@@ -1,0 +1,189 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 3,
+			"revision" : 1,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 572.0, 108.0, 929.0, 653.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 216.0, 642.0, 35.0, 22.0 ],
+					"text" : "out 5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 168.0, 642.0, 35.0, 22.0 ],
+					"text" : "out 4"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 118.0, 642.0, 35.0, 22.0 ],
+					"text" : "out 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 69.0, 642.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 20.0, 9.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 849.0, 9.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "Param choose_mode(0);\r\nParam steal_mode(0);\r\nParam voices(1);\r\n\r\nData voice_note(1024);\r\nData note_voice(12);\r\nData voice_sequ(1024);\r\n\r\nHistory last_used,sequ(1);\r\ntp=0;\r\nif(in1==-10){\r\n\tsequ=1;\r\n\tlast_used=0;\r\n\tfor(i=0;i<128;i+=1){\r\n\t\tpoke(voice_note,-1,i,0,0);\r\n\t\tpoke(voice_sequ,0,i,0,0);\r\n\t}\r\n\tfor(i=0;i<12;i+=1){\r\n\t\tpoke(note_voice,-1,i,0);\r\n\t}\r\n\tout4 = -1;\r\n\tout1 = -1;\r\n}else{\r\n\talready_p=-1;\r\n\tused = 0;\r\n\talloc = -1;\r\n\tfor(i=0;i<voices;i+=1){\r\n\t\ttp=peek(voice_note, i, 0);\r\n\t\tif((tp)==(in1)){\r\n\t\t\talready_p=i;\r\n\t\t}\r\n\t\tif(tp!=-1){\r\n \t\t\tused+=1;\r\n\t\t}\r\n\t\tif(used==0) sequ = 1;\r\n\t}\t\r\n\tif(in2==0){//noteoff\r\n\t\talloc = already_p;\r\n\t\tused=-4;\r\n\t}else{\r\n\t\tif(used == voices){//we are stealing\r\n\t\t\talloc=-5;\r\n\t\t\tif(steal_mode==0){ //no steal\r\n\t\t\t}else if(steal_mode==1){ //oldest\r\n\t\t\tused=-3;\r\n\t\t\t\tl=999999;\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\tused=-6;\r\n\t\t\t\t\tt=voice_sequ.peek(i);\r\n\t\t\t\t\tif(t<l){\r\n\t\t\t\t\t\tl=t;\r\n\t\t\t\t\t\talloc=i;\r\n\t\t\tused=-2;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(steal_mode==2){ //lowest\r\n\t\t\t\tl=999999;\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\tt=voice_note.peek(i);\r\n\t\t\t\t\tif(t<l){\r\n\t\t\t\t\t\tl=t;\r\n\t\t\t\t\t\talloc=i;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(steal_mode==3){ //highest\r\n\t\t\t\tl=-99;\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\tt=voice_note.peek(i);\r\n\t\t\t\t\tif(t>l){\r\n\t\t\t\t\t\tl=t;\r\n\t\t\t\t\t\talloc=i;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(steal_mode==4){ //cyclic\r\n\t\t\t\talloc = (last_used + 1) % voices;\r\n\t\t\t}else if(steal_mode==5){ //random\r\n\t\t\t\talloc = floor(noise()*voices);\r\n\t\t\t}else if(steal_mode==6){ //notememory\r\n\t\t\t\tt=note_voice.peek(in1 % 12);\r\n\t\t\t\tif(t!=-1){\r\n\t\t\t\t\talloc = t;\r\n\t\t\t\t}else{\r\n\t\t\t\t\talloc = (last_used + 1) % voices;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}else{ //we are choosing\r\n\t\t\tused=-3;\r\n\t\t\tif(choose_mode==0){ //blind cycle\r\n\t\t\t\talloc = (last_used + 1) % voices;\r\n\t\t\t}else if(choose_mode==1){//blind random\r\n\t\t\t\talloc = floor(noise()*voices);\r\n\t\t\t}else if(choose_mode==2){//cycle free\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\tif(voice_note.peek((i+1+last_used)%voices)==-1){\r\n\t\t\t\t\t\talloc = (i+1+last_used)%voices;\r\n\t\t\t\t\t\ti=999999999;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(choose_mode==3){//first free\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\tif(voice_note.peek(i)==-1){\r\n\t\t\t\t\t\talloc = i;\r\n\t\t\t\t\t\ti=999999999;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(choose_mode==4){//last free\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\tif(voice_note.peek(voices-i-1)==-1){\r\n\t\t\t\t\t\talloc = voices - 1 - i;\r\n\t\t\t\t\t\ti=999999999;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(choose_mode==5){//random free\r\n\t\t\t\tt= floor( noise()*voices);\r\n\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\tif(voice_note.peek((i+t)%voices)==-1){\r\n\t\t\t\t\t\talloc = (i+t)%voices;\r\n\t\t\t\t\t\ti=999999999;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}else if(choose_mode==6){//notememory\r\n\t\t\t\tif(note_voice.peek(in1%12)!=-1){\r\n\t\t\t\t\talloc = note_voice.peek(in1%12);\r\n\t\t\t\t}else{\r\n\t\t\t\t\tfor(i=0;i<voices;i+=1){\r\n\t\t\t\t\t\tif(voice_note.peek((i+last_used)%voices)==-1){\r\n\t\t\t\t\t\t\talloc = (i+last_used)%voices;\r\n\t\t\t\t\t\t\ti=999999999;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tif(alloc<0){\r\n\t\tout5=voice_sequ.peek(0);\r\n\t\tout4=already_p;\r\n\t\tout3=used;\r\n\t\tout2=steal_mode;\r\n\t\tout1=alloc;\r\n\t}else{\r\n\t\tlast_used=alloc;\r\n\t\tif((voice_note.peek(alloc)>-1)&&(in2!=0)){\r\n\t\t\tout5 = voice_note.peek(alloc);\r\n\t\t\tout4 = alloc;\r\n\t\t}else{\r\n\t\t\tout4 = -1;\r\n\t\t}\r\n\t\tout3 = in2;\r\n\t\tout2 = in1;\r\n\t\tif(in2<=0){\r\n\t\t\tpoke(voice_note,-1,alloc);\r\n\t\t}else{\r\n\t\t\tpoke(voice_note,in1,alloc);\r\n\t\t}\r\n\t\tpoke(note_voice,alloc, in1%12);\r\n\t\tif(in2>0){\r\n\t\t\tpoke(voice_sequ,sequ,alloc);\r\n\t\t\tsequ+=1;\r\n\t\t}else{\r\n\t\t\tpoke(voice_sequ,0,alloc);\r\n\t\t}\r\n\t\tout1 = alloc;\r\n\t}\r\n}\r\n\r\n",
+					"fontface" : 0,
+					"fontname" : "Lucida Console",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "", "", "", "", "" ],
+					"patching_rect" : [ 20.0, 44.0, 848.0, 573.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 20.0, 642.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-3", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-3", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-3", 4 ]
+				}
+
+			}
+ ],
+		"autosave" : 0
+	}
+
+}

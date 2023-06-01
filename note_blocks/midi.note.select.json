@@ -1,0 +1,31 @@
+{
+	"midi.note.select" : {
+		"patcher" : "midi.note.select",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "lets through notes that are in the pool, also splits to one output per note",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "in pool","not in pool", "C", "C#", "D", "D#" , "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0]
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "pool",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

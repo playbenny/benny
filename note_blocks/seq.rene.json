@@ -1,0 +1,447 @@
+{
+	"seq.rene" : {
+		"patcher" : "seq.rene",
+		"type" : "note",
+		"block_ui_patcher" : "seq.rene.ui",
+		"help_text" : "a circle on a cartesian plane step sequencer",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "advance", "setpos", "resync" ]
+			},
+			"out" : {
+				"midi" : [ "notes", "pointer" ],
+				"humanise" : 1
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [1,2,3,4],
+				"colour" : [255,255,255]
+			},
+			{ 
+				"contains" : [5, 6,7,8,9, 10,11,12,13, 14,15,16,17, 18,19,20],
+				"colour" : [90,255,0]
+			},
+			{ 
+				"contains" : [21, 22,23,24,25, 26,27,28,29, 30,31,32,33, 34,35,36],
+				"colour" : [180,200,0],
+				"height" : 2
+			},
+			{ 
+				"contains" : [37,38,39,40,41, 42,43,44,45, 46,47,48,49, 50,51,52],
+				"colour" : [180,200,0],
+				"height" : 0				
+			}		
+		],
+		"panel" : {
+			"parameters" : [3,4,1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "pointer",
+				"type" : "int",
+				"values" : ["uni", 0,16, "lin"],
+				"error_scale" : 0,
+				"default" : 0,
+				"nomap" : 1
+			},
+			{
+				"name" : "step",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp"],
+				"wrap" : 0,
+				"default" : 0.55
+			},
+			{
+				"name" : "radius",
+				"type" : "float",
+				"values" : ["uni", 0,4, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "X",
+				"type" : "float",
+				"values" : ["uni", 0, 4, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "Y",
+				"type" : "float",
+				"values" : ["uni", 0, 4, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "note",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vel",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "on",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}

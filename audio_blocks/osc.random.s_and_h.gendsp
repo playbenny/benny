@@ -1,0 +1,170 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 3,
+			"revision" : 1,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 660.0, 109.0, 675.0, 698.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 614.0, 578.0, 35.0, 22.0 ],
+					"text" : "out 4"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 426.0, 578.0, 35.0, 22.0 ],
+					"text" : "out 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 238.0, 578.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "Buffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\nParam tr(0);\r\nParam v(0);\r\nParam panic(0);\r\n\r\nData register(128);\r\n\r\nHistory col, c1, c2, len, prob, blnd, shp, t2, t3,rng;\r\nHistory ov(0), held(0),point(0);\r\n\r\nHistory pink(0);\r\nHistory dark(0);\r\nHistory pois1(0);\r\nHistory pois(0);\r\n\r\nif(delta(phasor(60))<0){\r\n\tcol = 5.99*peek(prm,0+voice_offset, 0, channels=1);\r\n\tc1 = floor(col);\r\n\tc2 = abs(col-5)/16;\r\n\tt2 = col - c1;\r\n\tt3 = 1-t2;\r\n\tlen = floor(31*peek(prm,1+voice_offset, 0, channels=1))+0.9;\r\n\tprob = peek(prm,2+voice_offset, 0, channels=1);\r\n\tblnd = peek(prm,3+voice_offset, 0, channels=1);\r\n\tshp = pow(10,20*peek(prm, 4+voice_offset, 0, channels=1));\r\n\trng = (2+126*peek(prm, 5+voice_offset, 0, channels=1))/128;\r\n}\r\n\r\nwhite = (noise() + noise() + noise() + noise() + noise() + noise() + noise() + noise())/6;\r\npink += 0.1*white - 0.01*pink;\r\ndark += 0.01* pink - dark*0.01;\r\nblue = white*white*white;\r\npois1 += white*c2;\r\nif(pois1> 1){\r\n\tpois=1;\r\n\tpois1=0;\r\n}else if(pois1< -1){\r\n\tpois=-1;\r\n\tpois1=0;\r\n}else{\r\n\tpois=0;\r\n}\r\n\r\n\r\nx=0;\r\nif(c1==0){\r\n\tx = t3*dark + t2*pink;\r\n}else if(c1==1){\r\n\tx = t3*pink + t2*white;\r\n}else if(c1==2){\r\n\tx = t3*white + t2*blue;\r\n}else if(c1==3){\r\n\tx = t3*blue + t2*pois;\r\n}else if(c1==4){\r\n\tx = t3*pois + t2*in2;\r\n}else{\r\n\tx = t3*in2 + t2*dark;\r\n}\r\nx = clip(x,-1,1);\r\n\r\nout1 = x;\r\no3=0;\r\nif(tr+v+in1>ov){\r\n\to3=1;\r\n\t//trigger s&h\r\n\tpoint += 1;\r\n\t\r\n\tif(abs(noise())<= prob){\r\n\t\tpoke(register, (1-blnd)*peek(register,point,0) + blnd*x, point, 0);//(1-blnd)*peek(register,point,0) + blnd*x);\r\n\t}\r\n\theld = peek(register,point,0);\r\n\tif(point>=len){\r\n\t\tpoint=0;\r\n\t}\r\n}\r\n\tov=tr+v+in1+0.1;\r\nout4=o3;\r\nout3=rng*held;\r\nout2=slide(held,shp,shp);\r\n",
+					"fontface" : 0,
+					"fontname" : "Lucida Console",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ 50.0, 46.0, 583.0, 512.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 614.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 578.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-5", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-5", 3 ]
+				}
+
+			}
+ ]
+	}
+
+}

@@ -1,0 +1,114 @@
+{
+	"osc.shepherd" : {
+		"patcher" : "osc.shepherd",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Shepherd oscillator. Mixes multiple octaves of a wave to let you make scales that ascend or descend forever, or parts that fluidly morph between high and low frequencies, using the ideas of Roger Shepherd and his famous barberpole tone (which this block can recreate by connecting a rising sawtooth lfo to the fm input). Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. The rectangle portion of this oscillator uses code from Yofiel.com. ",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "modulation 1", "modulation 2" ],
+				"midi" : [ "pitch_in" ]
+			},
+			"out" : {
+				"audio" : [ "osc out", "sines out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,4,5,6,9],
+				"colour" : [255,0,0]
+			},
+			{
+				"contains" : [1,1,2,2,3]
+			},
+			{
+				"contains" : [7,8,10],
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "shape",
+				"type" : "menu_f",
+				"values" : ["sin", "tri", "saw", "pulse", "sqr", "tri"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "centre",
+				"type" : "int",
+				"values" : ["uni", 0, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "width",
+				"type" : "float",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "spacing",
+				"type" : "menu_i",
+				"values" : ["1 octave", "2 octaves"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "unstable_pitch",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "unstable_shape",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0
+			},
+			{
+				"name" : "modulation 1",
+				"type" : "menu_i",
+				"error_scale" : 0,
+				"values" : ["fm" , "sync" , "sync&fm", "shape", "centre", "width"],
+				"wrap" : 1
+			},
+			{
+				"name" : "modulation 2",
+				"type" : "menu_i",
+				"error_scale" : 0,
+				"values" : ["shape", "centre", "width"],
+				"wrap" : 1
+			},
+			{
+				"name" : "porta",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin" ],
+				"wrap" : 0,
+				"default" : 0.75				
+			}
+		]
+	}
+}

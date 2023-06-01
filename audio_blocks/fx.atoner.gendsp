@@ -1,0 +1,134 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 3,
+			"revision" : 1,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 376.0, 138.0, 675.0, 600.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 614.0, 573.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "require \"sm_sallenkey_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\n\r\nHistory counter(0);\r\nHistory outsign(1);\r\nHistory outlevel(0);\r\nHistory waitflag(0);\r\nHistory filterfreq(440);\r\n\r\nHistory div,mod,mix,off,drv;\r\n\r\nif(delta(phasor(60))<0){\r\n\tdiv = peek(prm,voice_offset, 0, channels=1);\r\n\tmod = peek(prm,1+voice_offset, 0, channels=1);\r\n\tmix = peek(prm,2+voice_offset, 0, channels=1);\r\n\toff = peek(prm,3+voice_offset, 0, channels=1);\r\n\tdrv = peek(prm,4+voice_offset, 0, channels=1);\r\n}\r\n\r\noutlevel=0;\r\nif(mod<0.5){\r\n\tcounter += ((delta(in1 > 0))!=0);\r\n\tif(counter >= div*16) {\r\n\t\tfilterfreq = 440 / (1 + (div*16));\r\n\t\tcounter = 0;\r\n\t\toutsign *= -1;\r\n\t\toutlevel = outsign;\r\n\t}\r\n}else{\r\n\tt = (delta(in1 > 0));\r\n\tfilterfreq = mtof((div+in2)*128);\r\n\tif((waitflag<=0) && (t!=0)){\r\n\t\twaitflag = samplerate/filterfreq;\r\n\t\toutsign *= -1;\r\n\t\toutlevel = outsign;\t\t\r\n\t}\r\n\tif(waitflag>0) waitflag-=1;\r\n}\r\n\r\nx = outlevel;\r\n\r\ncut = clip(filterfreq*pow(2,(off-0.5)*8, 1, 20000));\r\nflp,fbp,fhp = skfTanNltoCoefMulti(x,cut,clip(drv/1.1,0,0.99),0.9);\r\n//flp=dcblock(flp);\r\n//fbp=dcblock(fbp);\r\n\r\nx = mix * fhp + (1-mix)*flp;\r\n\r\nout1 = x;\r\nout2 = outlevel;",
+					"fontface" : 0,
+					"fontname" : "Lucida Console",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 46.0, 583.0, 512.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 614.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 46.5, 573.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}

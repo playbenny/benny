@@ -1,0 +1,75 @@
+{
+	"midi.fold" : {
+		"patcher" : "midi.fold",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Transposes, folding notes that lie outside the set range. The last control, 'glissando', determines whether the output notes change when you adjust the controls as opposed to just when new notes come in.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0, 1]
+			},
+			{ 
+				"contains" : [2,2,3,3,4,5]
+			}			
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2,3]
+		},
+		"parameters" : [
+			{
+				"name" : "transpose notes",
+				"type" : "int",
+				"values" : ["bi", -24, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "transpose octaves",
+				"type" : "int",
+				"values" : ["bi", -8, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "fold floor",
+				"type" : "note",
+				"values" : ["uni", 0, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fold ceiling",
+				"type" : "note",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "fold span",
+				"type" : "menu_i",
+				"values" : ["1oct", "2oct", "3oct", "4oct"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "glissando",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

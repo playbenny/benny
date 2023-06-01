@@ -1,0 +1,144 @@
+{
+	"core.tuning" : {
+		"patcher" : "core.tuning",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "global tuning controller, affects all blocks that have a midi-pitch function (eg oscillators). the tilt and nonlin controls simulate inaccurate tuning in analogue synths and eg pianos - with tilt stretching the tuning across the whole range, which is common in pianos badly tuned by ear, and nonlin introducing slight brownian deviations as you'd see from slightly nonlinear midi-cv conversion in an analogue synth. offset lets you tune to the nearest churchbells or the hum of the mains in your town or 432Hz if you believe in that sort of thing. the scale and root sliders let you select between the common western 12TET tuning, which only sounds good for certain types of melody and harmony, with 3rds sounding particularly rough, and a few other options - just intonation and a couple of scales used in iranian music, rast and segah. all these non-12TET scales are based around a chosen root key, and they generally share the property of some intervals sounding really good and some sounding extra inharmonious. still TODO: more cultural and technical context for each scale, more scales and import of scale files. ",
+		"exclusive" : 1,
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "hermode in" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3, 4]
+			},
+			{ 
+				"contains" : [5,6,7,8,9,10,11,12,13,14,15,16]
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "tilt",
+				"type" : "float4",
+				"values" : ["bi", -1, 1, "exp"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "nonlin",
+				"type" : "float4",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "offset",
+				"type" : "float4",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "scale",
+				"type" : "menu_i",
+				"values" : ["free", "12tet", "just", "rast", "segah", "chahargah"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "root",
+				"type" : "menu_i",
+				"values" : ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "c",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "c#",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "d",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "d#",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "e",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "f",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "f#",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "g",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "g#",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "a",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "a#",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "b",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

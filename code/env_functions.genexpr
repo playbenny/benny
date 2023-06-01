@@ -1,0 +1,164 @@
+//#####################################################################
+// mathslike envelope
+// adjusted to be more tolerant of flocking params moving around
+
+envelope(){	
+	History ov(0);  //last non-zero velocity
+	History oov(0); //just for detect change
+	History env(0);
+	History attdone(1); History decdone(1); History target(0);
+	History attrate(0.00001); History decrate(0.00001);
+
+	Param v(0);
+	Param vcavel(1, min=-1, default=1, max=1);
+	Param hold(1, min=0, default=1, max=1);
+	Param loop(0, min=0, default=0, max=1);
+	Param curve(-1, min=-1, default=-1, max=1);
+	Param attack(1000, min=0.1, default=1000, max=10000000);
+	Param decay(1000, min=0.1, default=1000, max=10000000);
+	Param accum(0, min=-1, default=0, max=1);
+	Param panic(0, min=0, default=0, max=1);
+
+	attrate=1/mstosamps(attack);
+	decrate=-1/mstosamps(decay);
+
+	if(panic) {
+		target=0;
+		decdone=0;
+		decrate=-0.001;
+		env*=0.999;
+	//	ov=0;
+	}
+	if(v!=oov){
+		oov=v;
+		if(v==0){
+			if(hold>0){
+				target=0;
+				attdone=1;
+				decdone=0;
+			}
+		}else{
+			ov=(v*vcavel+1-vcavel);
+			if((hold > 0.1) && (decdone == 1) && (attdone==1)){
+				target = hold * ov;
+			}else{
+				target=ov+(accum*1.2*(env-(env*env*env*0.2)));
+			}
+			if(target < env){
+				attdone=1;
+				decdone=0;
+			}else{
+				attdone=0;
+				decdone=1;
+			}
+		}
+	}
+	if(!attdone){
+		t=clip(target-env,-1,1);
+		if(t>0.00001){
+			if(curve>0){		env+=clip(((1-curve)+curve*t)*attrate,0,t);
+			}else if(curve==0){	env+=clip(attrate,0,t);
+			}else if(curve>-1){	env+=clip(((1+curve)-curve*(1/t))* attrate,0,t);
+			}else {				env+=clip((1*pow((1/t),-curve))* attrate,0,t);
+			}
+		}else{
+			env=target;
+			attdone=1;
+			if(hold<=0.1) {
+				target=0;
+				decdone=0;
+			}else if(hold<0.95){
+				target=hold*ov;
+				decdone=0;
+			}
+		}
+	}
+	if(!decdone){
+		t=clip(target-env,-1,1);
+		if(t<-0.001){
+			if(curve<-1){		env+=clip(1*pow((.0000001-t), -curve)*decrate,t,-0.00000001);//clip(-1* pow((0.0000001-t),2.8)*decrate,t,-0.00000001);
+			}else if(curve<0){	env+=clip(((1+curve)+curve*(t-.0000001))*decrate,t,-0.00000001);
+			}else if(curve==0){	env+=clip(decrate,t,0);
+			}else {				env+=clip(((1-curve)-curve*(1/t))* decrate,t,-0.00000001);
+			}
+		}else{
+			env=target;
+			decdone=1;
+			if(loop){
+				ov = ov*loop;
+				if(ov>0.001){
+					attdone=0;
+					target=ov*loop;
+				}
+			}
+		}
+	}
+	return env, slide((target>0),200,mstosamps(decay+200));
+}
+
+//#################### audio rate input env (follower)
+audio_rate_envelope(v){	
+	History ov(0);  //last non-zero velocity
+	History oov(0); //just for detect change
+	History env(0);
+	History attdone(1); History decdone(1); History target(0);
+	History attrate(0.00001); History decrate(0.00001);
+
+//	Param v(0);
+	Param vcavel(1, min=-1, default=1, max=1);
+	Param hold(1, min=0, default=1, max=1);
+	Param loop(0, min=0, default=0, max=1);
+	Param curve(-1, min=-1, default=-1, max=1);
+	Param attack(1000, min=0.1, default=1000, max=10000000);
+	Param decay(1000, min=0.1, default=1000, max=10000000);
+	Param accum(0, min=-1, default=0, max=1);
+	Param panic(0, min=0, default=0, max=1);
+
+	attrate=1/mstosamps(attack);
+	decrate=-1/mstosamps(decay);
+
+	if(panic) {
+		target=0;
+		decdone=0;
+		decrate=-0.001;
+		env*=0.999;
+	//	ov=0;
+	}
+	if(v!=oov){
+		oov=v;
+		target=v;
+		if(v<=env){
+			attdone=1;
+			decdone=0;
+		}else{
+			decdone=1;
+			attdone=0;
+		}
+	}
+	if(!attdone){
+		t=clip(target-env,-1,1);
+		if(t>0.00001){
+			if(curve>0){		env+=clip(((1-curve)+curve*t)*attrate,0,t);
+			}else if(curve==0){	env+=clip(attrate,0,t);
+			}else {				env+=clip(((1+curve)-curve*(1/t))* attrate,0,t);
+			}
+		}else{
+			env=target;
+			attdone=1;
+		}
+	}
+	if(!decdone){
+		t=clip(target-env,-1,1);
+		if(t<-0.001){
+//			ccurve = -curve;
+			if(curve<0){		env+=clip(((1+curve)+curve*(t-.1))*decrate,t,-0.00000001);
+			}else if(curve==0){	env+=clip(decrate,t,0);
+			}else {				env+=clip(((1-curve)-curve*(1/t))* decrate,t,-0.00000001);
+			}
+		}else{
+			env=target;
+			decdone=1;
+		}
+	}
+	return env, slide((target>0),200,mstosamps(decay+200));
+}

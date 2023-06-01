@@ -1,0 +1,55 @@
+{
+	"midi.holes" : {
+		"patcher" : "midi.holes",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Forgets some midi events, randomly",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "passed", "discarded" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3]
+			}		
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "skip note",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "skip off",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "skip every",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "accent after skip",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.6 
+			}
+		]
+	}
+}

@@ -1,0 +1,48 @@
+{
+	"utility.vca" : {
+		"patcher" : "utility.vca",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "log/lin vca",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "level in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out", "level out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2]
+			}
+		],
+		"panel" : {
+			"parameters" : [1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "shape",
+				"type" : "menu_f",
+				"values" : ["log", "lin", "exp"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			}
+		]
+	}
+}

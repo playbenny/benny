@@ -1,0 +1,112 @@
+{
+	"fx.filter.fixed.bank" : {
+		"patcher" : "fx.filter.fixed.bank",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "fixed filter bank with split outputs and airwindows api emulation",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4,5,6,7,8,9,10,11]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2,3,4,5,6,7,8,9,10,11]
+		},
+		"parameters" : [
+			{
+				"name" : "125",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "175",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "250",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "350",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "500",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "700",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "1k",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "1k4",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "2k",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "2k8",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "4k",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "5k6",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+
+		]
+	}
+}

@@ -1,0 +1,118 @@
+{
+	"utility.buttons" : {
+		"patcher" : "utility.buttons",
+		"type" : "note",
+		"block_ui_patcher" : "utility.buttons.ui",
+		"no_edit" : 1,
+		"help_text" : "3 buttons on a panel that output the note and vel of your choice. While the button is lit (hold/toggle modes) the 'switched inputs' pass midi messages to their respective outputs.",
+		"max_polyphony" : 1,
+		"connections" : {
+			"out" : {
+				"midi" : [ "button A", "button B", "button C", "switched output A", "switched output B", "switched output C" ]
+			},
+			"in" : {
+				"midi" : [ "A in","B in","C in", "switched input A", "switched input B", "switched input C" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2],
+				"height" : 0
+			},		 
+			{ 
+				"contains" : [3,6, 4,7, 5,8],
+				"height" : 0
+			},		 
+			{ 
+				"contains" : [9, 10, 11],
+				"height" : 0
+			}		 
+		],
+		"parameters" : [
+			{
+				"name" : "A_note",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "B_note",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "C_note",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "A_vel",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "B_vel",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "C_vel",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "A_Y->vel",
+				"type" : "int",
+				"values" : ["bi", -127, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "B_Y->vel",
+				"type" : "int",
+				"values" : ["bi", -127, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "C_Y->vel",
+				"type" : "int",
+				"values" : ["bi", -127, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "A_mode",
+				"type" : "menu_i",
+				"values" : ["HOLD", "TOGGLE", "TRIGGER"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "B_mode",
+				"type" : "menu_i",
+				"values" : ["HOLD", "TOGGLE", "TRIGGER"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "C_mode",
+				"type" : "menu_i",
+				"values" : ["HOLD", "TOGGLE", "TRIGGER"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

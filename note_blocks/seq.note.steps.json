@@ -1,0 +1,542 @@
+{
+	"seq.note.steps" : {
+		"patcher" : "seq.note.steps",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A simple step sequencer. Each step has note, vel, on/off and length sliders. Adding more voices adds more playheads traversing the same sequence. ",
+		"max_polyphony" : 0,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic"
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "advance", "setpos", "resync" ]
+			},
+			"out" : {
+				"midi" : [ "notes", "trigger", "loop pulse" ],
+				"humanise" : 1
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [  2,3,4,5],
+				"colour" : [255,255,255]
+			},
+			{ 
+				"contains" : [6,7,8,9, 10,11,12,13, 14,15,16,17, 18,19,20,21],
+				"colour" : [90,255,0]
+			},
+			{ 
+				"contains" : [22,23,24,25, 26,27,28,29, 30,31,32,33, 34,35,36,37],
+				"colour" : [180,200,0],
+				"height" : 2
+			},
+			{ 
+				"contains" : [38,39,40,41, 42,43,44,45, 46,47,48,49, 50,51,52,53],
+				"colour" : [180,200,0],
+				"height" : 0				
+			},
+			{ 
+				"contains" : [54,55,56,57, 58,59,60,61, 62,63,64,65, 66,67,68,69],
+				"colour" : [180,200,0],
+				"height" : 0				
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "clock",
+				"type" : "menu_i",
+				"width" : 3,
+				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
+				"error_scale" : 0,
+				"nomap" : 1,
+				"default" : 0.56
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"nomap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "hold",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.45 
+			},
+			{
+				"name" : "start",
+				"type" : "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "root",
+				"type" : "note",
+				"values" : ["uni", 0, 92, "lin"],
+				"wrap" : 0,
+				"default" : 0.4 
+			},
+			{
+				"name" : "note",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vel",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "on",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "",
+				"type" : "menu_i",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			},
+			{
+				"name" : "",
+				"type" : "int",
+				"values" : ["uni", 0, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.08
+			}
+		]
+	}
+}

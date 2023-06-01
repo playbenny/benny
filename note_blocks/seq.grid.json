@@ -1,0 +1,63 @@
+{
+	"seq.grid" : {
+		"patcher" : "seq.grid",
+		"type" : "note",
+		"block_ui_patcher" : "seq.grid.ui",
+		"help_text" : "A step sequencer. One voice = one sequencer row. Values can be sent out as changing velocities of a fixed note, or changing notes with a fixed velocity. ",
+		"max_polyphony" : 0,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic"
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger", "set position" ]
+			},
+			"out" : {
+				"midi" : [ "notes out", "velocities out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [1, 2,3],
+				"colour" : [255,255,255]
+			}			
+		],
+		"voice_data" : {
+			"defaults" : [0 , 0.12, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		},
+		"parameters" : [
+			{
+				"name" : "clock",
+				"type" : "menu_i",
+				"width" : 3,
+				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
+				"error_scale" : 0,
+				"nomap" : 1,
+				"default" : 0.56
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "start mod",
+				"type" : "float",
+				"values" : ["bi", -32, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "length mod",
+				"type" : "float",
+				"values" : ["bi", -32, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

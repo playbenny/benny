@@ -1,0 +1,135 @@
+onepole(input){
+	History y0(0);
+
+	Param cutoff(1000, max=20000, min=1);
+
+	coeff_a = clip(sin(abs(cutoff) * 2 * PI / samplerate), 0, 1);
+	mix5 = mix(y0, input, coeff_a);
+	y0 = fixdenorm(mix5);
+	return mix5;
+}
+
+twopole_lp(input){
+	History history_1(0);
+	History history_2(0);
+	History history_3(0);
+	History history_4(0);
+
+	Param cutoff(440, max=20000, min=1);
+	Param Q(0.5, max = 10, min = 0.000001);
+
+	min_5 = max(cutoff, 0.00001);
+	min_6 = max(Q, 0.000001);
+	omega = ((min_5 * twopi)) / samplerate;
+	sn = sin(omega);
+	cs = cos(omega);
+	one_over_Q = 1 / min_6;
+	alpha = ((sn * 0.5)) * one_over_Q;
+	b0 = 1 / ((1 + alpha));
+	a2 = ((((1 - cs)) * 0.5)) * b0;
+	a1 = ((1 - cs)) * b0;
+	b1 = ((-2 * cs)) * b0;
+	b2 = ((1 - alpha)) * b0;
+	expr_7 = a2;
+	expr_8 = a1;
+	expr_9 = a2;
+	expr_10 = b1;
+	expr_11 = b2;
+	mul_12 = input * expr_7;
+	mul_13 = history_3 * expr_8;
+	mul_14 = history_2 * expr_9;
+	mul_15 = history_1 * expr_11;
+	mul_16 = history_4 * expr_10;
+	sub_17 = ((((mul_14 + mul_13)) + mul_12)) - ((mul_16 + mul_15));
+	gen_18 = sub_17;
+	history_1 = fixdenorm(history_4);
+	history_2 = fixdenorm(history_3);
+	history_3 = fixdenorm(input);
+	history_4 = fixdenorm(sub_17);
+ 	return gen_18;
+}
+
+bandpass(input){
+	History history_1(0);
+	History history_2(0);
+	History history_3(0);
+	History history_4(0);
+
+	Param cutoff(440, max=20000, min=1);
+	Param Q(0.5, max = 10, min = 0.000001);
+
+	min_5 = max(cutoff, 0);
+	min_6 = max(Q, 0.000001);
+	omega = ((min_5 * twopi)) / samplerate;
+	sn = sin(omega);
+	cs = cos(omega);
+	alpha = ((sn * 0.5)) / min_6;
+	b0 = 1 / ((1 + alpha));
+	a0 = alpha * b0;
+	a2 = (-alpha) * b0;
+	b1 = ((-2 * cs)) * b0;
+	b2 = ((1 - alpha)) * b0;
+	expr_7 = a0;
+	expr_8 = 0;
+	expr_9 = a2;
+	expr_10 = b1;
+	expr_11 = b2;
+	mul_12 = input * expr_7;
+	mul_13 = history_3 * expr_8;
+	mul_14 = history_1 * expr_9;
+	mul_15 = history_2 * expr_11;
+	mul_16 = history_4 * expr_10;
+	sub_17 = ((((mul_14 + mul_13)) + mul_12)) - ((mul_16 + mul_15));
+	gen_18 = sub_17;
+	history_1 = fixdenorm(history_3);
+	history_2 = fixdenorm(history_4);
+	history_3 = fixdenorm(input);
+	history_4 = fixdenorm(sub_17);
+	return gen_18;
+}
+
+//##############################################################
+// doepfer-style wavefolder with shoulder (from lookup table)
+
+lookup_fold(signal, l, u){
+	Buffer foldLUT("foldLUT");
+	if(signal<l){
+		return l - signal;
+	}else if(signal<0){
+		t = sample(foldLUT, signal/l, 0, channels=1);
+		return -t;
+	}else if(signal<u){
+		t = sample(foldLUT, signal/u, 0, channels=1);
+		return t;
+	}else{
+		return u - signal;
+	}
+}
+
+/* //how to use: (you can add more stages if you want)
+l2 = 2 * in2;
+u2 = 2 * in3;
+
+out1 = lookup_fold(in4*lookup_fold(in1, l2 , u2), l2, u2);
+*/
+
+// this is how it was used ..
+
+fold_multistage(signal, wf, wa, wh){
+	fold_u=(1-wa)/wf;
+	fold_l=(-wa)/wf;
+	
+	signal = lookup_fold(signal/8, fold_l, fold_u);
+	signal*= wh/2;
+	signal = twopole_lp(signal, cutoff=12000);
+	signal = 0.5*lookup_fold(signal, fold_l, fold_u);
+	signal*= wh/2;
+	signal = twopole_lp(signal, cutoff=12000);
+	signal = 0.5*lookup_fold(signal, fold_l, fold_u);
+	signal*= wh/2;
+	signal-=(signal*signal*signal)/3;
+	signal = twopole_lp(signal, cutoff=12000);
+	signal = lookup_fold(signal, fold_l, fold_u);
+	
+	return signal;
+}

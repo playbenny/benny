@@ -1,0 +1,31 @@
+{
+	"midi.note.length" : {
+		"patcher" : "midi.note.length",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "sets the length of midi notes. when set to zero the notes are passed as instantaneous triggers with no length.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0]
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "length_(ms)",
+				"type" : "int",
+				"values" : ["uni", 0, 10000, "exp"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

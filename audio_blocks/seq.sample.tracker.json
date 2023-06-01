@@ -1,0 +1,81 @@
+{
+	"seq.sample.tracker" : {
+		"patcher" : "seq.sample.tracker",
+		"type" : "audio",
+		"block_ui_patcher" : "seq.sample.tracker.ui",
+		"help_text" : "buzz-style sample tracker",
+		"max_polyphony" : 0,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic"
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger", "row select", "reset" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ],
+				"audio" : [ "out1", "out2" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [1, 2,3],
+				"colour" : [255,255,255]
+			},
+			{
+				"contains" : [4,5]
+			}
+		],
+		"voice_data" : {
+			"defaults" : [0 , 0.118]
+		},
+		"parameters" : [
+			{
+				"name" : "clock",
+				"type" : "menu_i",
+				"width" : 3,
+				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0.56
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "start mod",
+				"type" : "float",
+				"values" : ["bi", -32, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "length mod",
+				"type" : "float",
+				"values" : ["bi", -32, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "stretch",
+				"type" : "float",
+				"values" : ["bi", -4, 4, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

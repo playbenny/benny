@@ -1,0 +1,76 @@
+{
+	"osc.random.s_and_h" : {
+		"patcher" : "osc.random.s_and_h",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "multi colour noise source and shift register / s&h",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "trigger", "audio" ],
+				"midi" : [ "trigger" ]
+			},
+			"out" : {
+				"audio" : [ "noise", "s&h" ],
+				"midi" : [ "s&h" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0],
+				"colour" : [100,100,255]
+			},
+			{
+				"contains" : [1,2,3,4,5]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 2,3]
+		},
+		"parameters" : [
+			{
+				"name" : "noise colour",
+				"type" : "menu_f",
+				"values" : ["dark", "pink", "white", "blue", "poisson", "audio in" ],
+				"wrap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "shift_register_length",
+				"type" : "int",
+				"values" : ["uni", 1,32, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "replace_chance",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "replace_blend",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "output_shape",
+				"type" : "menu_f",
+				"values" : ["sharp", "curved" ],
+				"wrap" : 0,
+				"default" : 0.0
+			},
+			{
+				"name" : "midi_output_range",
+				"type" : "int",
+				"values" : ["uni", 2,128, "lin" ],
+				"wrap" : 0,
+				"default" : 0.25
+			}			
+		]
+	}
+}

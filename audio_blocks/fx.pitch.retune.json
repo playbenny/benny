@@ -1,0 +1,40 @@
+{
+	"fx.pitch.retune" : {
+		"patcher" : "fx.pitch.retune",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "autotune",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0, 1],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "pool",
+				"type" : "menu_i",
+				"values" : ["chromatic", "1", "2", "3", "4", "5" ,"6" , "7" ,"8"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.15
+			},
+			{
+				"name" : "quality",
+				"type" : "menu_i",
+				"values" : ["basic", "good", "better", "best"],
+				"wrap" : 0,
+				"default" : 0.3
+			}
+		]
+	}
+}

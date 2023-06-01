@@ -1,0 +1,79 @@
+{
+	"midi.switch" : {
+		"patcher" : "midi.switch",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Has multiple ins and outs, lets you select an input and route it to an output, (accomplishing the functions of the max gate and switch objects). Also lets you select i/o via midi and cycle through io via mid",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "select in", "select out", "in cycle trigger", "out cycle trigger", "notes in 1", "notes in 2", "notes in 3", "notes in 4", "notes in 5", "notes in 6", "notes in 7", "notes in 8", "notes in 9", "notes in 10",  "notes in 11", "notes in 12", "notes in 13", "notes in 14", "notes in 15", "notes in 16"]
+			},
+			"out" : {
+				"midi" : [ "notes out 1", "notes out 2", "notes out 3", "notes out 4", "notes out 5", "notes out 6", "notes out 7", "notes out 8", "notes out 9", "notes out 10", "notes out 11", "notes out 12", "notes out 13", "notes out 14", "notes out 15", "notes out 16" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,6]
+			},
+			{
+				"contains" : [2,3,4,5]
+			}	
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "selected input",
+				"type" : "menu_i",
+				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "selected output",
+				"type" : "menu_i",
+				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "in cycle min",
+				"type" : "menu_i",
+				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "in cycle max",
+				"type" : "menu_i",
+				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "out cycle max",
+				"type" : "menu_i",
+				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "out cycle max",
+				"type" : "menu_i",
+				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "cycle on_noteoff",
+				"type" : "menu_i",
+				"values" : ["off", "in cycle", "out cycle" ],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

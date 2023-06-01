@@ -1,0 +1,64 @@
+{
+	"fx.atoner" : {
+		"patcher" : "fx.atoner",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "rough model of the 4ms atoner, an octave divider",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in", "mod" ]
+			},
+			"out" : {
+				"audio" : [ "filtered out", "unfiltered out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3],
+				"colour" : [255,100,100]
+			}
+		],
+		"panel" : {
+			"parameters" : [0,0]
+		},
+		"parameters" : [
+			{
+				"name" : "divide / freq",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_i",
+				"values" : ["divider","atoner"],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "filter mix",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "filter cutoff offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "filter drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			}
+		]
+	}
+}

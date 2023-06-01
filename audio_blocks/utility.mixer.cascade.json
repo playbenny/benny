@@ -1,0 +1,142 @@
+{
+	"utility.mixer.cascade" : {
+		"patcher" : "utility.mixer.cascade",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "mixer using airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in 1", "audio in 2" ]
+			},
+			"out" : {
+				"audio" : [ "audio out ", "audio out 2" ],
+				"force_unity" : 1
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+				"onepervoice" : 1,
+				"height" : 4
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.39
+			}
+		]
+	}
+}

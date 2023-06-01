@@ -1,0 +1,64 @@
+{
+	"fx.filter.2pole" : {
+		"patcher" : "fx.filter.2pole",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "surreal machines' zero delay feedback filter model",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "cutoff" ]
+			},
+			"out" : {
+				"audio" : [ "lp/hp", "bp" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,1,2,3,4],
+				"colour" : [255,100,100]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "float",
+				"values" : ["uni", 0,1, "exp"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "resonance",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "circuit_saturation",
+				"type" : "menu",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "lp/hp_mix",
+				"type" : "menu_f",
+				"values" : ["lp","both", "hp"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "key_follow",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			}	
+		]
+	}
+}

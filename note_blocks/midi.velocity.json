@@ -1,0 +1,66 @@
+{
+	"midi.velocity" : {
+		"patcher" : "midi.velocity",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "midi velocity processing",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "passed", "discarded" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3,4,5]
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "gate below",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "gate above",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "curve",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "humanise",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "out min",
+				"type" : "int",
+				"values" : ["uni", 1, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "out max",
+				"type" : "int",
+				"values" : ["uni", 1, 127, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}

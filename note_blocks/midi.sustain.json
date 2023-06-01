@@ -1,0 +1,31 @@
+{
+	"midi.sustain" : {
+		"patcher" : "midi.sustain",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "hold the last n notes",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" , "stop all"]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0]
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "sustain",
+				"type" : "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

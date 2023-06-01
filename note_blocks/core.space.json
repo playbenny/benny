@@ -1,0 +1,29 @@
+{
+	"core.space" : {
+		"patcher" : "core.space",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Lets you blow a wind-like force into the flocked parameters simulation. Also has controls for visual declarification.",
+		"exclusive" : 1,
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "wind X", "wind Y", "wind Z"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "bloom",
+				"type" : "float4",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			}
+		]
+	}
+}

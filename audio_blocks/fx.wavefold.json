@@ -1,0 +1,55 @@
+{
+	"fx.wavefold" : {
+		"patcher" : "fx.wavefold",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wavefolder modelled roughly after the doepfer one",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "mod in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "multiplier",
+				"type" : "float",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "asym",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "harmonics",
+				"type" : "float",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "mod target",
+				"type" : "menu_i",
+				"values" : ["multiplier", "asym", "harmonics"],
+				"wrap" : 0,
+				"default" : 0 
+			}
+		]
+	}
+}

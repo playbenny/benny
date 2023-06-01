@@ -1,0 +1,160 @@
+{
+	"seq.shape.player" : {
+		"patcher" : "seq.shape.player",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Plays the shape stored in a notepool. The trigger note input both triggers and sets the in-scale offset (eg midi-note 2 offsets the pattern by 2 notes). In the clocked modes a trigger note starts the whole sequence playing by itself on a regular clock. The ornaments sliders control the chance of various types of ornamentation being applied to the pattern. On the second midi input C = reset, C# on triggers one of the ornament types.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger in", "reset+ornament in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3]
+			},
+			{ 
+				"contains" : [4, 4, 15,16],
+				"height" : 1,
+				"colour" : [255,255,255]
+			},
+			{ 
+				"contains" : [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+				"height" : 0,
+				"colour" : [255,255,255]
+			}						
+		],
+		"panel" : {
+			"parameters" : [4,5]
+		},
+		"parameters" : [
+			{
+				"name" : "pool",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_i",
+				"values" : ["trigger->clock", "trigger->start-1", "trigger->start-loop"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "clock rate",
+				"type" : "menu_i",
+				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n", "2b", "3b", "4b", "5b", "6b","7b","8b"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.46
+			},
+			{
+				"name" : "offset",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"error_scale" : 0.3,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "ornament_inclination",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "reset",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "skip",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "double",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "flam",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "swap",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "trill",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "arp",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "sub_loop",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "back",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fwd",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "arp_step",
+				"type" : "float",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "arp_limit",
+				"type" : "float",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

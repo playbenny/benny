@@ -1,0 +1,48 @@
+{
+	"midi.free.clock" : {
+		"patcher" : "midi.free.clock",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "a free-running clock, disconnected from the global one",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "reset in" ]
+			},
+			"out" : {
+				"midi" : [ "clock" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0, 1,2]
+			}		
+		],
+		"panel" : {
+			"parameters" : [0, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "tempo",
+				"type" : "float4",
+				"values" : ["uni", 0, 240, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "multiplier",
+				"type" : "int",
+				"values" : ["uni", 1, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "run while stopped",
+				"type" : "menu_i",
+				"values" : ["play_only", "always"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

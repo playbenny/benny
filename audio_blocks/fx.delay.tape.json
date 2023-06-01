@@ -1,0 +1,107 @@
+{
+	"fx.delay.tape" : {
+		"patcher" : "fx.delay.tape",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Basic delay line with tape-like repitching, mod, timeslips and saturation. The repitch midi input alters the delay time multiplier to shift by the desired interval (so if for example a C is held in the delayline and you play an F the rate is changed in order to repitch the playback and subsequent repeats up to an F)",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "modulation" ],
+				"midi" : [ "repitch"]
+			},
+			"out" : {
+				"audio" : [ "audio out", "mod signal out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,1,7],
+				"height" : 0
+			},
+			{
+				"contains" : [2,2,8,8, 3,9]
+			},
+			{
+				"contains" : [4,5,6],
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,4,8,9]
+		},
+		"parameters" : [
+			{
+				"name" : "time",
+				"type" : "menu_i",
+				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n", "2b", "3b", "4b", "5b", "6b","7b","8b"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.46
+			},
+			{
+				"name" : "time mult",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "highpass",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp"],
+				"wrap" : 0,
+				"default" : 0.075
+			},
+			{
+				"name" : "wobbles",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1 
+			},
+			{
+				"name" : "warbles",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.05 
+			},
+			{
+				"name" : "slips",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "change mode",
+				"type" : "menu_i",
+				"values" : ["fixedrate", "octave","oct rev","bend"],
+				"error_scale" : 0,
+				"wrap" : 1
+			},
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}

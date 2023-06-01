@@ -1,0 +1,55 @@
+{
+	"utility.lowpass.highpass" : {
+		"patcher" : "utility.lowpass.highpass",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "airwindows capacitor2 - a lowpass / highpass with modelled self-modulation.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in 1", "audio in 2" ]
+			},
+			"out" : {
+				"audio" : [ "audio out 1", "audio out 2" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3]
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1]
+		},
+		"parameters" : [
+			{
+				"name" : "lowpass",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "highpass",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "nonlin",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "dry/wet",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}

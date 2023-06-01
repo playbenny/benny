@@ -1,0 +1,419 @@
+/*
+'require' for sm_sallenkey filter abstractions
+Pete Dowling @Surreal Machines, 2015
+for 'smFilterPack' package, available from Cycling '74
+*/
+
+// approximations
+
+expA(x0)							// approx exp(x) (more accurate than 'fastexp()')
+{
+	x = 0.999996 + (0.031261316 + (0.00048274797 + 0.000006 * x0) * x0) * x0;
+	x *= x; x *= x; x *= x; x *= x; x *= x;
+	return x;
+}
+
+dbtoaApprox(db)						// i know this is shit, will fix one day, ok for +/- 12 dB input
+{
+	return fastpow(10, (db * 0.05)) + 0.028652;	// 0 dB == 1 amplitude
+}
+
+// cheaper than library 'mtof()'
+mtofApprox(pitch)					// using 'expA()' for approximated accuracy
+{
+	mtofA = 440 * expA(0.057762265 * (pitch - 69));
+	return mtofA + 0.120906;		// + offset = accurate (exact) for input 48..69
+}
+
+// cheaper tan approx
+tnA(x)								// tan approximation (0..1 input)
+{
+	x2 = (x * x);
+	x3 = (x2 * x);
+	x5 = (x2 * x3);
+	return ((x5 * 0.133333) + (x3 * 0.333333)) + x;
+}
+
+tanO14(x)							// tan approx octant
+{
+	c1 = -34287.4662577359568109624;
+	c2 =  2566.7175462315050423295;
+	c3 = -26.5366371951731325438;
+	c4 = -43656.1579281292375769579;
+	c5 =  12244.4839556747426927793;
+	c6 = -336.611376245464339493;
+
+	x2 = x * x;
+	return (x * (c1 + x2 * (c2 + x2 * c3))) / (c4 + x2 * (c5 + x2 * (c6 + x2)));
+}
+
+// good tan approx
+tan_14(x)							// tan approx
+{
+	four_over_pi = 1.27323954473516;	// 4 / pi
+	threehalfpi = 4.7123889803847;		// 3 * halfpi
+	octant = int(x * four_over_pi);		// get octant # (0 to 7)
+	tanreturn = 0;
+	if 				(octant == 0) {
+		tanreturn = 	 tanO14(x					* four_over_pi);
+	} else if 		(octant == 1) {
+		tanreturn =  1 / tanO14((halfpi - x)		* four_over_pi);
+	} else if 		(octant == 2) {
+		tanreturn = -1 / tanO14((x - halfpi)		* four_over_pi);
+	} else if 		(octant == 3) {
+		tanreturn = 	-tanO14((pi - x)			* four_over_pi);
+	} else if 		(octant == 4) {
+		tanreturn = 	 tanO14((x - pi)			* four_over_pi);
+	} else if 		(octant == 5) {
+		tanreturn =  1 / tanO14((threehalfpi - x)	* four_over_pi);
+	} else if 		(octant == 6) {
+		tanreturn = -1 / tanO14((x - threehalfpi)	* four_over_pi);
+	} else {	//	(octant == 7)
+		tanreturn = 	-tanO14((twopi - x)			* four_over_pi);
+	}
+	return tanreturn;
+}
+
+cosQ32(x)
+{
+	c1 =  0.99940307;
+	c2 = -0.49558072;
+	c3 =  0.03679168;
+
+	x2 =  x * x;
+	return (c1 + x2 * (c2 + c3 * x2));
+}
+
+cos_32(x)
+{
+	two_over_pi = 0.63661977236758;	// 2 / pi
+	quad = int(x * two_over_pi);	// get quadrant # (0 to 3) we're in
+	cosreturn = 0;
+	if 				(quad == 0) {
+		cosreturn =  cosQ32(x);
+	} else if 		(quad == 1) {
+		cosreturn = -cosQ32(pi - x);
+	} else if 		(quad == 2) {
+		cosreturn = -cosQ32(x - pi);
+	} else {	//	(quad == 3)
+		cosreturn =  cosQ32(twopi - x);
+	}
+	return cosreturn;
+}
+
+sin_32(x)
+{
+	return cos_32(halfpi - x);
+}
+
+cosQ231(x)
+{
+	c1  =  0.9999999999999999999999914771;
+	c2  = -0.4999999999999999999991637437;
+	c3  =  0.04166666666666666665319411988;
+	c4  = -0.00138888888888888880310186415;
+	c5  =  0.00002480158730158702330045157;
+	c6  = -0.000000275573192239332256421489;
+	c7  =  0.000000002087675698165412591559;
+	c8  = -0.0000000000114707451267755432394;
+	c9  =  0.0000000000000477945439406649917;
+	c10 = -0.00000000000000015612263428827781;
+	c11 =  0.00000000000000000039912654507924;
+
+	x2 = x * x;
+	return	c1 + x2 * (c2 + x2 * (c3 + x2 * (c4 + x2 * (c5 + x2 * (c6 + x2 * 
+				(c7 + x2 * (c8 + x2 * (c9 + x2 * (c10 + x2 * c11)))))))));
+}
+
+cos_231(x)
+{
+	two_over_pi = 0.63661977236758;	// 2 / pi
+	quad = int(x * two_over_pi);	// get quadrant # (0 to 3) we're in
+	cosreturn = 0;
+	if 				(quad == 0) {
+		cosreturn =  cosQ231(x);
+	} else if 		(quad == 1) {
+		cosreturn = -cosQ231(pi - x);
+	} else if 		(quad == 2) {
+		cosreturn = -cosQ231(x - pi);
+	} else {	//	(quad == 3)
+		cosreturn =  cosQ231(twopi - x);
+	}
+	return cosreturn;
+}
+
+sin_231(x)
+{
+	return cos_231(halfpi - x);
+}
+
+// smoothing
+
+tauA(t)										// approximate 'exp(-1 / (t * samplerate))'
+{
+	y = expA(-1 / (t * samplerate));
+	return y + 0.000128;					// approximation has excellent accuracy above...
+}											// ...0.01 seconds (10 milliseconds) input
+
+// more 'exact' than 'logsmooth()'
+expsmooth(x, t)								// t is smooth time in seconds
+{
+	History w(0);
+	z = tauA(t);
+	y = (z * w) + (x * (1 - z));
+	w = y;
+	return y;
+}
+
+logsmooth(x, s)								// s = time to drop 6dB (in seconds)
+{
+	History z(0);
+//	ad = 0.693147 / maximum((s * samplerate), 1);	// incl. maximum check
+	ad = 0.693147 / (s * samplerate);
+	y = ((x - z) * ad) + z;
+	z = y;
+	return y;
+}
+
+// nonlinearaties
+
+tnhL(x)								// HQ tanh Lambert approx
+{
+	x2 = x * x;
+
+	a = (((x2 + 378) * x2 + 17325) * x2 + 135135) * x;
+	b = ((28 * x2 + 3150) * x2 + 62370) * x2 + 135135;
+
+	return clamp((a / b), -1, 1);
+}
+
+rsindrive(xin, scaledrive)
+// 'scaledrive' clipped and scaled before smoothing, for example, if initial 'drive' param 0..1:
+//  scaledrive = logsmooth((((drive * 0.9) + 0.1) * pi), 0.022666);	// must be 0..pi for our purposes
+{
+	pidiv10		= 0.31415926535897932384626433832795;
+	outdrive	= 1 / sin_32(clip(scaledrive, pidiv10, halfpi)) - 0.000597;
+	x			= sin_231(clip(xin, -1, 1) * scaledrive);			// sin_231 phase -pi..pi & not clipped
+
+	return		x * outdrive;
+}
+
+// fixed 4x cheap oversampling, plus voodoo for GenExpr
+rsin4x(XIN, w)
+{
+	History	umTm1_0(0), umT0_0(0), umT1_0(0);
+
+	History	dmT2_1(0), dmT1_1(0), dmT0_1(0);
+	History	dmT2_2(0), dmT1_2(0), dmT0_2(0);
+	History	dmT2_3(0), dmT1_3(0), dmT0_3(0);
+
+	History	doX0(0);
+
+	x0_0_a	= XIN + 0;
+	x1_0	= interp(0.25,	umTm1_0, umT0_0, umT1_0, x0_0_a, mode="spline");
+	x3_0	= interp(0.75,	umTm1_0, umT0_0, umT1_0, x0_0_a, mode="spline");
+	x2_0	= interp(0.5,	umTm1_0, umT0_0, umT1_0, x0_0_a, mode="spline");
+
+	// process 4x
+	y1_0	= rsindrive(x1_0,		w);
+	y2_0	= rsindrive(x2_0,		w);
+	y3_0	= rsindrive(x3_0,		w);
+	y4_0	= rsindrive(umT1_0,		w);
+
+	y4_0_a	= y4_0 + 0;
+	y4_1	= interp(0.75,	y4_0_a,	dmT0_3, dmT1_3, dmT2_3, mode="spline");
+
+	y3_0_a	= y3_0 + 0;
+	y3_1	= interp(0.5,	y3_0_a,	dmT0_2, dmT1_2, dmT2_2, mode="spline");
+
+	y2_0_a	= y2_0 + 0;
+	y2_1	= interp(0.25,	y2_0_a,	dmT0_1, dmT1_1, dmT2_1, mode="spline");
+
+	y0_0	= (((doX0 + y2_1) + y3_1) + y4_1) * 0.25;
+
+	umTm1_0	= umT0_0;
+	umT0_0	= umT1_0;
+	umT1_0	= XIN;
+
+	dmT1_1	= dmT0_1;
+	dmT0_1	= y2_0;
+	dmT2_1	= dmT1_1;
+
+	dmT1_2	= dmT0_2;
+	dmT0_2	= y3_0;
+	dmT2_2	= dmT1_2;
+
+	dmT1_3	= dmT0_3;
+	dmT0_3	= y4_0;
+	dmT2_3	= dmT1_3;
+
+	doX0	= y1_0;
+
+	return dcblock(y0_0);
+}
+
+// make oversampling choice on nonlinearity
+rsinNonlin(xin, drive, oversampling)
+{
+	History rsindummy(0);			// for embedding
+	y = 0;
+	if (oversampling == 1) {		// use 1x oversampling
+		y = rsindrive(xin, drive);
+	} else if (oversampling == 2) {	// use 4x oversampling
+		y = rsin4x(xin, drive);
+	} else {						// BYPASSED
+		y = xin;
+	}
+	return y;
+}
+
+// for master filter
+
+skfTanCoef(cf, k)
+{
+	// setup
+	g0	= tan_14(pi * (cf / samplerate));			// cutoff
+	g1	= 1 + g0;
+//	k	= 2 * res;									// multiply before
+	a0	= 1 / ((g1 * g1) - (g0 * k));
+	// coefficients
+	a1	= k * a0;
+	a2	= g1 * a0;
+	a3	= g0 * a2;
+	a4	= 1 / g1;
+	a5	= g0 * a4;
+	// coefficients to filter
+	return	a1, a2, a3, a4, a5;
+}
+
+skfTanNlto(v0, a1, a2, a3, a4, a5, k, sat, ft)
+{
+	History ic1eq(0), ic2eq(0);
+
+	// tick
+	v1, v2	= 0;
+	if (sat > 0) {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + tnhL(a3 * v0);
+		v2 = (a4 * ic2eq) + tnhL(a5 * v1);
+	} else {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + (a3 * v0);
+		v2 = (a4 * ic2eq) + (a5 * v1);
+	}
+
+	// filters						// (could be simultaneous outs, but not needed here)
+	yv = 0;
+	if				(ft == 2) {		// bandpass
+		yv = v1 - v2;
+	} else if		(ft == 3) {		// highpass
+		yv = v0 - v2;
+	} else {	//	(ft == 1)		// lowpass, default
+		yv = v2;
+	}
+
+	// updates
+	ic1eq = (2 * (v1 - (k * v2))) - ic1eq;
+	ic2eq = (2 * v2) - ic2eq;
+
+	// out
+	return dcblock(yv);
+}
+
+skfTanNltoMulti(v0, a1, a2, a3, a4, a5, k, sat)
+{
+	History ic1eq(0), ic2eq(0);
+
+	// tick
+	v1, v2	= 0;
+	if (sat > 0) {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + tnhL(a3 * v0);
+		v2 = (a4 * ic2eq) + tnhL(a5 * v1);
+	} else {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + (a3 * v0);
+		v2 = (a4 * ic2eq) + (a5 * v1);
+	}
+
+	// filters
+	hp = v0 - v2;	// highpass
+	bp = v1 - v2;	// bandpass
+	lp = v2;		// lowpass
+
+	// updates
+	ic1eq = (2 * (v1 - (k * v2))) - ic1eq;
+	ic2eq = (2 * v2) - ic2eq;
+
+	// out
+	return lp, bp, hp;
+}
+
+skfTanNltoCoef(v0, cf, res, sat, ft)
+{
+	History ic1eq(0), ic2eq(0);
+	// setup
+	g0 = tnA(pi * (cf / samplerate));				// cutoff
+	g1 = 1 + g0;
+	k = 2 * res;									// 
+	// coefficients
+	a0 = 1 / ((g1 * g1) - (g0 * k));				// 
+	a1 = k * a0;
+	a2 = g1 * a0;
+	a3 = g0 * a2;
+	a4 = 1 / g1;
+	a5 = g0 * a4;
+	// tick
+	v1, v2	= 0;
+	if (sat > 0) {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + (a3 * tnhL(v0));
+		v2 = (a4 * ic2eq) + tnhL(a5 * v1);
+	} else {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + (a3 * v0);
+		v2 = (a4 * ic2eq) + (a5 * v1);
+	}
+	// filters						// (could be simultaneous outs, but not needed here)
+	yv = 0;
+	if				(ft == 1) {		// bandpass
+		yv = v1 - v2;
+	} else if		(ft == 2) {		// highpass
+		yv = v0 - v2;
+	} else {	//	(ft == 0)		// lowpass, default
+		yv = v2;
+	}
+	// updates
+	ic1eq = (2 * (v1 - (k * v2))) - ic1eq;
+	ic2eq = (2 * v2) - ic2eq;
+	// out
+	return dcblock(yv);				// 
+}
+
+skfTanNltoCoefMulti(v0, cf, res, sat)
+{
+	History ic1eq(0), ic2eq(0);
+	// setup
+	g0 = tnA(pi * (cf / samplerate));				// cutoff
+	g1 = 1 + g0;
+	k = 2 * res;									// 
+	// coefficients
+	a0 = 1 / ((g1 * g1) - (g0 * k));				// 
+	a1 = k * a0;
+	a2 = g1 * a0;
+	a3 = g0 * a2;
+	a4 = 1 / g1;
+	a5 = g0 * a4;
+	// tick
+	v1, v2	= 0;
+	if (sat > 0) {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + (a3 * tnhL(v0));
+		v2 = (a4 * ic2eq) + tnhL(a5 * v1);
+	} else {
+		v1 = (a1 * ic2eq) + (a2 * ic1eq) + (a3 * v0);
+		v2 = (a4 * ic2eq) + (a5 * v1);
+	}
+	// filters
+	hp = v0 - v2;	// highpass
+	bp = v1 - v2;	// bandpass
+	lp = v2;		// lowpass
+	// updates
+	ic1eq = (2 * (v1 - (k * v2))) - ic1eq;
+	ic2eq = (2 * v2) - ic2eq;
+	// out
+	return lp, bp, hp;
+}

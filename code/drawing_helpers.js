@@ -1,0 +1,654 @@
+function draw_block_texture(block){
+	var block_label = blocks.get("blocks["+block+"]::label");
+	if(block_label!==null){
+		var block_mute = blocks.get("blocks["+block+"]::mute");
+		var block_bypass = blocks.get("blocks["+block+"]::bypass");
+		var ts = block_label + block_mute + block_bypass;
+		//post("mute is",block_mute);
+		//var ts = "m"+block_mute +"-"+ block_label;
+		//post("\n\nTS IS ",ts);
+		if(blocks_tex_sent[block]!=ts){
+			//post("drawing texture:",block," label is ",block_label, "ts is ",ts," last sent was ",blocks_tex_sent[block]);
+			blocks_tex_sent[block]=ts;
+			//post("now its  ",blocks_tex_sent[block]);
+			messnamed("texture_generator","block",block);
+			var bln = block_label.split(".",4);
+			var block_colour = blocks.get("blocks["+block+"]::space::colour");
+			lcd_block_textures.message("brgb",block_colour);
+			lcd_block_textures.message("clear");
+			if(block_mute){
+				lcd_block_textures.message("frgb",128,128,128);
+				lcd_block_textures.message("paintpoly", 8,8, 8, 32, 96, 120, 120, 120, 120, 96, 32, 8, 8,8);
+				lcd_block_textures.message("paintpoly", 120, 8, 120, 32, 32, 120, 8, 120, 8, 96, 96, 8, 120, 8);
+			}else if(block_bypass){
+				lcd_block_textures.message("frgb",128,128,128);
+				lcd_block_textures.message("paintpoly", 8,8, 8, 32, 96, 120, 120, 120, 120, 96, 32, 8, 8,8);
+				lcd_block_textures.message("paintpoly", 64, 120, 120, 120, 120, 64, 64, 120);
+			}
+			lcd_block_textures.message("frgb",255,255,255);
+			lcd_block_textures.message("font","consolas",25);
+			lcd_block_textures.message("textface","bold");
+			for(var t=0;t<bln.length;t++){
+				lcd_block_textures.message("moveto",5, 28+t*29);
+				lcd_block_textures.message("write",bln[t]);
+			}
+			lcd_block_textures.message("bang");
+		}
+	}
+}
+
+function block_texture_is(i,tex){
+	blocks_cube_texture[i] = tex;
+	if(Array.isArray(blocks_cube[i])){
+		//post("received texture for existing block ",i,"it is",tex);
+		if(blocks_cube[i].length){
+			blocks_cube[i][0].texture = tex;
+		}
+	}
+}
+
+function menu_block_texture_is(i,tex){
+	blocks_menu_texture[i] = tex;
+	//post("\nreceived texture", i,tex,"... ");
+	if(blocks_menu[i]!== undefined){
+		//post("... for existing menu block ",i,"it is",tex);
+		blocks_menu[i].texture = tex;
+	}
+}
+
+function gain_display(gain){
+	if(config.get("gain_display_format")=="x"){
+		var s;
+		s = gain.toPrecision(2)+"x";
+		return s;
+	}else{
+		var s;
+		if(gain===0){
+			s="-inf";
+		}else{
+			var g = f_to_db(gain);
+			s = g.toPrecision(2)+"dB";
+		}
+		return s; 
+	}
+}
+function draw_cpu_meter(){
+	var pk = 9 + fontheight*(100-cpu_meter.peak)*0.01;
+	var avg = 9 + fontheight*(100-cpu_meter.avg)*0.01;
+	outlet(7,"frgb", 0, 0, 0);
+	outlet(7, "moveto", 5, 9);
+	outlet(7,"lineto", 5, 9+fontheight);
+	outlet(7, "frgb", 2.55*cpu_meter.peak, Math.min(2.55*(120-cpu_meter.peak),255),55);
+	outlet(7, "moveto", 5, avg);
+	outlet(7, "lineto", 5, pk);
+}
+
+function setfontsize(size){
+	if(cur_font_size!=size){
+		cur_font_size=size;
+		outlet(7, "font","Consolas",size);
+	}
+}
+
+function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	outlet(8, "paintrect",x1,y1,x2,y2,index,0,2);
+	var ly;
+ 	if(value>=0) {
+		if(value>=1){
+			var m = 1 - (value % 1)*0.9;
+			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		ly = y1 + (y2 - y1) * (1-(value%1));
+		outlet(7, "paintrect",x1,ly,x2,y2,r,g,b);
+	}else{
+		if(value<=-1){
+			var m = 1 - (value % 1)*0.9;
+			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		ly = y1 + (y2-y1)*(1+(value%1));
+		outlet(7, "paintrect",x1,y1,x2,ly,r,g,b);
+	}
+}
+function draw_button(x1,y1,x2,y2,r,g,b,index,value){
+	var rat = bg_dark_ratio;
+	if(value != 1){
+		rat = 1;
+	}
+	outlet(7, "paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
+	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
+	outlet(8, "paintrect",x1,y1,x2,y2,index,0,1);
+}
+function labelled_parameter_v_slider(pnumber){
+	
+	var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
+	
+	parameter_v_slider(paramslider_details[pnumber][0], paramslider_details[pnumber][1], paramslider_details[pnumber][2], paramslider_details[pnumber][3],paramslider_details[pnumber][4], paramslider_details[pnumber][5], paramslider_details[pnumber][6], paramslider_details[pnumber][7],paramslider_details[pnumber][8], paramslider_details[pnumber][9], paramslider_details[pnumber][10]);
+	
+	if(paramslider_details[pnumber][16] == 0){
+		outlet(7,"frgb",paramslider_details[pnumber][4]*2, paramslider_details[pnumber][5]*2, paramslider_details[pnumber][6]*2);
+	}else{
+		outlet(7,"frgb",paramslider_details[pnumber][4], paramslider_details[pnumber][5], paramslider_details[pnumber][6]);
+	}
+	
+	namelabely=paramslider_details[pnumber][12];
+	for(var c = 0;c<paramslider_details[pnumber][11].length;c++){
+		outlet(7,"moveto",paramslider_details[pnumber][0]+fontheight*0.1,namelabely);
+		outlet(7,"write",paramslider_details[pnumber][11][c]);				
+		namelabely+=0.4*fontheight;
+	}
+	outlet(7,"moveto",paramslider_details[pnumber][0]+fontheight*0.1,namelabely);
+	
+	//post(p_values,"<pv len>",p_values.length);
+	var p_type=paramslider_details[pnumber][13];
+	var wrap = paramslider_details[pnumber][14];
+	var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
+	if(p_type == "menu_f"){
+		var pv2;
+		if(wrap){
+			pv *= (p_values.length-0.0001);
+			pv = Math.floor(pv);
+			pv2 = (pv+1) % (p_values.length);
+			pv = pv % (p_values.length);											
+		}else{
+			pv *= (p_values.length-1);
+			pv = Math.floor(pv);
+			pv2 = Math.min(pv+1,p_values.length-1);
+			pv = Math.min(pv,p_values.length-1);											
+		}
+		if(pv==pv2){
+			outlet(7, "write", p_values[pv]);	
+		}else{
+			outlet(7, "write", p_values[pv]+ "-"+ p_values[pv2]);
+		}	
+	}else if((p_type == "menu_i")||(p_type == "menu_b")){
+		pv *= (p_values.length-0.0001);
+		pv = Math.min(Math.floor(pv),p_values.length-1);
+		outlet(7, "write", p_values[pv]);
+	}else if((p_type == "wave")){
+		pv *= (MAX_WAVES-0.0001);
+		pv = Math.floor(pv+1);
+		var wnam = "-";
+		if(waves_dict.contains("waves["+pv+"]::name")) wnam = waves_dict.get("waves["+pv+"]::name");
+		outlet(7, "write", pv+" "+wnam);
+	}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
+		var pvp;
+		if(p_values[3] == "exp"){
+			if(p_values[0] == "uni"){
+				pv = Math.pow(2, pv) - 1;
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = Math.pow(2, pv) - 1;
+				}else{
+					pv = -(Math.pow(2, -pv) - 1);
+				}
+				pv += 1;
+				pv *= 0.5;
+			}
+		}
+		pvp = p_values[1] + (p_values[2]-p_values[1]-0.0001)*pv;
+		//pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		if(p_type == "int"){
+			pvp = Math.floor(p_values[1] + (0.99+p_values[2]-p_values[1])*pv);
+		}else if(p_type == "note"){
+			pvp = note_names[Math.floor(pvp)];
+		}else if(p_type == "float4"){
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+			pvp = pv.toPrecision(4);
+		}else{
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+			var pre=2;
+			if(pv>=1){
+				pre=3;
+				if(pv>999){
+					pre=4;
+					if(pv>9999){
+						pre=5;
+					}
+				}
+			}
+			pvp = pv.toPrecision(pre);
+		}
+		outlet(7, "write", pvp);
+	}
+	return(namelabely+4);
+}
+
+function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,index,0,2);
+	// need to get the voices used by this block:
+	//var type = blocks.get("blocks["+blockno+"]::type");
+	voicelist = voicemap.get(blockno);
+	var ly, value;
+	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
+	if(pol=="bi")value = (2*value)-1;
+ 	if(value>=0) {
+		ly = y1  + (y2 - y1) * (1-value);
+		outlet(7, "paintrect",x1,ly,x2,y2,r>>1,g>>1,b>>1);
+	}else{
+		ly = y1 + (y2-y1)*(-value);
+		outlet(7, "paintrect",x1,y1,x2,ly,r>>1,g>>1,b>>1);
+	}
+	var w = x2-x1-2;
+	if(!Array.isArray(voicelist)) voicelist = [voicelist];
+	var ww = w/voicelist.length;
+	outlet(7,"frgb",r,g,b);
+	for(var i=0;i<voicelist.length;i++){
+		value = voice_parameter_buffer.peek(1,MAX_PARAMETERS*(voicelist[i])+paramno);
+		if(pol=="bi"){
+			value = (2*value)-1;
+			value = Math.min(Math.max(-1,value),1);
+		}else{
+			value = Math.min(Math.max(0,value),1);
+		}
+		if(value>=0){
+			ly = y1 + (y2 - y1-2) * (1-value);		
+		}else{
+			ly = y1 + (y2 - y1-2)*(-value);
+		}
+		outlet(7,"moveto",x1+(ww*i),ly);
+		outlet(7,"lineto",x1+(ww*(i+1)),ly);
+	}
+
+}
+
+function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	outlet(8, "paintrect",x1,y1,x2,y2,index,0, 2);
+	var lx;
+ 	if(value>=0) {
+		if(value>=1){
+			var m = 1 - (value % 1)*0.6;
+			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		lx = x1 +  (x2 - x1) * (value % 1);
+		outlet(7, "paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
+	}else{
+		if(value<=-1){
+			var m = 1 - ((-value) % 1)*0.6;
+			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		lx = x1 + (x2 - x1) * (1-((-value) % 1));
+		outlet(7, "paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
+	}
+}
+function clear_wave_graphic(n){
+	var t;
+	for(var i = 0; i<4;i++){
+		if(typeof draw_wave[n-1][i] !== 'undefined') for(t=0;t<draw_wave[n-1][i].length;t++)	draw_wave[n-1][i][t]=0;
+	}
+
+}
+function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
+	var value=0;
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 3);
+	var i,t,ch,s,dl,d,st;
+	var hls;
+	var hle ;
+	var wmin,wmax;
+	var w = Math.floor((x2-x1-1)/2);
+	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
+	var chans = waves_dict.get("waves["+buffer+"]::channels");
+	var h = 0.5*(y2-y1)/chans;
+	for(ch=0;ch<chans;ch++){
+		outlet(7,"frgb",90,90,90);
+		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
+		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
+		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
+		dl /= d;
+		hls = w*(highlight);
+		hle = w*(highlight+dl);
+		dl *= w;
+		if(w>250){
+			for(t=0;t<d;t++){
+				i = Math.floor(t*dl+st);
+				outlet(7,"moveto",x1+i+i,y1+h*2*ch);
+				outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));
+			}
+			outlet(7,"frgb",255,255,255);
+			outlet(7,"moveto",x1+st+st,y1+h*2*ch);
+			outlet(7,"lineto",x1+st+st,y1+h*2*(ch+1));
+			i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
+			outlet(7,"moveto",x1+i+i,y1+h*2*ch);
+			outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));			
+		}
+		var curc=1;
+		if(highlight<1){ 
+			outlet(7, "frgb", r>>1,g>>1,b>>1);
+			curc=0;
+		}else{
+			outlet(7,"frgb",r,g,b);		
+		}
+		for(i=0;i<w;i++){
+			wmin = draw_wave[buffer-1][ch*2][i];
+			wmax = draw_wave[buffer-1][ch*2+1][i];
+			for(t=0;t<20;t++){
+				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
+				if(s>wmax) wmax=s;
+				if(s<wmin) wmin=s;
+			}
+			draw_wave[buffer-1][ch*2][i] = wmin;
+			draw_wave[buffer-1][ch*2+1][i] = wmax;
+			if((i>=hls)&&(i<=hle)&&(curc==0)){
+				outlet(7,"frgb",r,g,b);
+				curc=1;
+			}else if((i>hle)&&(curc==1)){
+				curc=0;
+				outlet(7, "frgb", r>>1,g>>1,b>>1);
+			}
+			outlet(7,"moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
+			outlet(7,"lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
+		}
+	}
+}
+
+function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	outlet(8, "paintrect",x1,y1,x2,y2,index,0, 3);
+	var i,t,ch,s,dl,d,st;
+	var wmin,wmax;
+	var w = x2-x1;
+	outlet(7, "paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
+	w = Math.floor((w-1)/2);
+	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
+	var chans = waves_dict.get("waves["+buffer+"]::channels");
+	var h = 0.5*(y2-y1)/chans;
+	for(ch=0;ch<chans;ch++){
+		outlet(7,"frgb",50,50,50);
+		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
+		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
+		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
+		dl /= d;
+		dl *= w;
+		for(t=0;t<d;t++){
+			i = Math.floor(t*dl+st);
+			outlet(7,"moveto",x1+i+i,y1+h*2*ch);
+			outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));
+		}
+		outlet(7,"frgb",90,90,90);
+		outlet(7,"moveto",x1+st+st,y1+h*2*ch);
+		outlet(7,"lineto",x1+st+st,y1+h*2*(ch+1));
+		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
+		outlet(7,"moveto",x1+i+i,y1+h*2*ch);
+		outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));
+		outlet(7,"frgb",r,g,b);
+		for(i=0;i<w;i++){
+			wmin = draw_wave[buffer-1][ch*2][i];
+			wmax = draw_wave[buffer-1][ch*2+1][i];
+			for(t=0;t<20;t++){
+				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
+				if(s>wmax) wmax=s;
+				if(s<wmin) wmin=s;
+			}
+			draw_wave[buffer-1][ch*2][i] = wmin;
+			draw_wave[buffer-1][ch*2+1][i] = wmax;
+			outlet(7,"moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
+			outlet(7,"lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
+		}
+	}
+}
+function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 2);
+	var lx;
+ 	if(value>=0) {
+		if(value>=1){
+			var m = 1 - (value % 1)*0.6;
+			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		lx = x1 +  (x2 - x1) * (value % 1);
+		outlet(7, "paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
+		outlet(7, "moveto", (x1+8), (y2-8));
+		if(value>0.3) {
+			outlet(7, "frgb", 0,0,0);
+		}else{
+			outlet(7, "frgb" , r,g,b);
+		}
+		outlet(7, "write", gain_display(value));
+	}else{
+		if(value<=-1){
+			var m = 1 - ((-value) % 1)*0.6;
+			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		lx = x1 + (x2 - x1) * (1-((-value) % 1));
+		outlet(7, "paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
+		outlet(7, "moveto", (x1+8), (y2-8));
+		if(value<-0.7) {
+			outlet(7, "frgb", 0,0,0);
+		}else{
+			outlet(7, "frgb", r,g,b);
+		}
+		outlet(7, "write", gain_display(value));
+	}
+}
+
+function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
+	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 4);
+	var lx = x1 + 8 + (x2-x1-16)*value_x;
+	var ly = y1 + 8 + (y2-y1-16)*(1-value_y);
+	outlet(7, "paintrect",(lx-4),(ly-4),(lx+4),(ly+4) ,r,g,b);
+}
+
+function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
+	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
+	outlet(7, "frameoval",x1,y1,x2,y2,r,g,b);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 2);
+	outlet(7, "moveto",((x1+x2)/2),((y1+y2)/2));
+	outlet(7, "lineto",(((x1+x2)/2)+Math.sin(6.28*angle)*(x2-x1-16)/2),(((y1+y2)/2)-Math.cos(6.28*angle)*(y2-y1-16)/2));
+}
+
+function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
+	if((v1==1)&&(v2==1)) return;
+	var cx,cy,l;
+	var ux = (x2-x1)/v1;
+	var uy = (y2-y1)/v2;
+	var minl=99,maxl=-99;
+	for(cx=v1-1;cx>=0;cx--){
+		for(cy=0;cy<v2;cy++){
+			l = spread_level(cx, cy, offset,vector, v1, v2);
+			outlet(7, "paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
+			if(l<minl)minl=l;
+			if(l>maxl)maxl=l;
+		}
+	}
+	if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
+		setfontsize( Math.min(uy,ux)*0.2);
+		for(cx=v1-1;cx>=0;cx--){
+			for(cy=0;cy<v2;cy++){
+				l = scale*spread_level(cx, cy, offset,vector, v1, v2);
+				outlet(7,"moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*ux);
+				outlet(7,"write",l.toPrecision(3));				
+			}
+		}
+	}else{
+		maxl*=scale;
+		outlet(7,"frgb",0,0,0);
+		outlet(7,"moveto",(x1+5),(y1+(y2-y1)*0.95));
+		outlet(7,"write","x"+maxl.toPrecision(3));
+	}
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 4);
+}
+
+function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
+	t = (1-amount)*(x2-x1-8)/2;
+	outlet(7, "paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
+	outlet(7, "paintoval",x1,y1,x2,y2,0,0,0);
+	outlet(7, "frameoval",x1,y1,x2,y2,r/2,g/2,b/2);
+	outlet(7, "frameoval",(x1+t),(y1+t),(x2-t),(y2-t),r,g,b);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 4);
+	var cx = (x1+x2)/2;
+	var cy = (y1+y2)/2;
+	var r1 = (x2-x1)/2;
+	var w = r1*0.1;
+	var i=0;
+	var col=[r,g,b];
+	for(i=0;i<v1;i++){
+		outlet(7, "paintrect",(cx-w+r1*Math.sin(6.28*i/v1)),(cy-w-r1*Math.cos(6.28*i/v1)),(cx+w+r1*Math.sin(6.28*i/v1)),(cy+w-r1*Math.cos(6.28*i/v1)),col);
+		if(i==0) col = [r/2,g/2,b/2];
+	}
+	r1 -= t;
+	col=[r,g,b];
+	for(i=0;i<v2;i++){
+		outlet(7, "paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v2))),(cy-w-r1*Math.cos(6.28*(angle + i/v2))),(cx+w+r1*Math.sin(6.28*(angle + i/v2))),(cy+w-r1*Math.cos(6.28*(angle + i/v2))),col);
+		if(i==0) col = [r/2,g/2,b/2];
+	}
+}
+
+function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight){
+	if(type=="data_v_scroll"){
+		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,voice_data_buffer.peek(1,dataindex));
+		mouse_click_actions[mouse_index] = data_edit;
+		mouse_click_parameters[mouse_index] = dataindex;
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;			
+	}else if(type=="param_v_scroll"){//0=block,1=paramno
+		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex));
+		mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+		mouse_click_parameters[mouse_index] = [paramindex, dataindex];
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+	}else if(type=="param_toggle"){//0=block,1=paramno
+		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex)>0.5);
+		mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+		mouse_click_parameters[mouse_index] = [paramindex, dataindex];
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+	}else if(type=="mouse_passthrough"){
+		outlet(8, "paintrect", x1,y1,x2,y2, (mouse_index&255),(mouse_index>>8), 7);
+		mouse_click_actions[mouse_index] = custom_mouse_passthrough;
+		mouse_click_parameters[mouse_index] = dataindex; //custom_block+1;
+		mouse_click_values[mouse_index] = 0;
+		mouse_index++;
+	}else if(type =="waveform_slice_highlight"){
+		draw_waveform(x1,y1,x2,y2,r,g,b,paramindex,mouse_index,highlight)
+		mouse_click_actions[mouse_index] = custom_mouse_passthrough;
+		mouse_click_parameters[mouse_index] = dataindex+1; //custom_block+1;
+		mouse_click_values[mouse_index] = 0;
+		mouse_index++;		
+	}
+}
+
+function flock_axes(v){
+	flock_cubexy.enable = v;
+	flock_cubexz.enable = v;
+	flock_cubeyz.enable = v;
+}
+
+function center_view(resetz){
+	var i;
+	var tot_x = 0;
+	var tot_y = 0;
+	var tot_n = 0;
+	var x,y;
+	var maxx=0,minx=0,miny=0,maxy=0;
+	for(i=0;i<MAX_BLOCKS;i++){
+		if(blocks.contains("blocks["+i+"]::name")){
+			tot_n++;
+			x=blocks.get("blocks["+i+"]::space::x");
+			y=blocks.get("blocks["+i+"]::space::y");
+			tot_x+=x;
+			tot_y+=y;
+			if(x<minx){ 
+				minx=x;
+			}else if(x>maxx){
+				maxx=x;
+			}
+			if(y<miny){
+				miny=y;
+			}else if(y>maxy){
+				maxy=y;
+			}
+		}
+	}
+	var w = maxx-minx;
+	var h = maxy-miny;
+	var d = Math.max(w,h);
+	
+	if(tot_n == 0) tot_n=1;
+	camera_position[0] = (tot_x / tot_n)+2;
+	camera_position[1] = tot_y / tot_n;
+	if(resetz || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
+/*	outlet(9, "anim", "moveto", camera_position, 0.5);
+	outlet(9, "rotatexyz" , 0, 0, 0);
+	outlet(9, "direction", 0, 0, -1);*/
+	camera();
+	redraw_flag.flag |= 8;	
+}
+
+function request_redraw(n){
+	// post("\nreq redraw",n);
+	if(displaymode=="blocks") redraw_flag.flag |= n;
+}
+
+function draw_menu_hint(){
+	var col = menucolour;
+	if(blocktypes.contains(usermouse.hover[1]+"::colour")) col = blocktypes.get(usermouse.hover[1]+"::colour");
+	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
+	var topspace=(block_menu_d.mode == 3);
+	outlet(7,"clear");
+	outlet(7, "paintrect", sidebar.x,9,mainwindow_width-9,9+fontheight*(1+topspace),cod);
+	setfontsize(fontheight/1.6);
+	outlet(7, "textface", "bold");
+	
+	outlet(7,"paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);
+	outlet(7,"frgb",col);
+	outlet(7, "moveto", sidebar.x+fontheight*0.2,9+fontheight*0.75);
+	if(block_menu_d.mode == 1){
+		outlet(7, "write", "swap block:");
+	}else if(block_menu_d.mode == 2){
+		outlet(7, "write", "insert block in connection:");
+	}else if(block_menu_d.mode == 0){
+		outlet(7, "write", "add new block:");
+	}else if(block_menu_d.mode == 3){
+		outlet(7, "write", "substitute for "); 
+		outlet(7, "moveto", sidebar.x+fontheight*0.2,9+fontheight*1.75);
+		outlet(7, "write",block_menu_d.swap_block_target);
+	}
+
+	if(blocktypes.contains(usermouse.hover[1]+"::help_text")){
+		var hint=blocktypes.get(usermouse.hover[1]+"::help_text")+" ";
+//		post("\n"+usermouse.hover[1]+" : "+hint);
+		
+		hint = hint+"                       ";
+		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
+		var rowstart=0;
+		var rowend=36;
+		outlet(7, "paintrect", sidebar.x,9+fontheight*(1.1+topspace),mainwindow_width-9,9+fontheight*(2.1+topspace),cod);
+		outlet(7,"frgb",col);
+		outlet(7, "moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
+		outlet(7, "write", usermouse.hover[1]);
+		setfontsize(fontheight/2.5);
+		outlet(7, "textface", "normal");
+		var bold=0;
+		for(var i=0;i<hintrows;i++){
+			while((hint[rowend]!=' ')&&(rowend>1+rowstart)){ rowend--; }
+			var sliced = hint.slice(rowstart,rowend);
+			if(sliced.indexOf("£")>-1){
+				rowend = rowstart+ sliced.indexOf("£");
+				sliced = hint.slice(rowstart,rowend);
+			}
+			if(sliced.indexOf("*")>-1){
+				post("sliced",rowstart,rowend,sliced.indexOf("*"));
+				bold=1-bold;
+				rowend = rowstart+ sliced.indexOf("*");
+				sliced = hint.slice(rowstart,rowend);
+			}
+			outlet(7,"moveto",sidebar.x+fontheight*0.2,9+fontheight*(2.9+topspace+0.45*(i)));
+			outlet(7,"write",sliced);
+			rowstart=rowend+1;
+			rowend+=36;
+			if(bold){
+				outlet(7,"textface", "bold");
+			}else{
+				outlet(7, "textface", "normal");
+			}
+		}
+		outlet(7,"bang");
+	}
+}
+	

@@ -1,0 +1,49 @@
+{
+	"utility.gate" : {
+		"patcher" : "utility.gate",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "very basic gate",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,1,2]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "threshold",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.8
+			},
+			{
+				"name" : "on time",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "off time",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp"],
+				"wrap" : 0,
+				"default" : 0.1
+			}
+
+		]
+	}
+}

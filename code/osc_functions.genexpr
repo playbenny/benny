@@ -1,0 +1,108 @@
+pink(rate){ //rate should be something like 0.001
+	History pink_last(0);
+	pink_last = (0.9999-rate)*pink_last+(noise()+noise()+noise()+noise())*rate;
+	return pink_last;
+}
+
+/*=============================================================/*
+         FM sync Variable-Width Pulse Oscillator with 
+	Enhanced Polynomial transition Region (EPTR) Antialiasing
+	 	      and 3x oversampling in the upper octave
+				By Ernest Meyer (http://yofiel.com)
+===============================================================*/
+/* *************************************************************/
+/* Functions                                                   
+// the Pulse is divided into five stages. Antialiasing calucations
+//only occur during the rising and falling transionts, (8 clock
+//cycles max for each wave cycle). 
+/* *************************************************************/
+eptr(ramp,ed1,ew1){
+	Buffer buf("eptr"); // loads eptr buffer from Max
+	ed2 = 8192  / ed1;	// buffer transition coefficient;
+	ew2 = 1-ew1;				// inverted duty cycle 
+ 	e0= 0; // pi5  = pi *.5;
+	
+	if (ramp <=  ew1 -ed1)				// fixed low region at start		 
+		return -1;				
+	else if (ramp < ew1 +ed1) { 			// rising region
+		e0 = peek(buf, ed2*(ramp -ew1 +ed1), 0);
+		return e0;
+	} 
+	else if (ramp <= ew2 -ed1)			// middle fixed hi region
+		return 1; 
+	else if (ramp < ew2+ed1){			//  falling region
+		e0 = peek(buf,ed2*(ramp -ew2 +ed1), 0);
+		return neg(e0);
+	} 
+	else return -1;  					// fixed low region at end
+}
+
+eptr_rect(fc,fm,pulsewidth){
+	Param sync(0, min=0, default=0, max=2);
+	History z0; History z1; History z2; History z3; History z4;
+	History zt(0); History zr(0); History t2(0); History t1(0);
+	History ret(0);
+	sr2  = 2/samplerate;			// 2/SR constant.
+	inc  = fc*sr2*(1+fm); // phase increment(including FM), Fc/2*sr
+	snc=0;
+	if(sync){
+		snc=(change(fm>0)>0);
+		if(sync==1) fm=0;
+	} //snc  = sync; 		// resets phase on positive transitions
+	w1   = scale(pulsewidth,0,1,.0025,.4975); // Duty cycle 5%~95%.
+	// Phase accumulator                                                   
+	// The ramp works in the range -1~+1,
+	// to prevent phase inversion by negative wraps from FM signals
+	r1 = (snc)? 0: wrap(inc + z0,-1,1); 
+	z0 = r1; 
+	// In case FM present, a new inc is interpolated from phase history
+	z1=inc; 
+	z2=z1; 
+	z3=z2; 
+	z4=z3;			
+	inc2 = interp(inc,z1,z2,z3,z4,mode="spline");
+
+	r2 = r1 *.5 + .5;	// ramp rescaled to 0-1 for EPTR calcs
+//	ret=0; //so far you can have one or other but not both HELP
+//	if (inc2<.125){		// if Fc<sr/16 (2756Hz @441000 sr)
+//		d1 = inc * 2; 	// width of phase transition region (4*fc/sr)
+//		ret = eptr(r2, d1, w1);
+//	} else { 			// adding 3x oversampling at higher freqs
+		t0 = delta(r2);
+		if (t0>0){ t2 = r2 -t0 *.6666667;             //z-2
+			   	t1 = r2 -t0 *.3333333;             //z-1
+ 		} else {   t2 =wrap(zt *.3333333 +zr, 0, 1);  //z-2 
+			   	t1 =wrap(zt *.6666667 +zr, 0, 1);  //z-1
+		}
+		zt = t0; // ramp and delta history for interp
+		zr = r2; 
+		d1  = inc2;	// shrink transition region
+		tt2 = eptr(t2, d1, w1); 
+		tt1 = eptr(t1, d1, w1); 
+		tt0 = eptr(r2, d1, w1);
+		if        (tt2==tt1 && tt1==tt0) {          ret = tt0;
+		} else if (tt2!=-1 && tt1==-1 && tt0!=-1) { ret = -1;
+		} else if (tt2!=1  && tt1==1  && tt0!=1)  { ret =  1;
+		} else { ret = (tt2 + tt1 + tt0) * .33333333; }
+//	}
+	return ret;
+}
+
+
+integrator_saw(rectin, pitch, pw){ //turn pitch into a param?
+	History integ(0);
+	History decay(0.99999);
+	
+	pws=scale(pw,0,1,.005,.995); //mirroring what eptr does
+	pws=clip(pws,.005,.995);
+	offset=(2*pws-1);
+	scale=clip(-pitch/(pws*(pws-1)*samplerate),0,0.1);
+	integ=(decay*integ+(rectin+offset)*scale);
+	
+	if(abs(integ)>=1){
+		integ=clip(integ,-1,1);
+		if(decay>0.00001) decay=decay-0.00001;
+	}else if(decay<0.99999) decay=decay+0.00001;
+	
+	return integ;
+}

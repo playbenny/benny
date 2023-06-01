@@ -1,0 +1,102 @@
+{
+	"fx.delay.stretch" : {
+		"patcher" : "fx.delay.stretch",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Delay line with phase vocoder read head allowing time change without pitch shift, or pitch shifted delays.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "modulation" ],
+				"midi" : [ "pitch_in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out", "mod signal out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0, 1, 6],
+				"height" : 2
+			},
+			{
+				"contains" : [4,4,5],
+				"height" : 2
+			},
+			{
+				"contains" : [2,2,7,7,3,8],
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2,4,5,8,9]
+		},
+		"parameters" : [
+			{
+				"name" : "time",
+				"type" : "menu_i",
+				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n", "2b", "3b", "4b", "5b", "6b","7b","8b"],
+				"error_scale" : 0.5,
+				"wrap" : 0,
+				"default" : 0.46
+			},
+			{
+				"name" : "time mult",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "highpass",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp"],
+				"wrap" : 0,
+				"default" : 0.075
+			},
+			{
+				"name" : "pitch",
+				"type" : "float4",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "formant shift",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "transition",
+				"type" : "menu_i",
+				"error_scale" : 0,
+				"values" : ["half/double", "expo", "reversing"],
+				"wrap" : 1,
+				"default" : 0.9 
+			},
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}

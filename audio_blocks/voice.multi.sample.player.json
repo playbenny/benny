@@ -1,0 +1,126 @@
+{
+	"voice.multi.sample.player" : {
+		"patcher" : "voice.multi.sample.player",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "multisample player with slices, offset, timestretch. expects you to load a wave with an ascending scale, evenly spaced. ",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ],
+				"audio" : [ "fm"]
+			},
+			"out" : {
+				"audio" : [ "out1", "out2" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0],
+				"height" : 0
+			},
+			{ 
+				"contains" : [1, 2, 3, 4],
+				"height" : 0
+			},{ 
+				"contains" : [5,6,7]
+			},{ 
+				"contains" : [8,9,10,11],
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [5,6,7]
+		},
+		"parameters" : [
+			{
+				"name" : "wave",
+				"type" : "wave",
+				"values" : ["wave"],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "slice_offset",
+				"type" : "int",
+				"values" : ["bi", -128, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "micro_offset_(ms)",
+				"type" : "float",
+				"values" : ["bi", -1000, 1000, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "stretch",
+				"type" : "float",
+				"values" : ["bi", -4, 4, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "attack",
+				"type" : "float4",
+				"values" : ["uni", 0.01, 1000, "exp" ],
+				"wrap" : 0,
+				"error_scale" : 2,
+				"default" : 0.05
+			},
+			{
+				"name" : "sustain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "release",
+				"type" : "float4",
+				"values" : ["uni", 0.01, 1000, "exp" ],
+				"wrap" : 0,
+				"error_scale" : 4,
+				"default" : 0.15
+			},
+			{
+				"name" : "curve",
+				"type" : "menu_f",
+				"values" : ["exp", "lin", "log" ],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "loop",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "vel->level",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "accum",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			}	
+		]
+	}
+}

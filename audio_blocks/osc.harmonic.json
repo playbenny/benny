@@ -1,0 +1,124 @@
+{
+	"osc.harmonic" : {
+		"patcher" : "osc.harmonic",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "8 drawbar harmonics, uses non-linear summing borrowed from airwindows console which serves to give it a nice glued character that sits in a mix well, less a collection of digital sines than a single voice.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "fm", "am" ],
+				"midi" : [ "pitch_in" ]
+			},
+			"out" : {
+				"audio" : [ "osc out", "harmonic 1 out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4,5,6,7],
+				"colour" : [255,255,255]
+			},
+			{
+				"contains" : [8,9,10,12,11],
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1,2,3,4,5,6,7]
+		},
+		"parameters" : [
+			{
+				"name" : "1",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "2",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "3",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.333
+			},
+			{
+				"name" : "4",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "5",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.20 
+			},
+			{
+				"name" : "6",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1667 
+			},
+			{
+				"name" : "7",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1429 
+			},
+			{
+				"name" : "8",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.125 
+			},
+			{
+				"name" : "x3 tuning",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "x5 tuning",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "x7 tuning",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin" ],
+				"wrap" : 0,
+				"default" : 0.75				
+			},
+			{
+				"name" : "out2",
+				"type" : "menu_i",
+				"values" : ["opposite","1","2","3","4","5","6","7","8" ],
+				"wrap" : 0,
+				"default" : 0.15				
+			}
+		]
+	}
+}

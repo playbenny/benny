@@ -1,0 +1,73 @@
+{
+	"midi.delay" : {
+		"patcher" : "midi.delay",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Delays midi events",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0, 1,5]
+			},
+			{ 
+				"contains" : [2,3,4]
+			}			
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "time",
+				"type" : "menu_i",
+				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n", "2b", "3b", "4b", "5b", "6b","7b","8b"],
+				"error_scale" : 0.5,
+				"wrap" : 0,
+				"default" : 0.46
+			},
+			{
+				"name" : "time mult",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "lowest note",
+				"type" : "notes",
+				"values" : ["uni", 0, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "highest note",
+				"type" : "notes",
+				"values" : ["uni", 1, 24, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "lowest vel",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "time_offset_ms",
+				"type" : "float",
+				"values" : ["bi", -50, 50, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

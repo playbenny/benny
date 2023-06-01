@@ -1,0 +1,51 @@
+{
+	"master_1" : {
+		"patcher" : "master_1",
+		"type" : "output",
+		"help_text" : "Master channel with continuity fx",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3]
+			}		
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "xfade",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "time",
+				"type" : "menu_i",
+				"values" : ["4n", "2n", "1n", "2b", "3b", "4b"],
+				"wrap" : 0,
+				"default" : 0.4
+			},
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.9
+			},
+			{
+				"name" : "input_gain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

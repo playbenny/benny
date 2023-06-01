@@ -1,0 +1,48 @@
+{
+	"utility.values" : {
+		"patcher" : "utility.values",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "3 sliders 3 values, useful for offsetting params of individual voices, summing modulations, flocking variables from different blocks, etc",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				
+			},
+			"out" : {
+				"midi" : [ "A", "B", "C" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2]
+			}		
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "A",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "B",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "C",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

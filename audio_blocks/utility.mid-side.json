@@ -1,0 +1,55 @@
+{
+	"utility.mid.side" : {
+		"patcher" : "utility.mid.side",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "mid-side processor",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in 1", "in 2" ]
+			},
+			"out" : {
+				"audio" : [ "out 1", "out 2" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [1,1,0,2,3]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "mono bass freq",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp"],
+				"wrap" : 0,
+				"default" : 0.4
+			},
+			{
+				"name" : "width",
+				"type" : "float",
+				"values" : ["bi", 0, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "input",
+				"type" : "menu_i",
+				"error_scale" : 0,
+				"values" : ["LR", "MS"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "output",
+				"type" : "menu_i",
+				"error_scale" : 0,
+				"values" : ["LR", "MS"],
+				"wrap" : 1,
+				"default" : 0
+			}
+
+		]
+	}
+}

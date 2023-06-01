@@ -1,0 +1,134 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 5,
+			"revision" : 3,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 533.0, 361.0, 868.0, 450.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 829.222222149372101, 641.999992787837982, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 515.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "require \"osc_functions\";\r\nBuffer shape(\"osc_shape_lookup\");\r\nBuffer mtof_lookup(\"mtof_lookup\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\nBuffer detuning(\"detuning\");\r\n\r\nHistory cursor_s(0);\r\nHistory cursor_p(0);\r\nHistory ws,cen,wid,p_unstab,s_unstab,detune,mod1,mod2,cr,sr,porta,sha,sha_off(0),mgain;\r\nHistory gap(1),g12(12),iwi(1);\r\n\r\nParam voice_is(0, min=0,default=0,max=4096);\r\nParam voice_offset(0);\r\nParam p(0,min=0,default=64,max=128);\r\nParam v(0,min=0,default=0,max=1000);\r\n\r\nc_p_r = 0.00001/(voice_is+20);\r\ncursor_p += c_p_r;\r\n\r\nif(delta(phasor(60))<0){\r\n\tws = peek(prm,voice_offset, 0,channels=1);\r\n\tcen = 96*peek(prm,1+ voice_offset,0, channels=1);\r\n\twid = 4*peek(prm,2+ voice_offset,0, channels=1)+0.01;\r\n\tiwi = 2/(wid+2);\r\n\twid = 1/wid;\r\n\tgap = (peek(prm,3+ voice_offset,0, channels=1) >= 0.5) + 1;\r\n\tg12 = gap * 12;\r\n\tp_unstab = peek(prm,4+ voice_offset, 0,channels=1);\r\n\tp_unstab *= p_unstab*p_unstab*0.5;\r\n\tcr = p_unstab/(voice_is*5180+1000);\r\n\ts_unstab = peek(prm,5+ voice_offset,0, channels=1);\r\n\ts_unstab *= s_unstab;\r\n\tsr = s_unstab/(voice_offset*3260+4200);\r\n\tdetune = 48*(peek(prm,6+ voice_offset,0, channels=1)-0.5);\r\n\tmod1 = peek(prm,7+ voice_offset,0, channels=1);\r\n\tmod2 = peek(prm,8+voice_offset,0, channels=1);\r\n\tporta = 100*peek(prm,9+voice_offset,0, channels=1);\r\n\tporta = porta*porta;\r\n\tporta = mstosamps(porta);\r\n\tmgain = 4*peek(prm,10+voice_offset,0, channels=1)-2;\r\n}\r\n \r\ncursor_p += 0.000001*cr;\r\ncursor_s += sr;\r\ncursor_p=wrap(cursor_p);\r\ncursor_s=wrap(cursor_s);\r\n\r\npink_s = sample(detuning,cursor_s,0);\r\npink_p = sample(detuning,cursor_p,0);\r\n\r\nsh = ws + s_unstab*pink_s;\r\n//cen=slide(ce,1000,1000);\r\n//wid=slide(1/wi,1000,1000);\r\nif(mod1>=0.5){\r\n\tif(mod1<0.66){\r\n\t\tsh+=in1;\r\n\t}else if(mod1<0.833){\r\n\t\tcen+=64*in1;\r\n\t}else{\r\n\t\twid+=4*in1;\r\n\t}\r\n}\r\nif(mod2<0.33){\r\n\tsh+=in2;\r\n}else if(mod2<0.66){\r\n\tcen+=in2;\r\n}else{\r\n\twid+=in2;\r\n}\r\nsdif = sh+sha_off - sha;\r\nif(sdif>0.5) sha_off-=1;\r\nif(sdif<-0.5) sha_off+=1;\r\nsha = slide(sh + sha_off,100,100);\r\nsin_l, tri_l, rec_l, pw = sample(shape, wrap(sha) , 0, channels=4);\r\n\r\nnote = p % g12;\r\nnotegap = ((p - cen) % g12)/g12; //runs from 0 to 1 repeating\r\noct = floor(cen / g12) * g12 + note +0.0001; //the input note at the octave set by centre\r\npitch = slide(oct,porta,porta) + (slide(p_unstab,100,100)*pink_p) + (slide(detune,100,100));\r\npit = peek(mtof_lookup,pitch, (voice_is % 8), channels=1, interp = \"linear\");\r\nopit = clip(abs(pit*(1+in1*(mod1<0.5))),0.0001,samplerate/3);\r\n\r\n//opit = pit;\r\ng2 = 2*gap;\r\nrec=0;\r\nrrec=0;\r\nsaw=0;\r\nsine=0;\r\nol = slide(clip(1 - abs((notegap-2)*wid),0,1),10000,10000);\r\nif(ol>0){\r\n\tsine += ol * cycle(opit);\r\n\tif(mod1<0.166){\r\n\t\trec =  eptr_rect(pit,in1,pw, sync=0);\r\n\t}else if(mod1<0.33){\r\n\t\trec =  eptr_rect(pit,in1,pw, sync=1);\r\n\t}else if(mod1<0.5){ \r\n\t\trec =  eptr_rect(pit,in1,pw, sync=2);\r\n\t}else{\r\n\t\trec = eptr_rect(pit,0,pw);\r\n\t}\r\n\trrec += ol*rec;\r\n\tsaw +=  ol*integrator_saw(rec, opit, pw);\r\n}\r\nopit*=g2;\r\npit*=g2;\r\n//opit = 9999999;\r\nif(opit<11000){\r\n\tol = slide(clip(1 - abs((notegap-1)*wid),0,1),10000,10000);\r\n\tif(ol>0){\r\n\t\tsine += ol * cycle(opit);\r\n\t\tif(mod1<0.166){\r\n\t\t\trec =  eptr_rect(pit,in1,pw, sync=0);\r\n\t\t}else if(mod1<0.33){\r\n\t\t\trec =  eptr_rect(pit,in1,pw, sync=1);\r\n\t\t}else if(mod1<0.5){\r\n\t\t\trec =  eptr_rect(pit,in1,pw, sync=2);\r\n\t\t}else{\r\n\t\t\trec = eptr_rect(pit,0,pw);\r\n\t\t}\r\n\t\trrec += ol*rec;\r\n\t\tsaw +=  ol*integrator_saw(rec, opit, pw);\r\n\t}\r\n\topit*=g2;\r\n\tpit*=g2;\r\n\r\n\tif(opit<11000){\r\n\t\tol = slide(clip(1 - abs((notegap  )*wid),0,1),10000,10000);\r\n\t\tif(ol>0){\r\n\t\t\tsine += ol * cycle(opit);\r\n\t\t\tif(mod1<0.166){\r\n\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=0);\r\n\t\t\t}else if(mod1<0.33){\r\n\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=1);\r\n\t\t\t}else if(mod1<0.5){ \r\n\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=2);\r\n\t\t\t}else{\r\n\t\t\t\trec = eptr_rect(pit,0,pw);\r\n\t\t\t}\r\n\t\t\trrec += ol*rec;\r\n\t\t\tsaw +=  ol*integrator_saw(rec, opit, pw);\r\n\t\t}\r\n\t\topit*=g2;\r\n\t\tpit*=g2;\r\n\r\n\t\tif(opit<11000){\r\n\t\t\tol = slide(clip(1 - abs((notegap+1)*wid),0,1),10000,10000);\r\n\t\t\tif(ol>0){\r\n\t\t\t\tsine += ol * cycle(opit);\r\n\t\t\t\tif(mod1<0.166){\r\n\t\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=0);\r\n\t\t\t\t}else if(mod1<0.33){\r\n\t\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=1);\r\n\t\t\t\t}else if(mod1<0.5){ \r\n\t\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=2);\r\n\t\t\t\t}else{\r\n\t\t\t\t\trec = eptr_rect(pit,0,pw);\r\n\t\t\t\t}\r\n\t\t\t\trrec += ol*rec;\r\n\t\t\t\tsaw +=  ol*integrator_saw(rec, opit, pw);\r\n\t\t\t}\r\n\t\t\topit*=g2;\r\n\t\t\tpit*=g2;\r\n\t\t\t\r\n\t\t\tif(opit<11000){\r\n\t\t\t\tol = slide(clip(1 - abs((notegap+2)*wid),0,1),10000,10000);\r\n\t\t\t\tif(ol>0){\r\n\t\t\t\t\tif(mod1<0.166){\r\n\t\t\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=0);\r\n\t\t\t\t\t}else if(mod1<0.33){\r\n\t\t\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=1);\r\n\t\t\t\t\t}else if(mod1<0.5){ \r\n\t\t\t\t\t\trec =  eptr_rect(pit,in1,pw, sync=2);\r\n\t\t\t\t\t}else{\r\n\t\t\t\t\t\trec = eptr_rect(pit,0,pw);\r\n\t\t\t\t\t}\r\n\t\t\t\t\trrec += ol*rec;\r\n\t\t\t\t\tsaw +=  ol*integrator_saw(rec, opit, pw);\r\n\t\t\t\t\tsine += ol * cycle(opit);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\nosc = sin_l * sine + tri_l * saw + rec_l * rrec;\r\nmg = slide(mgain, 1000,1000);\r\nout1 = mg * osc * iwi;\r\nout2 = mg * sine * iwi;",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 43.0, 798.222222149372101, 589.666659235954285 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 641.999992787837982, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+ ]
+	}
+
+}
