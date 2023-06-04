@@ -252,6 +252,7 @@ function initialise_dictionaries(){
 	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
 	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
+	ANIM_TIME = config.get("ANIM_TIME");
 
 	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
@@ -266,10 +267,9 @@ function initialise_dictionaries(){
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
 
 
-
+	SONGS_FOLDER = config.get("SONGS_FOLDER");
 	read_songs_folder();
-	//preload_all_waves();
-
+	
 	// all the 3d ui stuff now
 
 	outlet(6, "sendwindow", "idlemouse", 1);

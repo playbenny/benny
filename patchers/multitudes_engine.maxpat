@@ -11730,6 +11730,55 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-23",
+									"linecount" : 2,
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 439.0, 219.0, 151.0, 36.0 ],
+									"text" : "prepend to_blockmanager folder_select"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-9",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "cancel" ],
+									"patching_rect" : [ 510.0, 189.0, 50.0, 22.0 ],
+									"text" : "t cancel"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-8",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 2,
+									"outlettype" : [ "", "bang" ],
+									"patching_rect" : [ 439.0, 157.0, 90.0, 22.0 ],
+									"text" : "opendialog fold"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-4",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 439.0, 125.0, 84.0, 22.0 ],
+									"text" : "r select_folder"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-24",
 									"maxclass" : "newobj",
 									"numinlets" : 0,
@@ -12268,6 +12317,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-8", 0 ],
+									"source" : [ "obj-4", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-17", 0 ],
 									"source" : [ "obj-40", 1 ]
 								}
@@ -12382,6 +12438,27 @@
 								"patchline" : 								{
 									"destination" : [ "obj-17", 0 ],
 									"source" : [ "obj-74", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-23", 0 ],
+									"source" : [ "obj-8", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-9", 0 ],
+									"source" : [ "obj-8", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-23", 0 ],
+									"source" : [ "obj-9", 0 ]
 								}
 
 							}
@@ -14131,19 +14208,6 @@
 
 			}
  ],
-		"parameters" : 		{
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -14209,48 +14273,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "continuity_buffer_fx.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.js",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.keyboard.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "drawing_helpers.js",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -14267,13 +14289,6 @@
 				"name" : "jitgltextureset.js",
 				"bootpath" : "C74:/packages/Jitter Tools/javascript",
 				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "master_1.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{

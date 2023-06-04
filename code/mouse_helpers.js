@@ -181,6 +181,19 @@ function data_edit(parameter,value){
 	}
 }
 
+function select_folder(parameter,value){
+	messnamed("select_folder","bang");
+}
+
+function clear_everything_btn(parameter,value){
+	if(value == DANGER_BUTTON){
+		clear_everything();
+		DANGER_BUTTON = -1;
+	}else{
+		DANGER_BUTTON = value;
+	}
+}
+
 function custom_mouse_passthrough(parameter,value){
 	//post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	ui_poly.setvalue(parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);

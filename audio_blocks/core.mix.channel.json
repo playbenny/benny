@@ -41,10 +41,14 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [80,80],
+				"contains" : [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95], 
+				"onepervoice" : 1,
+				"height" : 0
+			},
+			{ 
+				"contains" : [96,96],
 				"height" : 0
 			}
-			
 		],
 		"panel" : {
 			"parameters" : [0,1,2,3,4,5,6,7]
@@ -277,112 +281,112 @@
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "thump", "body", "mid-control", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
@@ -391,112 +395,224 @@
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 1
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sweep",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			},
 			{
 				"name" : "controller channel",
