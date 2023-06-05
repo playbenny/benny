@@ -186,11 +186,11 @@ function select_folder(parameter,value){
 }
 
 function clear_everything_btn(parameter,value){
-	if(value == DANGER_BUTTON){
+	if(value == danger_button){
 		clear_everything();
-		DANGER_BUTTON = -1;
+		danger_button = -1;
 	}else{
-		DANGER_BUTTON = value;
+		danger_button = value;
 	}
 }
 

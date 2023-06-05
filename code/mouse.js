@@ -173,7 +173,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;				
 			}else{
-				post("HI LUKE", usermouse.gotcell[0], usermouse.gotcell[2], usermouse.clicked2d);
 				//usermouse.timer = DOUBLE_CLICK_TIME;
 				usermouse.clicked2d = usermouse.gotcell[0];
 				usermouse.clicked3d = -1;
@@ -187,7 +186,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var f = mouse_click_actions[usermouse.gotcell[0]];
 						var p = mouse_click_parameters[usermouse.gotcell[0]];
 						var v = mouse_click_values[usermouse.gotcell[0]];
-						post("F P V: ",f,p,v);
 						usermouse.drag.starting_value_x = f(p,"get");
 						if(/* (v>1)|| */(usermouse.gotcell[2]==4)){ //v is 
 							usermouse.drag.starting_value_y = f(v,"get");

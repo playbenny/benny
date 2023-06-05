@@ -3389,9 +3389,9 @@ function draw_sidebar(){
 		outlet(7, "write", "folder");
 		setfontsize(fontheight/1.6);			
 
-		outlet(7, "paintrect", mainwindow_width -9 - fontheight*2.6, y_offset, mainwindow_width-9, y_offset+fontheight,greydarkest );
-		outlet(8, "paintrect", mainwindow_width -9 - fontheight*2.6, y_offset, mainwindow_width-9, y_offset+fontheight,(mouse_index&255),(mouse_index>>8),1 );
-		if(DANGER_BUTTON == mouse_index){
+		outlet(7, "paintrect", mainwindow_width - 9 - fontheight * 2.6, y_offset, mainwindow_width - 9, y_offset+fontheight,greydarkest );
+		outlet(8, "paintrect", mainwindow_width - 9 - fontheight * 2.6, y_offset, mainwindow_width - 9, y_offset+fontheight,(mouse_index&255),(mouse_index>>8),1 );
+		if(danger_button == mouse_index){
 			outlet(7, "frgb" , 255,50,50);
 		}else{
 			outlet(7, "frgb", greycolour);

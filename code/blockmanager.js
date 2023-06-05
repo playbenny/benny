@@ -32,13 +32,14 @@ var DOUBLE_CLICK_TIME = 8;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var BLOCK_TEXTURE_SIZE = 128;
 var ANIM_TIME = 0.25;
-var DANGER_BUTTON = -1;
 
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 
 var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);
+
+var danger_button = -1;
 
 var mainwindow_width = 320;
 var mainwindow_height = 240;
