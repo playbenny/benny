@@ -2577,7 +2577,7 @@
 					"patching_rect" : [ 1106.0, 638.5, 42.25, 20.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 117.75, 161.0, 42.25, 20.0 ],
-					"text" : "20 22",
+					"text" : "18 20",
 					"textcolor" : [ 1.0, 0.933333333333333, 0.0, 1.0 ]
 				}
 
@@ -11730,6 +11730,55 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-23",
+									"linecount" : 2,
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 439.0, 219.0, 151.0, 36.0 ],
+									"text" : "prepend to_blockmanager folder_select"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-9",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "cancel" ],
+									"patching_rect" : [ 510.0, 189.0, 50.0, 22.0 ],
+									"text" : "t cancel"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-8",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 2,
+									"outlettype" : [ "", "bang" ],
+									"patching_rect" : [ 439.0, 157.0, 90.0, 22.0 ],
+									"text" : "opendialog fold"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-4",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 439.0, 125.0, 84.0, 22.0 ],
+									"text" : "r select_folder"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-24",
 									"maxclass" : "newobj",
 									"numinlets" : 0,
@@ -12268,6 +12317,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-8", 0 ],
+									"source" : [ "obj-4", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-17", 0 ],
 									"source" : [ "obj-40", 1 ]
 								}
@@ -12382,6 +12438,27 @@
 								"patchline" : 								{
 									"destination" : [ "obj-17", 0 ],
 									"source" : [ "obj-74", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-23", 0 ],
+									"source" : [ "obj-8", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-9", 0 ],
+									"source" : [ "obj-8", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-23", 0 ],
+									"source" : [ "obj-9", 0 ]
 								}
 
 							}
@@ -12849,7 +12926,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 548.5, 536.0, 78.0, 22.0 ],
+					"patching_rect" : [ 548.5, 545.0, 78.0, 22.0 ],
 					"text" : "mc.tapout~ 1"
 				}
 
@@ -14131,19 +14208,6 @@
 
 			}
  ],
-		"parameters" : 		{
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -14237,6 +14301,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "core.input.control.2.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "core.input.control.maxpat",
 				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
@@ -14245,6 +14316,27 @@
 			}
 , 			{
 				"name" : "core.input.keyboard.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.scales.shapes.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.scales.shapes.ui.js",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.scales.shapes.ui.maxpat",
 				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -14277,6 +14369,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "midi.holes.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "note_wrap.maxpat",
 				"bootpath" : "~/Documents/james music/Multitudes/patchers",
 				"patcherrelativepath" : ".",
@@ -14291,9 +14390,79 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "seq.grid.js",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.grid.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.grid.ui.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.tracker.js",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.tracker.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.tracker.ui.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.trackerL.js",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.trackerL.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.trackerL.ui.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "ui_wrap.maxpat",
 				"bootpath" : "~/Documents/james music/Multitudes/patchers",
 				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "utility.values.maxpat",
+				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}

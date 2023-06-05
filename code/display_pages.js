@@ -48,28 +48,29 @@ function set_display_mode(mode,t){
 
 function camera(){
 	if(displaymode == "custom"){
-		outlet(9, "anim", "moveto", [0,-95,0], 0.2);
+		outlet(9, "anim", "moveto", [0,-95,0], ANIM_TIME);
 	}else if(displaymode == "block_menu"){
 		outlet(9, "position", [2,-93,menu_camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
 		outlet(9, "rotatexyz" , 0, 0, 0);
 		outlet(9, "direction", 0, -1, 0);		
-	}else if(displaymode == "blocks"){
+	}else if(displaymode == "blocks"){ //this could be animated too?
 		outlet(9, "rotatexyz" , 0, 0, 0);
-		outlet(9,"position",  camera_position);
-		outlet(9, "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+		outlet(0, "direction", 0, 0, -1);
+		outlet(9,"anim", "moveto",  camera_position, ANIM_TIME);
+//		outlet(9, "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		if(sidebar.mode=="file_menu"){
 			camera_position[2] += 50;
 			camera_position[0] = 8+Math.max(camera_position[0], blocks_page.rightmost);
-			outlet(9, "anim", "moveto", camera_position, 1);
+			outlet(9, "anim", "moveto", camera_position, ANIM_TIME);
 		}
 	}else if(displaymode == "connection_menu"){
-		outlet(9, "anim", "moveto", camera_position[0],camera_position[1],-20,0.5);
+		outlet(9, "anim", "moveto", camera_position[0],camera_position[1],-20,ANIM_TIME);
 	}else if(displaymode == "waves"){
-		outlet(9, "anim", "moveto", [0,-95,0], 0.2);
+		outlet(9, "anim", "moveto", [0,-95,0], ANIM_TIME);
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
-		outlet(9, "anim", "moveto", [0,-95,0], 0.2);		
+		outlet(9, "anim", "moveto", [0,-95,0], ANIM_TIME);		
 	}else if(displaymode == "flocks"){
-		outlet(9, "anim", "moveto", [flock_cube_size*1.5,1.5*flock_cube_size,5+1.5*flock_cube_size], 0.5);
+		outlet(9, "anim", "moveto", [flock_cube_size*1.5,1.5*flock_cube_size,5+1.5*flock_cube_size], ANIM_TIME);
 		outlet(9, "direction", -0.572078, -0.667424, -0.476731);
 	}
 }
@@ -3373,7 +3374,40 @@ function draw_sidebar(){
 			outlet(7, "write", "selected");
 			setfontsize(fontheight/1.6);
 		}
-		
+
+		outlet(7, "paintrect", file_menu_x + fontheight*8.1, y_offset, file_menu_x+fontheight*10.7, y_offset+fontheight,greydarkest );
+		outlet(8, "paintrect", file_menu_x + fontheight*8.1, y_offset, file_menu_x+fontheight*10.7, y_offset+fontheight,(mouse_index&255),(mouse_index>>8),1 );
+		outlet(7, "frgb" , greycolour);
+		mouse_click_actions[mouse_index] = select_folder;
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+		setfontsize(fontheight/3.2);
+		outlet(7, "moveto", file_menu_x + fontheight*8.4, y_offset+fontheight*0.45);
+		outlet(7, "write", "change");
+		outlet(7, "moveto", file_menu_x + fontheight*8.4, y_offset+fontheight*0.75);
+		outlet(7, "write", "folder");
+		setfontsize(fontheight/1.6);			
+
+		outlet(7, "paintrect", mainwindow_width - 9 - fontheight * 2.6, y_offset, mainwindow_width - 9, y_offset+fontheight,greydarkest );
+		outlet(8, "paintrect", mainwindow_width - 9 - fontheight * 2.6, y_offset, mainwindow_width - 9, y_offset+fontheight,(mouse_index&255),(mouse_index>>8),1 );
+		if(danger_button == mouse_index){
+			outlet(7, "frgb" , 255,50,50);
+		}else{
+			outlet(7, "frgb", greycolour);
+		}
+		mouse_click_actions[mouse_index] = clear_everything_btn;
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = mouse_index;
+		mouse_index++;
+		setfontsize(fontheight/3.2);
+		outlet(7, "moveto", mainwindow_width -9 - fontheight*2.3, y_offset+fontheight*0.45);
+		outlet(7, "write", "clear");
+		outlet(7, "moveto", mainwindow_width -9 - fontheight*2.3, y_offset+fontheight*0.75);
+		outlet(7, "write", "everything");
+		setfontsize(fontheight/1.6);
+
+
 		y_offset += 0.4*fontheight;
 
 		for(i=0;i<songlist.length;i++){

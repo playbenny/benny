@@ -1,6 +1,6 @@
 function read_songs_folder(){ //also loads all song json files, and constructs the wave preload list.
-	var f = new Folder("songs");
-	post("reading songs folder\n");
+	var f = new Folder(SONGS_FOLDER);
+	post("reading songs folder: ",SONGS_FOLDER,"\n");
 	f.reset();
 	var i=0, ts, tss;
 	songlist = [];
@@ -681,6 +681,15 @@ function save_song(){
 //copy blocks and connections and states and properties into one dict
 	messnamed("trigger_save_as","bang");
 	set_sidebar_mode("none");
+}
+
+function folder_select(folderstr){
+	if(folderstr!="cancel"){
+		SONGS_FOLDER = folderstr;
+		config.replace("SONGS_FOLDER",folderstr);
+		config.writeagain();
+		read_songs_folder();
+	}
 }
 
 
