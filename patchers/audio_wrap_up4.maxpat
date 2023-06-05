@@ -574,8 +574,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 4,
 					"outlettype" : [ "signal", "signal", "", "" ],
-					"patching_rect" : [ 38.0, 247.0, 112.0, 22.0 ],
-					"text" : "poly~ blank.audio 1"
+					"patching_rect" : [ 38.0, 247.0, 139.0, 22.0 ],
+					"text" : "poly~ blank.audio 1 up 4"
 				}
 
 			}

@@ -240,6 +240,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var f = mouse_click_actions[usermouse.last.gotcell[0]];
 						var p = mouse_click_parameters[usermouse.last.gotcell[0]];
 						var v = mouse_click_values[usermouse.last.gotcell[0]];
+						
+						if(usermouse.last.gotcell[0] != danger_button){
+							danger_button = -1;
+						} 
 						f(p,v);
 						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 					}

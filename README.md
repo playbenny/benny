@@ -4,6 +4,7 @@ MULTITUDES
 installation
 ------------
 - for now (in the end i'll make gen versions of everything i use) you need to install the ar. airwindows externals, they're in a zip in the root folder. test they're installed by in a new max window making an object, ar.cliponly2~, if it works you're good.
+- in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore
 - open 'multitudes.maxproj'
 
 configuration
