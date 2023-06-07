@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 936.0, 154.0, 600.0, 450.0 ],
+		"rect" : [ 374.0, 180.0, 600.0, 450.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -75,15 +75,15 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Param thresh(0.125,default=0.125);\r\nParam aspeed(8, default = 127);\r\nParam rspeed(511, default = 511);\r\nHistory gain(1),tgain(1),dg(0);\r\nHistory osign(0);\r\nHistory mdiode(0),mmdiode(0);\r\nHistory mode(0);\r\n\r\ndiode=abs(in2);\r\nsign = (diode == in2);\r\n\r\n\r\nif(sign!=osign){\r\n\tosign=sign;\r\n\t\r\n\tmode = (mdiode>thresh);\r\n\tmmdiode = mdiode;\r\n\tmdiode = 0;\r\n}else{\r\n\tif(diode>mdiode)mdiode=diode;\r\n\tif(diode>mmdiode)mmdiode=diode;\r\n}\r\n\r\n\r\nif(mode==0){//release\r\n\tgain = (gain * rspeed + 1)/(rspeed + 1);\r\n}else{//attack\r\n\t//didiff = didiff * didiff;\r\n\ttarget = 1 / (1 + 8*(mmdiode-thresh));\r\n\tif(target>gain){\r\n\t\tgain = (gain * rspeed + target)/(rspeed + 1);\t\r\n\t}else{\r\n\t\tgain = (gain * aspeed + target)/(aspeed + 1);\r\n\t}\r\n}\r\nout2 = gain;\r\n\r\nout1 = in1*gain;",
+					"code" : "Param thresh(0.125,default=0.125);\r\nParam aspeed(8, default = 127);\r\nParam rspeed(511, default = 511);\r\nHistory gain(1);\r\nHistory osign(0);\r\nHistory mdiode(0),mmdiode(0); //max since last zero-xing, latest max\r\nHistory mode(0);\r\nHistory target(1);\r\n\r\ndiode=abs(in2);\r\nsign = (diode == in2);\r\n\r\n\r\nif(sign!=osign){\r\n\tosign=sign;\r\n\t\r\n\tmode = (mdiode>thresh);\r\n\tmmdiode = mdiode;\r\n\tif(mode) target = 1 / (1 + 8*(mmdiode-thresh));\r\n\tmdiode = 0;\r\n}else{\r\n\tif(diode>mdiode)mdiode=diode;\r\n\tif(diode>mmdiode){\r\n\t\tmmdiode=diode;\r\n\t\tmode = (mmdiode>thresh);\r\n\t\t\t//i think this makes attack more instant\r\n\t\tif(mode) target = 1 / (1 + 8*(mmdiode-thresh));\r\n\t}\r\n\t\t\r\n}\r\n\r\n\r\nif(mode==0){//release\r\n\tgain = (gain * rspeed + 1)/(rspeed + 1);\r\n}else{//attack\r\n\t//didiff = didiff * didiff;\r\n\t\r\n\tif(target>gain){\r\n\t\tgain = (gain * rspeed + target)/(rspeed + 1);\t\r\n\t}else{\r\n\t\tgain = (gain * aspeed + target)/(aspeed + 1);\r\n\t}\r\n}\r\nout2 = gain;\r\n\r\nout1 = in1*gain;",
 					"fontface" : 0,
-					"fontname" : "<Monospaced>",
+					"fontname" : "Lucida Console",
 					"fontsize" : 12.0,
 					"id" : "obj-3",
 					"maxclass" : "codebox",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "", "", "", "" ],
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 23.0, 49.0, 537.0, 379.0 ]
 				}
 
@@ -128,8 +128,7 @@
 				}
 
 			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }

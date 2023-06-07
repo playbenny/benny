@@ -615,7 +615,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -623,7 +623,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -631,7 +631,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -639,7 +639,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -647,7 +647,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -655,7 +655,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -663,7 +663,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -671,7 +671,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -679,7 +679,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -687,7 +687,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -695,7 +695,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -703,7 +703,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -711,7 +711,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -719,7 +719,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -727,7 +727,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
@@ -735,7 +735,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "controller channel",
+				"name" : "fader_number",
 				"type" : "menu_i",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
 				"error_scale" : 0,
