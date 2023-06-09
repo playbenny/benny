@@ -2242,7 +2242,10 @@ function build_mod_sum_action_list(){
 	var ALLAUDIO = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_OUTPUTS;
 	
 	var list_pointer = 0;
-	
+
+	messnamed("pause_mod_processing",1);
+
+
 	for(mv=0;mv<ALLAUDIO;mv++){ //first look if there are any midi-audio to process
 		if(mod_routemap.contains(mv)){
 			slotlist = mod_routemap.get(mv);
@@ -2253,16 +2256,16 @@ function build_mod_sum_action_list(){
 			mod_sum_action_list.poke(2,list_pointer,0);
 			mod_sum_action_list.poke(3,list_pointer,3);
 			mod_sum_action_list.poke(4,list_pointer,0);
-//				i=list_pointer;
-//				post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");			
+//			i=list_pointer;
+//			post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");			
 			list_pointer++;
 			for(t=0;t<slotlist.length;t++){
 				mod_sum_action_list.poke(1,list_pointer,mv+1);
 				mod_sum_action_list.poke(2,list_pointer,slotlist[t]);
 				mod_sum_action_list.poke(3,list_pointer,4); //is it a modulation type input? i think so?
-//				i=list_pointer;
+				i=list_pointer;
 //				post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");
-				list_pointer += 1;
+//				list_pointer += 1;
 			}
 		}		
 	}
@@ -2281,8 +2284,7 @@ function build_mod_sum_action_list(){
 				lockup = blocks.get("blocks["+b+"]::error::lockup");
 				lockup *= lockup * 0.003;
 				voicelist = voicemap.get(b);
-				if(btype=="audio"){
-				}else if(btype=="hardware"){
+				if(btype=="hardware"){
 					//todo hardware can have params too!
 //					voffset+=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;//+b; //TODO no not +b, need a lookup
 					if(blocktypes.contains(bname+"::midi_output_number")){
@@ -2430,7 +2432,9 @@ function build_mod_sum_action_list(){
 	mod_sum_action_list.poke(2,list_pointer,-1);
 	mod_sum_action_list.poke(3,list_pointer,-1);
 	mod_sum_action_list.poke(4,list_pointer,-1);
-	list_pointer++;								
+	list_pointer++;	
+	messnamed("pause_mod_processing", 0);
+
 //post("ok, list length",list_pointer,"\n");
 //for(i=0;i<list_pointer;i++){
 //	post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");

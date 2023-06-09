@@ -555,8 +555,9 @@ function populate_lookup_tables(){
 }
 
 function load_core_blocks(){
+	// this routine also populates controller lists and keyboard input lists in all blocks in the db
 	var k=blocktypes.getkeys();
-	var t;
+	var t, mk, mt;
 //	var nm,nms;
 	var y = 3;
 	var x = 0;
@@ -575,18 +576,22 @@ function load_core_blocks(){
 				}
 			}
 		}
-	}
-	if(blocktypes.contains("core.input.control")){
 		if(io_dict.contains("controllers")){
-			var cn = io_dict.get("controllers");
-			var cnfk;
-			k = cn.getkeys();
-			if(typeof k == 'string'){
-				k= [k];
-//				post("fixing string into an array");
-			}
-			for(cnfk in k){
-				blocktypes.replace("core.input.control::parameters[0]::values["+cnfk+"]",k[cnfk]);
+			post("populating controller lists", k[t]);
+			var ps = blocktypes.getsize(k[t]+"::parameters");
+			var pt;
+			for(pt=0;pt<ps;pt++){
+				if(blocktypes.get(k[t]+"::parameters["+pt+"]::name")=="controller number"){
+					var cn = io_dict.get("controllers");
+					var cnfk;
+					mk = cn.getkeys();
+					if(typeof mk == 'string'){
+						mk= [mk];
+					}
+					for(cnfk in mk){
+						blocktypes.replace(k[t]+"::parameters["+pt+"]::values["+cnfk+"]",mk[cnfk]);
+					}
+				}
 			}
 		}
 	}

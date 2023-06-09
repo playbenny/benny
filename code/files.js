@@ -428,9 +428,9 @@ function import_song(){
 		set_display_mode("blocks");
 		set_sidebar_mode("none");
 		build_mod_sum_action_list();
+		
 		output_queue_pointer = 0;
 		changed_queue_pointer = 0;
-		messnamed("reset_mod_pointers","bang");
 		redraw_flag.flag=4;
 		meters_enable=1;
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
@@ -780,6 +780,11 @@ function process_purgelist(){
 
 
 function clear_everything(){
+	messnamed("pause_mod_processing",1);
+
+	output_queue.poke(1,0,0);
+	output_queue_pointer = 0;
+
 	var emptys="{}";
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
