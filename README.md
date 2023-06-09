@@ -10,9 +10,19 @@ installation
 configuration
 -------------
 - recommended max/msp audio settings: vector size same as audio buffer size, i work at 256 (any lower and the multicore processing doesn't run very efficiently) scheduler in audio interupt ticked, overdrive ticked
+- recommended max scheduler settings, found under options/preferences/scheduler, take a screenshot of your original ones just in case
+    Event Interval (ms) : 2
+    Overdrive : Yes
+    Poll Throttle : 100
+    Queue Throttle : 10
+    Redraw Queue Throttle : 100
+    Refresh Rate : 33.333333
+    Scheduler Interval (ms) : 1
+    Scheduler Slop (ms) : 100
 - in the end, there'll be a hardware editor.. for now, using the hardware config .json files as an example, build your own, with entries for any pieces of modular or hardware you want to use. in vscode this isn't too bad...
 - the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
     - KNOWN ISSUE manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
+    - KNOWN ISSUE you can't load a vst's config and edit it, you just have to do it again if you change your mind how you want the parameters organised
 - there's a config.json file you can edit with some visual/ui preferrences
 
 temporary limits
