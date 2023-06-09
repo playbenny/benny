@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-26",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "float" ],
+					"patching_rect" : [ 299.25, 404.0, 29.5, 22.0 ],
+					"text" : "t b f"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-31",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -717,7 +729,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 297.75, 351.0, 50.0, 22.0 ]
+					"patching_rect" : [ 299.25, 345.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -728,7 +740,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 297.75, 383.0, 65.0, 22.0 ],
+					"patching_rect" : [ 299.25, 377.0, 65.0, 22.0 ],
 					"text" : "aspeed $1"
 				}
 
@@ -742,7 +754,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 360.563093066215515, 351.0, 50.0, 22.0 ]
+					"patching_rect" : [ 362.063093066215515, 345.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -753,7 +765,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 360.563093066215515, 383.0, 62.0, 22.0 ],
+					"patching_rect" : [ 362.063093066215515, 377.0, 62.0, 22.0 ],
 					"text" : "rspeed $1"
 				}
 
@@ -1019,7 +1031,7 @@
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................A...R9."
+							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
 						}
 ,
 						"snapshotlist" : 						{
@@ -1041,7 +1053,7 @@
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................A...R9."
+										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
 									}
 ,
 									"fileref" : 									{
@@ -1460,11 +1472,11 @@
 							}
 , 							{
 								"key" : 2,
-								"value" : [ 70, 1.1, -1, 110, 1.5, 2, 8000, 0.4, 0 ]
+								"value" : [ 70, 1.1, -1, 110, 1.5, 2, 8000, 0.4, 0.3 ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ 110, 1.1, -1, 0, 0, 0, 10000, 0.5, 0.5 ]
+								"value" : [ 110, 1.1, -1, 0, 0, 0, 10000, 0.5, 0.7 ]
 							}
 , 							{
 								"key" : 4,
@@ -1665,7 +1677,7 @@
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................A...R9."
+							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
 						}
 ,
 						"snapshotlist" : 						{
@@ -1687,7 +1699,7 @@
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................A...R9."
+										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
 									}
 ,
 									"fileref" : 									{
@@ -1825,6 +1837,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 48.166666666666657, 218.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1861,10 +1877,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 10.0, 43.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1888,6 +1900,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 214.75, 817.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -1900,6 +1916,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 457.0, 431.556071519851685, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -1911,6 +1931,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 156.75, 817.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -1923,6 +1947,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 343.0, 431.556071519851685, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -2327,6 +2355,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-36", 1 ],
+					"source" : [ "obj-26", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-36", 0 ],
+					"source" : [ "obj-26", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-41", 1 ],
 					"order" : 0,
 					"source" : [ "obj-29", 0 ]
@@ -2583,7 +2625,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-36", 1 ],
+					"destination" : [ "obj-26", 0 ],
 					"source" : [ "obj-58", 8 ]
 				}
 
@@ -3136,42 +3178,7 @@
 				}
 
 			}
- ],
-		"parameters" : 		{
-			"obj-23" : [ "vst~[14]", "vst~", 0 ],
-			"obj-89" : [ "vst~[17]", "vst~", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
-		"dependency_cache" : [ 			{
-				"name" : "airwindows Console7Cascade.maxsnap",
-				"bootpath" : "~/Documents/Max 8/Snapshots",
-				"patcherrelativepath" : "../../../Max 8/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "ar.cliponly~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
-				"name" : "utility.mix.channel.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : ".",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }

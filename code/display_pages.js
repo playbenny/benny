@@ -993,10 +993,10 @@ function draw_wire(connection_number){
 			}
 			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
 				tconz = ((to_number+0.5)/(NO_IO_PER_BLOCK));
-				to_pos = [ (blocks_cube[cto][0].position[0] + (tconz-0.5)*0.4), blocks_cube[cto][0].position[1]+0.44, 0/*tconz*/ ];
+				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, 0/*tconz*/ ];
 			}else{
 				tconz =  ((to_number+0.5)/(num_ins));
-				to_pos = [ blocks_cube[cto][0].position[0]+ (tconz-0.5)*0.4, blocks_cube[cto][0].position[1]+0.44, 0/* tconz*/ ];
+				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, 0/* tconz*/ ];
 				if(to_type == "midi") typeoffset = 0.25; //to_pos[1]-=0.25;
 				if(to_type == "parameters") typeoffset = 0.125; //to_pos[1]+=0.25;
 			}
@@ -1038,9 +1038,12 @@ function draw_wire(connection_number){
 					if(tv>1)to_multi = 1;
 					for(t=0;t<tv;t++){
 						to_list[t] = t+1;
-					}			
+					}
+					to_pos[0] += 0.2;			
 				}
 			}else{
+				to_pos[0] += 0.2;
+
 				tl = connections.get("connections["+connection_number+"]::to::voice");
 				if(tl.length>1){
 					to_multi = 1;
@@ -1048,7 +1051,7 @@ function draw_wire(connection_number){
 						to_list[t] = tl[t];
 					}
 				}else {
-					to_pos[0] += 0.5*tl + 0.2;// + tconz * 0.4; 
+					to_pos[0] += 0.5*tl;// + tconz * 0.4; 
 				}
 			}
 			if(is_empty(wires[connection_number])) wires[connection_number] = [];
@@ -1258,7 +1261,7 @@ function draw_wire(connection_number){
 							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute);
 						}
 					}
-					to_pos[0] += 0.05;// 0.4 * tconz;
+					to_pos[0] += 0.3 + 0.4 * tconz;
 					if(corners[1]){	
 						if(to_type=="hardware") post("hw conn,",tconz);
 						for(t=0;t<3;t++){
