@@ -92,7 +92,7 @@ function setfontsize(size){
 
 function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,index,0,2);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8),2);
 	var ly;
  	if(value>=0) {
 		if(value>=1){
@@ -117,7 +117,7 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,value){
 	}
 	outlet(7, "paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
-	outlet(8, "paintrect",x1,y1,x2,y2,index,0,1);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8),1);
 }
 function labelled_parameter_v_slider(pnumber){
 	
@@ -218,7 +218,7 @@ function labelled_parameter_v_slider(pnumber){
 
 function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,index,0,2);
+	outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,(index&255),(index>>8),2);
 	// need to get the voices used by this block:
 	//var type = blocks.get("blocks["+blockno+"]::type");
 	voicelist = voicemap.get(blockno);
@@ -257,7 +257,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 
 function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,index,0, 2);
+	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){

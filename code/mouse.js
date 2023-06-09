@@ -724,9 +724,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	if(gotcell!=null){
 		b = gotcell[1];
 		c = gotcell[2];
+		b = b + (c<<8);
 		d = gotcell[3];	
 	}
-	//post("bcd",b,c,d,displaymode);
+//	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
 		if(displaymode=="blocks"){
 			var xx = (2 * x / mainwindow_width) - 1;
