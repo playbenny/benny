@@ -621,42 +621,46 @@ function initialise_block_menu(visible){
 			z++;
 			x=-4;
 			for(i=0;i<cubecount;i++){
-				ts=types[i].split('.');
-				if(ts[0]==type_order[typ]){
-					post("\ndrawing menu texture:",i," label is ",ts,"\n");
-					messnamed("texture_generator","menu",i);
-					col = blocktypes.get(types[i]+"::colour");
-					lcd_block_textures.message("brgb",col);
-					lcd_block_textures.message("clear");
-					lcd_block_textures.message("frgb",255,255,255);
-					lcd_block_textures.message("font","consolas",30);
-					lcd_block_textures.message("textface","bold");
-					for(var t=0;t<ts.length;t++){
-						lcd_block_textures.message("moveto",5, 28+t*30);
-						lcd_block_textures.message("write",ts[t]);
+				if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated"==1))){
+					//skip this one
+				}else{
+					ts=types[i].split('.');
+					if(ts[0]==type_order[typ]){
+						post("\ndrawing menu texture:",i," label is ",ts,"\n");
+						messnamed("texture_generator","menu",i);
+						col = blocktypes.get(types[i]+"::colour");
+						lcd_block_textures.message("brgb",col);
+						lcd_block_textures.message("clear");
+						lcd_block_textures.message("frgb",255,255,255);
+						lcd_block_textures.message("font","consolas",30);
+						lcd_block_textures.message("textface","bold");
+						for(var t=0;t<ts.length;t++){
+							lcd_block_textures.message("moveto",5, 28+t*30);
+							lcd_block_textures.message("write",ts[t]);
+						}
+						lcd_block_textures.message("bang");
+	
+						if(x>4){
+							z++;
+							x=-4;
+						}
+						//col = config.get("palette::"+ts[0]);
+						post("drawing menu block",ts);
+						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
+						blocks_menu[i].shape = "cube";
+						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
+						blocks_menu[i].position = [x, -110, z];
+						blocks_menu[i].scale = [0.45, 0.45, 0.45];
+						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
+						blocks_menu[i].texture = blocks_menu_texture[i];
+						blocks_menu[i].tex_map = 1;
+						blocks_menu[i].texzoom = [1,1];
+						blocks_menu[i].texanchor = [0.5,0.5];
+						blocks_menu[i].tex_plane_s = [0.5,0,0,0.5];
+						blocks_menu[i].tex_plane_t = [0,1,-0.5,-0.5];
+						x++;					
 					}
-					lcd_block_textures.message("bang");
-
-					if(x>4){
-						z++;
-						x=-4;
-					}
-					//col = config.get("palette::"+ts[0]);
-					post("drawing menu block",ts);
-					blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
-					blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
-					blocks_menu[i].shape = "cube";
-					blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
-					blocks_menu[i].position = [x, -110, z];
-					blocks_menu[i].scale = [0.45, 0.45, 0.45];
-					blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
-					blocks_menu[i].texture = blocks_menu_texture[i];
-					blocks_menu[i].tex_map = 1;
-					blocks_menu[i].texzoom = [1,1];
-					blocks_menu[i].texanchor = [0.5,0.5];
-					blocks_menu[i].tex_plane_s = [0.5,0,0,0.5];
-					blocks_menu[i].tex_plane_t = [0,1,-0.5,-0.5];
-					x++;					
 				}
 			}
 		}
@@ -989,10 +993,10 @@ function draw_wire(connection_number){
 			}
 			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
 				tconz = ((to_number+0.5)/(NO_IO_PER_BLOCK));
-				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, 0/*tconz*/ ];
+				to_pos = [ (blocks_cube[cto][0].position[0] + (tconz-0.5)*0.4), blocks_cube[cto][0].position[1]+0.44, 0/*tconz*/ ];
 			}else{
 				tconz =  ((to_number+0.5)/(num_ins));
-				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, 0/* tconz*/ ];
+				to_pos = [ blocks_cube[cto][0].position[0]+ (tconz-0.5)*0.4, blocks_cube[cto][0].position[1]+0.44, 0/* tconz*/ ];
 				if(to_type == "midi") typeoffset = 0.25; //to_pos[1]-=0.25;
 				if(to_type == "parameters") typeoffset = 0.125; //to_pos[1]+=0.25;
 			}
@@ -1044,7 +1048,7 @@ function draw_wire(connection_number){
 						to_list[t] = tl[t];
 					}
 				}else {
-					to_pos[0] += 0.5*tl + tconz * 0.4; 
+					to_pos[0] += 0.5*tl + 0.2;// + tconz * 0.4; 
 				}
 			}
 			if(is_empty(wires[connection_number])) wires[connection_number] = [];

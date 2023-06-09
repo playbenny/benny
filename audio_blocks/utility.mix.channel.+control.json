@@ -1,6 +1,7 @@
 {
-	"utility.mix.channel" : {
-		"patcher" : "utility.mix.channel",
+	"utility.mix.channel.+control" : {
+		"patcher" : "utility.mix.channel.+control",
+		"deprecated" : 1,
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
@@ -38,6 +39,15 @@
 			{ 
 				"contains" : [64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79], 
 				"onepervoice" : 1,
+				"height" : 0
+			},
+			{ 
+				"contains" : [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95], 
+				"onepervoice" : 1,
+				"height" : 0
+			},
+			{ 
+				"contains" : [96,96],
 				"height" : 0
 			}
 		],
@@ -604,7 +614,143 @@
 				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
-			}		
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fader_number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "controller number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			}			
 		]
 	}
 }

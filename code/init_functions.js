@@ -576,8 +576,7 @@ function load_core_blocks(){
 				}
 			}
 		}
-		if(io_dict.contains("controllers")){
-			post("populating controller lists", k[t]);
+		if(io_dict.contains("controllers")){  //looks for blocks with a param called 'controller number' and populates the menu list with the current set of controllers
 			var ps = blocktypes.getsize(k[t]+"::parameters");
 			var pt;
 			for(pt=0;pt<ps;pt++){
