@@ -603,29 +603,35 @@ function initialise_block_menu(visible){
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
 		if(block_menu_d.mode == 1) swpt = blocks.get("blocks["+block_menu_d.swap_block_target+"]::type");
 		for(i=0;i<cubecount;i++){
-			if(visible==1)vis=1;	
-			if(block_menu_d.mode == 1){
-				if(blocktypes.get(types[i]+"::type") != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
-			}
-			if(blocktypes.contains(types[i]+"::exclusive")){
-				for(t = 0;t<MAX_BLOCKS;t++){
-					if(blocks.get("blocks["+t+"]::name") == types[i]){
-						vis=0; // this is to hide blocks eg clock when there's one already out (as you can't have more than one of them)
+			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+				//skip this one
+				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+			}else{
+				if(visible==1)vis=1;	
+				if(block_menu_d.mode == 1){
+					if(blocktypes.get(types[i]+"::type") != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
+				}
+				if(blocktypes.contains(types[i]+"::exclusive")){
+					for(t = 0;t<MAX_BLOCKS;t++){
+						if(blocks.get("blocks["+t+"]::name") == types[i]){
+							vis=0; // this is to hide blocks eg clock when there's one already out (as you can't have more than one of them)
+						}
 					}
 				}
+				blocks_menu[i].enable = vis;
 			}
-			blocks_menu[i].enable = vis;
 		}
 	}else{
 		for(var typ in type_order){
 			z++;
 			x=-4;
 			for(i=0;i<cubecount;i++){
-				if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated"==1))){
-					//skip this one
-				}else{
-					ts=types[i].split('.');
-					if(ts[0]==type_order[typ]){
+				ts=types[i].split('.');
+				if(ts[0]==type_order[typ]){
+					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+						//skip this one
+						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+					}else{
 //						post("\ndrawing menu texture:",i," label is ",ts,"\n");
 						messnamed("texture_generator","menu",i);
 						col = blocktypes.get(types[i]+"::colour");
