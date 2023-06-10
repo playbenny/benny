@@ -1,5 +1,5 @@
 {
-	"SONGS_FOLDER" : "C:/Users/jhold/Documents/james music/Multitudes/songs/",
+	"SONGS_FOLDER" : "C:/Users/jhold/Documents/james music/live set/songs/",
 	"type_order" : [ "core", "seq", "midi", "osc", "voice", "hardware", "fx", "vst", "utility" ],
 	"gain_display_format" : "x",
 	"downscale_limit" : 2600,

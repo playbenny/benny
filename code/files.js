@@ -684,6 +684,7 @@ function save_song(){
 }
 
 function folder_select(folderstr){
+//	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
 		SONGS_FOLDER = folderstr;
 		config.replace("SONGS_FOLDER",folderstr);
