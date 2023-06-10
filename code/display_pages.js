@@ -626,7 +626,7 @@ function initialise_block_menu(visible){
 				}else{
 					ts=types[i].split('.');
 					if(ts[0]==type_order[typ]){
-						post("\ndrawing menu texture:",i," label is ",ts,"\n");
+//						post("\ndrawing menu texture:",i," label is ",ts,"\n");
 						messnamed("texture_generator","menu",i);
 						col = blocktypes.get(types[i]+"::colour");
 						lcd_block_textures.message("brgb",col);
@@ -645,7 +645,7 @@ function initialise_block_menu(visible){
 							x=-4;
 						}
 						//col = config.get("palette::"+ts[0]);
-						post("drawing menu block",ts);
+//						post("drawing menu block",ts);
 						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
 						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
 						blocks_menu[i].shape = "cube";
@@ -664,6 +664,7 @@ function initialise_block_menu(visible){
 				}
 			}
 		}
+		blocks_tex_sent = []; // this is a good moment to ask for a redraw of any blocks that are loaded by now's textures
 		initialise_block_menu(visible); //to hide the core blocks if they're already loaded
 	}
 }

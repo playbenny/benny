@@ -117,7 +117,7 @@ function import_hardware(v){
 	var menutex_task = new Task(initialise_block_menu, this);
 	menutex_task.schedule(1000);
 	//	redraw_flag.flag=4;
-	blocks_tex_sent = [];
+	
 }
 
 function initialise_dictionaries(){
