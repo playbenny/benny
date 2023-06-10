@@ -272,7 +272,7 @@ function check_output_queue(){
 			ccout=r;
 			messnamed("hardware_midi", midiout+8, ccout, Math.floor(128*v), chanout);
 		}else if(t==2){// sigs
-//			post("\nsetting sigouts from output queue position",output_queue_pointer,"r",r,"v",v);
+			//post("\nsetting sigouts from output queue position",output_queue_pointer,"r",r,"v",v);
 			sigouts.setvalue(r,v);
 		}
 		output_queue_pointer+=1;

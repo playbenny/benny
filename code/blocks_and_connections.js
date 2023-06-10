@@ -2220,6 +2220,7 @@ function swap_block(block_name){
 
 function build_mod_sum_action_list(){
 	if(loading.progress>0) return 0;
+	messnamed("modulation_processor", "pause",1);
 	post("\nBuilding new mod sum action list");
 //this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
 // buffer has 4 channels. 
@@ -2243,7 +2244,6 @@ function build_mod_sum_action_list(){
 	
 	var list_pointer = 0;
 
-	messnamed("pause_mod_processing",1);
 
 
 	for(mv=0;mv<ALLAUDIO;mv++){ //first look if there are any midi-audio to process
@@ -2263,9 +2263,9 @@ function build_mod_sum_action_list(){
 				mod_sum_action_list.poke(1,list_pointer,mv+1);
 				mod_sum_action_list.poke(2,list_pointer,slotlist[t]);
 				mod_sum_action_list.poke(3,list_pointer,4); //is it a modulation type input? i think so?
-				i=list_pointer;
+//				i=list_pointer;
 //				post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");
-//				list_pointer += 1;
+				list_pointer += 1;
 			}
 		}		
 	}
@@ -2433,8 +2433,11 @@ function build_mod_sum_action_list(){
 	mod_sum_action_list.poke(3,list_pointer,-1);
 	mod_sum_action_list.poke(4,list_pointer,-1);
 	list_pointer++;	
-	messnamed("pause_mod_processing", 0);
-
+	messnamed("modulation_processor", "pause", 0);
+	output_queue_pointer = 0;
+	output_queue.poke(1,0,0);
+	changed_queue_pointer = 0; 
+	
 //post("ok, list length",list_pointer,"\n");
 //for(i=0;i<list_pointer;i++){
 //	post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");
