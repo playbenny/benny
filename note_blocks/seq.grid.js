@@ -9,6 +9,7 @@ var blocks = new Dict;
 blocks.name = "blocks"
 var voicemap = new Dict;
 voicemap.name =  "voicemap";
+var mini=0;
 var v_list = [];
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
 //data format: for each voice the buffer holds:
@@ -23,6 +24,8 @@ function setup(x1,y1,x2,y2,sw){
 	menucolour = config.get("palette::menu");
 	menudark = [menucolour[0]*0.2,menucolour[1]*0.2,menucolour[2]*0.2];
 	width = x2-x1;
+	mini=0;
+	if(width<sw*0.6){ mini=1;}
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
@@ -54,7 +57,7 @@ function draw(){
 			
 			outlet(0,"custom_ui_element","data_v_scroll",x_pos,r*rh+y_pos,x_pos+0.9*unit,(0.9+r)*rh+y_pos,menucolour[0],menucolour[1],menucolour[2],MAX_DATA*v_list[r]);
 			outlet(0,"custom_ui_element","data_v_scroll",x_pos+unit,r*rh+y_pos,x_pos+1.9*unit,(0.9+r)*rh+y_pos,menucolour[0],menucolour[1],menucolour[2],MAX_DATA*v_list[r]+1);
-			if((width>400)){
+			if(!mini){
 //				outlet(1,"frgb",menudark);
 				outlet(1,"moveto",x_pos+0.1*unit,r*rh+y_pos+unit*0.4);
 				outlet(1,"write","strt");
@@ -71,7 +74,7 @@ function draw(){
 			cursors[r]=ph;
 			for(c=maxl-1;c>=0;c--){			
 				outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,255*(c==ph),63+192*((c>=s)&&(c<s+l)),255*(c==ph),MAX_DATA*v_list[r]+3+c);
-				if((width>400)){
+				if(!mini){
 //					outlet(1,"frgb",menudark);
 					outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.4);
 					outlet(1,"write",c);
@@ -101,7 +104,7 @@ function update(){
 			//redraw slider that was old cursor
 			if((cursors[r]>=0)&&(cursors[r]<maxl)){
 				outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,0,255,0,MAX_DATA*v_list[r]+3+cursors[r]);
-				if((width>400)){
+				if(!mini){
 					outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 					outlet(1,"write",cursors[r]);
 					i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+3+cursors[r])*128);
@@ -119,7 +122,7 @@ function update(){
 			//draw new cursor slider
 			if(cursors[r]<maxl){
 				outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+3+ph);
-				if((width>400)){
+				if(!mini){
 					outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 					outlet(1,"write",cursors[r]);
 					i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+3+cursors[r])*128);

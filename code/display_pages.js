@@ -231,7 +231,7 @@ function draw_panels(){
 		y+=h+0.1;
 
 	}
-	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>2)){
+	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>3)){
 		MAX_PANEL_COLUMNS--;
 		redraw.redraw_flag=4;
 	}
@@ -421,7 +421,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		mouse_click_parameters[mouse_index] = "custom";
 		mouse_click_values[mouse_index] = b;
 		mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
-		ui_poly.setvalue( b+1, "setup", x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,0);
+		ui_poly.setvalue( b+1, "setup", x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
 	}
 }
 

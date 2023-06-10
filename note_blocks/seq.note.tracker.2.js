@@ -35,7 +35,7 @@ function setup(x1,y1,x2,y2,sw){
 	menucolour = config.get("palette::menu");
 	mini=0;
 	width = x2-x1;
-	if(width<500){ mini=1;}
+	if(width<sw*0.6){ mini=1;}
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
