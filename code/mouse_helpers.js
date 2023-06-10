@@ -119,7 +119,7 @@ function select_block(parameter,value){
 		}
 	}else{
 		usermouse.timer = DOUBLE_CLICK_TIME;
-		post(selected.block[value],selected.block_count,displaymode,usermouse.timer);
+		//post(selected.block[value],selected.block_count,displaymode,usermouse.timer);
 		var i;
 		for(i=0;i<MAX_BLOCKS;i++){
 			selected.block[i]=0;

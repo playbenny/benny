@@ -605,7 +605,7 @@ function initialise_block_menu(visible){
 		for(i=0;i<cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 				//skip this one
-				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+//				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 			}else{
 				if(visible==1)vis=1;	
 				if(block_menu_d.mode == 1){
@@ -630,7 +630,7 @@ function initialise_block_menu(visible){
 				if(ts[0]==type_order[typ]){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
-						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+//						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 					}else{
 //						post("\ndrawing menu texture:",i," label is ",ts,"\n");
 						messnamed("texture_generator","menu",i);
@@ -1270,7 +1270,7 @@ function draw_wire(connection_number){
 					}
 					to_pos[0] += 0.3 + 0.4 * tconz;
 					if(corners[1]){	
-						if(to_type=="hardware") post("hw conn,",tconz);
+						//if(to_type=="hardware") post("hw conn,",tconz);
 						for(t=0;t<3;t++){
 							bez_prep[0][t] = blob_position[t];
 							bez_prep[1][t] = blob_position[t]+meanvector[t];
