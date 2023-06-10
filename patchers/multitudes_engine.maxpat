@@ -21,11 +21,11 @@
 		"gridsnaponopen" : 1,
 		"objectsnaponopen" : 1,
 		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
+		"toolbarvisible" : 0,
+		"lefttoolbarpinned" : 2,
+		"toptoolbarpinned" : 2,
+		"righttoolbarpinned" : 2,
+		"bottomtoolbarpinned" : 2,
 		"toolbars_unpinned_last_save" : 0,
 		"tallnewobj" : 0,
 		"boxanimatetime" : 200,
@@ -2577,7 +2577,7 @@
 					"patching_rect" : [ 1106.0, 638.5, 42.25, 20.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 117.75, 161.0, 42.25, 20.0 ],
-					"text" : "34 40",
+					"text" : "14 14",
 					"textcolor" : [ 1.0, 0.933333333333333, 0.0, 1.0 ]
 				}
 
@@ -14170,58 +14170,7 @@
 
 			}
  ],
-		"parameters" : 		{
-			"obj-15.12::obj-11.1::obj-67" : [ "vst~[1]", "vst~", 0 ],
-			"obj-15.14::obj-11.1::obj-67" : [ "vst~[2]", "vst~", 0 ],
-			"obj-15.16::obj-11.1::obj-23" : [ "vst~[7]", "vst~", 0 ],
-			"obj-15.17::obj-11.1::obj-67" : [ "vst~[13]", "vst~", 0 ],
-			"obj-15.21::obj-11.1::obj-67" : [ "vst~[19]", "vst~", 0 ],
-			"obj-15.22::obj-11.1::obj-23" : [ "vst~[14]", "vst~", 0 ],
-			"obj-15.22::obj-11.1::obj-89" : [ "vst~[17]", "vst~", 0 ],
-			"obj-15.39::obj-11.1::obj-23" : [ "vst~[24]", "vst~", 0 ],
-			"obj-15.39::obj-11.1::obj-89" : [ "vst~[22]", "vst~", 0 ],
-			"obj-15.40::obj-11.1::obj-23" : [ "vst~[8]", "vst~", 0 ],
-			"obj-15.40::obj-11.1::obj-89" : [ "vst~[25]", "vst~", 0 ],
-			"obj-15.41::obj-11.1::obj-23" : [ "vst~[9]", "vst~", 0 ],
-			"obj-15.41::obj-11.1::obj-89" : [ "vst~[20]", "vst~", 0 ],
-			"obj-15.42::obj-11.1::obj-23" : [ "vst~[10]", "vst~", 0 ],
-			"obj-15.42::obj-11.1::obj-89" : [ "vst~[23]", "vst~", 0 ],
-			"obj-15.43::obj-11.1::obj-23" : [ "vst~[26]", "vst~", 0 ],
-			"obj-15.43::obj-11.1::obj-89" : [ "vst~[21]", "vst~", 0 ],
-			"obj-15.44::obj-11.1::obj-23" : [ "vst~[28]", "vst~", 0 ],
-			"obj-15.44::obj-11.1::obj-89" : [ "vst~[27]", "vst~", 0 ],
-			"obj-15.9::obj-11.1::obj-67" : [ "vst~[11]", "vst~", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
 		"dependency_cache" : [ 			{
-				"name" : "airwindows Console7Cascade.maxsnap",
-				"bootpath" : "~/Documents/Max 8/Snapshots",
-				"patcherrelativepath" : "../../../Max 8/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "airwindows Console7Channel.maxsnap",
-				"bootpath" : "~/Documents/Max 8/Snapshots",
-				"patcherrelativepath" : "../../../Max 8/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "ar.capacitor2~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}
@@ -14232,41 +14181,41 @@
 , 			{
 				"name" : "audio-to-data.gendsp",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
+				"patcherrelativepath" : "../../../james music/Multitudes/code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "audio-to-data.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "audio_wrap_up2.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.audio.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.note.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
@@ -14274,120 +14223,22 @@
 , 			{
 				"name" : "blockmanager.js",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
+				"patcherrelativepath" : "../../../james music/Multitudes/code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "clip_dither.maxpat",
 				"bootpath" : "~/Documents/james music/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "continuity_buffer_fx.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.js",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.2.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.keyboard.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.scales.shapes.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.scales.shapes.ui.js",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.scales.shapes.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.tuning.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
+				"patcherrelativepath" : "../../../james music/Multitudes/output_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "drawing_helpers.js",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
+				"patcherrelativepath" : "../../../james music/Multitudes/code",
 				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "filter_functions.genexpr",
-				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
-				"type" : "GenX",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "fx.delay.tape.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "fx.delay.tape.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -14403,267 +14254,36 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "master_1.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.fold.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.holes.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.scale.quantise.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "mini.env.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "note_wrap.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "osc.basic.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "osc.basic.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "parameters_and_modulation.gendsp",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
+				"patcherrelativepath" : "../../../james music/Multitudes/code",
 				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.grid.js",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.grid.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.grid.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.tracker.js",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.tracker.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.tracker.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.trackerL.js",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.trackerL.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.trackerL.ui.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "ui_wrap.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.env.asr.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.env.asr.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.lowpass.highpass.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.mix.channel.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.mix.channel.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.mixer.buss.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.values.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.vca.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.vca.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.basic.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.basic.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.noise.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.noise.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.pitch.env.gendsp",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.pitch.env.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.sample.player.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "voicealloc.gendsp",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
+				"patcherrelativepath" : "../../../james music/Multitudes/code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "vst.loader.maxpat",
-				"bootpath" : "~/Documents/james music/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
@@ -14671,7 +14291,7 @@
 , 			{
 				"name" : "whitegaussnoise.gendsp",
 				"bootpath" : "~/Documents/james music/Multitudes/code",
-				"patcherrelativepath" : "../code",
+				"patcherrelativepath" : "../../../james music/Multitudes/code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}

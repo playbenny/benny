@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "int", "int" ],
+					"patching_rect" : [ 960.153214011873388, 639.25, 61.0, 22.0 ],
+					"text" : "change 1."
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-88",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -70,7 +82,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 942.153214011873388, 201.5, 50.0, 22.0 ]
+					"patching_rect" : [ 960.153214011873388, 607.25, 50.0, 22.0 ]
 				}
 
 			}
@@ -81,7 +93,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 942.153214011873388, 169.5, 43.0, 22.0 ],
+					"patching_rect" : [ 960.153214011873388, 575.25, 43.0, 22.0 ],
 					"text" : "* 2.99."
 				}
 
@@ -93,7 +105,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "int", "int" ],
-					"patching_rect" : [ 942.153214011873388, 137.5, 65.0, 22.0 ],
+					"patching_rect" : [ 960.153214011873388, 543.25, 65.0, 22.0 ],
 					"text" : "change -1."
 				}
 
@@ -1132,14 +1144,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "Console7Cascade64.vstinfo",
-							"plugindisplayname" : "airwindows Console7Cascade",
-							"pluginsavedname" : "",
-							"pluginsaveduniqueid" : 1668247155,
+							"pluginname" : "console7channel64.vstinfo",
+							"plugindisplayname" : "airwindows Console7Channel",
+							"pluginsavedname" : "C74_VST:/console7channel64",
+							"pluginsaveduniqueid" : 1668247153,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
+							"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AKGZQ+."
 						}
 ,
 						"snapshotlist" : 						{
@@ -1149,19 +1161,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "airwindows Console7Cascade",
-									"origin" : "Console7Cascade64.vstinfo",
+									"origin" : "console7channel64.vstinfo",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "Console7Cascade64.vstinfo",
-										"plugindisplayname" : "airwindows Console7Cascade",
-										"pluginsavedname" : "",
-										"pluginsaveduniqueid" : 1668247155,
+										"pluginname" : "console7channel64.vstinfo",
+										"plugindisplayname" : "airwindows Console7Channel",
+										"pluginsavedname" : "C74_VST:/console7channel64",
+										"pluginsaveduniqueid" : 1668247153,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
+										"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AKGZQ+."
 									}
 ,
 									"fileref" : 									{
@@ -1169,7 +1181,25 @@
 										"filename" : "airwindows Console7Cascade.maxsnap",
 										"filepath" : "~/Documents/Max 8/Snapshots",
 										"filepos" : -1,
-										"snapshotfileid" : "0e6499e7d3e3a599f1b85630186fc89a"
+										"snapshotfileid" : "52d263641b5eeed6f3a6cfb8346aa62b"
+									}
+
+								}
+, 								{
+									"filetype" : "C74Snapshot",
+									"version" : 2,
+									"minorversion" : 0,
+									"name" : "airwindows Console7Channel",
+									"origin" : "Console7Channel64.vstinfo",
+									"type" : "VST",
+									"subtype" : "AudioEffect",
+									"embed" : 0,
+									"fileref" : 									{
+										"name" : "airwindows Console7Channel",
+										"filename" : "airwindows Console7Channel.maxsnap",
+										"filepath" : "~/Documents/Max 8/Snapshots",
+										"filepos" : -1,
+										"snapshotfileid" : "e80d5c6fcc931bd5c745ecedd6861fcd"
 									}
 
 								}
@@ -1778,14 +1808,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "Console7Cascade64.vstinfo",
-							"plugindisplayname" : "airwindows Console7Cascade",
-							"pluginsavedname" : "",
-							"pluginsaveduniqueid" : 1668247155,
+							"pluginname" : "console7channel64.vstinfo",
+							"plugindisplayname" : "airwindows Console7Channel",
+							"pluginsavedname" : "C74_VST:/console7channel64",
+							"pluginsaveduniqueid" : 1668247153,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
+							"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AKGZQ+."
 						}
 ,
 						"snapshotlist" : 						{
@@ -1795,19 +1825,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "airwindows Console7Cascade",
-									"origin" : "Console7Cascade64.vstinfo",
+									"origin" : "console7channel64.vstinfo",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "Console7Cascade64.vstinfo",
-										"plugindisplayname" : "airwindows Console7Cascade",
-										"pluginsavedname" : "",
-										"pluginsaveduniqueid" : 1668247155,
+										"pluginname" : "console7channel64.vstinfo",
+										"plugindisplayname" : "airwindows Console7Channel",
+										"pluginsavedname" : "C74_VST:/console7channel64",
+										"pluginsaveduniqueid" : 1668247153,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AT35w9."
+										"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AKGZQ+."
 									}
 ,
 									"fileref" : 									{
@@ -1815,7 +1845,25 @@
 										"filename" : "airwindows Console7Cascade.maxsnap",
 										"filepath" : "~/Documents/Max 8/Snapshots",
 										"filepos" : -1,
-										"snapshotfileid" : "0e6499e7d3e3a599f1b85630186fc89a"
+										"snapshotfileid" : "52d263641b5eeed6f3a6cfb8346aa62b"
+									}
+
+								}
+, 								{
+									"filetype" : "C74Snapshot",
+									"version" : 2,
+									"minorversion" : 0,
+									"name" : "airwindows Console7Channel",
+									"origin" : "Console7Channel64.vstinfo",
+									"type" : "VST",
+									"subtype" : "AudioEffect",
+									"embed" : 0,
+									"fileref" : 									{
+										"name" : "airwindows Console7Channel",
+										"filename" : "airwindows Console7Channel.maxsnap",
+										"filepath" : "~/Documents/Max 8/Snapshots",
+										"filepos" : -1,
+										"snapshotfileid" : "e80d5c6fcc931bd5c745ecedd6861fcd"
 									}
 
 								}
@@ -1945,6 +1993,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 48.166666666666657, 218.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1981,10 +2033,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 10.0, 43.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -2008,6 +2056,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 214.75, 817.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -2020,6 +2072,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 457.0, 431.556071519851685, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -2031,6 +2087,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 156.75, 817.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -2043,6 +2103,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 343.0, 431.556071519851685, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -2461,6 +2525,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-88", 0 ],
+					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-49", 0 ],
 					"source" : [ "obj-28", 0 ]
 				}
@@ -2854,7 +2925,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-88", 0 ],
+					"destination" : [ "obj-27", 0 ],
 					"source" : [ "obj-59", 0 ]
 				}
 
