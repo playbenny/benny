@@ -2433,10 +2433,11 @@ function build_mod_sum_action_list(){
 	mod_sum_action_list.poke(3,list_pointer,-1);
 	mod_sum_action_list.poke(4,list_pointer,-1);
 	list_pointer++;	
-	messnamed("modulation_processor", "pause", 0);
 	output_queue_pointer = 0;
 	output_queue.poke(1,0,0);
 	changed_queue_pointer = 0; 
+	changed_queue.poke(1,0,0);
+	messnamed("modulation_processor", "pause", 0);
 	
 //post("ok, list length",list_pointer,"\n");
 //for(i=0;i<list_pointer;i++){
