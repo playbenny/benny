@@ -2221,8 +2221,6 @@ function swap_block(block_name){
 function build_mod_sum_action_list(){
 	if(loading.progress>0) return 0;
 	messnamed("modulation_processor", "pause",1);
-	output_queue_pointer = 0;
-	output_queue.poke(1,0,0);
 	post("\nBuilding new mod sum action list");
 //this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
 // buffer has 4 channels. 
