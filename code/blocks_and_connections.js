@@ -90,6 +90,12 @@ function new_block(block_name,x,y){
 	blocks.replace("blocks["+new_block_index+"]::flock::brownian", 0);
 	blocks.replace("blocks["+new_block_index+"]::space::x", x);
 	blocks.replace("blocks["+new_block_index+"]::space::y", y);
+	var up=0;
+	if(type == "audio"){
+		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING_ENABLE * blocktypes.get(block_name+"::upsample");
+		blocks.replace("blocks["+new_block_index+"]::upsample", up);
+		audio_upsamplelist[new_voice] = up;
+	}
 /*	blc=[128,128,128];
 	if(config.contains("palette::"+bln[0])){
 		blc=config.get("palette::"+bln[0]);

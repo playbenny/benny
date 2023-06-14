@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3761909121,
+	"modificationdate" : 3769622863,
 	"viewrect" : [ 29.0, 101.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -245,6 +245,16 @@
 				"local" : 1
 			}
 ,
+			"upwrap2.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
 			"seq.note.tracker.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -276,7 +286,7 @@
 				"toplevel" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}
@@ -389,7 +399,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}
@@ -402,7 +412,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}
@@ -412,7 +422,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}
@@ -422,7 +432,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}
@@ -447,7 +457,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}
@@ -462,7 +472,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
 				}
 
 			}

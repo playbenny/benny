@@ -3,6 +3,7 @@
 	"type_order" : [ "core", "seq", "midi", "osc", "voice", "hardware", "fx", "vst", "utility" ],
 	"gain_display_format" : "x",
 	"downscale_limit" : 2600,
+	"UPSAMPLING_ENABLE" : 1,
 	"wire_diaX" : 0.03,
 	"wire_diaY" : 0.03,
 	"glow" : 0.2,

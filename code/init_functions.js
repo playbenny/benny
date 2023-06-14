@@ -214,6 +214,7 @@ function initialise_dictionaries(){
 	config.import_json("config.json");
 	post("reading config\n");				
 	menucolour = config.get("palette::menu");
+	UPSAMPLING_ENABLE = config.get("UPSAMPLING_ENABLE");
 	if(config.contains("downscale_limit")) messnamed("downscale_limit",config.get("downscale_limit"));
 	var dimm=2;
 	menudark = [ menucolour[0]/ dimm, menucolour[1]/dimm, menucolour[2]/dimm ];
@@ -413,10 +414,14 @@ function send_audio_patcherlist(do_all){
 	for(i = 0; i<MAX_AUDIO_VOICES; i++){
 		if(audio_patcherlist[i]!=loaded_audio_patcherlist[i]){
 			//post("loading",audio_patcherlist[i],"into",i+1,"\n");
+			var pn = (audio_patcherlist[i]+".maxpat");
+			if(audio_upsamplelist[i]>0){
+				pn = "upsample upwrap"+audio_upsamplelist[i]+".maxpat "+pn;
+			}
 			if(loading.dont_automute!=0){
-				audio_poly.setvalue(i+1,"patchername","loading",(audio_patcherlist[i]+".maxpat")); //supresses autounmute
+				audio_poly.setvalue(i+1,"patchername","loading",pn); //supresses autounmute
 			}else{
-				audio_poly.setvalue(i+1,"patchername",(audio_patcherlist[i]+".maxpat"));
+				audio_poly.setvalue(i+1,"patchername",pn);
 			}
 			loaded_audio_patcherlist[i]=audio_patcherlist[i];
 			if(do_all!=1){

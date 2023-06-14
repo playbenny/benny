@@ -32,7 +32,7 @@ var DOUBLE_CLICK_TIME = 8;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var BLOCK_TEXTURE_SIZE = 128;
 var ANIM_TIME = 0.25;
-
+var UPSAMPLING_ENABLE = 1;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 
@@ -401,6 +401,7 @@ var waves_dict = new Dict;
 waves_dict.name = "waves";
 
 var audio_patcherlist = new Array(MAX_AUDIO_VOICES);
+var audio_upsamplelist = new Array(MAX_AUDIO_VOICES);
 var note_patcherlist = new Array(MAX_NOTE_VOICES);
 var ui_patcherlist = new Array(MAX_BLOCKS);
 var hardware_list = new Array(MAX_HARDWARE_BLOCKS);
