@@ -428,6 +428,7 @@ function remove_connection(connection_number){
 		wires[connection_number][i].freepeer(); //enable=0;
 	}
 	wires[connection_number]=[];
+	wire_ends[connection_number][0] = -1.057;
 	if(!is_empty(connection_blobs[connection_number])){
 		connection_blobs[connection_number].freepeer(); //enable = 0;
 		connection_blobs[connection_number] = null;
@@ -2078,8 +2079,7 @@ function insert_block_in_connection(newblockname,newblock){
 }
 
 function swap_block(block_name){
-	post("swapping block",block_name,block_menu_d.swap_block_target);
-	// STILL TODO: if type of block is different, or it's a hardware block, you need to remove and remake all connections (eg swapping audio to hardware)
+	post("swapping block",block_menu_d.swap_block_target,"to",block_name);
 	var details = new Dict;
 	// find an unused block number in blocks
 	// what type is it?	// look it up in the blocks dict:
@@ -2092,8 +2092,11 @@ function swap_block(block_name){
 	}
 	
 	var type = details.get("type")
-	post("type "+type+" or "+ blocks.get("blocks["+block_menu_d.swap_block_target+"]::type"));
-	if((type=="hardware")||(blocks.get("blocks["+block_menu_d.swap_block_target+"]::type")=="hardware")){
+	var otype = blocks.get("blocks["+block_menu_d.swap_block_target+"]::type");
+	var redo_connections = 0;
+	if((type=="hardware")||(otype=="hardware")||(type != otype)){
+		redo_connections = 1;
+		
 		// collect up connections to/from this block, disconnect them all
 		var handful = [];
 		var handful_n = [];
@@ -2104,22 +2107,15 @@ function swap_block(block_name){
 					handful[h] = connections.get("connections["+i+"]");
 					handful_n[h] = i;
 					h++;
-					post("removing connection "+i+" while swapping hardware block");
 					remove_connection(i);
+					//wire_ends[i][0] += 0.05;
 				}
 			}
 		}
+	}
+	if(type == "hardware"){
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
-
-		// put all the connections back
-		if(h>0){
-			for(i=0;i<h;i++){
-				connections.replace("connections["+handful_n[i]+"]",handful[i]);
-				make_connection(handful_n[i]);	
-			}
-			post("reconnected "+h+" connections");
-		}
 	}else{
 		block_name = details.get("patcher");
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
@@ -2133,6 +2129,16 @@ function swap_block(block_name){
 		still_checking_polys |=4;
 		//send_ui_patcherlist();
 	}
+	if(redo_connections){
+		// put all the connections back
+		if(h>0){
+			for(i=0;i<h;i++){
+				connections.replace("connections["+handful_n[i]+"]",handful[i]);
+				make_connection(handful_n[i]);	
+			}
+		}
+	}
+
 	selected.block[block_menu_d.swap_block_target] = 1;
 	blocks.replace("blocks["+block_menu_d.swap_block_target+"]::type",type);
 /*	blc=[128,128,128];
@@ -2239,9 +2245,8 @@ function swap_block(block_name){
 		still_checking_polys |=2;
 		//send_audio_patcherlist();
 	}
-
 	block_menu_d.swap_block_target = -1;
-	redraw_flag.flag = 6;
+	redraw_flag.flag |= 8;//6;
 }
 
 function build_mod_sum_action_list(){

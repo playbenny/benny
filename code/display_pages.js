@@ -4793,7 +4793,7 @@ function draw_sidebar(){
 				outlet(7, "moveto" ,mainwindow_width-9-4.1*fontheight, fontheight*0.5+y_offset);
 				outlet(7, "write", "panel lockup");
 				y_offset+=fontheight*0.75;
-			}else if(has_params){
+			}else{
 				outlet(7, "frgb", block_colour);
 				outlet(7, "paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest );
 				outlet(8, "paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
