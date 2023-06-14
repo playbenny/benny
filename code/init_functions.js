@@ -419,7 +419,7 @@ function send_audio_patcherlist(do_all){
 				pn = "upsample upwrap"+audio_upsamplelist[i]+".maxpat "+pn;
 			}
 			if(loading.dont_automute!=0){
-				audio_poly.setvalue(i+1,"patchername","loading",pn); //supresses autounmute
+				audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
 			}else{
 				audio_poly.setvalue(i+1,"patchername",pn);
 			}

@@ -14,7 +14,7 @@ function read_songs_folder(){ //also loads all song json files, and constructs t
 			}
 			songlist[i] = tss;//f.filename;
 			if(!songs.contains(tss)){
-				song.import_json(f.filename);
+				song.import_json(SONGS_FOLDER+f.filename);
 				post("\npreloaded songfile:",f.filename);
 				var songkeys = song.getkeys();
 				for(k in songkeys){
