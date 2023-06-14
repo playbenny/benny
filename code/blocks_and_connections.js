@@ -2092,15 +2092,34 @@ function swap_block(block_name){
 	}
 	
 	var type = details.get("type")
-	if(type=="hardware"){
+	post("type "+type+" or "+ blocks.get("blocks["+block_menu_d.swap_block_target+"]::type"));
+	if((type=="hardware")||(blocks.get("blocks["+block_menu_d.swap_block_target+"]::type")=="hardware")){
 		// collect up connections to/from this block, disconnect them all
 		var handful = [];
-
+		var handful_n = [];
+		var h=0;
+		for(i=0;i<connections.getsize("connections");i++){
+			if(connections.contains("connections["+i+"]::from")){
+				if((connections.get("connections["+i+"]::from::number") == block_menu_d.swap_block_target)||(connections.get("connections["+i+"]::to::number") == block_menu_d.swap_block_target)){
+					handful[h] = connections.get("connections["+i+"]");
+					handful_n[h] = i;
+					h++;
+					post("removing connection "+i+" while swapping hardware block");
+					remove_connection(i);
+				}
+			}
+		}
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
 
 		// put all the connections back
-		
+		if(h>0){
+			for(i=0;i<h;i++){
+				connections.replace("connections["+handful_n[i]+"]",handful[i]);
+				make_connection(handful_n[i]);	
+			}
+			post("reconnected "+h+" connections");
+		}
 	}else{
 		block_name = details.get("patcher");
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
@@ -2122,7 +2141,8 @@ function swap_block(block_name){
 	}
 	blocks.replace("blocks["+block_menu_d.swap_block_target+"]::space::colour", blc );*/
 	blocks.replace("blocks["+block_menu_d.swap_block_target+"]::space::colour", blocktypes.get(block_name+"::colour") );
-	
+	draw_block_texture(block_menu_d.swap_block_target);
+
 	var voicelist = [];
 	voicelist = voicemap.get(block_menu_d.swap_block_target);
 	if(typeof voicelist == "number") voicelist = [voicelist];
@@ -2210,7 +2230,7 @@ function swap_block(block_name){
 			}
 			
 		}
-
+		rebuild_action_list = 1;
 	}
 	if(type == "note"){
 		still_checking_polys |=1;
