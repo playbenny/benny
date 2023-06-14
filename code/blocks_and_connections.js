@@ -2079,7 +2079,7 @@ function insert_block_in_connection(newblockname,newblock){
 
 function swap_block(block_name){
 	post("swapping block",block_name,block_menu_d.swap_block_target);
-	// STILL TODO: if type of block is different, you need to remove and remake all connections (eg swapping audio to hardware)
+	// STILL TODO: if type of block is different, or it's a hardware block, you need to remove and remake all connections (eg swapping audio to hardware)
 	var details = new Dict;
 	// find an unused block number in blocks
 	// what type is it?	// look it up in the blocks dict:
@@ -2093,8 +2093,14 @@ function swap_block(block_name){
 	
 	var type = details.get("type")
 	if(type=="hardware"){
+		// collect up connections to/from this block, disconnect them all
+		var handful = [];
+
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
+
+		// put all the connections back
+		
 	}else{
 		block_name = details.get("patcher");
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
