@@ -28,6 +28,39 @@ function copy_block(){
 	post("TODO: copy block");
 }
 
+function change_upsampling(b,u){ // send block, -1 to just set it for all voices.
+	if(u>-1){
+		blocks.replace("blocks["+b+"]::upsample",u);
+	}else{
+		if(blocks.contains("blocks["+b+"]::upsample")){
+			u = blocks.get("blocks["+b+"]::upsample");
+		}else{
+			return -1;
+		}
+	}
+	var vl = voicemap.get(b);
+	if(!Array.isArray(vl)) vl = [vl];
+	for(var i in vl){
+		audio_upsamplelist[vl[i]-MAX_NOTE_VOICES] = u;
+//		post("\n set upsampling of voice",vl[i] - MAX_NOTE_VOICES, "to",u);
+	}
+	hard_reload_block(b);
+}
+
+function hard_reload_block(b){
+	var vl = voicemap.get(b);
+	if(!Array.isArray(vl)) vl = [vl];
+	for(var i in vl){
+		if(vl[i]>=MAX_NOTE_VOICES){
+			loaded_audio_patcherlist[vl[i]-MAX_NOTE_VOICES] = "reload";
+		}else{
+			loaded_note_patcherlist[vl[i]] = "reload";
+		}
+		post("\nreloading voice patcher "+vl[i]);
+	}
+	still_checking_polys = 3;
+}
+
 function open_patcher(block){
 	post("opening patcher");
 	var type = blocks.get("blocks["+block+"]::type");

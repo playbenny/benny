@@ -146,6 +146,7 @@ function initialise_dictionaries(){
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++) {
 		loaded_audio_patcherlist[i]='_blank.audio';
+		audio_upsamplelist[i]=1;
 	}
 	for(i=0;i<MAX_BLOCKS;i++) {
 		loaded_ui_patcherlist[i] = '_blank.ui';
@@ -411,12 +412,15 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 
 function send_audio_patcherlist(do_all){
 	var i;
+//	post("\nsorry",audio_upsamplelist,"\n and ",loaded_audio_patcherlist);
 	for(i = 0; i<MAX_AUDIO_VOICES; i++){
 		if(audio_patcherlist[i]!=loaded_audio_patcherlist[i]){
 			//post("loading",audio_patcherlist[i],"into",i+1,"\n");
 			var pn = (audio_patcherlist[i]+".maxpat");
-			if(audio_upsamplelist[i]>0){
-				pn = "upsample upwrap"+audio_upsamplelist[i]+".maxpat "+pn;
+//			post("i,",i,"uplist-i",audio_upsamplelist[i]);
+			if(audio_upsamplelist[i]>1){
+				pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
+//				post("\n upsample message sent : "+ pn);
 			}
 			if(loading.dont_automute!=0){
 				audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute

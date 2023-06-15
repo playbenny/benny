@@ -4584,7 +4584,52 @@ function draw_sidebar(){
 					
 					
 				}
-				
+
+				//oversampling settings
+				if(UPSAMPLING_ENABLE && (block_type == "audio")){
+					var current_up = blocks.get("blocks["+block+"]::upsample");
+					outlet(7, "paintrect", sidebar.x, y_offset, mainwindow_width-9-4.4*fontheight, fontheight+y_offset,block_darkest );
+					outlet(7, "moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+					outlet(7, "frgb", block_colour );
+					outlet(7, "write", "upsampling");
+					if( current_up > 1 ){
+						outlet(7, "paintrect", mainwindow_width-9-4.3*fontheight, y_offset, mainwindow_width-9-3.3*fontheight, fontheight+y_offset,block_dark );
+						outlet(8, "paintrect", mainwindow_width-9-4.3*fontheight, y_offset, mainwindow_width-9-3.3*fontheight, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
+						mouse_click_actions[mouse_index] = change_upsampling;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = ( current_up >> 1);	
+						mouse_index++;
+						outlet(7, "moveto" ,mainwindow_width-9-4.1*fontheight, fontheight*0.75+y_offset);
+						outlet(7, "frgb", block_colour );
+						outlet(7, "write", "-");
+					}else{
+						outlet(7, "paintrect", mainwindow_width-9-4.3*fontheight, y_offset, mainwindow_width-9-3.3*fontheight, fontheight+y_offset,block_darkest );
+					}
+					outlet(7, "paintrect", mainwindow_width-9-3.2*fontheight, y_offset, mainwindow_width-9-1.1*fontheight, fontheight+y_offset,block_darkest );
+					outlet(7, "moveto" ,mainwindow_width-9-3.0*fontheight, fontheight*0.5+y_offset);
+					outlet(7, "write", "voices");
+					outlet(7, "frgb", block_colour);
+					outlet(7, "moveto" ,mainwindow_width-9-3.0*fontheight, fontheight*0.75+y_offset);
+					outlet(7, "write", current_up+"x");
+					if(current_up<128){
+						outlet(7, "paintrect", mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,block_dark);
+						outlet(8, "paintrect", mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
+						mouse_click_actions[mouse_index] = change_upsampling;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = (current_up << 1);	
+						mouse_index++;
+						outlet(7, "moveto" ,mainwindow_width-9-0.8*fontheight, fontheight*0.75+y_offset);
+						outlet(7, "frgb", block_colour );
+						outlet(7, "write", "+");
+					}else{
+						outlet(7, "paintrect", mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest);
+					}
+					y_offset += 1.1* fontheight;
+
+				}
+
+
+
 				// panel assigns
 				outlet(7, "paintrect", sidebar.x, y_offset, mainwindow_width-9-4.4*fontheight, fontheight+y_offset,block_darkest );
 				outlet(7, "paintrect", mainwindow_width-9-4.3*fontheight, y_offset, mainwindow_width-9-2.2*fontheight, fontheight+y_offset,block_dark );

@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3769622863,
+	"modificationdate" : 3769626200,
 	"viewrect" : [ 29.0, 101.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -263,6 +263,66 @@
 			"seq.rene.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
+			}
+,
+			"upwrap4.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"upwrap8.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"upwrap16.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"upwrap32.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"upwrap64.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"upwrap128.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
 			}
 ,
 			"seq.rene.ui.maxpat" : 			{

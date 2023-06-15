@@ -1781,6 +1781,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}else if(type == "audio"){
 					voiceoffset = new_voice + MAX_NOTE_VOICES;
 					audio_patcherlist[new_voice] = details.get("patcher");
+					audio_upsamplelist[new_voice] = blocks.get("blocks["+block+"]::upsample");
 				}else if(type == "hardware"){
 					voiceoffset = new_voice + MAX_NOTE_VOICES + MAX_AUDIO_VOICES;
 					hardware_list[new_voice] = block_name;
