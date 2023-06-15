@@ -179,7 +179,8 @@ function initialise_dictionaries(){
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++) {
 		audio_patcherlist[i]='blank.audio';
-		//loaded_audio_patcherlist[i]='blank.audio';
+		audio_poly.setvalue(i+1,"patchername","blank.audio");
+		loaded_audio_patcherlist[i]='blank.audio';
 	}
 	for(i=0;i<MAX_BLOCKS;i++) {
 		ui_patcherlist[i]='blank.ui';
@@ -392,95 +393,6 @@ function import_blocktypes(v)
 	f.close();
 }
 
-
-
-function send_note_patcherlist(do_all){ //loads a single voice and returns, only unflags still_checking_polys when all loaded.
-	var i;
-	for(i = 0; i<MAX_NOTE_VOICES; i++){
-		if(note_patcherlist[i]!=loaded_note_patcherlist[i]){
-			//post("loading",note_patcherlist[i],"into",i+1,"\n");
-			note_poly.setvalue(i+1,"patchername",(note_patcherlist[i]+".maxpat"));
-			loaded_note_patcherlist[i]=note_patcherlist[i];
-			if(do_all!=1){
-				still_checking_polys |=1;
-				return 1;
-			}
-		}
-	}
-	still_checking_polys &= 6;
-	post("\nall note blocks loaded");
-}
-
-function send_audio_patcherlist(do_all){
-	var i;
-//	post("\nsorry",audio_upsamplelist,"\n and ",loaded_audio_patcherlist);
-	for(i = 0; i<MAX_AUDIO_VOICES; i++){
-		if((audio_patcherlist[i]!=loaded_audio_patcherlist[i])&&(audio_patcherlist[i]!="recycling")){
-			if(RECYCLING && (audio_patcherlist[i] == "blank.audio")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
-				audio_patcherlist[i] = "recycling";
-				audio_poly.setvalue(i+1, "muteouts", 1);
-				if(!do_all){
-					still_checking_polys |= 2;
-					return 1;
-				}
-			}else{
-				//post("loading",audio_patcherlist[i],"into",i+1,"\n");
-				var pn = (audio_patcherlist[i]+".maxpat");
-	//			post("i,",i,"uplist-i",audio_upsamplelist[i]);
-				if(audio_upsamplelist[i]>1){
-					pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
-	//				post("\n upsample message sent : "+ pn);
-				}
-				if(loading.dont_automute!=0){
-					audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
-				}else{
-					audio_poly.setvalue(i+1,"patchername",pn);
-				}
-				loaded_audio_patcherlist[i]=audio_patcherlist[i];
-				if(do_all!=1){
-					still_checking_polys |=2;
-					return 1;
-				} 
-			}
-		}
-	}
-	still_checking_polys &= 5;
-	post("\nall audio blocks loaded");
-	loading.dont_automute=0;
-	redraw_flag.flag |= 4;
-}
-
-function send_ui_patcherlist(do_all){
-	var i;
-	for(i = 0; i<MAX_BLOCKS; i++){
-		if(loaded_ui_patcherlist[i]!=ui_patcherlist[i]){
-			loaded_ui_patcherlist[i]=ui_patcherlist[i];
-			ui_poly.setvalue( i+1, "patchername",ui_patcherlist[i] + ".maxpat");
-			if(do_all!=1){
-				still_checking_polys |=4;
-				return 1;
-			}
-		}
-	}
-	still_checking_polys &= 3;
-	post("\nall ui blocks loaded");
-//	blocks_tex_sent = [];
-	redraw_flag.flag |= 4;
-}
-
-
-function poly_loaded(type,number){
-	//post("poly loaded voice successfully",type,number,"\n");
-	if(type=="audio"){
-		if(still_checking_polys&2){ send_audio_patcherlist(); }
-	}else if(type=="note"){
-		if(still_checking_polys&1){ send_note_patcherlist(); }
-		//	send_note_patcherlist();
-	}else if(type=="ui"){
-		if(still_checking_polys&4){ send_ui_patcherlist(); }	
-		//	send_ui_patcherlist();
-	}
-}
 
 function is_empty(obj){
 	for (var i in obj) return false;      
