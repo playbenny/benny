@@ -215,7 +215,8 @@ function initialise_dictionaries(){
 	config.import_json("config.json");
 	post("reading config\n");				
 	menucolour = config.get("palette::menu");
-	UPSAMPLING_ENABLE = config.get("UPSAMPLING_ENABLE");
+	UPSAMPLING = config.get("UPSAMPLING");
+	RECYCLING = config.get("RECYCLING");
 	if(config.contains("downscale_limit")) messnamed("downscale_limit",config.get("downscale_limit"));
 	var dimm=2;
 	menudark = [ menucolour[0]/ dimm, menucolour[1]/dimm, menucolour[2]/dimm ];
@@ -414,24 +415,33 @@ function send_audio_patcherlist(do_all){
 	var i;
 //	post("\nsorry",audio_upsamplelist,"\n and ",loaded_audio_patcherlist);
 	for(i = 0; i<MAX_AUDIO_VOICES; i++){
-		if(audio_patcherlist[i]!=loaded_audio_patcherlist[i]){
-			//post("loading",audio_patcherlist[i],"into",i+1,"\n");
-			var pn = (audio_patcherlist[i]+".maxpat");
-//			post("i,",i,"uplist-i",audio_upsamplelist[i]);
-			if(audio_upsamplelist[i]>1){
-				pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
-//				post("\n upsample message sent : "+ pn);
-			}
-			if(loading.dont_automute!=0){
-				audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
+		if((audio_patcherlist[i]!=loaded_audio_patcherlist[i])&&(audio_patcherlist[i]!="recycling")){
+			if(RECYCLING && (audio_patcherlist[i] == "blank.audio")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
+				audio_patcherlist[i] = "recycling";
+				audio_poly.setvalue(i+1, "muteouts", 1);
+				if(!do_all){
+					still_checking_polys |= 2;
+					return 1;
+				}
 			}else{
-				audio_poly.setvalue(i+1,"patchername",pn);
+				//post("loading",audio_patcherlist[i],"into",i+1,"\n");
+				var pn = (audio_patcherlist[i]+".maxpat");
+	//			post("i,",i,"uplist-i",audio_upsamplelist[i]);
+				if(audio_upsamplelist[i]>1){
+					pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
+	//				post("\n upsample message sent : "+ pn);
+				}
+				if(loading.dont_automute!=0){
+					audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
+				}else{
+					audio_poly.setvalue(i+1,"patchername",pn);
+				}
+				loaded_audio_patcherlist[i]=audio_patcherlist[i];
+				if(do_all!=1){
+					still_checking_polys |=2;
+					return 1;
+				} 
 			}
-			loaded_audio_patcherlist[i]=audio_patcherlist[i];
-			if(do_all!=1){
-				still_checking_polys |=2;
-				return 1;
-			} 
 		}
 	}
 	still_checking_polys &= 5;

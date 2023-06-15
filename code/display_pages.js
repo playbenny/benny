@@ -4586,7 +4586,7 @@ function draw_sidebar(){
 				}
 
 				//oversampling settings
-				if(UPSAMPLING_ENABLE && (block_type == "audio")){
+				if(UPSAMPLING && (block_type == "audio")){
 					var current_up = blocks.get("blocks["+block+"]::upsample");
 					outlet(7, "paintrect", sidebar.x, y_offset, mainwindow_width-9-4.4*fontheight, fontheight+y_offset,block_darkest );
 					outlet(7, "moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);

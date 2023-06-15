@@ -92,7 +92,7 @@ function new_block(block_name,x,y){
 	blocks.replace("blocks["+new_block_index+"]::space::y", y);
 	var up=0;
 	if(type == "audio"){
-		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING_ENABLE * blocktypes.get(block_name+"::upsample");
+		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
 		blocks.replace("blocks["+new_block_index+"]::upsample", up);
 		audio_upsamplelist[new_voice] = up;
 	}
@@ -212,6 +212,19 @@ function new_block(block_name,x,y){
 	return new_block_index;
 }
 
+function find_audio_voice_to_recycle(pa){
+	for(i=0;i<MAX_AUDIO_VOICES;i++){
+		if((audio_patcherlist[i] == "recycling") && (loaded_audio_patcherlist[i] == pa)){
+			return i;
+		}
+	}
+	for(i=0;i<MAX_AUDIO_VOICES;i++){
+		if(audio_patcherlist[i]=="blank.audio") return i;
+	}
+	post("\nERROR : can't find a free voice\n");
+	return -1;
+}
+
 function next_free_voice(t){
 	var i=0;
 	if(t == "note"){
@@ -222,12 +235,15 @@ function next_free_voice(t){
 		for(i=0;i<MAX_AUDIO_VOICES;i++){
 			if(audio_patcherlist[i]=="blank.audio") return i;
 		}
+		for(i=0;i<MAX_AUDIO_VOICES;i++){
+			if(audio_patcherlist[i]=="recycling") return i;
+		}
 	}else if(t == "hardware"){
 		for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
 			if(hardware_list[i]=="none") return i;
 		}		
 	}
-	post("error: can't find a free voice\n");
+	post("\nERROR : can't find a free voice\n");
 	return -1;
 }
 

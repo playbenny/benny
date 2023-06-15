@@ -505,7 +505,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	var type = blocktypes.get(block_name+"::type");
 	var offs = 0;
 	if(!was_exclusive){
-		new_voice = next_free_voice(type);
+		if(type == "audio"){
+			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"));
+		}else{
+			new_voice = next_free_voice(type);
+		}
 	}else{
 		if(blocktypes.get(block_name+"::max_polyphony") == 1){
 			var v_list = voicemap.get(block_index);
