@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "noise source + VCA + ENV",
 		"max_polyphony" : 0,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "fm", "shape modulation" ],

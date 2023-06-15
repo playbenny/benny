@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "wavefolder modelled roughly after the doepfer one",
 		"max_polyphony" : 0,
+		"upsample" : 8,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "mod in" ]

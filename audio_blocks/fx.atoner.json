@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "rough model of the 4ms atoner, an octave divider",
 		"max_polyphony" : 0,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "in", "mod" ]

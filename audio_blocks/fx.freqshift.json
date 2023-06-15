@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "max msp's freqshift object. for both positive and negative shifts mix both outputs. the audio rate input is fm of the freq set by the slider",
 		"max_polyphony" : 0,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "freq mod in" ]

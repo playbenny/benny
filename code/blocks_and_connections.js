@@ -16,7 +16,13 @@ function new_block(block_name,x,y){
 
 	var type = details.get("type");
 	var vst = 0;
-	new_voice = next_free_voice(type);
+	var recycled=0;
+	if((type=="audio") && RECYCLING){
+		new_voice = find_audio_voice_to_recycle(block_name);
+		recycled=1;
+	}else{
+		new_voice = next_free_voice(type);
+	}
 	var t_offset = 0;
 	if(type == "note"){
 		note_patcherlist[new_voice] = details.get("patcher");
@@ -31,6 +37,7 @@ function new_block(block_name,x,y){
 		hardware_list[new_voice] = block_name;
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
+	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
 	// now store it in block dict
 	if(type=="hardware"){
 		blocks.replace("blocks["+new_block_index+"]::name",block_name);
@@ -248,6 +255,12 @@ function send_audio_patcherlist(do_all){
 				if(audio_upsamplelist[i]>1){
 					pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
 	//				post("\n upsample message sent : "+ pn);
+				}
+				if(loaded_audio_patcherlist[i] == "reload"){
+					audio_poly.setvalue(i+1,"patchername","blank.audio.maxpat");
+					loaded_audio_patcherlist[i] = "blank.audio";
+					still_checking_polys |=2;
+					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
 				if(loading.dont_automute!=0){
 					audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute

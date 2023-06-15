@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Basic delay line with tape-like repitching, mod, timeslips and saturation. The repitch midi input alters the delay time multiplier to shift by the desired interval (so if for example a C is held in the delayline and you play an F the rate is changed in order to repitch the playback and subsequent repeats up to an F)",
 		"max_polyphony" : 0,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "modulation" ],

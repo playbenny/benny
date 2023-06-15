@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "seq.sample.tracker.ui",
 		"help_text" : "buzz-style sample tracker",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",

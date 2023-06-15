@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "sample player with slices, offset, timestretch",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"connections" : {
 			"in" : {
 				"midi" : [ "notes in" ],

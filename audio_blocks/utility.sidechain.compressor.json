@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "pro-c2 set up to sidechain",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in" , "sidechain in"]

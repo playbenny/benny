@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "pitch shift",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "modulation" ],

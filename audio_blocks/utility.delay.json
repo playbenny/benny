@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "uncoloured digital delay. time settings in samples, vectors, ms and beats are ADDED together. each cable connection step in the patch introduces 1x vector's worth of delay.",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "in 1", "in 2" ]

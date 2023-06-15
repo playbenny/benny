@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "mid-side processor",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "in 1", "in 2" ]

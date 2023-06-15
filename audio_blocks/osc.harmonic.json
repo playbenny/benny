@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "8 drawbar harmonics, uses non-linear summing borrowed from airwindows console which serves to give it a nice glued character that sits in a mix well, less a collection of digital sines than a single voice.",
 		"max_polyphony" : 0,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "fm", "am" ],

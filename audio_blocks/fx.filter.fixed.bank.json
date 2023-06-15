@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "fixed filter bank with split outputs and airwindows api emulation",
 		"max_polyphony" : 0,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in" ]

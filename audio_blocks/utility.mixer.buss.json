@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "every mixer.channel/cascade block has to be routed, at unity gain, to one of these, to make the magic work.",
 		"max_polyphony" : 0,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"force_unity" : 1,

@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 3,
+			"revision" : 4,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 306.0, 269.0, 54.0, 22.0 ],
+					"text" : "deferlow"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-16",
 					"maxclass" : "newobj",
@@ -180,7 +192,7 @@
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "430.VMjLgTZ....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9HiL23hQEwFVFkjKt3hK1MjKt3hKDUEaYcVUGEldAgGUqE0Qi8FMwjkKt3hKtLiPt3hKt3hKt3hKt3hKhEzPt3hK4LjKt3RVP4hKtHlPvvTdLAyT4wTdh8jKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3xL04hKt3hKt3hKtjyPt3hKt3hKt3hKt3hKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIUSP4hKt.kKA4hKtjyPt3hKy7jVOIyQAEjKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIEUP4hKt.kKA4hKt3hKt3hKt3hKt3hYq3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3BTtDjKt3RNC4hKtLySA4hKt3BQt3hKt3BOujzPu0Fbu4VYtQmO7jTQjkFcC8lazI2arwVYx4SLx3hQYQUVpEjKt3hKt3hKtLyS77RREQVZzMzatQmbuwFakImO77hUSQ0LPwVcmklaSQWXzUlO.."
+							"blob" : "430.VMjLgTZ....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9HiL23hQEwFVFkjKt3hK1MjKt3hKDUEaYcVUGEldAgGUqE0Qi8FMwjkKt3hKtLiPt3hKt3hKt3hK2vDczDjLLkGSvLjKt3RVP4hKtHlPvvTdLQyP1D0Yg8jKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3xL04hKt3hKt3hKtjyPt3hKt3hKt3hYq3hKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIUSP4hKt.kKA4hKtjyPt3hKy7jVOIyQAEjKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIEUP4hKt.kKA4hKt3hKt3hKt3hKt3hYq3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3BTtDjKt3RNC4hKtLySA4hKt3BQt3hKt3BOujzPu0Fbu4VYtQmO7jTQjkFcC8lazI2arwVYx4SLx3hQYQUVpEjKt3hKt3hKtLyS77RREQVZzMzatQmbuwFakImO77hUSQ0LPwVcmklaSQWXzUlO.."
 						}
 ,
 						"snapshotlist" : 						{
@@ -202,7 +214,7 @@
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "430.VMjLgTZ....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9HiL23hQEwFVFkjKt3hK1MjKt3hKDUEaYcVUGEldAgGUqE0Qi8FMwjkKt3hKtLiPt3hKt3hKt3hKt3hKhEzPt3hK4LjKt3RVP4hKtHlPvvTdLAyT4wTdh8jKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3xL04hKt3hKt3hKtjyPt3hKt3hKt3hKt3hKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIUSP4hKt.kKA4hKtjyPt3hKy7jVOIyQAEjKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIEUP4hKt.kKA4hKt3hKt3hKt3hKt3hYq3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3BTtDjKt3RNC4hKtLySA4hKt3BQt3hKt3BOujzPu0Fbu4VYtQmO7jTQjkFcC8lazI2arwVYx4SLx3hQYQUVpEjKt3hKt3hKtLyS77RREQVZzMzatQmbuwFakImO77hUSQ0LPwVcmklaSQWXzUlO.."
+										"blob" : "430.VMjLgTZ....OVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9HiL23hQEwFVFkjKt3hK1MjKt3hKDUEaYcVUGEldAgGUqE0Qi8FMwjkKt3hKtLiPt3hKt3hKt3hK2vDczDjLLkGSvLjKt3RVP4hKtHlPvvTdLQyP1D0Yg8jKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3xL04hKt3hKt3hKtjyPt3hKt3hKt3hYq3hKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIUSP4hKt.kKA4hKtjyPt3hKy7jVOIyQAEjKt3hKt3hKtX2St3hKt3hKt3hKt3BYZIEUP4hKt.kKA4hKt3hKt3hKt3hKt3hYq3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3BTtDjKt3RNC4hKtLySA4hKt3BQt3hKt3BOujzPu0Fbu4VYtQmO7jTQjkFcC8lazI2arwVYx4SLx3hQYQUVpEjKt3hKt3hKtLyS77RREQVZzMzatQmbuwFakImO77hUSQ0LPwVcmklaSQWXzUlO.."
 									}
 ,
 									"fileref" : 									{
@@ -232,6 +244,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 752.0, 424.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -244,6 +260,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 752.0, 271.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -255,6 +275,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 650.0, 424.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -267,6 +291,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 650.0, 271.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -350,7 +378,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 305.0, 269.0, 53.0, 22.0 ],
+					"patching_rect" : [ 306.0, 305.0, 53.0, 22.0 ],
 					"text" : "getvoice"
 				}
 
@@ -373,7 +401,11 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 305.0, 305.0, 35.0, 22.0 ],
+					"patching_rect" : [ 306.0, 341.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -410,10 +442,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 37.0, 136.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -479,6 +507,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-51", 0 ],
 					"source" : [ "obj-11", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-38", 0 ],
+					"source" : [ "obj-12", 0 ]
 				}
 
 			}
@@ -644,7 +679,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-38", 0 ],
+					"destination" : [ "obj-12", 0 ],
 					"order" : 1,
 					"source" : [ "obj-8", 0 ]
 				}
@@ -666,7 +701,30 @@
 				}
 
 			}
- ]
+ ],
+		"parameters" : 		{
+			"obj-2" : [ "vst~", "vst~", 0 ],
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
+		"dependency_cache" : [ 			{
+				"name" : "Pro-C 2.maxsnap",
+				"bootpath" : "~/Documents/james music/Multitudes/data",
+				"patcherrelativepath" : "../../../james music/Multitudes/data",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }

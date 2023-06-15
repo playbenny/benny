@@ -6,6 +6,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
 		"max_polyphony" : 16,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "sidechain in" ]
