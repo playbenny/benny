@@ -52,7 +52,7 @@ function frameclock(){
 	if(loading.ready_for_next_action){
 		loading.ready_for_next_action--;
 		if(loading.ready_for_next_action==0){
-			clear_screens();
+			//clear_screens();
 			import_song();
 		}
 		slowclock();

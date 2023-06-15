@@ -4445,6 +4445,19 @@ function draw_sidebar(){
 				outlet(7, "frgb", 0,0,0 );
 				outlet(7, "write", "block settings");
 				y_offset += 1.1* fontheight;
+
+				outlet(7, "paintrect", mainwindow_width-9-6.5*fontheight, y_offset, mainwindow_width-9-5.5*fontheight, fontheight+y_offset,block_darkest );
+				outlet(8, "paintrect", mainwindow_width-9-6.5*fontheight, y_offset, mainwindow_width-9-5.5*fontheight, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
+				mouse_click_actions[mouse_index] = hard_reload_block;
+				mouse_click_parameters[mouse_index] = block;
+				mouse_click_values[mouse_index] = "";	
+				mouse_index++;
+				outlet(7, "frgb" ,255,128,50);
+				outlet(7, "moveto" ,mainwindow_width-9-6.4*fontheight, fontheight*0.5+y_offset);
+				outlet(7, "write", "re-");
+				outlet(7, "moveto" ,mainwindow_width-9-6.4*fontheight, fontheight*0.75+y_offset);
+				outlet(7, "write", "load");
+
 				outlet(7, "paintrect", mainwindow_width-9-5.4*fontheight, y_offset, mainwindow_width-9-4.4*fontheight, fontheight+y_offset,block_darkest );
 				outlet(8, "paintrect", mainwindow_width-9-5.4*fontheight, y_offset, mainwindow_width-9-4.4*fontheight, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
 				mouse_click_actions[mouse_index] = set_sidebar_mode;
@@ -4456,6 +4469,7 @@ function draw_sidebar(){
 				outlet(7, "write", "re-");
 				outlet(7, "moveto" ,mainwindow_width-9-5.3*fontheight, fontheight*0.75+y_offset);
 				outlet(7, "write", "name");
+
 				outlet(7, "paintrect", mainwindow_width-9-4.3*fontheight, y_offset, mainwindow_width-9-3.3*fontheight, fontheight+y_offset,block_darkest );
 				outlet(8, "paintrect", mainwindow_width-9-4.3*fontheight, y_offset, mainwindow_width-9-3.3*fontheight, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
 				mouse_click_actions[mouse_index] = open_patcher;
@@ -4467,6 +4481,7 @@ function draw_sidebar(){
 				outlet(7, "write", "open");
 				outlet(7, "moveto" ,mainwindow_width-9-4.2*fontheight, fontheight*0.75+y_offset);
 				outlet(7, "write", "patch");
+				
 				outlet(7, "paintrect", mainwindow_width-9-3.2*fontheight, y_offset, mainwindow_width-9-2.2*fontheight, fontheight+y_offset,block_darkest );
 				outlet(8, "paintrect", mainwindow_width-9-3.2*fontheight, y_offset, mainwindow_width-9-2.2*fontheight, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
 				mouse_click_actions[mouse_index] = copy_block;

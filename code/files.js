@@ -161,7 +161,7 @@ function load_song(){
 	loading.dont_automute=1;
 	loading.progress=-1;
 	loading.mute_new=0;
-	loading.bundling=5;
+	loading.bundling=12;
 	import_song();
 }
 
@@ -198,7 +198,7 @@ function import_song(){
 		var thisblock,block_name;
 		sidebar.mode = "none";
 		clear_blocks_selection();
-		
+		clear_screens();
 		// merge sequence goes like this then
 		//  - read blocks one by one
 		//     - if hardware or exclusive type block look to see if already deployed and allocate as replacement
@@ -341,12 +341,12 @@ function import_song(){
 			i--;
 			if(i==0) t = 0;		
 		} while (loading.progress<t);
-		loading.ready_for_next_action = 2;
+		loading.ready_for_next_action = 1;
 		if(t!=0) center_view(1);
 		//redraw_flag.flag |= 2;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+songs.getsize(songlist[currentsong]+"::connections")){
 		t=MAX_BLOCKS+loading.mapping.length+songs.getsize(songlist[currentsong]+"::connections");
-		i=2*loading.bundling; //7;
+		i=3*loading.bundling; //7;
 		do{ 
 			b=loading.progress-MAX_BLOCKS-loading.mapping.length;
 			//post("\nloading connection number",b);
@@ -355,9 +355,10 @@ function import_song(){
 				new_connection.replace("from::number",loading.mapping[new_connection.get("from::number")]);
 				new_connection.replace("to::number",loading.mapping[new_connection.get("to::number")]);
 				connections.append("connections",new_connection);
-				make_connection(connections.getsize("connections")-1);
+				var co = connections.getsize("connections")-1;
+				make_connection(co);
 				new_connection.clear();		
-				draw_wire(i);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
+				draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
 			}
 			loading.progress++;
 			i--;
@@ -504,9 +505,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	var new_voice=-1;
 	var type = blocktypes.get(block_name+"::type");
 	var offs = 0;
+	var recycled = 0;
 	if(!was_exclusive){
 		if(type == "audio"){
 			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"));
+			recycled = 1;
 		}else{
 			new_voice = next_free_voice(type);
 		}
@@ -521,11 +524,22 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 	if(type == "note"){
 		note_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
-		//send_note_patcherlist();
 		still_checking_polys |= 1;
 	}else if(type == "audio"){
 		audio_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
-		//send_audio_patcherlist();
+		var up = 1;
+		if(blocks.contains("blocks["+block_index+"]::upsample")){
+			up = UPSAMPLING * blocks.get("blocks["+block_index+"]::upsample");
+			post("\nrestoring saved upsample value");
+		}else if(blocktypes.contains(block_name+"::upsample")){
+			up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
+			blocks.replace("blocks["+block_index+"]::upsample", up);
+			post("\nusing default upsample value");
+		}else {
+			blocks.replace("blocks["+block_index+"]::upsample", 1);
+			post("\n no saved upsampling, no default upsampling, set to 1x");
+		}
+		audio_upsamplelist[new_voice] = up;
 		still_checking_polys |= 2;
 		offs=MAX_NOTE_VOICES;
 	}else if(type == "hardware"){
@@ -538,10 +552,9 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}else{
 		ui_patcherlist[block_index] = ui;
 	}
-	//send_ui_patcherlist();
 	still_checking_polys |= 4;
 	voicemap.replace(block_index, new_voice+offs); //set the voicemap
-
+	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
 	// and load the params
 	if(blocktypes.contains(block_name+"::parameters")){
 		var voiceoffset = new_voice + MAX_NOTE_VOICES*(type == "audio");

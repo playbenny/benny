@@ -310,6 +310,9 @@ function find_audio_voice_to_recycle(pa){
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if(audio_patcherlist[i]=="blank.audio") return i;
 	}
+	for(i=0;i<MAX_AUDIO_VOICES;i++){
+		if(audio_patcherlist[i]=="recycling") return i;
+	}
 	post("\nERROR : can't find a free voice or one to recycle\n");
 	return -1;
 }
