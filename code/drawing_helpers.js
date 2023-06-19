@@ -224,17 +224,30 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 	voicelist = voicemap.get(blockno);
 	var ly, value;
 	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
-	if(pol=="bi")value = (2*value)-1;
- 	if(value>=0) {
-		ly = y1  + (y2 - y1) * (1-value);
-		outlet(7, "paintrect",x1,ly,x2,y2,r>>1,g>>1,b>>1);
-	}else{
-		ly = y1 + (y2-y1)*(-value);
-		outlet(7, "paintrect",x1,y1,x2,ly,r>>1,g>>1,b>>1);
-	}
 	var w = x2-x1-2;
 	if(!Array.isArray(voicelist)) voicelist = [voicelist];
 	var ww = w/voicelist.length;
+	if(pol=="bi")value = (2*value)-1;
+ 	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
+		post("\n voice is" + sidebar.scopes.voicenum);
+		if(value>=0) {
+			ly = y1  + (y2 - y1) * (1-value);
+			outlet(7, "paintrect",x1,ly,x2,y2,r*0.45,g*0.45,b*0.45);
+			outlet(7, "paintrect",x1+ww*sidebar.scopes.voicenum,ly,x1+ww*sidebar.scopes.voicenum+ww,y2,r*0.66,g*0.66,b*0.66);
+		}else{
+			ly = y1 + (y2-y1)*(-value);
+			outlet(7, "paintrect",x1,y1,x2,ly,r*0.45,g*0.45,b*0.45);
+			outlet(7, "paintrect",x1+ww*sidebar.scopes.voicenum,y1,x1+ww*sidebar.scopes.voicenum+ww,ly,r*0.66,g*0.66,b*0.66);
+		}
+	}else{
+		if(value>=0) {
+			ly = y1  + (y2 - y1) * (1-value);
+			outlet(7, "paintrect",x1,ly,x2,y2,r>>1,g>>1,b>>1);
+		}else{
+			ly = y1 + (y2-y1)*(-value);
+			outlet(7, "paintrect",x1,y1,x2,ly,r>>1,g>>1,b>>1);
+		}
+	}
 	outlet(7,"frgb",r,g,b);
 	for(var i=0;i<voicelist.length;i++){
 		value = voice_parameter_buffer.peek(1,MAX_PARAMETERS*(voicelist[i])+paramno);
@@ -252,7 +265,6 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 		outlet(7,"moveto",x1+(ww*i),ly);
 		outlet(7,"lineto",x1+(ww*(i+1)),ly);
 	}
-
 }
 
 function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
