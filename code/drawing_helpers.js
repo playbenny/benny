@@ -228,7 +228,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 	var ww = w/voicelist.length;
 	if(pol=="bi")value = (2*value)-1;
  	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
-		post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
+		//post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
 		outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,((index+1)&255),((index+1)>>8),2);
 		for(var i=0;i<voicelist.length;i++){
 			var tvalue = value+parameter_static_mod.peek(1,voicelist[i]*MAX_PARAMETERS+paramno);

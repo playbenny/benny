@@ -2380,7 +2380,7 @@ function swap_block(block_name){
 function build_mod_sum_action_list(){
 	if(loading.progress>0) return 0;
 	messnamed("modulation_processor", "pause",1);
-	post("\nBuilding new mod sum action list");
+	//post("\nBuilding new mod sum action list");
 //this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
 // buffer has 4 channels. 
 // ch1 is the index of the destination, this repeats for all rows relating to this particular param/etc. it changing is the sign to sum up, dump the number, move on.

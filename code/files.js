@@ -392,10 +392,9 @@ function import_song(){
 					}
 				}
 			}
-			i="current";
 			for(b=0;b<loading.mapping.length;b++){
-				if(songs.contains(songlist[currentsong]+"::states::"+i+"::"+b)){
-					stpv = songs.get(songlist[currentsong]+"::states::"+i+"::"+b);
+				if(songs.contains(songlist[currentsong]+"::states::current::"+b)){
+					stpv = songs.get(songlist[currentsong]+"::states::current::"+b);
 					if(l>0){
 						for(t=0;t<l;t++){
 							if(loading.wave_paramlist[t][0]==loading.mapping[b]){
@@ -405,7 +404,18 @@ function import_song(){
 							}
 						}
 					}
-					states.replace("states::"+i+"::"+loading.mapping[b],stpv);
+					states.replace("states::current::"+loading.mapping[b],stpv);
+				}
+			}
+			
+			for(b=0;b<loading.mapping.length;b++){
+				if(songs.contains(songlist[currentsong]+"::states::per_voice::"+b)){
+					stpv = songs.get(songlist[currentsong]+"::states::per_voice::"+b);
+					var vl=voicemap.get(loading.mapping[b]);
+					if(!Array.isArray(vl)) vl=[vl];
+					for(i=0;i<stpv.length;i+=3){
+						parameter_static_mod.poke(1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
+					}
 				}
 			}
 			if(songs.contains(songlist[currentsong]+"::names")){
@@ -675,13 +685,24 @@ function save_song(){
 //copy current param values into states[0]
 	var b,p,psize;
 	var store = [];
+	var per_v = [];
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(ui_patcherlist[b]!='blank.ui') ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
 		store[b] = [];
+		per_v[b] = [];
+		var vl = voicemap.get(b);
+		if(!Array.isArray(vl)) vl = [vl];
+		
 		if(blocks.contains("blocks["+b+"]::name")){
 			psize = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
 			for(p=0;p<psize;p++){ 
 				store[b][p+1]=parameter_value_buffer.peek(1, MAX_PARAMETERS*b+p);
+				for(var v=0;v<vl.length;v++){
+					var tv=parameter_static_mod.peek(1,vl[v]*MAX_PARAMETERS+p);
+					if(tv!=0){
+						per_v[b].push(v,p,tv); // per voice static parameter mod is stored in savefile as voice, param, modval triplets
+					}
+				}
 			}
 			store[b][0] = 0;
 			if(blocks.contains("blocks["+b+"]::mute")) store[b][0] = blocks.get("blocks["+b+"]::mute");
@@ -690,6 +711,7 @@ function save_song(){
 	if(states.contains("states::current")) states.remove("states::current");
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
+		if(per_v[b].length) states.replace("states::per_voice::"+b,per_v[b]);
 	}
 	post("current state stored");
 	if(panels_order.length){
@@ -793,9 +815,6 @@ function process_purgelist(){
 		}
 	}
 }
-
-
-
 
 function clear_everything(){
 	messnamed("pause_mod_processing",1);
