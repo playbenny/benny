@@ -897,7 +897,9 @@ function keydown(key){
 			if(key == 45){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name"))))	voicecount(sidebar.selected, current_p - 1);				
+					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
+						voicecount(sidebar.selected, current_p - 1);
+					}				
 				}
 			}else if((key == 43)||(key==573)){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
@@ -940,7 +942,11 @@ function keydown(key){
 			}else if(key == 45){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name"))))	voicecount(sidebar.selected, current_p - 1);				
+					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
+						voicecount(sidebar.selected, current_p - 1);
+					}
+				}else if(sidebar.mode == "blocks"){
+					multiselect_polychange(-1);
 				}
 			}else if((key == 43)||(key==573)){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
@@ -950,6 +956,8 @@ function keydown(key){
 					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
 						voicecount(sidebar.selected, current_p + 1);
 					}
+				}else if(sidebar.mode == "blocks"){
+					multiselect_polychange(1);
 				}
 			}else if(key == 353){
 				select_all();

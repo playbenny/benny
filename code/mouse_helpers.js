@@ -47,6 +47,30 @@ function change_upsampling(b,u){ // send block, -1 to just set it for all voices
 	hard_reload_block(b);
 }
 
+function multiselect_polychange(dir){
+	if(dir>0){
+		for(var se = 0;se<MAX_BLOCKS;se++){
+			if(selected.block[se]){
+				var max_p = blocktypes.get(blocks.get("blocks["+se+"]::name")+"::max_polyphony");
+				if(max_p ==0) max_p=9999999999999;
+				var current_p = blocks.get("blocks["+se+"]::poly::voices");
+				if((max_p > current_p)&&(blocks.get("blocks["+se+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+se+"]::name")+"::plugin_name")))){
+					voicecount(se, current_p + 1);
+				}
+			}
+		}		
+	}else{
+		for(var se = 0;se<MAX_BLOCKS;se++){
+			if(selected.block[se]){
+				var current_p = blocks.get("blocks["+se+"]::poly::voices");
+				if((current_p>1)&&(blocks.get("blocks["+se+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+se+"]::name")+"::plugin_name")))){
+					voicecount(se, current_p - 1);
+				}					
+			}
+		}		
+	}
+}
+
 function hard_reload_block(b){
 	var vl = voicemap.get(b);
 	if(!Array.isArray(vl)) vl = [vl];

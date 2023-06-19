@@ -5346,6 +5346,36 @@ function draw_sidebar(){
 				}
 			}
 			y_offset += 0.1* fontheight;
+			y_offset+=0.5*fontheight;
+			outlet(7, "paintrect", sidebar.x, y_offset, sidebar.x+fontheight*5.8, fontheight+y_offset, menudarkest );
+			outlet(7, "frgb" , menucolour);				
+			outlet(7, "moveto", sidebar.x + fontheight*0.2, fontheight*0.75+y_offset);
+			outlet(7, "write", "polyphony");		
+
+			outlet(7, "paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudarkest );
+			outlet(8, "paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
+			mouse_click_actions[mouse_index] = multiselect_polychange;
+			mouse_click_parameters[mouse_index] = -1;
+			mouse_click_values[mouse_index] = "";	
+			mouse_index++;	
+			outlet(7, "frgb" , menucolour);				
+			//outlet(7, "moveto", sidebar.x + fontheight*6, fontheight*0.5+y_offset);
+			//outlet(7, "write", "un");
+			outlet(7, "moveto", sidebar.x + fontheight*6, fontheight*0.75+y_offset);
+			outlet(7, "write", "-");
+			outlet(7, "paintrect", sidebar.x + fontheight*7, y_offset, sidebar.x+fontheight*8, fontheight+y_offset,menudarkest );
+			outlet(8, "paintrect", sidebar.x + fontheight*7, y_offset, sidebar.x+fontheight*8, fontheight+y_offset,(mouse_index&255),(mouse_index>>8),1 );
+			mouse_click_actions[mouse_index] = multiselect_polychange;
+			mouse_click_parameters[mouse_index] = 1;
+			mouse_click_values[mouse_index] = "";	
+			mouse_index++;
+			outlet(7, "frgb" , menucolour);				
+			outlet(7, "moveto", sidebar.x + fontheight*7.1, fontheight*0.75+y_offset);
+			outlet(7, "write", "+");		
+
+
+			y_offset += 1.1*fontheight;
+
 
 		}else if(selected.wire_count == 1){ // if 1 connection selected
 // CONNECTION DETAIL VIEW #######################################################################################################

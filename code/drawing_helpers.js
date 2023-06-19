@@ -221,7 +221,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 	outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,(index&255),(index>>8),2);
 	// need to get the voices used by this block:
 	//var type = blocks.get("blocks["+blockno+"]::type");
-	voicelist = voicemap.get(blockno);
+	voicelist = voicemap.get(blockno); 
 	var ly, value;
 	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
 	var w = x2-x1-2;
@@ -229,7 +229,6 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 	var ww = w/voicelist.length;
 	if(pol=="bi")value = (2*value)-1;
  	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
-		post("\n voice is" + sidebar.scopes.voicenum);
 		if(value>=0) {
 			ly = y1  + (y2 - y1) * (1-value);
 			outlet(7, "paintrect",x1,ly,x2,y2,r*0.45,g*0.45,b*0.45);
