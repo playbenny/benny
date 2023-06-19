@@ -3665,7 +3665,7 @@ function draw_sidebar(){
 							outlet(7, "paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,block_darkest);
 							outlet(8, "paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,(mouse_index&255),(mouse_index>>8),2);
 							mouse_click_actions[mouse_index] = scope_zoom;
-							mouse_click_parameters[mouse_index] = sidebar.scopes.voicelist[i] % MAX_AUDIO_VOICES;
+							mouse_click_parameters[mouse_index] = Math.floor(i>>1);//sidebar.scopes.voicelist[i] % MAX_AUDIO_VOICES;
 							mouse_click_values[mouse_index] = "";	
 							mouse_index++;
 						}

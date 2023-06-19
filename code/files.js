@@ -799,7 +799,8 @@ function process_purgelist(){
 
 function clear_everything(){
 	messnamed("pause_mod_processing",1);
-
+	messnamed("clear_all_buffers","bang");
+	
 	output_queue.poke(1,0,0);
 	output_queue_pointer = 0;
 
@@ -892,8 +893,9 @@ function clear_everything(){
 
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
-	for(;i--;) is_flocked.push(0);
-
+	for(;i--;){
+		is_flocked.push(0);
+	}
 	messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 

@@ -277,6 +277,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else{
 								scope_zoom(mouse_click_parameters[usermouse.last.gotcell[0]],"click");
 							}
+						}else if(mouse_click_actions[usermouse.gotcell[0]]==static_mod_adjust){
+							if(alt == 1){
+								var pb = mouse_click_parameters[usermouse.gotcell[0]];
+								static_mod_adjust(pb,0);
+							}
 						}
 					}
 				}
@@ -294,7 +299,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								set_display_mode("blocks");
 								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 								var r = new_block(usermouse.ids[1], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+								draw_block(r);
 								selected.block[r] = 1;
+								sidebar.scopes.voice = -1;
+								sidebar.scopes.voicenum = -1;
+								redraw_flag.flag |= 8;
 							}
 						}
 						usermouse.clicked3d = -1;

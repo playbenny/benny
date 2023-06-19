@@ -129,11 +129,14 @@ function initialise_dictionaries(){
 	matrix.message("clear"); //clears the audio matrix
 
 	//wipe all the buffers
-	//messnamed("clear_all_buffers","bang");
+	messnamed("clear_all_buffers","bang");
 	waves_polybuffer.clear();
 
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
-	for(;i--;) is_flocked.push(0);
+	is_flocked=[];
+	for(;i--;){
+		is_flocked.push(0);
+	}
 
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("initialising polys\n");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
@@ -274,6 +277,8 @@ function initialise_dictionaries(){
 	SONGS_FOLDER = config.get("SONGS_FOLDER");
 	read_songs_folder();
 	
+
+
 	// all the 3d ui stuff now
 
 	outlet(6, "sendwindow", "idlemouse", 1);

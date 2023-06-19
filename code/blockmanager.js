@@ -91,6 +91,7 @@ var voice_parameter_buffer = new Buffer("voice_parameter_buffer"); //for each vo
 var voice_data_buffer = new Buffer("voice_data_buffer"); //for voices that store data, eg grid seq
 var parameter_value_buffer = new Buffer("parameter_value_buffer"); //for each block, the values set by the user
 var mod_buffer = new Buffer("mod_buffer"); //filled according to 'id' which just increments (total length is like 40k) then this is looked up from the mod_route dict/coll
+var parameter_static_mod = new Buffer("voice_static_mod_buffer"); //holds per voice tweaks to parameter values
 var mod_sum_action_list = new Buffer("mod_sum_action_list"); //this is a list of things to add up and where they go, for modulation. the list is redone every time it might've changed, eg blocks added, flocks changed, connections added/removed
 var rebuild_action_list = 0;
 var output_queue = new Buffer("output_queue"); //this is a list of things for the js to do that the gen code updates - hw midi out, sigs

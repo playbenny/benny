@@ -441,6 +441,27 @@ function edit_state_label(parameter,value){
 	}
 }
 
+function static_mod_adjust(parameter,value){
+//	post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	if(value=="get"){
+		return parameter_static_mod.peek(1,parameter[2]);
+	}else{
+		//set value
+		parameter_static_mod.poke(1,parameter[2],Math.max(-1,Math.min(1,value)));
+		rebuild_action_list = 1;
+		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
+			redraw_flag.flag|=1;
+			redraw_flag.targets[parameter[0]]=2;
+		}
+		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][parameter[0]])){
+			redraw_flag.flag|=16;
+			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
+		}
+		//if(displaymode=="custom") redraw_flag.flag=4;
+		if(sidebar.selected==automap.mapped_c) note_poly.setvalue(automap.available_c,"refresh");
+	}
+}
+
 function sidebar_parameter_knob(parameter, value){
 	//post("\nP: ",parameter,"\nV:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
