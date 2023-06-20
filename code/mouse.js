@@ -361,7 +361,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
 								usermouse.clicked3d=-1;
 								block_menu_d.mode = 0;
-								post("\n\nOPENING BLOCK MENU BECAUSE DRAG DIST",usermouse.drag.distance);
+								//post("\n\nOPENING BLOCK MENU BECAUSE DRAG DIST",usermouse.drag.distance);
 								set_display_mode("block_menu");
 							}
 							redraw_flag.targets = [];

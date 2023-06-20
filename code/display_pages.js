@@ -397,7 +397,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			var namelabely =18+(y+2+has_states+0.4)*fontheight;
 			var h_slider=0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
-			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],0, namearr,namelabely,p_type,wrap,block_name,h_slider];
+			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],0 /* TODO ONEPERVOICE HERE << AND BIPOLAR TOO??>*/, namearr,namelabely,p_type,wrap,block_name,h_slider];
 			labelled_parameter_v_slider(panelslider_index);
 			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
 				//var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[panelslider_index][8]+paramslider_details[panelslider_index][9]);				
@@ -3749,9 +3749,11 @@ function draw_sidebar(){
 						}
 						plist = groups[i].get("contains");
 						var columns = Math.max(1,plist.length);
+						var opvf = 0;
 						opv=plist.length;
 						if(groups[i].contains("onepervoice")){
 							opv=blocks.get("blocks["+block+"]::poly::voices");
+							opvf = 1;
 							columns= Math.max(1,opv);
 						}
 						w_slider = (sidebar.width + fontheight * 0.1)/columns;
@@ -3763,7 +3765,12 @@ function draw_sidebar(){
 							for(tk=t;tk<opv;tk++){
 								if(plist[tk]==plist[t]) wk++;
 							}
-							if(params[plist[t]].contains("name")){
+							var cur = plist[t];
+							if(opvf){
+								//cur = 0;
+								post("\nt",t,"plist[t]",plist[t]);
+							}
+							if(params[cur].contains("name")){
 								if(getmap==1){
 									maplist[maplist.length]= MAX_PARAMETERS*block+plist[t];
 									map_x++;
@@ -3784,8 +3791,14 @@ function draw_sidebar(){
 								namelabely=y1+fontheight*(0.4+h_slider);
 								namearr = params[plist[t]].get("name");
 								namearr = namearr.split("_");
+								var flags = (p_values[0]=="bi");
+								if(opvf){
+									flags |= 2;
+									flags |= 4 * t;
+								}
+
 								if(p_type=="button"){
-									paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],p_values[0],namearr,namelabely,p_type,wrap,block_name,h_slider];
+									paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,p_values[0]);
 									mouse_click_actions[mouse_index] = sidebar_button;
 									mouse_click_parameters[mouse_index] = block;
@@ -3793,9 +3806,9 @@ function draw_sidebar(){
 									mouse_index++;
 								}else{
 									if(h_slider==0){
-										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],p_values[0],namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									}else{
-										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],p_values[0],namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									}
 									namelabely = labelled_parameter_v_slider(plist[t]);
 									paramslider_details[plist[t]][17]=namelabely;

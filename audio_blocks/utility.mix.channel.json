@@ -4,7 +4,7 @@
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
-		"max_polyphony" : 16,
+		"max_polyphony" : 0,
 		"upsample" : 2,
 		"connections" : {
 			"in" : { 
@@ -17,39 +17,39 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+				"contains" : [0,0],
 				"onepervoice" : 1,
 				"height" : 4
 			},
 			{ 
-				"contains" : [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+				"contains" : [1,1],
 				"onepervoice" : 1,
 				"height" : 1
 			},
 			{ 
-				"contains" : [32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47],
+				"contains" : [2,2],
 				"onepervoice" : 1,
 				"height" : 0
 			},
 			{ 
-				"contains" : [48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63],
+				"contains" : [3,3],
 				"onepervoice" : 1,
 				"height" : 1
 			},
 			{ 
-				"contains" : [64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79], 
+				"contains" : [4,4], 
 				"onepervoice" : 1,
 				"height" : 0
 			},
 			{ 
-				"contains" : [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95], 
+				"contains" : [5,5], 
 				"onepervoice" : 1,
 				"height" : 0
 			}
 			
 		],
 		"panel" : {
-			"parameters" : [0,1,2,3,4,5,6,7]
+			"parameters" : [0]
 		},
 		"parameters" : [
 			{
@@ -60,326 +60,11 @@
 				"default" : 0.39
 			},
 			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
-				"name" : "level",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.39
-			},
-			{
 				"name" : "pan",
 				"type" : "float",
 				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "pan",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
-				"wrap" : 0,
-				"default" : 0
 			},
 			{
 				"name" : "voicing",
@@ -396,325 +81,10 @@
 				"default" : 1
 			},
 			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "amount",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
 				"name" : "sweep",
 				"type" : "float",
 				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "sweep",
-				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "type",
-				"type" : "menu_i",
-				"values" : ["channel", "cascade", "crunch"],
-				"wrap" : 1,
 				"default" : 0.5
 			},
 			{

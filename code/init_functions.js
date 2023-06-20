@@ -1,7 +1,3 @@
-function reportdr(){
-	post("\nreporting",usermouse.drag.distance,usermouse.drag.starting_x,usermouse.drag.starting_y);
-}
-
 function import_hardware(v){
 	var d2 = new Dict;
 	var d = new Dict;

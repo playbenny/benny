@@ -223,25 +223,37 @@ function labelled_parameter_v_slider(pnumber){
 	return(namelabely+4);
 }
 
-function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
+		// flags this was 'pol' now contains more info..
+		// &= 1 - bipolar not unipolar
+		// &= 2 - onepervoice
+		// /4 and math.floor - voice number if OPV
+		outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	// need to get the voices used by this block:
 	//var type = blocks.get("blocks["+blockno+"]::type");
-	voicelist = voicemap.get(blockno); 
+	var vlist = voicemap.get(blockno); 
 	var ly, value;
 	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
 	var w = x2-x1; //-2;
-	if(!Array.isArray(voicelist)) voicelist = [voicelist];
-	var ww = w/voicelist.length;
-	if(pol=="bi")value = (2*value)-1;
+	if(!Array.isArray(vlist)) vlist = [vlist];
+	var opvf=0;
+	var opv=-1;
+	if(flags & 2){
+		//this is a onepervoice slider
+		opvf = 1;
+		opv = Math.floor(flags/4);
+		vlist = [vlist[opv]];
+	}
+	var ww = w/vlist.length;
+	if(flags & 1)value = (2*value)-1; //bipolar
  	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
 		//post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
 		outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,((index+1)&255),((index+1)>>8),2);
 	}else{
 		outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,(index&255),(index>>8),2);
 	}
-	for(var i=0;i<voicelist.length;i++){
-		var tvalue = value+parameter_static_mod.peek(1,voicelist[i]*MAX_PARAMETERS+paramno);
+	for(var i=0;i<vlist.length;i++){
+		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
 		if(tvalue>1) tvalue=1;
 		if(tvalue<-1) tvalue = -1;
 		if(tvalue>=0) {
@@ -250,7 +262,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 			if(i==sidebar.scopes.voicenum){
 				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
 				mouse_click_actions[index] = static_mod_adjust;
-				mouse_click_parameters[index] = [paramno, blockno, voicelist[i]*MAX_PARAMETERS+paramno];
+				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
 				mouse_index++;
 				mu=0.57;
@@ -262,7 +274,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 			if(i==sidebar.scopes.voicenum){
 				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
 				mouse_click_actions[index] = static_mod_adjust;
-				mouse_click_parameters[index] = [paramno,blockno,voicelist[i]*MAX_PARAMETERS+paramno];
+				mouse_click_parameters[index] = [paramno,blockno,vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
 				mouse_index++;
 				mu=0.57;
@@ -272,11 +284,11 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,pol){
 	}
 
 	w = w-2;
-	ww = w/voicelist.length;
+	ww = w/vlist.length;
 	outlet(7,"frgb",r,g,b);
-	for(var i=0;i<voicelist.length;i++){
-		value = voice_parameter_buffer.peek(1,MAX_PARAMETERS*(voicelist[i])+paramno);
-		if(pol=="bi"){
+	for(var i=0;i<vlist.length;i++){
+		value = voice_parameter_buffer.peek(1,MAX_PARAMETERS*(vlist[i])+paramno);
+		if(flags & 1){ //bipolar
 			value = (2*value)-1;
 			value = Math.min(Math.max(-1,value),1);
 		}else{
