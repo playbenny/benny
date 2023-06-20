@@ -268,7 +268,7 @@ function scope_zoom(parameter,value){
 		return sidebar.scopes.zoom;
 	}else if(value=="click"){
 		sidebar.scopes.voicenum = parameter;
-		redraw_flag.flag |= 2;
+		redraw_flag.flag |= 10;
 	}else{
 		sidebar.scopes.zoom = Math.min(Math.max(0,value),1);
 		messnamed("scope_rate",60*Math.pow(2,sidebar.scopes.zoom*8));

@@ -144,6 +144,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;		
 					usermouse.clicked3d = usermouse.hover[1];
+					usermouse.drag.last_x = usermouse.x;
+					usermouse.drag.last_y = usermouse.y;
 					usermouse.drag.distance=0;
 					usermouse.clicked2d=-1;
 					usermouse.ids = id.split('-');
@@ -492,6 +494,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					if((usermouse.shift!=usermouse.last.shift)||(usermouse.alt!=usermouse.last.alt)){
 						usermouse.drag.starting_x = usermouse.x;
 						usermouse.drag.starting_y = usermouse.y;
+						usermouse.drag.last_x = usermouse.x;
+						usermouse.drag.last_y = usermouse.y;
 						xdist = 0;
 						ydist = 0;
 						usermouse.drag.starting_value_x = f(p,"get");
