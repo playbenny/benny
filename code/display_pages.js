@@ -2802,7 +2802,13 @@ function draw_topbar(){
 	mouse_click_actions[mouse_index] = play_button;
 	mouse_click_parameters[mouse_index] = "";
 	mouse_click_values[mouse_index] = "";
+	post("\nPLAY ButtON i  WROTE ", (mouse_index&255),(mouse_index>>8), 1 );
 	mouse_index++;
+	outlet(8, "bang");
+
+	post("----immediate readback", click_matrix.getcell(10, 10));
+
+
 
 	for(i=0;i<meter_positions[0][2].length;i++){
 		outlet(8, "paintrect", meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+10, meter_positions[0][2][i][2], (mouse_index&255),(mouse_index>>8), 1);
@@ -2841,6 +2847,7 @@ function draw_topbar(){
 
 	outlet(8, "bang");
 	post("----immediate readback", click_matrix.getcell(10+fontheight*x_o, 10));
+	post("----immediate readback", click_matrix.getcell(11+fontheight*x_o, 11));
 
 	// only need to draw resync if you're playing
 	mouse_click_actions[mouse_index] = resync_button;
