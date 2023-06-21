@@ -2821,7 +2821,7 @@ function draw_topbar(){
 
 	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
 	outlet(8, "paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, (mouse_index&255),(mouse_index>>8), 1 );
-	
+	post("\nI WROTE ", (mouse_index&255),(mouse_index>>8), 1 );
 	draw_cpu_meter();
 
 	if(!playing){
@@ -2838,7 +2838,10 @@ function draw_topbar(){
 	outlet(7, "write", "re");
 	outlet(7, "moveto", 9 + fontheight*(x_o+0.15), 9+fontheight*0.75);
 	outlet(7, "write", "sync");
-	post("\nRESYNC BUTTON MOUSE INDEX",mouse_index);
+
+	outlet(8, "bang");
+	post("----immediate readback", click_matrix.getcell(10+fontheight*x_o, 10));
+
 	// only need to draw resync if you're playing
 	mouse_click_actions[mouse_index] = resync_button;
 	mouse_click_parameters[mouse_index] = "";
