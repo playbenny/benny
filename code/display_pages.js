@@ -2838,6 +2838,7 @@ function draw_topbar(){
 	outlet(7, "write", "re");
 	outlet(7, "moveto", 9 + fontheight*(x_o+0.15), 9+fontheight*0.75);
 	outlet(7, "write", "sync");
+	post("\nRESYNC BUTTON MOUSE INDEX",mouse_index);
 	// only need to draw resync if you're playing
 	mouse_click_actions[mouse_index] = resync_button;
 	mouse_click_parameters[mouse_index] = "";
