@@ -119,36 +119,40 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,value){
 	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
 	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8),1);
 }
-function labelled_parameter_v_slider(pnumber){
+function labelled_parameter_v_slider(sl_no){
 	
-	var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
+	var p_values= blocktypes.get(paramslider_details[sl_no][15]+"::parameters["+paramslider_details[sl_no][9]+"]::values");
 	
-	parameter_v_slider(paramslider_details[pnumber][0], paramslider_details[pnumber][1], paramslider_details[pnumber][2], paramslider_details[pnumber][3],paramslider_details[pnumber][4], paramslider_details[pnumber][5], paramslider_details[pnumber][6], paramslider_details[pnumber][7],paramslider_details[pnumber][8], paramslider_details[pnumber][9], paramslider_details[pnumber][10]);
+	parameter_v_slider(paramslider_details[sl_no][0], paramslider_details[sl_no][1], paramslider_details[sl_no][2], paramslider_details[sl_no][3],paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6], paramslider_details[sl_no][7],paramslider_details[sl_no][8], paramslider_details[sl_no][9], paramslider_details[sl_no][10],sl_no);
 	
-	if(paramslider_details[pnumber][16] == 0){
-		outlet(7,"frgb",paramslider_details[pnumber][4]*2, paramslider_details[pnumber][5]*2, paramslider_details[pnumber][6]*2);
+	if(paramslider_details[sl_no][16] == 0){
+		outlet(7,"frgb",paramslider_details[sl_no][4]*2, paramslider_details[sl_no][5]*2, paramslider_details[sl_no][6]*2);
 	}else{
-		outlet(7,"frgb",paramslider_details[pnumber][4], paramslider_details[pnumber][5], paramslider_details[pnumber][6]);
+		outlet(7,"frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
 	}
 	
-	namelabely=paramslider_details[pnumber][12];
-	for(var c = 0;c<paramslider_details[pnumber][11].length;c++){
-		outlet(7,"moveto",paramslider_details[pnumber][0]+fontheight*0.1,namelabely);
-		outlet(7,"write",paramslider_details[pnumber][11][c]);				
+	namelabely=paramslider_details[sl_no][12];
+	for(var c = 0;c<paramslider_details[sl_no][11].length;c++){
+		outlet(7,"moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
+		outlet(7,"write",paramslider_details[sl_no][11][c]);				
 		namelabely+=0.4*fontheight;
 	}
-	outlet(7,"moveto",paramslider_details[pnumber][0]+fontheight*0.1,namelabely);
+	outlet(7,"moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
 	
 	//post(p_values,"<pv len>",p_values.length);
-	var p_type=paramslider_details[pnumber][13];
-	var wrap = paramslider_details[pnumber][14];
-	var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
-	if((paramslider_details[pnumber][8]==sidebar.selected)&&(sidebar.scopes.voicenum>=0)){
-		var vo = voicemap.get(paramslider_details[pnumber][8]+"["+sidebar.scopes.voicenum+"]"); 
+	var p_type=paramslider_details[sl_no][13];
+	var wrap = paramslider_details[sl_no][14];
+	var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[sl_no][8]+paramslider_details[sl_no][9]);
+	if((paramslider_details[sl_no][8]==sidebar.selected)&&(sidebar.scopes.voicenum>=0)){
+		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+sidebar.scopes.voicenum+"]"); 
 		// if a single voice's offset is being editted, show the sum of the two in the label ????? << this is not how mod works tho?
-		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[pnumber][9]);
+		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[sl_no][9]);
+	}else if((paramslider_details[sl_no][8]==sidebar.selected)&&(paramslider_details[sl_no][10]&2)){ //opv mode
+		var voc = Math.floor(paramslider_details[sl_no][10]/4);
+		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+voc+"]"); 
+		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[sl_no][9]);		
 	}
-		
+	pv = Math.min(1,Math.max(0,pv));	
 
 	if(p_type == "menu_f"){
 		var pv2;
@@ -223,14 +227,12 @@ function labelled_parameter_v_slider(pnumber){
 	return(namelabely+4);
 }
 
-function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
+function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no){
 		// flags this was 'pol' now contains more info..
 		// &= 1 - bipolar not unipolar
 		// &= 2 - onepervoice
 		// /4 and math.floor - voice number if OPV
-		outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	// need to get the voices used by this block:
-	//var type = blocks.get("blocks["+blockno+"]::type");
+	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	var vlist = voicemap.get(blockno); 
 	var ly, value;
 	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
@@ -241,12 +243,12 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
 	if(flags & 2){
 		//this is a onepervoice slider
 		opvf = 1;
-		opv = Math.floor(flags/4);
+		opv = Math.floor((flags&16380)/4);
+		//post("\ndrawing slider for param",paramno,"voice",opv,"index",index);
 		vlist = [vlist[opv]];
 	}
 	var ww = w/vlist.length;
-	if(flags & 1)value = (2*value)-1; //bipolar
- 	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
+	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
 		//post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
 		outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,((index+1)&255),((index+1)>>8),2);
 	}else{
@@ -254,12 +256,21 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
 	}
 	for(var i=0;i<vlist.length;i++){
 		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
-		if(tvalue>1) tvalue=1;
-		if(tvalue<-1) tvalue = -1;
+		if(tvalue > 1) tvalue = 1;
+		if(tvalue < 0) tvalue = 0;
+		if(flags & 1) tvalue = (2*tvalue)-1; //bipolar
 		if(tvalue>=0) {
 			ly = y1  + (y2 - y1) * (1-tvalue);
 			var mu=0.33;
-			if(i==sidebar.scopes.voicenum){
+			//post("\ndrawing slider",sl_no,blockno,paramno);
+			if(opvf){
+				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
+				mouse_click_actions[index] = static_mod_adjust;
+				mouse_click_parameters[index] = [sl_no, blockno, vlist[0]*MAX_PARAMETERS+paramno];
+				mouse_click_values[index] = "";
+				mouse_index++;
+				mu=0.5;				
+			}else if(i==sidebar.scopes.voicenum){
 				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];

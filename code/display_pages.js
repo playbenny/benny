@@ -394,8 +394,8 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			var wrap = params[plist[p]].get("wrap");
 			var namearr = params[plist[p]].get("name");
 			namearr = namearr.split("_");
-			var namelabely =18+(y+2+has_states+0.4)*fontheight;
-			var h_slider=0;
+			var namelabely = 18+(y+2+has_states+0.4)*fontheight;
+			var h_slider = 0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
 			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],0 /* TODO ONEPERVOICE HERE << AND BIPOLAR TOO??>*/, namearr,namelabely,p_type,wrap,block_name,h_slider];
 			labelled_parameter_v_slider(panelslider_index);
@@ -3735,6 +3735,7 @@ function draw_sidebar(){
 							automap.mapped_c=block;
 						} 
 					}
+					var curi=-1; //alternate index for use with onepervoice parameters
 					for(i=0;i<groups.length;i++){
 						colour=block_colour;
 						if(groups[i].contains("colour")){
@@ -3761,18 +3762,22 @@ function draw_sidebar(){
 						y1 = y_offset +  fontheight * (4 * knob.y);
 						y2 = y_offset +  fontheight * (4 * knob.y + h_slider+(h_slider==0));
 						for(t=0;t<opv;t++){
-							wk=0;
-							for(tk=t;tk<opv;tk++){
-								if(plist[tk]==plist[t]) wk++;
-							}
-							var cur = plist[t];
+							var curp = plist[t];
 							if(opvf){
-								//cur = 0;
-								post("\nt",t,"plist[t]",plist[t]);
+								wk = 1;
+								curp = plist[0];
+								curv = t;
+								curi++;
+							}else{
+								wk=0;
+								curi = curp;
+								for(tk=t;tk<opv;tk++){
+									if(plist[tk]==plist[t]) wk++;
+								}
 							}
-							if(params[cur].contains("name")){
+							if(params[curp].contains("name")){
 								if(getmap==1){
-									maplist[maplist.length]= MAX_PARAMETERS*block+plist[t];
+									maplist[maplist.length]= MAX_PARAMETERS*block+curp;
 									map_x++;
 									if(map_x>=map_cols){
 										map_x=0;
@@ -3784,12 +3789,12 @@ function draw_sidebar(){
 								}
 								x1 = sidebar.x + w_slider*knob.x;
 								x2 = sidebar.x + w_slider*(knob.x+wk) - fontheight*0.1;
-								p_type = params[plist[t]].get("type");
-								p_values = params[plist[t]].get("values");
-								wrap = params[plist[t]].get("wrap");
-								pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
+								p_type = params[curp].get("type");
+								p_values = params[curp].get("values");
+								wrap = params[curp].get("wrap");
+								pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
 								namelabely=y1+fontheight*(0.4+h_slider);
-								namearr = params[plist[t]].get("name");
+								namearr = params[curp].get("name");
 								namearr = namearr.split("_");
 								var flags = (p_values[0]=="bi");
 								if(opvf){
@@ -3798,7 +3803,7 @@ function draw_sidebar(){
 								}
 
 								if(p_type=="button"){
-									paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+									paramslider_details[curi]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,p_values[0]);
 									mouse_click_actions[mouse_index] = sidebar_button;
 									mouse_click_parameters[mouse_index] = block;
@@ -3806,20 +3811,24 @@ function draw_sidebar(){
 									mouse_index++;
 								}else{
 									if(h_slider==0){
-										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curi]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									}else{
-										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curi]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									}
-									namelabely = labelled_parameter_v_slider(plist[t]);
-									paramslider_details[plist[t]][17]=namelabely;
+									namelabely = labelled_parameter_v_slider(curi);
+									paramslider_details[curi][17]=namelabely;
 									if(namelabely>maxnamelabely) maxnamelabely=namelabely;
-									//paramslider_details is used for quick redraw of a single slider. index is plist[t]
+									//paramslider_details is used for quick redraw of a single slider. index is curp
 									//ie is mouse_click_parameters[index][0]
 									mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-									mouse_click_parameters[mouse_index] = [plist[t], block];
+									mouse_click_parameters[mouse_index] = [curi, block];
 									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
 										//if it's a menu_b or menu_i store the next position in mouse_click_values
-										mouse_click_values[mouse_index] = plist[t];//(pv+1/p_values.length) % 1;
+										if(opvf){
+											mouse_click_values[mouse_index] = curi+1;
+										}else{
+											mouse_click_values[mouse_index] = curi+1;//(pv+1/p_values.length) % 1;
+										}
 									}else{
 										mouse_click_values[mouse_index] = "";
 									}								

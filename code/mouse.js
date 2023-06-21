@@ -266,10 +266,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if(mouse_click_values[usermouse.last.gotcell[0]]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
 								var f = mouse_click_actions[usermouse.last.gotcell[0]];
 								var p = mouse_click_parameters[usermouse.last.gotcell[0]];
-								var pnumber = mouse_click_values[usermouse.last.gotcell[0]];
+								var pnumber = mouse_click_values[usermouse.last.gotcell[0]] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
-								if(p_values.length>0) pv = (pv + 1/p_values.length) % 1;
+								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
 								f(p,pv);
 								redraw_flag.flag=2;
 							} 

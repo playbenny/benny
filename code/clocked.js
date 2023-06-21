@@ -105,7 +105,11 @@ function frameclock(){
 					if(redraw_flag.targets[i] && Array.isArray(paramslider_details[i])){ //check it's defined (as sometimes if clock runs during its construction you got errors
 						bangflag=1;
 						//post("\nREDRAW",i);
-						if((redraw_flag.targets[i]==1)&&(paramslider_details[i][16]!=0)&&(automap.mapped_c!=sidebar.selected)){
+						if(paramslider_details[i][10]&2){
+							draw_sidebar(); //for now, with one-per-voice parameters, we cheat and redraw the whole sidebar
+							// because flagging changes is done per parameter, not per parameter/voice
+							// most opv parameters are not going to be audio rate mod'd...
+						}else if((redraw_flag.targets[i]==1)&&(paramslider_details[i][16]!=0)&&(automap.mapped_c!=sidebar.selected)){
 							outlet(7, "paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
@@ -214,6 +218,8 @@ function check_changed_queue(){
 		if(b==sidebar.selected){
 			if((sidebar.mode == "block")||(sidebar.mode == "settings")||(sidebar.mode == "add_state")){
 				if(!is_empty(paramslider_details[i])){
+//					post("\ntesting",i,b,p);
+//					post("flagging",p,"as changed");
 					redraw_flag.targets[p] |= 1;
 					redraw_flag.flag |= 1;														
 				}

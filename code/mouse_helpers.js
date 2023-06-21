@@ -449,7 +449,7 @@ function static_mod_adjust(parameter,value){
 		//set value
 		parameter_static_mod.poke(1,parameter[2],Math.max(-1,Math.min(1,value)));
 		rebuild_action_list = 1;
-		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
+		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings"))){// && (parameter[1]==sidebar.selected)){
 			redraw_flag.flag|=1;
 			redraw_flag.targets[parameter[0]]=2;
 		}
