@@ -134,8 +134,13 @@ var is_flocked = new Array(65536); //voice*MAX_PARAMS+paramno is the index, this
  //   								  the value is 0 for no or flock_id for yes
 var mod_id = 0;
 
-var click_matrix = new JitterMatrix(4, "char", 320, 240);
-click_matrix.name = "click_matrix";
+// new click buffer. this array is typed for speed. we take index (12bit) and add bitshifted type(4bit)
+// dont mess it up with out of bounds values. index < 4096, type < 16
+var click_i = new Int16Array(9900000); //more than 4k. 
+var click_b_w = 11; //width of the screen log2 (ie so 2^this > actual width)
+
+//var click_matrix = new JitterMatrix(4, "char", 320, 240);
+//click_matrix.name = "click_matrix";
 
 var connections_sketch = new JitterObject("jit.gl.sketch","mainwindow");
 
@@ -271,6 +276,8 @@ var usermouse = {
 		shift: 0,
 		alt: 0,
 		gotcell : [0,0,0],
+		got_i : 0,
+		got_t : 0
 	},
 	queue : [],
 	qlb : 0,

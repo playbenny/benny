@@ -1,24 +1,3 @@
-// new click buffer. this array is typed for speed. we take index (12bit) and add bitshifted type(4bit)
-// dont mess it up with out of bounds values. index < 4096, type < 16
-var click_i = new Int16Array(9900000); //more than 4k. 
-var click_b_w = 11; //width of the screen log2 (ie so 2^this > actual width)
-
-function click_rectangle(x1,y1,x2,y2,index,type){
-	type &= 15;
-	index &= 4095;
-	var w = x2-x1;
-	var c = type<<12+index;
-	for(var y=y1;y<=y2;y++){
-		var ty=y<<click_b_w;
-		ty+=x1;
-		for(var e=w;e--;ty++){
-			click_i[ty] = c;
-		}
-	}
-//	post("\n last ty",ty,"test,",1<<click_b_w);
-//	post("\n click val",click_i[x1+(y1<<click_b_w)],"index",x1+(y1<<click_b_w));
-}
-
 function new_block(block_name,x,y){
 	post("new block");
 	var details = new Dict;
@@ -396,8 +375,8 @@ function create_connection_button(){
 	connections.append("connections",new_connection);
 	make_connection(connections.getsize("connections")-1);
 	new_connection.clear();
-	outlet(8,"clear");
-	outlet(8,"bang");
+	click_clear(0,0);
+	//outlet(8,"bang");
 	set_display_mode("blocks");
 	redraw_flag.flag |= 4;
 }
@@ -2220,8 +2199,8 @@ function insert_block_in_connection(newblockname,newblock){
 	connections.append("connections",new_connection);
 	make_connection(connections.getsize("connections")-1);
 	new_connection.clear();
-	outlet(8,"clear");
-	outlet(8,"bang");
+	click_clear(0,0);
+	//outlet(8,"bang");
 	set_display_mode("blocks");
 	redraw_flag.flag |= 4;	
 }

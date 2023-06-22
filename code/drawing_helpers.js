@@ -1,3 +1,32 @@
+
+function click_clear(index,type){
+	post("\nwiping click matrix");
+	if(mainwindow_height>0) click_rectangle(0,0,mainwindow_width,mainwindow_height,index,type); // wipe click matrix
+}
+function click_oval(x1,y1,x2,y2,index,type){
+	click_rectangle(x1,y1,x2,y2,index,type); //sorry, i lied. TODO draw ovals here
+}
+function click_rectangle(x1,y1,x2,y2,index,type){
+	x1=Math.max(0,x1);
+	x1|=0;
+	x2|=0;
+	y2|=0;
+	y1=Math.max(0,y1);
+	y1|=0;
+	type &= 15;
+	index &= 4095;
+	var w = x2-x1;
+	var c = (type<<12)+index;
+	for(var y=y1;y<=y2;y++){
+		var ty=y<<click_b_w;
+		ty+=x1;
+		for(var e=w;e--;ty++){
+			click_i[ty] = c;
+		}
+	}
+}
+
+
 function draw_block_texture(block){
 	var block_label = blocks.get("blocks["+block+"]::label");
 	if(block_label!==null){
@@ -92,7 +121,7 @@ function setfontsize(size){
 
 function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8),2);
+	click_rectangle(x1,y1,x2,y2,index,2);
 	var ly;
  	if(value>=0) {
 		if(value>=1){
@@ -117,7 +146,7 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,value){
 	}
 	outlet(7, "paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8),1);
+	click_rectangle(x1,y1,x2,y2,index,1);
 }
 function labelled_parameter_v_slider(sl_no){
 	
@@ -250,9 +279,9 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no)
 	var ww = w/vlist.length;
 	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
 		//post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
-		outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,((index+1)&255),((index+1)>>8),2);
+		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+1,2);
 	}else{
-		outlet(8, "paintrect",x1,y1,x2+fontheight*0.1,y2,(index&255),(index>>8),2);
+		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index,2);
 	}
 	for(var i=0;i<vlist.length;i++){
 		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
@@ -264,14 +293,14 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no)
 			var mu=0.33;
 			//post("\ndrawing slider",sl_no,blockno,paramno);
 			if(opvf){
-				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
+				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [sl_no, blockno, vlist[0]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
 				mouse_index++;
 				mu=0.5;				
 			}else if(i==sidebar.scopes.voicenum){
-				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
+				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
@@ -283,7 +312,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no)
 			ly = y1 + (y2-y1)*(-tvalue);
 			var mu=0.33;
 			if(i==sidebar.scopes.voicenum){
-				outlet(8, "paintrect",x1+ww*i,y1,x1+ww*i+ww,y2,(index&255),(index>>8),2);
+				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno,blockno,vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
@@ -317,7 +346,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no)
 
 function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 2);
+	click_rectangle(x1,y1,x2,y2,index, 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){
@@ -345,7 +374,7 @@ function clear_wave_graphic(n){
 function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	var value=0;
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 3);
+	click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
 	var hls;
 	var hle ;
@@ -408,7 +437,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 
 function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,index,0, 3);
+	click_rectangle(x1,y1,x2,y2,index,0, 3);
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
@@ -453,7 +482,7 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 }
 function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 2);
+	click_rectangle(x1,y1,x2,y2,index, 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){
@@ -488,7 +517,7 @@ function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 
 function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
 	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 4);
+	click_rectangle(x1,y1,x2,y2,index, 4);
 	var lx = x1 + 8 + (x2-x1-16)*value_x;
 	var ly = y1 + 8 + (y2-y1-16)*(1-value_y);
 	outlet(7, "paintrect",(lx-4),(ly-4),(lx+4),(ly+4) ,r,g,b);
@@ -497,7 +526,7 @@ function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
 function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
 	outlet(7, "frameoval",x1,y1,x2,y2,r,g,b);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 2);
+	click_rectangle(x1,y1,x2,y2,index, 2);
 	outlet(7, "moveto",((x1+x2)/2),((y1+y2)/2));
 	outlet(7, "lineto",(((x1+x2)/2)+Math.sin(6.28*angle)*(x2-x1-16)/2),(((y1+y2)/2)-Math.cos(6.28*angle)*(y2-y1-16)/2));
 }
@@ -531,7 +560,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 		outlet(7,"moveto",(x1+5),(y1+(y2-y1)*0.95));
 		outlet(7,"write","x"+maxl.toPrecision(3));
 	}
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 4);
+	click_rectangle(x1,y1,x2,y2,index, 4);
 }
 
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
@@ -540,7 +569,7 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	outlet(7, "paintoval",x1,y1,x2,y2,0,0,0);
 	outlet(7, "frameoval",x1,y1,x2,y2,r/2,g/2,b/2);
 	outlet(7, "frameoval",(x1+t),(y1+t),(x2-t),(y2-t),r,g,b);
-	outlet(8, "paintrect",x1,y1,x2,y2,(index&255),(index>>8), 4);
+	click_rectangle(x1,y1,x2,y2,index, 4);
 	var cx = (x1+x2)/2;
 	var cy = (y1+y2)/2;
 	var r1 = (x2-x1)/2;
@@ -579,7 +608,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 	}else if(type=="mouse_passthrough"){
-		outlet(8, "paintrect", x1,y1,x2,y2, (mouse_index&255),(mouse_index>>8), 7);
+		click_rectangle( x1,y1,x2,y2, mouse_index, 7);
 		mouse_click_actions[mouse_index] = custom_mouse_passthrough;
 		mouse_click_parameters[mouse_index] = dataindex; //custom_block+1;
 		mouse_click_values[mouse_index] = 0;

@@ -561,16 +561,15 @@ function size(width,height,scale){
 		mainwindow_width = width;
 		mainwindow_height = height;
 		if((typeof scale == "number") && (scale>0)) scale_2d = scale;
-		click_matrix.dim= [width,height];
+		//click_matrix.dim= [width,height];
 		outlet(7,"dim",width,height);
-		outlet(8,"dim",width,height); // TODO delete me
+		//outlet(8,"dim",width,height); // TODO delete me
 		click_b_w=1; //work out the next power of two after the width, eg 640 --> 1024, use this for the click matrix row length for speed
 		var t = 1;
 		while(t<mainwindow_width){
 			t*=2;
 			click_b_w++;
 		}
-		click_rectangle(0,0,mainwindow_width,mainwindow_height,0,0); // wipe click matrix
 		post("\nset click_b_w to",click_b_w);
 		fontheight = (mainwindow_height-24) / 18;
 		sidebar.width = fontheight*8;

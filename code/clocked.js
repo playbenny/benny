@@ -222,7 +222,7 @@ function frameclock(){
 	}
 	if(bangflag) {
 		outlet(7, "bang");
-		outlet(8, "bang");
+		//outlet(8,"bang");
 	}
 	redraw_flag.flag = 0;
 }

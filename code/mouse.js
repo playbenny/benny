@@ -124,22 +124,27 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.alt = alt;
 	usermouse.x = x;
 	usermouse.y = y;
-	var tcell = click_matrix.getcell(x/scale_2d,y/scale_2d);
+	/*var tcell = click_matrix.getcell(x/scale_2d,y/scale_2d);
 	if(tcell!=null){
-		usermouse.gotcell[0] = tcell[1] + (tcell[2]<<8);
-		usermouse.gotcell[2] = tcell[3];
+		usermouse.got_i = tcell[1] + (tcell[2]<<8);
+		usermouse.got_t = tcell[3];
 	}else{
 		usermouse.gotcell = [0,0,0];
-	}
+	}*/
+	//usermouse.gotcell = [0,0,0];
+	var tcell = click_i[x+(y<<click_b_w)];
+	usermouse.got_i = tcell & 4095;
+	usermouse.got_t = tcell >> 12;
+//	post("\nindex",usermouse.got_i,"type",usermouse.got_t);
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
 		var id = glpicker.touch(x,y);
 		picker_hover_and_special(id);
 	}
-	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.gotcell[0],usermouse.gotcell[2]]);
+	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
 	if(usermouse.last.left_button!=usermouse.left_button){
 		// ##################################################
 		if(usermouse.left_button){	// CLICK
-			if((usermouse.gotcell[0]==0) && (usermouse.gotcell[2]==0)){	//nothing on the 2d layer, open it up for 3d clicks
+			if((usermouse.got_i==0) && (usermouse.got_t==0)){	//nothing on the 2d layer, open it up for 3d clicks
 				if((displaymode=="blocks")||(displaymode=="block_menu")){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;		
@@ -168,28 +173,28 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}
 				} 
-			}else if(usermouse.gotcell[2]==7){//passthrough
-				var f = mouse_click_actions[usermouse.gotcell[0]];
-				var p = mouse_click_parameters[usermouse.gotcell[0]];
-				var v = mouse_click_values[usermouse.gotcell[0]];
+			}else if(usermouse.got_t==7){//passthrough
+				var f = mouse_click_actions[usermouse.got_i];
+				var p = mouse_click_parameters[usermouse.got_i];
+				var v = mouse_click_values[usermouse.got_i];
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;				
 			}else{
 				//usermouse.timer = DOUBLE_CLICK_TIME;
-				usermouse.clicked2d = usermouse.gotcell[0];
+				usermouse.clicked2d = usermouse.got_i;
 				usermouse.clicked3d = -1;
-				usermouse.last.gotcell[0] = usermouse.gotcell[0];
-				usermouse.last.gotcell[2] = usermouse.gotcell[2];
+				usermouse.last.gotcell[0] = usermouse.got_i;
+				usermouse.last.gotcell[2] = usermouse.got_t;
 				usermouse.drag.distance = 0;
-				if(usermouse.gotcell[2]>=2 && usermouse.gotcell[2]<=4){
+				if(usermouse.got_t>=2 && usermouse.got_t<=4){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
-					if(usermouse.gotcell[0]>=0){
-						var f = mouse_click_actions[usermouse.gotcell[0]];
-						var p = mouse_click_parameters[usermouse.gotcell[0]];
-						var v = mouse_click_values[usermouse.gotcell[0]];
+					if(usermouse.got_i>=0){
+						var f = mouse_click_actions[usermouse.got_i];
+						var p = mouse_click_parameters[usermouse.got_i];
+						var v = mouse_click_values[usermouse.got_i];
 						usermouse.drag.starting_value_x = f(p,"get");
-						if(/* (v>1)|| */(usermouse.gotcell[2]==4)){ //v is 
+						if(/* (v>1)|| */(usermouse.got_t==4)){ //v is 
 							usermouse.drag.starting_value_y = f(v,"get");
 						}else{
 							usermouse.drag.starting_value_y = -1;
@@ -203,29 +208,29 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		// ##################################################
 		}else{						// RELEASE
 //			post("\nrelease\n2d3d is",usermouse.clicked2d,usermouse.clicked3d);
-			if(usermouse.gotcell[2]==7){//passthrough
-				var f = mouse_click_actions[usermouse.gotcell[0]];
-				var p = mouse_click_parameters[usermouse.gotcell[0]];
-				var v = mouse_click_values[usermouse.gotcell[0]];
+			if(usermouse.got_t==7){//passthrough
+				var f = mouse_click_actions[usermouse.got_i];
+				var p = mouse_click_parameters[usermouse.got_i];
+				var v = mouse_click_values[usermouse.got_i];
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			} 
 /*			if(usermouse.clicked2d == -2){ //this is if the mouse click transition to 1 happened in picker not in mouse, which is the case with touch
-				if((usermouse.gotcell[0] > 0) && (usermouse.gotcell[2]>0)){
-					usermouse.clicked2d = usermouse.gotcell[0];
+				if((usermouse.got_i > 0) && (usermouse.got_t>0)){
+					usermouse.clicked2d = usermouse.got_i;
 					usermouse.clicked3d = -1;
-					usermouse.last.gotcell[0] = usermouse.gotcell[0];
-					usermouse.last.gotcell[2] = usermouse.gotcell[2];
+					usermouse.last.gotcell[0] = usermouse.got_i;
+					usermouse.last.gotcell[2] = usermouse.got_t;
 					usermouse.drag.distance = 0;
-					if(usermouse.gotcell[2]>=2 && usermouse.gotcell[2]<=4){
+					if(usermouse.got_t>=2 && usermouse.got_t<=4){
 						usermouse.drag.starting_x = usermouse.x;
 						usermouse.drag.starting_y = usermouse.y;
-						if(usermouse.gotcell[0]>=0){
-							var f = mouse_click_actions[usermouse.gotcell[0]];
-							var p = mouse_click_parameters[usermouse.gotcell[0]];
-							var v = mouse_click_values[usermouse.gotcell[0]];
+						if(usermouse.got_i>=0){
+							var f = mouse_click_actions[usermouse.got_i];
+							var p = mouse_click_parameters[usermouse.got_i];
+							var v = mouse_click_values[usermouse.got_i];
 							usermouse.drag.starting_value_x = f(p,"get");
-							if((v>1)||(usermouse.gotcell[2]==4)){ //v is 
+							if((v>1)||(usermouse.got_t==4)){ //v is 
 								usermouse.drag.starting_value_y = f(v,"get");
 							}else{
 								usermouse.drag.starting_value_y = -1;
@@ -236,7 +241,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}
 			}*/
 			if(usermouse.clicked2d != -1){
-				if(usermouse.last.gotcell[0] == usermouse.gotcell[0]){
+				if(usermouse.last.gotcell[0] == usermouse.got_i){
 					// post("2d release",usermouse.last.gotcell[0]);
 					if((usermouse.last.gotcell[2] == 1)||(usermouse.last.gotcell[2] == 7)){ // it's a button (1) or passthrough(7)
 						var f = mouse_click_actions[usermouse.last.gotcell[0]];
@@ -279,9 +284,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else{
 								scope_zoom(mouse_click_parameters[usermouse.last.gotcell[0]],"click");
 							}
-						}else if(mouse_click_actions[usermouse.gotcell[0]]==static_mod_adjust){
+						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
 							if(alt == 1){
-								var pb = mouse_click_parameters[usermouse.gotcell[0]];
+								var pb = mouse_click_parameters[usermouse.got_i];
 								static_mod_adjust(pb,0);
 							}
 						}
@@ -484,7 +489,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);			
 			if((usermouse.clicked2d != -1) && (usermouse.last.gotcell[2]>=2 && usermouse.last.gotcell[2]<=4)){ 
 // #### 2D DRAG ###########################################################################################################
-//				post("\nlast lookup: start xy",usermouse.drag.starting_value_x,usermouse.drag.starting_value_y,"last gotcell",usermouse.last.gotcell[0],"current gotcell", usermouse.gotcell[0], "value of gotcell", mouse_click_values[usermouse.gotcell[0]]);
+//				post("\nlast lookup: start xy",usermouse.drag.starting_value_x,usermouse.drag.starting_value_y,"last gotcell",usermouse.last.gotcell[0],"current gotcell", usermouse.got_i, "value of gotcell", mouse_click_values[usermouse.got_i]);
 				var f = mouse_click_actions[usermouse.last.gotcell[0]];
 				var p = mouse_click_parameters[usermouse.last.gotcell[0]];
 				var v = mouse_click_values[usermouse.last.gotcell[0]];
@@ -499,7 +504,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						xdist = 0;
 						ydist = 0;
 						usermouse.drag.starting_value_x = f(p,"get");
-						if(/* (v>1)|| */(usermouse.gotcell[2]==4)){ //v is 
+						if(/* (v>1)|| */(usermouse.got_t==4)){ //v is 
 							usermouse.drag.starting_value_y = f(v,"get");
 						}else{
 							usermouse.drag.starting_value_y = -1;
@@ -733,13 +738,22 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.alt = alt;
 	usermouse.x = x;
 	usermouse.y = y;
-	var gotcell=click_matrix.getcell(x/scale_2d,y/scale_2d);
+	/*var gotcell=click_matrix.getcell(x/scale_2d,y/scale_2d);
 	if(gotcell!=null){
 		b = gotcell[1];
 		c = gotcell[2];
 		b = b + (c<<8);
 		d = gotcell[3];	
-	}
+	}*/
+	var tcell = click_i[x+(y<<click_b_w)];
+	b=tcell & 4095;
+	c=0;
+	d=tcell >> 12;
+
+	if((displaymode=="blocks")||(displaymode=="block_menu")){
+		var id = glpicker.touch(x,y);
+		picker_hover_and_special(id);
+	}	
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
 		if(displaymode=="blocks"){
