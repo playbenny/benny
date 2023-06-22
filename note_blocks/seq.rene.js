@@ -50,7 +50,6 @@ function draw(){
 			}
 		}	
 		outlet(1,"bang");
-		outlet(2,"bang");
 	}
 }
 

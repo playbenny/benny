@@ -90,9 +90,7 @@ function draw(){
 				}
 			}
 		}
-	//	outlet(0,"bang");
 		outlet(1,"bang");
-		outlet(2,"bang");
 	}
 }
 
