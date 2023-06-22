@@ -135,7 +135,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		var id = glpicker.touch(x,y);
 		picker_hover_and_special(id);
 	}
-	deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.gotcell[0],usermouse.gotcell[2]]);
+	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.gotcell[0],usermouse.gotcell[2]]);
 	if(usermouse.last.left_button!=usermouse.left_button){
 		// ##################################################
 		if(usermouse.left_button){	// CLICK

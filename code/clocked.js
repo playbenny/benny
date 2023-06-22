@@ -105,10 +105,31 @@ function frameclock(){
 					if(redraw_flag.targets[i] && Array.isArray(paramslider_details[i])){ //check it's defined (as sometimes if clock runs during its construction you got errors
 						bangflag=1;
 						//post("\nREDRAW",i);
+						 //for now, with one-per-voice parameters, we cheat and redraw the whole row
+						// because flagging changes is done per parameter, not per parameter/voice
+						// most opv parameters are not going to be audio rate mod'd...
 						if(paramslider_details[i][10]&2){
-							draw_sidebar(); //for now, with one-per-voice parameters, we cheat and redraw the whole sidebar
-							// because flagging changes is done per parameter, not per parameter/voice
-							// most opv parameters are not going to be audio rate mod'd...
+							var thisp = paramslider_details[i][9];
+							//post("\nOPV slider, it wants to redraw number",i,"who's paramno value is ",thisp);
+							for(var ii=i;ii>-1;ii--){
+								if((Array.isArray(paramslider_details[ii]))&&(paramslider_details[ii][9]==thisp)){
+									//post("also drawing",ii)
+									outlet(7, "paintrect", paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],0,0,0);
+ 									parameter_v_slider(paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],paramslider_details[ii][4], paramslider_details[ii][5], paramslider_details[ii][6], paramslider_details[ii][7],paramslider_details[ii][8], paramslider_details[ii][9], paramslider_details[ii][10]);
+								}else{
+									ii=-2;
+								}
+							}
+							for(var ii=i+1;ii < paramslider_details.length;ii++){
+								if((Array.isArray(paramslider_details[ii]))&&(paramslider_details[ii][9]==thisp)){
+									//post("also drawing",ii)
+									outlet(7, "paintrect", paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],0,0,0);
+ 									parameter_v_slider(paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],paramslider_details[ii][4], paramslider_details[ii][5], paramslider_details[ii][6], paramslider_details[ii][7],paramslider_details[ii][8], paramslider_details[ii][9], paramslider_details[ii][10]);
+								}else{
+									ii=paramslider_details.length+1;
+								}
+							}
+							//draw_sidebar();
 						}else if((redraw_flag.targets[i]==1)&&(paramslider_details[i][16]!=0)&&(automap.mapped_c!=sidebar.selected)){
 							outlet(7, "paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);

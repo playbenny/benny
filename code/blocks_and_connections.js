@@ -1,3 +1,23 @@
+// new click buffer. this array is typed for speed. we take index (12bit) and add bitshifted type(4bit)
+// dont mess it up with out of bounds values. index < 4096, type < 16
+var click_i = new Int16Array(9900000); //more than 4k. 
+var click_b_w = 11; //width of the screen log2 (ie so 2^this > actual width)
+
+function click_rectangle(x1,y1,x2,y2,index,type){
+	type &= 15;
+	index &= 4095;
+	var w = x2-x1;
+	var c = type<<12+index;
+	for(var y=y1;y<=y2;y++){
+		var ty=y<<click_b_w;
+		ty+=x1;
+		for(var e=w;e--;ty++){
+			click_i[ty] = c;
+		}
+	}
+//	post("\n last ty",ty,"test,",1<<click_b_w);
+//	post("\n click val",click_i[x1+(y1<<click_b_w)],"index",x1+(y1<<click_b_w));
+}
 
 function new_block(block_name,x,y){
 	post("new block");
