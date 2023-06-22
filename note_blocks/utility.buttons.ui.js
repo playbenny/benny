@@ -51,7 +51,7 @@ function draw(){
 			outlet(0,"custom_ui_element","mouse_passthrough",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,0,0,0,block+1,block+1,0);
 		}	
 		outlet(1,"bang");
-		outlet(2,"bang");	}
+	}
 }
 
 function update(){
@@ -66,7 +66,6 @@ function update(){
 			}
 		}	
 		outlet(1,"bang");
-		outlet(2,"bang");
 	}
 }
 

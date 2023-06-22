@@ -1,7 +1,7 @@
 var MAX_DATA = 1024;
 var MAX_BLOCKS = 64;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
-outlets = 4;
+outlets = 3;
 var config = new Dict;
 config.name = "config";
 var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
@@ -121,7 +121,7 @@ function check_mute_state(){
 		if(blocks.get("blocks["+block+"]::mute")==1) muted =1;
 	}
 
-	outlet(3,1-muted);
+	outlet(2,1-muted);
 }
 
 function voice_is(v){
@@ -131,7 +131,7 @@ function voice_is(v){
 		if((i!=block) && (blocks.contains("blocks["+i+"]::patcher"))){
 			if(blocks.get("blocks["+i+"]::patcher")=="core.clock"){
 				if(!muted){ //ie if we're not loading
-					outlet(3,2); //this closes the gate, acquires the tempo, reopens the gate?
+					outlet(2,2); //this closes the gate, acquires the tempo, reopens the gate?
 				}
 			} 
 		}
