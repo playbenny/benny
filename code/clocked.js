@@ -110,10 +110,10 @@ function frameclock(){
 						// most opv parameters are not going to be audio rate mod'd...
 						if(paramslider_details[i][10]&2){
 							var thisp = paramslider_details[i][9];
-							//post("\nOPV slider, it wants to redraw number",i,"who's paramno value is ",thisp);
-							for(var ii=i;ii>-1;ii--){
+							post("\nOPV slider, it wants to redraw number",i,"who's paramno value is ",thisp);
+							for(var ii=i;ii>-1;ii--){ //now looks before and after this slider to see if they have the same paramno, redraws them too
 								if((Array.isArray(paramslider_details[ii]))&&(paramslider_details[ii][9]==thisp)){
-									//post("also drawing",ii)
+									post("also drawing",ii)
 									outlet(7, "paintrect", paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],0,0,0);
  									parameter_v_slider(paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],paramslider_details[ii][4], paramslider_details[ii][5], paramslider_details[ii][6], paramslider_details[ii][7],paramslider_details[ii][8], paramslider_details[ii][9], paramslider_details[ii][10]);
 								}else{
@@ -122,7 +122,7 @@ function frameclock(){
 							}
 							for(var ii=i+1;ii < paramslider_details.length;ii++){
 								if((Array.isArray(paramslider_details[ii]))&&(paramslider_details[ii][9]==thisp)){
-									//post("also drawing",ii)
+									post("also drawing",ii)
 									outlet(7, "paintrect", paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],0,0,0);
  									parameter_v_slider(paramslider_details[ii][0], paramslider_details[ii][1], paramslider_details[ii][2], paramslider_details[ii][3],paramslider_details[ii][4], paramslider_details[ii][5], paramslider_details[ii][6], paramslider_details[ii][7],paramslider_details[ii][8], paramslider_details[ii][9], paramslider_details[ii][10]);
 								}else{

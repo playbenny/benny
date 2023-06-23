@@ -4530,15 +4530,16 @@ function draw_sidebar(){
 				outlet(7, "frgb" , block_colour);
 				outlet(7, "moveto" ,mainwindow_width-9-1.9*fontheight, fontheight*0.75+y_offset);
 				outlet(7, "write", "swap");
-				outlet(7, "paintrect", mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,255*bg_dark_ratio,0,0 );
 				click_rectangle( mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
 				mouse_click_actions[mouse_index] = remove_block_btn;
 				mouse_click_parameters[mouse_index] = block;
 				mouse_click_values[mouse_index] = mouse_index;	
 				if(danger_button == mouse_index){
-					outlet(7, "frgb" , 255,50,50);
+					outlet(7, "paintrect", mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,255,0,0 );
+					outlet(7, "frgb" , 0,0,0);
 				}else{
-					outlet(7, "frgb", menucolour);
+					outlet(7, "paintrect", mainwindow_width-9-1*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest );
+					outlet(7, "frgb", 255,0,0);
 				}
 				mouse_index++;
 //				outlet(7, "frgb" , 255,0,0);
@@ -5426,14 +5427,19 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = 0;
 			mouse_index++;
 			
-			outlet(7, "paintrect", mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
-			click_rectangle( mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
 			outlet(7, "paintrect", sidebar.x, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,menudarkest );
-			mouse_click_actions[mouse_index] = remove_connection;
+			click_rectangle( mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
+			mouse_click_actions[mouse_index] = remove_connection_btn;
 			mouse_click_parameters[mouse_index] = i;
-			mouse_click_values[mouse_index] = 0;
+			mouse_click_values[mouse_index] = mouse_index;
+			if(danger_button == mouse_index){
+				outlet(7, "paintrect", mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,120,0,0 );
+				outlet(7, "frgb" , 255,50,50);
+			}else{
+				outlet(7, "paintrect", mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
+				outlet(7, "frgb" , 255,0,0);
+			}
 			mouse_index++;
-			outlet(7, "frgb" , 255,0,0);
 			outlet(7, "moveto" , mainwindow_width-9-fontheight*0.8, fontheight*0.75+y_offset);
 			outlet(7, "write", "del");
 			outlet(7, "frgb", menucolour );

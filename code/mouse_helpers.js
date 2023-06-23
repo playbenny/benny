@@ -242,6 +242,16 @@ function select_folder(parameter,value){
 	messnamed("select_folder","bang");
 }
 
+function remove_connection_btn(cno,value){
+	if(value == danger_button){
+		remove_connection(cno);
+		danger_button = -1;
+	}else{
+		danger_button = value;
+		redraw_flag.flag |= 2;
+	}	
+}
+
 function remove_block_btn(block,value){
 	if(value == danger_button){
 		remove_block(block);
