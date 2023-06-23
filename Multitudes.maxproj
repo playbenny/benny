@@ -2,8 +2,8 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3770380681,
-	"viewrect" : [ 29.0, 101.0, 879.0, 611.0 ],
+	"modificationdate" : 3770402360,
+	"viewrect" : [ 29.0, 101.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
 	"showdependencies" : 1,
@@ -90,6 +90,21 @@
 				"local" : 1
 			}
 ,
+			"env.asr.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.2pole.filter.env.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.2pole.filter.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"fx.atoner.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -105,12 +120,27 @@
 				"local" : 1
 			}
 ,
+			"fx.fixed.filter.bank.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"fx.pitch.shift.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
 ,
+			"fx.retune.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"fx.wavefold.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"wavefoldR.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -131,6 +161,17 @@
 			}
 ,
 			"utility.gate.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"multitudes_engine.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"toplevel" : 1
+			}
+,
+			"utility.mid-side.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -208,12 +249,6 @@
 			"seq.note.tracker.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
-			}
-,
-			"multitudes_engine.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"toplevel" : 1
 			}
 ,
 			"upwrap2.maxpat" : 			{
@@ -412,6 +447,16 @@
 			"fx.2pole.filter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
+			}
+,
+			"env.asr.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/james music/Multitudes/patchers",
+					"projectrelativepath" : "../../james music/Multitudes/patchers"
+				}
+
 			}
 
 		}

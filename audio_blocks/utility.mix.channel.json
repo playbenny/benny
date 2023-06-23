@@ -17,32 +17,32 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0],
+				"contains" : [0],
 				"onepervoice" : 1,
 				"height" : 4
 			},
 			{ 
-				"contains" : [1,1],
+				"contains" : [1],
 				"onepervoice" : 1,
 				"height" : 1
 			},
 			{ 
-				"contains" : [2,2],
+				"contains" : [2],
 				"onepervoice" : 1,
 				"height" : 0
 			},
 			{ 
-				"contains" : [3,3],
+				"contains" : [3],
 				"onepervoice" : 1,
 				"height" : 1
 			},
 			{ 
-				"contains" : [4,4], 
+				"contains" : [4], 
 				"onepervoice" : 1,
 				"height" : 0
 			},
 			{ 
-				"contains" : [5,5], 
+				"contains" : [5], 
 				"onepervoice" : 1,
 				"height" : 0
 			}

@@ -27,12 +27,12 @@
 				"height" : 0
 			},
 			{
-				"contains" : [8,8],
+				"contains" : [8],
 				"height" : 2,
 				"onepervoice" : 1
 			},
 			{
-				"contains" : [9,9],
+				"contains" : [9],
 				"height" : 2,
 				"onepervoice" : 1
 			}

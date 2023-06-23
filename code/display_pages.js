@@ -3757,6 +3757,7 @@ function draw_sidebar(){
 							h_slider = groups[i].get("height");
 						}
 						plist = groups[i].get("contains");
+						if(!Array.isArray(plist)) plist = [plist];
 						var columns = Math.max(1,plist.length);
 						var opvf = 0;
 						opv=plist.length;
