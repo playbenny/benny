@@ -575,10 +575,6 @@ function draw_block_menu(){
 	mouse_click_parameters[0] = 0;
 	mouse_click_values[0] = 0;	
 	draw_menu_hint();
-	//outlet(7, "clear");
-	click_clear(0,0);
-	//outlet(7, "bang");
-	//outlet(8,"bang");
 }
 
 function hide_block_menu(){
@@ -1541,7 +1537,6 @@ function draw_connection_menu(){
 	redraw_flag.targets=[];
 	var mouse_index = 3;
 	outlet(7, "brgb", 0, 0, 0);
-	click_clear(0,0);
 	outlet(7, "clear");
 	click_clear(0,0);
 	var a = new Array(3);
@@ -2766,7 +2761,6 @@ function clear_screens(){
 		mouse_click_values[0] = 0;		
 	}
 	outlet(7, "clear");
-	click_clear(0,0);	
 	mouse_index++;
 }
 

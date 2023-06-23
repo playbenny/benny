@@ -375,7 +375,7 @@ function create_connection_button(){
 	connections.append("connections",new_connection);
 	make_connection(connections.getsize("connections")-1);
 	new_connection.clear();
-	click_clear(0,0);
+	//click_clear(0,0);
 	//outlet(8,"bang");
 	set_display_mode("blocks");
 	redraw_flag.flag |= 4;
@@ -2199,7 +2199,7 @@ function insert_block_in_connection(newblockname,newblock){
 	connections.append("connections",new_connection);
 	make_connection(connections.getsize("connections")-1);
 	new_connection.clear();
-	click_clear(0,0);
+	//click_clear(0,0);
 	//outlet(8,"bang");
 	set_display_mode("blocks");
 	redraw_flag.flag |= 4;	
@@ -2591,11 +2591,11 @@ function build_mod_sum_action_list(){
 	mod_sum_action_list.poke(3,list_pointer,-1);
 	mod_sum_action_list.poke(4,list_pointer,-1);
 	list_pointer++;	
-	output_queue_pointer = 0;
 	output_queue.poke(1,0,0);
-	changed_queue_pointer = 0; 
+	output_queue_pointer = 0;
 	changed_queue.poke(1,0,0);
-	messnamed("modulation_processor", "pause", 0);
+	changed_queue_pointer = 0; 
+	messnamed("modulation_processor", "pause", 0); //this message gets deferred (in the max patch) otherwise the gen doesn't get a frame to realise that pause has changed to 1 and back
 	
 //post("ok, list length",list_pointer,"\n");
 //for(i=0;i<list_pointer;i++){

@@ -4,7 +4,7 @@
 		"type" : "note",
 		"block_ui_patcher" : "core.clock.ui",
 		"help_text" : "Control tempo, swing, and microtiming settings for up to 8 humanised clock sources. 1 voice = 1 clock. USE ONLY ONE CLOCK BLOCK PER SONG THOUGH. when you merge in another song that contains a clock, it won't adjust the tempo until you unmute it. it shares humanisation ids with the first clock. TODO make the new clock easier than this. Click offset is measured in multiples of vector size, so it should stay consistent if you change vs in future.",
-		"max_polyphony" : 8,
+		"max_polyphony" : 0,
 		"autoload" : 1,
 		"connections" : {
 			"in" : {
@@ -17,7 +17,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 6,24,25],
+				"contains" : [0, 0, 6, 10, 11],
 				"colour" : [255,255,255],
 				"height" : 1
 			},
@@ -27,12 +27,12 @@
 				"height" : 0
 			},
 			{
-				"contains" : [8,9,10,11,12,13,14,15],
+				"contains" : [8,8],
 				"height" : 2,
 				"onepervoice" : 1
 			},
 			{
-				"contains" : [16,17,18,19,20,21,22,23],
+				"contains" : [9,9],
 				"height" : 2,
 				"onepervoice" : 1
 			}
@@ -98,7 +98,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "clock1",
+				"name" : "division",
 				"type" : "menu_i",
 				"width" : 3,
 				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
@@ -107,126 +107,7 @@
 				"default" : 0.6
 			},
 			{
-				"name" : "clock2",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0.455
-			},
-			{
-				"name" : "clock3",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0.321
-			},
-			{
-				"name" : "clock4",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0
-			},
-			{
-				"name" : "clock5",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0
-			},
-			{
-				"name" : "clock6",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0
-			},
-			{
-				"name" : "clock7",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0
-			},
-			{
-				"name" : "clock8",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0
-			},
-			{
-				"name" : "offset1",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset2",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset3",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset4",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset5",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset6",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset7",
-				"type" : "float",
-				"values" : ["bi", -50, 50, "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "offset8",
+				"name" : "offset",
 				"type" : "float",
 				"values" : ["bi", -50, 50, "lin"],
 				"error_scale" : 0,

@@ -275,7 +275,6 @@ var usermouse = {
 		left_button : 0,
 		shift: 0,
 		alt: 0,
-		gotcell : [0,0,0],
 		got_i : 0,
 		got_t : 0
 	},
@@ -287,7 +286,8 @@ var usermouse = {
 	hover : [-1,-1,-1], //hover things while you drag a thing
 	ids : [0,0,0], //current, split by -'s
 	oid : 0, //last hover id, to see if it's changed
-	gotcell : [0,0,0],
+	got_i : 0,
+	got_t : 0,
 	left_button : 0,
 	shift : 0,
 	alt : 0,

@@ -84,8 +84,8 @@ function picker_hover_and_special(id){
 		}	
 	}
 }
-// usermouse. left_button, shift, ctrl, alt, x, y, gotcell  <-- all the latest values. gotcell = 2d click index
-//     last.left_button, last.gotcell <-- last message's left button, gotcell
+// usermouse. left_button, shift, ctrl, alt, x, y, got_i, got_t  <-- all the latest values. got_i , _t = 2d click index and type
+//     last.left_button, last.got_i / _t <-- last message's left button, index+type
 // looks like only mouse fn can administer left button? this thitng above here is probably wrong?
 //  .clicked2d - index if clicked, -1 if nothing
 //  .clicked3d = -1 if you've clicked the 2d layer which supercedes the 3d one.
@@ -124,18 +124,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.alt = alt;
 	usermouse.x = x;
 	usermouse.y = y;
-	/*var tcell = click_matrix.getcell(x/scale_2d,y/scale_2d);
-	if(tcell!=null){
-		usermouse.got_i = tcell[1] + (tcell[2]<<8);
-		usermouse.got_t = tcell[3];
-	}else{
-		usermouse.gotcell = [0,0,0];
-	}*/
-	//usermouse.gotcell = [0,0,0];
+
 	var tcell = click_i[x+(y<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
-//	post("\nindex",usermouse.got_i,"type",usermouse.got_t);
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
 		var id = glpicker.touch(x,y);
 		picker_hover_and_special(id);
@@ -183,8 +175,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				//usermouse.timer = DOUBLE_CLICK_TIME;
 				usermouse.clicked2d = usermouse.got_i;
 				usermouse.clicked3d = -1;
-				usermouse.last.gotcell[0] = usermouse.got_i;
-				usermouse.last.gotcell[2] = usermouse.got_t;
+				usermouse.last.got_i = usermouse.got_i;
+				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
 				if(usermouse.got_t>=2 && usermouse.got_t<=4){
 					usermouse.drag.starting_x = usermouse.x;
@@ -219,8 +211,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if((usermouse.got_i > 0) && (usermouse.got_t>0)){
 					usermouse.clicked2d = usermouse.got_i;
 					usermouse.clicked3d = -1;
-					usermouse.last.gotcell[0] = usermouse.got_i;
-					usermouse.last.gotcell[2] = usermouse.got_t;
+					usermouse.last.got_i = usermouse.got_i;
+					usermouse.last.got_t = usermouse.got_t;
 					usermouse.drag.distance = 0;
 					if(usermouse.got_t>=2 && usermouse.got_t<=4){
 						usermouse.drag.starting_x = usermouse.x;
@@ -241,25 +233,25 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}
 			}*/
 			if(usermouse.clicked2d != -1){
-				if(usermouse.last.gotcell[0] == usermouse.got_i){
-					// post("2d release",usermouse.last.gotcell[0]);
-					if((usermouse.last.gotcell[2] == 1)||(usermouse.last.gotcell[2] == 7)){ // it's a button (1) or passthrough(7)
-						var f = mouse_click_actions[usermouse.last.gotcell[0]];
-						var p = mouse_click_parameters[usermouse.last.gotcell[0]];
-						var v = mouse_click_values[usermouse.last.gotcell[0]];
+				if(usermouse.last.got_i == usermouse.got_i){
+					// post("2d release",usermouse.last.got_i);
+					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)){ // it's a button (1) or passthrough(7)
+						var f = mouse_click_actions[usermouse.last.got_i];
+						var p = mouse_click_parameters[usermouse.last.got_i];
+						var v = mouse_click_values[usermouse.last.got_i];
 						
-						if(usermouse.last.gotcell[0] != danger_button){
+						if(usermouse.last.got_i != danger_button){
 							danger_button = -1;
 						} 
 						f(p,v);
 						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 					}
-					if((usermouse.last.gotcell[2] == 2) && (usermouse.drag.distance<100)){ //its a slider
-						if(mouse_click_actions[usermouse.last.gotcell[0]]==sidebar_parameter_knob){
+					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider
+						if(mouse_click_actions[usermouse.last.got_i]==sidebar_parameter_knob){
 							if(alt == 1){
-								var pb = mouse_click_parameters[usermouse.last.gotcell[0]];
-								var f = mouse_click_actions[usermouse.last.gotcell[0]];
-								var p = mouse_click_parameters[usermouse.last.gotcell[0]];
+								var pb = mouse_click_parameters[usermouse.last.got_i];
+								var f = mouse_click_actions[usermouse.last.got_i];
+								var p = mouse_click_parameters[usermouse.last.got_i];
 								f(p,param_defaults[pb[1]][pb[0]]);
 								redraw_flag.flag=2;								
 							}else if(usermouse.ctrl == 1){
@@ -268,21 +260,21 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}else{
 									set_sidebar_mode("flock");
 								}
-							}else if(mouse_click_values[usermouse.last.gotcell[0]]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
-								var f = mouse_click_actions[usermouse.last.gotcell[0]];
-								var p = mouse_click_parameters[usermouse.last.gotcell[0]];
-								var pnumber = mouse_click_values[usermouse.last.gotcell[0]] - 1;
+							}else if(mouse_click_values[usermouse.last.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
+								var f = mouse_click_actions[usermouse.last.got_i];
+								var p = mouse_click_parameters[usermouse.last.got_i];
+								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
 								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
 								f(p,pv);
 								redraw_flag.flag=2;
 							} 
-						}else if(mouse_click_actions[usermouse.last.gotcell[0]]==scope_zoom){
+						}else if(mouse_click_actions[usermouse.last.got_i]==scope_zoom){
 							if(alt == 1){
 								scope_zoom(0,SCOPE_DEFAULT_ZOOM);
 							}else{
-								scope_zoom(mouse_click_parameters[usermouse.last.gotcell[0]],"click");
+								scope_zoom(mouse_click_parameters[usermouse.last.got_i],"click");
 							}
 						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
 							if(alt == 1){
@@ -487,12 +479,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			var xdist=usermouse.x-usermouse.drag.starting_x;
 			var ydist=usermouse.drag.starting_y-usermouse.y;
 			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);			
-			if((usermouse.clicked2d != -1) && (usermouse.last.gotcell[2]>=2 && usermouse.last.gotcell[2]<=4)){ 
+			if((usermouse.clicked2d != -1) && (usermouse.last.got_t>=2 && usermouse.last.got_t<=4)){ 
 // #### 2D DRAG ###########################################################################################################
-//				post("\nlast lookup: start xy",usermouse.drag.starting_value_x,usermouse.drag.starting_value_y,"last gotcell",usermouse.last.gotcell[0],"current gotcell", usermouse.got_i, "value of gotcell", mouse_click_values[usermouse.got_i]);
-				var f = mouse_click_actions[usermouse.last.gotcell[0]];
-				var p = mouse_click_parameters[usermouse.last.gotcell[0]];
-				var v = mouse_click_values[usermouse.last.gotcell[0]];
+				var f = mouse_click_actions[usermouse.last.got_i];
+				var p = mouse_click_parameters[usermouse.last.got_i];
+				var v = mouse_click_values[usermouse.last.got_i];
 				if(f!="none"){
 					xdist/=(mainwindow_width*0.25);
 					ydist/=(mainwindow_height*0.3);
@@ -738,13 +729,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.alt = alt;
 	usermouse.x = x;
 	usermouse.y = y;
-	/*var gotcell=click_matrix.getcell(x/scale_2d,y/scale_2d);
-	if(gotcell!=null){
-		b = gotcell[1];
-		c = gotcell[2];
-		b = b + (c<<8);
-		d = gotcell[3];	
-	}*/
+
 	var tcell = click_i[x+(y<<click_b_w)];
 	b=tcell & 4095;
 	c=0;
