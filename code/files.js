@@ -680,7 +680,8 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 }
 
-function save_song(){
+function save_song(selectedonly){
+	if(selectedonly) post("\nTODO save selected blocks only isn't done yet sorry, this will save the whole thing.");
 	post("collecting data to save\n");
 //copy current param values into states[0]
 	var b,p,psize;
