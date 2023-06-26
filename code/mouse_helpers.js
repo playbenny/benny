@@ -349,33 +349,65 @@ function fire_block_state(state, block){
 		if(m!=pv[0]) redraw_flag.flag |= 8;
 	}
 }
-function fire_whole_state(state, value){
-	//post("\nfire whole state",state);
+
+function fire_whole_state_btn(state,value){
 	if(usermouse.ctrl){
 		sidebar.selected = state;
 		set_sidebar_mode("edit_state");
 	}else{
-		var pv=[];
-		if(state==-1) state="current";
-		var stat = new Dict();
-		stat = states.get("states::"+state);
-		var sc_list = stat.getkeys();
-		if(!Array.isArray(sc_list)) sc_list=[+sc_list];
-		var mf=0;
-		for(var i=0;i<sc_list.length;i++){
-			var b = sc_list[i];
-			pv = states.get("states::"+state+"::"+b);
-			if(!is_empty(pv)){
-				var m=0;
-				if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
-				if(m!=pv[0])mf=1;
-				mute_particular_block(b,pv[0]);
-				for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, pv[t]);
-			}
-		}
-		if(mf==1)redraw_flag.flag |= 8;
+		fire_whole_state(state);
 	}
 }
+function fire_whole_state(state, value){
+	//post("\nfire whole state",state);
+	var pv=[];
+	if(state==-1) state="current";
+	var stat = new Dict();
+	stat = states.get("states::"+state);
+	var sc_list = stat.getkeys();
+	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
+	var mf=0;
+	for(var i=0;i<sc_list.length;i++){
+		var b = sc_list[i];
+		pv = states.get("states::"+state+"::"+b);
+		if(!is_empty(pv)){
+			var m=0;
+			if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
+			if(m!=pv[0])mf=1;
+			mute_particular_block(b,pv[0]);
+			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, pv[t]);
+		}
+	}
+	if(mf==1)redraw_flag.flag |= 8;
+}
+
+function blend_state(state, amount){ //this isn't suitable for xfading, it's for the states block really - it blends current value with state value (no way to wind back to starting point etc)
+	var pv=[];
+	if(state==-1) state="current";
+	var stat = new Dict();
+	stat = states.get("states::"+state);
+	var sc_list = stat.getkeys();
+	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
+	var mf=0;
+	for(var i=0;i<sc_list.length;i++){
+		var b = sc_list[i];
+		pv = states.get("states::"+state+"::"+b);
+		if(!is_empty(pv)){
+			var m=0;
+			if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
+			if(m!=pv[0])mf=1;
+			mute_particular_block(b,pv[0]);
+			for(var t=1;t<pv.length;t++){
+				var opv = parameter_value_buffer.peek(1, MAX_PARAMETERS*b+t-1);
+				opv = opv * (128-amount) + pv[t] * amount;
+				opv = opv>>7;
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, opv);
+			} 
+		}
+	}
+	if(mf==1)redraw_flag.flag |= 8;
+}
+
 function add_state(parameter,value){
 	set_sidebar_mode("add_state");
 }	

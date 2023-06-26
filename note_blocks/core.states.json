@@ -1,0 +1,14 @@
+{
+	"core.states" : {
+		"patcher" : "core.states",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "recall states via midi message. note number = state number. blend input does a xfade from current state to the selected one, based on the velocity of the incoming note.",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "select", "blend" ]
+			}
+		}
+	}
+}

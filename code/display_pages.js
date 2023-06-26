@@ -3009,7 +3009,7 @@ function draw_topbar(){
 					}					
 				}
 				click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), fontheight + 9,mouse_index,1 );							
-				mouse_click_actions[mouse_index] = fire_whole_state;
+				mouse_click_actions[mouse_index] = fire_whole_state_btn;
 				mouse_click_parameters[mouse_index] = i;
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
