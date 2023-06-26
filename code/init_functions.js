@@ -33,17 +33,17 @@ function import_hardware(v){
 			d3.setparse('{}');
 			d3.import_json(ob+".json");
 			if(d3.contains(ob+"::parameters")){
-				post("found output block parameters\n");
+				//post("found output block parameters\n");
 				//blocktypes.set(keys[i]+"::connections",d3.get(ob+"connections"));
 				blocktypes.set(keys[i]+"::groups",d3.get(ob+"::groups"));
 				blocktypes.set(keys[i]+"::parameters");
 				blocktypes.append(keys[i]+"::parameters");
 				var plist= d3.getsize(ob+"::parameters");
-				post("\nfound ",plist,"parameters\n");
+				post("- found ",plist,"parameters. ");
 				for(t=0;t<plist;t++){
 					blocktypes.setparse(keys[i]+"::parameters["+t+"]","{}");
 					blocktypes.set(keys[i]+"::parameters["+t+"]",d3.get(ob+"::parameters["+t+"]"));
-					post("\nadded param"+d3.get(ob+"::parameters["+t+"]"));
+					post(" - added param "+d3.get(ob+"::parameters["+t+"]::name")+"\n");
 					if(t+1<plist)blocktypes.append(keys[i]+"::parameters","*");
 				}
 			}
@@ -493,14 +493,16 @@ function populate_lookup_tables(){
 function load_core_blocks(){
 	// this routine also populates controller lists and keyboard input lists in all blocks in the db
 	var k=blocktypes.getkeys();
-	var t, mk, mt;
+	var t, mk;
 //	var nm,nms;
 	var y = 3;
 	var x = 0;
 	post("loading core blocks\n");
 	for(t in k){
 		if(blocktypes.contains(k[t]+"::autoload")){
-			if(blocktypes.get(k[t]+"::autoload")==1){
+			if(blocktypes.contains(k[t]+"::deprecated") && (blocktypes.get(k[t]+"::deprecated")==1)){
+				post("not showing this one because it's deprecated"+k[t]);//if it's deprecated, skip it
+			}else if(blocktypes.get(k[t]+"::autoload")==1){
 				post("loading",k[t]);
 				var kk=k[t].split('.');
 				if(kk[0]=='hardware'){
@@ -570,7 +572,6 @@ function size(width,height,scale){
 			t*=2;
 			click_b_w++;
 		}
-		post("\nset click_b_w to",click_b_w);
 		fontheight = (mainwindow_height-24) / 18;
 		sidebar.width = fontheight*8;
 		sidebar.x = mainwindow_width-sidebar.width -9;

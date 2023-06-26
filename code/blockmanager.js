@@ -223,7 +223,6 @@ var blocks_page = {
 	lowest: 0,
 	possible_connection: -1,
 	saved_color: [0,0,0,0],
-	safemode : 0
 }	
 
 var block_menu_d = {
@@ -462,8 +461,10 @@ var loading = {
 }
 
 var cpu_meter = {
-	avg : 0,
-	peak : 0,
+	avg : [256],
+	peak : [256],
+	fps : [256],
+	pointer : 0,
 	x : 1,
 	y2 : 9,
 	y1 : 40
@@ -503,13 +504,12 @@ function request_globals(){
 	globals_requested = 1;
 }
 
-function safe_mode(safe){
-	blocks.safemode = safe;
-}
-function cpu(avg,peak){
-	// TODO display this
-	cpu_meter.avg = avg;
-	cpu_meter.peak = peak;
+function cpu(avg,peak,fps){
+	cpu_meter.pointer++;
+	cpu_meter.pointer &= 255;
+	cpu_meter.avg[cpu_meter.pointer] = avg;
+	cpu_meter.peak[cpu_meter.pointer] = peak;
+	cpu_meter.fps[cpu_meter.pointer] = fps;
 }
 
 function request_waves_remapping(type, voice){

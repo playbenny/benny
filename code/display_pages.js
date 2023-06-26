@@ -23,7 +23,6 @@ function set_display_mode(mode,t){
 		}
 		if(mode=="block_menu") {
 			menu_camera_scroll=0;
-			if(blocks.safemode) return(0);
 		}else{
 			//hide_block_menu();
 		}

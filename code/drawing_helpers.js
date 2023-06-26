@@ -101,13 +101,14 @@ function gain_display(gain){
 		return s; 
 	}
 }
+
 function draw_cpu_meter(){
-	var pk = 9 + fontheight*(100-cpu_meter.peak)*0.01;
-	var avg = 9 + fontheight*(100-cpu_meter.avg)*0.01;
+	var pk = 9 + fontheight*(100-cpu_meter.peak[cpu_meter.pointer])*0.01;
+	var avg = 9 + fontheight*(100-cpu_meter.avg[cpu_meter.pointer])*0.01;
 	outlet(7,"frgb", 0, 0, 0);
 	outlet(7, "moveto", 5, 9);
 	outlet(7,"lineto", 5, 9+fontheight);
-	outlet(7, "frgb", 2.55*cpu_meter.peak, Math.min(2.55*(120-cpu_meter.peak),255),55);
+	outlet(7, "frgb", 2.55*cpu_meter.peak[cpu_meter.pointer], Math.min(2.55*(120-cpu_meter.peak[cpu_meter.pointer]),255),55);
 	outlet(7, "moveto", 5, avg);
 	outlet(7, "lineto", 5, pk);
 }

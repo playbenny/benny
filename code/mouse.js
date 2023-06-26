@@ -390,12 +390,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
-									if(!blocks.safemode){
-										post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
-										build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
-										usermouse.clicked3d=-1;
-										set_display_mode("connection_menu");
-									}
+									post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									usermouse.clicked3d=-1;
+									set_display_mode("connection_menu");
 								}
 							}else{ // ############## END OF DRAG MOVE BLOCKS ################
 								// MOVE BLOCK: - stores the dragged pos in the dict
@@ -416,7 +414,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								usermouse.clicked3d = -1;
 							}
 							if((usermouse.hover[1] == usermouse.ids[1]) && (0.25*Math.round(4*displaypos[0]) == 0.25*Math.round(4*dictpos[0])) && (0.25*Math.round(4*displaypos[1]) == 0.25*Math.round(4*dictpos[1]))){
-								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD) && !blocks.safemode){ // ###################### CONNECT TO SELF
+								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
 									build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									set_display_mode("connection_menu");
@@ -605,7 +603,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											}
 										}
 									}
-								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)&&(!blocks.safemode)){
+								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
 									//post("\n\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 								
 								// ############## INDICATE POSSIBLE CONNECTION (currently by turning it white)	
