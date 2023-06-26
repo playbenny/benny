@@ -3915,6 +3915,7 @@ function draw_sidebar(){
 							h_slider = groups[i].get("height");
 						}
 						plist = groups[i].get("contains");
+						if(!Array.isArray(plist)) plist = [plist];
 						var columns = Math.max(1,plist.length);
 						w_slider = (sidebar.width + fontheight * 0.1)/columns;
 						maxnamelabely =0;
@@ -4107,6 +4108,7 @@ function draw_sidebar(){
 							h_slider = groups[i].get("height");
 						}
 						plist = groups[i].get("contains");
+						if(!Array.isArray(plist)) plist = [plist];
 						var columns = Math.max(1,plist.length);
 						w_slider = (sidebar.width + fontheight * 0.1)/columns;
 						maxnamelabely =0;
@@ -4274,6 +4276,7 @@ function draw_sidebar(){
 					var totcol = 0;
 					for(i=0;i<groups.length;i++){
 						plist = groups[i].get("contains");
+						if(!Array.isArray(plist)) plist = [plist];
 						var columns = Math.max(1,plist.length);
 						opv=plist.length;
 						if(groups[i].contains("onepervoice")){
@@ -4295,12 +4298,9 @@ function draw_sidebar(){
 						y1 = y_offset +  fontheight * 0.1;
 						y2 = y_offset +  fontheight * 1;
 						plist = groups[i].get("contains");
-						var columns = Math.max(1,plist.length);
+						if(!Array.isArray(plist)) plist = [plist];
 						opv=plist.length;
-						if(groups[i].contains("onepervoice")){
-							opv=blocks.get("blocks["+block+"]::poly::voices");
-							columns= Math.max(1,opv);
-						}						
+						var columns= Math.max(1,opv);						
 						for(t=0;t<opv;t++){
 							wk=0;
 							for(tk=t;tk<opv;tk++){
