@@ -248,11 +248,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider
 						if(mouse_click_actions[usermouse.last.got_i]==sidebar_parameter_knob){
+							var pb = mouse_click_parameters[usermouse.last.got_i];
 							if(alt == 1){
-								var pb = mouse_click_parameters[usermouse.last.got_i];
-								var f = mouse_click_actions[usermouse.last.got_i];
-								var p = mouse_click_parameters[usermouse.last.got_i];
-								f(p,param_defaults[pb[1]][pb[0]]);
+								sidebar_parameter_knob(p,param_defaults[pb[1]][pb[0]]);
 								redraw_flag.flag=2;								
 							}else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
@@ -261,13 +259,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									set_sidebar_mode("flock");
 								}
 							}else if(mouse_click_values[usermouse.last.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
-								var f = mouse_click_actions[usermouse.last.got_i];
-								var p = mouse_click_parameters[usermouse.last.got_i];
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
 								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
-								f(p,pv);
+								sidebar_parameter_knob(pb,pv);
 								redraw_flag.flag=2;
 							} 
 						}else if(mouse_click_actions[usermouse.last.got_i]==scope_zoom){
@@ -277,10 +273,23 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								scope_zoom(mouse_click_parameters[usermouse.last.got_i],"click");
 							}
 						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
+							var pb = mouse_click_parameters[usermouse.got_i];
 							if(alt == 1){
-								var pb = mouse_click_parameters[usermouse.got_i];
 								static_mod_adjust(pb,0);
-							}
+							}else if(usermouse.ctrl == 1){
+								if(usermouse.shift == 1){
+									set_sidebar_mode("panel_assign");
+								}else{
+									set_sidebar_mode("flock");
+								}
+							}else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
+								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
+								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
+								var pv = static_mod_adjust(pb,"get");
+								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
+								static_mod_adjust(pb,pv);
+								redraw_flag.flag=2;
+							} 
 						}
 					}
 				}

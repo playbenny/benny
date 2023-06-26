@@ -152,8 +152,16 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,value){
 function labelled_parameter_v_slider(sl_no){
 	
 	var p_values= blocktypes.get(paramslider_details[sl_no][15]+"::parameters["+paramslider_details[sl_no][9]+"]::values");
+	var p_type=paramslider_details[sl_no][13];
+	var wrap = paramslider_details[sl_no][14];
+
+	var click_to_step = 0;
+	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+		//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
+		click_to_step = sl_no+1;
+	}								
 	
-	parameter_v_slider(paramslider_details[sl_no][0], paramslider_details[sl_no][1], paramslider_details[sl_no][2], paramslider_details[sl_no][3],paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6], paramslider_details[sl_no][7],paramslider_details[sl_no][8], paramslider_details[sl_no][9], paramslider_details[sl_no][10]);
+	parameter_v_slider(paramslider_details[sl_no][0], paramslider_details[sl_no][1], paramslider_details[sl_no][2], paramslider_details[sl_no][3],paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6], paramslider_details[sl_no][7],paramslider_details[sl_no][8], paramslider_details[sl_no][9], paramslider_details[sl_no][10],click_to_step);
 	
 	if(paramslider_details[sl_no][16] == 0){ //if overlaid, the text is twice as bright
 		outlet(7,"frgb",paramslider_details[sl_no][4]*2, paramslider_details[sl_no][5]*2, paramslider_details[sl_no][6]*2);
@@ -168,8 +176,6 @@ function labelled_parameter_v_slider(sl_no){
 		namelabely+=0.4*fontheight;
 	}
 	
-	var p_type=paramslider_details[sl_no][13];
-	var wrap = paramslider_details[sl_no][14];
 	var pv,ov=-11.11;
 
 	var vo = voicemap.get(paramslider_details[sl_no][8]);
@@ -289,7 +295,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 	return pvp;
 }
 
-function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
+function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_to_step){
 		// flags this was 'pol' now contains more info..
 		// &= 1 - bipolar not unipolar
 		// &= 2 - onepervoice
@@ -321,6 +327,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
+				if(click_to_step>0)mouse_click_values[index]=click_to_step;
 				mouse_index++;
 				index++;
 				mu=0.57;
@@ -334,6 +341,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
+				if(click_to_step>0)mouse_click_values[index]=click_to_step;
 				mouse_index++;
 				index++;
 				mu=0.5;				

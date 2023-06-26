@@ -3824,12 +3824,8 @@ function draw_sidebar(){
 									mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 									mouse_click_parameters[mouse_index] = [curp, block];
 									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
-										//if it's a menu_b or menu_i store the next position in mouse_click_values
-										if(opvf){
-											mouse_click_values[mouse_index] = curp+1;
-										}else{
-											mouse_click_values[mouse_index] = curp+1;//(pv+1/p_values.length) % 1;
-										}
+										//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
+										mouse_click_values[mouse_index] = curp+1;
 									}else{
 										mouse_click_values[mouse_index] = "";
 									}								
