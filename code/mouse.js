@@ -276,6 +276,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							var pb = mouse_click_parameters[usermouse.got_i];
 							if(alt == 1){
 								static_mod_adjust(pb,0);
+								redraw_flag.flag=2;
 							}else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
 									set_sidebar_mode("panel_assign");
