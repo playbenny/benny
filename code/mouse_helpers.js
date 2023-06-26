@@ -461,7 +461,7 @@ function edit_state_label(parameter,value){
 }
 
 function static_mod_adjust(parameter,value){
-//	post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	if(value=="get"){
 		return parameter_static_mod.peek(1,parameter[2]);
 	}else{

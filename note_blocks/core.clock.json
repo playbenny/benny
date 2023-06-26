@@ -11,7 +11,7 @@
 				"midi" : [ "humaniser loopback" ]
 			},
 			"out" : {
-				"midi" : [ "clock" ],
+				"midi" : [ "clock", "play" ],
 				"dontdefaultall" : 1
 			}
 		},
@@ -46,7 +46,8 @@
 				"type" : "float4",
 				"values" : ["uni", 0, 240, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.5,
+				"nopervoice" : 1
 			},
 			{
 				"name" : "humanisation_clock",
@@ -88,7 +89,8 @@
 				"type" : "float",
 				"values" : ["uni", 0.1, 60, "exp"],
 				"wrap" : 0,
-				"default" : 0.025
+				"default" : 0.025,
+				"nopervoice" : 1
 			},
 			{
 				"name" : "velocity_humanisation",
@@ -120,7 +122,8 @@
 				"values" : ["2/4", "3/4", "4/4", "5/4", "6/4", "7/4", "9/4", "10/4", "11/4"],
 				"wrap" : 0,
 				"error_scale" : 0,
-				"default" : 0.25
+				"default" : 0.25,
+				"nopervoice" : 1
 			},
 			{
 				"name" : "click_offset",
@@ -128,7 +131,8 @@
 				"values" : ["bi", -10, 10, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.5,
+				"nopervoice" : 1
 			}
 		]
 	}

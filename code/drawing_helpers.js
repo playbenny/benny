@@ -153,9 +153,9 @@ function labelled_parameter_v_slider(sl_no){
 	
 	var p_values= blocktypes.get(paramslider_details[sl_no][15]+"::parameters["+paramslider_details[sl_no][9]+"]::values");
 	
-	parameter_v_slider(paramslider_details[sl_no][0], paramslider_details[sl_no][1], paramslider_details[sl_no][2], paramslider_details[sl_no][3],paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6], paramslider_details[sl_no][7],paramslider_details[sl_no][8], paramslider_details[sl_no][9], paramslider_details[sl_no][10],sl_no);
+	parameter_v_slider(paramslider_details[sl_no][0], paramslider_details[sl_no][1], paramslider_details[sl_no][2], paramslider_details[sl_no][3],paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6], paramslider_details[sl_no][7],paramslider_details[sl_no][8], paramslider_details[sl_no][9], paramslider_details[sl_no][10]);
 	
-	if(paramslider_details[sl_no][16] == 0){
+	if(paramslider_details[sl_no][16] == 0){ //if overlaid, the text is twice as bright
 		outlet(7,"frgb",paramslider_details[sl_no][4]*2, paramslider_details[sl_no][5]*2, paramslider_details[sl_no][6]*2);
 	}else{
 		outlet(7,"frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
@@ -167,23 +167,56 @@ function labelled_parameter_v_slider(sl_no){
 		outlet(7,"write",paramslider_details[sl_no][11][c]);				
 		namelabely+=0.4*fontheight;
 	}
-	outlet(7,"moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
 	
-	//post(p_values,"<pv len>",p_values.length);
 	var p_type=paramslider_details[sl_no][13];
 	var wrap = paramslider_details[sl_no][14];
-	var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[sl_no][8]+paramslider_details[sl_no][9]);
-	if((paramslider_details[sl_no][8]==sidebar.selected)&&(sidebar.scopes.voicenum>=0)){
+	var pv,ov=-11.11;
+
+	var vo = voicemap.get(paramslider_details[sl_no][8]);
+	if(!Array.isArray(vo)) vo = [vo];
+	var w = paramslider_details[sl_no][2] - paramslider_details[sl_no][0];
+	var ww = w / vo.length;
+	var x = paramslider_details[sl_no][0]+fontheight*0.1;
+	var maskx = -1;
+	for(var i=0;i<vo.length;i++){
+		if(((sidebar.scopes.voicenum>=0) && (sidebar.scopes.voicenum!=i))){
+			x+=ww;
+		}else{
+			pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*vo[i]+paramslider_details[sl_no][9]);	
+			pv = Math.min(1,Math.max(0,pv));
+			if((pv!=ov)&&(x>maskx)){
+				var label = get_parameter_label(p_type,wrap,pv,p_values);
+				maskx = x + fontheight*0.2*label.length;
+				//if(maskx<paramslider_details[sl_no][2]){
+					outlet(7,"moveto",x,namelabely);
+					outlet(7,"write",label);
+					if(!(paramslider_details[sl_no][10]&2))ov=pv;
+				//}
+			}
+			x+=ww;
+		}
+	}
+	/*
+	outlet(7,"moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
+	pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[sl_no][8]+paramslider_details[sl_no][9]);
+
+	//how this should work: if voices>1 you display a label for each, but skip ones where it's the same as the last one?
+	// all are done from voice_para not para_val - ie take into account modulation and static mod
+	if((paramslider_details[sl_no][8]==sidebar.selected)&&((sidebar.scopes.voicenum>=0)||(paramslider_details[sl_no][10]&2))){
 		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+sidebar.scopes.voicenum+"]"); 
 		// if a single voice's offset is being editted, show the sum of the two in the label ????? << this is not how mod works tho?
 		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[sl_no][9]);
-	}else if((paramslider_details[sl_no][8]==sidebar.selected)&&(paramslider_details[sl_no][10]&2)){ //opv mode
-		var voc = Math.floor(paramslider_details[sl_no][10]/4);
-		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+voc+"]"); 
-		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[sl_no][9]);		
 	}
+
 	pv = Math.min(1,Math.max(0,pv));	
 
+	parameter_label(p_type,wrap,pv,p_values);
+*/
+	return(namelabely+4);
+}
+
+function get_parameter_label(p_type,wrap,pv,p_values){
+	var pvp;
 	if(p_type == "menu_f"){
 		var pv2;
 		if(wrap){
@@ -198,22 +231,21 @@ function labelled_parameter_v_slider(sl_no){
 			pv = Math.min(pv,p_values.length-1);											
 		}
 		if(pv==pv2){
-			outlet(7, "write", p_values[pv]);	
+			pvp = p_values[pv];	
 		}else{
-			outlet(7, "write", p_values[pv]+ "-"+ p_values[pv2]);
+			pvp = p_values[pv]+ "-"+ p_values[pv2];
 		}	
 	}else if((p_type == "menu_i")||(p_type == "menu_b")){
 		pv *= (p_values.length-0.0001);
 		pv = Math.min(Math.floor(pv),p_values.length-1);
-		outlet(7, "write", p_values[pv]);
+		pvp = p_values[pv];
 	}else if((p_type == "wave")){
 		pv *= (MAX_WAVES-0.0001);
 		pv = Math.floor(pv+1);
 		var wnam = "-";
 		if(waves_dict.contains("waves["+pv+"]::name")) wnam = waves_dict.get("waves["+pv+"]::name");
-		outlet(7, "write", pv+" "+wnam);
+		pvp = pv+" "+wnam;
 	}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
-		var pvp;
 		if(p_values[3] == "exp"){
 			if(p_values[0] == "uni"){
 				pv = Math.pow(2, pv) - 1;
@@ -252,32 +284,23 @@ function labelled_parameter_v_slider(sl_no){
 			}
 			pvp = pv.toPrecision(pre);
 		}
-		outlet(7, "write", pvp);
 	}
-	return(namelabely+4);
+	//outlet(7, "write", pvp);
+	return pvp;
 }
 
-function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no){
+function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags){
 		// flags this was 'pol' now contains more info..
 		// &= 1 - bipolar not unipolar
 		// &= 2 - onepervoice
-		// /4 and math.floor - voice number if OPV
 	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	var vlist = voicemap.get(blockno); 
 	var ly, value;
 	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
 	var w = x2-x1; //-2;
 	if(!Array.isArray(vlist)) vlist = [vlist];
-	var opvf=0;
-	var opv=-1;
-	if(flags & 2){
-		//this is a onepervoice slider
-		opvf = 1;
-		opv = Math.floor((flags&16380)/4);
-		//post("\ndrawing slider for param",paramno,"voice",opv,"index",index);
-		vlist = [vlist[opv]];
-	}
-	var ww = w/vlist.length;
+	var ww = (w + 2*(flags&2))/vlist.length;
+	var ww2 = ww - 2*(flags&2);
 	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
 		//post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
 		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+1,2);
@@ -293,39 +316,33 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no)
 			ly = y1  + (y2 - y1) * (1-tvalue);
 			var mu=0.33;
 			//post("\ndrawing slider",sl_no,blockno,paramno);
-			if(opvf){
-				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
-				mouse_click_actions[index] = static_mod_adjust;
-				mouse_click_parameters[index] = [sl_no, blockno, vlist[0]*MAX_PARAMETERS+paramno];
-				mouse_click_values[index] = "";
-				mouse_index++;
-				mu=0.5;				
-			}else if(i==sidebar.scopes.voicenum){
+		if((i==sidebar.scopes.voicenum)||(flags & 2)){
 				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
 				mouse_index++;
+				index++;
 				mu=0.57;
 			}
-			outlet(7, "paintrect",x1+ww*i,ly,x1+ww*i+ww,y2,r*mu,g*mu,b*mu);
+			outlet(7, "paintrect",x1+ww*i,ly,x1+ww*i+ww2,y2,r*mu,g*mu,b*mu);
 		}else{
 			ly = y1 + (y2-y1)*(-tvalue);
 			var mu=0.33;
-			if(i==sidebar.scopes.voicenum){
+			if((i==sidebar.scopes.voicenum)||(flags & 2)){
 				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
-				mouse_click_parameters[index] = [paramno,blockno,vlist[i]*MAX_PARAMETERS+paramno];
+				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
 				mouse_index++;
-				mu=0.57;
+				index++;
+				mu=0.5;				
 			}
-			outlet(7, "paintrect",x1+ww*i,y1,x1+ww*i+ww,ly,r*mu,g*mu,b*mu);
+			outlet(7, "paintrect",x1+ww*i,y1,x1+ww*i+ww2,ly,r*mu,g*mu,b*mu);
 		}
 	}
 
-	w = w-2;
-	ww = w/vlist.length;
+	ww2 -= 2;
 	outlet(7,"frgb",r,g,b);
 	for(var i=0;i<vlist.length;i++){
 		value = voice_parameter_buffer.peek(1,MAX_PARAMETERS*(vlist[i])+paramno);
@@ -341,7 +358,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,sl_no)
 			ly = y1 + (y2 - y1-2)*(-value);
 		}
 		outlet(7,"moveto",x1+(ww*i),ly);
-		outlet(7,"lineto",x1+(ww*(i+1)),ly);
+		outlet(7,"lineto",x1+(ww*i)+ww2,ly);
 	}
 }
 

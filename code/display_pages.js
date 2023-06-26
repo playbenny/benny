@@ -626,7 +626,14 @@ function initialise_block_menu(visible){
 				if(ts[0]==type_order[typ]){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
-//						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+						//						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
+						blocks_menu[i].shape = "cube";
+						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
+						blocks_menu[i].position = [1000, 1000, 1000];
+						blocks_menu[i].scale = [0.45, 0.45, 0.45];
+						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 					}else{
 //						post("\ndrawing menu texture:",i," label is ",ts,"\n");
 						messnamed("texture_generator","menu",i);
@@ -3717,7 +3724,7 @@ function draw_sidebar(){
 					}
 
 					var w_slider,h_slider,colour,plist;
-					var opv; //used to hide sliders that apply to not-yet-active voices
+					var slidercount; //used to hide sliders that apply to not-yet-active voices
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
 					var getmap = 0;
 					if(automap.available_k!=-1){
@@ -3742,7 +3749,6 @@ function draw_sidebar(){
 							automap.mapped_c=block;
 						} 
 					}
-					var curi=-1; //alternate index for use with onepervoice parameters
 					for(i=0;i<groups.length;i++){
 						colour=block_colour;
 						if(groups[i].contains("colour")){
@@ -3757,31 +3763,18 @@ function draw_sidebar(){
 						}
 						plist = groups[i].get("contains");
 						if(!Array.isArray(plist)) plist = [plist];
-						var columns = Math.max(1,plist.length);
-						var opvf = 0;
-						opv=plist.length;
-						if(groups[i].contains("onepervoice")){
-							opv=blocks.get("blocks["+block+"]::poly::voices");
-							opvf = 1;
-							columns= Math.max(1,opv);
-						}
+						slidercount=plist.length;
+						var columns = Math.max(1,slidercount);
+						var opvf = groups[i].contains("onepervoice");
 						w_slider = (sidebar.width + fontheight * 0.1)/columns;
 						maxnamelabely =0;
 						y1 = y_offset +  fontheight * (4 * knob.y);
 						y2 = y_offset +  fontheight * (4 * knob.y + h_slider+(h_slider==0));
-						for(t=0;t<opv;t++){
+						for(t=0;t<slidercount;t++){
 							var curp = plist[t];
-							if(opvf){
-								wk = 1;
-								curp = plist[0];
-								curv = t;
-								curi++;
-							}else{
-								wk=0;
-								curi = curp;
-								for(tk=t;tk<opv;tk++){
-									if(plist[tk]==plist[t]) wk++;
-								}
+							wk=0;
+							for(tk=t;tk<slidercount;tk++){
+								if(plist[tk]==plist[t]) wk++;
 							}
 							if(params[curp].contains("name")){
 								if(getmap==1){
@@ -3807,11 +3800,11 @@ function draw_sidebar(){
 								var flags = (p_values[0]=="bi");
 								if(opvf){
 									flags |= 2;
-									flags |= 4 * t;
+									//flags |= 4 * t;
 								}
 
 								if(p_type=="button"){
-									paramslider_details[curi]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+									paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,p_values[0]);
 									mouse_click_actions[mouse_index] = sidebar_button;
 									mouse_click_parameters[mouse_index] = block;
@@ -3819,23 +3812,23 @@ function draw_sidebar(){
 									mouse_index++;
 								}else{
 									if(h_slider==0){
-										paramslider_details[curi]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									}else{
-										paramslider_details[curi]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									}
-									namelabely = labelled_parameter_v_slider(curi);
-									paramslider_details[curi][17]=namelabely;
+									namelabely = labelled_parameter_v_slider(curp);
+									paramslider_details[curp][17]=namelabely;
 									if(namelabely>maxnamelabely) maxnamelabely=namelabely;
 									//paramslider_details is used for quick redraw of a single slider. index is curp
 									//ie is mouse_click_parameters[index][0]
 									mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-									mouse_click_parameters[mouse_index] = [curi, block];
+									mouse_click_parameters[mouse_index] = [curp, block];
 									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
 										//if it's a menu_b or menu_i store the next position in mouse_click_values
 										if(opvf){
-											mouse_click_values[mouse_index] = curi+1;
+											mouse_click_values[mouse_index] = curp+1;
 										}else{
-											mouse_click_values[mouse_index] = curi+1;//(pv+1/p_values.length) % 1;
+											mouse_click_values[mouse_index] = curp+1;//(pv+1/p_values.length) % 1;
 										}
 									}else{
 										mouse_click_values[mouse_index] = "";
