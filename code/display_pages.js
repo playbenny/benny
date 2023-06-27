@@ -2736,6 +2736,8 @@ function set_sidebar_mode(mode){
 	} 
 	post("sidebar mode",mode);
 	if(mode!=sidebar.mode){
+		sidebar.scroll.position = 0;
+		sidebar.scroll.max = 0;
 		if(mode=="block"){
 			sidebar.scopes.voice = -1;//causes it to ask te right block to display a scope
 		}else{
@@ -3138,7 +3140,7 @@ function draw_topbar(){
 
 function draw_sidebar(){	
 //	post("\ndraw sidebar");
-
+	sidebar.scroll.max = 0;
 	selected.block_count =0;
 	selected.wire_count = 0;
 	var block_colour, block_dark, block_darkest;
@@ -3159,7 +3161,13 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
-	y_offset = 9;
+	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
+	mouse_click_actions[mouse_index] = scroll_sidebar;
+	mouse_click_parameters[mouse_index] = "";
+	mouse_click_values[mouse_index] = "";	
+	mouse_index++;
+
+	y_offset = 9 - sidebar.scroll.position;
 	if(sidebar.mode == "edit_label"){
 		// EDIT BLOCK LABEL ##############################################################################################################
 		block = sidebar.selected;
@@ -4928,8 +4936,16 @@ function draw_sidebar(){
 								lcd_main.message("frgb", block_colour );
 								var f_number = connections.get("connections["+i+"]::from::number");
 								var f_name = blocks.get("blocks["+f_number+"]::name");
+								var f_label = f_name;
+								if(blocks.contains("blocks["+f_number+"]::label")){
+									f_label = blocks.get("blocks["+f_number+"]::label");
+								}
 								var t_number = connections.get("connections["+i+"]::to::number");
 								var t_name = blocks.get("blocks["+t_number+"]::name");
+								var t_label = t_name;
+								if(blocks.contains("blocks["+t_number+"]::label")){
+									t_label = blocks.get("blocks["+t_number+"]::label");
+								}
 								var f_o_no = connections.get("connections["+i+"]::from::output::number");
 								var f_type = connections.get("connections["+i+"]::from::output::type");
 								var t_i_no = connections.get("connections["+i+"]::to::input::number");
@@ -4948,7 +4964,7 @@ function draw_sidebar(){
 								if(blocks.get("blocks["+f_number+"]::poly::voices")>1) f_o_v = connections.get("connections["+i+"]::from::voice");
 								if(blocks.get("blocks["+t_number+"]::poly::voices")>1) t_i_v = connections.get("connections["+i+"]::to::voice");
 								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.45+y_offset);
-								lcd_main.message("write", f_name);
+								lcd_main.message("write", f_label);
 								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.7+y_offset);
 								if(f_o_v!="") {
 									lcd_main.message("write", f_o_v+" - "+f_o_name);
@@ -4958,7 +4974,7 @@ function draw_sidebar(){
 //								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.95+y_offset);
 //								lcd_main.message("write", f_o_v);
 								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*1.05+y_offset);
-								lcd_main.message("write", t_name);
+								lcd_main.message("write", t_label);
 								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.3*fontheight+y_offset);
 								if(t_i_v!=""){
 									lcd_main.message("write", t_i_v+" - "+t_i_name);
@@ -6061,6 +6077,7 @@ function draw_sidebar(){
 				remove_midi_scope();
 				redraw_flag.targets=[];
 				sidebar.selected = -1;
+				sidebar.scroll.position = 0;
 			}
 		}	
 	}
@@ -6078,6 +6095,18 @@ function draw_sidebar(){
 				note_poly.setvalue(automap.available_k,"automapped", 0);
 			}
 		}
+	}
+	if(y_offset>mainwindow_height) sidebar.scroll.max = sidebar.scroll.position+y_offset-mainwindow_height;
+	if((sidebar.scroll.max>0)){ //&&(sidebar.mode != "none")){
+		lcd_main.message("frgb", menudarkest);
+		lcd_main.message("moveto",mainwindow_width-5,0);
+		lcd_main.message("lineto",mainwindow_width-5,mainwindow_height);		
+		var l = mainwindow_height / (mainwindow_height + sidebar.scroll.max);
+		var l2 = mainwindow_height * l;
+		var p = sidebar.scroll.position * l;
+		lcd_main.message("frgb", menucolour);
+		lcd_main.message("moveto",mainwindow_width-5,p);
+		lcd_main.message("lineto",mainwindow_width-5,p+l2);
 	}
 //	lcd_main.message("bang");
 	//outlet(8,"bang");

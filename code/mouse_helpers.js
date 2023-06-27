@@ -463,7 +463,14 @@ function toggle_panel(parameter,value){
 	blocks.replace("blocks["+parameter+"]::panel::enable",e);
 	redraw_flag.flag |= 2;
 }
-
+function scroll_sidebar(parameter,value){
+	if(value=="get"){
+		return -sidebar.scroll.position/1000;
+	}else{
+		sidebar.scroll.position = Math.min(Math.max(0,-value*1000),sidebar.scroll.max-0.01);
+		redraw_flag.flag |= 2;
+	}
+}
 function edit_label(parameter,value){
 	if(parameter == "ok"){
 		var block = selected.block.indexOf(1);

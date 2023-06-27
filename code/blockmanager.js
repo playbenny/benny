@@ -308,6 +308,10 @@ var sidebar = {
 		startx : 490,
 		spread : 2
 	},
+	scroll : {
+		position : 0,
+		max : 0
+	},
 	editbtn : 0,
 	editbtn_x: 0,
 	editcolour : [255,255,255],
