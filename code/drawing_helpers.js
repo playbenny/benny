@@ -105,39 +105,39 @@ function gain_display(gain){
 function draw_cpu_meter(){
 	var pk = 9 + fontheight*(100-cpu_meter.peak[cpu_meter.pointer])*0.01;
 	var avg = 9 + fontheight*(100-cpu_meter.avg[cpu_meter.pointer])*0.01;
-	outlet(7,"frgb", 0, 0, 0);
-	outlet(7, "moveto", 5, 9);
-	outlet(7,"lineto", 5, 9+fontheight);
-	outlet(7, "frgb", 2.55*cpu_meter.peak[cpu_meter.pointer], Math.min(2.55*(120-cpu_meter.peak[cpu_meter.pointer]),255),55);
-	outlet(7, "moveto", 5, avg);
-	outlet(7, "lineto", 5, pk);
+	lcd_main.message("frgb", 0, 0, 0);
+	lcd_main.message("moveto", 5, 9);
+	lcd_main.message("lineto", 5, 9+fontheight);
+	lcd_main.message("frgb", 2.55*cpu_meter.peak[cpu_meter.pointer], Math.min(2.55*(120-cpu_meter.peak[cpu_meter.pointer]),255),55);
+	lcd_main.message("moveto", 5, avg);
+	lcd_main.message("lineto", 5, pk);
 }
 
 function setfontsize(size){
 	if(cur_font_size!=size){
 		cur_font_size=size;
-		outlet(7, "font","Consolas",size);
+		lcd_main.message("font","Consolas",size);
 	}
 }
 
 function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index,2);
 	var ly;
  	if(value>=0) {
 		if(value>=1){
 			var m = 1 - (value % 1)*0.9;
-			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+			lcd_main.message("paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
 		}
 		ly = y1 + (y2 - y1) * (1-(value%1));
-		outlet(7, "paintrect",x1,ly,x2,y2,r,g,b);
+		lcd_main.message("paintrect",x1,ly,x2,y2,r,g,b);
 	}else{
 		if(value<=-1){
 			var m = 1 - (value % 1)*0.9;
-			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+			lcd_main.message("paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
 		}
 		ly = y1 + (y2-y1)*(1+(value%1));
-		outlet(7, "paintrect",x1,y1,x2,ly,r,g,b);
+		lcd_main.message("paintrect",x1,y1,x2,ly,r,g,b);
 	}
 }
 function draw_button(x1,y1,x2,y2,r,g,b,index,value){
@@ -145,8 +145,8 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,value){
 	if(value != 1){
 		rat = 1;
 	}
-	outlet(7, "paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
-	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
+	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	click_rectangle(x1,y1,x2,y2,index,1);
 }
 function labelled_parameter_v_slider(sl_no){
@@ -164,15 +164,15 @@ function labelled_parameter_v_slider(sl_no){
 	parameter_v_slider(paramslider_details[sl_no][0], paramslider_details[sl_no][1], paramslider_details[sl_no][2], paramslider_details[sl_no][3],paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6], paramslider_details[sl_no][7],paramslider_details[sl_no][8], paramslider_details[sl_no][9], paramslider_details[sl_no][10],click_to_step);
 	
 	if(paramslider_details[sl_no][16] == 0){ //if overlaid, the text is twice as bright
-		outlet(7,"frgb",paramslider_details[sl_no][4]*2, paramslider_details[sl_no][5]*2, paramslider_details[sl_no][6]*2);
+		lcd_main.message("frgb",paramslider_details[sl_no][4]*2, paramslider_details[sl_no][5]*2, paramslider_details[sl_no][6]*2);
 	}else{
-		outlet(7,"frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
+		lcd_main.message("frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
 	}
 	
 	namelabely=paramslider_details[sl_no][12];
 	for(var c = 0;c<paramslider_details[sl_no][11].length;c++){
-		outlet(7,"moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
-		outlet(7,"write",paramslider_details[sl_no][11][c]);				
+		lcd_main.message("moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
+		lcd_main.message("write",paramslider_details[sl_no][11][c]);				
 		namelabely+=0.4*fontheight;
 	}
 	
@@ -194,8 +194,8 @@ function labelled_parameter_v_slider(sl_no){
 				var label = get_parameter_label(p_type,wrap,pv,p_values);
 				maskx = x + fontheight*0.2*label.length;
 				//if(maskx<paramslider_details[sl_no][2]){
-					outlet(7,"moveto",x,namelabely);
-					outlet(7,"write",label);
+					lcd_main.message("moveto",x,namelabely);
+					lcd_main.message("write",label);
 					if(!(paramslider_details[sl_no][10]&2))ov=pv;
 				//}
 			}
@@ -203,7 +203,7 @@ function labelled_parameter_v_slider(sl_no){
 		}
 	}
 	/*
-	outlet(7,"moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
+	lcd_main.message("moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
 	pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[sl_no][8]+paramslider_details[sl_no][9]);
 
 	//how this should work: if voices>1 you display a label for each, but skip ones where it's the same as the last one?
@@ -291,7 +291,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 			pvp = pv.toPrecision(pre);
 		}
 	}
-	//outlet(7, "write", pvp);
+	//lcd_main.message("write", pvp);
 	return pvp;
 }
 
@@ -299,7 +299,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		// flags this was 'pol' now contains more info..
 		// &= 1 - bipolar not unipolar
 		// &= 2 - onepervoice
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	var vlist = voicemap.get(blockno); 
 	var ly, value;
 	value = parameter_value_buffer.peek(1,MAX_PARAMETERS*blockno+paramno);
@@ -332,7 +332,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 				index++;
 				mu=0.57;
 			}
-			outlet(7, "paintrect",x1+ww*i,ly,x1+ww*i+ww2,y2,r*mu,g*mu,b*mu);
+			lcd_main.message("paintrect",x1+ww*i,ly,x1+ww*i+ww2,y2,r*mu,g*mu,b*mu);
 		}else{
 			ly = y1 + (y2-y1)*(-tvalue);
 			var mu=0.33;
@@ -346,12 +346,12 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 				index++;
 				mu=0.5;				
 			}
-			outlet(7, "paintrect",x1+ww*i,y1,x1+ww*i+ww2,ly,r*mu,g*mu,b*mu);
+			lcd_main.message("paintrect",x1+ww*i,y1,x1+ww*i+ww2,ly,r*mu,g*mu,b*mu);
 		}
 	}
 
 	ww2 -= 2;
-	outlet(7,"frgb",r,g,b);
+	lcd_main.message("frgb",r,g,b);
 	for(var i=0;i<vlist.length;i++){
 		value = voice_parameter_buffer.peek(1,MAX_PARAMETERS*(vlist[i])+paramno);
 		if(flags & 1){ //bipolar
@@ -365,29 +365,29 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		}else{
 			ly = y1 + (y2 - y1-2)*(-value);
 		}
-		outlet(7,"moveto",x1+(ww*i),ly);
-		outlet(7,"lineto",x1+(ww*i)+ww2,ly);
+		lcd_main.message("moveto",x1+(ww*i),ly);
+		lcd_main.message("lineto",x1+(ww*i)+ww2,ly);
 	}
 }
 
 function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index, 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){
 			var m = 1 - (value % 1)*0.6;
-			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+			lcd_main.message("paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
 		}
 		lx = x1 +  (x2 - x1) * (value % 1);
-		outlet(7, "paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
+		lcd_main.message("paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
 	}else{
 		if(value<=-1){
 			var m = 1 - ((-value) % 1)*0.6;
-			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+			lcd_main.message("paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
 		}
 		lx = x1 + (x2 - x1) * (1-((-value) % 1));
-		outlet(7, "paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
+		lcd_main.message("paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
 	}
 }
 function clear_wave_graphic(n){
@@ -399,7 +399,7 @@ function clear_wave_graphic(n){
 }
 function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	var value=0;
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
 	var hls;
@@ -410,7 +410,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	for(ch=0;ch<chans;ch++){
-		outlet(7,"frgb",90,90,90);
+		lcd_main.message("frgb",90,90,90);
 		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
 		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
 		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
@@ -421,22 +421,22 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 		if(w>250){
 			for(t=0;t<d;t++){
 				i = Math.floor(t*dl+st);
-				outlet(7,"moveto",x1+i+i,y1+h*2*ch);
-				outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));
+				lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
+				lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
 			}
-			outlet(7,"frgb",255,255,255);
-			outlet(7,"moveto",x1+st+st,y1+h*2*ch);
-			outlet(7,"lineto",x1+st+st,y1+h*2*(ch+1));
+			lcd_main.message("frgb",255,255,255);
+			lcd_main.message("moveto",x1+st+st,y1+h*2*ch);
+			lcd_main.message("lineto",x1+st+st,y1+h*2*(ch+1));
 			i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
-			outlet(7,"moveto",x1+i+i,y1+h*2*ch);
-			outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));			
+			lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
+			lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));			
 		}
 		var curc=1;
 		if(highlight<1){ 
-			outlet(7, "frgb", r>>1,g>>1,b>>1);
+			lcd_main.message("frgb", r>>1,g>>1,b>>1);
 			curc=0;
 		}else{
-			outlet(7,"frgb",r,g,b);		
+			lcd_main.message("frgb",r,g,b);		
 		}
 		for(i=0;i<w;i++){
 			wmin = draw_wave[buffer-1][ch*2][i];
@@ -449,31 +449,31 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 			draw_wave[buffer-1][ch*2][i] = wmin;
 			draw_wave[buffer-1][ch*2+1][i] = wmax;
 			if((i>=hls)&&(i<=hle)&&(curc==0)){
-				outlet(7,"frgb",r,g,b);
+				lcd_main.message("frgb",r,g,b);
 				curc=1;
 			}else if((i>hle)&&(curc==1)){
 				curc=0;
-				outlet(7, "frgb", r>>1,g>>1,b>>1);
+				lcd_main.message("frgb", r>>1,g>>1,b>>1);
 			}
-			outlet(7,"moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
-			outlet(7,"lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
+			lcd_main.message("moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
+			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
 		}
 	}
 }
 
 function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index,0, 3);
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
-	outlet(7, "paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
+	lcd_main.message("paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
 	w = Math.floor((w-1)/2);
 	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	for(ch=0;ch<chans;ch++){
-		outlet(7,"frgb",50,50,50);
+		lcd_main.message("frgb",50,50,50);
 		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
 		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
 		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
@@ -481,16 +481,16 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 		dl *= w;
 		for(t=0;t<d;t++){
 			i = Math.floor(t*dl+st);
-			outlet(7,"moveto",x1+i+i,y1+h*2*ch);
-			outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));
+			lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
+			lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
 		}
-		outlet(7,"frgb",90,90,90);
-		outlet(7,"moveto",x1+st+st,y1+h*2*ch);
-		outlet(7,"lineto",x1+st+st,y1+h*2*(ch+1));
+		lcd_main.message("frgb",90,90,90);
+		lcd_main.message("moveto",x1+st+st,y1+h*2*ch);
+		lcd_main.message("lineto",x1+st+st,y1+h*2*(ch+1));
 		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
-		outlet(7,"moveto",x1+i+i,y1+h*2*ch);
-		outlet(7,"lineto",x1+i+i,y1+h*2*(ch+1));
-		outlet(7,"frgb",r,g,b);
+		lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
+		lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
+		lcd_main.message("frgb",r,g,b);
 		for(i=0;i<w;i++){
 			wmin = draw_wave[buffer-1][ch*2][i];
 			wmax = draw_wave[buffer-1][ch*2+1][i];
@@ -501,60 +501,60 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 			}
 			draw_wave[buffer-1][ch*2][i] = wmin;
 			draw_wave[buffer-1][ch*2+1][i] = wmax;
-			outlet(7,"moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
-			outlet(7,"lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
+			lcd_main.message("moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
+			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
 		}
 	}
 }
 function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
-	outlet(7, "paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index, 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){
 			var m = 1 - (value % 1)*0.6;
-			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+			lcd_main.message("paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
 		}
 		lx = x1 +  (x2 - x1) * (value % 1);
-		outlet(7, "paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
-		outlet(7, "moveto", (x1+8), (y2-8));
+		lcd_main.message("paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
+		lcd_main.message("moveto", (x1+8), (y2-8));
 		if(value>0.3) {
-			outlet(7, "frgb", 0,0,0);
+			lcd_main.message("frgb", 0,0,0);
 		}else{
-			outlet(7, "frgb" , r,g,b);
+			lcd_main.message("frgb" , r,g,b);
 		}
-		outlet(7, "write", gain_display(value));
+		lcd_main.message("write", gain_display(value));
 	}else{
 		if(value<=-1){
 			var m = 1 - ((-value) % 1)*0.6;
-			outlet(7, "paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+			lcd_main.message("paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
 		}
 		lx = x1 + (x2 - x1) * (1-((-value) % 1));
-		outlet(7, "paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
-		outlet(7, "moveto", (x1+8), (y2-8));
+		lcd_main.message("paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
+		lcd_main.message("moveto", (x1+8), (y2-8));
 		if(value<-0.7) {
-			outlet(7, "frgb", 0,0,0);
+			lcd_main.message("frgb", 0,0,0);
 		}else{
-			outlet(7, "frgb", r,g,b);
+			lcd_main.message("frgb", r,g,b);
 		}
-		outlet(7, "write", gain_display(value));
+		lcd_main.message("write", gain_display(value));
 	}
 }
 
 function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
-	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	click_rectangle(x1,y1,x2,y2,index, 4);
 	var lx = x1 + 8 + (x2-x1-16)*value_x;
 	var ly = y1 + 8 + (y2-y1-16)*(1-value_y);
-	outlet(7, "paintrect",(lx-4),(ly-4),(lx+4),(ly+4) ,r,g,b);
+	lcd_main.message("paintrect",(lx-4),(ly-4),(lx+4),(ly+4) ,r,g,b);
 }
 
 function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
-	outlet(7, "framerect",x1,y1,x2,y2,r,g,b);
-	outlet(7, "frameoval",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("frameoval",x1,y1,x2,y2,r,g,b);
 	click_rectangle(x1,y1,x2,y2,index, 2);
-	outlet(7, "moveto",((x1+x2)/2),((y1+y2)/2));
-	outlet(7, "lineto",(((x1+x2)/2)+Math.sin(6.28*angle)*(x2-x1-16)/2),(((y1+y2)/2)-Math.cos(6.28*angle)*(y2-y1-16)/2));
+	lcd_main.message("moveto",((x1+x2)/2),((y1+y2)/2));
+	lcd_main.message("lineto",(((x1+x2)/2)+Math.sin(6.28*angle)*(x2-x1-16)/2),(((y1+y2)/2)-Math.cos(6.28*angle)*(y2-y1-16)/2));
 }
 
 function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
@@ -566,7 +566,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	for(cx=v1-1;cx>=0;cx--){
 		for(cy=0;cy<v2;cy++){
 			l = spread_level(cx, cy, offset,vector, v1, v2);
-			outlet(7, "paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
+			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;
 		}
@@ -576,25 +576,25 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 		for(cx=v1-1;cx>=0;cx--){
 			for(cy=0;cy<v2;cy++){
 				l = scale*spread_level(cx, cy, offset,vector, v1, v2);
-				outlet(7,"moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*ux);
-				outlet(7,"write",l.toPrecision(3));				
+				lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*ux);
+				lcd_main.message("write",l.toPrecision(3));				
 			}
 		}
 	}else{
 		maxl*=scale;
-		outlet(7,"frgb",0,0,0);
-		outlet(7,"moveto",(x1+5),(y1+(y2-y1)*0.95));
-		outlet(7,"write","x"+maxl.toPrecision(3));
+		lcd_main.message("frgb",0,0,0);
+		lcd_main.message("moveto",(x1+5),(y1+(y2-y1)*0.95));
+		lcd_main.message("write","x"+maxl.toPrecision(3));
 	}
 	click_rectangle(x1,y1,x2,y2,index, 4);
 }
 
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	t = (1-amount)*(x2-x1-8)/2;
-	outlet(7, "paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
-	outlet(7, "paintoval",x1,y1,x2,y2,0,0,0);
-	outlet(7, "frameoval",x1,y1,x2,y2,r/2,g/2,b/2);
-	outlet(7, "frameoval",(x1+t),(y1+t),(x2-t),(y2-t),r,g,b);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
+	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
+	lcd_main.message("frameoval",x1,y1,x2,y2,r/2,g/2,b/2);
+	lcd_main.message("frameoval",(x1+t),(y1+t),(x2-t),(y2-t),r,g,b);
 	click_rectangle(x1,y1,x2,y2,index, 4);
 	var cx = (x1+x2)/2;
 	var cy = (y1+y2)/2;
@@ -603,13 +603,13 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	var i=0;
 	var col=[r,g,b];
 	for(i=0;i<v1;i++){
-		outlet(7, "paintrect",(cx-w+r1*Math.sin(6.28*i/v1)),(cy-w-r1*Math.cos(6.28*i/v1)),(cx+w+r1*Math.sin(6.28*i/v1)),(cy+w-r1*Math.cos(6.28*i/v1)),col);
+		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*i/v1)),(cy-w-r1*Math.cos(6.28*i/v1)),(cx+w+r1*Math.sin(6.28*i/v1)),(cy+w-r1*Math.cos(6.28*i/v1)),col);
 		if(i==0) col = [r/2,g/2,b/2];
 	}
 	r1 -= t;
 	col=[r,g,b];
 	for(i=0;i<v2;i++){
-		outlet(7, "paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v2))),(cy-w-r1*Math.cos(6.28*(angle + i/v2))),(cx+w+r1*Math.sin(6.28*(angle + i/v2))),(cy+w-r1*Math.cos(6.28*(angle + i/v2))),col);
+		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v2))),(cy-w-r1*Math.cos(6.28*(angle + i/v2))),(cx+w+r1*Math.sin(6.28*(angle + i/v2))),(cy+w-r1*Math.cos(6.28*(angle + i/v2))),col);
 		if(i==0) col = [r/2,g/2,b/2];
 	}
 }
@@ -688,9 +688,9 @@ function center_view(resetz){
 	camera_position[0] = (tot_x / tot_n)+2;
 	camera_position[1] = tot_y / tot_n;
 	if(resetz || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
-/*	outlet(9, "anim", "moveto", camera_position, 0.5);
-	outlet(9, "rotatexyz" , 0, 0, 0);
-	outlet(9, "direction", 0, 0, -1);*/
+/*	messnamed("camera_control", "anim", "moveto", camera_position, 0.5);
+	messnamed("camera_control", "rotatexyz" , 0, 0, 0);
+	messnamed("camera_control", "direction", 0, 0, -1);*/
 	camera();
 	redraw_flag.flag |= 8;	
 }
@@ -705,24 +705,24 @@ function draw_menu_hint(){
 	if(blocktypes.contains(usermouse.hover[1]+"::colour")) col = blocktypes.get(usermouse.hover[1]+"::colour");
 	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
 	var topspace=(block_menu_d.mode == 3);
-	outlet(7,"clear");
-	outlet(7, "paintrect", sidebar.x,9,mainwindow_width-9,9+fontheight*(1+topspace),cod);
+	lcd_main.message("clear");
+	lcd_main.message("paintrect", sidebar.x,9,mainwindow_width-9,9+fontheight*(1+topspace),cod);
 	setfontsize(fontheight/1.6);
-	outlet(7, "textface", "bold");
+	lcd_main.message("textface", "bold");
 	
-	outlet(7,"paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);
-	outlet(7,"frgb",col);
-	outlet(7, "moveto", sidebar.x+fontheight*0.2,9+fontheight*0.75);
+	lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);
+	lcd_main.message("frgb",col);
+	lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*0.75);
 	if(block_menu_d.mode == 1){
-		outlet(7, "write", "swap block:");
+		lcd_main.message("write", "swap block:");
 	}else if(block_menu_d.mode == 2){
-		outlet(7, "write", "insert block in connection:");
+		lcd_main.message("write", "insert block in connection:");
 	}else if(block_menu_d.mode == 0){
-		outlet(7, "write", "add new block:");
+		lcd_main.message("write", "add new block:");
 	}else if(block_menu_d.mode == 3){
-		outlet(7, "write", "substitute for "); 
-		outlet(7, "moveto", sidebar.x+fontheight*0.2,9+fontheight*1.75);
-		outlet(7, "write",block_menu_d.swap_block_target);
+		lcd_main.message("write", "substitute for "); 
+		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*1.75);
+		lcd_main.message("write",block_menu_d.swap_block_target);
 	}
 
 	if(blocktypes.contains(usermouse.hover[1]+"::help_text")){
@@ -733,12 +733,12 @@ function draw_menu_hint(){
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
 		var rowstart=0;
 		var rowend=36;
-		outlet(7, "paintrect", sidebar.x,9+fontheight*(1.1+topspace),mainwindow_width-9,9+fontheight*(2.1+topspace),cod);
-		outlet(7,"frgb",col);
-		outlet(7, "moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
-		outlet(7, "write", usermouse.hover[1]);
+		lcd_main.message("paintrect", sidebar.x,9+fontheight*(1.1+topspace),mainwindow_width-9,9+fontheight*(2.1+topspace),cod);
+		lcd_main.message("frgb",col);
+		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
+		lcd_main.message("write", usermouse.hover[1]);
 		setfontsize(fontheight/2.5);
-		outlet(7, "textface", "normal");
+		lcd_main.message("textface", "normal");
 		var bold=0;
 		for(var i=0;i<hintrows;i++){
 			while((hint[rowend]!=' ')&&(rowend>1+rowstart)){ rowend--; }
@@ -753,17 +753,17 @@ function draw_menu_hint(){
 				rowend = rowstart+ sliced.indexOf("*");
 				sliced = hint.slice(rowstart,rowend);
 			}
-			outlet(7,"moveto",sidebar.x+fontheight*0.2,9+fontheight*(2.9+topspace+0.45*(i)));
-			outlet(7,"write",sliced);
+			lcd_main.message("moveto",sidebar.x+fontheight*0.2,9+fontheight*(2.9+topspace+0.45*(i)));
+			lcd_main.message("write",sliced);
 			rowstart=rowend+1;
 			rowend+=36;
 			if(bold){
-				outlet(7,"textface", "bold");
+				lcd_main.message("textface", "bold");
 			}else{
-				outlet(7, "textface", "normal");
+				lcd_main.message("textface", "normal");
 			}
 		}
-		outlet(7,"bang");
+		lcd_main.message("bang");
 	}
 }
 	

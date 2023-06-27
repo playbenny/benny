@@ -106,10 +106,10 @@ function frameclock(){
 						bangflag=1;
 						//post("\nREDRAW",i);
 						if((redraw_flag.targets[i]==1)&&(paramslider_details[i][16]!=0)&&(automap.mapped_c!=sidebar.selected)){
-							outlet(7, "paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
+							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
-							outlet(7, "paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
+							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
 							labelled_parameter_v_slider(i);
 						}
 						redraw_flag.targets[i]=0;
@@ -124,10 +124,10 @@ function frameclock(){
 						bangflag=1;
 						i = MAX_PARAMETERS + t;
 						if((redraw_flag.paneltargets[t]==1)&&(paramslider_details[i][16]!=0)){
-							outlet(7, "paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
+							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
-							outlet(7, "paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
+							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
 							labelled_parameter_v_slider(i);
 						}
 						redraw_flag.paneltargets[t]=0;				
@@ -196,7 +196,7 @@ function frameclock(){
 		bangflag=1;
 	}
 	if(bangflag) {
-		outlet(7, "bang");
+		lcd_main.message("bang");
 		//outlet(8,"bang");
 	}
 	redraw_flag.flag = 0;
@@ -345,19 +345,19 @@ function sidebar_meters(){
 	}
 	
 	for(i=0;i<l;i++){
-		outlet(7, "frgb", meter_positions[i][1]);
+		lcd_main.message("frgb", meter_positions[i][1]);
 		for(ii=0;ii<meter_positions[i][2].length;ii++){
-			outlet(7, "moveto", meter_positions[i][2][ii][0],meter_positions[i][2][ii][1]);
-			outlet(7, "lineto", meter_positions[i][2][ii][0],meter_positions[i][2][ii][2]);			
+			lcd_main.message("moveto", meter_positions[i][2][ii][0],meter_positions[i][2][ii][1]);
+			lcd_main.message("lineto", meter_positions[i][2][ii][0],meter_positions[i][2][ii][2]);			
 		}
-		outlet(7, "frgb", meter_positions[i][0]);
+		lcd_main.message("frgb", meter_positions[i][0]);
 		for(ii=0;ii<meter_positions[i][2].length;ii++){
 			mmin = Math.min(Math.max(scope_buffer.peek(1,meter_positions[i][2][ii][3]), -1), 1);
 			mmax = Math.min(Math.max(scope_buffer.peek(2,meter_positions[i][2][ii][3]), -1), 1);
 			var mh=meter_positions[i][2][ii][2]-meter_positions[i][2][ii][1]-2;
 			if((mmin>-0.98) && (mmax<0.98)){// && (mmin<1)  && (mmax>-1)){
-				outlet(7, "moveto", meter_positions[i][2][ii][0], meter_positions[i][2][ii][1] + mh * (1 - mmax) * 0.5);
-				outlet(7, "lineto", meter_positions[i][2][ii][0], 1+meter_positions[i][2][ii][1] + mh * (1 - mmin) * 0.5);
+				lcd_main.message("moveto", meter_positions[i][2][ii][0], meter_positions[i][2][ii][1] + mh * (1 - mmax) * 0.5);
+				lcd_main.message("lineto", meter_positions[i][2][ii][0], 1+meter_positions[i][2][ii][1] + mh * (1 - mmin) * 0.5);
 			}else{
 				peakflag=1;
 				peaklist[peaklist.length]=[meter_positions[i][2][ii][0], meter_positions[i][2][ii][1] + mh * (1 - mmax) * 0.5, 1+meter_positions[i][2][ii][1] + mh * (1 - mmin) * 0.5];
@@ -365,10 +365,10 @@ function sidebar_meters(){
 		}
 	}
 	if(peakflag){
-		outlet(7, "frgb", 255, 20, 20);
+		lcd_main.message("frgb", 255, 20, 20);
 		for(i=0;i<peaklist.length;i++){
-			outlet(7, "moveto",peaklist[i][0],peaklist[i][1]);
-			outlet(7, "lineto",peaklist[i][0],peaklist[i][2]);
+			lcd_main.message("moveto",peaklist[i][0],peaklist[i][1]);
+			lcd_main.message("lineto",peaklist[i][0],peaklist[i][2]);
 		}
 	}
 
@@ -399,8 +399,8 @@ function sidebar_midi_scope(){
 		y2 += t;
 		show = 0;
 	}
-	outlet(7, "paintrect" , x1,y1,x2,y2,sidebar.scopes.bg);
-	outlet(7, "frgb",sidebar.scopes.fg);
+	lcd_main.message("paintrect" , x1,y1,x2,y2,sidebar.scopes.bg);
+	lcd_main.message("frgb",sidebar.scopes.fg);
 	
 	sx = (x2-x1)/128;
 	sy = (y2-y1-2)/128;
@@ -413,31 +413,31 @@ function sidebar_midi_scope(){
 		if(v[t]>127){
 			r=1;
 			v[t]=127;
-			outlet(7,"frgb",255,0,0);
+			lcd_main.message("frgb",255,0,0);
 		}else if(v[t]<-127){
 			r=1;
 			v[t]=-127;
-			outlet(7,"frgb",255,0,0);
+			lcd_main.message("frgb",255,0,0);
 		}else if(r==1){
-			outlet(7,"frgb",sidebar.scopes.fg);
+			lcd_main.message("frgb",sidebar.scopes.fg);
 		}
 		if(v[t]>0){
-			outlet(7, "moveto", x1+t*sx, y2);
-			outlet(7, "lineto", x1+t*sx, y2-sy*v[t]);
+			lcd_main.message("moveto", x1+t*sx, y2);
+			lcd_main.message("lineto", x1+t*sx, y2-sy*v[t]);
 			midi_scope_buffer.poke(1,t,Math.max(0,v[t]-0.2)); //held notes very slowly decay in the scope
 			if(show == 1){
 				if(t>llx+4){ly=1; llx=t;}else{ly++;}
-				outlet(7, "moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
-				outlet(7, "write", note_names[t]);
+				lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
+				lcd_main.message("write", note_names[t]);
 			}
 		}else if(v[t]<0){
-			outlet(7, "moveto", x1+t*sx, y2);
-			outlet(7, "lineto", x1+t*sx, y2+sy*v[t]);
+			lcd_main.message("moveto", x1+t*sx, y2);
+			lcd_main.message("lineto", x1+t*sx, y2+sy*v[t]);
 			midi_scope_buffer.poke(1,t,Math.min(0,v[t]*0.00001));//just holds it for 1 frame longer
 			if(show == 1){
 				if(t>llx+4){ly=1; llx=t;}else{ly++;}
-				outlet(7, "moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
-				outlet(7, "write", note_names[t]);
+				lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
+				lcd_main.message("write", note_names[t]);
 			}
 		}
 	}
@@ -455,7 +455,7 @@ function draw_scope(x1,y1,x2,y2,voice){
 	var t,mmin,mmax,c,oc;
 	c=-1;
 	oc=-1;
-	outlet(7, "paintrect", x1,y1,x2,y2, sidebar.scopes.bg);
+	lcd_main.message("paintrect", x1,y1,x2,y2, sidebar.scopes.bg);
 	for(t=0;t<(x2-x1-2)/2;t++){
 		mmin = scope_buffer.peek(1,256*(voice+1)+ t+1);
 		mmax = scope_buffer.peek(2,256*(voice+1)+ t+1);
@@ -468,13 +468,13 @@ function draw_scope(x1,y1,x2,y2,voice){
 		}
 		if(c!=oc){
 			if(c==1){
-				outlet(7, "frgb", 255, 20, 20);
+				lcd_main.message("frgb", 255, 20, 20);
 			}else{
-				outlet(7, "frgb", sidebar.scopes.fg);
+				lcd_main.message("frgb", sidebar.scopes.fg);
 			}
 		}
-		outlet(7, "moveto", x1+t*2, (y1+y2)/2 - (y2-y1-4)*0.5*mmax -1);
-		outlet(7, "lineto", x1+t*2, (y1+y2)/2 - (y2-y1-4)*0.5*mmin );
+		lcd_main.message("moveto", x1+t*2, (y1+y2)/2 - (y2-y1-4)*0.5*mmax -1);
+		lcd_main.message("lineto", x1+t*2, (y1+y2)/2 - (y2-y1-4)*0.5*mmin );
 	}		
 }
 

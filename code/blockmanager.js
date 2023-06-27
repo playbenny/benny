@@ -57,9 +57,9 @@ var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
 var input_used = new Array(MAX_AUDIO_OUTPUTS+2);
 
 outlets = 10;
-setoutletassist(9,"connect to main window gl camera");
-setoutletassist(8,"connect to main window click buffer lcd");
-setoutletassist(7,"connect to main window lcd");
+//setoutletassist(9,"connect to main window gl camera");
+//setoutletassist(8,"connect to main window click buffer lcd");
+//setoutletassist(7,"connect to main window lcd");
 setoutletassist(6,"connect to main window jit.world");
 //setoutletassist(5,"connect to mc.matrix");
 //setoutletassist(4,"connect to audio-to-data poly");
@@ -78,7 +78,6 @@ var sigouts = this.patcher.getnamed("sigouts");
 var matrix = this.patcher.getnamed("matrix");
 var world = this.patcher.getnamed("world");
 var lcd_main = this.patcher.getnamed("lcd_main");
-var lcd_click_buffer = this.patcher.getnamed("lcd_click_buffer");
 
 var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 var textureset_blocks = this.patcher.getnamed("textureset_blocks");

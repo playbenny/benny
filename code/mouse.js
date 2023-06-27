@@ -537,9 +537,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//zoom in or out on drag
 									//xdist = usermouse.x - usermouse.last_x;
 									camera_position[2] = usermouse.drag.starting_value_y + ydist*0.1;
-									outlet(9, "rotatexyz" , 0, 0, 0);
-									outlet(9,"position",  camera_position);
-									outlet(9, "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+									messnamed("camera_control", "rotatexyz" , 0, 0, 0);
+									messnamed("camera_control","position",  camera_position);
+									messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}else if(usermouse.shift){
 									var sts = connections_sketch.screentoworld(usermouse.drag.starting_x,usermouse.drag.starting_y);
 									var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
@@ -551,9 +551,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}else{
 									camera_position[0] = usermouse.drag.starting_value_x - xdist*0.001*camera_position[2];
 									camera_position[1] = usermouse.drag.starting_value_y - ydist*0.001*camera_position[2];
-									outlet(9, "rotatexyz" , 0, 0, 0);
-									outlet(9,"position",  camera_position);
-									outlet(9, "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+									messnamed("camera_control", "rotatexyz" , 0, 0, 0);
+									messnamed("camera_control","position",  camera_position);
+									messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
 							}else if(usermouse.ids[0] == "block"){
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
@@ -665,7 +665,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if((usermouse.clicked3d == "background")||(usermouse.clicked3d == "background_dragged")){
 								usermouse.clicked3d = "background_dragged";
 								menu_camera_scroll = usermouse.drag.starting_value_y + ydist*0.04;
-								outlet(9,"position", 2 , -93, menu_camera_scroll);	
+								messnamed("camera_control","position", 2 , -93, menu_camera_scroll);	
 							}					
 						}
 					}
@@ -757,11 +757,11 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			if(camera_position[2]<0.1)camera_position[2]+=2*scroll;
 			camera_position[0] += xx*scroll*0.5;
 			camera_position[1] -= yy*scroll*0.5;
-			outlet(9,"position",  camera_position);
-			outlet(9, "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+			messnamed("camera_control","position",  camera_position);
+			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){
 			menu_camera_scroll = menu_camera_scroll-scroll;
-			outlet(9,"position", 2 , -93, menu_camera_scroll);
+			messnamed("camera_control","position", 2 , -93, menu_camera_scroll);
 		}else if(displaymode=="connection_menu"){
 			if(x<mainwindow_width/2){
 				connection_menu.replace("from::viewoffset",Math.max(0,connection_menu.get("from::viewoffset")+2*(scroll<0)-1));

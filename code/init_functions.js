@@ -339,12 +339,12 @@ function initialise_dictionaries(){
 	
 	flock_axes(0);
 	
-//	outlet(9, "position", 0, 0, -2);
-	outlet(9, "direction", 0, 0, -1);
-	outlet(9,"position",  camera_position);
-	outlet(9, "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
-	outlet(9, "lighting_enable", 1);
-	outlet(9, "lens_angle", 30);
+//	messnamed("camera_control", "position", 0, 0, -2);
+	messnamed("camera_control", "direction", 0, 0, -1);
+	messnamed("camera_control","position",  camera_position);
+	messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+	messnamed("camera_control", "lighting_enable", 1);
+	messnamed("camera_control", "lens_angle", 30);
 	sigouts.setvalue(0,0); // clear sigs
 }
 
@@ -564,7 +564,7 @@ function size(width,height,scale){
 		mainwindow_height = height;
 		if((typeof scale == "number") && (scale>0)) scale_2d = scale;
 		//click_matrix.dim= [width,height];
-		outlet(7,"dim",width,height);
+		lcd_main.message("dim",width,height);
 		//outlet(8,"dim",width,height); // TODO delete me
 		click_b_w=1; //work out the next power of two after the width, eg 640 --> 1024, use this for the click matrix row length for speed
 		var t = 1;
