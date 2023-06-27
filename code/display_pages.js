@@ -3161,6 +3161,13 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
+	click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
+	mouse_click_actions[mouse_index] = "none";
+	mouse_click_parameters[mouse_index] = "";
+	mouse_click_values[mouse_index] = "";	
+	mouse_index++;
+
+
 	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
 	mouse_click_actions[mouse_index] = scroll_sidebar;
 	mouse_click_parameters[mouse_index] = "";
@@ -4918,273 +4925,285 @@ function draw_sidebar(){
 				lcd_main.message("write", "connections");
 				y_offset += 1.1* fontheight;
 				if(conn_count){
-					for(i=0;i<cm;i++){
-						setfontsize(fontheight/3.2);
-						if(connections.contains("connections["+i+"]::from::number")){
-							if((connections.get("connections["+i+"]::from::number") == block) || (connections.get("connections["+i+"]::to::number") == block)){
-								lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9 - 3.3*fontheight, fontheight*1.6+y_offset,block_darkest );
-								click_rectangle( sidebar.x, y_offset, mainwindow_width-9 - 3.3*fontheight, fontheight*1.7+y_offset,mouse_index,1 );
-								mouse_click_actions[mouse_index] = connection_select;
-								mouse_click_parameters[mouse_index] = 0; //"connections["+i+"]::conversion::mute";
-								mouse_click_values[mouse_index] = i;
-								mouse_index++;
-								lcd_main.message("frgb" , block_dark);
-								lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.45+y_offset);
-								lcd_main.message("write", "from");
-								lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.05+y_offset);
-								lcd_main.message("write", "to");
-								lcd_main.message("frgb", block_colour );
-								var f_number = connections.get("connections["+i+"]::from::number");
-								var f_name = blocks.get("blocks["+f_number+"]::name");
-								var f_label = f_name;
-								if(blocks.contains("blocks["+f_number+"]::label")){
-									f_label = blocks.get("blocks["+f_number+"]::label");
-								}
-								var t_number = connections.get("connections["+i+"]::to::number");
-								var t_name = blocks.get("blocks["+t_number+"]::name");
-								var t_label = t_name;
-								if(blocks.contains("blocks["+t_number+"]::label")){
-									t_label = blocks.get("blocks["+t_number+"]::label");
-								}
-								var f_o_no = connections.get("connections["+i+"]::from::output::number");
-								var f_type = connections.get("connections["+i+"]::from::output::type");
-								var t_i_no = connections.get("connections["+i+"]::to::input::number");
-								var t_type = connections.get("connections["+i+"]::to::input::type");
-								if(f_type=="parameters"){
-									var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
+					for(var pass=0;pass<2;pass++){
+						for(i=0;i<cm;i++){
+							setfontsize(fontheight/3.2);
+							if(connections.contains("connections["+i+"]::from::number")){
+								var comp;
+								if(pass==0){
+									comp = connections.get("connections["+i+"]::from::number");
 								}else{
-									var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
+									comp = connections.get("connections["+i+"]::to::number");
 								}
-								if(t_type=="parameters"){
-									var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
-								}else{
-									var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
-								}
-								var f_o_v = ""; var t_i_v="";
-								if(blocks.get("blocks["+f_number+"]::poly::voices")>1) f_o_v = connections.get("connections["+i+"]::from::voice");
-								if(blocks.get("blocks["+t_number+"]::poly::voices")>1) t_i_v = connections.get("connections["+i+"]::to::voice");
-								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.45+y_offset);
-								lcd_main.message("write", f_label);
-								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.7+y_offset);
-								if(f_o_v!="") {
-									lcd_main.message("write", f_o_v+" - "+f_o_name);
-								}else{
-									lcd_main.message("write", f_o_name);
-								}
-//								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.95+y_offset);
-//								lcd_main.message("write", f_o_v);
-								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*1.05+y_offset);
-								lcd_main.message("write", t_label);
-								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.3*fontheight+y_offset);
-								if(t_i_v!=""){
-									lcd_main.message("write", t_i_v+" - "+t_i_name);
-								}else{
-									lcd_main.message("write", t_i_name);
-								}
-//								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.8*fontheight+y_offset);
-//								lcd_main.message("write", t_i_v);
-								
-								var mute = connections.get("connections["+i+"]::conversion::mute");
-								var scale = connections.get("connections["+i+"]::conversion::scale");
-								var vector = connections.get("connections["+i+"]::conversion::vector");
-								var offset = connections.get("connections["+i+"]::conversion::offset");
-								var offset2 = connections.get("connections["+i+"]::conversion::offset2");
-								var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
-
-								var col=new Array(3);
-								if(connections.get("connections["+i+"]::to::input::type")=="audio"){
-									col = audiocolour;
-								}else if(connections.get("connections["+i+"]::to::input::type")=="hardware"){
-									col = hardwarecolour;
-								}else if(connections.get("connections["+i+"]::to::input::type")=="matrix"){
-									col = matrixcolour;
-								}else if(connections.get("connections["+i+"]::to::input::type")=="midi"){
-									col = midicolour;
-								}else if(connections.get("connections["+i+"]::to::input::type")=="block"){
-									col = blockcontrolcolour;
-								}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-									col = parameterscolour;
-								}
-								
-								if(mute){
-									lcd_main.message("paintrect",mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,128,128,128);
-									lcd_main.message("frgb", 0, 0, 0);
-									lcd_main.message("moveto",mainwindow_width-9-fontheight*0.9, fontheight*0.9+y_offset);
-									lcd_main.message("write", "mute");
-									lcd_main.message("frgb",col[0],col[1],col[2]);
-								}else{
-									lcd_main.message("paintrect",mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,menudark);
-									lcd_main.message("frgb" , menucolour);
-									lcd_main.message("moveto",mainwindow_width-9-fontheight*0.9, fontheight*0.9+y_offset);
-									lcd_main.message("write","mute");
-								}
-								click_rectangle(mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index, 1);
-								mouse_click_actions[mouse_index] = connection_edit;
-								mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::mute";
-								mouse_click_values[mouse_index] = !mute;
-								mouse_index++;
-								if((connections.get("connections["+i+"]::from::output::type")!="matrix") && (!force_unity)){
-									draw_h_slider_labelled(mainwindow_width-9-fontheight*3.2, y_offset+fontheight*1.1, mainwindow_width-9, fontheight*1.6+y_offset,col[0],col[1],col[2],mouse_index,scale);
-									mouse_click_actions[mouse_index] = connection_edit;
-									mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::scale";
-									mouse_click_values[mouse_index] = 0;
+								if((comp == block)){
+									lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9 - 3.3*fontheight, fontheight*1.6+y_offset,block_darkest );
+									click_rectangle( sidebar.x, y_offset, mainwindow_width-9 - 3.3*fontheight, fontheight*1.7+y_offset,mouse_index,1 );
+									mouse_click_actions[mouse_index] = connection_select;
+									mouse_click_parameters[mouse_index] = 0; //"connections["+i+"]::conversion::mute";
+									mouse_click_values[mouse_index] = i;
 									mouse_index++;
-										//	lcd_main.message("frgb", menucolour);
-								}else{
-									lcd_main.message("moveto", mainwindow_width-9-fontheight*3.0, y_offset+fontheight*1.6);
-									lcd_main.message("write","gain locked @ unity");
-								}
-								if(connections.get("connections["+i+"]::from::output::type")=="hardware"){
+									lcd_main.message("frgb" , block_dark);
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.45+y_offset);
+									lcd_main.message("write", "from");
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.05+y_offset);
+									lcd_main.message("write", "to");
+									lcd_main.message("frgb", block_colour );
+									var f_number = connections.get("connections["+i+"]::from::number");
+									var f_name = blocks.get("blocks["+f_number+"]::name");
+									var f_label = f_name;
+									if(blocks.contains("blocks["+f_number+"]::label")){
+										f_label = blocks.get("blocks["+f_number+"]::label");
+									}
+									var t_number = connections.get("connections["+i+"]::to::number");
+									var t_name = blocks.get("blocks["+t_number+"]::name");
+									var t_label = t_name;
+									if(blocks.contains("blocks["+t_number+"]::label")){
+										t_label = blocks.get("blocks["+t_number+"]::label");
+									}
+									var f_o_no = connections.get("connections["+i+"]::from::output::number");
+									var f_type = connections.get("connections["+i+"]::from::output::type");
+									var t_i_no = connections.get("connections["+i+"]::to::input::number");
+									var t_type = connections.get("connections["+i+"]::to::input::type");
+									if(f_type=="parameters"){
+										var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
+									}else{
+										var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
+									}
+									if(t_type=="parameters"){
+										var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
+									}else{
+										var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
+									}
+									var f_o_v = ""; var t_i_v="";
+									if(blocks.get("blocks["+f_number+"]::poly::voices")>1) f_o_v = connections.get("connections["+i+"]::from::voice");
+									if(blocks.get("blocks["+t_number+"]::poly::voices")>1) t_i_v = connections.get("connections["+i+"]::to::voice");
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.45+y_offset);
+									if(pass==1){
+										lcd_main.message("write", f_label);
+										lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.7+y_offset);
+									}
+									if(f_o_v!="") {
+										lcd_main.message("write", f_o_v+" - "+f_o_name);
+									}else{
+										lcd_main.message("write", f_o_name);
+									}
+	//								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.95+y_offset);
+	//								lcd_main.message("write", f_o_v);
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*1.05+y_offset);
+									if(pass==0){
+										lcd_main.message("write", t_label);
+										lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.3*fontheight+y_offset);
+									}
+									if(t_i_v!=""){
+										lcd_main.message("write", t_i_v+" - "+t_i_name);
+									}else{
+										lcd_main.message("write", t_i_name);
+									}
+	//								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.8*fontheight+y_offset);
+	//								lcd_main.message("write", t_i_v);
+									
+									var mute = connections.get("connections["+i+"]::conversion::mute");
+									var scale = connections.get("connections["+i+"]::conversion::scale");
+									var vector = connections.get("connections["+i+"]::conversion::vector");
+									var offset = connections.get("connections["+i+"]::conversion::offset");
+									var offset2 = connections.get("connections["+i+"]::conversion::offset2");
+									var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
+	
+									var col=new Array(3);
 									if(connections.get("connections["+i+"]::to::input::type")=="audio"){
-										var v1;
-										var v2;
-										var nv1 = connections.get("connections["+i+"]::from::voice");
-										if(connections.gettype("connections["+i+"]::from::voice")!="array"){
-											if(connections.get("connections["+i+"]::from::voice")=="all"){
-												v1 = connection_menu.get("from::voices");
-											}else{
-												v1 = 1;
-											}
-										}else{
-											v1 = nv1.length;
-										}
-										var nv2 = connections.get("connections["+i+"]::to::voice");
-										post(connections.gettype("connections["+i+"]::to::voice"));
-										if(connections.gettype("connections["+i+"]::to::voice")!="array"){
-											if(connections.get("connections["+i+"]::to::voice")=="all"){
-												v2 = connection_menu.get("to::voices");
-											}else{
-												v2 = 1;
-											}
-										}else{
-											v2 = nv2.length;
-										}
-										draw_spread(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2);	
-										draw_spread_levels(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,scale);	
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_index++;
-									}else if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-										draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;
-										draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
-										mouse_index++;
+										col = audiocolour;
+									}else if(connections.get("connections["+i+"]::to::input::type")=="hardware"){
+										col = hardwarecolour;
+									}else if(connections.get("connections["+i+"]::to::input::type")=="matrix"){
+										col = matrixcolour;
+									}else if(connections.get("connections["+i+"]::to::input::type")=="midi"){
+										col = midicolour;
+									}else if(connections.get("connections["+i+"]::to::input::type")=="block"){
+										col = blockcontrolcolour;
 									}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-										draw_h_slider(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;
+										col = parameterscolour;
 									}
-								}else if(connections.get("connections["+i+"]::from::output::type")=="audio"){
-									if(force_unity){
-									}else if((connections.get("connections["+i+"]::to::input::type")=="hardware")	|| (connections.get("connections["+i+"]::to::input::type")=="audio")){
-										var v1;
-										var v2;
-										var nv1 = connections.get("connections["+i+"]::from::voice");
-										if(connections.gettype("connections["+i+"]::from::voice")!="array"){
-											if(connections.get("connections["+i+"]::from::voice")=="all"){
-												v1 = connection_menu.get("from::voices");
-											}else{
-												v1 = 1;
-											}
-										}else{
-											v1 = nv1.length;
-										}
-										var nv2 = connections.get("connections["+i+"]::to::voice");
-										if(connections.gettype("connections["+i+"]::to::voice")!="array"){
-											if(connections.get("connections["+i+"]::to::voice")=="all"){
-												v2 = connection_menu.get("to::voices");
-											}else{
-												v2 = 1;
-											}
-										}else{
-											v2 = nv2.length;
-										}
-										
-										draw_spread(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2);				
-										draw_spread_levels(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,scale);				
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_index++;
-									}else if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-										draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;
-										draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
-										mouse_index++;
-									}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-										draw_h_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;
+									
+									if(mute){
+										lcd_main.message("paintrect",mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,128,128,128);
+										lcd_main.message("frgb", 0, 0, 0);
+										lcd_main.message("moveto",mainwindow_width-9-fontheight*0.9, fontheight*0.9+y_offset);
+										lcd_main.message("write", "mute");
+										lcd_main.message("frgb",col[0],col[1],col[2]);
+									}else{
+										lcd_main.message("paintrect",mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,menudark);
+										lcd_main.message("frgb" , menucolour);
+										lcd_main.message("moveto",mainwindow_width-9-fontheight*0.9, fontheight*0.9+y_offset);
+										lcd_main.message("write","mute");
 									}
-								}else if(connections.get("connections["+i+"]::from::output::type")=="midi"){
-									if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-										draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
+									click_rectangle(mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index, 1);
+									mouse_click_actions[mouse_index] = connection_edit;
+									mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::mute";
+									mouse_click_values[mouse_index] = !mute;
+									mouse_index++;
+									if((connections.get("connections["+i+"]::from::output::type")!="matrix") && (!force_unity)){
+										draw_h_slider_labelled(mainwindow_width-9-fontheight*3.2, y_offset+fontheight*1.1, mainwindow_width-9, fontheight*1.6+y_offset,col[0],col[1],col[2],mouse_index,scale);
 										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
-										mouse_index++;			
-									}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-										draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::scale";
 										mouse_click_values[mouse_index] = 0;
 										mouse_index++;
-										draw_h_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;			
-									}else if((connections.get("connections["+i+"]::to::input::type")=="audio")||(connections.get("connections["+i+"]::to::input::type")=="hardware")){
-										draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;
-										draw_h_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;									
+											//	lcd_main.message("frgb", menucolour);
+									}else{
+										lcd_main.message("moveto", mainwindow_width-9-fontheight*3.0, y_offset+fontheight*1.6);
+										lcd_main.message("write","gain locked @ unity");
 									}
-								}else if(connections.get("connections["+i+"]::from::output::type")=="parameters"){
-									if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-										draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;
-										draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-										mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
-										mouse_index++;			
-									}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-										draw_h_slider(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
-										mouse_click_actions[mouse_index] = connection_edit;
-										mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-										mouse_click_values[mouse_index] = 0;
-										mouse_index++;			
-									}			
+									if(connections.get("connections["+i+"]::from::output::type")=="hardware"){
+										if(connections.get("connections["+i+"]::to::input::type")=="audio"){
+											var v1;
+											var v2;
+											var nv1 = connections.get("connections["+i+"]::from::voice");
+											if(connections.gettype("connections["+i+"]::from::voice")!="array"){
+												if(connections.get("connections["+i+"]::from::voice")=="all"){
+													v1 = connection_menu.get("from::voices");
+												}else{
+													v1 = 1;
+												}
+											}else{
+												v1 = nv1.length;
+											}
+											var nv2 = connections.get("connections["+i+"]::to::voice");
+											post(connections.gettype("connections["+i+"]::to::voice"));
+											if(connections.gettype("connections["+i+"]::to::voice")!="array"){
+												if(connections.get("connections["+i+"]::to::voice")=="all"){
+													v2 = connection_menu.get("to::voices");
+												}else{
+													v2 = 1;
+												}
+											}else{
+												v2 = nv2.length;
+											}
+											draw_spread(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2);	
+											draw_spread_levels(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,scale);	
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_index++;
+										}else if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
+											draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+											draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+											mouse_index++;
+										}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
+											draw_h_slider(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+										}
+									}else if(connections.get("connections["+i+"]::from::output::type")=="audio"){
+										if(force_unity){
+										}else if((connections.get("connections["+i+"]::to::input::type")=="hardware")	|| (connections.get("connections["+i+"]::to::input::type")=="audio")){
+											var v1;
+											var v2;
+											var nv1 = connections.get("connections["+i+"]::from::voice");
+											if(connections.gettype("connections["+i+"]::from::voice")!="array"){
+												if(connections.get("connections["+i+"]::from::voice")=="all"){
+													v1 = connection_menu.get("from::voices");
+												}else{
+													v1 = 1;
+												}
+											}else{
+												v1 = nv1.length;
+											}
+											var nv2 = connections.get("connections["+i+"]::to::voice");
+											if(connections.gettype("connections["+i+"]::to::voice")!="array"){
+												if(connections.get("connections["+i+"]::to::voice")=="all"){
+													v2 = connection_menu.get("to::voices");
+												}else{
+													v2 = 1;
+												}
+											}else{
+												v2 = nv2.length;
+											}
+											
+											draw_spread(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2);				
+											draw_spread_levels(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,scale);				
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_index++;
+										}else if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
+											draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+											draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+											mouse_index++;
+										}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
+											draw_h_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+										}
+									}else if(connections.get("connections["+i+"]::from::output::type")=="midi"){
+										if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
+											draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+											mouse_index++;			
+										}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
+											draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+											draw_h_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;			
+										}else if((connections.get("connections["+i+"]::to::input::type")=="audio")||(connections.get("connections["+i+"]::to::input::type")=="hardware")){
+											draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+											draw_h_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;									
+										}
+									}else if(connections.get("connections["+i+"]::from::output::type")=="parameters"){
+										if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
+											draw_vector(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;
+											draw_2d_slider(mainwindow_width-9-fontheight*2.1, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+											mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+											mouse_index++;			
+										}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
+											draw_h_slider(mainwindow_width-9-fontheight*3.2, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+											mouse_click_actions[mouse_index] = connection_edit;
+											mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+											mouse_click_values[mouse_index] = 0;
+											mouse_index++;			
+										}			
+									}
+									
+									y_offset += 1.7 * fontheight;
 								}
-								
-								y_offset += 1.7 * fontheight;
 							}
 						}
 					}
