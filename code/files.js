@@ -511,14 +511,28 @@ function load_process_block_voices_and_data(block){
 }
 
 function load_block(block_name,block_index,paramvalues,was_exclusive){
-	post("\nloading block: ",block_name," into ",block_index," was_exclu=",was_exclusive);//,"index",block_index,"paramvalues",paramvalues);
+	//post("\nloading block: ",block_name," into ",block_index," was_exclu=",was_exclusive);//,"index",block_index,"paramvalues",paramvalues);
 	var new_voice=-1;
 	var type = blocktypes.get(block_name+"::type");
 	var offs = 0;
 	var recycled = 0;
+	var up = 1;
+	if(type == "audio"){
+		if(blocks.contains("blocks["+block_index+"]::upsample")){
+			up = UPSAMPLING * blocks.get("blocks["+block_index+"]::upsample");
+			//post("\nrestoring saved upsample value");
+		}else if(blocktypes.contains(block_name+"::upsample")){
+			up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
+			blocks.replace("blocks["+block_index+"]::upsample", up);
+			//post("\nusing default upsample value");
+		}else {
+			blocks.replace("blocks["+block_index+"]::upsample", 1);
+			//post("\n no saved upsampling, no default upsampling, set to 1x");
+		}
+	}
 	if(!was_exclusive){
 		if(type == "audio"){
-			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"));
+			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
 			recycled = 1;
 		}else{
 			new_voice = next_free_voice(type);
@@ -537,18 +551,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		still_checking_polys |= 1;
 	}else if(type == "audio"){
 		audio_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
-		var up = 1;
-		if(blocks.contains("blocks["+block_index+"]::upsample")){
-			up = UPSAMPLING * blocks.get("blocks["+block_index+"]::upsample");
-			post("\nrestoring saved upsample value");
-		}else if(blocktypes.contains(block_name+"::upsample")){
-			up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
-			blocks.replace("blocks["+block_index+"]::upsample", up);
-			post("\nusing default upsample value");
-		}else {
-			blocks.replace("blocks["+block_index+"]::upsample", 1);
-			post("\n no saved upsampling, no default upsampling, set to 1x");
-		}
+
 		audio_upsamplelist[new_voice] = up;
 		still_checking_polys |= 2;
 		offs=MAX_NOTE_VOICES;

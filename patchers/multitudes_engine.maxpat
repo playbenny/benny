@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-41",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1397.799999999999955, 316.0, 99.0, 22.0 ],
+					"text" : "r camera_control"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-149",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -115,7 +127,6 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 247.149999999999977, 194.0, 153.0, 22.0 ],
-									"presentation_linecount" : 2,
 									"text" : "bgfillcolor 0.333 0.302 0. 1."
 								}
 
@@ -1576,7 +1587,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 1392.800000000000182, 200.0, 113.0, 22.0 ],
+					"patching_rect" : [ 241.5, 152.75, 113.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -1595,7 +1606,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 1392.800000000000182, 166.0, 119.0, 22.0 ],
+					"patching_rect" : [ 241.5, 118.75, 119.0, 22.0 ],
 					"text" : "jit.lcd 4 char 128 128",
 					"varname" : "lcd_block_textures"
 				}
@@ -12811,18 +12822,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-55",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 1501.799999999999955, 297.0, 103.0, 22.0 ],
-					"text" : "viewport 0. 0. 1 1."
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-61",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -12900,7 +12899,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 1346.799999999999955, 411.0, 65.0, 22.0 ],
+					"patching_rect" : [ 1397.799999999999955, 348.0, 65.0, 22.0 ],
 					"text" : "route anim"
 				}
 
@@ -12949,7 +12948,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 1346.799999999999955, 445.0, 76.0, 22.0 ],
+					"patching_rect" : [ 1397.799999999999955, 382.0, 76.0, 22.0 ],
 					"text" : "jit.anim.drive"
 				}
 
@@ -12960,7 +12959,7 @@
 					"bgcolor2" : [ 0.152941176470588, 1.0, 0.588235294117647, 1.0 ],
 					"bgfillcolor_angle" : 270.0,
 					"bgfillcolor_autogradient" : 0.0,
-					"bgfillcolor_color" : [ 1.0, 0.216, 0.0, 1.0 ],
+					"bgfillcolor_color" : [ 0.333, 0.302, 0.0, 1.0 ],
 					"bgfillcolor_color1" : [ 0.152941176470588, 1.0, 0.588235294117647, 1.0 ],
 					"bgfillcolor_color2" : [ 0.2, 0.2, 0.2, 1.0 ],
 					"bgfillcolor_proportion" : 0.5,
@@ -12976,7 +12975,7 @@
 					"patching_rect" : [ 13.0, 12.25, 147.0, 30.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 226.0, 97.0, 88.0, 30.0 ],
-					"text" : "restart",
+					"text" : "start",
 					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ],
 					"textjustification" : 1
 				}
@@ -12990,7 +12989,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_gl_texture", "" ],
-					"patching_rect" : [ 1429.799999999999955, 481.0, 288.0, 36.0 ],
+					"patching_rect" : [ 1480.799999999999955, 418.0, 288.0, 36.0 ],
 					"text" : "jit.gl.camera mainwindow @cull_face 1 @antialias 1 @smooth_shading 1 @fsaa 1"
 				}
 
@@ -13168,8 +13167,8 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 10,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "", "" ],
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 1335.799999999999955, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -13299,7 +13298,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 1429.799999999999955, 445.0, 256.0, 22.0 ]
+					"patching_rect" : [ 1480.799999999999955, 382.0, 256.0, 22.0 ]
 				}
 
 			}
@@ -13312,20 +13311,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 1457.799999999999955, 380.5, 228.0, 22.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"attr" : "lighting_enable",
-					"id" : "obj-41",
-					"maxclass" : "attrui",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 1535.799999999999955, 410.0, 150.0, 22.0 ]
+					"patching_rect" : [ 1480.799999999999955, 348.0, 228.0, 22.0 ]
 				}
 
 			}
@@ -13957,34 +13943,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-48", 0 ],
-					"source" : [ "obj-32", 6 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-49", 0 ],
-					"source" : [ "obj-32", 8 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-54", 0 ],
-					"source" : [ "obj-32", 7 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-66", 0 ],
-					"source" : [ "obj-32", 9 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-45", 0 ],
 					"source" : [ "obj-33", 0 ]
 				}
@@ -14048,7 +14006,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-46", 0 ],
+					"destination" : [ "obj-66", 0 ],
 					"source" : [ "obj-41", 0 ]
 				}
 
@@ -14152,13 +14110,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-48", 0 ],
 					"source" : [ "obj-54", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-46", 0 ],
-					"source" : [ "obj-55", 0 ]
 				}
 
 			}
@@ -14559,48 +14510,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "continuity_buffer_fx.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.keyboard.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "drawing_helpers.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -14617,13 +14526,6 @@
 				"name" : "jitgltextureset.js",
 				"bootpath" : "C74:/packages/Jitter Tools/javascript",
 				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "master_1.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{

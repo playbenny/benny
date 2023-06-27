@@ -312,10 +312,11 @@ function poly_loaded(type,number){
 	}
 }
 
-function find_audio_voice_to_recycle(pa){
+function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
+	//post("\n>>looking for a voice to recycle for",pa,"upsampling is",up);
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if((audio_patcherlist[i] == "recycling") && (loaded_audio_patcherlist[i] == pa)){
-			post("\nrecycling voice ",i);
+			//post("\nrecycling voice ",i);
 			return i;
 		}
 	}
@@ -1879,10 +1880,12 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	while(voices != v){
 		if(voices > v){	//add voices
 			if((v==0)||(vst==0)){
-				new_voice = next_free_voice(type);
 				var t_offset = 0;
 				if(type=="audio"){
 					t_offset=MAX_NOTE_VOICES;
+					new_voice = find_audio_voice_to_recycle(details.get("patcher"),blocks.get("blocks["+block+"]::upsample"));
+				}else{
+					new_voice = next_free_voice(type);
 				}
 				if(details.contains("voice_data::defaults")){
 					var vd_def = [];
@@ -1915,6 +1918,9 @@ function voicecount(block, voices){     // changes the number of voices assigned
 						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", "0");
 						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", "0");
 						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", "0");
+					}
+					if(loading.progress<=0){
+						audio_poly.setvalue(new_voice+1, "muteouts", 0);
 					}
 				}
 				if(blocks.contains("blocks["+block+"]::flock::parameters")){

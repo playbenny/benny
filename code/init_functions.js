@@ -281,17 +281,17 @@ function initialise_dictionaries(){
 
 	// all the 3d ui stuff now
 
-	outlet(6, "sendwindow", "idlemouse", 1);
-	outlet(6, "sendwindow", "mousewheel", 1);
-	outlet(6, "sendrender", "rotate_order", "zyx");
-	outlet(6, "sendrender", "smooth_shading", 1);
-	outlet(6, "enable", 1);
-	outlet(6, "visible", 1);
-	outlet(6, "esc_fullscreen", 0);
-	outlet(6, "fsmenubar", 0);
-	outlet(6, "fsaa", 1);
-	outlet(6, "fps", 30);
-	world.getsize(); //outlet(6, "getsize"); //get ui window ready
+	world.message( "sendwindow", "idlemouse", 1);
+	world.message( "sendwindow", "mousewheel", 1);
+	world.message( "sendrender", "rotate_order", "zyx");
+	world.message( "sendrender", "smooth_shading", 1);
+	world.message( "enable", 1);
+	world.message( "visible", 1);
+	world.message( "esc_fullscreen", 0);
+	world.message( "fsmenubar", 0);
+	world.message( "fsaa", 1);
+	world.message( "fps", 30);
+	world.getsize(); //world.message( "getsize"); //get ui window ready
 
 	background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
 	background_cube.shape = "cube";
@@ -565,7 +565,6 @@ function size(width,height,scale){
 		if((typeof scale == "number") && (scale>0)) scale_2d = scale;
 		//click_matrix.dim= [width,height];
 		lcd_main.message("dim",width,height);
-		//outlet(8,"dim",width,height); // TODO delete me
 		click_b_w=1; //work out the next power of two after the width, eg 640 --> 1024, use this for the click matrix row length for speed
 		var t = 1;
 		while(t<mainwindow_width){

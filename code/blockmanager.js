@@ -56,17 +56,7 @@ var debug = 0;
 var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
 var input_used = new Array(MAX_AUDIO_OUTPUTS+2);
 
-outlets = 10;
-//setoutletassist(9,"connect to main window gl camera");
-//setoutletassist(8,"connect to main window click buffer lcd");
-//setoutletassist(7,"connect to main window lcd");
-setoutletassist(6,"connect to main window jit.world");
-//setoutletassist(5,"connect to mc.matrix");
-//setoutletassist(4,"connect to audio-to-data poly");
-//setoutletassist(3,"connect to audio blocks poly");
-//setoutletassist(2,"connect to midi blocks poly");
-//setoutletassist(1,"connect to block ui poly");
-//setoutletassist(0,"connect to voice allocators poly");
+outlets = 0;
 
 var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
 var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");

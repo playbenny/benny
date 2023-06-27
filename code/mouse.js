@@ -812,7 +812,7 @@ function keydown(key){
 	// GLOBAL KEYS ##############################################################################
 	if(key == -27){//f11 fullscreen
 		fullscreen = 1 - fullscreen;
-		outlet(6,"fullscreen",fullscreen);
+		world.message("fullscreen",fullscreen);
 		return;
 	}else if(key == 47){
 		deferred_diagnostics();

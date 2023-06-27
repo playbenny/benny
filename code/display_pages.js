@@ -54,7 +54,7 @@ function camera(){
 		messnamed("camera_control", "direction", 0, -1, 0);		
 	}else if(displaymode == "blocks"){ //this could be animated too?
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
-		outlet(0, "direction", 0, 0, -1);
+		messnamed("camera_control", "direction", 0, 0, -1);
 		messnamed("camera_control","anim", "moveto",  camera_position, ANIM_TIME);
 //		messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		if(sidebar.mode=="file_menu"){
