@@ -3141,6 +3141,8 @@ function draw_topbar(){
 function draw_sidebar(){	
 //	post("\ndraw sidebar");
 	sidebar.scroll.max = 0;
+
+	if(sidebar.mode!=sidebar.lastmode) sidebar.scroll.position = 0;
 	selected.block_count =0;
 	selected.wire_count = 0;
 	var block_colour, block_dark, block_darkest;
@@ -5470,7 +5472,7 @@ function draw_sidebar(){
 			lcd_main.message("frgb", menucolour );
 
 			lcd_main.message("moveto" , mainwindow_width-9-fontheight*2, fontheight*0.75+y_offset);
-			lcd_main.message("write", "insert");
+			lcd_main.message("write", "ins");
 			
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			setfontsize(fontheight/1.6);
@@ -5788,11 +5790,21 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = !mute;
 			mouse_index++;
 			if((connections.get("connections["+i+"]::from::output::type")!="matrix") && (!force_unity)){
-				draw_h_slider_labelled(sidebar.x, y_offset+fontheight*2.7, mainwindow_width-9, fontheight*4.0+y_offset,col[0],col[1],col[2],mouse_index,scale);
+				draw_h_slider_labelled(sidebar.x, y_offset+fontheight*2.7, mainwindow_width-9-fontheight*1.1, fontheight*4.0+y_offset,col[0],col[1],col[2],mouse_index,scale);
 				mouse_click_actions[mouse_index] = connection_edit;
 				mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::scale";
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
+				lcd_main.message("paintrect", mainwindow_width-9-fontheight,y_offset+fontheight*2.7,mainwindow_width-9,y_offset+4*fontheight,menudark);
+				lcd_main.message("frgb", menucolour );
+				lcd_main.message("moveto",mainwindow_width-9-fontheight*0.8, fontheight*3.8+y_offset);
+				lcd_main.message("write","ø");
+				click_rectangle(mainwindow_width-9-fontheight,y_offset+fontheight*2.7,mainwindow_width,y_offset+4*fontheight,mouse_index, 1);
+				mouse_click_actions[mouse_index] = connection_edit;
+				mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::scale";
+				mouse_click_values[mouse_index] = -scale;
+				mouse_index++;
+	
 				lcd_main.message("frgb", menucolour);
 			}else{
 				lcd_main.message("moveto", sidebar.x+fontheight*0.2, y_offset+fontheight*3.7);
@@ -5963,6 +5975,7 @@ function draw_sidebar(){
 //			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);				
 			sidebar.mode = "wires";
 			if(sidebar.mode != sidebar.lastmode){
+				sidebar.scroll.position = 0;
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
 				remove_midi_scope();
@@ -5972,6 +5985,7 @@ function draw_sidebar(){
 		// if multi connections selected
 		   // connection adjust view - gain control, offset if applicable, muteall/unmuteall		
 		}else if(sidebar.mode == "input_scope"){
+			sidebar.scroll.position = 0;
 			if(sidebar.mode != sidebar.lastmode){
 				sidebar.lastmode = sidebar.mode;
 			}
@@ -6029,6 +6043,7 @@ function draw_sidebar(){
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 			
 		}else if(sidebar.mode == "output_scope"){
+			sidebar.scroll.position = 0;
 			if(sidebar.mode != sidebar.lastmode){
 				sidebar.lastmode = sidebar.mode;
 			}
