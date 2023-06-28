@@ -796,10 +796,10 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	block_label = blocks.get("blocks["+i+"]::label");
 	block_type = blocks.get("blocks["+i+"]::type");
 	var vst = 0;
-	var subchannels = 1;
-	if(blocks.get("blocks["+i+"]::subchannels")>1){
+	var subvoices = 1;
+	if(blocks.get("blocks["+i+"]::subvoices")>1){
 		vst = 1;
-		subchannels = blocks.get("blocks["+i+"]::subchannels");
+		subvoices = blocks.get("blocks["+i+"]::subvoices");
 	} 
 	if(block_x<blocks_page.leftmost) blocks_page.leftmost = block_x;
 	if(block_x>blocks_page.rightmost) blocks_page.rightmost = block_x;
@@ -5566,7 +5566,7 @@ function draw_sidebar(){
 					sidebar.scopes.voicelist = [];
 					audio_to_data_poly.setvalue(0, "vis_scope", 0);
 					var listvoice;
-					if(!blocks.get("blocks["+f_number+"]::subchannels")>1){
+					if(!blocks.get("blocks["+f_number+"]::subvoices")>1){
 						if(f_o_v=="all"){
 							listvoice = voicemap.get(f_number);
 							if(typeof listvoice == "number") listvoice = [listvoice];

@@ -153,15 +153,17 @@ function new_block(block_name,x,y){
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", "0");
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", "0");
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", "0");
-		if(vst==1){
+		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
+			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
+			//WHAT AND WHY IS THIS?
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
-				blocks.replace("blocks["+new_block_index+"]::subchannels",2);
+				blocks.replace("blocks["+new_block_index+"]::subvoices",2);
 				voicecount(new_block_index,blocktypes.get(block_name+"::max_polyphony"));
 			}else{
-				blocks.replace("blocks["+new_block_index+"]::subchannels",1);
+				blocks.replace("blocks["+new_block_index+"]::subvoices",1);
 			}			
 		}else{
-			blocks.replace("blocks["+new_block_index+"]::subchannels",1);
+			if(!blocktypes.contains(block_name+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",1);
 		}
 	}else if(type=="hardware"){
 		var split=0;//=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
@@ -607,7 +609,7 @@ function remove_connection(connection_number){
 			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[f_o_no];
 		}
 	}else{
-		if(blocks.get("blocks["+f_block+"]::subchannels")>1){
+		if(blocks.get("blocks["+f_block+"]::subvoices")>1){
 			post("disconnecting stereo vst as if 2 voices",f_voice_list, voicemap.get(f_block));
 			//so f_voices[] should contain the matrix channels where the vst poly voice is, we have to make an
 			//adjustment so voice 2 goes to v1/o2 instead
@@ -698,7 +700,7 @@ function remove_connection(connection_number){
 			t_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[t_i_no] - 1;
 		}
 	}else{	// need to check for vsts		
-		if(blocks.get("blocks["+t_block+"]::subchannels")>1){
+		if(blocks.get("blocks["+t_block+"]::subvoices")>1){
 			post("disconnecting stereo vst as if 2 voices",t_voice_list, voicemap.get(t_block));
 			//so f_voices[] should contain the matrix channels where the vst poly voice is, we have to make an
 			//adjustment so voice 2 goes to v1/o2 instead
@@ -1041,7 +1043,7 @@ function make_connection(cno){
 			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[f_o_no];
 		}
 	}else{ // need to check for vsts, and if so do what i did for hardware above:
-		if(blocks.get("blocks["+f_block+"]::subchannels")>1){
+		if(blocks.get("blocks["+f_block+"]::subvoices")>1){
 			post("connecting stereo vst as if 2 voices",f_voice_list, voicemap.get(f_block));
 			//so f_voices[] should contain the matrix channels where the vst poly voice is, we have to make an
 			//adjustment so voice 2 goes to v1/o2 instead
@@ -1132,7 +1134,7 @@ function make_connection(cno){
 			t_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[t_i_no] - 1;
 		}
 	}else{	
-		if(blocks.get("blocks["+t_block+"]::subchannels")>1){
+		if(blocks.get("blocks["+t_block+"]::subvoices")>1){
 			post("connecting stereo vst as if 2 voices",t_voice_list, voicemap.get(t_block));
 			//so f_voices[] should contain the matrix channels where the vst poly voice is, we have to make an
 			//adjustment so voice 2 goes to v1/o2 instead
