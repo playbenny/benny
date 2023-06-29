@@ -797,9 +797,9 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	block_type = blocks.get("blocks["+i+"]::type");
 	var vst = 0;
 	var subvoices = 1;
-	if(blocks.get("blocks["+i+"]::subvoices")>1){
-		vst = 1;
+	if(blocks.contains("blocks["+i+"]::subvoices")){
 		subvoices = blocks.get("blocks["+i+"]::subvoices");
+		vst = (subvoices>1);
 	} 
 	if(block_x<blocks_page.leftmost) blocks_page.leftmost = block_x;
 	if(block_x>blocks_page.rightmost) blocks_page.rightmost = block_x;

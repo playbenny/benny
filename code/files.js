@@ -624,14 +624,14 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	panelslider_visible[block_index] = [];
 	
 	if(type=="audio"){ 
-		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", "1");
-		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", "0");
-		audio_to_data_poly.setvalue((new_voice+1), "out_value", "0");
-		audio_to_data_poly.setvalue((new_voice+1), "out_trigger", "0");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_meter", "1");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", "0");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", "0");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", "0");
+		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", 1);
+		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", 0);
+		audio_to_data_poly.setvalue((new_voice+1), "out_value", 0);
+		audio_to_data_poly.setvalue((new_voice+1), "out_trigger", 0);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 	}else if(type=="hardware"){
 		var split=0;//=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 		var ts, tii;
@@ -868,7 +868,7 @@ function clear_everything(){
 	panels_order=[];
 	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
-		audio_to_data_poly.setvalue(i, "vis_meter", "1");
+		audio_to_data_poly.setvalue(i, "vis_meter", 1);
 	}
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";

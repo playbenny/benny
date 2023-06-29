@@ -192,10 +192,13 @@ function initialise_dictionaries(){
 		selected.wire[i]=0;
 	}
 	still_checking_polys = 7;
-	audio_to_data_poly.setvalue(0, "off");
+	audio_to_data_poly.setvalue(0, "vis_meter", 0);
+	audio_to_data_poly.setvalue(0, "vis_scope", 0);
+	audio_to_data_poly.setvalue(0, "out_value", 0);
+	audio_to_data_poly.setvalue(0, "out_trigger", 0);
 
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
-		audio_to_data_poly.setvalue(i, "vis_meter", "1");
+		audio_to_data_poly.setvalue(i, "vis_meter", 1);
 	}
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";

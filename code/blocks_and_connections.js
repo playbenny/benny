@@ -145,26 +145,33 @@ function new_block(block_name,x,y){
 	voicealloc_poly.setvalue((new_block_index+1),"steal_mode",steal);  
 	
 	if(type=="audio"){ 
-		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", "1");
-		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", "0");
-		audio_to_data_poly.setvalue((new_voice+1), "out_value", "0");
-		audio_to_data_poly.setvalue((new_voice+1), "out_trigger", "0");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_meter", "1");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", "0");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", "0");
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", "0");
+		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", 1);
+		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", 0);
+		audio_to_data_poly.setvalue((new_voice+1), "out_value", 0);
+		audio_to_data_poly.setvalue((new_voice+1), "out_trigger", 0);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
+		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
 			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
-			//WHAT AND WHY IS THIS?
+			if(!blocktypes.contains(block_name+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",2);
+			//blocks.replace("blocks["+new_block_index+"]::subvoices",2);			
+			/*/WHAT AND WHY IS THIS?
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
 				blocks.replace("blocks["+new_block_index+"]::subvoices",2);
 				voicecount(new_block_index,blocktypes.get(block_name+"::max_polyphony"));
 			}else{
 				blocks.replace("blocks["+new_block_index+"]::subvoices",1);
-			}			
+			}*/
 		}else{
-			if(!blocktypes.contains(block_name+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",1);
+			if(!blocktypes.contains(block_name+"::subvoices")){
+				blocks.replace("blocks["+new_block_index+"]::subvoices",1);
+			}else{
+				blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
+			}
 		}
+	if(blocks.get("blocks["+new_block_index+"]::subvoices")>1) voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
 	}else if(type=="hardware"){
 		var split=0;//=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 		var ts, tii;
@@ -767,7 +774,7 @@ function remove_connection(connection_number){
 				var c_ind = MAX_MOD_IDS * m_index + t_block;
 				set_conversion(c_ind,0,0,0,0,0,0,0);
 				if(remove_from_midi_routemap(m_index,t_block) == 0) {
-					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", "0");
+					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 0);
 				}
 			}
 		}else{
@@ -818,7 +825,7 @@ function remove_connection(connection_number){
 						if(typeof existing=="number")existing=[existing];
 						post("m_ind",m_index,"ex",existing);
 						if(!is_empty(existing)){
-							audio_to_data_poly.setvalue((f_voice+1)+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES, "out_value", "0");
+							audio_to_data_poly.setvalue((f_voice+1)+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES, "out_value", 0);
 						}
 					}else if(t_type == "parameters"){
 						m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
@@ -854,7 +861,7 @@ function remove_connection(connection_number){
 						remove_from_midi_routemap(m_index,vvv);
 						remove_from_mod_routemap(t_voice,tmod_id);
 						if(tidslist.length<=1){
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", "0");
+							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", 0);
 						}
 						var m_index_mult = MAX_MOD_IDS * m_index;
 						set_conversion(m_index_mult + vvv,0,0,0,0,0,0,0);
@@ -1209,7 +1216,7 @@ function make_connection(cno){
 					}
 				}else if(f_type == "audio"){//audio to midi (polyrouter)
 				//	post("audio to midi (polyrouter)\n");
-					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", "1");
+					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 				//	post("f_v[i]=",f_voices[i]," f_o_no=",f_o_no,"\n");
 					m_index = ((f_voices[i]+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 					add_to_midi_routemap(m_index,t_block);
@@ -1278,7 +1285,7 @@ function make_connection(cno){
 						}else if(t_type == "midi"){
 				// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
 	//						post("audio to midi");
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", "1");
+							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							m_index = ((f_voice+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 							add_to_midi_routemap(m_index,t_voice);
 							var enab = 1-conversion.get("mute");
@@ -1291,7 +1298,7 @@ function make_connection(cno){
 						}else if(t_type == "block"){
 							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
 	//						post("audio to midi");
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", "1");
+							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							m_index = ((f_voice+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 							add_to_midi_routemap(m_index,t_voice);
 							var enab = 1-conversion.get("mute");
@@ -1302,7 +1309,7 @@ function make_connection(cno){
 							var c_ind = MAX_MOD_IDS * m_index + t_voice;
 							//AM I THE CRASH set_conversion(c_ind,enab,2,scale,offn,offv,vect,-(1+t_i_no));
 						}else if(t_type == "parameters"){
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", "1");
+							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 							t_voice+=2*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS;
 							var tmod_id;
@@ -1916,10 +1923,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				if(type=="audio"){  // turn on audio-to-data for the new voice
 					var tout;
 					for(tout=0;tout<NO_IO_PER_BLOCK;tout++){
-						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_meter", "1");
-						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", "0");
-						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", "0");
-						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", "0");
+						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_meter", 1);
+						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
+						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
+						audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 					}
 					if(loading.progress<=0){
 						audio_poly.setvalue(new_voice+1, "muteouts", 0);
@@ -1994,10 +2001,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				if(type=="audio"){ 
 					var tout;
 					for(tout=0;tout<NO_IO_PER_BLOCK;tout++){
-						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "vis_meter", "0");
-						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "vis_scope", "0");
-						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "out_value", "0");
-						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "out_trigger", "0");
+						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "vis_meter", 0);
+						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
+						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
+						audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 					}
 				}
 				v--;
@@ -2339,14 +2346,14 @@ function swap_block(block_name){
 		}
 		
 		if(type=="audio"){ 
-			audio_to_data_poly.setvalue((voice+1), "vis_meter", "1");
-			audio_to_data_poly.setvalue((voice+1), "vis_scope", "0");
-			audio_to_data_poly.setvalue((voice+1), "out_value", "0");
-			audio_to_data_poly.setvalue((voice+1), "out_trigger", "0");
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "vis_meter", "1");
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "vis_scope", "0");
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_value", "0");
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_trigger", "0");
+			audio_to_data_poly.setvalue((voice+1), "vis_meter", 1);
+			audio_to_data_poly.setvalue((voice+1), "vis_scope", 0);
+			audio_to_data_poly.setvalue((voice+1), "out_value", 0);
+			audio_to_data_poly.setvalue((voice+1), "out_trigger", 0);
+			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
+			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
+			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_value", 0);
+			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		}else if(type=="hardware"){
 			//hardware_metermap[new_block_index] = [];
 			var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
