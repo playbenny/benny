@@ -171,7 +171,9 @@ function new_block(block_name,x,y){
 				blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
 			}
 		}
-	if(blocks.get("blocks["+new_block_index+"]::subvoices")>1) voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
+		if(blocks.get("blocks["+new_block_index+"]::subvoices")>1){
+			voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
+		} 	
 	}else if(type=="hardware"){
 		var split=0;//=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 		var ts, tii;
@@ -617,7 +619,7 @@ function remove_connection(connection_number){
 		}
 	}else{
 		if(blocks.get("blocks["+f_block+"]::subvoices")>1){
-			post("disconnecting stereo vst as if 2 voices",f_voice_list, voicemap.get(f_block));
+			post("disconnecting block with subvoices as if 2 voices",f_voice_list, voicemap.get(f_block));
 			//so f_voices[] should contain the matrix channels where the vst poly voice is, we have to make an
 			//adjustment so voice 2 goes to v1/o2 instead
 			if(f_voice_list == "all"){
@@ -708,7 +710,7 @@ function remove_connection(connection_number){
 		}
 	}else{	// need to check for vsts		
 		if(blocks.get("blocks["+t_block+"]::subvoices")>1){
-			post("disconnecting stereo vst as if 2 voices",t_voice_list, voicemap.get(t_block));
+			post("disconnecting stereo vst / block with subvoices as if 2 voices",t_voice_list, voicemap.get(t_block));
 			//so f_voices[] should contain the matrix channels where the vst poly voice is, we have to make an
 			//adjustment so voice 2 goes to v1/o2 instead
 			if(t_voice_list == "all"){
@@ -1764,7 +1766,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	var details = new Dict;
 	var new_voice;
 	var i;
-	var vst=0;
+	var subvoices=1;
 	var block_name = blocks.get("blocks["+block+"]::name"); // check it exists,
 	if(blocktypes.contains(block_name)){
 		details = blocktypes.get(block_name);
@@ -1790,7 +1792,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		voices=max_v;
 		post("max polyphony = "+max_v+"\n");
 	}
-	if((details.get("patcher")=="vst.loader") && (max_v>0)) vst=1;
+	//if((details.get("patcher")=="vst.loader") && (max_v>0)) vst=1;
+	subvoices = details.get("subvoices");
 	if(voices == v) return 1;
 	
 	// FIRST, IF REMOVING VOICES, REMOVE ALL CONNECTIONS THAT TOUCH THIS BLOCK, STORING THE ONES THAT ARE GOING BACK ON
@@ -1888,7 +1891,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	// NOW ADD OR REMOVE VOICES:
 	while(voices != v){
 		if(voices > v){	//add voices
-			if((v==0)||(vst==0)){
+			if((subvoices<=1)||((v % subvoices)==0)){ //EITHER this is a normal block with normal number of subvoices (1) and adding a voice adds a poly voice
+				// OR if a block has n subvoices, then the 0, the n, the 2n etc all get a new poly voice, skip the rest.
 				var t_offset = 0;
 				if(type=="audio"){
 					t_offset=MAX_NOTE_VOICES;
@@ -1961,7 +1965,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				v++;
 			}
 		}else if(voices < v){
-			if((v==1)||(vst==0)){
+			if((subvoices<=1)||((v % subvoices)==0)){
 				var voiceoffset=0;
 				var removeme;// then actually remove the voice
 				if(type == "note"){
