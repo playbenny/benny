@@ -4,15 +4,16 @@
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "every mixer.channel/cascade block has to be routed, at unity gain, to one of these, to make the magic work.",
-		"max_polyphony" : 0,
+		"max_polyphony" : 2,
 		"upsample" : 2,
+		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
 				"force_unity" : 1,
-				"audio" : [ "audio in 1", "audio in 2" ]
+				"audio" : [ "in" ]
 			},
 			"out" : {
-				"audio" : [ "audio out 1", "audio out 2" ]
+				"audio" : [ "out" ]
 			}
 		}
 	}

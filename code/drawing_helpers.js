@@ -1,6 +1,6 @@
 
 function click_clear(index,type){
-	post("\nwiping click matrix");
+	//post("\nwiping click matrix");
 	if(mainwindow_height>0) click_rectangle(0,0,mainwindow_width,mainwindow_height,index,type); // wipe click matrix
 }
 function click_oval(x1,y1,x2,y2,index,type){

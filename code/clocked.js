@@ -295,9 +295,10 @@ function meters(block,voice,polyvoice){
 		for(tt=0;tt<NO_IO_PER_BLOCK;tt++){ // need to get from buffer
 			mmin = scope_buffer.peek(1,1+(polyvoice+MAX_AUDIO_VOICES*tt));
 			mmax = scope_buffer.peek(2,1+(polyvoice+MAX_AUDIO_VOICES*tt));
-			if(typeof blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position === undefined ){
+			if(blocks_meter[block][voice*NO_IO_PER_BLOCK+tt] === undefined ){
 				post("\nmeter problem: block",block,"voice",voice,"tt",tt,"loadingstatus",loading.progress);
 			}else{
+				//post("\nmeter OK     : block",block,"voice",voice,"tt",tt);
 				tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position;
 				//tv[0] = blocks_cube[block][voice].position[0] + 0.4+tt*0.4/NO_IO_PER_BLOCK + 0.25*(voice==0);
 				tv[1] = blocks_cube[block][voice].position[1] + (mmax+mmin)*0.225;

@@ -795,11 +795,9 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	block_name = blocks.get("blocks["+i+"]::name");
 	block_label = blocks.get("blocks["+i+"]::label");
 	block_type = blocks.get("blocks["+i+"]::type");
-	var vst = 0;
 	var subvoices = 1;
 	if(blocks.contains("blocks["+i+"]::subvoices")){
 		subvoices = blocks.get("blocks["+i+"]::subvoices");
-		vst = (subvoices>1);
 	} 
 	if(block_x<blocks_page.leftmost) blocks_page.leftmost = block_x;
 	if(block_x>blocks_page.rightmost) blocks_page.rightmost = block_x;
@@ -842,7 +840,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][t].position = [block_x+0.25+0.5*t, block_y, 0];
 				blocks_cube[i][t].scale = [0.2, 0.45, 0.45];		
 				if(block_type=="audio"){
-					if((vst==0) || (t==1)){
+					if((subvoices<=1) || (t==1)){
 						for(tt=0;tt<NO_IO_PER_BLOCK;tt++){
 							blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
 							blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
@@ -881,9 +879,9 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 		blocks_cube[i][t].position = [block_x+0.25*(t!=0)+0.5*t, block_y, 0];
 		blocks_cube[i][t].enable = 1;
 		if(block_type=="audio"){
-			if(vst==1){
-				if(t==1){
-					for(tt=0;tt<NO_IO_PER_BLOCK;tt++){
+			if(subvoices>1){
+				if((t % subvoices) == 1){
+					for(tt=0;tt<(NO_IO_PER_BLOCK);tt++){
 						blocks_meter[i][tt].color = [1, 1, 1, 1];
 						blocks_meter[i][tt].position = [block_x + tt*0.5 + 0.75, block_y, 0.5];
 						blocks_meter[i][tt].scale = [0.20, 0.025, 0.05];
