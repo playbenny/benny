@@ -8,11 +8,11 @@
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "fm", "shape modulation" ],
-				"midi" : [ "pitch_in" ]
+				"audio" : [ "fm / sync", "shape" ],
+				"midi" : [ "pitch","sync" ]
 			},
 			"out" : {
-				"audio" : [ "osc out", "sub out" ]
+				"audio" : [ "osc", "sub" ]
 			}
 		},
 		"groups" : [
