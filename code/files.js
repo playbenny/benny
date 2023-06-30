@@ -834,7 +834,10 @@ function clear_everything(){
 	var i,t;
 	//also empties all the dicts for re-initialisatoin:
 	audio_poly.setvalue( 0, "kill");
-	audio_to_data_poly.setvalue(0, "off");
+	audio_to_data_poly.setvalue(0, "vis_meter", 0);
+	audio_to_data_poly.setvalue(0, "vis_scope", 0);
+	audio_to_data_poly.setvalue(0, "out_value", 0);
+	audio_to_data_poly.setvalue(0, "out_trigger", 0);
 //	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
 

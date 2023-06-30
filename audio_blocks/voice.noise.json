@@ -8,11 +8,11 @@
 		"upsample" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "fm", "shape modulation" ],
-				"midi" : [ "trigger_in" ]
+				"audio" : [ "colour", "ext source" ],
+				"midi" : [ "trigger" ]
 			},
 			"out" : {
-				"audio" : [ "noise out", "s&h out" ]
+				"audio" : [ "noise", "s&h" ]
 			}
 		},
 		"groups" : [

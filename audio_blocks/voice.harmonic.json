@@ -9,10 +9,10 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "fm", "am" ],
-				"midi" : [ "pitch_in" ]
+				"midi" : [ "notes" ]
 			},
 			"out" : {
-				"audio" : [ "osc out", "harmonic 1 out" ]
+				"audio" : [ "osc", "out2" ]
 			}
 		},
 		"groups" : [
