@@ -222,7 +222,7 @@
 				"box" : 				{
 					"id" : "obj-16",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
+					"numinlets" : 3,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
 					"patching_rect" : [ 37.0, 269.0, 89.0, 22.0 ],
@@ -491,7 +491,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-16", 0 ],
+					"destination" : [ "obj-16", 2 ],
 					"source" : [ "obj-21", 0 ]
 				}
 
