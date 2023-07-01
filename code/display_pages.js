@@ -2800,8 +2800,8 @@ function draw_topbar(){
 			lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
 		}	
 	}
-	click_rectangle( 9, 9, 9 + fontheight, 9+fontheight, mouse_index, 1);
-	mouse_click_actions[mouse_index] = play_button;
+	click_rectangle( 9, 9, 9 + fontheight, 9+fontheight, mouse_index, 6);
+	mouse_click_actions[mouse_index] = [play_button_click, play_button_release];
 	mouse_click_parameters[mouse_index] = "";
 	mouse_click_values[mouse_index] = "";
 	mouse_index++;

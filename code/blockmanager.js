@@ -1,3 +1,5 @@
+outlets = 0;
+
 include("init_functions.js");
 include("display_pages.js");
 include("files.js");
@@ -49,6 +51,7 @@ var scale_2d = 1;
 var displaymode = "loading";
 var custom_block = -1; //block no for custom screen pages
 var playing = 0;
+var playflag = 0;
 
 var meters_enable = 1;
 var debug = 0;
@@ -56,7 +59,15 @@ var debug = 0;
 var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
 var input_used = new Array(MAX_AUDIO_OUTPUTS+2);
 
-outlets = 0;
+var state_fade = {
+	starting : [],
+	ending : [],
+	block : [],
+	param : [],
+	selected : -1,
+	last : -1,
+	position : 0
+}
 
 var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
 var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");

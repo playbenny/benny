@@ -192,6 +192,16 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.drag.starting_value_y = -1;
 						}
 					}
+				}else if(usermouse.got_t==6){
+					var f = mouse_click_actions[usermouse.got_i];
+					f = f[0];
+					var p = mouse_click_parameters[usermouse.got_i];
+					var v = mouse_click_values[usermouse.got_i];
+					f(p,v);
+					usermouse.drag.starting_x = usermouse.x;
+					usermouse.drag.starting_y = usermouse.y;
+					usermouse.drag.starting_value_x = 0;
+					usermouse.drag.starting_value_y = 0;
 				}
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			}
@@ -206,37 +216,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				var v = mouse_click_values[usermouse.got_i];
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
-			} 
-/*			if(usermouse.clicked2d == -2){ //this is if the mouse click transition to 1 happened in picker not in mouse, which is the case with touch
-				if((usermouse.got_i > 0) && (usermouse.got_t>0)){
-					usermouse.clicked2d = usermouse.got_i;
-					usermouse.clicked3d = -1;
-					usermouse.last.got_i = usermouse.got_i;
-					usermouse.last.got_t = usermouse.got_t;
-					usermouse.drag.distance = 0;
-					if(usermouse.got_t>=2 && usermouse.got_t<=4){
-						usermouse.drag.starting_x = usermouse.x;
-						usermouse.drag.starting_y = usermouse.y;
-						if(usermouse.got_i>=0){
-							var f = mouse_click_actions[usermouse.got_i];
-							var p = mouse_click_parameters[usermouse.got_i];
-							var v = mouse_click_values[usermouse.got_i];
-							usermouse.drag.starting_value_x = f(p,"get");
-							if((v>1)||(usermouse.got_t==4)){ //v is 
-								usermouse.drag.starting_value_y = f(v,"get");
-							}else{
-								usermouse.drag.starting_value_y = -1;
-							}
-						}
-					}
-					usermouse.last.left_button = 1;
-				}
-			}*/
-			if(usermouse.clicked2d != -1){
+			} else if(usermouse.clicked2d != -1){ //IF IT ALL GOES WRONG THIS IS WHERE
 				if(usermouse.last.got_i == usermouse.got_i){
 					// post("2d release",usermouse.last.got_i);
-					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)){ // it's a button (1) or passthrough(7)
+					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)||(usermouse.last.got_t == 6)){ // it's a button (1) or passthrough(7)
 						var f = mouse_click_actions[usermouse.last.got_i];
+						if(usermouse.last.got_t == 6){
+							usermouse.last.got_t == 1;
+							f = f[1];
+						}
 						var p = mouse_click_parameters[usermouse.last.got_i];
 						var v = mouse_click_values[usermouse.last.got_i];
 						

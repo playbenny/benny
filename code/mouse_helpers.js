@@ -11,6 +11,20 @@ function play_button(){
 	messnamed("play",1-playing);
 }
 
+function play_button_click(){
+	if(playing == 0){
+		messnamed("play",1);
+		playflag = 1;
+	}else{playflag = 0;}
+}
+
+function play_button_release(){
+	if((!playflag)&playing){
+		messnamed("play",0);
+	}
+	playflag = 0;
+}
+
 function resync_button(){
 	messnamed("resync","bang");
 }
@@ -350,6 +364,15 @@ function fire_block_state(state, block){
 	}
 }
 
+function fire_whole_state_btn_click(){ //start timer, after a moment a slider appears
+
+}
+function fire_whole_state_btn_release(state,value){//if a slider didn't appear you're firing the state
+	fire_whole_state_btn(state,value);
+}
+function whole_state_xfade(parameter,value){
+
+}
 function fire_whole_state_btn(state,value){
 	if(usermouse.ctrl){
 		sidebar.selected = state;
@@ -358,6 +381,8 @@ function fire_whole_state_btn(state,value){
 		fire_whole_state(state);
 	}
 }
+
+
 function fire_whole_state(state, value){
 	//post("\nfire whole state",state);
 	var pv=[];
