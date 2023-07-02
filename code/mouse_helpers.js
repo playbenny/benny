@@ -364,14 +364,26 @@ function fire_block_state(state, block){
 	}
 }
 
-function fire_whole_state_btn_click(){ //start timer, after a moment a slider appears
-
+function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
+	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
+	state_fade.selected = state;
+	whole_state_xfade_create_task.schedule(500);
+}
+function create_whole_state_xfade_slider(state,value){
+	state_fade.position=0;
+	redraw_flag.flag |= 2;
+	//here: fill the starting/ending/block/param arrays
 }
 function fire_whole_state_btn_release(state,value){//if a slider didn't appear you're firing the state
+	whole_state_xfade_create_task.cancel();
+	state_fade.selected = -2;
+	state_fade.last = state;
+	state_fade.position = 0;
+	redraw_flag.flag |= 2;
 	fire_whole_state_btn(state,value);
 }
-function whole_state_xfade(parameter,value){
-
+function whole_state_xfade(parameter,value){ //called by the slider
+	post("state fade",parameter,value);
 }
 function fire_whole_state_btn(state,value){
 	if(usermouse.ctrl){

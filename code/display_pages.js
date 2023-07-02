@@ -2980,7 +2980,6 @@ function draw_topbar(){
 	
 		var cll = config.getsize("palette::gamut");
 		var c = new Array(3);
-		var x_o=x_o;
 		// draw a button for each possible state
 		for(i=-1;i<MAX_STATES;i++){
 			var statecontents;
@@ -2989,32 +2988,46 @@ function draw_topbar(){
 			}else{
 				statecontents = states.contains("states::"+i);
 			}
+			if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
 			if(statecontents){
-				if(i == -1){
+				if((state_fade.position>-1) && (state_fade.selected == i)){ //draw a slider instead
 					c = menucolour;
-					lcd_main.message("framerect", 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), fontheight + 9,c );		
-					lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
-					lcd_main.message("write", "init");					
+					lcd_main.message("framerect",9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), mainwindow_height - 9,c )
+					click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), mainwindow_height - 9,mouse_index,2 );							
+					mouse_click_actions[mouse_index] = whole_state_xfade;
+					mouse_click_parameters[mouse_index] = i;
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					x_o+=1.2;					
 				}else{
-					c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
-					lcd_main.message("paintrect", 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), fontheight + 9,c );		
-					if(states.contains("names::"+i)){
-						var sn=states.get("names::"+i);
-						sn = sn.split(".");
-						if(!Array.isArray(sn)) sn = [sn];
-						for(var si=0;si<sn.length;si++){
-							lcd_main.message("moveto",9 + fontheight*(x_o+1.15-0.2*sn[si].length), 9+fontheight*(1-0.25*(sn.length-si)));
-							lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
-							lcd_main.message("write",sn[si]);
-						}
-					}					
+					var clicked=0;
+					if(usermouse.clicked2d==mouse_index) clicked=1;
+					if(i == -1){
+						c = menucolour;
+						lcd_main.message("framerect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
+						lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
+						lcd_main.message("write", "init");					
+					}else{
+						c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
+						lcd_main.message("paintrect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
+						if(states.contains("names::"+i)){
+							var sn=states.get("names::"+i);
+							sn = sn.split(".");
+							if(!Array.isArray(sn)) sn = [sn];
+							for(var si=0;si<sn.length;si++){
+								lcd_main.message("moveto",9 + fontheight*(x_o+1.15-0.2*sn[si].length), 9+fontheight*(1-0.25*(sn.length-si)));
+								lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
+								lcd_main.message("write",sn[si]);
+							}
+						}					
+					}
+					click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), fontheight + 9,mouse_index,6 );							
+					mouse_click_actions[mouse_index] = [fire_whole_state_btn_click,fire_whole_state_btn_release];
+					mouse_click_parameters[mouse_index] = i;
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					x_o+=1.2;
 				}
-				click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), fontheight + 9,mouse_index,1 );							
-				mouse_click_actions[mouse_index] = fire_whole_state_btn;
-				mouse_click_parameters[mouse_index] = i;
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				x_o+=1.2;
 			}
 		}
 		if(anymuted){

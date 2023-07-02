@@ -64,10 +64,11 @@ var state_fade = {
 	ending : [],
 	block : [],
 	param : [],
-	selected : -1,
-	last : -1,
-	position : 0
+	selected : -2, //-1 = init state, -2=none
+	position : -1, //-1 = no fader, 0-1=fade pos.
+	last: -1 //just for the colour fade on the slider.
 }
+var whole_state_xfade_create_task = new Task(create_whole_state_xfade_slider, this);
 
 var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
 var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
