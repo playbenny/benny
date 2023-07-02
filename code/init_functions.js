@@ -261,6 +261,7 @@ function initialise_dictionaries(){
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
 	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
 	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
+	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
 	ANIM_TIME = config.get("ANIM_TIME");
 

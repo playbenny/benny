@@ -367,7 +367,7 @@ function fire_block_state(state, block){
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
 	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
 	state_fade.selected = state;
-	whole_state_xfade_create_task.schedule(500);
+	whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
 }
 function create_whole_state_xfade_slider(state,value){
 	state_fade.position=0;
