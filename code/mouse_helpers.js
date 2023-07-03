@@ -929,9 +929,9 @@ function flock_add_to_array(block,x,y,z){
 function hw_meter_click(number,type){
 	post("\n you clicked a meter, type:",type,"number",number);
 	sidebar.scopes.voice = number;
-	for(var i =0;i<MAX_BLOCKS;i++){
-		selected.block[i]=0;
-		selected.wire[i]=0;
+	for(var i = 0; i < MAX_BLOCKS; i++){
+		selected.block[i] = 0;
+		selected.wire[i] = 0;
 	}
 	if(type == "in"){
 		set_sidebar_mode("input_scope");

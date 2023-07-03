@@ -429,7 +429,6 @@ function sidebar_midi_scope(){
 function sidebar_scopes(){
 	var i;
 	for(i=0;i<sidebar.scopes.voicelist.length;i++){
-//	post("scopes",sidebar.scopes.voicelist[i]);
 		draw_scope(sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,sidebar.scopes.voicelist[i]);
 	}
 }

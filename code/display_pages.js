@@ -2772,7 +2772,7 @@ function clear_screens(){
 }
 
 function draw_topbar(){
-	post("\ndraw topbar");
+	//post("\ndraw topbar");
 	setfontsize(fontheight/3.2);
 	lcd_main.message("textface", "bold");
 	lcd_main.message("pensize", 2, 2);
@@ -5516,8 +5516,8 @@ function draw_sidebar(){
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
 			
 			sidebar.mode = "wire";
-
-			y_offset += fontheight*2.1;
+			sidebar.scopes.starty = y_offset;
+			sidebar.scopes.endy = y_offset+2*fontheight;
 			lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,mainwindow_width-9,sidebar.scopes.endy,menudarkest);
 			sidebar.scopes.bg=menudarkest;
 			sidebar.scopes.fg=menucolour;
@@ -5526,6 +5526,7 @@ function draw_sidebar(){
 			mouse_click_parameters[mouse_index] = "";
 			mouse_click_values[mouse_index] = "";	
 			mouse_index++;
+			y_offset += fontheight*2.1;
 			if((t_type=="midi")&&(f_type!="midi")){
 				y_offset+=fontheight*2.1;
 				lcd_main.message("paintrect", sidebar.x, sidebar.scopes.endy+fontheight*0.1,mainwindow_width-9,sidebar.scopes.endy+fontheight*2.1,menudarkest);
@@ -5996,7 +5997,7 @@ function draw_sidebar(){
 			sidebar.editbtn = 0;
 			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
 			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
-
+			
 			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
@@ -6025,13 +6026,15 @@ function draw_sidebar(){
 					}
 				}
 			}
-
+			
 			sidebar.scopes.starty = y_offset;
 			sidebar.scopes.endy = y_offset+4*fontheight;
 			sidebar.scopes.bg = menudarkest;
 			sidebar.scopes.fg = menucolour;
+			sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 			
 			lcd_main.message("paintrect", sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,block_darkest);
+			
 			click_rectangle( sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,mouse_index,2);
 			
 			mouse_click_actions[mouse_index] = scope_zoom;
@@ -6043,7 +6046,6 @@ function draw_sidebar(){
 			sidebar.scopes.midi = -1;
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK,"vis_scope",1);
 			sidebar.scopes.voicelist = [sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK];			
-			sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 			
 		}else if(sidebar.mode == "output_scope"){
@@ -6087,6 +6089,7 @@ function draw_sidebar(){
 			sidebar.scopes.endy = y_offset+4*fontheight;
 			sidebar.scopes.bg = menudarkest;
 			sidebar.scopes.fg = menucolour;
+			sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 
 			lcd_main.message("paintrect", sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,block_darkest);
 			click_rectangle( sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,mouse_index,2);
@@ -6100,8 +6103,6 @@ function draw_sidebar(){
 			sidebar.scopes.midi = -1;
 			sidebar.scopes.voicelist = [sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS];
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS,"vis_scope",1);
-			
-			sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 			
 		}else{
