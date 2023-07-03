@@ -1893,7 +1893,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		if(voices > v){	//add voices
 			if((subvoices<=1)||((v % subvoices)==0)){ //EITHER this is a normal block with normal number of subvoices (1) and adding a voice adds a poly voice
 				// OR if a block has n subvoices, then the 0, the n, the 2n etc all get a new poly voice, skip the rest.
-				post("adding a poly voice");
+				//post("adding a poly voice");
 				var t_offset = 0;
 				if(type=="audio"){
 					t_offset=MAX_NOTE_VOICES;

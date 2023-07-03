@@ -27,7 +27,6 @@ function click_rectangle(x1,y1,x2,y2,index,type){
 	}
 }
 
-
 function draw_block_texture(block){
 	var block_label = blocks.get("blocks["+block+"]::label");
 	if(block_label!==null){

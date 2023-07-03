@@ -369,11 +369,40 @@ function fire_whole_state_btn_click(state,value){ //start timer, after a moment 
 	state_fade.selected = state;
 	whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
 }
+
 function create_whole_state_xfade_slider(state,value){
+
 	state_fade.position=0;
 	redraw_flag.flag |= 2;
-	//here: fill the starting/ending/block/param arrays
+	usermouse.last.got_t = 2;
+	//here: fill the starting/ending arrays - these are structured like the store[b][xxxx] arrays used to save states
+	var state = state_fade.selected; // run through the state we're fading into, just note down those params, not all blocks.
+	var pv=[];
+	state_fade.start = [];
+	state_fade.end = [];
+	if(state_fade.selected==-1) state="current";
+	var stat = new Dict();
+	stat = states.get("states::"+state);
+	var sc_list = stat.getkeys();
+	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
+	for(var i=0;i<sc_list.length;i++){
+		var b = sc_list[i];
+		state_fade.start[b] = [];
+		state_fade.end[b] = [];
+		pv = states.get("states::"+state+"::"+b);
+		if(!is_empty(pv)){
+			var m=0;
+			if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
+			state_fade.start[b][0] = m;
+			state_fade.end[b][0] = pv[0];
+			for(var t=1;t<pv.length;t++){
+				state_fade.start[b][t] = parameter_value_buffer.peek(1, MAX_PARAMETERS*b+t-1);
+				state_fade.end[b][t] = pv[t];
+			}
+		}
+	}
 }
+
 function fire_whole_state_btn_release(state,value){//if a slider didn't appear you're firing the state
 	whole_state_xfade_create_task.cancel();
 	state_fade.selected = -2;
@@ -384,6 +413,13 @@ function fire_whole_state_btn_release(state,value){//if a slider didn't appear y
 }
 function whole_state_xfade(parameter,value){ //called by the slider
 	post("state fade",parameter,value);
+	if(parameter == "get"){
+		return state_fade.position;
+	}else{
+		var op=state_fade.position;
+		state_fade.position = Math.min(1,Math.max(0,value));
+		if(op!=state_fade.position) fade_state();
+	}
 }
 function fire_whole_state_btn(state,value){
 	if(usermouse.ctrl){
@@ -416,6 +452,34 @@ function fire_whole_state(state, value){
 		}
 	}
 	if(mf==1)redraw_flag.flag |= 8;
+}
+
+function fade_state(){
+	post("\nfade whole state",state_fade.position);
+	var pv=[] , qv = [];
+	var state = state_fade.selected;
+	if(state==-1) state="current";
+	var stat = new Dict();
+	stat = states.get("states::"+state);
+	var sc_list = stat.getkeys();
+	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
+	var mf=0;
+	for(var i=0;i<sc_list.length;i++){
+		var b = sc_list[i];
+		pv = states.get("states::"+state+"::"+b);
+		if(!is_empty(state_fade.end[b])){
+			var m=-1;
+			var om=0;
+			//if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
+			//if(m!=pv[0])mf=1;
+			if((state_fade.position > 0) && (state_fade.end[b][0] == 1)) m = 1;
+			if((state_fade.position == 1) && (state_fade.end[b][0] == 0)) m = 0;
+			if((state_fade.position == 0)) m = state_fade.start[b][0];
+			if(m>-1) mute_particular_block(b,m);
+			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, state_fade.position*state_fade.end[b][t] - (1- state_fade.position)*state_fade.start[b][t]);
+		}
+	}
+	//if(mf==1)redraw_flag.flag |= 8;
 }
 
 function blend_state(state, amount){ //this isn't suitable for xfading, it's for the states block really - it blends current value with state value (no way to wind back to starting point etc)

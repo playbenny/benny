@@ -2984,12 +2984,15 @@ function draw_topbar(){
 			}else{
 				statecontents = states.contains("states::"+i);
 			}
-			if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
+			//if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
 			if(statecontents){
 				if((state_fade.position>-1) && (state_fade.selected == i)){ //draw a slider instead
 					c = menucolour;
 					lcd_main.message("framerect",9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), mainwindow_height - 9,c )
+					c2 = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
+					lcd_main.message("paintrect",9+fontheight*x_o+4, 9+(mainwindow_height-18-fontheight)*(1 - state_fade.position), 9+fontheight*(x_o+1.1)-4, 9+fontheight+(mainwindow_height-18-fontheight)*(1-state_fade.position),c[0]*(state_fade.position-1)+c2[0]*state_fade.position,c[1]*(state_fade.position-1)+c2[1]*state_fade.position,c[2]*(state_fade.position-1)+c2[2]*state_fade.position );
 					click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), mainwindow_height - 9,mouse_index,2 );							
+					post("\nfader index",mouse_index);
 					mouse_click_actions[mouse_index] = whole_state_xfade;
 					mouse_click_parameters[mouse_index] = i;
 					mouse_click_values[mouse_index] = 0;
@@ -3028,17 +3031,22 @@ function draw_topbar(){
 		}
 		if(anymuted){
 			x_o+=0.2;
+			if(usermouse.clicked2d == mouse_index){
+				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.4), 9+fontheight,0,0,0 );
+				lcd_main.message("frgb", menucolour);		
+			}else{
+				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.4), 9+fontheight,menudarkest );
+				lcd_main.message("frgb", menucolour);		
+			}
+			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
+			lcd_main.message("write", "unmute");
+			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
+			lcd_main.message("write", "all");			
 			click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.6), 9+fontheight,mouse_index,1 );
 			mouse_click_actions[mouse_index] = mute_all_blocks;
 			mouse_click_parameters[mouse_index] = "unmute";
 			mouse_click_values[mouse_index] = 0;
 			mouse_index++;
-			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.4), 9+fontheight,menudark );
-			lcd_main.message("frgb", menucolour);		
-			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
-			lcd_main.message("write", "unmute");
-			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-			lcd_main.message("write", "all");
 			x_o+=1.6;
 		}
 		if(song_select.show){
@@ -3169,11 +3177,13 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
-	click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
-	mouse_click_actions[mouse_index] = "none";
-	mouse_click_parameters[mouse_index] = "";
-	mouse_click_values[mouse_index] = "";	
-	mouse_index++;
+	if(sidebar.mode!="none"){
+		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
+		mouse_click_actions[mouse_index] = "none";
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = "";	
+		mouse_index++;
+	}
 
 	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
 	mouse_click_actions[mouse_index] = scroll_sidebar;

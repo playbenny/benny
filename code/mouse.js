@@ -205,7 +205,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
 					usermouse.drag.starting_value_x = 0;
-					usermouse.drag.starting_value_y = 0;
+					usermouse.drag.starting_value_y = 1;
+					usermouse.clicked2d = usermouse.got_i;
+					usermouse.clicked3d = -1;
+					usermouse.drag.distance = 0;
 				}
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			}
@@ -236,6 +239,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							danger_button = -1;
 						} 
 						if(Array.isArray(f)) post("f is an array",mouse_click_actions[usermouse.last.got_i][0],mouse_click_actions[usermouse.last.got_i][1]);
+						post("f is",f,"index is",usermouse.last.got_i,usermouse.last.got_t);
+						post("or",f.name);
 						f(p,v);
 						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 					}
@@ -265,6 +270,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else{
 								scope_zoom(mouse_click_parameters[usermouse.last.got_i],"click");
 							}
+						}else if(mouse_click_actions[usermouse.got_i]==whole_state_xfade){
+							post("finished state xfade");
+							state_fade.last = state_fade.selected;
+							state_fade.selected = -2;
+							state_fade.position = -1;
+							redraw_flag.flag |= 2;									
 						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
 							var pb = mouse_click_parameters[usermouse.got_i];
 							if(alt == 1){
@@ -515,6 +526,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}else{
 						f(v,usermouse.drag.starting_value_y+ydist);
 					}
+					post("drag-f",f);
+					post("or",f.name);
 					f(p,usermouse.drag.starting_value_x+xdist);					
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG

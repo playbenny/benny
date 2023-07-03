@@ -86,7 +86,6 @@ function frameclock(){
 			}
 		}
 	}
-	if(redraw_flag.flag) post("redraw_flag.",redraw_flag.flag);
 	if(redraw_flag.flag & 8){
 		block_and_wire_colours();
 	}	
