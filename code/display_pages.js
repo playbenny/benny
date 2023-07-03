@@ -2772,34 +2772,30 @@ function clear_screens(){
 }
 
 function draw_topbar(){
-//	post("\ndraw topbar");
+	post("\ndraw topbar");
 	setfontsize(fontheight/3.2);
 	lcd_main.message("textface", "bold");
 	lcd_main.message("pensize", 2, 2);
 	lcd_main.message("frgb",menucolour);
 
 	var x_o=0, i;
-	// play / panic / sync / file / possibly audioIO+midiIO meters? / paste if there's something copied
 	
 	//play
+	
 	if(usermouse.clicked2d == mouse_index){
 		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menucolour);
-		lcd_main.message("frgb", 0,0,0);
-		lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+	}else if(!(still_checking_polys&3)){
+		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menudarkest);
 	}else{
-		if(!(still_checking_polys&3)){
-			lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menudarkest);
-		}else{
-			lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, 64,64,64);
-		}
-		if(!playing){
-			lcd_main.message("frgb" , menudark);
-			lcd_main.message("paintpoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
-		}else{
-			lcd_main.message("frgb" , menucolour);			
-			lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
-		}	
+		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, 64,64,64);
 	}
+	if(!playing){
+		lcd_main.message("frgb" , menudark);
+		lcd_main.message("paintpoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+	}else{
+		lcd_main.message("frgb" , menucolour);			
+		lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+	}	
 	click_rectangle( 9, 9, 9 + fontheight, 9+fontheight, mouse_index, 6);
 	mouse_click_actions[mouse_index] = [play_button_click, play_button_release];
 	mouse_click_parameters[mouse_index] = "";
@@ -2807,24 +2803,24 @@ function draw_topbar(){
 	mouse_index++;
 
 	for(i=0;i<meter_positions[0][2].length;i++){
-		click_rectangle( meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+10, meter_positions[0][2][i][2], mouse_index, 1);
+		click_rectangle( meter_positions[0][2][i][0]-1, meter_positions[0][2][i][1]-1, meter_positions[0][2][i][0]+6, meter_positions[0][2][i][2], mouse_index, 1);
 		mouse_click_actions[mouse_index] = hw_meter_click;
 		mouse_click_parameters[mouse_index] = i;
 		mouse_click_values[mouse_index] = "in";
 		mouse_index++;
 	}
 	for(i=0;i<meter_positions[1][2].length;i++){
-		click_rectangle( meter_positions[1][2][i][0], meter_positions[1][2][i][1], meter_positions[1][2][i][0]+10, meter_positions[1][2][i][2], mouse_index, 1);
+		click_rectangle( meter_positions[1][2][i][0]-1, meter_positions[1][2][i][1]-1, meter_positions[1][2][i][0]+6, meter_positions[1][2][i][2], mouse_index, 1);
 		mouse_click_actions[mouse_index] = hw_meter_click;
 		mouse_click_parameters[mouse_index] = i;
 		mouse_click_values[mouse_index] = "out";
 		mouse_index++;
 	}
+	draw_cpu_meter();
+
 
 	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
 	click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
-	draw_cpu_meter();
-
 	if(!playing){
 		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,menudarkest );
 		lcd_main.message("frgb" , menudark);
@@ -3150,9 +3146,8 @@ function draw_topbar(){
 }
 
 function draw_sidebar(){	
-//	post("\ndraw sidebar");
+	//post("\ndraw sidebar",sidebar.mode);
 	sidebar.scroll.max = 0;
-
 	if(sidebar.mode!=sidebar.lastmode) sidebar.scroll.position = 0;
 	selected.block_count =0;
 	selected.wire_count = 0;
@@ -3180,13 +3175,11 @@ function draw_sidebar(){
 	mouse_click_values[mouse_index] = "";	
 	mouse_index++;
 
-
 	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
 	mouse_click_actions[mouse_index] = scroll_sidebar;
 	mouse_click_parameters[mouse_index] = "";
 	mouse_click_values[mouse_index] = "";	
 	mouse_index++;
-
 	y_offset = 9 - sidebar.scroll.position;
 	if(sidebar.mode == "edit_label"){
 		// EDIT BLOCK LABEL ##############################################################################################################
@@ -3569,11 +3562,11 @@ function draw_sidebar(){
 							}
 							sidebar.scopes.width = (sidebar.width + fontheight * 0.1)/ts.length;
 							messnamed("scope_size",(sidebar.scopes.width)/2);
-//							post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
+							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
 					}else{
 						if((listvoice+MAX_NOTE_VOICES) != sidebar.scopes.midi){
-//							post(sidebar.scopes.midi,"s.s.m<<  >>listvoi",listvoice+MAX_NOTE_VOICES);
+							//post(sidebar.scopes.midi,"s.s.m<<  >>listvoi",listvoice+MAX_NOTE_VOICES);
 							assign_midi_scope("voice",listvoice+MAX_NOTE_VOICES, 0);
 						}
 					}
@@ -4376,7 +4369,7 @@ function draw_sidebar(){
 				}
 				colour=block_colour;
 				y_offset += fontheight*1.1;
-//				y_offset += fontheight * 4 * knob.y;				
+				//y_offset += fontheight * 4 * knob.y;				
 			}else if(has_params){
 				//parameters header only displayed if not in block OR flock assign modes
 				lcd_main.message("paintrect", sidebar.x , y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest );
@@ -4391,7 +4384,7 @@ function draw_sidebar(){
 			
 				y_offset += fontheight*1.1;
 			}				
-// STATES LIST ##############################################################################################################
+		// STATES LIST ##############################################################################################################
 			if(sidebar.mode == "add_state"){
 				lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,block_colour );
 				click_rectangle( sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
@@ -4487,7 +4480,7 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;					
 			}
 			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")){
-// BLOCK SETTINGS ##############################################################################################################
+		// BLOCK SETTINGS ##############################################################################################################
 				lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,block_colour );
 				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 				lcd_main.message("frgb", 0,0,0 );
@@ -4560,7 +4553,7 @@ function draw_sidebar(){
 					lcd_main.message("frgb", 255,0,0);
 				}
 				mouse_index++;
-//				lcd_main.message("frgb" , 255,0,0);
+				// lcd_main.message("frgb" , 255,0,0);
 				lcd_main.message("moveto" ,mainwindow_width-9-0.8*fontheight, fontheight*0.75+y_offset);
 				lcd_main.message("write", "del");
 				y_offset += 1.1* fontheight;
@@ -5000,8 +4993,8 @@ function draw_sidebar(){
 									}else{
 										lcd_main.message("write", f_o_name);
 									}
-	//								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.95+y_offset);
-	//								lcd_main.message("write", f_o_v);
+									//lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.95+y_offset);
+									//lcd_main.message("write", f_o_v);
 									lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*1.05+y_offset);
 									if(pass==0){
 										lcd_main.message("write", t_label);
@@ -5012,8 +5005,8 @@ function draw_sidebar(){
 									}else{
 										lcd_main.message("write", t_i_name);
 									}
-	//								lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.8*fontheight+y_offset);
-	//								lcd_main.message("write", t_i_v);
+									//lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.8*fontheight+y_offset);
+									//lcd_main.message("write", t_i_v);
 									
 									var mute = connections.get("connections["+i+"]::conversion::mute");
 									var scale = connections.get("connections["+i+"]::conversion::scale");
@@ -5316,7 +5309,7 @@ function draw_sidebar(){
 				}
 			}
 		}else if(selected.block_count > 1){ 
-// MULTI BLOCKS SELECTED ########################################################################################################
+		// MULTI BLOCKS SELECTED ########################################################################################################
 			if(sidebar.mode != "blocks"){
 				audio_to_data_poly.setvalue(0,"vis_scope",0);
 				sidebar.mode = "blocks";
@@ -5452,7 +5445,7 @@ function draw_sidebar(){
 
 
 		}else if(selected.wire_count == 1){ // if 1 connection selected
-// CONNECTION DETAIL VIEW #######################################################################################################
+			// CONNECTION DETAIL VIEW #######################################################################################################
 			i = selected.wire.indexOf(1);
 			sidebar.editbtn = 0;
 			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
@@ -6114,7 +6107,7 @@ function draw_sidebar(){
 		}else{
 			sidebar.editbtn = 0;
 //			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
-//			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
+//			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);
 			sidebar.mode = "none";
 			if(sidebar.mode != sidebar.lastmode){
 				sidebar.lastmode = sidebar.mode;

@@ -112,6 +112,7 @@ function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
+	//post("processing mouse event",x,y,leftbutton);
 	//if(id!='background') post("touch",id);
 	//	opicker(id,leftbutton);
 	usermouse.last.left_button = usermouse.left_button;
@@ -128,9 +129,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	var tcell = click_i[x+(y<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
-	if((displaymode=="blocks")||(displaymode=="block_menu")){
-		var id = glpicker.touch(x,y);
-		picker_hover_and_special(id);
+	//post(usermouse.got_i,usermouse.got_t);
+	if(usermouse.got_t==0){
+		if((displaymode=="blocks")||(displaymode=="block_menu")){
+			var id = glpicker.touch(x,y);
+			picker_hover_and_special(id);
+		}
 	}
 	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
 	if(usermouse.last.left_button!=usermouse.left_button){

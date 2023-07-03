@@ -38,6 +38,7 @@ function frameclock(){
 		//deferred_diag.push("mouse queue length "+usermouse.queue.length+" count is "+usermouse.qcount+" qlb is "+usermouse.qlb);
 		while(usermouse.queue.length>0){
 			var entry = usermouse.queue.shift();
+			//post("\nprocessing mouse queue",entry);
 			if((entry[2]!=usermouse.left_button)||(usermouse.queue.length==0)){ //(entry[2]==0)||
 				omouse(entry[0],entry[1],entry[2],entry[3],entry[4],entry[5],entry[6],entry[7]);
 			}
@@ -85,7 +86,7 @@ function frameclock(){
 			}
 		}
 	}
-
+	if(redraw_flag.flag) post("redraw_flag.",redraw_flag.flag);
 	if(redraw_flag.flag & 8){
 		block_and_wire_colours();
 	}	
@@ -227,24 +228,6 @@ function check_changed_queue(){
 				redraw_flag.flag |= 16;
 			}
 		}
-
-/* some old code here:
-						if(chngd){
-							if(sidebar.mode == "block"){
-								if(b==sidebar.selected){
-									redraw_flag.targets[p] |= 1;
-									redraw_flag.flag |= 1;									
-								}
-							}
-							if(displaymode == "panels"){
-								if(panelslider_visible[b][p]){
-									redraw_flag.paneltargets[panelslider_visible[b][p]-MAX_PARAMETERS] |= 1;//|= 2;
-									redraw_flag.flag |= 16;
-								}
-								
-							}
-						}
-*/		
 //		post("block",b,"param",p,"changed\n");
 		changed_queue_pointer += 1;
 		if(changed_queue_pointer > 1023){
@@ -344,7 +327,6 @@ function sidebar_meters(){
 	}else{
 		l = 2;
 	}
-	
 	for(i=0;i<l;i++){
 		lcd_main.message("frgb", meter_positions[i][1]);
 		for(ii=0;ii<meter_positions[i][2].length;ii++){

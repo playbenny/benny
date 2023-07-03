@@ -257,19 +257,6 @@ var fontheight;
 var mouse_click_actions = [];
 var mouse_click_parameters = [];
 var mouse_click_values = [];
-var mouse_click_corners = [];
-
-
-/*var newmouse = {
-	queue : {
-		mouse : [],
-		picker : []
-	},
-	last : {
-		mouse : [],
-		picker : []
-	}
-}*/
 
 var usermouse = {
 	last : {
@@ -286,7 +273,7 @@ var usermouse = {
 	clicked3d : -1,
 	hover : [-1,-1,-1], //hover things while you drag a thing
 	ids : [0,0,0], //current, split by -'s
-	oid : 0, //last hover id, to see if it's changed
+	oid : -1.1, //last hover id, to see if it's changed
 	got_i : 0,
 	got_t : 0,
 	left_button : 0,
