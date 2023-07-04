@@ -454,11 +454,9 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 	var d;
 	var tl=0;
 	for(var i=0;i<no_out_channels;i++){
-		for(var ii=0;ii<no_in_channels;ii++){
-			d = ((((i/no_out_channels)+(ii/no_in_channels)) + 1.5) % 1 ) - 0.5;
-			d = Math.abs(d);
-			tl += Math.max(1 - r2 * d * no_out_channels,0);
-		}
+		d = ((((i/no_out_channels)+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
+		d = Math.abs(d);
+		tl += Math.max(1 - r2 * d * no_out_channels,0);
 	} // first sum up a kind of hypothetical total level
 
 

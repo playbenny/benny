@@ -642,7 +642,7 @@ function static_mod_adjust(parameter,value){
 }
 
 function sidebar_parameter_knob(parameter, value){
-	post("\nP: ",parameter,"\nV:",value);
+	//post("\nP: ",parameter,"\nV:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
 		return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
@@ -868,6 +868,7 @@ function process_drag_selection(){
 function connection_edit(parameter,value){
 	if(value=="get"){
 		return connections.get(parameter);
+	}else if(parameter == -1){ //todo find the root of this error! lol
 	}else{
 		var pn=parameter.split("::");
 		if(pn[2]=="scale"){

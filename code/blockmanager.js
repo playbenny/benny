@@ -503,6 +503,7 @@ function cpu(avg,peak,fps){
 	cpu_meter.avg[cpu_meter.pointer] = avg;
 	cpu_meter.peak[cpu_meter.pointer] = peak;
 	cpu_meter.fps[cpu_meter.pointer] = fps;
+	if(sidebar.mode=="cpu") redraw_flag.flag |= 2;
 }
 
 function request_waves_remapping(type, voice){

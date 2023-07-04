@@ -2780,8 +2780,13 @@ function draw_topbar(){
 
 	var x_o=0, i;
 	
+	click_rectangle( 0,0,9,fontheight+9, mouse_index, 1);
+	mouse_click_actions[mouse_index] = set_sidebar_mode;
+	mouse_click_parameters[mouse_index] = "cpu";
+	mouse_click_values[mouse_index] = "";
+	mouse_index++;
+
 	//play
-	
 	if(usermouse.clicked2d == mouse_index){
 		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menucolour);
 	}else if(!(still_checking_polys&3)){
@@ -3365,7 +3370,6 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 255,60,60);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*5.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "delete state");
-		
 	}else if(sidebar.mode == "file_menu"){
 		// FILE MENU ##############################################################################################################
 		var cavg = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
@@ -6115,7 +6119,96 @@ function draw_sidebar(){
 			sidebar.scopes.voicelist = [sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS];
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS,"vis_scope",1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
+		}else if(sidebar.mode == "cpu"){
+			y_offset = 9;
+			if(sidebar.mode+state != sidebar.lastmode){
+				clear_blocks_selection();
+				sidebar.lastmode = sidebar.mode+state;
+				audio_to_data_poly.setvalue(0,"vis_scope", 0);
+				remove_midi_scope();
+				redraw_flag.targets=[];
+				text_being_editted = state_label;
+			}
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,menudarkest);
+			click_rectangle( sidebar.x, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,mouse_index,1);
+			mouse_click_actions[mouse_index] = set_sidebar_mode;
+			mouse_click_parameters[mouse_index] = "none";
+			mouse_click_values[mouse_index] = "";	
+			mouse_index++;
+			lcd_main.message("frgb" , menucolour);
+			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+			lcd_main.message("write", "resource monitor");
+			y_offset+=1.1*fontheight;
+			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width - 9,4*fontheight+y_offset,menudarkest);
+			var p = (cpu_meter.pointer+1) & 255;
+			var st = (mainwindow_width - 9 - sidebar.x) / 256;
+			var tx=sidebar.x, ty=0, tyy;
+			lcd_main.message("frgb",menucolour);
+			for(var i = 256; i--;){
+				ty = y_offset + 4 * fontheight * (1 - cpu_meter.avg[p]/100);
+				tyy = y_offset + 4 * fontheight * (1 - cpu_meter.peak[p]/100);
+				tx2 = tx+st;
+				lcd_main.message("paintrect",tx, tyy, tx2, ty, menucolour);
+				tx=tx2;
+				p = (p + 1) & 255;
+			}
+			tx=sidebar.x;
+			lcd_main.message("frgb",200,200,200);
+			for(var i = 256; i--;){
+				var c = cpu_meter.fps[p];
+				if(isNaN(c)) c =0;
+				ty = y_offset + 4 * fontheight * (1 - c/30);
+				lcd_main.message("moveto",tx, ty);
+				tx+=st;
+				lcd_main.message("lineto",tx, ty);
+				p = (p + 1) & 255;
+			}
+			wm = (sidebar.width-18)/15;
+			tx = sidebar.x;
+			y_offset+=5.1*fontheight;
+			lcd_main.message("moveto",sidebar.x,y_offset+0.5*fontheight);
+			lcd_main.message("write", "blocks");
+			var bfree = MAX_BLOCKS;
+			for(var i = 0;i<MAX_BLOCKS;i++){
+				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,menudarkest);
+				tx += wm;
+				if(tx>mainwindow_width-18){
+					tx = sidebar.x;
+					y_offset += wm;
+				}
+			}
+			lcd_main.message("moveto",sidebar.x+6*fontheight,y_offset+0.5*fontheight);
+			lcd_main.message("write", bfree,"free");
+			bfree= MAX_NOTE_VOICES;
+			lcd_main.message("moveto",sidebar.x,y_offset+0.5*fontheight);
+			lcd_main.message("write", "note voices");
+			tx=sidebar.x;
+			y_offset+=1.1*fontheight;
+			for(var i = 0;i<MAX_NOTE_VOICES;i++){
+				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,menudarkest);
+				tx += wm;
+				if(tx>mainwindow_width-18){
+					tx = sidebar.x;
+					y_offset += wm;
+				}
+			}
+			lcd_main.message("moveto",sidebar.x+6*fontheight,y_offset+0.5*fontheight);
+			lcd_main.message("write", bfree,"free");
+			bfree= MAX_AUDIO_VOICES;
+			lcd_main.message("moveto",sidebar.x,y_offset+0.5*fontheight);
+			lcd_main.message("write", "audio voices");
+			tx=sidebar.x;
+			y_offset+=1.1*fontheight;
+			for(var i = 0;i<MAX_AUDIO_VOICES;i++){
+				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,menudarkest);
+				tx += wm;
+				if(tx>mainwindow_width-18){
+					tx = sidebar.x;
+					y_offset += wm;
+				}
+			}
 			
+
 		}else{
 			sidebar.editbtn = 0;
 //			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
