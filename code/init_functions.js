@@ -447,21 +447,24 @@ function mulberry32(){
 function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels){
 	//r2=radius of inner circle
 	//d = angle difference
+	no_in_channels = Math.max(no_in_channels,2);
+	no_out_channels = Math.max(no_out_channels,2);
 	var inputangle = in_no / no_in_channels;
 	var outputangle = out_no / no_out_channels;
 	var d;
 	var tl=0;
 	for(var i=0;i<no_out_channels;i++){
-		d = ((((i/no_out_channels)+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
-		d = Math.abs(d);
-		tl += Math.max(1 - r2 * d * no_out_channels,0);
+		for(var ii=0;ii<no_in_channels;ii++){
+			d = ((((i/no_out_channels)+(ii/no_in_channels)) + 1.5) % 1 ) - 0.5;
+			d = Math.abs(d);
+			tl += Math.max(1 - r2 * d * no_out_channels,0);
+		}
 	} // first sum up a kind of hypothetical total level
 
 
 	// then the particular one
 	d = (((rotation+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
 	d = Math.abs(d);
-	//post("r2",r2,"r2sq + (etc",(r2*r2 + (1-r2)/no_out_channels));
 	var l = Math.max(1 - r2 * d * no_out_channels,0) / tl;
 	return l;
 }

@@ -222,7 +222,7 @@ function labelled_parameter_v_slider(sl_no){
 }
 
 function get_parameter_label(p_type,wrap,pv,p_values){
-	var pvp;
+	var pvp="";
 	if(p_type == "menu_f"){
 		var pv2;
 		if(wrap){

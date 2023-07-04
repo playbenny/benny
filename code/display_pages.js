@@ -5578,7 +5578,7 @@ function draw_sidebar(){
 					assign_midi_scope("connection",i,m_index);
 					sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 				}else if(f_type=="audio"){
-					post("assigning connection audio scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
+					//post("assigning connection audio scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					sidebar.scopes.voicelist = [];
 					audio_to_data_poly.setvalue(0, "vis_scope", 0);
 					var listvoice;
