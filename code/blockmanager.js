@@ -63,6 +63,8 @@ var input_used = new Array(MAX_AUDIO_OUTPUTS+2);
 var state_fade = {
 	start : [],
 	end : [],
+	colour : [],
+	lastcolour : [],
 	selected : -2, //-1 = init state, -2=none
 	position : -1, //-1 = no fader, 0-1=fade pos.
 	last: -1 //just for the colour fade on the slider.

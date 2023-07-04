@@ -225,8 +225,9 @@ function initialise_dictionaries(){
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
 	if(config.contains("downscale_limit")) messnamed("downscale_limit",config.get("downscale_limit"));
-	var dimm=2;
-	menudark = [ menucolour[0]/ dimm, menucolour[1]/dimm, menucolour[2]/dimm ];
+	var dimm=0.5;
+	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	state_fade.lastcolour = menudark;
 	dimm=bg_dark_ratio;
 	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
 	matrixcolour = config.get("palette::connections::matrix");

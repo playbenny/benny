@@ -365,14 +365,16 @@ function fire_block_state(state, block){
 }
 
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
+	post("whole state btn click",state);
 	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
 	state_fade.selected = state;
+	state_fade.position = -1;
 	whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
 }
 
 function create_whole_state_xfade_slider(state,value){
-
-	state_fade.position=0;
+	post("\n creating slider");
+	state_fade.position=1;
 	redraw_flag.flag |= 2;
 	usermouse.last.got_t = 2;
 	//here: fill the starting/ending arrays - these are structured like the store[b][xxxx] arrays used to save states
@@ -387,6 +389,7 @@ function create_whole_state_xfade_slider(state,value){
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
 	for(var i=0;i<sc_list.length;i++){
 		var b = sc_list[i];
+		post(b,": ");
 		state_fade.start[b] = [];
 		state_fade.end[b] = [];
 		pv = states.get("states::"+state+"::"+b);
@@ -398,35 +401,45 @@ function create_whole_state_xfade_slider(state,value){
 			for(var t=1;t<pv.length;t++){
 				state_fade.start[b][t] = parameter_value_buffer.peek(1, MAX_PARAMETERS*b+t-1);
 				state_fade.end[b][t] = pv[t];
+				post(state_fade.start[b][t],state_fade.end[b][t],", ");
 			}
 		}
 	}
 }
 
 function fire_whole_state_btn_release(state,value){//if a slider didn't appear you're firing the state
+	//post("\nstate release");
 	whole_state_xfade_create_task.cancel();
 	state_fade.selected = -2;
 	state_fade.last = state;
-	state_fade.position = 0;
+	state_fade.position = -1;
 	redraw_flag.flag |= 2;
 	fire_whole_state_btn(state,value);
 }
 function whole_state_xfade(parameter,value){ //called by the slider
-	post("state fade",parameter,value);
-	if(parameter == "get"){
-		return state_fade.position;
+	//post("\nwhole state fade. p:",parameter,"v:",value,"pos:",state_fade.position);
+	if(value == "get"){
+		return state_fade.position*2 - 1;
 	}else{
-		var op=state_fade.position;
-		state_fade.position = Math.min(1,Math.max(0,value));
-		if(op!=state_fade.position) fade_state();
+		value = value *0.5 + 0.5;
+		if((value>0)&&(value<1)){
+			var op=state_fade.position;
+			state_fade.position = Math.min(1,Math.max(0,value));
+			if(op!=state_fade.position) fade_state();
+		}
 	}
 }
 function fire_whole_state_btn(state,value){
+	//post("\nwhole state btn")
 	if(usermouse.ctrl){
 		sidebar.selected = state;
 		set_sidebar_mode("edit_state");
+		var cll = config.getsize("palette::gamut");
+		state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
 	}else{
 		fire_whole_state(state);
+		var cll = config.getsize("palette::gamut");
+		state_fade.lastcolour = config.get("palette::gamut["+Math.floor(state*cll/MAX_STATES)+"]::colour");
 	}
 }
 
@@ -455,30 +468,34 @@ function fire_whole_state(state, value){
 }
 
 function fade_state(){
-	post("\nfade whole state",state_fade.position);
-	var pv=[] , qv = [];
+	//post("\nfade whole state",state_fade.position);
+	var pv=[];// , qv = [];
 	var state = state_fade.selected;
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
 	var sc_list = stat.getkeys();
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
-	var mf=0;
+	//var mf=0;
 	for(var i=0;i<sc_list.length;i++){
 		var b = sc_list[i];
 		pv = states.get("states::"+state+"::"+b);
 		if(!is_empty(state_fade.end[b])){
 			var m=-1;
-			var om=0;
+			//var om=0;
 			//if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
 			//if(m!=pv[0])mf=1;
-			if((state_fade.position > 0) && (state_fade.end[b][0] == 1)) m = 1;
-			if((state_fade.position == 1) && (state_fade.end[b][0] == 0)) m = 0;
-			if((state_fade.position == 0)) m = state_fade.start[b][0];
+			//fade starts at 1 (top) and ends at 0 (bottom) - 1 is the 'current state', 0 is the selected state.
+			if((state_fade.position < 1) && (state_fade.end[b][0] == 1)) m = 1;
+			if((state_fade.position == 0) && (state_fade.end[b][0] == 0)) m = 0;
+			if((state_fade.position == 1)) m = state_fade.start[b][0];
 			if(m>-1) mute_particular_block(b,m);
-			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, state_fade.position*state_fade.end[b][t] - (1- state_fade.position)*state_fade.start[b][t]);
+			for(var t=1;t<pv.length;t++){
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
+			}
 		}
 	}
+	redraw_flag.flag |= 2;
 	//if(mf==1)redraw_flag.flag |= 8;
 }
 
@@ -542,6 +559,9 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			if(states.contains("states::"+parameter+"::"+block)) states.remove("states::"+parameter+"::"+block);
 			if(pv.length) states.replace("states::"+parameter+"::"+block,pv);
 			blocks.replace("blocks["+block+"]::panel::enable",1);
+			var cll = config.getsize("palette::gamut");
+			state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
+			
 			set_sidebar_mode("block");
 		}
 	}
@@ -622,7 +642,7 @@ function static_mod_adjust(parameter,value){
 }
 
 function sidebar_parameter_knob(parameter, value){
-	//post("\nP: ",parameter,"\nV:",value);
+	post("\nP: ",parameter,"\nV:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
 		return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);

@@ -142,9 +142,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		if(usermouse.left_button){	// CLICK
 			if((usermouse.got_i==0) && (usermouse.got_t==0)){	//nothing on the 2d layer, open it up for 3d clicks
 				if((displaymode=="blocks")||(displaymode=="block_menu")){
+					usermouse.clicked3d = usermouse.hover[1];
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;		
-					usermouse.clicked3d = usermouse.hover[1];
 					usermouse.drag.last_x = usermouse.x;
 					usermouse.drag.last_y = usermouse.y;
 					usermouse.drag.distance=0;
@@ -204,8 +204,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					f(p,v);
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
-					usermouse.drag.starting_value_x = 0;
-					usermouse.drag.starting_value_y = 1;
+					usermouse.drag.starting_value_x = 1;
+					usermouse.drag.starting_value_y = -1;
 					usermouse.clicked2d = usermouse.got_i;
 					usermouse.clicked3d = -1;
 					usermouse.drag.distance = 0;
@@ -239,16 +239,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							danger_button = -1;
 						} 
 						if(Array.isArray(f)) post("f is an array",mouse_click_actions[usermouse.last.got_i][0],mouse_click_actions[usermouse.last.got_i][1]);
-						post("f is",f,"index is",usermouse.last.got_i,usermouse.last.got_t);
-						post("or",f.name);
+						//post("f is",f,"index is",usermouse.last.got_i,usermouse.last.got_t);
+						//post("or",f.name);
 						f(p,v);
 						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 					}
 					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider
 						if(mouse_click_actions[usermouse.last.got_i]==sidebar_parameter_knob){
 							var pb = mouse_click_parameters[usermouse.last.got_i];
+							post("params",pb);
 							if(alt == 1){
-								sidebar_parameter_knob(p,param_defaults[pb[1]][pb[0]]);
+								sidebar_parameter_knob(pb,param_defaults[pb[1]][pb[0]]);
 								redraw_flag.flag=2;								
 							}else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
@@ -270,8 +271,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else{
 								scope_zoom(mouse_click_parameters[usermouse.last.got_i],"click");
 							}
-						}else if(mouse_click_actions[usermouse.got_i]==whole_state_xfade){
-							post("finished state xfade");
+						}else if(mouse_click_actions[usermouse.got_i]==whole_state_xfade){ //end of state xfade
+							post("release on fader");
+							state_fade.lastcolour = [state_fade.colour[0], state_fade.colour[1], state_fade.colour[2]];
 							state_fade.last = state_fade.selected;
 							state_fade.selected = -2;
 							state_fade.position = -1;
@@ -526,8 +528,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}else{
 						f(v,usermouse.drag.starting_value_y+ydist);
 					}
-					post("drag-f",f);
-					post("or",f.name);
+					//post("drag-f",f);
+					//post("or",f.name);
 					f(p,usermouse.drag.starting_value_x+xdist);					
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG

@@ -2987,12 +2987,13 @@ function draw_topbar(){
 			//if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
 			if(statecontents){
 				if((state_fade.position>-1) && (state_fade.selected == i)){ //draw a slider instead
-					c = menucolour;
-					lcd_main.message("framerect",9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), mainwindow_height - 9,c )
+					c = state_fade.lastcolour;
+					lcd_main.message("paintrect",9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), mainwindow_height - 9,menudarkest )
 					c2 = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
-					lcd_main.message("paintrect",9+fontheight*x_o+4, 9+(mainwindow_height-18-fontheight)*(1 - state_fade.position), 9+fontheight*(x_o+1.1)-4, 9+fontheight+(mainwindow_height-18-fontheight)*(1-state_fade.position),c[0]*(state_fade.position-1)+c2[0]*state_fade.position,c[1]*(state_fade.position-1)+c2[1]*state_fade.position,c[2]*(state_fade.position-1)+c2[2]*state_fade.position );
-					click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), mainwindow_height - 9,mouse_index,2 );							
-					post("\nfader index",mouse_index);
+					state_fade.colour = [c2[0]*(1- state_fade.position)+c[0]*state_fade.position,c2[1]*(1 - state_fade.position)+c[1]*state_fade.position,c2[2]*(1 - state_fade.position)+c[2]*state_fade.position];
+					y = 9+(mainwindow_height-18-fontheight)*(1 - state_fade.position);
+					lcd_main.message("paintrect",9+fontheight*x_o+4,y, 9+fontheight*(x_o+1.1)-4, y+fontheight,state_fade.colour );
+					click_rectangle( 9+fontheight*x_o, 0, 9+fontheight*(x_o+1.2), mainwindow_height ,mouse_index,2 );							
 					mouse_click_actions[mouse_index] = whole_state_xfade;
 					mouse_click_parameters[mouse_index] = i;
 					mouse_click_values[mouse_index] = 0;
