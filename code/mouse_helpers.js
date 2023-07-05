@@ -1011,18 +1011,29 @@ function flock_add_to_array(block,x,y,z){
 	build_mod_sum_action_list();
 }
 
+function show_cpu_meter(){
+	clear_block_and_wire_selection();
+	set_sidebar_mode("cpu");
+}
+
 function hw_meter_click(number,type){
 	post("\n you clicked a meter, type:",type,"number",number);
 	sidebar.scopes.voice = number;
-	for(var i = 0; i < MAX_BLOCKS; i++){
-		selected.block[i] = 0;
-		selected.wire[i] = 0;
-	}
+	clear_block_and_wire_selection();
 	if(type == "in"){
 		set_sidebar_mode("input_scope");
 	}else if(type == "out"){
 		set_sidebar_mode("output_scope");
 	}
+}
+
+function clear_block_and_wire_selection() {
+	for (var i = 0; i < MAX_BLOCKS; i++) {
+		selected.block[i] = 0;
+		selected.wire[i] = 0;
+	}
+	sidebar.scopes.voicenum=-1;
+	redraw_flag.flag |= 8;
 }
 
 function block_edit(parameter,value){

@@ -122,6 +122,55 @@ function import_hardware(v){
 
 function initialise_dictionaries(){
 	var i; 
+	// get config first because a lot of things depend on it.
+	config.parse('{ }');
+	config.import_json("config.json");
+	post("reading config\n");				
+	menucolour = config.get("palette::menu");
+	UPSAMPLING = config.get("UPSAMPLING");
+	RECYCLING = config.get("RECYCLING");
+	if(config.contains("downscale_limit")) messnamed("downscale_limit",config.get("downscale_limit"));
+	var dimm=0.5;
+	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	state_fade.lastcolour = menudark;
+	dimm=bg_dark_ratio;
+	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	matrixcolour = config.get("palette::connections::matrix");
+	hardwarecolour = config.get("palette::connections::hardware");
+	audiocolour = config.get("palette::connections::audio");
+	midicolour = config.get("palette::connections::midi");
+	parameterscolour = config.get("palette::connections::parameters");
+	blockcontrolcolour = config.get("palette::connections::block");
+	wire_diaX = config.get("wire_diaX");
+	wire_diaY = config.get("wire_diaY");
+	blob_dia = config.get("blob_dia");
+	glow_amount = config.get("glow");
+	messnamed("bloom_amt",glow_amount);
+	MAX_BLOCKS = config.get("MAX_BLOCKS");
+	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
+	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
+	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
+	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
+	MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
+	MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
+	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
+	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
+	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
+	MAX_WAVES = config.get("MAX_WAVES");
+	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
+	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
+	MAX_STATES = config.get("MAX_STATES");
+	MERGE_PURGE = config.get("MERGE_PURGE");
+	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
+	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
+	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
+	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
+	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
+	ANIM_TIME = config.get("ANIM_TIME");
+
 
 //	connections_sketch.reset();
 //	request_globals(); //sends the global variables (MAX_DATA etc) out. IS THIS NEEDED AT THIS POINT?
@@ -132,11 +181,6 @@ function initialise_dictionaries(){
 	messnamed("clear_all_buffers","bang");
 	waves_polybuffer.clear();
 
-	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
-	is_flocked=[];
-	for(;i--;){
-		is_flocked.push(0);
-	}
 
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("initialising polys\n");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
@@ -157,9 +201,15 @@ function initialise_dictionaries(){
 	for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
 		hardware_list[i] = "none";
 	}
+	
+	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
+	is_flocked=[];
+	for(;i--;){
+		is_flocked.push(0);
+	}
+
 	//also empties all the dicts for re-initialisatoin:
 	blocktypes.parse('{ }');
-	config.parse('{ }');
 	voicemap.parse('{ }');
 	midi_routemap.parse('{ }');
 	hardware_metermap.parse('{ }');
@@ -219,52 +269,6 @@ function initialise_dictionaries(){
 	send_note_patcherlist();
 	send_audio_patcherlist();
 
-	config.import_json("config.json");
-	post("reading config\n");				
-	menucolour = config.get("palette::menu");
-	UPSAMPLING = config.get("UPSAMPLING");
-	RECYCLING = config.get("RECYCLING");
-	if(config.contains("downscale_limit")) messnamed("downscale_limit",config.get("downscale_limit"));
-	var dimm=0.5;
-	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
-	state_fade.lastcolour = menudark;
-	dimm=bg_dark_ratio;
-	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
-	matrixcolour = config.get("palette::connections::matrix");
-	hardwarecolour = config.get("palette::connections::hardware");
-	audiocolour = config.get("palette::connections::audio");
-	midicolour = config.get("palette::connections::midi");
-	parameterscolour = config.get("palette::connections::parameters");
-	blockcontrolcolour = config.get("palette::connections::block");
-	wire_diaX = config.get("wire_diaX");
-	wire_diaY = config.get("wire_diaY");
-	blob_dia = config.get("blob_dia");
-	glow_amount = config.get("glow");
-	messnamed("bloom_amt",glow_amount);
-	MAX_BLOCKS = config.get("MAX_BLOCKS");
-	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
-	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
-	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
-	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
-	MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
-	MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
-	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
-	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	MAX_DATA = config.get("MAX_DATA");
-	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
-	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
-	MAX_WAVES = config.get("MAX_WAVES");
-	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
-	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
-	MAX_STATES = config.get("MAX_STATES");
-	MERGE_PURGE = config.get("MERGE_PURGE");
-	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
-	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
-	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
-	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
-	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
-	ANIM_TIME = config.get("ANIM_TIME");
 
 	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);

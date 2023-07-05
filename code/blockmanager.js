@@ -458,6 +458,7 @@ var cpu_meter = {
 	peak : [256],
 	fps : [256],
 	pointer : 0,
+	lastdrawn : -1,
 	x : 1,
 	y2 : 9,
 	y1 : 40
@@ -499,11 +500,18 @@ function request_globals(){
 
 function cpu(avg,peak,fps){
 	cpu_meter.pointer++;
-	cpu_meter.pointer &= 255;
+	cpu_meter.pointer &= 127;
 	cpu_meter.avg[cpu_meter.pointer] = avg;
 	cpu_meter.peak[cpu_meter.pointer] = peak;
 	cpu_meter.fps[cpu_meter.pointer] = fps;
-	if(sidebar.mode=="cpu") redraw_flag.flag |= 2;
+	if(sidebar.mode=="cpu"){
+		if(cpu_meter.lastdrawn > 3){ 
+			redraw_flag.flag |= 2; 
+			cpu_meter.lastdrawn =0;
+		}else{ 
+			cpu_meter.lastdrawn++; 
+		}
+	} 
 }
 
 function request_waves_remapping(type, voice){
