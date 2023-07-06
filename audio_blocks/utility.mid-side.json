@@ -6,12 +6,13 @@
 		"help_text" : "mid-side processor",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "in 1", "in 2" ]
+				"audio" : [ "in" ]
 			},
 			"out" : {
-				"audio" : [ "out 1", "out 2" ]
+				"audio" : [ "out" ]
 			}
 		},
 		"groups" : [

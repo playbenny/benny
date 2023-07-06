@@ -6,12 +6,13 @@
 		"help_text" : "airwindows capacitor2 - a lowpass / highpass with modelled self-modulation.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
+		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio in 1", "audio in 2" ]
+				"audio" : [ "in" ]
 			},
 			"out" : {
-				"audio" : [ "audio out 1", "audio out 2" ]
+				"audio" : [ "out" ]
 			}
 		},
 		"groups" : [
