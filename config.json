@@ -4,7 +4,7 @@
 	"gain_display_format" : "x",
 	"downscale_limit" : 2600,
 	"UPSAMPLING" : 1,
-	"RECYCLING" : 1,
+	"RECYCLING" : 0,
 	"wire_diaX" : 0.03,
 	"wire_diaY" : 0.03,
 	"glow" : 0.2,

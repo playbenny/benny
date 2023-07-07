@@ -629,11 +629,11 @@ function static_mod_adjust(parameter,value){
 		parameter_static_mod.poke(1,parameter[2],Math.max(-1,Math.min(1,value)));
 		rebuild_action_list = 1;
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings"))){// && (parameter[1]==sidebar.selected)){
-			redraw_flag.flag|=1;
+			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
 		}
 		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][parameter[0]])){
-			redraw_flag.flag|=16;
+			redraw_flag.deferred|=16;
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
 		}
 		//if(displaymode=="custom") redraw_flag.flag=4;
@@ -650,11 +650,11 @@ function sidebar_parameter_knob(parameter, value){
 		//set value
 		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
-			redraw_flag.flag|=1;
+			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
 		}
 		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][parameter[0]])){
-			redraw_flag.flag|=16;
+			redraw_flag.deferred|=16;
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
 		}
 		//if(displaymode=="custom") redraw_flag.flag=4;

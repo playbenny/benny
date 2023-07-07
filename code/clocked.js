@@ -29,6 +29,10 @@ function slowclock(){
 function fastclock(){
 	check_changed_queue();
 	check_output_queue(); //EVENTUALLY this needs to be on a faster clock
+	if(redraw_flag.deferred!=0){
+		redraw_flag.flag = redraw_flag.deferred;
+		redraw_flag.deferred = 0;
+	}
 }
 
 function frameclock(){
