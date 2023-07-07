@@ -463,7 +463,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 
 function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	click_rectangle(x1,y1,x2,y2,index,0, 3);
+	click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
