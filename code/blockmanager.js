@@ -280,6 +280,7 @@ var usermouse = {
 	shift : 0,
 	alt : 0,
 	ctrl : 0,
+	caps : 0,
 	x : 0,
 	y : 0,
 	timer : 0,
@@ -335,6 +336,7 @@ var sidebar = {
 
 var redraw_flag = {
 	flag : 0,
+	deferred : 0,
 	targets: new Array(),
 	paneltargets: new Array(),
 	targetcount: 0,

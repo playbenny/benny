@@ -123,6 +123,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.shift = shift;
 	usermouse.ctrl = ctrl;
 	usermouse.alt = alt;
+	usermouse.caps = caps;
 	usermouse.x = x;
 	usermouse.y = y;
 

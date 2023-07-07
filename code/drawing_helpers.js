@@ -322,7 +322,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 			ly = y1  + (y2 - y1) * (1-tvalue);
 			var mu=0.33;
 			//post("\ndrawing slider",sl_no,blockno,paramno);
-		if((i==sidebar.scopes.voicenum)||(flags & 2)){
+		if(((i==sidebar.scopes.voicenum)||(flags & 2))&&(!usermouse.caps)){ //these two caps are temp code emergency access to param value
 				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
@@ -336,7 +336,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		}else{
 			ly = y1 + (y2-y1)*(-tvalue);
 			var mu=0.33;
-			if((i==sidebar.scopes.voicenum)||(flags & 2)){
+			if(((i==sidebar.scopes.voicenum)||(flags & 2))&&(!usermouse.caps)){
 				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
