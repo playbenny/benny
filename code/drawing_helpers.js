@@ -1,19 +1,18 @@
-
 function click_clear(index,type){
-	//post("\nwiping click matrix");
+	post("\nwiping click matrix");
 	if(mainwindow_height>0) click_rectangle(0,0,mainwindow_width,mainwindow_height,index,type); // wipe click matrix
 }
 function click_oval(x1,y1,x2,y2,index,type){
 	click_rectangle(x1,y1,x2,y2,index,type); //sorry, i lied. TODO draw ovals here
 }
 function click_rectangle(x1,y1,x2,y2,index,type){
-	x1=Math.max(0,x1);
-	x1|=0;
-	x2|=0;
+	x1=Math.max(0,x1) >> click_b_s;
+	//x1|=0;
+	x2 = x2 >> click_b_s;
 	if(x2 <= x1) return 0;
-	y2|=0;
-	y1=Math.max(0,y1);
-	y1|=0;
+	y2 = y2 >> click_b_s;
+	y1=Math.max(0,y1>>click_b_s);
+	//y1|=0;
 	type &= 15;
 	index &= 4095;
 	var w = x2-x1;

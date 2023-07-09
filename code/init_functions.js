@@ -129,7 +129,7 @@ function initialise_dictionaries(){
 	menucolour = config.get("palette::menu");
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
-	if(config.contains("downscale_limit")) messnamed("downscale_limit",config.get("downscale_limit"));
+	click_b_s = config.get("click_buffer_scaledown");
 	var dimm=0.5;
 	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
 	state_fade.lastcolour = menudark;
@@ -586,7 +586,7 @@ function size(width,height,scale){
 		//click_matrix.dim= [width,height];
 		lcd_main.message("dim",width,height);
 		click_b_w=1; //work out the next power of two after the width, eg 640 --> 1024, use this for the click matrix row length for speed
-		var t = 1;
+		var t = 1;// << click_b_s;
 		while(t<mainwindow_width){
 			t*=2;
 			click_b_w++;

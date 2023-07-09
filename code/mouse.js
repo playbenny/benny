@@ -127,7 +127,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.x = x;
 	usermouse.y = y;
 
-	var tcell = click_i[x+(y<<click_b_w)];
+	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
 	//post(usermouse.got_i,usermouse.got_t);
@@ -747,7 +747,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.x = x;
 	usermouse.y = y;
 
-	var tcell = click_i[x+(y<<click_b_w)];
+	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
 	b=tcell & 4095;
 	c=0;
 	d=tcell >> 12;
