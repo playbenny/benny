@@ -470,7 +470,7 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 	d = (((rotation+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
 	d = Math.abs(d);
 	var l = Math.max(1 - r2 * d * max_chans,0) / tl;
-	post("\ntl",tl,"l",l);
+	//post("\ntl",tl,"l",l);
 	return l;
 }
 
