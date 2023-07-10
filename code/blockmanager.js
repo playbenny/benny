@@ -301,6 +301,7 @@ var sidebar = {
 	mode : "none",
 	lastmode : "none",
 	selected : -1,
+	selected_voice : 0, //this is eg voice 2 out of 4 for this block
 	width : 100,
 	x : 490,
 	meters : {
@@ -318,7 +319,6 @@ var sidebar = {
 	scopes : {
 		zoom : 0,
 		voice : -1,    //this is eg voice 34 of the poly
-		voicenum : 0, //this is eg voice 2 out of 4 for this block
 		one_or_all : 0, //0=single, 1=all
 		width : 0,
 		starty : 0,
@@ -385,6 +385,8 @@ song.name = "song";
 
 var songs = new Dict;
 songs.name = "songs";
+var songs_info = []; //holds voicecount etc 
+var songs_moddate = []; //and file data/time for every preloaded json song.
 
 var io_dict = new Dict;
 io_dict.name = "io";

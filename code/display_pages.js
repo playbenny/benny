@@ -583,6 +583,13 @@ function hide_block_menu(){
 	}
 }
 
+function reinitialise_block_menu(){
+	for(var b in blocks_menu){
+		if(blocks_menu[b]!=="undefined") blocks_menu[b].freepeer()
+	}
+	blocks_menu=[];
+}
+
 function initialise_block_menu(visible){		
 	//post("\nshowing block menu\n");
 	var i; // draw cubes distributed on the xz plane, rotated 90 degrees about the x axis, y = -110
@@ -618,9 +625,12 @@ function initialise_block_menu(visible){
 			}
 		}
 	}else{
+		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
+		post("w is",w);
 		for(var typ in type_order){
 			z++;
-			x=-4;
+			z+=0.5;
+			x=-w;
 			for(i=0;i<cubecount;i++){
 				ts=types[i].split('.');
 				if(ts[0]==type_order[typ]){
@@ -649,9 +659,9 @@ function initialise_block_menu(visible){
 						}
 						lcd_block_textures.message("bang");
 	
-						if(x>4){
+						if(x>w){
 							z++;
-							x=-4;
+							x=-w;
 						}
 						//col = config.get("palette::"+ts[0]);
 //						post("drawing menu block",ts);
@@ -733,7 +743,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			for(t=0;t<=block_v;t++){
 				if(selected.anysel){
 					if(selected.block[i]){
-						if((sidebar.scopes.voicenum==-1)||((sidebar.scopes.voicenum+1) == t)){
+						if((sidebar.selected_voice==-1)||((sidebar.selected_voice+1) == t)){
 							blocks_cube[i][t].color = block_c; 
 						}else{
 							blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
@@ -3519,9 +3529,9 @@ function draw_sidebar(){
 			if(sidebar.selected != block) sidebar.lastmode = "retrig";
 			var bvs = voicemap.get(block);
 			if(!Array.isArray(bvs)) bvs = [bvs];
-			if(sidebar.scopes.voicenum >= bvs.length) sidebar.scopes.voicenum = -1;
+			if(sidebar.selected_voice >= bvs.length) sidebar.selected_voice = -1;
 			var listvoice=-1;
-			if(sidebar.scopes.voicenum>=0) listvoice  = bvs[sidebar.scopes.voicenum] - MAX_NOTE_VOICES;// voicemap.get(block+"["+sidebar.scopes.voicenum+"]") - MAX_NOTE_VOICES; 
+			if(sidebar.selected_voice>=0) listvoice  = bvs[sidebar.selected_voice] - MAX_NOTE_VOICES;// voicemap.get(block+"["+sidebar.selected_voice+"]") - MAX_NOTE_VOICES; 
 			if(listvoice != sidebar.scopes.voice) sidebar.lastmode="retrig";
 			if(sidebar.mode != sidebar.lastmode){
 				sidebar.lastmode = sidebar.mode;
@@ -3533,7 +3543,7 @@ function draw_sidebar(){
 				if(sidebar.mode == "block"){
 					//get scope info together, turn on scopes
 					if(block_type=="audio"){
-						if(sidebar.scopes.voicenum != -1){
+						if(sidebar.selected_voice != -1){
 							sidebar.scopes.voicelist = [];
 							for(tii=0;tii<NO_IO_PER_BLOCK;tii++){
 								audio_to_data_poly.setvalue((listvoice+1+tii*MAX_AUDIO_VOICES),"vis_scope", 1);
@@ -3543,7 +3553,7 @@ function draw_sidebar(){
 							messnamed("scope_size",(sidebar.scopes.width)/2);
 							sidebar.scopes.voice = listvoice;
 						}else{
-							//post("if sidebar.scopes.voicenum is -1 display scopes for all voices");
+							//post("if sidebar.selected_voice is -1 display scopes for all voices");
 							sidebar.scopes.voicelist = [];
 							for(i=0;i<bvs.length;i++){
 								for(tii=0;tii<NO_IO_PER_BLOCK;tii++){
@@ -3656,17 +3666,20 @@ function draw_sidebar(){
 			if(bntt.length<15) setfontsize(fontheight/1.6);
 			lcd_main.message("write", bntt);
 			setfontsize(fontheight/3.2);
-			lcd_main.message("moveto", sidebar.x+fontheight*4.8, y_offset + fontheight * 0.75);
 			var current_p = blocks.get("blocks["+block+"]::poly::voices");
-			if(sidebar.scopes.voicenum==-1){
+			if(sidebar.selected_voice==-1){
+				lcd_main.message("moveto", sidebar.x+fontheight*4.9, y_offset + fontheight * 0.75);
 				lcd_main.message("frgb" , block_dark);
 				if(sidebar.scopes.voicelist.length>1) lcd_main.message("write", "("+current_p+")");
 			}else{
 				lcd_main.message("frgb" , block_colour);
-				lcd_main.message("write", (1+sidebar.scopes.voicenum));
+				var vn = (1+sidebar.selected_voice);
+				vn = ("      "+vn).slice(-3);
+				lcd_main.message("moveto", sidebar.x+fontheight*4.9, y_offset + fontheight * 0.5);
+				lcd_main.message("write", vn);
 				lcd_main.message("frgb" , block_dark);
-				lcd_main.message("moveto", sidebar.x+fontheight*4.8, y_offset + fontheight * 0.75);
-				lcd_main.message("write", " /"+(current_p));
+				lcd_main.message("moveto", sidebar.x+fontheight*4.9, y_offset + fontheight * 0.75);
+				lcd_main.message("write", ("    /"+current_p).slice(-3));
 			}
 			click_rectangle( sidebar.x + fontheight*5.6, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,mouse_index,1 );
 			mouse_click_actions[mouse_index] = bypass_selected_block;
@@ -3713,7 +3726,7 @@ function draw_sidebar(){
 				sidebar.scopes.fg = block_colour;
 				
 				if(block_type == "audio" || block_type == "hardware"){
-					if(sidebar.scopes.voicenum != -1){
+					if(sidebar.selected_voice != -1){
 						for(i=0;i<NO_IO_PER_BLOCK;i++){
 							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,block_darkest);
 							click_rectangle( sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,mouse_index,2);

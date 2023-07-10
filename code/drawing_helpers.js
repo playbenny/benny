@@ -1,6 +1,6 @@
 function click_clear(index,type){
 	if(usermouse.left_button) return 1;
-	post("\nwiping click matrix");
+	//post("\nwiping click matrix");
 	click_rectangle(0,0,mainwindow_width,mainwindow_height,index,type); // wipe click matrix
 }
 function click_oval(x1,y1,x2,y2,index,type){
@@ -185,7 +185,7 @@ function labelled_parameter_v_slider(sl_no){
 	var x = paramslider_details[sl_no][0]+fontheight*0.1;
 	var maskx = -1;
 	for(var i=0;i<vo.length;i++){
-		if(((sidebar.scopes.voicenum>=0) && (sidebar.scopes.voicenum!=i))){
+		if(((sidebar.selected_voice>=0) && (sidebar.selected_voice!=i))){
 			x+=ww;
 		}else{
 			pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*vo[i]+paramslider_details[sl_no][9]);	
@@ -208,8 +208,8 @@ function labelled_parameter_v_slider(sl_no){
 
 	//how this should work: if voices>1 you display a label for each, but skip ones where it's the same as the last one?
 	// all are done from voice_para not para_val - ie take into account modulation and static mod
-	if((paramslider_details[sl_no][8]==sidebar.selected)&&((sidebar.scopes.voicenum>=0)||(paramslider_details[sl_no][10]&2))){
-		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+sidebar.scopes.voicenum+"]"); 
+	if((paramslider_details[sl_no][8]==sidebar.selected)&&((sidebar.selected_voice>=0)||(paramslider_details[sl_no][10]&2))){
+		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+sidebar.selected_voice+"]"); 
 		// if a single voice's offset is being editted, show the sum of the two in the label ????? << this is not how mod works tho?
 		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[sl_no][9]);
 	}
@@ -307,8 +307,8 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 	if(!Array.isArray(vlist)) vlist = [vlist];
 	var ww = (w + 2*(flags&2))/vlist.length;
 	var ww2 = ww - 2*(flags&2);
-	if((blockno == sidebar.selected)&&(sidebar.scopes.voicenum >=0)){
-		//post("\nvoicenum",sidebar.scopes.voicenum," voice ",sidebar.scopes.voice);
+	if((blockno == sidebar.selected)&&(sidebar.selected_voice >=0)){
+		//post("\nvoicenum",sidebar.selected_voice," voice ",sidebar.scopes.voice);
 		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+1,2);
 	}else{
 		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index,2);
@@ -322,7 +322,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 			ly = y1  + (y2 - y1) * (1-tvalue);
 			var mu=0.33;
 			//post("\ndrawing slider",sl_no,blockno,paramno);
-		if(((i==sidebar.scopes.voicenum)||(flags & 2))&&(!usermouse.caps)){ //these two caps are temp code emergency access to param value
+		if(((i==sidebar.selected_voice)||(flags & 2))&&(!usermouse.caps)){ //these two caps are temp code emergency access to param value
 				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
@@ -336,7 +336,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		}else{
 			ly = y1 + (y2-y1)*(-tvalue);
 			var mu=0.33;
-			if(((i==sidebar.scopes.voicenum)||(flags & 2))&&(!usermouse.caps)){
+			if(((i==sidebar.selected_voice)||(flags & 2))&&(!usermouse.caps)){
 				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];

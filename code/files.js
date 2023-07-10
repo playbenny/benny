@@ -12,9 +12,14 @@ function read_songs_folder(){ //also loads all song json files, and constructs t
 				tss = tss + ts[t];
 				if(t>0) tss = tss + ".";
 			}
+			var tsd = f.moddate.toString();
 			songlist[i] = tss;//f.filename;
+			if(songs.contains(tss)){
+				if(tsd!=songs_moddate[i]) songs.remove(tss);
+			}
 			if(!songs.contains(tss)){
 				song.import_json(SONGS_FOLDER+f.filename);
+				songs_moddate[i] = tsd;
 				post("\npreloaded songfile:",f.filename);
 				var songkeys = song.getkeys();
 				for(k in songkeys){
@@ -65,6 +70,25 @@ function read_songs_folder(){ //also loads all song json files, and constructs t
 				}
 			}
 		}
+		var bc=0, vc_n=0, vc_a=0, vc_h=0;
+		if(songs.contains(songlist[i]+"::blocks")){
+			var bs=songs.getsize(songlist[i]+"::blocks");
+			for(var t=0;t<bs;t++){
+				if(songs.contains(songlist[i]+"::blocks["+t+"]::type")){
+					bc++;
+					var ty = songs.get(songlist[i]+"::blocks["+t+"]::type");
+					var vc = songs.get(songlist[i]+"::blocks["+t+"]::poly::voices");
+					if(ty=="note"){
+						vc_n += vc;
+					}else if(ty=="audio"){
+						vc_a += vc;
+					}else if(ty="hardware"){
+						vc_h += vc;
+					}
+				}
+			}
+		}
+		songs_info[i]=[bc,vc_n,vc_a,vc_h];
 	}	
 }
 
@@ -838,7 +862,7 @@ function clear_everything(){
 	audio_to_data_poly.setvalue(0, "vis_scope", 0);
 	audio_to_data_poly.setvalue(0, "out_value", 0);
 	audio_to_data_poly.setvalue(0, "out_trigger", 0);
-	sidebar.scopes.voicenum = -1;
+	sidebar.selected_voice = -1;
 //	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
 

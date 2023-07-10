@@ -580,6 +580,7 @@ function deferred_diagnostics(){
 
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
+		reinitialise_block_menu();
 		post("main window : "+width+"x"+height+"px\n");
 		blocks_tex_sent = [];
 		//initialise_block_menu(-1);

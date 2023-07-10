@@ -300,7 +300,7 @@ function scope_zoom(parameter,value){
 	if(value=="get"){
 		return sidebar.scopes.zoom;
 	}else if(value=="click"){
-		sidebar.scopes.voicenum = parameter;
+		sidebar.selected_voice = parameter;
 		redraw_flag.flag |= 10;
 	}else{
 		sidebar.scopes.zoom = Math.min(Math.max(0,value),1);
@@ -1032,7 +1032,7 @@ function clear_block_and_wire_selection() {
 		selected.block[i] = 0;
 		selected.wire[i] = 0;
 	}
-	sidebar.scopes.voicenum=-1;
+	sidebar.selected_voice=-1;
 	redraw_flag.flag |= 8;
 }
 
@@ -1197,6 +1197,7 @@ function new_connection_toggle_voice(side,number){
 
 function select_song(song){
 	currentsong = song;
+	post("\n song info",songs_info[currentsong]);
 	redraw_flag.flag|=2;
 }
 

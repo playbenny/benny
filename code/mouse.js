@@ -318,7 +318,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								draw_block(r);
 								selected.block[r] = 1;
 								sidebar.scopes.voice = -1;
-								sidebar.scopes.voicenum = -1;
+								sidebar.selected_voice = -1;
 								redraw_flag.flag |= 8;
 							}
 						}
@@ -712,7 +712,7 @@ function mouse_released_on_a_thing_no_drag(){
 		}else if(usermouse.shift == 0){
 			var ti=0;
 			var afters=1;
-			if(selected.block[usermouse.ids[1]] && (+usermouse.ids[2]-1 == sidebar.scopes.voicenum)) afters = 0;
+			if(selected.block[usermouse.ids[1]] && (+usermouse.ids[2]-1 == sidebar.selected_voice)) afters = 0;
 			for(ti=0;ti<selected.wire.length;ti++){
 				selected.wire[ti]=0;
 			}
@@ -723,7 +723,7 @@ function mouse_released_on_a_thing_no_drag(){
 			selected.block_count=afters;
 			selected.wire_count=0;
 			usermouse.timer = DOUBLE_CLICK_TIME;
-			if(afters) sidebar.scopes.voicenum = +usermouse.ids[2]-1;
+			if(afters) sidebar.selected_voice = +usermouse.ids[2]-1;
 			if(sidebar.mode=="edit_label") set_sidebar_mode("block");
 		}else{
 			selected.block[usermouse.ids[1]]=1-selected.block[usermouse.ids[1]];
