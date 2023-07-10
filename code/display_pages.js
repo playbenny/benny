@@ -47,7 +47,7 @@ function set_display_mode(mode,t){
 
 function camera(){
 	if(displaymode == "custom"){
-		messnamed("camera_control", "anim", "moveto", [0,-95,0], ANIM_TIME);
+		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
 	}else if(displaymode == "block_menu"){
 		messnamed("camera_control", "position", [2,-93,menu_camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
@@ -55,7 +55,7 @@ function camera(){
 	}else if(displaymode == "blocks"){ //this could be animated too?
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
 		messnamed("camera_control", "direction", 0, 0, -1);
-		messnamed("camera_control","anim", "moveto",  camera_position, ANIM_TIME);
+		messnamed("camera_control", "position",  camera_position, ANIM_TIME); //"anim", "moveto"
 //		messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		if(sidebar.mode=="file_menu"){
 			camera_position[2] += 50;
@@ -63,11 +63,11 @@ function camera(){
 			messnamed("camera_control", "anim", "moveto", camera_position, ANIM_TIME);
 		}
 	}else if(displaymode == "connection_menu"){
-		messnamed("camera_control", "anim", "moveto", camera_position[0],camera_position[1],-20,ANIM_TIME);
+		messnamed("camera_control", "position", camera_position[0],camera_position[1],-20,ANIM_TIME);
 	}else if(displaymode == "waves"){
-		messnamed("camera_control", "anim", "moveto", [0,-95,0], ANIM_TIME);
+		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
-		messnamed("camera_control", "anim", "moveto", [0,-95,0], ANIM_TIME);		
+		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);		
 	}else if(displaymode == "flocks"){
 		messnamed("camera_control", "anim", "moveto", [flock_cube_size*1.5,1.5*flock_cube_size,5+1.5*flock_cube_size], ANIM_TIME);
 		messnamed("camera_control", "direction", -0.572078, -0.667424, -0.476731);

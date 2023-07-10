@@ -92,7 +92,7 @@ function frameclock(){
 	}
 	if(redraw_flag.flag & 8){
 		block_and_wire_colours();
-	}	
+	}
 	if(redraw_flag.flag & 4){
 		redraw();
 		bangflag=1;
@@ -181,9 +181,9 @@ function frameclock(){
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){
-			clear_screens();
-			draw_topbar();
-			draw_sidebar();
+//			clear_screens();
+//			draw_topbar();
+//			draw_sidebar();
 			draw_custom();
 		}else{
 			update_custom();
