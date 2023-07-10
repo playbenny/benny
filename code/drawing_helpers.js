@@ -571,21 +571,23 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 			if(l>maxl)maxl=l;
 		}
 	}
-	if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
-		setfontsize( Math.min(uy,ux)*0.4);
-		lcd_main.message("frgb", menucolour);
-		for(cx=v1-1;cx>=0;cx--){
-			for(cy=0;cy<v2;cy++){
-				l = scale*spread_level(cx, cy, offset,vector, v1, v2);
-				lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*uy);
-				lcd_main.message("write",l.toPrecision(2));				
+	if(sidebar.mode != "connections"){
+		if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
+			setfontsize( Math.min(uy,ux)*0.4);
+			lcd_main.message("frgb", menucolour);
+			for(cx=v1-1;cx>=0;cx--){
+				for(cy=0;cy<v2;cy++){
+					l = scale*spread_level(cx, cy, offset,vector, v1, v2);
+					lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*uy);
+					lcd_main.message("write",l.toPrecision(2));				
+				}
 			}
+		}else{
+			maxl*=scale;
+			lcd_main.message("frgb",0,0,0);
+			lcd_main.message("moveto",(x1+5),(y1+(y2-y1)*0.95));
+			lcd_main.message("write","x"+maxl.toPrecision(3));
 		}
-	}else{
-		maxl*=scale;
-		lcd_main.message("frgb",0,0,0);
-		lcd_main.message("moveto",(x1+5),(y1+(y2-y1)*0.95));
-		lcd_main.message("write","x"+maxl.toPrecision(3));
 	}
 	click_rectangle(x1,y1,x2,y2,index, 4);
 }
