@@ -626,7 +626,6 @@ function initialise_block_menu(visible){
 		}
 	}else{
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
-		post("w is",w);
 		for(var typ in type_order){
 			z++;
 			z+=0.5;

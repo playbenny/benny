@@ -272,7 +272,7 @@ var usermouse = {
 	clicked3d : -1,
 	hover : [-1,-1,-1], //hover things while you drag a thing
 	ids : [0,0,0], //current, split by -'s
-	oid : -1.1, //last hover id, to see if it's changed
+	oid : null,//-1.1, //last hover id, to see if it's changed
 	got_i : 0,
 	got_t : 0,
 	left_button : 0,
