@@ -682,6 +682,7 @@ function initialise_block_menu(visible){
 				}
 			}
 		}
+		menu_length = z;
 		blocks_tex_sent = []; // this is a good moment to ask for a redraw of any blocks that are loaded by now's textures
 		initialise_block_menu(visible); //to hide the core blocks if they're already loaded
 	}

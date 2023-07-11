@@ -152,6 +152,7 @@ var blocks_cube_texture = [];
 var blocks_tex_sent= []; //each element is mutestate+label
 var blocks_menu_texture = [];
 var blocks_menu = []; //called menulabel-type or menublock-type
+var menu_length = 10; //endstop for the menu scroll
 var cubecount; //number of menu cubes
 var wires = []; // called wires-connectionno-segmentno
 var wires_colours = [];
