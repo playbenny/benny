@@ -726,6 +726,7 @@ function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 function block_and_wire_colours(){ //for selection and mute etc
 	var i, t, cmute,tmc,segment,cs;
 	var block_c=[];
+	var block_v, subvoices, block_mute;
 	selected.anysel = 0;
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
 		selected.anysel = 1; 
@@ -737,13 +738,16 @@ function block_and_wire_colours(){ //for selection and mute etc
 			block_c = [1,1,1,1];
 			block_mute = blocks.get("blocks["+i+"]::mute");
 			block_v = blocks.get("blocks["+i+"]::poly::voices");
+			subvoices = Math.max(1,blocks.get("blocks["+i+"]::subvoices"));
 			if(block_mute){
 				anymuted=1;
 			}
-			for(t=0;t<=block_v;t++){
+			for(t=0;t<=block_v*subvoices;t++){
 				if(selected.anysel){
 					if(selected.block[i]){
-						if((sidebar.selected_voice==-1)||((sidebar.selected_voice+1) == t)){
+						if((sidebar.selected_voice==-1)){
+							blocks_cube[i][t].color = block_c; 
+						}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
 							blocks_cube[i][t].color = block_c; 
 						}else{
 							blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
@@ -1638,8 +1642,12 @@ function draw_connection_menu(){
 	mouse_click_values[2] = "all";
 	tx+=fontheight*1.8;
 	var w=1;
-	connection_menu.replace("from::voices", blocks.get('blocks['+from_block+']::poly::voices'));
-	connection_menu.replace("to::voices", blocks.get('blocks['+to_block+']::poly::voices'));
+	var from_voicecount = blocks.get('blocks['+from_block+']::poly::voices');
+	var from_subvoices = Math.max(1,blocks.get('blocks['+from_block+']::subvoices'));
+	connection_menu.replace("from::voices", from_voicecount * from_subvoices);
+	var to_voicecount = blocks.get('blocks['+to_block+']::poly::voices');
+	var to_subvoices = Math.max(1,blocks.get('blocks['+to_block+']::subvoices'));
+	connection_menu.replace("to::voices", to_voicecount * to_subvoices);
 	for(i=1;i<=connection_menu.get("from::voices");i++){
 		if(tx>(mainwindow_width/3-fontheight)) {
 			tx=fontheight*2+9;
@@ -5584,6 +5592,11 @@ function draw_sidebar(){
 			t_i_v.sort();
 			var f_v_no = blocks.get("blocks["+f_number+"]::poly::voices");
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
+			var from_subvoices = Math.max(1,blocks.get('blocks['+f_number+']::subvoices'));
+			var to_subvoices = Math.max(1,blocks.get('blocks['+t_number+']::subvoices'));
+			
+			f_v_no *= from_subvoices;
+			t_v_no *= to_subvoices;
 			
 			sidebar.mode = "wire";
 			sidebar.scopes.starty = y_offset;

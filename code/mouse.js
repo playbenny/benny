@@ -5,7 +5,7 @@ function clicked_block_preparation() {
 		usermouse.drag.dragging.voices = [];
 		for (var b = 0; b < MAX_BLOCKS; b++) {
 			if (selected.block[b]) {
-				var tvc = blocks.get("blocks[" + b + "]::poly::voices")*blocks.get("blocks[" + b + "]::subvoices");
+				var tvc = blocks.get("blocks[" + b + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + b + "]::subvoices"));
 				for (var i = 0; i <= tvc; i++) {
 					usermouse.drag.dragging.voices[t] = [b, i];
 					t++;
@@ -15,7 +15,7 @@ function clicked_block_preparation() {
 		for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
 	} else {
 		// if the clicked block is not selected, or is the only one selected, then you drag it				
-		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices")*blocks.get("blocks[" + usermouse.ids[1] + "]::subvoices");
+		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + usermouse.ids[1] + "]::subvoices"));
 		usermouse.drag.dragging.voices = [];
 		for (var i = 0; i <= tvc; i++) {
 			usermouse.drag.dragging.voices[i] = [usermouse.ids[1], i];
@@ -605,7 +605,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 													bdx = blocks.get("blocks["+ob+"]::space::x") + block_x - dictpos[0];
 													bdy = blocks.get("blocks["+ob+"]::space::y") + block_y - dictpos[1];
 												}
-												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ bdx + 0.25 * (usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1], bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
+												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
+												if(subvoices<1)subvoices = 1;
+												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
 												if(usermouse.drag.dragging.voices[t][1]>0){
 													for(tt=0;tt<nometers;tt++){ 
 														if(typeof blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt] !== 'undefined'){
@@ -723,7 +725,15 @@ function mouse_released_on_a_thing_no_drag(){
 			selected.block_count=afters;
 			selected.wire_count=0;
 			usermouse.timer = DOUBLE_CLICK_TIME;
-			if(afters) sidebar.selected_voice = +usermouse.ids[2]-1;
+			var subvoices = 1;
+			if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices"))subvoices = blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
+			if(afters){
+				if(usermouse.ids[2] == 0){
+					sidebar.selected_voice = -1;
+				}else{
+					sidebar.selected_voice = ((usermouse.ids[2]-1)/subvoices)|0;
+				}
+			}
 			if(sidebar.mode=="edit_label") set_sidebar_mode("block");
 		}else{
 			selected.block[usermouse.ids[1]]=1-selected.block[usermouse.ids[1]];
