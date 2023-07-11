@@ -78,6 +78,10 @@ function read_songs_folder(){ //also loads all song json files, and constructs t
 					bc++;
 					var ty = songs.get(songlist[i]+"::blocks["+t+"]::type");
 					var vc = songs.get(songlist[i]+"::blocks["+t+"]::poly::voices");
+					if(songs.contains(songlist[i]+"::blocks["+t+"]::subvoices")){
+						var sb=songs.get(songlist[i]+"::blocks["+t+"]::subvoices");
+						if(sb>1) vc/=sb;
+					}
 					if(ty=="note"){
 						vc_n += vc;
 					}else if(ty=="audio"){
