@@ -156,14 +156,6 @@ function new_block(block_name,x,y){
 		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
 			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
 			if(!blocktypes.contains(block_name+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",2);
-			//blocks.replace("blocks["+new_block_index+"]::subvoices",2);			
-			/*/WHAT AND WHY IS THIS?
-			if(blocktypes.get(block_name+"::max_polyphony")>1){
-				blocks.replace("blocks["+new_block_index+"]::subvoices",2);
-				voicecount(new_block_index,blocktypes.get(block_name+"::max_polyphony"));
-			}else{
-				blocks.replace("blocks["+new_block_index+"]::subvoices",1);
-			}*/
 		}else{
 			if(!blocktypes.contains(block_name+"::subvoices")){
 				blocks.replace("blocks["+new_block_index+"]::subvoices",1);
@@ -171,9 +163,9 @@ function new_block(block_name,x,y){
 				blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
 			}
 		}
-		if(blocks.get("blocks["+new_block_index+"]::subvoices")>1){
-			voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
-		} 	
+		//if(blocks.get("blocks["+new_block_index+"]::subvoices")>1){
+		//	voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
+		//} 	
 	}else if(type=="hardware"){
 		var split=0;//=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 		var ts, tii;
@@ -1793,8 +1785,9 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		post("max polyphony = "+max_v+"\n");
 	}
 	//if((details.get("patcher")=="vst.loader") && (max_v>0)) vst=1;
-	subvoices = blocks.get("blocks["+block+"]::subvoices");
 	if(voices == v) return 1;
+	
+	subvoices = blocks.get("blocks["+block+"]::subvoices");
 	
 	// FIRST, IF REMOVING VOICES, REMOVE ALL CONNECTIONS THAT TOUCH THIS BLOCK, STORING THE ONES THAT ARE GOING BACK ON
 	//IN THIS ARRAY OF DICTS
@@ -1887,11 +1880,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	}else if(voices > v){
 		direction = 1;
 	}
-	
+
 	// NOW ADD OR REMOVE VOICES:
 	while(voices != v){
 		if(voices > v){	//add voices
-			if((subvoices<=1)||((v % subvoices)==0)){ //EITHER this is a normal block with normal number of subvoices (1) and adding a voice adds a poly voice
+			//if((subvoices<=1)||((v % subvoices)==0)){ //EITHER this is a normal block with normal number of subvoices (1) and adding a voice adds a poly voice
 				// OR if a block has n subvoices, then the 0, the n, the 2n etc all get a new poly voice, skip the rest.
 				//post("adding a poly voice");
 				var t_offset = 0;
@@ -1962,11 +1955,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				} //set param spreads
 				v++;			
 				
-			}else{
-				v++;
-			}
+			//}else{
+			//	v++;
+			//}
 		}else if(voices < v){
-			if((subvoices<=1)||((v % subvoices)==0)){
+			//if((subvoices<=1)||((v % subvoices)==0)){
 				var voiceoffset=0;
 				var removeme;// then actually remove the voice
 				if(type == "note"){
@@ -2013,7 +2006,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					}
 				}
 				v--;
-			}else{
+			/*}else{
 				for(i=(v-1);i<blocks_meter[block].length;i++){
 					blocks_meter[block][i].freepeer(); //enable = 0;
 				}
@@ -2021,7 +2014,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				blocks_cube[block][v].freepeer(); //enable = 0;
 				blocks_cube[block].pop(); //[v-1]= null;
 				v--;
-			}
+			}*/
 		}
 	}
 	var voiceoffset=0;

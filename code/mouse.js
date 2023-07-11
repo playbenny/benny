@@ -5,7 +5,7 @@ function clicked_block_preparation() {
 		usermouse.drag.dragging.voices = [];
 		for (var b = 0; b < MAX_BLOCKS; b++) {
 			if (selected.block[b]) {
-				var tvc = blocks.get("blocks[" + b + "]::poly::voices");
+				var tvc = blocks.get("blocks[" + b + "]::poly::voices")*blocks.get("blocks[" + b + "]::subvoices");
 				for (var i = 0; i <= tvc; i++) {
 					usermouse.drag.dragging.voices[t] = [b, i];
 					t++;
@@ -15,7 +15,7 @@ function clicked_block_preparation() {
 		for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
 	} else {
 		// if the clicked block is not selected, or is the only one selected, then you drag it				
-		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices");
+		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices")*blocks.get("blocks[" + usermouse.ids[1] + "]::subvoices");
 		usermouse.drag.dragging.voices = [];
 		for (var i = 0; i <= tvc; i++) {
 			usermouse.drag.dragging.voices[i] = [usermouse.ids[1], i];

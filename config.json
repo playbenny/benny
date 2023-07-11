@@ -5,6 +5,7 @@
 	"click_buffer_scaledown" : 2,
 	"UPSAMPLING" : 1,
 	"RECYCLING" : 1,
+	"waves_preloading" : 0,
 	"wire_diaX" : 0.03,
 	"wire_diaY" : 0.03,
 	"glow" : 0.2,

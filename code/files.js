@@ -97,6 +97,7 @@ function read_songs_folder(){ //also loads all song json files, and constructs t
 }
 
 function preload_all_waves(){
+	if(!waves_preloading) preload_list = [];
 	if(preload_list.length>0){
 		var t = preload_list.pop();
 		if(polybuffer_load_wave(t[0],t[1])==-1){

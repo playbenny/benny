@@ -820,7 +820,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	}
 
 	var tt=0;
-	for(t=0;t<=block_v;t++){
+	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
 			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","mainwindow");
 			blocks_cube[i][t].dim = [12, 12];
@@ -847,18 +847,21 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			}else{
 				var tc = blocks_cube[i][t].color;
 				blocks_cube[i][t].color = [block_c[0]*tc[0]/256,block_c[1]*tc[1]/256,block_c[2]*tc[2]/256,1];
-				blocks_cube[i][t].position = [block_x+0.25+0.5*t, block_y, 0];
-				blocks_cube[i][t].scale = [0.2, 0.45, 0.45];		
+				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, 0];
+				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				if(block_type=="audio"){
-					if((subvoices<=1) || (t==1)){
-						for(tt=0;tt<NO_IO_PER_BLOCK;tt++){
-							blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
-							blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
-							blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].name = "meter-"+i+"-"+t+"-"+tt;
-							blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].shape = "cube";
+					post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
+					//if((subvoices==1) || (t % subvoices) == 1){
+						var tv=(t-1)/subvoices;
+						for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
+							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
+							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
+							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter-"+i+"-"+t+"-"+tt;
+							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
 							//blocks_meter[i][t*NO_IO_PER_BLOCK+tt].blend_enable = 0;
+							post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
 						}						
-					}// for vsts it register more cubes than there really are - one per output, so you just skip the voices that arent the first
+					//}// for vsts it register more cubes than there really are - one per output, so you just skip the voices that arent the first
 				}else if(block_type == "hardware"){
 					var noio=0, max_poly=1;
 					if(blocktypes.contains(block_name+"::max_polyphony")) max_poly = blocktypes.get(block_name+"::max_polyphony");
@@ -884,30 +887,33 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				}	
 			}
 		}
-		//blocks_cube[i][t].position = [block_x, block_y, -t];
-		//blocks_cube[i][t].scale = [0.45, 0.45, 0.45];
-		blocks_cube[i][t].position = [block_x+0.25*(t!=0)+0.5*t, block_y, 0];
+		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, 0];
 		blocks_cube[i][t].enable = 1;
 		if(block_type=="audio"){
-			if(subvoices>1){
-				if((t % subvoices) == 1){
-					for(tt=0;tt<(NO_IO_PER_BLOCK);tt++){
-						blocks_meter[i][tt].color = [1, 1, 1, 1];
-						blocks_meter[i][tt].position = [block_x + tt*0.5 + 0.75, block_y, 0.5];
-						blocks_meter[i][tt].scale = [0.20, 0.025, 0.05];
-						blocks_meter[i][tt].enable = 1;
+/*			if(subvoices>1){
+				if(t>0){
+				//if((t % subvoices) == 1){
+					var tv=(t-1)*NO_IO_PER_BLOCK/subvoices;
+					post("tv is",tv);
+					for(tt=0;tt<(NO_IO_PER_BLOCK/subvoices);tt++){
+						blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
+						blocks_meter[i][tv+tt].position = [block_x + tt*0.5/ subvoices + 0.15+ 0.1*subvoices, block_y, 0.5];
+						blocks_meter[i][tv+tt].scale = [-0.05+0.25/subvoices, 0.025, 0.05];
+						blocks_meter[i][tv+tt].enable = 1;
 					}									
 				}
-			}else{
+			}else{  // i think you could merge these two ^ \/ /\*/
 				if(t>0){
-					for(tt=0;tt<NO_IO_PER_BLOCK;tt++){
-						blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].color = [1, 1, 1, 1];
-						blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].position = [blocks_cube[i][t].position[0] + tt*0.4/NO_IO_PER_BLOCK - 0.1, block_y, 0.5];
-						blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].scale = [0.2/NO_IO_PER_BLOCK, 0.025, 0.05];
-						blocks_meter[i][(t-1)*NO_IO_PER_BLOCK+tt].enable = 1;
+					var ios=NO_IO_PER_BLOCK/subvoices;
+					var tv = (t-1)*ios;
+					for(tt=0;tt<ios;tt++){
+						blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
+						blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5];
+						blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
+						blocks_meter[i][tv+tt].enable = 1;
 					}				
 				}
-			}
+			//}
 		}else if(block_type == "hardware"){
 			if(t>0){
 				var noio=0, max_poly=1;

@@ -170,6 +170,8 @@ function initialise_dictionaries(){
 	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
 	ANIM_TIME = config.get("ANIM_TIME");
+	waves_preloading = config.get("waves_preloading");
+	
 
 
 //	connections_sketch.reset();
