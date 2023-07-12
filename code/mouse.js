@@ -936,7 +936,7 @@ function keydown(key){
 			if(key == 45){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
+					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
 						voicecount(sidebar.selected, current_p - 1);
 					}				
 				}
@@ -945,7 +945,7 @@ function keydown(key){
 					var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
 					if(max_p ==0) max_p=9999999999999;
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
+					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
 						voicecount(sidebar.selected, current_p + 1);
 					}
 				}
@@ -981,7 +981,7 @@ function keydown(key){
 			}else if(key == 45){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
+					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
 						voicecount(sidebar.selected, current_p - 1);
 					}
 				}else if(sidebar.mode == "blocks"){
@@ -992,7 +992,7 @@ function keydown(key){
 					var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
 					if(max_p ==0) max_p=9999999999999;
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
+					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
 						voicecount(sidebar.selected, current_p + 1);
 					}
 				}else if(sidebar.mode == "blocks"){

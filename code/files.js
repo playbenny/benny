@@ -673,6 +673,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
 			if(ts=="no"){
 				ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
+				if(!Array.isArray(ts)) ts = [ts];
 			}else{
 				var ts2 = blocktypes.get(block_name+"::connections::out::hardware_channels");
 				if(typeof ts2=="number") ts2=[ts2];				

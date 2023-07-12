@@ -314,7 +314,7 @@ function initialise_dictionaries(){
 	selection_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
 	selection_cube.shape = "cube";
 	selection_cube.name = "selection";
-	selection_cube.color = [0.5, 0.5, 0.5, 0.15];
+	selection_cube.color = [0.65, 0.65, 0.65, 0.15];
 	selection_cube.scale = [1, 1, 1 ];
 	selection_cube.position = [0, 0, 0];
 	selection_cube.blend_enable = 1;

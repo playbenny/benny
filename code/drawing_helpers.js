@@ -565,7 +565,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	var minl=99,maxl=-99;
 	for(cx=v1-1;cx>=0;cx--){
 		for(cy=0;cy<v2;cy++){
-			l = spread_level(cx, cy, offset,vector, v1, v2);
+			l = scale*spread_level(cx, cy, offset,vector, v1, v2);
 			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;

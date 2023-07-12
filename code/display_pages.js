@@ -854,18 +854,16 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, 0];
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				if(block_type=="audio"){
-					post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
-					//if((subvoices==1) || (t % subvoices) == 1){
-						var tv=(t-1)/subvoices;
-						for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
-							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
-							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
-							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter-"+i+"-"+t+"-"+tt;
-							blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
-							//blocks_meter[i][t*NO_IO_PER_BLOCK+tt].blend_enable = 0;
-							post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
-						}						
-					//}// for vsts it register more cubes than there really are - one per output, so you just skip the voices that arent the first
+					//post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
+					var tv=(t-1)/subvoices;
+					for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter-"+i+"-"+t+"-"+tt;
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
+						//blocks_meter[i][t*NO_IO_PER_BLOCK+tt].blend_enable = 0;
+						//post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
+					}						
 				}else if(block_type == "hardware"){
 					var noio=0, max_poly=1;
 					if(blocktypes.contains(block_name+"::max_polyphony")) max_poly = blocktypes.get(block_name+"::max_polyphony");
@@ -3206,13 +3204,13 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
-	if(sidebar.mode!="none"){
+	/*if(sidebar.mode!="none"){
 		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
 		mouse_click_actions[mouse_index] = "none";
 		mouse_click_parameters[mouse_index] = "";
 		mouse_click_values[mouse_index] = "";	
 		mouse_index++;
-	}
+	}*/
 
 	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
 	mouse_click_actions[mouse_index] = scroll_sidebar;
@@ -4641,7 +4639,7 @@ function draw_sidebar(){
 				if(max_p ==0) {
 					max_p=9999999999999;
 				}
-				if((max_p != 1)&&(block_type!="hardware")&&((!blocktypes.contains(block_name+"::plugin_name")))){
+				if((max_p != 1)&&(block_type!="hardware")){
 					//var current_p = blocks.get("blocks["+block+"]::poly::voices");
 					lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9-4.4*fontheight, fontheight+y_offset,block_darkest );
 					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);

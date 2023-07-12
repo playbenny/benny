@@ -1,5 +1,5 @@
 function new_block(block_name,x,y){
-	post("new block");
+	//post("new block");
 	var details = new Dict;
 //	var map = new Dict;
 	var new_voice = -1;
@@ -155,13 +155,11 @@ function new_block(block_name,x,y){
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
 			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
-			if(!blocktypes.contains(block_name+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",2);
+			if(!blocktypes.contains(block_name+"::subvoices")) blocktypes.replace(block_name+"::subvoices",2);//is this the right place to be fixing the blocktypes db?!
+			blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
 		}else{
-			if(!blocktypes.contains(block_name+"::subvoices")){
-				blocks.replace("blocks["+new_block_index+"]::subvoices",1);
-			}else{
-				blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
-			}
+			if(!blocktypes.contains(block_name+"::subvoices")) blocktypes.replace(block_name+"::subvoices",1);
+			blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
 		}
 		//if(blocks.get("blocks["+new_block_index+"]::subvoices")>1){
 		//	voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
@@ -178,6 +176,7 @@ function new_block(block_name,x,y){
 		if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
 			if(ts=="no"){
 				ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
+				if(!Array.isArray(ts)) ts = [ts];
 			}else{
 				var ts2 = blocktypes.get(block_name+"::connections::out::hardware_channels");
 				if(typeof ts2=="number") ts2=[ts2];				
@@ -186,20 +185,24 @@ function new_block(block_name,x,y){
 				}
 			}
 		}
+		post("\nstart of meter assign hw");
 		if(ts!="no"){
+			post("\nts is ",ts.toString());
 			for(tii=0;tii<split;tii++){
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_trigger", 0);
-				ts[tii] = ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS-1;
+				post("\nturning on meter",tii,":",ts[tii],typeof ts[tii]);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_meter", 1);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_scope", 0);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_value", 0);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_trigger", 0);
+				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS-1;
 			}
 			for(tii=split;tii<ts.length;tii++){
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_trigger", 0);
-				ts[tii] = ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES-1;
+				post("\nturning on input meter",tii,":",ts[tii],typeof ts[tii]);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_meter", 1);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_scope", 0);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_value", 0);
+				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_trigger", 0);
+				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES-1;
 			}
 			hardware_metermap.replace(new_block_index,ts);
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
@@ -1973,7 +1976,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				voicemap.remove(block.toString()); //doesn't need to mess around, with hardware you're either removing everything or nothing.
 			}
 			for(i=0;i<subvoices;i++){
-				blocks_cube[block][(v-1)*subvoices+2 - i].freepeer(); //enable = 0;
+				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
+				blocks_cube[block][v*subvoices - i].freepeer(); //enable = 0;
 				blocks_cube[block].pop(); //= null;
 			}
 			for(i=(v-1)*NO_IO_PER_BLOCK;i<blocks_meter[block].length;i++){
@@ -2209,14 +2213,26 @@ function swap_block(block_name){
 	
 	var type = details.get("type")
 	var otype = blocks.get("blocks["+block_menu_d.swap_block_target+"]::type");
+	var o_subv = 1;
+	if(otype == "audio") o_subv = blocks.get("blocks["+block_menu_d.swap_block_target+"]::subvoices");
+	var subv = 1;
+	if(type == "audio"){
+		if(details.contains("subvoices")){
+			subv = details.get("subvoices");
+		}else if(details.contains("plugin_name")){
+			subv = 2;
+		}
+	} 
 	var redo_connections = 0;
-	if((type=="hardware")||(otype=="hardware")||(type != otype)){
+	if((type=="hardware")||(otype=="hardware")||(type != otype)||(subv != o_subv)){
 		redo_connections = 1;
 		
 		// collect up connections to/from this block, disconnect them all
 		var handful = [];
 		var handful_n = [];
 		var h=0;
+		var ratio = subv/o_subv;
+		if(ratio!=1) post("\ntodo - i think here it needs to reassign connection voices differently?");
 		for(i=0;i<connections.getsize("connections");i++){
 			if(connections.contains("connections["+i+"]::from")){
 				if((connections.get("connections["+i+"]::from::number") == block_menu_d.swap_block_target)||(connections.get("connections["+i+"]::to::number") == block_menu_d.swap_block_target)){
@@ -2227,6 +2243,19 @@ function swap_block(block_name){
 					//wire_ends[i][0] += 0.05;
 				}
 			}
+		}
+		if(subv != o_subv){
+			var ts = blocks_cube[block_menu_d.swap_block_target].length;
+			for(;--ts;){
+				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
+				blocks_cube[block_menu_d.swap_block_target][ts].freepeer(); //enable = 0;
+				blocks_cube[block_menu_d.swap_block_target].pop(); //= null;
+			}
+			ts = blocks_meter[block_menu_d.swap_block_target].length;
+			for(;--ts;){
+				blocks_meter[block_menu_d.swap_block_target][ts].freepeer(); //enable = 0;
+			}
+			blocks_meter[block_menu_d.swap_block_target].pop();			
 		}
 	}
 	if(type == "hardware"){
@@ -2242,6 +2271,7 @@ function swap_block(block_name){
 		}else{
 			ui_patcherlist[block_menu_d.swap_block_target] = ui;
 		}
+		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::subvoices",subv);
 		still_checking_polys |=4;
 		//send_ui_patcherlist();
 	}
@@ -2330,18 +2360,29 @@ function swap_block(block_name){
 			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		}else if(type=="hardware"){
 			//hardware_metermap[new_block_index] = [];
-			var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
-			var ts, tii;
+			var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_AUDIO_INPUTS;
+			var ts, tii,split;
+			ts="no";
 			if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
 				ts = blocktypes.get(block_name+"::connections::in::hardware_channels");	
-				voffset += MAX_AUDIO_INPUTS;
-			}else if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
-				ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
-			}else{
-				ts= "no";
+				if(typeof ts=="number") ts=[ts];
+				split = ts.length;
+			}
+			if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
+				if(ts=="no"){
+					ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
+					if(!Array.isArray(ts)) ts = [ts];
+				}else{
+					var ts2 = blocktypes.get(block_name+"::connections::out::hardware_channels");
+					if(typeof ts2=="number") ts2=[ts2];				
+					for(tii=0;tii<ts2.length;tii++){
+						ts[ts.length]=ts2[tii];
+					}
+				}
 			}
 			if(ts!="no"){
 				for(tii=0;tii<ts.length;tii++){
+					if(tii==split) voffset-=MAX_AUDIO_INPUTS;
 					audio_to_data_poly.setvalue(ts[tii]+voffset,"vis_meter", 1);
 					audio_to_data_poly.setvalue(ts[tii]+voffset,"vis_scope", 0);
 					audio_to_data_poly.setvalue(ts[tii]+voffset,"out_value", 0);
@@ -2362,7 +2403,7 @@ function swap_block(block_name){
 		//send_audio_patcherlist();
 	}
 	block_menu_d.swap_block_target = -1;
-	redraw_flag.flag |= 8;//6;
+	redraw_flag.flag |= 4; //8;//6;
 }
 
 function build_mod_sum_action_list(){
