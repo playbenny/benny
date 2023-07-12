@@ -625,7 +625,6 @@ function remove_connection(connection_number){
 				for(i=0;i<ta.length;i++){
 					for(var ti=0;ti<f_subvoices;ti++){
 						f_voices[i*f_subvoices+ti]=+ta[i] + ti*MAX_AUDIO_VOICES;
-						//f_voices[i*2+1]=+ta[i]+MAX_AUDIO_VOICES;
 					}
 				}
 			}else{
@@ -633,11 +632,11 @@ function remove_connection(connection_number){
 				if(!ta.length) ta = [ta];
 				if(typeof f_voice_list == 'number') f_voice_list = [f_voice_list];
 				for(v=0;v<f_voice_list.length;v++){
-					var tv = ta[f_voice_list[v]-1];
-					var tv2 = tv % f_subvoices;
-					tv /= f_subvoices;
-					tv |= 0;
-					f_voices[v] = [tv + tv2*MAX_AUDIO_VOICES];
+					var v2 = v % f_subvoices;
+					var v3 = v / f_subvoices;
+					v3 |= 0;
+					var tv = ta[f_voice_list[v3]-1];
+					f_voices[v] = [tv + v2*MAX_AUDIO_VOICES];
 				}
 			}			
 		}else{
@@ -1061,11 +1060,11 @@ function make_connection(cno){
 				if(!ta.length) ta = [ta];
 				if(typeof f_voice_list == 'number') f_voice_list = [f_voice_list];
 				for(v=0;v<f_voice_list.length;v++){
-					var tv = ta[f_voice_list[v]-1];
-					var tv2 = tv % f_subvoices;
-					tv /= f_subvoices;
-					tv |= 0;
-					f_voices[v] = [tv + tv2*MAX_AUDIO_VOICES];
+					var v2 = v % f_subvoices;
+					var v3 = v / f_subvoices;
+					v3 |= 0;
+					var tv = ta[f_voice_list[v3]-1];
+					f_voices[v] = [tv + v2*MAX_AUDIO_VOICES];
 				}
 			}	
 		}else{
