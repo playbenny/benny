@@ -1403,8 +1403,8 @@ function draw_wire(connection_number){
 					}
 				}
 			}else{ // single wire
-				to_pos[0] += 0.05;// 0.2 * tconz;
-				from_pos[0] += 0.4 * fconz + 0.05;
+				to_pos[0] += 0.45;// 0.2 * tconz; was 0.05
+				from_pos[0] += 0.4 * fconz + 0.45;
 				if(corners[0]&&corners[1]){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];

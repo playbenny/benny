@@ -65,7 +65,7 @@
 			{
 				"name" : "voicing",
 				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "high-mid", "high"],
+				"values" : ["clean", "sub", "kick", "body", "mid", "hi-mid", "high"],
 				"wrap" : 0,
 				"default" : 0
 			},
