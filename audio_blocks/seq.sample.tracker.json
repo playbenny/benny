@@ -6,6 +6,7 @@
 		"help_text" : "buzz-style sample tracker",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"subvoices" : 2,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
@@ -17,7 +18,7 @@
 			},
 			"out" : {
 				"midi" : [ "notes out" ],
-				"audio" : [ "out1", "out2" ]
+				"audio" : [ "out" ]
 			}
 		},
 		"groups" : [

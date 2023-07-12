@@ -3209,13 +3209,13 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
-	/*if(sidebar.mode!="none"){
+	if(sidebar.mode!="none"){
 		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
 		mouse_click_actions[mouse_index] = "none";
 		mouse_click_parameters[mouse_index] = "";
 		mouse_click_values[mouse_index] = "";	
 		mouse_index++;
-	}*/
+	}
 
 	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
 	mouse_click_actions[mouse_index] = scroll_sidebar;
@@ -6337,7 +6337,11 @@ function draw_sidebar(){
 			}
 		}
 	}
-	if(y_offset>mainwindow_height) sidebar.scroll.max = sidebar.scroll.position+y_offset-mainwindow_height;
+	if(y_offset>mainwindow_height){
+		sidebar.scroll.max = sidebar.scroll.position+y_offset-mainwindow_height;
+	}else{
+		//click_rectangle(sidebar.x,y_offset+fontheight,mainwindow_width,mainwindow_height,0,0);
+	}
 	if((sidebar.scroll.max>0)){ //&&(sidebar.mode != "none")){
 		lcd_main.message("frgb", menudarkest);
 		lcd_main.message("moveto",mainwindow_width-5,0);
@@ -6351,6 +6355,7 @@ function draw_sidebar(){
 	}
 //	lcd_main.message("bang");
 	//outlet(8,"bang");
+	
 }
 
 function remove_midi_scope(){

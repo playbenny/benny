@@ -6,17 +6,18 @@
 		"help_text" : "very basic gate",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio in" ]
+				"audio" : [ "in" ]
 			},
 			"out" : {
-				"audio" : [ "audio out" ]
+				"audio" : [ "out" ]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,1,2]
+				"contains" : [0,0,1,2,3]
 			}
 		],
 		"panel" : {
@@ -28,21 +29,29 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.8
+				"default" : 0.2
 			},
 			{
-				"name" : "on time",
+				"name" : "on_time",
 				"type" : "float",
 				"values" : ["uni", 0, 1000, "exp"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "off time",
+				"name" : "off_time",
 				"type" : "float",
 				"values" : ["uni", 0, 1000, "exp"],
 				"wrap" : 0,
 				"default" : 0.1
+			},
+			{
+				"name" : "stereo_link",
+				"type" : "menu_i",
+				"values" : ["off","on"],
+				"wrap" : 0,
+				"default" : 0.1
+
 			}
 
 		]

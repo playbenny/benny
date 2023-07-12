@@ -11,7 +11,7 @@
 				"audio" : [ "audio in" ]
 			},
 			"out" : {
-				"audio" : [ "audio out" ]
+				"audio" : [ "evens","odds" ]
 			}
 		},
 		"groups" : [

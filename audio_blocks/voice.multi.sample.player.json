@@ -6,13 +6,14 @@
 		"help_text" : "multisample player with slices, offset, timestretch. expects you to load a wave with an ascending scale, evenly spaced. ",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"subvoices" : 2,
 		"connections" : {
 			"in" : {
 				"midi" : [ "notes in" ],
-				"audio" : [ "fm"]
+				"audio" : [ "fm", ""]
 			},
 			"out" : {
-				"audio" : [ "out1", "out2" ]
+				"audio" : [ "out" ]
 			}
 		},
 		"groups" : [

@@ -621,7 +621,7 @@ function remove_connection(connection_number){
 			//adjustment so voice 2 goes to v1/o2 instead
 			if(f_voice_list == "all"){
 				ta = voicemap.get(f_block);
-				if(!ta.length) ta = [ta];
+				if(!Array.isArray(ta)) ta = [ta];
 				for(i=0;i<ta.length;i++){
 					for(var ti=0;ti<f_subvoices;ti++){
 						f_voices[i*f_subvoices+ti]=+ta[i] + ti*MAX_AUDIO_VOICES;
@@ -629,14 +629,14 @@ function remove_connection(connection_number){
 				}
 			}else{
 				ta = voicemap.get(f_block);
-				if(!ta.length) ta = [ta];
-				if(typeof f_voice_list == 'number') f_voice_list = [f_voice_list];
+				if(!Array.isArray(ta)) ta = [ta];
+				if(!Array.isArray(f_voice_list)) f_voice_list = [f_voice_list];
 				for(v=0;v<f_voice_list.length;v++){
-					var v2 = v % f_subvoices;
-					var v3 = v / f_subvoices;
+					var v2 = (f_voice_list[v]-1) % f_subvoices;
+					var v3 = (f_voice_list[v]-1) / f_subvoices;
 					v3 |= 0;
-					var tv = ta[f_voice_list[v3]-1];
-					f_voices[v] = [tv + v2*MAX_AUDIO_VOICES];
+					var tv = ta[v3];
+					f_voices[v] = tv + v2*MAX_AUDIO_VOICES;
 				}
 			}			
 		}else{
@@ -1059,12 +1059,15 @@ function make_connection(cno){
 				ta = voicemap.get(f_block);
 				if(!ta.length) ta = [ta];
 				if(typeof f_voice_list == 'number') f_voice_list = [f_voice_list];
+				//post("\nf_voice_list",f_voice_list.toString());
 				for(v=0;v<f_voice_list.length;v++){
-					var v2 = v % f_subvoices;
-					var v3 = v / f_subvoices;
+					var v2 = (f_voice_list[v]-1) % f_subvoices;
+					var v3 = (f_voice_list[v]-1) / f_subvoices;
 					v3 |= 0;
-					var tv = ta[f_voice_list[v3]-1];
-					f_voices[v] = [tv + v2*MAX_AUDIO_VOICES];
+					var tv = ta[v3];
+					//post("tv",tv,"v2",v2,"v",v,"v3",v3);
+					f_voices[v] = tv + v2*MAX_AUDIO_VOICES;
+					//post(">>",f_voices[v]);
 				}
 			}	
 		}else{

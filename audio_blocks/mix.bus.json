@@ -1,9 +1,9 @@
 {
-	"utility.mixer.buss" : {
-		"patcher" : "utility.mixer.buss",
+	"mix.bus" : {
+		"patcher" : "utility.mixer.bus",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "every mixer.channel/cascade block has to be routed, at unity gain, to one of these, to make the magic work.",
+		"help_text" : "every mix.channel/stereo.channel etc block has to be routed, at unity gain, to one of these, to make the magic work.",
 		"max_polyphony" : 2,
 		"upsample" : 2,
 		"subvoices" : 2,
