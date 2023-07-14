@@ -329,16 +329,18 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	
 	var has_meters=0;
 	var mx=0;
-	var mlist;
 	var positions = []; 
+	var subvoices = 1;
+	if(blocks.contains("blocks["+b+"]::subvoices")) subvoices = blocks.get("blocks["+b+"]::subvoices");
 	if(blocktypes.contains(block_name+"::connections::out::audio")){
 		has_meters=1;
-		mlist=blocktypes.get(block_name+"::connections::out::audio");
+		var mll =blocktypes.getsize(block_name+"::connections::out::audio");
+		if(subvoices>1) mll=subvoices;
 		var vmap = voicemap.get(b);
 		if(typeof vmap == "number") vmap = [vmap];
 		if(vmap !== 'null'){
 			for(var vm=0;vm<vmap.length;vm++){
-				for(i=0;i<mlist.length;i++){
+				for(i=0;i<mll;i++){
 					positions[positions.length] = [mx*sidebar.meters.spread, 18+y*fontheight+fontheight*1.1, 16+y*fontheight+fontheight*1.9, 1+((vmap[vm] - MAX_NOTE_VOICES)+MAX_AUDIO_VOICES*i)];
 					mx++;
 				}
