@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 5,
+			"revision" : 4,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 40.0, 85.0, 1533.0, 743.0 ],
+		"rect" : [ 42.0, 85.0, 1533.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -69,8 +69,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 8,
 					"outlettype" : [ "int", "int", "int", "int", "int", "int", "int", "int" ],
-					"patching_rect" : [ -25.5, 238.0, 105.0, 22.0 ],
-					"text" : "t 1 1 7 2 25 3 26 4"
+					"patching_rect" : [ -25.5, 238.0, 104.0, 22.0 ],
+					"text" : "t 1 1 7 2 11 3 12 4"
 				}
 
 			}
@@ -1109,7 +1109,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 265.0, 488.0, 87.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "core.clock.ui.js",
+						"filename" : "core.clock.ui",
 						"parameter_enable" : 0
 					}
 ,
@@ -1186,6 +1186,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 306.0, 537.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -1318,6 +1322,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 265.0, 537.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1330,6 +1338,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 85.0, 66.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -2355,16 +2367,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [ 			{
-				"name" : "core.clock.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : ".",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }

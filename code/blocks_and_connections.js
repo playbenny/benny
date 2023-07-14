@@ -547,8 +547,10 @@ function remove_connection(connection_number){
 	var f_o_no = connections.get("connections["+connection_number+"]::from::output::number");
 	var t_i_no = connections.get("connections["+connection_number+"]::to::input::number");
 	var to_block_type = blocks.get("blocks["+t_block+"]::type");
-	var f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
-	var t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
+	var f_subvoices = 1;
+	if(f_type=="audio") f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+	var t_subvoices = 1;
+	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 	
 	var f_voices = [];
 	var t_voices = [];
@@ -931,10 +933,10 @@ function remove_connection(connection_number){
 						var tvv = t_voice;
 						var tmod_id;
 						var idslist = mod_routemap.get(tvv);
-						if(typeof idslist == "number") idslist =[idslist];
+						if(!Array.isArray(idslist)) idslist =[idslist];
 						if(idslist == "null") idslist = [];
 						var tidslist = midi_routemap.get(m_index);
-						if(typeof tidslist == "number") tidslist=[tidslist];
+						if(!Array.isArray(tidslist)) tidslist=[tidslist];
 						var found = -1;
 						var sx,sy;
 						var tparamlist = mod_param.get(tvv);
@@ -987,8 +989,10 @@ function make_connection(cno){
 	var f_block = 1* connections.get("connections["+cno+"]::from::number");
 	var t_block = 1* connections.get("connections["+cno+"]::to::number");
 	var to_block_type = blocks.get("blocks["+t_block+"]::type");
-	var f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
-	var t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
+	var f_subvoices = 1;
+	if(f_type=="audio") f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+	var t_subvoices = 1;
+	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 	var f_voices = [];
 	var t_voices = [];
 	var f_voice,t_voice;
@@ -1568,33 +1572,7 @@ function build_new_connection_menu(from, to, fromv,tov){
  	new_connection.replace("from::number",from);
 	new_connection.replace("to::number", to);
 	
-	var notall = 0;
-	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
-	if(fromv==-1){
-		if(notall){
-			new_connection.replace("from::voice", 1 );
-		}else{
-			new_connection.replace("from::voice", "all" );		
-		}
-	}else{
-		new_connection.replace("from::voice", fromv + 1 );
-	}
-	notall = 0;
-	if(blocktypes.contains(toname+"::connections::in::dontdefaultall")) notall = blocktypes.get(toname+"::connections::in::dontdefaultall");
-	if(tov == -1){
-		if(notall){
-			new_connection.replace("to::voice", 1 );
-		}else{
-			new_connection.replace("to::voice", "all" );		
-		}
-	}else{
-		new_connection.replace("to::voice", tov + 1 );
-	}
-	var force_unity = 0;
-	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
-		force_unity = 1;
-		new_connection.replace("conversion::force_unity" , 1);
-	} 
+
 	new_connection.replace("conversion::mute" , 0);
 	new_connection.replace("conversion::scale", 1);
 	new_connection.replace("conversion::vector", 0);	
@@ -1628,6 +1606,18 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::output::number",0);
 			new_connection.replace("from::output::type","midi");
 		}
+	}
+	var notall = 0;
+	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
+	if(fromv==-1){
+		if(notall){
+			new_connection.replace("from::voice", 1 );
+		}else{
+			new_connection.replace("from::voice", "all" );		
+		}
+	}else{
+		if((new_connection.get("from::output::type")!="audio")&&(blocktypes.contains(fromname+"::subvoices"))) fromv /= blocktypes.get(fromname+"::subvoices");
+		new_connection.replace("from::voice", fromv + 1 );
 	}
 	//post("\n\n\nNEWCONN def_ass=",default_assigned);
 	var r_default_assigned=0;
@@ -1675,6 +1665,21 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}
 	}
 	//post("\nNEWCONN r_def_ass=",r_default_assigned);
+	notall = 0;
+	if(blocktypes.contains(toname+"::connections::in::dontdefaultall")) notall = blocktypes.get(toname+"::connections::in::dontdefaultall");
+	if(tov == -1){
+		if(notall){
+			new_connection.replace("to::voice", 1 );
+		}else{
+			new_connection.replace("to::voice", "all" );		
+		}
+	}else{
+		if((new_connection.get("to::input::type")!="audio")&&(blocktypes.contains(toname+"::subvoices"))) tov /= blocktypes.get(toname+"::subvoices");
+		new_connection.replace("to::voice", tov + 1 );
+	}
+	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
+		new_connection.replace("conversion::force_unity" , 1);
+	} 
 	
 	if(d.contains("parameters")){
 		var i = 0;	
@@ -1795,13 +1800,15 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		// first remove all connections for the removed voice
 		for(i=0;i<connections.getsize("connections");i++){
 			if((connections.contains("connections["+i+"]::from::number")) && (connections.contains("connections["+i+"]::to::number"))){
+				var sv=1;
 				var f_voice = connections.get("connections["+i+"]::from::voice");
 				var t_voice = connections.get("connections["+i+"]::to::voice");
 				var removedtotally=0;
 				if(connections.get("connections["+i+"]::from::number") == block){
+					if(connections.get("connections["+i+"]::from::output::type") == "audio") sv = subvoices;
 //			post("f_voice",f_voice,typeof f_voice);
 					if(typeof f_voice == "number"){
-						if(f_voice > voices) { 
+						if(f_voice > voices*sv) { 
 							remove_connection(i);
 							removedtotally = 1;
 						}
@@ -1816,7 +1823,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 						var vc;
 						var f_v2=[];
 						for(vv=0;vv<f_voice.length;vv++){
-							if(f_voice[vv]<=voices){
+							if(f_voice[vv]<=voices*sv){
 								f_v2[vc] = f_voice[vv];
 								vc++;
 							}
@@ -1836,8 +1843,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}
 				if(!removedtotally){
 					if(connections.get("connections["+i+"]::to::number") == block){
+						sv = 1;
+						if(connections.get("connections["+i+"]::to::input::type") == "audio") sv = subvoices;
+						post("\nSV IS ",sv);
 						if(typeof t_voice == "number"){
-							if(t_voice > voices){
+							if(t_voice > voices*sv){
 								remove_connection(i);
 							}
 						}else if(t_voice == "all"){
@@ -1851,7 +1861,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 							var vc=0;
 							var t_v2=[];
 							for(vv=0;vv<t_voice.length;vv++){
-								if(t_voice[vv]<=voices){
+								if(t_voice[vv]<=voices*sv){
 									t_v2[vc] = t_voice[vv];
 									vc++;
 								}

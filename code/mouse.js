@@ -12,7 +12,7 @@ function clicked_block_preparation() {
 				}
 			}
 		}
-		for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
+		//for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
 	} else {
 		// if the clicked block is not selected, or is the only one selected, then you drag it				
 		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + usermouse.ids[1] + "]::subvoices"));

@@ -583,7 +583,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 				}
 			}
 		}else{
-			maxl*=scale;
+			//maxl*=scale;
 			lcd_main.message("frgb",0,0,0);
 			lcd_main.message("moveto",(x1+5),(y1+(y2-y1)*0.95));
 			lcd_main.message("write","x"+maxl.toPrecision(3));

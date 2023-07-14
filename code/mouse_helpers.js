@@ -1177,7 +1177,7 @@ function new_connection_toggle_voice(side,number){
 			a = new_connection.get(side+"::voice");
 			if(a==number){
 				b[0] = "all";
-				post("setting to all\n"+b+"\n");
+				//post("setting to all\n"+b+"\n");
 			}else{
 				if(a=="all"){
 					b[0] = number;
@@ -1185,7 +1185,7 @@ function new_connection_toggle_voice(side,number){
 					b[0] = a;
 					b[1] = number;
 				}
-				post("setting to "+b+"\n");
+				//post("setting to "+b+"\n");
 			}
 			new_connection.replace(side+"::voice",b);
 		}	

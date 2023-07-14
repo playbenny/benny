@@ -1039,8 +1039,8 @@ function draw_wire(connection_number){
 			var to_list = [];
 			var tv,tl;
 			var from_subvoices=1, to_subvoices=1;
-			if(blocks.contains("blocks["+cfrom+"]::subvoices"))from_subvoices=blocks.get("blocks["+cfrom+"]::subvoices");
-			if(blocks.contains("blocks["+cto+"]::subvoices"))to_subvoices=blocks.get("blocks["+cto+"]::subvoices");
+			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices")))from_subvoices=blocks.get("blocks["+cfrom+"]::subvoices");
+			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices")))to_subvoices=blocks.get("blocks["+cto+"]::subvoices");
 			
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
 				tv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
@@ -1566,7 +1566,6 @@ function draw_connection_menu(){
 	lcd_main.message("brgb", 0, 0, 0);
 	lcd_main.message("clear");
 	click_clear(0,0);
-	var a = new Array(3);
 	var menucolour = config.get("palette::menu");
 	var matrixcolour = config.get("palette::connections::matrix");
 	var hardwarecolour = config.get("palette::connections::hardware");
@@ -1628,12 +1627,12 @@ function draw_connection_menu(){
 	lcd_main.message("textface", "bold");
 	var tx=fontheight*2+9;
 	if(new_connection.get("from::voice")!="all"){
-		lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+1.7*fontheight-6),(3*fontheight+y_offset),menudarkest);
+		lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+1.6*fontheight-6),(3*fontheight+y_offset),menudarkest);
 		lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 		lcd_main.message("frgb", menudark);
 		lcd_main.message("write","ALL");
 	}else{
-		lcd_main.message("paintrect",(tx-6),( 2.1*fontheight+y_offset),(tx+1.7*fontheight-6),(3*fontheight+y_offset),menucolour);
+		lcd_main.message("paintrect",(tx-6),( 2.1*fontheight+y_offset),(tx+1.6*fontheight-6),(3*fontheight+y_offset),menucolour);
 		lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 		lcd_main.message("frgb", 0, 0, 0);
 		lcd_main.message("write","ALL");		
@@ -1650,13 +1649,37 @@ function draw_connection_menu(){
 	connection_menu.replace("from::voices", from_voicecount * from_subvoices);
 	var to_voicecount = blocks.get('blocks['+to_block+']::poly::voices');
 	var to_subvoices = Math.max(1,blocks.get('blocks['+to_block+']::subvoices'));
+	//audio connections have their voice range as voices*subvoices
+	//midi/param ones have their voice range corresponding to poly voices
+	var from_subvoices_ratio = 1;
+	var to_subvoices_ratio = 1;
+	var f_type="";
+	if(new_connection.contains("from::output")) f_type = new_connection.get("from::output::type");
+	if(f_type!="audio"){
+		from_subvoices_ratio = from_subvoices;
+		from_subvoices = 1;
+	}
+	//post("\nNEW CONN",from_subvoices,from_subvoices_ratio,f_type);
+	connection_menu.replace("from::voices", from_voicecount * from_subvoices);
+	var t_type="";
+	if(new_connection.contains("to::input")) t_type = new_connection.get("to::input::type");
+	if(t_type!="audio"){
+		to_subvoices_ratio = to_subvoices;
+		to_subvoices = 1;
+	}
 	connection_menu.replace("to::voices", to_voicecount * to_subvoices);
 	for(i=1;i<=connection_menu.get("from::voices");i++){
 		if(tx>(mainwindow_width/3-fontheight)) {
 			tx=fontheight*2+9;
 			y_offset += fontheight;
 		}
-		w = (i>9)*0.5+1;
+		var actualvoice = (i-1)*from_subvoices_ratio+1;
+		w=0;
+		var voicestr = actualvoice;
+		for(var ts=0;ts<from_subvoices_ratio;ts++){
+			w += ((actualvoice+ts)>9)*0.6+0.8;
+			if(ts!=0)voicestr = voicestr+"+"+(actualvoice+ts);
+		}
 		var voice_selected=0;
 		if(new_connection.contains("from::voice")){
 			var v_list = [];
@@ -1673,13 +1696,13 @@ function draw_connection_menu(){
 			lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+(w-0.1)*fontheight-6),(3*fontheight+y_offset),menucolour);
 			lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 			lcd_main.message("frgb", 0, 0, 0);
-			lcd_main.message("write",i);	
+			lcd_main.message("write",voicestr);	
 			lcd_main.message("frgb",menucolour);		
 		}else{
 			lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+(w-0.1)*fontheight-6),(3*fontheight+y_offset),menudarkest);
 			lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 			lcd_main.message("frgb", menudark);
-			lcd_main.message("write",i);
+			lcd_main.message("write",voicestr);
 		}
 		click_rectangle((tx-6),(2*fontheight+y_offset),(tx+w*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
 		mouse_click_actions[mouse_index] = new_connection_toggle_voice;
@@ -1687,6 +1710,7 @@ function draw_connection_menu(){
 		mouse_click_values[mouse_index] = i;
 		tx+=w*fontheight;
 		mouse_index++;
+		if(((i-1)%from_subvoices) == 1)tx+=0.1*fontheight;
 	}
 	//-+ buttons for polyphony
 	var max_p = blocktypes.get(blocks.get("blocks["+from_block+"]::name")+"::max_polyphony");
@@ -1734,7 +1758,7 @@ function draw_connection_menu(){
 			lcd_main.message("write", "POLY");	
 			lcd_main.message("frgb",menucolour);	
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+2.2*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
-			tx+=fontheight*2.2+2;
+			tx+=fontheight*2.2+4;
 		}else if((new_connection.get("to::input::type")=="block")){
 			lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+2.5*fontheight-6),(3*fontheight+y_offset),menucolour);
 			lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
@@ -1742,7 +1766,7 @@ function draw_connection_menu(){
 			lcd_main.message("write", "BLOCK");	
 			lcd_main.message("frgb",menucolour);	
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+2.5*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
-			tx+=fontheight*2.2+2;
+			tx+=fontheight*2.5+4;
 		}else{
 			lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+1.8*fontheight-6),(3*fontheight+y_offset),menucolour);
 			lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
@@ -1750,7 +1774,7 @@ function draw_connection_menu(){
 			lcd_main.message("write", "ALL");	
 			lcd_main.message("frgb",menucolour);	
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+1.8*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
-			tx+=fontheight*1.8+2;
+			tx+=fontheight*1.8+4;
 		}
 	}else{
 		if((new_connection.contains("to::input"))&&(new_connection.get("to::input::type")=="midi")){
@@ -1759,7 +1783,7 @@ function draw_connection_menu(){
 			lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 			lcd_main.message("write", "POLY");
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+2.2*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
-			tx+=fontheight*2.2+2;
+			tx+=fontheight*2.2+4;
 		}else if((new_connection.contains("to::input"))&&(new_connection.get("to::input::type")=="block")){
 			lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+2.5*fontheight-6),(3*fontheight+y_offset),menucolour);
 			lcd_main.message("frgb", 0,0,0);
@@ -1767,14 +1791,14 @@ function draw_connection_menu(){
 			lcd_main.message("write", "BLOCK");
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+2.5*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
 			new_connection.replace("to::voice","all");
-			tx+=fontheight*2.2+2;
+			tx+=fontheight*2.5+4;
 		}else{
 			lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+1.8*fontheight-6),(3*fontheight+y_offset),menudarkest);
 			lcd_main.message("frgb", menudark);
 			lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 			lcd_main.message("write", "ALL");
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+1.8*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
-			tx+=fontheight*1.8+2;	
+			tx+=fontheight*1.8+4;	
 		}
 	}
 	mouse_click_actions[mouse_index] = new_connection_toggle_voice;
@@ -1787,7 +1811,13 @@ function draw_connection_menu(){
 				tx=mainwindow_width/2+fontheight*2.5+9;
 				y_offset += fontheight;
 			}
-			w = (i>9)*0.5+1;
+			var actualvoice = (i-1)*to_subvoices_ratio+1;
+			w=0;
+			var voicestr = actualvoice;
+			for(var ts=0;ts<to_subvoices_ratio;ts++){
+				w += ((actualvoice+ts)>9)*0.6+0.8;
+				if(ts!=0)voicestr = voicestr+"+"+(actualvoice+ts);
+			}
 			var voice_selected=0;
 			if(new_connection.contains("to::voice")){
 				var v_list = [];
@@ -1804,13 +1834,13 @@ function draw_connection_menu(){
 				lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+(w-0.1)*fontheight-6),(3*fontheight+y_offset),menucolour);
 				lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
 				lcd_main.message("frgb", 0, 0, 0);
-				lcd_main.message("write",i);
+				lcd_main.message("write",voicestr);
 				lcd_main.message("frgb",menucolour);
 			}else{
 				lcd_main.message("paintrect",(tx-6),(2.1*fontheight+y_offset),(tx+(w-0.1)*fontheight-6),(3*fontheight+y_offset),menudarkest);
 				lcd_main.message("frgb", menudark);
 				lcd_main.message("moveto",tx,(2.85*fontheight+y_offset));
-				lcd_main.message("write",i);
+				lcd_main.message("write",voicestr);
 			}
 			click_rectangle((tx-6),(2*fontheight+y_offset),(tx+w*fontheight-6),(3*fontheight+y_offset),mouse_index, 1);
 			mouse_click_actions[mouse_index] = new_connection_toggle_voice;
@@ -1818,6 +1848,7 @@ function draw_connection_menu(){
 			mouse_click_values[mouse_index] = i;
 			mouse_index++;
 			tx+=w*fontheight;
+			if(((i-1)%to_subvoices) == 1)tx+=0.1*fontheight;
 		}
 		//-+ buttons for polyphony
 		var max_p = blocktypes.get(blocks.get("blocks["+to_block+"]::name")+"::max_polyphony");
