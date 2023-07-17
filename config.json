@@ -4,7 +4,7 @@
 	"gain_display_format" : "x",
 	"click_buffer_scaledown" : 2,
 	"UPSAMPLING" : 1,
-	"RECYCLING" : 0,
+	"RECYCLING" : 1,
 	"waves_preloading" : 1,
 	"wire_diaX" : 0.03,
 	"wire_diaY" : 0.03,

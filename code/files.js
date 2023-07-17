@@ -311,6 +311,21 @@ function import_song(){
 						post(block_name,"instead as a substitute");
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
+						//need to go through all connections, if connected to this block and type = hardware,
+						//adjust to type = audio.
+						var con_l = songs.getsize(songlist[currentsong]+"::connections");
+						for(;con_l-- >0;){
+							if(songs.contains(songlist[currentsong]+"::connections["+con_l+"]::from")){
+								if((songs.get(songlist[currentsong]+"::connections["+con_l+"]::from::number")==b)&&(songs.get(songlist[currentsong]+"::connections["+con_l+"]::from::output::type")=="hardware")){
+									songs.replace(songlist[currentsong]+"::connections["+con_l+"]::from::output::type","audio");
+								}
+							}
+							if(songs.contains(songlist[currentsong]+"::connections["+con_l+"]::to")){
+								if((songs.get(songlist[currentsong]+"::connections["+con_l+"]::to::number")==b)&&(songs.get(songlist[currentsong]+"::connections["+con_l+"]::to::input::type")=="hardware")){
+									songs.replace(songlist[currentsong]+"::connections["+con_l+"]::to::input::type","audio");
+								}
+							}
+						}
 					}else if(block_menu_d.swap_block_target == -1){
 						post("the block type",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
 						block_menu_d.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
@@ -852,10 +867,13 @@ function process_purgelist(){
 
 function clear_everything(){
 	messnamed("pause_mod_processing",1);
-	messnamed("clear_all_buffers","bang");
+	//messnamed("clear_all_buffers","bang"); 
+	//you don't need to do this, everything that gets loaded or created will overwrite these buffers
 	
 	output_queue.poke(1,0,0);
 	output_queue_pointer = 0;
+	changed_queue.poke(1,0,0);
+	changed_queue_pointer = 0;
 
 	var emptys="{}";
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
@@ -893,7 +911,6 @@ function clear_everything(){
 
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
 	
-	//wipe all the buffers
 	draw_wave = [];
 	for(i=0;i<128;i++){
 		quantpool.poke(1, i, i);

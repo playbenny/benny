@@ -131,6 +131,7 @@ function new_block(block_name,x,y){
 				p_default = blocktypes.get(block_name+"::parameters["+i+"]::default");
 			}
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
+			parameter_static_mod.poke(1, new_voice  *MAX_PARAMETERS+i, 0);
 			param_defaults[new_block_index][i] = p_default;
 		}		
 	}
@@ -1133,7 +1134,7 @@ function make_connection(cno){
 				}
 			}
 		}else{
-//			post("\n this is where the error was varr, f_o_no",varr,t_i_no,t_block,blocks.get("blocks["+t_block+"]::name"),blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::hardware_channels"));
+			post("\n this is where the error was varr, f_o_no",varr,t_i_no,t_block,blocks.get("blocks["+t_block+"]::name"),blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio"));
 			t_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[t_i_no] - 1;
 		}
 	}else{	
@@ -1953,6 +1954,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}else{
 					spr = sprd;
 				}
+				parameter_static_mod.poke(1, new_voice  *MAX_PARAMETERS+i, 0);
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
 			} //set param spreads
@@ -2357,6 +2359,7 @@ function swap_block(block_name){
 					p_default = params[i].get("default");
 				}
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
+				parameter_static_mod.poke(1, voice  *MAX_PARAMETERS+i, 0);
 				param_defaults[block_menu_d.swap_block_target][i] = p_default;
 			}		
 		}
