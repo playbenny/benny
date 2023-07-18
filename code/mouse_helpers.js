@@ -16,12 +16,14 @@ function play_button_click(){
 		messnamed("play",1);
 		playflag = 1;
 	}else{playflag = 0;}
+	deferred_diag.push("PBC, flag = ",playflag);
 }
 
 function play_button_release(){
 	if((!playflag)&playing){
 		messnamed("play",0);
-	}
+		deferred_diag.push("Y-PBR, flag",playflag,"play",playing);
+	}else {deferred_diag.push("X-PBR, flag",playflag,"play",playing);}
 	playflag = 0;
 }
 

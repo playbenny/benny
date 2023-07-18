@@ -1134,7 +1134,7 @@ function make_connection(cno){
 				}
 			}
 		}else{
-			post("\n this is where the error was varr, f_o_no",varr,t_i_no,t_block,blocks.get("blocks["+t_block+"]::name"),blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio"));
+			//post("\n this is where the error was varr, f_o_no",varr,t_i_no,t_block,blocks.get("blocks["+t_block+"]::name"),blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio"));
 			t_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[t_i_no] - 1;
 		}
 	}else{	

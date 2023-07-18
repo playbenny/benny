@@ -102,9 +102,13 @@ function mouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function mouseidle(x,y,leftbutton,ctrl,shift,caps,alt,e){
-	usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
-	usermouse.qlb = leftbutton;
-	//deferred_diag.push("idle    "+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
+	if(!usermouse.qlb){
+		usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
+		usermouse.qlb = leftbutton;
+		//deferred_diag.push("idle    "+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
+	}else{
+		deferred_diag.push("idle during click??????");
+	}
 }
 
 function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
@@ -239,7 +243,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						if(usermouse.last.got_i != danger_button){
 							danger_button = -1;
 						} 
-						if(Array.isArray(f)) post("f is an array",mouse_click_actions[usermouse.last.got_i][0],mouse_click_actions[usermouse.last.got_i][1]);
+						//if(Array.isArray(f)) post("f is an array",mouse_click_actions[usermouse.last.got_i][0],mouse_click_actions[usermouse.last.got_i][1]);
 						//post("f is",f,"index is",usermouse.last.got_i,usermouse.last.got_t);
 						//post("or",f.name);
 						f(p,v);
@@ -376,7 +380,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								usermouse.clicked3d=-1;
 								block_menu_d.mode = 0;
 								//post("\n\nOPENING BLOCK MENU BECAUSE DRAG DIST",usermouse.drag.distance);
-								set_display_mode("block_menu");
+								if(sidebar.mode=="file_menu"){
+									set_sidebar_mode("none");
+									center_view(1);
+								}else{
+									set_display_mode("block_menu");
+								}
+								
 							}
 							redraw_flag.targets = [];
 							redraw_flag.targetcount = 0;
