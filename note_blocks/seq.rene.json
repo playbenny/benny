@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "seq.rene.ui",
 		"help_text" : "a circle on a cartesian plane step sequencer",
 		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 4,
 		"connections" : {
 			"in" : {
 				"midi" : [ "advance", "setpos", "resync" ]

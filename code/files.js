@@ -766,9 +766,14 @@ function save_song(selectedonly){
 	if(panels_order.length){
 		blocks.replace("panels_order",panels_order);
 	}
+	if(fullscreen){
+		fullscreen=0;
+		world.message("fullscreen",0);
+	}
 //copy blocks and connections and states and properties into one dict
 	messnamed("trigger_save_as","bang");
 	set_sidebar_mode("none");
+	post("\nis this after choosing the file or before?");
 }
 
 function folder_select(folderstr){
@@ -779,7 +784,9 @@ function folder_select(folderstr){
 		config.writeagain();
 		read_songs_folder();
 	}
+	if(fullscreen) world.message("fullscreen",fullscreen);
 }
+
 
 
 function purge_muted_trees(){

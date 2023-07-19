@@ -385,7 +385,8 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	}
 	if(has_params){ //has panelparams
 		panelslider_visible[b]=[];
-		plist = blocks.get("blocks["+b+"]::panel::parameters");
+		var plist = blocks.get("blocks["+b+"]::panel::parameters");
+		var glist = blocktypes.get(block_name+"::groups");
 		var params = blocktypes.get(block_name+"::parameters");
 		if(typeof plist == "number") plist = [plist];
 		for(var p=0;p<plist.length;p++){
@@ -395,11 +396,25 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			//var p_values = params[plist[p]].get("values");
 			var wrap = params[plist[p]].get("wrap");
 			var namearr = params[plist[p]].get("name");
+			var noperv = params[plist[p]].contains("nopervoice");
+			var p_values = params[plist[p]].get("values");
+			var flags = (p_values[0]=="bi") + 4*noperv;
+			if(!noperv){
+				for(var g=0;g<glist.length;g++){
+					var cont = glist[g].get("contains");
+					if(!Array.isArray(cont)) cont=[cont];
+					var gi = cont.indexOf(plist[p]);
+					if(gi>-1){
+						if(glist[g].contains("onepervoice")) flags |= 2;
+					}
+				}
+				//look up what group contains this param, look up if that group has onepervoice flag
+			}			
 			namearr = namearr.split("_");
 			var namelabely = 18+(y+2+has_states+0.4)*fontheight;
 			var h_slider = 0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
-			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],0 /* TODO ONEPERVOICE HERE << AND BIPOLAR TOO??>*/, namearr,namelabely,p_type,wrap,block_name,h_slider];
+			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider];
 			labelled_parameter_v_slider(panelslider_index);
 			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
 				//var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[panelslider_index][8]+paramslider_details[panelslider_index][9]);				
@@ -418,11 +433,13 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		panelslider_visible[b]=[];
 	}
 	if(has_ui){
-		click_rectangle( x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mouse_index,1);
-		mouse_click_actions[mouse_index] = set_display_mode;
-		mouse_click_parameters[mouse_index] = "custom";
-		mouse_click_values[mouse_index] = b;
-		mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
+		if(!blocktypes.contains(block_name+"::no_edit")){
+			click_rectangle( x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mouse_index,1);
+			mouse_click_actions[mouse_index] = set_display_mode;
+			mouse_click_parameters[mouse_index] = "custom";
+			mouse_click_values[mouse_index] = b;
+			mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
+		}
 		ui_poly.setvalue( b+1, "setup", x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
 	}
 }
@@ -3795,6 +3812,25 @@ function draw_sidebar(){
 			y_offset += 1.1*fontheight;
 					
 			if(sidebar.mode == "block"){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
+					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
+					if(ui_h>0){
+						ui_h *= fontheight;
+						//draw the panelui for this block here
+						if(!blocktypes.contains(block_name+"::no_edit")){
+							click_rectangle( sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mouse_index,1);
+							mouse_click_actions[mouse_index] = set_display_mode;
+							mouse_click_parameters[mouse_index] = "custom";
+							mouse_click_values[mouse_index] = b;
+							mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
+						}
+						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mainwindow_width);
+						y_offset += ui_h;
+					}
+				}
+
+
+
 				sidebar.scopes.starty = y_offset;
 				sidebar.scopes.endy = y_offset+2*fontheight;
 				sidebar.scopes.bg = block_darkest;
@@ -3937,6 +3973,9 @@ function draw_sidebar(){
 								if(opvf){
 									flags |= 2;
 									//flags |= 4 * t;
+								}else if(params[curp].contains("nopervoice")){
+									flags &= 61;
+									flags |= 4; //removes 2 flag, adds 4 flag
 								}
 
 								if(p_type=="button"){

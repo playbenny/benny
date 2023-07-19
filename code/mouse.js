@@ -864,7 +864,10 @@ function keydown(key){
 				set_sidebar_mode("block");
 			}else if(sidebar.mode!="none"){
 				clear_blocks_selection();
-				if(sidebar.mode == "file_menu") set_sidebar_mode("none");
+				if(sidebar.mode == "file_menu"){
+					set_sidebar_mode("none");
+					center_view(1);
+				} 
 			}else{
 				center_view(1);
 				//redraw_flag.flag |= 4;//draw_blocks();

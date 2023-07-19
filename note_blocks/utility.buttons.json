@@ -4,6 +4,7 @@
 		"type" : "note",
 		"block_ui_patcher" : "utility.buttons.ui",
 		"no_edit" : 1,
+		"ui_in_sidebar_height" : 4,
 		"help_text" : "3 buttons on a panel that output the note and vel of your choice. While the button is lit (hold/toggle modes) the 'switched inputs' pass midi messages to their respective outputs.",
 		"max_polyphony" : 1,
 		"connections" : {

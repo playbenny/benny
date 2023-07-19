@@ -255,6 +255,9 @@ function data_edit(parameter,value){
 }
 
 function select_folder(parameter,value){
+	if(fullscreen){
+		world.message("fullscreen",0);
+	}
 	messnamed("select_folder","bang");
 }
 
@@ -371,7 +374,7 @@ function fire_whole_state_btn_click(state,value){ //start timer, after a moment 
 	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
 	state_fade.selected = state;
 	state_fade.position = -1;
-	whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
+	if(state>=0) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
 }
 
 function create_whole_state_xfade_slider(state,value){

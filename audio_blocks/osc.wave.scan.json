@@ -6,6 +6,7 @@
 		"help_text" : "A looping wave player that lets you fluidly move around the longer sample while staying quantised. EG if you have a long wav of a drum performance loaded you can 'play' it by moving the target parameter and this block will keep it in time.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"ui_in_sidebar_height" : 4,
 		"subvoices" : 2,
 		"connections" : {
 			"in" : { 

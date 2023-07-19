@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "core.scales.shapes.ui",
 		"help_text" : "Scales and shapes storage. In 'held' mode the currently held notes are stored along with the order they were added. In 'pattern' mode a phrase played in is turned into a list of notes and the order they were added. The seq.shape.player can play back these patterns, various pitch quantisation blocks can use the stored lists of notes too. If you add more voices to this block you can have more stored scales and shapes. ",
 		"exclusive" : 1,
+		"ui_in_sidebar_height" : 4,		
 		"max_polyphony" : 8,
 		"connections" : {
 			"in" : {

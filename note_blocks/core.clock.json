@@ -6,6 +6,7 @@
 		"help_text" : "Control tempo, swing, and microtiming settings for up to 8 humanised clock sources. 1 voice = 1 clock. USE ONLY ONE CLOCK BLOCK PER SONG THOUGH. when you merge in another song that contains a clock, it won't adjust the tempo until you unmute it. it shares humanisation ids with the first clock. TODO make the new clock easier than this. Click offset is measured in multiples of vector size, so it should stay consistent if you change vs in future.",
 		"max_polyphony" : 0,
 		"autoload" : 1,
+		"ui_in_sidebar_height" : 4,		
 		"connections" : {
 			"in" : {
 				"midi" : [ "humaniser loopback" ]
@@ -19,12 +20,12 @@
 			{ 
 				"contains" : [0, 0, 6, 10, 11],
 				"colour" : [255,255,255],
-				"height" : 1
+				"height" : 0
 			},
 			{ 
 				"contains" : [1,2,3,7,4,5],
 				"colour" : [128,128,128],
-				"height" : 0
+				"height" : 1
 			},
 			{
 				"contains" : [8],

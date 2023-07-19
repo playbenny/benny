@@ -131,7 +131,7 @@ function new_block(block_name,x,y){
 				p_default = blocktypes.get(block_name+"::parameters["+i+"]::default");
 			}
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
-			parameter_static_mod.poke(1, new_voice  *MAX_PARAMETERS+i, 0);
+			parameter_static_mod.poke(1, (new_voice+t_offset)  *MAX_PARAMETERS+i, 0);
 			param_defaults[new_block_index][i] = p_default;
 		}		
 	}
@@ -191,19 +191,23 @@ function new_block(block_name,x,y){
 			post("\nts is ",ts.toString());
 			for(tii=0;tii<split;tii++){
 				post("\nturning on meter",tii,":",ts[tii],typeof ts[tii]);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_meter", 1);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_scope", 0);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_value", 0);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_trigger", 0);
-				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS-1;
+				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES*2 + MAX_AUDIO_INPUTS;
+				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
+				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				ts[tii] -= 1;
+				post(ts[tii]);
 			}
 			for(tii=split;tii<ts.length;tii++){
 				post("\nturning on input meter",tii,":",ts[tii],typeof ts[tii]);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_meter", 1);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_scope", 0);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_value", 0);
-				audio_to_data_poly.setvalue(+ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_trigger", 0);
-				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES-1;
+				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
+				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
+				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				ts[tii] -= 1;
+				post(ts[tii]);
 			}
 			hardware_metermap.replace(new_block_index,ts);
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
@@ -1954,7 +1958,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}else{
 					spr = sprd;
 				}
-				parameter_static_mod.poke(1, new_voice  *MAX_PARAMETERS+i, 0);
+				parameter_static_mod.poke(1, voiceoffset  *MAX_PARAMETERS+i, 0);
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
 			} //set param spreads
