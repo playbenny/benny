@@ -3460,7 +3460,7 @@ function draw_sidebar(){
 		}
 		for(var i = 0;i<MAX_AUDIO_VOICES;i++){
 			if(audio_patcherlist[i]=="recycling"){
-				free_a--;
+				//free_a--;
 			}else if(audio_patcherlist[i]!="blank.audio") {
 				free_a--;
 			}
