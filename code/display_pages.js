@@ -21,11 +21,11 @@ function set_display_mode(mode,t){
 		}else{
 			flock_axes(0);
 		}
-		if(mode=="block_menu") {
+		/*if(mode=="block_menu") {
 			menu_camera_scroll=0;
 		}else{
 			//hide_block_menu();
-		}
+		}*/
 		displaymode=mode;
 		camera();
 		//post("display mode set to "+mode+"\n");
@@ -3821,7 +3821,7 @@ function draw_sidebar(){
 							click_rectangle( sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mouse_index,1);
 							mouse_click_actions[mouse_index] = set_display_mode;
 							mouse_click_parameters[mouse_index] = "custom";
-							mouse_click_values[mouse_index] = b;
+							mouse_click_values[mouse_index] = block;
 							mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 						}
 						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mainwindow_width);
@@ -6263,9 +6263,9 @@ function draw_sidebar(){
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS,"vis_scope",1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 		}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
-			audio_poly.message("setvalue",0,"report_mutes");
 			y_offset = 9-sidebar.scroll.position;
 			if(sidebar.mode+state != sidebar.lastmode){
+				audio_poly.message("setvalue",0,"report_mutes");
 				clear_blocks_selection();
 				sidebar.lastmode = sidebar.mode+state;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -6316,12 +6316,21 @@ function draw_sidebar(){
 			lcd_main.message("write", "blocks");
 			var bfree = MAX_BLOCKS;
 			var oy = y_offset-0.5*fontheight;
+			var voicecolours=[];
 			for(var i = 0;i<MAX_BLOCKS;i++){
 				var c=menudarkest;
 				if(blocks.contains("blocks["+i+"]::space::colour")) {
 					c= blocks.get("blocks["+i+"]::space::colour");
 					bfree--;
+					if(voicemap.contains(i)){
+						var tva = voicemap.get(i);
+						if(!Array.isArray(tva)) tva = [tva];
+						for(tv = tva.length-1;tv>=0;tv--){
+							voicecolours[tva[tv]]=c;
+						}
+					}
 				}
+
 				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,c);
 				tx += wm;
 				if(tx>mainwindow_width-18){
@@ -6344,6 +6353,7 @@ function draw_sidebar(){
 					c = menucolour;
 					bfree--;
 				}	
+				if(Array.isArray(voicecolours[i])) c=voicecolours[i];
 				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,c);
 				tx += wm;
 				if(tx>mainwindow_width-18){
@@ -6362,16 +6372,25 @@ function draw_sidebar(){
 			y_offset+=1.1*fontheight;
 			for(var i = 0;i<MAX_AUDIO_VOICES;i++){
 				var c = menudarkest;
+				var rectype = "paintrect";
 				if(audio_patcherlist[i]=="recycling"){
 					c = [0,50,0];
+					rectype = "framerect";
 				}else if(audio_patcherlist[i]!="blank.audio") {
 					c = menucolour;
+					rectype = "paintrect";
 					bfree--;
+					if(Array.isArray(voicecolours[i+MAX_NOTE_VOICES])) c=voicecolours[i+MAX_NOTE_VOICES];					
 					if(audio_mutemap[i]){
 						c=[c[0]*0.5,c[1]*0.5,c[2]*0.5];
 					}
 				}
-				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,c);
+				lcd_main.message(rectype,tx,y_offset,tx+18,y_offset+18,c);
+				if(audio_mutemap[i]){
+					lcd_main.message("frgb",0,0,0);
+					lcd_main.message("moveto",tx+2,y_offset+16);
+					lcd_main.message("lineto",tx+16,y_offset);
+				}
 				tx += wm;
 				if(tx>mainwindow_width-18){
 					tx = sidebar.x;
