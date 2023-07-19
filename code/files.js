@@ -699,18 +699,20 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		}
 		if(ts!="no"){
 			for(tii=0;tii<split;tii++){
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS,"out_trigger", 0);
-				ts[tii] = ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES + MAX_AUDIO_INPUTS-1;
+				ts[tii] = ts[tii]+MAX_AUDIO_VOICES*2 + MAX_AUDIO_INPUTS;
+				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
+				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				ts[tii] -= 1;
 			}
 			for(tii=split;tii<ts.length;tii++){
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES,"out_trigger", 0);
-				ts[tii] = ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES-1;
+				ts[tii] = ts[tii]+MAX_AUDIO_VOICES*2;
+				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
+				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
+				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				ts[tii]-=1;
 			}
 			hardware_metermap.replace(block_index,ts);
 			if(blocktypes.get(block_name+"::max_polyphony")>1){

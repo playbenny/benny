@@ -201,7 +201,7 @@ function new_block(block_name,x,y){
 			}
 			for(tii=split;tii<ts.length;tii++){
 				post("\nturning on input meter",tii,":",ts[tii],typeof ts[tii]);
-				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
+				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES*2;
 				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
 				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
 				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
@@ -2379,7 +2379,7 @@ function swap_block(block_name){
 			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		}else if(type=="hardware"){
 			//hardware_metermap[new_block_index] = [];
-			var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_AUDIO_INPUTS;
+			var voffset=MAX_AUDIO_VOICES*2+MAX_AUDIO_INPUTS;
 			var ts, tii,split;
 			ts="no";
 			if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){

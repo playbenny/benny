@@ -12,7 +12,7 @@ include("drawing_helpers.js");
 //these are all loaded from the config.json file now BUT MAX_PARAMATER and MAX_NOTE_VOICES and MAX_MOD_IDS need sending out
 var MAX_BLOCKS = 128; 
 var MAX_NOTE_VOICES = 64;
-var MAX_AUDIO_VOICES = 96;
+var MAX_AUDIO_VOICES = 64;
 var MAX_AUDIO_INPUTS = 12;
 var MAX_AUDIO_OUTPUTS = 16;
 var MAX_USED_AUDIO_INPUTS = 0;
