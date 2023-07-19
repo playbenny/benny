@@ -6263,6 +6263,7 @@ function draw_sidebar(){
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS,"vis_scope",1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 		}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
+			audio_poly.message("setvalue",0,"report_mutes");
 			y_offset = 9-sidebar.scroll.position;
 			if(sidebar.mode+state != sidebar.lastmode){
 				clear_blocks_selection();
@@ -6366,6 +6367,9 @@ function draw_sidebar(){
 				}else if(audio_patcherlist[i]!="blank.audio") {
 					c = menucolour;
 					bfree--;
+					if(audio_mutemap[i]){
+						c=[c[0]*0.5,c[1]*0.5,c[2]*0.5];
+					}
 				}
 				lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,c);
 				tx += wm;

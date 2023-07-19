@@ -2216,6 +2216,10 @@ function insert_block_in_connection(newblockname,newblock){
 	redraw_flag.flag |= 4;	
 }
 
+function mutemap(voice,state){
+	audio_mutemap[voice-1] = state;
+}
+
 function swap_block(block_name){
 	post("swapping block",block_menu_d.swap_block_target,"to",block_name);
 	var details = new Dict;

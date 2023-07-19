@@ -334,11 +334,13 @@ var sidebar = {
 	}
 }
 
+var audio_mutemap = [];
+
 var redraw_flag = {
 	flag : 0,
 	deferred : 0,
-	targets: new Array(),
-	paneltargets: new Array(),
+	targets: [],
+	paneltargets: [],
 	targetcount: 0,
 	selective : 0
 }
