@@ -276,7 +276,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else{
 								scope_zoom(mouse_click_parameters[usermouse.last.got_i],"click");
 							}
-						}else if(mouse_click_actions[usermouse.got_i]==whole_state_xfade){ //end of state xfade
+						}else if(mouse_click_actions[usermouse.last.got_i]==whole_state_xfade){ //end of state xfade
 							post("release on fader");
 							state_fade.lastcolour = [state_fade.colour[0], state_fade.colour[1], state_fade.colour[2]];
 							state_fade.last = state_fade.selected;

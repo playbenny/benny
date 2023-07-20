@@ -2848,6 +2848,23 @@ function clear_screens(){
 	mouse_index++;
 }
 
+function draw_state_xfade(){
+	var cll = config.getsize("palette::gamut");
+	if((state_fade.position>-1) && (state_fade.selected > -1)){
+		var c = state_fade.lastcolour;
+		lcd_main.message("paintrect",9+fontheight*state_fade.x, 9, 9+fontheight*(state_fade.x+1.1), mainwindow_height - 9,menudarkest )
+		var c2 = config.get("palette::gamut["+Math.floor(state_fade.selected*cll/MAX_STATES)+"]::colour");
+		state_fade.colour = [c2[0]*(1- state_fade.position)+c[0]*state_fade.position,c2[1]*(1 - state_fade.position)+c[1]*state_fade.position,c2[2]*(1 - state_fade.position)+c[2]*state_fade.position];
+		var y = 9+(mainwindow_height-18-fontheight)*(1 - state_fade.position);
+		lcd_main.message("paintrect",9+fontheight*state_fade.x+4,y, 9+fontheight*(state_fade.x+1.1)-4, y+fontheight,state_fade.colour );
+		click_rectangle( 9+fontheight*state_fade.x, 0, 9+fontheight*(state_fade.x+1.2), mainwindow_height ,mouse_index,2 );							
+		mouse_click_actions[state_fade.index] = whole_state_xfade;
+		mouse_click_parameters[state_fade.index] = state_fade.selected;
+		mouse_click_values[state_fade.index] = 0;
+		//post("\ndrawn fader, index is",state_fade.index);
+	}
+}
+
 function draw_topbar(){
 	//post("\ndraw topbar");
 	setfontsize(fontheight/3.2);
@@ -3064,51 +3081,40 @@ function draw_topbar(){
 				statecontents = states.contains("states::current");
 			}else{
 				statecontents = states.contains("states::"+i);
+				if(statecontents &&  (state_fade.position>-1) && (state_fade.selected ==i)){
+					state_fade.x = x_o;
+					state_fade.index = mouse_index;
+				} 
 			}
 			//if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
 			if(statecontents){
-				if((state_fade.position>-1) && (state_fade.selected == i)){ //draw a slider instead
-					c = state_fade.lastcolour;
-					lcd_main.message("paintrect",9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), mainwindow_height - 9,menudarkest )
-					c2 = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
-					state_fade.colour = [c2[0]*(1- state_fade.position)+c[0]*state_fade.position,c2[1]*(1 - state_fade.position)+c[1]*state_fade.position,c2[2]*(1 - state_fade.position)+c[2]*state_fade.position];
-					y = 9+(mainwindow_height-18-fontheight)*(1 - state_fade.position);
-					lcd_main.message("paintrect",9+fontheight*x_o+4,y, 9+fontheight*(x_o+1.1)-4, y+fontheight,state_fade.colour );
-					click_rectangle( 9+fontheight*x_o, 0, 9+fontheight*(x_o+1.2), mainwindow_height ,mouse_index,2 );							
-					mouse_click_actions[mouse_index] = whole_state_xfade;
-					mouse_click_parameters[mouse_index] = i;
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					x_o+=1.2;					
+				var clicked=0;
+				if(usermouse.clicked2d==mouse_index) clicked=1;
+				if(i == -1){
+					c = menucolour;
+					lcd_main.message("framerect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
+					lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
+					lcd_main.message("write", "init");					
 				}else{
-					var clicked=0;
-					if(usermouse.clicked2d==mouse_index) clicked=1;
-					if(i == -1){
-						c = menucolour;
-						lcd_main.message("framerect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
-						lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
-						lcd_main.message("write", "init");					
-					}else{
-						c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
-						lcd_main.message("paintrect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
-						if(states.contains("names::"+i)){
-							var sn=states.get("names::"+i);
-							sn = sn.split(".");
-							if(!Array.isArray(sn)) sn = [sn];
-							for(var si=0;si<sn.length;si++){
-								lcd_main.message("moveto",9 + fontheight*(x_o+1.15-0.2*sn[si].length), 9+fontheight*(1-0.25*(sn.length-si)));
-								lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
-								lcd_main.message("write",sn[si]);
-							}
-						}					
-					}
-					click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), fontheight + 9,mouse_index,6 );							
-					mouse_click_actions[mouse_index] = [fire_whole_state_btn_click,fire_whole_state_btn_release];
-					mouse_click_parameters[mouse_index] = i;
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					x_o+=1.2;
+					c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
+					lcd_main.message("paintrect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
+					if(states.contains("names::"+i)){
+						var sn=states.get("names::"+i);
+						sn = sn.split(".");
+						if(!Array.isArray(sn)) sn = [sn];
+						for(var si=0;si<sn.length;si++){
+							lcd_main.message("moveto",9 + fontheight*(x_o+1.15-0.2*sn[si].length), 9+fontheight*(1-0.25*(sn.length-si)));
+							lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
+							lcd_main.message("write",sn[si]);
+						}
+					}					
 				}
+				click_rectangle( 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), fontheight + 9,mouse_index,6 );							
+				mouse_click_actions[mouse_index] = [fire_whole_state_btn_click,fire_whole_state_btn_release];
+				mouse_click_parameters[mouse_index] = i;
+				mouse_click_values[mouse_index] = 0;
+				mouse_index++;
+				x_o+=1.2;
 			}
 		}
 		if(anymuted){

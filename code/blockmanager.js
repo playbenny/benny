@@ -63,6 +63,8 @@ var input_used = new Array(MAX_AUDIO_OUTPUTS+2);
 
 var state_fade = {
 	start : [],
+	x : 0,
+	index : 0,
 	end : [],
 	colour : [],
 	lastcolour : [],
