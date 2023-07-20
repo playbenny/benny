@@ -168,6 +168,9 @@ function frameclock(){
 			sidebar_meters();
 			bangflag = 1;
 		}
+		if(sidebar.mode == "block"){
+			if(custom_block == sidebar.selected) update_custom();
+		}
 	}else if(displaymode == "flocks"){
 		sidebar_meters();
 		move_flock_blocks();

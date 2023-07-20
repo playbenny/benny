@@ -3812,25 +3812,6 @@ function draw_sidebar(){
 			y_offset += 1.1*fontheight;
 					
 			if(sidebar.mode == "block"){
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
-					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
-					if(ui_h>0){
-						ui_h *= fontheight;
-						//draw the panelui for this block here
-						if(!blocktypes.contains(block_name+"::no_edit")){
-							click_rectangle( sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mouse_index,1);
-							mouse_click_actions[mouse_index] = set_display_mode;
-							mouse_click_parameters[mouse_index] = "custom";
-							mouse_click_values[mouse_index] = block;
-							mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
-						}
-						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mainwindow_width);
-						y_offset += ui_h;
-					}
-				}
-
-
-
 				sidebar.scopes.starty = y_offset;
 				sidebar.scopes.endy = y_offset+2*fontheight;
 				sidebar.scopes.bg = block_darkest;
@@ -3866,6 +3847,23 @@ function draw_sidebar(){
 					mouse_click_parameters[mouse_index] = "";
 					mouse_click_values[mouse_index] = "";	
 					mouse_index++;
+				}
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
+					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
+					if(ui_h>0){
+						ui_h *= fontheight;
+						//draw the panelui for this block here
+						if(!blocktypes.contains(block_name+"::no_edit")){
+							click_rectangle( sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mouse_index,1);
+							mouse_click_actions[mouse_index] = set_display_mode;
+							mouse_click_parameters[mouse_index] = "custom";
+							mouse_click_values[mouse_index] = block;
+							mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
+						}
+						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mainwindow_width);
+						custom_block = block;
+						y_offset += ui_h;
+					}
 				}
 			}
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")){

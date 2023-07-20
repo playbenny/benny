@@ -2,7 +2,8 @@
 	"core.input.control" : {
 		"patcher" : "core.input.control",
 		"type" : "note",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "core.input.control.ui",
+		"ui_in_sidebar_height":7,
 		"help_text" : "Midi controller input. The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. And if auto assign is turned on then when a block is selected the controller will auto assign to this block's parameters. When you deselect the block the midi controller goes back to it's normal mode - outputting values from this block. ",
 		"exclusive" : 1,
 		"max_polyphony" : 1,
