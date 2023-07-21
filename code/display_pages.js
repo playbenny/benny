@@ -3854,7 +3854,7 @@ function draw_sidebar(){
 					mouse_click_values[mouse_index] = "";	
 					mouse_index++;
 				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && !(displaymode == "custom")){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
 					if(ui_h>0){
 						ui_h *= fontheight;

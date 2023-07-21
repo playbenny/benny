@@ -1,11 +1,12 @@
 {
-	"seq.grid" : {
-		"patcher" : "seq.grid",
+	"seq.grid-o" : {
+		"patcher" : "seq.grid-o",
 		"type" : "note",
-		"block_ui_patcher" : "seq.grid.ui",
+		"block_ui_patcher" : "seq.grid.ui-o",
 		"help_text" : "A step sequencer. One voice = one sequencer row. Values can be sent out as changing velocities of a fixed note, or changing notes with a fixed velocity. ",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
+		"deprecated" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
@@ -33,11 +34,11 @@
 			{ 
 				"contains" : [1],
 				"colour" : [255,255,255],
-				"onepervoice" :1 
+				"onepervoice" : 1
 			}
 		],
 		"voice_data" : {
-			"defaults" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+			"defaults" : [0 , 0.12, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		},
 		"parameters" : [
 			{
@@ -52,23 +53,23 @@
 			{
 				"name" : "offset",
 				"type" : "float",
-				"values" : ["bi", -128, 128, "lin"],
+				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "start",
-				"type" : "int",
-				"values" : ["uni", 1, 128, "lin"],
+				"type" : "float",
+				"values" : ["bi", -32, 32, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "length",
-				"type" : "int",
-				"values" : ["uni", 1, 128, "lin"],
+				"type" : "float",
+				"values" : ["bi", -32, 32, "lin"],
 				"wrap" : 0,
-				"default" : 0.125
+				"default" : 0.5
 			}
 		]
 	}
