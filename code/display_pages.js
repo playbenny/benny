@@ -2844,16 +2844,17 @@ function clear_screens(){
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
-	lcd_main.message("clear"); //lcd_main.message("clear");
+	lcd_main.message("clear");
 	mouse_index++;
 }
 
 function draw_state_xfade(){
 	var cll = config.getsize("palette::gamut");
-	if((state_fade.position>-1) && (state_fade.selected > -1)){
+	if((state_fade.position>-1) && (state_fade.selected > -2)){
 		var c = state_fade.lastcolour;
 		lcd_main.message("paintrect",9+fontheight*state_fade.x, 9, 9+fontheight*(state_fade.x+1.1), mainwindow_height - 9,menudarkest )
-		var c2 = config.get("palette::gamut["+Math.floor(state_fade.selected*cll/MAX_STATES)+"]::colour");
+		var c2 = [0,0,0];
+		if(state_fade.selected>=0) c2 = config.get("palette::gamut["+Math.floor(state_fade.selected*cll/MAX_STATES)+"]::colour");
 		state_fade.colour = [c2[0]*(1- state_fade.position)+c[0]*state_fade.position,c2[1]*(1 - state_fade.position)+c[1]*state_fade.position,c2[2]*(1 - state_fade.position)+c[2]*state_fade.position];
 		var y = 9+(mainwindow_height-18-fontheight)*(1 - state_fade.position);
 		lcd_main.message("paintrect",9+fontheight*state_fade.x+4,y, 9+fontheight*(state_fade.x+1.1)-4, y+fontheight,state_fade.colour );
@@ -2861,7 +2862,6 @@ function draw_state_xfade(){
 		mouse_click_actions[state_fade.index] = whole_state_xfade;
 		mouse_click_parameters[state_fade.index] = state_fade.selected;
 		mouse_click_values[state_fade.index] = 0;
-		//post("\ndrawn fader, index is",state_fade.index);
 	}
 }
 
@@ -3081,16 +3081,16 @@ function draw_topbar(){
 				statecontents = states.contains("states::current");
 			}else{
 				statecontents = states.contains("states::"+i);
-				if(statecontents &&  (state_fade.position>-1) && (state_fade.selected ==i)){
-					state_fade.x = x_o;
-					state_fade.index = mouse_index;
-				} 
 			}
 			//if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
 			if(statecontents){
+				if((state_fade.position>-1) && (state_fade.selected ==i)){
+					state_fade.x = x_o;
+					state_fade.index = mouse_index;
+				} 
 				var clicked=0;
 				if(usermouse.clicked2d==mouse_index) clicked=1;
-				if(i == -1){
+				if(i < 0){
 					c = menucolour;
 					lcd_main.message("framerect", 9+fontheight*x_o-clicked, 9-clicked, 9+fontheight*(x_o+1.1)+clicked, fontheight + 9+clicked,c );		
 					lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);

@@ -106,9 +106,9 @@ function mouseidle(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
 		usermouse.qlb = leftbutton;
 		//deferred_diag.push("idle    "+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
-	}else{
+	}/*else{
 		deferred_diag.push("idle during click??????");
-	}
+	}*/
 }
 
 function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
@@ -228,7 +228,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				var v = mouse_click_values[usermouse.got_i];
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
-			} else if(usermouse.clicked2d != -1){ //IF IT ALL GOES WRONG THIS IS WHERE
+			} else if(usermouse.clicked2d != -1){
 				if(usermouse.last.got_i == usermouse.got_i){
 					//post("2d release",usermouse.last.got_i,usermouse.last.got_t);
 					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)||(usermouse.last.got_t == 6)){ // it's a button (1) or passthrough(7)
@@ -276,13 +276,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else{
 								scope_zoom(mouse_click_parameters[usermouse.last.got_i],"click");
 							}
-						}else if(mouse_click_actions[usermouse.last.got_i]==whole_state_xfade){ //end of state xfade
-							post("release on fader");
-							state_fade.lastcolour = [state_fade.colour[0], state_fade.colour[1], state_fade.colour[2]];
-							state_fade.last = state_fade.selected;
-							state_fade.selected = -2;
-							state_fade.position = -1;
-							redraw_flag.flag |= 2;									
 						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
 							var pb = mouse_click_parameters[usermouse.got_i];
 							if(alt == 1){
@@ -304,6 +297,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							} 
 						}
 					}
+				}else if(mouse_click_actions[usermouse.last.got_i]==whole_state_xfade){ //end of state xfade
+					state_fade.lastcolour = [state_fade.colour[0], state_fade.colour[1], state_fade.colour[2]];
+					state_fade.last = state_fade.selected;
+					state_fade.selected = -2;
+					state_fade.position = -2;
+					redraw_flag.flag |= 2;									
 				}
 				usermouse.clicked2d = -1;
 			}else if(usermouse.clicked3d != -1){ //####################### 3d release #####################

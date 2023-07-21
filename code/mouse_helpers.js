@@ -370,15 +370,14 @@ function fire_block_state(state, block){
 }
 
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
-	post("whole state btn click",state);
+	//post("whole state btn click",state);
 	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
 	state_fade.selected = state;
 	state_fade.position = -1;
-	if(state>=0) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
+	if(state>=-1) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
 }
 
 function create_whole_state_xfade_slider(state,value){
-	post("\n creating slider");
 	state_fade.position=1;
 	redraw_flag.flag |= 2;
 	usermouse.last.got_t = 2;
@@ -394,7 +393,7 @@ function create_whole_state_xfade_slider(state,value){
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
 	for(var i=0;i<sc_list.length;i++){
 		var b = sc_list[i];
-		post(b,": ");
+		//post(b,": ");
 		state_fade.start[b] = [];
 		state_fade.end[b] = [];
 		pv = states.get("states::"+state+"::"+b);
@@ -406,7 +405,7 @@ function create_whole_state_xfade_slider(state,value){
 			for(var t=1;t<pv.length;t++){
 				state_fade.start[b][t] = parameter_value_buffer.peek(1, MAX_PARAMETERS*b+t-1);
 				state_fade.end[b][t] = pv[t];
-				post(state_fade.start[b][t],state_fade.end[b][t],", ");
+				//post(state_fade.start[b][t],state_fade.end[b][t],", ");
 			}
 		}
 	}
@@ -422,16 +421,13 @@ function fire_whole_state_btn_release(state,value){//if a slider didn't appear y
 	fire_whole_state_btn(state,value);
 }
 function whole_state_xfade(parameter,value){ //called by the slider
-	//post("\nwhole state fade. p:",parameter,"v:",value,"pos:",state_fade.position);
 	if(value == "get"){
 		return state_fade.position*2 - 1;
 	}else{
 		value = value *0.5 + 0.5;
-		if((value>0)&&(value<1)){
-			var op=state_fade.position;
-			state_fade.position = Math.min(1,Math.max(0,value));
-			if(op!=state_fade.position) fade_state();
-		}
+		var op=state_fade.position;
+		state_fade.position = Math.min(1,Math.max(0,value));
+		if(op!=state_fade.position) fade_state();
 	}
 }
 function fire_whole_state_btn(state,value){
@@ -439,12 +435,14 @@ function fire_whole_state_btn(state,value){
 	if(usermouse.ctrl){
 		sidebar.selected = state;
 		set_sidebar_mode("edit_state");
-		var cll = config.getsize("palette::gamut");
-		state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
 	}else{
 		fire_whole_state(state);
+	}
+	if(state>-1){
 		var cll = config.getsize("palette::gamut");
 		state_fade.lastcolour = config.get("palette::gamut["+Math.floor(state*cll/MAX_STATES)+"]::colour");
+	}else{
+		state_fade.lastcolour = [0,0,0];
 	}
 }
 

@@ -226,6 +226,7 @@ function import_song(){
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;
 		sidebar.mode = "none";
+		state_fade.lastcolour = [0,0,0];
 		clear_blocks_selection();
 		clear_screens();
 		// merge sequence goes like this then
