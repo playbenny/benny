@@ -90,7 +90,7 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 function draw(){
 	if(block>=0){
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0);
-		post("\n\nmini",mini);
+		//post("\n\nmini",mini);
 		var c,r,i,ph,rr,rc;
 		v_list = map.get(block);
 		if(typeof v_list=="number") v_list = [v_list];

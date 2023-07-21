@@ -484,11 +484,12 @@ function import_song(){
 		set_display_mode("blocks");
 		set_sidebar_mode("none");
 		build_mod_sum_action_list();
+		draw_blocks();
+		//prep_meter_updatelist();
 		
 		output_queue_pointer = 0;
 		changed_queue_pointer = 0;
 		redraw_flag.flag=4;
-		meters_enable=1;
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}
 }

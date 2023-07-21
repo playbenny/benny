@@ -84,11 +84,8 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
-		//outlet(8,"bang");
-		meters_enable=1;
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
-		//outlet(8,"bang");	
 	}else if(displaymode == "custom"){
 		clear_screens();
 		draw_topbar();
@@ -100,7 +97,6 @@ function redraw(){
 		draw_topbar();
 		draw_sidebar();
 		draw_panels();
-		//outlet(8,"bang");
 		meters_enable=1;
 	}else if(displaymode == "custom_fullscreen"){
 		clear_screens();
@@ -111,14 +107,11 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
-		//outlet(8,"bang");	
-		//draw_sidebar();
 	}else if(displaymode == "waves"){
 		sidebar.mode="none";
 		clear_screens();
 		draw_topbar();
 		draw_waves();
-		//outlet(8,"bang");		
 	}
 }
 
@@ -979,6 +972,7 @@ function draw_blocks(){
 			draw_wire(i);
 		} 
 	}
+	prep_meter_updatelist();
 }
 
 function draw_wire(connection_number){
@@ -3247,6 +3241,7 @@ function draw_sidebar(){
 	if(sidebar.mode!=sidebar.lastmode) sidebar.scroll.position = 0;
 	selected.block_count =0;
 	selected.wire_count = 0;
+	sidebar.panel = 0;	
 	var block_colour, block_dark, block_darkest;
 	var i,t;
 	var y_offset=0;
@@ -3816,7 +3811,6 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = "";	
 			mouse_index++;
 			y_offset += 1.1*fontheight;
-					
 			if(sidebar.mode == "block"){
 				sidebar.scopes.starty = y_offset;
 				sidebar.scopes.endy = y_offset+2*fontheight;
@@ -3856,6 +3850,7 @@ function draw_sidebar(){
 				}
 				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && !(displaymode == "custom")){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
+					sidebar.panel = 1;
 					if(ui_h>0){
 						ui_h *= fontheight;
 						//draw the panelui for this block here

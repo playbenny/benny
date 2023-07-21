@@ -23,18 +23,15 @@
 		"groups" : [
 			{ 
 				"contains" : [2],
-				"colour" : [255,255,255],
-				"onepervoice" : 1
+				"colour" : [255,255,255]
 			},
 			{ 
 				"contains" : [3],
-				"colour" : [255,255,255],
-				"onepervoice" : 1
+				"colour" : [255,255,255]
 			},
 			{ 
 				"contains" : [1],
-				"colour" : [255,255,255],
-				"onepervoice" : 1
+				"colour" : [255,255,255]
 			}
 		],
 		"voice_data" : {

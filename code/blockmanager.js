@@ -56,6 +56,10 @@ var playing = 0;
 var playflag = 0;
 
 var meters_enable = 1;
+var meters_updatelist = {
+	hardware : [],
+	meters : []
+}
 var debug = 0;
 
 var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
@@ -333,7 +337,8 @@ var sidebar = {
 		midinames : 1,
 		fg: [255,255,255],
 		bg: [10,10,10]
-	}
+	},
+	panel : 0
 }
 
 var audio_mutemap = [];

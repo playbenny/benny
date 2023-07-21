@@ -143,35 +143,16 @@ function frameclock(){
 	}
 	if(displaymode == "blocks"){
 		if(meters_enable==1){
-			var k = [];
-			var index,vmap;
-			k = voicemap.getkeys();
-			for(i in k){
-				vmap = voicemap.get(k[i]);
-				if(typeof vmap == "number"){ vmap = [vmap]; }
-				if(vmap !== 'null'){
-					if(vmap[0]>=MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-						vmap = hardware_metermap.get(k[i]);
-						if(typeof vmap == "number"){
-							hardware_meters(k[i],0,vmap);
-						}else if(vmap !== 'null'){
-							for(index =0;index<vmap.length;index++){
-								hardware_meters(k[i],index,vmap[index]);
-							}
-						}
-					}else if(vmap[0]>=MAX_NOTE_VOICES){
-						for(index =0;index<vmap.length;index++){
-							meters(k[i],index,vmap[index]-MAX_NOTE_VOICES);
-						}
-					}
-				}
+			for(i = meters_updatelist.hardware.length-1; i>=0; i--){
+				hardware_meters(meters_updatelist.hardware[i][0],meters_updatelist.hardware[i][1],meters_updatelist.hardware[i][2]);
+			}
+			for(i = meters_updatelist.meters.length-1;i>=0;i--){
+				meters(meters_updatelist.meters[i][0],meters_updatelist.meters[i][1],meters_updatelist.meters[i][2]);
 			}
 			sidebar_meters();
 			bangflag = 1;
 		}
-		if(sidebar.mode == "block"){
-			if(custom_block == sidebar.selected) update_custom();
-		}
+		if(sidebar.panel) update_custom();
 	}else if(displaymode == "flocks"){
 		sidebar_meters();
 		move_flock_blocks();
@@ -209,6 +190,35 @@ function frameclock(){
 		//outlet(8,"bang");
 	}
 	redraw_flag.flag = 0;
+}
+
+function prep_meter_updatelist(){
+	var k = [];
+	var index,vmap;
+	k = voicemap.getkeys();
+	meters_updatelist.hardware = [];
+	meters_updatelist.meters = [];
+	for(var i in k){
+		vmap = voicemap.get(k[i]);
+		if(typeof vmap == "number"){ vmap = [vmap]; }
+		if(vmap !== 'null'){
+			if(vmap[0]>=MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
+				vmap = hardware_metermap.get(k[i]);
+				if(typeof vmap == "number"){
+					meters_updatelist.hardware.push([k[i],0,vmap]);
+				}else if(vmap !== 'null'){
+					for(index =0;index<vmap.length;index++){
+						meters_updatelist.hardware.push([k[i],index,vmap[index]]);
+					}
+				}
+			}else if(vmap[0]>=MAX_NOTE_VOICES){
+				for(index =0;index<vmap.length;index++){
+					meters_updatelist.meters.push([k[i],index,vmap[index]-MAX_NOTE_VOICES] );
+				}
+			}
+		}
+	}
+	meters_enable = 1;
 }
 
 function check_changed_queue(){
