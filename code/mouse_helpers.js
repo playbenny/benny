@@ -16,7 +16,7 @@ function play_button_click(){
 		messnamed("play",1);
 		playflag = 1;
 	}else{playflag = 0;}
-	deferred_diag.push("PBC, flag = ",playflag);
+	//deferred_diag.push("PBC, flag = ",playflag);
 }
 
 function play_button_release(){

@@ -297,7 +297,7 @@ function meters(block,voice,polyvoice){
 			mmin = scope_buffer.peek(1,1+(polyvoice+MAX_AUDIO_VOICES*tt));
 			mmax = scope_buffer.peek(2,1+(polyvoice+MAX_AUDIO_VOICES*tt));
 			if(blocks_meter[block][voice*NO_IO_PER_BLOCK+tt] === undefined ){
-				post("\nmeter problem: block",block,"voice",voice,"tt",tt,"loadingstatus",loading.progress);
+				deferred_diag.push("meter problem: block"+block+"voice"+voice+"tt"+tt);//,"loadingstatus",loading.progress);
 			}else{
 				//post("\nmeter OK     : block",block,"voice",voice,"tt",tt);
 				tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position;
