@@ -131,7 +131,7 @@ function new_block(block_name,x,y){
 				p_default = blocktypes.get(block_name+"::parameters["+i+"]::default");
 			}
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
-			parameter_static_mod.poke(1, (new_voice+t_offset)  *MAX_PARAMETERS+i, 0);
+			parameter_static_mod.poke(1, MAX_PARAMETERS*voiceoffset+i, 0);
 			param_defaults[new_block_index][i] = p_default;
 		}		
 	}

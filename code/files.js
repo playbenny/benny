@@ -631,6 +631,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		for(var i=0;i<params.length;i++){
 			if(new_voice!=-1){
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
+				parameter_static_mod.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
 				param_error_drift[voiceoffset][i]=0;
 			}
 			p_default = 0;
