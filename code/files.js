@@ -301,6 +301,7 @@ function import_song(){
 		}
 		for(b=loading.progress;b<MAX_BLOCKS;b++){
 			thisblock = songs.get(songlist[currentsong]+"::blocks["+b+"]");
+			//post("\n",b,"type",typeof thisblock, thisblock.toString());
 			if(thisblock.contains("name")){
 				block_name = thisblock.get("name");
 				//post("\nimport song loop "+block_name);
@@ -371,6 +372,8 @@ function import_song(){
 		}
 		
 		loading.progress=MAX_BLOCKS;
+		meters_updatelist.hardware = [];
+		meters_updatelist.meters = [];
 		meters_enable = 0;
 		//draw_blocks(); //block cubes need to exist in order for connections to be created but this is called after voicecount anyway
 		center_view(1);

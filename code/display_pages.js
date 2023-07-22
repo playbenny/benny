@@ -6380,12 +6380,12 @@ function draw_sidebar(){
 					rectype = "paintrect";
 					bfree--;
 					if(Array.isArray(voicecolours[i+MAX_NOTE_VOICES])) c=voicecolours[i+MAX_NOTE_VOICES];					
-					if(audio_mutemap[i]){
+					if(mutemap.peek(1,i+1)){
 						c=[c[0]*0.5,c[1]*0.5,c[2]*0.5];
 					}
 				}
 				lcd_main.message(rectype,tx,y_offset,tx+18,y_offset+18,c);
-				if(audio_mutemap[i]){
+				if(mutemap.peek(1,i+1)){
 					lcd_main.message("frgb",0,0,0);
 					lcd_main.message("moveto",tx+2,y_offset+16);
 					lcd_main.message("lineto",tx+16,y_offset);

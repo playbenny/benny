@@ -55,7 +55,7 @@ var custom_block = -1; //block no for custom screen pages
 var playing = 0;
 var playflag = 0;
 
-var meters_enable = 1;
+var meters_enable = 0;
 var meters_updatelist = {
 	hardware : [],
 	meters : []
@@ -341,7 +341,7 @@ var sidebar = {
 	panel : 0
 }
 
-var audio_mutemap = [];
+var mutemap = new Buffer("mutemap");
 
 var redraw_flag = {
 	flag : 0,
