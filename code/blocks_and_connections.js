@@ -186,28 +186,28 @@ function new_block(block_name,x,y){
 				}
 			}
 		}
-		post("\nstart of meter assign hw");
+		//post("\nstart of meter assign hw");
 		if(ts!="no"){
-			post("\nts is ",ts.toString());
+			//post("\nts is ",ts.toString());
 			for(tii=0;tii<split;tii++){
-				post("\nturning on meter",tii,":",ts[tii],typeof ts[tii]);
+				//post("\nturning on meter",tii,":",ts[tii],typeof ts[tii]);
 				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES*2 + MAX_AUDIO_INPUTS;
 				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
 				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
 				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
 				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
-				post(ts[tii]);
+				//post(ts[tii]);
 			}
 			for(tii=split;tii<ts.length;tii++){
-				post("\nturning on input meter",tii,":",ts[tii],typeof ts[tii]);
+				//post("\nturning on input meter",tii,":",ts[tii],typeof ts[tii]);
 				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES*2;
 				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
 				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
 				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
 				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
-				post(ts[tii]);
+				//post(ts[tii]);
 			}
 			hardware_metermap.replace(new_block_index,ts);
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
