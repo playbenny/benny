@@ -46,6 +46,7 @@ function clicked_block_preparation() {
 
 function picker_hover_and_special(id){
 	if(usermouse.oid!=id){ //if id has changed
+		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
 		usermouse.oid=id;
 		var thov =id.split('-'); // store hover - any picker id received when not waiting for click
@@ -252,7 +253,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider
 						if(mouse_click_actions[usermouse.last.got_i]==sidebar_parameter_knob){
 							var pb = mouse_click_parameters[usermouse.last.got_i];
-							post("params",pb);
+							//post("params",pb);
 							if(alt == 1){
 								sidebar_parameter_knob(pb,param_defaults[pb[1]][pb[0]]);
 								redraw_flag.flag=2;								
@@ -394,7 +395,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(selection_cube.enable == 1){
 								process_drag_selection();
 								selection_cube.enable = 0;
-								//block_and_wire_colours();
 								redraw_flag.flag |= 12; //4
 							}else{
 							//	deferred_diag[deferred_diag.length] = "it was just a drag, don't do anything else";
@@ -489,10 +489,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			usermouse.drag.starting_value_x = camera_position[0];
 			if(usermouse.ctrl){//set up zoom
 				usermouse.drag.starting_value_y = camera_position[2];
-			}else if(usermouse.shift){//set up select rectangle
-				post("\nselection rectangle (TODO!)");
+			}else if(usermouse.shift){//(set up )select rectangle)
+				
 			}else{//set up normal background drag
-				usermouse.drag.starting_value_x = camera_position[0];
+				//usermouse.drag.starting_value_x = camera_position[0];
 				if(usermouse.clicked3d =="background") {
 					usermouse.drag.starting_value_y = camera_position[1];
 				}else{
@@ -859,7 +859,7 @@ function keydown(key){
 			redraw_flag.flag |= 4;
 		}else{
 			set_display_mode("blocks");
-			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")){
+			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
 				set_sidebar_mode("block");
 			}else if(sidebar.mode!="none"){
 				clear_blocks_selection();

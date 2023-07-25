@@ -480,7 +480,7 @@ function import_song(){
 		for(i=0;i<loading.mutelist.length;i++){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
-		block_and_wire_colours();
+		
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
@@ -492,7 +492,7 @@ function import_song(){
 		
 		output_queue_pointer = 0;
 		changed_queue_pointer = 0;
-		redraw_flag.flag=4;
+		redraw_flag.flag|=12;
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}
 }

@@ -1,3 +1,11 @@
+function click_info(action,parameter,value){
+	mouse_click_actions[mouse_index] = action;
+	mouse_click_parameters[mouse_index] = parameter;
+	mouse_click_values[mouse_index] = value;	
+	mouse_index++;
+}
+
+
 function click_clear(index,type){
 	if(usermouse.left_button) return 1;
 	//post("\nwiping click matrix");
