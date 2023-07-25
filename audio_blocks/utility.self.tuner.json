@@ -1,0 +1,58 @@
+{
+	"utility.self.tuner" : {
+		"patcher" : "utility.self.tuner",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "self-tuning midi to cv converter. connect your osc's output to the listen input. connect the cv output to the osc cv input. play notes.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "listen","fm" ]
+			},
+			"out" : {
+				"audio" : [ "cv" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,1,2,3]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "threshold",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "on_time",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "off_time",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "stereo_link",
+				"type" : "menu_i",
+				"values" : ["off","on"],
+				"wrap" : 0,
+				"default" : 0.1
+
+			}
+
+		]
+	}
+}
