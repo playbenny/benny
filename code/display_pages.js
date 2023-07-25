@@ -3599,7 +3599,7 @@ function draw_sidebar(){
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		y_offset = 9-sidebar.scroll.position;
 		if(sidebar.mode+state != sidebar.lastmode){
-			audio_poly.message("setvalue",0,"report_mutes");
+			//audio_poly.message("setvalue",0,"report_mutes");
 			sidebar.lastmode = sidebar.mode+state;
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
 			remove_midi_scope();
@@ -3717,10 +3717,14 @@ function draw_sidebar(){
 		y_offset+=1.1*fontheight;
 		for(var i = 0;i<MAX_AUDIO_VOICES;i++){
 			var c = menudarkest;
+			var d = [0,0,0];
 			var rectype = "paintrect";
 			if(audio_patcherlist[i]=="recycling"){
 				c = [0,50,0];
+				d = [20,80,20];
 				rectype = "framerect";
+				voiceno[i+MAX_NOTE_VOICES] = i+MAX_NOTE_VOICES;
+				voiceparent[i+MAX_NOTE_VOICES] = -1;
 			}else if(audio_patcherlist[i]!="blank.audio") {
 				c = menucolour;
 				rectype = "paintrect";
@@ -3735,7 +3739,7 @@ function draw_sidebar(){
 			click_rectangle(tx-4,y_offset-4,tx+22,y_offset+22,mouse_index,1);
 			click_info(cpu_select_block,voiceno[i+MAX_NOTE_VOICES],voiceparent[i+MAX_NOTE_VOICES]);
 			if(mutemap.peek(1,i+1)){
-				lcd_main.message("frgb",0,0,0);
+				lcd_main.message("frgb",d);
 				lcd_main.message("moveto",tx+2,y_offset+16);
 				lcd_main.message("lineto",tx+16,y_offset);
 			}

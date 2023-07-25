@@ -102,22 +102,29 @@ function hard_reload_block(b){
 }
 
 function open_patcher(block,voice){
-	post("opening patcher");
-	var type = blocks.get("blocks["+block+"]::type");
-	post(type);
-	var vm = voicemap.get(block);
-	if(!Array.isArray(vm)) vm = [vm];
-	if(voice == -1){
-		voice = vm[0];
-	}else{
-		voice = vm[voice];
+	if(block>-1){
+		var vm = voicemap.get(block);
+		if(!Array.isArray(vm)) vm = [vm];
+		if(voice == -1){
+			voice = vm[0];
+		}else{
+			voice = vm[voice];
+		}
 	}
-	if(type=="note"){
-		note_poly.setvalue( voice+1, "open");
+	if(voice<MAX_NOTE_VOICES){
+		if(usermouse.ctrl){
+			note_poly.message( "open" , voice+1);
+		}else{
+			note_poly.setvalue( voice+1, "open");
+		}
 		clear_blocks_selection();
-	}else if(type=="audio"){
+	}else{
 		voice = voice  - MAX_NOTE_VOICES;	
-		audio_poly.setvalue( voice+1, "open");
+		if(usermouse.ctrl){
+			audio_poly.message( "open" , voice+1);
+		}else{
+			audio_poly.setvalue( voice+1, "open");
+		}
 		clear_blocks_selection();
 	}
 }
