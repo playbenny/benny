@@ -8,7 +8,8 @@
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "listen","fm" ]
+				"audio" : [ "listen","fm" ],
+				"midi" : [ "notes" ]
 			},
 			"out" : {
 				"audio" : [ "cv" ]
@@ -16,12 +17,9 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,1,2,3]
+				"contains" : [0]
 			}
 		],
-		"panel" : {
-			"parameters" : [0, 1,2]
-		},
 		"parameters" : [
 			{
 				"name" : "threshold",
@@ -29,30 +27,7 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.2
-			},
-			{
-				"name" : "on_time",
-				"type" : "float",
-				"values" : ["uni", 0, 1000, "exp"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "off_time",
-				"type" : "float",
-				"values" : ["uni", 0, 1000, "exp"],
-				"wrap" : 0,
-				"default" : 0.1
-			},
-			{
-				"name" : "stereo_link",
-				"type" : "menu_i",
-				"values" : ["off","on"],
-				"wrap" : 0,
-				"default" : 0.1
-
 			}
-
 		]
 	}
 }
