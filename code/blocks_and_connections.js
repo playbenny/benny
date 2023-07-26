@@ -1638,9 +1638,9 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","hardware");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}if(default_assigned==1){
+			}else if(default_assigned==1){
 				new_connection.replace("conversion::offset", 0.5);
-				r_default_assigned=1;
+				//r_default_assigned=1;
 			}
 		}
 	}
@@ -1653,9 +1653,9 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","audio");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}if(default_assigned==1){
+			}else if(default_assigned==1){
 				new_connection.replace("conversion::offset", 0.5);
-				r_default_assigned=1;
+				//r_default_assigned=1;
 			}
 		}
 	}
