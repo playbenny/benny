@@ -3260,7 +3260,7 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
-	if(sidebar.mode!="none"){
+	if((sidebar.mode!="none")||((selected.block_count+selected.wire_count)>0)){
 		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
 		mouse_click_actions[mouse_index] = "none";
 		mouse_click_parameters[mouse_index] = "";
@@ -6450,7 +6450,10 @@ function draw_sidebar(){
 	if(y_offset>mainwindow_height){
 		sidebar.scroll.max = sidebar.scroll.position+y_offset-mainwindow_height;
 	}else{
-		//click_rectangle(sidebar.x,y_offset+fontheight,mainwindow_width,mainwindow_height,0,0);
+		if((sidebar.mode!="none")){
+			var ttt= (displaymode == "panels") ? 1 : 0;
+			click_rectangle(sidebar.x,y_offset+1,mainwindow_width,mainwindow_height,ttt,ttt);
+		}
 	}
 	if((sidebar.scroll.max>0)){ //&&(sidebar.mode != "none")){
 		lcd_main.message("frgb", menudarkest);
