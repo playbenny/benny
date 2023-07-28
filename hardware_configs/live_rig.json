@@ -133,9 +133,9 @@
 				}
 			}
 		},
-		"hardware.filter.wasp2" : 			{
+		"hardware.filter.gstorm.pro" : 			{
 			"type" : "hardware",
-			"help_text": "wasp filter 2",
+			"help_text": "g storm pro vcf",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
@@ -145,8 +145,21 @@
 					"hardware_channels" : [ 4, 12 ]
 				},
 				"out" : {
-					"hardware" : [ "lp", "bp" ],
-					"hardware_channels" : [3,4 ]
+					"hardware" : [ "lp" ],
+					"hardware_channels" : [3 ]
+				}
+			}
+		},
+		"hardware.erica.sum" : 			{
+			"type" : "hardware",
+			"help_text": "sum of the two sides of the erica mixer, which is fed by the sem and the mmm ladder vcf",
+			"exclusive" : 1,
+			"max_polyphony" : 1,
+			"substitute" : "utility.vca",
+			"connections" : {
+				"out" : {
+					"hardware" : [ "sum" ],
+					"hardware_channels" : [4 ]
 				}
 			}
 		},
