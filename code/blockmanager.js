@@ -527,6 +527,20 @@ function cpu(avg,peak,fps){
 	} 
 }
 
+function outputfx(type, number, value){
+	if(type=="meter"){
+		if(value==0){
+			c=menucolour;
+		}else if(value==1){
+			c=[60,255,60];
+		}else{
+			c=[60,90,255];
+		}
+		meter_positions[1][0]=c;
+		meter_positions[1][1]=[(c[0]*0.2)|0,(c[1]*0.2)|0,(c[2]*0.2)|0];
+	}
+}
+
 function request_waves_remapping(type, voice){
 	post("\n remapping request received,",type,voice,"the remapping i sent out is",waves.remapping);
 	if(type=="audio"){
