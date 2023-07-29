@@ -220,7 +220,7 @@ function initialise_dictionaries(){
 	states.parse('{ "states" : {}}');
 	songs.parse('{}');
 	song.parse('{}');
-
+	
 	messnamed("update_midi_routemap","bang");
 	
 	messnamed("play",0);

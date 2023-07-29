@@ -533,8 +533,12 @@ function outputfx(type, number, value){
 			c=menucolour;
 		}else if(value==1){
 			c=[60,255,60];
-		}else{
+		}else if(value==2){
+			c=[60,190,205];
+		}else if(value==3){
 			c=[60,90,255];
+		}else if(value==4){
+			c=[255,90,255];
 		}
 		meter_positions[1][0]=c;
 		meter_positions[1][1]=[(c[0]*0.2)|0,(c[1]*0.2)|0,(c[2]*0.2)|0];
