@@ -6285,7 +6285,7 @@ function draw_sidebar(){
 					mouse_index++;			
 				}			
 			}
-	   
+			y_offset += fontheight*5;
 		}else if(selected.wire_count > 1){
 // MULTI CONNECTION VIEW
 			sidebar.editbtn = 0;
