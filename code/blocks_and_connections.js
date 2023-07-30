@@ -327,7 +327,7 @@ function poly_loaded(type,number){
 function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
 	//post("\n>>looking for a voice to recycle for",pa,"upsampling is",up);
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
-		if((audio_patcherlist[i] == "recycling") && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] = "vst.loader") && (vst_list[i]==pa)))){
+		if((audio_patcherlist[i] == "recycling") && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] == "vst.loader") && (vst_list[i]==pa)))){
 			//post("\nrecycling voice ",i);
 			return i;
 		}
