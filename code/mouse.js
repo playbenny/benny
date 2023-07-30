@@ -705,7 +705,6 @@ function mouse_released_on_a_thing_no_drag(){
 					if(selected.block[+usermouse.ids[1]]!=1) select_block(0,+usermouse.ids[1]);
 					return(0);
 				}else if(blocktypes.contains(blocks.get("blocks["+usermouse.ids[1]+"]::name")+"::plugin_name")){
-					post("/n/n show vst editor"); //vst edit
 					show_vst_editor(usermouse.ids[1],usermouse.ids[1]);
 					if(selected.block[+usermouse.ids[1]]!=1) select_block(0,+usermouse.ids[1]);
 					return(0);					

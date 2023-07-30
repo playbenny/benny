@@ -23,6 +23,7 @@ configuration
 - the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
     - KNOWN ISSUE manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
     - KNOWN ISSUE you can't load a vst's config and edit it, you just have to do it again if you change your mind how you want the parameters organised
+    - KNOWN ISSUE on windows sometimes max pretends not to be able to find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
 - there's a config.json file you can edit with some visual/ui preferrences
 
 temporary limits
