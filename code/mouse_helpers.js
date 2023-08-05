@@ -486,7 +486,7 @@ function fire_whole_state(state, value){
 			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, pv[t]);
 		}
 	}
-	if(mf==1)redraw_flag.flag |= 8;
+	if((mf==1) && (displaymode != "block_menu")) redraw_flag.flag |= 8;
 }
 
 function fade_state(){
