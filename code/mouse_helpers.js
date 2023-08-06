@@ -201,7 +201,9 @@ function cpu_select_block(parameter,value){
 		select_block(0,value);
 	}
 }
+
 function select_block(parameter,value){
+	//post("\nselblock,",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
 		if(blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher")!="blank.ui"){
 			set_display_mode("custom",value);
@@ -222,6 +224,7 @@ function select_block(parameter,value){
 		selected.block_count = 1;
 		selected.wire_count = 0;
 		redraw_flag.flag |= 2;
+		//post("\n\nselecting block",value,"sidebar mode is",sidebar.mode);
 		//if(sidebar.mode != "cpu") set_sidebar_mode("block");
 		if(displaymode == "blocks") redraw_flag.flag |= 8;
 	}
@@ -230,6 +233,8 @@ function select_block(parameter,value){
 function panels_bg_click(){
 	if(sidebar.mode != "none") clear_blocks_selection();
 }
+
+
 function panel_edit_button(parameter,value){
 	post("panel edit",parameter,value);
 	if(value=="up"){
