@@ -788,6 +788,7 @@ function folder_select(folderstr){
 //	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
 		SONGS_FOLDER = folderstr;
+		post("\nselected new songs folder:",folderstr);
 		config.replace("SONGS_FOLDER",folderstr);
 		config.writeagain();
 		read_songs_folder();

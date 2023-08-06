@@ -1,5 +1,5 @@
 {
-	"SONGS_FOLDER" : "C:/Users/jhold/Documents/james music/live set/songs/",
+	"SONGS_FOLDER" : "C:/Users/jhold/Documents/james music/live set/tests/",
 	"type_order" : [ "core", "seq", "midi", "osc", "voice", "hardware", "fx", "vst", "utility", "mix" ],
 	"gain_display_format" : "x",
 	"click_buffer_scaledown" : 2,
