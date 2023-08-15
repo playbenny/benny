@@ -2487,20 +2487,16 @@ function build_mod_sum_action_list(){
 			var bname = blocks.get("blocks["+b+"]::name");
 			psize = blocktypes.getsize(bname+"::parameters");
 			if(psize){
-				midiout=0;
+				midiout=-1;
 				btype = blocks.get("blocks["+b+"]::type");
 				lockup = blocks.get("blocks["+b+"]::error::lockup");
 				lockup *= lockup * 0.003;
 				voicelist = voicemap.get(b);
+				if(!Array.isArray(voicelist)) voicelist = [voicelist];
 				if(btype=="hardware"){
-					//todo hardware can have params too!
-//					voffset+=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;//+b; //TODO no not +b, need a lookup
 					if(blocktypes.contains(bname+"::midi_output_number")){
 						midiout = blocktypes.get(bname+"::midi_output_number");
 					}	
-				}
-				if(typeof voicelist == "number"){
-					voicelist = [voicelist];
 				}
 
 				for(i=0;i<voicelist.length;i++){
@@ -2528,8 +2524,8 @@ function build_mod_sum_action_list(){
 						if(blocktypes.contains(bname+"::parameters["+p+"]::wrap")){
 							wrap = 2 - blocktypes.get(bname+"::parameters["+p+"]::wrap"); 
 						}
-						//TODO could lose the whole mod_wrap dict?
-						if(btype=="hardware"){
+						
+						if(midiout>-1){
 							flag = 4;
 							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
 							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");

@@ -11,40 +11,51 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2, 3]
+				"contains" : [0, 0, 1, 2]
+			},
+			{
+				"contains" : [3,4],
+				"height" : 0
 			}		
 		],
 		"panel" : {
-			"parameters" : [0, 1, 2]
+			"parameters" : [0, 1, 2, 3,4]
 		},
 		"parameters" : [
 			{
-				"name" : "xfade",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"name" : "length (beats)",
+				"type" : "int",
+				"values" : ["uni", 1, 64, "lin"],
 				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "time",
-				"type" : "menu_i",
-				"values" : ["4n", "2n", "1n", "2b", "3b", "4b"],
-				"wrap" : 0,
-				"default" : 0.4
+				"default" : 0.065
 			},
 			{
 				"name" : "feedback",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.9
+				"default" : 0.98
 			},
 			{
-				"name" : "input_gain",
+				"name" : "highpass",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
+			},
+			{
+				"name" : "follow_tempo",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "on_play:",
+				"type" : "menu_i",
+				"values" : ["cut", "fade"],
+				"wrap" : 0,
+				"default" : 0.75
 			}
 		]
 	}

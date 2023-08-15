@@ -89,6 +89,8 @@
 			"type" : "hardware",
 			"help_text": "main stereo outs",
 			"output_block" : "master_1",
+			"block_ui_patcher" : "master_1.ui",
+			"ui_in_sidebar_height" : 4,		
 			"autoload" : 1,
 			"max_polyphony" : 2,
 			"exclusive" : 1,
