@@ -584,7 +584,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
 			recycled = 1;
 		}else{
-			new_voice = next_free_voice(type);
+			new_voice = next_free_voice(type,block_name);
 		}
 	}else{
 		if(blocktypes.get(block_name+"::max_polyphony") == 1){
@@ -592,7 +592,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			if(typeof v_list == "number")v_list = [v_list];
 			new_voice = v_list[0];
 		}else{
-			new_voice = next_free_voice(type);
+			new_voice = next_free_voice(type,block_name);
 		}
 	}
 	if(type == "note"){

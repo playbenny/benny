@@ -23,11 +23,11 @@
 		},
 		"parameters" : [
 			{
-				"name" : "length (beats)",
+				"name" : "initial length_(beats)",
 				"type" : "int",
 				"values" : ["uni", 1, 64, "lin"],
 				"wrap" : 0,
-				"default" : 0.065
+				"default" : 0.06
 			},
 			{
 				"name" : "feedback",
@@ -44,14 +44,14 @@
 				"default" : 0
 			},
 			{
-				"name" : "follow_tempo",
+				"name" : "follow tempo",
 				"type" : "menu_i",
 				"values" : ["off", "on"],
 				"wrap" : 0,
 				"default" : 0.75
 			},
 			{
-				"name" : "on_play:",
+				"name" : "on play:",
 				"type" : "menu_i",
 				"values" : ["cut", "fade"],
 				"wrap" : 0,
