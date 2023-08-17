@@ -782,8 +782,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			
 			camera_position[2] = camera_position[2]-2*scroll;
 			if(camera_position[2]<0.1)camera_position[2]+=2*scroll;
-			camera_position[0] += xx*scroll*0.5;
-			camera_position[1] -= yy*scroll*0.5;
+			camera_position[0] += xx*scroll*1.5;
+			camera_position[1] -= yy*scroll*1.5;//*0.5;
 			messnamed("camera_control","position",  camera_position);
 			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){

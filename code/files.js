@@ -589,11 +589,13 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}else{
 		if(blocktypes.get(block_name+"::max_polyphony") == 1){
 			var v_list = voicemap.get(block_index);
-			if(typeof v_list == "number")v_list = [v_list];
+			if(!Array.isArray(v_list)) v_list = [v_list];
 			new_voice = v_list[0];
 		}else{
 			new_voice = next_free_voice(type,block_name);
 		}
+		//if(type=="hardware") 
+		post("\n\nHERE, VOICEALLOC EXCL",type,block_name,new_voice);
 	}
 	if(type == "note"){
 		note_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
