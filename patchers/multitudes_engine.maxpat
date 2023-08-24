@@ -260,6 +260,18 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-3",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "bang" ],
+									"patching_rect" : [ 311.0, 100.0, 61.0, 22.0 ],
+									"text" : "savebang"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-2",
 									"maxclass" : "message",
 									"numinlets" : 2,
@@ -520,6 +532,13 @@
 								"patchline" : 								{
 									"destination" : [ "obj-143", 0 ],
 									"source" : [ "obj-2", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-119", 0 ],
+									"source" : [ "obj-3", 0 ]
 								}
 
 							}
@@ -1786,8 +1805,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "multichannelsignal", "multichannelsignal" ],
-					"patching_rect" : [ 703.5, 807.625, 125.0, 22.0 ],
-					"text" : "mc.poly~ clip_dither 8",
+					"patching_rect" : [ 703.5, 807.25, 132.0, 22.0 ],
+					"text" : "mc.poly~ clip_dither 12",
 					"varname" : "output_blocks_poly"
 				}
 
@@ -5538,7 +5557,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 1056.0, 794.25, 29.5, 22.0 ],
+					"patching_rect" : [ 1079.0, 772.375, 29.5, 22.0 ],
 					"text" : "- 1"
 				}
 
@@ -8883,7 +8902,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 1056.0, 764.5, 67.0, 22.0 ],
+					"patching_rect" : [ 1079.0, 742.625, 67.0, 22.0 ],
 					"text" : "route voice"
 				}
 
@@ -8910,7 +8929,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 1056.0, 823.25, 41.0, 22.0 ],
+					"patching_rect" : [ 1079.0, 801.375, 41.0, 22.0 ],
 					"text" : "t i 128"
 				}
 
@@ -11913,7 +11932,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
 					"patching_rect" : [ 703.5, 586.0, 121.0, 22.0 ],
-					"text" : "mc.sig~ @chans 144",
+					"text" : "mc.sig~ @chans 152",
 					"varname" : "sigouts"
 				}
 
@@ -13162,7 +13181,7 @@
 					"bgcolor2" : [ 0.152941176470588, 1.0, 0.588235294117647, 1.0 ],
 					"bgfillcolor_angle" : 270.0,
 					"bgfillcolor_autogradient" : 0.0,
-					"bgfillcolor_color" : [ 1.0, 0.216, 0.0, 1.0 ],
+					"bgfillcolor_color" : [ 0.333, 0.302, 0.0, 1.0 ],
 					"bgfillcolor_color1" : [ 0.152941176470588, 1.0, 0.588235294117647, 1.0 ],
 					"bgfillcolor_color2" : [ 0.2, 0.2, 0.2, 1.0 ],
 					"bgfillcolor_proportion" : 0.5,
@@ -13178,7 +13197,7 @@
 					"patching_rect" : [ 13.0, 12.25, 147.0, 30.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 226.0, 97.0, 88.0, 30.0 ],
-					"text" : "restart",
+					"text" : "start",
 					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ],
 					"textjustification" : 1
 				}
@@ -13360,7 +13379,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 857.0, 807.25, 218.0, 22.0 ],
-					"text" : "mc.poly~ audio-to-data 156 @parallel 1",
+					"text" : "mc.poly~ audio-to-data 170 @parallel 1",
 					"varname" : "audio_to_data_poly"
 				}
 
@@ -13400,8 +13419,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 668.5, 524.0, 207.0, 22.0 ],
-					"text" : "mc.adc~ 1 2 3 4 5 6 9 10 11 12 13 14"
+					"patching_rect" : [ 668.5, 524.0, 307.0, 22.0 ],
+					"text" : "mc.adc~ 1 2 3 4 5 6 9 10 11 12 13 14 17 18 19 20 21 22"
 				}
 
 			}
@@ -13459,8 +13478,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 703.5, 903.625, 260.0, 22.0 ],
-					"text" : "mc.dac~ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16",
+					"patching_rect" : [ 703.5, 903.625, 394.0, 22.0 ],
+					"text" : "mc.dac~ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24",
 					"varname" : "audio_outputs"
 				}
 
@@ -13473,7 +13492,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "multichannelsignal", "" ],
 					"patching_rect" : [ 607.5, 623.0, 200.0, 22.0 ],
-					"text" : "mcs.matrix~ 140 144 0. @ramp 200",
+					"text" : "mcs.matrix~ 146 152 0. @ramp 200",
 					"varname" : "matrix"
 				}
 
@@ -14676,6 +14695,19 @@
 
 			}
  ],
+		"parameters" : 		{
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -14741,13 +14773,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "continuity_buffer_fx.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "core.clock.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
@@ -14755,7 +14780,35 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "core.clock.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "core.input.control.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -14788,7 +14841,14 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "master_1.maxpat",
+				"name" : "master_1.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "master_1.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
 				"patcherrelativepath" : "../output_blocks",
 				"type" : "JSON",
@@ -14798,6 +14858,20 @@
 				"name" : "note_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.basic.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.basic.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
