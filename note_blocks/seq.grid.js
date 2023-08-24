@@ -61,7 +61,7 @@ function draw(){
 			
 			cursors[r]=ph;
 			for(c=maxl-1;c>=0;c--){			
-				outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,255*(c==ph),63+192*((c>=s)&&(c<s+l)),255*(c==ph),MAX_DATA*v_list[r]+3+c);
+				outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,255*(c==ph),63+192*((c>=s)&&(c<s+l)),255*(c==ph),MAX_DATA*v_list[r]+1+c);
 				if(!mini){
 //					outlet(1,"frgb",menudark);
 					outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.4);
@@ -89,7 +89,7 @@ function update(){
 		if(cursors[r]!=ph){
 			//redraw slider that was old cursor
 			if((cursors[r]>=0)&&(cursors[r]<maxl)){
-				outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,0,255,0,MAX_DATA*v_list[r]+3+cursors[r]);
+				outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,0,255,0,MAX_DATA*v_list[r]+1+cursors[r]);
 				if(!mini){
 					outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 					outlet(1,"write",cursors[r]);
@@ -107,7 +107,7 @@ function update(){
 			cursors[r]=ph;
 			//draw new cursor slider
 			if(cursors[r]<maxl){
-				outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+3+ph);
+				outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+1+ph);
 				if(!mini){
 					outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 					outlet(1,"write",cursors[r]);

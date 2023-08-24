@@ -20,7 +20,7 @@ function new_block(block_name,x,y){
 		new_voice = find_audio_voice_to_recycle(block_name);
 		recycled=1;
 	}else{
-		new_voice = next_free_voice(type);
+		new_voice = next_free_voice(type,block_name);
 	}
 	var t_offset = 0;
 	if(type == "note"){
@@ -35,14 +35,23 @@ function new_block(block_name,x,y){
 	}else if(type == "hardware"){
 		t_offset=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 		hardware_list[new_voice] = block_name;
+		post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
 	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
 	// now store it in block dict
 	if(type=="hardware"){
 		blocks.replace("blocks["+new_block_index+"]::name",block_name);
-		if(blocktypes.contains(block_name+"::substitute")){
-			blocks.replace("blocks["+new_block_index+"]::substitute",blocktypes.get(block_name+"::substitute"));
+		if(details.contains("substitute")){
+			blocks.replace("blocks["+new_block_index+"]::substitute",details.get("substitute"));
+		}
+		if(details.contains("block_ui_patcher")){
+			var ui = details.get("block_ui_patcher");
+			if((ui == "") || (ui == 0)){
+				ui_patcherlist[new_block_index] = "blank.ui";
+			}else{
+				ui_patcherlist[new_block_index] = ui;
+			}	
 		}
 	}else{
 		//block_name = details.get("patcher");
@@ -342,7 +351,7 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	return -1;
 }
 
-function next_free_voice(t){
+function next_free_voice(t,n){
 	var i=0;
 	if(t == "note"){
 		for(i=0;i<MAX_NOTE_VOICES;i++){
@@ -356,9 +365,23 @@ function next_free_voice(t){
 			if(audio_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "hardware"){
-		for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
-			if(hardware_list[i]=="none") return i;
-		}		
+		//for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
+		//	if(hardware_list[i]=="none") return i;
+		//}
+		if(blocktypes.contains(n)){
+			if(blocktypes.contains(n+"::connections::in::hardware_channels")){
+				t = blocktypes.get(n+"::connections::in::hardware_channels");
+				if(Array.isArray(t)) t = t[0];
+				return t;
+			}else if(blocktypes.contains(n+"::connections::out::hardware_channels")){
+				t = blocktypes.get(n+"::connections::out::hardware_channels");
+				if(Array.isArray(t)) t = t[0];
+				return t+MAX_AUDIO_INPUTS;
+			}else{
+				post("\nerror? hardware has no input or output channels")
+				return -1;
+			}
+		}
 	}
 	post("\nERROR : can't find a free voice\n");
 	return -1;
@@ -1901,7 +1924,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				t_offset=MAX_NOTE_VOICES;
 				new_voice = find_audio_voice_to_recycle(details.get("patcher"),blocks.get("blocks["+block+"]::upsample"));
 			}else{
-				new_voice = next_free_voice(type);
+				new_voice = next_free_voice(type,block_name);
 			}
 			if(details.contains("voice_data::defaults")){
 				var vd_def = [];
@@ -2487,20 +2510,16 @@ function build_mod_sum_action_list(){
 			var bname = blocks.get("blocks["+b+"]::name");
 			psize = blocktypes.getsize(bname+"::parameters");
 			if(psize){
-				midiout=0;
+				midiout=-1;
 				btype = blocks.get("blocks["+b+"]::type");
 				lockup = blocks.get("blocks["+b+"]::error::lockup");
 				lockup *= lockup * 0.003;
 				voicelist = voicemap.get(b);
+				if(!Array.isArray(voicelist)) voicelist = [voicelist];
 				if(btype=="hardware"){
-					//todo hardware can have params too!
-//					voffset+=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;//+b; //TODO no not +b, need a lookup
 					if(blocktypes.contains(bname+"::midi_output_number")){
 						midiout = blocktypes.get(bname+"::midi_output_number");
 					}	
-				}
-				if(typeof voicelist == "number"){
-					voicelist = [voicelist];
 				}
 
 				for(i=0;i<voicelist.length;i++){
@@ -2528,8 +2547,8 @@ function build_mod_sum_action_list(){
 						if(blocktypes.contains(bname+"::parameters["+p+"]::wrap")){
 							wrap = 2 - blocktypes.get(bname+"::parameters["+p+"]::wrap"); 
 						}
-						//TODO could lose the whole mod_wrap dict?
-						if(btype=="hardware"){
+						
+						if(midiout>-1){
 							flag = 4;
 							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
 							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");

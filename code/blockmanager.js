@@ -532,11 +532,11 @@ function outputfx(type, number, value){
 		if(value==0){
 			c=menucolour;
 		}else if(value==1){
-			c=[60,255,60];
+			c=[255,100,60];
 		}else if(value==2){
-			c=[60,190,205];
+			c=[60,255,60];
 		}else if(value==3){
-			c=[60,90,255];
+			c=[60,205,100];
 		}else if(value==4){
 			c=[255,90,255];
 		}

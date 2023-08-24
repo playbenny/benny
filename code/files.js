@@ -349,7 +349,7 @@ function import_song(){
 					post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
 					for(i=0;i<MAX_BLOCKS;i++){
 						if(blocks.get("blocks["+i+"]::name") == block_name){
-							post("found im",i)
+							post("found:",i)
 							t= 1;
 							loading.mapping[b] = i; //this next line stops orphaned bits of clock being left behind
 							if(thisblock.get("poly::voices")<blocks.get("blocks["+i+"]::poly::voices")) thisblock.replace("poly::voices",blocks.get("blocks["+i+"]::poly::voices"));
@@ -389,6 +389,7 @@ function import_song(){
 			i--;
 			if(i==0) t = 0;		
 		} while (loading.progress<t);
+		output_blocks_poly.setvalue(0,"load_complete");
 		loading.ready_for_next_action = 1;
 		if(t!=0) center_view(1);
 		//redraw_flag.flag |= 2;
@@ -584,23 +585,24 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
 			recycled = 1;
 		}else{
-			new_voice = next_free_voice(type);
+			new_voice = next_free_voice(type,block_name);
 		}
 	}else{
 		if(blocktypes.get(block_name+"::max_polyphony") == 1){
 			var v_list = voicemap.get(block_index);
-			if(typeof v_list == "number")v_list = [v_list];
+			if(!Array.isArray(v_list)) v_list = [v_list];
 			new_voice = v_list[0];
 		}else{
-			new_voice = next_free_voice(type);
+			new_voice = next_free_voice(type,block_name);
 		}
+		//if(type=="hardware") 
 	}
 	if(type == "note"){
 		note_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
 		still_checking_polys |= 1;
 	}else if(type == "audio"){
 		audio_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
-
+		
 		audio_upsamplelist[new_voice] = up;
 		still_checking_polys |= 2;
 		offs=MAX_NOTE_VOICES;
@@ -608,6 +610,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		hardware_list[new_voice] = block_name;
 		offs=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 	}
+	//post("\n\nHERE, VOICEALLOC ",type,block_name,new_voice,offs);
 	var ui = blocktypes.get(block_name+"::block_ui_patcher");
 	if((ui == "") || (ui == 0) || is_empty(ui)){
 		ui_patcherlist[block_index] = "blank.ui";
@@ -619,7 +622,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
 	// and load the params
 	if(blocktypes.contains(block_name+"::parameters")){
-		var voiceoffset = new_voice + MAX_NOTE_VOICES*(type == "audio");
+		var voiceoffset = new_voice + MAX_NOTE_VOICES*(type == "audio") + (MAX_NOTE_VOICES+MAX_AUDIO_VOICES)*(type == "hardware");
 		var params = [];
 		params = blocktypes.get(block_name+"::parameters");
 		if(!Array.isArray(params)) params = [params];
@@ -650,7 +653,8 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			if(params[i].contains("default")){
 				p_default = params[i].get("default");
 			}
-			if(i+1<=paramvalues.length){
+			
+			if(i+1<paramvalues.length){
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,paramvalues[i+1]);
 				param_defaults[block_index][i] = paramvalues[i+1]; //p_default; << new blocks the default is the default, when you load a song the default is the startup value of that param in the song instead.
 			}else{ // in the rare case that you've added some paramters to a block it should still load saves without errors.
@@ -788,6 +792,7 @@ function folder_select(folderstr){
 //	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
 		SONGS_FOLDER = folderstr;
+		post("\nselected new songs folder:",folderstr);
 		config.replace("SONGS_FOLDER",folderstr);
 		config.writeagain();
 		read_songs_folder();

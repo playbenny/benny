@@ -782,8 +782,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			
 			camera_position[2] = camera_position[2]-2*scroll;
 			if(camera_position[2]<0.1)camera_position[2]+=2*scroll;
-			camera_position[0] += xx*scroll*0.5;
-			camera_position[1] -= yy*scroll*0.5;
+			camera_position[0] += xx*scroll*1.5;
+			camera_position[1] -= yy*scroll*1.5;//*0.5;
 			messnamed("camera_control","position",  camera_position);
 			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){
@@ -848,10 +848,16 @@ function keydown(key){
 	}else if(key == -3){//escape
 		//center_view();
 		if(displaymode=="panels"){
-			if(sidebar.mode=="none"){
-				set_display_mode("blocks");
-			}else{
+			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
+				set_sidebar_mode("block");
+			}else if(sidebar.mode!="none"){
 				clear_blocks_selection();
+				if(sidebar.mode == "file_menu"){
+					set_sidebar_mode("none");
+					center_view(1);
+				} 
+			}else{
+				set_display_mode("blocks");
 			}
 		}else if((displaymode=="waves")&&(waves.selected!=-1)){
 			waves.selected=-1;

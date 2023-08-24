@@ -139,6 +139,7 @@ function get_hw_meter_positions(){
 }
 
 function draw_panels(){
+	//deferred_diag.push("draw panels "+mouse_index);
 	panels_custom = [];
 	var i,b,x=0,y=0,h;
 	var statecount;
@@ -2824,6 +2825,7 @@ function set_sidebar_mode(mode){
 
 function clear_screens(){
 	//lcd_main.message("brgb", 0, 0, 0);
+	//deferred_diag.push("clear screens, mode "+displaymode);
 	lcd_main.message("brgb", 0, 0, 0);
 	if(displaymode=="panels"){
 		mouse_index=2;
@@ -2839,7 +2841,7 @@ function clear_screens(){
 		mouse_click_values[0] = 0;		
 	}
 	lcd_main.message("clear");
-	mouse_index++;
+	//mouse_index++;
 }
 
 function draw_state_xfade(){
@@ -2860,7 +2862,7 @@ function draw_state_xfade(){
 }
 
 function draw_topbar(){
-	//post("\ndraw topbar");
+	//deferred_diag.push("draw topbar"+mouse_index);
 	setfontsize(fontheight/3.2);
 	lcd_main.message("textface", "bold");
 	lcd_main.message("pensize", 2, 2);
@@ -3236,7 +3238,7 @@ function draw_topbar(){
 }
 
 function draw_sidebar(){	
-	//post("\ndraw sidebar",sidebar.mode);
+	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) sidebar.scroll.position = 0;
 	selected.block_count =0;
@@ -3261,11 +3263,11 @@ function draw_sidebar(){
 	var has_params=0;
 	var block;
 	if((sidebar.mode!="none")||((selected.block_count+selected.wire_count)>0)){
-		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,mouse_index,0);
-		mouse_click_actions[mouse_index] = "none";
-		mouse_click_parameters[mouse_index] = "";
-		mouse_click_values[mouse_index] = "";	
-		mouse_index++;
+		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,0,0);
+		mouse_click_actions[0] = "none";
+		mouse_click_parameters[0] = "";
+		mouse_click_values[0] = "";	
+		//mouse_index++;
 	}
 
 	click_rectangle(mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
@@ -6285,7 +6287,7 @@ function draw_sidebar(){
 					mouse_index++;			
 				}			
 			}
-	   
+			y_offset += fontheight*5;
 		}else if(selected.wire_count > 1){
 // MULTI CONNECTION VIEW
 			sidebar.editbtn = 0;

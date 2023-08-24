@@ -32,18 +32,31 @@ function import_hardware(v){
 			ob = d.get(keys[i]+"::output_block");
 			d3.setparse('{}');
 			d3.import_json(ob+".json");
+			
 			if(d3.contains(ob+"::parameters")){
+				if(d3.contains(ob+"::groups")){
+					blocktypes.set(keys[i]+"::groups");
+					blocktypes.append(keys[i]+"::groups");
+					var glist=d3.getsize(ob+"::groups");
+					for(t=0;t<glist;t++){
+						blocktypes.setparse(keys[i]+"::groups["+t+"]","{}");
+						blocktypes.set(keys[i]+"::groups["+t+"]",d3.get(ob+"::groups["+t+"]"));
+						if(t+1<glist)blocktypes.append(keys[i]+"::groups","*");
+					}
+				}
+				if(d3.contains(ob+"::panel")){
+					blocktypes.set(keys[i]+"::panel",d3.get(ob+"::panel"));
+				}
 				//post("found output block parameters\n");
 				//blocktypes.set(keys[i]+"::connections",d3.get(ob+"connections"));
-				blocktypes.set(keys[i]+"::groups",d3.get(ob+"::groups"));
 				blocktypes.set(keys[i]+"::parameters");
 				blocktypes.append(keys[i]+"::parameters");
 				var plist= d3.getsize(ob+"::parameters");
-				post("- found ",plist,"parameters. ");
+				//post("- found ",plist,"parameters. adding: ");
 				for(t=0;t<plist;t++){
 					blocktypes.setparse(keys[i]+"::parameters["+t+"]","{}");
 					blocktypes.set(keys[i]+"::parameters["+t+"]",d3.get(ob+"::parameters["+t+"]"));
-					post(" - added param "+d3.get(ob+"::parameters["+t+"]::name")+"\n");
+					//post(d3.get(ob+"::parameters["+t+"]::name")+" ");
 					if(t+1<plist)blocktypes.append(keys[i]+"::parameters","*");
 				}
 			}
