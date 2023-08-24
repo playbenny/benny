@@ -150,9 +150,22 @@
 				}
 			}
 		},
-		"hardware.filter.gstorm.xavcf" : 			{
+		"hardware.erica.sum" : 			{
 			"type" : "hardware",
-			"help_text": "g storm Xavcf",
+			"help_text": "sum of the two sides of the erica mixer, which is fed by the sem and the mmm ladder vcf",
+			"exclusive" : 1,
+			"max_polyphony" : 1,
+			"substitute" : "utility.vca",
+			"connections" : {
+				"out" : {
+					"hardware" : [ "sum" ],
+					"hardware_channels" : [4 ]
+				}
+			}
+		},
+		"hardware.filter.sem" : 			{
+			"type" : "hardware",
+			"help_text": "erica tube mixer A channel to 12db SEM filter",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
@@ -201,7 +214,7 @@
 				}
 			}
 		},
-		"hardware.doepfer.bbd" : 			{
+		"hardware.bbd" : 			{
 			"type" : "hardware",
 			"help_text": "doepfer BBD module",			
 			"exclusive" : 1,
@@ -218,23 +231,6 @@
 				}
 			}
 		},
-		"hardware.sarajevo.bbd" : 			{
-			"type" : "hardware",
-			"help_text": "doepfer BBD module",			
-			"exclusive" : 1,
-			"max_polyphony" : 1,
-			"substitute" : "fx.delay.tape",
-			"connections" : {
-				"in" : {
-					"hardware" : [ "in", "time" ],
-					"hardware_channels" : [ 16, 17 ]
-				},
-				"out" : {
-					"hardware" : [ "mixed", "tap3" ],
-					"hardware_channels" : [ 23, 24 ]
-				}
-			}
-		},		
 		"hardware.in.ext" : 			{
 			"type" : "hardware",
 			"help_text": "mic input",
@@ -243,7 +239,7 @@
 			"connections" : {
 				"out" : {
 					"hardware" : [ "ext input" ],
-					"hardware_channels" : [ 18 ]
+					"hardware_channels" : [ 11 ]
 				}
 			}
 		}
