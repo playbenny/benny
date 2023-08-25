@@ -816,6 +816,10 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 }
 
 function mute_particular_block(block,av){ // i=block, av=value, av=-1 means toggle
+	if(block == "per_voice"){
+		post("\n\n\nERROR mute was passed : ",block);
+		return -1; 
+	}
 	if(av==-1){
 		av = 1 - blocks.get("blocks["+block+"]::mute");
 	}
