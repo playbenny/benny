@@ -3459,7 +3459,8 @@ function draw_sidebar(){
 			if(blocks.contains("blocks["+i+"]::space::colour")) free_b--;
 		}
 		for(var i = 0;i<MAX_NOTE_VOICES;i++){
-			if(note_patcherlist[i]!='blank.note') free_n--;
+			if(note_patcherlist[i]=="recycling"){
+			}else if(note_patcherlist[i]!='blank.note') free_n--;
 		}
 		for(var i = 0;i<MAX_AUDIO_VOICES;i++){
 			if(audio_patcherlist[i]=="recycling"){
@@ -3693,13 +3694,16 @@ function draw_sidebar(){
 		y_offset+=1.1*fontheight;
 		for(var i = 0;i<MAX_NOTE_VOICES;i++){
 			var c=menudarkest;
-			if(note_patcherlist[i]!='blank.note'){
+			var rectype = "paintrect";
+			if(note_patcherlist[i]=='recycling'){
+				rectype = "framerect";
+			}else if(note_patcherlist[i]!='blank.note'){
 				c = menucolour;
 				bfree--;
 			}	
 			if(Array.isArray(voicecolours[i])) c=voicecolours[i];
 			if(voiceselect[i]) lcd_main.message("paintrect",tx-4,y_offset-4,tx+22,y_offset+22,menucolour);
-			lcd_main.message("paintrect",tx,y_offset,tx+18,y_offset+18,c);
+			lcd_main.message(rectype,tx,y_offset,tx+18,y_offset+18,c);
 			click_rectangle(tx-4,y_offset-4,tx+22,y_offset+22,mouse_index,1);
 			click_info(cpu_select_block,voiceno[i],voiceparent[i]);
 			tx += wm;

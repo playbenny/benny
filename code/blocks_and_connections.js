@@ -18,7 +18,10 @@ function new_block(block_name,x,y){
 	var recycled=0;
 	if((type=="audio") && RECYCLING){
 		new_voice = find_audio_voice_to_recycle(block_name);
-		recycled=1;
+		recycled = 1;
+	}else if((type=="note") && RECYCLING){
+		new_voice = find_note_voice_to_recycle(block_name);
+		recycled = 1;
 	}else{
 		new_voice = next_free_voice(type,block_name);
 	}
@@ -242,7 +245,7 @@ function new_block(block_name,x,y){
 function send_note_patcherlist(do_all){ //loads a single voice and returns, only unflags still_checking_polys when all loaded.
 	var i;
 	for(i = 0; i<MAX_NOTE_VOICES; i++){
-		if(note_patcherlist[i]!=loaded_note_patcherlist[i]){
+/*		if(note_patcherlist[i]!=loaded_note_patcherlist[i]){
 			//post("loading",note_patcherlist[i],"into",i+1,"\n");
 			note_poly.setvalue(i+1,"patchername",(note_patcherlist[i]+".maxpat"));
 			loaded_note_patcherlist[i]=note_patcherlist[i];
@@ -250,7 +253,32 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 				still_checking_polys |=1;
 				return 1;
 			}
-		}
+		}*/
+		if((note_patcherlist[i] != loaded_note_patcherlist[i]) && (note_patcherlist[i] != "recycling")){
+			if(RECYCLING && (note_patcherlist[i] == "blank.note")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
+				note_patcherlist[i] = "recycling";
+				note_poly.setvalue(i+1, "muteouts", 1);
+				if(!do_all){
+					still_checking_polys |= 1;
+					return 1;
+				}
+			}else{
+				//post("loading",note_patcherlist[i],"into",i+1,"\n");
+				var pn = (note_patcherlist[i]+".maxpat");
+				if(loaded_note_patcherlist[i] == "reload"){
+					note_poly.setvalue(i+1,"patchername","blank.note.maxpat");
+					loaded_note_patcherlist[i] = "blank.note";
+					still_checking_polys |=1;
+					return 1; //this clears it, come back next time and it'll load what you wanted
+				}
+				note_poly.setvalue(i+1,"patchername",pn);
+				loaded_note_patcherlist[i]=note_patcherlist[i];
+				if(do_all != 1){
+					still_checking_polys |= 1;
+					return 1;
+				} 
+			}
+		}		
 	}
 	still_checking_polys &= 6;
 	post("\nall note blocks loaded");
@@ -304,14 +332,39 @@ function send_audio_patcherlist(do_all){
 function send_ui_patcherlist(do_all){
 	var i;
 	for(i = 0; i<MAX_BLOCKS; i++){
-		if(loaded_ui_patcherlist[i]!=ui_patcherlist[i]){
+/*		if(loaded_ui_patcherlist[i]!=ui_patcherlist[i]){
 			loaded_ui_patcherlist[i]=ui_patcherlist[i];
 			ui_poly.setvalue( i+1, "patchername",ui_patcherlist[i] + ".maxpat");
 			if(do_all!=1){
 				still_checking_polys |=4;
 				return 1;
 			}
-		}
+		}*/
+		if((loaded_ui_patcherlist[i]!=ui_patcherlist[i])&&(ui_patcherlist[i]!="recycling")){
+			if(RECYCLING && (ui_patcherlist[i] == "blank.ui")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
+				ui_patcherlist[i] = "recycling";
+				ui_poly.setvalue(i+1, "muteouts", 1); //doesn't strictly mute the outs but i'm just using the same message for consistancy
+				if(!do_all){
+					still_checking_polys |= 4;
+					return 1;
+				}
+			}else{
+				//post("loading",audio_patcherlist[i],"into",i+1,"\n");
+				var pn = (ui_patcherlist[i]+".maxpat");
+				if(loaded_ui_patcherlist[i] == "reload"){
+					ui_poly.setvalue(i+1,"patchername","blank.ui.maxpat");
+					loaded_ui_patcherlist[i] = "blank.ui";
+					still_checking_polys |=4;
+					return 1; //this clears it, come back next time and it'll load what you wanted
+				}
+				ui_poly.setvalue(i+1,"patchername",pn);
+				loaded_ui_patcherlist[i]=ui_patcherlist[i];
+				if(do_all!=1){
+					still_checking_polys |=4;
+					return 1;
+				} 
+			}
+		}		
 	}
 	still_checking_polys &= 3;
 	post("\nall ui blocks loaded");
@@ -350,12 +403,32 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	post("\nERROR : can't find a free voice or one to recycle\n");
 	return -1;
 }
+function find_note_voice_to_recycle(pa){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
+	//post("\n>>looking for a voice to recycle for",pa,"upsampling is",up);
+	for(i=0;i<MAX_NOTE_VOICES;i++){
+		if((note_patcherlist[i] == "recycling") && (loaded_note_patcherlist[i] == pa)){
+			//post("\nrecycling note voice ",i,pa);
+			return i;
+		}
+	}
+	for(i=0;i<MAX_NOTE_VOICES;i++){
+		if(note_patcherlist[i]=="blank.note") return i;
+	}
+	for(i=0;i<MAX_NOTE_VOICES;i++){
+		if(note_patcherlist[i]=="recycling") return i;
+	}
+	post("\nERROR : can't find a free voice or one to recycle\n");
+	return -1;
+}
 
 function next_free_voice(t,n){
 	var i=0;
 	if(t == "note"){
 		for(i=0;i<MAX_NOTE_VOICES;i++){
 			if(note_patcherlist[i]=="blank.note") return i;
+		}
+		for(i=0;i<MAX_AUDIO_VOICES;i++){
+			if(note_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "audio"){
 		for(i=0;i<MAX_AUDIO_VOICES;i++){
@@ -400,7 +473,14 @@ function next_free_block(){
 		if(a.contains("name")){
 			index++;
 		}else{
-			return index;
+			for(var i=0;i<loading.mapping.length;i++){
+				if(loading.mapping[i] == index){
+					post("\nthe block i was going to use is already used in the loading mapping",index,"so i'll find another");
+					index++;
+					i=9999999;
+				}
+			}
+			if(i<9999998) return index;
 		}
 	}
 	post("error: no free block slots found\n");
@@ -1923,6 +2003,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			if(type=="audio"){
 				t_offset=MAX_NOTE_VOICES;
 				new_voice = find_audio_voice_to_recycle(details.get("patcher"),blocks.get("blocks["+block+"]::upsample"));
+			}else if(type=="note"){
+				new_voice = find_note_voice_to_recycle(details.get("patcher"));
 			}else{
 				new_voice = next_free_voice(type,block_name);
 			}

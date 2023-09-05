@@ -76,6 +76,7 @@ function voice_is(v){
 }
 
 function voice_offset(){}
+
 function loadbang(){
 	outlet(0,"getvoice");
 }

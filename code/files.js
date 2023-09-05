@@ -194,10 +194,6 @@ function load_song(){
 	import_song();
 }
 
-//file page actually needs:
-// clear / load (clears and loads) / merge (loads in all at once, but optionally new blocks are muted) 
-// save / save selected
-
 function merge_song(){
 	loading.progress=-1;
 	if(playing){
@@ -207,11 +203,11 @@ function merge_song(){
 		loading.mute_new=0;
 		loading.bundling=4;
 	}
-	song_select.previous_name=song_select.current_name;
-	song_select.previous_blocks=song_select.current_blocks.slice();
+	song_select.previous_name = song_select.current_name;
+	song_select.previous_blocks = song_select.current_blocks.slice();
 	song_select.current_name = songlist[currentsong];
-	song_select.current_blocks=[];
-	song_select.show=1;
+	song_select.current_blocks = [];
+	song_select.show = 1;
 	if(MERGE_PURGE>0) purge_muted_trees();
 	import_song();
 }
@@ -345,6 +341,8 @@ function import_song(){
 				}
 				t=0;
 				var excl = blocktypes.contains(block_name+"::exclusive");
+				var ui = blocktypes.get(block_name+"::block_ui_patcher");
+				var type = blocktypes.get(block_name+"::type");
 				if(excl){
 					post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
 					for(i=0;i<MAX_BLOCKS;i++){
@@ -353,6 +351,18 @@ function import_song(){
 							t= 1;
 							loading.mapping[b] = i; //this next line stops orphaned bits of clock being left behind
 							if(thisblock.get("poly::voices")<blocks.get("blocks["+i+"]::poly::voices")) thisblock.replace("poly::voices",blocks.get("blocks["+i+"]::poly::voices"));
+							i=MAX_BLOCKS;
+						}
+					}
+				}
+				if((t == 0) && (ui != "blank.ui")){
+					for(i=0;i<MAX_BLOCKS;i++){
+						if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
+							post("\nrecycling ui and block number:",i,ui);
+							t= 1;
+							loading.mapping[b] = i;
+							//ui_patcherlist[i] = ui; //something muteouts 0? - if there's a mechanism to disable ui patchers then here you should enable..
+							i=MAX_BLOCKS;
 						}
 					}
 				}
@@ -490,7 +500,7 @@ function import_song(){
 		build_mod_sum_action_list();
 		draw_blocks();
 		//prep_meter_updatelist();
-		
+		loading.mapping = [];
 		output_queue_pointer = 0;
 		changed_queue_pointer = 0;
 		redraw_flag.flag|=12;
@@ -584,6 +594,9 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		if(type == "audio"){
 			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
 			recycled = 1;
+		}else if(type == "note"){
+			new_voice = find_note_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
+			recycled = 1;			
 		}else{
 			new_voice = next_free_voice(type,block_name);
 		}

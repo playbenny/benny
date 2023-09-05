@@ -206,13 +206,6 @@ function initialise_dictionaries(){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
 	}
-	for(i=0;i<MAX_AUDIO_VOICES;i++) {
-		loaded_audio_patcherlist[i]='_blank.audio';
-		audio_upsamplelist[i]=1;
-	}
-	for(i=0;i<MAX_BLOCKS;i++) {
-		loaded_ui_patcherlist[i] = '_blank.ui';
-	}
 	for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
 		hardware_list[i] = "none";
 	}
@@ -243,20 +236,23 @@ function initialise_dictionaries(){
 	var i;
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		note_patcherlist[i]='blank.note';
-		//loaded_note_patcherlist[i]='blank.note';
+		audio_poly.setvalue(i+1,"patchername","blank.note");
+		loaded_note_patcherlist[i]='blank.note';
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++) {
+		audio_upsamplelist[i]=1;
 		audio_patcherlist[i]='blank.audio';
 		audio_poly.setvalue(i+1,"patchername","blank.audio");
 		loaded_audio_patcherlist[i]='blank.audio';
 	}
 	for(i=0;i<MAX_BLOCKS;i++) {
 		ui_patcherlist[i]='blank.ui';
-		//loaded_ui_patcherlist[i] = 'blank.ui';
+		loaded_ui_patcherlist[i] = 'blank.ui';
+		audio_poly.setvalue(i+1,"patchername","blank.ui");
 		selected.block[i]=0;
 		selected.wire[i]=0;
 	}
-	still_checking_polys = 7;
+	still_checking_polys = 0;
 	audio_to_data_poly.setvalue(0, "vis_meter", 0);
 	audio_to_data_poly.setvalue(0, "vis_scope", 0);
 	audio_to_data_poly.setvalue(0, "out_value", 0);
