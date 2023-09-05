@@ -35,7 +35,7 @@ function new_block(block_name,x,y){
 	}else if(type == "hardware"){
 		t_offset=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 		hardware_list[new_voice] = block_name;
-		post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
+		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
 	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
