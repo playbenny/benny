@@ -1,0 +1,63 @@
+{
+	"master_2" : {
+		"patcher" : "master_2",
+		"type" : "output",
+		"help_text" : "Master channel with continuity looper",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0, 1, 2]
+			},
+			{
+				"contains" : [3,4],
+				"height" : 0
+			}		
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4]
+		},
+		"parameters" : [
+			{
+				"name" : "initial length_(beats)",
+				"type" : "int",
+				"values" : ["uni", 1, 64, "lin"],
+				"wrap" : 0,
+				"default" : 0.06
+			},
+			{
+				"name" : "fadeout",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.95
+			},
+			{
+				"name" : "highpass",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "on play:",
+				"type" : "menu_i",
+				"values" : ["cut", "fade"],
+				"wrap" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "controller number",
+				"type" : "menu_i",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			}			
+		]
+	}
+}

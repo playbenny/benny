@@ -88,8 +88,8 @@
 		"hardware.out.1+2" : 			{
 			"type" : "hardware",
 			"help_text": "main stereo outs",
-			"output_block" : "master_1",
-			"block_ui_patcher" : "master_1.ui",
+			"output_block" : "master_2",
+			"block_ui_patcher" : "master_2.ui",
 			"ui_in_sidebar_height" : 4,		
 			"autoload" : 1,
 			"max_polyphony" : 2,
