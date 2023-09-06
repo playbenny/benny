@@ -462,6 +462,7 @@ var loading = {
 	ready_for_next_action : 0,
 	bundling : 1, //set to 1 for a slow load with a rest between each thing loaded, higher loads things in chunks, loads faster overall.
 	mapping : [],
+	merge : 0,
 	mutelist : [], //each entry is [blockno,mute], you resend the message once everything should've loaded
 	purgelist : [], //list of blocks to be deleted, and everything solely connected to them too. (for merge purge)
 	wave_paramlist : [] //list of [blockno,paramno] that are wave parameters that have been remapped - it uses this list to apply the remapping to preset states too

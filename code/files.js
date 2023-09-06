@@ -187,6 +187,7 @@ function buffer_loaded(number,path,name,buffername){
 
 function load_song(){
 	clear_everything();
+	loading.merge = 0;
 	loading.dont_automute=1;
 	loading.progress=-1;
 	loading.mute_new=0;
@@ -196,6 +197,7 @@ function load_song(){
 
 function merge_song(){
 	loading.progress=-1;
+	loading.merge = 1;
 	if(playing){
 		loading.mute_new=1;
 		loading.bundling=2;
@@ -342,7 +344,7 @@ function import_song(){
 				t=0;
 				var excl = blocktypes.contains(block_name+"::exclusive");
 				var ui = blocktypes.get(block_name+"::block_ui_patcher");
-				var type = blocktypes.get(block_name+"::type");
+				//var type = blocktypes.get(block_name+"::type");
 				if(excl){
 					post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
 					for(i=0;i<MAX_BLOCKS;i++){
@@ -358,7 +360,7 @@ function import_song(){
 				if((t == 0) && (ui != "blank.ui")){
 					for(i=0;i<MAX_BLOCKS;i++){
 						if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
-							post("\nrecycling ui and block number:",i,ui);
+							//post("\nrecycling ui and block number:",i,ui);
 							t= 1;
 							loading.mapping[b] = i;
 							//ui_patcherlist[i] = ui; //something muteouts 0? - if there's a mechanism to disable ui patchers then here you should enable..
@@ -377,7 +379,7 @@ function import_song(){
 				tx = blocks.get("blocks["+loading.mapping[b]+"]::space::x");
 				blocks.replace("blocks["+loading.mapping[b]+"]::space::x",tx+loading.xoffset);
 				if(!blocks.contains("blocks["+loading.mapping[b]+"]::label")) blocks.replace("blocks["+loading.mapping[b]+"]::label", block_name);
-				load_block(block_name,loading.mapping[b],songs.get(songlist[currentsong]+"::states::current::"+b),t);
+				load_block(block_name,loading.mapping[b],songs.get(songlist[currentsong]+"::states::current::"+b),excl);
 			}
 		}
 		
@@ -590,13 +592,15 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			//post("\n no saved upsampling, no default upsampling, set to 1x");
 		}
 	}
-	if(!was_exclusive){
+	if(!(was_exclusive && loading.merge)){
 		if(type == "audio"){
-			new_voice = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
-			recycled = 1;
+			var tnv = find_audio_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
+			new_voice = tnv[0];
+			recycled = tnv[1];
 		}else if(type == "note"){
-			new_voice = find_note_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
-			recycled = 1;			
+			var tnv = find_note_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
+			new_voice = tnv[0];
+			recycled = tnv[1];
 		}else{
 			new_voice = next_free_voice(type,block_name);
 		}
@@ -605,7 +609,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			var v_list = voicemap.get(block_index);
 			if(!Array.isArray(v_list)) v_list = [v_list];
 			new_voice = v_list[0];
+			recycled = 1;
+			post("\nblock was exclusive so i'm reusing voice",new_voice,"from the vlist",v_list);
 		}else{
+			post("\nblock was excl but poly so i'm just getting a free slot");
 			new_voice = next_free_voice(type,block_name);
 		}
 		//if(type=="hardware") 
@@ -614,8 +621,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		note_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
 		still_checking_polys |= 1;
 	}else if(type == "audio"){
-		audio_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
-		
+		audio_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");	
 		audio_upsamplelist[new_voice] = up;
 		still_checking_polys |= 2;
 		offs=MAX_NOTE_VOICES;
@@ -632,7 +638,15 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 	still_checking_polys |= 4;
 	voicemap.replace(block_index, new_voice+offs); //set the voicemap
-	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
+
+	if(recycled){
+		if(type=="audio"){
+			audio_poly.setvalue(new_voice+1,"reset");
+		}else if(type=="note"){
+			note_poly.setvalue(new_voice+1,"reset");
+		}
+	}
+
 	// and load the params
 	if(blocktypes.contains(block_name+"::parameters")){
 		var voiceoffset = new_voice + MAX_NOTE_VOICES*(type == "audio") + (MAX_NOTE_VOICES+MAX_AUDIO_VOICES)*(type == "hardware");

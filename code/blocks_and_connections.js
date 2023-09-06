@@ -17,11 +17,13 @@ function new_block(block_name,x,y){
 	var vst = 0;
 	var recycled=0;
 	if((type=="audio") && RECYCLING){
-		new_voice = find_audio_voice_to_recycle(block_name);
-		recycled = 1;
+		var tnv = find_audio_voice_to_recycle(block_name);
+		new_voice = tnv[0];
+		recycled = tnv[1];
 	}else if((type=="note") && RECYCLING){
-		new_voice = find_note_voice_to_recycle(block_name);
-		recycled = 1;
+		var tnv = find_note_voice_to_recycle(block_name);
+		new_voice = tnv[0];
+		recycled = tnv[1];
 	}else{
 		new_voice = next_free_voice(type,block_name);
 	}
@@ -41,7 +43,13 @@ function new_block(block_name,x,y){
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
-	if(recycled) audio_poly.setvalue(new_voice+1,"reset");
+	if(recycled){
+		if(type=="audio"){
+			audio_poly.setvalue(new_voice+1,"reset");
+		}else if(type=="note"){
+			note_poly.setvalue(new_voice+1,"reset");
+		}
+	}
 	// now store it in block dict
 	if(type=="hardware"){
 		blocks.replace("blocks["+new_block_index+"]::name",block_name);
@@ -391,31 +399,32 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if((audio_patcherlist[i] == "recycling") && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] == "vst.loader") && (vst_list[i]==pa)))){
 			//post("\nrecycling voice ",i);
-			return i;
+			return [i,1];
 		}
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
-		if(audio_patcherlist[i]=="blank.audio") return i;
+		if(audio_patcherlist[i]=="blank.audio") return [i,0];
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
-		if(audio_patcherlist[i]=="recycling") return i;
+		if(audio_patcherlist[i]=="recycling") return [i,0];
 	}
 	post("\nERROR : can't find a free voice or one to recycle\n");
 	return -1;
 }
+
 function find_note_voice_to_recycle(pa){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
-	//post("\n>>looking for a voice to recycle for",pa,"upsampling is",up);
+	//post("\n>>looking for a voice to recycle for",pa);
 	for(i=0;i<MAX_NOTE_VOICES;i++){
 		if((note_patcherlist[i] == "recycling") && (loaded_note_patcherlist[i] == pa)){
 			//post("\nrecycling note voice ",i,pa);
-			return i;
+			return [i,1];
 		}
 	}
 	for(i=0;i<MAX_NOTE_VOICES;i++){
-		if(note_patcherlist[i]=="blank.note") return i;
+		if(note_patcherlist[i]=="blank.note") return [i,0];
 	}
 	for(i=0;i<MAX_NOTE_VOICES;i++){
-		if(note_patcherlist[i]=="recycling") return i;
+		if(note_patcherlist[i]=="recycling") return [i,0];
 	}
 	post("\nERROR : can't find a free voice or one to recycle\n");
 	return -1;
@@ -427,7 +436,7 @@ function next_free_voice(t,n){
 		for(i=0;i<MAX_NOTE_VOICES;i++){
 			if(note_patcherlist[i]=="blank.note") return i;
 		}
-		for(i=0;i<MAX_AUDIO_VOICES;i++){
+		for(i=0;i<MAX_NOTE_VOICES;i++){
 			if(note_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "audio"){
@@ -2000,11 +2009,16 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		if(voices > v){	//add voices
 			//post("adding a poly voice");
 			var t_offset = 0;
+			var recycled = 0;
 			if(type=="audio"){
 				t_offset=MAX_NOTE_VOICES;
-				new_voice = find_audio_voice_to_recycle(details.get("patcher"),blocks.get("blocks["+block+"]::upsample"));
+				var tnv = find_audio_voice_to_recycle(details.get("patcher"),blocks.get("blocks["+block+"]::upsample"));
+				new_voice = tnv[0];
+				recycled = tnv[1];
 			}else if(type=="note"){
-				new_voice = find_note_voice_to_recycle(details.get("patcher"));
+				var tnv = find_note_voice_to_recycle(details.get("patcher"));
+				new_voice = tnv[0];
+				recycled = tnv[1];
 			}else{
 				new_voice = next_free_voice(type,block_name);
 			}
@@ -2068,6 +2082,13 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
 			} //set param spreads
+			if(recycled){
+				if(type=="audio"){
+					audio_poly.setvalue(new_voice+1,"reset");
+				}else if(type=="note"){
+					note_poly.setvalue(new_voice+1,"reset");
+				}
+			}		
 			v++;			
 		}else if(voices < v){
 			var voiceoffset=0;
