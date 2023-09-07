@@ -820,12 +820,13 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 		post("\n\n\nERROR mute was passed : ",block);
 		return -1; 
 	}
+	var type = blocks.get("blocks["+block+"]::type");
 	if(av==-1){
 		av = 1 - blocks.get("blocks["+block+"]::mute");
 	}
 	if(av==1) anymuted =1;
 	blocks.replace("blocks["+block+"]::mute",av);
-	if(blocks.get("blocks["+block+"]::type")=="audio"){
+	if(type=="audio"){
 		list = voicemap.get(block);
 		if(typeof list === 'number'){
 			audio_poly.setvalue( list+1-MAX_NOTE_VOICES, "muteouts",av);
@@ -834,7 +835,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 				audio_poly.setvalue( list[t]+1-MAX_NOTE_VOICES, "muteouts",av);
 			}					
 		}
-	}else{
+	}else if(type == "note"){
 		list = voicemap.get(block);
 		if(list === null){
 			post("\n\nERROR: couldn't find block "+block+" in the voicemap list\n\n");
@@ -844,6 +845,14 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 			for(var t=0;t<list.length;t++){
 				note_poly.setvalue( list[t]+1, "muteouts",av);
 			}					
+		}
+	}else if(type == "hardware"){
+		//actually needs to mute or unmute the audio/midi connections for hw blocks
+		for(var t=0;t<connections.getsize("connections");t++){
+			if(connections.contains("connections["+t+"]::from") && (connections.get("connections["+t+"]::from::number") == block)){
+				// and connection type is audio/hw
+				// then mute it or unmute it (if the connection itself is not muted)
+			}
 		}
 	}
 	if(usermouse.shift && (av==0)){ //this could lose the av term, but big auto mute chains seems a bad idea.
