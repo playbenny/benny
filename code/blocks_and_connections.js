@@ -253,15 +253,6 @@ function new_block(block_name,x,y){
 function send_note_patcherlist(do_all){ //loads a single voice and returns, only unflags still_checking_polys when all loaded.
 	var i;
 	for(i = 0; i<MAX_NOTE_VOICES; i++){
-/*		if(note_patcherlist[i]!=loaded_note_patcherlist[i]){
-			//post("loading",note_patcherlist[i],"into",i+1,"\n");
-			note_poly.setvalue(i+1,"patchername",(note_patcherlist[i]+".maxpat"));
-			loaded_note_patcherlist[i]=note_patcherlist[i];
-			if(do_all!=1){
-				still_checking_polys |=1;
-				return 1;
-			}
-		}*/
 		if((note_patcherlist[i] != loaded_note_patcherlist[i]) && (note_patcherlist[i] != "recycling")){
 			if(RECYCLING && (note_patcherlist[i] == "blank.note")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				note_patcherlist[i] = "recycling";
@@ -340,14 +331,6 @@ function send_audio_patcherlist(do_all){
 function send_ui_patcherlist(do_all){
 	var i;
 	for(i = 0; i<MAX_BLOCKS; i++){
-/*		if(loaded_ui_patcherlist[i]!=ui_patcherlist[i]){
-			loaded_ui_patcherlist[i]=ui_patcherlist[i];
-			ui_poly.setvalue( i+1, "patchername",ui_patcherlist[i] + ".maxpat");
-			if(do_all!=1){
-				still_checking_polys |=4;
-				return 1;
-			}
-		}*/
 		if((loaded_ui_patcherlist[i]!=ui_patcherlist[i])&&(ui_patcherlist[i]!="recycling")){
 			if(RECYCLING && (ui_patcherlist[i] == "blank.ui")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				ui_patcherlist[i] = "recycling";
