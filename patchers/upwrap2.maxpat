@@ -57,7 +57,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 453.0, 198.0, 52.0, 22.0 ],
+					"patching_rect" : [ 443.0, 230.0, 52.0, 22.0 ],
 					"text" : "mute $1"
 				}
 
@@ -199,7 +199,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 390.0, 198.0, 58.0, 22.0 ],
+					"patching_rect" : [ 390.0, 189.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
