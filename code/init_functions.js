@@ -236,7 +236,7 @@ function initialise_dictionaries(){
 	var i;
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		note_patcherlist[i]='blank.note';
-		audio_poly.setvalue(i+1,"patchername","blank.note");
+		note_poly.setvalue(i+1,"patchername","blank.note");
 		loaded_note_patcherlist[i]='blank.note';
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++) {
@@ -248,7 +248,7 @@ function initialise_dictionaries(){
 	for(i=0;i<MAX_BLOCKS;i++) {
 		ui_patcherlist[i]='blank.ui';
 		loaded_ui_patcherlist[i] = 'blank.ui';
-		audio_poly.setvalue(i+1,"patchername","blank.ui");
+		ui_poly.setvalue(i+1,"patchername","blank.ui");
 		selected.block[i]=0;
 		selected.wire[i]=0;
 	}

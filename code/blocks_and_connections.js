@@ -51,6 +51,7 @@ function new_block(block_name,x,y){
 		}
 	}
 	// now store it in block dict
+	ui_patcherlist[new_block_index] = "blank.ui"; //if the new block has no ui we need to be sure it gets unloaded
 	if(type=="hardware"){
 		blocks.replace("blocks["+new_block_index+"]::name",block_name);
 		if(details.contains("substitute")){
@@ -82,7 +83,6 @@ function new_block(block_name,x,y){
 			for(vdi=vd_def.length;vdi<MAX_DATA;vdi++){
 				voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset)+vdi,0);
 			}
-			//post("new block so setting default data TODO BUT HOW DO WE KNOW ITS NEW? IS THIS THE RIGHT PLACE TO DO THIS?",new_voice+t_offset,MAX_DATA*(new_voice+t_offset));
 		}
 	}
 	panelslider_visible[new_block_index] = [];
