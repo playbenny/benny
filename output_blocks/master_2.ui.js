@@ -18,9 +18,12 @@ var samplerate = 48000;
 var param_ind;
 
 var l_pos = 0,l_start = 0,l_end = 0;
+var o_l_pos =0, o_l_start=0,o_l_end=0;
 
 var wavestripe = [];
 var wavestripe_onepx = 1;
+
+var redraw =1;
 
 function setup(x1,y1,x2,y2,sw){
 	menucolour = config.get("palette::menu");
@@ -35,6 +38,7 @@ function setup(x1,y1,x2,y2,sw){
 }
 
 function getparams(){
+	redraw = 0;
 	p_len = Math.floor(128*voice_parameter_buffer.peek(1, param_ind,1));
 	p_fb = Math.floor(128*voice_parameter_buffer.peek(1, param_ind+1,1));
 	p_hp = Math.floor(128*voice_parameter_buffer.peek(1, param_ind+2,1));
@@ -43,6 +47,18 @@ function getparams(){
 	l_pos = Math.floor((width-4)*voice_parameter_buffer.peek(1, param_ind+5,1));
 	l_start = Math.floor((width-4)*voice_parameter_buffer.peek(1, param_ind+6,1));
 	l_end = l_start+Math.floor((width-4)*voice_parameter_buffer.peek(1, param_ind+7,1));
+	if(l_pos!=o_l_pos){
+		o_l_pos=l_pos;
+		redraw=1;
+	}
+	if(l_start!=o_l_start){
+		o_l_start = l_start;
+		redraw=1;
+	}
+	if(l_end!=o_l_end){
+		o_l_end = l_end;
+		redraw =1;
+	}
 }
 
 function draw(){
@@ -58,42 +74,45 @@ function draw(){
 }
 
 function drawstripe(x1,y1,x2,y2){
-	var h = (y2 - y1)*0.5;
-	var xx=0;
-	outlet(1,"frgb",0,0,200);
-	var c=0;
-	for(var x=x1;x<x2;x++){
-		var min=0, max =0;
-		if(x==l_pos){
-			outlet(1,"frgb", 255,255,255);
-			c=1;
-		}else if((x>=l_start)&&(x<=l_end)){
-			outlet(1,"frgb", 0,100,200);
-			c=1;
-		}else if(c>0){
-			outlet(1,"frgb", 0,0, 200);
-			c=0;
+	if(redraw){
+
+		var h = (y2 - y1)*0.5;
+		var xx=0;
+		outlet(1,"frgb",0,0,200);
+		var c=0;
+		for(var x=x1;x<x2;x++){
+			var min=0, max =0;
+			if(x==l_pos){
+				outlet(1,"frgb", 255,255,255);
+				c=1;
+			}else if((x>=l_start)&&(x<=l_end)){
+				outlet(1,"frgb", 0,100,200);
+				c=1;
+			}else if(c>0){
+				outlet(1,"frgb", 0,0, 200);
+				c=0;
+			}
+			for(var i=0;i<10;i++){
+				var xxx=wavestripe_onepx * Math.random();
+				xxx = (xxx + xx) | 0;
+				var yy = loop_buffer.peek(1,xxx,1);
+				if(yy<min)min=yy;
+				if(yy>max)max=yy;
+			}
+			if(min<-1){
+				outlet(1,"frgb",255,0,0);
+				c=1;
+				min=-1;
+			}
+			if(max<1){
+				outlet(1,"frgb",255,0,0);
+				c=1;
+				max=1;
+			}
+			outlet(1,"moveto", x, y1 + (min+1)*h);
+			outlet(1,"lineto", x, y1 + (max+1)*h);
+			xx+=wavestripe_onepx;
 		}
-		for(var i=0;i<10;i++){
-			var xxx=wavestripe_onepx * Math.random();
-			xxx = (xxx + xx) | 0;
-			var yy = loop_buffer.peek(1,xxx,1);
-			if(yy<min)min=yy;
-			if(yy>max)max=yy;
-		}
-		if(min<-1){
-			outlet(1,"frgb",255,0,0);
-			c=1;
-			min=-1;
-		}
-		if(max<1){
-			outlet(1,"frgb",255,0,0);
-			c=1;
-			max=1;
-		}
-		outlet(1,"moveto", x, y1 + (min+1)*h);
-		outlet(1,"lineto", x, y1 + (max+1)*h);
-		xx+=wavestripe_onepx;
 	}
 }
 function update(){
