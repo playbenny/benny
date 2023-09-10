@@ -39,7 +39,9 @@
 		"hardware.out.1+2" : 			{
 			"type" : "hardware",
 			"max_polyphony" : 2,
-			"output_block" : "master_1",
+			"output_block" : "master_2",
+			"block_ui_patcher" : "master_2.ui",
+			"ui_in_sidebar_height" : 4,		
 			"help_text" : "pc speakers",
 			"autoload" : 1,
 			"connections" : {

@@ -656,6 +656,12 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_parameters[mouse_index] = dataindex+1; //custom_block+1;
 		mouse_click_values[mouse_index] = 0;
 		mouse_index++;		
+	}else if(type =="button"){ // not sure about any of this:>>
+		click_rectangle( x1, y1, x2, y2, mouse_index, 8);
+		mouse_click_actions[mouse_index] = custom_mouse_button;
+		mouse_click_parameters[mouse_index] = dataindex+1; //custom_block+1;
+		mouse_click_values[mouse_index] = 0;
+		mouse_index++;				
 	}
 }
 

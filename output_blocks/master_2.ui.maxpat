@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -40,11 +40,35 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 137.0, 179.5, 138.0, 22.0 ],
+					"text" : "prepend set_samplerate"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 89.0, 147.0, 67.0, 22.0 ],
+					"text" : "adstatus sr"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-7",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 71.0, 272.0, 157.0, 22.0 ],
+					"patching_rect" : [ 89.0, 115.0, 157.0, 22.0 ],
 					"text" : "print MASTERFX_LOADED"
 				}
 
@@ -56,7 +80,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 71.0, 240.0, 58.0, 22.0 ],
+					"patching_rect" : [ 89.0, 83.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -100,11 +124,11 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 269.0, 217.0, 83.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "master_1.ui",
+						"filename" : "master_2.ui",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js master_1.ui"
+					"text" : "js master_2.ui"
 				}
 
 			}
@@ -141,6 +165,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-2", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
@@ -163,7 +194,23 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
+					"order" : 1,
 					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"order" : 0,
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-8", 1 ]
 				}
 
 			}
