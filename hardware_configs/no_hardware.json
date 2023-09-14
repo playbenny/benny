@@ -41,7 +41,7 @@
 			"max_polyphony" : 2,
 			"output_block" : "master_2",
 			"block_ui_patcher" : "master_2.ui",
-			"ui_in_sidebar_height" : 4,		
+			"ui_in_sidebar_height" : 6,		
 			"help_text" : "pc speakers",
 			"autoload" : 1,
 			"connections" : {
