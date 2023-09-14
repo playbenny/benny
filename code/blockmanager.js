@@ -89,6 +89,9 @@ var matrix = this.patcher.getnamed("matrix");
 var world = this.patcher.getnamed("world");
 var lcd_main = this.patcher.getnamed("lcd_main");
 
+var output_looper_active = 0;
+var output_looper_block = -1;
+
 var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 var textureset_blocks = this.patcher.getnamed("textureset_blocks");
 
@@ -543,6 +546,8 @@ function outputfx(type, number, value){
 		}
 		meter_positions[1][0]=c;
 		meter_positions[1][1]=[(c[0]*0.2)|0,(c[1]*0.2)|0,(c[2]*0.2)|0];
+		output_looper_active = (value>0);
+		output_looper_block = number;
 	}
 }
 

@@ -192,6 +192,10 @@ function load_song(){
 	loading.progress=-1;
 	loading.mute_new=0;
 	loading.bundling=12;
+	if(output_looper_active){
+		post("\noutput looper is active so setting it to fullscreen");
+		set_display_mode("custom_fullscreen",output_looper_block+1);
+	}
 	import_song();
 }
 
@@ -219,14 +223,14 @@ function import_song(){
 	preload_task.cancel();
 
 	if(loading.progress==-1){
-		set_display_mode("loading");
+		//set_display_mode("loading");
 		post("loading from song",songlist[currentsong],"\n");
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;
 		sidebar.mode = "none";
 		state_fade.lastcolour = [0,0,0];
 		clear_blocks_selection();
-		clear_screens();
+		// clear_screens();
 		// merge sequence goes like this then
 		//  - read blocks one by one
 		//     - if hardware or exclusive type block look to see if already deployed and allocate as replacement

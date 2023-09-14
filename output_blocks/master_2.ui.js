@@ -86,32 +86,33 @@ function draw(){
 function drawcontrols(){
 	outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,0,0,0);
 	outlet(1,"framerect",x_pos,y_pos+height*0.5+1,x_pos+width*0.25-1,y_pos+height,menucolour);
-	outlet(1,"moveto",x_pos+8,y_pos+height*0.8);
+	outlet(1,"moveto",x_pos+width*0.06,y_pos+height*0.77);
 	//outlet(1,"frgb", 0,0,0);
 	if(!l_on){
 		outlet(1,"write","LOOP");
-		outlet(0,"custom_ui_element","button",x_pos,y_pos+height*0.5+1,x_pos+width*0.25-1,y_pos+height,"output",block,"loop",1,block);
+		outlet(0,"custom_ui_element","direct_button",x_pos,y_pos+height*0.5+1,x_pos+width*0.25-1,y_pos+height,"output",block,"loop",1,v_list[0],0);
 	}else{
 		outlet(1,"write","STOP");
-		outlet(0,"custom_ui_element","button",x_pos,y_pos+height*0.5+1,x_pos+width*0.25-1,y_pos+height,"output",block,"loop",0,block);
+		outlet(0,"custom_ui_element","direct_button",x_pos,y_pos+height*0.5+1,x_pos+width*0.25-1,y_pos+height,"output",block,"loop",0,v_list[0],0);
 		//draw buttons for: bend, move, resize
 		outlet(1,"framerect",x_pos+width*0.25+1,y_pos+height*0.5+1,x_pos+width,y_pos+height*0.66-1,menucolour);
-		outlet(0,"custom_ui_element","mouse_passthrough",x_pos+width*0.25+1,y_pos+height*0.5+1,x_pos+width,y_pos+height*0.82-1,0,0,0,block);
+		outlet(0,"custom_ui_element","direct_mouse_passthrough",x_pos+width*0.25+1,y_pos+height*0.5+1,x_pos+width,y_pos+height*0.66-1,"output",block,"bend",0,v_list[0],0);
 		outlet(1,"moveto",x_pos+width*0.51,y_pos+height*0.61);
 		outlet(1,"write","<<< bend >>>");
 		outlet(1,"framerect",x_pos+width*0.25+1,y_pos+height*0.66+1,x_pos+width,y_pos+height*0.82-1,menucolour);
+		outlet(0,"custom_ui_element","direct_mouse_passthrough",x_pos+width*0.25+1,y_pos+height*0.66+1,x_pos+width,y_pos+height*0.82-1,"output",block,"move",0,v_list[0],0);
 		outlet(1,"moveto",x_pos+width*0.51,y_pos+height*0.77);
 		outlet(1,"write","<<< move >>>");
 		outlet(1,"framerect",x_pos+width*0.25+1,y_pos+height*0.82+1,x_pos+width*0.5-1,y_pos+height,menucolour);
-		outlet(0,"custom_ui_element","button",x_pos+width*0.25+1,y_pos+height*0.82+1,x_pos+width*0.5-1,y_pos+height,"output",block,"half",0,block);
+		outlet(0,"custom_ui_element","direct_button",x_pos+width*0.25+1,y_pos+height*0.82+1,x_pos+width*0.5-1,y_pos+height,"output",block,"half",0,v_list[0],0);
 		outlet(1,"moveto",x_pos+width*0.34,y_pos+height*0.95);
 		outlet(1,"write","half");
 		outlet(1,"framerect",x_pos+width*0.5+1,y_pos+height*0.82+1,x_pos+width*0.75-1,y_pos+height,menucolour);
-		outlet(0,"custom_ui_element","button",x_pos+width*0.5+1,y_pos+height*0.82+1,x_pos+width*0.75-1,y_pos+height,"output",block,"reset_size",0,block);
+		outlet(0,"custom_ui_element","direct_button",x_pos+width*0.5+1,y_pos+height*0.82+1,x_pos+width*0.75-1,y_pos+height,"output",block,"reset_size",0,v_list[0],0);
 		outlet(1,"moveto",x_pos+width*0.58,y_pos+height*0.95);
 		outlet(1,"write","reset");
 		outlet(1,"framerect",x_pos+width*0.75+1,y_pos+height*0.82+1,x_pos+width,y_pos+height,menucolour);
-		outlet(0,"custom_ui_element","button",x_pos+width*0.75+1,y_pos+height*0.82+1,x_pos+width,y_pos+height,"output",block,"double",0,block);
+		outlet(0,"custom_ui_element","direct_button",x_pos+width*0.75+1,y_pos+height*0.82+1,x_pos+width,y_pos+height,"output",block,"double",0,v_list[0],0);
 		outlet(1,"moveto",x_pos+width*0.82,y_pos+height*0.95);
 		outlet(1,"write","double");
 	}

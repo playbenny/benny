@@ -2955,7 +2955,7 @@ function draw_topbar(){
 	mouse_click_values[mouse_index] = "";
 	mouse_index++;
 	x_o+=1.1;
-	if((displaymode != "loading")&&(sidebar.mode != "file_menu")){
+	if((loading.progress==0)&&(sidebar.mode != "file_menu")){
 		click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.6), 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = set_display_mode;
 		if(displaymode == "panels"){
@@ -3159,7 +3159,7 @@ function draw_topbar(){
 			lcd_main.message("write", "merged");
 			x_o+=1.6;
 		}
-	}else if(displaymode == "loading"){
+	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // this is a bodge, the progress bar is quite meaningless..
 		lcd_main.message("framerect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10), 9+fontheight,192,192,192 );
 		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2))), 9+fontheight,192,192,192 );

@@ -314,13 +314,32 @@ function clear_everything_btn(parameter,value){
 }
 
 function custom_mouse_passthrough(parameter,value){
-	post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
+	//post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	ui_poly.setvalue(parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
 }
-
-function custom_mouse_button(parameter,value){
-	post("\n\n\n\n\n\n\ncustom mouse button",parameter,value);
+function custom_direct_mouse_passthrough(parameter,value){
+	//post("\n\nCDIRECT MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
+	if(value[0] == "output"){
+		//post("passthrough",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
+		output_blocks_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
+	}else if(value[0] == "note"){
+		note_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
+	}else if(value[0] == "audio"){
+		audio_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
+	}
 }
+function custom_direct_mouse_button(parameter,value){
+	//post("\n\ncustom mouse button",parameter,"----",value);
+	if(value[0] == "output"){
+		//post("output block button",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
+		output_blocks_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
+	}else if(value[0] == "note"){
+		note_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
+	}else if(value[0] == "audio"){
+		audio_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
+	}
+}
+
 function scope_one_or_all(parameter,value){
 	if(value=="get"){
 		return sidebar.scopes.one_or_all
