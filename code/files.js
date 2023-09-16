@@ -192,10 +192,6 @@ function load_song(){
 	loading.progress=-1;
 	loading.mute_new=0;
 	loading.bundling=12;
-	if(output_looper_active){
-		post("\noutput looper is active so setting it to fullscreen");
-		set_display_mode("custom_fullscreen",output_looper_block+1);
-	}
 	import_song();
 }
 
@@ -221,9 +217,13 @@ function merge_song(){
 function import_song(){	
 	var b,i,t;
 	preload_task.cancel();
-
+	post("\nimport-displaymode is",displaymode);
 	if(loading.progress==-1){
 		//set_display_mode("loading");
+		if(output_looper_active){
+			post("\noutput looper is active so setting it to fullscreen");
+			set_display_mode("custom_fullscreen",output_looper_block+1);
+		}
 		post("loading from song",songlist[currentsong],"\n");
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;

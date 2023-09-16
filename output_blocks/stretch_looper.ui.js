@@ -227,7 +227,7 @@ function store(){
 	//nothing to store for this block
 }
 
-function send_note(xx,note,vel){
+/*function send_note(xx,note,vel){
 	//post("\ntodo send note",xx,note,vel);
 	messnamed("utility.buttons",block,xx,note,vel);
-}
+}*/

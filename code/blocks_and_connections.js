@@ -453,28 +453,43 @@ function next_free_voice(t,n){
 }
 
 
-function next_free_block(){
-	var a = new Dict;
-	
-	var index=0;
-	while(index < MAX_BLOCKS){
-		a = blocks.get("blocks["+index+"]");
-		if(a <= 0) {
-			return index;
-		}
-		if(a.contains("name")){
-			index++;
-		}else{
-			for(var i=0;i<loading.mapping.length;i++){
-				if(loading.mapping[i] == index){
-					post("\nthe block i was going to use is already used in the loading mapping",index,"so i'll find another");
-					index++;
-					i=9999999;
+function next_free_block(type){
+	if(type!==null){
+		//search for a recycling candidate
+		for(i=0;i<MAX_BLOCKS;i++){
+			if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==type)){
+				post("\n-found ui patcher recycling candidate..");
+				for(t=0;t<loading.mapping.length;t++){
+					if(loading.mapping[t] == i){
+						post("failed, already in use");
+						t=999999999;
+					}
 				}
+				if(t<999999999) return i; 	
 			}
-			if(i<9999998) return index;
 		}
 	}
+	for(i=0;i<MAX_BLOCKS;i++){
+		if(ui_patcherlist[i]=="blank.ui"){
+			for(t=0;t<loading.mapping.length;t++){
+				if(loading.mapping[t] == i){
+					t=999999999;
+				}
+			}
+			if(t<999999999) return i; 
+		}
+	}
+	for(i=0;i<MAX_BLOCKS;i++){
+		if(ui_patcherlist[i]=="recycling"){
+			for(t=0;t<loading.mapping.length;t++){
+				if(loading.mapping[t] == i){
+					t=999999999;
+				}
+			}
+			if(t<999999999) return i; 
+		}
+	}
+
 	post("error: no free block slots found\n");
 	return -1;
 }

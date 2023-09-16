@@ -1,8 +1,8 @@
 {
-	"master_2" : {
-		"patcher" : "master_2",
+	"stretch_looper" : {
+		"patcher" : "stretch_looper",
 		"type" : "output",
-		"help_text" : "Master channel with continuity looper",
+		"help_text" : "stereo output channels with continuity looper that timestretches to match the next song.",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
