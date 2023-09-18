@@ -457,7 +457,7 @@ function next_free_block(type){
 	if(type!==null){
 		//search for a recycling candidate
 		for(i=0;i<MAX_BLOCKS;i++){
-			if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==type)){
+			if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==type) && !blocks.contains("blocks["+i+"]::name")){
 				post("\n-found ui patcher recycling candidate..");
 				for(t=0;t<loading.mapping.length;t++){
 					if(loading.mapping[t] == i){
@@ -470,17 +470,20 @@ function next_free_block(type){
 		}
 	}
 	for(i=0;i<MAX_BLOCKS;i++){
-		if(ui_patcherlist[i]=="blank.ui"){
+		if((ui_patcherlist[i]=="blank.ui") && !blocks.contains("blocks["+i+"]::name")){
 			for(t=0;t<loading.mapping.length;t++){
 				if(loading.mapping[t] == i){
 					t=999999999;
 				}
 			}
-			if(t<999999999) return i; 
+			if(t<999999999){
+				post("using blank block",i);
+				return i; 
+			}
 		}
 	}
 	for(i=0;i<MAX_BLOCKS;i++){
-		if(ui_patcherlist[i]=="recycling"){
+		if((ui_patcherlist[i]=="recycling") && !blocks.contains("blocks["+i+"]::name")){
 			for(t=0;t<loading.mapping.length;t++){
 				if(loading.mapping[t] == i){
 					t=999999999;
