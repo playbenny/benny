@@ -118,9 +118,9 @@
 				}
 			}
 		},
-		"hardware.filter.wasp" : 			{
+		"hardware.filter.pro-2" : 			{
 			"type" : "hardware",
-			"help_text": "wasp filter",
+			"help_text": "g storm prp vcf",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
@@ -129,9 +129,9 @@
 					"hardware" : [ "in", "cutoff" ],
 					"hardware_channels" : [ 19, 20 ]
 				},
-				"out" : {
-					"hardware" : [ "lp", "bp" ],
-					"hardware_channels" : [ 11, 12 ]
+				"out" : { 
+					"hardware" : [ "lp" ],
+					"hardware_channels" : [ 11 ]
 				}
 			}
 		},
@@ -215,8 +215,8 @@
 					"hardware_channels" : [ 13,14]
 				},
 				"out" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 8 ]
+					"hardware" : [ "out", "phaser out" ],
+					"hardware_channels" : [ 8, 14 ]
 				}
 			}
 		},		
@@ -249,8 +249,8 @@
 					"hardware_channels" : [9,10]
 				},
 				"out" : {
-					"hardware" : [ "lp", "bp", "hp" ],
-					"hardware_channels" : [4,5,6 ]
+					"hardware" : [ "lp", "bp", "hp" , "lp-drive-fb" ],
+					"hardware_channels" : [4,5,6, 15 ]
 				}
 			}
 		},
