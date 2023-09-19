@@ -130,7 +130,7 @@
 					"hardware_channels" : [ 19, 20 ]
 				},
 				"out" : { 
-					"hardware" : [ "lp" ],
+					"hardware" : [ "out" ],
 					"hardware_channels" : [ 11 ]
 				}
 			}

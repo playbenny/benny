@@ -483,7 +483,7 @@ function draw_waves(){
 				mouse_index++;
 
 				c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-				draw_h_slider(9+fontheight*12,sloty+fontheight*0.1,9+fontheight*14.9,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
+				draw_h_slider(9+fontheight*12,sloty+fontheight*0.1,mainwindow_width-9-5*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
 				mouse_click_actions[mouse_index] = setup_waves;
 				mouse_click_parameters[mouse_index] = [slot+1,"divisions"];
 				mouse_click_values[mouse_index] = 0;

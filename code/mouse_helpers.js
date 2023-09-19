@@ -1291,7 +1291,7 @@ function setup_waves(parameter,value){
 	}
 }
 function store_wave_slices(waveno){
-	var d = Math.floor(waves_dict.get("waves["+waveno+"]::divisions")*127.999)+1;
+	var d = Math.floor(waves_dict.get("waves["+waveno+"]::divisions")*(MAX_WAVES_SLICES-0.00001))+1;
 	if(d>0){
 		var l = waves_dict.get("waves["+waveno+"]::length");
 		var s = l * waves_dict.get("waves["+waveno+"]::start");

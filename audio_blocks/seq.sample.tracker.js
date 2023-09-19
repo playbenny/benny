@@ -2,6 +2,7 @@ var MAX_DATA = 1024;
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;
+var MAX_WAVES_SLICES = 1024;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 outlets = 3;
 var config = new Dict;
@@ -344,7 +345,7 @@ function keydown(key){
 			break;
 		case 39:
 			currentslice++;
-			if(currentslice>999)currentslice=999;
+			if(currentslice>MAX_WAVES_SLICES)currentslice=MAX_WAVES_SLICES;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+3,currentslice+1);
 			draw();
 			break;

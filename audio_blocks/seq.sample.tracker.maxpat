@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -379,13 +379,13 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 5,
-							"revision" : 4,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 888.0, 228.0, 990.0, 507.0 ],
+						"rect" : [ 223.0, 168.0, 990.0, 507.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -511,7 +511,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 331.666666666666629, 418.0, 69.666666666666686, 22.0 ],
-									"text" : "waves.7"
+									"text" : "waves.1"
 								}
 
 							}
@@ -865,9 +865,9 @@
 									"maxclass" : "newobj",
 									"numinlets" : 2,
 									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 729.0, 140.0, 37.0, 22.0 ],
-									"text" : "* 128"
+									"outlettype" : [ "float" ],
+									"patching_rect" : [ 729.0, 140.0, 47.0, 22.0 ],
+									"text" : "* 1024."
 								}
 
 							}
@@ -1642,13 +1642,13 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 5,
-							"revision" : 4,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 888.0, 228.0, 990.0, 507.0 ],
+						"rect" : [ 223.0, 168.0, 990.0, 507.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -1774,7 +1774,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 331.666666666666629, 418.0, 69.666666666666686, 22.0 ],
-									"text" : "waves.7"
+									"text" : "waves.1"
 								}
 
 							}
@@ -2128,9 +2128,9 @@
 									"maxclass" : "newobj",
 									"numinlets" : 2,
 									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 729.0, 140.0, 37.0, 22.0 ],
-									"text" : "* 128"
+									"outlettype" : [ "float" ],
+									"patching_rect" : [ 729.0, 140.0, 47.0, 22.0 ],
+									"text" : "* 1024."
 								}
 
 							}
@@ -3419,7 +3419,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 5,
-							"revision" : 4,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -5630,9 +5630,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [  ],
-		"autosave" : 0
+ ]
 	}
 
 }
