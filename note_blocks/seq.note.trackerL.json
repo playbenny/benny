@@ -2,6 +2,7 @@
 	"seq.note.trackerL" : {
 		"patcher" : "seq.note.trackerL",
 		"type" : "note",
+		"deprecated" : 1,
 		"block_ui_patcher" : "seq.note.trackerL.ui",
 		"help_text" : "note tracker, long pattern version. each voice is monophonic. see the other note tracker if you want many note columns on each voice. on the trigger input C=clock B=back D=reset",
 		"max_polyphony" : 0,

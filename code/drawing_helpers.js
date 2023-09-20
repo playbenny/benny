@@ -405,7 +405,11 @@ function clear_wave_graphic(n){
 	}
 
 }
-function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
+function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom_amount){
+	if(zoom_amount==null){
+		zoom_offset=-1;
+		zoom_amount=1;
+	}
 	var value=0;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index, 3);
@@ -414,18 +418,24 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	var hle ;
 	var wmin,wmax;
 	var w = Math.floor((x2-x1-1)/2);
-	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
+	if(w!=draw_wave[buffer-1][0].length) clear_wave_graphic(buffer);
+	var length = waves_dict.get("waves["+buffer+"]::length");
+	st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
+	d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
+	dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
+	dl /= d;
+	hls = w*(highlight);
+	hle = w*(highlight+dl);
+	var zoom_l = 1/*(1+0.99*(zoom_amount<0)*zoom_amount)*dl*(1-Math.abs(zoom_amount))+(zoom_amount>0)*zoom_amount;
+	var zoom_start = Math.min(1,Math.max(0,highlight+zoom_offset));
+	var zoom_end = zoom_start+zoom_l*/; //this is all ready for when you implement zoom BUT first make it show markers based on the stored ones 
+	//not just multiplying, ditto highlight pos and length. AND DO STRIPE WHILE YOUR AT IT
+	var chunk = zoom_l*length/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
+	dl *= w;
 	for(ch=0;ch<chans;ch++){
 		lcd_main.message("frgb",90,90,90);
-		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
-		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
-		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
-		dl /= d;
-		hls = w*(highlight);
-		hle = w*(highlight+dl);
-		dl *= w;
 		if(w>250){
 			for(t=0;t<d;t++){
 				i = Math.floor(t*dl+st);

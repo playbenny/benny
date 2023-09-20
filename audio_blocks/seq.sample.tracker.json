@@ -23,26 +23,17 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [1, 2,3],
+				"contains" : [1, 2, 0],
 				"colour" : [255,255,255]
 			},
 			{
-				"contains" : [4,5]
+				"contains" : [3,4]
 			}
 		],
 		"voice_data" : {
 			"defaults" : [0 , 0.118]
 		},
 		"parameters" : [
-			{
-				"name" : "clock",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0.56
-			},
 			{
 				"name" : "offset",
 				"type" : "float",
@@ -51,18 +42,18 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "start mod",
-				"type" : "float",
-				"values" : ["bi", -32, 32, "lin"],
+				"name" : "start",
+				"type" : "int",
+				"values" : ["uni", 0, 128, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0
 			},
 			{
-				"name" : "length mod",
-				"type" : "float",
-				"values" : ["bi", -32, 32, "lin"],
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.124
 			},
 			{
 				"name" : "detune",

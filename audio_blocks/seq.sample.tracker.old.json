@@ -1,11 +1,13 @@
 {
-	"seq.note.tracker" : {
-		"patcher" : "seq.note.tracker",
-		"type" : "note",
-		"deprecated" : 1,
-		"block_ui_patcher" : "seq.note.tracker.ui",
-		"help_text" : "note tracker / data memory object vaguely inspired by leafcutter john's max tracker package. on the trigger input C=clock B=back D=reset",
+	"seq.sample.tracker.old" : {
+		"patcher" : "seq.sample.tracker.old",
+		"type" : "audio",
+		"block_ui_patcher" : "seq.sample.tracker.old.ui",
+		"help_text" : "buzz-style sample tracker",
 		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"deprecated" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
@@ -16,13 +18,17 @@
 				"midi" : [ "trigger", "row select", "reset" ]
 			},
 			"out" : {
-				"midi" : [ "notes out" ]
+				"midi" : [ "notes out" ],
+				"audio" : [ "out" ]
 			}
 		},
 		"groups" : [
 			{ 
 				"contains" : [1, 2,3],
 				"colour" : [255,255,255]
+			},
+			{
+				"contains" : [4,5]
 			}
 		],
 		"voice_data" : {
@@ -31,7 +37,6 @@
 		"parameters" : [
 			{
 				"name" : "clock",
-				"nomap" : 1,
 				"type" : "menu_i",
 				"width" : 3,
 				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
@@ -57,6 +62,20 @@
 				"name" : "length mod",
 				"type" : "float",
 				"values" : ["bi", -32, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "stretch",
+				"type" : "float",
+				"values" : ["bi", -4, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			}

@@ -138,7 +138,7 @@ function drawcell(c,r){
 				lp=1.5;
 			} 
 		}
-		if(cursors[c]==rr){
+		if(cursors[c+display_col_offset]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
@@ -382,21 +382,28 @@ function keydown(key){
 }
 function update(){
 	var c,o;
-	for(c=0;c<v_list.length;c++){
+	for(c=display_col_offset;c<v_list.length;c++){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
+		start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
+		lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
+		end  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
+		offs =  Math.floor(1024*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+4,1)-512);
+		divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
+
 		if(cursors[c]!=ph){
-			l  = 512;//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
-			s  = 0;//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
+			//l  = 512;//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
+			//s  = 0;//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
 			o = cursors[c]-display_row_offset;
 			cursors[c]=ph;
 			//redraw cell that was old cursor
 			if((o>=0)&&(o<maxl)){
-				drawcell(c,o);	
+				drawcell(c-display_col_offset,o);	
 			}
 			
 			//draw new cursor cell
 			if(cursors[c]-display_row_offset<maxl){
-				drawcell(c,cursors[c]-display_row_offset);
+				drawcell(c-display_col_offset,cursors[c]-display_row_offset);
 			}
 		}
 	}

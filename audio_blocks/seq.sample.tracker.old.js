@@ -4,7 +4,6 @@ var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;
 var MAX_WAVES_SLICES = 1024;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
-var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 outlets = 3;
 var config = new Dict;
 config.name = "config";
@@ -18,8 +17,6 @@ var currentvel=100;
 var cursorx=0;
 var cursorx2=0;
 var cursory=0;
-var s=[];
-var l=[];
 var baseoct=4;
 var mini;
 var namelist;
@@ -108,32 +105,28 @@ function draw(){
 		cw = (width - sx)/i;
 		maxl = Math.floor((height-sy)/rh);
 		if(!mini){
-			outlet(1,"paintrect",x_pos+sx,y_pos,x_pos+width,sy+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
+			outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
 			outlet(1,"font","Consolas",rh*0.8);
 			outlet(1,"frgb",menucolour);
-			outlet(1,"moveto",3+sx+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","octave");
-			outlet(1,"moveto",3+sx+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",baseoct-2);
-			outlet(1,"moveto",3+sx+0.2*cw+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","vel");
-			outlet(1,"moveto",3+sx+0.2*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",currentvel);
-			outlet(1,"moveto",3+sx+0.4*cw+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","wave");
-			outlet(1,"moveto",3+sx+0.4*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",(1+currentwave));
-			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","slice");
-			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",currentslice+1);
-			if(cursorx2<4) draw_wave_hint(currentwave,currentslice);
+			outlet(1,"moveto",12+x_pos,rh*1.0+y_pos);
+			outlet(1,"write","o",baseoct);
+			outlet(1,"moveto",12+x_pos,rh*1.7+y_pos);
+			var wnam = "-";
+			if(waves_dict.contains("waves["+(1+currentwave)+"]::name")) wnam = waves_dict.get("waves["+(1+currentwave)+"]::name");
+			outlet(1,"write","w",(1+currentwave)+" "+wnam);
+			outlet(1,"moveto",12+x_pos,rh*2.4+y_pos);
+			outlet(1,"write","s",currentslice+1);
 			for(c=display_col_offset;c<Math.min(display_col_offset+3,v_list.length);c++){
-				ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
-				l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
-				s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
-				outlet(1,"moveto", 3+sx+cw*(c-display_col_offset)+x_pos, rh*2.15+y_pos);
+				ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+2));
+				l  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*128)+1;
+				s  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*128);
+				
+				outlet(0,"custom_ui_element","data_v_scroll",sx+cw*(c-display_col_offset+0.75)+x_pos, 9+y_pos, sx+cw*(c-display_col_offset+0.85)+x_pos, sy-9+y_pos,menucolour[0],menucolour[1],menucolour[2],MAX_DATA*v_list[c]);
+				outlet(0,"custom_ui_element","data_v_scroll",sx+cw*(c-display_col_offset+0.90)+x_pos, 9+y_pos, sx+cw*(c-display_col_offset+1)+x_pos, sy-9+y_pos,menucolour[0],menucolour[1],menucolour[2],MAX_DATA*v_list[c]+1);
+				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.3)+x_pos, rh*1.7+y_pos);
 				outlet(1,"write", "voice", c+1);
+				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.3)+x_pos, rh*2.4+y_pos);
+				outlet(1,"write", s,"-",l);
 				cursors[c]=ph;
 				for(r=0;r<maxl;r++){			
 					drawcell((c-display_col_offset),r);
@@ -145,8 +138,8 @@ function draw(){
 			rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 			rc = (4+rc)/24;
 			
-			outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc,menucolour[2]*rc);
-			outlet(1,"moveto",3+x_pos,sy+rh*(r+0.75)+y_pos);
+			outlet(1,"paintrect",9+x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc,menucolour[2]*rc);
+			outlet(1,"moveto",12+x_pos,sy+rh*(r+0.75)+y_pos);
 			if(!mini){
 				outlet(1,"frgb",menucolour);
 				outlet(1,"write",rr);
@@ -158,30 +151,6 @@ function draw(){
 	}
 }
 
-
-function update(){
-	var c,o;
-	for(c=display_col_offset;c<v_list.length;c++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
-		if(cursors[c]!=ph){
-			l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*128)+1;
-			s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*128);
-			o = cursors[c]-display_row_offset;
-			cursors[c]=ph;
-			//redraw cell that was old cursor
-			if((o>=0)&&(o<maxl)){
-				drawcell(c,o);	
-			}
-			
-			//draw new cursor cell
-			if(cursors[c]-display_row_offset<maxl){
-				drawcell(c,cursors[c]-display_row_offset);
-			}
-		}
-	}
-}
-
-
 function drawcell(c,r){
 	if((c>=0)&&(c<3)){
 		var rr,rc,fc,i,ll,ss;
@@ -190,17 +159,17 @@ function drawcell(c,r){
 		rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 		rc = rc/24;
 		fc = [menucolour[0]*0.25,menucolour[1]*0.25,menucolour[2]*0.25];
-		if((rr>=s[c+display_col_offset])&&(rr<s[c+display_col_offset]+l[c+display_col_offset])){
+		if((rr>=s)&&(rr<s+l)){
 			rc+=0.1;
 			fc=menucolour;
 		}
-		if(cursors[c+display_row_offset]==rr){
+		if(cursors[c]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
 		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc,menucolour[2]*rc);
 		outlet(1,"frgb",fc);
-		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+1+6*rr,6);
+		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+3+6*rr,6);
 	//	post(values,"\n");
 		var incell = ((cursorx==(c+display_col_offset))&&(cursory==rr));
 		var x=0;
@@ -214,8 +183,8 @@ function drawcell(c,r){
 				ll=1;
 				ss=".";
 			}else if(i==5){
-				ll=3;
-				ss="...";
+				ll=2;
+				ss="..";
 			}else{
 				ll=3;
 				ss="...";
@@ -239,10 +208,10 @@ function drawcell(c,r){
 				outlet(1,"paintrect",sx+(c+(x-1)/20)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll+1)/20)*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
 				outlet(1,"frgb",255,255,255);
 				washighlight=1;
-				if((cursorx2>=4)&&(values[4]>1)){
-					if(values[4]>1) draw_fx_hint(values[4]-2);
-				}else if((cursorx2<4)){
+				if((cursorx2==2)||(cursorx2==3)){
 					if(values[2]>0) draw_wave_hint(values[2]-1,values[3]-1);
+				} else if(cursorx2==4){
+					if(values[4]>1) draw_fx_hint(values[4]-2);
 				}
 			}else if(washighlight){
 				washighlight=0;
@@ -260,44 +229,13 @@ function drawcell(c,r){
 }
 
 function draw_fx_hint(fx){
-	outlet(1,"moveto",3+sx+0.75*cw+x_pos,rh*0.75+y_pos);
-	outlet(1,"textface","bold");
-	outlet(1,"write",fx_names[fx]);
-	var x=3+sx+1.1*cw+x_pos;
-	var str=fx_descs[fx].split(" ");
-	var ws = "";
-	var y=rh*0.75+y_pos;
-	var xx = x;
-	for(var i=0;i<str.length;i++){
-		ws = ws + " " + str[i];
-		xx += str[i].length * unit * 0.27;
-		if((xx>(x_pos+width))||(i==str.length-1)){
-			//post("\n\n\nxx is ",xx,"x+w is",x_pos+width);
-			outlet(1,"moveto",x,y);
-			outlet(1,"write",ws);
-			ws="";
-			xx=x;
-			y+=rh*0.7;
-		}
-	}
+	post(fx,"FX HINT",fx_names[fx],fx_descs[fx],"\n");
 }
 
 function draw_wave_hint(wave,slice){
-	if(waves_dict.contains("waves["+(1+wave)+"]::name")){
-		wnam = waves_dict.get("waves["+(1+wave)+"]::name");
-		outlet(0, "custom_ui_element","waveform_slice_highlight",3+sx+0.75*cw+x_pos, y_pos, -9+width+x_pos, sy+y_pos,menucolour[0]*1.1,menucolour[1]*1.1,menucolour[2]*1.1,block,wave+1,slice/MAX_WAVES_SLICES); 
-		outlet(1,"moveto",3+sx+0.75*cw+x_pos,rh*0.75+y_pos);
-		var wnam;
-		var wns = wnam.split(".");
-		wns.length -= 1;
-		var wn = wns[0];
-		for(i=1;i<wns.length;i++){
-			wn=wn+"."+wns[i];
-		}
-		outlet(1,"write",wn);
-	} 
+	post("WAVE HINT", wave, waves_dict.get("waves["+wave+"]::name"), slice);
+	//i should print the name of the sample and draw the wave aroudn the selected slice
 }
-
 function mouse(x,y,l,s,a,c,scr){
 	var ox = cursorx;
 	var oy = cursory;
@@ -396,63 +334,63 @@ function keydown(key){
 		case 59:
 			currentwave++;
 			if(currentwave>128)currentwave=128;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+2,currentwave+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+2,currentwave+1);
 			draw();
 			break;
 		case 46:
 			currentwave--;
 			if(currentwave<0)currentwave=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+2,currentwave+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+2,currentwave+1);
 			draw();
 			break;
 		case 39:
 			currentslice++;
 			if(currentslice>MAX_WAVES_SLICES)currentslice=MAX_WAVES_SLICES;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+3,currentslice+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+3,currentslice+1);
 			draw();
 			break;
 		case 47:
 			currentslice--;
 			if(currentslice<0)currentslice=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+3,currentslice+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+3,currentslice+1);
 			draw();
 			break;	
 		case 61:
 			currentvel++;
 			if(currentvel>128)currentvel=128;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+1,currentvel+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+1,currentvel+1);
 			draw();
 			break;
 		case 45:
 			currentvel--;
 			if(currentvel<0)currentvel=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+1,currentvel+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+1,currentvel+1);
 			draw();
 			break;
 		case -6:
 			//optionally del could move everything up one?
 			for(i=cursory;i<127;i++){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1),6);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*i,rowvalues);
+				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+6*(i+1),6);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*i,rowvalues);
 			}
 			draw();
 			break;
 		case -8:
 			//insert
 			for(i=128;i>cursory;i--){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i-1),6);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*i,rowvalues);
+				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+6*(i-1),6);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*i,rowvalues);
 			}
 			var rowvalues=[0,0,0,0,0,0];
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory,rowvalues);
 			draw();
 			break;
 		case -7:
 			if(cursorx2==0){
 				var rowvalues=[0,0,0,0,0,0];
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory,rowvalues);
 			}else{
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,0);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+cursorx2,0);
 			}
 			draw();
 			break;
@@ -461,49 +399,49 @@ function keydown(key){
 				if(key==49){
 					var rowvalues=[-1,0,0,0];
 					post("off");
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory,rowvalues);
 				}else if(key>0){
 					if(keymap[key]>-1){
 						var rowvalues = [baseoct*12+keymap[key],currentvel+1,currentwave+1,currentslice+1];
-						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*cursory+1);
+						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+3+6*cursory+1);
 						if(t>0) rowvalues[1]=t;
-						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*cursory+2);
+						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+3+6*cursory+2);
 						if(t>0) rowvalues[2]=t;
-						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*cursory+3);
+						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+3+6*cursory+3);
 						if(t>0) rowvalues[3]=t;
-						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory,rowvalues);
 						cursory=(cursory+1) & 127;
 					}
 				}
 			}else if((cursorx2==1)||(cursorx2==3)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
-					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2)-1;
+					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+6*cursory+cursorx2)-1;
 					if(o<100){
 						o*=10;
 						o+=t;
 					}else{
 						o=t;
 					}
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,o+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+cursorx2,o+1);
 				}
 			}else if((cursorx2==2)||(cursorx2==5)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
-					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2)-1;
+					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+6*cursory+cursorx2)-1;
 					if(o<10){
 						o*=10;
 						o+=t;
 					}else{
 						o=t;
 					}
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,o+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+cursorx2,o+1);
 				}
 			}else if((cursorx2==4)){
 				var t=key-96;
 				post("fx",t);
 				if((t>=0)&&(t<=26)){					
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,t+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+6*cursory+cursorx2,t+1);
 				}
 			}
 			
@@ -531,6 +469,27 @@ function keydown(key){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
+	}
+}
+function update(){
+	var c,o;
+	for(c=0;c<v_list.length;c++){
+		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+2));
+		if(cursors[c]!=ph){
+			l  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*128)+1;
+			s  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*128);
+			o = cursors[c]-display_row_offset;
+			cursors[c]=ph;
+			//redraw cell that was old cursor
+			if((o>=0)&&(o<maxl)){
+				drawcell(c,o);	
+			}
+			
+			//draw new cursor cell
+			if(cursors[c]-display_row_offset<maxl){
+				drawcell(c,cursors[c]-display_row_offset);
+			}
+		}
 	}
 }
 
@@ -563,9 +522,9 @@ function remapping(froom,too){
 	var cx,cy,cv,ct=0;
 	for(cx=0;cx<v_list.length;cx++){
 		for(cy=0;cy<128;cy++){
-			cv = voice_data_buffer.peek(1, MAX_DATA*v_list[cx]+1+6*cy+2);
+			cv = voice_data_buffer.peek(1, MAX_DATA*v_list[cx]+3+6*cy+2);
 			if(cv==froom+1){
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cx]+1+6*cy+2,-(too+1));
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cx]+3+6*cy+2,-(too+1));
 				ct++;
 			}
 		}
@@ -576,9 +535,9 @@ function finalise_remapping(){
 	var cx,cy,cv;
 	for(cx=0;cx<v_list.length;cx++){
 		for(cy=0;cy<128;cy++){
-			cv = voice_data_buffer.peek(1, MAX_DATA*v_list[cx]+1+6*cy+2);
+			cv = voice_data_buffer.peek(1, MAX_DATA*v_list[cx]+3+6*cy+2);
 			if(cv<0){
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cx]+1+6*cy+2,-cv);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cx]+3+6*cy+2,-cv);
 			}
 		}
 	}

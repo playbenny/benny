@@ -196,7 +196,11 @@ function cpu_select_block(parameter,value){
 	//cpu page select - clears selected voice
 	sidebar.selected_voice = parameter;
 	if(usermouse.alt){
-		open_patcher(value,parameter);
+		if(parameter==-1){
+			if(loaded_ui_patcherlist[value]!='blank.ui') ui_poly.setvalue(value+1,"open");
+		}else{
+			open_patcher(value,parameter);
+		}
 	}else{
 		select_block(0,value);
 	}
@@ -1074,7 +1078,7 @@ function flock_add_to_array(block,x,y,z){
 }
 
 function show_cpu_meter(){
-	clear_block_and_wire_selection();
+	if((selected.block_count>1) || (selected.wire_count>0)) clear_block_and_wire_selection();
 	set_sidebar_mode("cpu");
 }
 
@@ -1293,7 +1297,9 @@ function setup_waves(parameter,value){
 function store_wave_slices(waveno){
 	var d = Math.floor(waves_dict.get("waves["+waveno+"]::divisions")*(MAX_WAVES_SLICES-0.00001))+1;
 	if(d>0){
+		post("\ncalculating ",d,"slices ")
 		var l = waves_dict.get("waves["+waveno+"]::length");
+
 		var s = l * waves_dict.get("waves["+waveno+"]::start");
 		var e = l * waves_dict.get("waves["+waveno+"]::end");
 		var m = (e-s) / d;

@@ -469,21 +469,21 @@ function draw_waves(){
 				lcd_main.message("paintrect",9, sloty, mainwindow_width-9,sloty+0.9*fontheight,c[0],c[1],c[2]);
 
 				c=config.get("palette::gamut["+Math.floor(1+slot*colinc)+"]::colour");
-				draw_h_slider(9+fontheight*6,sloty+fontheight*0.1,9+fontheight*8.9,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::start"));
+				draw_h_slider(mainwindow_width-9-17*fontheight,sloty+fontheight*0.1,mainwindow_width-9-13.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::start"));
 				mouse_click_actions[mouse_index] = setup_waves;
 				mouse_click_parameters[mouse_index] = [slot+1,"start"];
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
 
 				c=config.get("palette::gamut["+Math.floor(2+slot*colinc)+"]::colour");
-				draw_h_slider(9+fontheight*9,sloty+fontheight*0.1,9+fontheight*11.9,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::end"));
+				draw_h_slider(mainwindow_width-9-13*fontheight,sloty+fontheight*0.1,mainwindow_width-9-9.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::end"));
 				mouse_click_actions[mouse_index] = setup_waves;
 				mouse_click_parameters[mouse_index] = [slot+1,"end"];
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
 
 				c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-				draw_h_slider(9+fontheight*12,sloty+fontheight*0.1,mainwindow_width-9-5*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
+				draw_h_slider(mainwindow_width-9-9*fontheight,sloty+fontheight*0.1,mainwindow_width-9-5*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
 				mouse_click_actions[mouse_index] = setup_waves;
 				mouse_click_parameters[mouse_index] = [slot+1,"divisions"];
 				mouse_click_values[mouse_index] = 0;
@@ -512,13 +512,13 @@ function draw_waves(){
 				setfontsize(fontheight/2.4);
 				lcd_main.message("textface","bold");
 				lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
-				lcd_main.message("moveto",9+6.3*fontheight,sloty+fontheight*0.6);
 				setfontsize(fontheight/3.2);
 				lcd_main.message("textface","normal");
+				lcd_main.message("moveto",mainwindow_width-17*fontheight,sloty+fontheight*0.6);
 				lcd_main.message("write","start");
-				lcd_main.message("moveto",9+9.3*fontheight,sloty+fontheight*0.6);
+				lcd_main.message("moveto",mainwindow_width-13*fontheight,sloty+fontheight*0.6);
 				lcd_main.message("write","end");
-				lcd_main.message("moveto",9+12.3*fontheight,sloty+fontheight*0.6);
+				lcd_main.message("moveto",mainwindow_width-9*fontheight,sloty+fontheight*0.6);
 				lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
 				
 				draw_waveform(9,sloty+fontheight*1.3,mainwindow_width-9,sloty+bigsloth+fontheight*0.9,c[0],c[1],c[2],slot+1,mouse_index,2);
