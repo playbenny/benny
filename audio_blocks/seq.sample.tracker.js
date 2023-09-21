@@ -8,7 +8,7 @@ var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 outlets = 3;
 var config = new Dict;
 config.name = "config";
-var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
+var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl,showcols;
 var block=-1;
 var display_row_offset = 0;
 var display_col_offset = 0;
@@ -101,6 +101,7 @@ function draw(){
 		for(i=0;i<v_list.length;i++) {
 			cursors[i]=-1;
 		}
+		if(mini) showcols = v_list.length;
 		i= showcols; 
 		rh = 0.5*unit;
 		sy = 1.2*unit;
@@ -128,7 +129,7 @@ function draw(){
 			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*1.45+y_pos);
 			outlet(1,"write",currentslice+1);
 			if(cursorx2<4) draw_wave_hint(currentwave,currentslice);
-			for(c=display_col_offset;c<Math.min(display_col_offset+3,v_list.length);c++){
+			for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
 				ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 				l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
 				s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
@@ -164,18 +165,18 @@ function update(){
 	for(c=display_col_offset;c<v_list.length;c++){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		if(cursors[c]!=ph){
-			l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*128)+1;
-			s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*128);
+			//l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*128)+1;
+			//s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*128);
 			o = cursors[c]-display_row_offset;
 			cursors[c]=ph;
 			//redraw cell that was old cursor
 			if((o>=0)&&(o<maxl)){
-				drawcell(c,o);	
+				drawcell(c-display_col_offset,o);	
 			}
 			
 			//draw new cursor cell
 			if(cursors[c]-display_row_offset<maxl){
-				drawcell(c,cursors[c]-display_row_offset);
+				drawcell(c-display_col_offset,cursors[c]-display_row_offset);
 			}
 		}
 	}
@@ -183,7 +184,7 @@ function update(){
 
 
 function drawcell(c,r){
-	if((c>=0)&&(c<3)){
+	if((c>=0)&&(c<showcols)){
 		var rr,rc,fc,i,ll,ss;
 		var values;
 		rr = r+display_row_offset;
@@ -194,7 +195,7 @@ function drawcell(c,r){
 			rc+=0.1;
 			fc=menucolour;
 		}
-		if(cursors[c+display_row_offset]==rr){
+		if(cursors[c+display_col_offset]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
@@ -207,55 +208,58 @@ function drawcell(c,r){
 		var washighlight=0;
 		for(i=0;i<6;i++){		
 			//outlet(1,"write","... ... .. ... . ..");
-			if(i==2){
-				ll=2;
-				ss="..";
-			}else if(i==4){
-				ll=1;
-				ss=".";
-			}else if(i==5){
-				ll=3;
-				ss="...";
-			}else{
-				ll=3;
-				ss="...";
-			}
-			if(values[i]!=0){
-				if(i==0){
-					if(values[i]==-1){
-						ss="off";
-					}else{
-						ss = note_names[values[i]-1];
-					}
+			if(!mini){
+				if(i==2){
+					ll=2;
+					ss="..";
 				}else if(i==4){
-					ss = String.fromCharCode(63+values[i]);
+					ll=1;
+					ss=".";
+				}else if(i==5){
+					ll=3;
+					ss="...";
 				}else{
-					ss = Math.floor(values[i]-1);
-					if(i==2) ss++;
-					if(i==3) ss++;
+					ll=3;
+					ss="...";
+				}
+				if(values[i]!=0){
+					if(i==0){
+						if(values[i]==-1){
+							ss="off";
+						}else{
+							ss = note_names[values[i]-1];
+						}
+					}else if(i==4){
+						ss = String.fromCharCode(63+values[i]);
+					}else{
+						ss = Math.floor(values[i]-1);
+						if(i==2) ss++;
+						if(i==3) ss++;
+					}
 				}
 			}
 			if(incell && (i==cursorx2)){
 				outlet(1,"paintrect",sx+(c+(x-1)/20)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll+1)/20)*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
 				outlet(1,"frgb",255,255,255);
-				washighlight=1;
-				if((cursorx2>=4)&&(values[4]>1)){
-					if(values[4]>1) draw_fx_hint(values[4]-2);
-				}else if((cursorx2<4)){
-					if(values[2]>0) draw_wave_hint(values[2]-1,values[3]-1);
+				if(!mini){
+					washighlight=1;
+					if((cursorx2>=4)&&(values[4]>1)){
+						if(values[4]>1) draw_fx_hint(values[4]-2);
+					}else if((cursorx2<4)){
+						if(values[2]>0) draw_wave_hint(values[2]-1,values[3]-1);
+					}
 				}
 			}else if(washighlight){
 				washighlight=0;
 				outlet(1,"frgb",fc);
 			}
-			if(i>0) ss = ("....." + ss).slice(-ll); 
 			if(!mini){
+				if(i>0) ss = ("....." + ss).slice(-ll); 
 				outlet(1,"moveto",sx+(c+x/20)*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
 				outlet(1,"write",ss);
 			}
 			x+=ll+1;
 		}
-		
 	}
 }
 
@@ -517,10 +521,10 @@ function keydown(key){
 		display_row_offset=Math.max(0,cursory-5);
 		df=1;
 	}
-	if(cursorx-display_col_offset<1){
+	if(cursorx-display_col_offset<=showcols){
 		display_col_offset=Math.max(0,cursorx-1);
 		df=1;
-	}else if(cursorx-display_col_offset>1){
+	}else if(cursorx-display_col_offset>=showcols-1){
 		display_col_offset=cursorx-1;
 		df=1;
 	}

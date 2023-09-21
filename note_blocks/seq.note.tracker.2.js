@@ -120,6 +120,35 @@ function draw(){
 	}
 }
 
+function update(){
+	var c,o;
+	for(c=display_col_offset;c<v_list.length;c++){
+		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
+		start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
+		lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
+		end  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
+		offs =  Math.floor(1024*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+4,1)-512);
+		divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
+
+		if(cursors[c]!=ph){
+			//l  = 512;//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
+			//s  = 0;//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
+			o = cursors[c]-display_row_offset;
+			cursors[c]=ph;
+			//redraw cell that was old cursor
+			if((o>=0)&&(o<maxl)){
+				drawcell(c-display_col_offset,o);	
+			}
+			
+			//draw new cursor cell
+			if(cursors[c]-display_row_offset<maxl){
+				drawcell(c-display_col_offset,cursors[c]-display_row_offset);
+			}
+		}
+	}
+}
+
 function drawcell(c,r){
 	if((c>=0)&&(c<showcols)){
 		var rr,rc,fc,i,ll,ss;
@@ -378,34 +407,6 @@ function keydown(key){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
-	}
-}
-function update(){
-	var c,o;
-	for(c=display_col_offset;c<v_list.length;c++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
-		start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
-		lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
-		end  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
-		lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
-		offs =  Math.floor(1024*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+4,1)-512);
-		divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
-
-		if(cursors[c]!=ph){
-			//l  = 512;//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
-			//s  = 0;//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
-			o = cursors[c]-display_row_offset;
-			cursors[c]=ph;
-			//redraw cell that was old cursor
-			if((o>=0)&&(o<maxl)){
-				drawcell(c-display_col_offset,o);	
-			}
-			
-			//draw new cursor cell
-			if(cursors[c]-display_row_offset<maxl){
-				drawcell(c-display_col_offset,cursors[c]-display_row_offset);
-			}
-		}
 	}
 }
 
