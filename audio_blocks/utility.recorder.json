@@ -1,0 +1,33 @@
+{
+	"utility.recorder" : {
+		"patcher" : "utility.recorder",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "records wav files, timestamped and indexed by the number of the voice that recorded it",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "thru" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "record arm",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0
+			}
+		]
+	}
+}
