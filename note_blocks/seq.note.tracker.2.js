@@ -245,9 +245,9 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}else{
 		//todo shift select, copy paste?
 		cursorx = (xx-sx)/cw;
+		cursorx += display_col_offset;
 		cursorx2 = Math.floor((cursorx % 1)*2);
 		cursorx = Math.min(v_list.length-1,Math.floor(cursorx));	
-		cursorx = Math.floor(cursorx);	
 		cursory = Math.floor((yy-sy)/rh);
 	}
 	var df=0;
