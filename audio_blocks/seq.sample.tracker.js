@@ -153,7 +153,7 @@ function draw(){
 				outlet(1,"write",rr);
 			}
 		}
-		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,block,0);
+		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
 	//	outlet(0,"bang");
 		outlet(1,"bang");
 	}
@@ -302,11 +302,11 @@ function draw_wave_hint(wave,slice){
 	} 
 }
 
-function mouse(x,y,l,s,a,c,scr){
+function mouse(x,y,lb,sh,al,ct,scr){
 	var ox = cursorx;
 	var oy = cursory;
 	if(scr!=0){
-		if(s==0){
+		if(sh==0){
 			if(scr<0){
 				cursory=(cursory+1) & 127;
 			}else{
@@ -330,24 +330,27 @@ function mouse(x,y,l,s,a,c,scr){
 	}else{
 		//todo shift select, copy paste?
 		cursorx = (x-sx)/cw;
+		cursorx += display_col_offset;
 		cursorx2 = Math.floor((cursorx % 1)*6);
-		cursorx = Math.floor(cursorx);	
+		cursorx = Math.min(v_list.length-1,Math.floor(cursorx));	
 		cursory = Math.floor((y-sy)/rh);
 	}
 	var df=0;
-	if(cursory-display_row_offset>30){
-		display_row_offset=cursory-30;
-		df=1;
-	}else if(cursory-display_row_offset<5){
-		display_row_offset=Math.max(0,cursory-5);
-		df=1;
-	}
-	if(cursorx-display_col_offset<1){
-		display_col_offset=Math.max(0,cursorx-1);
-		df=1;
-	}else if(cursorx-display_col_offset>1){
-		display_col_offset=cursorx-1;
-		df=1;
+	if(lb==0){
+		if(cursory-display_row_offset>30){
+			display_row_offset=cursory-30;
+			df=1;
+		}else if(cursory-display_row_offset<5){
+			display_row_offset=Math.max(0,cursory-5);
+			df=1;
+		}
+		if(cursorx-display_col_offset<1){
+			display_col_offset=Math.max(0,cursorx-1);
+			df=1;
+		}else if(cursorx-display_col_offset>1){
+			display_col_offset=cursorx-1;
+			df=1;
+		}
 	}
 	if(df){
 		draw();
