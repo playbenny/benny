@@ -354,10 +354,12 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}
 	if(df){
 		draw();
+		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
 		}
+		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
 	}
 }
@@ -369,6 +371,7 @@ function keydown(key){
 			cursorx=0;
 			cursorx2=0;
 			cursory=0;
+			messnamed("to_blockmanager","select_voice",cursorx,0);
 			break;
 		case -9:
 			cursory=(cursory+127) & 127;
@@ -382,6 +385,7 @@ function keydown(key){
 			if(cursorx2<0){
 				cursorx2=5;
 				cursorx=(cursorx+v_list.length-1)%v_list.length;
+				messnamed("to_blockmanager","select_voice",cursorx,0);
 			}
 			break;
 		case -12:
@@ -389,6 +393,7 @@ function keydown(key){
 			if(cursorx2>5){
 				cursorx2=0;
 				cursorx=(cursorx+1)%v_list.length;
+				messnamed("to_blockmanager","select_voice",cursorx,0);
 			}
 			break;
 		case 108:

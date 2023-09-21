@@ -205,6 +205,10 @@ function cpu_select_block(parameter,value){
 		select_block(0,value);
 	}
 }
+function select_voice(parameter,value){
+	sidebar.selected_voice = parameter;
+	redraw_flag.flag |= 10;
+}
 
 function select_block(parameter,value){
 	//post("\nselblock,",value);
