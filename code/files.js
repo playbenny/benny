@@ -224,6 +224,7 @@ function import_song(){
 			post("\noutput looper is active so setting it to fullscreen");
 			set_display_mode("custom_fullscreen",output_looper_block+1);
 		}else{
+			clear_screens();
 			set_sidebar_mode("none");
 			set_display_mode("blocks");
 		}

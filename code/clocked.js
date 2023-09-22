@@ -62,7 +62,7 @@ function frameclock(){
 		}
 		slowclock();
 		draw_topbar();
-		sidebar_meters();
+		//sidebar_meters();
 		bangflag=1;
 		redraw_flag.flag = 0;// redraw_flag.flag & 59; //disables a 'redraw' (and hence a draw blocks)
 	}else if(loading.progress!=0){

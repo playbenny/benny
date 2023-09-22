@@ -232,9 +232,9 @@ function drawcell(c,r){
 					}else if(i==4){
 						ss = String.fromCharCode(63+values[i]);
 					}else{
-						ss = Math.floor(values[i]-1);
+						ss = (values[i]-1);
 						if(i==2) ss++;
-						if(i==3) ss++;
+						//if(i==3) ss++;
 					}
 				}
 			}
@@ -329,11 +329,12 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		}
 	}else{
 		//todo shift select, copy paste?
-		cursorx = (x-sx)/cw;
+		cursorx = (x-sx-x_pos)/cw;
 		cursorx += display_col_offset;
 		cursorx2 = Math.floor((cursorx % 1)*6);
 		cursorx = Math.min(v_list.length-1,Math.floor(cursorx));	
-		cursory = Math.floor((y-sy)/rh);
+		cursory = Math.floor((y-sy-y_pos)/rh);
+		cursory += display_row_offset;
 	}
 	var df=0;
 	if(lb==0){
@@ -491,24 +492,27 @@ function keydown(key){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
 					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2)-1;
-					if(o<100){
+					if((o>0)&&(o<100)){
 						o*=10;
 						o+=t;
 					}else{
 						o=t;
 					}
+					if(cursorx2==1) currentvel = o |0;
+					if(cursorx2==3) currentslice = (o-1) |0;
 					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,o+1);
 				}
 			}else if((cursorx2==2)||(cursorx2==5)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
 					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2)-1;
-					if(o<10){
+					if((o>0)&&(o<10)){
 						o*=10;
 						o+=t;
 					}else{
 						o=t;
 					}
+					if(cursorx2==2) currentwave = --o |0;
 					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,o+1);
 				}
 			}else if((cursorx2==4)){
