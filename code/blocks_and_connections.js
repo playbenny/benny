@@ -1120,6 +1120,7 @@ function make_connection(cno){
 	var m_index;
 	var varr=[];
 	var max_poly;
+	var hw_mute=0; //if from block is hardware, and is muted, this gets set to 1, and the connection is set to silent
 	// work out which polyvoices/matrix slots correspond
 	if(f_type == "matrix"){
 		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
@@ -1145,6 +1146,7 @@ function make_connection(cno){
 	}else if(f_type == "hardware"){
 		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
 		varr = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::connections::out::hardware_channels");
+		hw_mute = blocks.get("blocks["+f_block+"]::mute");
 		if(typeof varr == "number") varr = [varr];
 		if(max_poly>1){
 			if(f_voice_list == "all"){
@@ -1387,10 +1389,10 @@ function make_connection(cno){
 								outmsg[1] = t_voice;//shuold it be this? - MAX_NOTE_VOICES;
 							}
 							if(force_unity){
-								outmsg[2] = (1-conversion.get("mute"));
+								outmsg[2] = (1-(hw_mute || conversion.get("mute")));
 							}else{
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
-								outmsg[2] = conversion.get("scale") * (1-conversion.get("mute")) * spread_l;
+								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
 							//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
 							matrix.message(outmsg);

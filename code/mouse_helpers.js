@@ -880,8 +880,10 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 		//actually needs to mute or unmute the audio/midi connections for hw blocks
 		for(var t=0;t<connections.getsize("connections");t++){
 			if(connections.contains("connections["+t+"]::from") && (connections.get("connections["+t+"]::from::number") == block)){
-				// and connection type is audio/hw
 				// then mute it or unmute it (if the connection itself is not muted)
+				if((connections.get("connections["+t+"]::conversion::mute")==0) && (connections.get("connections["+t+"]::from::output::type") == "hardware")){
+					make_connection(t);
+				}
 			}
 		}
 	}
