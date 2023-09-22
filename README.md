@@ -1,6 +1,10 @@
 MULTITUDES
 ----------
-
+- is software for making live music
+- integrates hardware and software
+- aims for a low-density, low-distraction, glance-able interface that works for touch and mouse/keyboard use
+- is agnostic about timelines and structure rather than imposing either
+  
 installation
 ------------
 - for now (in the end i'll make gen versions of everything i use) you need to install the ar. airwindows externals, they're in a zip in the root folder. test they're installed by in a new max window making an object, ar.cliponly2~, if it works you're good.
