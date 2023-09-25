@@ -23,11 +23,11 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [1, 2, 0],
+				"contains" : [0,1,2,3,4,5],
 				"colour" : [255,255,255]
 			},
 			{
-				"contains" : [3,4]
+				"contains" : [6,7]
 			}
 		],
 		"voice_data" : {

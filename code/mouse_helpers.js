@@ -1303,7 +1303,7 @@ function setup_waves(parameter,value){
 function store_wave_slices(waveno){
 	var d = Math.floor(waves_dict.get("waves["+waveno+"]::divisions")*(MAX_WAVES_SLICES-0.00001))+1;
 	if(d>0){
-		post("\ncalculating ",d,"slices ")
+		//post("\ncalculating ",d,"slices ")
 		var l = waves_dict.get("waves["+waveno+"]::length");
 
 		var s = l * waves_dict.get("waves["+waveno+"]::start");
@@ -1314,7 +1314,7 @@ function store_wave_slices(waveno){
 		for(i=0;i<d;i++){
 			waves_slices_buffer.poke(1, o+i, i*m+s);
 		}
-		post("writing slices to buffer",waveno,/*o,*/l,s,e,d,m,"\n");
+		//post("writing slices to buffer",waveno,/*o,*/l,s,e,d,m,"\n");
 	}
 }
 
