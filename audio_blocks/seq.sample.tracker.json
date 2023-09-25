@@ -35,25 +35,47 @@
 		},
 		"parameters" : [
 			{
-				"name" : "offset",
-				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
 				"name" : "start",
 				"type" : "int",
-				"values" : ["uni", 0, 128, "lin"],
+				"width" : 3,
+				"values" : ["uni", 0, 512, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "length",
+				"name" : "loop_start",
 				"type" : "int",
-				"values" : ["uni", 1, 128, "lin"],
+				"values" : ["uni", 0, 512, "lin"],
 				"wrap" : 0,
-				"default" : 0.124
+				"default" : 0.03125
+			},
+			{
+				"name" : "loop_length",
+				"type" : "int",
+				"values" : ["uni", 0, 512, "lin"],
+				"wrap" : 0,
+				"default" : 0.03125
+			},
+			{
+				"name" : "loop_enable",
+				"type" : "menu_i",
+				"values" : ["oneshot", "loop"],
+				"wrap" : 0,
+				"default" : 0.6
+			},
+			{
+				"name" : "offset",
+				"type" : "int",
+				"values" : ["bi", -512, 512, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "display_grid",
+				"type" : "int",
+				"values" : ["uni", 2, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
 			},
 			{
 				"name" : "detune",

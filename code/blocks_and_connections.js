@@ -1966,7 +1966,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					if(connections.get("connections["+i+"]::to::number") == block){
 						sv = 1;
 						if(connections.get("connections["+i+"]::to::input::type") == "audio") sv = subvoices;
-						post("\nSV IS ",sv);
+						//post("\nSV IS ",sv);
 						if(typeof t_voice == "number"){
 							if(t_voice > voices*sv){
 								remove_connection(i);
@@ -2159,16 +2159,14 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	blocks.set("blocks["+block+"]::poly::voices",v);
 	if(v>0){ // tell polyalloc how many voices remain
 		var addone = voicemap.get(block);
+		if(!Array.isArray(addone))addone = [addone];
 		var str_version = "";
 		for(i=0;i<addone.length;i++){
 			str_version = str_version + (addone[i]+1-voiceoffset)+" ";
 		}
-//		voicealloc_poly.setvalue((block+1),"mode",type,"blind_cycle",str_version);
 		// tell the polyalloc voice about its new job
 		voicealloc_poly.setvalue(+block + 1,"type",type);
 		voicealloc_poly.setvalue(+block + 1,"voicelist",str_version);
-		//post(0, "setvalue",+block + 1,"type",type);
-		//post(0, "setvalue",+block + 1,"voicelist",str_version);
 	}else{ // or turn it off if zero
 		voicealloc_poly.setvalue( (block+1), "off");
 	}

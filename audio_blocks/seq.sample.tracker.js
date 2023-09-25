@@ -175,8 +175,9 @@ function update(){
 			}
 			
 			//draw new cursor cell
-			if(cursors[c]-display_row_offset<maxl){
-				drawcell(c-display_col_offset,cursors[c]-display_row_offset);
+			o=cursors[c]-display_row_offset;
+			if((o>=0)&&(o<maxl)){
+				drawcell(c-display_col_offset,o);
 			}
 		}
 	}
