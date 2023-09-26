@@ -70,21 +70,21 @@
 				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "AM by osc2",
 				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "shapemod by osc2",
 				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "shape2",
@@ -120,21 +120,21 @@
 				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "AM by osc1",
 				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "shapemod by osc1",
 				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "unstable_pitch",
@@ -155,7 +155,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75,	
+				"default" : 0.5,	
 				"error_scale" : 0.3
 			},
 			{
@@ -163,7 +163,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75,	
+				"default" : 0.5,	
 				"error_scale" : 0.3
 			},
 			{
@@ -171,7 +171,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75,	
+				"default" : 0.5,	
 				"error_scale" : 0.3
 			},
 			{
@@ -179,7 +179,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75,	
+				"default" : 0.5,	
 				"error_scale" : 0.3
 			}
 		]
