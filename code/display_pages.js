@@ -1076,7 +1076,7 @@ function draw_wire(connection_number){
 			var to_multi=0;
 			if(connections.get("connections["+connection_number+"]::to::voice")=="all"){
 				tv = blocks.get("blocks["+cto+"]::poly::voices") * to_subvoices;
-				if(((to_type == "midi")||(to_type == "parameters"))&&(tv>1)){
+				if(((to_type == "midi")||(to_type == "parameters"))/*&&(tv>1)*/){
 					to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
 				}else{
 					if(tv>1)to_multi = 1;
