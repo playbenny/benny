@@ -1,0 +1,344 @@
+{
+	"voice.dual" : {
+		"patcher" : "voice.dual",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A pair of basic oscillators, with 2 envelopes and vcas and a load of diverse cross modulation possibilities. Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. The rectangle portion of this oscillator uses code from Yofiel.com. ",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "osc1 mod", "osc2 mod" ],
+				"midi" : [ "pitch","sync","osc2 detune","trigger1","trigger2","pitch_no_trigger" ]
+			},
+			"out" : {
+				"audio" : [ "mix", "alt" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,1,1,2,3,4,5,6,7,8,9],
+				"colour" : [255,0,0],
+				"height" : 2
+			},
+			{ 
+				"contains" : [10,10,11,11,12,13,14,15,16,17,18,19],
+				"colour" : [0,255,0],
+				"height" : 2
+			},
+			{
+				"contains" : [20,20,21,21,22,22,23,24,25,26],
+				"colour" : [255,0,0],
+				"height" : 1
+			},
+			{
+				"contains" : [27,27,28,28,29,29,30,31,32,33],
+				"colour" : [0,255,0],
+				"height" : 1
+			},
+			{
+				"contains" : [34,35,36,37,38,39],
+				"colour" : [0,0,255],
+				"height" : 1
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 10, 1, 11]
+		},
+		"parameters" : [
+			{
+				"name" : "1_shape",
+				"type" : "menu_f",
+				"values" : ["sin", "tri", "saw", "pulse", "sqr", "tri"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "_range",
+				"type" : "menu_i",
+				"values" : ["-16|lfo","-15|lfo","-14|lfo","-13|lfo","-12|lfo","-11|lfo","-10|lfo","-9|lfo","-8|lfo","-7|lfo","-6|lfo","-5|sub","-4|sub","-3|osc","-2|osc","-1|osc","0|osc","1|osc","2|osc"],
+				"error_scale" : 0.5,
+				"wrap" : 0,
+				"default" : 0.875
+			},
+			{
+				"name" : "de_tune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "por_ta",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "osc2_>FM",
+				"type" : "float",
+				"values" : ["bi", -10, 10, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_AM",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vca2_>FM",
+				"type" : "float",
+				"values" : ["bi", -10, 10, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_AM",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "2_shape",
+				"type" : "menu_f",
+				"values" : ["sin", "tri", "saw", "pulse", "sqr", "tri"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "_range",
+				"type" : "menu_i",
+				"values" : ["-16|lfo","-15|lfo","-14|lfo","-13|lfo","-12|lfo","-11|lfo","-10|lfo","-9|lfo","-8|lfo","-7|lfo","-6|lfo","-5|sub","-4|sub","-3|osc","-2|osc","-1|osc","0|osc","1|osc","2|osc"],
+				"error_scale" : 0.5,
+				"wrap" : 0,
+				"default" : 0.875
+			},
+			{
+				"name" : "de_tune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0
+			},
+			{
+				"name" : "por_ta",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "osc1_>FM",
+				"type" : "float",
+				"values" : ["bi", -10, 10, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "_>AM",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vca1_>FM",
+				"type" : "float",
+				"values" : ["bi", -10, 10, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_AM",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : ">_shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "attack",
+				"type" : "float4",
+				"values" : ["uni", 0.01, 1000, "exp" ],
+				"wrap" : 0,
+				"error_scale" : 2,
+				"default" : 0.05
+			},
+			{
+				"name" : "sustain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "release",
+				"type" : "float4",
+				"values" : ["uni", 0.01, 1000, "exp" ],
+				"wrap" : 0,
+				"error_scale" : 4,
+				"default" : 0.15
+			},
+			{
+				"name" : "curve",
+				"type" : "menu_f",
+				"values" : ["exp", "lin", "log" ],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "loop",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "vel>_level",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "accum",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},			
+			{
+				"name" : "attack",
+				"type" : "float4",
+				"values" : ["uni", 0.01, 1000, "exp" ],
+				"wrap" : 0,
+				"error_scale" : 2,
+				"default" : 0.05
+			},
+			{
+				"name" : "sustain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "release",
+				"type" : "float4",
+				"values" : ["uni", 0.01, 1000, "exp" ],
+				"wrap" : 0,
+				"error_scale" : 4,
+				"default" : 0.15
+			},
+			{
+				"name" : "curve",
+				"type" : "menu_f",
+				"values" : ["exp", "lin", "log" ],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "loop",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "vel>_level",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "accum",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "unstable_pitch",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "unstable_shape",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "out1_osc1_gain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,	
+				"error_scale" : 0.3
+			},
+			{
+				"name" : "out1_osc2_gain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,	
+				"error_scale" : 0.3
+			},
+			{
+				"name" : "out2_osc1_gain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,	
+				"error_scale" : 0.3
+			},
+			{
+				"name" : "out2_osc2_gain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,	
+				"error_scale" : 0.3
+			}
+		]
+	}
+}
