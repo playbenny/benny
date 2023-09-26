@@ -1,9 +1,11 @@
 MULTITUDES
 ----------
-- is software for making live music
-- integrates hardware and software
+- is a software playground for making live music or for making music live
+- integrates hardware and software, lets you connect anything to anything
 - aims for a low-density, low-distraction, glance-able interface that works for touch and mouse/keyboard use
 - is agnostic about timelines and structure rather than imposing either
+- is an extendible and hackable place to host your own max patches
+- is not a DAW
   
 installation
 ------------
@@ -32,7 +34,7 @@ configuration
 
 temporary limits
 ----------------
-at the moment the code is fixed to 64 midi block voices, 64 audio block voices, 16 hw outs, click on 17, 12 hw ins. this will all be reconfigurable at startup in the end.
+at the moment the code is fixed to 64 midi block voices, 64 audio block voices, 24 hw outs, click on 25, 12 hw ins. this will all be reconfigurable at startup in the end.
 at the moment only 2-in 2-out audio voices are supported. eventually 'wide' voices with more io will be possible.
 parameter refresh rate is about every 20ms at the moment. plan to speed it up a bit.
 
