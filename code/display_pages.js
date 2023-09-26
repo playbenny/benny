@@ -6305,7 +6305,72 @@ function draw_sidebar(){
 				redraw_flag.targets=[];
 				sidebar.selected = -1;
 			}
-		// if multi connections selected
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*5.8,fontheight+y_offset,menudarkest);
+			click_rectangle( sidebar.x, y_offset, sidebar.x+fontheight*5.9, fontheight+y_offset,mouse_index,2 );
+			mouse_click_actions[mouse_index] = connection_scale_selected;
+			mouse_click_parameters[mouse_index] = 0;
+			mouse_click_values[mouse_index] = "";	
+			mouse_index++;	
+			lcd_main.message("paintrect", sidebar.x + fontheight*4.8, y_offset, sidebar.x+fontheight*5.8, fontheight+y_offset,menudarkest );
+			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+			lcd_main.message("frgb" , menucolour);
+			lcd_main.message("write", selected.wire_count, "connections selected");
+
+			sidebar.editbtn = 0;
+			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
+		
+			lcd_main.message("paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudark );
+			click_rectangle( sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,mouse_index,1 );
+			mouse_click_actions[mouse_index] = connection_mute_selected;
+			mouse_click_parameters[mouse_index] = 0;
+			mouse_click_values[mouse_index] = "";	
+			mouse_index++;	
+			lcd_main.message("frgb" , menucolour);				
+			lcd_main.message("moveto", sidebar.x + fontheight*6, fontheight*0.5+y_offset);
+			lcd_main.message("write", "un");
+			lcd_main.message("moveto", sidebar.x + fontheight*6, fontheight*0.75+y_offset);
+			lcd_main.message("write", "mute");
+			lcd_main.message("paintrect", sidebar.x + fontheight*7, y_offset, sidebar.x+fontheight*8, fontheight+y_offset,menucolour );
+			click_rectangle( sidebar.x + fontheight*7, y_offset, sidebar.x+fontheight*8, fontheight+y_offset,mouse_index,1 );
+			mouse_click_actions[mouse_index] = connection_mute_selected;
+			mouse_click_parameters[mouse_index] = 1;
+			mouse_click_values[mouse_index] = "";	
+			mouse_index++;
+			lcd_main.message("frgb" , 0,0,0);				
+			lcd_main.message("moveto", sidebar.x + fontheight*7.1, fontheight*0.75+y_offset);
+			lcd_main.message("write", "mute");		
+			y_offset += 1.1*fontheight;
+			var block_label;
+			
+			for(i=0;i<selected.wire.length;i++){
+				if(selected.wire[i]){
+					var f_number = connections.get("connections["+i+"]::from::number");
+					var f_label = blocks.get("blocks["+f_number+"]::label");
+					//var f_name = blocks.get("blocks["+f_number+"]::name");
+					var t_number = connections.get("connections["+i+"]::to::number");
+					var t_label = blocks.get("blocks["+t_number+"]::label");
+					//var t_name = blocks.get("blocks["+t_number+"]::name");
+					//var f_o_no = connections.get("connections["+i+"]::from::output::number");
+					//var f_type = connections.get("connections["+i+"]::from::output::type");
+					//var t_i_no = connections.get("connections["+i+"]::to::input::number");
+					//var t_type = connections.get("connections["+i+"]::to::input::type");
+					var mute = connections.get("connections["+i+"]::conversion::mute");
+					var scale = connections.get("connections["+i+"]::conversion::scale");
+					lcd_main.message("frgb" , menucolour);				
+					lcd_main.message("moveto", sidebar.x + 0.1*fontheight, fontheight*(0.4)+y_offset);
+					lcd_main.message("write", f_label+"-->"+t_label);
+					if((connections.get("connections["+i+"]::from::output::type")!="matrix") && (!force_unity)){
+						draw_h_slider_labelled(sidebar.x+5*fontheight, y_offset, mainwindow_width-9-fontheight*1.1, fontheight+y_offset,menucolour,mouse_index,scale);
+						mouse_click_actions[mouse_index] = connection_edit;
+						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::scale";
+						mouse_click_values[mouse_index] = 0;
+						mouse_index++;
+					}
+
+					y_offset+=1.1*fontheight;
+				}
+			}		// if multi connections selected
 		   // connection adjust view - gain control, offset if applicable, muteall/unmuteall		
 		}else if(sidebar.mode == "input_scope"){
 			sidebar.scroll.position = 0;

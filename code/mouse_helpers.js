@@ -962,6 +962,29 @@ function connection_edit(parameter,value){
 	}
 }
 
+function connection_mute_selected(parameter,value){
+	var i=connections.getsize();
+	if(parameter==0){//unmute all
+		for(;i>0;--i){
+			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",0)
+		}	
+	}else if(parameter==1){ //mute all
+		for(;i>0;--i){
+			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",1)
+		}	
+	}else if(parameter==-1){ //toggle all
+		for(;i>0;--i){
+			m=connections.get("connections["+i+"]::conversion::mute");
+			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",!m)
+		}	
+	}
+}
+
+function connection_scale_selected(parameter,value){
+	var adj=1+parameter; //eg param is the mouse scroll wheel value, +-
+	post("\nMULTI ADJUST NOT DONE YET",adj);
+}
+
 function panel_assign_click(parameter,value){
 	var fplist = [];
 	if(blocks.contains("blocks["+parameter[0]+"]::panel::parameters")){
