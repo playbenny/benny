@@ -20,6 +20,7 @@ var cursorx2=0;
 var cursory=0;
 var s=[];
 var l=[];
+var l_on=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var baseoct=4;
 var mini;
 var namelist;
@@ -133,6 +134,7 @@ function draw(){
 				ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 				l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
 				s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
+				l_on[c] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3)
 				outlet(1,"moveto", 3+sx+cw*(c-display_col_offset)+x_pos, rh*2.15+y_pos);
 				outlet(1,"write", "voice", c+1);
 				cursors[c]=ph;
@@ -192,19 +194,26 @@ function drawcell(c,r){
 		rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 		rc = rc/24;
 		fc = [menucolour[0]*0.25,menucolour[1]*0.25,menucolour[2]*0.25];
-		if((rr>=s[c+display_col_offset])&&(rr<s[c+display_col_offset]+l[c+display_col_offset])){
+		var lp=1;
+		var cp=c+display_col_offset;
+		if((rr>=s[cp])&&(rr<s[cp]+l[cp])){
 			rc+=0.1;
 			fc=menucolour;
+/*			if(l_on[cp]){
+				fc[1]*=1.3;
+				fc[0]*=0.8;
+				lp=1.5;
+			} */
 		}
-		if(cursors[c+display_col_offset]==rr){
+		if(cursors[cp]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
-		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc,menucolour[2]*rc);
+		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
 		outlet(1,"frgb",fc);
-		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+1+6*rr,6);
+		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cp)]+1+6*rr,6);
 	//	post(values,"\n");
-		var incell = ((cursorx==(c+display_col_offset))&&(cursory==rr));
+		var incell = ((cursorx==(cp))&&(cursory==rr));
 		var x=0;
 		var washighlight=0;
 		for(i=0;i<6;i++){		

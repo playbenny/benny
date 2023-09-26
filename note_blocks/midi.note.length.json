@@ -15,7 +15,8 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0]
+				"contains" : [0,0],
+				"height" : 5
 			}		
 		],
 		"parameters" : [
