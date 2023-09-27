@@ -1,0 +1,71 @@
+{
+	"midi.lfo" : {
+		"patcher" : "midi.lfo",
+		"type" : "note",
+		"block_ui_patcher" : "midi.lfo.ui",
+		"help_text" : "A midi LFO, if you add more voices they're linked, so you can build eg quadrature lfos from this.",
+		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 4,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic"
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "reset" ]
+			},
+			"out" : {
+				"midi" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,3],
+				"colour" : [255,255,255]
+			},
+			{ 
+				"contains" : [2],
+				"colour" : [255,255,255],
+				"onepervoice" : 1
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "shape",
+				"type" : "menu_f",
+				"values" : ["sin", "tri", "saw", "pulse", "sqr", "tri"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "rate",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp"],
+				"error_scale" : 0,
+				"default" : 0.26
+			},
+			{
+				"name" : "phase_offset",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "warp",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "follow_global_transport",
+				"type" : "menu_i",
+				"values" : ["free", "follow"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}
