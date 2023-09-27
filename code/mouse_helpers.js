@@ -963,9 +963,11 @@ function connection_edit(parameter,value){
 }
 
 function connection_mute_selected(parameter,value){
-	var i=connections.getsize();
+	var i=connections.getsize("connections");
+	post("\nmute sel conns",i,parameter,value);
 	if(parameter==0){//unmute all
 		for(;i>0;--i){
+			post(i);
 			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",0)
 		}	
 	}else if(parameter==1){ //mute all
@@ -981,8 +983,15 @@ function connection_mute_selected(parameter,value){
 }
 
 function connection_scale_selected(parameter,value){
-	var adj=1+parameter; //eg param is the mouse scroll wheel value, +-
-	post("\nMULTI ADJUST NOT DONE YET",adj);
+	if(value == "get") return 0;
+	var adj = 1 + value; //eg param is the mouse scroll wheel value, +-
+	var i=connections.getsize("connections");
+	for(;i>0;--i){
+		if(selected.wire[i]){
+			var os=connections.get("connections["+i+"]::conversion::scale");
+			connection_edit("connections["+i+"]::conversion::scale",os*adj);
+		}
+	}	
 }
 
 function panel_assign_click(parameter,value){
