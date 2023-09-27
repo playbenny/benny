@@ -12,7 +12,7 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "row select", "reset" ]
+				"midi" : [ "trigger", "row select", "reset", "midi in" ]
 			},
 			"out" : {
 				"midi" : [ "notes out" ]
@@ -20,7 +20,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2,3,4,5],
+				"contains" : [0, 1, 2,3,4,5,6],
 				"colour" : [255,255,255]
 			}
 		],
@@ -67,6 +67,13 @@
 				"values" : ["uni", 2, 16, "lin"],
 				"wrap" : 0,
 				"default" : 0.2
+			},
+			{
+				"name" : "midi_in",
+				"type" : "menu_i",
+				"values" : ["through", "record"],
+				"wrap" : 0,
+				"default" : 0.25
 			}
 		]
 	}

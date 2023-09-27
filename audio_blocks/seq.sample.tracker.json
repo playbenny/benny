@@ -14,7 +14,7 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "row select", "reset" ]
+				"midi" : [ "trigger", "row select", "reset", "midi in" ]
 			},
 			"out" : {
 				"midi" : [ "notes out" ],
@@ -27,12 +27,9 @@
 				"colour" : [255,255,255]
 			},
 			{
-				"contains" : [6,7]
+				"contains" : [6,7,8]
 			}
 		],
-		"voice_data" : {
-			"defaults" : [0 , 0.118]
-		},
 		"parameters" : [
 			{
 				"name" : "start",
@@ -90,6 +87,13 @@
 				"values" : ["bi", -4, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "midi_in",
+				"type" : "menu_i",
+				"values" : ["play", "record"],
+				"wrap" : 0,
+				"default" : 0.25
 			}
 		]
 	}
