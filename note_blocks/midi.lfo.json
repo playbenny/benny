@@ -57,14 +57,14 @@
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "follow_global_transport",
 				"type" : "menu_i",
 				"values" : ["free", "follow"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.25
 			}
 		]
 	}

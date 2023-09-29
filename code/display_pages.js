@@ -4012,7 +4012,7 @@ function draw_sidebar(){
 					mouse_click_values[mouse_index] = "";	
 					mouse_index++;
 				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && !(displaymode == "custom")){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && !(displaymode == "custom") && !(displaymode == "panels")){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
 					sidebar.panel = 1;
 					if(ui_h>0){
@@ -4027,7 +4027,7 @@ function draw_sidebar(){
 						}
 						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,mainwindow_width-9,y_offset+ui_h,mainwindow_width);
 						custom_block = block;
-						y_offset += ui_h;
+						y_offset += ui_h + 0.1*fontheight;
 					}
 				}
 			}
