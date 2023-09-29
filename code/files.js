@@ -221,8 +221,8 @@ function import_song(){
 	if(loading.progress==-1){
 		//set_display_mode("loading");
 		if(output_looper_active){
-			post("\noutput looper is active so setting it to fullscreen");
-			set_display_mode("custom_fullscreen",output_looper_block+1);
+			post("\noutput looper is active so i should be setting it to fullscreen but i wont");
+			// set_display_mode("custom_fullscreen",output_looper_block+1);
 		}else{
 			clear_screens();
 			set_sidebar_mode("none");

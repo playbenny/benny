@@ -44,17 +44,19 @@ function draw(){
 		var i;
 		//var c,r,ph,rr,rc,fc;
 		v_list = map.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
-		unit = height / v_list.length;
-		var wave = 1;
-		var highlight = 2;
-		for(i=0;i<v_list.length;i++) {
-			//need to find out if highlight has changed, only draw if it has.
-			wave = 1+ Math.floor(MAX_WAVES*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i],1));
-			highlight = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7,1);
-			if(o_hl[i]!=highlight){
-				o_hl[i]=highlight;
-				outlet(0, "custom_ui_element","waveform_slice_highlight",x_pos, y_pos, width+x_pos, (1+i)*unit+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block,wave,highlight); 
+		if(v_list !== null){
+			if(typeof v_list=="number") v_list = [v_list];
+			unit = height / v_list.length;
+			var wave = 1;
+			var highlight = 2;
+			for(i=0;i<v_list.length;i++) {
+				//need to find out if highlight has changed, only draw if it has.
+				wave = 1+ Math.floor(MAX_WAVES*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i],1));
+				highlight = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7,1);
+				if(o_hl[i]!=highlight){
+					o_hl[i]=highlight;
+					outlet(0, "custom_ui_element","waveform_slice_highlight",x_pos, y_pos, width+x_pos, (1+i)*unit+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block,wave,highlight); 
+				}
 			}
 		}
 	}
