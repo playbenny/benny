@@ -2,10 +2,15 @@ var MAX_DATA = 1024;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
+var shape_buffer = new Buffer("osc_shape_lookup");
 outlets = 3;
 var config = new Dict;
 config.name = "config";
-var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl=-1;
+var connections = new Dict;
+connections.name = "connections";
+var blocks = new Dict;
+blocks.name = "blocks";
+var width, height,x_pos,y_pos,unit;
 var block=-1;
 var blocks = new Dict;
 blocks.name = "blocks"
@@ -13,117 +18,113 @@ var voicemap = new Dict;
 voicemap.name =  "voicemap";
 var mini=0;
 var v_list = [];
-var cursors = new Array(128); //holds last drawn position of playheads (per row)
-//data format: for each voice the buffer holds:
-// 0 - start (*128)
-// 1 - length (*128+1)
-// 2 - playhead position (updated by player voice)
-// 3-131? data values
-var notelist = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var cu; //first one's cursor pos, to see if we need to redraw
+var gx,gy,gw,gh; //graph position (it has labels in not-mini mode so the size is not the size of the panel)
+var vcol=[[255,0,0],[0,255,0],[0,0,255],[255,255,0],[0,255,255],[255,0,255]];
 
 function setup(x1,y1,x2,y2,sw){
-//	post("drawing sequencers");
+	outlet(0,"getvoice");
 	menucolour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menudark = [menucolour[0]*0.2,menucolour[1]*0.2,menucolour[2]*0.2];
 	width = x2-x1;
 	mini=0;
-	if(width<sw*0.6){ mini=1;}
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
+	if(width<sw*0.6){ 
+		mini=1;
+		gx=x1;
+		gy=y1;
+		gw=width;
+		gh=height-1;
+	}else{
+		gx=x1; gy=y1; gw=width;
+		gh = Math.floor(height * 14 / 18);
+	}
 	unit = height / 18;
 	draw();
 }
 
 function draw(){
 	if(block>=0){
-		var c,r,ph,l,s;
-		v_list = voicemap.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
-		var i;
-		maxl=1;
-		for(i=0;i<v_list.length;i++) {
-			cursors[i]=-1;
-			l  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+3)*128)+1;
-			s  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2)*128);
-			if(l+s>maxl) maxl = l+s;
-		}
-		cw = (width)/(maxl);
-		i= Math.max(2 - mini,v_list.length);
-		rh = height/i;
-		sx = 0;
-		for(r=0;r<v_list.length;r++){
-			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
-			l  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[r]+3)*128)+1;
-			s  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[r]+2)*128);
-			
-			cursors[r]=ph;
-			for(c=maxl-1;c>=0;c--){			
-				outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,255*(c==ph),63+192*((c>=s)&&(c<s+l)),255*(c==ph),MAX_DATA*v_list[r]+1+c);
-				if(!mini){
-//					outlet(1,"frgb",menudark);
-					outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.4);
-					outlet(1,"write",c);
-					i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1+c)*128);
-					if(i>0){
-						i--;
-						outlet(1,"frgb",menucolour);
-						outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.8);
-						outlet(1,"write",i);
- 						outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*1.2);
-						outlet(1,"write",notelist[i%12]+"-"+Math.floor(i/12));
+		drawcurves();
+		if(!mini){
+			for(var v=0;v<v_list.length;v++){
+				outlet(1,"moveto",gx+unit, gy+gh+unit*(0.4+v*0.5));
+				outlet(1,"frgb",vcol[v]);
+				vs = "voice: " + v;
+				for(var i=0;i<connections.getsize("connections");i++){
+					if(connections.contains("connections["+i+"]::from::number")){
+						if(parseInt(connections.get("connections["+i+"]::from::number"))==block){
+							if(parseInt(connections.get("connections["+i+"]::from::voice"))==v+1){
+								// falls down if it's from multiple voices
+								vs = vs + " to: "+blocks.get("blocks["+connections.get("connections["+i+"]::to::number")+"]::label");
+								//need to eventually get block name instead
+							}
+						}
 					}
 				}
+				outlet(1,"write",vs);
 			}
 		}
-		outlet(1,"bang");
+	}
+}
+
+function drawcurves(){
+	if(block>=0){
+		outlet(1, "paintrect", gx,gy,gx+gw+1,gy+gh+1,0,0.2,0);
+		outlet(1, "moveto", gx+20,gy);
+		outlet(1, "frgb", menucolour);
+		outlet(1, "lineto", gx+20,gy+gh);
+
+		for(var v=0;v<v_list.length;v++){
+			var sh=Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v])*4096);
+			var shp=[shape_buffer.peek(1, sh),shape_buffer.peek(2, sh),shape_buffer.peek(3, sh),shape_buffer.peek(4, sh)];
+			var ra=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+1);
+			ra = 1/(10000 - 9950*ra);
+			var wa=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+3);
+			if(wa<0.5){
+				wa = 8 - 14*wa;
+			}else{
+				wa = 2 - 2*wa;
+			}
+			var ph=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+2);
+			cu=voice_data_buffer.peek(1, MAX_DATA*v_list[0]);
+			var stx=cu-100; //5 ticks per pixel, 20 pixels gap at the front
+			var x=gx;
+			for(var i=0;i<gw;i+=2){
+				var p = stx * ra + ph;
+				p = p % 1;
+				y=shp[0]*(1-Math.cos(p* 6.283))*0.5;
+				if(p<shp[3]){
+					y += shp[1]*(p/shp[3]);
+				}else{
+					y += shp[1]*(1- (p-shp[3])/(1-shp[3])); //tri
+					y += shp[2]; //sq
+				}
+				y = 1 - Math.pow(y, wa);
+				if(y<0) y=0;
+				if(y>1) y=1;
+				y *= gh;
+				y += gy;
+				if(i==0){
+					outlet(1,"moveto",x,y)
+					outlet(1,"frgb",vcol[v]);
+				}else{
+					outlet(1,"lineto",x,y);
+				}
+				x+=2;
+				stx += 10;				
+			}
+		}
 	}
 }
 
 function update(){
-	var r,i;
-	for(r=0;r<v_list.length;r++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
-		if(cursors[r]!=ph){
-			//redraw slider that was old cursor
-			if((cursors[r]>=0)&&(cursors[r]<maxl)){
-				outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,0,255,0,MAX_DATA*v_list[r]+1+cursors[r]);
-				if(!mini){
-					outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
-					outlet(1,"write",cursors[r]);
-					i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1+cursors[r])*128);
-					if(i>0){
-						i--;
-						outlet(1,"frgb",menucolour);
-						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit);
-						outlet(1,"write",i);
- 						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*1.5);
-						outlet(1,"write",notelist[i%12]+"-"+Math.floor(i/12));
-					}					
-				}
-			}
-			cursors[r]=ph;
-			//draw new cursor slider
-			if(cursors[r]<maxl){
-				outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+1+ph);
-				if(!mini){
-					outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
-					outlet(1,"write",cursors[r]);
-					i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1+cursors[r])*128);
-					if(i>0){
-						i--;
-						outlet(1,"frgb",0,0,0);
-						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit);
-						outlet(1,"write",i);
- 						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*1.5);
-						outlet(1,"write",notelist[i%12]+"-"+Math.floor(i/12));
-					}					
-				}
-			}
-		}
-	}
+	var ocu=cu;
+	if((voice_data_buffer.peek(1, MAX_DATA*v_list[0])-ocu)<5) drawcurves();
 }
 
 function voice_is(v){
@@ -131,6 +132,9 @@ function voice_is(v){
 	if(block>0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+	}
+	for(var i = 0; i<v_list.length;i++){
+		vcol[i] = config.get("palette::gamut["+i*20+"]::colour");
 	}
 }
 
@@ -140,28 +144,6 @@ function loadbang(){
 }
 
 function store(){
-	var r;
-	if(block>=0){
-		if(maxl<1){
-			var i,l,s;
-			v_list = voicemap.get(block);
-			if(typeof v_list=="number") v_list = [v_list];
-			maxl=1;
-			for(i=0;i<v_list.length;i++){
-				cursors[i]=-1;
-				l  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1)*128)+3;
-				s  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*128)+2;
-				if(l+s>maxl) maxl = l+s;
-			}		
-		}
-	}else{
-		post("error storing seq.grid - unknown block",block,v_list);
-	}
-	var transf_arr = new Array(maxl+3);
-	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], maxl+1);
-		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
-	}
 }
 
 function keydown(key){

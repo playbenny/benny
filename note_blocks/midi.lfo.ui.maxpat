@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 2,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 813.0, 266.0, 632.0, 480.0 ],
+		"rect" : [ 444.0, 274.0, 632.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -87,13 +87,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 265.0, 217.0, 63.0, 22.0 ],
+					"patching_rect" : [ 265.0, 217.0, 59.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "seq.grid.js",
+						"filename" : "midi.lfo.js",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js seq.grid"
+					"text" : "js midi.lfo"
 				}
 
 			}
