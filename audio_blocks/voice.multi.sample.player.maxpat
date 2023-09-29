@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -81,10 +81,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 526.0, 741.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -168,7 +164,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 365.833333333333371, 117.0, 58.0, 22.0 ],
+					"patching_rect" : [ 260.666666666666742, 117.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -180,8 +176,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 365.833333333333371, 149.0, 103.0, 22.0 ],
-					"text" : "get MAX_WAVES"
+					"patching_rect" : [ 260.666666666666742, 149.0, 254.0, 22.0 ],
+					"text" : "get MAX_WAVES, get MAX_WAVES_SLICES"
 				}
 
 			}
@@ -189,11 +185,11 @@
 				"box" : 				{
 					"id" : "obj-83",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 380.5, 213.0, 114.0, 22.0 ],
-					"text" : "route MAX_WAVES"
+					"numinlets" : 3,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 275.333333333333371, 213.0, 241.0, 22.0 ],
+					"text" : "route MAX_WAVES MAX_WAVES_SLICES"
 				}
 
 			}
@@ -204,7 +200,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 4,
 					"outlettype" : [ "dictionary", "", "", "" ],
-					"patching_rect" : [ 365.833333333333371, 181.0, 63.0, 22.0 ],
+					"patching_rect" : [ 260.666666666666742, 181.0, 63.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"parameter_enable" : 0,
@@ -1270,7 +1266,7 @@
 				"box" : 				{
 					"id" : "obj-142",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
+					"numinlets" : 5,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
 					"patcher" : 					{
@@ -1278,13 +1274,13 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 5,
-							"revision" : 4,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 570.0, 228.0, 990.0, 507.0 ],
+						"rect" : [ 493.0, 232.0, 990.0, 507.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -1313,6 +1309,19 @@
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
+								"box" : 								{
+									"comment" : "MAX_WAVES_SLICES",
+									"id" : "obj-10",
+									"index" : 5,
+									"maxclass" : "inlet",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 870.0, 62.0, 30.0, 30.0 ]
+								}
+
+							}
+, 							{
 								"box" : 								{
 									"id" : "obj-40",
 									"maxclass" : "newobj",
@@ -1716,8 +1725,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "int" ],
-									"patching_rect" : [ 658.0, 211.0, 37.0, 22.0 ],
-									"text" : "* 128"
+									"patching_rect" : [ 658.0, 211.0, 43.0, 22.0 ],
+									"text" : "* 1024"
 								}
 
 							}
@@ -1921,6 +1930,13 @@
 								"patchline" : 								{
 									"destination" : [ "obj-29", 0 ],
 									"source" : [ "obj-1", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-1", 1 ],
+									"source" : [ "obj-10", 0 ]
 								}
 
 							}
@@ -2411,7 +2427,7 @@
 				"box" : 				{
 					"id" : "obj-141",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
+					"numinlets" : 5,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
 					"patcher" : 					{
@@ -2419,13 +2435,13 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 5,
-							"revision" : 4,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 570.0, 228.0, 990.0, 507.0 ],
+						"rect" : [ 493.0, 232.0, 990.0, 507.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -2454,6 +2470,19 @@
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
+								"box" : 								{
+									"comment" : "MAX_WAVES_SLICES",
+									"id" : "obj-10",
+									"index" : 5,
+									"maxclass" : "inlet",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 870.0, 62.0, 30.0, 30.0 ]
+								}
+
+							}
+, 							{
 								"box" : 								{
 									"id" : "obj-40",
 									"maxclass" : "newobj",
@@ -2857,8 +2886,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "int" ],
-									"patching_rect" : [ 658.0, 211.0, 37.0, 22.0 ],
-									"text" : "* 128"
+									"patching_rect" : [ 658.0, 211.0, 43.0, 22.0 ],
+									"text" : "* 1024"
 								}
 
 							}
@@ -3062,6 +3091,13 @@
 								"patchline" : 								{
 									"destination" : [ "obj-29", 0 ],
 									"source" : [ "obj-1", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-1", 1 ],
+									"source" : [ "obj-10", 0 ]
 								}
 
 							}
@@ -3640,6 +3676,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 1196.0, 707.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -3652,6 +3692,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 921.0, 831.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -3663,6 +3707,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 745.5, 1068.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -3674,6 +3722,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 647.0, 1068.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -3913,10 +3965,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 376.5, 981.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -3953,6 +4001,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 832.0, 9.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -5229,6 +5281,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-141", 4 ],
+					"order" : 1,
+					"source" : [ "obj-83", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-142", 4 ],
+					"order" : 0,
+					"source" : [ "obj-83", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-83", 0 ],
 					"source" : [ "obj-84", 1 ]
 				}
@@ -5325,16 +5393,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [ 			{
-				"name" : "mini.env.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : ".",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }

@@ -2107,6 +2107,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					voicemap.remove(block.toString());
 				}
 				note_patcherlist[removeme] = "blank.note";
+				note_poly.setvalue(removeme+1, "enabled",0);
 			}else if(type == "audio"){
 				voiceoffset = MAX_NOTE_VOICES;
 				var list = voicemap.get(block);
