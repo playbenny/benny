@@ -1050,19 +1050,20 @@ function draw_wire(connection_number){
 			var from_multi = 0;
 			var from_list = [];
 			var to_list = [];
-			var tv,tl;
+			var tv,fv,tl;
 			var from_subvoices=1, to_subvoices=1;
 			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices")))from_subvoices=blocks.get("blocks["+cfrom+"]::subvoices");
 			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices")))to_subvoices=blocks.get("blocks["+cto+"]::subvoices");
 			
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
-				tv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
-				if(tv>1) from_multi = 1;
-				for(t=0;t<tv;t++){
+				fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
+				if(fv>1) from_multi = 1;
+				for(t=0;t<fv;t++){
 					from_list[t] = t+1;
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
+				fv = tl.length;
 				if(tl.length>1){
 					from_multi=1;
 					for(t=0;t<tl.length;t++){
@@ -1086,6 +1087,7 @@ function draw_wire(connection_number){
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::to::voice");
+				tv = tl.length;
 				if(tl.length>1){
 					to_multi = 1;
 					for(t=0;t<tl.length;t++){
@@ -1102,35 +1104,35 @@ function draw_wire(connection_number){
 			var corners = [0,0];
 			
 			if((to_pos[1]>=from_pos[1])){
-				from_anglevector = [0, -0.44, 0];
+				from_anglevector = [0, -0.33, 0];
 				corners[0] = 1;
 				if(to_pos[0]>from_pos[0]){
-					from_corner = [from_pos[0] + 0.44, from_pos[1]-0.44, from_pos[2]];
-					from_cornervector = [0.44, 0, 0];//[0.44, 0, 0];
+					from_corner = [from_pos[0] + 0.33+0.5*fv, from_pos[1]-0.33, from_pos[2]];
+					from_cornervector = [0.33, 0, 0];//[0.44, 0, 0];
 				}else{
-					from_corner = [from_pos[0] - 0.44, from_pos[1]-0.44, from_pos[2]];
-					from_cornervector = [-0.44, 0, 0];//[-0.44, 0, 0];
+					from_corner = [from_pos[0] - 0.33, from_pos[1]-0.33, from_pos[2]];
+					from_cornervector = [-0.33, 0, 0];//[-0.44, 0, 0];
 				}
 			}else{
 				from_corner = [from_pos[0],from_pos[1] - 0.5,from_pos[2]];
-				from_cornervector = [0, -0.44, 0];
-				from_anglevector = [0, -0.44, 0];
+				from_cornervector = [0, -0.33, 0];
+				from_anglevector = [0, -0.33, 0];
 			}
 
 			if((to_pos[1]>=from_pos[1])){
-				to_anglevector = [0, -0.44, 0];
+				to_anglevector = [0, -0.33, 0];
 				corners[1]=1;
 				if(to_pos[0]<from_pos[0]){
-					to_corner = [to_pos[0]+0.44, to_pos[1]+0.44, to_pos[2]];
-					to_cornervector = [-0.44,0,0];//[-0.44, 0, 0];
+					to_corner = [to_pos[0]+0.33+0.5*tv, to_pos[1]+0.33, to_pos[2]];
+					to_cornervector = [-0.33,0,0];//[-0.33, 0, 0];
 				}else{
-					to_corner = [to_pos[0]-0.44, to_pos[1]+0.44, to_pos[2]];
-					to_cornervector = [0.44, 0, 0];
+					to_corner = [to_pos[0]-0.33, to_pos[1]+0.33, to_pos[2]];
+					to_cornervector = [0.33, 0, 0];
 				}
 			}else{
 				to_corner = [to_pos[0],to_pos[1]+0.5,to_pos[2]];
-				to_cornervector = [0, -0.44, 0];
-				to_anglevector = [0, -0.44, 0];
+				to_cornervector = [0, -0.33, 0];
+				to_anglevector = [0, -0.33, 0];
 			}
 			if((dist<4.5)&&(cfrom!=cto)) corners = [0,0];
 			var bez_prep=[];
@@ -1171,14 +1173,14 @@ function draw_wire(connection_number){
 				meanvector[0] = from_corner[0] - to_corner[0];
 				meanvector[1] = from_corner[1] - to_corner[1];
 				var mvl = meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1];
-				mvl = -0.44/Math.sqrt(mvl);
+				mvl = -0.33/Math.sqrt(mvl);
 				meanvector[0] = meanvector[0] * mvl;
 				meanvector[1] = meanvector[1] * mvl;				
 
 				if((from_multi)&&(to_multi>0)){ 
 					if(corners[0]){ //many-corner(many)-blob-  then later i'll do -?corner(many)?-many
 						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5*from_list[i]/from_subvoices+0.4*fconx + 0.05;
+							from_pos[0] = fp + 0.5*(from_list[i]-1)/from_subvoices+0.4*fconx + 0.55;
 							//from_corner[2] = (1 - from_list[i]+fconx+blob_position[2])*0.5;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = from_pos[t];
@@ -1205,7 +1207,7 @@ function draw_wire(connection_number){
 						}
 					}else{ //many-blob- then later ?corner?-many
 						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5*from_list[i]/from_subvoices + 0.4*fconx + 0.05;
+							from_pos[0] = fp + 0.5*(from_list[i]-1)/from_subvoices + 0.4*fconx + 0.55;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = from_pos[t];
 								bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
@@ -1233,7 +1235,7 @@ function draw_wire(connection_number){
 							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
 						}
 						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5 * to_list[i]/to_subvoices + 0.4 * tconx + 0.05;
+							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
 							//to_corner[2] = (1 - to_list[i]+tconx+blob_position[2])*0.5;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = to_corner[t];
@@ -1247,7 +1249,7 @@ function draw_wire(connection_number){
 						}
 					}else{ //blob-no corner many
 						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5 * to_list[i]/to_subvoices + 0.4 * tconx + 0.05;
+							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = blob_position[t];
 								bez_prep[1][t] = blob_position[t]+meanvector[t];
@@ -1262,7 +1264,7 @@ function draw_wire(connection_number){
 				}else if(from_multi){  //only from is multi, so many-blob-corner-one, this is the same whether its got a corner[0] or not as the blob is the corner
 					if(corners[0]){ //many-corner(many)-blob-  then later i'll do -?corner(many)?-many
 						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5 * from_list[i]/from_subvoices+ 0.4 * fconx + 0.05;
+							from_pos[0] = fp + 0.5 * (from_list[i]-1)/from_subvoices+ 0.4 * fconx + 0.55;
 							//from_corner[2] = (1 - from_list[i]+fconx+blob_position[2])*0.5;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = from_pos[t];
@@ -1289,7 +1291,7 @@ function draw_wire(connection_number){
 						}
 					}else{ //many-blob- then later ?corner?-many
 						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5 * from_list[i]/from_subvoices + 0.4 * fconx + 0.05;
+							from_pos[0] = fp + 0.5 * (from_list[i]-1)/from_subvoices + 0.4 * fconx + 0.55;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = from_pos[t];
 								bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
@@ -1388,7 +1390,7 @@ function draw_wire(connection_number){
 							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
 						}
 						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5* to_list[i]/to_subvoices + 0.4 * tconx +0.05;
+							to_pos[0] = tp + 0.5* (to_list[i]-1)/to_subvoices + 0.4 * tconx +0.55;
 							//to_corner[2] = (1 - to_list[i]+tconx+blob_position[2])*0.5;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = to_corner[t];
@@ -1402,7 +1404,7 @@ function draw_wire(connection_number){
 						}
 					}else{ //blob-no corner many
 						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5 * to_list[i]/to_subvoices + 0.4 * tconx + 0.05;
+							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
 							for(t=0;t<3;t++){
 								bez_prep[0][t] = blob_position[t];
 								bez_prep[1][t] = blob_position[t]+meanvector[t];
