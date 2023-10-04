@@ -23,7 +23,7 @@
 		"parameters" : [
 			{
 				"name" : "delay_samples",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1000, "lin"],
 				"wrap" : 0,
 				"default" : 0
@@ -46,14 +46,14 @@
 			},
 			{
 				"name" : "delay_ms",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 10000, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "delay_beats",
-				"type" : "flo",
+				"type" : "float",
 				"error_scale" : 0,
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,

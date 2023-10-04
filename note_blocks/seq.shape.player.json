@@ -66,91 +66,91 @@
 			},
 			{
 				"name" : "ornament_inclination",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "reset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "skip",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "double",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "flam",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "swap",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "trill",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "arp",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "sub_loop",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "back",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "fwd",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "arp_step",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "arp_limit",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0

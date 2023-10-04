@@ -31,14 +31,14 @@
 			},
 			{
 				"name" : "fadeout",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.95
 			},
 			{
 				"name" : "highpass",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
@@ -60,7 +60,7 @@
 			},
 			{
 				"name" : "blank",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
@@ -74,21 +74,21 @@
 			},
 			{
 				"name" : "loop position",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "loop start",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "loop end",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0

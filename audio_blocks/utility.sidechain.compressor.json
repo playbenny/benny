@@ -22,28 +22,28 @@
 		"parameters" : [
 			{
 				"name" : "threshold",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", -60, 0, "lin"],
 				"wrap" : 0,
 				"default" : 0.75
 			},
 			{
 				"name" : "ratio",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 100, "exp"],
 				"wrap" : 0,
 				"default" : 10
 			},
 			{
 				"name" : "attack",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0.005, 250, "exp"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
 			{
 				"name" : "release",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 10, 2500, "exp"],
 				"wrap" : 0,
 				"default" : 0.1

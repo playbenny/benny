@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3779292277,
+	"modificationdate" : 3779297495,
 	"viewrect" : [ 36.0, 63.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -462,6 +462,16 @@
 			"env.asr.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
+			}
+,
+			"parameterwatcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 
 		}

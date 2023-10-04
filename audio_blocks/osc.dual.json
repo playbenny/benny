@@ -53,35 +53,35 @@
 			},
 			{
 				"name" : "detune1",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"error_scale" : 0
 			},
 			{
 				"name" : "porta1",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 10000, "exp" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "FM by osc2",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "AM by osc2",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "shapemod by osc2",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0.5
@@ -103,56 +103,56 @@
 			},
 			{
 				"name" : "detune2",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"error_scale" : 0
 			},
 			{
 				"name" : "porta2",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 10000, "exp" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "FM by osc1",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "AM by osc1",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "shapemod by osc1",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "unstable_pitch",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.02 
 			},
 			{
 				"name" : "unstable_shape",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.02 
 			},
 			{
 				"name" : "out1_osc1_gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5,	
@@ -160,7 +160,7 @@
 			},
 			{
 				"name" : "out1_osc2_gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5,	
@@ -168,7 +168,7 @@
 			},
 			{
 				"name" : "out2_osc1_gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5,	
@@ -176,7 +176,7 @@
 			},
 			{
 				"name" : "out2_osc2_gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5,	

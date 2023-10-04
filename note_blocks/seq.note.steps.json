@@ -56,7 +56,7 @@
 			},
 			{
 				"name" : "offset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"nomap" : 1,
 				"default" : 0.5

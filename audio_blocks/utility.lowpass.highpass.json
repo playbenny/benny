@@ -26,28 +26,28 @@
 		"parameters" : [
 			{
 				"name" : "lowpass",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "highpass",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "nonlin",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "dry/wet",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 1

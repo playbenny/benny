@@ -49,21 +49,21 @@
 			},
 			{
 				"name" : "offset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "start",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -32, 32, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "length",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -32, 32, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

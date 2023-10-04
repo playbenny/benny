@@ -26,14 +26,14 @@
 		"parameters" : [
 			{
 				"name" : "frequency",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "resonance",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni",0,1,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
@@ -55,7 +55,7 @@
 			},
 			{
 				"name" : "key_follow",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5

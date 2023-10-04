@@ -25,21 +25,21 @@
 		"parameters" : [
 			{
 				"name" : "multiplier",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "asym",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "harmonics",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0 

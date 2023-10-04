@@ -51,7 +51,7 @@
 			},
 			{
 				"name" : "offset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -128, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

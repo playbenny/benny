@@ -29,112 +29,112 @@
 		"parameters" : [
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77
 			},
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.77

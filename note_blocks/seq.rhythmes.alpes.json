@@ -27,14 +27,14 @@
 		"parameters" : [
 			{
 				"name" : "division",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 6, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "width",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 6, "lin"],
 				"wrap" : 0,
 				"default" : 0.26
@@ -48,7 +48,7 @@
 			},
 			{
 				"name" : "velocity drive",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0.1, 1.1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

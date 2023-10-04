@@ -22,7 +22,7 @@
 		"parameters" : [
 			{
 				"name" : "frequency",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 1, 4000, "exp"],
 				"wrap" : 0,
 				"default" : 0

@@ -49,28 +49,28 @@
 			},
 			{
 				"name" : "step",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.55
 			},
 			{
 				"name" : "radius",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,4, "lin"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
 			{
 				"name" : "X",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "Y",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 

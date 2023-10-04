@@ -52,21 +52,21 @@
 			},
 			{
 				"name" : "humanisation_clock",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
 			{
 				"name" : "humanisation_motor",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.2
 			},
 			{
 				"name" : "humanisation_listening",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.09
@@ -80,14 +80,14 @@
 			},
 			{
 				"name" : "swing_amount",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.03
 			},
 			{
 				"name" : "time to_change",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0.1, 60, "exp"],
 				"wrap" : 0,
 				"default" : 0.025,
@@ -95,7 +95,7 @@
 			},
 			{
 				"name" : "velocity_humanisation",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 3, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
@@ -111,7 +111,7 @@
 			},
 			{
 				"name" : "offset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -50, 50, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
@@ -128,7 +128,7 @@
 			},
 			{
 				"name" : "click_offset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -10, 10, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,

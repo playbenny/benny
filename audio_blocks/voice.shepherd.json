@@ -67,21 +67,21 @@
 			},
 			{
 				"name" : "unstable_pitch",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.02 
 			},
 			{
 				"name" : "unstable_shape",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.02 
 			},
 			{
 				"name" : "detune",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"error_scale" : 0
@@ -102,7 +102,7 @@
 			},
 			{
 				"name" : "porta",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 10000, "exp" ],
 				"wrap" : 0,
 				"default" : 0
@@ -117,7 +117,7 @@
 			},
 			{
 				"name" : "sustain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"error_scale" : 0,
@@ -140,28 +140,28 @@
 			},
 			{
 				"name" : "loop",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "vel->level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "accum",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				

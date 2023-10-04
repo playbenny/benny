@@ -32,14 +32,14 @@
 			},
 			{
 				"name" : "gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "offset",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 

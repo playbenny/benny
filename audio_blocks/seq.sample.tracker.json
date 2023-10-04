@@ -76,14 +76,14 @@
 			},
 			{
 				"name" : "detune",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "stretch",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -4, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

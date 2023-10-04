@@ -54,14 +54,14 @@
 		"parameters" : [
 			{
 				"name" : "level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.39
 			},
 			{
 				"name" : "pan",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
@@ -75,14 +75,14 @@
 			},
 			{
 				"name" : "amount",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
 			{
 				"name" : "sweep",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

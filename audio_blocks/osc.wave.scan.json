@@ -68,7 +68,7 @@
 			},
 			{
 				"name" : "quantise offset_micro",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
@@ -76,7 +76,7 @@
 			},
 			{
 				"name" : "pitch shift",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
@@ -90,14 +90,14 @@
 			},
 			{
 				"name" : "target",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0 
 			},
 			{
 				"name" : "gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.25 

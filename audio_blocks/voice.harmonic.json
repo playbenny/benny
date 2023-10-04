@@ -34,77 +34,77 @@
 		"parameters" : [
 			{
 				"name" : "1",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1 
 			},
 			{
 				"name" : "2",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "3",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.333
 			},
 			{
 				"name" : "4",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
 			{
 				"name" : "5",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.20 
 			},
 			{
 				"name" : "6",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.1667 
 			},
 			{
 				"name" : "7",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.1429 
 			},
 			{
 				"name" : "8",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.125 
 			},
 			{
 				"name" : "x3 tuning",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "x5 tuning",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "x7 tuning",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5 
@@ -119,7 +119,7 @@
 			},
 			{
 				"name" : "sustain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"error_scale" : 0,
@@ -142,28 +142,28 @@
 			},
 			{
 				"name" : "loop",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "vel->level",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "accum",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "gain",
-				"type" : "flo",
+				"type" : "float",
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				
