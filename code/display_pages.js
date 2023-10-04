@@ -4309,7 +4309,7 @@ function draw_sidebar(){
 									pv *= p_values.length;
 									pv = Math.min(Math.floor(pv),p_values.length-1);
 									lcd_main.message("write", p_values[pv]);
-								}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
+								}else if((p_type == "flo") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
 									var pvp;
 									if(p_values[3] == "lin"){
 										pv = p_values[1] + (p_values[2]-p_values[1])*pv;
@@ -4502,7 +4502,7 @@ function draw_sidebar(){
 									pv *= p_values.length;
 									pv = Math.min(Math.floor(pv),p_values.length-1);
 									lcd_main.message("write", p_values[pv]);
-								}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
+								}else if((p_type == "flo") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
 									var pvp;
 									if(p_values[3] == "lin"){
 										pv = p_values[1] + (p_values[2]-p_values[1])*pv;

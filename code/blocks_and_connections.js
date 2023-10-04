@@ -143,7 +143,7 @@ function new_block(block_name,x,y){
 			p_default = 0;
 			p_type = blocktypes.get(block_name+"::parameters["+i+"]::type");//params[i].get("type");
 			p_values = blocktypes.get(block_name+"::parameters["+i+"]::values");
-			if(p_type == "float"){
+			if(p_type == "flo"){
 				if(p_values[0]=="bi"){
 					p_default = 0.5;
 				}
@@ -2483,7 +2483,7 @@ function swap_block(block_name){
 				p_default = 0;
 				p_type = params[i].get("type");
 				p_values = params[i].get("values");
-				if(p_type == "float"){
+				if(p_type == "flo"){
 					if(p_values[0]=="bi"){
 						p_default = 0.5;
 					}

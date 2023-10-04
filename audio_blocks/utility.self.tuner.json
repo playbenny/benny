@@ -23,7 +23,7 @@
 		"parameters" : [
 			{
 				"name" : "threshold",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.2

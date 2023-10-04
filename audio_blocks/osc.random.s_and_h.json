@@ -46,14 +46,14 @@
 			},
 			{
 				"name" : "replace_chance",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "replace_blend",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
 				"default" : 1

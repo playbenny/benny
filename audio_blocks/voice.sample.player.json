@@ -52,21 +52,21 @@
 			},
 			{
 				"name" : "offset",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "detune",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "stretch",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -4, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
@@ -81,7 +81,7 @@
 			},
 			{
 				"name" : "sustain",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"error_scale" : 0,
@@ -104,21 +104,21 @@
 			},
 			{
 				"name" : "loop",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "vel->level",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "accum",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5

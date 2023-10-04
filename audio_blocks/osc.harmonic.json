@@ -31,84 +31,84 @@
 		"parameters" : [
 			{
 				"name" : "1",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1 
 			},
 			{
 				"name" : "2",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "3",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.333
 			},
 			{
 				"name" : "4",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
 			{
 				"name" : "5",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.20 
 			},
 			{
 				"name" : "6",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.1667 
 			},
 			{
 				"name" : "7",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.1429 
 			},
 			{
 				"name" : "8",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.125 
 			},
 			{
 				"name" : "x3 tuning",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "x5 tuning",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "x7 tuning",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "gain",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				

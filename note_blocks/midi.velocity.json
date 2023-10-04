@@ -35,14 +35,14 @@
 			},
 			{
 				"name" : "curve",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "humanise",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

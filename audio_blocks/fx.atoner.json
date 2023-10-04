@@ -26,7 +26,7 @@
 		"parameters" : [
 			{
 				"name" : "divide / freq",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0
@@ -41,21 +41,21 @@
 			},
 			{
 				"name" : "filter mix",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "filter cutoff offset",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
 			{
 				"name" : "filter drive",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5 

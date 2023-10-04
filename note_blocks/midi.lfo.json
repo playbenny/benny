@@ -40,21 +40,21 @@
 			},
 			{
 				"name" : "rate",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "exp"],
 				"error_scale" : 0,
 				"default" : 0.26
 			},
 			{
 				"name" : "phase_offset",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 1,
 				"default" : 0
 			},
 			{
 				"name" : "warp",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

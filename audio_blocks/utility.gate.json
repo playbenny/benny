@@ -26,21 +26,21 @@
 		"parameters" : [
 			{
 				"name" : "threshold",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.2
 			},
 			{
 				"name" : "on_time",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1000, "exp"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "off_time",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1000, "exp"],
 				"wrap" : 0,
 				"default" : 0.1

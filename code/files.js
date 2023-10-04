@@ -675,7 +675,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			p_default = 0;
 			p_type = params[i].get("type");
 			p_values = params[i].get("values");
-			if(p_type == "float"){
+			if(p_type == "flo"){
 				if(p_values[0]=="bi"){
 					p_default = 0.5;
 				}

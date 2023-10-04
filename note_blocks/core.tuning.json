@@ -57,84 +57,84 @@
 			},
 			{
 				"name" : "c",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "c#",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "d",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "d#",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "e",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "f",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "f#",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "g",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "g#",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "a",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "a#",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "b",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -100, 100, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

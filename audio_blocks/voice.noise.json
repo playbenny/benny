@@ -50,7 +50,7 @@
 			},
 			{
 				"name" : "sustain",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"error_scale" : 0,
@@ -73,28 +73,28 @@
 			},
 			{
 				"name" : "loop",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "vel->level",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "accum",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5
 			}	,
 			{
 				"name" : "gain",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				

@@ -128,9 +128,9 @@ function transfer_params_and_defaults(){
 		name = paramnames.get(i);
 		def = paramdefaults.get(i+1);
 		if(i>0) new_blockfile.append(block_name+"::parameters", "B");
-		new_blockfile.setparse(block_name+'::parameters['+i+']', ' { "name" : "'+name+'"}');//' , "default" : '+def+' , "type" : "float", "values" : ["uni",0,1,"lin"]');
+		new_blockfile.setparse(block_name+'::parameters['+i+']', ' { "name" : "'+name+'"}');//' , "default" : '+def+' , "type" : "flo", "values" : ["uni",0,1,"lin"]');
 		new_blockfile.replace(block_name + "::parameters["+i+"]::default",def);
-		new_blockfile.replace(block_name + "::parameters["+i+"]::type","float");
+		new_blockfile.replace(block_name + "::parameters["+i+"]::type","flo");
 		new_blockfile.replace(block_name + "::parameters["+i+"]::wrap",0);
 		new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", 0,1, "lin");
 	}

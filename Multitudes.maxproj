@@ -2,8 +2,8 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3770402360,
-	"viewrect" : [ 29.0, 101.0, 244.0, 611.0 ],
+	"modificationdate" : 3779292277,
+	"viewrect" : [ 36.0, 63.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
 	"showdependencies" : 1,
@@ -345,6 +345,16 @@
 				"kind" : "patcher",
 				"local" : 1
 			}
+,
+			"voiceheader.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
 
 		}
 ,
@@ -399,6 +409,16 @@
 				"local" : 1
 			}
 ,
+			"blockmanager.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"whitegaussnoise.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"utility.vca.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -429,16 +449,6 @@
 				"local" : 1
 			}
 ,
-			"blockmanager.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"whitegaussnoise.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"fx.2pole.filter.env.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -451,12 +461,7 @@
 ,
 			"env.asr.gendsp" : 			{
 				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "../../james music/Multitudes/patchers"
-				}
-
+				"local" : 1
 			}
 
 		}
@@ -464,32 +469,17 @@
 		"data" : 		{
 			"env.asr.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "../../james music/Multitudes/patchers"
-				}
-
+				"local" : 1
 			}
 ,
 			"fx.2pole.filter.env.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "../../james music/Multitudes/patchers"
-				}
-
+				"local" : 1
 			}
 ,
 			"fx.2pole.filter.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "../../james music/Multitudes/patchers"
-				}
-
+				"local" : 1
 			}
 ,
 			"fx.atoner.json" : 			{
@@ -509,12 +499,7 @@
 ,
 			"fx.fixed.filter.bank.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "../../james music/Multitudes/patchers"
-				}
-
+				"local" : 1
 			}
 ,
 			"fx.pitch.shift.json" : 			{
@@ -524,12 +509,7 @@
 ,
 			"fx.retune.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/james music/Multitudes/patchers",
-					"projectrelativepath" : "../../james music/Multitudes/patchers"
-				}
-
+				"local" : 1
 			}
 ,
 			"fx.wavefold.json" : 			{

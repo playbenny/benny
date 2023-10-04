@@ -23,14 +23,14 @@
 		"parameters" : [
 			{
 				"name" : "mono bass freq",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["uni", 0, 1000, "exp"],
 				"wrap" : 0,
 				"default" : 0.4
 			},
 			{
 				"name" : "width",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", 0, 2, "lin"],
 				"wrap" : 0,
 				"default" : 0.5

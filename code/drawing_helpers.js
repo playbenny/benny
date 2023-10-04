@@ -259,7 +259,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 		var wnam = "-";
 		if(waves_dict.contains("waves["+pv+"]::name")) wnam = waves_dict.get("waves["+pv+"]::name");
 		pvp = pv+" "+wnam;
-	}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
+	}else if((p_type == "flo") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
 		if(p_values[3] == "exp"){
 			if(p_values[0] == "uni"){
 				pv = Math.pow(2, pv) - 1;

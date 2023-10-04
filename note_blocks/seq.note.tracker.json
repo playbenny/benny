@@ -41,21 +41,21 @@
 			},
 			{
 				"name" : "offset",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "start mod",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -32, 32, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "length mod",
-				"type" : "float",
+				"type" : "flo",
 				"values" : ["bi", -32, 32, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
