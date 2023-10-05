@@ -15,7 +15,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,1,2,3],
+				"contains" : [0,0,0,1,2,3,4],
 				"height" : 5
 			}		
 		],
@@ -40,6 +40,13 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1
+			},	
+			{
+				"name" : "pitch to_length",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			},
 			{
 				"name" : "vel to_length",
@@ -47,7 +54,7 @@
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
-			}				
+			}
 		]
 	}
 }
