@@ -192,6 +192,12 @@ function load_song(){
 	loading.progress=-1;
 	loading.mute_new=0;
 	loading.bundling=12;
+	loading.wait=1;
+	if(usermouse.ctrl){
+		loading.bundling=1;
+		loading.wait=30;
+		post("\n\nTROUBLESHOOTING SLOW LOAD MODE\n\n");
+	}
 	import_song();
 }
 
@@ -271,7 +277,7 @@ function import_song(){
 			post("\n\n\nSONG NOTES\n\n"+songs.get(songlist[currentsong]+"::notepad"));
 		}
 		loading.progress++;
-		loading.ready_for_next_action=1;//loading.bundling;
+		loading.ready_for_next_action=loading.wait;//loading.bundling;
 	}else if(loading.progress<MAX_BLOCKS){
 		if(loading.progress == 0){
 			if(songs.contains(songlist[currentsong]+"::waves")){
@@ -310,7 +316,7 @@ function import_song(){
 			//post("\n",b,"type",typeof thisblock, thisblock.toString());
 			if(thisblock.contains("name")){
 				block_name = thisblock.get("name");
-				//post("\nimport song loop "+block_name);
+				if(loading.wait>1) post("\nloading block "+b+" : "+block_name);
 				if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
 					if(thisblock.contains("substitute")){
 						//use that then
@@ -397,7 +403,7 @@ function import_song(){
 		meters_enable = 0;
 		//draw_blocks(); //block cubes need to exist in order for connections to be created but this is called after voicecount anyway
 		center_view(1);
-		loading.ready_for_next_action = 1; //loading.bundling;
+		loading.ready_for_next_action=loading.wait;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length){
 		t = MAX_BLOCKS+loading.mapping.length;
 		i=loading.bundling;//*4; //this determines how many of these are done at once (before handing exection back to max etc), i don't think they take long though?
@@ -410,7 +416,7 @@ function import_song(){
 			if(i==0) t = 0;		
 		} while (loading.progress<t);
 		output_blocks_poly.setvalue(0,"load_complete");
-		loading.ready_for_next_action = 1;
+		loading.ready_for_next_action=loading.wait;
 		if(t!=0) center_view(1);
 		//redraw_flag.flag |= 2;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+songs.getsize(songlist[currentsong]+"::connections")){
@@ -434,7 +440,7 @@ function import_song(){
 			if(i==0) t = 0;
 		} while (loading.progress<t);
 		
-		loading.ready_for_next_action = 1; //loading.bundling;
+		loading.ready_for_next_action=loading.wait;
 		//redraw_flag.flag |= 2;
 	}else{ 
 		var stpv = [];
@@ -557,6 +563,7 @@ function build_wave_remapping_list(){
 }
 
 function load_process_block_voices_and_data(block){
+	if(loading.wait>1) post("\nrestoring block "+block+" voices and data");
 	var drawn=1;
 	t = blocks.get("blocks["+block +"]::poly::voices");
 	if(t!=1){
@@ -581,7 +588,7 @@ function load_process_block_voices_and_data(block){
 }
 
 function load_block(block_name,block_index,paramvalues,was_exclusive){
-	//post("\nloading block: ",block_name," into ",block_index," was_exclu=",was_exclusive);//,"index",block_index,"paramvalues",paramvalues);
+	if(loading.wait>1) post("\nloading block: ",block_name," into ",block_index," was_exclu=",was_exclusive);//,"index",block_index,"paramvalues",paramvalues);
 	var new_voice=-1;
 	var type = blocktypes.get(block_name+"::type");
 	var offs = 0;

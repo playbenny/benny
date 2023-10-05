@@ -465,6 +465,7 @@ var loading = {
 	xoffset : 0,
 	ready_for_next_action : 0,
 	bundling : 1, //set to 1 for a slow load with a rest between each thing loaded, higher loads things in chunks, loads faster overall.
+	wait : 1, //how many frame to wait between stages of loading
 	mapping : [],
 	merge : 0,
 	mutelist : [], //each entry is [blockno,mute], you resend the message once everything should've loaded

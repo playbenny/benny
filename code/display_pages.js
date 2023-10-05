@@ -3581,7 +3581,7 @@ function draw_sidebar(){
 
 		for(i=0;i<songlist.length;i++){
 			y_offset += 1.1*fontheight;
-			click_rectangle( file_menu_x , y_offset, mainwindow_width, y_offset+1.1*fontheight,mouse_index,1 );
+			click_rectangle( file_menu_x , y_offset, mainwindow_width-9, y_offset+1.1*fontheight,mouse_index,1 );
 			if(i==currentsong){
 				lcd_main.message("paintrect", file_menu_x , y_offset, mainwindow_width-9, y_offset+fontheight,greycolour );
 				lcd_main.message("frgb", 0, 0, 0 );
