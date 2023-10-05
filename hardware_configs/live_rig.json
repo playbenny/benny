@@ -118,23 +118,6 @@
 				}
 			}
 		},
-		"hardware.filter.pro-2" : 			{
-			"type" : "hardware",
-			"help_text": "g storm prp vcf",
-			"exclusive" : 1,
-			"max_polyphony" : 1,
-			"substitute" : "fx.filter.2pole",
-			"connections" : {
-				"in" : {
-					"hardware" : [ "in", "cutoff" ],
-					"hardware_channels" : [ 19, 20 ]
-				},
-				"out" : { 
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 11 ]
-				}
-			}
-		},
 		"hardware.filter.pro" : 			{
 			"type" : "hardware",
 			"help_text": "g storm pro vcf",
@@ -149,6 +132,23 @@
 				"out" : {
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 7 ]
+				}
+			}
+		},
+		"hardware.filter.pro.2" : 			{
+			"type" : "hardware",
+			"help_text": "g storm pro vcf",
+			"exclusive" : 1,
+			"max_polyphony" : 1,
+			"substitute" : "fx.filter.2pole",
+			"connections" : {
+				"in" : {
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 19, 20 ]
+				},
+				"out" : { 
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 11 ]
 				}
 			}
 		},
