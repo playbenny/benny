@@ -137,6 +137,11 @@ function new_block(block_name,x,y){
 		var p_type,p_values,p_default;
 		param_error_drift[voiceoffset]= [];
 		param_defaults[new_block_index] = [];
+		var sprd = blocks.get("blocks["+new_block_index+"]::error::spread");
+		sprd = sprd*sprd*sprd*sprd;
+		var spr = sprd;
+		var drft = blocks.get("blocks["+new_block_index+"]::error::drift");
+		drft = drft*drft*drft*drft;
 		for(var i=0;i<paramslength;i++){
 			parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
 //			param_error_spread[voiceoffet][i]=0;
@@ -154,6 +159,43 @@ function new_block(block_name,x,y){
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
 			parameter_static_mod.poke(1, MAX_PARAMETERS*voiceoffset+i, 0);
 			param_defaults[new_block_index][i] = p_default;
+			if(details.contains("parameters["+i+"]::error_scale")){
+				spr=sprd*details.get("parameters["+i+"]::error_scale");
+			}else{
+				spr = sprd;
+			}
+			param_error_drift[voiceoffset][i]=0.01*drft*spr;
+			var p_type = details.get("parameters["+i+"]::type");
+			var p_pol = details.get("parameters["+i+"]::values[0]");
+			var p_min = details.get("parameters["+i+"]::values[1]");
+			var p_max = details.get("parameters["+i+"]::values[2]");
+			var p_curve = details.get("parameters["+i+"]::values[3]");
+			var p_steps = 0;
+			if(p_type=="menu_i"){
+				p_min = 0;
+				p_max = details.getsize("parameters["+i+"]::values");
+				p_steps = p_max;
+			}else if(p_type=="menu_f"){
+				p_min=0;
+				p_max = details.getsize("parameters["+i+"]::values");
+				p_steps = 0;
+			}else if(p_type=="int"){
+				p_steps=p_max;
+			}
+			if(p_curve == "lin"){
+				p_curve = 0;
+			}else {
+				if(p_pol=="uni"){
+					p_curve = 1;
+				}else{
+					p_curve = 2;
+				}
+			}
+			// parameter info poked out here for paramwatcher
+			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
+			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
+			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);
+			parameter_info_buffer.poke(4,MAX_PARAMETERS*new_block_index+i,p_curve);
 		}		
 	}
 	// tell the polyalloc voice about its new job
@@ -2084,6 +2126,37 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				parameter_static_mod.poke(1, voiceoffset  *MAX_PARAMETERS+i, 0);
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
+				var p_type = details.get("parameters["+i+"]::type");
+				var p_pol = details.get("parameters["+i+"]::values[0]");
+				var p_min = details.get("parameters["+i+"]::values[1]");
+				var p_max = details.get("parameters["+i+"]::values[2]");
+				var p_curve = details.get("parameters["+i+"]::values[3]");
+				var p_steps = 0;
+				if(p_type=="menu_i"){
+					p_min = 0;
+					p_max = details.getsize("parameters["+i+"]::values");
+					p_steps = p_max;
+				}else if(p_type=="menu_f"){
+					p_min=0;
+					p_max = details.getsize("parameters["+i+"]::values");
+					p_steps = 0;
+				}else if(p_type=="int"){
+					p_steps=p_max;
+				}
+				if(p_curve == "lin"){
+					p_curve = 0;
+				}else {
+					if(p_pol=="uni"){
+						p_curve = 1;
+					}else{
+						p_curve = 2;
+					}
+					}
+				// parameter info poked out here for paramwatcher
+				parameter_info_buffer.poke(1,MAX_PARAMETERS*block+i,p_min);
+				parameter_info_buffer.poke(2,MAX_PARAMETERS*block+i,p_max);
+				parameter_info_buffer.poke(3,MAX_PARAMETERS*block+i,p_steps);
+				parameter_info_buffer.poke(4,MAX_PARAMETERS*block+i,p_curve);
 			} //set param spreads
 			if(recycled){
 				if(type=="audio"){
