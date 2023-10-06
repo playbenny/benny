@@ -519,7 +519,7 @@ function next_free_block(type){
 				}
 			}
 			if(t<999999999){
-				post("using blank block",i);
+				//post("using blank block",i);
 				return i; 
 			}
 		}

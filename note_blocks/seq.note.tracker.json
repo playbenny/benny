@@ -2,18 +2,18 @@
 	"seq.note.tracker" : {
 		"patcher" : "seq.note.tracker",
 		"type" : "note",
-		"deprecated" : 1,
 		"block_ui_patcher" : "seq.note.tracker.ui",
-		"help_text" : "note tracker / data memory object vaguely inspired by leafcutter john's max tracker package. on the trigger input C=clock B=back D=reset",
+		"help_text" : "note tracker. add more voices for more polyphony. on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points. l and , switch octave in the editor.",
 		"max_polyphony" : 0,
 		"default_polymode" : 	{
-				"stack_mode" : "unison all",
+				"stack_mode" : "1x",
 				"choose_mode" : "blind cycle",
 				"steal_mode" : "cyclic"
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "row select", "reset" ]
+				"midi" : [ "midi in" ,"trigger", "row select", "reset" ],
+				"default" : 1
 			},
 			"out" : {
 				"midi" : [ "notes out" ]
@@ -21,44 +21,60 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [1, 2,3],
+				"contains" : [0, 1, 2,3,4,5,6],
 				"colour" : [255,255,255]
 			}
 		],
-		"voice_data" : {
-			"defaults" : [0 , 0.118]
-		},
 		"parameters" : [
 			{
-				"name" : "clock",
-				"nomap" : 1,
-				"type" : "menu_i",
+				"name" : "start",
+				"type" : "int",
 				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0.56
+				"values" : ["uni", 0, 512, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "loop_start",
+				"type" : "int",
+				"values" : ["uni", 0, 512, "lin"],
+				"wrap" : 0,
+				"default" : 0.03125
+			},
+			{
+				"name" : "loop_length",
+				"type" : "int",
+				"values" : ["uni", 0, 512, "lin"],
+				"wrap" : 0,
+				"default" : 0.03125
+			},
+			{
+				"name" : "loop_enable",
+				"type" : "menu_i",
+				"values" : ["oneshot", "loop"],
+				"wrap" : 0,
+				"default" : 0.6
 			},
 			{
 				"name" : "offset",
-				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
+				"type" : "int",
+				"values" : ["bi", -512, 512, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "start mod",
-				"type" : "float",
-				"values" : ["bi", -32, 32, "lin"],
+				"name" : "display_grid",
+				"type" : "int",
+				"values" : ["uni", 2, 16, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.2
 			},
 			{
-				"name" : "length mod",
-				"type" : "float",
-				"values" : ["bi", -32, 32, "lin"],
+				"name" : "midi_in",
+				"type" : "menu_i",
+				"values" : ["through", "record"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.25
 			}
 		]
 	}

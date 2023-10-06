@@ -2,7 +2,6 @@ var MAX_DATA = 1024;
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
-var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 outlets = 3;
 var config = new Dict;
 config.name = "config";
@@ -26,20 +25,21 @@ blocks.name = "blocks";
 var v_list = [];
 var keymap = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 28, -1, 14, 16, -1, 19, 21, 23, -1, 26, -1, -1, -1, 31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 30, -1, 32, -1, -1, -1, -1, 8, 5, 4, 17, -1, 7, 9, 25, 11, -1, -1, 12, 10, 27, 29, 13, 18, 2, 20, 24, 6, 15, 3, 22, 1, -1, -1, -1, -1, -1];
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
-var ph,start,lstart,end,lon,divs,offs;
 //data format: for each voice the buffer holds:
-// 0 - playhead position (updated by player voice)
-// 1-1023 data values
+// 0 - start (*128)
+// 1 - length (*128+1)
+// 2 - playhead position (updated by player voice)
+// 3-131? data values
 function setup(x1,y1,x2,y2,sw){ 
 //	post("drawing sequencers");
 	menucolour = config.get("palette::menu");
 	mini=0;
 	width = x2-x1;
-	if(width<sw*0.6){ mini=1;}
+	if(width<500){ mini=1;}
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	showcols=Math.floor(5*width/height);
+	showcols=Math.floor(2*width/height);
 	unit = height / 18;
 	display_row_offset = 0;
 	display_col_offset = 0;
@@ -94,19 +94,22 @@ function draw(){
 			}
 		}
 		for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
-			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
-			start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
-			lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
-			end  = lstart + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
-			lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
-			offs =  Math.floor(1024*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+4,1)-512);
-			divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
-//			post("\nparams:",ph,start,lstart,end,lon,offs,divs);
+			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+2));
+			l  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*128)+1;
+			s  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*128);
+			
+			outlet(0,"custom_ui_element","data_v_scroll",sx+cw*(c-display_col_offset+0.25)+x_pos, y_pos, sx+cw*(c-display_col_offset+0.48)+x_pos, sy-9+y_pos,menucolour[0],menucolour[1],menucolour[2],MAX_DATA*v_list[c]);
+			outlet(0,"custom_ui_element","data_v_scroll",sx+cw*(c-display_col_offset+0.50)+x_pos, y_pos, sx+cw*(c-display_col_offset+0.73)+x_pos, sy-9+y_pos,menucolour[0],menucolour[1],menucolour[2],MAX_DATA*v_list[c]+1);
 			if(!mini){
 				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
 				outlet(1,"write", "voice");
 				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.7+y_pos);
 				outlet(1,"write", c+1);
+				outlet(1,"frgb", 0,0,0);
+				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.26)+x_pos, rh*1.0+y_pos);
+				outlet(1,"write", "start",s);
+				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.51)+x_pos, rh*1.0+y_pos);
+				outlet(1,"write", "length",l);
 			}
 			cursors[c]=ph;
 			for(r=0;r<maxl;r++){			
@@ -114,39 +117,9 @@ function draw(){
 			}
 		}
 		if(!mini){
-			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
+			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,block,0);
 		}
 		outlet(1,"bang");
-	}
-}
-
-function update(){
-	var c,o;
-	for(c=display_col_offset;c<v_list.length;c++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
-		start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
-		lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
-		end  = lstart + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
-		lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
-		offs =  Math.floor(1024*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+4,1)-512);
-		divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
-
-		if(cursors[c]!=ph){
-			//l  = 512;//Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*512)+1;
-			//s  = 0;//TODOMath.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*512);
-			o = cursors[c]-display_row_offset;
-			cursors[c]=ph;
-			//redraw cell that was old cursor
-			if((o>=0)&&(o<maxl)){
-				drawcell(c-display_col_offset,o);	
-			}
-			
-			//draw new cursor cell
-			o = cursors[c]-display_row_offset;
-			if((o>=0)&&(o<maxl)){
-				drawcell(c-display_col_offset,o);	
-			}
-		}
 	}
 }
 
@@ -158,33 +131,27 @@ function drawcell(c,r){
 		rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 		rc = rc/24;
 		fc = [menucolour[0]*0.25,menucolour[1]*0.25,menucolour[2]*0.25];
-		var lp=1;
-		if((rr>=start)&&(rr<end)){
+		if((rr>=s)&&(rr<s+l)){
 			rc+=0.1;
-			fc=[menucolour[0],menucolour[1],menucolour[2]];
-			if((rr>=lstart)&& lon){
-				fc[1]*=1.3;
-				fc[0]*=0.8;
-				lp=1.5;
-			} 
+			fc=menucolour;
 		}
-		if(cursors[c+display_col_offset]==rr){
+		if(cursors[c]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
-		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
+		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc,menucolour[2]*rc);
 		if(!mini){
 			outlet(1,"frgb",fc);
-			values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+1+2*rr,2);
+			values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+3+8*rr,8);
 		//	post(values,"\n");
 			var incell = ((cursorx==(c+display_col_offset))&&(cursory==rr));
 			var x=0;
 			var washighlight=0;
-			for(i=0;i<2;i++){		
+			for(i=0;i<8;i++){		
 				ll=3;
 				ss="...";
 				if(values[i]!=0){
-					if(i!=1){
+					if(i!=7){
 						if(values[i]==-1){
 							ss="off";
 						}else{
@@ -195,7 +162,7 @@ function drawcell(c,r){
 					}
 				}
 				if(incell && (i==cursorx2)){
-					outlet(1,"paintrect",sx+(c+(x)/7)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll)/7)*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
+					outlet(1,"paintrect",sx+(c+(x)/34)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll)/34)*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
 					outlet(1,"frgb",255,255,255);
 					washighlight=1;
 				}else if(washighlight){
@@ -203,26 +170,26 @@ function drawcell(c,r){
 					outlet(1,"frgb",fc);
 				}
 				ss = ("....." + ss).slice(-ll); 
-				outlet(1,"moveto",sx+(c+x/7)*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
+				outlet(1,"moveto",sx+(c+x/34)*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
 				outlet(1,"write",ss);
 				x+=ll+1;
 			}
 		}else{
-			values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+1+2*rr,2);
-			for(i=0;i<2;i++){
-				if(values[i]!=0) outlet(1,"paintrect",sx+(c+(i*4)/7)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(i*4+1)/7)*cw+x_pos,sy+rh*(r+1)+y_pos,fc);
+			values = voice_data_buffer.peek(1,MAX_DATA*v_list[(c+display_col_offset)]+3+8*rr,8);
+			for(i=0;i<8;i++){
+				if(values[i]!=0) outlet(1,"paintrect",sx+(c+(i*4)/34)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(i*4+1)/34)*cw+x_pos,sy+rh*(r+1)+y_pos,fc);
 			}
 		}
 	}
 }
 
-function mouse(x,y,lb,sh,al,ct,scr){
+function mouse(x,y,l,s,a,c,scr){
 	var ox = cursorx;
 	var oy = cursory;
 	var xx = x-x_pos;
 	var yy = y-y_pos;
 	if(scr!=0){
-		if(sh==0){
+		if(s==0){
 			if(scr<0){
 				cursory=(cursory+1) & 127;
 			}else{
@@ -231,13 +198,13 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		}else{
 			if(scr<0){
 				cursorx2++;
-				if(cursorx2>1){
+				if(cursorx2>5){
 					cursorx2=0;
 					cursorx=(cursorx+1)%v_list.length;
 				}
 			}else{
 				cursorx2--;
-				if(cursorx2<1){
+				if(cursorx2<0){
 					cursorx2=5;
 					cursorx=(cursorx+v_list.length-1)%v_list.length;
 				}
@@ -246,35 +213,30 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}else{
 		//todo shift select, copy paste?
 		cursorx = (xx-sx)/cw;
-		cursorx += display_col_offset;
-		cursorx2 = Math.floor((cursorx % 1)*2);
-		cursorx = Math.min(v_list.length-1,Math.floor(cursorx));	
+		cursorx2 = Math.floor((cursorx % 1)*8);
+		cursorx = Math.floor(cursorx);	
 		cursory = Math.floor((yy-sy)/rh);
 	}
 	var df=0;
-	if(lb==0){
-		if(cursory-display_row_offset>30){
-			display_row_offset=cursory-30;
-			df=1;
-		}else if(cursory-display_row_offset<5){
-			display_row_offset=Math.max(0,cursory-5);
-			df=1;
-		}
-		if(cursorx-display_col_offset<1){
-			display_col_offset=Math.max(0,cursorx-1);
-			df=1;
-		}else if(cursorx-display_col_offset>1){
-			display_col_offset=cursorx-1;
-			df=1;
-		}
+	if(cursory-display_row_offset>30){
+		display_row_offset=cursory-30;
+		df=1;
+	}else if(cursory-display_row_offset<5){
+		display_row_offset=Math.max(0,cursory-5);
+		df=1;
+	}
+	if(cursorx-display_col_offset<1){
+		display_col_offset=Math.max(0,cursorx-1);
+		df=1;
+	}else if(cursorx-display_col_offset>1){
+		display_col_offset=cursorx-1;
+		df=1;
 	}
 	if(df){
 		draw();
-		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
-			if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
 	}
@@ -289,23 +251,23 @@ function keydown(key){
 			cursory=0;
 			break;
 		case -9:
-			cursory=(cursory+511) & 511;
+			cursory=(cursory+127) & 127;
 			break;
 		case -4://enter homes cursor and moves down
 			cursorx2=0;
 		case -10://arrow just moves down
-			cursory=(cursory+1) & 511;
+			cursory=(cursory+1) & 127;
 			break;
 		case -11:
 			cursorx2--;
 			if(cursorx2<0){
-				cursorx2=1;
+				cursorx2=7;
 				cursorx=(cursorx+v_list.length-1)%v_list.length;
 			}
 			break;
 		case -12:
 			cursorx2++;
-			if(cursorx2>1){
+			if(cursorx2>7){
 				cursorx2=0;
 				cursorx=(cursorx+1)%v_list.length;
 			}
@@ -322,70 +284,69 @@ function keydown(key){
 		case 61:
 			currentvel++;
 			if(currentvel>128)currentvel=128;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+1,currentvel+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+1,currentvel+1);
 			draw();
 			break;
 		case 45:
 			currentvel--;
 			if(currentvel<0)currentvel=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+1,currentvel+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+1,currentvel+1);
 			draw();
 			break;
 		case -6:
 			//optionally del could move everything up one?
-			for(i=cursory;i<512;i++){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+2*(i+1),2);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*i,rowvalues);
+			for(i=cursory;i<127;i++){
+				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+8*(i+1),8);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*i,rowvalues);
 			}
 			draw();
 			break;
 		case -8:
 			//insert
-			for(i=511;i>cursory;i--){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+2*(i-1),2);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+2*i,rowvalues);
+			for(i=127;i>cursory;i--){
+				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+8*(i-1),8);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*i,rowvalues);
 			}
-			var rowvalues=[0,0];
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory,rowvalues);
+			var rowvalues=[0,0,0,0,0,0];
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory,rowvalues);
 			draw();
 			break;
 		case -7:
 		case 46:
 			if(cursorx2==0){
-				var rowvalues=[0,0];
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory,rowvalues);
+				var rowvalues=[0,0,0,0,0,0];
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory,rowvalues);
 			}else{
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,0);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+cursorx2,0);
 			}
 			draw();
 			break;
 		default:
-			if(cursorx2!=1){
+			if(cursorx2!=7){
 				if(key==49){
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,-1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+cursorx2,-1);
 				}else if(key==47){
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,0);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+cursorx2,0);
 				}else if(key>0){
 					if(keymap[key]>-1){
-						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+2*cursory+1);
+						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+3+8*cursory+7);
 						if(t<=0) t = currentvel+1;
-						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,baseoct*12+keymap[key]);
-						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+1,t);
-						//cursorx2=(cursorx2+1) & 1;
-						cursory=(cursory+1) & 511;
+						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+cursorx2,baseoct*12+keymap[key]);
+						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+7,t);
+						cursorx2=(cursorx2+1) & 7;
 					}
 				}
 			}else{
 				var t=key-48;
 				if((t>=0)&&(t<10)){
-					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2)-1;
+					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+8*cursory+cursorx2)-1;
 					if(o<100){
 						o*=10;
 						o+=t;
 					}else{
 						o=t;
 					}
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,o+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+8*cursory+cursorx2,o+1);
 				}
 			}
 			
@@ -408,13 +369,32 @@ function keydown(key){
 	}
 	if(df){
 		draw();
-		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
-			if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
+	}
+}
+function update(){
+	var c,o;
+	for(c=0;c<v_list.length;c++){
+		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+2));
+		if(cursors[c]!=ph){
+			l  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]+1)*128)+1;
+			s  = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c])*128);
+			o = cursors[c]-display_row_offset;
+			cursors[c]=ph;
+			//redraw cell that was old cursor
+			if((o>=0)&&(o<maxl)){
+				drawcell(c,o);	
+			}
+			
+			//draw new cursor cell
+			if(cursors[c]-display_row_offset<maxl){
+				drawcell(c,cursors[c]-display_row_offset);
+			}
+		}
 	}
 }
 

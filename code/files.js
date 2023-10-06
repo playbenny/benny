@@ -195,7 +195,7 @@ function load_song(){
 	loading.wait=1;
 	if(usermouse.ctrl){
 		loading.bundling=1;
-		loading.wait=30;
+		loading.wait=20;
 		post("\n\nTROUBLESHOOTING SLOW LOAD MODE\n\n");
 	}
 	import_song();
@@ -223,12 +223,15 @@ function merge_song(){
 function import_song(){	
 	var b,i,t;
 	preload_task.cancel();
-	post("\nimport-displaymode is",displaymode);
+	//post("\nimport-displaymode is",displaymode);
 	if(loading.progress==-1){
 		//set_display_mode("loading");
 		if(output_looper_active){
 			post("\noutput looper is active so i should be setting it to fullscreen but i wont");
 			// set_display_mode("custom_fullscreen",output_looper_block+1);
+			clear_screens();
+			set_sidebar_mode("none");
+			set_display_mode("blocks");
 		}else{
 			clear_screens();
 			set_sidebar_mode("none");
@@ -360,7 +363,7 @@ function import_song(){
 				var ui = blocktypes.get(block_name+"::block_ui_patcher");
 				//var type = blocktypes.get(block_name+"::type");
 				if(excl){
-					post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
+					if(loading.wait>1) post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
 					for(i=0;i<MAX_BLOCKS;i++){
 						if(blocks.get("blocks["+i+"]::name") == block_name){
 							post("found:",i)
@@ -571,7 +574,7 @@ function load_process_block_voices_and_data(block){
 		blocks.replace("blocks["+block +"]::poly::voices",1)
 		voicecount(block, t);
 	}
-	if(blocks.contains("blocks["+block+"]::voice_data")){
+	if(blocks.contains("blocks["+block+"]::voice_data") && voicemap.contains(block)){
 		var v_list = voicemap.get(block);
 		if(typeof v_list == "number")v_list = [v_list];
 		t = v_list.length;

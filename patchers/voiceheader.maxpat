@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "int" ],
+					"patching_rect" : [ 291.0, 92.0, 36.0, 22.0 ],
+					"text" : "t b -1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"comment" : "voice offset - the start location in the voice_parameter_buffer",
 					"id" : "obj-11",
 					"index" : 4,
@@ -93,7 +105,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 93.0, 92.0, 113.0, 22.0 ],
+					"patching_rect" : [ 39.333333333333314, 100.0, 113.0, 22.0 ],
 					"text" : "prepend voiceoffset"
 				}
 
@@ -565,11 +577,11 @@
 				"box" : 				{
 					"id" : "obj-5",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
-					"numoutlets" : 4,
-					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 34.0, 60.0, 196.0, 22.0 ],
-					"text" : "route voice_is voice_offset enabled"
+					"numinlets" : 5,
+					"numoutlets" : 5,
+					"outlettype" : [ "", "", "", "", "" ],
+					"patching_rect" : [ 34.0, 60.0, 226.0, 22.0 ],
+					"text" : "route voice_is voice_offset enabled bang"
 				}
 
 			}
@@ -939,6 +951,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-5", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-54", 1 ],
 					"source" : [ "obj-50", 0 ]
 				}
@@ -969,6 +988,20 @@
 				"patchline" : 				{
 					"destination" : [ "obj-61", 1 ],
 					"source" : [ "obj-59", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-26", 0 ],
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 0 ],
+					"source" : [ "obj-6", 1 ]
 				}
 
 			}

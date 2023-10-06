@@ -901,6 +901,9 @@ function keydown(key){
 		set_sidebar_mode("file_menu");
 		redraw_flag.flag = 2;
 		set_display_mode("blocks");
+	}else if(key == -28){
+		set_sidebar_mode("cpu");
+		redraw_flag.flag = 2;
 	}
 	// MODAL OVERIDES - IE EDIT LABEL MODE IN THE SIDEBAR TAKES OVER THE WHOLE KEYBOARD
 	if((sidebar.mode == "edit_label")||(sidebar.mode == "edit_state")){

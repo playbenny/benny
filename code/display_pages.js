@@ -3485,97 +3485,6 @@ function draw_sidebar(){
 			//also: calculate resource usage so you can decide if you've got space to merge the currently selected song
 		}
 		setfontsize(fontheight/1.6);
-		lcd_main.message("paintrect", file_menu_x, y_offset, file_menu_x+fontheight*2.1, y_offset+fontheight,greydarkest );
-		click_rectangle( file_menu_x, y_offset, file_menu_x+fontheight*2.2, y_offset+fontheight,mouse_index,1 );
-		mouse_click_actions[mouse_index] = load_song;
-		mouse_click_parameters[mouse_index] = "";
-		mouse_click_values[mouse_index] = "";
-		mouse_index++;
-		if(!playing){
-			lcd_main.message("frgb" , greycolour);
-		}else{
-			if(danger_button == mouse_index){
-				lcd_main.message("frgb" , 255,50,50);
-			}else{
-				lcd_main.message("frgb" , greycolour[0], greycolour[1]*0.3, greycolour[2]*0.2);
-			}
-		}
-		lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
-		lcd_main.message("write", "load");
-
-		//only show merge if resources are available
-		if((free_b>=songs_info[currentsong][0])&&(free_n>=songs_info[currentsong][1])&&(free_a>=songs_info[currentsong][2])){
-			lcd_main.message("paintrect", file_menu_x + fontheight*2.2, y_offset, file_menu_x+fontheight*4.3, y_offset+fontheight,greydarkest );
-			click_rectangle( file_menu_x + fontheight*2.2, y_offset, file_menu_x+fontheight*4.4, y_offset+fontheight,mouse_index,1 );
-			mouse_click_actions[mouse_index] = merge_song;
-			mouse_click_parameters[mouse_index] = "";
-			mouse_click_values[mouse_index] = "";
-			mouse_index++;
-			lcd_main.message("frgb" , greycolour);
-			lcd_main.message("moveto", file_menu_x + fontheight*2.4, y_offset+fontheight*0.75);
-			lcd_main.message("write", "merge");
-		}else{
-			post("Not enough free resources to offer merge-load,\nfree_b:",free_b," free_n:",free_n," free_a:",free_a,"\nand the song requires",songs_info[currentsong]);
-		}
-		
-		if(selected.block.indexOf(1)!=-1){
-			lcd_main.message("paintrect", file_menu_x + fontheight*4.4, y_offset, file_menu_x+fontheight*6.5, y_offset+fontheight,greydarkest );
-			click_rectangle( file_menu_x + fontheight*4.4, y_offset, file_menu_x+fontheight*6.6, y_offset+fontheight,mouse_index,1 );
-			lcd_main.message("frgb" , greycolour);
-			mouse_click_actions[mouse_index] = save_song;
-			mouse_click_parameters[mouse_index] = 1;
-			mouse_click_values[mouse_index] = "";
-			mouse_index++;
-			setfontsize(fontheight/3.2);
-			lcd_main.message("moveto", file_menu_x + fontheight*4.6, y_offset+fontheight*0.45);
-			lcd_main.message("write", "save");
-			lcd_main.message("moveto", file_menu_x + fontheight*4.6, y_offset+fontheight*0.75);
-			lcd_main.message("write", "selected");
-			setfontsize(fontheight/1.6);
-		}
-
-		lcd_main.message("paintrect", file_menu_x + fontheight*6.6, y_offset, file_menu_x+fontheight*8.7, y_offset+fontheight,greydarkest );
-		click_rectangle( file_menu_x + fontheight*6.6, y_offset, file_menu_x+fontheight*8.8, y_offset+fontheight,mouse_index,1 );
-		lcd_main.message("frgb" , greycolour);
-		mouse_click_actions[mouse_index] = save_song;
-		mouse_click_parameters[mouse_index] = 0;
-		mouse_click_values[mouse_index] = "";
-		mouse_index++;
-		lcd_main.message("moveto", file_menu_x + fontheight*6.8, y_offset+fontheight*0.75);
-		lcd_main.message("write", "save");				
-
-		lcd_main.message("paintrect", file_menu_x + fontheight*8.8, y_offset, file_menu_x+fontheight*10.9, y_offset+fontheight,greydarkest );
-		click_rectangle( file_menu_x + fontheight*8.8, y_offset, file_menu_x+fontheight*11.0, y_offset+fontheight,mouse_index,1 );
-		lcd_main.message("frgb" , greycolour);
-		mouse_click_actions[mouse_index] = select_folder;
-		mouse_click_parameters[mouse_index] = "";
-		mouse_click_values[mouse_index] = "";
-		mouse_index++;
-		setfontsize(fontheight/3.2);
-		lcd_main.message("moveto", file_menu_x + fontheight*9.0, y_offset+fontheight*0.45);
-		lcd_main.message("write", "change");
-		lcd_main.message("moveto", file_menu_x + fontheight*9.0, y_offset+fontheight*0.75);
-		lcd_main.message("write", "folder");
-		setfontsize(fontheight/1.6);			
-
-		lcd_main.message("paintrect", mainwindow_width - 9 - fontheight * 2.2, y_offset, mainwindow_width - 9, y_offset+fontheight,greydarkest );
-		click_rectangle( mainwindow_width - 9 - fontheight * 2.2, y_offset, mainwindow_width - 9, y_offset+fontheight,mouse_index,1 );
-		if(danger_button == mouse_index){
-			lcd_main.message("frgb" , 255,50,50);
-		}else{
-			lcd_main.message("frgb", greycolour);
-		}
-		mouse_click_actions[mouse_index] = clear_everything_btn;
-		mouse_click_parameters[mouse_index] = "";
-		mouse_click_values[mouse_index] = mouse_index;
-		mouse_index++;
-		setfontsize(fontheight/3.2);
-		lcd_main.message("moveto", mainwindow_width -9 - fontheight*2, y_offset+fontheight*0.45);
-		lcd_main.message("write", "clear");
-		lcd_main.message("moveto", mainwindow_width -9 - fontheight*2, y_offset+fontheight*0.75);
-		lcd_main.message("write", "everything");
-		setfontsize(fontheight/1.6);
-
 
 		y_offset += 0.4*fontheight;
 
@@ -3598,7 +3507,99 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = i;
 			mouse_index++;
 		}
+		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
+		click_rectangle( file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
+		mouse_click_actions[mouse_index] = load_song;
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+		if(!playing){
+			lcd_main.message("frgb" , greycolour);
+		}else{
+			if(danger_button == mouse_index){
+				lcd_main.message("frgb" , 255,50,50);
+			}else{
+				lcd_main.message("frgb" , greycolour[0], greycolour[1]*0.3, greycolour[2]*0.2);
+			}
+		}
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75);
+		lcd_main.message("write", "load");
+
+		//only show merge if resources are available
+		if((free_b>=songs_info[currentsong][0])&&(free_n>=songs_info[currentsong][1])&&(free_a>=songs_info[currentsong][2])){
+			lcd_main.message("paintrect", file_menu_x + fontheight*2.2, 9, file_menu_x+fontheight*4.3, 9+fontheight,greydarkest );
+			click_rectangle( file_menu_x + fontheight*2.2, 9, file_menu_x+fontheight*4.4, 9+fontheight,mouse_index,1 );
+			mouse_click_actions[mouse_index] = merge_song;
+			mouse_click_parameters[mouse_index] = "";
+			mouse_click_values[mouse_index] = "";
+			mouse_index++;
+			lcd_main.message("frgb" , greycolour);
+			lcd_main.message("moveto", file_menu_x + fontheight*2.4, 9+fontheight*0.75);
+			lcd_main.message("write", "merge");
+		}else{
+			post("Not enough free resources to offer merge-load,\nfree_b:",free_b," free_n:",free_n," free_a:",free_a,"\nand the song requires",songs_info[currentsong]);
+		}
+		
+		if(selected.block.indexOf(1)!=-1){
+			lcd_main.message("paintrect", file_menu_x + fontheight*4.4, 9, file_menu_x+fontheight*6.5, 9+fontheight,greydarkest );
+			click_rectangle( file_menu_x + fontheight*4.4, 9, file_menu_x+fontheight*6.6, 9+fontheight,mouse_index,1 );
+			lcd_main.message("frgb" , greycolour);
+			mouse_click_actions[mouse_index] = save_song;
+			mouse_click_parameters[mouse_index] = 1;
+			mouse_click_values[mouse_index] = "";
+			mouse_index++;
+			setfontsize(fontheight/3.2);
+			lcd_main.message("moveto", file_menu_x + fontheight*4.6, 9+fontheight*0.45);
+			lcd_main.message("write", "save");
+			lcd_main.message("moveto", file_menu_x + fontheight*4.6, 9+fontheight*0.75);
+			lcd_main.message("write", "selected");
+			setfontsize(fontheight/1.6);
+		}
+
+		lcd_main.message("paintrect", file_menu_x + fontheight*6.6, 9, file_menu_x+fontheight*8.7, 9+fontheight,greydarkest );
+		click_rectangle( file_menu_x + fontheight*6.6, 9, file_menu_x+fontheight*8.8, 9+fontheight,mouse_index,1 );
+		lcd_main.message("frgb" , greycolour);
+		mouse_click_actions[mouse_index] = save_song;
+		mouse_click_parameters[mouse_index] = 0;
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+		lcd_main.message("moveto", file_menu_x + fontheight*6.8, 9+fontheight*0.75);
+		lcd_main.message("write", "save");				
+
+		lcd_main.message("paintrect", file_menu_x + fontheight*8.8, 9, file_menu_x+fontheight*10.9, 9+fontheight,greydarkest );
+		click_rectangle( file_menu_x + fontheight*8.8, 9, file_menu_x+fontheight*11.0, 9+fontheight,mouse_index,1 );
+		lcd_main.message("frgb" , greycolour);
+		mouse_click_actions[mouse_index] = select_folder;
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
 		setfontsize(fontheight/3.2);
+		lcd_main.message("moveto", file_menu_x + fontheight*9.0, 9+fontheight*0.45);
+		lcd_main.message("write", "change");
+		lcd_main.message("moveto", file_menu_x + fontheight*9.0, 9+fontheight*0.75);
+		lcd_main.message("write", "folder");
+		setfontsize(fontheight/1.6);			
+
+		lcd_main.message("paintrect", mainwindow_width - 9 - fontheight * 2.2, 9, mainwindow_width - 9, 9+fontheight,greydarkest );
+		click_rectangle( mainwindow_width - 9 - fontheight * 2.2, 9, mainwindow_width - 9, 9+fontheight,mouse_index,1 );
+		if(danger_button == mouse_index){
+			lcd_main.message("frgb" , 255,50,50);
+		}else{
+			lcd_main.message("frgb", greycolour);
+		}
+		mouse_click_actions[mouse_index] = clear_everything_btn;
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = mouse_index;
+		mouse_index++;
+		setfontsize(fontheight/3.2);
+		lcd_main.message("moveto", mainwindow_width -9 - fontheight*2, 9+fontheight*0.45);
+		lcd_main.message("write", "clear");
+		lcd_main.message("moveto", mainwindow_width -9 - fontheight*2, 9+fontheight*0.75);
+		lcd_main.message("write", "everything");
+		//setfontsize(fontheight/1.6);
+
+
+		//setfontsize(fontheight/3.2);
 
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		y_offset = 9-sidebar.scroll.position;
