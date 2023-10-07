@@ -756,7 +756,9 @@ function block_and_wire_colours(){ //for selection and mute etc
 				anymuted=1;
 			}
 			for(t=0;t<=block_v*subvoices;t++){
+				var p = blocks_cube[i][t].position;
 				if(selected.anysel){
+					
 					if(selected.block[i]){
 						if((sidebar.selected_voice==-1)){
 							blocks_cube[i][t].color = block_c; 
@@ -765,11 +767,15 @@ function block_and_wire_colours(){ //for selection and mute etc
 						}else{
 							blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 						}
+
+						blocks_cube[i][t].position = [p[0],p[1],1];
 					}else{
 						blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1];
+						blocks_cube[i][t].position = [p[0],p[1],0];
 					}
 				}else{
 					blocks_cube[i][t].color = block_c;
+					blocks_cube[i][t].position = [p[0],p[1],0];
 				}
 				if(block_mute) blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
 				if(t==0){
@@ -793,6 +799,9 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 			cmute = connections.get("connections["+i+"]::conversion::mute");
 	//		post("connection",i,"length",wires[i].length,"w_c length",wires_colours[i].length,"\n");
+			//if(cs){
+			//}
+			draw_wire(i);
 			if(wires_colours[i].length>=wires[i].length){
 				for(segment=0;segment<wires[i].length;segment++){
 					tmc=0.3;
@@ -813,6 +822,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
+	block_z = selected.block[i];
 	block_c = blocks.get("blocks["+i+"]::space::colour");
 	block_mute = blocks.get("blocks["+i+"]::mute");
 	if(block_mute){
@@ -859,12 +869,12 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][0].tex_map = 1;
 				blocks_cube[i][0].texzoom = [1,1];
 				blocks_cube[i][0].texanchor = [0.5, 0.5];
-				blocks_cube[i][t].position = [block_x, block_y, 0];
+				blocks_cube[i][t].position = [block_x, block_y, block_z];
 				blocks_cube[i][t].scale = [0.45, 0.45, 0.45];
 			}else{
 				var tc = blocks_cube[i][t].color;
 				blocks_cube[i][t].color = [block_c[0]*tc[0]/256,block_c[1]*tc[1]/256,block_c[2]*tc[2]/256,1];
-				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, 0];
+				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				if(block_type=="audio"){
 					//post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
@@ -902,7 +912,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				}	
 			}
 		}
-		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, 0];
+		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, block_z];
 		blocks_cube[i][t].enable = 1;
 		if(block_type=="audio"){
 /*			if(subvoices>1){
@@ -923,7 +933,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					var tv = (t-1)*ios;
 					for(tt=0;tt<ios;tt++){
 						blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
-						blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5];
+						blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5+block_z];
 						blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
 						blocks_meter[i][tv+tt].enable = 1;
 					}				
@@ -945,7 +955,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				}else{
 					for(tt=0;tt<noio;tt++){
 						blocks_meter[i][(t-1)*noio+tt].color = [1, 1, 1, 1];
-						blocks_meter[i][(t-1)*noio+tt].position = [blocks_cube[i][t].position[0] - 0.2 + (tt+0.5)*0.4/noio, block_y, 0.5];
+						blocks_meter[i][(t-1)*noio+tt].position = [blocks_cube[i][t].position[0] - 0.2 + (tt+0.5)*0.4/noio, block_y, 0.5+block_z];
 						blocks_meter[i][(t-1)*noio+tt].scale = [0.2/noio, 0.025, 0.05];
 						blocks_meter[i][(t-1)*noio+tt].enable = 1;
 					}
@@ -986,7 +996,7 @@ function draw_wire(connection_number){
 		var drawme=1;
 		//if(is_empty(blocks_cube[cfrom])) drawme = 0;
 		if(!is_empty(wire_ends[connection_number])){
-			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][3])){
+			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
 				drawme =0;
 			}
 		}
@@ -1020,7 +1030,7 @@ function draw_wire(connection_number){
 			var fconx = 0;
 			var tconx = 0; //offset x based on input number/no inputs (or outputs etc)
 			
-			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1]];
+			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			if((from_type=="audio") || (from_type=="hardware") || (from_type=="matrix")){
 				fconx = ((from_number+0.5)/(NO_IO_PER_BLOCK)) ;
 				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
@@ -1050,7 +1060,7 @@ function draw_wire(connection_number){
 			var from_multi = 0;
 			var from_list = [];
 			var to_list = [];
-			var tv,fv,tl;
+			var tv=0,fv=0,tl;
 			var from_subvoices=1, to_subvoices=1;
 			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices")))from_subvoices=blocks.get("blocks["+cfrom+"]::subvoices");
 			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices")))to_subvoices=blocks.get("blocks["+cto+"]::subvoices");
@@ -1063,13 +1073,14 @@ function draw_wire(connection_number){
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
-				fv = tl.length;
+				if(Array.isArray(tl)) fv = tl.length;
 				if(tl.length>1){
 					from_multi=1;
 					for(t=0;t<tl.length;t++){
 						from_list[t] = tl[t];
 					}
 				}else{
+					fv=1;
 					from_pos[0] += 0.5*(tl-1)/from_subvoices;
 				}
 			}
@@ -1107,18 +1118,18 @@ function draw_wire(connection_number){
 				from_anglevector = [0, -0.33, 0];
 				corners[0] = 1;
 				if(to_pos[0]>from_pos[0]){
-					from_corner = [from_pos[0] + 0.33+0.5*fv, from_pos[1]-0.33, from_pos[2]];
+					from_corner = [from_pos[0] + 0.33 + 0.5 * fv, from_pos[1]-0.33, from_pos[2]];
 					from_cornervector = [0.33, 0, 0];//[0.44, 0, 0];
 				}else{
 					from_corner = [from_pos[0] - 0.33, from_pos[1]-0.33, from_pos[2]];
 					from_cornervector = [-0.33, 0, 0];//[-0.44, 0, 0];
 				}
 			}else{
-				from_corner = [from_pos[0],from_pos[1] - 0.5,from_pos[2]];
+				from_corner = [from_pos[0],from_pos[1] - 0.33,from_pos[2]];
 				from_cornervector = [0, -0.33, 0];
 				from_anglevector = [0, -0.33, 0];
 			}
-
+			
 			if((to_pos[1]>=from_pos[1])){
 				to_anglevector = [0, -0.33, 0];
 				corners[1]=1;
@@ -1165,17 +1176,20 @@ function draw_wire(connection_number){
 				
 				minz = 0.5*mtot/(from_list.length+to_list.length);
 				minz += 0.5*(fp+tp);
-				blob_position[2] =  0;//1 - minz;
-				from_corner[2] = 0;
-				to_corner[2]=0;
+				from_corner[2] = from_pos[2];
+				to_corner[2]= to_pos[2];
 				blob_position[0] = minz; //((from_corner[0] + to_corner[0])*0.5);
 				blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);// ((from_corner[1] + to_corner[1])*0.5);
 				meanvector[0] = from_corner[0] - to_corner[0];
 				meanvector[1] = from_corner[1] - to_corner[1];
-				var mvl = meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1];
-				mvl = -0.33/Math.sqrt(mvl);
-				meanvector[0] = meanvector[0] * mvl;
-				meanvector[1] = meanvector[1] * mvl;				
+				var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
+				blob_position[2] =  -0.3*Math.max(0,mvl-2);//1 - minz;
+				from_corner[2] += blob_position[2]*0.5;
+				to_corner[2] += blob_position[2]*0.5;
+				//post("bp",blob_position[2]);
+				
+				meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
+				meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
 
 				if((from_multi)&&(to_multi>0)){ 
 					if(corners[0]){ //many-corner(many)-blob-  then later i'll do -?corner(many)?-many

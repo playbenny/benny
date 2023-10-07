@@ -303,6 +303,7 @@ function meters(block,voice,polyvoice){
 				tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position;
 				//tv[0] = blocks_cube[block][voice].position[0] + 0.4+tt*0.4/NO_IO_PER_BLOCK + 0.25*(voice==0);
 				tv[1] = blocks_cube[block][voice].position[1] + (mmax+mmin)*0.225;
+				tv[2] = 0.5+selected.block[block];
 				blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position = tv;
 				tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale;
 				tv[1] = Math.max(0.225*(mmax-mmin),0.005);
