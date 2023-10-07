@@ -1073,8 +1073,8 @@ function draw_wire(connection_number){
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
-				if(Array.isArray(tl)) fv = tl.length;
 				if(tl.length>1){
+					fv = tl.length;
 					from_multi=1;
 					for(t=0;t<tl.length;t++){
 						from_list[t] = tl[t];
@@ -1098,53 +1098,55 @@ function draw_wire(connection_number){
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::to::voice");
-				tv = tl.length;
 				if(tl.length>1){
+					tv = tl.length;
 					to_multi = 1;
 					for(t=0;t<tl.length;t++){
 						to_list[t] = tl[t];
 					}
 				}else {
+					tv=1;
 					to_pos[0] += 0.5*(tl-1)/to_subvoices;// + tconx * 0.4; 
 				}
 			}
+
 			if(is_empty(wires[connection_number])) wires[connection_number] = [];
 			if(is_empty(wires_colours[connection_number])) wires_colours[connection_number] = [];
 			
 			// if it doubles back on itself in any way it needs a corner in the wire at each end.
 			var corners = [0,0];
 			
-			if((to_pos[1]>=from_pos[1])){
-				from_anglevector = [0, -0.33, 0];
+			/*if((to_pos[1]>=from_pos[1])){ //THIS SETS UP CORNERS IF THE CABLE SHOULD GO ROUND A BLOCK BUT IT NEVER WORKED
+				from_anglevector = [0, -0.2, 0];
 				corners[0] = 1;
 				if(to_pos[0]>from_pos[0]){
 					from_corner = [from_pos[0] + 0.33 + 0.5 * fv, from_pos[1]-0.33, from_pos[2]];
-					from_cornervector = [0.33, 0, 0];//[0.44, 0, 0];
+					from_cornervector = [0.2, 0, 0];//[0.44, 0, 0];
 				}else{
 					from_corner = [from_pos[0] - 0.33, from_pos[1]-0.33, from_pos[2]];
-					from_cornervector = [-0.33, 0, 0];//[-0.44, 0, 0];
+					from_cornervector = [-0.2, 0, 0];//[-0.44, 0, 0];
 				}
-			}else{
-				from_corner = [from_pos[0],from_pos[1] - 0.33,from_pos[2]];
-				from_cornervector = [0, -0.33, 0];
-				from_anglevector = [0, -0.33, 0];
-			}
-			
-			if((to_pos[1]>=from_pos[1])){
-				to_anglevector = [0, -0.33, 0];
+
+				to_anglevector = [0, -0.2, 0];
 				corners[1]=1;
 				if(to_pos[0]<from_pos[0]){
 					to_corner = [to_pos[0]+0.33+0.5*tv, to_pos[1]+0.33, to_pos[2]];
-					to_cornervector = [-0.33,0,0];//[-0.33, 0, 0];
+					to_cornervector = [-0.2,0,0];//[-0.33, 0, 0];
 				}else{
 					to_corner = [to_pos[0]-0.33, to_pos[1]+0.33, to_pos[2]];
-					to_cornervector = [0.33, 0, 0];
+					to_cornervector = [0.2, 0, 0];
 				}
-			}else{
+
+			}else{*/
+				from_corner = [from_pos[0],from_pos[1] - 0.33,from_pos[2]];
+				from_cornervector = [0, -0.2, 0];
+				from_anglevector = [0, -0.2, 0];
+
 				to_corner = [to_pos[0],to_pos[1]+0.5,to_pos[2]];
-				to_cornervector = [0, -0.33, 0];
-				to_anglevector = [0, -0.33, 0];
-			}
+				to_cornervector = [0, -0.2, 0];
+				to_anglevector = [0, -0.2, 0];
+			//}
+			
 			if((dist<4.5)&&(cfrom!=cto)) corners = [0,0];
 			var bez_prep=[];
 			for(t=0;t<6;t++){
@@ -1154,9 +1156,34 @@ function draw_wire(connection_number){
 			//so. if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
 			// many-blob-corner-one, many-corner-blob-corner-many, one-corner-blob-many
+			var blob_position = [];
+			var meanvector = [0,0,0];
+
+			from_corner[2] = from_pos[2];
+			to_corner[2]= to_pos[2];
+			blob_position[0] = ((from_pos[0] + to_pos[0])*0.5);//((from_corner[0] + to_corner[0])*0.5);
+			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);// ((from_corner[1] + to_corner[1])*0.5);
+			meanvector[0] = from_corner[0] - to_corner[0];
+			meanvector[1] = from_corner[1] - to_corner[1];
+			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
+			blob_position[2] =  -0.3*Math.max(0,mvl-2);//1 - minz;
+			from_corner[2] += blob_position[2]*0.75;
+			to_corner[2] += blob_position[2]*0.75;
+			var mv3=mvl*0.05;
+			
+			mv3 = mv3 * mv3 * mv3 * 20;
+			mv3 = Math.min(15,mv3);
+			//post("bp",blob_position[2]);
+			mvl = mvl - mv3;
+			from_anglevector = [from_anglevector[0]*mvl,from_anglevector[1]*mvl,from_anglevector[2] + blob_position[2] * 0.5];
+			to_anglevector = [to_anglevector[0]*mvl,to_anglevector[1]*mvl,to_anglevector[2] - blob_position[2] * 0.5];
+			from_cornervector[2] += blob_position[2]*0.5;
+			to_cornervector[2] -= blob_position[2]*0.5;
+
+			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
+			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
+
 			if((to_multi>0) || from_multi){
-				var blob_position = [];
-				var meanvector = [0,0,0];
 				var i;
 				var minz=99999;
 				var mtot=0;
@@ -1166,30 +1193,17 @@ function draw_wire(connection_number){
 				for(t=0;t<from_list.length;t++){
 					i = from_list[t];
 					mtot += i;
-					if(i<minz)minz=i;
+					//if(i<minz)minz=i;
 				}
 				for(t=0;t<to_list.length;t++){
 					i = to_list[t];
 					mtot+=i;
-					if(i<minz)minz=i;
+					//if(i<minz)minz=i;
 				}
 				
 				minz = 0.5*mtot/(from_list.length+to_list.length);
-				minz += 0.5*(fp+tp);
-				from_corner[2] = from_pos[2];
-				to_corner[2]= to_pos[2];
-				blob_position[0] = minz; //((from_corner[0] + to_corner[0])*0.5);
-				blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);// ((from_corner[1] + to_corner[1])*0.5);
-				meanvector[0] = from_corner[0] - to_corner[0];
-				meanvector[1] = from_corner[1] - to_corner[1];
-				var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-				blob_position[2] =  -0.3*Math.max(0,mvl-2);//1 - minz;
-				from_corner[2] += blob_position[2]*0.5;
-				to_corner[2] += blob_position[2]*0.5;
-				//post("bp",blob_position[2]);
-				
-				meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
-				meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
+				blob_position[0] += minz; //((from_corner[0] + to_corner[0])*0.5);
+				//	minz += 0.5*(fp+tp);
 
 				if((from_multi)&&(to_multi>0)){ 
 					if(corners[0]){ //many-corner(many)-blob-  then later i'll do -?corner(many)?-many
@@ -3521,6 +3535,7 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = i;
 			mouse_index++;
 		}
+		lcd_main.message("paintrect", file_menu_x, 0, mainwindow_width-9, 18+fontheight,0,0,0 );
 		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
 		click_rectangle( file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = load_song;

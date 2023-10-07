@@ -322,6 +322,7 @@ function hardware_meters(block,voice,polyvoice){
 		var tv=[];
 		tv = blocks_meter[block][voice].position;
 		tv[1] = blocks.get("blocks["+block+"]::space::y")+(mmax+mmin)*0.225;
+		tv[2] = 0.5+selected.block[block];
 		blocks_meter[block][voice].position = tv;
 		tv = blocks_meter[block][voice].scale;
 		tv[1] = Math.max(0.225*(mmax-mmin),0.005);
