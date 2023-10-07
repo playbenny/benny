@@ -10,7 +10,7 @@
 				"midi" : [ "trigger in", "reset+ornament in" ]
 			},
 			"out" : {
-				"midi" : [ "notes out" ]
+				"midi" : [ "notes out", "ornament notifier" ]
 			}
 		},
 		"groups" : [
