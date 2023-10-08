@@ -831,6 +831,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			connection_menu.replace("to::viewoffset",Math.max(0,connection_menu.get("to::viewoffset")+2*(scroll<0)-1));
 			redraw_flag.flag=4;
 		}
+	}else if((sidebar.mode!='none')&&(x>sidebar.x)){
+		scroll_sidebar(scroll,"rel");
+	}else if((sidebar.mode=='file_menu')&&(x>mainwindow_width - 9 - fontheight * 15)){
+		scroll_sidebar(scroll,"rel");
 	}
 }
 
@@ -897,10 +901,13 @@ function keydown(key){
 		set_sidebar_mode("connections");
 		redraw_flag.flag = 2;
 		set_display_mode("blocks");
-	}else if(key == -24){
+	}else if(key == -25){
 		set_sidebar_mode("file_menu");
 		redraw_flag.flag = 2;
 		set_display_mode("blocks");
+	}else if(key == -26){
+		wires_show_all = !wires_show_all;
+		redraw_flag.flag = 8;
 	}else if(key == -28){
 		set_sidebar_mode("cpu");
 		redraw_flag.flag = 2;
