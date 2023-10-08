@@ -2,8 +2,8 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3779297495,
-	"viewrect" : [ 36.0, 63.0, 244.0, 611.0 ],
+	"modificationdate" : 3779623729,
+	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
 	"showdependencies" : 1,
@@ -171,6 +171,46 @@
 				"toplevel" : 1
 			}
 ,
+			"core.input.keyboard.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.scales.shapes.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"midi.holes.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voiceheader.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.shape.player.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"upwrap2.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.basic.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.harmonic.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"utility.mid-side.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -186,27 +226,7 @@
 				"local" : 1
 			}
 ,
-			"voice.basic.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"voice.harmonic.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
 			"voice.noise.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"core.input.keyboard.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"core.scales.shapes.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -217,11 +237,6 @@
 			}
 ,
 			"midi.fold.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"midi.holes.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -249,16 +264,6 @@
 			"seq.note.tracker.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
-			}
-,
-			"upwrap2.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
-				}
-
 			}
 ,
 			"seq.note.tracker.ui.maxpat" : 			{
@@ -336,24 +341,9 @@
 				"local" : 1
 			}
 ,
-			"seq.shape.player.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
 			"VST.manager.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
-			}
-,
-			"voiceheader.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
-				}
-
 			}
 
 		}
@@ -414,12 +404,7 @@
 				"local" : 1
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"utility.vca.gendsp" : 			{
+			"parameterwatcher.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -434,17 +419,27 @@
 				"local" : 1
 			}
 ,
+			"whitegaussnoise.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"utility.vca.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"voice.noise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"seq.note.tracker.js" : 			{
+			"seq.rene.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
 ,
-			"seq.rene.js" : 			{
+			"seq.note.tracker.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -461,15 +456,10 @@
 ,
 			"env.asr.gendsp" : 			{
 				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"parameterwatcher.gendsp" : 			{
-				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
-					"projectrelativepath" : "./code"
+					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"projectrelativepath" : "./patchers"
 				}
 
 			}
@@ -479,17 +469,32 @@
 		"data" : 		{
 			"env.asr.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"fx.2pole.filter.env.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"fx.2pole.filter.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"fx.atoner.json" : 			{
@@ -509,7 +514,12 @@
 ,
 			"fx.fixed.filter.bank.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"fx.pitch.shift.json" : 			{
@@ -519,7 +529,12 @@
 ,
 			"fx.retune.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"fx.wavefold.json" : 			{
@@ -688,6 +703,6 @@
 	"devpathtype" : 0,
 	"devpath" : ".",
 	"sortmode" : 1,
-	"viewmode" : 1,
+	"viewmode" : 0,
 	"includepackages" : 0
 }
