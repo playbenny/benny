@@ -729,7 +729,7 @@ function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 		if(Array.isArray(wires[i]) ){
 			for(var t=0;t<wires[i].length;t++){
 				if(typeof wires[i][t] !== 'undefined'){
-					wires[i][t].enable = enab;
+					wires[i][t].enable = enab && wires_enable[i];
 				}
 			}
 		}
@@ -788,29 +788,40 @@ function block_and_wire_colours(){ //for selection and mute etc
 		}
 	}
 	for(i=0;i<connections.getsize("connections");i++){
-		if(connections.contains("connections["+i+"]::conversion::mute")){
+		if((connections.contains("connections["+i+"]::conversion::mute"))){
+			var cfrom = connections.get("connections["+i+"]::from::number");
+			var cto = connections.get("connections["+i+"]::to::number");
 			cs = selected.wire[i];
 			if(selected.anysel && !cs){
-				if(selected.block[connections.get("connections["+i+"]::from::number")]){
+				if(selected.block[cfrom]){
 					cs = 1;
-				}else if(selected.block[connections.get("connections["+i+"]::to::number")]){
+				}else if(selected.block[cto]){
 					cs = 1;
 				}
 			}
-			cmute = connections.get("connections["+i+"]::conversion::mute");
-	//		post("connection",i,"length",wires[i].length,"w_c length",wires_colours[i].length,"\n");
-			//if(cs){
-			//}
-			draw_wire(i);
-			if(wires_colours[i].length>=wires[i].length){
-				for(segment=0;segment<wires[i].length;segment++){
-					tmc=0.3;
-					if(cmute) tmc -= 0.2935*(segment*0.5==Math.floor(segment*0.5)); // stripey wires if muted
-					tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
-					//post("seg,w_c[i][seg]",segment);
-					//post(wires_colours[i][segment],"\n");
-					wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
-				}		
+			var visible = cs || wires_show_all;
+			wires_enable[i] = visible;
+			if(visible){
+				cmute = connections.get("connections["+i+"]::conversion::mute");
+				//		post("connection",i,"length",wires[i].length,"w_c length",wires_colours[i].length,"\n");
+				draw_wire(i);
+				if(wires_colours[i].length>=wires[i].length){
+					for(segment=0;segment<wires[i].length;segment++){
+						tmc=0.3;
+						if(cmute) tmc -= 0.15 + 0.1435*(segment*0.5==Math.floor(segment*0.5)); // stripey wires if muted
+						tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
+						//post("seg,w_c[i][seg]",segment);
+						//post(wires_colours[i][segment],"\n");
+						wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
+						wires[i][segment].enable = 1;
+					}		
+				}
+			}else{
+				if(Array.isArray(wires[i])){
+					for(segment=0;segment<wires[i].length;segment++){
+						wires[i][segment].enable = 0;
+					}
+				}
 			}
 		}
 	}
@@ -990,17 +1001,27 @@ function draw_wire(connection_number){
 	//post("draw wire",connection_number,"\n");
 	var t;
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
+		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
 		var cfrom = connections.get("connections["+connection_number+"]::from::number");
 		var cto = connections.get("connections["+connection_number+"]::to::number");
 		// now just get the block positions and compare to stored ones in wire_ends
+		var visible = wires_show_all || selected.wire[connection_number] || selected.block[cfrom] || selected.block[cto];
+
 		var drawme=1;
-		//if(is_empty(blocks_cube[cfrom])) drawme = 0;
-		if(!is_empty(wire_ends[connection_number])){
+		if(wires_enable[connection_number]!=visible){
+			wires_enable[connection_number]=visible;
+			if(Array.isArray(wires[connection_number])){
+				for(t=0;t<wires[connection_number].length;t++){
+					wires[connection_number][t].enable = visible;
+				}
+			}
+			//if(visible==0)drawme=0;
+		}
+		if(drawme && !is_empty(wire_ends[connection_number])){
 			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
 				drawme =0;
 			}
 		}
-		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
 		if(drawme){
 			var cmute = connections.get("connections["+connection_number+"]::conversion::mute");
 			var from_number = connections.get("connections["+connection_number+"]::from::output::number");
@@ -1218,7 +1239,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = from_colour[t];
 								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 						for(i=0;i<from_list.length;i++){
 							//from_pos[2] = 1 - from_list[i]+fconx;
@@ -1231,7 +1252,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 					}else{ //many-blob- then later ?corner?-many
 						for(i=0;i<from_list.length;i++){
@@ -1244,7 +1265,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = from_colour[t];
 								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute, visible);
 						}
 					}
 					// this is the first half
@@ -1260,7 +1281,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 						for(i=0;i<to_list.length;i++){
 							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
@@ -1273,7 +1294,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 								bez_prep[5][t] = to_colour[t];
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 					}else{ //blob-no corner many
 						for(i=0;i<to_list.length;i++){
@@ -1286,7 +1307,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 								bez_prep[5][t] = to_colour[t];
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute, visible);
 						}
 					}
 				}else if(from_multi){  //only from is multi, so many-blob-corner-one, this is the same whether its got a corner[0] or not as the blob is the corner
@@ -1302,7 +1323,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = from_colour[t];
 								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 						for(i=0;i<from_list.length;i++){
 							//from_pos[2] = 1 - from_list[i]+fconx;
@@ -1315,7 +1336,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 					}else{ //many-blob- then later ?corner?-many
 						for(i=0;i<from_list.length;i++){
@@ -1328,7 +1349,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = from_colour[t];
 								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute, visible);
 						}
 					}
 					if(to_multi<0){
@@ -1346,7 +1367,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						}
-						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						for(t=0;t<3;t++){
 							bez_prep[0][t] = to_corner[t];
 							bez_prep[1][t] = to_corner[t]+to_cornervector[t];//+from_anglevector[t];
@@ -1355,7 +1376,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 							bez_prep[5][t] = to_colour[t];
 						}
-						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);		
+						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);		
 					}else{
 						for(t=0;t<3;t++){
 							bez_prep[0][t] = blob_position[t];
@@ -1365,7 +1386,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 							bez_prep[5][t] = to_colour[t];
 						}
-						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5, bez_prep, cmute);		
+						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5, bez_prep, cmute, visible);		
 					}
 				}else{ // one-corner-blob-many //ie to_multi==1
 					to_pos[0] += 0.55 + 0.4 * tconx;
@@ -1379,7 +1400,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = from_colour[t];
 							bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 						}
-						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);					
+						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);					
 						for(t=0;t<3;t++){
 							bez_prep[0][t] = from_corner[t];
 							bez_prep[1][t] = from_corner[t]+from_cornervector[t];
@@ -1388,7 +1409,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						}
-						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);					
+						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);					
 	
 					}else{
 						for(t=0;t<3;t++){
@@ -1399,7 +1420,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						}
-						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5, bez_prep, cmute);					
+						segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5, bez_prep, cmute, visible);					
 	
 					}
 
@@ -1415,7 +1436,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 						for(i=0;i<to_list.length;i++){
 							to_pos[0] = tp + 0.5* (to_list[i]-1)/to_subvoices + 0.4 * tconx +0.55;
@@ -1428,7 +1449,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 								bez_prep[5][t] = to_colour[t];
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25 , bez_prep, cmute, visible);
 						}
 					}else{ //blob-no corner many
 						for(i=0;i<to_list.length;i++){
@@ -1441,7 +1462,7 @@ function draw_wire(connection_number){
 								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 								bez_prep[5][t] = to_colour[t];
 							}
-							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute);
+							segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5 , bez_prep, cmute, visible);
 						}
 					}
 				}
@@ -1461,7 +1482,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);	
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_corner[t];
 						bez_prep[1][t] = from_corner[t]+from_cornervector[t];
@@ -1470,7 +1491,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 						bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.5, bez_prep, cmute, visible);	
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = to_corner[t];
 						bez_prep[1][t] = to_corner[t]+to_cornervector[t];
@@ -1479,7 +1500,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);	
 				}else if(corners[0]){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1489,7 +1510,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);	
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_corner[t];
 						bez_prep[1][t] = from_corner[t]+from_cornervector[t];
@@ -1498,7 +1519,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.75, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.75, bez_prep, cmute, visible);	
 				}else if(corners[1]){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1508,7 +1529,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.75, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.75, bez_prep, cmute, visible);	
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = to_corner[t];
 						bez_prep[1][t] = to_corner[t]+to_cornervector[t];
@@ -1517,7 +1538,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS*0.25, bez_prep, cmute, visible);	
 				}else{
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1527,14 +1548,14 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS, bez_prep, cmute);	
+					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS, bez_prep, cmute, visible);	
 				}
 			}
 		}
 	}
 }
 
-function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute){
+function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, visible){
 	var t, tt, i, ott;
 	var p = [];
 	for(t=0;t<=num_segments;t++){
@@ -1548,7 +1569,7 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute){
 	var col = [bez_prep[4][0], bez_prep[4][1], bez_prep[4][2]];
 	var cold = [(bez_prep[5][0]-bez_prep[4][0])/num_segments, (bez_prep[5][1]-bez_prep[4][1])/num_segments, (bez_prep[5][2]-bez_prep[4][2])/num_segments];
 	for(t=0;t<num_segments;t++){
-		draw_cylinder(connection_number,segment, p[t], p[t+1], cmute, col);
+		draw_cylinder(connection_number,segment, p[t], p[t+1], cmute, col, visible);
 		col[0]+=cold[0];
 		col[1]+=cold[1];
 		col[2]+=cold[2];
@@ -1557,7 +1578,7 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute){
 	return segment;
 }
 
-function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
+function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, visible){
 	var t;
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
@@ -1600,7 +1621,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 //	post("col",col);
 	wires_colours[connection_number][segment] = [col[0],col[1],col[2]];
 	wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 0.7];
-	wires[connection_number][segment].enable = 1;
+	wires[connection_number][segment].enable = visible;
 }
 
 function draw_connection_menu(){
@@ -3535,6 +3556,8 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = i;
 			mouse_index++;
 		}
+		y_offset += 1.5*fontheight;
+
 		lcd_main.message("paintrect", file_menu_x, 0, mainwindow_width-9, 18+fontheight,0,0,0 );
 		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
 		click_rectangle( file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
@@ -3566,7 +3589,7 @@ function draw_sidebar(){
 			lcd_main.message("moveto", file_menu_x + fontheight*2.4, 9+fontheight*0.75);
 			lcd_main.message("write", "merge");
 		}else{
-			post("Not enough free resources to offer merge-load,\nfree_b:",free_b," free_n:",free_n," free_a:",free_a,"\nand the song requires",songs_info[currentsong]);
+			//post("Not enough free resources to offer merge-load,\nfree_b:",free_b," free_n:",free_n," free_a:",free_a,"\nand the song requires",songs_info[currentsong]);
 		}
 		
 		if(selected.block.indexOf(1)!=-1){

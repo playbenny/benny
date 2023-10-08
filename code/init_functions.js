@@ -184,7 +184,7 @@ function initialise_dictionaries(){
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
 	ANIM_TIME = config.get("ANIM_TIME");
 	waves_preloading = config.get("waves_preloading");
-	
+	wires_show_all = config.get("WIRES_SHOW_ALL");
 
 
 //	connections_sketch.reset();
