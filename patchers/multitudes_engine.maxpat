@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 9.0, 54.0, 323.0, 222.0 ],
+		"rect" : [ 9.0, 54.0, 324.0, 267.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,183 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-153",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 991.75, 285.75, 54.0, 22.0 ],
+					"text" : "deferlow"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-152",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "" ],
+					"patching_rect" : [ 939.75, 320.5, 34.0, 22.0 ],
+					"text" : "sel 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-150",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 991.75, 251.0, 38.0, 22.0 ],
+					"text" : "r play"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-148",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 881.25, 320.5, 52.0, 22.0 ],
+					"text" : "s record"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-145",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 881.25, 283.0, 31.0, 22.0 ],
+					"text" : "t s 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-130",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 821.416666666666515, 218.316242575645447, 55.0, 22.0 ],
+					"text" : "zl slice 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-143",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 806.75, 152.75, 136.0, 22.0 ],
+					"text" : "get RECORD_FOLDER"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-144",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 4,
+					"outlettype" : [ "dictionary", "", "", "" ],
+					"patching_rect" : [ 806.75, 184.75, 63.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict config"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-119",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "date", "time" ],
+					"patching_rect" : [ 857.75, 114.25, 75.0, 22.0 ],
+					"text" : "t b date time"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-120",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "list", "list", "int" ],
+					"patching_rect" : [ 915.416666666666629, 184.75, 40.0, 22.0 ],
+					"text" : "date"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-121",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 881.25, 251.0, 101.0, 22.0 ],
+					"text" : "prepend filename"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-122",
+					"maxclass" : "newobj",
+					"numinlets" : 7,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 881.25, 217.25, 224.0, 22.0 ],
+					"text" : "sprintf symout %srec-%i-%i-%i-%i-%i-%i"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-101",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 883.75, 84.0, 150.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 36.0, 235.0, 150.0, 20.0 ],
+					"text" : "start recording",
+					"textcolor" : [ 1.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-81",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 857.75, 84.25, 24.0, 24.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 9.0, 233.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-72",
 					"maxclass" : "number",
@@ -14132,6 +14309,27 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-120", 0 ],
+					"source" : [ "obj-119", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-120", 0 ],
+					"source" : [ "obj-119", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-143", 0 ],
+					"source" : [ "obj-119", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-135", 0 ],
 					"source" : [ "obj-12", 2 ]
 				}
@@ -14188,6 +14386,34 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-122", 4 ],
+					"source" : [ "obj-120", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-122", 1 ],
+					"source" : [ "obj-120", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-145", 0 ],
+					"source" : [ "obj-121", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-121", 0 ],
+					"source" : [ "obj-122", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-76", 0 ],
 					"source" : [ "obj-125", 0 ]
 				}
@@ -14228,6 +14454,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
 					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-122", 0 ],
+					"source" : [ "obj-130", 1 ]
 				}
 
 			}
@@ -14303,6 +14536,34 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-144", 0 ],
+					"source" : [ "obj-143", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-130", 0 ],
+					"source" : [ "obj-144", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-148", 0 ],
+					"source" : [ "obj-145", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-148", 0 ],
+					"source" : [ "obj-145", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-52", 0 ],
 					"source" : [ "obj-146", 0 ]
 				}
@@ -14366,8 +14627,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-153", 0 ],
+					"source" : [ "obj-150", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
 					"source" : [ "obj-151", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-148", 0 ],
+					"source" : [ "obj-152", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-152", 0 ],
+					"source" : [ "obj-153", 0 ]
 				}
 
 			}
@@ -14935,6 +15217,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-119", 0 ],
+					"source" : [ "obj-81", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-146", 0 ],
 					"source" : [ "obj-82", 0 ]
 				}
@@ -15075,29 +15364,30 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-15.11::obj-11.1::obj-14.1::obj-23" : [ "vst~[2]", "vst~", 0 ],
-			"obj-15.13::obj-11.1::obj-14.1::obj-23" : [ "vst~[3]", "vst~", 0 ],
+			"obj-15.10::obj-11.1::obj-14.1::obj-23" : [ "vst~[2]", "vst~", 0 ],
+			"obj-15.12::obj-11.1::obj-14.1::obj-23" : [ "vst~[3]", "vst~", 0 ],
+			"obj-15.15::obj-11.1::obj-67" : [ "vst~[10]", "vst~", 0 ],
 			"obj-15.17::obj-11.1::obj-14.1::obj-23" : [ "vst~[5]", "vst~", 0 ],
 			"obj-15.18::obj-11.1::obj-67" : [ "vst~[4]", "vst~", 0 ],
-			"obj-15.1::obj-11.1::obj-67" : [ "vst~[1]", "vst~", 0 ],
-			"obj-15.23::obj-11.1::obj-14.1::obj-23" : [ "vst~[8]", "vst~", 0 ],
-			"obj-15.25::obj-11.1::obj-67" : [ "vst~[7]", "vst~", 0 ],
-			"obj-15.32::obj-11.1::obj-14.1::obj-23" : [ "vst~[9]", "vst~", 0 ],
-			"obj-15.33::obj-11.1::obj-14.1::obj-23" : [ "vst~[10]", "vst~", 0 ],
+			"obj-15.21::obj-11.1::obj-14.1::obj-23" : [ "vst~[7]", "vst~", 0 ],
+			"obj-15.25::obj-11.1::obj-67" : [ "vst~[8]", "vst~", 0 ],
+			"obj-15.2::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
+			"obj-15.31::obj-11.1::obj-67" : [ "vst~[9]", "vst~", 0 ],
 			"obj-15.34::obj-11.1::obj-14.1::obj-23" : [ "vst~[11]", "vst~", 0 ],
 			"obj-15.35::obj-11.1::obj-14.1::obj-23" : [ "vst~[12]", "vst~", 0 ],
 			"obj-15.36::obj-11.1::obj-14.1::obj-23" : [ "vst~[13]", "vst~", 0 ],
 			"obj-15.37::obj-11.1::obj-14.1::obj-23" : [ "vst~[14]", "vst~", 0 ],
 			"obj-15.38::obj-11.1::obj-14.1::obj-23" : [ "vst~[15]", "vst~", 0 ],
 			"obj-15.39::obj-11.1::obj-14.1::obj-23" : [ "vst~[18]", "vst~", 0 ],
-			"obj-15.3::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
+			"obj-15.3::obj-11.1::obj-14.1::obj-23" : [ "vst~[1]", "vst~", 0 ],
 			"obj-15.40::obj-11.1::obj-14.1::obj-23" : [ "vst~[20]", "vst~", 0 ],
 			"obj-15.41::obj-11.1::obj-14.1::obj-23" : [ "vst~[16]", "vst~", 0 ],
 			"obj-15.42::obj-11.1::obj-14.1::obj-23" : [ "vst~[21]", "vst~", 0 ],
 			"obj-15.43::obj-11.1::obj-14.1::obj-23" : [ "vst~[22]", "vst~", 0 ],
+			"obj-15.44::obj-11.1::obj-14.1::obj-23" : [ "vst~[23]", "vst~", 0 ],
 			"obj-15.4::obj-11.1::obj-14.1::obj-23" : [ "vst~[17]", "vst~", 0 ],
-			"obj-15.55::obj-11.1::obj-67" : [ "vst~[23]", "vst~", 0 ],
-			"obj-15.5::obj-11.1::obj-14.1::obj-23" : [ "vst~[19]", "vst~", 0 ],
+			"obj-15.53::obj-11.1::obj-67" : [ "vst~[24]", "vst~", 0 ],
+			"obj-15.54::obj-11.1::obj-14.1::obj-23" : [ "vst~[19]", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
@@ -15310,6 +15600,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "midi.fold.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "midi.holes.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
@@ -15339,6 +15636,13 @@
 			}
 , 			{
 				"name" : "midi.note.length.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.velocity.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -15408,6 +15712,20 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "osc.harmonic.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.harmonic.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "parameters_and_modulation.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -15437,6 +15755,20 @@
 			}
 , 			{
 				"name" : "seq.note.tracker.2.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.tracker.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.note.tracker.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -15528,6 +15860,27 @@
 			}
 , 			{
 				"name" : "utility.mid.side.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "utility.recorder.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "utility.vca.env.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "utility.vca.env.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
