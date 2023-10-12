@@ -400,10 +400,11 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 }
 function clear_wave_graphic(n){
 	var t;
-	for(var i = 0; i<4;i++){
-		if(typeof draw_wave[n-1][i] !== 'undefined') for(t=0;t<draw_wave[n-1][i].length;t++)	draw_wave[n-1][i][t]=0;
+	if(Array.isArray(draw_wave[n-1])){
+		for(var i = 0; i<4;i++){
+			if(typeof draw_wave[n-1][i] !== 'undefined') for(t=0;t<draw_wave[n-1][i].length;t++)	draw_wave[n-1][i][t]=0;
+		}
 	}
-
 }
 function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom_amount){
 	if(zoom_amount==null){
