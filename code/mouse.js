@@ -881,8 +881,10 @@ function keydown(key){
 				//redraw_flag.flag |= 4;//draw_blocks();
 			}
 		}
+	}else if((key == 254)&&(loading.progress==0)){
+		load_next_song(0);
 	}else if(key == -2){
-		play_button();
+			play_button();
 	}else if(key == -23){
 		set_display_mode("waves");
 	}else if(key == -494){

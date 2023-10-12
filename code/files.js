@@ -186,11 +186,12 @@ function buffer_loaded(number,path,name,buffername){
 }
 
 function load_next_song(slow){
-	if(slow) usermouse.ctrl=1;
+	var oc = usermouse.ctrl;
+	usermouse.ctrl = slow;
 	load_song();
 	currentsong++;
 	if(currentsong==songlist.length)currentsong=0;
-	if(slow) usermouse.ctrl=0;
+	usermouse.ctrl = oc;
 }
 
 function load_song(){

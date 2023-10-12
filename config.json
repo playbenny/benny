@@ -11,7 +11,7 @@
 	"wire_diaY" : 0.03,
 	"glow" : 0.2,
 	"MAX_BEZIER_SEGMENTS" : 16,
-	"WIRES_SHOW_ALL" : 1,
+	"WIRES_SHOW_ALL" : 0,
 	"ANIM_TIME" : 0.25,
 	"blob_dia" : 0.06,
 	"MAX_BLOCKS" : 128,

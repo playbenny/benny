@@ -14093,7 +14093,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager.js",
+						"filename" : "blockmanager",
 						"parameter_enable" : 0
 					}
 ,
@@ -15612,7 +15612,7 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-15.10::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
+			"obj-15.11::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
@@ -15660,6 +15660,13 @@
 			}
 , 			{
 				"name" : "audio_wrap.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "blank.note.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
@@ -15764,24 +15771,10 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "core.tuning.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "drawing_helpers.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "filter_functions.genexpr",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
-				"patcherrelativepath" : "../code",
-				"type" : "GenX",
 				"implicit" : 1
 			}
 , 			{
@@ -15813,6 +15806,20 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "fx.pitch.retune.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "fx.pitch.shift.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "jit.gl.textureset.maxpat",
 				"bootpath" : "C74:/packages/Jitter Tools/patchers/abstractions",
 				"type" : "JSON",
@@ -15825,42 +15832,14 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "midi.delay.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "midi.fold.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.free.clock.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.holes.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -15871,27 +15850,6 @@
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.scale.quantise.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.velocity.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "mini.env.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
@@ -15958,14 +15916,21 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "osc.harmonic.gendsp",
+				"name" : "osc.shepherd.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "osc.harmonic.maxpat",
+				"name" : "osc.shepherd.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.wave.scan.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
@@ -15986,35 +15951,7 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "osc.wave.traverse.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "osc.wave.traverse.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "osc_functions.genexpr",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
-				"patcherrelativepath" : "../code",
-				"type" : "GenX",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "parameters_and_modulation.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "parameterwatcher.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
@@ -16035,28 +15972,7 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "seq.grid.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.grid.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "seq.grid.ui-o.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.grid.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -16084,17 +16000,10 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "seq.note.tracker.js",
+				"name" : "seq.note.tracker.old.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.tracker.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -16106,13 +16015,6 @@
 			}
 , 			{
 				"name" : "seq.note.tracker.old.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.tracker.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -16134,69 +16036,6 @@
 			}
 , 			{
 				"name" : "seq.note.trackerL.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.rene.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.rene.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.rhythmes.alpes.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.sample.tracker.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.sample.tracker.old.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.sample.tracker.old.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.sample.tracker.old.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.sample.tracker.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.shape.player.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -16245,34 +16084,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "utility.buttons.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.buttons.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.buttons.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.delay.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "utility.env.asr.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
@@ -16281,6 +16092,13 @@
 			}
 , 			{
 				"name" : "utility.env.asr.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "utility.gate.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
@@ -16336,27 +16154,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "voice.ks.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.ks.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.multi.sample.player.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "voice.noise.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
@@ -16371,41 +16168,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "voice.pitch.env.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.pitch.env.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.sample.player.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.shepherd.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.shepherd.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "voicealloc.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -16414,13 +16176,6 @@
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
