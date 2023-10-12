@@ -902,7 +902,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 816.831785440444946, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 1, 1, 0, 0, 21000.0, 1.0, 0.699999988079071, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 1, 1, 0, 0, 4000.0, 1.0, 0.300000011920929, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -917,7 +917,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 537.260356869016391, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 20.0, 1.0, 0.699999988079071, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 6, 1, 0, 0, 70.0, 1.299999952316284, 1.299999952316284, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -968,7 +968,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 676.831785440444946, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 5, 1, 0, 0, 0.000099999997474, 1.0, 0.000099999997474, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 5, 1, 0, 0, 120.0, 0.501187205314636, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -1255,7 +1255,7 @@
 			}
 , 			{
 				"box" : 				{
-					"autosave" : 1,
+					"autosave" : 0,
 					"bgmode" : 0,
 					"border" : 0,
 					"clickthrough" : 0,
@@ -1265,20 +1265,11 @@
 					"numoutlets" : 8,
 					"offset" : [ 0.0, 0.0 ],
 					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
-					"patching_rect" : [ 156.75, 771.0, 150.0, 22.0 ],
-					"save" : [ "#N", "vst~", "loaduniqueid", 0, 2, "console7cascade64", ";" ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_invisible" : 1,
-							"parameter_longname" : "vst~[1]",
-							"parameter_shortname" : "vst~",
-							"parameter_type" : 3
-						}
-
-					}
-,
+					"patching_rect" : [ 156.75, 771.0, 148.0, 22.0 ],
+					"save" : [ "#N", "vst~", "loaduniqueid", 0, 2, "console7channel64", ";" ],
 					"saved_object_attributes" : 					{
-						"parameter_enable" : 1,
+						"autosave" : 0,
+						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
 ,
@@ -1294,7 +1285,7 @@
 						"snapshot" : 						{
 							"pluginname" : "console7channel64.vstinfo",
 							"plugindisplayname" : "airwindows Console7Channel",
-							"pluginsavedname" : "C74_VST:/console7channel64",
+							"pluginsavedname" : "",
 							"pluginsaveduniqueid" : 1668247153,
 							"version" : 1,
 							"isbank" : 0,
@@ -1308,15 +1299,15 @@
 									"filetype" : "C74Snapshot",
 									"version" : 2,
 									"minorversion" : 0,
-									"name" : "airwindows Console7Cascade",
+									"name" : "airwindows Console7Channel",
 									"origin" : "console7channel64.vstinfo",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
-									"embed" : 1,
+									"embed" : 0,
 									"snapshot" : 									{
 										"pluginname" : "console7channel64.vstinfo",
 										"plugindisplayname" : "airwindows Console7Channel",
-										"pluginsavedname" : "C74_VST:/console7channel64",
+										"pluginsavedname" : "",
 										"pluginsaveduniqueid" : 1668247153,
 										"version" : 1,
 										"isbank" : 0,
@@ -1325,29 +1316,11 @@
 									}
 ,
 									"fileref" : 									{
-										"name" : "airwindows Console7Cascade",
-										"filename" : "airwindows Console7Cascade.maxsnap",
-										"filepath" : "~/Documents/Max 8/Snapshots",
-										"filepos" : -1,
-										"snapshotfileid" : "52d263641b5eeed6f3a6cfb8346aa62b"
-									}
-
-								}
-, 								{
-									"filetype" : "C74Snapshot",
-									"version" : 2,
-									"minorversion" : 0,
-									"name" : "airwindows Console7Channel",
-									"origin" : "Console7Channel64.vstinfo",
-									"type" : "VST",
-									"subtype" : "AudioEffect",
-									"embed" : 0,
-									"fileref" : 									{
 										"name" : "airwindows Console7Channel",
 										"filename" : "airwindows Console7Channel.maxsnap",
 										"filepath" : "~/Documents/Max 8/Snapshots",
 										"filepos" : -1,
-										"snapshotfileid" : "e80d5c6fcc931bd5c745ecedd6861fcd"
+										"snapshotfileid" : "0169dcf76031064a529afbe871cf44c1"
 									}
 
 								}
@@ -1356,7 +1329,7 @@
 
 					}
 ,
-					"text" : "vst~ 2 console7cascade64",
+					"text" : "vst~ 2 console7channel64",
 					"varname" : "vst~",
 					"viewvisibility" : 0
 				}
@@ -2875,7 +2848,47 @@
 				}
 
 			}
- ]
+ ],
+		"parameters" : 		{
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
+		"dependency_cache" : [ 			{
+				"name" : "airwindows Console7Channel.maxsnap",
+				"bootpath" : "~/Documents/Max 8/Snapshots",
+				"patcherrelativepath" : "../../../Max 8/Snapshots",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "ar.cliponly~.mxe64",
+				"type" : "mx64"
+			}
+, 			{
+				"name" : "mix.channel.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : ".",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "mutecontrol_fx.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"patcherrelativepath" : "../patchers",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }
