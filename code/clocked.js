@@ -487,7 +487,7 @@ function do_drift(){
 			for(t=0;t<param_error_drift.length;t++){
 				if(param_error_drift[i][t]!=0){
 					//param_error_spread[i][t]+=(Math.random()-0.5)*param_error_drift[i][t];
-					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
+					safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
 				}
 			}
 		}

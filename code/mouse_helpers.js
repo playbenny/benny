@@ -281,7 +281,7 @@ function data_edit(parameter,value){
 	if(value=="get"){
 		return voice_data_buffer.peek(1,parameter);
 	}else{
-		voice_data_buffer.poke(1,parameter,Math.min(1,Math.max(0,value)))
+		if(typeof value == 'number') voice_data_buffer.poke(1,parameter,Math.min(1,Math.max(0,value)))
 		redraw_flag.flag |= 4;//?
 	}
 }
@@ -686,7 +686,7 @@ function static_mod_adjust(parameter,value){
 		return parameter_static_mod.peek(1,parameter[2]);
 	}else{
 		//set value
-		parameter_static_mod.poke(1,parameter[2],Math.max(-1,Math.min(1,value)));
+		safepoke(parameter_static_mod,1,parameter[2],Math.max(-1,Math.min(1,value)));
 		rebuild_action_list = 1;
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings"))){// && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
@@ -1166,7 +1166,7 @@ function block_edit(parameter,value){
 						mult = blocktypes.get(block_name+"::parameters["+i+"]::error_scale");
 					}
 //					param_error_spread[list[l]][i]=(Math.random()-0.5)*sprd*mult;
-					parameter_error_spread_buffer.poke(1, MAX_PARAMETERS*list[l]+i,(mulberry32()-0.5)*sprd*mult);
+					safepoke(parameter_error_spread_buffer,1, MAX_PARAMETERS*list[l]+i,(mulberry32()-0.5)*sprd*mult);
 				}			
 			}
 		}else if(pt[2]=="drift"){

@@ -590,6 +590,26 @@ function deferred_diagnostics(){
 	}
 }
 
+function safepoke(buffer,channel,index,value){
+	if((typeof channel == 'number')&&(typeof index == 'number')){
+		if((typeof value == 'number')){
+			buffer.poke(channel,index,value);
+		}else if(Array.isArray(value)){
+			ok=1;
+			for(var i=0;i<value.length;i++){
+				ok &= (typeof value[i]=='number');
+			}
+			if(ok){
+				buffer.poke(channel,index,value);
+			}else{
+				post("\n\n\n\nWARNING UNSAFE ARRAY POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
+			}
+		}
+	}else{
+		post("\n\n\n\nWARNING UNSAFE POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
+	}
+}
+
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
 		reinitialise_block_menu();

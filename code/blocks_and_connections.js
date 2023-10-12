@@ -79,9 +79,9 @@ function new_block(block_name,x,y){
 			var vd_def = [];
 			var vdi;
 			vd_def = details.get("voice_data::defaults");
-			voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset),vd_def);
+			safepoke(voice_data_buffer,1, MAX_DATA*(new_voice+t_offset),vd_def);
 			for(vdi=vd_def.length;vdi<MAX_DATA;vdi++){
-				voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset)+vdi,0);
+				safepoke(voice_data_buffer,1, MAX_DATA*(new_voice+t_offset)+vdi,0);
 			}
 		}
 	}
@@ -143,7 +143,7 @@ function new_block(block_name,x,y){
 		var drft = blocks.get("blocks["+new_block_index+"]::error::drift");
 		drft = drft*drft*drft*drft;
 		for(var i=0;i<paramslength;i++){
-			parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
+			safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,0);
 //			param_error_spread[voiceoffet][i]=0;
 			p_default = 0;
 			p_type = blocktypes.get(block_name+"::parameters["+i+"]::type");//params[i].get("type");
@@ -157,7 +157,7 @@ function new_block(block_name,x,y){
 				p_default = blocktypes.get(block_name+"::parameters["+i+"]::default");
 			}
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
-			parameter_static_mod.poke(1, MAX_PARAMETERS*voiceoffset+i, 0);
+			safepoke(parameter_static_mod,1, MAX_PARAMETERS*voiceoffset+i, 0);
 			param_defaults[new_block_index][i] = p_default;
 			if(details.contains("parameters["+i+"]::error_scale")){
 				spr=sprd*details.get("parameters["+i+"]::error_scale");
@@ -192,10 +192,10 @@ function new_block(block_name,x,y){
 				}
 			}
 			// parameter info poked out here for paramwatcher
-			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
-			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
-			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);
-			parameter_info_buffer.poke(4,MAX_PARAMETERS*new_block_index+i,p_curve);
+			safepoke(parameter_info_buffer,1,MAX_PARAMETERS*new_block_index+i,p_min);
+			safepoke(parameter_info_buffer,2,MAX_PARAMETERS*new_block_index+i,p_max);
+			safepoke(parameter_info_buffer,3,MAX_PARAMETERS*new_block_index+i,p_steps);
+			safepoke(parameter_info_buffer,4,MAX_PARAMETERS*new_block_index+i,p_curve);
 		}		
 	}
 	// tell the polyalloc voice about its new job
@@ -330,6 +330,7 @@ function send_audio_patcherlist(do_all){
 //	post("\nsorry",audio_upsamplelist,"\n and ",loaded_audio_patcherlist);
 	for(i = 0; i<MAX_AUDIO_VOICES; i++){
 		if((audio_patcherlist[i]!=loaded_audio_patcherlist[i])&&(audio_patcherlist[i]!="recycling")){
+			//if(loading.wait>1) post("\n- loading voice "+i+"'s patcher");
 			if(RECYCLING && (audio_patcherlist[i] == "blank.audio")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				audio_patcherlist[i] = "recycling";
 				audio_poly.setvalue(i+1, "muteouts", 1);
@@ -1432,6 +1433,7 @@ function make_connection(cno){
 							}
 							if(force_unity){
 								outmsg[2] = (1-(hw_mute || conversion.get("mute")));
+								//post("\nforce unity matrix message",outmsg, "f, t",f_voice,t_voice);
 							}else{
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
@@ -2068,12 +2070,18 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				new_voice = next_free_voice(type,block_name);
 			}
 			if(details.contains("voice_data::defaults")){
+				if(loading.wait>1) post("\n- poking in default voicedata");
 				var vd_def = [];
 				var vdi;
 				vd_def = details.get("voice_data::defaults");
-				voice_data_buffer.poke(1,MAX_DATA*(new_voice+t_offset),vd_def);
+				if((typeof new_voice != 'number')||(typeof t_offset != 'number')){
+					post("\n- poking in default voicedata");
+					post("\n\n\nPROBLEM",new_voice,t_offset,vd_def);
+					return -1;
+				}
+				safepoke(voice_data_buffer,1,MAX_DATA*(new_voice+t_offset),vd_def);
 				for(vdi=vd_def.length;vdi<MAX_DATA;vdi++){
-					voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset)+vdi,0);
+					safepoke(voice_data_buffer,1, MAX_DATA*(new_voice+t_offset)+vdi,0);
 				}
 				//post("new voice of an existing block so setting default data TODO BUT HOW DO WE KNOW ITS NEW? IS THIS THE RIGTH PLACE TO DO THIS?",new_voice+t_offset,MAX_DATA*(new_voice+t_offset));
 			}
@@ -2123,8 +2131,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}else{
 					spr = sprd;
 				}
-				parameter_static_mod.poke(1, voiceoffset  *MAX_PARAMETERS+i, 0);
-				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
+				safepoke(parameter_static_mod,1, voiceoffset  *MAX_PARAMETERS+i, 0);
+				safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
 				var p_type = details.get("parameters["+i+"]::type");
 				var p_pol = details.get("parameters["+i+"]::values[0]");
@@ -2151,12 +2159,13 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					}else{
 						p_curve = 2;
 					}
-					}
+				}
+
 				// parameter info poked out here for paramwatcher
-				parameter_info_buffer.poke(1,MAX_PARAMETERS*block+i,p_min);
-				parameter_info_buffer.poke(2,MAX_PARAMETERS*block+i,p_max);
-				parameter_info_buffer.poke(3,MAX_PARAMETERS*block+i,p_steps);
-				parameter_info_buffer.poke(4,MAX_PARAMETERS*block+i,p_curve);
+				safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block+i,p_min);
+				safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block+i,p_max);
+				safepoke(parameter_info_buffer,3,MAX_PARAMETERS*block+i,p_steps);
+				safepoke(parameter_info_buffer,4,MAX_PARAMETERS*block+i,p_curve);
 			} //set param spreads
 			if(recycled){
 				if(type=="audio"){
@@ -2527,7 +2536,7 @@ function swap_block(block_name){
 			var vdi;
 			vd_def = details.get("voice_data::defaults")
 			for(vdi=0;vdi<vd_def.length;vdi++){
-				voice_data_buffer.poke(1, MAX_DATA*(voice)+vdi,vd_def[vdi]);
+				safepoke(voice_data_buffer,1, MAX_DATA*(voice)+vdi,vd_def[vdi]);
 			}
 			post("swapping block so setting default data");
 		}
@@ -2549,7 +2558,7 @@ function swap_block(block_name){
 			param_defaults[voice] = [];
 			for(var i=0;i<params.length;i++){
 				if(voice!=-1){
-					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voice+i,0);
+					safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voice+i,0);
 //					param_error_spread[voice][i]=0;
 					param_error_drift[voice][i]=0;
 				}
@@ -2565,7 +2574,7 @@ function swap_block(block_name){
 					p_default = params[i].get("default");
 				}
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
-				parameter_static_mod.poke(1, voice  *MAX_PARAMETERS+i, 0);
+				safepoke(parameter_static_mod,1, voice  *MAX_PARAMETERS+i, 0);
 				param_defaults[block_menu_d.swap_block_target][i] = p_default;
 			}		
 		}

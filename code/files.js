@@ -185,6 +185,14 @@ function buffer_loaded(number,path,name,buffername){
 	waves.age[number]=++waves.seq_no;
 }
 
+function load_next_song(slow){
+	if(slow) usermouse.ctrl=1;
+	load_song();
+	currentsong++;
+	if(currentsong==songlist.length)currentsong=0;
+	if(slow) usermouse.ctrl=0;
+}
+
 function load_song(){
 	clear_everything();
 	loading.merge = 0;
@@ -195,7 +203,7 @@ function load_song(){
 	loading.wait=1;
 	if(usermouse.ctrl){
 		loading.bundling=1;
-		loading.wait=20;
+		loading.wait=40;
 		post("\n\nTROUBLESHOOTING SLOW LOAD MODE\n\n");
 	}
 	import_song();
@@ -492,7 +500,7 @@ function import_song(){
 					var vl=voicemap.get(loading.mapping[b]);
 					if(!Array.isArray(vl)) vl=[vl];
 					for(i=0;i<stpv.length;i+=3){
-						parameter_static_mod.poke(1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
+						safepoke(parameter_static_mod,1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
 					}
 				}
 			}
@@ -566,9 +574,9 @@ function build_wave_remapping_list(){
 }
 
 function load_process_block_voices_and_data(block){
-	if(loading.wait>1) post("\nrestoring block "+block+" voices and data");
 	var drawn=1;
 	t = blocks.get("blocks["+block +"]::poly::voices");
+	if(loading.wait>1) post("\nrestoring block "+block+" voices ("+t+") and data");
 	if(t!=1){
 		drawn=0;
 		blocks.replace("blocks["+block +"]::poly::voices",1)
@@ -576,15 +584,15 @@ function load_process_block_voices_and_data(block){
 	}
 	if(blocks.contains("blocks["+block+"]::voice_data") && voicemap.contains(block)){
 		var v_list = voicemap.get(block);
-		if(typeof v_list == "number")v_list = [v_list];
+		if(!Array.isArray(v_list)) v_list = [v_list];
 		t = v_list.length;
-		//post("\n\nrestoring data, voicelist",v_list,"so vlist lenght is",v_list.length,"and t is",t);
+		if(loading.wait>1) post("\n- restoring data, voicelist",v_list,"so vlist lenght is",v_list.length,"and t is",t);
 		for(i=0;i<t;i++){
 			var vdata= new Array(MAX_DATA);
 			//post("\nvoice",i,"index",MAX_DATA*v_list[i]);
 			vdata = blocks.get("blocks["+block+"]::voice_data::"+i);
 			//post("\nvdata length:",vdata.length);//,"\nvdata:\n",vdata);
-			voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
+			safepoke(voice_data_buffer,1, MAX_DATA*v_list[i], vdata);
 		}
 	}	
 	if(drawn==1) draw_block(block); //used to be outside the loop with a 'draw_blocks()' but maybe this is quicker?)
@@ -678,8 +686,8 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		param_defaults[block_index] = [];
 		for(var i=0;i<params.length;i++){
 			if(new_voice!=-1){
-				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
-				parameter_static_mod.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
+				safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,0);
+				safepoke(parameter_static_mod,1,MAX_PARAMETERS*voiceoffset+i,0);
 				param_error_drift[voiceoffset][i]=0;
 			}
 			p_default = 0;
