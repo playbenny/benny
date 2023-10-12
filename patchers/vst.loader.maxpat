@@ -229,10 +229,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 300.833333333333599, 880.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -1239,7 +1235,7 @@
 					"patching_rect" : [ 794.5, 692.0, 120.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "2716polydone",
+						"name" : "2632polydone",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -1288,7 +1284,7 @@
 					"patching_rect" : [ 583.5, 302.0, 120.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "2716polydone",
+						"name" : "2632polydone",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -1325,7 +1321,7 @@
 					"patching_rect" : [ 664.0, 408.0, 180.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "2716polydone",
+						"name" : "2632polydone",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -2129,19 +2125,9 @@
 					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
 					"patching_rect" : [ 497.0, 590.0, 92.5, 22.0 ],
 					"save" : [ "#N", "vst~", "loaduniqueid", 0, ";" ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_invisible" : 1,
-							"parameter_longname" : "vst~[10]",
-							"parameter_shortname" : "vst~",
-							"parameter_type" : 3
-						}
-
-					}
-,
 					"saved_object_attributes" : 					{
 						"autosave" : 0,
-						"parameter_enable" : 1,
+						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
 ,
@@ -2315,6 +2301,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 27.0, 66.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -2350,10 +2340,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 68.0, 773.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -2389,6 +2375,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 547.5, 644.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -2401,6 +2391,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 570.5, 555.5, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -2412,6 +2406,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 497.0, 644.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -2424,6 +2422,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 497.0, 555.5, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 

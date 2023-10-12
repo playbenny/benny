@@ -1015,7 +1015,7 @@ function draw_wire(connection_number){
 					wires[connection_number][t].enable = visible;
 				}
 			}
-			//if(visible==0)drawme=0;
+			if(visible==0)drawme=0;
 		}
 		if(drawme && !is_empty(wire_ends[connection_number])){
 			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
