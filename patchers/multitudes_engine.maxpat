@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 0.0, 51.0, 324.0, 267.0 ],
+		"rect" : [ 8.0, 51.0, 325.0, 224.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -40,12 +40,36 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-87",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 911.25, 358.5, 22.0, 22.0 ],
+					"text" : "t 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-55",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "bang" ],
+					"patching_rect" : [ 911.25, 326.5, 55.0, 22.0 ],
+					"text" : "onebang"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-153",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 991.75, 285.75, 54.0, 22.0 ],
+					"patching_rect" : [ 991.75, 283.0, 54.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -57,8 +81,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 939.75, 320.5, 34.0, 22.0 ],
-					"text" : "sel 1"
+					"patching_rect" : [ 932.25, 283.0, 34.0, 22.0 ],
+					"text" : "sel 0"
 				}
 
 			}
@@ -80,7 +104,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 881.25, 362.5, 52.0, 22.0 ],
+					"patching_rect" : [ 881.25, 396.5, 52.0, 22.0 ],
 					"text" : "s record"
 				}
 
@@ -90,10 +114,10 @@
 					"id" : "obj-145",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "int", "" ],
-					"patching_rect" : [ 881.25, 283.0, 31.0, 22.0 ],
-					"text" : "t 1 s"
+					"numoutlets" : 3,
+					"outlettype" : [ "int", "", "bang" ],
+					"patching_rect" : [ 881.25, 283.0, 41.0, 22.0 ],
+					"text" : "t 1 s b"
 				}
 
 			}
@@ -14564,6 +14588,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-55", 1 ],
+					"source" : [ "obj-145", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-52", 0 ],
 					"source" : [ "obj-146", 0 ]
 				}
@@ -14641,8 +14672,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-148", 0 ],
-					"source" : [ "obj-152", 1 ]
+					"destination" : [ "obj-55", 0 ],
+					"source" : [ "obj-152", 0 ]
 				}
 
 			}
@@ -15012,6 +15043,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-87", 0 ],
+					"source" : [ "obj-55", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-21", 0 ],
 					"source" : [ "obj-56", 0 ]
 				}
@@ -15245,6 +15283,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-148", 0 ],
+					"source" : [ "obj-87", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-86", 0 ],
 					"source" : [ "obj-88", 0 ]
 				}
@@ -15364,30 +15409,19 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-15.10::obj-11.1::obj-14.1::obj-23" : [ "vst~[2]", "vst~", 0 ],
-			"obj-15.12::obj-11.1::obj-14.1::obj-23" : [ "vst~[3]", "vst~", 0 ],
-			"obj-15.15::obj-11.1::obj-67" : [ "vst~[10]", "vst~", 0 ],
-			"obj-15.17::obj-11.1::obj-14.1::obj-23" : [ "vst~[5]", "vst~", 0 ],
-			"obj-15.18::obj-11.1::obj-67" : [ "vst~[4]", "vst~", 0 ],
+			"obj-15.15::obj-11.1::obj-67" : [ "vst~[2]", "vst~", 0 ],
+			"obj-15.20::obj-11.1::obj-14.1::obj-23" : [ "vst~[3]", "vst~", 0 ],
 			"obj-15.21::obj-11.1::obj-14.1::obj-23" : [ "vst~[7]", "vst~", 0 ],
-			"obj-15.25::obj-11.1::obj-67" : [ "vst~[8]", "vst~", 0 ],
-			"obj-15.2::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
-			"obj-15.30::obj-11.1::obj-67" : [ "vst~[9]", "vst~", 0 ],
-			"obj-15.31::obj-11.1::obj-67" : [ "vst~[11]", "vst~", 0 ],
-			"obj-15.35::obj-11.1::obj-14.1::obj-23" : [ "vst~[12]", "vst~", 0 ],
-			"obj-15.36::obj-11.1::obj-14.1::obj-23" : [ "vst~[13]", "vst~", 0 ],
-			"obj-15.37::obj-11.1::obj-14.1::obj-23" : [ "vst~[14]", "vst~", 0 ],
-			"obj-15.38::obj-11.1::obj-14.1::obj-23" : [ "vst~[15]", "vst~", 0 ],
+			"obj-15.22::obj-11.1::obj-14.1::obj-23" : [ "vst~[19]", "vst~", 0 ],
 			"obj-15.39::obj-11.1::obj-14.1::obj-23" : [ "vst~[18]", "vst~", 0 ],
-			"obj-15.3::obj-11.1::obj-14.1::obj-23" : [ "vst~[1]", "vst~", 0 ],
 			"obj-15.40::obj-11.1::obj-14.1::obj-23" : [ "vst~[20]", "vst~", 0 ],
 			"obj-15.41::obj-11.1::obj-14.1::obj-23" : [ "vst~[16]", "vst~", 0 ],
 			"obj-15.42::obj-11.1::obj-14.1::obj-23" : [ "vst~[21]", "vst~", 0 ],
 			"obj-15.43::obj-11.1::obj-14.1::obj-23" : [ "vst~[22]", "vst~", 0 ],
 			"obj-15.44::obj-11.1::obj-14.1::obj-23" : [ "vst~[23]", "vst~", 0 ],
 			"obj-15.45::obj-11.1::obj-14.1::obj-23" : [ "vst~[24]", "vst~", 0 ],
-			"obj-15.46::obj-11.1::obj-14.1::obj-23" : [ "vst~[19]", "vst~", 0 ],
-			"obj-15.4::obj-11.1::obj-14.1::obj-23" : [ "vst~[17]", "vst~", 0 ],
+			"obj-15.8::obj-11.1::obj-67" : [ "vst~[10]", "vst~", 0 ],
+			"obj-15.9::obj-11.1::obj-67" : [ "vst~[1]", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
@@ -15560,13 +15594,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "core.tuning.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "drawing_helpers.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -15588,6 +15615,20 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "fx.pitch.retune.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "fx.pitch.shift.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "jit.gl.textureset.maxpat",
 				"bootpath" : "C74:/packages/Jitter Tools/patchers/abstractions",
 				"type" : "JSON",
@@ -15600,49 +15641,14 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "midi.delay.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "midi.fold.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.holes.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.note.length.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.velocity.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -15712,14 +15718,35 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "osc.harmonic.gendsp",
+				"name" : "osc.shepherd.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "osc.harmonic.maxpat",
+				"name" : "osc.shepherd.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.wave.scan.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.wave.scan.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "osc.wave.scan.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
@@ -15737,6 +15764,27 @@
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.grid-o.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.grid-o.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.grid.ui-o.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -15761,42 +15809,21 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "seq.note.tracker.maxpat",
+				"name" : "seq.note.trackerL.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.tracker.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.sample.tracker.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "seq.sample.tracker.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
+				"name" : "seq.note.trackerL.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "seq.sample.tracker.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.shape.player.maxpat",
+				"name" : "seq.note.trackerL.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -15852,6 +15879,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "utility.gate.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "utility.lowpass.highpass.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
@@ -15859,28 +15893,14 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "utility.mid.side.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.recorder.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "utility.vca.env.gendsp",
+				"name" : "utility.vca.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "utility.vca.env.maxpat",
+				"name" : "utility.vca.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
@@ -15895,48 +15915,6 @@
 			}
 , 			{
 				"name" : "voice.basic.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.dual.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.dual.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.harmonic.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.harmonic.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.pitch.env.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voice.pitch.env.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
