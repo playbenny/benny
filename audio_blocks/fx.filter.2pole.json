@@ -41,7 +41,7 @@
 			},
 			{
 				"name" : "circuit_saturation",
-				"type" : "menu",
+				"type" : "menu_i",
 				"values" : ["off", "on"],
 				"wrap" : 0,
 				"default" : 1 
