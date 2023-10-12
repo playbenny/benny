@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 9.0, 54.0, 324.0, 267.0 ],
+		"rect" : [ 0.0, 51.0, 324.0, 267.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -80,7 +80,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 881.25, 320.5, 52.0, 22.0 ],
+					"patching_rect" : [ 881.25, 362.5, 52.0, 22.0 ],
 					"text" : "s record"
 				}
 
@@ -91,9 +91,9 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
-					"outlettype" : [ "", "int" ],
+					"outlettype" : [ "int", "" ],
 					"patching_rect" : [ 881.25, 283.0, 31.0, 22.0 ],
-					"text" : "t s 1"
+					"text" : "t 1 s"
 				}
 
 			}
@@ -15372,8 +15372,8 @@
 			"obj-15.21::obj-11.1::obj-14.1::obj-23" : [ "vst~[7]", "vst~", 0 ],
 			"obj-15.25::obj-11.1::obj-67" : [ "vst~[8]", "vst~", 0 ],
 			"obj-15.2::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
-			"obj-15.31::obj-11.1::obj-67" : [ "vst~[9]", "vst~", 0 ],
-			"obj-15.34::obj-11.1::obj-14.1::obj-23" : [ "vst~[11]", "vst~", 0 ],
+			"obj-15.30::obj-11.1::obj-67" : [ "vst~[9]", "vst~", 0 ],
+			"obj-15.31::obj-11.1::obj-67" : [ "vst~[11]", "vst~", 0 ],
 			"obj-15.35::obj-11.1::obj-14.1::obj-23" : [ "vst~[12]", "vst~", 0 ],
 			"obj-15.36::obj-11.1::obj-14.1::obj-23" : [ "vst~[13]", "vst~", 0 ],
 			"obj-15.37::obj-11.1::obj-14.1::obj-23" : [ "vst~[14]", "vst~", 0 ],
@@ -15385,9 +15385,9 @@
 			"obj-15.42::obj-11.1::obj-14.1::obj-23" : [ "vst~[21]", "vst~", 0 ],
 			"obj-15.43::obj-11.1::obj-14.1::obj-23" : [ "vst~[22]", "vst~", 0 ],
 			"obj-15.44::obj-11.1::obj-14.1::obj-23" : [ "vst~[23]", "vst~", 0 ],
+			"obj-15.45::obj-11.1::obj-14.1::obj-23" : [ "vst~[24]", "vst~", 0 ],
+			"obj-15.46::obj-11.1::obj-14.1::obj-23" : [ "vst~[19]", "vst~", 0 ],
 			"obj-15.4::obj-11.1::obj-14.1::obj-23" : [ "vst~[17]", "vst~", 0 ],
-			"obj-15.53::obj-11.1::obj-67" : [ "vst~[24]", "vst~", 0 ],
-			"obj-15.54::obj-11.1::obj-14.1::obj-23" : [ "vst~[19]", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
