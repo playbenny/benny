@@ -13,7 +13,8 @@
 		"connections" : {
 			"in" : {
 				"midi" : [ "midi in" ,"trigger", "row select", "reset" ],
-				"default" : 1
+				"default" : 1,
+				"automap_to" : 0
 			},
 			"out" : {
 				"midi" : [ "notes out" ]

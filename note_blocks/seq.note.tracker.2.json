@@ -2,6 +2,7 @@
 	"seq.note.tracker.2" : {
 		"patcher" : "seq.note.tracker.2",
 		"type" : "note",
+		"deprecated" : 1,
 		"block_ui_patcher" : "seq.note.tracker.2.ui",
 		"help_text" : "note tracker. add more voices for more polyphony. on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points. l and , switch octave in the editor.",
 		"max_polyphony" : 0,

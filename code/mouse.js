@@ -913,6 +913,20 @@ function keydown(key){
 	}else if(key == -28){
 		set_sidebar_mode("cpu");
 		redraw_flag.flag = 2;
+	}else if(sidebar.selected>=0){
+		if(key == 45){
+			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
+			if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
+				voicecount(sidebar.selected, current_p - 1);
+			}
+		}else if((key == 43)||(key==573)){
+			var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
+			if(max_p ==0) max_p=9999999999999;
+			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
+			if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
+				voicecount(sidebar.selected, current_p + 1);
+			}
+		}
 	}
 	// MODAL OVERIDES - IE EDIT LABEL MODE IN THE SIDEBAR TAKES OVER THE WHOLE KEYBOARD
 	if((sidebar.mode == "edit_label")||(sidebar.mode == "edit_state")){
@@ -943,7 +957,7 @@ function keydown(key){
 		redraw_flag.flag |= 2;
 	}else{
 		if(displaymode=="custom_fullscreen"){
-			post("fs keys",key);
+			//post("fs keys",key);
 			if(key == -19) {
 				set_display_mode("custom",selected.block.indexOf(1));
 			}else if(key==-3){
