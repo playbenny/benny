@@ -59,6 +59,8 @@ var fx_descs = ["chiptune style arpeggio, the values are [note1][note2][rate] or
 "use timestretch to play the sample slower (see also hurry)",
 ".",".","."];
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
+var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
+
 //data format: for each voice the buffer holds:
 // 0 - start (*128)
 // 1 - length (*128+1)
@@ -221,25 +223,40 @@ function drawcell(c,r){
 		rc = rc/24;
 		fc = [menucolour[0]*0.25,menucolour[1]*0.25,menucolour[2]*0.25];
 		var lp=1;
-		var cp=c+display_col_offset;
-		if((rr>=s[cp])&&(rr<s[cp]+l[cp])){
+		var cc=c+display_col_offset;
+		if((rr>=s[cc])&&(rr<s[cc]+l[cc])){
 			rc+=0.1;
 			fc=[menucolour[0],menucolour[1],menucolour[2]];
-			if(l_on[cp]){
+			if(l_on[cc]){
 				fc[1]*=1.3;
 				fc[0]*=0.8;
 				lp=1.5;
 			}
 		}
-		if(cursors[cp]==rr){
+		if(cursors[cc]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
-		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
+		if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
+			var ts=0,te=6;
+			if((cc==sel_sx)&&(sel_sx2>0)){
+				outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.475)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc,fc[1]*rc*lp,fc[2]*rc);
+				ts=sel_sx2/6;
+			}
+			if((cc==sel_ex)&&(sel_ex2<5)){
+				outlet(1,"paintrect",sx+(c+0.475)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc,fc[1]*rc*lp,fc[2]*rc);
+				te=sel_ex2/6;
+			}
+			var rc2 = rc + 0.2;
+			outlet(1,"paintrect",sx+(c+0.95*ts)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95*te)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc2,fc[1]*rc2*lp*0.5,255*rc2);
+		}else{// all not
+			outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
+		}
+
 		outlet(1,"frgb",fc);
-		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cp)]+1+6*rr,6);
+		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+6*rr,6);
 	//	post(values,"\n");
-		var incell = ((cursorx==(cp))&&(cursory==rr));
+		var incell = ((cursorx==(cc))&&(cursory==rr));
 		var x=0;
 		var washighlight=0;
 		for(i=0;i<6;i++){		
@@ -389,16 +406,41 @@ function mouse(x,y,lb,sh,al,ct,scr){
 
 		}
 	}else if(lb){
-		//todo shift select, copy paste?
-/*		cursorx = (x-sx-x_pos)/cw;
-		cursorx += display_col_offset;
-		cursorx2 = Math.floor((cursorx % 1)*6);
-		cursorx = Math.min(v_list.length-1,Math.floor(cursorx));	
-		cursory = Math.floor((y-sy-y_pos)/rh);
-		cursory += display_row_offset;*/
-		cursory = clicky;
-		cursorx2 = clickx2;
-		cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
+		if(sh){
+			sel_sx = cursorx;
+			sel_sx2 = cursorx2;
+			sel_sy = cursory;
+			cursorx2 = clickx2;
+			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
+			cursory = clicky;
+			sel_ex = cursorx;
+			sel_ex2 = cursorx2;
+			sel_ey = cursory;
+			if(sel_ey<sel_sy){
+				var t = sel_sy;
+				sel_sy = sel_ey;
+				sel_ey = t;
+			}
+			if(sel_sx>sel_ex){
+				var t = sel_sx;
+				var t2 = sel_sx2;
+				sel_sx = sel_ex;
+				sel_sx2 = sel_ex2;
+				sel_ex = t;
+				sel_ex2 = t2;
+			}
+			draw();
+		}else{		
+	/*		cursorx = (x-sx-x_pos)/cw;
+			cursorx += display_col_offset;
+			cursorx2 = Math.floor((cursorx % 1)*6);
+			cursorx = Math.min(v_list.length-1,Math.floor(cursorx));	
+			cursory = Math.floor((y-sy-y_pos)/rh);
+			cursory += display_row_offset;*/
+			cursory = clicky;
+			cursorx2 = clickx2;
+			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
+		}
 	}
 	var df=0;
 	if(lb==0){

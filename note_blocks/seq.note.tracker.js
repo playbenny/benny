@@ -188,7 +188,7 @@ function drawcell(c,r){
 		rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 		rc = rc/24;
 		fc = [menucolour[0]*0.25,menucolour[1]*0.25,menucolour[2]*0.25];
-		var lp=1,sl=1;
+		var lp=1;
 		if((rr>=start[cc])&&(rr<end[cc])){
 			rc+=0.1;
 			fc=[menucolour[0],menucolour[1],menucolour[2]];
@@ -198,23 +198,25 @@ function drawcell(c,r){
 				lp=1.5;
 			} 
 		}
-		if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
-			//post("\ninside selection area",rr,cc);
-			/*if((cc==sel_sx)&&(cursorx2<sel_sx2)){
-
-			}else if((cc==sel_ex)&&(cursorx2>sel_ex2)){
-
-			}else{*/
-				fc[2] = 1;
-//				sl = 1.7;
-				lp=0.5;
-			//}	
-		}
 		if(cursors[cc]==rr){
 			rc=(rc+0.3)*1.5;
 			fc=[0,0,0];
 		}
-		outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
+		if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
+			var ts=0,te=1;
+			if((cc==sel_sx)&&(sel_sx2>0)){
+				outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.475)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc,fc[1]*rc*lp,fc[2]*rc);
+				ts=0.5;
+			}
+			if((cc==sel_ex)&&(sel_ex2<1)){
+				outlet(1,"paintrect",sx+(c+0.475)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc,fc[1]*rc*lp,fc[2]*rc);
+				te=0.5;
+			}
+			var rc2 = rc + 0.2;
+			outlet(1,"paintrect",sx+(c+0.95*ts)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95*te)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc2,fc[1]*rc2*lp*0.5,255*rc2);
+		}else{// all not
+			outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
+		}
 		if(!mini){
 			outlet(1,"frgb",fc);
 			values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+2*rr,2);
@@ -298,29 +300,52 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
-			var v = voice_data_buffer.peek(1,MAX_DATA*v_list[(clickx)]+clickx2+1+2*(clicky+display_row_offset));
-			if(v>0){
-				if(scr>0){
-					v++;
-				}else{
-					v--;
-					if(v<0)v=0;
+			if(((clickx>sel_sx)||((clickx==sel_sx)&&(clickx2>=sel_sx2)))&&((clickx<sel_ex)||((clickx==sel_ex)&&(clickx2<=sel_ex2)))&&(clicky>=sel_sy)&&(clicky<=sel_ey)){
+				for(var tx=sel_sx;tx<=sel_ex;tx++){
+					for(var ty=sel_sy;ty<=sel_ey;ty++){
+						var ts=0;
+						var te=2;
+						if((tx==sel_sx)&&(sel_sx2>0)) ts=1;
+						if((tx==sel_ex)&&(sel_ex2<1)) te=1;
+						for(var tt=ts;tt<te;tt++){
+							var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tt+1+2*ty);
+							if(v>0){
+								if(scr>0){
+									v++;
+								}else{
+									v--;
+									if(v<0)v=0;
+								}
+								voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tt+1+2*ty,v);
+							}
+						}
+					}
 				}
-				voice_data_buffer.poke(1,MAX_DATA*v_list[clickx]+clickx2+1+2*(clicky+display_row_offset),v);
+			}else{
+				var v = voice_data_buffer.peek(1,MAX_DATA*v_list[(clickx)]+clickx2+1+2*(clicky+display_row_offset));
+				if(v>0){
+					if(scr>0){
+						v++;
+					}else{
+						v--;
+						if(v<0)v=0;
+					}
+					voice_data_buffer.poke(1,MAX_DATA*v_list[clickx]+clickx2+1+2*(clicky+display_row_offset),v);
+				}
 			}
 		}
 	}else if(lb){
 		//todo shift select, copy paste?
 		if(sh){
-			sel_sx = cursorx;
+			sel_sx = cursorx+display_col_offset;
 			sel_sx2 = cursorx2;
-			sel_sy = cursory;
+			sel_sy = cursory+display_row_offset;
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
-			sel_ex = cursorx;
+			sel_ex = cursorx+display_col_offset;
 			sel_ex2 = cursorx2;
-			sel_ey = cursory;
+			sel_ey = cursory+display_row_offset;
 			if(sel_ey<sel_sy){
 				var t = sel_sy;
 				sel_sy = sel_ey;
@@ -334,12 +359,14 @@ function mouse(x,y,lb,sh,al,ct,scr){
 				sel_ex = t;
 				sel_ex2 = t2;
 			}
+			post("\nselection ",sel_sx,sel_ex,sel_sy,sel_ey,sel_sx2,sel_ex2);
 			draw();
 		}else{
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
-
+			sel_ex=-1;
+			sel_ey=-1;
 		}
 	}
 	var df=0;
