@@ -240,16 +240,15 @@ function import_song(){
 			// set_display_mode("custom_fullscreen",output_looper_block+1);
 			clear_screens();
 			set_sidebar_mode("none");
-			set_display_mode("blocks");
+//			set_display_mode("blocks");
 		}else{
 			clear_screens();
 			set_sidebar_mode("none");
-			set_display_mode("blocks");
+//			set_display_mode("blocks");
 		}
 		post("loading from song",songlist[currentsong],"\n");
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;
-		sidebar.mode = "none";
 		state_fade.lastcolour = [0,0,0];
 		clear_blocks_selection();
 		// clear_screens();
@@ -523,10 +522,10 @@ function import_song(){
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
-		set_display_mode("blocks");
+		//set_display_mode("blocks");
 		set_sidebar_mode("none");
 		build_mod_sum_action_list();
-		draw_blocks();
+		//draw_blocks();
 		//prep_meter_updatelist();
 		loading.mapping = [];
 		output_queue_pointer = 0;
@@ -948,6 +947,8 @@ function clear_everything(){
 	output_queue_pointer = 0;
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
+
+	redraw_flag.paneltargets = [];
 
 	var emptys="{}";
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
