@@ -435,7 +435,7 @@ var loaded_ui_patcherlist = new Array(MAX_BLOCKS);
 var vst_list = new Array(MAX_AUDIO_VOICES);
 
 var songlist;
-var currentsong = 0;
+var currentsong = -1;
 
 var fullscreen = 0;
 
