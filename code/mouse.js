@@ -928,8 +928,8 @@ function keydown(key){
 			}
 		}
 	}
-	// MODAL OVERIDES - IE EDIT LABEL MODE IN THE SIDEBAR TAKES OVER THE WHOLE KEYBOARD
 	if((sidebar.mode == "edit_label")||(sidebar.mode == "edit_state")){
+		// MODAL OVERIDES - IE EDIT LABEL MODE IN THE SIDEBAR TAKES OVER THE WHOLE KEYBOARD
 		//post("edit keys",key);
 		if((key==-6)||(key==-7)){
 			//delete
@@ -1086,11 +1086,16 @@ function keydown(key){
 			if(key==-4){
 				create_connection_button();
 			}
-		}		
+		}
+		if(keyrepeat_task.running==0){
+			keyrepeat_task = new Task(keydown, this, key);
+			keyrepeat_task.interval= 150;
+			keyrepeat_task.repeat(-1,300);			
+		}
 	}
 
 }
 
 function keyup(key){
-	
+	keyrepeat_task.cancel();
 }
