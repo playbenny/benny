@@ -75,7 +75,10 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	x_pos = x1;
 	y_pos = y1;
 	showcols=Math.floor(2*width/height);
-	if(width<sw*0.6){ mini=1;}
+	if(width<sw*0.6){ 
+		mini=1;
+		showcols = v_list.length;		
+	}
 	unit = height / 18;
 	display_row_offset = 0;
 	display_col_offset = 0;
@@ -103,7 +106,6 @@ function draw(){
 		for(i=0;i<v_list.length;i++) {
 			cursors[i]=-1;
 		}
-		if(mini) showcols = v_list.length;
 		i= showcols; 
 		rh = 0.5*unit;
 		sy = 1.2*unit;
@@ -397,20 +399,19 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			if((cursorx>=sel_sx)&&(cursorx2>=sel_sx2)&&(cursorx<=sel_ex)&&(cursorx2<=sel_ex2)&&(cursory>=sel_sy)&&(cursory<=sel_ey)){
 				//youve scrolled on a value in a selected area, change them all
 				for(var tx=sel_sx;tx<=sel_ex;tx++){
-					for(var tx2=0;tx2<6;tx2++){
-						if(((tx==sel_sx)&&(tx2>=sel_sx2))||(tx>sel_sx)){
-							if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
-								for(var ty=sel_sy;ty<sel_ey;ty++){
-									var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tx2+1+6*(ty));
-									if(v>0){
-										if(scr>0){
-											v++;
-										}else{
-											v--;
-											if(v<0)v=0;
-										}
-										voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tx2+1+6*(ty),v);
+					var tx2 = clickx2;
+					if(((tx==sel_sx)&&(tx2>=sel_sx2))||(tx>sel_sx)){
+						if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
+							for(var ty=sel_sy;ty<sel_ey;ty++){
+								var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tx2+1+6*(ty));
+								if(v>0){
+									if(scr>0){
+										v++;
+									}else{
+										v--;
+										if(v<1)v=1;
 									}
+									voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tx2+1+6*(ty),v);
 								}
 							}
 						}
@@ -481,8 +482,8 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		if(cursorx-display_col_offset<1){
 			display_col_offset=Math.max(0,cursorx-1);
 			df=1;
-		}else if(cursorx-display_col_offset>1){
-			display_col_offset=cursorx-1;
+		}else if(cursorx-display_col_offset>=showcols-2){
+			display_col_offset=cursorx-showcols+2;
 			df=1;
 		}
 	}
@@ -542,6 +543,14 @@ function keydown(key){
 			sel_ex=-1;
 			sel_ey=-1;
 			drawflag=1;
+			break;
+		case -13:
+			cursory -= 16;
+			if(cursory<0) cursory=0;
+			break;
+		case -14:
+			cursory += 16;
+			if(cursory>127) cursory=127;
 			break;
 		case 500:
 			if(sel_ex==-1){
@@ -809,24 +818,21 @@ function keydown(key){
 			
 			break;
 	}
-	var df=0;
 	if(cursory-display_row_offset>30){
 		display_row_offset=cursory-30;
-		df=1;
+		drawflag=1;
 	}else if(cursory-display_row_offset<5){
 		display_row_offset=Math.max(0,cursory-5);
-		df=1;
+		drawflag=1;
 	}
 	if(cursorx-display_col_offset<=showcols){
 		display_col_offset=Math.max(0,cursorx-1);
-		df=1;
-	}else if(cursorx-display_col_offset>=showcols-1){
-		display_col_offset=cursorx-1;
-		df=1;
-	}
-	if(df){
 		drawflag=1;
-	}else{
+	}else if(cursorx-display_col_offset>=showcols-1){
+		display_col_offset=cursorx-showcols+1;
+		drawflag=1;
+	}
+	if(!drawflag){
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
 		}

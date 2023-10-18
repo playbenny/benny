@@ -16,7 +16,7 @@ var cursorx=0;
 var cursorx2=0;
 var cursory=0;
 var baseoct=4;
-var mini=0;
+var mini=0,showcols;
 var drawflag=0;
 var namelist;
 var note_names = new Array(128);
@@ -38,11 +38,15 @@ function setup(x1,y1,x2,y2,sw){
 	menucolour = config.get("palette::menu");
 	mini=0;
 	width = x2-x1;
-	if(width<sw*0.6){ mini=1;}
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	showcols=Math.floor(5*width/height);
+	if(width<sw*0.6){ 
+		mini=1;
+		showcols = v_list.length;
+	}else{
+		showcols=Math.floor(5*width/height);
+	}
 	unit = height / 18;
 	display_row_offset = 0;
 	display_col_offset = 0;
@@ -57,6 +61,7 @@ function setup(x1,y1,x2,y2,sw){
 	}
 	draw();
 }
+
 function draw(){
 	if(block>=0){
 		drawflag=0;
@@ -66,7 +71,6 @@ function draw(){
 		for(i=0;i<v_list.length;i++) {
 			cursors[i]=-1;
 		}
-		if(mini) showcols = v_list.length;
 		i= showcols; //Math.min(4,Math.max(3,v_list.length));
 		rh = 0.5*unit;
 		sy = 1.2*unit*(mini==0);
@@ -306,19 +310,20 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			cursory = clicky;
 			if(((clickx>sel_sx)||((clickx==sel_sx)&&(clickx2>=sel_sx2)))&&((clickx<sel_ex)||((clickx==sel_ex)&&(clickx2<=sel_ex2)))&&(clicky>=sel_sy)&&(clicky<=sel_ey)){
 				for(var tx=sel_sx;tx<=sel_ex;tx++){
-					for(var ty=sel_sy;ty<=sel_ey;ty++){
-						var ts=0;
-						var te=2;
-						if((tx==sel_sx)&&(sel_sx2>0)) ts=1;
-						if((tx==sel_ex)&&(sel_ex2<1)) te=1;
-						for(var tt=ts;tt<te;tt++){
+					tt = clickx2;
+					var ts=0;
+					var te=2;
+					if((tx==sel_sx)&&(sel_sx2>0)) ts=1;
+					if((tx==sel_ex)&&(sel_ex2<1)) te=1;
+					if((tt>=ts)&&(tt<=te)){
+						for(var ty=sel_sy;ty<=sel_ey;ty++){
 							var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tt+1+2*ty);
 							if(v>0){
 								if(scr>0){
 									v++;
 								}else{
 									v--;
-									if(v<0)v=0;
+									if(v<1)v=1;
 								}
 								voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tt+1+2*ty,v);
 							}
@@ -386,8 +391,8 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		if(cursorx-display_col_offset<1){
 			display_col_offset=Math.max(0,cursorx-1);
 			df=1;
-		}else if(cursorx-display_col_offset>showcols-1){
-			display_col_offset=cursorx-1;
+		}else if(cursorx-display_col_offset>=showcols-2){
+			display_col_offset=cursorx-showcols+2;
 			df=1;
 		}
 	}
@@ -444,6 +449,14 @@ function keydown(key){
 			sel_ex=-1;
 			sel_ey=-1;
 			drawflag=1;
+			break;
+		case -13:
+			cursory -= 16;
+			if(cursory<0) cursory=0;
+			break;
+		case -14:
+			cursory += 16;
+			if(cursory>511) cursory=511;
 			break;
 		case 500:
 			if(sel_ex==-1){
@@ -680,7 +693,7 @@ function keydown(key){
 		display_col_offset=Math.max(0,cursorx-1);
 		drawflag=1;
 	}else if(cursorx-display_col_offset>=showcols-1){
-		display_col_offset=cursorx-1;
+		display_col_offset=cursorx-showcols+1;
 		drawflag=1;
 	}
 	if(drawflag){
