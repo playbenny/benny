@@ -17,6 +17,7 @@ var cursorx2=0;
 var cursory=0;
 var baseoct=4;
 var mini=0;
+var drawflag=0;
 var namelist;
 var note_names = new Array(128);
 var voicemap = new Dict;
@@ -54,12 +55,11 @@ function setup(x1,y1,x2,y2,sw){
 	for(i=0;i<128;i++){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
-	
-	//post(block);
 	draw();
 }
 function draw(){
 	if(block>=0){
+		drawflag=0;
 		var c,r,i,rr,rc;
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
@@ -128,6 +128,10 @@ function draw(){
 
 function update(){
 	var c,o,ph;
+	if(drawflag){
+		draw();
+		return 0;
+	}
 	for(c=display_col_offset;c<v_list.length;c++){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
@@ -359,14 +363,15 @@ function mouse(x,y,lb,sh,al,ct,scr){
 				sel_ex = t;
 				sel_ex2 = t2;
 			}
-			post("\nselection ",sel_sx,sel_ex,sel_sy,sel_ey,sel_sx2,sel_ex2);
-			draw();
+			//post("\nselection ",sel_sx,sel_ex,sel_sy,sel_ey,sel_sx2,sel_ex2);
+			drawflag=1;
 		}else{
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
 			sel_ex=-1;
 			sel_ey=-1;
+			drawflag=1;
 		}
 	}
 	var df=0;
@@ -387,8 +392,8 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		}
 	}
 	if(df){
-		draw();
 		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
+		drawflag=1;
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
@@ -408,11 +413,17 @@ function keydown(key){
 			break;
 		case -9:
 			cursory=(cursory+511) & 511;
+			sel_ex=-1;
+			sel_ey=-1;
+			drawflag=1;
 			break;
 		case -4://enter homes cursor and moves down
 			cursorx2=0;
 		case -10://arrow just moves down
 			cursory=(cursory+1) & 511;
+			sel_ex=-1;
+			sel_ey=-1;
+			drawflag=1;
 			break;
 		case -11:
 			cursorx2--;
@@ -420,6 +431,9 @@ function keydown(key){
 				cursorx2=1;
 				cursorx=(cursorx+v_list.length-1)%v_list.length;
 			}
+			sel_ex=-1;
+			sel_ey=-1;
+			drawflag=1;
 			break;
 		case -12:
 			cursorx2++;
@@ -427,11 +441,104 @@ function keydown(key){
 				cursorx2=0;
 				cursorx=(cursorx+1)%v_list.length;
 			}
+			sel_ex=-1;
+			sel_ey=-1;
+			drawflag=1;
+			break;
+		case 500:
+			if(sel_ex==-1){
+				sel_ex=cursorx;
+				sel_sx=cursorx;
+				sel_ex2=cursorx2;
+				sel_sx2=cursorx2;
+				sel_ey=cursory;
+				sel_sy=cursory;
+			}
+			if(sel_ex==cursorx){
+				cursorx2++;
+				if(cursorx2>1){
+					cursorx2=0;
+					cursorx=(cursorx+1)%v_list.length;
+				}
+				sel_ex2 = cursorx2;
+				sel_ex = cursorx;
+			}else if(sel_sx==cursorx){
+				cursorx2++;
+				if(cursorx2>1){
+					cursorx2=0;
+					cursorx=(cursorx+1)%v_list.length;
+				}
+				sel_sx2 = cursorx2;
+				sel_sx = cursorx;
+			}
+			break;
+		case 501:
+			if(sel_ex==-1){
+				sel_ex=cursorx;
+				sel_sx=cursorx;
+				sel_ex2=cursorx2;
+				sel_sx2=cursorx2;
+				sel_ey=cursory;
+				sel_sy=cursory;
+			}
+			if(sel_ex==cursorx){
+				cursorx2--;
+				if(cursorx2<0){
+					cursorx2=1;
+					cursorx=(cursorx+v_list.length-1)%v_list.length;
+				}
+				sel_ex2 = cursorx2;
+				sel_ex = cursorx;
+			}else if(sel_sx==cursorx){
+				cursorx2--;
+				if(cursorx2<0){
+					cursorx2=1;
+					cursorx=(cursorx+v_list.length-1)%v_list.length;
+				}
+				sel_sx2 = cursorx2;
+				sel_sx = cursorx;
+			}
+			break;
+		case 502:
+			if(sel_ex==-1){
+				sel_ex=cursorx;
+				sel_sx=cursorx;
+				sel_ex2=cursorx2;
+				sel_sx2=cursorx2;
+				sel_ey=cursory;
+				sel_sy=cursory;
+			}
+			if(sel_ey==cursory){
+				cursory=(cursory+1) & 511;
+				sel_ey=cursory;
+			}else if(sel_sy==cursory){
+				cursory=(cursory+511) & 511;
+				sel_sy==cursory;
+			}
+			drawflag=1;
+			break;
+		case 503:
+			if(sel_ex==-1){
+				sel_ex=cursorx;
+				sel_sx=cursorx;
+				sel_ex2=cursorx2;
+				sel_sx2=cursorx2;
+				sel_ey=cursory;
+				sel_sy=cursory;
+			}
+			if(sel_ey==cursory){
+				cursory=(cursory+511) & 511;
+				sel_ey=cursory;
+			}else if(sel_sy==cursory){
+				cursory=(cursory+511) & 511;
+				sel_sy==cursory;
+			}
+			drawflag=1;
 			break;
 		case 108:
 			baseoct++;
 			if(baseoct>10)baseoct=10;
-			draw();
+			drawflag=1;
 			break;
 		case 44:
 			baseoct--;
@@ -442,21 +549,40 @@ function keydown(key){
 			currentvel++;
 			if(currentvel>128)currentvel=128;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+1,currentvel+1);
-			draw();
+			drawflag=1;
 			break;
 		case 45:
 			currentvel--;
 			if(currentvel<0)currentvel=0;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+1,currentvel+1);
-			draw();
+			drawflag=1;
 			break;
 		case -6:
-			//optionally del could move everything up one?
-			for(i=cursory;i<512;i++){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+2*(i+1),2);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*i,rowvalues);
+			//del
+			if(sel_ex==-1){
+				for(i=cursory;i<512;i++){
+					var rowvalues;
+					if(i<511){
+						rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+2*(i+1),2);
+					}else{
+						rowvalues = [0,0];
+					}
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*i,rowvalues);
+				}
+			}else{
+				for(i=sel_sy;i<=sel_ey;i++){
+					for(var tx=0;tx<=v_list.length;tx++){
+						for(var tx2=0;tx2<2;tx2++){
+							if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
+								if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
+									voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+2*i+tx2,0);
+								}
+							}
+						}
+					}
+				}
 			}
-			draw();
+			drawflag=1;
 			break;
 		case -8:
 			//insert
@@ -466,7 +592,7 @@ function keydown(key){
 			}
 			var rowvalues=[0,0];
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory,rowvalues);
-			draw();
+			drawflag=1;
 			break;
 		case -7:
 		case 46:
@@ -477,8 +603,41 @@ function keydown(key){
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,0);
 			}
 			cursory=(cursory+1) & 511;
-			draw();
+			drawflag=1;
 			break;
+		case 353: //ctl-a
+			sel_sx=0;
+			sel_sx2=0;
+			sel_ex=v_list.length-1;
+			sel_ex2=1;
+			sel_sy=0;
+			sel_ey=511;
+			drawflag=1;
+			break;
+		case 355: //ctl-c
+			break;
+			case 361: //ctl-I (interpolate)
+			if((sel_sy!=sel_ey)&&(sel_ey>-1)){
+				var v1 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_sx]+1+2*(sel_sy)+sel_sx2);
+				var v2 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_ex]+1+2*(sel_ey)+sel_ex2);
+				if((v1>0)&&(v2>0)){
+					for(i=sel_sy;i<=sel_ey;i++){
+						voice_data_buffer.poke(1, MAX_DATA*v_list[sel_sx]+1+2*i+sel_sx2,Math.floor((v2*i+v1*(sel_ey-i))/(sel_ey-sel_sy)));
+					}
+				}
+			}
+			break;
+		case 364: //ctl-l
+			sel_sx=cursorx;
+			sel_sx2=cursorx2;
+			sel_ex=sel_sx;
+			sel_ex2=sel_sx2;
+			sel_sy=0;
+			sel_ey=511;
+			drawflag=1;
+			break;
+		case 374: //ctl-v
+		case 376: //ctl-x
 		default:
 			if(cursorx2!=1){
 				if(key==49){
@@ -507,27 +666,24 @@ function keydown(key){
 					}
 					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+2*cursory+cursorx2,o+1);
 				}
-			}
-			
+			}	
 			break;
 	}
-	var df=0;
 	if(cursory-display_row_offset>30){
 		display_row_offset=cursory-30;
-		df=1;
+		drawflag=1;
 	}else if(cursory-display_row_offset<5){
 		display_row_offset=Math.max(0,cursory-5);
-		df=1;
+		drawflag=1;
 	}
 	if(cursorx-display_col_offset<=1){
 		display_col_offset=Math.max(0,cursorx-1);
-		df=1;
+		drawflag=1;
 	}else if(cursorx-display_col_offset>=showcols-1){
 		display_col_offset=cursorx-1;
-		df=1;
+		drawflag=1;
 	}
-	if(df){
-		draw();
+	if(drawflag){
 		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
