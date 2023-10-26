@@ -919,7 +919,7 @@ function keydown(key){
 			if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
 				voicecount(sidebar.selected, current_p - 1);
 			}
-		}else if((key == 43)||(key==573)){
+		}else if((key == 555)||(key==573)){
 			var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
 			if(max_p ==0) max_p=9999999999999;
 			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
