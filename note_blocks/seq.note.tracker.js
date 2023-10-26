@@ -440,7 +440,10 @@ function copy_selection(){
 }
 
 function paste_columns(){
-	post("paste not done yet!");
+	if(copy.contains("data::column_contents")){
+		var cols = copy.getkeys("data::column_contents");
+	}
+	post("paste not done yet! cols is ",cols.length);
 }
 
 function delete_selection(){
@@ -641,7 +644,7 @@ function keydown(key){
 			copy_selection();
 			delete_selection();
 			break;
-		case 377:
+		case 374:
 			paste_columns();
 			break;
 		case -6:
