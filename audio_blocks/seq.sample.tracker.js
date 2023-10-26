@@ -499,6 +499,69 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}
 }
 
+
+function copy_selection(){
+	var col=0;
+	var column_contents=[];
+	if(sel_ex!=-1){
+		for(var tx=0;tx<=v_list.length;tx++){
+			for(var tx2=0;tx2<2;tx2++){
+				if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
+					if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
+						column_contents[col] = [];
+						for(var i=sel_sy;i<=sel_ey;i++){
+							column_contents[col][i-sel_sy] = voice_data_buffer.peek(1, MAX_DATA*v_list[tx]+1+6*i+tx2);
+						}
+						col++;
+					}
+				}
+			}
+		}
+	}else{
+		return 0;
+	}
+	if(col){
+		copy.setparse("data","{}");
+//		copy.replace("data::columns",col);
+		copy.setparse("data::column_contents","[ * ]");
+		for(var i =0;i<col;i++){
+			copy.setparse("data::column_contents::"+i, "[ * ]");
+			copy.replace("data::column_contents::"+i,column_contents[i]);
+		}
+	}
+}
+
+function paste_columns(){
+	post("paste not done yet!");
+}
+
+function delete_selection(){
+	if(sel_ex==-1){
+		for(i=cursory;i<127;i++){
+			var rowvalues;
+			if(i<126){
+				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1),6);
+			}else{
+				rowvalues = [0,0,0,0,0,0];
+			}
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*i,rowvalues);
+		}
+	}else{
+		for(i=sel_sy;i<=sel_ey;i++){
+			for(var tx=0;tx<=v_list.length;tx++){
+				for(var tx2=0;tx2<6;tx2++){
+					if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
+						if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
+							voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*i+tx2,0);
+						}
+					}
+				}
+			}
+		}
+	}
+	drawflag=1;
+}
+
 function keydown(key){
 	var ox = cursorx;
 	var oy = cursory;
@@ -687,31 +750,19 @@ function keydown(key){
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+1,currentvel+1);
 			drawflag=1;
 			break;
+		case 355:
+			copy_selection();
+			break;
+		case 376:
+			copy_selection();
+			delete_selection();
+			break;
+		case 377:
+			paste_columns();
+			break;
 		case -6:
 			// del
-			if(sel_ex==-1){
-				for(i=cursory;i<127;i++){
-					var rowvalues;
-					if(i<126){
-						rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1),6);
-					}else{
-						rowvalues = [0,0,0,0,0,0];
-					}
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*i,rowvalues);
-				}
-			}else{
-				for(i=sel_sy;i<=sel_ey;i++){
-					for(var tx=0;tx<=v_list.length;tx++){
-						for(var tx2=0;tx2<6;tx2++){
-							if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
-								if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
-									voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*i+tx2,0);
-								}
-							}
-						}
-					}
-				}
-			}
+			delete_selection();
 			drawflag=1;
 			break;
 		case -8:
