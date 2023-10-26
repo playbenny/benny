@@ -5740,7 +5740,7 @@ function draw_sidebar(){
 			lcd_main.message("moveto", sidebar.x + fontheight*4.9, fontheight*0.75+y_offset);
 			lcd_main.message("write", "copy");
 			click_rectangle( sidebar.x + fontheight*4.8, y_offset, sidebar.x+fontheight*5.8, fontheight+y_offset,mouse_index,1 );
-			mouse_click_actions[mouse_index] = copy_block;
+			mouse_click_actions[mouse_index] = copy_selection;
 			mouse_click_parameters[mouse_index] = "";
 			mouse_click_values[mouse_index] = "";	
 			mouse_index++;					

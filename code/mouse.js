@@ -1043,6 +1043,13 @@ function keydown(key){
 				}
 			}else if(key == 353){
 				select_all();
+			}else if(key == 355){
+				copy_selection();
+			}else if(key == 376){
+				copy_selection();
+				delete_selection();
+			}else if(key == 374){
+				blocks_paste();
 			}else if(key == -5){
 				set_display_mode("panels");
 			}else if(key == -9){

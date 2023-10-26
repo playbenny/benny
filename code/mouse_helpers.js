@@ -40,8 +40,43 @@ function panic_button(){
 	//for(i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
 
-function copy_block(){
-	post("TODO: copy block");
+function blocks_paste(){
+//paste. should be clever - 
+// - if blocks are selected
+//   - are any the same type? paste in all parameters
+// if not, paste in the blocks in the clipboard
+	if(selected.blocks.indexOf(1)>-1){
+		//run through blocks in clipboard, get type
+		//see if any selected blocks are same type
+		//paste values (and opvs?)
+	}else{
+		//clear selection
+		//paste content of clipboard as new blocks and connections
+		//select just pasted blocks and connections
+	}
+}
+function copy_block(block){
+	// TODO LATER if only one voice selected, just copy that
+	post("\nTODO: copy block",block);
+	//block itself 
+	var tb = blocks.get("blocks["+block+"]");
+	copy.setparse("blocks::"+block,"{}");
+	copy.replace("blocks::"+block,tb);
+	//data (inc prompting it to save that data? or just bruteforce grab it all yourself?)
+	//paramvalues
+	//opv values
+
+}
+
+function copy_selection(){
+	copy.setparse("blocks","{ }");
+	copy.setparse("connections","{}");
+	for(i=0;i<selected.block.length;i++){
+		if(selected.block[i]){
+			copy_block(i);
+		}
+	}
+	post("\ncopied blocks, todo: search for connections that go between copied blocks, copy them too");
 }
 
 function change_upsampling(b,u){ // send block, -1 to just set it for all voices.
@@ -629,7 +664,9 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 		}
 	}
 }	
-	
+
+
+
 function show_vst_editor(parameter,value){
 	var vlist = /*audio_*/voicemap.get(value);
 	if(typeof vlist == "number") vlist = [vlist];

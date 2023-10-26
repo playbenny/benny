@@ -373,6 +373,9 @@ var text_being_editted="";
 var config = new Dict;
 config.name = "config";
 
+var copy = new Dict;
+copy.name = "copy";
+
 var flock_presets = new Dict;
 flock_presets.name = "flock_presets";
 
