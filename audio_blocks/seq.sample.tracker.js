@@ -505,7 +505,7 @@ function copy_selection(){
 	var column_contents=[];
 	if(sel_ex!=-1){
 		for(var tx=0;tx<=v_list.length;tx++){
-			for(var tx2=0;tx2<2;tx2++){
+			for(var tx2=0;tx2<6;tx2++){
 				if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
 					if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
 						column_contents[col] = [];
@@ -532,7 +532,27 @@ function copy_selection(){
 }
 
 function paste_columns(){
-	post("paste not done yet!");
+	if(copy.contains("data::column_contents")){
+		var td = copy.get("data::column_contents");
+		var cols = td.getkeys();
+		var tx=cursorx;
+		var tx2=cursorx2;
+		for(var i=0;i<cols.length;i++){
+			var ty=cursory;
+			var col = td.get(cols[i]);
+			for(y=0;y<col.length;y++){
+				voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*ty+tx2,col[y]);
+				ty++;
+			}
+			tx2++;
+			if(tx2>5){
+				tx++;
+				tx2=0;
+				if(tx>=v_list.length) i=999999999;
+			}
+		}
+		drawflag=1;
+	}
 }
 
 function delete_selection(){
@@ -757,11 +777,12 @@ function keydown(key){
 			copy_selection();
 			delete_selection();
 			break;
-		case 377:
+		case 374:
 			paste_columns();
 			break;
 		case -6:
-			// del
+		case -7:
+			// del or delete
 			delete_selection();
 			drawflag=1;
 			break;

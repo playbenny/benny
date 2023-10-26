@@ -441,9 +441,26 @@ function copy_selection(){
 
 function paste_columns(){
 	if(copy.contains("data::column_contents")){
-		var cols = copy.getkeys("data::column_contents");
+		var td = copy.get("data::column_contents");
+		var cols = td.getkeys();
+		var tx=cursorx;
+		var tx2=cursorx2;
+		for(var i=0;i<cols.length;i++){
+			var ty=cursory;
+			var col = td.get(cols[i]);
+			for(y=0;y<col.length;y++){
+				voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+2*ty+tx2,col[y]);
+				ty++;
+			}
+			tx2++;
+			if(tx2>1){
+				tx++;
+				tx2=0;
+				if(tx>=v_list.length) i=999999999;
+			}
+		}
+		drawflag=1;
 	}
-	post("paste not done yet! cols is ",cols.length);
 }
 
 function delete_selection(){
@@ -648,7 +665,8 @@ function keydown(key){
 			paste_columns();
 			break;
 		case -6:
-			//del
+		case -7:
+			//del or delete
 			delete_selection();
 			break;
 		case -8:
