@@ -1033,6 +1033,7 @@ function draw_wire(connection_number){
 			var num_ins;
 			if(to_type!="parameters"){
 				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::connections::in::"+to_type);
+				num_ins++; //add the block input (mute, mute toggle)
 			}else{
 				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::parameters");
 			}
@@ -1047,7 +1048,6 @@ function draw_wire(connection_number){
 			to_colour[0] = to_colour[0]*0.003921;// /255;
 			to_colour[1] = to_colour[1]*0.003921;// /255;
 			to_colour[2] = to_colour[2]*0.003921;// /255;
-
 			var fconx = 0;
 			var tconx = 0; //offset x based on input number/no inputs (or outputs etc)
 			
@@ -1069,6 +1069,10 @@ function draw_wire(connection_number){
 				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
 				if(to_type == "midi") to_pos[2] += 0.25; //to_pos[1]-=0.25;
 				if(to_type == "parameters") to_pos[2] += 0.125; //to_pos[1]+=0.25;
+				if(to_type == "block"){
+					to_pos[2] += 0.375;
+					tconx = 0.5;
+				} 
 			}
 			
 			var dist=0;
@@ -1109,7 +1113,7 @@ function draw_wire(connection_number){
 			var to_multi=0;
 			if(connections.get("connections["+connection_number+"]::to::voice")=="all"){
 				tv = blocks.get("blocks["+cto+"]::poly::voices") * to_subvoices;
-				if(((to_type == "midi")||(to_type == "parameters"))/*&&(tv>1)*/){
+				if(((to_type == "midi")||(to_type == "parameters")||(to_type == "block"))/*&&(tv>1)*/){
 					to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
 				}else{
 					if(tv>1)to_multi = 1;
@@ -3448,11 +3452,18 @@ function draw_sidebar(){
 		y_offset += 1.1* fontheight;
 		var cll = config.getsize("palette::gamut");
 		var c = new Array(3);
-		var sc;
+		var sc=0;
 		var statex=0;
 		// draw a button for each possible state
-		for(sc=0;sc<MAX_STATES;sc++){
-			var statecontents = states.get("states::"+sc);
+		if(states.contains("states::current")) sc=-1;
+		var x_inc=8 / (MAX_STATES-sc);
+		for(;sc<MAX_STATES;sc++){
+			var statecontents;
+			if(sc==-1){
+				statecontents = states.get("states::current");
+			}else{
+				statecontents = states.get("states::"+sc);
+			}
 			var slotfilled=0;
 			var stateexists=0;
 			if(!is_empty(statecontents)){
@@ -3462,17 +3473,25 @@ function draw_sidebar(){
 				}
 			}
 			if(sc!=sidebar.selected){
-				c = config.get("palette::gamut["+Math.floor(sc*cll/MAX_STATES)+"]::colour");
-				lcd_main.message("paintrect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,c );							
-				if(stateexists) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,menucolour );
-				if(slotfilled) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,255,0,0 );
-				click_rectangle( sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,mouse_index,1 );							
+				var sn = "";
+				if(sc==-1){
+					sn = "init";
+					c = [0,0,0];
+				}else{
+					c = config.get("palette::gamut["+Math.floor(sc*cll/MAX_STATES)+"]::colour");
+				}
+				if(states.contains("names::"+sc)){
+					sn=states.get("names::"+sc);
+				}
+				lcd_main.message("paintrect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,c );							
+				if(stateexists) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,menucolour );
+				if(slotfilled) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,255,0,0 );
+				click_rectangle( sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,mouse_index,1 );							
 				mouse_click_actions[mouse_index] = add_to_state;
 				mouse_click_parameters[mouse_index] = sc;
 				mouse_click_values[mouse_index] = block;
 				mouse_index++;
-				if(states.contains("names::"+sc)){
-					var sn=states.get("names::"+sc);
+				if(sn!=""){
 					sn = sn.split(".");
 					if(!Array.isArray(sn)) sn = [sn];
 					for(var si=0;si<sn.length;si++){
@@ -3482,7 +3501,7 @@ function draw_sidebar(){
 					}
 				}	
 			}
-			statex+=1;
+			statex+=x_inc;
 			if(statex>7){
 				y_offset += 1* fontheight;
 				statex=0;
@@ -3578,7 +3597,13 @@ function draw_sidebar(){
 		lcd_main.message("write", "load");
 
 		//only show merge if resources are available
-		if((free_b>=songs_info[currentsong][0])&&(free_n>=songs_info[currentsong][1])&&(free_a>=songs_info[currentsong][2])){
+		var merge=0;
+		if(currentsong==-1){
+			merge = 1;
+		}else if((free_b>=songs_info[currentsong][0])&&(free_n>=songs_info[currentsong][1])&&(free_a>=songs_info[currentsong][2])){
+			merge = 1;
+		}
+		if(merge){
 			lcd_main.message("paintrect", file_menu_x + fontheight*2.2, 9, file_menu_x+fontheight*4.3, 9+fontheight,greydarkest );
 			click_rectangle( file_menu_x + fontheight*2.2, 9, file_menu_x+fontheight*4.4, 9+fontheight,mouse_index,1 );
 			mouse_click_actions[mouse_index] = merge_song;
@@ -4769,11 +4794,19 @@ function draw_sidebar(){
 				y_offset += 1.2* fontheight;
 				var cll = config.getsize("palette::gamut");
 				var c = new Array(3);
-				var sc;
+				var sc=0;
 				var statex=0;
+				if(states.contains("states::current")) sc=-1;
+				var x_inc=8.1 / (MAX_STATES-sc);
+		
 				// draw a button for each possible state
-				for(sc=0;sc<MAX_STATES;sc++){
-					var statecontents = states.get("states::"+sc);
+				for(;sc<MAX_STATES;sc++){
+					var statecontents;
+					if(sc==-1){
+						statecontents = states.get("states::current");
+					}else{
+						statecontents = states.get("states::"+sc);
+					}
 					var slotfilled=0;
 					var stateexists=0;
 					if(!is_empty(statecontents)){
@@ -4782,17 +4815,25 @@ function draw_sidebar(){
 							slotfilled=1;
 						}
 					}
-					c = config.get("palette::gamut["+Math.floor(sc*cll/MAX_STATES)+"]::colour");
-					lcd_main.message("paintrect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,c );							
-					if(stateexists) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,menucolour );
-					if(slotfilled) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,255,0,0 );
+					var sn = "";
+					if(sc==-1){
+						sn = "init";
+						c = [0,0,0];
+					}else{
+						c = config.get("palette::gamut["+Math.floor(sc*cll/MAX_STATES)+"]::colour");
+					}
+					if(states.contains("names::"+sc)){
+						sn=states.get("names::"+sc);
+					}
+					lcd_main.message("paintrect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,c );							
+					if(stateexists) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,menucolour );
+					if(slotfilled) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,255,0,0 );
 					click_rectangle( sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9), fontheight*0.9+y_offset,mouse_index,1 );							
 					mouse_click_actions[mouse_index] = add_to_state;
 					mouse_click_parameters[mouse_index] = sc;
 					mouse_click_values[mouse_index] = block;
 					mouse_index++;
-					if(states.contains("names::"+sc)){
-						var sn=states.get("names::"+sc);
+					if(sc!=""){
 						sn = sn.split(".");
 						if(!Array.isArray(sn)) sn = [sn];
 						for(var si=0;si<sn.length;si++){
@@ -4801,7 +4842,7 @@ function draw_sidebar(){
 							lcd_main.message("write", sn[si]);
 						}
 					}	
-					statex+=1.0124;
+					statex+=x_inc;
 					if(statex>7.1){
 						y_offset += 1* fontheight;
 						statex=0;
@@ -4822,11 +4863,19 @@ function draw_sidebar(){
 				var cll = config.getsize("palette::gamut")/MAX_STATES;
 				var c = new Array(3);
 				var sc=0;
-				var scw = 6.5*fontheight / MAX_STATES;
+				if(states.contains("states::current")) sc=-1;
+				var scw = 6.5*fontheight / (MAX_STATES - sc);
 				var statex=0;
 				// draw a button for each possible state
-				for(sc=0;sc<MAX_STATES;sc++){
-					var statecontents = states.get("states::"+sc);
+				for(;sc<MAX_STATES;sc++){
+					var statecontents;
+					if(sc==-1){
+						statecontents = states.get("states::current");
+						c = [0,0,0];
+					}else{
+						statecontents = states.get("states::"+sc);
+						c = config.get("palette::gamut["+Math.floor(sc*cll)+"]::colour");
+					}
 					var slotfilled=0;
 					var stateexists=0;
 					if(!is_empty(statecontents)){
@@ -4835,7 +4884,6 @@ function draw_sidebar(){
 							slotfilled=1;
 						}
 					}
-					c = config.get("palette::gamut["+Math.floor(sc*cll)+"]::colour");
 					if(slotfilled){
 						lcd_main.message("paintrect", sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,c );							
 						click_rectangle( sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,mouse_index,1 );							
@@ -5864,16 +5912,6 @@ function draw_sidebar(){
 			var t_i_no = connections.get("connections["+i+"]::to::input::number");
 			var t_type = connections.get("connections["+i+"]::to::input::type");
 			
-			if(f_type=="parameters"){
-				var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
-			}else{
-				var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
-			}
-			if(t_type=="parameters"){
-				var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
-			}else{
-				var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
-			}
 			var f_o_v = connections.get("connections["+i+"]::from::voice");
 			var t_i_v = connections.get("connections["+i+"]::to::voice");
 			if(!Array.isArray(f_o_v)) f_o_v=[f_o_v];
@@ -5887,6 +5925,24 @@ function draw_sidebar(){
 			
 			f_v_no *= from_subvoices;
 			t_v_no *= to_subvoices;
+
+			if(f_type=="parameters"){
+				var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
+			}else{
+				var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
+			}
+			if(t_type=="parameters"){
+				var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
+			}else if(t_type=="block"){
+				t_v_no = 0;
+				if(t_i_no == 0){
+					var t_i_name = "mute toggle";
+				}else if(t_i_no == 1){
+					var t_i_name = "mute";
+				}
+			}else{
+				var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
+			}
 			
 			sidebar.mode = "wire";
 			sidebar.scopes.starty = y_offset;
@@ -6088,7 +6144,8 @@ function draw_sidebar(){
 				if(vi==0){
 					click_rectangle( vx-fontheight*0.1, fontheight*4.3+y_offset, vx+fontheight*1.7, fontheight*4.9+y_offset, mouse_index,1);
 					var w=0;
-					if((t_i_no == 0) && ((t_type == "midi")||(t_type == "block"))) w=0.5;
+					if((t_i_no == 0) && ((t_type == "midi"))) w=0.5;
+					if(t_type == "block") w=0.7;
 					if(t_i_v == "all"){
 						lcd_main.message("paintrect", vx-fontheight*0.1, fontheight*4.3+y_offset, vx+fontheight*(w+1.1), fontheight*4.9+y_offset, menucolour);
 						lcd_main.message("frgb", 0,0,0 );
@@ -6097,15 +6154,17 @@ function draw_sidebar(){
 						lcd_main.message("frgb", menucolour );
 					}
 					lcd_main.message("moveto" ,vx, fontheight*4.8+y_offset);
-					if(w>0){
-						lcd_main.message("write", "poly");
+					if(w>0.5){
+						lcd_main.message("write", "BLOCK");
+						vx+=fontheight*(1.3+w);	
+					}else if(w>0){
+						lcd_main.message("write", "POLY");
 						vx+=fontheight*(1.3+w);	
 					}else{
-						lcd_main.message("write", "all");
+						lcd_main.message("write", "ALL");
 						vx+=fontheight*1.3;
 					}
 					var t_i_no = connections.get("connections["+i+"]::to::input::number");
-			var t_type
 				}else{
 					click_rectangle( vx-fontheight*0.1, fontheight*4.3+y_offset, vx+fontheight*0.4, fontheight*4.9+y_offset, mouse_index,1);
 					if(t_i_v.indexOf(vi)!=-1){

@@ -409,11 +409,12 @@ function delete_state(state,block){
 }
 
 function fire_block_state(state, block){
-	if(usermouse.ctrl){
+	if(usermouse.ctrl && (state!=-1)){
 		sidebar.selected = state;
 		set_sidebar_mode("edit_stete");
 	}else{
 		var pv=[];
+		if(state==-1) state = "current";
 		pv = states.get("states::"+state+"::"+block);
 		var m=0;
 		if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
@@ -588,6 +589,7 @@ function add_state(parameter,value){
 }	
 
 function add_to_state(parameter,block){ //if block==-1 all states, -2 all selected states
+	if(parameter==-1) parameter = "current";
 	if(usermouse.ctrl){
 		delete_state(parameter,block);
 	}else{
@@ -616,8 +618,12 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			if(states.contains("states::"+parameter+"::"+block)) states.remove("states::"+parameter+"::"+block);
 			if(pv.length) states.replace("states::"+parameter+"::"+block,pv);
 			blocks.replace("blocks["+block+"]::panel::enable",1);
-			var cll = config.getsize("palette::gamut");
-			state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
+			if(parameter=="current"){
+				state_fade.lastcolour = [0,0,0];
+			}else{
+				var cll = config.getsize("palette::gamut");
+				state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
+			}
 			
 			set_sidebar_mode("block");
 		}
