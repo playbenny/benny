@@ -45,14 +45,103 @@ function blocks_paste(){
 // - if blocks are selected
 //   - are any the same type? paste in all parameters
 // if not, paste in the blocks in the clipboard
-	if(selected.blocks.indexOf(1)>-1){
-		//run through blocks in clipboard, get type
-		//see if any selected blocks are same type
-		//paste values (and opvs?)
-	}else{
-		//clear selection
-		//paste content of clipboard as new blocks and connections
-		//select just pasted blocks and connections
+	if(copy.contains("blocks")){
+		var td = copy.get("blocks");
+		var copied_blocks = td.getkeys();
+		if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
+		if((selected.block.indexOf(1)>-1)&&(copied_blocks.length == 1)){
+			//you could run through blocks in clipboard, but it'd get confusing
+			//so restricted to one.
+			//get type, see if any selected blocks are same type
+			//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
+			var copied_type = td.get(copied_blocks[0]+"::patcher");
+			for(var i=0; i<selected.block.length;i++){
+				if(selected.block[i]){
+					var ty = blocks.get("blocks["+i+"]::patcher");
+					if(ty==copied_type){
+						//copy params
+						var vals = copy.get("block_params::"+copied_blocks[0]);
+						parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
+						//copy block settings
+						var tdd = td.get(copied_blocks[0]+"::poly");
+						var tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							if(tkeys[t]!="voices"){
+								blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+							}else{
+								voicecount(i,tdd.get("voices"));
+							}
+						}
+						draw_block(i);
+						tdd = td.get(copied_blocks[0]+"::panel");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[0]+"::error");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[0]+"::flock");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						//set redraw
+					}
+				}
+			}
+		}else{
+			clear_block_and_wire_selection();
+			var new_blocks_indexes=[];
+			for(var b=0;b<copied_blocks.length;b++){
+				var name = copy.get("blocks::"+copied_blocks[b]+"::name");
+				var new_block_index = new_block(name,td.get(copied_blocks[b]+"::space::x")+2,td.get(copied_blocks[b]+"::space::y")+1);
+				if(new_block_index==-1){
+					post("\nerror pasting, "+name+" not found");
+				}else{
+					new_blocks_indexes.push(new_block_index);
+					//ok you've made the right type of block, but all its settings and parameters are defaults
+					//you could integrate pasting into new block but i don't really like the sound of that? paste is never mission-critical like new block is
+					//ok can i iterate through the keys in the copy buffer to make this futureproof rather than doing them specifically?
+					//sort of, nested ones sound like a headache so i'll go through them one by one
+					//and poly requires voicecount calling so that's special. 
+					//poly/panel/error/flock/(space)
+					var vals = copy.get("block_params::"+copied_blocks[b]);
+					parameter_value_buffer.poke(1,new_block_index*MAX_PARAMETERS,vals);
+					var tdd = td.get(copied_blocks[b]+"::poly");
+					var tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						if(tkeys[t]!="voices"){
+							blocks.replace("blocks["+new_block_index+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+						}else{
+							voicecount(new_block_index,tdd.get("voices"));
+						}
+					}
+					draw_block(new_block_index);
+					tdd = td.get(copied_blocks[b]+"::panel");
+					tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						blocks.replace("blocks["+new_block_index+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+					tdd = td.get(copied_blocks[b]+"::error");
+					tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						blocks.replace("blocks["+new_block_index+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+					tdd = td.get(copied_blocks[b]+"::flock");
+					tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+				}				
+			}
+			//todo: opv values, block data << these 2 on both parts of this fn,
+			// connections between selected blocks (these aren't copied yet)
+			//select just pasted blocks and connections
+			for(var t=0;t<new_blocks_indexes.length;t++) selected.block[new_blocks_indexes[t]];
+		}
 	}
 }
 function copy_block(block){
@@ -62,6 +151,11 @@ function copy_block(block){
 	var tb = blocks.get("blocks["+block+"]");
 	copy.setparse("blocks::"+block,"{}");
 	copy.replace("blocks::"+block,tb);
+	copy.setparse("block_params::"+block,"{}");
+	var name=tb.get("name");
+	var paramcount = blocktypes.getsize(name+"::parameters");
+	var vals = parameter_value_buffer.peek(1, block*MAX_PARAMETERS, paramcount);
+	copy.replace("block_params::"+block,vals);
 	//data (inc prompting it to save that data? or just bruteforce grab it all yourself?)
 	//paramvalues
 	//opv values
@@ -70,13 +164,14 @@ function copy_block(block){
 
 function copy_selection(){
 	copy.setparse("blocks","{ }");
-	copy.setparse("connections","{}");
+	copy.setparse("block_params","{}");
 	for(i=0;i<selected.block.length;i++){
 		if(selected.block[i]){
 			copy_block(i);
 		}
 	}
 	post("\ncopied blocks, todo: search for connections that go between copied blocks, copy them too");
+	//copy.setparse("connections","{}");
 }
 
 function change_upsampling(b,u){ // send block, -1 to just set it for all voices.
