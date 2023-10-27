@@ -75,6 +75,7 @@ function blocks_paste(){
 						draw_block(i);
 						tdd = td.get(copied_blocks[0]+"::panel");
 						tkeys = tdd.getkeys();
+						if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
 						for(var t=0;t<tkeys.length;t++){
 							blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
 						}
@@ -88,7 +89,15 @@ function blocks_paste(){
 						for(var t=0;t<tkeys.length;t++){
 							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
 						}
-						//set redraw
+						if(copy.contains("block_data::"+copied_blocks[0])){
+							var vl = voicemap.get(i);
+							if(!Array.isArray(vl)) vl=[vl];
+							for(var t=0;t<vl.length;t++){
+								var vals = copy.get("block_data::"+copied_blocks[0]+"::"+t);
+								voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
+							}
+						}
+							//set redraw
 					}
 				}
 			}
@@ -119,9 +128,11 @@ function blocks_paste(){
 							voicecount(new_block_index,tdd.get("voices"));
 						}
 					}
+					blocks.replace("blocks["+new_block_index+"]::space::colour",copy.get("blocks::"+copied_blocks[b]+"::space::colour"));
 					draw_block(new_block_index);
 					tdd = td.get(copied_blocks[b]+"::panel");
 					tkeys = tdd.getkeys();
+					if(td.getsize(copied_blocks[b]+"::panel")==1) tkeys = [tkeys];
 					for(var t=0;t<tkeys.length;t++){
 						blocks.replace("blocks["+new_block_index+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
 					}
@@ -134,6 +145,14 @@ function blocks_paste(){
 					tkeys = tdd.getkeys();
 					for(var t=0;t<tkeys.length;t++){
 						blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+					if(copy.contains("block_data::"+copied_blocks[b])){
+						var vl = voicemap.get(new_block_index);
+						if(!Array.isArray(vl)) vl=[vl];
+						for(var t=0;t<vl.length;t++){
+							var vals = copy.get("block_data::"+copied_blocks[b]+"::"+t);
+							voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
+						}
 					}
 				}				
 			}
@@ -156,8 +175,16 @@ function copy_block(block){
 	var paramcount = blocktypes.getsize(name+"::parameters");
 	var vals = parameter_value_buffer.peek(1, block*MAX_PARAMETERS, paramcount);
 	copy.replace("block_params::"+block,vals);
-	//data (inc prompting it to save that data? or just bruteforce grab it all yourself?)
-	//paramvalues
+	if(blocktypes.contains(name+"::voice_data")){//even just an empty key in the block json is enough to tell it to copy data with the block
+		var vl=voicemap.get(block);
+		if(!Array.isArray(vl)) vl = [vl];
+		copy.setparse("block_data::"+block,"{}");
+		for(var i=0;i<vl.length;i++){
+			copy.setparse("block_data::"+block+"::"+i,"{}");
+			vals = voice_data_buffer.peek(1, vl[i]*MAX_DATA, MAX_DATA);
+			copy.replace("block_data::"+block+"::"+i,vals);
+		}
+	}
 	//opv values
 
 }
