@@ -541,7 +541,19 @@ function next_free_block(type){
 }
 
 function create_connection_button(){
-	connections.append("connections",new_connection);
+	var csize = connections.getsize("connections");
+	var w=1;
+	for(var i=0;i<csize;i++){ //look for an empty slot
+		if(!connections.contains("connections["+i+"]::to::number")){
+			post("\n\n\n\n\n\nWRITING CONNECTION"+i+"\n\n\n\n");
+			connections.replace("connections["+i+"]",new_connection);
+			w=0;
+			i=csize;
+		}
+	}
+	if(w){
+		connections.append("connections",new_connection);
+	}
 	make_connection(connections.getsize("connections")-1);
 	new_connection.clear();
 	//click_clear(0,0);
