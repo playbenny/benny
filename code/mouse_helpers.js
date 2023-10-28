@@ -40,77 +40,90 @@ function panic_button(){
 	//for(i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
 
-function blocks_paste(){
+function blocks_paste(outside_connections){
 //paste. should be clever - 
 // - if blocks are selected
 //   - are any the same type? paste in all parameters
-// if not, paste in the blocks in the clipboard
+//   - is it just one? and is just one copied? swap it in
+// if not, paste in the blocks in the clipboard and their connections as new blocks
+// outside connections = 1 if it should also paste connections from outside the copied blocks
 	if(copy.contains("blocks")){
 		var td = copy.get("blocks");
 		var copied_blocks = td.getkeys();
 		if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
-		if((selected.block.indexOf(1)>-1)&&(copied_blocks.length == 1)){
+		if((selected.block.indexOf(1)>-1)&&(copied_blocks.length == 1)&&(!outside_connections)){
 			//you could run through blocks in clipboard, but it'd get confusing
 			//so restricted to one.
 			//get type, see if any selected blocks are same type
 			//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
-			var copied_type = td.get(copied_blocks[0]+"::patcher");
+			var copied_type = td.get(copied_blocks[0]+"::name");
 			for(var i=0; i<selected.block.length;i++){
 				if(selected.block[i]){
-					var ty = blocks.get("blocks["+i+"]::patcher");
-					if(ty==copied_type){
-						//copy params
-						var vals = copy.get("block_params::"+copied_blocks[0]);
-						parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
-						//copy block settings
-						var tdd = td.get(copied_blocks[0]+"::poly");
-						var tkeys = tdd.getkeys();
-						for(var t=0;t<tkeys.length;t++){
-							if(tkeys[t]!="voices"){
-								blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
-							}else{
-								voicecount(i,tdd.get("voices"));
-							}
-						}
-						draw_block(i);
-						tdd = td.get(copied_blocks[0]+"::panel");
-						tkeys = tdd.getkeys();
-						if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
-						for(var t=0;t<tkeys.length;t++){
-							blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
-						}
-						tdd = td.get(copied_blocks[0]+"::error");
-						tkeys = tdd.getkeys();
-						for(var t=0;t<tkeys.length;t++){
-							blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
-						}
-						tdd = td.get(copied_blocks[0]+"::flock");
-						tkeys = tdd.getkeys();
-						for(var t=0;t<tkeys.length;t++){
-							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
-						}
-						if(copy.contains("block_data::"+copied_blocks[0])){
-							var vl = voicemap.get(i);
-							if(!Array.isArray(vl)) vl=[vl];
-							for(var t=0;t<vl.length;t++){
-								var vals = copy.get("block_data::"+copied_blocks[0]+"::"+t);
-								voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
-							}
-						}
-							//set redraw
+					var ty = blocks.get("blocks["+i+"]::name");
+					if(ty!=copied_type){
+						//then swap the selected block to this type, then copy settings params etc
+						//should this be only if just one selected??
+						block_menu_d.swap_block_target = i;
+						swap_block(copied_type);
 					}
+					//copy params
+					var vals = copy.get("block_params::"+copied_blocks[0]);
+					parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
+					//copy block settings
+					var tdd = td.get(copied_blocks[0]+"::poly");
+					var tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						if(tkeys[t]!="voices"){
+							blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+						}else{
+							voicecount(i,tdd.get("voices"));
+						}
+					}
+					draw_block(i);
+					tdd = td.get(copied_blocks[0]+"::panel");
+					tkeys = tdd.getkeys();
+					if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
+					for(var t=0;t<tkeys.length;t++){
+						blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+					tdd = td.get(copied_blocks[0]+"::error");
+					tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+					tdd = td.get(copied_blocks[0]+"::flock");
+					tkeys = tdd.getkeys();
+					for(var t=0;t<tkeys.length;t++){
+						blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+					}
+					if(copy.contains("block_data::"+copied_blocks[0])){
+						var vl = voicemap.get(i);
+						if(!Array.isArray(vl)) vl=[vl];
+						for(var t=0;t<vl.length;t++){
+							var vals = copy.get("block_data::"+copied_blocks[0]+"::"+t);
+							voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
+						}
+					}
+						//set redraw
 				}
 			}
 		}else{
 			clear_block_and_wire_selection();
 			var new_blocks_indexes=[];
+			var paste_mapping = [];
+			for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
 			for(var b=0;b<copied_blocks.length;b++){
 				var name = copy.get("blocks::"+copied_blocks[b]+"::name");
-				var new_block_index = new_block(name,td.get(copied_blocks[b]+"::space::x")+2,td.get(copied_blocks[b]+"::space::y")+1);
+				var px = td.get(copied_blocks[b]+"::space::x")+2;
+				var py = td.get(copied_blocks[b]+"::space::y");
+				copy.replace("blocks::"+copied_blocks[b]+"::space::x",px);
+				//copy.replace("blocks::"+copied_blocks[b]+"::space::y",py);
+				var new_block_index = new_block(name,px,py);
 				if(new_block_index==-1){
 					post("\nerror pasting, "+name+" not found");
 				}else{
 					new_blocks_indexes.push(new_block_index);
+					paste_mapping[copied_blocks[b]] = new_block_index;
 					//ok you've made the right type of block, but all its settings and parameters are defaults
 					//you could integrate pasting into new block but i don't really like the sound of that? paste is never mission-critical like new block is
 					//ok can i iterate through the keys in the copy buffer to make this futureproof rather than doing them specifically?
@@ -154,18 +167,38 @@ function blocks_paste(){
 							voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
 						}
 					}
+					selected.block[new_block_index] = 1;
 				}				
 			}
-			//todo: opv values, block data << these 2 on both parts of this fn,
+			//todo: opv values
 			// connections between selected blocks (these aren't copied yet)
-			//select just pasted blocks and connections
-			for(var t=0;t<new_blocks_indexes.length;t++) selected.block[new_blocks_indexes[t]];
+			var tdc = copy.get("connections");
+			var tk = tdc.getkeys();
+			if(tk!=null){
+				var csize = tk.length;
+				for(var t=0;t<csize;t++){
+					new_connection = copy.get("connections::"+t);
+					var pfrom = paste_mapping[+new_connection.get("from::number")];
+					var pto = paste_mapping[+new_connection.get("to::number")];
+					if(pfrom != -1) new_connection.replace("from::number",pfrom);
+					if(pto != -1) new_connection.replace("to::number",pto);
+					if(((pfrom==-1)||(pto==-1))&&(outside_connections != 1)){
+						//do nothing - this connection is outside
+					}else{
+						connections.append("connections",new_connection);
+						var co = connections.getsize("connections")-1;
+						make_connection(co);
+						new_connection.clear();		
+						selected.wire[co]=1;
+						//draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
+					}
+				}				
+			}
 		}
 	}
 }
+
 function copy_block(block){
-	// TODO LATER if only one voice selected, just copy that
-	post("\nTODO: copy block",block);
 	//block itself 
 	var tb = blocks.get("blocks["+block+"]");
 	copy.setparse("blocks::"+block,"{}");
@@ -186,19 +219,32 @@ function copy_block(block){
 		}
 	}
 	//opv values
-
 }
 
 function copy_selection(){
 	copy.setparse("blocks","{ }");
 	copy.setparse("block_params","{}");
+	copy.setparse("block_data","{}");
 	for(i=0;i<selected.block.length;i++){
 		if(selected.block[i]){
 			copy_block(i);
 		}
 	}
-	post("\ncopied blocks, todo: search for connections that go between copied blocks, copy them too");
-	//copy.setparse("connections","{}");
+//	post("\ncopied blocks, todo: search for connections that go between copied blocks, copy them too");
+	copy.setparse("connections","{}");
+	var csize = connections.getsize("connections");
+	for(i=0;i<csize;i++){
+		if(connections.contains("connections["+i+"]::from::number")){
+			var cfrom = connections.get("connections["+i+"]::from::number");
+			var cto = connections.get("connections["+i+"]::to::number");
+//			post("\nchecking connection",cfrom,cto,+cfrom,+cto,selected.block[+cfrom],selected.block[+cto]);
+			if(selected.block[+cfrom] || selected.block[+cto]){
+				//if you swapped this && for || you'd get all connections in and out of copied blocks, and could reconnect them on paste too?
+				copy.setparse("connections::"+i,"{}");
+				copy.replace("connections::"+i,connections.get("connections["+i+"]"));
+			}
+		}
+	}
 }
 
 function change_upsampling(b,u){ // send block, -1 to just set it for all voices.

@@ -1049,7 +1049,10 @@ function keydown(key){
 				copy_selection();
 				delete_selection();
 			}else if(key == 374){
-				blocks_paste();
+				blocks_paste(0);
+			}else if(key == 2422){
+				post("\npaste with ext connections");
+				blocks_paste(1);
 			}else if(key == -5){
 				set_display_mode("panels");
 			}else if(key == -9){
