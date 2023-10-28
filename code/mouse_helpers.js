@@ -142,6 +142,11 @@ function blocks_paste(outside_connections){
 						}
 					}
 					blocks.replace("blocks["+new_block_index+"]::space::colour",copy.get("blocks::"+copied_blocks[b]+"::space::colour"));
+					if(copy.contains("blocks::"+copied_blocks[b]+"::upsample")) blocks.replace("blocks["+new_block_index+"]::upsample",copy.get("blocks::"+copied_blocks[b]+"::upsample"));
+					if(copy.contains("blocks::"+copied_blocks[b]+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",copy.get("blocks::"+copied_blocks[b]+"::subvoices"));
+					if(copy.contains("blocks::"+copied_blocks[b]+"::mute")) blocks.replace("blocks["+new_block_index+"]::mute",copy.get("blocks::"+copied_blocks[b]+"::mute"));
+					if(copy.contains("blocks::"+copied_blocks[b]+"::bypass")) blocks.replace("blocks["+new_block_index+"]::bypass",copy.get("blocks::"+copied_blocks[b]+"::bypass"));
+					
 					draw_block(new_block_index);
 					tdd = td.get(copied_blocks[b]+"::panel");
 					tkeys = tdd.getkeys();
@@ -159,16 +164,47 @@ function blocks_paste(outside_connections){
 					for(var t=0;t<tkeys.length;t++){
 						blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
 					}
+					var vl = voicemap.get(new_block_index);
+					if(!Array.isArray(vl)) vl=[vl];
 					if(copy.contains("block_data::"+copied_blocks[b])){
-						var vl = voicemap.get(new_block_index);
-						if(!Array.isArray(vl)) vl=[vl];
 						for(var t=0;t<vl.length;t++){
 							var vals = copy.get("block_data::"+copied_blocks[b]+"::"+t);
-							voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
+							safepoke(voice_data_buffer, 1,MAX_DATA*vl[t],vals);
+						}
+					}
+					if(copy.contains("parameter_static_mod::"+copied_blocks[b])){
+						for(var t=0;t<vl.length;t++){
+							if(copy.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
+								var vals = copy.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
+								safepoke(parameter_static_mod,1,MAX_PARAMETERS*vl[t],vals);
+							}
 						}
 					}
 					selected.block[new_block_index] = 1;
 				}				
+			}
+			if(copy.contains("states")){
+				var tds = copy.get("states");
+				var tk = tds.getkeys();
+				if(tk!=null){
+					post("\n\nwe have some states",tk.length);
+					for(var t=0;t<tk.length;t++){
+						
+						var tdsb = copy.get("states::"+tk[t]);
+						if(tdsb!=null){
+							var tkb = tdsb.getkeys();
+							post("\n state",tk[t],"has content");
+							for(var tt=0;tt<tkb.length;tt++){
+								if(paste_mapping[+tkb[tt]]!=-1){
+									post(" AND ",tkb[tt]," matches so we should retag it to",paste_mapping[+tkb[tt]]);
+									//states.setparse("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],"{}");
+									//post("\n content",copy.get("states::"+tk[t]+"::"+tkb[tt]));
+									states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],copy.get("states::"+tk[t]+"::"+tkb[tt]));
+								}
+							}
+						}
+					}
+				}
 			}
 			//todo: opv values
 			// connections between selected blocks (these aren't copied yet)
@@ -208,9 +244,9 @@ function copy_block(block){
 	var paramcount = blocktypes.getsize(name+"::parameters");
 	var vals = parameter_value_buffer.peek(1, block*MAX_PARAMETERS, paramcount);
 	copy.replace("block_params::"+block,vals);
+	var vl=voicemap.get(block);
+	if(!Array.isArray(vl)) vl = [vl];
 	if(blocktypes.contains(name+"::voice_data")){//even just an empty key in the block json is enough to tell it to copy data with the block
-		var vl=voicemap.get(block);
-		if(!Array.isArray(vl)) vl = [vl];
 		copy.setparse("block_data::"+block,"{}");
 		for(var i=0;i<vl.length;i++){
 			copy.setparse("block_data::"+block+"::"+i,"{}");
@@ -218,13 +254,28 @@ function copy_block(block){
 			copy.replace("block_data::"+block+"::"+i,vals);
 		}
 	}
+	//var type = blocktypes.get(name+"::type");
+	for(var i=0;i<vl.length;i++){
+		//var voiceoffset = vl[i] + MAX_NOTE_VOICES*(type == "audio") + (MAX_NOTE_VOICES+MAX_AUDIO_VOICES)*(type == "hardware");
+		var psm = parameter_static_mod.peek(1,MAX_PARAMETERS*vl[i],paramcount);
+		var c=0;
+		for(var t=0;t<paramcount;t++) c|=(psm[t]!=0);
+		if(c){
+			if(!copy.contains("parameter_static_mod::"+block)) copy.setparse("parameter_static_mod::"+block,"{}");			
+			copy.setparse("parameter_static_mod::"+block+"::"+i,"{}");
+			copy.replace("parameter_static_mod::"+block+"::"+i,psm);
+		}
+	
+	}
 	//opv values
 }
 
 function copy_selection(){
+	var i;
 	copy.setparse("blocks","{ }");
 	copy.setparse("block_params","{}");
 	copy.setparse("block_data","{}");
+	copy.setparse("parameter_static_mod","{}");
 	for(i=0;i<selected.block.length;i++){
 		if(selected.block[i]){
 			copy_block(i);
@@ -233,6 +284,7 @@ function copy_selection(){
 //	post("\ncopied blocks, todo: search for connections that go between copied blocks, copy them too");
 	copy.setparse("connections","{}");
 	var csize = connections.getsize("connections");
+	var c_ext=0;
 	for(i=0;i<csize;i++){
 		if(connections.contains("connections["+i+"]::from::number")){
 			var cfrom = connections.get("connections["+i+"]::from::number");
@@ -240,8 +292,24 @@ function copy_selection(){
 //			post("\nchecking connection",cfrom,cto,+cfrom,+cto,selected.block[+cfrom],selected.block[+cto]);
 			if(selected.block[+cfrom] || selected.block[+cto]){
 				//if you swapped this && for || you'd get all connections in and out of copied blocks, and could reconnect them on paste too?
+				if(!(selected.block[+cfrom] && selected.block[+cto])) c_ext=1;
 				copy.setparse("connections::"+i,"{}");
 				copy.replace("connections::"+i,connections.get("connections["+i+"]"));
+			}
+		}
+	}
+	copy.setparse("external_connections",c_ext);
+	copy.setparse("states","{}");
+	for(i=0;i<MAX_STATES;i++){
+		if(states.contains("states::"+i)){
+			copy.setparse("states::"+i,"{}")
+			for(var t=0;t<MAX_BLOCKS;t++){
+				if(selected.block[t]){
+					if(states.contains("states::"+i+"::"+t)){
+						copy.setparse("states::"+i+"::"+t,"{}");
+						copy.replace("states::"+i+"::"+t,states.get("states::"+i+"::"+t));
+					}
+				}
 			}
 		}
 	}
