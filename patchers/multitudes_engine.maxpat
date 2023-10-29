@@ -6045,7 +6045,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 605.399999999999977, 222.1875, 48.0, 22.0 ],
-									"text" : "pipe 10"
+									"text" : "pipe 50"
 								}
 
 							}
@@ -6066,8 +6066,8 @@
 									"id" : "obj-64",
 									"maxclass" : "newobj",
 									"numinlets" : 4,
-									"numoutlets" : 3,
-									"outlettype" : [ "float", "float", "float" ],
+									"numoutlets" : 1,
+									"outlettype" : [ "float" ],
 									"patcher" : 									{
 										"fileversion" : 1,
 										"appversion" : 										{
@@ -6108,28 +6108,6 @@
 										"subpatcher_template" : "",
 										"assistshowspatchername" : 0,
 										"boxes" : [ 											{
-												"box" : 												{
-													"id" : "obj-8",
-													"maxclass" : "newobj",
-													"numinlets" : 1,
-													"numoutlets" : 0,
-													"patching_rect" : [ 120.0, 575.0, 35.0, 22.0 ],
-													"text" : "out 3"
-												}
-
-											}
-, 											{
-												"box" : 												{
-													"id" : "obj-7",
-													"maxclass" : "newobj",
-													"numinlets" : 1,
-													"numoutlets" : 0,
-													"patching_rect" : [ 68.0, 573.0, 35.0, 22.0 ],
-													"text" : "out 2"
-												}
-
-											}
-, 											{
 												"box" : 												{
 													"id" : "obj-6",
 													"maxclass" : "newobj",
@@ -6179,7 +6157,7 @@
 											}
 , 											{
 												"box" : 												{
-													"code" : "Buffer midi_meters(\"midi_meters\");\r\nBuffer midi_scopes(\"midi_scopes\");\r\nBuffer midi_scopes_change(\"midi_scopes_change\");\r\n//inputs\r\n//1 = outputno 2 = note 3 = vel 4 = voiceno\r\n\r\nvflag, ch, held, p_min,p_max,v_min,v_max  = midi_meters.peek(1, in4, channels = 7);\r\n\r\nt_ind = (128*in4+in1);\r\n\r\n\r\nch = 0;\r\nif(in3 == 0){\r\n\t//remove from scopes\r\n\told = midi_scopes.peek(1,t_ind*128+in2);\r\n\tif(old!=0){\r\n\t\t//reduce held notecount for that output by 1.\r\n\t\tch=1;\r\n\t\tif(held>0) held = held - 1;\r\n\t}\r\n\t//if it was any kind of min or max, recalculate those\r\n}else{\r\n\tvv=abs(in3);\r\n\r\n\t//add to scopes, if negative send a message to schedule wiping it in a moment\r\n\told = midi_scopes.peek(1,t_ind*128+in2);\r\n\tif(old==0){//increase note held count\r\n\t\theld+=1;\r\n\t\tmidi_scopes_change.poke(1,t_ind,1);\r\n\t}\r\n\tmidi_scopes.poke(1,t_ind*128,in3);\r\n\tif((vflag==-1)||(vflag==in1)){\r\n\t\tif(in2 < p_min){\r\n \t\t\tp_min = in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(in2 > p_max){\r\n\t\t\tp_max=in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv < v_min){\r\n\t\t\tv_min=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv > v_max){\r\n\t\t\tv_max=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t}\r\n}\r\nif(ch > 0){\r\n\tmidi_meters.poke(1, in4, vflag, ch, held, p_min,p_max,v_min,v_max);\r\n}\r\nif(in3<0){\r\n\t//out3=in4;\r\n\t//out2=in2;\r\n\tout1=t_ind*128+in2; //the outputs are used to bang it again with a 0 to turn off negative notes.\r\n}else{\r\n\tout1=-1;\r\n}",
+													"code" : "Buffer midi_meters(\"midi_meters\");\r\nBuffer midi_scopes(\"midi_scopes\");\r\nBuffer midi_scopes_change(\"midi_scopes_change\");\r\n//inputs\r\n//1 = outputno 2 = note 3 = vel 4 = voiceno\r\n\r\nvflag, ch, held, p_min,p_max,v_min,v_max  = midi_meters.peek(1, in4, channels = 7);\r\n\r\nt_ind = (128*in4 + in1);\r\nm_ind = in2;\r\nm_ind += t_ind * 128;\r\n\r\nch = 0;\r\nif(in3 == 0){\r\n\t//remove from scopes\r\n\told = midi_scopes.peek(1,m_ind);\r\n\tif(old != 0){\r\n\t\t//reduce held notecount for that output by 1.\r\n\t\tch=1;\r\n\t\tif(held>0) held = held - 1;\r\n\t}\r\n\t//if it was any kind of min or max, recalculate those\r\n}else{\r\n\tvv=abs(in3);\r\n\r\n\t//add to scopes, if negative send a message to schedule wiping it in a moment\r\n\told = midi_scopes.peek(1,m_ind);\r\n\tif(old==0){//increase note held count\r\n\t\theld+=1;\r\n\t\tmidi_scopes_change.poke(1,t_ind,1);\r\n\t}\r\n\tmidi_scopes.poke(1,m_ind,in3);\r\n\tif((vflag == -1)||(vflag == in1)){\r\n\t\tif(in2 < p_min){\r\n \t\t\tp_min = in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(in2 > p_max){\r\n\t\t\tp_max = in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv < v_min){\r\n\t\t\tv_min=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv > v_max){\r\n\t\t\tv_max=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t}\r\n}\r\nif(ch > 0){\r\n\tmidi_meters.poke(1, in4, vflag);\r\n\tmidi_meters.poke(2, in4, ch);\r\n\tmidi_meters.poke(3, in4, held);\r\n\tmidi_meters.poke(4, in4, p_min);\r\n\tmidi_meters.poke(5, in4, p_max);\r\n\tmidi_meters.poke(6, in4, v_min);\r\n\tmidi_meters.poke(7, in4, v_max);\r\n}\r\nif(in3 < 0){\r\n\tout1 = m_ind; //the output is used to turn off negative notes.\r\n}else{\r\n\tout1 = -1;\r\n}",
 													"fontface" : 0,
 													"fontname" : "<Monospaced>",
 													"fontsize" : 12.0,
@@ -14540,7 +14518,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager",
+						"filename" : "blockmanager.js",
 						"parameter_enable" : 0
 					}
 ,
@@ -16202,27 +16180,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "midi.lfo.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "midi.lfo.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "mutecontrol.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
@@ -16238,13 +16195,6 @@
 			}
 , 			{
 				"name" : "parameters_and_modulation.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "parameterwatcher.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
@@ -16301,13 +16251,6 @@
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",

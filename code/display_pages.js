@@ -931,30 +931,23 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, block_z];
 		blocks_cube[i][t].enable = 1;
 		if(block_type=="audio"){
-/*			if(subvoices>1){
-				if(t>0){
-				//if((t % subvoices) == 1){
-					var tv=(t-1)*NO_IO_PER_BLOCK/subvoices;
-					post("tv is",tv);
-					for(tt=0;tt<(NO_IO_PER_BLOCK/subvoices);tt++){
-						blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
-						blocks_meter[i][tv+tt].position = [block_x + tt*0.5/ subvoices + 0.15+ 0.1*subvoices, block_y, 0.5];
-						blocks_meter[i][tv+tt].scale = [-0.05+0.25/subvoices, 0.025, 0.05];
-						blocks_meter[i][tv+tt].enable = 1;
-					}									
-				}
-			}else{  // i think you could merge these two ^ \/ /\*/
-				if(t>0){
-					var ios=NO_IO_PER_BLOCK/subvoices;
-					var tv = (t-1)*ios;
-					for(tt=0;tt<ios;tt++){
-						blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
-						blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5+block_z];
-						blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
-						blocks_meter[i][tv+tt].enable = 1;
-					}				
-				}
-			//}
+			if(t>0){
+				var ios=NO_IO_PER_BLOCK/subvoices;
+				var tv = (t-1)*ios;
+				for(tt=0;tt<ios;tt++){
+					blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
+					blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5+block_z];
+					blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
+					blocks_meter[i][tv+tt].enable = 1;
+				}				
+			}
+		}else if(block_type == "note"){
+			if(t>0){
+				blocks_meter[i][t-1].color = [1, 1, 1, 1];
+				blocks_meter[i][t-1].position = [blocks_cube[i][t].position[0], block_y, 0.5+block_z];
+				blocks_meter[i][t-1].scale = [0.2, 0.025, 0.05];
+				blocks_meter[i][t-1].enable = 1;
+			}			
 		}else if(block_type == "hardware"){
 			if(t>0){
 				var noio=0, max_poly=1;

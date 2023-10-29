@@ -346,17 +346,20 @@ function midi_meters(){
 		var voice=meters_updatelist.midi[i][1];
 		if(blocks_meter[block][voice] !== 'undefined'){
 			var polyvoice = meters_updatelist.midi[i][2];
-			var mmin = Math.random();//scope_buffer.peek(1,1+(polyvoice));
-			var mmax = Math.random();//scope_buffer.peek(2,1+(polyvoice));
-			var tv=[];
-			tv = blocks_meter[block][voice].position;
-			tv[1] = blocks.get("blocks["+block+"]::space::y")+(mmax+mmin)*0.225;
-			tv[2] = 0.5+selected.block[block];
-			blocks_meter[block][voice].position = tv;
-			tv = blocks_meter[block][voice].scale;
-			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
-			blocks_meter[block][voice].scale = tv;
-			post("\nmm",i, "bvp",block,voice,polyvoice);
+			var mvals = midi_meters_buffer.peek(1,polyvoice,6);
+			if(mvals[1]){
+				var mmin = Math.random();//scope_buffer.peek(1,1+(polyvoice));
+				var mmax = Math.random();//scope_buffer.peek(2,1+(polyvoice));
+				var tv=[];
+				tv = blocks_meter[block][voice].position;
+				tv[1] = blocks.get("blocks["+block+"]::space::y")+(mmax+mmin)*0.225;
+				tv[2] = 0.5+selected.block[block];
+				blocks_meter[block][voice].position = tv;
+				tv = blocks_meter[block][voice].scale;
+				tv[1] = Math.max(0.225*(mmax-mmin),0.005);
+				blocks_meter[block][voice].scale = tv;
+				post("\nmm",i, "bvp",block,voice,polyvoice);
+			}
 		}
 	}
 }

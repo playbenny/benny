@@ -103,7 +103,9 @@ var textureset_blocks = this.patcher.getnamed("textureset_blocks");
 var glpicker = new JitterObject("jit.gl.picker","mainwindow");
 
 var scope_buffer = new Buffer("scope_buffer");
-var midi_scope_buffer = new Buffer("midi_scope_buffer");
+var midi_scope_buffer = new Buffer("midi_scope_buffer"); //old one, to be replaced..
+
+var midi_meters_buffer = new Buffer("midi_meters_buffer");
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer"); //for each voice, the final value of all parameters
 var voice_data_buffer = new Buffer("voice_data_buffer"); //for voices that store data, eg grid seq
 var parameter_value_buffer = new Buffer("parameter_value_buffer"); //for each block, the values set by the user
