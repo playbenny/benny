@@ -70,6 +70,8 @@ var state_fade = {
 	x : 0,
 	index : 0,
 	end : [],
+	static_start : [],
+	static_end : [],
 	colour : [],
 	lastcolour : [],
 	selected : -2, //-1 = init state, -2=none

@@ -114,10 +114,10 @@ function blocks_paste(outside_connections){
 			for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
 			for(var b=0;b<copied_blocks.length;b++){
 				var name = copy.get("blocks::"+copied_blocks[b]+"::name");
-				var px = td.get(copied_blocks[b]+"::space::x")+2;
-				var py = td.get(copied_blocks[b]+"::space::y");
+				var px = td.get(copied_blocks[b]+"::space::x")+2.5;
+				var py = td.get(copied_blocks[b]+"::space::y")-0.25;
 				copy.replace("blocks::"+copied_blocks[b]+"::space::x",px);
-				//copy.replace("blocks::"+copied_blocks[b]+"::space::y",py);
+				copy.replace("blocks::"+copied_blocks[b]+"::space::y",py);
 				var new_block_index = new_block(name,px,py);
 				if(new_block_index==-1){
 					post("\nerror pasting, "+name+" not found");
@@ -175,6 +175,7 @@ function blocks_paste(outside_connections){
 					if(copy.contains("parameter_static_mod::"+copied_blocks[b])){
 						for(var t=0;t<vl.length;t++){
 							if(copy.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
+								post("pasting static mod ",t,vl[t]);
 								var vals = copy.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
 								safepoke(parameter_static_mod,1,MAX_PARAMETERS*vl[t],vals);
 							}
@@ -187,20 +188,31 @@ function blocks_paste(outside_connections){
 				var tds = copy.get("states");
 				var tk = tds.getkeys();
 				if(tk!=null){
-					post("\n\nwe have some states",tk.length);
 					for(var t=0;t<tk.length;t++){
 						
 						var tdsb = copy.get("states::"+tk[t]);
 						if(tdsb!=null){
 							var tkb = tdsb.getkeys();
-							post("\n state",tk[t],"has content");
+							var stat=0;
 							for(var tt=0;tt<tkb.length;tt++){
-								if(paste_mapping[+tkb[tt]]!=-1){
-									post(" AND ",tkb[tt]," matches so we should retag it to",paste_mapping[+tkb[tt]]);
-									//states.setparse("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],"{}");
-									//post("\n content",copy.get("states::"+tk[t]+"::"+tkb[tt]));
-									states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],copy.get("states::"+tk[t]+"::"+tkb[tt]));
+								if(tkb[tt]=="static_mod"){
+									stat=1;
+								}else{
+									if(paste_mapping[+tkb[tt]]!=-1){
+										states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],copy.get("states::"+tk[t]+"::"+tkb[tt]));
+									}
 								}
+							}
+							if(stat){
+								tdsb = copy.get("states::"+tk[t]+"::static_mod");
+								if(tdsb!=null){
+									tkb = tdsb.getkeys();
+									for(var tt=0;tt<tkb.length;tt++){
+										if(paste_mapping[+tkb[tt]]!=-1){
+											states.replace("states::"+tk[t]+"::static_mod::"+paste_mapping[+tkb[tt]],copy.get("states::"+tk[t]+"::static_mod::"+tkb[tt]));
+										}
+									}
+								}										
 							}
 						}
 					}
@@ -267,7 +279,6 @@ function copy_block(block){
 		}
 	
 	}
-	//opv values
 }
 
 function copy_selection(){
@@ -281,7 +292,6 @@ function copy_selection(){
 			copy_block(i);
 		}
 	}
-//	post("\ncopied blocks, todo: search for connections that go between copied blocks, copy them too");
 	copy.setparse("connections","{}");
 	var csize = connections.getsize("connections");
 	var c_ext=0;
@@ -289,9 +299,7 @@ function copy_selection(){
 		if(connections.contains("connections["+i+"]::from::number")){
 			var cfrom = connections.get("connections["+i+"]::from::number");
 			var cto = connections.get("connections["+i+"]::to::number");
-//			post("\nchecking connection",cfrom,cto,+cfrom,+cto,selected.block[+cfrom],selected.block[+cto]);
 			if(selected.block[+cfrom] || selected.block[+cto]){
-				//if you swapped this && for || you'd get all connections in and out of copied blocks, and could reconnect them on paste too?
 				if(!(selected.block[+cfrom] && selected.block[+cto])) c_ext=1;
 				copy.setparse("connections::"+i,"{}");
 				copy.replace("connections::"+i,connections.get("connections["+i+"]"));
@@ -308,6 +316,11 @@ function copy_selection(){
 					if(states.contains("states::"+i+"::"+t)){
 						copy.setparse("states::"+i+"::"+t,"{}");
 						copy.replace("states::"+i+"::"+t,states.get("states::"+i+"::"+t));
+					}
+					if(states.contains("states::"+i+"::static_mod::"+t)){
+						if(!copy.contains("states::"+i+"::static_mod")) copy.setparse("states::"+i+"::static_mod","{}");
+						copy.setparse("states::"+i+"::static_mod::"+t,"{}");
+						copy.replace("states::"+i+"::static_mod::"+t,states.get("states::"+i+"::static_mod::"+t));
 					}
 				}
 			}
@@ -664,6 +677,7 @@ function delete_state(state,block){
 		}else{
 			if(states.contains("states::"+state+"::"+block)){
 				states.remove("states::"+state+"::"+block);
+				if(states.contains("states::"+state+"::static_mod::"+block)) states.remove("states::"+state+"::static_mod::"+block);
 				post("removed block"+block+"from state"+state);
 				var sz=0;
 				for(var i=0;i<MAX_BLOCKS;i++) if(states.contains("states::"+state+"::"+i)) sz++;
@@ -691,6 +705,14 @@ function fire_block_state(state, block){
 		if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
 		mute_particular_block(block,pv[0]);
 		for(var i=1;i<pv.length;i++) parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
+		if(states.contains("states::"+state+"::static_mod::"+block)){
+			var td = states.get("states::"+state+"::static_mod::"+block);
+			var tk = td.getkeys();
+			var vl = voicemap.get(block);
+			for(var i=0;i<tk.length;i++){
+				parameter_static_mod.poke(1,MAX_PARAMETERS*vl[+tk[i]],states.get("states::"+state+"::static_mod::"+block+"::"+tk[i]));
+			}
+		}
 		if(m!=pv[0]) redraw_flag.flag |= 8;
 	}
 }
@@ -720,18 +742,34 @@ function create_whole_state_xfade_slider(state,value){
 	for(var i=0;i<sc_list.length;i++){
 		var b = sc_list[i];
 		//post(b,": ");
-		state_fade.start[b] = [];
-		state_fade.end[b] = [];
-		pv = states.get("states::"+state+"::"+b);
-		if(!is_empty(pv)){
-			var m=0;
-			if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
-			state_fade.start[b][0] = m;
-			state_fade.end[b][0] = pv[0];
-			for(var t=1;t<pv.length;t++){
-				state_fade.start[b][t] = parameter_value_buffer.peek(1, MAX_PARAMETERS*b+t-1);
-				state_fade.end[b][t] = pv[t];
-				//post(state_fade.start[b][t],state_fade.end[b][t],", ");
+		if(b!="static_mod"){
+			state_fade.static_start[b] = null;
+			state_fade.static_end[b] = null;
+			state_fade.start[b] = [];
+			state_fade.end[b] = [];
+			pv = states.get("states::"+state+"::"+b);
+			if(!is_empty(pv)){
+				var m=0;
+				if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
+				state_fade.start[b][0] = m;
+				state_fade.end[b][0] = pv[0];
+				for(var t=1;t<pv.length;t++){
+					state_fade.start[b][t] = parameter_value_buffer.peek(1, MAX_PARAMETERS*b+t-1);
+					state_fade.end[b][t] = pv[t];
+				}
+				if(states.contains("states::"+state+"::static_mod::"+b)){
+					vl = voicemap.get(b);
+					var td=states.get("states::"+state+"::static_mod::"+b);
+					var tk=td.getkeys();
+					if(tk!=null){
+						state_fade.static_start[b] = [];
+						state_fade.static_end[b] = [];
+						for(var t=0;t<tk.length;t++){
+							state_fade.static_start[b][+tk[t]] = parameter_static_mod.peek(1, MAX_PARAMETERS * vl[+tk[t]],pv.length-1);
+							state_fade.static_end[b][+tk[t]] = states.get("states::"+state+"::static_mod::"+b+"::"+tk[t]);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -775,15 +813,16 @@ function fire_whole_state_btn(state,value){
 
 function fire_whole_state(state, value){
 	//post("\nfire whole state",state);
-	var pv=[];
+//	var pv=[];
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
 	var sc_list = stat.getkeys();
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
-	var mf=0;
+//	var mf=0;
 	for(var i=0;i<sc_list.length;i++){
-		var b = sc_list[i];
+		if(sc_list[i]!="static_mod") fire_block_state(state,sc_list[i]);
+/*		var b = sc_list[i];
 		pv = states.get("states::"+state+"::"+b);
 		if(!is_empty(pv)){
 			var m=0;
@@ -791,9 +830,9 @@ function fire_whole_state(state, value){
 			if(m!=pv[0])mf=1;
 			mute_particular_block(b,pv[0]);
 			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, pv[t]);
-		}
+		}*/
 	}
-	if((mf==1) && (displaymode != "block_menu")) redraw_flag.flag |= 8;
+//	if((mf==1) && (displaymode != "block_menu")) redraw_flag.flag |= 8;
 }
 
 function fade_state(){
@@ -821,6 +860,21 @@ function fade_state(){
 			if(m>-1) mute_particular_block(b,m);
 			for(var t=1;t<pv.length;t++){
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
+			}
+			if(state_fade.static_start[b]!=null){
+				if(Array.isArray(state_fade.static_start[b])){
+					var vl=voicemap.get(b);
+					for(var t=0;t<state_fade.static_start[b].length;t++){
+						if(Array.isArray(state_fade.static_start[b][t])){
+							for(var x=0;x<pv.length;x++){
+								if(state_fade.static_start[b][t][x]!=state_fade.static_end[b][t][x]){
+									var y = (1-state_fade.position)*state_fade.static_end[b][t][x] + state_fade.position*state_fade.static_start[b][t][x];
+									safepoke(parameter_static_mod, 1, MAX_PARAMETERS*vl[t]+x, y);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -873,7 +927,7 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 				add_to_state(parameter,i);
 			}
 		}else{
-			post("add param values to state number", parameter," block number",block);
+			//post("add param values to state number", parameter," block number",block);
 			var block_name = blocks.get("blocks["+block+"]::name");
 			var params = blocktypes.get(block_name+"::parameters");
 			if(blocktypes.getsize(block_name+"::parameters")==1) params = [params];	
@@ -885,10 +939,23 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			for(var p=0;p<params.length;p++){
 				pv[p+1] = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+p);
 			}
-			post("parameter array",pv);
+			//post("parameter array",pv);
 			if(states.contains("states::"+parameter+"::"+block)) states.remove("states::"+parameter+"::"+block);
 			if(pv.length) states.replace("states::"+parameter+"::"+block,pv);
 			blocks.replace("blocks["+block+"]::panel::enable",1);
+			var vl = voicemap.get(block);
+			for(var i=0;i<vl.length;i++){
+				//var voiceoffset = vl[i] + MAX_NOTE_VOICES*(type == "audio") + (MAX_NOTE_VOICES+MAX_AUDIO_VOICES)*(type == "hardware");
+				var psm = parameter_static_mod.peek(1,MAX_PARAMETERS*vl[i],params.length);
+				var c=0;
+				for(var t=0;t<params.length;t++) c|=(psm[t]!=0);
+				if(c){
+					if(!states.contains("states::"+parameter+"::static_mod"))states.setparse("states::"+parameter+"::static_mod","{}");
+					if(!states.contains("states::"+parameter+"::static_mod::"+block))states.setparse("states::"+parameter+"::static_mod::"+block,"{}");
+					if(!states.contains("states::"+parameter+"::static_mod::"+block+"::"+i))states.setparse("states::"+parameter+"::static_mod::"+block+"::"+i,"{}");
+					states.replace("states::"+parameter+"::static_mod::"+block+"::"+i,psm);
+				}
+			}
 			if(parameter=="current"){
 				state_fade.lastcolour = [0,0,0];
 			}else{
