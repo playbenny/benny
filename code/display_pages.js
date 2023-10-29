@@ -920,6 +920,11 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 						}
 					}					
 					
+				}else if(block_type == "note"){
+					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","mainwindow");
+					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
+					blocks_meter[i][t-1].name = "meter-"+i+"-"+t+"-0";
+					blocks_meter[i][t-1].shape = "cube";
 				}	
 			}
 		}

@@ -58,7 +58,8 @@ var playflag = 0;
 var meters_enable = 0;
 var meters_updatelist = {
 	hardware : [],
-	meters : []
+	meters : [],
+	midi : []
 }
 var debug = 0;
 

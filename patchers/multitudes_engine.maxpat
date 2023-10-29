@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 8.0, 60.0, 325.0, 224.0 ],
+		"rect" : [ 0.0, 48.0, 1129.0, 663.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -5961,7 +5961,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 40.0, 85.0, 1533.0, 743.0 ],
+						"rect" : [ 34.0, 82.0, 1061.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -5989,15 +5989,51 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
+						"visible" : 1,
 						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-127",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 2,
+									"outlettype" : [ "int", "int" ],
+									"patching_rect" : [ 605.399999999999977, 247.84375, 29.5, 22.0 ],
+									"text" : "t 0 i"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-121",
+									"maxclass" : "button",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "bang" ],
+									"parameter_enable" : 0,
+									"patching_rect" : [ 722.0, 138.0, 24.0, 24.0 ]
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-83",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 2,
+									"outlettype" : [ "bang", "" ],
+									"patching_rect" : [ 555.5, 222.1875, 38.0, 22.0 ],
+									"text" : "sel -1"
+								}
+
+							}
+, 							{
 								"box" : 								{
 									"id" : "obj-82",
 									"maxclass" : "newobj",
-									"numinlets" : 4,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 591.166666666666629, 258.1875, 74.0, 22.0 ],
-									"text" : "pack 0 0 0 0"
+									"numinlets" : 3,
+									"numoutlets" : 0,
+									"patching_rect" : [ 591.166666666666629, 273.5, 122.0, 22.0 ],
+									"text" : "poke~ midi_scopes 1"
 								}
 
 							}
@@ -6005,11 +6041,11 @@
 								"box" : 								{
 									"id" : "obj-66",
 									"maxclass" : "newobj",
-									"numinlets" : 4,
-									"numoutlets" : 3,
-									"outlettype" : [ "", "", "" ],
-									"patching_rect" : [ 591.166666666666629, 226.1875, 78.0, 22.0 ],
-									"text" : "pipe 0 0 0 10"
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 605.399999999999977, 222.1875, 48.0, 22.0 ],
+									"text" : "pipe 10"
 								}
 
 							}
@@ -6143,15 +6179,15 @@
 											}
 , 											{
 												"box" : 												{
-													"code" : "Buffer midi_meters(\"midi_meters\");\r\nBuffer midi_scopes(\"midi_scopes\");\r\nBuffer midi_scopes_change(\"midi_scopes_change\");\r\n//inputs\r\n//1 = outputno 2 = note 3 = vel 4 = voiceno\r\n\r\nvflag, ch, held, p_min,p_max,v_min,v_max  = midi_meters.peek(1, in4, channels = 7);\r\n\r\nt_ind = (128*in4+in1);\r\n\r\n\r\nch = 0;\r\nif(in3 == 0){\r\n\t//remove from scopes\r\n\told = midi_scopes.peek(1,t_ind*128+in2);\r\n\tif(old!=0){\r\n\t\t//reduce held notecount for that output by 1.\r\n\t\tch=1;\r\n\t\tif(held>0) held = held - 1;\r\n\t}\r\n\t//if it was any kind of min or max, recalculate those\r\n}else{\r\n\tvv=abs(in3);\r\n\r\n\t//add to scopes, if negative send a message to schedule wiping it in a moment\r\n\told = midi_scopes.peek(1,t_ind*128+in2);\r\n\tif(old==0){//increase note held count\r\n\t\theld+=1;\r\n\t\tmidi_scopes_change.poke(1,t_ind,1);\r\n\t}\r\n\tmidi_scopes.poke(1,t_ind*128,in3);\r\n\tif(in3<0){\r\n\t\tout3=in4;\r\n\t\tout2=in2;\r\n\t\tout1=in1; //the outputs are used to bang it again with a 0 to turn off negative notes.\r\n\t}\r\n\tif((vflag==-1)||(vflag==in1)){\r\n\t\tif(in2 < p_min){\r\n \t\t\tp_min = in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(in2 > p_max){\r\n\t\t\tp_max=in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv < v_min){\r\n\t\t\tv_min=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv > v_max){\r\n\t\t\tv_max=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t}\r\n}\r\nif(ch > 0){\r\n\tmidi_meters.poke(1, in4, vflag, ch, held, p_min,p_max,v_min,v_max);\r\n}\r\nout1 = vflag;",
+													"code" : "Buffer midi_meters(\"midi_meters\");\r\nBuffer midi_scopes(\"midi_scopes\");\r\nBuffer midi_scopes_change(\"midi_scopes_change\");\r\n//inputs\r\n//1 = outputno 2 = note 3 = vel 4 = voiceno\r\n\r\nvflag, ch, held, p_min,p_max,v_min,v_max  = midi_meters.peek(1, in4, channels = 7);\r\n\r\nt_ind = (128*in4+in1);\r\n\r\n\r\nch = 0;\r\nif(in3 == 0){\r\n\t//remove from scopes\r\n\told = midi_scopes.peek(1,t_ind*128+in2);\r\n\tif(old!=0){\r\n\t\t//reduce held notecount for that output by 1.\r\n\t\tch=1;\r\n\t\tif(held>0) held = held - 1;\r\n\t}\r\n\t//if it was any kind of min or max, recalculate those\r\n}else{\r\n\tvv=abs(in3);\r\n\r\n\t//add to scopes, if negative send a message to schedule wiping it in a moment\r\n\told = midi_scopes.peek(1,t_ind*128+in2);\r\n\tif(old==0){//increase note held count\r\n\t\theld+=1;\r\n\t\tmidi_scopes_change.poke(1,t_ind,1);\r\n\t}\r\n\tmidi_scopes.poke(1,t_ind*128,in3);\r\n\tif((vflag==-1)||(vflag==in1)){\r\n\t\tif(in2 < p_min){\r\n \t\t\tp_min = in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(in2 > p_max){\r\n\t\t\tp_max=in2;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv < v_min){\r\n\t\t\tv_min=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv > v_max){\r\n\t\t\tv_max=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t}\r\n}\r\nif(ch > 0){\r\n\tmidi_meters.poke(1, in4, vflag, ch, held, p_min,p_max,v_min,v_max);\r\n}\r\nif(in3<0){\r\n\t//out3=in4;\r\n\t//out2=in2;\r\n\tout1=t_ind*128+in2; //the outputs are used to bang it again with a 0 to turn off negative notes.\r\n}else{\r\n\tout1=-1;\r\n}",
 													"fontface" : 0,
 													"fontname" : "<Monospaced>",
 													"fontsize" : 12.0,
 													"id" : "obj-3",
 													"maxclass" : "codebox",
 													"numinlets" : 4,
-													"numoutlets" : 3,
-													"outlettype" : [ "", "", "" ],
+													"numoutlets" : 1,
+													"outlettype" : [ "" ],
 													"patching_rect" : [ 22.0, 27.0, 1019.0, 542.0 ]
 												}
 
@@ -6186,20 +6222,6 @@
 												"patchline" : 												{
 													"destination" : [ "obj-4", 0 ],
 													"source" : [ "obj-3", 0 ]
-												}
-
-											}
-, 											{
-												"patchline" : 												{
-													"destination" : [ "obj-7", 0 ],
-													"source" : [ "obj-3", 1 ]
-												}
-
-											}
-, 											{
-												"patchline" : 												{
-													"destination" : [ "obj-8", 0 ],
-													"source" : [ "obj-3", 2 ]
 												}
 
 											}
@@ -8411,6 +8433,20 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-82", 1 ],
+									"source" : [ "obj-127", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-82", 0 ],
+									"source" : [ "obj-127", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-129", 0 ],
 									"order" : 1,
 									"source" : [ "obj-128", 0 ]
@@ -9683,21 +9719,7 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-66", 2 ],
-									"source" : [ "obj-64", 2 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-66", 1 ],
-									"source" : [ "obj-64", 1 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-66", 0 ],
+									"destination" : [ "obj-83", 0 ],
 									"source" : [ "obj-64", 0 ]
 								}
 
@@ -9718,21 +9740,7 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-82", 3 ],
-									"source" : [ "obj-66", 2 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-82", 1 ],
-									"source" : [ "obj-66", 1 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-82", 0 ],
+									"destination" : [ "obj-127", 0 ],
 									"source" : [ "obj-66", 0 ]
 								}
 
@@ -9816,8 +9824,8 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-64", 0 ],
-									"source" : [ "obj-82", 0 ]
+									"destination" : [ "obj-66", 0 ],
+									"source" : [ "obj-83", 1 ]
 								}
 
 							}
@@ -14529,8 +14537,7 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -16059,6 +16066,10 @@
 			}
  ],
 		"dependency_cache" : [ 			{
+				"name" : "ar.capacitor2~.mxe64",
+				"type" : "mx64"
+			}
+, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}
@@ -16123,6 +16134,55 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "core.clock.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.keyboard.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "drawing_helpers.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -16142,6 +16202,34 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "midi.lfo.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.lfo.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.lfo.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "mutecontrol.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "note_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
@@ -16156,9 +16244,51 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "parameterwatcher.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"patcherrelativepath" : "../code",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "ui_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voice.basic.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voice.basic.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
@@ -16171,6 +16301,13 @@
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voiceheader.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
