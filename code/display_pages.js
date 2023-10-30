@@ -880,8 +880,8 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][0].tex_map = 1;
 				blocks_cube[i][0].texzoom = [1,1];
 				blocks_cube[i][0].texanchor = [0.5, 0.5];
-				blocks_cube[i][t].position = [block_x, block_y, block_z];
-				blocks_cube[i][t].scale = [0.45, 0.45, 0.45];
+				blocks_cube[i][0].position = [block_x, block_y, block_z];
+				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
 			}else{
 				var tc = blocks_cube[i][t].color;
 				blocks_cube[i][t].color = [block_c[0]*tc[0]/256,block_c[1]*tc[1]/256,block_c[2]*tc[2]/256,1];

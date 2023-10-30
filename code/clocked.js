@@ -346,19 +346,28 @@ function midi_meters(){
 		var voice=meters_updatelist.midi[i][1];
 		if(blocks_meter[block][voice] !== 'undefined'){
 			var polyvoice = meters_updatelist.midi[i][2];
-			var mvals = midi_meters_buffer.peek(1,polyvoice,6);
+			var mvals = [];
+			for(var ii=0;ii<7;ii++) mvals[ii] = midi_meters_buffer.peek(ii+1,polyvoice);
 			if(mvals[1]){
-				var mmin = Math.random();//scope_buffer.peek(1,1+(polyvoice));
-				var mmax = Math.random();//scope_buffer.peek(2,1+(polyvoice));
+				var held = mvals[2]*0.1;
+				var p_min = mvals[3]/128;
+				var p_max = (1+ mvals[4])/128;
+				var v_min = mvals[5]/128;
+				var v_max = (1+ mvals[6])/128;
+				
+				
 				var tv=[];
-				tv = blocks_meter[block][voice].position;
-				tv[1] = blocks.get("blocks["+block+"]::space::y")+(mmax+mmin)*0.225;
-				tv[2] = 0.5+selected.block[block];
+				tv = blocks_cube[block][voice+1].position;
+				tv[0] = tv[0] - 0.225 + (p_max+p_min)*0.45;
+				tv[1] = tv[1] - 0.45 + (v_max+v_min)*0.45;
+				tv[2] = 0.5 + selected.block[block];
 				blocks_meter[block][voice].position = tv;
-				tv = blocks_meter[block][voice].scale;
-				tv[1] = Math.max(0.225*(mmax-mmin),0.005);
+				//tv = blocks_meter[block][voice].scale;
+				tv[0] = Math.max(0.45*(p_max-p_min),0.01);
+				tv[1] = Math.max(0.45*(v_max-v_min),0.01);
+				tv[2] = 0.1+held;
 				blocks_meter[block][voice].scale = tv;
-				post("\nmm",i, "bvp",block,voice,polyvoice);
+				post("\nmm",i, "bvp",block,voice,polyvoice,"mvals",mvals);
 			}
 		}
 	}
