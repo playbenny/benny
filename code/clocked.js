@@ -349,25 +349,30 @@ function midi_meters(){
 			var mvals = [];
 			for(var ii=0;ii<7;ii++) mvals[ii] = midi_meters_buffer.peek(ii+1,polyvoice);
 			if(mvals[1]){
-				var held = mvals[2]*0.1;
-				var p_min = mvals[3]/128;
-				var p_max = (1+ mvals[4])/128;
-				var v_min = mvals[5]/128;
-				var v_max = (1+ mvals[6])/128;
-				
-				
-				var tv=[];
-				tv = blocks_cube[block][voice+1].position;
-				tv[0] = tv[0] - 0.225 + (p_max+p_min)*0.45;
-				tv[1] = tv[1] - 0.45 + (v_max+v_min)*0.45;
-				tv[2] = 0.5 + selected.block[block];
-				blocks_meter[block][voice].position = tv;
-				//tv = blocks_meter[block][voice].scale;
-				tv[0] = Math.max(0.45*(p_max-p_min),0.01);
-				tv[1] = Math.max(0.45*(v_max-v_min),0.01);
-				tv[2] = 0.1+held;
-				blocks_meter[block][voice].scale = tv;
-				post("\nmm",i, "bvp",block,voice,polyvoice,"mvals",mvals);
+				midi_meters_buffer.poke(2,polyvoice,0); //wipe change flag
+				if((mvals[2]==0)||(mvals[4]<mvals[3])){
+					blocks_meter[block][voice].enable = 0;
+					//post("\nNO ",polyvoice,"mvals",mvals);
+				}else{
+					blocks_meter[block][voice].enable = 1;
+					var held = mvals[2]*0.05;
+					var p_min = mvals[3]/128;
+					var p_max = (1+ mvals[4])/128;
+					var v_min = mvals[5]/128;
+					var v_max = (1+ mvals[6])/128;
+					var tv=[];
+					tv = blocks_cube[block][voice+1].position;
+					tv[0] = tv[0] - 0.185 + (p_max+p_min)*0.185;
+					tv[1] = tv[1] - 0.41 + (v_max+v_min)*0.41;
+					tv[2] = 0.5 + selected.block[block];
+					blocks_meter[block][voice].position = tv;
+					//tv = blocks_meter[block][voice].scale;
+					tv[0] = Math.max(0.185*(p_max-p_min),0.02);
+					tv[1] = Math.max(0.45*(v_max-v_min),0.02);
+					tv[2] = held;
+					blocks_meter[block][voice].scale = tv;
+				}
+				//post("\nYES",polyvoice,"mvals",mvals);
 			}
 		}
 	}

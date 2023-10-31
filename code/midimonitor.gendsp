@@ -40,11 +40,22 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 974.0, 574.0, 35.0, 22.0 ],
+					"text" : "out 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-7",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 113.0, 584.0, 35.0, 22.0 ],
+					"patching_rect" : [ 522.0, 574.0, 35.0, 22.0 ],
 					"text" : "out 2"
 				}
 
@@ -99,15 +110,15 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer midi_meters(\"midi_meters_buffer\");\r\nBuffer midi_scopes(\"midi_scopes_buffer\");\r\nBuffer midi_scopes_change(\"midi_scopes_change_buffer\");\r\n//inputs\r\n//1 = outputno 2 = note 3 = vel 4 = voiceno\r\nindex = in4;\r\nvflag, ch, held, p_min,p_max,v_min,v_max  = peek(midi_meters, index, 0, channels = 7);\r\n\r\nt_ind = (128*index + in1);\r\nnote = in2;\r\nm_ind = note + t_ind * 128;\r\n\r\nch = 0;\r\nif(in3 == 0){\r\n\t//remove from scopes\r\n\told = peek(midi_scopes, m_ind, 0);\r\n\tif(old != 0){\r\n\t\t//reduce held notecount for that output by 1.\r\n\t\tch=1;\r\n\t\theld -= (held>0);\r\n\t}\r\n\t//if it was any kind of min or max, recalculate those\r\n\tpoke(midi_scopes,0,m_ind,0);\r\n}else{\r\n\tvv=abs(in3);\r\n\t\r\n\t//add to scopes, if negative send a message to schedule wiping it in a moment\r\n\told = peek(midi_scopes,m_ind,0);\r\n\tif(old==0){//increase note held count\r\n\t\theld+=(in3>0);\r\n\t\tch = 1;\r\n\t\tpoke(midi_scopes_change, 1,t_ind,0);\r\n\t}\r\n\tpoke(midi_scopes,in3, m_ind, 0);\r\n\tif((vflag == -1)||(vflag == in1)){\r\n\t\tif(note < p_min){\r\n \t\t\tp_min = note;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(note > p_max){\r\n\t\t\tp_max = note;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv < v_min){\r\n\t\t\tv_min=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t\tif(vv > v_max){\r\n\t\t\tv_max=vv;\r\n\t\t\tch=1;\r\n\t\t}\r\n\t}\r\n}\r\nif(ch > 0){\r\n\t//poke(midi_meters, index, vflag, 0);\r\n\tpoke(midi_meters, ch, index, 1);\r\n\tpoke(midi_meters, held, index, 2);\r\n\tpoke(midi_meters, p_min, index, 3);\r\n\tpoke(midi_meters, p_max, index, 4);\r\n\tpoke(midi_meters, v_min, index, 5);\r\n\tpoke(midi_meters, v_max, index, 6);\r\n\tout2 = 1 + index;\r\n}else{\r\n\tout2 = 0;\r\n}\r\nif(in3 < 0){\r\n\tout1 = m_ind; //the output is used to turn off negative notes.\r\n}else{\r\n\tout1 = -1;\r\n}",
+					"code" : "Buffer midi_meters(\"midi_meters_buffer\");\r\nBuffer midi_scopes(\"midi_scopes_buffer\");\r\nBuffer midi_scopes_change(\"midi_scopes_change_buffer\");\r\n//inputs\r\n//1 = outputno 2 = note 3 = vel 4 = voiceno\r\nindex = in4;\r\nvflag, ch, held, pmin,pmax,vmin,vmax  = peek(midi_meters, index, 0, channels = 7);\r\n\r\nono = in1;\r\nt_ind = (128*index + ono);\r\nnote = in2;\r\nm_offs = t_ind * 128;\r\nm_ind = note + m_offs;\r\nvcheck = (vflag == -1)||(vflag == ono);\r\nch = 0;\r\nif(in3 == 0){\r\n\t//remove from scopes\r\n\told = peek(midi_scopes, m_ind, 0);\r\n\tif(old != 0){\r\n\t\t//reduce held notecount for that output by 1.\r\n\t\tch=1;\r\n\t\theld -= (held>=1);\r\n\t\tif(vcheck){\r\n\t\t\tif(held < 1){\r\n\t\t\t\tpmin = 128;\r\n\t//\t\t\tvmax = 0;\r\n\t\t\t\tpmax = 0;\r\n\t\t\t\tvmin = 128;\r\n\t// weird gen bug - if i assign all 4 of these it doesn't compile?\r\n\t// love 2 work in an undocumented compiler would be great if c74\r\n\t// could finish this feature before they add any more eh\r\n\t\t\t}else{\r\n\t\t//if it was any kind of min or max, recalculate those\r\n\t\t\t\tif(note == pmin){\r\n \t\t\t\t\tpmin = 128;\r\n\t\t\t\t\tfor(x = old; x< 128 ; x+=1){\r\n\t\t\t\t\t\ty = peek(midi_scopes, m_offs+x, 0);\r\n\t\t\t\t\t\tif(y!=0){\r\n\t\t\t\t\t\t\tpmin = x;\r\n\t\t\t\t\t\t\tx=128;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tif(note == pmax){\r\n \t\t\t\t\tpmax = 0;\r\n\t\t\t\t\tfor(x = old; x>= 0 ; x-=1){\r\n\t\t\t\t\t\ty = peek(midi_scopes, m_offs+x, 0);\r\n\t\t\t\t\t\tif(y!=0){\r\n\t\t\t\t\t\t\tpmax = x;\r\n\t\t\t\t\t\t\tx=-1;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n \t\t\t\t}\r\n\t\t\t\tif(old == vmin){\r\n\t\t\t\t\tfor(x = pmin; x<= pmax ; x+=1){\r\n\t\t\t\t\t\ty = abs(peek(midi_scopes, m_offs+x, 0));\r\n\t\t\t\t\t\tif((y>0)&&(y<vmin)){\r\n\t\t\t\t\t\t\tvmin = y;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tif(old == vmax){\r\n\t\t\t\t\tfor(x = pmin; x<= pmax ; x+=1){\r\n\t\t\t\t\t\ty = abs(peek(midi_scopes, m_offs+x, 0));\r\n\t\t\t\t\t\tif((y>0)&&(y<vmin)){\r\n\t\t\t\t\t\t\tvmin = y;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tpoke(midi_scopes,0,m_ind,0);\r\n}else{\r\n\tvv=abs(in3);\r\n\t//add to scopes, if negative send a message to schedule wiping it in a moment\r\n\told = peek(midi_scopes,m_ind,0);\r\n\tpoke(midi_scopes,in3, m_ind, 0);\r\n\tif(vcheck){\r\n\t\tif(old==0){//increase note held count\r\n\t\t\theld+=1; //(in3>0);\r\n\t\t\tch = 1;\r\n\t\t\tpoke(midi_scopes_change, 1,t_ind,0);\r\n\t\t}\r\n\t\tif(held == 1){\r\n\t\t\tpmin = note;\r\n\t\t\tpmax = note;\r\n\t\t\tvmin = vv;\r\n\t\t\tvmax = vv;\r\n\t\t\tch = 1;\r\n\t\t}else{\r\n\t\t\tif(note < pmin){\r\n \t\t\t\tpmin = note;\r\n\t\t\t\tch=1;\r\n\t\t\t}\r\n\t\t\tif(note > pmax){\r\n\t\t\t\tpmax = note;\r\n\t\t\t\tch=1;\r\n\t\t\t}\r\n\t\t\tif(vv < vmin){\r\n\t\t\t\tvmin = vv;\r\n\t\t\t\tch=1;\r\n\t\t\t}\r\n\t\t\tif(vv > vmax){\r\n\t\t\t\tvmax = vv;\r\n\t\t\t\tch=1;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\nif(ch > 0){\r\n\t//poke(midi_meters, index, vflag, 0);\r\n\tpoke(midi_meters, ch, index, 1);\r\n\tpoke(midi_meters, held, index, 2);\r\n\tpoke(midi_meters, pmin, index, 3);\r\n\tpoke(midi_meters, pmax, index, 4);\r\n\tpoke(midi_meters, vmin, index, 5);\r\n\tpoke(midi_meters, vmax, index, 6);\r\n//\tout2 = 1 + index;\r\n}\r\nif(in3 < 0){\r\n\tout1 = in1; //m_ind; //the output is used to turn off negative notes.\r\n}else{\r\n\tout1 = -1;\r\n//\tout3 = vmax;\r\n}\r\nout2 = in2;\r\nout3 = in4;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-3",
 					"maxclass" : "codebox",
 					"numinlets" : 4,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 22.0, 27.0, 1019.0, 542.0 ]
 				}
 
@@ -149,6 +160,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-3", 2 ]
 				}
 
 			}

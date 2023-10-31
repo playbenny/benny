@@ -708,13 +708,13 @@ function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 				/*if(typeof blocks_cube[i][t] !== 'undefined') */blocks_cube[i][t].enable = enab;
 			}
 			if(typeof blocks_meter[i][0] !== 'undefined'){
-				for(var t=0;t<blocks_cube[i].length;t++){
+//				for(var t=0;t<blocks_cube[i].length;t++){
 					for(var tt=0;tt<blocks_meter[i].length;tt++){
-						if(typeof blocks_meter[i][t*NO_IO_PER_BLOCK+tt] !== 'undefined'){
-							blocks_meter[i][t*NO_IO_PER_BLOCK+tt].enable = enab;
+						if(typeof blocks_meter[i][tt] !== 'undefined'){
+							blocks_meter[i][tt].enable = enab;
 						}
 					}
-				}
+//				}
 			}
 		}
 /*		if(typeof blocks_label[i]!=='undefined'){
@@ -945,8 +945,8 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			if(t>0){
 				blocks_meter[i][t-1].color = [1, 1, 1, 1];
 				blocks_meter[i][t-1].position = [blocks_cube[i][t].position[0], block_y, 0.5+block_z];
-				blocks_meter[i][t-1].scale = [0.2, 0.025, 0.05];
-				blocks_meter[i][t-1].enable = 1;
+				blocks_meter[i][t-1].scale = [0, 0, 0.05];
+				blocks_meter[i][t-1].enable = 0;
 			}			
 		}else if(block_type == "hardware"){
 			if(t>0){
