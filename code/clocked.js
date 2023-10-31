@@ -355,11 +355,15 @@ function midi_meters(){
 					//post("\nNO ",polyvoice,"mvals",mvals);
 				}else{
 					blocks_meter[block][voice].enable = 1;
+					var minsize = Math.max(1,0.3*(camera_position[2]-20));
+					minsize *= minsize;
+					//post("\nminsize ",minsize);
+					//originally: replace minsize with 1.
 					var held = mvals[2]*0.05;
-					var p_min = mvals[3]/128;
-					var p_max = (1+ mvals[4])/128;
-					var v_min = mvals[5]/128;
-					var v_max = (1+ mvals[6])/128;
+					var p_min = (mvals[3])/(128 + minsize);
+					var p_max = (minsize + mvals[4])/(128 + minsize);
+					var v_min = (mvals[5])/(128 + minsize);
+					var v_max = (minsize + mvals[6])/(128 + minsize);
 					var tv=[];
 					tv = blocks_cube[block][voice+1].position;
 					tv[0] = tv[0] - 0.185 + (p_max+p_min)*0.185;
