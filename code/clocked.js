@@ -210,10 +210,10 @@ function prep_meter_updatelist(){
 			if(vmap[0]>=MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
 				vmap = hardware_metermap.get(k[i]);
 				if(typeof vmap == "number"){
-					meters_updatelist.hardware.push([k[i],0,vmap]);
+					meters_updatelist.hardware.push([k[i],0,vmap,blocks.get("blocks["+k[i]+"]::space::y")]);
 				}else if(vmap !== 'null'){
 					for(index =0;index<vmap.length;index++){
-						meters_updatelist.hardware.push([k[i],index,vmap[index]]);
+						meters_updatelist.hardware.push([k[i],index,vmap[index],blocks.get("blocks["+k[i]+"]::space::y")]);
 					}
 				}
 			}else if(vmap[0]>=MAX_NOTE_VOICES){
@@ -336,7 +336,7 @@ function hardware_meters(){
 			var mmax = scope_buffer.peek(2,1+(polyvoice));
 			var tv=[];
 			tv = blocks_meter[block][voice].position;
-			tv[1] = blocks_cube[block][voice].position[1] + (mmax+mmin)*0.225;
+			tv[1] = meters_updatelist.hardware[i][3] + (mmax+mmin) * 0.225;
 			tv[2] = 0.5+selected.block[block];
 			blocks_meter[block][voice].position = tv;
 			tv = blocks_meter[block][voice].scale;

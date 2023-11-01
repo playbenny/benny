@@ -465,6 +465,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[2] = 0;
 								}
 								usermouse.clicked3d = -1;
+								//meters_enable = 1;
+								block_meters_enable(1);
 							}
 							if((usermouse.hover[1] == usermouse.ids[1]) && (0.25*Math.round(4*displaypos[0]) == 0.25*Math.round(4*dictpos[0])) && (0.25*Math.round(4*displaypos[1]) == 0.25*Math.round(4*dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
@@ -620,32 +622,37 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										if((dx>=0.75)||(dy>=0.75)){
 											usermouse.drag.starting_value_x = -999; // this is the start of dragging a block. resetting these means it
 											usermouse.drag.starting_value_y = -999; // always passes the dx/dy test.
-											var tv = new Array(3);
-											var nometers = NO_IO_PER_BLOCK; //for eg hardware you actually need to get the name, look up in blocktypes how many io.
-											var b_t,ob=-1;
+											block_meters_enable(0);
+											meters_updatelist.meters = [];
+											meters_updatelist.hardware = [];
+											meters_updatelist.midi = [];
+											//meters_enable = 0;
+											//var tv = new Array(3);
+											//var nometers = NO_IO_PER_BLOCK; //for eg hardware you actually need to get the name, look up in blocktypes how many io.
+											var ob=-1;
 											var bdx,bdy;
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
 												//post("dragin",usermouse.drag.dragging.voices[t][0],usermouse.drag.dragging.voices[t][1]);
 												if(ob!=usermouse.drag.dragging.voices[t][0]){
 													ob = usermouse.drag.dragging.voices[t][0];	
-													b_t = blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::type");
-													nometers = 0; //note blocks have no meters
-													if(b_t == "audio"){
-														nometers = NO_IO_PER_BLOCK;
-													}else if(b_t == "hardware"){
-														b_t = blocks.get("blocks["+usermouse.ids[1]+"]::name");
-														nometers = 0;
-														if(blocktypes.contains(b_t+"::connections::in::hardware_channels")) nometers += blocktypes.getsize(b_t+"::connections::in::hardware_channels");
-														if(blocktypes.contains(b_t+"::connections::out::hardware_channels")) nometers += blocktypes.getsize(b_t+"::connections::out::hardware_channels");
-														if(blocktypes.contains(b_t+"::max_polyphony")) nometers /= blocktypes.get(b_t+"::max_polyphony");
-													}
+													//b_t = blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::type");
+													//nometers = 0; //note blocks have no meters
+													//if(b_t == "audio"){
+													//	nometers = NO_IO_PER_BLOCK;
+													//}else if(b_t == "hardware"){
+													//	b_t = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+													//	nometers = 0;
+													//	if(blocktypes.contains(b_t+"::connections::in::hardware_channels")) nometers += blocktypes.getsize(b_t+"::connections::in::hardware_channels");
+													//	if(blocktypes.contains(b_t+"::connections::out::hardware_channels")) nometers += blocktypes.getsize(b_t+"::connections::out::hardware_channels");
+													//	if(blocktypes.contains(b_t+"::max_polyphony")) nometers /= blocktypes.get(b_t+"::max_polyphony");
+													//}
 													bdx = blocks.get("blocks["+ob+"]::space::x") + block_x - dictpos[0];
 													bdy = blocks.get("blocks["+ob+"]::space::y") + block_y - dictpos[1];
 												}
 												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
 												if(subvoices<1)subvoices = 1;
 												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
-												if(usermouse.drag.dragging.voices[t][1]>0){
+												/*if(usermouse.drag.dragging.voices[t][1]>0){
 													for(tt=0;tt<nometers;tt++){ 
 														if(typeof blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt] !== 'undefined'){
 															tv = blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt].position;
@@ -654,7 +661,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 															blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt].position = tv;
 														}
 													}
-												}
+												}*/
 											}
 											for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
