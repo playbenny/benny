@@ -37,6 +37,7 @@ var BLOCK_TEXTURE_SIZE = 128;
 var ANIM_TIME = 0.25;
 var UPSAMPLING = 1;
 var RECYCLING = 1;
+var BLOCK_MENU_CLICK_ACTION = "click";
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
@@ -309,6 +310,7 @@ var usermouse = {
 	x : 0,
 	y : 0,
 	timer : 0,
+	long_press_function : null,
 	drag : {
 		starting_x : 0,
 		starting_y : 0,

@@ -117,7 +117,7 @@ function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
-	//post("processing mouse event",x,y,leftbutton);
+	//post("processing mouse event",x,y,leftbutton,ctrl,shift,caps,alt,e);
 	//if(id!='background') post("touch",id);
 	//	opicker(id,leftbutton);
 	usermouse.last.left_button = usermouse.left_button;
@@ -165,6 +165,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.drag.last_y = usermouse.y;
 						usermouse.ids[1]=-3;
 						usermouse.hover=[-1,-1,-1];
+						if(BLOCK_MENU_CLICK_ACTION=="long_click"){
+							usermouse.long_press_function = show_new_block_menu;
+							usermouse.timer=-1;
+						}
 					}else{
 						usermouse.clicked3d = usermouse.ids[1];
 						usermouse.hover = [].concat(usermouse.ids);
@@ -376,17 +380,36 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								clear_blocks_selection();
 								//redraw_flag.flag=8;
 							}else{
-								blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
-								usermouse.clicked3d=-1;
-								block_menu_d.mode = 0;
-								//post("\n\nOPENING BLOCK MENU BECAUSE DRAG DIST",usermouse.drag.distance);
-								if(sidebar.mode=="file_menu"){
-									set_sidebar_mode("none");
-									center_view(1);
-								}else{
-									set_display_mode("block_menu");
+								var showmenu =0;
+								//there are options for how to bring up the menu, so we go through and see if they're true for the various modes, then decide whether to trigger the menu (1)
+								if(BLOCK_MENU_CLICK_ACTION=="click"){
+									showmenu = 0;
+								}else if(BLOCK_MENU_CLICK_ACTION=="double_click"){
+									var tp = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+									if(usermouse.timer>0){
+										if((Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1]))<400){
+											showmenu = 1;
+										}else{
+											post("\ndouble click too wide",(Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1])));
+										}
+									}else{
+										usermouse.timer = DOUBLE_CLICK_TIME;
+										blocks_page.new_block_click_pos = tp;
+									}
+								}else if(BLOCK_MENU_CLICK_ACTION=="ctrl_click"){
+									if(usermouse.ctrl) showmenu = 1;
+								}else if(BLOCK_MENU_CLICK_ACTION=="alt_click"){
+									if(usermouse.alt) showmenu = 1;
+								}else if(BLOCK_MENU_CLICK_ACTION=="shift_click"){
+									if(usermouse.shift) showmenu = 1;
+								}else if(BLOCK_MENU_CLICK_ACTION=="long_click"){
+									if(usermouse.timer<-LONG_PRESS_TIME/66) usermouse.long_press_function();
+									usermouse.timer = 0;
+									usermouse.long_press_function = null;
 								}
-								
+								if(showmenu){
+									show_new_block_menu();
+								}
 							}
 							redraw_flag.targets = [];
 							redraw_flag.targetcount = 0;
@@ -486,6 +509,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			usermouse.drag.starting_x = usermouse.x;
 			usermouse.drag.starting_y = usermouse.y;
 			usermouse.drag.distance = 0;
+			usermouse.timer = 0;
 			usermouse.drag.starting_value_x = camera_position[0];
 			if(usermouse.ctrl){//set up zoom
 				usermouse.drag.starting_value_y = camera_position[2];
@@ -1040,6 +1064,17 @@ function keydown(key){
 					}
 				}else if(sidebar.mode == "blocks"){
 					multiselect_polychange(1);
+				}
+			}else if(key == 98){
+				//new_block_menu
+				blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+				usermouse.clicked3d=-1;
+				block_menu_d.mode = 0;
+				if(sidebar.mode=="file_menu"){
+					set_sidebar_mode("none");
+					center_view(1);
+				}else{
+					set_display_mode("block_menu");
 				}
 			}else if(key == 353){
 				select_all();

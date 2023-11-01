@@ -494,6 +494,18 @@ function select_voice(parameter,value){
 	redraw_flag.flag |= 10;
 }
 
+function show_new_block_menu(){
+	blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+	usermouse.clicked3d=-1;
+	block_menu_d.mode = 0;
+	if(sidebar.mode=="file_menu"){
+		set_sidebar_mode("none");
+		center_view(1);
+	}else{
+		set_display_mode("block_menu");
+	}
+}
+
 function select_block(parameter,value){
 	//post("\nselblock,",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){

@@ -50,8 +50,15 @@ function frameclock(){
 	}
 
 
-	if(usermouse.timer>0){
+	if(usermouse.timer!=0){
 		usermouse.timer-=1;
+		if(usermouse.timer<-LONG_PRESS_TIME/33){
+			if(usermouse.long_press_function!=null){
+				usermouse.long_press_function();
+				usermouse.long_press_function=null;
+				usermouse.timer = 0;
+			}
+		}
 	}
 	
 	if(loading.ready_for_next_action){

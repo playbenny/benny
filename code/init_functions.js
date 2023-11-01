@@ -159,6 +159,7 @@ function initialise_dictionaries(){
 	blob_dia = config.get("blob_dia");
 	glow_amount = config.get("glow");
 	messnamed("bloom_amt",glow_amount);
+	BLOCK_MENU_CLICK_ACTION = config.get("BLOCK_MENU_CLICK_ACTION");
 	MAX_BLOCKS = config.get("MAX_BLOCKS");
 	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");

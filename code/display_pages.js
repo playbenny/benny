@@ -707,24 +707,9 @@ function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 			for(var t=0;t<blocks_cube[i].length;t++){
 				/*if(typeof blocks_cube[i][t] !== 'undefined') */blocks_cube[i][t].enable = enab;
 			}
-			if(typeof blocks_meter[i][0] !== 'undefined'){
-//				for(var t=0;t<blocks_cube[i].length;t++){
-					for(var tt=0;tt<blocks_meter[i].length;tt++){
-						if(typeof blocks_meter[i][tt] !== 'undefined'){
-							blocks_meter[i][tt].enable = enab;
-						}
-					}
-//				}
-			}
 		}
-/*		if(typeof blocks_label[i]!=='undefined'){
-			for(var t=0;t<blocks_label[i].length;t++){
-				if(typeof blocks_label[i][t] !== 'undefined'){
-					blocks_label[i][t].enable = enab;
-				}
-			}
-		}*/
 	}
+	block_meters_enable(enab);
 	for(var i=0;i<wires.length;i++){
 		if(Array.isArray(wires[i]) ){
 			for(var t=0;t<wires[i].length;t++){
@@ -732,6 +717,35 @@ function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 					wires[i][t].enable = enab && wires_enable[i];
 				}
 			}
+		}
+	}
+}
+
+function block_meters_enable(enab){
+	var i,tt,voice,block;
+	if(enab == 0){
+		for(i = meters_updatelist.midi.length-1; i>=0; i--){
+			block=meters_updatelist.midi[i][0];
+			voice=meters_updatelist.midi[i][1];
+			if(blocks_meter[block][voice] !== 'undefined'){	
+				blocks_meter[block][voice].enable = 0;
+			}
+		}
+	}
+	for(i = meters_updatelist.hardware.length-1; i>=0; i--){
+		block=meters_updatelist.hardware[i][0];
+		voice=meters_updatelist.hardware[i][1];
+		if(blocks_meter[block][voice] !== 'undefined'){
+			blocks_meter[block][voice].enable = enab;
+		}
+	}
+	for(i = meters_updatelist.meters.length-1; i>=0; i--){
+		voice = meters_updatelist.meters[i][1];
+		//if(voice !== 'undefined'){
+		block = meters_updatelist.meters[i][0];
+		//var polyvoice = meters_updatelist.meters[i][2];
+		for(tt=0;tt<NO_IO_PER_BLOCK;tt++){
+			blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].enable = enab;
 		}
 	}
 }
