@@ -495,15 +495,13 @@ function select_voice(parameter,value){
 }
 
 function show_new_block_menu(){
+	usermouse
 	blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
 	usermouse.clicked3d=-1;
+	usermouse.timer = 0;
+	usermouse.long_press_function = null;
 	block_menu_d.mode = 0;
-	if(sidebar.mode=="file_menu"){
-		set_sidebar_mode("none");
-		center_view(1);
-	}else{
-		set_display_mode("block_menu");
-	}
+	set_display_mode("block_menu");
 }
 
 function select_block(parameter,value){

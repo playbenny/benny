@@ -312,6 +312,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				usermouse.clicked2d = -1;
 			}else if(usermouse.clicked3d != -1){ //####################### 3d release #####################
 				if(displaymode=="block_menu"){
+					usermouse.timer = 0;
+					usermouse.long_press_function = null;
 					if(block_menu_d.mode == 0){ //post("BLOCK MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.clicked3d==-2){
 							usermouse.clicked3d=-3;
