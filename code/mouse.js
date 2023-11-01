@@ -425,6 +425,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							//set clicked3d to -3? then the picker event has to trigger a whole thing?
 						}
 					}
+					usermouse.timer = 0;
+					usermouse.long_press_function = null;
 					usermouse.drag.starting_x = 0;
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
