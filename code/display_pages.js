@@ -3880,8 +3880,10 @@ function draw_sidebar(){
 			if(!Array.isArray(bvs)) bvs = [bvs];
 			if(sidebar.selected_voice >= bvs.length) sidebar.selected_voice = -1;
 			var listvoice=-1;
-			if(sidebar.selected_voice>=0) listvoice  = bvs[sidebar.selected_voice] - MAX_NOTE_VOICES;// voicemap.get(block+"["+sidebar.selected_voice+"]") - MAX_NOTE_VOICES; 
-			if(listvoice != sidebar.scopes.voice) sidebar.lastmode="retrig";
+			if(sidebar.selected_voice>=0){
+				listvoice  = bvs[sidebar.selected_voice] - MAX_NOTE_VOICES;// voicemap.get(block+"["+sidebar.selected_voice+"]") - MAX_NOTE_VOICES; 
+				if(listvoice != sidebar.scopes.voice) sidebar.lastmode="retrig";
+			}else if(sidebar.scopes.midivoicelist.length!=bvs.length) sidebar.lastmode="retrig";
 			if(sidebar.mode != sidebar.lastmode){
 				sidebar.lastmode = sidebar.mode;
 				sidebar.scopes.voice = -1;
