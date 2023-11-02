@@ -1068,7 +1068,7 @@ function sidebar_parameter_knob(parameter, value){
 		return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
 	}else{
 		//set value
-		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));
+		safepoke(parameter_value_buffer,1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;

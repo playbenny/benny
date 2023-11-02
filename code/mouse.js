@@ -725,6 +725,23 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}		
 			}
 		}
+	}else{ //idlemouse
+		if(usermouse.ctrl){ // if ctrl held hover over param slider selects voice
+			if(usermouse.got_t == 2){
+				if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
+					var sl_no = mouse_click_parameters[usermouse.got_i][0];
+					var x1 = paramslider_details[sl_no][0];
+					var x2 = paramslider_details[sl_no][2];
+					var p = blocks.get("blocks["+mouse_click_parameters[usermouse.got_i][1]+"]::poly::voices");
+					var vh = Math.floor(p*(usermouse.x - x1)/(x2 - x1));
+					if(sidebar.selected_voice != vh){
+						sidebar.selected_voice = vh;
+						redraw_flag.flag |= 10;
+					}
+				}
+			}
+
+		}
 	}
 }
 
