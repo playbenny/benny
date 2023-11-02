@@ -426,6 +426,8 @@ function insert_menu_button(cno){
 	set_display_mode("block_menu");
 }
 
+function do_nothing(){}
+
 function clear_blocks_selection(){
 	var t;
 	for(t=0;t<selected.block.length;t++){
