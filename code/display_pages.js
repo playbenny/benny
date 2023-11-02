@@ -2878,6 +2878,8 @@ function set_sidebar_mode(mode){
 			sidebar.scopes.voice = -1;//causes it to ask te right block to display a scope
 		}else{
 			audio_to_data_poly.setvalue(0,"vis_scope",0);
+			sidebar.scopes.midi = -1;
+			sidebar.scopes.voice = -1;
 		}
 		sidebar.mode = mode;
 		if(mode=="file_menu"){

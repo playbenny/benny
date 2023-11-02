@@ -440,6 +440,8 @@ function clear_blocks_selection(){
 	redraw_flag.flag=10;
 	redraw_flag.targets = [];
 	redraw_flag.targetcount = 0;
+	sidebar.scopes.midi = -1;
+	sidebar.scopes.voice = -1;
 }
 
 function select_all(){
