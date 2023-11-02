@@ -186,7 +186,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;				
 			}else{
-				//usermouse.timer = DOUBLE_CLICK_TIME;
 				usermouse.clicked2d = usermouse.got_i;
 				usermouse.clicked3d = -1;
 				usermouse.last.got_i = usermouse.got_i;
@@ -405,7 +404,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}else if(BLOCK_MENU_CLICK_ACTION=="shift_click"){
 									if(usermouse.shift) showmenu = 1;
 								}else if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-									if(usermouse.timer<-LONG_PRESS_TIME/66) usermouse.long_press_function();
+									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
 									usermouse.timer = 0;
 									usermouse.long_press_function = null;
 								}
@@ -427,8 +426,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							//set clicked3d to -3? then the picker event has to trigger a whole thing?
 						}
 					}
-					usermouse.timer = 0;
-					usermouse.long_press_function = null;
+					if(usermouse.timer<0){
+						usermouse.timer = 0;
+						usermouse.long_press_function = null;
+					}
 					usermouse.drag.starting_x = 0;
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
@@ -515,7 +516,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			usermouse.drag.starting_x = usermouse.x;
 			usermouse.drag.starting_y = usermouse.y;
 			usermouse.drag.distance = 0;
-			usermouse.timer = 0;
+			usermouse.long_press_function = null;
 			usermouse.drag.starting_value_x = camera_position[0];
 			if(usermouse.ctrl){//set up zoom
 				usermouse.drag.starting_value_y = camera_position[2];

@@ -3951,7 +3951,7 @@ function draw_sidebar(){
 							sidebar.scopes.midivoicelist = [bvs[sidebar.selected_voice]];
 							sidebar.scopes.midioutlist = [0];
 						}
-						post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist);
+						//post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist);
 					}
 				}
 				sidebar.selected = block;
@@ -6722,64 +6722,10 @@ function draw_sidebar(){
 }
 
 function remove_midi_scope(){
-	post("\nremove midi scope called",sidebar.scopes.midi,"vl",sidebar.scopes.midivoicelist);
+//	post("\nremove midi scope called",sidebar.scopes.midi,"vl",sidebar.scopes.midivoicelist);
 	sidebar.scopes.midi = -1;
 	sidebar.scopes.midivoicelist = [];
-	/*	if(sidebar.scopes.midi>-1){
-		var z=[];
-		for(var i =0;i<128;i++)z[i]=0;
-		midi_scope_buffer.poke(1,0,z);// clear buffer
-		for(var i=0;i<sidebar.scopes.midivoicelist.length;i++){
-			remove_from_midi_routemap(sidebar.scopes.midivoicelist[i], MAX_MOD_IDS-1);
-			set_conversion(MAX_MOD_IDS*(1 + sidebar.scopes.midivoicelist[i])-1,0,0,0,0,0,0,0);
-		}
-		messnamed("update_midi_routemap","bang");
-		sidebar.scopes.midi = -1;
-		sidebar.scopes.midivoicelist=[];
-	}*/
-}
-
-function assign_midi_scope(typ,num, props){
-	post("\nassign_midi_ scope called but is disabledd",typ,num,props);
-/*	if(typ=="block"){
-		// this would be more complicated - add to all
-		var vl = voicemap.get(num);
-		if(!Array.isArray(vl)) vl=[vl];
-		for(var i=0;i<vl.length;i++){
-			assign_ midi_scopes("voice",vl[i],props);
-		}
-	}else if(typ=="voice"){
-		sidebar.scopes.midi = num;
-		if(!Array.isArray(props)) props = [props];
-		for(var i =0;i<props.length;i++){
-			var m_index = (num<<7) + props[i];
-			sidebar.scopes.midivoicelist[i] = m_index;
-			var c_ind = MAX_MOD_IDS * (1 + m_index) - 1;
-			add_to_midi_routemap(m_index,MAX_MOD_IDS-1);
-			set_conversion(c_ind,1,4,1,0.5,0.5,0,0);			
-		}	
-		messnamed("update_midi_routemap","bang");
-		// need to add to midi routemap and bang that, and do conversion buffer
-		// midi routemap row = voiceno<<7 + outputno
-		// value added to row = MAX_MOD_IDS-1
-		// conv buff pos = MAX_MOD_IDS*(1+outputno+voiceno<<7)-1
-	}else if(typ=="connection"){
-		// need to add to midi routemap and bang that, and COPY conversion buffer
-		sidebar.scopes.midi = MAX_BLOCKS+num;
-		sidebar.scopes.midivoicelist = props.slice();
-		// props contains a list of m_indexes
-		for(var i = 0;i<props.length;i++){
-			var c_ind = MAX_MOD_IDS * (1 + props[i]) - 1;
-			add_to_midi_routemap(props[i],MAX_MOD_IDS-1);
-			var enab = 1-connections.get("connections["+num+"]::conversion::mute");
-			var scale = connections.get("connections["+num+"]::conversion::scale");
-			var offn = connections.get("connections["+num+"]::conversion::offset");
-			var offv = connections.get("connections["+num+"]::conversion::offset2");
-			var vect = connections.get("connections["+num+"]::conversion::vector");
-			set_conversion(c_ind,enab,4,scale,offn,offv,vect,0);			
-		}
-		messnamed("update_midi_routemap","bang");
-	}*/
+	sidebar.scopes.midioutlist = [];
 }
 
 function do_automap(type, voice, onoff, name){
