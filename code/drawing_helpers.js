@@ -210,22 +210,6 @@ function labelled_parameter_v_slider(sl_no){
 			x+=ww;
 		}
 	}
-	/*
-	lcd_main.message("moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
-	pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[sl_no][8]+paramslider_details[sl_no][9]);
-
-	//how this should work: if voices>1 you display a label for each, but skip ones where it's the same as the last one?
-	// all are done from voice_para not para_val - ie take into account modulation and static mod
-	if((paramslider_details[sl_no][8]==sidebar.selected)&&((sidebar.selected_voice>=0)||(paramslider_details[sl_no][10]&2))){
-		var vo = voicemap.get(paramslider_details[sl_no][8]+"["+sidebar.selected_voice+"]"); 
-		// if a single voice's offset is being editted, show the sum of the two in the label ????? << this is not how mod works tho?
-		pv += parameter_static_mod.peek(1,MAX_PARAMETERS*vo+paramslider_details[sl_no][9]);
-	}
-
-	pv = Math.min(1,Math.max(0,pv));	
-
-	parameter_label(p_type,wrap,pv,p_values);
-*/
 	return(namelabely+4);
 }
 
@@ -307,6 +291,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		// flags this was 'pol' now contains more info..
 		// &= 1 - bipolar not unipolar
 		// &= 2 - onepervoice
+		// &= 4 - no per voice modulation on this one
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	var vlist = voicemap.get(blockno); 
 	var ly, value;
@@ -330,8 +315,9 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 			ly = y1  + (y2 - y1) * (1-tvalue);
 			var mu=0.33;
 			//post("\ndrawing slider",sl_no,blockno,paramno);
-		if(((i==sidebar.selected_voice)||(flags & 2))&&(!usermouse.caps) &&(!(flags&4))){ //these two caps are temp code emergency access to param value
-				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
+		if(((i==sidebar.selected_voice)||(flags & 2))&&(!(flags&4))){ //these two caps are temp code emergency access to param value
+				click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
+				//post("\nso usermouse x is",usermouse.x,"slider outline is x1,y1,x2,y2 is",x1,y1,x2,y2," and i calculate the click rect to be ",x1+ww*i,y1,x1+ww*(i+1),y2)
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
