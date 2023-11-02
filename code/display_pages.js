@@ -3945,7 +3945,7 @@ function draw_sidebar(){
 							if(sidebar.selected_voice<0){
 								sidebar.scopes.midivoicelist = bvs;
 							}else{
-								sidebar.scopes.midivoicelist = [bvs[sidebar.selected.voice]];
+								sidebar.scopes.midivoicelist = [bvs[sidebar.selected_voice]];
 							}
 							post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist);
 		//				}
