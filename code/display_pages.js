@@ -3940,17 +3940,18 @@ function draw_sidebar(){
 							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
 					}else{
-		//				if((listvoice+MAX_NOTE_VOICES) != sidebar.scopes.midi){
-							//post(sidebar.scopes.midi,"s.s.m<<  >>listvoi",listvoice+MAX_NOTE_VOICES);
-							//assign_midi_scope("voice",listvoice+MAX_NOTE_VOICES, 0);
-							sidebar.scopes.midi = block;
-							if(sidebar.selected_voice<0){
-								sidebar.scopes.midivoicelist = bvs;
-							}else{
-								sidebar.scopes.midivoicelist = [bvs[sidebar.selected_voice]];
+						//assign_midi_scope
+						sidebar.scopes.midi = block;
+						if(sidebar.selected_voice<0){
+							sidebar.scopes.midivoicelist = bvs;
+							for(var te=0;te<bvs.length;te++){
+								sidebar.scopes.midioutlist[te] = 0; //in future support selecting the output you monitor, or displaying them all?
 							}
-							post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist);
-		//				}
+						}else{
+							sidebar.scopes.midivoicelist = [bvs[sidebar.selected_voice]];
+							sidebar.scopes.midioutlist = [0];
+						}
+						post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist);
 					}
 				}
 				sidebar.selected = block;
@@ -6016,7 +6017,19 @@ function draw_sidebar(){
 					}
 					sidebar.scopes.voice = -1;
 					sidebar.scopes.voicelist = [];
-					assign_midi_scope("connection",i,m_index);
+					sidebar.scopes.midi = MAX_BLOCKS + i;
+					sidebar.scopes.midivoicelist=[];
+					sidebar.scopes.midioutlist=[];
+					var vm = voicemap.get(f_number);
+					if(!Array.isArray(vm))vm=[vm];
+					//post("\nvoicelist is",vm,"tf_o_v is",tf_o_v,"\n");
+					for(tii=0;tii<tf_o_v.length;tii++){
+						//post("\ntii",tii,"tf_o_v",tf_o_v,"vm[tf]",vm[+tf_o_v[tii]]);
+						sidebar.scopes.midivoicelist[tii] = vm[+tf_o_v[tii]];
+						sidebar.scopes.midioutlist[tii] = +f_o_no;
+					}
+					post("\nassigning midi scope for connection",i,"from block",f_number,"the voices are",sidebar.scopes.midivoicelist,"and the outs are",sidebar.scopes.midioutlist);
+					//assign_midi_scope("connection",i,m_index);
 					sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 				}else if(f_type=="audio"){
 					//post("assigning connection audio scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");

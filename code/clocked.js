@@ -467,21 +467,18 @@ function sidebar_midi_scope(){
 	r =0;
 	//actually need to iterate over all voices/outputs?
 	//but there are flags for if you need to bother drawing
-	vl = sidebar.scopes.midivoicelist; //voicemap.get(sidebar.selected);
-	//if(!Array.isArray(vl)) vl = [vl];
-	var vout = 0;
 	var vi,cha=0;
-	for(vi=0;vi<vl.length;vi++){
-		if(midi_scopes_change_buffer.peek(1,(vl[vi]*128 + vout))>0){
+	for(vi=0;vi<sidebar.scopes.midivoicelist.length;vi++){
+		if(midi_scopes_change_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi]))>0){ 
 			cha +=1;
-			midi_scopes_change_buffer.poke(1,(vl[vi]*128 + vout),0);
+			midi_scopes_change_buffer.poke(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi]),0);
 		}
 	}
 	if(cha>0){
 		lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
 		lcd_main.message("frgb",sidebar.scopes.fg);
-		for(vi = 0;vi<vl.length; vi++){
-			v = midi_scopes_buffer.peek(1,(vl[vi]*128 + vout)*128,128);
+		for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
+			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi])*128,128);
 			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
 			for(t=0;t<128;t++){
 				if(v[t]){

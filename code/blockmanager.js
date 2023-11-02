@@ -354,6 +354,7 @@ var sidebar = {
 		endy: 0,
 		voicelist : [-1, -1],
 		midivoicelist : [],
+		midioutlist : [],
 		midi : -1, //this is the target id for midi notes that you're watching
 		midinames : 1,
 		fg: [255,255,255],
