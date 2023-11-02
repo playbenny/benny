@@ -3938,10 +3938,17 @@ function draw_sidebar(){
 							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
 					}else{
-						if((listvoice+MAX_NOTE_VOICES) != sidebar.scopes.midi){
+		//				if((listvoice+MAX_NOTE_VOICES) != sidebar.scopes.midi){
 							//post(sidebar.scopes.midi,"s.s.m<<  >>listvoi",listvoice+MAX_NOTE_VOICES);
-							assign_midi_scope("voice",listvoice+MAX_NOTE_VOICES, 0);
-						}
+							//assign_midi_scope("voice",listvoice+MAX_NOTE_VOICES, 0);
+							sidebar.scopes.midi = block;
+							if(sidebar.selected_voice<0){
+								sidebar.scopes.midivoicelist = bvs;
+							}else{
+								sidebar.scopes.midivoicelist = [bvs[sidebar.selected.voice]];
+							}
+							post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist);
+		//				}
 					}
 				}
 				sidebar.selected = block;
@@ -5980,8 +5987,10 @@ function draw_sidebar(){
 				sidebar.selected = -1;
 
 				var tii;
-
+				// SHOULD THIS BE f_type?
 				if((t_type=="midi")||(t_type=="block")||(t_type=="parameters")){
+					//
+
 				//	deferred_diag.push("assigning midi scope block to connection output",t_number,"voice",t_i_v,"input",t_i_no,"fov",f_o_v,"\n");
 					// need to add 1023 to the midi routemap for every source voice
 					// use f_o_v + f_number to look up in voicemap
@@ -6698,7 +6707,10 @@ function draw_sidebar(){
 }
 
 function remove_midi_scope(){
-	if(sidebar.scopes.midi>-1){
+	post("\nremove midi scope called",sidebar.scopes.midi,"vl",sidebar.scopes.midivoicelist);
+	sidebar.scopes.midi = -1;
+	sidebar.scopes.midivoicelist = [];
+	/*	if(sidebar.scopes.midi>-1){
 		var z=[];
 		for(var i =0;i<128;i++)z[i]=0;
 		midi_scope_buffer.poke(1,0,z);// clear buffer
@@ -6709,16 +6721,17 @@ function remove_midi_scope(){
 		messnamed("update_midi_routemap","bang");
 		sidebar.scopes.midi = -1;
 		sidebar.scopes.midivoicelist=[];
-	}
+	}*/
 }
 
 function assign_midi_scope(typ,num, props){
-	if(typ=="block"){
+	post("\nassign_midi_ scope called but is disabledd",typ,num,props);
+/*	if(typ=="block"){
 		// this would be more complicated - add to all
 		var vl = voicemap.get(num);
 		if(!Array.isArray(vl)) vl=[vl];
 		for(var i=0;i<vl.length;i++){
-			assign_midi_scopes("voice",vl[i],props);
+			assign_ midi_scopes("voice",vl[i],props);
 		}
 	}else if(typ=="voice"){
 		sidebar.scopes.midi = num;
@@ -6751,7 +6764,7 @@ function assign_midi_scope(typ,num, props){
 			set_conversion(c_ind,enab,4,scale,offn,offv,vect,0);			
 		}
 		messnamed("update_midi_routemap","bang");
-	}
+	}*/
 }
 
 function do_automap(type, voice, onoff, name){

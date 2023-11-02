@@ -433,33 +433,32 @@ function sidebar_meters(){
 		}
 	}
 
-	if(sidebar.mode == "block"){
-		if(sidebar.scopes.voice>-1) sidebar_scopes();
-		if(sidebar.scopes.midi>-1) sidebar_midi_scope();
+	if(sidebar.scopes.voice>-1) sidebar_scopes();
+	if(sidebar.scopes.midi>-1) sidebar_midi_scope();
+/*	if(sidebar.mode == "block"){
 	}else if(sidebar.mode == "wire"){
 		if(sidebar.scopes.voice>-1) sidebar_scopes();
 		if(sidebar.scopes.midi>-1) sidebar_midi_scope();
 	}else if((sidebar.mode == "output_scope")||(sidebar.mode == "input_scope")){
 		if(sidebar.scopes.voice>-1) sidebar_scopes();
-	}
+	}*/
 }
 
 function sidebar_midi_scope(){
 	var t,v,sx,sy;
 	var x1,y1,x2,y2;
 	var ly=1,llx=-100;
-	var show = sidebar.scopes.midinames;
 	x1 = sidebar.x;
 	y1 = sidebar.scopes.starty;
 	x2 = mainwindow_width-9;
 	y2 = sidebar.scopes.endy;
-	if(sidebar.scopes.voice>-1){
+/*	if(sidebar.scopes.voice>-1){
 		//if it's also displaying an audio scope, move this one down a bit
 		t = fontheight*2.1;
 		y1 += t;
 		y2 += t;
 		show = 0;
-	}
+	}*/
 	
 	sx = (x2-x1)/128;
 	sy = (y2-y1-2)/128;
@@ -468,8 +467,8 @@ function sidebar_midi_scope(){
 	r =0;
 	//actually need to iterate over all voices/outputs?
 	//but there are flags for if you need to bother drawing
-	vl = voicemap.get(sidebar.selected);
-	if(!Array.isArray(vl)) vl = [vl];
+	vl = sidebar.scopes.midivoicelist; //voicemap.get(sidebar.selected);
+	//if(!Array.isArray(vl)) vl = [vl];
 	var vout = 0;
 	var vi,cha=0;
 	for(vi=0;vi<vl.length;vi++){
@@ -485,20 +484,21 @@ function sidebar_midi_scope(){
 		v = midi_scopes_buffer.peek(1,(vl[vi]*128 + vout)*128,128);
 		//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
 		for(t=0;t<128;t++){
-			//v = midi_scope_buffer.peek(1,t);
-			if(Math.abs(v[t])>127){
-				if(r!=1)lcd_main.message("frgb",255,0,0);
-				r=1;
-				v[t]=127;
-			}else if(r==1){
-				lcd_main.message("frgb",sidebar.scopes.fg);
-			}
-			lcd_main.message("moveto", x1+t*sx, y2);
-			lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
-			if(show == 1){
-				if(t>llx+4){ly=1; llx=t;}else{ly++;}
-				lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
-				lcd_main.message("write", note_names[t]);
+			if(v[t]){
+				if(Math.abs(v[t])>127){
+					if(r!=1)lcd_main.message("frgb",255,0,0);
+					r=1;
+					v[t]=127;
+				}else if(r==1){
+					lcd_main.message("frgb",sidebar.scopes.fg);
+				}
+				lcd_main.message("moveto", x1+t*sx, y2);
+				lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
+				if(sidebar.scopes.midinames == 1){
+					if(t>llx+4){ly=1; llx=t;}else{ly++;}
+					lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
+					lcd_main.message("write", note_names[t]);
+				}
 			}
 		}
 	}
