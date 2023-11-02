@@ -420,13 +420,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								process_drag_selection();
 								selection_cube.enable = 0;
 								redraw_flag.flag |= 12; //4
-							}else{
-							//	deferred_diag[deferred_diag.length] = "it was just a drag, don't do anything else";
 							}
-							//set clicked3d to -3? then the picker event has to trigger a whole thing?
 						}
 					}
-					if(usermouse.timer<0){
+					if(usermouse.timer<0){ // reset background longpress
 						usermouse.timer = 0;
 						usermouse.long_press_function = null;
 					}
