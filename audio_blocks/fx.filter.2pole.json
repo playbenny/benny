@@ -8,7 +8,8 @@
 		"upsample" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio in", "cutoff" ]
+				"audio" : [ "audio in", "cutoff" ],
+				"midi" : [ "notes" ]
 			},
 			"out" : {
 				"audio" : [ "lp/hp", "bp" ]
@@ -58,7 +59,7 @@
 				"type" : "float",
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.75
 			}	
 		]
 	}
