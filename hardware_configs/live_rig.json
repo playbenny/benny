@@ -186,15 +186,15 @@
 				}
 			}
 		},
-		"hardware.filter.gyrinx" : 			{
+		"hardware.fx_boy" : 			{
 			"type" : "hardware",
-			"help_text": "g storm Xavcf",
+			"help_text": "FX boy!",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
-			"substitute" : "fx.filter.2pole",
+			"substitute" : "fx.wavefold",
 			"connections" : {
 				"in" : {
-					"hardware" : [ "in", "cutoff" ],
+					"hardware" : [ "in", "X" ],
 					"hardware_channels" : [ 3,4 ]
 				},
 				"out" : {
