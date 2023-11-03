@@ -1183,8 +1183,11 @@ function draw_wire(connection_number){
 				to_cornervector = [0, -0.2, 0];
 				to_anglevector = [0, -0.2, 0];
 			//}
-			
-			if((dist<4.5)&&(cfrom!=cto)) corners = [0,0];
+			var segments_to_use = MAX_BEZIER_SEGMENTS;
+			if((dist<4.5)&&(cfrom!=cto)){
+				corners = [0,0];
+				segments_to_use = 3; //flag for short wires - use less segments.
+			} 
 			var bez_prep=[];
 			for(t=0;t<6;t++){
 				bez_prep[t] = new Array(3);
@@ -1564,7 +1567,17 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, MAX_BEZIER_SEGMENTS, bez_prep, cmute, visible);	
+					segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute, visible);	
+				}
+			}
+		}
+		if(Array.isArray(wires[connection_number])){
+			if(segment<wires[connection_number].length){
+				//remove wires
+				for(var sr = wires[connection_number].length-1;sr>=segment;sr--){
+					wires[connection_number][sr].freepeer();
+					wires[connection_number].pop();
+					//wires[connection_number][sr].enable = 0;
 				}
 			}
 		}
@@ -1613,22 +1626,23 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		rotz=0;
 	}else{
 		seglength = Math.sqrt(seglength);
-		var rotY = -Math.acos(pos_dif[2]/seglength);
+		var rotY = (7.8540-Math.acos(pos_dif[2]/seglength)) % 6.28;
 		var rotZ = Math.atan(pos_dif[1]/pos_dif[0]);
 	
 		if(from_pos[0]<=to_pos[0]) rotY	= -rotY;
+		post("\nroty",rotY,"rotz",rotZ);
 		rotZ *= 57.29577951; //180/Math.PI;
 		rotY *= 57.29577951; //180/Math.PI;
 	}
 	if(typeof wires[connection_number][segment] === 'undefined') {
 		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","mainwindow");
-		wires[connection_number][segment].shape = "opencylinder";
+		wires[connection_number][segment].shape = "plane";//"opencylinder";
 		wires[connection_number][segment].name = "wires-"+connection_number+"-"+segment;
-		wires[connection_number][segment].dim = [5, 2]; //[3,2]cyl is ribbons, [5,2] cuboids
+		wires[connection_number][segment].dim = [2,2];//[5, 2]; //[3,2]cyl is ribbons, [5,2] cuboids
 		//wires[connection_number][segment].blend_enable = 1;
 	}
 	wires[connection_number][segment].position = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
-	wires[connection_number][segment].scale = [wire_diaX,wire_diaY, seglength*0.52];
+	wires[connection_number][segment].scale = [seglength*0.52, wire_diaX,wire_diaY];
 	wires[connection_number][segment].rotatexyz = [0, rotY, rotZ];
 	var tmc=0.4;
 	if(cmute) tmc -= 0.35*(segment*0.5==Math.floor(segment*0.5)); // stripey wires if muted

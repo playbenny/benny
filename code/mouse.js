@@ -55,15 +55,15 @@ function picker_hover_and_special(id){
 			if(bulgingwire!=-1){
 				for(var i=0;i<wires[bulgingwire].length;i++){
 					var ta = wires[bulgingwire][i].scale;
-					wires[bulgingwire][i].scale = [wire_diaX,wire_diaY,ta[2]];
+					wires[bulgingwire][i].scale = [ta[0], wire_diaX,wire_diaY];
 				}					
 			}
 			bulgingwire=thov[1];
 			bulgeamount=1;
 			for(var i=0;i<wires[bulgingwire].length;i++){
 				var ta = wires[bulgingwire][i].scale;
-				ta[0] = wire_diaX * (1 + bulgeamount);
-				ta[1] = wire_diaY * (1 + bulgeamount);
+				ta[1] = wire_diaX * (1 + bulgeamount);
+				ta[2] = wire_diaY * (1 + bulgeamount);
 				wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
 			}
 		}else if(thov[0]!="background"){
@@ -72,7 +72,7 @@ function picker_hover_and_special(id){
 				bulgeamount=0;
 				for(var i=0;i<wires[bulgingwire].length;i++){
 					var ta = wires[bulgingwire][i].scale;
-					wires[bulgingwire][i].scale = [wire_diaX,wire_diaY,ta[2]];
+					wires[bulgingwire][i].scale = [ta[0],wire_diaX,wire_diaY];
 				}
 				bulgingwire = -1;
 			}
@@ -263,7 +263,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
 									set_sidebar_mode("panel_assign");
-								}else{
+								}else if(usermouse.alt == 1){
 									set_sidebar_mode("flock");
 								}
 							}else if(mouse_click_values[usermouse.last.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE

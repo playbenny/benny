@@ -108,7 +108,7 @@ function blocks_paste(outside_connections){
 				}
 			}
 		}else{
-			clear_block_and_wire_selection();
+			clear_blocks_selection();
 			var new_blocks_indexes=[];
 			var paste_mapping = [];
 			for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
@@ -444,6 +444,7 @@ function clear_blocks_selection(){
 	redraw_flag.targetcount = 0;
 	sidebar.scopes.midi = -1;
 	sidebar.scopes.voice = -1;
+	if(sidebar.mode!="none") set_sidebar_mode("none");
 }
 
 function select_all(){
@@ -1479,28 +1480,19 @@ function flock_add_to_array(block,x,y,z){
 }
 
 function show_cpu_meter(){
-	if((selected.block_count>1) || (selected.wire_count>0)) clear_block_and_wire_selection();
+	if((selected.block_count>1) || (selected.wire_count>0)) clear_blocks_selection();
 	set_sidebar_mode("cpu");
 }
 
 function hw_meter_click(number,type){
 	post("\n you clicked a meter, type:",type,"number",number);
 	sidebar.scopes.voice = number;
-	clear_block_and_wire_selection();
+	clear_blocks_selection();
 	if(type == "in"){
 		set_sidebar_mode("input_scope");
 	}else if(type == "out"){
 		set_sidebar_mode("output_scope");
 	}
-}
-
-function clear_block_and_wire_selection() {
-	for (var i = 0; i < MAX_BLOCKS; i++) {
-		selected.block[i] = 0;
-		selected.wire[i] = 0;
-	}
-	sidebar.selected_voice=-1;
-	redraw_flag.flag |= 8;
 }
 
 function block_edit(parameter,value){
