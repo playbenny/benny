@@ -3,8 +3,22 @@ space - play
 escape - close out of sidebars, return to blocks screen
 tab - toggle between blocks and panels screens
 ` - panic, stops all held notes
-
 ctrl-space - load the next song in the set folder
+
+ctrl-click topbar buttons:
+panels -> panels edit mode (for moving/removing panels)
+blocks -> flock visualiser mode
+
+[SIDEBAR]
+sliders:
+scroll wheel or drag
++shift for fine
++shift+alt for extrafine
+
+hold ctrl hover over sliders on the sidebar to select the voice for editting
+
+ctrl-shift click - switch into mode to (un/)assign sliders to panel
+ctrl-alt click - switch into mode to (un/)assign slider to a flock axis
 
 [BLOCKS MODE]
 
@@ -14,12 +28,16 @@ ctrl-X - cut
 ctrl-V - paste (if nothing selected, pastes the blocks you copied. if you copied a single block, and the block selected is the same type, then paste pastes the parameters into your selected block. if a different single block is selected, paste swaps in the one you copied.)
 ctrl-alt-V - superpaste, which is like paste but duplicating any connections outside the copied blocks that the original source had. for example, you have keyboard->voice->hardware out, if you copy just the voice block, ctrl-alt-V would paste in a new voice block with the same connections to keyboard and hardware out. it works with more complicated sets of blocks and connections too.
 
+long-click the background - new block menu
+  (this is configurable, can be a plain click, double click, shift click etc, set in config.json)
+
+mouse scrollwheel or ctrl-drag the background - zoom
+
 ctrl-click a block - toggle mute
 
 shift-click blocks/connections - toggle selection
 
 B - new block menu
-
 R - arm record for selected blocks
 
 [PANELS MODE]
