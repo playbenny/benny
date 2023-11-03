@@ -3006,7 +3006,27 @@ function draw_topbar(){
 	draw_cpu_meter();
 
 
-	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
+	x_o = 1.2 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
+
+	if(recording_flag){
+		click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
+		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );
+		if(!recording){
+			lcd_main.message("paintoval", 11 + fontheight*x_o, 11, 7+fontheight*(x_o+1), 7+fontheight,0,0,0);
+			lcd_main.message("frgb" , 255,58,50);
+		}else{
+			lcd_main.message("frgb" , 0,0,0);
+		}
+		lcd_main.message("moveto", 9 + fontheight*(x_o+0.25), 9+fontheight*0.75);
+		lcd_main.message("write", "rec");
+	
+		// only need to draw resync if you're playing
+		mouse_click_actions[mouse_index] = record_button;
+		mouse_click_parameters[mouse_index] = "";
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+		x_o+=1.1;
+	}	
 	click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
 	if(!playing){
 		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,menudarkest );
@@ -6403,9 +6423,9 @@ function draw_sidebar(){
 					mouse_click_parameters[mouse_index] = 0;
 					mouse_click_values[mouse_index] = 1;	
 					mouse_index++;
-					lcd_main.message("moveto" ,sidebar.x + fontheight*4, fontheight*0.5+y_offset);
+					lcd_main.message("moveto" ,sidebar.x + fontheight*3.8, fontheight*0.5+y_offset);
 					lcd_main.message("write", "rec");
-					lcd_main.message("moveto" ,sidebar.x + fontheight*4, fontheight*0.75+y_offset);
+					lcd_main.message("moveto" ,sidebar.x + fontheight*3.8, fontheight*0.75+y_offset);
 					lcd_main.message("write", "arm");
 				}
 				

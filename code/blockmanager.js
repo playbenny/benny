@@ -54,6 +54,8 @@ var scale_2d = 1;
 var displaymode = "loading";
 var custom_block = -1; //block no for custom screen pages
 var playing = 0;
+var recording = 0;
+var recording_flag = 0;
 var playflag = 0;
 
 var meters_enable = 0;

@@ -1100,6 +1100,12 @@ function move_selected_blocks(dx,dy){
 	draw_blocks();
 }
 
+function record_button(){
+	post("\nYOU PRESSED RECORD");
+	recording = 1-recording;
+	redraw_flag.flag |= 2;
+}
+
 function arm_selected_blocks(){
 	if(usermouse.ctrl){
 		for(var b=0;b<MAX_BLOCKS;b++){
@@ -1138,6 +1144,7 @@ function set_block_record_arm(block,x){
 			post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
 		}
 	}
+	recording_flag = record_arm.indexOf(1)!=-1;
 }
 
 function cycle_block_mode(block,setting){
