@@ -3355,7 +3355,7 @@ function draw_sidebar(){
 	}
 	var has_params=0;
 	var block;
-	if((sidebar.mode!="none")||((selected.block_count+selected.wire_count)>0)){
+	if(/*(sidebar.mode!="none")||*/((selected.block_count+selected.wire_count)>0)){
 		click_rectangle(sidebar.x,0,mainwindow_width,mainwindow_height,0,1); //was 0);
 		mouse_click_actions[0] = do_nothing;
 		mouse_click_parameters[0] = "";
