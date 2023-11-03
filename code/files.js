@@ -339,7 +339,7 @@ function import_song(){
 						//need to go through all connections, if connected to this block and type = hardware,
 						//adjust to type = audio.
 						var con_l = songs.getsize(songlist[currentsong]+"::connections");
-						for(;con_l-- >0;){
+						for(;con_l-- >=0;){
 							if(songs.contains(songlist[currentsong]+"::connections["+con_l+"]::from")){
 								if((songs.get(songlist[currentsong]+"::connections["+con_l+"]::from::number")==b)&&(songs.get(songlist[currentsong]+"::connections["+con_l+"]::from::output::type")=="hardware")){
 									songs.replace(songlist[currentsong]+"::connections["+con_l+"]::from::output::type","audio");
@@ -1042,7 +1042,7 @@ function clear_everything(){
 
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
-	for(;i--;){
+	for(;i-->=0;){
 		is_flocked.push(0);
 	}
 	messnamed("update_midi_routemap","bang");

@@ -37,9 +37,9 @@
 				"default" : 0
 			},
 			{
-				"name" : "run while stopped",
+				"name" : "run while_stopped",
 				"type" : "menu_i",
-				"values" : ["play_only", "always"],
+				"values" : ["play only", "always"],
 				"wrap" : 0,
 				"default" : 0
 			}

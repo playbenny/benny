@@ -87,14 +87,15 @@ function new_block(block_name,x,y){
 	}
 	panelslider_visible[new_block_index] = [];
 	blocks.replace("blocks["+new_block_index+"]::label",block_name);
-//	var bln = block_name.split(".",4);
+
 	blocks.replace("blocks["+new_block_index+"]::type",type);
 	if(details.contains("default_polymode")){
 		blocks.replace("blocks["+new_block_index+"]::poly",details.get("default_polymode"));
 	}else{
 		blocks.replace("blocks["+new_block_index+"]::poly::stack_mode","1x");
 		blocks.replace("blocks["+new_block_index+"]::poly::choose_mode","cycle free");
-		blocks.replace("blocks["+new_block_index+"]::poly::steal_mode","oldest");		
+		blocks.replace("blocks["+new_block_index+"]::poly::steal_mode","oldest");
+		blocks.replace("blocks["+new_block_index+"]::poly::latching_mode","continuous");		
 	}
 	if(details.contains("panel::parameters")){
 		blocks.replace("blocks["+new_block_index+"]::panel::parameters",details.get("panel::parameters"));
@@ -2498,13 +2499,14 @@ function swap_block(block_name){
 		}
 		if(subv != o_subv){
 			var ts = blocks_cube[block_menu_d.swap_block_target].length;
-			for(;--ts;){
+			for(;--ts>=0;){
+				post("\nTS ",ts,"if this doesn't get to zero there's a bug");
 				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
 				blocks_cube[block_menu_d.swap_block_target][ts].freepeer(); //enable = 0;
 				blocks_cube[block_menu_d.swap_block_target].pop(); //= null;
 			}
 			ts = blocks_meter[block_menu_d.swap_block_target].length;
-			for(;--ts;){
+			for(;--ts>=0;){
 				blocks_meter[block_menu_d.swap_block_target][ts].freepeer(); //enable = 0;
 			}
 			blocks_meter[block_menu_d.swap_block_target].pop();			

@@ -211,7 +211,7 @@ function initialise_dictionaries(){
 		hardware_list[i] = "none";
 	}
 	
-	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
+	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
 	for(;i--;){
 		is_flocked.push(0);
@@ -252,6 +252,7 @@ function initialise_dictionaries(){
 		ui_poly.setvalue(i+1,"patchername","blank.ui");
 		selected.block[i]=0;
 		selected.wire[i]=0;
+		record_arm[i]=0;
 	}
 	still_checking_polys = 0;
 	audio_to_data_poly.setvalue(0, "vis_meter", 0);

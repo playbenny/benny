@@ -500,7 +500,7 @@ function select_voice(parameter,value){
 }
 
 function show_new_block_menu(){
-	usermouse
+	clear_blocks_selection();
 	blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
 	usermouse.clicked3d=-1;
 	usermouse.timer = 0;
@@ -1100,6 +1100,46 @@ function move_selected_blocks(dx,dy){
 	draw_blocks();
 }
 
+function arm_selected_blocks(){
+	if(usermouse.ctrl){
+		for(var b=0;b<MAX_BLOCKS;b++){
+			set_block_record_arm(b,0);
+		}		
+	}
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(selected.block[b]) set_block_record_arm(b,-1);
+	}
+}
+
+function set_record_arm(block,x){
+	if(usermouse.ctrl){
+		for(var b=0;b<MAX_BLOCKS;b++){
+			set_block_record_arm(b,0);
+		}		
+	}
+	set_block_record_arm(block,x);
+}
+
+function set_block_record_arm(block,x){
+	var tt = blocks.get("blocks["+block+"]::type");
+	if((tt=="audio")||(tt=="hardware")){
+		if(x==0){
+			record_arm[block] = 0;
+		}else if(x==1){
+			record_arm[block] = 1;
+		}else{
+			record_arm[block] = 1 - record_arm[block];
+		}
+		redraw_flag.flag |= 10;
+		var vl = voicemap.get(block);
+		if(!Array.isArray(vl)) vl = [vl];
+		post("\ni should now tell all voices of block X to toggle their record arm status. both the wrapper blocks doing the recording and the texture display");
+		for(var i =0; i<vl.length;i++){
+			post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
+		}
+	}
+}
+
 function cycle_block_mode(block,setting){
 	var target = "blocks["+block+"]::";
 	var p;
@@ -1126,6 +1166,12 @@ function cycle_block_mode(block,setting){
 		p = flock_modes.indexOf(blocks.get(target));
 		p = (p+1) % flock_modes.length;
 		blocks.replace(target,flock_modes[p]);
+	}else if(setting=="latching"){
+		target = target+"poly::latching_mode";
+		p = latching_modes.indexOf(blocks.get(target));
+		p = (p+1) % latching_modes.length;
+		blocks.replace(target,latching_modes[p]);
+		//need to tell the voices
 	}
 	redraw_flag.flag |= 2;
 }
@@ -1328,18 +1374,17 @@ function connection_edit(parameter,value){
 
 function connection_mute_selected(parameter,value){
 	var i=connections.getsize("connections");
-	post("\nmute sel conns",i,parameter,value);
+	//post("\nmute sel conns",i,parameter,value);
 	if(parameter==0){//unmute all
-		for(;i>0;--i){
-			post(i);
+		for(;i>=0;--i){
 			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",0)
 		}	
 	}else if(parameter==1){ //mute all
-		for(;i>0;--i){
+		for(;i>=0;--i){
 			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",1)
 		}	
 	}else if(parameter==-1){ //toggle all
-		for(;i>0;--i){
+		for(;i>=0;--i){
 			m=connections.get("connections["+i+"]::conversion::mute");
 			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",!m)
 		}	
@@ -1350,7 +1395,7 @@ function connection_scale_selected(parameter,value){
 	if(value == "get") return 0;
 	var adj = 1 + value; //eg param is the mouse scroll wheel value, +-
 	var i=connections.getsize("connections");
-	for(;i>0;--i){
+	for(;i>=0;--i){
 		if(selected.wire[i]){
 			var os=connections.get("connections["+i+"]::conversion::scale");
 			connection_edit("connections["+i+"]::conversion::scale",os*adj);

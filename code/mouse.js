@@ -380,6 +380,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
 								//redraw_flag.flag=8;
+								if(BLOCK_MENU_CLICK_ACTION=="long_click"){
+									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
+									usermouse.timer = 0;
+									usermouse.long_press_function = null;
+								}
 							}else{
 								var showmenu =0;
 								//there are options for how to bring up the menu, so we go through and see if they're true for the various modes, then decide whether to trigger the menu (1)
@@ -1091,17 +1096,16 @@ function keydown(key){
 				}else if(sidebar.mode == "blocks"){
 					multiselect_polychange(1);
 				}
-			}else if(key == 98){
+			}else if(key == 98){ // B
 				//new_block_menu
 				blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
 				usermouse.clicked3d=-1;
 				block_menu_d.mode = 0;
-				if(sidebar.mode=="file_menu"){
-					set_sidebar_mode("none");
-					center_view(1);
-				}else{
-					set_display_mode("block_menu");
-				}
+				show_new_block_menu();
+				//set_display_mode("block_menu");
+			}else if((key == 114)||(key == 370)){ // R or ctrl R
+				//record arm
+				arm_selected_blocks();
 			}else if(key == 353){
 				select_all();
 			}else if(key == 355){

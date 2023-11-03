@@ -40,7 +40,7 @@ function draw_block_texture(block){
 	if(block_label!==null){
 		var block_mute = blocks.get("blocks["+block+"]::mute");
 		var block_bypass = blocks.get("blocks["+block+"]::bypass");
-		var ts = block_label + block_mute + block_bypass;
+		var ts = block_label + block_mute + block_bypass + record_arm[block];
 		//post("mute is",block_mute);
 		//var ts = "m"+block_mute +"-"+ block_label;
 		//post("\n\nTS IS ",ts);
@@ -61,6 +61,12 @@ function draw_block_texture(block){
 				lcd_block_textures.message("frgb",128,128,128);
 				lcd_block_textures.message("paintpoly", 8,8, 8, 32, 96, 120, 120, 120, 120, 96, 32, 8, 8,8);
 				lcd_block_textures.message("paintpoly", 64, 120, 120, 120, 120, 64, 64, 120);
+			}
+			if(record_arm[block]){
+				lcd_block_textures.message("frgb",255,255,255);
+				lcd_block_textures.message("paintoval", 94,6,122,34);
+				lcd_block_textures.message("frgb",255,58,50);
+				lcd_block_textures.message("paintoval", 96,8,120,32);
 			}
 			lcd_block_textures.message("frgb",255,255,255);
 			lcd_block_textures.message("font","consolas",25);
