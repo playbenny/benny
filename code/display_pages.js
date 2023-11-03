@@ -1011,7 +1011,6 @@ function draw_blocks(){
 }
 
 function draw_wire(connection_number){
-	//post("draw wire",connection_number,"\n");
 	var t;
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
 		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
@@ -1050,9 +1049,7 @@ function draw_wire(connection_number){
 			}else{
 				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::parameters");
 			}
-			var from_pos,to_pos;
-			var from_anglevector,to_anglevector;
-			var from_corner, to_corner, from_cornervector, to_cornervector;
+			var from_pos,to_pos, from_anglevector,to_anglevector;
 			var from_colour = config.get("palette::connections::"+from_type);
 			var to_colour = config.get("palette::connections::"+to_type);
 			from_colour[0] = from_colour[0]*0.003921;// /255;
@@ -1100,8 +1097,8 @@ function draw_wire(connection_number){
 			var to_list = [];
 			var tv=0,fv=0,tl;
 			var from_subvoices=1, to_subvoices=1;
-			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices")))from_subvoices=blocks.get("blocks["+cfrom+"]::subvoices");
-			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices")))to_subvoices=blocks.get("blocks["+cto+"]::subvoices");
+			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices"))) from_subvoices = blocks.get("blocks["+cfrom+"]::subvoices");
+			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices"))) to_subvoices = blocks.get("blocks["+cto+"]::subvoices");
 			
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
 				fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
@@ -1144,49 +1141,18 @@ function draw_wire(connection_number){
 					}
 				}else {
 					tv=1;
-					to_pos[0] += 0.5*(tl-1)/to_subvoices;// + tconx * 0.4; 
+					to_pos[0] += 0.5*(tl-1)/to_subvoices;
 				}
 			}
 
 			if(is_empty(wires[connection_number])) wires[connection_number] = [];
 			if(is_empty(wires_colours[connection_number])) wires_colours[connection_number] = [];
 			
-			// if it doubles back on itself in any way it needs a corner in the wire at each end.
-			var corners = [0,0];
-			
-			/*if((to_pos[1]>=from_pos[1])){ //THIS SETS UP CORNERS IF THE CABLE SHOULD GO ROUND A BLOCK BUT IT NEVER WORKED
-				from_anglevector = [0, -0.2, 0];
-				corners[0] = 1;
-				if(to_pos[0]>from_pos[0]){
-					from_corner = [from_pos[0] + 0.33 + 0.5 * fv, from_pos[1]-0.33, from_pos[2]];
-					from_cornervector = [0.2, 0, 0];//[0.44, 0, 0];
-				}else{
-					from_corner = [from_pos[0] - 0.33, from_pos[1]-0.33, from_pos[2]];
-					from_cornervector = [-0.2, 0, 0];//[-0.44, 0, 0];
-				}
+			from_anglevector = [0, -0.4, 0];
+			to_anglevector = [0, -0.4, 0];
 
-				to_anglevector = [0, -0.2, 0];
-				corners[1]=1;
-				if(to_pos[0]<from_pos[0]){
-					to_corner = [to_pos[0]+0.33+0.5*tv, to_pos[1]+0.33, to_pos[2]];
-					to_cornervector = [-0.2,0,0];//[-0.33, 0, 0];
-				}else{
-					to_corner = [to_pos[0]-0.33, to_pos[1]+0.33, to_pos[2]];
-					to_cornervector = [0.2, 0, 0];
-				}
-
-			}else{*/
-				from_corner = [from_pos[0],from_pos[1] - 0.33,from_pos[2]];
-				from_cornervector = [0, -0.2, 0];
-				from_anglevector = [0, -0.2, 0];
-
-				to_corner = [to_pos[0],to_pos[1]+0.5,to_pos[2]];
-				to_cornervector = [0, -0.2, 0];
-				to_anglevector = [0, -0.2, 0];
-			//}
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
 			if((dist<4.5)&&(cfrom!=cto)){
-				corners = [0,0];
 				segments_to_use /= 4; //flag for short wires - use less segments.
 			}else if((dist<9)&&(from_pos[1]<to_pos[1])){
 				segments_to_use /= 2;
@@ -1197,32 +1163,25 @@ function draw_wire(connection_number){
 				bez_prep[t] = new Array(3);
 			}
 			segment=0;
-			//so. if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
+			// old code was: if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
 			// many-blob-corner-one, many-corner-blob-corner-many, one-corner-blob-many
 			var blob_position = [];
 			var meanvector = [0,0,0];
 
-			from_corner[2] = from_pos[2];
-			to_corner[2]= to_pos[2];
-			blob_position[0] = ((from_pos[0] + to_pos[0])*0.5);//((from_corner[0] + to_corner[0])*0.5);
-			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);// ((from_corner[1] + to_corner[1])*0.5);
-			meanvector[0] = from_corner[0] - to_corner[0];
-			meanvector[1] = from_corner[1] - to_corner[1];
+			blob_position[0] = ((from_pos[0] + to_pos[0])*0.5);
+			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
+			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
+			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -0.3*Math.max(0,mvl-2);//1 - minz;
-			from_corner[2] += blob_position[2]*0.75;
-			to_corner[2] += blob_position[2]*0.75;
+			blob_position[2] =  -0.3*Math.max(0,mvl-2);
 			var mv3=mvl*0.05;
 			
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
-			//post("bp",blob_position[2]);
 			mvl = mvl - mv3;
 			from_anglevector = [from_anglevector[0]*mvl,from_anglevector[1]*mvl,from_anglevector[2] + blob_position[2] * 0.5];
 			to_anglevector = [to_anglevector[0]*mvl,to_anglevector[1]*mvl,to_anglevector[2] - blob_position[2] * 0.5];
-			from_cornervector[2] += blob_position[2]*0.5;
-			to_cornervector[2] -= blob_position[2]*0.5;
 
 			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
 			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
@@ -1237,256 +1196,92 @@ function draw_wire(connection_number){
 				for(t=0;t<from_list.length;t++){
 					i = from_list[t];
 					mtot += i;
-					//if(i<minz)minz=i;
 				}
 				for(t=0;t<to_list.length;t++){
 					i = to_list[t];
 					mtot+=i;
-					//if(i<minz)minz=i;
 				}
 				
 				minz = 0.5*mtot/(from_list.length+to_list.length);
-				blob_position[0] += minz; //((from_corner[0] + to_corner[0])*0.5);
-				//	minz += 0.5*(fp+tp);
+				blob_position[0] += minz;
 
 				if((from_multi)&&(to_multi>0)){ 
-					if(corners[0]){ //many-corner(many)-blob-  then later i'll do -?corner(many)?-many
-						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5*(from_list[i]-1)/from_subvoices+0.4*fconx + 0.55;
-							//from_corner[2] = (1 - from_list[i]+fconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = from_pos[t];
-								bez_prep[1][t] = from_pos[t]+from_anglevector[t];
-								bez_prep[2][t] = from_corner[t]-from_cornervector[t];
-								bez_prep[3][t] = from_corner[t];
-								bez_prep[4][t] = from_colour[t];
-								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
+					for(i=0;i<from_list.length;i++){
+						from_pos[0] = fp + 0.5*(from_list[i]-1)/from_subvoices + 0.4*fconx + 0.55;
+						for(t=0;t<3;t++){
+							bez_prep[0][t] = from_pos[t];
+							bez_prep[1][t] = from_pos[t]+from_anglevector[t];
+							bez_prep[2][t] = blob_position[t]-meanvector[t];
+							bez_prep[3][t] = blob_position[t];
+							bez_prep[4][t] = from_colour[t];
+							bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 						}
-						for(i=0;i<from_list.length;i++){
-							//from_pos[2] = 1 - from_list[i]+fconx;
-							//from_corner[2] = (1 - from_list[i]+fconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = from_corner[t];
-								bez_prep[1][t] = from_corner[t]+from_cornervector[t];
-								bez_prep[2][t] = blob_position[t]-meanvector[t];
-								bez_prep[3][t] = blob_position[t];
-								bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
-								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
-						}
-					}else{ //many-blob- then later ?corner?-many
-						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5*(from_list[i]-1)/from_subvoices + 0.4*fconx + 0.55;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = from_pos[t];
-								bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
-								bez_prep[2][t] = blob_position[t]-meanvector[t];
-								bez_prep[3][t] = blob_position[t];
-								bez_prep[4][t] = from_colour[t];
-								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
-						}
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
 					}
 					// this is the first half
-					if(corners[1]){//blob-corner(many)-many
-						for(i=0;i<to_list.length;i++){
-							//to_pos[0] = tp + 0.5*to_list[i] + 0.25*tconx;
-							//to_corner[2] = (1 - to_list[i]+tconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = blob_position[t];
-								bez_prep[1][t] = blob_position[t]+meanvector[t];
-								bez_prep[2][t] = to_corner[t]-to_cornervector[t];
-								bez_prep[3][t] = to_corner[t];
-								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
-								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
+					for(i=0;i<to_list.length;i++){
+						to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
+						for(t=0;t<3;t++){
+							bez_prep[0][t] = blob_position[t];
+							bez_prep[1][t] = blob_position[t]+meanvector[t];
+							bez_prep[2][t] = to_pos[t]-to_anglevector[t];
+							bez_prep[3][t] = to_pos[t];
+							bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
+							bez_prep[5][t] = to_colour[t];
 						}
-						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
-							//to_corner[2] = (1 - to_list[i]+tconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = to_corner[t];
-								bez_prep[1][t] = to_corner[t]+to_cornervector[t];
-								bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-								bez_prep[3][t] = to_pos[t];
-								bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-								bez_prep[5][t] = to_colour[t];
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
-						}
-					}else{ //blob-no corner many
-						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = blob_position[t];
-								bez_prep[1][t] = blob_position[t]+meanvector[t];
-								bez_prep[2][t] = to_pos[t]-2*to_anglevector[t];
-								bez_prep[3][t] = to_pos[t];
-								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
-								bez_prep[5][t] = to_colour[t];
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
-						}
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
 					}
 				}else if(from_multi){  //only from is multi, so many-blob-corner-one, this is the same whether its got a corner[0] or not as the blob is the corner
-					if(corners[0]){ //many-corner(many)-blob-  then later i'll do -?corner(many)?-many
-						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5 * (from_list[i]-1)/from_subvoices+ 0.4 * fconx + 0.55;
-							//from_corner[2] = (1 - from_list[i]+fconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = from_pos[t];
-								bez_prep[1][t] = from_pos[t]+from_anglevector[t];
-								bez_prep[2][t] = from_corner[t]-from_cornervector[t];
-								bez_prep[3][t] = from_corner[t];
-								bez_prep[4][t] = from_colour[t];
-								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
+					for(i=0;i<from_list.length;i++){
+						from_pos[0] = fp + 0.5 * (from_list[i]-1)/from_subvoices + 0.4 * fconx + 0.55;
+						for(t=0;t<3;t++){
+							bez_prep[0][t] = from_pos[t];
+							bez_prep[1][t] = from_pos[t]+from_anglevector[t];
+							bez_prep[2][t] = blob_position[t]-meanvector[t];
+							bez_prep[3][t] = blob_position[t];
+							bez_prep[4][t] = from_colour[t];
+							bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 						}
-						for(i=0;i<from_list.length;i++){
-							//from_pos[2] = 1 - from_list[i]+fconx;
-							//from_corner[2] = (1 - from_list[i]+fconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = from_corner[t];
-								bez_prep[1][t] = from_corner[t]+from_cornervector[t];
-								bez_prep[2][t] = blob_position[t]-meanvector[t];
-								bez_prep[3][t] = blob_position[t];
-								bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
-								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
-						}
-					}else{ //many-blob- then later ?corner?-many
-						for(i=0;i<from_list.length;i++){
-							from_pos[0] = fp + 0.5 * (from_list[i]-1)/from_subvoices + 0.4 * fconx + 0.55;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = from_pos[t];
-								bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
-								bez_prep[2][t] = blob_position[t]-meanvector[t];
-								bez_prep[3][t] = blob_position[t];
-								bez_prep[4][t] = from_colour[t];
-								bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
-						}
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
 					}
 					if(to_multi<0){
 						to_pos[0] += -0.4 + 0.8 * tconx;
 					}else{
 						to_pos[0] += 0.55 + 0.4 * tconx;
 					}
-					if(corners[1]){	
-						//if(to_type=="hardware") post("hw conn,",tconx);
-						for(t=0;t<3;t++){
-							bez_prep[0][t] = blob_position[t];
-							bez_prep[1][t] = blob_position[t]+meanvector[t];
-							bez_prep[2][t] = to_corner[t]-to_cornervector[t];
-							bez_prep[3][t] = to_corner[t]
-							bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
-						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
-						for(t=0;t<3;t++){
-							bez_prep[0][t] = to_corner[t];
-							bez_prep[1][t] = to_corner[t]+to_cornervector[t];//+from_anglevector[t];
-							bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-							bez_prep[3][t] = to_pos[t];
-							bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-							bez_prep[5][t] = to_colour[t];
-						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);		
-					}else{
-						for(t=0;t<3;t++){
-							bez_prep[0][t] = blob_position[t];
-							bez_prep[1][t] = blob_position[t]+meanvector[t];
-							bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-							bez_prep[3][t] = to_pos[t];
-							bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-							bez_prep[5][t] = to_colour[t];
-						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);		
+					for(t=0;t<3;t++){
+						bez_prep[0][t] = blob_position[t];
+						bez_prep[1][t] = blob_position[t]+meanvector[t];
+						bez_prep[2][t] = to_pos[t]-to_anglevector[t];
+						bez_prep[3][t] = to_pos[t];
+						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
+						bez_prep[5][t] = to_colour[t];
 					}
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);		
 				}else{ // one-corner-blob-many //ie to_multi==1
 					to_pos[0] += 0.55 + 0.4 * tconx;
 					from_pos[0] += 0.55 + 0.4 * fconx;
-					if(corners[0]){
-						for(t=0;t<3;t++){
-							bez_prep[0][t] = from_pos[t];
-							bez_prep[1][t] = from_pos[t]+from_anglevector[t];
-							bez_prep[2][t] = from_corner[t]-from_cornervector[t];
-							bez_prep[3][t] = from_corner[t];
-							bez_prep[4][t] = from_colour[t];
-							bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);					
-						for(t=0;t<3;t++){
-							bez_prep[0][t] = from_corner[t];
-							bez_prep[1][t] = from_corner[t]+from_cornervector[t];
-							bez_prep[2][t] = blob_position[t]-meanvector[t];
-							bez_prep[3][t] = blob_position[t];
-							bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
-						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);					
-	
-					}else{
-						for(t=0;t<3;t++){
-							bez_prep[0][t] = from_pos[t];
-							bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
-							bez_prep[2][t] = blob_position[t]-meanvector[t];
-							bez_prep[3][t] = blob_position[t];
-							bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
-						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);					
-	
+					for(t=0;t<3;t++){
+						bez_prep[0][t] = from_pos[t];
+						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
+						bez_prep[2][t] = blob_position[t]-meanvector[t];
+						bez_prep[3][t] = blob_position[t];
+						bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
+						bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 					}
-
-					if(corners[1]){//blob-corner(many)-many
-						for(i=0;i<to_list.length;i++){
-							//to_pos[0] = tp + 0.375 + 0.5 * to_list[i] + 0.25 * tconx;
-							//to_corner[2] = (1 - to_list[i]+tconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = blob_position[t];
-								bez_prep[1][t] = blob_position[t]+meanvector[t];
-								bez_prep[2][t] = to_corner[t]-to_cornervector[t];
-								bez_prep[3][t] = to_corner[t];
-								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
-								bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);					
+	
+					for(i=0;i<to_list.length;i++){
+						to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
+						for(t=0;t<3;t++){
+							bez_prep[0][t] = blob_position[t];
+							bez_prep[1][t] = blob_position[t]+meanvector[t];
+							bez_prep[2][t] = to_pos[t]-to_anglevector[t];
+							bez_prep[3][t] = to_pos[t];
+							bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
+							bez_prep[5][t] = to_colour[t];
 						}
-						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5* (to_list[i]-1)/to_subvoices + 0.4 * tconx +0.55;
-							//to_corner[2] = (1 - to_list[i]+tconx+blob_position[2])*0.5;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = to_corner[t];
-								bez_prep[1][t] = to_corner[t]+to_cornervector[t];
-								bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-								bez_prep[3][t] = to_pos[t];
-								bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-								bez_prep[5][t] = to_colour[t];
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.25 , bez_prep, cmute, visible);
-						}
-					}else{ //blob-no corner many
-						for(i=0;i<to_list.length;i++){
-							to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
-							for(t=0;t<3;t++){
-								bez_prep[0][t] = blob_position[t];
-								bez_prep[1][t] = blob_position[t]+meanvector[t];
-								bez_prep[2][t] = to_pos[t]-2*to_anglevector[t];
-								bez_prep[3][t] = to_pos[t];
-								bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
-								bez_prep[5][t] = to_colour[t];
-							}
-							segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
-						}
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
 					}
 				}
 			}else{ // single wire
@@ -1496,83 +1291,15 @@ function draw_wire(connection_number){
 					to_pos[0] += 0.55 + 0.4 * tconx;
 				}
 				from_pos[0] += 0.4 * fconx + 0.55;
-				if(corners[0]&&corners[1]){
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = from_pos[t];
-						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
-						bez_prep[2][t] = from_corner[t]-from_cornervector[t];
-						bez_prep[3][t] = from_corner[t];
-						bez_prep[4][t] = from_colour[t];
-						bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);	
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = from_corner[t];
-						bez_prep[1][t] = from_corner[t]+from_cornervector[t];
-						bez_prep[2][t] = to_corner[t]-to_cornervector[t];
-						bez_prep[3][t] = to_corner[t];
-						bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
-						bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = to_corner[t];
-						bez_prep[1][t] = to_corner[t]+to_cornervector[t];
-						bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-						bez_prep[3][t] = to_pos[t];
-						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-						bez_prep[5][t] = to_colour[t];
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);	
-				}else if(corners[0]){
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = from_pos[t];
-						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
-						bez_prep[2][t] = from_corner[t]-from_cornervector[t];
-						bez_prep[3][t] = from_corner[t];
-						bez_prep[4][t] = from_colour[t];
-						bez_prep[5][t] = (from_colour[t]*3+to_colour[t])*0.35;
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);	
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = from_corner[t];
-						bez_prep[1][t] = from_corner[t]+from_cornervector[t];
-						bez_prep[2][t] = to_pos[t]-2*to_anglevector[t];
-						bez_prep[3][t] = to_pos[t];
-						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-						bez_prep[5][t] = to_colour[t];
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.75, bez_prep, cmute, visible);	
-				}else if(corners[1]){
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = from_pos[t];
-						bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
-						bez_prep[2][t] = to_corner[t]-to_cornervector[t];
-						bez_prep[3][t] = to_corner[t];
-						bez_prep[4][t] = from_colour[t];
-						bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.75, bez_prep, cmute, visible);	
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = to_corner[t];
-						bez_prep[1][t] = to_corner[t]+to_cornervector[t];
-						bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-						bez_prep[3][t] = to_pos[t];
-						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
-						bez_prep[5][t] = to_colour[t];
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.25, bez_prep, cmute, visible);	
-				}else{
-					for(t=0;t<3;t++){
-						bez_prep[0][t] = from_pos[t];
-						bez_prep[1][t] = from_pos[t]+2*from_anglevector[t];
-						bez_prep[2][t] = to_pos[t]-2*to_anglevector[t];
-						bez_prep[3][t] = to_pos[t];
-						bez_prep[4][t] = from_colour[t];
-						bez_prep[5][t] = to_colour[t];
-					}
-					segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute, visible);	
+				for(t=0;t<3;t++){
+					bez_prep[0][t] = from_pos[t];
+					bez_prep[1][t] = from_pos[t]+from_anglevector[t];
+					bez_prep[2][t] = to_pos[t]-to_anglevector[t];
+					bez_prep[3][t] = to_pos[t];
+					bez_prep[4][t] = from_colour[t];
+					bez_prep[5][t] = to_colour[t];
 				}
+				segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute, visible);	
 			}
 			if(Array.isArray(wires[connection_number])){
 				if(segments_to_use<wires[connection_number].length){
