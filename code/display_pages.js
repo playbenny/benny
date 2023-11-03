@@ -1188,10 +1188,11 @@ function draw_wire(connection_number){
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
 			if((dist<4.5)&&(cfrom!=cto)){
 				corners = [0,0];
-				segments_to_use = 3 + (Math.abs(from_pos[1]-to_pos[1])>0.5)*4; //flag for short wires - use less segments.
+				segments_to_use /= 4; //flag for short wires - use less segments.
 			}else if((dist<9)&&(from_pos[1]<to_pos[1])){
 				segments_to_use /= 2;
 			}
+			segments_to_use = 4*(Math.max(1,Math.round(segments_to_use/4)));
 			var bez_prep=[];
 			for(t=0;t<6;t++){
 				bez_prep[t] = new Array(3);
