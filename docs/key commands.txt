@@ -8,6 +8,7 @@ ctrl-space - load the next song in the set folder
 ctrl-click topbar buttons:
 panels -> panels edit mode (for moving/removing panels)
 blocks -> flock visualiser mode
+record -> toggle both record and play
 
 [SIDEBAR]
 sliders:

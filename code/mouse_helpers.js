@@ -16,14 +16,12 @@ function play_button_click(){
 		messnamed("play",1);
 		playflag = 1;
 	}else{playflag = 0;}
-	//deferred_diag.push("PBC, flag = ",playflag);
 }
 
 function play_button_release(){
 	if((!playflag)&playing){
 		messnamed("play",0);
-		//deferred_diag.push("Y-PBR, flag",playflag,"play",playing);
-	}//else {deferred_diag.push("X-PBR, flag",playflag,"play",playing);}
+	}
 	playflag = 0;
 }
 
@@ -1101,8 +1099,10 @@ function move_selected_blocks(dx,dy){
 }
 
 function record_button(){
-	post("\nYOU PRESSED RECORD");
+	//post("\nYOU PRESSED RECORD");
 	recording = 1-recording;
+	messnamed("record",recording);
+	if(usermouse.ctrl) messnamed("play",recording);
 	redraw_flag.flag |= 2;
 }
 
@@ -1142,6 +1142,20 @@ function set_block_record_arm(block,x){
 		post("\ni should now tell all voices of block X to toggle their record arm status. both the wrapper blocks doing the recording and the texture display");
 		for(var i =0; i<vl.length;i++){
 			post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
+			var path = config.get("RECORD_FOLDER");
+			if(typeof songlist[currentsong] == 'undefined'){
+				path = path + "untitled";
+			}else{
+				path = path +songlist[currentsong];
+			}
+			var da = new Date();
+			path = path + "-" + (da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
+			post("\npath is ",path);
+			if(record_arm[block]){
+				audio_poly.setvalue(vl[i]+1-64,"filename",path);
+			}else{
+				audio_poly.setvalue(vl[i]+1-64,"filename","off");
+			}
 		}
 	}
 	recording_flag = record_arm.indexOf(1)!=-1;
