@@ -726,7 +726,7 @@ function block_meters_enable(enab){
 		for(i = meters_updatelist.midi.length-1; i>=0; i--){
 			block=meters_updatelist.midi[i][0];
 			voice=meters_updatelist.midi[i][1];
-			if(blocks_meter[block][voice] !== 'undefined'){	
+			if(typeof blocks_meter[block][voice] !== 'undefined'){	
 				blocks_meter[block][voice].enable = 0;
 			}
 		}
@@ -734,17 +734,15 @@ function block_meters_enable(enab){
 	for(i = meters_updatelist.hardware.length-1; i>=0; i--){
 		block=meters_updatelist.hardware[i][0];
 		voice=meters_updatelist.hardware[i][1];
-		if(blocks_meter[block][voice] !== 'undefined'){
+		if(typeof blocks_meter[block][voice] !== 'undefined'){
 			blocks_meter[block][voice].enable = enab;
 		}
 	}
 	for(i = meters_updatelist.meters.length-1; i>=0; i--){
 		voice = meters_updatelist.meters[i][1];
-		//if(voice !== 'undefined'){
 		block = meters_updatelist.meters[i][0];
-		//var polyvoice = meters_updatelist.meters[i][2];
 		for(tt=voice*NO_IO_PER_BLOCK;tt<(voice+1)*NO_IO_PER_BLOCK;tt++){
-			if(blocks_meter[block][tt] !== 'undefined'){	
+			if(typeof blocks_meter[block][tt] !== 'undefined'){	
 				blocks_meter[block][tt].enable = enab;
 			}
 		}
@@ -2681,7 +2679,6 @@ function draw_state_xfade(){
 }
 
 function draw_topbar(){
-	//deferred_diag.push("draw topbar"+mouse_index);
 	setfontsize(fontheight/3.2);
 	lcd_main.message("textface", "bold");
 	lcd_main.message("pensize", 2, 2);
@@ -2733,7 +2730,7 @@ function draw_topbar(){
 	draw_cpu_meter();
 
 
-	x_o = 1.2 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
+	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
 
 	if(recording_flag){
 		click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
