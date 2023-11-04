@@ -37,7 +37,16 @@ function panic_button(){
 	sigouts.setvalue(0,0); //clears midi-audio sig~
 	//for(i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
-
+function count_selected_blocks_and_wires(){
+	selected.block_count =0;
+	selected.wire_count = 0;
+	for(i=0;i<selected.block.length;i++){
+		selected.block_count += selected.block[i];
+	}
+	for(i=0;i<selected.wire.length;i++){
+		selected.wire_count += selected.wire[i];
+	}
+}
 function blocks_paste(outside_connections){
 //paste. should be clever - 
 // - if blocks are selected
@@ -46,15 +55,34 @@ function blocks_paste(outside_connections){
 // if not, paste in the blocks in the clipboard and their connections as new blocks
 // outside connections = 1 if it should also paste connections from outside the copied blocks
 	if(copy.contains("blocks")){
+		count_selected_blocks_and_wires();
 		var td = copy.get("blocks");
 		var copied_blocks = td.getkeys();
 		if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
-		if((selected.block.indexOf(1)>-1)&&(copied_blocks.length == 1)&&(!outside_connections)){
+		var copied_type = td.get(copied_blocks[0]+"::name");
+		var same = 0;
+		if((selected.block_count==1) && (copied_blocks.length==1) && (!outside_connections)){
+			//maybe the copied block is the same as the selected block, check
+			same = 1;
+			var selb = selected.block.indexOf(1);
+			if(copied_type != blocks.get("blocks["+selb+"]::name")){
+				same = 0;
+			}else{
+				//compare params!
+				var vals = copy.get("block_params::"+copied_blocks[0]);
+				var v2 = parameter_value_buffer.peek(1,selb*MAX_PARAMETERS,vals.length);
+				for(var pc=0;pc<vals.length;pc++){
+					if(v2[pc]!=vals[pc]) same = 0;
+				}
+				// i can't be bothered to compare settings who is ever going to do that
+			}
+		}
+		if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
 			//you could run through blocks in clipboard, but it'd get confusing
 			//so restricted to one.
-			//get type, see if any selected blocks are same type
+			//get type, first see if the block selected is the same as the copied one,
+			//if so, deselect, paste new copy. if not: see if any selected blocks are same type
 			//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
-			var copied_type = td.get(copied_blocks[0]+"::name");
 			for(var i=0; i<selected.block.length;i++){
 				if(selected.block[i]){
 					var ty = blocks.get("blocks["+i+"]::name");
@@ -112,13 +140,28 @@ function blocks_paste(outside_connections){
 			for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
 			for(var b=0;b<copied_blocks.length;b++){
 				var name = copy.get("blocks::"+copied_blocks[b]+"::name");
-				var px = td.get(copied_blocks[b]+"::space::x")+2.5;
-				var py = td.get(copied_blocks[b]+"::space::y")-0.25;
-				copy.replace("blocks::"+copied_blocks[b]+"::space::x",px);
-				copy.replace("blocks::"+copied_blocks[b]+"::space::y",py);
-				var new_block_index = new_block(name,px,py);
+				var excl = blocktypes.contains(name+"::exclusive");
+				if(excl){
+					for(i=0;i<MAX_BLOCKS;i++){
+						if(blocks.get("blocks["+i+"]::name") == name){
+							excl=2;
+							i=MAX_BLOCKS;
+						}
+					}
+				}
+				var new_block_index;
+				if(excl==2){
+					post("\ncan't paste this block, it's exclusive, only one instance is allowed.");
+					new_block_index = -1;
+				}else{
+					pasteoffset[0] += 2;
+					pasteoffset[1] -= 0.25;
+					var px = td.get(copied_blocks[b]+"::space::x")+pasteoffset[0];
+					var py = td.get(copied_blocks[b]+"::space::y")+pasteoffset[1];
+					new_block_index = new_block(name,px,py);
+				}
 				if(new_block_index==-1){
-					post("\nerror pasting, "+name+" not found");
+					if(excl!=2)post("\nerror pasting, "+name+" not found");
 				}else{
 					new_blocks_indexes.push(new_block_index);
 					paste_mapping[copied_blocks[b]] = new_block_index;
@@ -246,6 +289,7 @@ function blocks_paste(outside_connections){
 
 function copy_block(block){
 	//block itself 
+	pasteoffset = [0,0];
 	var tb = blocks.get("blocks["+block+"]");
 	copy.setparse("blocks::"+block,"{}");
 	copy.replace("blocks::"+block,tb);

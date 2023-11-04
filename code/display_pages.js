@@ -3077,19 +3077,12 @@ function draw_sidebar(){
 	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) sidebar.scroll.position = 0;
-	selected.block_count =0;
-	selected.wire_count = 0;
 	sidebar.panel = 0;	
 	var block_colour, block_dark, block_darkest;
 	var i,t;
 	var y_offset=0;
-//		redraw_flag.targets = [];
-	for(i=0;i<selected.block.length;i++){
-		selected.block_count += selected.block[i];
-	}
-	for(i=0;i<selected.wire.length;i++){
-		selected.wire_count += selected.wire[i];
-	}
+	//		redraw_flag.targets = [];
+	count_selected_blocks_and_wires();
 	if(selected.block_count!=1){
 		if(automap.mapped_k!=-1){
 			note_poly.setvalue( automap.available_k, "maptarget", "none");

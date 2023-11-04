@@ -387,6 +387,7 @@ config.name = "config";
 
 var copy = new Dict;
 copy.name = "copy";
+var pasteoffset = [0,0]; //add to this before every paste, reset it on new copy
 
 var flock_presets = new Dict;
 flock_presets.name = "flock_presets";
