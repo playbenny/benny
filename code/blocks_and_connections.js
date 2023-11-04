@@ -1917,11 +1917,17 @@ function build_new_connection_menu(from, to, fromv,tov){
 
 
 function remove_block(block){
+	//hide the cubes and meters first, to give the illusion it all happens fast
+	for(i=0;i<blocks_cube[block].length;i++){
+		blocks_cube[block][i].enable = 0;
+	}
+	for(i=0;i<blocks_meter[block].length;i++){
+		blocks_meter[block][i].enable = 0;
+	}
 	post("removing block",block,"\n");
 	var i;
 	sidebar.scopes.voice = -1;
 	// remove it from all states
-	delete_state(-1,block);
 	// remove all connections from this block.
 	for(i=0;i<connections.getsize("connections");i++){
 		if((connections.contains("connections["+i+"]::from::number")) && (connections.contains("connections["+i+"]::to::number"))){
@@ -1930,17 +1936,12 @@ function remove_block(block){
 			}
 		}
 	}
+	delete_state(-1,block);
 	// disable the cubes and meters
 	voicecount(block, 0); // remove all voices (this removes individual polyvoices and turns off audio-to-data voices)
 	// it's been removed from voicealoc lists by the voicecount function, which also freepeers the cubes and meters
 	blocks_meter[block]=[];
 	blocks_cube[block]=[];
-	// disable the label
-/*	for(i=0;i<4;i++){
-		if(typeof blocks_label[block][i] !== 'undefined') blocks_label[block][i].freepeer(); //enable =0;
-	}
-	blocks_label[block] = [];
-*/
 	if(blocktypes.contains(blocks.get("blocks["+block+"]::name")+"::block_ui_patcher")){
 		ui_patcherlist[block]='blank.ui';
 		still_checking_polys |=4;
@@ -1974,7 +1975,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	var v = blocks.get("blocks["+block+"]::poly::voices");
 	var type = blocks.get("blocks["+block+"]::type");
 	var details = new Dict;
-	var new_voice;
+	var new_voice = -1;
 	var i;
 	var subvoices=1;
 	var block_name = blocks.get("blocks["+block+"]::name"); // check it exists,
@@ -2299,10 +2300,13 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		var str_version = "";
 		for(i=0;i<addone.length;i++){
 			str_version = str_version + (addone[i]+1-voiceoffset)+" ";
+			if(addone[i]!=new_voice) get_voice_details(addone[i]);
 		}
 		// tell the polyalloc voice about its new job
 		voicealloc_poly.setvalue(+block + 1,"type",type);
 		voicealloc_poly.setvalue(+block + 1,"voicelist",str_version);
+		// and do voicedetails:
+		
 	}else{ // or turn it off if zero
 		voicealloc_poly.setvalue( (block+1), "off");
 	}

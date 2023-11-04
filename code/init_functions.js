@@ -116,6 +116,9 @@ function import_hardware(v){
 	assign_block_colours();
 	// now they're loaded you can render the block menu
 	//post("initialising new block menu \n");
+	
+	usermouse.queue = [];
+	world.message( "enable", 1);
 
 	set_display_mode("blocks");
 	
@@ -307,7 +310,6 @@ function initialise_dictionaries(){
 	world.message( "sendwindow", "mousewheel", 1);
 	world.message( "sendrender", "rotate_order", "zyx");
 	world.message( "sendrender", "smooth_shading", 1);
-	world.message( "enable", 1);
 	world.message( "visible", 1);
 	world.message( "esc_fullscreen", 0);
 	world.message( "fsmenubar", 0);
