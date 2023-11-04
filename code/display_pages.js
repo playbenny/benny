@@ -4864,21 +4864,21 @@ function draw_sidebar(){
 					lcd_main.message("write", blocks.get("blocks["+block+"]::poly::steal_mode"));
 					y_offset += 1.1* fontheight;
 					
-					lcd_main.message("paintrect", mainwindow_width-9-6.5*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest);
-					click_rectangle( mainwindow_width-9-6.5*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
-					mouse_click_actions[mouse_index] = cycle_block_mode;
-					mouse_click_parameters[mouse_index] = block;
-					mouse_click_values[mouse_index] = "latching";	
-					mouse_index++;
-					lcd_main.message("moveto" ,mainwindow_width-9-6.3*fontheight, fontheight*0.5+y_offset);
-					lcd_main.message("frgb", block_dark );
-					lcd_main.message("write", "voice parameter latching mode");
-					lcd_main.message("frgb", block_colour );
-					lcd_main.message("moveto" ,mainwindow_width-9-6.3*fontheight, fontheight*0.75+y_offset);
-					lcd_main.message("write", blocks.get("blocks["+block+"]::poly::latching_mode"));
-					
-					y_offset += 1.1* fontheight;
-					
+					if(blocktypes.contains(block_name+"::latching_enable")){
+						lcd_main.message("paintrect", mainwindow_width-9-6.5*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest);
+						click_rectangle( mainwindow_width-9-6.5*fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
+						mouse_click_actions[mouse_index] = cycle_block_mode;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = "latching";	
+						mouse_index++;
+						lcd_main.message("moveto" ,mainwindow_width-9-6.3*fontheight, fontheight*0.5+y_offset);
+						lcd_main.message("frgb", block_dark );
+						lcd_main.message("write", "voice parameter latching mode");
+						lcd_main.message("frgb", block_colour );
+						lcd_main.message("moveto" ,mainwindow_width-9-6.3*fontheight, fontheight*0.75+y_offset);
+						lcd_main.message("write", latching_modes[blocks.get("blocks["+block+"]::poly::latching_mode")]);
+						y_offset += 1.1* fontheight;
+					}
 				}
 
 				//oversampling settings

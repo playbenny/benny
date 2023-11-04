@@ -95,7 +95,7 @@ function new_block(block_name,x,y){
 		blocks.replace("blocks["+new_block_index+"]::poly::stack_mode","1x");
 		blocks.replace("blocks["+new_block_index+"]::poly::choose_mode","cycle free");
 		blocks.replace("blocks["+new_block_index+"]::poly::steal_mode","oldest");
-		blocks.replace("blocks["+new_block_index+"]::poly::latching_mode","continuous");		
+		blocks.replace("blocks["+new_block_index+"]::poly::latching_mode",0);		
 	}
 	if(details.contains("panel::parameters")){
 		blocks.replace("blocks["+new_block_index+"]::panel::parameters",details.get("panel::parameters"));
@@ -539,6 +539,35 @@ function next_free_block(type){
 
 	post("error: no free block slots found\n");
 	return -1;
+}
+
+function get_voice_details(voiceis){
+	var vlk = voicemap.getkeys();
+	var block = -1;
+	var nth = -1;
+	var of = -1;
+	for(var v=0;v<vlk.length;v++){
+		var vl = voicemap.get(vlk[v]);
+		if(!Array.isArray(vl)) vl = [vl];
+		for(var vv=0;vv<vl.length;vv++){
+			if(vl[vv] == voiceis){
+				block = +vlk[v];
+				nth = vv;
+				of = vl.length;
+			}
+		}
+	} 
+	var block_name = blocks.get("blocks["+block+"]::name");
+	var no_params = blocktypes.getsize(block_name+"::parameters");
+	var latching = 0;
+	if(blocks.contains("blocks["+block+"]::poly::latching_mode")) blocks.get("blocks["+block+"]::poly::latching_mode");
+	var rate = 0;
+
+	if(voiceis<MAX_NOTE_VOICES){
+		note_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+	}else if(voiceis<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
+		audio_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+	}
 }
 
 function create_connection_button(){

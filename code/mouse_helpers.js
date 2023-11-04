@@ -1233,10 +1233,21 @@ function cycle_block_mode(block,setting){
 		blocks.replace(target,flock_modes[p]);
 	}else if(setting=="latching"){
 		target = target+"poly::latching_mode";
-		p = latching_modes.indexOf(blocks.get(target));
-		p = (p+1) % latching_modes.length;
-		blocks.replace(target,latching_modes[p]);
-		//need to tell the voices
+		p = blocks.get(target);
+		p = (+p+1) % latching_modes.length;
+		blocks.replace(target,p);
+		//need to tell the voices - just send the voice is
+		var vl = voicemap.get(block);
+		if(!Array.isArray(vl))vl=[vl];
+		if((vl[0])<MAX_NOTE_VOICES){
+			for(var v=0;v<vl.length;v++){
+				note_poly.setvalue(1+vl[v],"voice_is",vl[v]);
+			}
+		}else if((vl[0])<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
+			for(var v=0;v<vl.length;v++){
+				audio_poly.setvalue(1+vl[v],"voice_is",vl[v]-MAX_NOTE_VOICES);
+			}
+		}
 	}
 	redraw_flag.flag |= 2;
 }
