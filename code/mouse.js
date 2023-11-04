@@ -1059,6 +1059,8 @@ function keydown(key){
 				}
 			}else if(key == -15){//home
 				center_view(1);
+			}else if(key == -4){//enter
+				if((sidebar.mode=="file_menu")&&(currentsong>-1)) load_song();
 			}else if((key == -6) || (key==-7)){
 				//delete, if any block or connection is selected
 				var i;

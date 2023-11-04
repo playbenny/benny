@@ -42,6 +42,10 @@
 		"menu" : [ 255, 200, 25 ],
 		"muted" : [ 30, 30, 40 ],
 		"background" : [0,0,0],
+		"background_blocks" : [0,0,0],
+		"background_block_menu" : [0,0,0],
+		"background_panels" : [0,0,0],
+		"background_waves" : [0,0,0],
 		"connections" : 		{
 			"block" : [ 55, 255, 255 ],
 			"hardware" : [ 255, 50, 25 ],

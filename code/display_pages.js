@@ -580,7 +580,7 @@ function update_custom_panels(){
 
 function draw_block_menu(){
 	initialise_block_menu(1);
-	lcd_main.message("brgb", backgroundcolour);
+	lcd_main.message("brgb", backgroundcolour_block_menu);
 	click_clear(0,0);
 //	mouse_click_actions[0] = pan_background;
 	mouse_click_parameters[0] = 0;
@@ -2643,14 +2643,21 @@ function set_sidebar_mode(mode){
 function clear_screens(){
 	//lcd_main.message("brgb", 0, 0, 0);
 	//deferred_diag.push("clear screens, mode "+displaymode);
-	lcd_main.message("brgb", backgroundcolour);
 	if(displaymode=="panels"){
+		lcd_main.message("brgb", backgroundcolour_panels);
 		mouse_index=2;
 		click_clear(1,1);
 		mouse_click_actions[1] = panels_bg_click;
 		mouse_click_parameters[1] = 0;
 		mouse_click_values[1] = 0;
 	}else{
+		if(displaymode=="blocks"){
+			lcd_main.message("brgb", backgroundcolour_blocks);
+		}else if(displaymode == "waves"){
+			lcd_main.message("brgb", backgroundcolour_waves);
+		}else{
+			lcd_main.message("brgb", backgroundcolour);
+		}
 		mouse_index=1;
 		click_clear(0,0);
 		mouse_click_actions[0] = "none";

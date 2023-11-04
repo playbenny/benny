@@ -276,6 +276,11 @@ var parameterscolour;
 var blockcontrolcolour;
 var fontheight;
 var backgroundcolour;
+var backgroundcolour_blocks;
+var backgroundcolour_block_menu;
+var backgroundcolour_panels;
+var backgroundcolour_waves;
+
 
 //this is what a listener looks like
 //var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);

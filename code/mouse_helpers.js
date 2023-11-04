@@ -1780,9 +1780,15 @@ function new_connection_toggle_voice(side,number){
 
 
 function select_song(song){
-	currentsong = song;
-	post("\n song info",songs_info[currentsong]);
-	redraw_flag.flag|=2;
+	if((usermouse.timer>0)&&(song==currentsong)){
+		usermouse.timer=0;
+		load_song();
+	}else{
+		currentsong = song;
+		usermouse.timer = DOUBLE_CLICK_TIME;
+		post("\n song info",songs_info[currentsong]);
+		redraw_flag.flag|=2;
+	}
 }
 
 function wave_chosen(number,name,path){

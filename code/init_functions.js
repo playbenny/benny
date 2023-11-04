@@ -158,6 +158,11 @@ function initialise_dictionaries(){
 	parameterscolour = config.get("palette::connections::parameters");
 	blockcontrolcolour = config.get("palette::connections::block");
 	backgroundcolour = config.get("palette::background");
+	backgroundcolour_blocks = config.get("palette::background_blocks");
+	backgroundcolour_block_menu = config.get("palette::background_block_menu");
+	backgroundcolour_panels = config.get("palette::background_panels");
+	backgroundcolour_waves = config.get("palette::background_waves");
+	
 	wire_diaX = config.get("wire_diaX");
 	wire_diaY = config.get("wire_diaY");
 	blob_dia = config.get("blob_dia");
