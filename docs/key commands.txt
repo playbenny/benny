@@ -9,6 +9,7 @@ ctrl-click topbar buttons:
 panels -> panels edit mode (for moving/removing panels)
 blocks -> flock visualiser mode
 record -> toggle both record and play
+any state -> state edit menu - lets you rename, delete etc
 
 [SIDEBAR]
 sliders:
@@ -20,6 +21,8 @@ hold ctrl hover over sliders on the sidebar to select the voice for editting
 
 ctrl-shift click - switch into mode to (un/)assign sliders to panel
 ctrl-alt click - switch into mode to (un/)assign slider to a flock axis
+
+ctrl-click title to bring up name edit, '.' in the name = newline
 
 [BLOCKS MODE]
 
@@ -34,6 +37,7 @@ long-click the background - new block menu
 
 mouse scrollwheel or ctrl-drag the background - zoom
 
+double-click a block - open its custom edit page if it has one
 ctrl-click a block - toggle mute
 
 shift-click blocks/connections - toggle selection

@@ -10,8 +10,13 @@ MULTITUDES
 installation
 ------------
 - for now (in the end i'll make gen versions of everything i use) you need to install the ar. airwindows externals, they're in a zip in the root folder. test they're installed by in a new max window making an object, ar.cliponly2~, if it works you're good.
-- in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore
+- in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore. there are more detailed configuration settings below.
 - open 'multitudes.maxproj'
+
+IMPORTANT
+---------
+YOU DONT NEED TO BUY MAX TO USE THIS! just ignore all those messages, don't start the free trial, don't subscribe, nothing. you'll be able to use all the features of this software.
+BUT if you decide you want to learn to build your own blocks you'll need to buy max.
 
 configuration
 -------------
@@ -27,7 +32,7 @@ configuration
     - Scheduler Slop (ms) : 100
 - in the end, there'll be a hardware editor.. for now, using the hardware config .json files as an example, build your own, with entries for any pieces of modular or hardware you want to use. in vscode this isn't too bad...
 - the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
-    - KNOWN ISSUE manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
+    - KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
     - KNOWN ISSUE you can't load a vst's config and edit it, you just have to do it again if you change your mind how you want the parameters organised
     - KNOWN ISSUE on windows sometimes max pretends not to be able to find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
 - there's a config.json file you can edit with some visual/ui preferrences
