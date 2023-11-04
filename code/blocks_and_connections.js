@@ -157,7 +157,7 @@ function new_block(block_name,x,y){
 			if(blocktypes.contains(block_name+"::parameters["+i+"]::default")){
 				p_default = blocktypes.get(block_name+"::parameters["+i+"]::default");
 			}
-			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
+			safepoke(parameter_value_buffer,1, MAX_PARAMETERS*new_block_index+i,p_default);
 			safepoke(parameter_static_mod,1, MAX_PARAMETERS*voiceoffset+i, 0);
 			param_defaults[new_block_index][i] = p_default;
 			if(details.contains("parameters["+i+"]::error_scale")){
@@ -728,13 +728,18 @@ function remove_from_mod_routemap(m_index,targetvalue){
 }
 
 function set_conversion(index, enab, type, scale, offn, offv, vect, inputno){
-	conversion_buffer.poke(1,index,enab);
-	conversion_buffer.poke(2,index,type);
-	conversion_buffer.poke(3,index,scale);
-	conversion_buffer.poke(4,index,offn);
-	conversion_buffer.poke(5,index,offv);
-	conversion_buffer.poke(6,index,vect);
-	conversion_buffer.poke(7,index,inputno);
+	if((typeof index == "number")&&(typeof index == "number")&&(typeof index == "number")&&(typeof index == "number")&&(typeof index == "number")&&(typeof index == "number")&&(typeof index == "number")&&(typeof index == "number")){
+		conversion_buffer.poke(1,index,enab);
+		conversion_buffer.poke(2,index,type);
+		conversion_buffer.poke(3,index,scale);
+		conversion_buffer.poke(4,index,offn);
+		conversion_buffer.poke(5,index,offv);
+		conversion_buffer.poke(6,index,vect);
+		conversion_buffer.poke(7,index,inputno);
+	}else{
+		post("\n\n\n\n\n\n\n\n\n unsafe poke in conversion",index, enab, type, scale, offn, offv, vect, inputno)
+	return 0;
+	}
 }
 
 
@@ -2631,7 +2636,7 @@ function swap_block(block_name){
 				if(params[i].contains("default")){
 					p_default = params[i].get("default");
 				}
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
+				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
 				safepoke(parameter_static_mod,1, voice  *MAX_PARAMETERS+i, 0);
 				param_defaults[block_menu_d.swap_block_target][i] = p_default;
 			}		
