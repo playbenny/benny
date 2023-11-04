@@ -1,6 +1,6 @@
 {
 	"SONGS_FOLDER" : "C:/Users/jhold/Documents/james music/live set/songs/",
-	"RECORD_FOLDER" : "C:/Users/jhold/Documents/james music/watussi/",
+	"RECORD_FOLDER" : "C:/Users/jhold/Documents/",
 	"type_order" : [ "core", "seq", "midi", "osc", "voice", "hardware", "fx", "vst", "utility", "mix" ],
 	"gain_display_format" : "x",
 	"click_buffer_scaledown" : 2,
@@ -11,8 +11,8 @@
 	"wire_diaY" : 0.03,
 	"glow" : 0.2,
 	"BLOCK_MENU_CLICK_ACTION" : "long_click",
-	"new_block_menu_mouse_action_note" : ["click","long_click","right_click","double_click","ctrl_click","alt_click"],
- 	"MAX_BEZIER_SEGMENTS" : 16,
+	"new_block_menu_mouse_action_note" : [ "click", "long_click", "right_click", "double_click", "ctrl_click", "alt_click" ],
+	"MAX_BEZIER_SEGMENTS" : 16,
 	"WIRES_SHOW_ALL" : 0,
 	"ANIM_TIME" : 0.25,
 	"blob_dia" : 0.06,
@@ -41,14 +41,14 @@
 	"palette" : 	{
 		"menu" : [ 255, 200, 25 ],
 		"muted" : [ 30, 30, 40 ],
+		"background" : [0,0,0],
 		"connections" : 		{
 			"block" : [ 55, 255, 255 ],
 			"hardware" : [ 255, 50, 25 ],
 			"audio" : [ 225, 120, 25 ],
 			"midi" : [ 205, 200, 25 ],
 			"parameters" : [ 120, 225, 25 ]
-		}
-,
+		},
 		"gamut" : [ 			{
 				"colour" : [ 208, 0, 108 ]
 			}

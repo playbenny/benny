@@ -580,7 +580,7 @@ function update_custom_panels(){
 
 function draw_block_menu(){
 	initialise_block_menu(1);
-	lcd_main.message("brgb", 0, 0, 0);
+	lcd_main.message("brgb", backgroundcolour);
 	click_clear(0,0);
 //	mouse_click_actions[0] = pan_background;
 	mouse_click_parameters[0] = 0;
@@ -1392,7 +1392,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 function draw_connection_menu(){
 	redraw_flag.targets=[];
 	var mouse_index = 3;
-	lcd_main.message("brgb", 0, 0, 0);
+	lcd_main.message("brgb", backgroundcolour);
 	lcd_main.message("clear");
 	click_clear(0,0);
 	var menucolour = config.get("palette::menu");
@@ -2643,7 +2643,7 @@ function set_sidebar_mode(mode){
 function clear_screens(){
 	//lcd_main.message("brgb", 0, 0, 0);
 	//deferred_diag.push("clear screens, mode "+displaymode);
-	lcd_main.message("brgb", 0, 0, 0);
+	lcd_main.message("brgb", backgroundcolour);
 	if(displaymode=="panels"){
 		mouse_index=2;
 		click_clear(1,1);

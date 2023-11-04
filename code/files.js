@@ -708,10 +708,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			}
 			
 			if(i+1<paramvalues.length){
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,paramvalues[i+1]);
+				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_index +i,paramvalues[i+1]);
 				param_defaults[block_index][i] = paramvalues[i+1]; //p_default; << new blocks the default is the default, when you load a song the default is the startup value of that param in the song instead.
 			}else{ // in the rare case that you've added some paramters to a block it should still load saves without errors.
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,p_default);
+				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_index +i,p_default);
 				param_defaults[block_index][i] = p_default;
 			}
 		}		
@@ -853,7 +853,14 @@ function folder_select(folderstr){
 	if(fullscreen) world.message("fullscreen",fullscreen);
 }
 
-
+function record_folder_select(folderstr){
+	if(folderstr!="cancel"){
+		RECORD_FOLDER = folderstr;
+		post("\nselected new record folder:",folderstr);
+		config.replace("RECORD_FOLDER",folderstr);
+		config.writeagain();
+	}
+}
 
 function purge_muted_trees(){
 	//idea: collect all muted blocks, add them to purgelist

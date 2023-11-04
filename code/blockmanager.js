@@ -275,6 +275,7 @@ var midicolour;
 var parameterscolour;
 var blockcontrolcolour;
 var fontheight;
+var backgroundcolour;
 
 //this is what a listener looks like
 //var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);

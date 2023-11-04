@@ -1145,6 +1145,7 @@ function move_selected_blocks(dx,dy){
 function record_button(){
 	//post("\nYOU PRESSED RECORD");
 	recording = 1-recording;
+	if(recording) for(var i=0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i);
 	messnamed("record",recording);
 	if(usermouse.ctrl) messnamed("play",recording);
 	redraw_flag.flag |= 2;
@@ -1181,30 +1182,33 @@ function set_block_record_arm(block,x){
 			record_arm[block] = 1 - record_arm[block];
 		}
 		redraw_flag.flag |= 10;
-		var vl = voicemap.get(block);
-		if(!Array.isArray(vl)) vl = [vl];
-		post("\ni should now tell all voices of block X to toggle their record arm status. both the wrapper blocks doing the recording and the texture display");
-		for(var i =0; i<vl.length;i++){
-			post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
-			var path = config.get("RECORD_FOLDER");
-			if(typeof songlist[currentsong] == 'undefined'){
-				path = path + "untitled";
-			}else{
-				path = path +songlist[currentsong];
-			}
-			var da = new Date();
-			path = path + "-" + (da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
-			post("\npath is ",path);
-			if(record_arm[block]){
-				audio_poly.setvalue(vl[i]+1-64,"filename",path);
-			}else{
-				audio_poly.setvalue(vl[i]+1-64,"filename","off");
-			}
-		}
+		send_record_arm_messages(block);
 	}
 	recording_flag = record_arm.indexOf(1)!=-1;
 }
 
+function send_record_arm_messages(block){
+	//makes up filenames for all armed blocks, sends them out.
+	var vl = voicemap.get(block);
+	if(!Array.isArray(vl)) vl = [vl];
+	var da = new Date();
+	for(var i =0; i<vl.length;i++){
+		//post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
+		var path = config.get("RECORD_FOLDER");
+		if(typeof songlist[currentsong] == 'undefined'){
+			path = path + "untitled";
+		}else{
+			path = path +songlist[currentsong];
+		}
+		path = path + "-" + (da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
+		//post("\npath is ",path);
+		if(record_arm[block]){
+			audio_poly.setvalue(vl[i]+1-64,"filename",path);
+		}else{
+			audio_poly.setvalue(vl[i]+1-64,"filename","off");
+		}
+	}
+}
 function cycle_block_mode(block,setting){
 	var target = "blocks["+block+"]::";
 	var p;

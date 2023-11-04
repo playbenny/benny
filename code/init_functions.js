@@ -116,7 +116,7 @@ function import_hardware(v){
 	assign_block_colours();
 	// now they're loaded you can render the block menu
 	//post("initialising new block menu \n");
-	
+
 	usermouse.queue = [];
 	world.message( "enable", 1);
 
@@ -157,6 +157,7 @@ function initialise_dictionaries(){
 	midicolour = config.get("palette::connections::midi");
 	parameterscolour = config.get("palette::connections::parameters");
 	blockcontrolcolour = config.get("palette::connections::block");
+	backgroundcolour = config.get("palette::background");
 	wire_diaX = config.get("wire_diaX");
 	wire_diaY = config.get("wire_diaY");
 	blob_dia = config.get("blob_dia");
