@@ -44,6 +44,7 @@
 		"background_block_menu" : [0,0,0],
 		"background_panels" : [0,0,0],
 		"background_waves" : [0,0,0],
+		"background_sidebar" : [0,0,0],
 		"connections" : 		{
 			"block" : [ 55, 255, 255 ],
 			"hardware" : [ 255, 50, 25 ],
