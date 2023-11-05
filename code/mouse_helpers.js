@@ -1336,7 +1336,7 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 }
 
 function mute_particular_block(block,av){ // i=block, av=value, av=-1 means toggle
-	if(block == "per_voice"){
+	if(block == "static_mod"){
 		post("\n\n\nERROR mute was passed : ",block);
 		return -1; 
 	}

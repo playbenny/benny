@@ -475,6 +475,10 @@ function import_song(){
 							}
 						}
 						states.replace("states::"+i+"::"+loading.mapping[b],stpv);
+						if(songs.contains(songlist[currentsong]+"::states::"+i+"::static_mod::"+b)){
+							stpv = songs.get(songlist[currentsong]+"::states::"+i+"::static_mod::"+b);
+							states.replace("states::"+i+"::static_mod::"+b,stpv);
+						}
 					}
 				}
 			}
@@ -495,8 +499,8 @@ function import_song(){
 			}
 			
 			for(b=0;b<loading.mapping.length;b++){
-				if(songs.contains(songlist[currentsong]+"::states::current::per_voice::"+b)){
-					stpv = songs.get(songlist[currentsong]+"::states::current::per_voice::"+b);
+				if(songs.contains(songlist[currentsong]+"::states::current::static_mod::"+b)){
+					stpv = songs.get(songlist[currentsong]+"::states::current::static_mod::"+b);
 					var vl=voicemap.get(loading.mapping[b]);
 					if(!Array.isArray(vl)) vl=[vl];
 					for(i=0;i<stpv.length;i+=3){
@@ -825,7 +829,7 @@ function save_song(selectedonly){
 	if(states.contains("states::current")) states.remove("states::current");
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
-		if(per_v[b].length) states.replace("states::current::per_voice::"+b,per_v[b]);
+		if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
 	}
 	post("current state stored");
 	if(panels_order.length){
@@ -838,7 +842,6 @@ function save_song(selectedonly){
 //copy blocks and connections and states and properties into one dict
 	messnamed("trigger_save_as","bang");
 	set_sidebar_mode("none");
-	post("\nis this after choosing the file or before?");
 }
 
 function folder_select(folderstr){
