@@ -846,8 +846,8 @@ function folder_select(folderstr){
 	if(folderstr!="cancel"){
 		SONGS_FOLDER = folderstr;
 		post("\nselected new songs folder:",folderstr);
-		config.replace("SONGS_FOLDER",folderstr);
-		config.writeagain();
+		userconfig.replace("SONGS_FOLDER",folderstr);
+		userconfig.writeagain();
 		read_songs_folder();
 	}
 	if(fullscreen) world.message("fullscreen",fullscreen);
@@ -858,7 +858,8 @@ function record_folder_select(folderstr){
 		RECORD_FOLDER = folderstr;
 		post("\nselected new record folder:",folderstr);
 		config.replace("RECORD_FOLDER",folderstr);
-		config.writeagain();
+		userconfig.replace("RECORD_FOLDER",folderstr);
+		userconfig.writeagain();
 	}
 }
 

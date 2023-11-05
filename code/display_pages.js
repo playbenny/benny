@@ -1377,7 +1377,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		//wires[connection_number][segment].blend_enable = 1;
 	}
 	wires[connection_number][segment].position = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
-	wires[connection_number][segment].scale = [seglength*0.52, wire_diaX,wire_diaY];
+	wires[connection_number][segment].scale = [seglength*0.52, wire_dia,1];
 	wires[connection_number][segment].rotatexyz = [0, rotY, rotZ];
 	var tmc=0.4;
 	if(cmute) tmc -= 0.35*(segment*0.5==Math.floor(segment*0.5)); // stripey wires if muted

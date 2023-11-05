@@ -222,9 +222,7 @@ var song_select = { //used to show the buttons to select the last song or the ne
 }
 var wire_ends = [];
 
-var wire_diaX = 0.03;
-var wire_diaY = 0.006;
-var blob_dia = 0.05;
+var wire_dia = 0.03;
 
 var cur_font_size = 0;
 
@@ -280,7 +278,7 @@ var backgroundcolour_blocks;
 var backgroundcolour_block_menu;
 var backgroundcolour_panels;
 var backgroundcolour_waves;
-
+var backgroundcolour_sidebar;
 
 //this is what a listener looks like
 //var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);
@@ -390,6 +388,8 @@ var text_being_editted="";
 
 var config = new Dict;
 config.name = "config";
+var userconfig = new Dict;
+userconfig.name = "userconfig";
 
 var copy = new Dict;
 copy.name = "copy";

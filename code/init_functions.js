@@ -136,12 +136,42 @@ function import_hardware(v){
 	
 }
 
+function process_userconfig(){
+	//userconfig OVERWRITES items in config
+	post("\nimporting userconfig\n  ");
+	var uk = userconfig.getkeys();
+	if(uk==null) return 0;
+	for(var i=0;i<uk.length;i++){
+		var tk=userconfig.get(uk[i]);
+		if(typeof tk == "string"){
+			config.replace(uk[i],tk);
+			post(uk[i]);
+		}else{
+			if(typeof tk == "object"){
+				tkk = tk.getkeys();
+				if(tkk != null){
+					for(var ii=0;ii<tkk.length;ii++){
+						var ttkk = userconfig.get(uk[i]+"::"+tkk[ii]);
+						if(ttkk != null){
+							config.replace(uk[i]+"::"+tkk[ii],ttkk);
+							post(tkk[ii]);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 function initialise_dictionaries(){
 	var i; 
 	// get config first because a lot of things depend on it.
 	config.parse('{ }');
 	config.import_json("config.json");
+	userconfig.parse('{ }');
+	userconfig.import_json("userconfig.json");
 	post("reading config\n");				
+	process_userconfig();
 	menucolour = config.get("palette::menu");
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
@@ -162,10 +192,9 @@ function initialise_dictionaries(){
 	backgroundcolour_block_menu = config.get("palette::background_block_menu");
 	backgroundcolour_panels = config.get("palette::background_panels");
 	backgroundcolour_waves = config.get("palette::background_waves");
+	backgroundcolour_sidebar = config.get("palette::background_sidebar");
 	
-	wire_diaX = config.get("wire_diaX");
-	wire_diaY = config.get("wire_diaY");
-	blob_dia = config.get("blob_dia");
+	wire_dia = config.get("wire_dia");
 	glow_amount = config.get("glow");
 	messnamed("bloom_amt",glow_amount);
 	BLOCK_MENU_CLICK_ACTION = config.get("BLOCK_MENU_CLICK_ACTION");
@@ -208,7 +237,7 @@ function initialise_dictionaries(){
 
 
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
-	post("initialising polys\n");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
+	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		loaded_note_patcherlist[i]='_blank.note';
 	}

@@ -55,15 +55,14 @@ function picker_hover_and_special(id){
 			if(bulgingwire!=-1){
 				for(var i=0;i<wires[bulgingwire].length;i++){
 					var ta = wires[bulgingwire][i].scale;
-					wires[bulgingwire][i].scale = [ta[0], wire_diaX,wire_diaY];
+					wires[bulgingwire][i].scale = [ta[0], wire_dia,1];
 				}					
 			}
 			bulgingwire=thov[1];
 			bulgeamount=1;
 			for(var i=0;i<wires[bulgingwire].length;i++){
 				var ta = wires[bulgingwire][i].scale;
-				ta[1] = wire_diaX * (1 + bulgeamount);
-				ta[2] = wire_diaY * (1 + bulgeamount);
+				ta[1] = wire_dia * (1 + bulgeamount);
 				wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
 			}
 		}else if(thov[0]!="background"){
@@ -72,7 +71,7 @@ function picker_hover_and_special(id){
 				bulgeamount=0;
 				for(var i=0;i<wires[bulgingwire].length;i++){
 					var ta = wires[bulgingwire][i].scale;
-					wires[bulgingwire][i].scale = [ta[0],wire_diaX,wire_diaY];
+					wires[bulgingwire][i].scale = [ta[0],wire_dia,1];
 				}
 				bulgingwire = -1;
 			}

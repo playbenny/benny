@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3779623729,
+	"modificationdate" : 3781988486,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -176,6 +176,16 @@
 				"local" : 1
 			}
 ,
+			"upwrap2.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.basic.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"core.scales.shapes.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -192,16 +202,6 @@
 			}
 ,
 			"seq.shape.player.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"upwrap2.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"voice.basic.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -404,22 +404,22 @@
 				"local" : 1
 			}
 ,
-			"parameterwatcher.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"voice.basic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"voice.harmonic.gendsp" : 			{
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
+			"parameterwatcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"voice.harmonic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -434,12 +434,12 @@
 				"local" : 1
 			}
 ,
-			"seq.rene.js" : 			{
+			"seq.note.tracker.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
 ,
-			"seq.note.tracker.js" : 			{
+			"seq.rene.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -640,6 +640,16 @@
 			"midi.note.select.json" : 			{
 				"kind" : "json",
 				"local" : 1
+			}
+,
+			"userconfig.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes",
+					"projectrelativepath" : "."
+				}
+
 			}
 ,
 			"midi.sustain.json" : 			{
