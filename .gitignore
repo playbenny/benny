@@ -26,3 +26,4 @@ audio_blocks/vst.CStrip64.json
 audio_blocks/vst.DeRez264.json
 audio_blocks/vst.Distortion64.json
 audio_blocks/vst.Elation64.json
+userconfig.json
