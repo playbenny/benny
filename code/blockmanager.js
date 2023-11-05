@@ -46,6 +46,7 @@ var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);
 
 var danger_button = -1;
+var folder_target = "";//when you pop open a folder select box, where is the result going?
 
 var mainwindow_width = 320;
 var mainwindow_height = 240;

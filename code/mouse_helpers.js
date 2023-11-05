@@ -631,6 +631,7 @@ function select_folder(parameter,value){
 	if(fullscreen){
 		world.message("fullscreen",0);
 	}
+	folder_target = parameter;
 	messnamed("select_folder","bang");
 }
 
@@ -1184,7 +1185,8 @@ function set_block_record_arm(block,x){
 		redraw_flag.flag |= 10;
 		send_record_arm_messages(block);
 	}
-	recording_flag = record_arm.indexOf(1)!=-1;
+	recording_flag = ((record_arm.indexOf(1)!=-1)+2*(config.get("RECORD_FOLDER")!=""));
+	//so it's 3 if you're good to go, it's <2 if you don't have a folder to write to
 }
 
 function send_record_arm_messages(block){

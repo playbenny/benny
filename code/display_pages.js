@@ -2739,7 +2739,7 @@ function draw_topbar(){
 
 	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
 
-	if(recording_flag){
+	if(recording_flag==3){
 		click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
 		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );
 		if(!recording){
@@ -2750,13 +2750,25 @@ function draw_topbar(){
 		}
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.25), 9+fontheight*0.75);
 		lcd_main.message("write", "rec");
-	
-		// only need to draw resync if you're playing
 		mouse_click_actions[mouse_index] = record_button;
 		mouse_click_parameters[mouse_index] = "";
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 		x_o+=1.1;
+	}	
+	if(recording_flag&1){
+		click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
+		lcd_main.message("framerect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,255,58,50 );
+//		lcd_main.message("frgb" , 0,0,0);
+		lcd_main.message("moveto", 9 + fontheight*(x_o+0.15), 9+fontheight*0.5);
+		lcd_main.message("write", "set rec");
+		lcd_main.message("moveto", 9 + fontheight*(x_o+0.15), 9+fontheight*0.75);
+		lcd_main.message("write", "folder");
+		mouse_click_actions[mouse_index] = select_folder;
+		mouse_click_parameters[mouse_index] = "record";
+		mouse_click_values[mouse_index] = "";
+		mouse_index++;
+		x_o+=1.6;
 	}	
 	click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight, mouse_index, 1 );
 	if(!playing){
@@ -3429,7 +3441,7 @@ function draw_sidebar(){
 		click_rectangle( file_menu_x + fontheight*8.8, 9, file_menu_x+fontheight*11.0, 9+fontheight,mouse_index,1 );
 		lcd_main.message("frgb" , greycolour);
 		mouse_click_actions[mouse_index] = select_folder;
-		mouse_click_parameters[mouse_index] = "";
+		mouse_click_parameters[mouse_index] = "song";
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 		setfontsize(fontheight/3.2);
