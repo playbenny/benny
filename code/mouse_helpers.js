@@ -1782,7 +1782,7 @@ function new_connection_toggle_voice(side,number){
 
 
 function select_song(song){
-	if((usermouse.timer>0)&&(song==currentsong)){
+	if((usermouse.timer>0)&&(song==currentsong)&&(!playing)){
 		usermouse.timer=0;
 		load_song();
 	}else{
