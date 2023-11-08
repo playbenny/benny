@@ -85,50 +85,29 @@
 		"triggers_in" :"TriggerIO"
 	},
 	"hardware" : 	{
-		"hardware.out.1+2" : 			{
+		"hardware.out.all" : 			{
 			"type" : "hardware",
-			"help_text": "main stereo outs",
+			"help_text": "all outs",
 			"autoload" : 1,
-			"max_polyphony" : 2,
+			"max_polyphony" : 8,
 			"exclusive" : 1,
 			"connections" : {
 				"in" : {
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 1, 2 ]
+					"hardware_channels" : [ 1, 2,3,4,5,6,7,8 ]
 				}
 			}
 		},
-		"hardware.filter.gyrinx" : 			{
+		"hardware.in.all" : 			{
 			"type" : "hardware",
-			"help_text": "gyrinx filter module",
+			"help_text": "all inputs",
 			"exclusive" : 1,
-			"max_polyphony" : 1,
+			"max_polyphony" : 4,
 			"substitute" : "fx.filter.2pole",
 			"connections" : {
-				"in" : {
-					"hardware" : [ "in", "cutoff1", "cutoff2" ],
-					"hardware_channels" : [ 3, 4 , 5 ]
-				},
 				"out" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [1 ]
-				}
-			}
-		},
-		"hardware.filter.chloe.stereo" : 			{
-			"type" : "hardware",
-			"help_text": "bizarre jezebel stereo filter",
-			"exclusive" : 1,
-			"max_polyphony" : 1,
-			"substitute" : "fx.filter.2pole",
-			"connections" : {
-				"in" : {
-					"hardware" : [ "in", "cutoff", "delay" ],
-					"hardware_channels" : [ 6,7, 8 ]
-				},
-				"out" : {
-					"hardware" : [ "output" ],
-					"hardware_channels" : [2 ]
+					"hardware" : [ "in" ],
+					"hardware_channels" : [1,2,3,4 ]
 				}
 			}
 		}
