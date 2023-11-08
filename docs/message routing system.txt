@@ -22,7 +22,7 @@ these are combined to get a pointer, to the start of a section of buffer where 9
 pointer is 9 *( index + max_connections_per_output * (outputno + voiceno * max_outputs_per_voice ) )
 where index is the connection no, for this voice/output/input triplet.
 
-the js keeps track of these 'index' values
+the js keeps track of these 'index' values, in routing_index[cno][destvoice][sourcevoice]
 
 the gen router spits out routed midi - going to
 polyallocators

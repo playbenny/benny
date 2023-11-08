@@ -811,6 +811,13 @@ function remove_routing(cno){
 	routing_index[cno] = [];
 }
 
+function turn_off_audio_to_data_if_unused(voice){
+	//run me AFTER deleting the connection this audio-to-data was on.
+	//check the routing_index array to see if any indexes are connected to this one.
+	audio_to_data_poly.setvalue(voice, "out_value", 0);
+
+}
+
 // REMOVE CONNECTION ###################################################################################################
 function remove_connection(connection_number){	
 	// post("removing connection",connection_number,"\n");
@@ -1024,29 +1031,14 @@ function remove_connection(connection_number){
 			}
 		}
 	}
-//		post("from voices: "+ f_voices + " type: "+f_type + " length " + f_voices.length+" list "+f_voice_list+"\n");
-//		post("to voices: "+ t_voices + " type: "+t_type + " length " + t_voices.length+" list "+t_voice_list+"\n");
 	for(i=0;i<f_voices.length;i++){
 		if(((t_type == "midi") || (t_type == "block")) && (t_voice_list == "all") && (to_block_type != "hardware")){
 //midi that goes to a polyalloc - handled here not per-to-voice
 			if(f_type == "midi"){ //midi to midi(polyrouter)
-//				post("midi to polyrouter midi");
-				m_index = (f_voices[i])*MAX_OUTPUTS_PER_VOICE+f_o_no;
-				//if(from_block_type=="audio") m_index+=MAX_NOTE_VOICES*128;
-				var c_ind = MAX_MOD_IDS * m_index + t_block;
-				set_conversion(c_ind,0,0,0,0,0,0,0);
-				remove_from_midi_routemap(m_index,t_block);
 				remove_routing(connection_number);
 			}else if(f_type == "audio"){//audio to midi (polyrouter)
-//				post("audio to midi (polyrouter)\n");
-//post("TODO only turn this out_value off if it's not used elsewhere\n");
-				m_index = ((f_voices[i]+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
-				var c_ind = MAX_MOD_IDS * m_index + t_block;
-				set_conversion(c_ind,0,0,0,0,0,0,0);
-				if(remove_from_midi_routemap(m_index,t_block) == 0) {
-					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 0);
-				}
 				remove_routing(connection_number);
+				turn_off_audio_to_data_if_unused((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
 			}
 		}else{
 			f_voice = 1*f_voices[i];
@@ -1088,17 +1080,9 @@ function remove_connection(connection_number){
 						//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
 						matrix.message(outmsg);
 					}else if((t_type == "midi") || (t_type == "block")){
-						m_index = ((f_voice+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
-						var m_index_mult = MAX_MOD_IDS * m_index;
 						remove_routing(connection_number);
-						set_conversion(m_index_mult + t_voice,0,0,0,0,0,0,0);
-						remove_from_midi_routemap(m_index,t_voice);
-						var existing = midi_routemap.get(m_index);
-						if(typeof existing=="number")existing=[existing];
-						post("m_ind",m_index,"ex",existing);
-						if(!is_empty(existing)){
-							audio_to_data_poly.setvalue((f_voice+1)+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES, "out_value", 0);
-						}
+						//TODO check its safe to turn this off
+						turn_off_audio_to_data_if_unused((f_voice+1)+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
 					}else if(t_type == "parameters"){
 						m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 						post("starting tvoice",t_voice);
@@ -1321,7 +1305,6 @@ function make_connection(cno){
 				}
 			}
 		}else{
-//			post("\n this is where the error was varr, f_o_no",varr,f_o_no);
 			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[f_o_no];
 		}
 	}else{ // need to check for vsts, and if so do what i did for hardware above:
@@ -1335,7 +1318,6 @@ function make_connection(cno){
 				for(i=0;i<ta.length;i++){
 					for(var ti=0;ti<f_subvoices;ti++){
 						f_voices[i*f_subvoices+ti]=+ta[i] + ti*MAX_AUDIO_VOICES;
-						//f_voices[i*2+1]=+ta[i]+MAX_AUDIO_VOICES;
 					}
 				}
 			}else{
@@ -1442,44 +1424,28 @@ function make_connection(cno){
 			}
 		}
 	}
-//		post("\nfrom voices: "+ f_voices + " type: "+f_type + " length " + f_voices.length+" list "+f_voice_list+" fono "+f_o_no+"\n");
-//		post("to voices: "+ t_voices + " type: "+t_type + " length " + t_voices.length+" list "+t_voice_list+" tono "+t_i_no+"\n");	
 	if((!is_empty(t_voices))&&(!is_empty(f_voices))){
-		//f_voices.sort(function(a,b) { return a-b; }); //IF IT NEEDS SORTED DONT DO IT HERE
-		//t_voices.sort(function(a,b) { return a-b; }); //it breaks eg subvoices=2 mappings.
-	//	post("from voices: "+ f_voices + "\n");
-//		post("to voices: "+ t_voices + "\n"+typeof t_voices[0]);
 		for(i=0;i<f_voices.length;i++){
 			if(((t_type == "midi")||(t_type == "block")) && (t_voice_list == "all") && (to_block_type != "hardware")){ 
 	//midi that goes to a polyalloc - handled here not per-to-voice
 				if(f_type == "midi"){ //midi to midi(polyrouter)
-					//m_index = (f_voices[i]) * MAX_OUTPUTS_PER_VOICE + f_o_no;
-					//add_to_midi_routemap(m_index,t_block);
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
-					//var c_ind = MAX_MOD_IDS * m_index + t_block; 
 					if(t_type == "midi"){
-					//	set_conversion(c_ind,enab,4,scale,offn,offv,0,t_i_no); 
 						set_routing(f_voices[i],f_o_no, enab,4,1,t_block,t_i_no,1,scale,offn*256-128,offv*256-128,cno,0);
 					}else{
-					//	set_conversion(c_ind,enab,4,scale,offn,offv,0, -(1 +t_i_no)); 
 						set_routing(f_voices[i],f_o_no, enab,4,1,t_block,-(1+t_i_no),1,scale,offn*256-128,offv*256-128,cno,0);
 					}
 				}else if(f_type == "audio"){//audio to midi (polyrouter)
 					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-					//m_index = ((f_voices[i]+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
-					//add_to_midi_routemap(m_index,t_block);
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
 					var vect = conversion.get("vector");
-					//var c_ind = MAX_MOD_IDS * m_index + t_block;
-					//set_conversion(c_ind,enab,2,scale,offn,offv,vect,t_i_no);
 					set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
-					//post("\nsetrouting",f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 				}
 			}else{
 				f_voice = f_voices[i];
@@ -1538,17 +1504,12 @@ function make_connection(cno){
 							matrix.message(outmsg);
 						}else if(t_type == "midi"){
 				// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
-	//						post("audio to midi");
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-							//m_index = ((f_voice+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
-							//add_to_midi_routemap(m_index,t_voice);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
 							var vect = conversion.get("vector");
-							//var c_ind = MAX_MOD_IDS * m_index + t_voice;
-							//set_conversion(c_ind,enab,2,scale,offn,offv,vect,t_i_no);
 							t_voice -= MAX_BLOCKS;
 							if(t_voice<MAX_NOTE_VOICES){
 								set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,2,t_voice,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
@@ -1556,17 +1517,12 @@ function make_connection(cno){
 								set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,3,t_voice-MAX_NOTE_VOICES,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 							}
 						}else if(t_type == "block"){
-							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
-	//						post("audio to midi");
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-							//m_index = ((f_voice+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
-							//add_to_midi_routemap(m_index,t_voice);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
 							var vect = conversion.get("vector");
-							//var c_ind = MAX_MOD_IDS * m_index + t_voice;
 							//i had this commented out for fear of a crash? set_conversion(c_ind,enab,2,scale,offn,offv,vect,-(1+t_i_no));
 							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 						}else if(t_type == "parameters"){
@@ -1579,7 +1535,7 @@ function make_connection(cno){
 							var tidslist = midi_routemap.get(m_index);
 							if(typeof tidslist == "number") tidslist=[tidslist];
 							if(is_empty(idslist)||is_empty(tidslist)){
-//								post("one or both empty so creating new modid");
+								post("\none or both empty so creating new modid");
 								mod_id++;
 								tmod_id=mod_id;
 								mod_buffer.poke(1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
@@ -1591,24 +1547,24 @@ function make_connection(cno){
 								for(sx=0;sx<idslist.length;sx++){
 									for(sy=0;sy<tidslist.length;sy++){
 										if(idslist[sx]+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS==tidslist[sy]){
-//											post("foundindex",idslist[sx]);
-//											post("PARAM IS ALREADY",tparamlist[idslist[sx]-1]);
+											post("\nfoundindex",idslist[sx]);
+											post("\nPARAM IS ALREADY",tparamlist[idslist[sx]-1]);
 											if(tparamlist[sx]==t_i_no) found = idslist[sx];
 										}
 									}
 								}
 								if(found!= -1){
-//									post("FOUND",found);
+									post("\nFOUND",found);
 									tmod_id = found;
 								}else{
-//									post("present but no matching id found");
+									post("\npresent but no matching id found");
 									mod_id++;
 									tmod_id=mod_id;
 									mod_buffer.poke(1, mod_id, 0);
 								}
 							}
 
-							//add_to_midi_routemap(m_index,tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS);
+							add_to_midi_routemap(m_index,tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS);
 							var wrap = 0;
 							if(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::parameters["+t_i_no+"]::wrap")){
 								wrap = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::parameters["+t_i_no+"]::wrap");
@@ -1616,18 +1572,6 @@ function make_connection(cno){
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
-							/*var offs = conversion.get("offset");
-							if(typeof offs === "number"){
-								var offn = offs;
-								var offv = 0;
-							}else{
-								var offn = offs[0];
-								var offv = offs[1];
-							}
-							var vect = conversion.get("vector");
-							var vvv=MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+tmod_id+MAX_HARDWARE_MIDI_OUTS;
-							vvv += MAX_MOD_IDS * m_index;
-							//set_conversion(vvv,enab,1,scale,offn,offv,vect,t_i_no);*/
 							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,scale,0,0,0,cno,v);
 						}
 					}else if(f_type == "matrix"){
