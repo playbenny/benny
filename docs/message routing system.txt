@@ -3,13 +3,19 @@
 
 these come from:
 
-polyallocators
 note voices
 audio voices
 audio-to-value converters
+polyallocators
 external midi(?not implemented)
 
 each is tagged with output number (ie some voices have multiple outputs) and a voice number - they run consecutively in the above order.
+0 to MAX_NOTE_VOICES-1
+MAX_NOTE_VOICES to etc
+MAX_NOTE_VOICES+MAX_AUDIO_VOICES to
+MAX_NOTE_VOICES+MAX_AUDIO_VOICES*(1 + OUTPUTS_PER_VOICE) to
+MAX_NOTE_VOICES+MAX_AUDIO_VOICES*(1 + OUTPUTS_PER_VOICE) + MAX_BLOCKS
+
 
 these are combined to get a pointer, to the start of a section of buffer where 9-tuples of connection data are stored in a row. you scan through, there are up to MAX_CONNECTIONS_PER_OUTPUT in a row, as soon as you get one where type (byte 2) is 0 you stop scanning
 
