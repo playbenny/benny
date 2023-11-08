@@ -1,0 +1,44 @@
+'midi' messages 
+---------------
+
+these come from:
+
+polyallocators
+note voices
+audio voices
+audio-to-value converters
+external midi(?not implemented)
+
+each is tagged with output number (ie some voices have multiple outputs) and a voice number - they run consecutively in the above order.
+
+these are combined to get a pointer, to the start of a section of buffer where 9-tuples of connection data are stored in a row. you scan through, there are up to MAX_CONNECTIONS_PER_OUTPUT in a row, as soon as you get one where type (byte 2) is 0 you stop scanning
+
+pointer is 9 *( index + max_connections_per_output * (outputno + voiceno * max_outputs_per_voice ) )
+where index is the connection no, for this voice/output/input triplet.
+
+the js keeps track of these 'index' values
+
+the gen router spits out routed midi - going to
+polyallocators
+note voices
+audio voices
+hardware
+
+and things that are modulating something get put in the mod_buffer. the js keeps track of indexes in that buffer where things belong. (the gen router does the putting though)
+
+
+
+modulation
+----------
+
+the js compiles an 'action list' - every memory location to collect up and scale and add and where it goes. then the gen modulation processor just runs this as fast as it can.
+
+
+
+note->audio
+-----------
+
+presently the js sends setvalue messages to a mc.sig, based on things the gen modulation processor puts in a buffer. this needs to be upgraded to gen so it can work faster.
+
+
+i think there's something similar for midi that comes from modulation? brb
