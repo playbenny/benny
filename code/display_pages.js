@@ -5703,7 +5703,7 @@ function draw_sidebar(){
 						sidebar.scopes.midivoicelist[tii] = vm[+tf_o_v[tii]];
 						sidebar.scopes.midioutlist[tii] = +f_o_no;
 					}
-					post("\nassigning midi scope for connection",i,"from block",f_number,"the voices are",sidebar.scopes.midivoicelist,"and the outs are",sidebar.scopes.midioutlist);
+					//post("\nassigning midi scope for connection",i,"from block",f_number,"the voices are",sidebar.scopes.midivoicelist,"and the outs are",sidebar.scopes.midioutlist);
 					//assign_midi_scope("connection",i,m_index);
 					sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 				}else if(f_type=="audio"){

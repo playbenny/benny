@@ -28,7 +28,7 @@ function slowclock(){
 
 function fastclock(){
 	check_changed_queue();
-	check_output_queue(); //EVENTUALLY this needs to be on a faster clock
+	//check_output_queue(); //EVENTUALLY this needs to be on a faster clock
 	if(redraw_flag.deferred!=0){
 		redraw_flag.flag = redraw_flag.deferred;
 		redraw_flag.deferred = 0;
@@ -49,7 +49,7 @@ function frameclock(){
 		}
 	}
 
-
+	fastclock();
 	if(usermouse.timer!=0){
 		usermouse.timer-=1;
 		if(usermouse.timer<-LONG_PRESS_TIME/33){
@@ -267,34 +267,6 @@ function check_changed_queue(){
 }
 
 
-function check_output_queue(){
-	var i=0,t,r,v;
-	var chanout,ccout,midiout;
-	t= output_queue.peek(1,output_queue_pointer);
-	while(t>0){
-		r= output_queue.peek(2,output_queue_pointer);
-		v= output_queue.peek(3,output_queue_pointer);
-		i+=1;
-		if(t==1){//hw midi out
-			midiout = Math.floor(r/16384);
-			r-=midiout*16384;
-			chanout = Math.floor(r/128);
-			r-=chanout*128;
-			ccout=r;
-			messnamed("hardware_midi", midiout+8, ccout, Math.floor(128*v), chanout);
-		}else if(t==2){// sigs
-			//post("\nsetting sigouts from output queue position",output_queue_pointer,"r",r,"v",v);
-			sigouts.setvalue(r,v);
-		}
-		output_queue_pointer+=1;
-		t= output_queue.peek(1,output_queue_pointer);
-		if(output_queue_pointer>1023){
-			output_queue_pointer=0;
-			t=0; //to make sure it can never get stuck, though it might miss a change for one frame while it wraps around
-		}
-	}
-//	if(i>0){post("read ",i,"output queue events\n");}
-}
 
 function meters(){
 	for(i = meters_updatelist.meters.length-1; i>=0; i--){

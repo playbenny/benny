@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3782254775,
+	"modificationdate" : 3782331138,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -414,17 +414,21 @@
 				"local" : 1
 			}
 ,
+			"output_queue_watcher.gendsp" : 			{
+				"kind" : "gendsp"
+			}
+,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"voice.basic.gendsp" : 			{
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
+			"voice.basic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}

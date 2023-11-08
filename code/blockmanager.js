@@ -124,7 +124,7 @@ var mod_sum_action_list = new Buffer("mod_sum_action_list"); //this is a list of
 var rebuild_action_list = 0;
 var output_queue = new Buffer("output_queue"); //this is a list of things for the js to do that the gen code updates - hw midi out, sigs
 var changed_queue = new Buffer("changed_queue"); //params that have changed for ui updates
-var output_queue_pointer = 0;
+//var output_queue_pointer = 0;
 var changed_queue_pointer = 0;
 var mtoa_buffer = new Buffer("mtoa_sigs"); //eventually i think this could be only accessed from a gen output queue checker but for now it's in clocked js
 

@@ -13,3 +13,14 @@ REQUESTS
 ;to_blockmanager
 
 get_voice_details $1 <- the number from voice_is
+
+
+
+
+
+
+
+INTERNAL MECHANISMS
+
+output_queue_pointer_reset bang
+sets the read pointer on the output queue (hardware midi from modulation, and the sigs)

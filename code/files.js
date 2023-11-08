@@ -532,7 +532,7 @@ function import_song(){
 		//draw_blocks();
 		//prep_meter_updatelist();
 		loading.mapping = [];
-		output_queue_pointer = 0;
+		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		redraw_flag.flag|=12;
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
@@ -953,7 +953,7 @@ function clear_everything(){
 	//you don't need to do this, everything that gets loaded or created will overwrite these buffers
 	
 	output_queue.poke(1,0,0);
-	output_queue_pointer = 0;
+	messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
 
