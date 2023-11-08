@@ -1,0 +1,15 @@
+on startup
+
+config_loaded bang
+some config values are sent out individually but this is being phased out, as is 'request globals', do not use. just query (dict config)
+
+play (1 or 0)
+record (1 or 0)
+
+
+
+REQUESTS
+
+;to_blockmanager
+
+get_voice_details $1 <- the number from voice_is

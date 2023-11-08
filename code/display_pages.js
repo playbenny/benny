@@ -5653,10 +5653,10 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = "";	
 			mouse_index++;
 			y_offset += fontheight*2.1;
-			if((t_type=="midi")&&(f_type!="midi")){
+/*			if((t_type=="midi")&&(f_type!="midi")){
 				y_offset+=fontheight*2.1;
 				lcd_main.message("paintrect", sidebar.x, sidebar.scopes.endy+fontheight*0.1,mainwindow_width-9,sidebar.scopes.endy+fontheight*2.1,menudarkest);
-			}
+			}*/
 			if(sidebar.mode != sidebar.lastmode){
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -5666,7 +5666,7 @@ function draw_sidebar(){
 
 				var tii;
 				// SHOULD THIS BE f_type?
-				if((t_type=="midi")||(t_type=="block")||(t_type=="parameters")){
+				if((f_type=="midi")||(f_type=="block")||(f_type=="parameters")){
 					//
 
 				//	deferred_diag.push("assigning midi scope block to connection output",t_number,"voice",t_i_v,"input",t_i_no,"fov",f_o_v,"\n");
@@ -5726,13 +5726,13 @@ function draw_sidebar(){
 					}else{
 						if(f_o_v=="all"){
 							listvoice = voicemap.get(f_number);
-							if(typeof listvoice == "number") listvoice = [listvoice, listvoice + MAX_AUDIO_VOICES];
+							if(typeof listvoice == "number") listvoice = [listvoice];//, listvoice + MAX_AUDIO_VOICES];
 							for(tii=0;tii<listvoice.length;tii++) listvoice[tii] -= MAX_NOTE_VOICES;
 						}else{
 							listvoice = f_o_v.slice();
 							var t_listvoice = voicemap.get(f_number);
-							if(typeof listvoice == "number") listvoice = [listvoice, listvoice + MAX_AUDIO_VOICES];
-							if(typeof t_listvoice == "number") t_listvoice = [t_listvoice, t_listvoice + MAX_AUDIO_VOICES];
+							if(typeof listvoice == "number") listvoice = [listvoice];//, listvoice + MAX_AUDIO_VOICES];
+							if(typeof t_listvoice == "number") t_listvoice = [t_listvoice];//, t_listvoice + MAX_AUDIO_VOICES];
 							for(tii=0;tii<listvoice.length;tii++) listvoice[tii] = t_listvoice[listvoice[tii]-1]-MAX_NOTE_VOICES;
 						}						
 					}
@@ -5742,10 +5742,15 @@ function draw_sidebar(){
 						audio_to_data_poly.setvalue((listvoice[tii]+1+f_o_no*MAX_AUDIO_VOICES),"vis_scope", 1);
 						sidebar.scopes.voicelist[tii] = (listvoice[tii]+f_o_no*MAX_AUDIO_VOICES);
 					}
+					sidebar.scopes.midivoicelist = [];
+					sidebar.scopes.midioutlist = [];
+					sidebar.scopes.midi = -1;
+					//post("\naudio to midi scopes:",sidebar.scopes.voicelist,"midi",sidebar.scopes.midivoicelist,"outs",sidebar.scopes.midioutlist,"midi",sidebar.scopes.midi);
 					sidebar.scopes.voice = f_number; 
 //						post("scopes voicelist",sidebar.scopes.voicelist,"f_o_v",f_o_v);
 					sidebar.scopes.width = (sidebar.width + fontheight * 0.1)/listvoice.length;
 					messnamed("scope_size",(sidebar.scopes.width)/2);
+
 				}else if(f_type=="hardware"){
 //					post("todo assign connection hardware scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					if(blocktypes.contains(f_name+"::connections::out::hardware_channels")){
@@ -5762,7 +5767,7 @@ function draw_sidebar(){
 //							post("\nSCOPES: ",sidebar.scopes.voicelist);
 						}
 					}
-				}else { //from midi
+				}//else { //from midi
 /*					sidebar.scopes.voice = -1;
 					post("assigning midi scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					var listvoice = f_o_v.slice();
@@ -5784,7 +5789,7 @@ function draw_sidebar(){
 					sidebar.scopes.width = (sidebar.width + fontheight * 0.1);
 					messnamed("midi_scope_source_voices",sidebar.scopes.voicelist);
 					messnamed("midi_scope_source_output",f_o_no);
-				*/				}
+				*/				//}
 			}
 			
 			var frametop=y_offset;
