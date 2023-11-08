@@ -26,6 +26,8 @@ var MAX_WAVES_SLICES = 1024;
 var MAX_WAVES = 16;
 var MAX_HARDWARE_MIDI_OUTS = 256;
 var MAX_HARDWARE_BLOCKS = 64;
+var MAX_CONNECTIONS_PER_OUTPUT = 32;
+var MAX_OUTPUTS_PER_VOICE = 128;
 var MAX_STATES = 8;
 var MERGE_PURGE = 1;
 var MAX_PANEL_COLUMNS = 4;
@@ -128,6 +130,10 @@ var mtoa_buffer = new Buffer("mtoa_sigs"); //eventually i think this could be on
 
 var parameter_error_spread_buffer = new Buffer("parameter_error_spread_buffer"); //indexed by MAX_PARAMETERS * voice + paramno, this is the random spread values added to each voice's params
 var conversion_buffer = new Buffer("conversion");
+var routing_buffer = new Buffer("routing"); //replaces conversion buffer
+	//index of this is 9 *( index + max_connections_per_output * (outputno + voiceno * max_outputs_per_voice ) )
+var next_free_routing_index = []; // index of this is outputno + voiceno*max_outputs_per_voice, holds the next free index
+var routing_index = []; //the actual index value where this connection's data is in the routing buffer.
 
 var waves_polybuffer = new PolyBuffer("waves");
 var polybuffer_names = [];

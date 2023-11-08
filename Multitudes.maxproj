@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3782135515,
+	"modificationdate" : 3782254775,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -120,6 +120,11 @@
 				"local" : 1
 			}
 ,
+			"mutecontrol_fx.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"fx.fixed.filter.bank.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -172,6 +177,11 @@
 			}
 ,
 			"core.input.keyboard.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"mutecontrol.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -394,16 +404,6 @@
 				"local" : 1
 			}
 ,
-			"midirouter.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
-					"projectrelativepath" : "./code"
-				}
-
-			}
-,
 			"osc.random.s_and_h.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -414,12 +414,17 @@
 				"local" : 1
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
+			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
 			"voice.basic.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}

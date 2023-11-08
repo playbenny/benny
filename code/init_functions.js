@@ -208,6 +208,8 @@ function initialise_dictionaries(){
 	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
 	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	MAX_CONNECTIONS_PER_OUTPUT = config.get("MAX_CONNECTIONS_PER_OUTPUT");
+	MAX_OUTPUTS_PER_VOICE = config.get("MAX_OUTPUTS_PER_VOICE");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
 	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
@@ -254,7 +256,12 @@ function initialise_dictionaries(){
 	for(;i--;){
 		is_flocked.push(0);
 	}
-
+	i = MAX_OUTPUTS_PER_VOICE * (MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_HARDWARE_BLOCKS);
+	next_free_routing_index=[];
+	for(;i--;){
+		next_free_routing_index.push(0);
+	}
+	for(i=0;i<256;i++) routing_index[i] = [];
 	//also empties all the dicts for re-initialisatoin:
 	blocktypes.parse('{ }');
 	voicemap.parse('{ }');
