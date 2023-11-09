@@ -5818,7 +5818,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-139",
@@ -14651,7 +14650,7 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-15.21::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
+			"obj-15.15::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
@@ -14670,10 +14669,6 @@
 				"patcherrelativepath" : "../../../Max 8/Snapshots",
 				"type" : "mx@s",
 				"implicit" : 1
-			}
-, 			{
-				"name" : "ar.capacitor2~.mxe64",
-				"type" : "mx64"
 			}
 , 			{
 				"name" : "ar.cliponly~.mxe64",
