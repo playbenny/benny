@@ -776,7 +776,7 @@ function mouse_released_on_a_thing_no_drag(){
 		}else if(usermouse.shift == 0){
 			var ti=0;
 			var afters=1;
-			if(selected.block[usermouse.ids[1]] && (+usermouse.ids[2]-1 == sidebar.selected_voice)) afters = 0;
+			//if(selected.block[usermouse.ids[1]] && (+usermouse.ids[2]-1 == sidebar.selected_voice)) afters = 0;
 			for(ti=0;ti<selected.wire.length;ti++){
 				selected.wire[ti]=0;
 			}
