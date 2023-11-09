@@ -10,13 +10,24 @@ record (1 or 0)
 
 REQUESTS
 
-;to_blockmanager
-
-get_voice_details $1 <- the number from voice_is
-
+;to_blockmanager get_voice_details $1 <- the number from voice_is
+gets you more info - total voices of block, your voiceno within block, etc
 
 
 
+BLOCKS
+
+all voices should send a 'getvoice' out of output 1 on load.
+in return they'll get a voice_is - your actual voice (you can't get it yourself as you may or may not be wrapped in many layers of other things) - and voice_offset - where this voice finds its current parameter values in the buffer.
+
+likewise normal max poly mute message mechanism has to work around it being wrapped - you'll get enable 1 / 0 messages to tell you if you're on or not. wrapper will unmute, bypass, upsample, etc for you. send your mute status (from thispoly) out of output 2
+
+
+
+REQUESTS
+
+;to_blockmanager get_voice_details $1 <- the number from voice_is
+gets you more info - total voices of block, your voiceno within block, etc
 
 
 
