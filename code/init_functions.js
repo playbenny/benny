@@ -328,13 +328,14 @@ function initialise_dictionaries(){
 	send_audio_patcherlist();
 
 	messnamed("config_loaded","bang");
+	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it
+
 	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 	messnamed("MAX_AUDIO_VOICES", MAX_AUDIO_VOICES);
 	messnamed("MAX_AUDIO_INPUTS", MAX_AUDIO_INPUTS);
 	messnamed("MAX_AUDIO_OUTPUTS", MAX_AUDIO_OUTPUTS);
 	messnamed("NO_IO_PER_BLOCK", NO_IO_PER_BLOCK);
-	messnamed("MAX_PARAMETERS", MAX_PARAMETERS);
 	messnamed("MAX_DATA", MAX_DATA);
 
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);

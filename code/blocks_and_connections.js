@@ -300,6 +300,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 			if(RECYCLING && (note_patcherlist[i] == "blank.note")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				note_patcherlist[i] = "recycling";
 				note_poly.setvalue(i+1, "muteouts", 1);
+				note_poly.setvalue(i+1, "enabled", 0);
 				if(!do_all){
 					still_checking_polys |= 1;
 					return 1;
@@ -1186,7 +1187,6 @@ function remove_connection(connection_number){
 						remove_from_midi_routemap(m_index,vvv);
 						mod_buffer.poke(1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
-						var m_index_mult = MAX_MOD_IDS * m_index;
 						remove_routing(connection_number);
 						sigouts.setvalue(tvv+1,0);
 					}else if((t_type == "midi") || (t_type == "block")){
@@ -2726,9 +2726,7 @@ function build_mod_sum_action_list(){
 	for(mv=0;mv<ALLAUDIO;mv++){ //first look if there are any midi-audio to process
 		if(mod_routemap.contains(mv)){
 			slotlist = mod_routemap.get(mv);
-			if(typeof slotlist == "number") {
-				slotlist = [slotlist];
-			}
+			if(!Array.isArray(slotlist)) slotlist = [slotlist];
 			mod_sum_action_list.poke(1,list_pointer,mv+1);
 			mod_sum_action_list.poke(2,list_pointer,0);
 			mod_sum_action_list.poke(3,list_pointer,3);
@@ -2737,6 +2735,10 @@ function build_mod_sum_action_list(){
 //			post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");			
 			list_pointer++;
 			for(t=0;t<slotlist.length;t++){
+				if(typeof slotlist[t] != "number"){
+					post("\n\n\n\nunsafe poke! slotlist\n\n\n\n\n\n");
+					return -1;
+				}
 				mod_sum_action_list.poke(1,list_pointer,mv+1);
 				mod_sum_action_list.poke(2,list_pointer,slotlist[t]);
 				mod_sum_action_list.poke(3,list_pointer,4); //is it a modulation type input? i think so?
@@ -2799,6 +2801,10 @@ function build_mod_sum_action_list(){
 							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
 							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");
 							dest_index = ccout + chanout*128+midiout*16384;
+							if(typeof dest_index != "number"){
+								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
+								return 0;
+							}
 							mod_sum_action_list.poke(1,list_pointer,dest_index);
 							mod_sum_action_list.poke(2,list_pointer,0);
 							mod_sum_action_list.poke(3,list_pointer,flag);
@@ -2808,9 +2814,16 @@ function build_mod_sum_action_list(){
 							extra = MAX_PARAMETERS*(voicelist[i])+p;
 							flock_id = is_flocked[extra]-1;
 							dest_index = flock_id;
-//							post(extra,"is flocked, flockid = ",flock_id,"\n");
+							if(typeof dest_index != "number"){
+								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
+								return 0;
+							}
+							if(typeof extra != "number"){
+								post("\n\n\n\n\nunsafe poke! extra\n\n\n\n\n");
+								return 0;
+							}
 
-							flock_buffer.poke(1,flock_id,extra+1);
+							flock_buffer.poke(1,flock_id,1 +extra);
 
 							mod_sum_action_list.poke(1,list_pointer,dest_index); //flokcid
 							mod_sum_action_list.poke(2,list_pointer,b*MAX_PARAMETERS+p); //extra); //bpos[flockid]
@@ -2819,7 +2832,10 @@ function build_mod_sum_action_list(){
 						}else{
 							dest_index = MAX_PARAMETERS*(voicelist[i])+p;
 							flag = 1;
-//							post(dest_index,"param\n");
+							if(typeof dest_index != "number"){
+								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
+								return 0;
+							}
 							mod_sum_action_list.poke(1,list_pointer,dest_index);
 							mod_sum_action_list.poke(2,list_pointer,b*MAX_PARAMETERS+p);
 							mod_sum_action_list.poke(3,list_pointer,flag);
@@ -2842,6 +2858,11 @@ function build_mod_sum_action_list(){
 						mod_sum_action_list.poke(4,list_pointer,0);
 						list_pointer++;
 
+						if(typeof voicelist[i] != "number"){
+							post("\n\n\n\n\nunsafe poke! voicelist\n\n\n\n\n");
+							return 0;
+						}
+
 						mod_sum_action_list.poke(1,list_pointer,dest_index);
 						mod_sum_action_list.poke(2,list_pointer,MAX_PARAMETERS*voicelist[i]+p);
 						mod_sum_action_list.poke(3,list_pointer,3);
@@ -2851,6 +2872,11 @@ function build_mod_sum_action_list(){
 						if(has_mod){
 							for(t=0;t<slotlist.length;t++){
 								if(paramlist[t]==p){
+									if(typeof slotlist[t] != "number"){
+										post("\n\n\n\n\nunsafe poke! slotlist\n\n\n\n\n");
+										return 0;
+									}
+		
 									mod_sum_action_list.poke(1,list_pointer,dest_index);
 									mod_sum_action_list.poke(2,list_pointer,slotlist[t]);
 									mod_sum_action_list.poke(3,list_pointer,4);
@@ -2863,10 +2889,26 @@ function build_mod_sum_action_list(){
 					if(flock_id!=-1){
 						var fll=flocklist.length;
 						flocklist[fll]=voicelist[i];
+						if(typeof voicelist[i] != "number"){
+							post("\n\n\n\n\nunsafe poke! voicelist\n\n\n\n\n");
+							return 0;
+						}
+
 						flockblocklist[fll]=b;
 						flockvoicelist[fll]=i;
 						flock_list_buffer.poke(1,fll+1,voicelist[i]);
 						//what's written to the action list is a whole new section, flag = 5 for the header row, index is voice no
+						if(typeof blocks.get("blocks["+b+"]::flock::weight") != "number"){
+							post("\n\n\n\n\nunsafe poke! weight\n\n\n\n\n");
+							return 0;
+						}
+						if(typeof blocks.get("blocks["+b+"]::flock::friction") != "number"){
+							post("\n\n\n\n\nunsafe poke! friction\n\n\n\n\n");
+							return 0;
+						}
+						
+
+
 						mod_sum_action_list.poke(1,list_pointer,voicelist[i]);
 						mod_sum_action_list.poke(2,list_pointer,fll);
 						mod_sum_action_list.poke(3,list_pointer,5);
