@@ -951,7 +951,6 @@ function clear_everything(){
 	messnamed("pause_mod_processing",1);
 	//messnamed("clear_all_buffers","bang"); 
 	//you don't need to do this, everything that gets loaded or created will overwrite these buffers
-	
 	output_queue.poke(1,0,0);
 	messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
@@ -963,7 +962,15 @@ function clear_everything(){
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 
-	var i,t;
+	var i;
+
+/*	for(i=0;i<routing_index.length;i++){
+		if(routing_index[i].length!=0){
+			remove_routing(i);
+		}
+	}*/
+	remove_all_routings();
+
 	//also empties all the dicts for re-initialisatoin:
 	audio_poly.setvalue( 0, "kill");
 	audio_to_data_poly.setvalue(0, "vis_meter", 0);
@@ -1054,7 +1061,7 @@ function clear_everything(){
 	for(;i-->=0;){
 		is_flocked.push(0);
 	}
-	messnamed("update_midi_routemap","bang");
+	//messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 
 	post("clearing everything\n");

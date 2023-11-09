@@ -766,6 +766,25 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 	}
 }
 
+function remove_all_routings(){
+	for(var c=0;c<routing_index.length;c++){
+		for(var i = 0;i<routing_index[c].length;i++){
+			for(var si=0;si<routing_index[c][i].length;si++){
+				var start = routing_index[c][i][si];
+				if(typeof start == "number"){
+					//end is the end of the whole section of routingbuffer..
+					//var end = (Math.floor((start / 9) / MAX_CONNECTIONS_PER_OUTPUT)+1)*MAX_CONNECTIONS_PER_OUTPUT*9;
+					//post("\nremoving, start is",start,"end is",end);
+					for(var x = start;x < start+9;x++){
+						routing_buffer.poke(1, x, 0);
+					}
+				}
+			}
+		}
+		routing_index[c] = [];
+	}
+}
+
 function remove_routing(cno){
 	for(var i = 0;i<routing_index[cno].length;i++){
 		for(var si=0;si<routing_index[cno][i].length;si++){
@@ -773,7 +792,7 @@ function remove_routing(cno){
 			if(typeof start == "number"){
 				//end is the end of the whole section of routingbuffer..
 				var end = (Math.floor((start / 9) / MAX_CONNECTIONS_PER_OUTPUT)+1)*MAX_CONNECTIONS_PER_OUTPUT*9;
-				post("\nremoving, start is",start,"end is",end);
+				//post("\nremoving, start is",start,"end is",end);
 				for(var x = start;x < end-9;x++){
 					routing_buffer.poke(1, x, routing_buffer.peek(1, x+9));
 				}
@@ -786,7 +805,7 @@ function remove_routing(cno){
 						if(!Array.isArray(routing_index[c][ii])) routing_index[c][ii]=[];
 						for(var sii=0;sii<routing_index[c][ii].length;sii++){
 							if((routing_index[c][ii][sii] > start)&&(routing_index[c][ii][sii] < end)){
-								post("\ndecrementing index for routing",c,ii,routing_index[c][ii][sii]);
+								//post("\ndecrementing index for routing",c,ii,routing_index[c][ii][sii]);
 								routing_index[c][ii][sii] -= 9;
 							}
 						} 

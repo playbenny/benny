@@ -11,11 +11,17 @@ blocks -> flock visualiser mode
 record -> toggle both record and play
 any state -> state edit menu - lets you rename, delete etc
 
+
+
 [SIDEBAR]
 sliders:
 scroll wheel or drag
 +shift for fine
 +shift+alt for extrafine
+
+alt + click returns to default or state when song loaded
+
+click on menu sliders moves to the next value
 
 hold ctrl hover over sliders on the sidebar to select the voice for editting
 
