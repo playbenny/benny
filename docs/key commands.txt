@@ -12,6 +12,13 @@ record -> toggle both record and play
 any state -> state edit menu - lets you rename, delete etc
 
 
+F9 - load/save
+F10 - wires display mode (either show all or only show the ones of the block(s) you have selected)
+F11 - fullscreen
+F12 - resource monitor page : shows cpu, framerate, block & voice resource usage
+ctrl-alt-F11 - stop processing (useful for dev work, stops your laptop fan..)
+ctrl-alt-F12 - hard reset the patch (same as the restart button or choosing a different hw config)
+
 
 [SIDEBAR]
 sliders:

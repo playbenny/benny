@@ -1678,7 +1678,7 @@ function block_edit(parameter,value){
 
 function automap_default(a,b){
 	if(sidebar.selected != -1){
-		parameter_value_buffer.poke(1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
+		safepoke(parameter_value_buffer,1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
 		note_poly.setvalue(b,"refresh");
 	}
 }
@@ -1831,6 +1831,7 @@ function store_wave_slices(waveno){
 		var m = (e-s) / d;
 		var i;
 		var o = (waveno - 1) * MAX_WAVES_SLICES;
+		
 		for(i=0;i<d;i++){
 			waves_slices_buffer.poke(1, o+i, i*m+s);
 		}
