@@ -143,7 +143,7 @@ function process_userconfig(){
 	if(uk==null) return 0;
 	for(var i=0;i<uk.length;i++){
 		var tk=userconfig.get(uk[i]);
-		if(typeof tk == "string"){
+		if((typeof tk == "string")||(typeof tk == "number")){
 			config.replace(uk[i],tk);
 			post(uk[i]);
 		}else{

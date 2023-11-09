@@ -26,15 +26,6 @@ function slowclock(){
 	draw_cpu_meter(); //is this the right place for this?
 }
 
-function fastclock(){
-	check_changed_queue();
-	//check_output_queue(); //EVENTUALLY this needs to be on a faster clock
-	if(redraw_flag.deferred!=0){
-		redraw_flag.flag = redraw_flag.deferred;
-		redraw_flag.deferred = 0;
-	}
-}
-
 function frameclock(){
 	var bangflag=0;
 	var i,t;
@@ -49,7 +40,8 @@ function frameclock(){
 		}
 	}
 
-	fastclock();
+	check_changed_queue(); // was in fastclock?
+
 	if(usermouse.timer!=0){
 		usermouse.timer-=1;
 		if(usermouse.timer<-LONG_PRESS_TIME/33){
@@ -193,6 +185,10 @@ function frameclock(){
 		//outlet(8,"bang");
 	}
 	redraw_flag.flag = 0;
+	if(redraw_flag.deferred!=0){
+		redraw_flag.flag = redraw_flag.deferred;
+		redraw_flag.deferred = 0;
+	}
 }
 
 function prep_meter_updatelist(){

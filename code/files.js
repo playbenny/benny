@@ -195,6 +195,7 @@ function load_next_song(slow){
 }
 
 function load_song(){
+	if(playing) play_button();
 	clear_everything();
 	loading.merge = 0;
 	loading.dont_automute=1;
@@ -244,8 +245,8 @@ function import_song(){
 		}else{
 			clear_screens();
 			set_sidebar_mode("none");
-//			set_display_mode("blocks");
 		}
+		set_display_mode("blocks");
 		post("loading from song",songlist[currentsong],"\n");
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;
