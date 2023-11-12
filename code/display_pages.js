@@ -6423,19 +6423,26 @@ function draw_sidebar(){
 			//need to get the name of this input, and the block it's on.
 			var bk = blocktypes.getkeys();
 			var t;
-			for(b in bk){
+			for(var b=0;b<bk.length;b++){
 				if(blocktypes.contains(bk[b]+"::connections::out::hardware_channels")){
 					t = blocktypes.get(bk[b]+"::connections::out::hardware_channels");
-					if(typeof t == "number") t = [t];
+					if(!Array.isArray(t)) t = [t];
+					var cnam = "";
+					var tn = blocktypes.get(bk[b]+"::connections::out::hardware");
+					if(!Array.isArray(tn)) tn = [tn];
+					var cnam = "";
 					for(var ti = 0; ti<t.length; ti++){
+						if(tn[ti] !== undefined){
+							cnam = tn[ti];
+						}
 						if(t[ti]==sidebar.scopes.voice+1){
 							lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
 							setfontsize(fontheight/2.4);
-							lcd_main.message("write", bk[b],blocktypes.get(bk[b]+"::connections::out::hardware["+ti+"]"));
-							
+							lcd_main.message("write", bk[b],cnam);							
 							y_offset += fontheight*1.1;
+							b=99999;ti=999999;
 						}
 					}
 				}
@@ -6481,19 +6488,25 @@ function draw_sidebar(){
 		
 			var bk = blocktypes.getkeys();
 			var t;
-			for(b in bk){
+			for(var b=0;b<bk.length;b++){
 				if(blocktypes.contains(bk[b]+"::connections::in::hardware_channels")){
 					t = blocktypes.get(bk[b]+"::connections::in::hardware_channels");
-					if(typeof t == "number") t = [t];
+					if(!Array.isArray(t)) t = [t];
+					var cnam = "";
+					var tn = blocktypes.get(bk[b]+"::connections::in::hardware");
+					if(!Array.isArray(tn)) tn = [tn];
 					for(var ti = 0; ti<t.length; ti++){
+						if(tn[ti] !== undefined){
+							cnam = tn[ti];
+						}
 						if(t[ti]==sidebar.scopes.voice+1){
 							lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
 							setfontsize(fontheight/2.4);
-							lcd_main.message("write", bk[b],blocktypes.get(bk[b]+"::connections::in::hardware["+ti+"]"));
-							
+							lcd_main.message("write", bk[b],cnam);							
 							y_offset += fontheight*1.1;
+							b= 9999999; ti=999999;
 						}
 					}
 				}

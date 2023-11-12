@@ -1615,14 +1615,14 @@ function show_cpu_meter(){
 }
 
 function hw_meter_click(number,type){
-	post("\n you clicked a meter, type:",type,"number",number);
-	sidebar.scopes.voice = number;
+//	post("\n you clicked a meter, type:",type,"number",number);
 	clear_blocks_selection();
 	if(type == "in"){
 		set_sidebar_mode("input_scope");
 	}else if(type == "out"){
 		set_sidebar_mode("output_scope");
 	}
+	sidebar.scopes.voice = number;
 }
 
 function block_edit(parameter,value){
