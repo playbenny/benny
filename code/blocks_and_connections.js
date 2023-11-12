@@ -1185,7 +1185,7 @@ function remove_connection(connection_number){
 						}
 						var vvv=tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS;
 						remove_from_midi_routemap(m_index,vvv);
-						mod_buffer.poke(1, tmod_id, 0);
+						safepoke(mod_buffer,1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
 						remove_routing(connection_number);
 						sigouts.setvalue(tvv+1,0);
@@ -1225,7 +1225,7 @@ function remove_connection(connection_number){
 						var vvv = MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+tmod_id+MAX_HARDWARE_MIDI_OUTS;
 						remove_from_midi_routemap(m_index,vvv);
 						remove_routing(connection_number);
-						mod_buffer.poke(1, tmod_id, 0)
+						safepoke(mod_buffer,1, tmod_id, 0)
 					}		
 				}		
 
@@ -1536,7 +1536,7 @@ function make_connection(cno){
 								post("\none or both empty so creating new modid");
 								mod_id++;
 								tmod_id=mod_id;
-								mod_buffer.poke(1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
+								safepoke(mod_buffer,1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
 							}else{
 								var found = -1;
 								var sx,sy;
@@ -1558,7 +1558,7 @@ function make_connection(cno){
 									post("\npresent but no matching id found");
 									mod_id++;
 									tmod_id=mod_id;
-									mod_buffer.poke(1, mod_id, 0);
+									safepoke(mod_buffer,1, mod_id, 0);
 								}
 							}
 
@@ -1645,7 +1645,7 @@ function make_connection(cno){
 							
 							var vvv = tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS; 
 							add_to_midi_routemap(m_index,vvv);
-							mod_buffer.poke(1, tmod_id, 0); 		
+							safepoke(mod_buffer,1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
 							//post("midi to audio",tvv);
 							var enab = 1-conversion.get("mute");
@@ -1701,7 +1701,7 @@ function make_connection(cno){
 //								post("one or both empty so creating new modid");
 								mod_id++;
 								tmod_id=mod_id;
-								mod_buffer.poke(1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
+								safepoke(mod_buffer,1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
 							}else{
 								var found = -1;
 								var sx,sy;
@@ -1724,7 +1724,7 @@ function make_connection(cno){
 //									post("present but no matching id found");
 									mod_id++;
 									tmod_id=mod_id;
-									mod_buffer.poke(1, mod_id, 0);
+									safepoke(mod_buffer,1, mod_id, 0);
 								}
 							}
 
