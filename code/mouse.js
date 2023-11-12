@@ -414,6 +414,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 								if(showmenu){
 									show_new_block_menu();
+								}else{
+									if(sidebar.mode!="none") set_sidebar_mode("none");
 								}
 							}
 							redraw_flag.targets = [];

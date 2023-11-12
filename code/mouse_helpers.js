@@ -576,8 +576,6 @@ function select_block(parameter,value){
 		selected.block_count = 1;
 		selected.wire_count = 0;
 		redraw_flag.flag |= 2;
-		//post("\n\nselecting block",value,"sidebar mode is",sidebar.mode);
-		//if(sidebar.mode != "cpu") set_sidebar_mode("block");
 		if(displaymode == "blocks") redraw_flag.flag |= 8;
 	}
 }
