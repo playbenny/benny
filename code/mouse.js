@@ -730,7 +730,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			}
 		}
 	}else{ //idlemouse
-		if(usermouse.ctrl){ // if ctrl held hover over param slider selects voice
+		if(usermouse.ctrl && (usermouse.x > sidebar.x)){ // if ctrl held hover over sidebar param slider selects voice
 			if(usermouse.got_t == 2){
 				if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
 					var sl_no = mouse_click_parameters[usermouse.got_i][0];

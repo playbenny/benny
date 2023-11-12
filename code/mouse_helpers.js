@@ -562,6 +562,8 @@ function select_block(parameter,value){
 		usermouse.timer = DOUBLE_CLICK_TIME;
 		//post(selected.block[value],selected.block_count,displaymode,usermouse.timer);
 		var i;
+		var ob=-1;
+		if(selected.block_count == 1) ob = selected.block.indexOf(1);
 		for(i=0;i<MAX_BLOCKS;i++){
 			selected.block[i]=0;
 		}
@@ -569,6 +571,7 @@ function select_block(parameter,value){
 			selected.wire[i]=0;
 		}
 		selected.block[value] = 1;
+		if(value != ob) sidebar.selected_voice = -1;
 		sidebar.selected = value;
 		selected.block_count = 1;
 		selected.wire_count = 0;

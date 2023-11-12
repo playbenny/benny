@@ -306,24 +306,18 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 	if(!Array.isArray(vlist)) vlist = [vlist];
 	var ww = (w + 2*(flags&2))/vlist.length;
 	var ww2 = ww - 2*(flags&2);
-	if((blockno == sidebar.selected)&&(sidebar.selected_voice >=0) &&(!(flags&4))){
-		//post("\nvoicenum",sidebar.selected_voice," voice ",sidebar.scopes.voice);
-		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+1,2);
-	}else{
-		click_rectangle(x1,y1,x2+fontheight*0.1,y2,index,2);
-	}
+	var pvm = (blockno == sidebar.selected)&&(sidebar.selected_voice >=0) &&(!(flags&4));
+	click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+pvm,2);
 	for(var i=0;i<vlist.length;i++){
 		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
 		if(tvalue > 1) tvalue = 1;
 		if(tvalue < 0) tvalue = 0;
 		if(flags & 1) tvalue = (2*tvalue)-1; //bipolar
+		var mu=0.33; //post("\ndrawing slider",sl_no,blockno,paramno);
 		if(tvalue>=0) {
 			ly = y1  + (y2 - y1) * (1-tvalue);
-			var mu=0.33;
-			//post("\ndrawing slider",sl_no,blockno,paramno);
-		if(((i==sidebar.selected_voice)||(flags & 2))&&(!(flags&4))){ //these two caps are temp code emergency access to param value
+			if(((i==sidebar.selected_voice)||(flags & 2))&&(pvm)){ 
 				click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
-				//post("\nso usermouse x is",usermouse.x,"slider outline is x1,y1,x2,y2 is",x1,y1,x2,y2," and i calculate the click rect to be ",x1+ww*i,y1,x1+ww*(i+1),y2)
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";
@@ -335,9 +329,8 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 			lcd_main.message("paintrect",x1+ww*i,ly,x1+ww*i+ww2,y2,r*mu,g*mu,b*mu);
 		}else{
 			ly = y1 + (y2-y1)*(-tvalue);
-			var mu=0.33;
-			if(((i==sidebar.selected_voice)||(flags & 2))&&(!usermouse.caps)&&(!(flags&4))){
-				click_rectangle(x1+ww*i,y1,x1+ww*i+ww,y2,index,2);
+			if(((i==sidebar.selected_voice)||(flags & 2))&&(pvm)){
+				click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
 				mouse_click_actions[index] = static_mod_adjust;
 				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
 				mouse_click_values[index] = "";

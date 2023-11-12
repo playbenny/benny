@@ -381,7 +381,8 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		var plist = blocks.get("blocks["+b+"]::panel::parameters");
 		var glist = blocktypes.get(block_name+"::groups");
 		var params = blocktypes.get(block_name+"::parameters");
-		if(typeof plist == "number") plist = [plist];
+		if(!Array.isArray(params)) params = [params];
+		if(!Array.isArray(plist)) plist = [plist];
 		for(var p=0;p<plist.length;p++){
 			//lcd_main.message("paintrect", 9+(x+p/plist.length)*mainwindow_width/4,18+(y+2+has_states)*fontheight,7+(x+(p+1)/plist.length)*mainwindow_width/4,18+(y+3.9+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2]);
 			//parameter_v_slider(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],0);
@@ -389,7 +390,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			//var p_values = params[plist[p]].get("values");
 			var wrap = params[plist[p]].get("wrap");
 			var namearr = params[plist[p]].get("name");
-			var noperv = params[plist[p]].contains("nopervoice");
+			var noperv = 1; //params[plist[p]].contains("nopervoice");
 			var p_values = params[plist[p]].get("values");
 			var flags = (p_values[0]=="bi") + 4*noperv;
 			if(!noperv){
