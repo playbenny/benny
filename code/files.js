@@ -965,11 +965,7 @@ function clear_everything(){
 
 	var i;
 
-/*	for(i=0;i<routing_index.length;i++){
-		if(routing_index[i].length!=0){
-			remove_routing(i);
-		}
-	}*/
+	wipe_midi_meters();
 	remove_all_routings();
 
 	//also empties all the dicts for re-initialisatoin:

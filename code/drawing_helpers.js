@@ -596,6 +596,24 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	click_rectangle(x1,y1,x2,y2,index, 4);
 }
 
+function wipe_midi_meters(){
+	for(i = meters_updatelist.midi.length-1; i>=0; i--){
+		var block=meters_updatelist.midi[i][0];
+		var voice=meters_updatelist.midi[i][1];
+		if(blocks_meter[block][voice] !== 'undefined'){
+			var polyvoice = meters_updatelist.midi[i][2];
+			if(typeof polyvoice != "number"){
+				post("\n\n\n\n unsafe poke");
+				sughstghldfjsl
+				return 0;
+			}
+			midi_meters_buffer.poke(1,polyvoice, [1,0,0,0,0,0,0]);
+		}
+	}
+	meters_updatelist.midi = [];
+}
+
+
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
