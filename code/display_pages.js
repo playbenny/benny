@@ -361,15 +361,28 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		var cll = config.getsize("palette::gamut")/MAX_STATES;
 		var c = new Array(3);		
 		
-		for(state=0;state<MAX_STATES;state++){
-			var statecontents = states.get("states::"+state);
+		for(state=0;state<=MAX_STATES;state++){
+			var statecontents;
+			if(state==0){
+				statecontents = states.get("states::current");
+			}else{
+				statecontents = states.get("states::"+(state-1));
+			} 
 			if(!is_empty(statecontents)){
 				if(statecontents.contains(b)){
-					c = config.get("palette::gamut["+Math.floor(state*cll)+"]::colour");
-					lcd_main.message("paintrect",x1+(state/MAX_STATES)*column_width,18+(y+2)*fontheight,x1+((state+1)/MAX_STATES)*column_width,18+(y+2.9)*fontheight,c[0],c[1],c[2]);
+					if(state==0){
+						c = [0,0,0];
+					}else{
+						c = config.get("palette::gamut["+Math.floor((state-1)*cll)+"]::colour");
+					}
+					lcd_main.message("paintrect",x1+(state/(MAX_STATES+1))*column_width,18+(y+2)*fontheight,x1+((state+1)/(MAX_STATES+1))*column_width,18+(y+2.9)*fontheight,c[0],c[1],c[2]);
 					click_rectangle(x1+(state/MAX_STATES)*column_width,18+(y+2)*fontheight,x1+((state+1)/MAX_STATES)*column_width,18+(y+2.9)*fontheight,mouse_index,1);
 					mouse_click_actions[mouse_index] = fire_block_state;
-					mouse_click_parameters[mouse_index] = state;
+					if(state==0){
+						mouse_click_parameters[mouse_index] = "current";
+					}else{
+						mouse_click_parameters[mouse_index] = state-1;
+					}
 					mouse_click_values[mouse_index] = b;
 					mouse_index++;
 				}
