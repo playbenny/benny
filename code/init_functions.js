@@ -227,6 +227,14 @@ function initialise_dictionaries(){
 	waves_preloading = config.get("waves_preloading");
 	wires_show_all = config.get("WIRES_SHOW_ALL");
 
+	var maxmsp = config.get("maxmsp");
+	var messes = maxmsp.getkeys();
+	for(i=0;i<messes.length;i++){
+		var m = maxmsp.get(messes[i]);
+		messnamed("max",messes[i],m);
+		post("\nmessage to max: ",messes[i],m);
+	}
+
 
 //	connections_sketch.reset();
 //	request_globals(); //sends the global variables (MAX_DATA etc) out. IS THIS NEEDED AT THIS POINT?
