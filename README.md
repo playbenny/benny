@@ -20,28 +20,19 @@ BUT if you decide you want to learn to build your own blocks you'll need to buy 
 
 configuration
 -------------
-- recommended max/msp audio settings: vector size same as audio buffer size, i work at 256 (any lower and the multicore processing doesn't run very efficiently) scheduler in audio interupt ticked, overdrive ticked
-- recommended max scheduler settings, found under options/preferences/scheduler, take a screenshot of your original ones just in case
-    - Event Interval (ms) : 2
-    - Overdrive : Yes
-    - Poll Throttle : 100
-    - Queue Throttle : 10
-    - Redraw Queue Throttle : 100
-    - Refresh Rate : 33.333333
-    - Scheduler Interval (ms) : 1
-    - Scheduler Slop (ms) : 100
-- in the end, there'll be a hardware editor.. for now, using the hardware config .json files as an example, build your own, with entries for any pieces of modular or hardware you want to use. in vscode this isn't too bad...
+- recommended max/msp audio settings: vector size same as audio buffer size, i work at 256 (any lower and the multicore processing doesn't run very efficiently) scheduler in audio interupt ticked, overdrive ticked. the program automatically sets some max/msp scheduler settings to optimal values, if you're an expert max user and want different values you can set them in config.json.
+- in the end, there'll be a hardware editor.. for now, using the hardware config .json files as an example, build your own, with entries for any pieces of modular or hardware you want to use. i recommend using an editor like vscode that has automatic syntax checking for json files.
 - the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
     - KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
     - KNOWN ISSUE you can't load a vst's config and edit it, you just have to do it again if you change your mind how you want the parameters organised
     - KNOWN ISSUE on windows sometimes max pretends not to be able to find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
-- there's a config.json file you can edit with some visual/ui preferrences
-
+- all the visual/ui preferences are in config.json, but to override them without the next update reverting them copy any entries you want to change the value of over to userconfig.json.
+   
 temporary limits
 ----------------
 at the moment the code is fixed to 64 midi block voices, 64 audio block voices, 24 hw outs, click on 25, 12 hw ins. this will all be reconfigurable at startup in the end.
 at the moment only 2-in 2-out audio voices are supported. eventually 'wide' voices with more io will be possible.
-parameter refresh rate is about every 20ms at the moment. plan to speed it up a bit.
+parameter refresh rate is about every 20ms at the moment. plan to speed it up to match vectorsize.
 
 developing blocks
 -----------------
