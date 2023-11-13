@@ -918,7 +918,7 @@ function fade_state(){
 			if((state_fade.position == 1)) m = state_fade.start[b][0];
 			if(m>-1) mute_particular_block(b,m);
 			for(var t=1;t<pv.length;t++){
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
+				safepoke(parameter_value_buffer, 1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
 			}
 			if(state_fade.static_start[b]!=null){
 				if(Array.isArray(state_fade.static_start[b])){
