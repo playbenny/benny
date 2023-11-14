@@ -730,7 +730,7 @@ function remove_from_mod_routemap(m_index,targetvalue){
 
 function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice, destinput, scalen, scalev, offsetn, offsetv,cno,destvoiceno){
 //nb destvoiceno = 0 for polyrouter, voices go 1,2,3,4,5 etc
-	if((typeof sourcevoice == "number")&&(typeof sourceoutput == "number")&&(typeof enab == "number")&&(typeof type == "number")&&(typeof desttype == "number")&&(typeof destvoice == "number")&&(typeof destinput == "number")&&(typeof scalen == "number")&&(typeof scalev == "number")&&(typeof offsetn == "number")&&(typeof offsetv == "number")){
+	if((typeof enab == "number")&&(typeof type == "number")&&(typeof desttype == "number")&&(typeof destvoice == "number")&&(typeof destinput == "number")&&(typeof scalen == "number")&&(typeof scalev == "number")&&(typeof offsetn == "number")&&(typeof offsetv == "number")){
 		var voindex = sourcevoice * MAX_OUTPUTS_PER_VOICE + sourceoutput;
 		var index = -1;
 		var baseindex = 9 * (MAX_CONNECTIONS_PER_OUTPUT * voindex);
@@ -2735,7 +2735,7 @@ function build_mod_sum_action_list(){
 //			post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");			
 			list_pointer++;
 			for(t=0;t<slotlist.length;t++){
-				if(typeof slotlist[t] != "number"){
+				if(slotlist[t] === null){
 					post("\n\n\n\nunsafe poke! slotlist\n\n\n\n\n\n");
 					return -1;
 				}
@@ -2801,7 +2801,7 @@ function build_mod_sum_action_list(){
 							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
 							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");
 							dest_index = ccout + chanout*128+midiout*16384;
-							if(typeof dest_index != "number"){
+							if(dest_index === null){
 								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
 								return 0;
 							}
@@ -2814,11 +2814,11 @@ function build_mod_sum_action_list(){
 							extra = MAX_PARAMETERS*(voicelist[i])+p;
 							flock_id = is_flocked[extra]-1;
 							dest_index = flock_id;
-							if(typeof dest_index != "number"){
+							if(dest_index === null){
 								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
 								return 0;
 							}
-							if(typeof extra != "number"){
+							if(extra === null){
 								post("\n\n\n\n\nunsafe poke! extra\n\n\n\n\n");
 								return 0;
 							}
@@ -2832,7 +2832,7 @@ function build_mod_sum_action_list(){
 						}else{
 							dest_index = MAX_PARAMETERS*(voicelist[i])+p;
 							flag = 1;
-							if(typeof dest_index != "number"){
+							if(dest_index === null){
 								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
 								return 0;
 							}
@@ -2858,7 +2858,7 @@ function build_mod_sum_action_list(){
 						mod_sum_action_list.poke(4,list_pointer,0);
 						list_pointer++;
 
-						if(typeof voicelist[i] != "number"){
+						if(voicelist[i] === null){
 							post("\n\n\n\n\nunsafe poke! voicelist\n\n\n\n\n");
 							return 0;
 						}
@@ -2872,7 +2872,7 @@ function build_mod_sum_action_list(){
 						if(has_mod){
 							for(t=0;t<slotlist.length;t++){
 								if(paramlist[t]==p){
-									if(typeof slotlist[t] != "number"){
+									if(slotlist[t] === null){
 										post("\n\n\n\n\nunsafe poke! slotlist\n\n\n\n\n");
 										return 0;
 									}
@@ -2889,7 +2889,7 @@ function build_mod_sum_action_list(){
 					if(flock_id!=-1){
 						var fll=flocklist.length;
 						flocklist[fll]=voicelist[i];
-						if(typeof voicelist[i] != "number"){
+						if(voicelist[i] === null){
 							post("\n\n\n\n\nunsafe poke! voicelist\n\n\n\n\n");
 							return 0;
 						}
@@ -2898,11 +2898,11 @@ function build_mod_sum_action_list(){
 						flockvoicelist[fll]=i;
 						flock_list_buffer.poke(1,fll+1,voicelist[i]);
 						//what's written to the action list is a whole new section, flag = 5 for the header row, index is voice no
-						if(typeof blocks.get("blocks["+b+"]::flock::weight") != "number"){
+						if(blocks.get("blocks["+b+"]::flock::weight")  === null){
 							post("\n\n\n\n\nunsafe poke! weight\n\n\n\n\n");
 							return 0;
 						}
-						if(typeof blocks.get("blocks["+b+"]::flock::friction") != "number"){
+						if(blocks.get("blocks["+b+"]::flock::friction") === null){
 							post("\n\n\n\n\nunsafe poke! friction\n\n\n\n\n");
 							return 0;
 						}

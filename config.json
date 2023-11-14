@@ -1,6 +1,7 @@
 {
 	"SONGS_FOLDER" : "",
 	"RECORD_FOLDER" : "",
+	"TEMPLATES_FOLDER" : "templates",
 	"type_order" : [ "core", "seq", "midi", "osc", "voice", "hardware", "fx", "vst", "utility", "mix" ],
 	"gain_display_format" : "x",
 	"click_buffer_scaledown" : 2,

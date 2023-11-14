@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 8.0, 51.0, 329.0, 224.0 ],
+		"rect" : [ 8.0, 51.0, 329.0, 234.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -3789,7 +3789,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 450.0, 207.0, 640.0, 386.0 ],
+						"rect" : [ 448.0, 207.0, 640.0, 386.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -5300,8 +5300,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 87.0, 278.5, 55.0, 22.0 ],
-					"text" : "enable 0"
+					"patching_rect" : [ 87.0, 278.5, 87.0, 22.0 ],
+					"text" : "enable 0, clear"
 				}
 
 			}
@@ -13227,7 +13227,8 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -14650,10 +14651,6 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "ar.capacitor2~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}

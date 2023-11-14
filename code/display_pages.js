@@ -3332,6 +3332,7 @@ function draw_sidebar(){
 		var free_b=MAX_BLOCKS;
 		var free_n=MAX_NOTE_VOICES;
 		var free_a=MAX_AUDIO_VOICES;
+		var files_page = "songs";
 		for(i = 0;i<MAX_BLOCKS;i++){
 			if(blocks.contains("blocks["+i+"]::space::colour")) free_b--;
 		}
@@ -3357,8 +3358,11 @@ function draw_sidebar(){
 			remove_midi_scope();
 			redraw_flag.targets=[];
 			sidebar.selected = -1;
-			read_songs_folder();
-			//also: calculate resource usage so you can decide if you've got space to merge the currently selected song
+			if(!usermouse.ctrl){
+				read_songs_folder("songs");
+			}else{
+				read_songs_folder("templates");
+			}
 		}
 		setfontsize(fontheight/1.6);
 

@@ -319,7 +319,7 @@ function midi_meters(){
 		var voice=meters_updatelist.midi[i][1];
 		if(blocks_meter[block][voice] !== 'undefined'){
 			var polyvoice = meters_updatelist.midi[i][2];
-			if(typeof polyvoice != "number"){
+			if(polyvoice === null){
 				post("\n\n\n\n unsafe poke");
 				sughstghldfjsl
 				return 0;

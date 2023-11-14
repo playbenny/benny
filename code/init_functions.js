@@ -7,7 +7,7 @@ function import_hardware(v){
 	
 	initialise_dictionaries();
 		
-	post("building blocktypes database \n");
+	post("\nbuilding blocktypes database \n");
 	import_blocktypes("note_blocks");
 	import_blocktypes("audio_blocks");
 	
@@ -111,18 +111,16 @@ function import_hardware(v){
 	}
 	messnamed("to_ext_matrix","read_config");
 	populate_lookup_tables();
+	transfer_input_lists();
 	post("\nsetting output blocks to:",output_blocks);
 	output_blocks_poly.patchername(output_blocks); //"master_1.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat");
 	assign_block_colours();
-	// now they're loaded you can render the block menu
-	//post("initialising new block menu \n");
-
+	
 	usermouse.queue = [];
 	world.message( "enable", 1);
 
 	set_display_mode("blocks");
 	
-	load_core_blocks();
 	
 	//	center_view();
 	this.patcher.getnamed("audio_outputs").message('int',1);
@@ -133,7 +131,16 @@ function import_hardware(v){
 	var menutex_task = new Task(initialise_block_menu, this);
 	menutex_task.schedule(1000);
 	//	redraw_flag.flag=4;
-	
+	if(songs.contains("autoload")){
+		loading.merge = 0;
+		loading.dont_automute=1;
+		loading.progress=-1;
+		loading.mute_new=0;
+		loading.bundling=12;
+		loading.wait=1;
+		loading.songname = "autoload";
+		import_song();	
+	}	
 }
 
 function process_userconfig(){
@@ -350,10 +357,10 @@ function initialise_dictionaries(){
 
 
 	SONGS_FOLDER = config.get("SONGS_FOLDER");
-	read_songs_folder();
+	read_songs_folder("songs");
 	
-
-
+	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
+	read_songs_folder("templates");	
 	// all the 3d ui stuff now
 
 	world.message( "sendwindow", "idlemouse", 1);
@@ -548,7 +555,7 @@ function play(state){
 }
 
 function populate_lookup_tables(){
-	post("building oscillator shape lookup\n");
+	post("\nbuilding oscillator shape lookup");
 	var osc_shape_lookup = new Buffer("osc_shape_lookup");
 	var i,t,tt;
 	var sin_l=[1,0,0,0,0,0,1];
@@ -579,31 +586,13 @@ function populate_lookup_tables(){
 	}
 }
 
-function load_core_blocks(){
+function transfer_input_lists(){
 	// this routine also populates controller lists and keyboard input lists in all blocks in the db
 	var k=blocktypes.getkeys();
 	var t, mk;
-//	var nm,nms;
-	var y = 3;
-	var x = 0;
-	post("loading core blocks\n");
-	for(t in k){
-		if(blocktypes.contains(k[t]+"::autoload")){
-			if(blocktypes.contains(k[t]+"::deprecated") && (blocktypes.get(k[t]+"::deprecated")==1)){
-				post("not showing this one because it's deprecated"+k[t]);//if it's deprecated, skip it
-			}else if(blocktypes.get(k[t]+"::autoload")==1){
-				post("loading",k[t]);
-				var kk=k[t].split('.');
-				if(kk[0]=='hardware'){
-					new_block(k[t],x,y);
-					x+=2;
-				}else{
-					new_block(k[t],-7, y);
-					y = y-2;
-				}
-			}
-		}
-		if(io_dict.contains("controllers")){  //looks for blocks with a param called 'controller number' and populates the menu list with the current set of controllers
+	post("transferring controller and keyboard lists to blocks\n");
+	if(io_dict.contains("controllers")){  //looks for blocks with a param called 'controller number' and populates the menu list with the current set of controllers
+		for(t in k){
 			var ps = blocktypes.getsize(k[t]+"::parameters");
 			var pt;
 			for(pt=0;pt<ps;pt++){
@@ -645,20 +634,18 @@ function deferred_diagnostics(){
 }
 
 function safepoke(buffer,channel,index,value){
-	if((typeof channel == 'number')&&(typeof index == 'number')){
-		if((typeof value == 'number')){
-			buffer.poke(channel,index,value);
-		}else if(Array.isArray(value)){
-			ok=1;
-			for(var i=0;i<value.length;i++){
-				ok &= (typeof value[i]=='number');
-			}
-			if(ok){
-				buffer.poke(channel,index,value);
-			}else{
-				post("\n\n\n\nWARNING UNSAFE ARRAY POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
-			}
+	if(Array.isArray(value)){
+		var ok=1;
+		for(var i=0;i<value.length;i++){
+			ok &= (value[i] !== null);
 		}
+		if(ok){
+			buffer.poke(channel,index,value);
+		}else{
+			post("\n\n\n\nWARNING UNSAFE ARRAY POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
+		}
+	}else if(value !== null){
+		buffer.poke(channel,index,value);
 	}else{
 		post("\n\n\n\nWARNING UNSAFE POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
 	}

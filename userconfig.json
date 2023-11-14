@@ -21,5 +21,6 @@
 
 	}
 ,
-	"RECORD_FOLDER" : "C:/Users/jhold/Documents/"
+	"RECORD_FOLDER" : "C:/Users/jhold/Documents/",
+	"TEMPLATES_FOLDER" : "templates"
 }
