@@ -74,7 +74,7 @@ function draw(){
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
 		//outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
 		if(!mini){
-			outlet(1,"font","Consolas",rh*0.8);
+			outlet(0,"setfontsize",rh*0.8);
 			outlet(1,"frgb",menucolour);
 			outlet(1,"moveto",x_pos,rh*1.0+y_pos);
 			outlet(1,"write","oct");

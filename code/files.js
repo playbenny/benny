@@ -14,7 +14,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	post("\nreading songs from folder: ",folder_name_or_path);
 	f.reset();
 	var i=0, ts, tss;
-	songlist = [];
+	if(df==0) songlist = [];
 	var fpath = f.pathname;
 	if(!Array.isArray(songs_moddate[df])) songs_moddate[df] = [];
 	if(fpath[fpath.length-1] !== "/" ) fpath = fpath+"/";
@@ -27,7 +27,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				if(t>0) tss = tss + ".";
 			}
 			var tsd = f.moddate.toString();
-			songlist[i] = tss;//f.filename;
+			if(df==0) songlist[i] = tss;//f.filename;
 			if(songs.contains(tss)){
 				if(tsd!=songs_moddate[df][i]) songs.remove(tss);
 			}
@@ -61,7 +61,6 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 							songs.setparse(tss+"::"+songkeys[k]+"["+kk+"]", "*");
 							songs.replace(tss+"::"+songkeys[k]+"["+kk+"]", song.get(songkeys[k]+"["+kk+"]"));
 						}
-	
 					}else{
 						songs.replace(tss+"::"+songkeys[k], song.get(songkeys[k]));
 					}
@@ -72,42 +71,44 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 		f.next();
 	}
 	f.close();
-	for(var i=0;i<songlist.length;i++){
-		if(songs.contains(songlist[i]+"::waves")){
-			var ws=songs.getsize(songlist[i]+"::waves");
-			for(var t=0;t<ws;t++){
-				var pat = songs.get(songlist[i]+"::waves["+t+"]::path");
-				var nam = songs.get(songlist[i]+"::waves["+t+"]::name");
-				if(pat!=null){
-					preload_list.push([pat,nam]);
-					//polybuffer_load_wave(pat,nam);
-				}
-			}
-		}
-		var bc=0, vc_n=0, vc_a=0, vc_h=0;
-		if(songs.contains(songlist[i]+"::blocks")){
-			var bs=songs.getsize(songlist[i]+"::blocks");
-			for(var t=0;t<bs;t++){
-				if(songs.contains(songlist[i]+"::blocks["+t+"]::type")){
-					bc++;
-					var ty = songs.get(songlist[i]+"::blocks["+t+"]::type");
-					var vc = songs.get(songlist[i]+"::blocks["+t+"]::poly::voices");
-					if(songs.contains(songlist[i]+"::blocks["+t+"]::subvoices")){
-						var sb=songs.get(songlist[i]+"::blocks["+t+"]::subvoices");
-						if(sb>1) vc/=sb;
-					}
-					if(ty=="note"){
-						vc_n += vc;
-					}else if(ty=="audio"){
-						vc_a += vc;
-					}else if(ty="hardware"){
-						vc_h += vc;
+	if((preload_list.length == 0) && (df==0)){
+		for(var i=0;i<songlist.length;i++){
+			if(songs.contains(songlist[i]+"::waves")){
+				var ws=songs.getsize(songlist[i]+"::waves");
+				for(var t=0;t<ws;t++){
+					var pat = songs.get(songlist[i]+"::waves["+t+"]::path");
+					var nam = songs.get(songlist[i]+"::waves["+t+"]::name");
+					if(pat!=null){
+						preload_list.push([pat,nam]);
+						//polybuffer_load_wave(pat,nam);
 					}
 				}
 			}
-		}
-		songs_info[i]=[bc,vc_n,vc_a,vc_h];
-	}	
+			var bc=0, vc_n=0, vc_a=0, vc_h=0;
+			if(songs.contains(songlist[i]+"::blocks")){
+				var bs=songs.getsize(songlist[i]+"::blocks");
+				for(var t=0;t<bs;t++){
+					if(songs.contains(songlist[i]+"::blocks["+t+"]::type")){
+						bc++;
+						var ty = songs.get(songlist[i]+"::blocks["+t+"]::type");
+						var vc = songs.get(songlist[i]+"::blocks["+t+"]::poly::voices");
+						if(songs.contains(songlist[i]+"::blocks["+t+"]::subvoices")){
+							var sb=songs.get(songlist[i]+"::blocks["+t+"]::subvoices");
+							if(sb>1) vc/=sb;
+						}
+						if(ty=="note"){
+							vc_n += vc;
+						}else if(ty=="audio"){
+							vc_a += vc;
+						}else if(ty="hardware"){
+							vc_h += vc;
+						}
+					}
+				}
+			}
+			songs_info[i]=[bc,vc_n,vc_a,vc_h];
+		}	
+	}
 }
 
 function preload_all_waves(){
@@ -208,6 +209,8 @@ function buffer_loaded(number,path,name,buffername){
 function load_next_song(slow){
 	var oc = usermouse.ctrl;
 	usermouse.ctrl = slow;
+	if(currentsong<0)currentsong=0;
+	post("\nload next, current is", currentsong, songlist[currentsong]);
 	load_song();
 	currentsong++;
 	if(currentsong==songlist.length)currentsong=0;

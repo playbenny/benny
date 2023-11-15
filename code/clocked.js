@@ -102,40 +102,47 @@ function frameclock(){
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		bangflag=1;
 	}else{
+		
 		if(redraw_flag.flag & 1){
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "settings")){
+				var vch = view_changed;
+				view_changed = false;
 				for(i=0;i<redraw_flag.targets.length;i++){
 					if(redraw_flag.targets[i] && Array.isArray(paramslider_details[i])){ //check it's defined (as sometimes if clock runs during its construction you got errors
 						bangflag=1;
 						//post("\nREDRAW",i);
 						if((redraw_flag.targets[i]==1)&&(paramslider_details[i][16]!=0)&&(automap.mapped_c!=sidebar.selected)){
-							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
+							//lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
-							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
+							//lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
 							labelled_parameter_v_slider(i);
 						}
 						redraw_flag.targets[i]=0;
 					}
 				}
+				view_changed = vch;
 			}
 		}
 		if(redraw_flag.flag & 16){
 			if(displaymode == "panels"){
+				var vch = view_changed;
+				view_changed = false;
 				for(t=0;t<redraw_flag.paneltargets.length;t++){
 					if(redraw_flag.paneltargets[t]){
 						bangflag=1;
 						i = MAX_PARAMETERS + t;
 						if((redraw_flag.paneltargets[t]==1)&&(paramslider_details[i][16]!=0)){
-							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
+							//lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
-							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
+							//lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
 							labelled_parameter_v_slider(i);
 						}
 						redraw_flag.paneltargets[t]=0;				
 					}
 				}	
+				view_changed = vch;
 			}
 		}
 	}
@@ -402,13 +409,6 @@ function sidebar_meters(){
 
 	if(sidebar.scopes.voice>-1) sidebar_scopes();
 	if(sidebar.scopes.midi>-1) sidebar_midi_scope();
-/*	if(sidebar.mode == "block"){
-	}else if(sidebar.mode == "wire"){
-		if(sidebar.scopes.voice>-1) sidebar_scopes();
-		if(sidebar.scopes.midi>-1) sidebar_midi_scope();
-	}else if((sidebar.mode == "output_scope")||(sidebar.mode == "input_scope")){
-		if(sidebar.scopes.voice>-1) sidebar_scopes();
-	}*/
 }
 
 function sidebar_midi_scope(){

@@ -106,7 +106,7 @@ function draw(){
 		maxl = Math.floor((height-sy)/rh);
 		if(!mini){
 			outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
-			outlet(1,"font","Consolas",rh*0.8);
+			outlet(0,"setfontsize",rh*0.8);
 			outlet(1,"frgb",menucolour);
 			outlet(1,"moveto",12+x_pos,rh*1.0+y_pos);
 			outlet(1,"write","o",baseoct);

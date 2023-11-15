@@ -1,11 +1,3 @@
-function click_info(action,parameter,value){
-	mouse_click_actions[mouse_index] = action;
-	mouse_click_parameters[mouse_index] = parameter;
-	mouse_click_values[mouse_index] = value;	
-	mouse_index++;
-}
-
-
 function click_clear(index,type){
 	if(usermouse.left_button) return 1;
 	//post("\nwiping click matrix");
@@ -14,6 +6,17 @@ function click_clear(index,type){
 function click_oval(x1,y1,x2,y2,index,type){
 	click_rectangle(x1,y1,x2,y2,index,type); //sorry, i lied. TODO draw ovals here
 }
+// click-zone takes care of whether it needs to be drawn, increments the counter whatever
+function click_zone(action,parameters,values,x1,y1,x2,y2,index,type){
+	if(view_changed===true){
+		mouse_click_actions[mouse_index] = action;
+		mouse_click_parameters[mouse_index] = parameters;
+		mouse_click_values[mouse_index] = values;
+		click_rectangle(x1,y1,x2,y2,index,type);
+	}
+	mouse_index++;
+}
+
 function click_rectangle(x1,y1,x2,y2,index,type){
 	x1=Math.max(0,x1) >> click_b_s;
 	//x1|=0;
@@ -174,7 +177,7 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,value){
 	}
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
-	click_rectangle(x1,y1,x2,y2,index,1);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index,1);
 }
 function labelled_parameter_v_slider(sl_no){
 	
@@ -320,7 +323,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 	var ww = (w + 2*(flags&2))/vlist.length;
 	var ww2 = ww - 2*(flags&2);
 	var pvm = (blockno == sidebar.selected)&&(sidebar.selected_voice >=0) &&(!(flags&4));
-	click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+pvm,2);
+	if(view_changed===true) click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+pvm,2);
 	for(var i=0;i<vlist.length;i++){
 		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
 		if(tvalue > 1) tvalue = 1;
@@ -330,11 +333,13 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		if(tvalue>=0) {
 			ly = y1  + (y2 - y1) * (1-tvalue);
 			if(((i==sidebar.selected_voice)||(flags & 2))&&(pvm)){ 
-				click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
-				mouse_click_actions[index] = static_mod_adjust;
-				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
-				mouse_click_values[index] = "";
-				if(click_to_step>0)mouse_click_values[index]=click_to_step;
+				if(view_changed===true){
+					click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
+					mouse_click_actions[index] = static_mod_adjust;
+					mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
+					mouse_click_values[index] = "";
+					if(click_to_step>0)mouse_click_values[index]=click_to_step;
+				}
 				mouse_index++;
 				index++;
 				mu=0.57;
@@ -343,11 +348,13 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 		}else{
 			ly = y1 + (y2-y1)*(-tvalue);
 			if(((i==sidebar.selected_voice)||(flags & 2))&&(pvm)){
-				click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
-				mouse_click_actions[index] = static_mod_adjust;
-				mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
-				mouse_click_values[index] = "";
-				if(click_to_step>0)mouse_click_values[index]=click_to_step;
+				if(view_changed===true) {
+					click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
+					mouse_click_actions[index] = static_mod_adjust;
+					mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
+					mouse_click_values[index] = "";
+					if(click_to_step>0)mouse_click_values[index]=click_to_step;
+				}
 				mouse_index++;
 				index++;
 				mu=0.5;				
@@ -378,7 +385,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 
 function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	click_rectangle(x1,y1,x2,y2,index, 2);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){
@@ -409,9 +416,8 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 		zoom_offset=-1;
 		zoom_amount=1;
 	}
-	var value=0;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	click_rectangle(x1,y1,x2,y2,index, 3);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
 	var hls;
 	var hle ;
@@ -480,7 +486,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 
 function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	click_rectangle(x1,y1,x2,y2,index, 3);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
@@ -525,7 +531,7 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 }
 function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	click_rectangle(x1,y1,x2,y2,index, 2);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 2);
 	var lx;
  	if(value>=0) {
 		if(value>=1){
@@ -560,7 +566,7 @@ function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 
 function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
-	click_rectangle(x1,y1,x2,y2,index, 4);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 4);
 	var lx = x1 + 8 + (x2-x1-16)*value_x;
 	var ly = y1 + 8 + (y2-y1-16)*(1-value_y);
 	lcd_main.message("paintrect",(lx-4),(ly-4),(lx+4),(ly+4) ,r,g,b);
@@ -569,7 +575,7 @@ function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
 function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	lcd_main.message("frameoval",x1,y1,x2,y2,r,g,b);
-	click_rectangle(x1,y1,x2,y2,index, 2);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 2);
 	lcd_main.message("moveto",((x1+x2)/2),((y1+y2)/2));
 	lcd_main.message("lineto",(((x1+x2)/2)+Math.sin(6.28*angle)*(x2-x1-16)/2),(((y1+y2)/2)-Math.cos(6.28*angle)*(y2-y1-16)/2));
 }
@@ -606,7 +612,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 			lcd_main.message("write","x"+maxl.toPrecision(3));
 		}
 	}
-	click_rectangle(x1,y1,x2,y2,index, 4);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 4);
 }
 
 function wipe_midi_meters(){
@@ -633,7 +639,7 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
 	lcd_main.message("frameoval",x1,y1,x2,y2,r/2,g/2,b/2);
 	lcd_main.message("frameoval",(x1+t),(y1+t),(x2-t),(y2-t),r,g,b);
-	click_rectangle(x1,y1,x2,y2,index, 4);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 4);
 	var cx = (x1+x2)/2;
 	var cy = (y1+y2)/2;
 	var r1 = (x2-x1)/2;

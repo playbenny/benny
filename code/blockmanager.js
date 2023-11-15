@@ -187,6 +187,8 @@ var wires = []; // called wires-connectionno-segmentno
 var wires_colours = [];
 var wires_enable = []; //whether wire enable flag is set
 
+var view_changed = true; //whether you're redrawing click buffers or not
+
 var wires_enable_animate = []; // list of [wireno,target enable value,current seg,direction,length];
 
 var wires_show_all = 1;
