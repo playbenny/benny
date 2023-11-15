@@ -191,6 +191,8 @@ var wires_enable_animate = []; // list of [wireno,target enable value,current se
 
 var wires_show_all = 1;
 
+var wires_potential_connection = -1; //if illustrating a potential connection you set this
+//to the (unused) conn no you use for drawing the wire, then set back to -1 when you freepeer it
 
 var bulgingwire=-1;
 var bulgeamount;
@@ -255,9 +257,7 @@ var blocks_page = {
 	leftmost : 0,
 	rightmost : 0,
 	highest :0,
-	lowest: 0,
-	possible_connection: -1,
-	saved_color: [0,0,0,0],
+	lowest: 0
 }	
 
 var block_menu_d = {
@@ -494,6 +494,8 @@ var deferred_diag = [];
 var debugmode;
 
 var glow_amount=0.15;
+var monofont = "Consolas";
+var mainfont = "Consolas";
 
 var ext_matrix = {
 	connections : [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16],

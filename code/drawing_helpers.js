@@ -69,7 +69,7 @@ function draw_block_texture(block){
 				lcd_block_textures.message("paintoval", 96,8,120,32);
 			}
 			lcd_block_textures.message("frgb",255,255,255);
-			lcd_block_textures.message("font","consolas",25);
+			lcd_block_textures.message("font",mainfont,25);
 			lcd_block_textures.message("textface","bold");
 			for(var t=0;t<bln.length;t++){
 				lcd_block_textures.message("moveto",5, 28+t*29);
@@ -127,10 +127,23 @@ function draw_cpu_meter(){
 	lcd_main.message("lineto", 5, pk);
 }
 
+function remove_potential_wire(){
+	if(wires_potential_connection != -1){
+		if(Array.isArray(wires[wires_potential_connection])){
+			for(var t=0;t<wires[wires_potential_connection].length;t++){
+				wires[wires_potential_connection][t].freepeer();
+				//post("\nremoving");
+			}
+		}
+		connections.setparse("connections["+wires_potential_connection+"]","{}");
+		wires_potential_connection = -1;
+	}										
+}
+
 function setfontsize(size){
 	if(cur_font_size!=size){
 		cur_font_size=size;
-		lcd_main.message("font","Consolas",size);
+		lcd_main.message("font",mainfont,size);
 	}
 }
 

@@ -448,6 +448,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									post("\nERROR hover was -1\n");
 								}else{
 									post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									remove_potential_wire();
 									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									usermouse.clicked3d=-1;
 									set_display_mode("connection_menu");
@@ -616,10 +617,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 								if((usermouse.hover=="background") || (((block_x!=dictpos[0])||(block_y!=dictpos[1])||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))||(usermouse.hover[0]=="wires")||(usermouse.hover=="background")))){
 								//if((usermouse.hover=="background") || (((block_x!=dictpos[0])||(block_y!=dictpos[1])||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))){
-									if(blocks_page.possible_connection>=0){
-										blocks_cube[blocks_page.possible_connection][0].color = blocks_page.saved_color;
-										blocks_page.possible_connection = -1;
-									}										
+									remove_potential_wire();
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
 										var dy = Math.abs(block_y-usermouse.drag.starting_value_y);
@@ -673,20 +671,65 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
-									//post("\n\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
-								
-								// ############## INDICATE POSSIBLE CONNECTION (currently by turning it white)	
-									//only need to do this once, when the state changes
-								//post("this'll help if that error happens",usermouse.hover,usermouse.ids,"\n");
-									if((blocks_cube[usermouse.hover[1]][0].color[0] == 1)&&(blocks_cube[usermouse.hover[1]][0].color[1] == 1)&&(blocks_cube[usermouse.hover[1]][0].color[2] == 1)&&(blocks_cube[usermouse.hover[1]][0].color[3] == 0.9)){
-									//	post("yes already");
+									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									// ############## INDICATE POSSIBLE CONNECTION by drawing a 'potential' wire	
+									var drawwire=1;
+									if(wires_potential_connection != -1){
+										if((connections.contains("connections["+wires_potential_connection+"]::to"))&&(connections.get("connections["+wires_potential_connection+"]::to::number")==usermouse.hover[1])&&(connections.get("connections["+wires_potential_connection+"]::to::voice")==usermouse.hover[2])){
+											//already drawn the potential connection wirer to this block
+											drawwire = 0;
+											//post("drawwire 0");
+										}/*else{
+											//the wire needs reroutin
+											post("reroute",wires_potential_connection);
+										}
 									}else{
-										if(usermouse.hover[1]!=usermouse.ids[1]){
-											blocks_page.possible_connection = usermouse.hover[1];
-											blocks_page.saved_color = blocks_cube[usermouse.hover[1]][0].color;
-											blocks_cube[usermouse.hover[1]][0].color = [1, 1, 0.9, 1];
+										//the wire needs creating
+										post("create");*/
+									}
+									if(drawwire === 1){
+										var potentialconn = new Dict;
+										potentialconn.parse("{}");
+										potentialconn.replace("from","{}");
+										potentialconn.replace("to::number",usermouse.hover[1]);
+										potentialconn.replace("from::number",usermouse.ids[1]);
+										potentialconn.replace("conversion::mute",0);
+										potentialconn.replace("from::output::number",0);
+										potentialconn.replace("from::output::type","potential");
+										potentialconn.replace("to::input::number",0);
+										potentialconn.replace("to::input::type","potential");
+										potentialconn.replace("to::voice",usermouse.hover[2]);
+										potentialconn.replace("from::voice",0);
+										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
+										if(wires_potential_connection==-1){
+											connections.append("connections",potentialconn);
+											wires_potential_connection = Math.max(1,connections.getsize("connections")-1);
+											//post("\nappended, number is",wires_potential_connection);
+										}else{
+											//post("\nreplaced", wires_potential_connection);
+											connections.replace("connections["+wires_potential_connection+"]",potentialconn);
+										}
+										//post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
+										//draw_wire(wires_potential_connection);
+										//post("\ndrew");
+									
+										var drawnlist = [];
+										for(var t=0;t<usermouse.drag.dragging.voices.length;t++){
+											if(drawnlist.indexOf(usermouse.drag.dragging.voices[t][0])==-1){
+												drawnlist.push(usermouse.drag.dragging.voices[t][0]);
+												draw_block(usermouse.drag.dragging.voices[t][0]);
+											}
+										}
+										draw_wire(wires_potential_connection);
+										for(var t=0;t<usermouse.drag.dragging.connections.length;t++){
+											draw_wire(usermouse.drag.dragging.connections[t]);
+										}
+							/*			if(usermouse.hover[1]!=usermouse.ids[1]){
+											//blocks_page.possible_connection = usermouse.hover[1];
+											//blocks_page.saved_color = blocks_cube[usermouse.hover[1]][0].color;
+											//blocks_cube[usermouse.hover[1]][0].color = [1, 1, 0.9, 1];
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
-												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::x") + 0.001, blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::y")-0.001, -usermouse.drag.dragging.voices[t][1]];
+												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::x") + 0.001 + 0.5*usermouse.drag.dragging.voices[t][1], blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::y")-0.001, 0];
 											}
 											if((oldpos[0] != blocks_cube[usermouse.ids[1]][0].position[0])||(oldpos[1] != blocks_cube[usermouse.ids[1]][0].position[1])||(oldpos[2] != blocks_cube[usermouse.ids[1]][0].position[2])){
 												for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
@@ -694,18 +737,18 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 												}
 											}
 										}else{
-											blocks_page.possible_connection = usermouse.hover[1];
-											blocks_page.saved_color = blocks_cube[usermouse.hover[1]][0].color;
-											blocks_cube[usermouse.hover[1]][0].color = [1, 1, 0.9, 1];
+											//blocks_page.possible_connection = usermouse.hover[1];
+											//blocks_page.saved_color = blocks_cube[usermouse.hover[1]][0].color;
+											//blocks_cube[usermouse.ids[1]][0].color = [1, 1, 0.9, 1];
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
-												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::x") + 0.001, blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::y")-0.001, -usermouse.drag.dragging.voices[t][1]];
+												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::x") + 0.001 + 0.5*usermouse.drag.dragging.voices[t][1], blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::y")-0.001, 0];
 											}
 											if((oldpos[0] != blocks_cube[usermouse.ids[1]][0].position[0])||(oldpos[1] != blocks_cube[usermouse.ids[1]][0].position[1])||(oldpos[2] != blocks_cube[usermouse.ids[1]][0].position[2])){
 												for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 													draw_wire(usermouse.drag.dragging.connections[tt]);
 												}
 											}
-										}
+										}*/
 									}
 								}
 							}	
@@ -717,13 +760,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					if(usermouse.left_button==1){
 						if(usermouse.drag.starting_x>0){
 							//var xdist=x-usermouse.drag.starting_x;
-							//var ydist=usermouse.drag.starting_y-y;
-							usermouse.drag.distance += Math.abs(x - usermouse.drag.last_x) + Math.abs(y - usermouse.drag.last_y);
-							usermouse.drag.last_x = x;
+							var ydist=usermouse.drag.last_y - y;//starting_y-y;
+							//usermouse.drag.distance += Math.abs(x - usermouse.drag.last_x) + Math.abs(y - usermouse.drag.last_y);
+							//usermouse.drag.last_x = x;
 							usermouse.drag.last_y = y;
 							if((usermouse.clicked3d == "background")||(usermouse.clicked3d == "background_dragged")){
 								usermouse.clicked3d = "background_dragged";
-								menu_camera_scroll = usermouse.drag.starting_value_y + ydist*0.04;
+								menu_camera_scroll += ydist*0.04;
 								messnamed("camera_control","position", 2 , -93, menu_camera_scroll);	
 							}					
 						}

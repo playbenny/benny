@@ -856,11 +856,6 @@ function remove_connection(connection_number){
 	}
 	wires[connection_number]=[];
 	wire_ends[connection_number][0] = -1.057;
-	if(!is_empty(connection_blobs[connection_number])){
-		connection_blobs[connection_number].freepeer(); //enable = 0;
-		connection_blobs[connection_number] = null;
-		//post("removing blob");
-	} 
 	selected.wire[connection_number] = 0;
 	
 	// work out which polyvoices/matrix slots correspond

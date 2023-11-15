@@ -10,6 +10,8 @@
 	"waves_preloading" : 1,
 	"wire_dia" : 0.03,
 	"glow" : 0.2,
+	"monofont" : "Consolas",
+	"mainfont" : "Consolas",
 	"BLOCK_MENU_CLICK_ACTION" : "long_click",
 	"new_block_menu_mouse_action_note" : [ "click", "long_click", "right_click", "double_click", "ctrl_click", "alt_click" ],
 	"MAX_BEZIER_SEGMENTS" : 16,
@@ -61,7 +63,8 @@
 			"hardware" : [ 255, 50, 25 ],
 			"audio" : [ 225, 120, 25 ],
 			"midi" : [ 205, 200, 25 ],
-			"parameters" : [ 120, 225, 25 ]
+			"parameters" : [ 120, 225, 25 ],
+			"potential" : [255,255,255]
 		},
 		"gamut" : [ 			{
 				"colour" : [ 208, 0, 108 ]

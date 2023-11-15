@@ -204,6 +204,8 @@ function initialise_dictionaries(){
 	wire_dia = config.get("wire_dia");
 	glow_amount = config.get("glow");
 	messnamed("bloom_amt",glow_amount);
+	mainfont = config.get("mainfont");
+	monofont = config.get("monofont");
 	BLOCK_MENU_CLICK_ACTION = config.get("BLOCK_MENU_CLICK_ACTION");
 	MAX_BLOCKS = config.get("MAX_BLOCKS");
 	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");

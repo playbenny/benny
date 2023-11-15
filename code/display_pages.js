@@ -676,7 +676,7 @@ function initialise_block_menu(visible){
 						lcd_block_textures.message("brgb",col);
 						lcd_block_textures.message("clear");
 						lcd_block_textures.message("frgb",255,255,255);
-						lcd_block_textures.message("font","consolas",30);
+						lcd_block_textures.message("font",mainfont,30);
 						lcd_block_textures.message("textface","bold");
 						for(var t=0;t<ts.length;t++){
 							lcd_block_textures.message("moveto",5, 28+t*30);
@@ -1029,7 +1029,7 @@ function draw_wire(connection_number){
 		var cfrom = connections.get("connections["+connection_number+"]::from::number");
 		var cto = connections.get("connections["+connection_number+"]::to::number");
 		// now just get the block positions and compare to stored ones in wire_ends
-		var visible = wires_show_all || selected.wire[connection_number] || selected.block[cfrom] || selected.block[cto];
+		var visible = wires_show_all || selected.wire[connection_number] || selected.block[cfrom] || selected.block[cto] || (connection_number == wires_potential_connection);
 
 		var drawme=1;
 		if(wires_enable[connection_number]!=visible){
@@ -1053,7 +1053,7 @@ function draw_wire(connection_number){
 			var to_number = connections.get("connections["+connection_number+"]::to::input::number");
 			var to_type = connections.get("connections["+connection_number+"]::to::input::type");
 			var from_name = blocks.get("blocks["+cfrom+"]::name");
-			var num_outs = blocktypes.getsize(from_name+"::connections::out::"+from_type);
+			var num_outs = Math.max(1,blocktypes.getsize(from_name+"::connections::out::"+from_type));
 			var num_ins;
 			if(to_type!="parameters"){
 				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::connections::in::"+to_type);
@@ -1080,8 +1080,8 @@ function draw_wire(connection_number){
 			}else{
 				fconx = ((from_number+0.5)/(num_outs));
 				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
-				if(from_type == "midi") from_pos[2]+=0.25;
-				if(from_type == "parameters") from_pos[2]+=0.125;
+				if(from_type == "midi") from_pos[2]-=0.25;
+				if(from_type == "parameters") from_pos[2]-=0.125;
 			}
 			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
 				tconx = ((to_number+0.5)/(NO_IO_PER_BLOCK));
@@ -1089,10 +1089,10 @@ function draw_wire(connection_number){
 			}else{
 				tconx =  ((to_number+0.5)/(num_ins));
 				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
-				if(to_type == "midi") to_pos[2] += 0.25; //to_pos[1]-=0.25;
-				if(to_type == "parameters") to_pos[2] += 0.125; //to_pos[1]+=0.25;
+				if(to_type == "midi") to_pos[2] -= 0.25; //to_pos[1]-=0.25;
+				if(to_type == "parameters") to_pos[2] -= 0.125; //to_pos[1]+=0.25;
 				if(to_type == "block"){
-					to_pos[2] += 0.375;
+					to_pos[2] -= 0.375;
 					tconx = 0.5;
 				} 
 			}
@@ -1111,7 +1111,6 @@ function draw_wire(connection_number){
 			var from_subvoices=1, to_subvoices=1;
 			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices"))) from_subvoices = blocks.get("blocks["+cfrom+"]::subvoices");
 			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices"))) to_subvoices = blocks.get("blocks["+cto+"]::subvoices");
-			
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
 				fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
 				if(fv>1) from_multi = 1;
@@ -1120,7 +1119,7 @@ function draw_wire(connection_number){
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
-				if(tl.length>1){
+				if(Array.isArray(tl)){
 					fv = tl.length;
 					from_multi=1;
 					for(t=0;t<tl.length;t++){
@@ -1145,7 +1144,7 @@ function draw_wire(connection_number){
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::to::voice");
-				if(tl.length>1){
+				if(Array.isArray(tl)){
 					tv = tl.length;
 					to_multi = 1;
 					for(t=0;t<tl.length;t++){
@@ -1166,7 +1165,7 @@ function draw_wire(connection_number){
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
 			if((dist<4.5)&&(cfrom!=cto)){
 				segments_to_use /= 4; //flag for short wires - use less segments.
-			}else if((dist<9)&&(from_pos[1]<to_pos[1])){
+			}else if((dist<9)&&(cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
 				segments_to_use /= 2;
 			}
 			segments_to_use = 4*(Math.max(1,Math.round(segments_to_use/4)));
@@ -1197,7 +1196,7 @@ function draw_wire(connection_number){
 
 			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
 			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
-
+			//if(connection_number == wires_potential_connection) post("\nstarting",from_pos,"to",to_pos,"conx",fconx,tconx,"from_list",from_list);
 			if((to_multi>0) || from_multi){
 				var i;
 				var minz=99999;
@@ -1328,6 +1327,7 @@ function draw_wire(connection_number){
 }
 
 function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, visible){
+	//if(connection_number == wires_potential_connection) post("\nbez:",connection_number, segment, num_segments, "\nfrom:",bez_prep[0], bez_prep[1], "\nto",bez_prep[2], bez_prep[3], bez_prep[4], bez_prep[5], cmute, visible)
 	var t, tt, i, ott;
 	var p = [];
 	num_segments = Math.max(1,Math.floor(num_segments));
@@ -1448,17 +1448,27 @@ function draw_connection_menu(){
 	lcd_main.message("write", "from");
 	setfontsize(fontheight*0.8);
 	lcd_main.message("textface","bold");
-	lcd_main.message("write",blocks.get('blocks['+from_block+']::name'));
+	var from_label = blocks.get('blocks['+from_block+']::name');
+	if(blocks.contains('blocks['+from_block+']::label')){
+		if(from_label != blocks.get('blocks['+from_block+']::label')){
+			from_label = blocks.get('blocks['+from_block+']::label') +" ("+from_label+")";
+		}
+	}
+	lcd_main.message("write",from_label);
 	lcd_main.message("textface","normal");
-//	lcd_main.message("write",connection_menu.get("from::number"));
 	lcd_main.message("moveto",(mainwindow_width/3 + 9),(1.85*fontheight+y_offset));
 	setfontsize(fontheight*0.4);
 	lcd_main.message("write", "to");
 	setfontsize(fontheight*0.8);
 	lcd_main.message("textface", "bold");	
-	lcd_main.message("write",blocks.get('blocks['+to_block+']::name'));
+	var to_label = blocks.get('blocks['+to_block+']::name');
+	if(blocks.contains('blocks['+to_block+']::label')){
+		if(to_label != blocks.get('blocks['+to_block+']::label')){
+			to_label = blocks.get('blocks['+to_block+']::label')+" ("+to_label+")";
+		}
+	}
+	lcd_main.message("write",to_label);
 	lcd_main.message("textface", "normal");
-//	lcd_main.message("write",to_block);
 	lcd_main.message("moveto", 10,(2.85*fontheight+y_offset));
 	setfontsize(fontheight*0.4);
 	lcd_main.message("write","voices");
