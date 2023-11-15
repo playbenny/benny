@@ -730,7 +730,7 @@ function remove_from_mod_routemap(m_index,targetvalue){
 
 function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice, destinput, scalen, scalev, offsetn, offsetv,cno,destvoiceno){
 //nb destvoiceno = 0 for polyrouter, voices go 1,2,3,4,5 etc
-	if((typeof enab == "number")&&(typeof type == "number")&&(typeof desttype == "number")&&(typeof destvoice == "number")&&(typeof destinput == "number")&&(typeof scalen == "number")&&(typeof scalev == "number")&&(typeof offsetn == "number")&&(typeof offsetv == "number")){
+	if((enab !== null) && (type !== null) && (desttype !== null) && (destvoice !== null) && (destinput !== null) && (scalen !== null) && (scalev !== null) && (offsetn !== null) && (offsetv !== null)){
 		var voindex = sourcevoice * MAX_OUTPUTS_PER_VOICE + sourceoutput;
 		var index = -1;
 		var baseindex = 9 * (MAX_CONNECTIONS_PER_OUTPUT * voindex);
