@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 42.0, 85.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 82.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -96,7 +96,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 50.0, 78.0, 1046.0, 483.666671097278595 ]
+					"patching_rect" : [ 50.0, 38.0, 966.0, 523.666671097278595 ]
 				}
 
 			}
@@ -121,6 +121,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
@@ -135,13 +142,12 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-3", 1 ],
+					"destination" : [ "obj-3", 2 ],
 					"source" : [ "obj-5", 0 ]
 				}
 
 			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }
