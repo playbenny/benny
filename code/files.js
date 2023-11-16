@@ -431,7 +431,7 @@ function import_song(){
 				tx = blocks.get("blocks["+loading.mapping[b]+"]::space::x");
 				blocks.replace("blocks["+loading.mapping[b]+"]::space::x",tx+loading.xoffset);
 				if(!blocks.contains("blocks["+loading.mapping[b]+"]::label")) blocks.replace("blocks["+loading.mapping[b]+"]::label", block_name);
-				load_block(block_name,loading.mapping[b],songs.get(loading.songname+"::states::current::"+b),excl);
+				load_block(block_name,loading.mapping[b],songs.get(loading.songname+"::states::current::"+b)||[],excl);
 			}
 		}
 		

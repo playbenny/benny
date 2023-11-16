@@ -146,6 +146,7 @@ function draw_panels(){
 	var statelist = states.getkeys();
 	var block_name;
 	var block_is_in_custom_order=[];
+	view_changed=true;
 	get_hw_meter_positions();
 	panelslider_index=MAX_PARAMETERS+1;
 	redraw_flag.paneltargets=[];
@@ -3297,7 +3298,8 @@ function draw_sidebar(){
 		var free_b=MAX_BLOCKS;
 		var free_n=MAX_NOTE_VOICES;
 		var free_a=MAX_AUDIO_VOICES;
-		var files_page = "songs";
+
+		//var files_page = "songs";
 		for(i = 0;i<MAX_BLOCKS;i++){
 			if(blocks.contains("blocks["+i+"]::space::colour")) free_b--;
 		}
@@ -3396,7 +3398,7 @@ function draw_sidebar(){
 
 		lcd_main.message("paintrect", file_menu_x + fontheight*6.6, 9, file_menu_x+fontheight*8.7, 9+fontheight,greydarkest );
 		lcd_main.message("frgb" , greycolour);
-		click_rectangle(save_song, 0, null, file_menu_x + fontheight*6.6, 9, file_menu_x+fontheight*8.8, 9+fontheight,mouse_index,1 );
+		click_zone(save_song, 0, "", file_menu_x + fontheight*6.6, 9, file_menu_x+fontheight*8.8, 9+fontheight,mouse_index,1 );
 		lcd_main.message("moveto", file_menu_x + fontheight*6.8, 9+fontheight*0.75);
 		lcd_main.message("write", "save");				
 
