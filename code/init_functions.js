@@ -656,7 +656,7 @@ function safepoke(buffer,channel,index,value){
 	}else if(value !== null){
 		buffer.poke(channel,index,value);
 	}else{
-		post("\n\n\n\nWARNING UNSAFE POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
+		post("\n\n\n\nWARNING UNSAFE POKE ATTEMPTED:\nbuffer: ",buffer,buffer.toString(), buffer.constructor.name, "C,I,V",channel,index,value,"\n\n\n");
 	}
 }
 

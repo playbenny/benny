@@ -550,7 +550,7 @@ function import_song(){
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
 		//set_display_mode("blocks");
-		set_sidebar_mode("none");
+		//set_sidebar_mode("none");
 		//build_mod_sum_action_list();
 		rebuild_action_list=1;
 
@@ -609,7 +609,7 @@ function load_process_block_voices_and_data(block){
 	if(loading.wait>1) post("\nrestoring block "+block+" voices ("+t+") and data");
 	if(t!=1){
 		drawn=0;
-		blocks.replace("blocks["+block +"]::poly::voices",1)
+		blocks.replace("blocks["+block +"]::poly::voices",1);
 		voicecount(block, t);
 	}
 	if(blocks.contains("blocks["+block+"]::voice_data") && voicemap.contains(block)){

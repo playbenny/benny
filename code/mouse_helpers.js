@@ -763,11 +763,18 @@ function fire_block_state(state, block){
 		var m=0;
 		if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
 		mute_particular_block(block,pv[0]);
-		for(var i=1;i<pv.length;i++) parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
+		for(var i=1;i<pv.length;i++){
+			if(pv[i] !== null){
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
+			}else{
+				post("\n\n\n\n\n\n\nunsafe poke in fire block state",i,pv[i]);
+			}
+		}
 		if(states.contains("states::"+state+"::static_mod::"+block)){
 			var td = states.get("states::"+state+"::static_mod::"+block);
 			var tk = td.getkeys();
 			var vl = voicemap.get(block);
+			if(!Array.isArray(vl)) vl = [vl];
 			for(var i=0;i<tk.length;i++){
 				parameter_static_mod.poke(1,MAX_PARAMETERS*vl[+tk[i]],states.get("states::"+state+"::static_mod::"+block+"::"+tk[i]));
 			}

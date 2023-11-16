@@ -37,7 +37,7 @@
 			{
 				"name" : "wave",
 				"type" : "wave",
-				"values" : ["wave"],
+				"values" : ["wave",0,256],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0

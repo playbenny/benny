@@ -2200,6 +2200,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}else{
 					spr = sprd;
 				}
+				if(loading.wait>1) post(spr);
 				safepoke(parameter_static_mod,1, voiceoffset  *MAX_PARAMETERS+i, 0);
 				safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
@@ -2229,7 +2230,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 						p_curve = 2;
 					}
 				}
-
 				// parameter info poked out here for paramwatcher
 				safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block+i,p_min);
 				safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block+i,p_max);
