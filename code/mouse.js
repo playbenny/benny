@@ -476,6 +476,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if((usermouse.hover[1] == usermouse.ids[1]) && (0.5*Math.round(2*displaypos[0]) == 0.5*Math.round(2*dictpos[0])) && (0.5*Math.round(2*displaypos[1]) == 0.5*Math.round(2*dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
+									remove_potential_wire();
 									build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									set_display_mode("connection_menu");
 								}else{ // ################### A BUNCH OF MUNDANE TOGGLING SELECtiON - you released on a thing, no drag:

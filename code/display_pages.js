@@ -1024,12 +1024,15 @@ function draw_blocks(){
 
 function draw_wire(connection_number){
 	var t;
+	
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
 		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
 		var cfrom = connections.get("connections["+connection_number+"]::from::number");
 		var cto = connections.get("connections["+connection_number+"]::to::number");
 		// now just get the block positions and compare to stored ones in wire_ends
 		var visible = wires_show_all || selected.wire[connection_number] || selected.block[cfrom] || selected.block[cto] || (connection_number == wires_potential_connection);
+
+		if(cfrom === null) return -1;
 
 		var drawme=1;
 		if(wires_enable[connection_number]!=visible){
@@ -1179,7 +1182,14 @@ function draw_wire(connection_number){
 			// many-blob-corner-one, many-corner-blob-corner-many, one-corner-blob-many
 			var blob_position = [];
 			var meanvector = [0,0,0];
-
+			if(cfrom == cto){
+				from_anglevector[0] += 0.5*from_anglevector[1];
+				from_anglevector[1] *= 2;
+				from_anglevector[2] -= 1;
+				to_anglevector[0] -= 0.5 * to_anglevector[1];
+				to_anglevector[1] *= 2;
+				to_anglevector[2] -= 1;
+			}
 			blob_position[0] = ((from_pos[0] + to_pos[0])*0.5);
 			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
 			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
@@ -3018,12 +3028,12 @@ function draw_topbar(){
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
-		lcd_main.message("framerect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10), 9+fontheight,192,192,192 );
-		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2))), 9+fontheight,192,192,192 );
-		lcd_main.message("frgb", 0,0,0);		
+		lcd_main.message("framerect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10), 9+fontheight,menucolour);
+		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2))), 9+fontheight,menucolour);
+		lcd_main.message("frgb", 255,255,255);		
 		//lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-		lcd_main.message("write", "loading: "+songlist[currentsong]);
+		lcd_main.message("write", "loading: "+ loading.songname);
 		//lcd_main.message("write", "-ing");
 		mouse_index++;
 		if(songs.contains(songlist[currentsong]+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
@@ -3097,7 +3107,10 @@ function draw_topbar(){
 function draw_sidebar(){	
 	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
-	if(sidebar.mode!=sidebar.lastmode) sidebar.scroll.position = 0;
+	if(sidebar.mode!=sidebar.lastmode) {
+		sidebar.scroll.position = 0;
+		view_changed = true;
+	}
 	sidebar.panel = 0;	
 	var block_colour, block_dark, block_darkest;
 	var i,t;
@@ -6284,9 +6297,9 @@ function draw_sidebar(){
 		lcd_main.message("moveto",mainwindow_width-5,p);
 		lcd_main.message("lineto",mainwindow_width-5,p+l2);
 	}
-//	lcd_main.message("bang");
+	//	lcd_main.message("bang");
 	//outlet(8,"bang");
-	
+	view_changed = false;
 }
 
 function remove_midi_scope(){

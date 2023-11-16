@@ -1239,7 +1239,10 @@ function make_connection(cno){
 // works out the route for the connection
 // makes the connection
 // (it has already been copied into the connections dict, at the slot we've been called with?)
+	post("\nmake conn");
+	messnamed("testpoint","bang");
 	var f_type = connections.get("connections["+cno+"]::from::output::type");
+	post("\ntest");
 	var t_type = connections.get("connections["+cno+"]::to::input::type");
 	var f_o_no = connections.get("connections["+cno+"]::from::output::number");
 	var t_i_no = connections.get("connections["+cno+"]::to::input::number");	
@@ -1769,7 +1772,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	connection_menu.replace("from::viewoffset" , 0);
 	connection_menu.replace("from::voices", blocks.get('blocks['+from+']::poly::voices'));
 	connection_menu.replace("to::voices", blocks.get('blocks['+to+']::poly::voices'));
-		
+	
 	new_connection.parse('{ }');
  	new_connection.replace("from::number",from);
 	new_connection.replace("to::number", to);
