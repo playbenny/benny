@@ -1032,7 +1032,10 @@ function draw_wire(connection_number){
 		// now just get the block positions and compare to stored ones in wire_ends
 		var visible = wires_show_all || selected.wire[connection_number] || selected.block[cfrom] || selected.block[cto] || (connection_number == wires_potential_connection);
 
-		if(cfrom === null) return -1;
+		if(cfrom === null){
+			post("\n\n\n\n\nERROR connection NOT FOUND");
+			return -1;
+		} 
 
 		var drawme=1;
 		if(wires_enable[connection_number]!=visible){
