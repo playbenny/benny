@@ -1235,16 +1235,30 @@ function remove_connection(connection_number){
 	rebuild_action_list = 1;
 }
 
+function remove_potential_wire(){
+	if(wires_potential_connection != -1){
+		if(Array.isArray(wires[wires_potential_connection])){
+			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
+				wires[wires_potential_connection][t].freepeer();
+				wires[wires_potential_connection].pop();
+			}
+		}
+		post("\nremoving",wires_potential_connection);
+		var empt=new Dict;  // wipe this one from the dictionary
+		connections.set("connections["+wires_potential_connection+"]", empt);
+		wire_ends[wires_potential_connection][3] = -99.94;
+		wire_ends[wires_potential_connection][1] = -99.94;
+		wires_potential_connection = -1;
+	}										
+}
 
 function make_connection(cno){
 // takes the new connection dict and 
 // works out the route for the connection
 // makes the connection
 // (it has already been copied into the connections dict, at the slot we've been called with?)
-	post("\nmake conn");
-	messnamed("testpoint","bang");
+	//post("\nmake conn");
 	var f_type = connections.get("connections["+cno+"]::from::output::type");
-	post("\ntest");
 	var t_type = connections.get("connections["+cno+"]::to::input::type");
 	var f_o_no = connections.get("connections["+cno+"]::from::output::number");
 	var t_i_no = connections.get("connections["+cno+"]::to::input::number");	

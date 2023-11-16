@@ -856,7 +856,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 
 
 function draw_block(i){ //i is the blockno, we've checked it exists before this point
-	post("drawing block",i,"\n");
+	//post("drawing block",i,"\n");
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
@@ -1024,7 +1024,7 @@ function draw_blocks(){
 
 function draw_wire(connection_number){
 	var t;
-	post("\ndraw wire",connection_number);
+	//post("\ndraw wire",connection_number);
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
 		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
 		var cfrom = connections.get("connections["+connection_number+"]::from::number");
