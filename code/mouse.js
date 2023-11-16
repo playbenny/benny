@@ -24,6 +24,7 @@ function clicked_block_preparation() {
 	usermouse.drag.starting_value_x = blocks_cube[usermouse.clicked3d][0].position[0];
 	usermouse.drag.starting_value_y = blocks_cube[usermouse.clicked3d][0].position[1];
 	var nc = 0, found;
+	usermouse.drag.dragging.connections = [];
 	for (t = 0; t < connections.getsize("connections"); t++) { //get list of connections that move with this/these blocks
 		found = 0;
 		if (connections.contains("connections[" + t + "]::to::number")) {

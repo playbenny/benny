@@ -144,8 +144,6 @@ function remove_potential_wire(){
 		connections.set("connections["+wires_potential_connection+"]", empt);
 		wire_ends[wires_potential_connection][3] = -99.94;
 		wire_ends[wires_potential_connection][1] = -99.94;
-		//	connections.setparse("connections["+wires_potential_connection+"]","{}");
-		//if((connections.getsize("connections")-1 == wires_potential_connection)) connections.remove("connections["+wires_potential_connection+"]");
 		wires_potential_connection = -1;
 	}										
 }

@@ -335,8 +335,8 @@ var usermouse = {
 		last_y : 0,
 		distance : 0,
 		dragging : {
-			connections : ["none"],
-			voices : ["none"]
+			connections : [],
+			voices : []
 		}
 	}
 }
