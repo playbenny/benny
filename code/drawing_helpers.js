@@ -134,12 +134,18 @@ function draw_cpu_meter(){
 function remove_potential_wire(){
 	if(wires_potential_connection != -1){
 		if(Array.isArray(wires[wires_potential_connection])){
-			for(var t=0;t<wires[wires_potential_connection].length;t++){
+			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
 				wires[wires_potential_connection][t].freepeer();
-				//post("\nremoving");
+				wires[wires_potential_connection].pop();
 			}
 		}
-		connections.setparse("connections["+wires_potential_connection+"]","{}");
+		post("\nremoving",wires_potential_connection);
+		var empt=new Dict;  // wipe this one from the dictionary
+		connections.set("connections["+wires_potential_connection+"]", empt);
+		wire_ends[wires_potential_connection][3] = -99.94;
+		wire_ends[wires_potential_connection][1] = -99.94;
+		//	connections.setparse("connections["+wires_potential_connection+"]","{}");
+		//if((connections.getsize("connections")-1 == wires_potential_connection)) connections.remove("connections["+wires_potential_connection+"]");
 		wires_potential_connection = -1;
 	}										
 }

@@ -289,6 +289,13 @@ function initialise_dictionaries(){
 	states.parse('{ "states" : {}}');
 	songs.parse('{}');
 	song.parse('{}');
+	potential_connection.parse("{}");
+	potential_connection.replace("conversion::mute",0);
+	potential_connection.replace("from::output::number",0);
+	potential_connection.replace("from::output::type","potential");
+	potential_connection.replace("to::input::number",0);
+	potential_connection.replace("to::input::type","potential");
+	potential_connection.replace("from::voice",0);
 	
 	messnamed("update_midi_routemap","bang");
 	

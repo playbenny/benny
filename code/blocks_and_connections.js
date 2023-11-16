@@ -574,17 +574,19 @@ function get_voice_details(voiceis){
 function create_connection_button(){
 	var csize = connections.getsize("connections");
 	var w=1;
-	for(var i=0;i<csize;i++){ //look for an empty slot
+	for(var i=1;i<csize;i++){ //look for an empty slot
 		if(!connections.contains("connections["+i+"]::to::number")){
+			post("\nfound an empty slot to use");
 			connections.replace("connections["+i+"]",new_connection);
 			w=0;
+			make_connection(i);
 			i=csize;
 		}
 	}
-	if(w){
+	if(w==1){
 		connections.append("connections",new_connection);
+		make_connection(connections.getsize("connections")-1);
 	}
-	make_connection(connections.getsize("connections")-1);
 	new_connection.clear();
 	//click_clear(0,0);
 	//outlet(8,"bang");

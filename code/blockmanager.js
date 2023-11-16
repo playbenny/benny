@@ -424,6 +424,8 @@ connections.name = "connections";
 
 var new_connection = new Dict;
 new_connection.name = "new_connection";
+var potential_connection = new Dict;
+potential_connection.name = "potential_connection";
 
 var connection_menu = new Dict;
 connection_menu.name = "connection_menu";

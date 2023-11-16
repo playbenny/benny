@@ -856,7 +856,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 
 
 function draw_block(i){ //i is the blockno, we've checked it exists before this point
-	//post("drawing block",i,"\n");
+	post("drawing block",i,"\n");
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
@@ -1024,7 +1024,7 @@ function draw_blocks(){
 
 function draw_wire(connection_number){
 	var t;
-	
+	post("\ndraw wire",connection_number);
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
 		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
 		var cfrom = connections.get("connections["+connection_number+"]::from::number");
@@ -1061,11 +1061,13 @@ function draw_wire(connection_number){
 			var from_name = blocks.get("blocks["+cfrom+"]::name");
 			var num_outs = Math.max(1,blocktypes.getsize(from_name+"::connections::out::"+from_type));
 			var num_ins;
-			if(to_type!="parameters"){
+			if(to_type=="parameters"){
+				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::parameters");
+			}else if (to_type != "potential"){
 				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::connections::in::"+to_type);
 				num_ins++; //add the block input (mute, mute toggle)
 			}else{
-				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::parameters");
+				num_ins = 1;//potential wires, special case
 			}
 			var from_pos,to_pos, from_anglevector,to_anglevector;
 			var from_colour = config.get("palette::connections::"+from_type);
@@ -1331,7 +1333,6 @@ function draw_wire(connection_number){
 					for(var sr = wires[connection_number].length-1;sr>=segment;sr--){
 						wires[connection_number][sr].freepeer();
 						wires[connection_number].pop();
-						//wires[connection_number][sr].enable = 0;
 					}
 				}
 			}

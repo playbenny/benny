@@ -678,37 +678,35 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(wires_potential_connection != -1){
 										if((connections.contains("connections["+wires_potential_connection+"]::to"))&&(connections.get("connections["+wires_potential_connection+"]::to::number")==usermouse.hover[1])&&(connections.get("connections["+wires_potential_connection+"]::to::voice")==usermouse.hover[2])){
 											//already drawn the potential connection wirer to this block
-											drawwire = 0;
-											//post("drawwire 0");
-										}/*else{
-											//the wire needs reroutin
-											post("reroute",wires_potential_connection);
+											drawwire = 0;	
 										}
-									}else{
-										//the wire needs creating
-										post("create");*/
 									}
-									if(drawwire === 1){
-										var potentialconn = new Dict;
-										potentialconn.parse("{}");
-										potentialconn.replace("from","{}");
-										potentialconn.replace("to::number",usermouse.hover[1]);
-										potentialconn.replace("from::number",usermouse.ids[1]);
-										potentialconn.replace("conversion::mute",0);
-										potentialconn.replace("from::output::number",0);
-										potentialconn.replace("from::output::type","potential");
-										potentialconn.replace("to::input::number",0);
-										potentialconn.replace("to::input::type","potential");
-										potentialconn.replace("to::voice",usermouse.hover[2]);
-										potentialconn.replace("from::voice",0);
+									if(drawwire == 1){
+										potential_connection.replace("from::number",usermouse.ids[1]);
+										potential_connection.replace("to::number",usermouse.hover[1]);
+										potential_connection.replace("to::voice",usermouse.hover[2]);
 										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
 										if(wires_potential_connection==-1){
-											connections.append("connections",potentialconn);
-											wires_potential_connection = Math.max(1,connections.getsize("connections")-1);
-											//post("\nappended, number is",wires_potential_connection);
+											var csize = connections.getsize("connections");
+											var w=1;
+											for(var i=1;i<csize;i++){ //look for an empty slot
+												if(!connections.contains("connections["+i+"]::to::number")){
+													post("\nfound an empty slot,",i," to use for potential connection wire");
+													connections.replace("connections["+i+"]",potential_connection);
+													wires_potential_connection = i;
+													w=0;
+													//make_connection(i);
+													i=csize;
+												}
+											}
+											if(w==1){
+												connections.append("connections",potential_connection);
+												wires_potential_connection = connections.getsize("connections")-1;
+												post("\nappended, number is",wires_potential_connection);
+											}
 										}else{
-											//post("\nreplaced", wires_potential_connection);
-											connections.replace("connections["+wires_potential_connection+"]",potentialconn);
+											post("\nreplaced", wires_potential_connection);
+											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
 										//post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
 										//draw_wire(wires_potential_connection);
