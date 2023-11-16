@@ -102,7 +102,6 @@ function frameclock(){
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		bangflag=1;
 	}else{
-		
 		if(redraw_flag.flag & 1){
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "settings")){
 				var vch = view_changed;

@@ -3032,12 +3032,13 @@ function draw_topbar(){
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
-		lcd_main.message("framerect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10), 9+fontheight,menucolour);
-		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+10*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2))), 9+fontheight,menucolour);
-		lcd_main.message("frgb", 255,255,255);		
-		//lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
+		lcd_main.message("paintrect", 13 + fontheight*x_o, 13, 5+fontheight*x_o+(mainwindow_width-fontheight*x_o-17)*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2)), 5+fontheight,menudark);
+		lcd_main.message("framerect", 9 + fontheight*x_o, 9, mainwindow_width - 9, 9+fontheight,menucolour);
+		lcd_main.message("frgb", 0,0,0);		
+		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
+		lcd_main.message("write", "loading:");
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-		lcd_main.message("write", "loading: "+ loading.songname);
+		lcd_main.message("write", loading.songname);
 		//lcd_main.message("write", "-ing");
 		mouse_index++;
 		if(songs.contains(songlist[currentsong]+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place

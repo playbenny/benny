@@ -439,7 +439,6 @@ function import_song(){
 		meters_updatelist.hardware = [];
 		meters_updatelist.meters = [];
 		meters_enable = 0;
-		//draw_blocks(); //block cubes need to exist in order for connections to be created but this is called after voicecount anyway
 		center_view(1);
 		loading.ready_for_next_action=loading.wait;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length){
@@ -456,7 +455,6 @@ function import_song(){
 		output_blocks_poly.setvalue(0,"load_complete");
 		loading.ready_for_next_action=loading.wait;
 		if(t!=0) center_view(1);
-		//redraw_flag.flag |= 2;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections")){
 		t=MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections");
 		i=3*loading.bundling; //7;
@@ -477,9 +475,7 @@ function import_song(){
 			i--;
 			if(i==0) t = 0;
 		} while (loading.progress<t);
-		
 		loading.ready_for_next_action=loading.wait;
-		//redraw_flag.flag |= 2;
 	}else{ 
 		var stpv = [];
 		if(songs.contains(loading.songname+"::states")){
@@ -555,12 +551,15 @@ function import_song(){
 		loading.progress = 0;
 		//set_display_mode("blocks");
 		set_sidebar_mode("none");
-		build_mod_sum_action_list();
+		//build_mod_sum_action_list();
+		rebuild_action_list=1;
+
 		//draw_blocks();
 		//prep_meter_updatelist();
 		loading.mapping = [];
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
+//		lcd_main.message("paintrect",9,9,mainwindow_width,fontheight,backgroundcolour_blocks);
 		redraw_flag.flag|=12;
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}
