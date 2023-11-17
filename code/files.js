@@ -549,6 +549,7 @@ function import_song(){
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
+		redraw_flag.flag|=12;
 		//set_display_mode("blocks");
 		//set_sidebar_mode("none");
 		//build_mod_sum_action_list();
@@ -560,7 +561,6 @@ function import_song(){
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 //		lcd_main.message("paintrect",9,9,mainwindow_width,fontheight,backgroundcolour_blocks);
-		redraw_flag.flag|=12;
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}
 }

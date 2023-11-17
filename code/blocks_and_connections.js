@@ -1464,9 +1464,7 @@ function make_connection(cno){
 				for(v=0;v<t_voices.length;v++){
 					t_voice = t_voices[v];
 					if(t_type == "midi"){ //midi to an individual voice, so we need to offset
-						if(to_block_type == "audio"){
-							t_voice += MAX_BLOCKS;// + MAX_NOTE_VOICES;
-						}else if(to_block_type == "note"){
+						if((to_block_type == "audio")||(to_block_type == "note")){
 							t_voice += MAX_BLOCKS;
 						}else if(to_block_type == "hardware"){ // HARDWARE JUST LOOKS UP AND REPLACES T_VOICE
 							var midiout = 0;
@@ -1516,6 +1514,7 @@ function make_connection(cno){
 							matrix.message(outmsg);
 						}else if(t_type == "midi"){
 				// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
+							post("\nturning on number",(f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
@@ -1523,6 +1522,7 @@ function make_connection(cno){
 							var offv = conversion.get("offset2");
 							var vect = conversion.get("vector");
 							t_voice -= MAX_BLOCKS;
+							post("\nrouting",f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,2,t_voice,t_i_no);
 							if(t_voice<MAX_NOTE_VOICES){
 								set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,2,t_voice,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 							}else{

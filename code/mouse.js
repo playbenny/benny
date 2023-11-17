@@ -323,12 +323,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged"){
 								set_display_mode("blocks");
 								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
-								var r = new_block(usermouse.ids[1], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
-								draw_block(r);
-								selected.block[r] = 1;
-								sidebar.scopes.voice = -1;
-								sidebar.selected_voice = -1;
-								redraw_flag.flag |= 8;
+								end_of_frame_fn = function(){
+									var r = new_block(usermouse.ids[1], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+									draw_block(r);
+									selected.block[r] = 1;
+									sidebar.scopes.voice = -1;
+									sidebar.selected_voice = -1;
+									redraw_flag.flag |= 8;
+								}
 							}
 						}
 						usermouse.clicked3d = -1;
