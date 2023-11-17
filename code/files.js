@@ -209,10 +209,10 @@ function buffer_loaded(number,path,name,buffername){
 function load_next_song(slow){
 	var oc = usermouse.ctrl;
 	usermouse.ctrl = slow;
+	currentsong++;
 	if(currentsong<0)currentsong=0;
 	post("\nload next, current is", currentsong, songlist[currentsong]);
 	load_song();
-	currentsong++;
 	if(currentsong==songlist.length)currentsong=0;
 	usermouse.ctrl = oc;
 }
