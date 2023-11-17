@@ -88,7 +88,6 @@
 		"hardware.out.all" : 			{
 			"type" : "hardware",
 			"help_text": "all outs",
-			"autoload" : 1,
 			"max_polyphony" : 8,
 			"exclusive" : 1,
 			"connections" : {
