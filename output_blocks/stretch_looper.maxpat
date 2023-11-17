@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 224.0, 116.0, 1413.0, 646.0 ],
+		"rect" : [ 40.0, 82.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,6 +40,42 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-212",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "" ],
+					"patching_rect" : [ 122.0, 786.435897409915924, 105.0, 22.0 ],
+					"text" : "sel refresh_voices"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-211",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 122.0, 754.435897409915924, 92.0, 22.0 ],
+					"text" : "r stretch_looper"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-209",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 122.0, 813.598289489746094, 91.0, 22.0 ],
+					"text" : "r config_loaded"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-207",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -55,10 +91,10 @@
 					"id" : "obj-194",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 69.0, 1167.0, 29.5, 22.0 ],
-					"text" : "t i 1"
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "int", "int" ],
+					"patching_rect" : [ 63.264953792095184, 1164.0, 40.0, 22.0 ],
+					"text" : "t b i 1"
 				}
 
 			}
@@ -1662,18 +1698,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-81",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 23.25, 813.598289489746094, 55.0, 22.0 ],
-					"text" : "del 1000"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-157",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -2099,7 +2123,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 67.305552065372467, 1134.897445380687714, 29.5, 22.0 ],
+					"patching_rect" : [ 63.264953792095184, 1136.897445380687714, 29.5, 22.0 ],
 					"text" : "*"
 				}
 
@@ -2533,7 +2557,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 51.790598273277283, 782.0, 58.0, 22.0 ],
+					"patching_rect" : [ 23.916666666666686, 768.598289489746094, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -2598,7 +2622,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 669.393165051937103, 814.0, 69.0, 22.0 ],
+					"patching_rect" : [ 669.393165051937103, 847.0, 69.0, 22.0 ],
 					"text" : "s coreclock"
 				}
 
@@ -4120,14 +4144,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-129", 0 ],
 					"order" : 0,
-					"source" : [ "obj-194", 1 ]
+					"source" : [ "obj-194", 2 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-138", 1 ],
-					"source" : [ "obj-194", 0 ]
+					"source" : [ "obj-194", 1 ]
 				}
 
 			}
@@ -4135,7 +4159,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-207", 0 ],
 					"order" : 1,
-					"source" : [ "obj-194", 1 ]
+					"source" : [ "obj-194", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-46", 0 ],
+					"source" : [ "obj-194", 0 ]
 				}
 
 			}
@@ -4299,8 +4330,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-104", 0 ],
+					"source" : [ "obj-209", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-21", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-212", 0 ],
+					"source" : [ "obj-211", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-104", 0 ],
+					"source" : [ "obj-212", 0 ]
 				}
 
 			}
@@ -5082,21 +5134,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [ 			{
-				"name" : "ar.capacitor2~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
-				"name" : "ar.cliponly~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
-				"name" : "ar.tapedither~.mxe64",
-				"type" : "mx64"
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }
