@@ -1,7 +1,9 @@
 function polycheck(){
+	var t = still_checking_polys>0;
 	if(still_checking_polys&4){ send_ui_patcherlist(); }
 	if(still_checking_polys&2){ send_audio_patcherlist(); }
     if(still_checking_polys&1){ send_note_patcherlist(); }
+	if(t&&(!still_checking_polys)) update_all_voices_mutestatus();
 }
 
 function slowclock(){

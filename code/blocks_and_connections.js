@@ -354,11 +354,11 @@ function send_audio_patcherlist(do_all){
 					still_checking_polys |=2;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
-				if(loading.dont_automute!=0){
-					audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
-				}else{
+				//if(loading.dont_automute!=0){
+				//	audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
+				//}else{
 					audio_poly.setvalue(i+1,"patchername",pn);
-				}
+				//}
 				loaded_audio_patcherlist[i]=audio_patcherlist[i];
 				if(do_all!=1){
 					still_checking_polys |=2;
@@ -408,8 +408,38 @@ function send_ui_patcherlist(do_all){
 	redraw_flag.flag |= 4;
 }
 
+function update_all_voices_mutestatus(){
+	//post("\nmutestatus\n\n");
+	var k = voicemap.getkeys();
+	if(k!=null){
+		for(var i = 0; i<k.length;i++){
+			var v = voicemap.get(k[i]);
+			if(v!=null){
+				var m =0;
+				if(blocks.contains("blocks["+k[i]+"]::name")&&(blocks.get("blocks["+k[i]+"]::mute")==1))m=1;
+				if(!Array.isArray(v)) v = [v];
+				for(var ii=0;ii<v.length;ii++){
+					if(v[ii]<MAX_NOTE_VOICES){
+						//post("\nthist mutes: note block",k[i],"voice",v[ii],"mute",m);
+						note_poly.setvalue(v[ii]+1, "muteouts", m);
+					}else if(v[ii]<MAX_AUDIO_VOICES+MAX_NOTE_VOICES){
+						if(audio_patcherlist[v[ii]] == "recycling"){
+							m = 1;
+							post("recycling");
+						}
+						//post("\nthist mutes: audio block",k[i],"voice",v[ii],"mute",m);
+						audio_poly.setvalue(v[ii]+1-MAX_NOTE_VOICES, "muteouts", m);
+					}else{
+	
+					}
+				}
+			}
+		}
+	}
+}
 
 function poly_loaded(type,number){
+	var t = still_checking_polys>0;
 	//post("poly loaded voice successfully",type,number,"\n");
 	if(type=="audio"){
 		if(still_checking_polys&2){ send_audio_patcherlist(); }
@@ -420,6 +450,7 @@ function poly_loaded(type,number){
 		if(still_checking_polys&4){ send_ui_patcherlist(); }	
 		//	send_ui_patcherlist();
 	}
+	if(t&&(!still_checking_polys)) update_all_voices_mutestatus();
 }
 
 function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
