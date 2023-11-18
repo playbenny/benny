@@ -54,7 +54,7 @@ function draw(){
 				outlet(0,"custom_ui_element","data_v_scroll",w4*(i+0.1)+x_pos,h4*(t+0.1)+y_pos,w4*(i+0.45)+x_pos,h4*(t+0.9)+y_pos,c[0],c[1],c[2],1+MAX_DATA*v_list+i+t*4);
 			}
 		}	
-		outlet(1,"bang");
+		//outlet(1,"bang");
 	}
 }
 

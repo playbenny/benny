@@ -75,7 +75,7 @@ function draw(){
 			}
 		}
 
-		outlet(1,"bang");
+		//outlet(1,"bang");
 		pool_changed=0;
 	}
 }

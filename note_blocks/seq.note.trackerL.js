@@ -123,7 +123,7 @@ function draw(){
 		if(!mini){
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,block,0);
 		}
-		outlet(1,"bang");
+		//outlet(1,"bang");
 	}
 }
 

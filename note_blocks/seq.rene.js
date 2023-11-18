@@ -49,7 +49,7 @@ function draw(){
 				outlet(0,"custom_ui_element","param_toggle",w4*(i+0.55)+x_pos,h4*(t+0.1)+y_pos,w4*(i+0.9)+x_pos,h4*(t+0.45)+y_pos,menucolour[0],menucolour[1],menucolour[2],block,37+r);
 			}
 		}	
-		outlet(1,"bang");
+		//outlet(1,"bang");
 	}
 }
 
