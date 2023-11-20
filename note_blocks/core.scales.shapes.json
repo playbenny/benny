@@ -15,68 +15,19 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3,4,5,6,7],
+				"contains" : [0],
 				"height" : 0,
 				"onepervoice" : 1
 			}			
 		],
 		"parameters" : [
 			{
-				"name" : "1 mode",
+				"name" : "mode",
 				"type" : "menu_i",
 				"values" : ["held", "pattern"],
 				"wrap" : 1,
 				"error_scale" : 0,
 				"default" : 0.6
-			},{
-				"name" : "2 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
-			},{
-				"name" : "3 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
-			},{
-				"name" : "4 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
-			},{
-				"name" : "5 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
-			},{
-				"name" : "6 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
-			},{
-				"name" : "7 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
-			},{
-				"name" : "8 mode",
-				"type" : "menu_i",
-				"values" : ["held", "pattern"],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0
 			}
 		]
 	}

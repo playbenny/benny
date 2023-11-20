@@ -219,6 +219,7 @@ function load_next_song(slow){
 
 function load_song(){
 	if(playing) play_button();
+	meters_enable = 0;
 	clear_everything();
 	loading.merge = 0;
 	loading.dont_automute=1;
@@ -229,13 +230,15 @@ function load_song(){
 	loading.songname = songlist[currentsong];
 	if(usermouse.ctrl){
 		loading.bundling=1;
-		loading.wait=40;
+		loading.wait=20;
+		if(usermouse.shift)loading.wait=2;
 		post("\n\nTROUBLESHOOTING SLOW LOAD MODE\n\n");
 	}
 	import_song();
 }
 
 function merge_song(){
+	meters_enable = 0;
 	loading.progress=-1;
 	loading.merge = 1;
 	if(playing){
@@ -255,6 +258,8 @@ function merge_song(){
 	import_song(songlist[currentsong]);
 }
 
+// this fn is called repeatedly, at each call it loads a bit more song, then sets a flag
+// so it'll be called again next frame. this way it doesn't make the music glitch!
 function import_song(){	
 	var b,i,t;
 	preload_task.cancel();
@@ -446,7 +451,7 @@ function import_song(){
 		i=loading.bundling;//*4; //this determines how many of these are done at once (before handing exection back to max etc), i don't think they take long though?
 		do {
 			b=loading.progress-MAX_BLOCKS;
-			//post("\nloading block voices and data for block", b, "<b map>", loading.mapping[b],typeof loading.mapping[b]);
+			if(loading.wait>1) post("\nloading block voices and data for block", b, "<b map>", loading.mapping[b],typeof loading.mapping[b]);
 			if(typeof loading.mapping[b] !=='undefined') load_process_block_voices_and_data(loading.mapping[b]);
 			loading.progress++;
 			i--;
@@ -460,7 +465,7 @@ function import_song(){
 		i=3*loading.bundling; //7;
 		do{ 
 			b=loading.progress-MAX_BLOCKS-loading.mapping.length;
-			//post("\nloading connection number",b);
+			if(loading.wait>1) post("\nloading connection number",b);
 			if(songs.contains(loading.songname+"::connections["+b+"]::from")){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
 				new_connection.replace("from::number",loading.mapping[new_connection.get("from::number")]);
@@ -478,7 +483,7 @@ function import_song(){
 		loading.ready_for_next_action=loading.wait;
 	}else{ 
 		var stpv = [];
-		if(songs.contains(loading.songname+"::states")){
+		if((songs.contains(loading.songname+"::states"))&&((loading.songname != "autoload")||(config.get("AUTOLOAD_INCLUDES_STATES")==1))){
 			post("\ndeleting all states of old song");
 			delete_state(-1,-1); //delete all existing states
 			post("\nloading states");

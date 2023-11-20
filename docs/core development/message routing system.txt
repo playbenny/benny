@@ -5,7 +5,7 @@ these come from:
 
 note voices
 audio voices
-audio-to-value converters -> the old system had this all going to voice 128! but then later voices (eg hardware) could overlap with other stuff? or overflow? insane.
+audio-to-value converters
 polyallocators
 external midi(?not implemented)
 

@@ -41,6 +41,7 @@
 	"DOUBLE_CLICK_TIME" : 8,
 	"LONG_PRESS_TIME" : 800,
 	"SCOPE_DEFAULT_ZOOM" : 0.65,
+	"AUTOLOAD_INCLUDES_STATES" : 0,
 	"maxmsp" : {
 		"preempt" : 1,
 		"seteventinterval" : 2,

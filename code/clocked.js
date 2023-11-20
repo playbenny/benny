@@ -58,8 +58,10 @@ function frameclock(){
 	if(loading.ready_for_next_action){
 		loading.ready_for_next_action--;
 		if(loading.ready_for_next_action==0){
-			//clear_screens();
 			import_song();
+			//clear_screens();
+			lcd_main.message("brgb", backgroundcolour_blocks);
+			lcd_main.message("clear");
 		}
 		slowclock();
 		draw_topbar();

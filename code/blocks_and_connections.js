@@ -306,7 +306,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 					return 1;
 				}
 			}else{
-				//post("loading",note_patcherlist[i],"into",i+1,"\n");
+				if(loading.wait>1) post("loading",note_patcherlist[i],"into",i+1,"\n");
 				var pn = (note_patcherlist[i]+".maxpat");
 				if(loaded_note_patcherlist[i] == "reload"){
 					note_poly.setvalue(i+1,"patchername","blank.note.maxpat");
@@ -332,7 +332,7 @@ function send_audio_patcherlist(do_all){
 //	post("\nsorry",audio_upsamplelist,"\n and ",loaded_audio_patcherlist);
 	for(i = 0; i<MAX_AUDIO_VOICES; i++){
 		if((audio_patcherlist[i]!=loaded_audio_patcherlist[i])&&(audio_patcherlist[i]!="recycling")){
-			//if(loading.wait>1) post("\n- loading voice "+i+"'s patcher");
+			if(loading.wait>1) post("\n- loading voice "+i+"'s patcher");
 			if(RECYCLING && (audio_patcherlist[i] == "blank.audio")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				audio_patcherlist[i] = "recycling";
 				audio_poly.setvalue(i+1, "muteouts", 1);
@@ -385,7 +385,7 @@ function send_ui_patcherlist(do_all){
 					return 1;
 				}
 			}else{
-				//post("loading",audio_patcherlist[i],"into",i+1,"\n");
+				if(loading.wait>1) post("loading",ui_patcherlist[i],"into",i+1,"\n");
 				var pn = (ui_patcherlist[i]+".maxpat");
 				if(loaded_ui_patcherlist[i] == "reload"){
 					ui_poly.setvalue(i+1,"patchername","blank.ui.maxpat");
@@ -436,6 +436,8 @@ function update_all_voices_mutestatus(){
 			}
 		}
 	}
+	send_all_voice_details();
+//	messnamed("loading_complete","bang");
 }
 
 function poly_loaded(type,number){
@@ -574,6 +576,7 @@ function next_free_block(type){
 }
 
 function get_voice_details(voiceis){
+	post("\nblock requested voice details",voiceis);
 	var vlk = voicemap.getkeys();
 	var block = -1;
 	var nth = -1;
@@ -600,6 +603,30 @@ function get_voice_details(voiceis){
 	}else if(voiceis<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
 		audio_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
 	}
+}
+
+function send_all_voice_details(){
+	post("\nsend all voice details");
+	var vlk = voicemap.getkeys();
+	for(var v=0;v<vlk.length;v++){
+		var vl = voicemap.get(vlk[v]);
+		if(!Array.isArray(vl)) vl = [vl];
+		var of = vl.length;
+		var block = +vlk[v];
+		var block_name = blocks.get("blocks["+block+"]::name");
+		var no_params = blocktypes.getsize(block_name+"::parameters");
+		var latching = 0;
+		if(blocks.contains("blocks["+block+"]::poly::latching_mode")) blocks.get("blocks["+block+"]::poly::latching_mode");
+		var rate = 0;
+		for(var nth=0;nth<of;nth++){
+			if(vl[nth]<MAX_NOTE_VOICES){
+				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+			}else if(vl[nth]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
+				audio_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+			}
+		}
+	} 
+
 }
 
 function create_connection_button(){
@@ -2346,7 +2373,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		var str_version = "";
 		for(i=0;i<addone.length;i++){
 			str_version = str_version + (addone[i]+1-voiceoffset)+" ";
-			if(addone[i]!=new_voice) get_voice_details(addone[i]);
+			//if(addone[i]!=new_voice) get_voice_details(addone[i]);
+			//this now happens once all voices are loaded
 		}
 		// tell the polyalloc voice about its new job
 		voicealloc_poly.setvalue(+block + 1,"type",type);

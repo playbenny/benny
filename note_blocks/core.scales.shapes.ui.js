@@ -11,7 +11,7 @@ for(var i =0;i<MAX_POOLS;i++){
 	pool_shape[i]=new Array();
 }
 
-var voice_data_buffer = new Buffer("voice_data_buffer"); 
+//var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
 var block=-1;
 var config = new Dict;
@@ -21,6 +21,7 @@ blocks.name = "blocks"
 var voicemap = new Dict;
 voicemap.name =  "voicemap";
 var v_list = new Array();
+var rh;
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
 //data format: for each voice the buffer holds:
 // 0 - start (*128)
@@ -40,6 +41,11 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
+	if(block>0){
+		v_list = voicemap.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		rh = height/v_list.length;
+	}
 	draw();
 }
 function notes(){
@@ -62,9 +68,6 @@ function scales(){
 }
 function draw(){
 	if(block>=0){
-		v_list = voicemap.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
-		rh = height/v_list.length;
 		for(r=0;r<v_list.length;r++){
 			if(v_list.length<=2){
 				draw_keyboard(x_pos,y_pos+rh*r,x_pos+width,y_pos+rh*(r+0.45),r);
@@ -135,6 +138,7 @@ function voice_is(v){
 	if(block>0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+		rh = height/v_list.length;
 	}
 }
 
