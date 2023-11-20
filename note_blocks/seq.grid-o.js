@@ -30,14 +30,16 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	draw();
+	if(block>=0){
+		v_list = voicemap.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		draw();
+	}
 }
 
 function draw(){
 	if(block>=0){
 		var c,r,ph,l,s;
-		v_list = voicemap.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
 		var i;
 		maxl=1;
 		for(i=0;i<v_list.length;i++) {
@@ -140,7 +142,7 @@ function update(){
 
 function voice_is(v){
 	block = v;
-	if(block>0){
+	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 	}

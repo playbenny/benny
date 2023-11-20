@@ -1,18 +1,18 @@
 var MAX_DATA = 1024;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
-var voice_parameter_buffer = new Buffer("voice_parameter_buffer"); 
+//var voice_parameter_buffer = new Buffer("voice_parameter_buffer"); 
 outlets = 3;
 var config = new Dict;
 config.name = "config";
 var width, height,x_pos,y_pos,w4,h4;
 var block=-1;
-var map = new Dict;
-map.name = "voicemap";
-var blocks = new Dict;
-blocks.name = "blocks"
+var voicemap = new Dict;
+voicemap.name = "voicemap";
+//var blocks = new Dict;
+//blocks.name = "blocks"
 var v_list = [];
-var cursors = new Array(128); //holds last drawn position of playheads (per row)
+var cursors = []; //holds last drawn position of playheads (per row)
 var cell = new Array(16); //holds how many cursors are in this cell this update
 
 function setup(x1,y1,x2,y2,sw){
@@ -24,14 +24,16 @@ function setup(x1,y1,x2,y2,sw){
 	y_pos = y1;
 	w4=width/4;
 	h4=height/4;
-	post(block);
-	draw();
+	if(block>=0){
+		v_list = voicemap.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		draw();
+	}	
 }
+
 function draw(){
 	if(block>=0){
-		var c,r,no,ve,on;
-		v_list = map.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
+		var c,r;
 		var i,t,c;
 		for(i=0;i<16;i++) cell[i]=0;
 		for(i=0;i<v_list.length;i++) {
@@ -82,8 +84,8 @@ function update(){
 
 function voice_is(v){
 	block = v;
-	if(block>0){
-		v_list = map.get(block);
+	if(block>=0){
+		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 	}
 }

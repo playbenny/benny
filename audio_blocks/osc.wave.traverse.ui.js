@@ -36,15 +36,17 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	y_pos = y1;
 	unit = height / 18;
 	o_hl = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
-	draw();
+	if(block>=0){
+		v_list = map.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		draw();
+	}
 }
 
 function draw(){
 	if(block>=0){
 		var i;
 		//var c,r,ph,rr,rc,fc;
-		v_list = map.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
 		unit = height / v_list.length;
 		var wave = 1;
 		var highlight = 2;
@@ -78,8 +80,11 @@ function keydown(){}
 
 function voice_is(v){
 	block = v;
-	blockcolour = blocks.get("blocks["+block+"]::space::colour");
-//	post("seq.grid.ui loaded, block is",block);
+	if(block>=0){
+		v_list = map.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		blockcolour = blocks.get("blocks["+block+"]::space::colour");
+	}
 }
 
 function voice_offset(v){
@@ -95,10 +100,4 @@ function quer(){
 }
 
 function store(){
-/*	var r;
-	var transf_arr = new Array(MAX_DATA);
-	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], MAX_DATA);
-		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
-	}*/
 }

@@ -1,6 +1,6 @@
 var MAX_DATA = 1024;
 var MAX_BLOCKS = 64;
-var voice_data_buffer = new Buffer("voice_data_buffer"); 
+//var voice_data_buffer = new Buffer("voice_data_buffer"); 
 outlets = 3;
 var config = new Dict;
 config.name = "config";

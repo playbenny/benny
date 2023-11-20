@@ -52,15 +52,15 @@ function setup(x1,y1,x2,y2,sw){
 	for(i=0;i<128;i++){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
-	
-	//post(block);
-	draw();
+	if(block>=0){
+		v_list = voicemap.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		draw();
+	}
 }
 function draw(){
 	if(block>=0){
 		var c,r,i,ph,rr,rc,fc;
-		v_list = voicemap.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
 		for(i=0;i<v_list.length;i++) {
 			cursors[i]=-1;
 		}
@@ -400,7 +400,7 @@ function update(){
 
 function voice_is(v){
 	block = v;
-	if(block>0){
+	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 	}

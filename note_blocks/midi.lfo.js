@@ -149,7 +149,7 @@ function update(){
 
 function voice_is(v){
 	block = v;
-	if(block>0){
+	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 	}

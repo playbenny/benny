@@ -32,7 +32,6 @@ function setup(x1,y1,x2,y2,sw){
 //	post("drawing sequencers");
 	menucolour = config.get("palette::menu");
 	var cl = config.getsize("palette::gamut");
-	//post("cl",cl);
 	for(var i =0;i<MAX_POOLS;i++){
 		colours[i]=config.get("palette::gamut["+i*cl/MAX_POOLS+"]::colour");
 	}
@@ -41,12 +40,12 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	if(block>0){
+	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 		rh = height/v_list.length;
+		draw();
 	}
-	draw();
 }
 function notes(){
 	var args = arrayfromargs(arguments);
@@ -55,7 +54,6 @@ function notes(){
 		pool_notes[args[0]-1][i-1]=args[i];
 	}
 	pool_changed=1;
-//	post('\nnotes', args, 'n');
 }
 function scales(){
 	var args = arrayfromargs(arguments);
@@ -64,7 +62,6 @@ function scales(){
 		pool_shape[args[0]-1][i-1]=args[i];
 	}
 	pool_changed=1;
-//	post('\nshape:', args, 'n');
 }
 function draw(){
 	if(block>=0){
@@ -77,8 +74,6 @@ function draw(){
 				draw_graphs(x_pos+width*0.72,y_pos+rh*r,x_pos+width,y_pos+rh*(r+0.9),r);
 			}
 		}
-
-		//outlet(1,"bang");
 		pool_changed=0;
 	}
 }
@@ -135,7 +130,7 @@ function update(){
 
 function voice_is(v){
 	block = v;
-	if(block>0){
+	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 		rh = height/v_list.length;

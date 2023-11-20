@@ -93,16 +93,17 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	for(i=0;i<128;i++){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
-	draw();
+	if(block>=0){
+		v_list = map.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		draw();
+	}
 }
 function draw(){
 	if(block>=0){
 		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0);
-		//post("\n\nmini",mini);
 		var c,r,i,rr,rc;
-		v_list = map.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
 		for(i=0;i<v_list.length;i++) {
 			cursors[i]=-1;
 		}
@@ -163,8 +164,6 @@ function draw(){
 			}
 		}
 		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
-	//	outlet(0,"bang");
-		//outlet(1,"bang");
 	}
 }
 
@@ -914,13 +913,15 @@ function keydown(key){
 
 function voice_is(v){
 	block = v;
-	v_list = map.get(block);
-	if(typeof v_list=="number") v_list = [v_list];
-
+	if(block>=0){
+		v_list = map.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+	}
 	outlet(0,"request_waves_remapping","ui",v);
-//	post("seq.grid.ui loaded, block is",block);
 }
+
 function voice_offset(){}
+
 function loadbang(){
 	outlet(0,"getvoice");
 }
@@ -928,6 +929,7 @@ function loadbang(){
 function quer(){
 	post("vlist is",v_list);
 }
+
 function store(){
 	var r;
 	var transf_arr = new Array(MAX_DATA);
