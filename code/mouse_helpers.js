@@ -1437,6 +1437,7 @@ function process_drag_selection(){
 			}
 		}
 	}
+	sidebar.selected_voice = -1;
 }
 function connection_edit(parameter,value){
 	if(value=="get"){
