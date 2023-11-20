@@ -624,7 +624,7 @@ function data_edit(parameter,value){
 		return voice_data_buffer.peek(1,parameter);
 	}else{
 		if(typeof value == 'number') voice_data_buffer.poke(1,parameter,Math.min(1,Math.max(0,value)))
-		redraw_flag.flag |= 4;//?
+		redraw_flag.flag |= 2;// was 4?
 	}
 }
 
