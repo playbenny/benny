@@ -331,7 +331,7 @@ function import_song(){
 						t = waves.remapping[i];
 						if(t==-1)t=i;
 						var tt = t+1;
-						post("\n loading song wave"+i+" into slot "+t+" its path is "+songs.get(loading.songname+"::waves["+ii+"]::path"));
+						//post("\n loading song wave"+i+" into slot "+t+" its path is "+songs.get(loading.songname+"::waves["+ii+"]::path"));
 						var pat = songs.get(loading.songname+"::waves["+ii+"]::path");
 						var nam = songs.get(loading.songname+"::waves["+ii+"]::name");
 						var polyslot = polybuffer_load_wave(pat,nam);
@@ -340,11 +340,11 @@ function import_song(){
 						}else{
 							polyslot++;
 						}
-						post("this wave is in polyslot",polyslot);
+						//post("this wave is in polyslot",polyslot);
 						waves_dict.replace("waves["+tt+"]", songs.get(loading.songname+"::waves["+ii+"]"));
 						waves_dict.replace("waves["+tt+"]::buffername","waves."+polyslot);
 						buffer_loaded(t,pat,nam,"waves."+polyslot);
-					}else{post("no wave ",i);}
+					}//else{post("no wave ",i);}
 				}
 			}
 			if(songs.contains(loading.songname+"::notepools")){
