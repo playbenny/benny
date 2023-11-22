@@ -3246,13 +3246,13 @@ function draw_sidebar(){
 			}else{
 				statecontents = states.get("states::"+sc);
 			}
-			var slotfilled=0;
+			//var slotfilled=0;
 			var stateexists=0;
 			if(!is_empty(statecontents)){
 				stateexists=1;
-				if(statecontents.contains(block)){
+				/*if(statecontents.contains(block)){
 					slotfilled=1;
-				}
+				}*/
 			}
 			if(sc!=sidebar.selected){
 				var sn = "";
@@ -3267,8 +3267,8 @@ function draw_sidebar(){
 				}
 				lcd_main.message("paintrect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,c );							
 				if(stateexists) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,menucolour );
-				if(slotfilled) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,255,0,0 );
-				click_zone(add_to_state, sc, block, sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,mouse_index,1 );							
+				//if(slotfilled) lcd_main.message("framerect", sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,255,0,0 );
+				click_zone(copy_state_to_state, state, sc, sidebar.x+fontheight*statex, y_offset, sidebar.x+fontheight*(statex+0.9*x_inc), fontheight*0.9+y_offset,mouse_index,1 );							
 				if(sn!=""){
 					sn = sn.split(".");
 					if(!Array.isArray(sn)) sn = [sn];

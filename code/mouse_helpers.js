@@ -979,6 +979,13 @@ function add_state(parameter,value){
 	set_sidebar_mode("add_state");
 }	
 
+function copy_state_to_state(from,to){
+	var st = states.get("states::"+from);
+	if(st!=null){
+		states.replace("states::"+to,st);
+	}
+}
+
 function add_to_state(parameter,block){ //if block==-1 all states, -2 all selected states
 	if(parameter==-1) parameter = "current";
 	if(usermouse.ctrl){
