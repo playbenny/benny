@@ -603,8 +603,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									selection_cube.scale = [0.5*Math.abs(sts[0]-stw[0]), 0.5*Math.abs(sts[1]-stw[1]), 1];
 									selection_cube.position = [0.5*(sts[0]+stw[0]), 0.5*(sts[1]+stw[1]), -1];
 									selection_cube.enable = 1;
-								
 									//selection rectangle
+									//nb the current selection function doesn't work for dynamic select
 								}else{
 									camera_position[0] = usermouse.drag.starting_value_x - xdist*0.001*camera_position[2];
 									camera_position[1] = usermouse.drag.starting_value_y - ydist*0.001*camera_position[2];
