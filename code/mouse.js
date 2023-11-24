@@ -231,6 +231,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				var p = mouse_click_parameters[usermouse.got_i];
 				var v = mouse_click_values[usermouse.got_i];
 				f(p,v);
+				if(usermouse.clicked2d>-1) redraw_flag.flag |= 2;
+				
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			} else if(usermouse.clicked2d != -1){
 				if(usermouse.last.got_i == usermouse.got_i){
@@ -238,7 +240,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)||(usermouse.last.got_t == 6)){ // it's a button (1) or passthrough(7)
 						var f = mouse_click_actions[usermouse.last.got_i];
 						if(usermouse.last.got_t == 6){
-							usermouse.last.got_t == 1;
+							usermouse.last.got_t = 1;
 							f = f[1];
 						}
 						var p = mouse_click_parameters[usermouse.last.got_i];
@@ -307,7 +309,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					state_fade.selected = -2;
 					state_fade.position = -2;
 					redraw_flag.flag |= 2;									
-				}
+				}else if(usermouse.last.got_t == 1) redraw_flag.flag |= 2;
 				usermouse.clicked2d = -1;
 			}else if(usermouse.clicked3d != -1){ //####################### 3d release #####################
 				if(displaymode=="block_menu"){
@@ -543,7 +545,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			var ydist=usermouse.drag.starting_y-usermouse.y;
 			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);			
 			if((usermouse.clicked2d != -1) && (usermouse.last.got_t>=2 && usermouse.last.got_t<=4)){ 
-// #### 2D DRAG ###########################################################################################################
+				// #### 2D DRAG ###########################################################################################################
 				var f = mouse_click_actions[usermouse.last.got_i];
 				var p = mouse_click_parameters[usermouse.last.got_i];
 				var v = mouse_click_values[usermouse.last.got_i];
@@ -580,6 +582,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					//post("drag-f",f);
 					//post("or",f.name);
 					f(p,usermouse.drag.starting_value_x+xdist);					
+				}
+			}else if((usermouse.clicked2d != -1) && (usermouse.last.got_t==1)){
+				//dragged off a button?
+				if(usermouse.got_i != usermouse.clicked2d){
+					usermouse.clicked2d = usermouse.got_i;
+					if(usermouse.got_t == 1){
+						usermouse.last_got_i = usermouse.got_i;
+					}
+					redraw_flag.flag |= 2;
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG
 				//	post("3d drag, hover",usermouse.hover,"ids",usermouse.ids,"\n");
