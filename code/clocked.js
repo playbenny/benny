@@ -96,7 +96,7 @@ function frameclock(){
 		block_and_wire_colours();
 	}
 	if(redraw_flag.flag & 4){
-		redraw();
+		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
 		bangflag=1;
 	}else if(redraw_flag.flag & 2){
 		clear_screens();
