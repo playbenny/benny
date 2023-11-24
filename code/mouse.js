@@ -586,10 +586,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			}else if((usermouse.clicked2d != -1) && (usermouse.last.got_t==1)){
 				//dragged off a button?
 				if(usermouse.got_i != usermouse.clicked2d){
-					usermouse.clicked2d = usermouse.got_i;
-					if(usermouse.got_t == 1){
+					usermouse.clicked2d = -1; //usermouse.got_i;
+					/*if(usermouse.got_t == 1){
 						usermouse.last_got_i = usermouse.got_i;
-					}
+						usermouse.last_got_t = 1;
+					}*/
 					redraw_flag.flag |= 2;
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG
