@@ -1,15 +1,17 @@
 MULTITUDES
 ----------
 - is a software playground for making live music or for making music live
-- integrates hardware and software, lets you connect anything to anything
+- integrates hardware and software, midi and audio, lets you connect anything to anything, extends into polyphony elegantly
 - aims for a low-density, low-distraction, glance-able interface that works for touch and mouse/keyboard use
 - is agnostic about timelines and structure rather than imposing either
+- makes polyphony experiments easy
 - is an extendible and hackable place to host your own max patches
 - is not a DAW
   
 installation
 ------------
-- for now (in the end i'll make gen versions of everything i use) you need to install the ar. airwindows externals, they're in a zip in the root folder. test they're installed by in a new max window making an object, ar.cliponly2~, if it works you're good.
+- install max (cycling74.com) but no need to buy it or subscribe, see the 'important' note below
+- for now (in the end i'll make gen versions of everything i use) you first need to install the ar. airwindows externals, they're in a zip in the root folder. you need to put them in documents/max 8/packages
 - in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore. there are more detailed configuration settings below.
 - open 'multitudes.maxproj'
 
