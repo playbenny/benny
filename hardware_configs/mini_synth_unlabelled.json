@@ -85,15 +85,27 @@
 		"triggers_in" :"TriggerIO"
 	},
 	"hardware" : 	{
-		"hardware.out.all" : 			{
+		"hardware.out.1+2" : 			{
 			"type" : "hardware",
 			"help_text": "all outs",
-			"max_polyphony" : 8,
+			"max_polyphony" : 2,
 			"exclusive" : 1,
 			"connections" : {
 				"in" : {
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 1, 2,3,4,5,6,7,8 ]
+					"hardware_channels" : [ 1, 2 ]
+				}
+			}
+		},
+		"hardware.out.345678" : 			{
+			"type" : "hardware",
+			"help_text": "all outs",
+			"max_polyphony" : 6,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 3,4,5,6,7,8 ]
 				}
 			}
 		},
