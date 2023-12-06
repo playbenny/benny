@@ -497,7 +497,7 @@ var still_checking_polys = 0;
 var globals_requested = 0;
 
 var deferred_diag = [];
-var debugmode;
+var debugmode = 0;
 
 var glow_amount=0.15;
 var monofont = "Consolas";

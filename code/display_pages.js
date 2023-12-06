@@ -2442,8 +2442,8 @@ function draw_connection_menu(){
 		if(new_connection.get("from::output::type")=="hardware"){
 			if((new_connection.get("to::input::type")=="hardware")||(new_connection.get("to::input::type")=="audio")){
 				nv1 = new_connection.get("from::voice");
-				if(new_connection.gettype("from::voice")!="array"){
-					if(new_connection.get("from::voice")=="all"){
+				if(!Array.isArray(nv1)){
+					if(nv1=="all"){
 						v1 = connection_menu.get("from::voices");
 					}else{
 						v1 = 1;
@@ -2452,8 +2452,8 @@ function draw_connection_menu(){
 					v1 = nv1.length;
 				}
 				nv2 = new_connection.get("to::voice");
-				if(new_connection.gettype("to::voice")!="array"){
-					if(new_connection.get("to::voice")=="all"){
+				if(!Array.isArray(nv2)){
+					if(nv2=="all"){
 						v2 = connection_menu.get("to::voices");
 					}else{
 						v2 = 1;
@@ -5882,9 +5882,8 @@ function draw_sidebar(){
 				lcd_main.message("write", "gain locked @ unity");
 			}
 			if(connections.get("connections["+i+"]::from::output::type")=="hardware"){
-				if(connections.get("connections["+i+"]::to::input::type")=="audio"){
-					var v1;
-					var v2;
+				if((connections.get("connections["+i+"]::to::input::type")=="audio")||(connections.get("connections["+i+"]::to::input::type")=="hardware")){
+					var v1,v2;
 					if(f_o_v=="all"){
 						v1 = f_v_no;
 					}else{
