@@ -947,19 +947,19 @@ function remove_connection(connection_number){
 		if(max_poly>1){
 			if(f_voice_list == "all"){
 				for(i=0;i<max_poly;i++){
-					f_voices[i] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+varr[i];
+					f_voices[i] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS+varr[i];
 				}
 			}else{
 				if(typeof f_voice_list == 'number'){
-					f_voices[0] =NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+varr[f_voice_list]-1;
+					f_voices[0] =NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS+varr[f_voice_list]-1;
 				}else{
 					for(v=0;v<f_voice_list.length;v++){
-						f_voices[v] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+varr[v]-1;
+						f_voices[v] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS+varr[v]-1;
 					}
 				}
 			}
 		}else{
-			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[f_o_no];
+			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + MAX_AUDIO_OUTPUTS+ varr[f_o_no];
 		}
 	}else{
 		if(f_subvoices>1){
@@ -1366,16 +1366,16 @@ function make_connection(cno){
 		if(max_poly>1){
 			if(f_voice_list == "all"){
 				for(i=0;i<max_poly;i++){
-					f_voices[i] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+varr[i];
+					f_voices[i] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS+varr[i];
 				}
 			}else{
 				if(!Array.isArray(f_voice_list)) f_voice_list = [f_voice_list];
 				for(v=0;v<f_voice_list.length;v++){
-					f_voices[v] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+varr[v]-1;
+					f_voices[v] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS+varr[v];//-1;
 				}
 			}
 		}else{
-			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[f_o_no];
+			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES +MAX_AUDIO_OUTPUTS+ varr[f_o_no];
 		}
 	}else{ // need to check for vsts, and if so do what i did for hardware above:
 		if(f_subvoices>1){
@@ -1453,7 +1453,7 @@ function make_connection(cno){
 			}
 		}else{
 			//post("\n this is where the error was varr, f_o_no",varr,t_i_no,t_block,blocks.get("blocks["+t_block+"]::name"),blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio"));
-			t_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[t_i_no] - 1;
+			t_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[t_i_no];// - 1;
 		}
 	}else{	
 		if(t_subvoices>1){
@@ -1568,7 +1568,7 @@ function make_connection(cno){
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
-							//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
+							if(debugmode)post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
 							matrix.message(outmsg);
 						}else if(t_type == "midi"){
 				// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
