@@ -1005,7 +1005,7 @@ function clear_everything(){
 	remove_all_routings();
 
 	//also empties all the dicts for re-initialisatoin:
-	audio_poly.setvalue( 0, "kill");
+	//audio_poly.setvalue( 0, "kill");
 	audio_to_data_poly.setvalue(0, "vis_meter", 0);
 	audio_to_data_poly.setvalue(0, "vis_scope", 0);
 	audio_to_data_poly.setvalue(0, "out_value", 0);
@@ -1013,6 +1013,8 @@ function clear_everything(){
 	sidebar.selected_voice = -1;
 //	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
+	note_poly.setvalue(0,"enabled",0);
+	audio_poly.setvalue(0,"enabled",0);
 
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;

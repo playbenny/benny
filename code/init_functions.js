@@ -10,7 +10,7 @@ function import_hardware(v){
 	post("\nbuilding blocktypes database \n");
 	import_blocktypes("note_blocks");
 	import_blocktypes("audio_blocks");
-	
+		
 	post("reading hardware database \n");
 	d2.import_json(v);
 	
@@ -131,7 +131,7 @@ function import_hardware(v){
 	var menutex_task = new Task(initialise_block_menu, this);
 	menutex_task.schedule(1000);
 	//	redraw_flag.flag=4;
-	if(songs.contains("autoload")){
+	if((!usermouse.ctrl) && (songs.contains("autoload"))){
 		loading.merge = 0;
 		loading.dont_automute=1;
 		loading.progress=-1;
@@ -141,6 +141,28 @@ function import_hardware(v){
 		loading.songname = "autoload";
 		import_song();	
 	}	
+}
+
+function load_config_colours(){
+	menucolour = config.get("palette::menu");
+	var dimm=0.5;
+	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	state_fade.lastcolour = menudark;
+	dimm=bg_dark_ratio;
+	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	matrixcolour = config.get("palette::connections::matrix");
+	hardwarecolour = config.get("palette::connections::hardware");
+	audiocolour = config.get("palette::connections::audio");
+	midicolour = config.get("palette::connections::midi");
+	parameterscolour = config.get("palette::connections::parameters");
+	blockcontrolcolour = config.get("palette::connections::block");
+	backgroundcolour = config.get("palette::background");
+	backgroundcolour_blocks = config.get("palette::background_blocks");
+	backgroundcolour_block_menu = config.get("palette::background_block_menu");
+	backgroundcolour_panels = config.get("palette::background_panels");
+	backgroundcolour_waves = config.get("palette::background_waves");
+	backgroundcolour_sidebar = config.get("palette::background_sidebar");
+	redraw_flag.flag |= 4;
 }
 
 function process_userconfig(){
@@ -179,28 +201,11 @@ function initialise_dictionaries(){
 	userconfig.import_json("userconfig.json");
 	post("reading config\n");				
 	process_userconfig();
-	menucolour = config.get("palette::menu");
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
 	click_b_s = config.get("click_buffer_scaledown");
-	var dimm=0.5;
-	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
-	state_fade.lastcolour = menudark;
-	dimm=bg_dark_ratio;
-	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
-	matrixcolour = config.get("palette::connections::matrix");
-	hardwarecolour = config.get("palette::connections::hardware");
-	audiocolour = config.get("palette::connections::audio");
-	midicolour = config.get("palette::connections::midi");
-	parameterscolour = config.get("palette::connections::parameters");
-	blockcontrolcolour = config.get("palette::connections::block");
-	backgroundcolour = config.get("palette::background");
-	backgroundcolour_blocks = config.get("palette::background_blocks");
-	backgroundcolour_block_menu = config.get("palette::background_block_menu");
-	backgroundcolour_panels = config.get("palette::background_panels");
-	backgroundcolour_waves = config.get("palette::background_waves");
-	backgroundcolour_sidebar = config.get("palette::background_sidebar");
-	
+	load_config_colours(); //separate fn so it can be called by core.space block
+
 	wire_dia = config.get("wire_dia");
 	glow_amount = config.get("glow");
 	messnamed("bloom_amt",glow_amount);
@@ -253,6 +258,8 @@ function initialise_dictionaries(){
 	//wipe all the buffers
 	messnamed("clear_all_buffers","bang");
 	waves_polybuffer.clear();
+	note_poly.setvalue(0,"enabled",0);
+	audio_poly.setvalue(0,"enabled",0);
 
 
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
