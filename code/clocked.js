@@ -118,7 +118,7 @@ function frameclock(){
 							//lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
-							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][3], paramslider_details[i][2], paramslider_details[i][17],0,0,0);
+							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][3], paramslider_details[i][2], paramslider_details[i][17],backgroundcolour_current);
 							labelled_parameter_v_slider(i);
 						}
 						redraw_flag.targets[i]=0;

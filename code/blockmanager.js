@@ -290,6 +290,7 @@ var backgroundcolour_block_menu;
 var backgroundcolour_panels;
 var backgroundcolour_waves;
 var backgroundcolour_sidebar;
+var backgroundcolour_current;
 
 //this is what a listener looks like
 //var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);

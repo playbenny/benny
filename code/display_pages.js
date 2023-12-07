@@ -2687,7 +2687,7 @@ function clear_screens(){
 	//deferred_diag.push("clear screens, mode "+displaymode);
 	view_changed = true;
 	if(displaymode=="panels"){
-		lcd_main.message("brgb", backgroundcolour_panels);
+		backgroundcolour_current = backgroundcolour_panels;
 		mouse_index=2;
 		click_clear(1,1);
 		mouse_click_actions[1] = panels_bg_click;
@@ -2695,11 +2695,11 @@ function clear_screens(){
 		mouse_click_values[1] = 0;
 	}else{
 		if(displaymode=="blocks"){
-			lcd_main.message("brgb", backgroundcolour_blocks);
+			backgroundcolour_current = backgroundcolour_blocks;
 		}else if(displaymode == "waves"){
-			lcd_main.message("brgb", backgroundcolour_waves);
+			backgroundcolour_current = backgroundcolour_waves;
 		}else{
-			lcd_main.message("brgb", backgroundcolour);
+			backgroundcolour_current = backgroundcolour;
 		}
 		mouse_index=1;
 		click_clear(0,0);
@@ -2707,6 +2707,7 @@ function clear_screens(){
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
+	lcd_main.message("brgb", backgroundcolour_current);
 	lcd_main.message("clear");
 	//mouse_index++;
 }
@@ -2864,7 +2865,7 @@ function draw_topbar(){
 		if(view_changed===true) click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.4), 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = set_display_mode;
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-		if((displaymode == "blocks"||(usermouse.clicked2d==mouse_index))){
+		if((displaymode == "blocks")||(usermouse.clicked2d==mouse_index)){
 			mouse_click_parameters[mouse_index] = "flocks";
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.4), 9+fontheight,menucolour );
 			lcd_main.message("frgb", 0,0,0);
@@ -2887,7 +2888,7 @@ function draw_topbar(){
 		if(view_changed===true) click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.2), 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = set_display_mode;
 		if((displaymode == "waves")||(usermouse.clicked2d==mouse_index)){
-			mouse_click_parameters[mouse_index] = "blocks";
+			if(displaymode == "waves")mouse_click_parameters[mouse_index] = "blocks";
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.2), 9+fontheight,menucolour );
 			lcd_main.message("frgb", 0,0,0);
 		}else{
@@ -3144,7 +3145,7 @@ function draw_sidebar(){
 		mouse_index--; //????
 	}
 
-	click_zone(scroll_sidebar, null, null, mainwindow_width-9,0,mainwindow_width,mainwindow_height,mouse_index,2);
+	click_zone(scroll_sidebar, null, null, mainwindow_width-9,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
 	y_offset = 9 - sidebar.scroll.position;
 	//post("\nstarting y",y_offset);
 	if(sidebar.mode == "edit_label"){
@@ -3749,7 +3750,7 @@ function draw_sidebar(){
 				lcd_main.message("write", "edit");
 			}else{
 				sidebar.editbtn = 0;
-				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
 				if(view_changed===true) click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 			}
 
@@ -5508,7 +5509,7 @@ function draw_sidebar(){
 			// CONNECTION DETAIL VIEW #######################################################################################################
 			i = selected.wire.indexOf(1);
 			sidebar.editbtn = 0;
-			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
 			if(view_changed===true) click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 
 			lcd_main.message("paintrect", mainwindow_width-9-2.1*fontheight, y_offset, mainwindow_width-9-1.1*fontheight, fontheight+y_offset,menudarkest );
@@ -6095,7 +6096,7 @@ function draw_sidebar(){
 				lcd_main.message("write", "copy");
 				click_zone(copy_selection, null,null, sidebar.x + fontheight*4.8, y_offset, sidebar.x+fontheight*5.8, fontheight+y_offset,mouse_index,1 );
 				sidebar.editbtn = 0;
-				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
 				click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 				
 				lcd_main.message("paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudark );
@@ -6202,7 +6203,7 @@ function draw_sidebar(){
 				lcd_main.message("write", selected.wire_count, "connections selected");
 
 				sidebar.editbtn = 0;
-				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
 				click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 			
 				lcd_main.message("paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudark );
@@ -6295,7 +6296,7 @@ function draw_sidebar(){
 				sidebar.lastmode = sidebar.mode;
 			}
 			sidebar.editbtn = 0;
-			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
 			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 			
 			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
@@ -6356,7 +6357,7 @@ function draw_sidebar(){
 				sidebar.lastmode = sidebar.mode;
 			}
 			sidebar.editbtn = 0;
-			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0,0);
+			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
 			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 
 			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
