@@ -242,14 +242,14 @@ function check_changed_queue(){
 		t-=1;
 		b = Math.floor(t/MAX_PARAMETERS);
 		p = Math.floor(t - b*MAX_PARAMETERS);
-		if(b==sidebar.selected){
-			if((sidebar.mode == "block")||(sidebar.mode == "settings")||(sidebar.mode == "add_state")){
+		if(b==sidebar.selected){ //removed this next check because paramslider_details gets wiped outside these modes
+//			if((sidebar.mode == "block")||(sidebar.mode == "settings")||(sidebar.mode == "add_state")){
 				if(!is_empty(paramslider_details[i])){
 //					post("\ntesting",i,b,p);
 //					post("flagging",p,"as changed");
 					redraw_flag.targets[p] |= 1;
 					redraw_flag.flag |= 1;														
-				}
+//				}
 			}
 		}
 		if(displaymode == "panels"){

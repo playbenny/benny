@@ -138,6 +138,16 @@ function setfontsize(size){
 	}
 }
 
+function clear_sidebar_paramslider_details(){
+	if(displaymode=="panels"){
+		for(var i=0;i<=MAX_PARAMETERS;i++){
+			paramslider_details[i]=[];
+		}
+	}else{
+		paramslider_details = [];
+	}
+}
+
 function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	click_rectangle(x1,y1,x2,y2,index,2);

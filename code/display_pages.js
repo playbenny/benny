@@ -3123,6 +3123,7 @@ function draw_sidebar(){
 	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
+		clear_sidebar_paramslider_details();
 		sidebar.scroll.position = 0;
 		view_changed = true;
 	}
@@ -3163,6 +3164,7 @@ function draw_sidebar(){
 		block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
 		
 		if(sidebar.mode != sidebar.lastmode){
+			clear_sidebar_paramslider_details();
 			sidebar.lastmode = sidebar.mode;
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
 			remove_midi_scope();
@@ -3330,6 +3332,7 @@ function draw_sidebar(){
 		var greycolour = [cavg,cavg,cavg];
 		var file_menu_x = mainwindow_width - 9 - fontheight * 15;
 		if(sidebar.mode != sidebar.lastmode){
+			clear_sidebar_paramslider_details();
 			sidebar.lastmode = sidebar.mode;
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
 			remove_midi_scope();
@@ -3591,11 +3594,8 @@ function draw_sidebar(){
 		lcd_main.message("moveto",sidebar.x+6*fontheight,oy);
 		lcd_main.message("frgb", menucolour);
 		lcd_main.message("write", bfree,"free");
-		
-
 	}else{		
-// BLOCK SCOPES AND PARAMS #######################################################################################################
-				
+// BLOCK SCOPES AND PARAMS #######################################################################################################	
 		block_colour = menucolour;
 		block_dark = menudark;
 		block_darkest = menudarkest;
@@ -3627,6 +3627,7 @@ function draw_sidebar(){
 				if(listvoice != sidebar.scopes.voice) sidebar.lastmode="retrig";
 			}else if(sidebar.scopes.midivoicelist.length!=bvs.length) sidebar.lastmode="retrig";
 			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 				sidebar.scopes.voice = -1;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -3681,7 +3682,7 @@ function draw_sidebar(){
 							messnamed("scope_size",(sidebar.scopes.width)/2);
 							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
-					}else{
+					}else if(blocktypes.contains(block_name+"::connections::in::midi")){
 						//assign_midi_scope
 						sidebar.scopes.midi = block;
 						if(sidebar.selected_voice<0){
@@ -3857,7 +3858,7 @@ function draw_sidebar(){
 					}
 
 					y_offset += fontheight*2.1;						
-				}else{
+				}else if(blocktypes.contains(block_name+"::connections::in::midi")){
 					y_offset += fontheight*2.1;
 					lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,mainwindow_width-9,sidebar.scopes.endy,block_darkest);
 					click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,mainwindow_width-9,sidebar.scopes.endy,mouse_index,1);
@@ -5593,6 +5594,7 @@ function draw_sidebar(){
 				lcd_main.message("paintrect", sidebar.x, sidebar.scopes.endy+fontheight*0.1,mainwindow_width-9,sidebar.scopes.endy+fontheight*2.1,menudarkest);
 			}*/
 			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
 				remove_midi_scope();
@@ -6053,6 +6055,7 @@ function draw_sidebar(){
 				sidebar.mode = "blocks";
 			}
 			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
 				sidebar.scroll.position = 0;
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -6293,6 +6296,7 @@ function draw_sidebar(){
 		}else if(sidebar.mode == "input_scope"){
 			sidebar.scroll.position = 0;
 			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 			}
 			sidebar.editbtn = 0;
@@ -6354,6 +6358,7 @@ function draw_sidebar(){
 		}else if(sidebar.mode == "output_scope"){
 			sidebar.scroll.position = 0;
 			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 			}
 			sidebar.editbtn = 0;
@@ -6412,6 +6417,7 @@ function draw_sidebar(){
 			sidebar.editbtn = 0;
 			sidebar.mode = "none";
 			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
 				remove_midi_scope();
