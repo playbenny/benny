@@ -8,12 +8,6 @@ function polycheck(){
 
 function slowclock(){
 	//here: check things that need to be copied into buffers have been, check up on things like deferred load happening
-	//if(deferred_diag.length>9900)deferred_diagnostics();
-/*	if(debugmode){
-		if(usermouse.left_button==0) deferred_diagnostics();
-	}else{
-		deferred_diag=[];
-	}*/
 	do_drift();
 	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();

@@ -1129,7 +1129,7 @@ function remove_connection(connection_number){
 							outmsg[1] = t_voice - 1;
 						}
 						outmsg[2] = 0;
-						if(debugmode == 1)post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
+						//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
 						matrix.message(outmsg);
 					}else if((t_type == "midi") || (t_type == "block")){
 						remove_routing(connection_number);
@@ -1349,7 +1349,7 @@ function make_connection(cno){
 	}else if(f_type == "hardware"){
 		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
 		varr = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::connections::out::hardware_channels");
-		post("\navailable hw voice out channels:", varr, "max poly", max_poly, "f_voice_list",f_voice_list);
+		//post("\navailable hw voice out channels:", varr, "max poly", max_poly, "f_voice_list",f_voice_list);
 		hw_mute = blocks.get("blocks["+f_block+"]::mute");
 		if(!Array.isArray(varr)) varr = [varr];
 		if(max_poly>1){
@@ -1366,7 +1366,7 @@ function make_connection(cno){
 		}else{
 			f_voices[0] = NO_IO_PER_BLOCK*MAX_AUDIO_VOICES + varr[f_o_no];
 		}
-		post("\nhave set f_voices to",f_voices,"\n");
+		//post("\nhave set f_voices to",f_voices,"\n");
 	}else{ // need to check for vsts, and if so do what i did for hardware above:
 		if(f_subvoices>1){
 			//post("connecting stereo vst as if 2 voices",f_voice_list, voicemap.get(f_block));
@@ -1557,7 +1557,7 @@ function make_connection(cno){
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
-							if(debugmode==1)post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
+							//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
 							matrix.message(outmsg);
 						}else if(t_type == "midi"){
 				// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	

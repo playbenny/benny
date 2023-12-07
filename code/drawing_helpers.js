@@ -123,7 +123,7 @@ function gain_display(gain){
 function draw_cpu_meter(){
 	var pk = 9 + fontheight*(100-cpu_meter.peak[cpu_meter.pointer])*0.01;
 	var avg = 9 + fontheight*(100-cpu_meter.avg[cpu_meter.pointer])*0.01;
-	lcd_main.message("frgb", 0, 0, 0);
+	lcd_main.message("frgb", backgroundcolour_current);
 	lcd_main.message("moveto", 5, 9);
 	lcd_main.message("lineto", 5, 9+fontheight);
 	lcd_main.message("frgb", 2.55*cpu_meter.peak[cpu_meter.pointer], Math.min(2.55*(120-cpu_meter.peak[cpu_meter.pointer]),255),55);
