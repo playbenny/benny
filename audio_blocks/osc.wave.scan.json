@@ -23,7 +23,7 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [7,7,6,6,5,2]
+				"contains" : [7,6,9,5,2]
 			},
 			{
 				"contains" : [1,3,4,8],
@@ -84,7 +84,7 @@
 			{
 				"name" : "self advance",
 				"type" : "menu_i",
-				"values" : ["off", "on", "on if target>0","..and no loop"],
+				"values" : ["off", "on", "on if target>0"],
 				"wrap" : 0,
 				"default" : 0.6
 			},
@@ -101,6 +101,13 @@
 				"values" : ["uni", 0, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.25 
+			},
+			{
+				"name" : "loop",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.6
 			}
 		]
 	}

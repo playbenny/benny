@@ -198,8 +198,12 @@ function buffer_loaded(number,path,name,buffername){
 	}
 	draw_wave[number] = new Array(2*waves_buffer[number].channelcount());
 	for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
-		draw_wave[number][i]=new Array(3200);
-		for(var t=0;t<3200;t++) draw_wave[number][i][t]=0;
+		draw_wave[number][i]=new Array(128);
+		var t=0;
+		while(t<128){
+			draw_wave[number][i][t]=0;
+			t++;
+		} 
 	}
 	if(displaymode=="waves") redraw_flag.flag |= 4;
 	store_wave_slices(tn);
@@ -749,6 +753,37 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_index +i,p_default);
 				param_defaults[block_index][i] = p_default;
 			}
+			var p_pol = p_values[0]; //details.get("parameters["+i+"]::values[0]");
+			var p_min = p_values[1]; //details.get("parameters["+i+"]::values[1]");
+			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
+			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
+			var p_steps = 0;
+			if(p_type=="menu_i"){
+				p_min = 0;
+				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
+				p_steps = p_max;
+			}else if(p_type=="menu_f"){
+				p_min=0;
+				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
+				p_steps = 0;
+			}else if(p_type=="int"){
+				p_steps=p_max;
+			}
+			if(p_curve == "lin"){
+				p_curve = 0;
+			}else {
+				if(p_pol=="uni"){
+					p_curve = 1;
+				}else{
+					p_curve = 2;
+				}
+			}
+			// parameter info poked out here for paramwatcher
+			//post("\nload block",block_index,"writing to p_i_b",MAX_PARAMETERS*block_index+i,p_min,p_max,p_steps,p_curve);
+			safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block_index+i,p_min);
+			safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block_index+i,p_max);
+			safepoke(parameter_info_buffer,3,MAX_PARAMETERS*block_index+i,p_steps);
+			safepoke(parameter_info_buffer,4,MAX_PARAMETERS*block_index+i,p_curve);
 		}		
 	}
 	// if the block has per-voice data it gets loaded after voicecount

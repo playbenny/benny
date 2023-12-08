@@ -333,7 +333,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 131.714285714285722, 322.0, 113.0, 22.0 ],
+					"patching_rect" : [ 240.500000000000057, 346.0, 113.0, 22.0 ],
 					"text" : "prepend blockoffset"
 				}
 
@@ -490,7 +490,7 @@
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 34.0, 16.0, 30.0, 30.0 ]
 				}
 

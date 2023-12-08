@@ -228,6 +228,7 @@ function initialise_dictionaries(){
 	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
 	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
 	MAX_WAVES = config.get("MAX_WAVES");
+	draw_wave.length = MAX_WAVES;
 	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
 	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
 	MAX_STATES = config.get("MAX_STATES");
@@ -692,8 +693,12 @@ function size(width,height,scale){
 		get_hw_meter_positions();
 		for(var number=0;number<draw_wave.length;number++){
 			for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
-				draw_wave[number][i]=new Array(3200);
-				for(var t=0;t<3200;t++) draw_wave[number][i][t]=0;
+				draw_wave[number][i]=new Array(128);
+				var t=0;
+				while(t<128){
+					draw_wave[number][i][t]=0;
+					t++;
+				} 
 			}			
 		}
 		set_display_mode(displaymode,custom_block);

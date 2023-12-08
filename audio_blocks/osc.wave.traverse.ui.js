@@ -27,7 +27,7 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	if(width != o_w){
 		for(var i=0;i<v_list.length;i++) {
 			wave = 1+ Math.floor(MAX_WAVES*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i],1));
-			messnamed("to_blockmanager","clear_wave_graphic",wave);
+			messnamed("to_blockmanager","clear_wave_graphic",wave,width);
 		}
 		o_w = width;
 	}

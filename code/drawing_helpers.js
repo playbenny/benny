@@ -401,11 +401,21 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 		lcd_main.message("paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
 	}
 }
-function clear_wave_graphic(n){
+
+function clear_wave_graphic(n,newl){
 	var t;
 	if(Array.isArray(draw_wave[n-1])){
-		for(var i = 0; i<4;i++){
-			if(typeof draw_wave[n-1][i] !== 'undefined') for(t=0;t<draw_wave[n-1][i].length;t++)	draw_wave[n-1][i][t]=0;
+		//post("\nclearing wave graphic",n);
+		var i = 0;
+		while(i<4){
+			if(Array.isArray(draw_wave[n-1][i])){
+				t = 0;
+				while(t<newl){
+					draw_wave[n-1][i][t]=0;
+					t++;
+				} 
+			} 
+			i++;
 		}
 	}
 }
@@ -421,7 +431,12 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	var hle ;
 	var wmin,wmax;
 	var w = Math.floor((x2-x1-1)/2);
-	if(w!=draw_wave[buffer-1][0].length) clear_wave_graphic(buffer);
+	if(!Array.isArray(draw_wave[buffer-1])) draw_wave[buffer-1] = [[],[],[],[]];
+	if(w!=draw_wave[buffer-1][0].length) {
+		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		draw_wave[buffer-1][0].length = w;
+		clear_wave_graphic(buffer,w);
+	}
 	var length = waves_dict.get("waves["+buffer+"]::length");
 	st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
 	d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;

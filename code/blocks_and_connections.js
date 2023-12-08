@@ -12,7 +12,6 @@ function new_block(block_name,x,y){
 		post("error: "+block_name+" not found in blocktypes dict");
 		return -1;
 	}
-
 	var type = details.get("type");
 	var vst = 0;
 	var recycled=0;
@@ -166,19 +165,19 @@ function new_block(block_name,x,y){
 				spr = sprd;
 			}
 			param_error_drift[voiceoffset][i]=0.01*drft*spr;
-			var p_type = details.get("parameters["+i+"]::type");
-			var p_pol = details.get("parameters["+i+"]::values[0]");
-			var p_min = details.get("parameters["+i+"]::values[1]");
-			var p_max = details.get("parameters["+i+"]::values[2]");
-			var p_curve = details.get("parameters["+i+"]::values[3]");
+			//var p_type = details.get("parameters["+i+"]::type");
+			var p_pol = p_values[0]; //details.get("parameters["+i+"]::values[0]");
+			var p_min = p_values[1]; //details.get("parameters["+i+"]::values[1]");
+			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
+			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
 			var p_steps = 0;
 			if(p_type=="menu_i"){
 				p_min = 0;
-				p_max = details.getsize("parameters["+i+"]::values");
+				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_steps = p_max;
 			}else if(p_type=="menu_f"){
 				p_min=0;
-				p_max = details.getsize("parameters["+i+"]::values");
+				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
 				p_steps = 0;
 			}else if(p_type=="int"){
 				p_steps=p_max;
@@ -193,6 +192,7 @@ function new_block(block_name,x,y){
 				}
 			}
 			// parameter info poked out here for paramwatcher
+			//post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
 			safepoke(parameter_info_buffer,1,MAX_PARAMETERS*new_block_index+i,p_min);
 			safepoke(parameter_info_buffer,2,MAX_PARAMETERS*new_block_index+i,p_max);
 			safepoke(parameter_info_buffer,3,MAX_PARAMETERS*new_block_index+i,p_steps);
@@ -601,7 +601,7 @@ function get_voice_details(voiceis){
 	if(voiceis<MAX_NOTE_VOICES){
 		note_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
 	}else if(voiceis<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-		audio_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+		audio_poly.setvalue(voiceis+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
 	}
 }
 
@@ -622,7 +622,7 @@ function send_all_voice_details(){
 			if(vl[nth]<MAX_NOTE_VOICES){
 				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
 			}else if(vl[nth]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-				audio_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+				audio_poly.setvalue(vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
 			}
 		}
 	} 
@@ -2278,6 +2278,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					}
 				}
 				// parameter info poked out here for paramwatcher
+				//post("\nblock",block,"writing to p_i_b",MAX_PARAMETERS*block+i,p_min,p_max,p_steps,p_curve);
 				safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block+i,p_min);
 				safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block+i,p_max);
 				safepoke(parameter_info_buffer,3,MAX_PARAMETERS*block+i,p_steps);
