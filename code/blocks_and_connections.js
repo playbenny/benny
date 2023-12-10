@@ -595,7 +595,7 @@ function get_voice_details(voiceis){
 	var block_name = blocks.get("blocks["+block+"]::name");
 	var no_params = blocktypes.getsize(block_name+"::parameters");
 	var latching = 0;
-	if(blocks.contains("blocks["+block+"]::poly::latching_mode")) blocks.get("blocks["+block+"]::poly::latching_mode");
+	if(blocks.contains("blocks["+block+"]::poly::latching_mode")) latching = blocks.get("blocks["+block+"]::poly::latching_mode");
 	var rate = 0;
 
 	if(voiceis<MAX_NOTE_VOICES){
@@ -616,7 +616,7 @@ function send_all_voice_details(){
 		var block_name = blocks.get("blocks["+block+"]::name");
 		var no_params = blocktypes.getsize(block_name+"::parameters");
 		var latching = 0;
-		if(blocks.contains("blocks["+block+"]::poly::latching_mode")) blocks.get("blocks["+block+"]::poly::latching_mode");
+		if(blocks.contains("blocks["+block+"]::poly::latching_mode")) latching = blocks.get("blocks["+block+"]::poly::latching_mode");
 		var rate = 0;
 		for(var nth=0;nth<of;nth++){
 			if(vl[nth]<MAX_NOTE_VOICES){

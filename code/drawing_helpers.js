@@ -20,15 +20,13 @@ function click_zone(action,parameters,values,x1,y1,x2,y2,index,type){
 
 function click_rectangle(x1,y1,x2,y2,index,type){
 	x1=Math.max(0,x1) >> click_b_s;
-	//x1|=0;
 	x2 = x2 >> click_b_s;
 	if(x2 <= x1) return 0;
 	y2 = y2 >> click_b_s;
 	y1=Math.max(0,y1>>click_b_s);
-	//y1|=0;
 	type &= 15;
 	index &= 4095;
-	var w = x2-x1;
+	var w = x2-x1+1;
 	var c = (type<<12)+index;
 	for(var y=y1;y<=y2;y++){
 		var ty=y<<click_b_w;
