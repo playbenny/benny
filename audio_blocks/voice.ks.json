@@ -6,6 +6,7 @@
 		"help_text" : "Basic KS string model with selfmodulation and a -x^3 saturator in the feedback loop. ",
 		"max_polyphony" : 0,
 		"upsample" : 2,
+		"latching_enable" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "fm", "feed in" ],

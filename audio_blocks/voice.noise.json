@@ -6,6 +6,7 @@
 		"help_text" : "noise source + VCA + ENV",
 		"max_polyphony" : 0,
 		"upsample" : 2,
+		"latching_enable" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "colour", "ext source" ],

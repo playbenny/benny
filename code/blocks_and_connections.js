@@ -881,8 +881,22 @@ function remove_routing(cno){
 function turn_off_audio_to_data_if_unused(voice){
 	//run me AFTER deleting the connection this audio-to-data was on.
 	//check the routing_index array to see if any indexes are connected to this one.
-	audio_to_data_poly.setvalue(voice, "out_value", 0);
-
+	var dont = 0;
+	for(var cno=routing_index.length;cno--;){
+		if(Array.isArray(routing_index[cno])){
+			for(var destvoice=routing_index[cno].length;destvoice--;){
+				if(typeof routing_index[cno][destvoice][voice] == "number"){
+					//post("\n i think i found another voice using this one's a2m converter so i wont turn it off ",routing_index[cno][destvoice][voice]);
+					dont = 1;
+				}/*else{
+					for(var source=routing_index[cno][destvoice].length;source--;){
+						post("\nr_i",cno,destvoice,source,"=",routing_index[cno][destvoice][source]);
+					}
+				}*/
+			}
+		}
+	}
+	if(!dont) audio_to_data_poly.setvalue(voice, "out_value", 0);
 }
 
 // REMOVE CONNECTION ###################################################################################################
@@ -1087,7 +1101,7 @@ function remove_connection(connection_number){
 				remove_routing(connection_number);
 			}else if(f_type == "audio"){//audio to midi (polyrouter)
 				remove_routing(connection_number);
-				turn_off_audio_to_data_if_unused((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
+				turn_off_audio_to_data_if_unused((f_voices[i]+(1+f_o_no)*MAX_AUDIO_VOICES));
 			}
 		}else{
 			f_voice = +f_voices[i];
@@ -1133,7 +1147,7 @@ function remove_connection(connection_number){
 						matrix.message(outmsg);
 					}else if((t_type == "midi") || (t_type == "block")){
 						remove_routing(connection_number);
-						turn_off_audio_to_data_if_unused((f_voice+1)+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
+						turn_off_audio_to_data_if_unused((f_voice)+(f_o_no+1)*MAX_AUDIO_VOICES);
 					}else if(t_type == "parameters"){
 						m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 						post("starting tvoice",t_voice);
@@ -1167,10 +1181,11 @@ function remove_connection(connection_number){
 
 						remove_from_midi_routemap(m_index,vvv);
 						remove_from_mod_routemap(t_voice,tmod_id);
-						if(tidslist.length<=1){
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", 0);
-						}
 						remove_routing(connection_number);
+						if(tidslist.length<=1){
+							//audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", 0);
+							turn_off_audio_to_data_if_unused((f_voice)+(f_o_no+1)*MAX_AUDIO_VOICES);
+						}
 					}
 				}else if(f_type == "matrix"){
 					if(t_type == "matrix") {

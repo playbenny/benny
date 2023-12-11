@@ -136,7 +136,7 @@ var routing_buffer = new Buffer("routing"); //replaces conversion buffer
 	//index of this is 9 *( index + max_connections_per_output * (outputno + voiceno * max_outputs_per_voice ) )
 var next_free_routing_index = []; // index of this is outputno + voiceno*max_outputs_per_voice, holds the next free index
 var routing_index = []; //the actual index value where this connection's data is in the routing buffer.
-
+  //routing_index[cno][destvoiceno][sourcevoice] = r_b index
 var waves_polybuffer = new PolyBuffer("waves");
 var polybuffer_names = [];
 var polybuffer_samplerates = [];

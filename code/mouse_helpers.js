@@ -263,9 +263,8 @@ function blocks_paste(outside_connections){
 			// connections between selected blocks (these aren't copied yet)
 			var tdc = copy.get("connections");
 			var tk = tdc.getkeys();
-			if(tk!=null){
-				var csize = tk.length;
-				for(var t=0;t<csize;t++){
+			if(Array.isArray(tk)){
+				for(var t=0;t<tk.length;t++){
 					new_connection = copy.get("connections::"+t);
 					var pfrom = paste_mapping[+new_connection.get("from::number")];
 					var pto = paste_mapping[+new_connection.get("to::number")];

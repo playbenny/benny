@@ -6,6 +6,7 @@
 		"help_text" : "A pair of basic oscillators, with 2 envelopes and vcas and a load of diverse cross modulation possibilities. Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. The rectangle portion of this oscillator uses code from Yofiel.com. ",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"latching_enable" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "osc1 mod", "osc2 mod" ],

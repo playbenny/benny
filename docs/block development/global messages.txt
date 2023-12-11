@@ -13,7 +13,7 @@ REQUESTS
 ;to_blockmanager get_voice_details $1 <- the number from voice_is
 gets you more info - total voices of block, your voiceno within block, etc
 
-this is automatically sent to all voices once all blocks have loaded (eg when you load a song, or when you add a new block or voice) so no need to actually request it
+this is automatically sent to all voices once all blocks have loaded (eg when you load a song, or when you add a new block or voice) so no need to actually request it. it's also resent when any of the details change - eg if latching is turned on/off
 
 
 BLOCKS

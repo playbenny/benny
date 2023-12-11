@@ -6,6 +6,7 @@
 		"help_text" : "sample player with slices, offset, timestretch",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"latching_enable" : 1,
 		"subvoices" : 2,
 		"connections" : {
 			"in" : {

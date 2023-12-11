@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3782331138,
+	"modificationdate" : 3785178939,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -201,12 +201,12 @@
 				"local" : 1
 			}
 ,
-			"midi.holes.maxpat" : 			{
+			"voiceheader.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
 ,
-			"voiceheader.maxpat" : 			{
+			"midi.holes.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -414,13 +414,13 @@
 				"local" : 1
 			}
 ,
-			"output_queue_watcher.gendsp" : 			{
-				"kind" : "gendsp"
-			}
-,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
+			}
+,
+			"output_queue_watcher.gendsp" : 			{
+				"kind" : "gendsp"
 			}
 ,
 			"whitegaussnoise.gendsp" : 			{
@@ -713,6 +713,10 @@
 		}
 ,
 		"other" : 		{
+			"osc_functions.genexpr" : 			{
+				"kind" : "genexpr",
+				"local" : 1
+			}
 
 		}
 
