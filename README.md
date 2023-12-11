@@ -4,7 +4,6 @@ MULTITUDES
 - integrates hardware and software, midi and audio, lets you connect anything to anything, extends into polyphony elegantly
 - aims for a low-density, low-distraction, glance-able interface that works for touch and mouse/keyboard use
 - is agnostic about timelines and structure rather than imposing either
-- makes polyphony experiments easy
 - is an extendible and hackable place to host your own max patches
 - is not a DAW
   
