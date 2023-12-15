@@ -2774,6 +2774,7 @@ function swap_block(block_name){
 }
 
 function build_mod_sum_action_list(){
+	//var ttt=new Date().getTime();
 	if(loading.progress>0) return 0;
 	messnamed("modulation_processor", "pause",1);
 	//post("\nBuilding new mod sum action list");
@@ -3027,11 +3028,12 @@ function build_mod_sum_action_list(){
 	mod_sum_action_list.poke(4,list_pointer,-1);
 	list_pointer++;	
 	output_queue.poke(1,0,0);
+	//ttt = new Date().getTime() - ttt;
+	//post("\nMSA LIST MADE IN ",ttt);
 	messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0; 
 	messnamed("modulation_processor", "pause", 0); //this message gets deferred (in the max patch) otherwise the gen doesn't get a frame to realise that pause has changed to 1 and back
-	
 //post("ok, list length",list_pointer,"\n");
 //for(i=0;i<list_pointer;i++){
 //	post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");
