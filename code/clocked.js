@@ -14,8 +14,12 @@ function slowclock(){
 
 	recursions=0;
 	if((deferred_diag.length>0)&&(usermouse.qlb==0)){
-		for(i=0;i<deferred_diag.length;i++){
-			post("\n"+deferred_diag[i]);
+		if(usermouse.ctrl){
+			post("\nthere were",deferred_diag.length,"items");
+		}else{
+			for(i=0;i<deferred_diag.length;i++){
+				post("\n"+deferred_diag[i]);
+			}
 		}
 		deferred_diag=[];
 	}
@@ -505,11 +509,12 @@ function draw_scope(x1,y1,x2,y2,voice){
 
 function do_drift(){
 	var i,t;
-	for(i = 0; i<param_error_drift.length;i++){
+	for(i=param_error_drift.length;i--;){
 		if(!is_empty(param_error_drift[i])){
-			for(t=0;t<param_error_drift.length;t++){
-				if(param_error_drift[i][t]!=0){
+			for(t=param_error_drift.length;t--;){
+				if((param_error_drift[i][t]|0)!=0){
 					//param_error_spread[i][t]+=(Math.random()-0.5)*param_error_drift[i][t];
+					//deferred_diag.push("drift i,t"+i+"-"+t+" "+param_error_drift[i][t]);
 					safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
 				}
 			}
