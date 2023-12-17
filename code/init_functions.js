@@ -654,16 +654,18 @@ function deferred_diagnostics(){
 function safepoke(buffer,channel,index,value){
 	if(Array.isArray(value)){
 		var ok=1;
-		for(var i=0;i<value.length;i++){
+		for(var i=value.length;i--;){
 			ok &= (value[i] !== null);
 		}
 		if(ok){
+			//deferred_diag.push("poke: "+channel+" - "+index+" - "+value);
 			buffer.poke(channel,index,value);
 		}else{
 			post("\n\n\n\nWARNING UNSAFE ARRAY POKE ATTEMPTED:\nbuffer: ",buffer,"C,I,V",channel,index,value,"\n\n\n");
 		}
 	}else if(value !== null){
 		buffer.poke(channel,index,value);
+		//post("\npoke - "+channel+" - "+index+" - "+value);
 	}else{
 		post("\n\n\n\nWARNING UNSAFE POKE ATTEMPTED:\nbuffer: ",buffer,buffer.toString(), buffer.constructor.name, "C,I,V",channel,index,value,"\n\n\n");
 	}

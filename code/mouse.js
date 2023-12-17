@@ -1120,21 +1120,7 @@ function keydown(key){
 				if((sidebar.mode=="file_menu")&&(currentsong>-1)) load_song();
 			}else if((key == -6) || (key==-7)){
 				//delete, if any block or connection is selected
-				var i;
-				for(i=0;i<selected.wire.length;i++){
-					if(selected.wire[i]) {
-						//post("removing connection",i,"\n");
-						remove_connection(i);
-					}
-				}
-				for(i=0;i<selected.block.length;i++){
-					if(selected.block[i]) {
-						//post("removing block",i,"\n");
-						remove_block(i);
-					}
-				}
-				selected.anysel = 0;
-				redraw_flag.flag |= 12;
+				delete_selection();
 			}else if(key == 45){
 				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
 					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");

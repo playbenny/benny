@@ -240,9 +240,9 @@
 				"default" : 0
 			},
 			{
-				"name" : "save colours to userconfig",
+				"name" : "save",
 				"type" : "button",
-				"values" : ["core","save","write_userconfig"]	
+				"values" : ["core","save colours to userconfig","write_userconfig"]	
  			}
 		]
 	}

@@ -758,7 +758,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
 			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
 			var p_steps = 0;
-			if(p_type=="menu_i"){
+			if((p_type=="menu_i")||(p_type=="menu_b")){
 				p_min = 0;
 				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_steps = p_max;
@@ -768,6 +768,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				p_steps = 0;
 			}else if(p_type=="int"){
 				p_steps=p_max;
+			}else if(p_type=="button"){
+				p_min = 0;
+				p_max = (p_values.length - 1 ) / 2;
+				p_steps = p_max;
+				p_curve = 0;
 			}
 			if(p_curve == "lin"){
 				p_curve = 0;
@@ -779,7 +784,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				}
 			}
 			// parameter info poked out here for paramwatcher
-			//post("\nload block",block_index,"writing to p_i_b",MAX_PARAMETERS*block_index+i,p_min,p_max,p_steps,p_curve);
+			// post("\nload block",block_index,"writing to p_i_b",MAX_PARAMETERS*block_index+i,p_min,p_max,p_steps,p_curve);
 			safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block_index+i,p_min);
 			safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block_index+i,p_max);
 			safepoke(parameter_info_buffer,3,MAX_PARAMETERS*block_index+i,p_steps);

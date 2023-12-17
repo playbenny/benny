@@ -164,6 +164,7 @@ function new_block(block_name,x,y){
 			}else{
 				spr = sprd;
 			}
+			
 			param_error_drift[voiceoffset][i]=0.01*drft*spr;
 			//var p_type = details.get("parameters["+i+"]::type");
 			var p_pol = p_values[0]; //details.get("parameters["+i+"]::values[0]");
@@ -171,7 +172,7 @@ function new_block(block_name,x,y){
 			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
 			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
 			var p_steps = 0;
-			if(p_type=="menu_i"){
+			if((p_type=="menu_i")||(p_type=="menu_b")){
 				p_min = 0;
 				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_steps = p_max;
@@ -181,6 +182,11 @@ function new_block(block_name,x,y){
 				p_steps = 0;
 			}else if(p_type=="int"){
 				p_steps=p_max;
+			}else if(p_type=="button"){
+				p_min = 0;
+				p_max = (p_values.length - 1 ) / 2;
+				p_steps = p_max;
+				p_curve = "lin";
 			}
 			if(p_curve == "lin"){
 				p_curve = 0;
@@ -2263,7 +2269,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					spr = sprd;
 				}
 				if(loading.wait>1) post(spr);
-				safepoke(parameter_static_mod,1, voiceoffset  *MAX_PARAMETERS+i, 0);
+				safepoke(parameter_static_mod,1, voiceoffset * MAX_PARAMETERS+i, 0);
 				safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
 				var p_type = details.get("parameters["+i+"]::type");
@@ -2272,7 +2278,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				var p_max = details.get("parameters["+i+"]::values[2]");
 				var p_curve = details.get("parameters["+i+"]::values[3]");
 				var p_steps = 0;
-				if(p_type=="menu_i"){
+				if((p_type=="menu_i")||(p_type=="menu_b")){
 					p_min = 0;
 					p_max = details.getsize("parameters["+i+"]::values");
 					p_steps = p_max;
@@ -2282,6 +2288,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					p_steps = 0;
 				}else if(p_type=="int"){
 					p_steps=p_max;
+				}else if(p_type=="button"){
+					p_min = 0;
+					p_max = (details.getsize("parameters["+i+"]::values") - 1 ) / 2;
+					p_steps = p_max;
+					p_curve = "lin";
 				}
 				if(p_curve == "lin"){
 					p_curve = 0;

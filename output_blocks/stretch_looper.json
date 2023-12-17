@@ -11,7 +11,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 1, 2]
+				"contains" : [5, 0, 0, 1, 2]
 			},
 			{
 				"contains" : [3,4],
@@ -19,7 +19,7 @@
 			}		
 		],
 		"panel" : {
-			"parameters" : [0, 1, 2, 3, 4]
+			"parameters" : [5, 0, 1, 2, 3, 4]
 		},
 		"parameters" : [
 			{
@@ -59,16 +59,16 @@
 				"default" : 0
 			},
 			{
-				"name" : "blank",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"name" : "loop_on",
+				"type" : "button",
+				"values" : ["voices", "loop", "loop 1", "stop", "loop 0"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "loop_on",
-				"type" : "menu_i",
-				"values" : ["off", "on"],
+				"name" : "loop pointer",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
@@ -78,7 +78,7 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
-			},
+			},			
 			{
 				"name" : "loop start",
 				"type" : "float",

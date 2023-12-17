@@ -490,7 +490,7 @@ var latching_modes = ["continuous","initial noteon","all ons","all ons and offs"
 var record_arm = [];
 
 var mulberryseed = 0; //seed for the mulberry32 random fn that does error spread values
-var param_error_drift = new Array(MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_HARDWARE_BLOCKS);
+var param_error_drift = []; //new Array(MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_HARDWARE_BLOCKS);
 var param_error_lockup = new Array(MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_HARDWARE_BLOCKS);
 //both indexed by voice / param num. populated when you make a new block or voice?
 

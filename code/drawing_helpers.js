@@ -170,6 +170,7 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	lcd_main.message("moveto",x1+9,y1+9);
+	lcd_main.message("frgb",menucolour);
 	lcd_main.message("write",label);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index,1);
 }

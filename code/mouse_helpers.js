@@ -724,22 +724,26 @@ function send_button_message(parameter, value){
 		if(!Array.isArray(vl)) vl=[vl];
 		if(vl[0]<MAX_NOTE_VOICES){
 			note_poly.setvalue(vl[0]+1,value[1]);
-		}else{
+		}else if(vl[0]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
 			audio_poly.setvalue(vl[0]+1-MAX_NOTE_VOICES,value[1]);
+		}else{
+			output_blocks_poly.setvalue(vl[0]+1-MAX_NOTE_VOICES-MAX_AUDIO_VOICES,value[1]);
 		}
 	}else if(value[0] == "voices"){
 		var vl=voicemap.get(parameter);
 		for(var t=vl.length;t--;){
 			if(vl[t]<MAX_NOTE_VOICES){
 				note_poly.setvalue(vl[t]+1,value[1]);
-			}else{
+			}else if(vl[t]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
 				audio_poly.setvalue(vl[t]+1-MAX_NOTE_VOICES,value[1]);
+			}else{
+				output_blocks_poly.setvalue(vl[t]+1-MAX_NOTE_VOICES-MAX_AUDIO_VOICES,value[1]);
 			}
 		}
 	}else if(value[0] == "core"){
 		messnamed("to_blockmanager",value[1]);
 	}						
-	//post("send button message",parameter,"value",value,"\n");
+	post("send button message",parameter,"value",value,"\n");
 }
 
 function delete_state(state,block){
@@ -1906,4 +1910,22 @@ function delete_wave(parameter,value){
 	waves.selected = -1;
 	messnamed("waves_buffers",parameter,"clearlow");
 	redraw_flag.flag = 4;
+}
+
+function delete_selection(){
+	var i;
+	for(i=0;i<selected.wire.length;i++){
+		if(selected.wire[i]) {
+			//post("removing connection",i,"\n");
+			remove_connection(i);
+		}
+	}
+	for(i=0;i<selected.block.length;i++){
+		if(selected.block[i]) {
+			//post("removing block",i,"\n");
+			remove_block(i);
+		}
+	}
+	selected.anysel = 0;
+	redraw_flag.flag |= 12;
 }
