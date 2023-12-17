@@ -936,6 +936,11 @@ function folder_select(folderstr){
 	if(fullscreen) world.message("fullscreen",fullscreen);
 }
 
+function write_userconfig(){
+	userconfig.writeagain();
+	post("\nwrote userconfig to disk");
+}
+
 function purge_muted_trees(){
 	//idea: collect all muted blocks, add them to purgelist
 	//then, for everything on purgelist, look at everything it's connected to. if you're taking the only input off a thing, add that thing to purgelist. likewise if only output.

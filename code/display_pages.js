@@ -3992,10 +3992,12 @@ function draw_sidebar(){
 	
 									if(p_type=="button"){
 										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,p_values[0]);
-										mouse_click_actions[mouse_index] = sidebar_button;
+										var statecount = (p_values.length - 1) / 2;
+										var pv2 = Math.floor(pv * statecount) * 2  + 1;
+										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
+										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
-										mouse_click_values[mouse_index] = "show_edit";
+										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 										mouse_index++;
 									}else{
 										if(h_slider==0){
@@ -4488,12 +4490,14 @@ function draw_sidebar(){
 								wrap = params[plist[t]].get("wrap");
 								pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
 								if(p_type=="button"){
-									paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],p_values[0],"",0,p_type,wrap,block_name,h_slider];
-									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,p_values[0]);
-									mouse_click_actions[mouse_index] = sidebar_button;
-									mouse_click_parameters[mouse_index] = block;
-									mouse_click_values[mouse_index] = "show_edit";
-									mouse_index++;
+									paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										var statecount = (p_values.length - 1) / 2;
+										var pv2 = Math.floor(pv * statecount) * 2  + 1;
+										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
+										mouse_click_actions[mouse_index] = send_button_message;
+										mouse_click_parameters[mouse_index] = block;
+										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1]];
+										mouse_index++;
 								}else{
 									if(h_slider==0){
 										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],p_values[0],"",0,p_type,wrap,block_name,h_slider];

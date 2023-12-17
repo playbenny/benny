@@ -715,8 +715,31 @@ function scope_midinames(parameter,value){
 	}
 }
 
-function sidebar_button(parameter, value){
-	post("sidebar button param",parameter,"value",value,"\n");
+function send_button_message(parameter, value){
+	parameter_value_buffer.poke(1,value[2],value[3]);
+	if(value[0] == "block"){
+		ui_poly.setvalue(parameter+1,value[1]);
+	}else if(value[0] == "firstvoice"){
+		var vl = voicemap.get(parameter);
+		if(!Array.isArray(vl)) vl=[vl];
+		if(vl[0]<MAX_NOTE_VOICES){
+			note_poly.setvalue(vl[0]+1,value[1]);
+		}else{
+			audio_poly.setvalue(vl[0]+1-MAX_NOTE_VOICES,value[1]);
+		}
+	}else if(value[0] == "voices"){
+		var vl=voicemap.get(parameter);
+		for(var t=vl.length;t--;){
+			if(vl[t]<MAX_NOTE_VOICES){
+				note_poly.setvalue(vl[t]+1,value[1]);
+			}else{
+				audio_poly.setvalue(vl[t]+1-MAX_NOTE_VOICES,value[1]);
+			}
+		}
+	}else if(value[0] == "core"){
+		messnamed("to_blockmanager",value[1]);
+	}						
+	//post("send button message",parameter,"value",value,"\n");
 }
 
 function delete_state(state,block){

@@ -166,15 +166,14 @@ function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 		lcd_main.message("paintrect",x1,y1,x2,ly,r,g,b);
 	}
 }
-function draw_button(x1,y1,x2,y2,r,g,b,index,value){
-	var rat = bg_dark_ratio;
-	if(value != 1){
-		rat = 1;
-	}
-	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
+function draw_button(x1,y1,x2,y2,r,g,b,index,label){
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("moveto",x1+9,y1+9);
+	lcd_main.message("write",label);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index,1);
 }
+
 function labelled_parameter_v_slider(sl_no){
 	
 	var p_values= blocktypes.get(paramslider_details[sl_no][15]+"::parameters["+paramslider_details[sl_no][9]+"]::values");

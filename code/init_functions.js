@@ -144,6 +144,7 @@ function import_hardware(v){
 }
 
 function load_config_colours(){
+	process_userconfig();
 	menucolour = config.get("palette::menu");
 	var dimm=0.5;
 	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
@@ -167,14 +168,14 @@ function load_config_colours(){
 
 function process_userconfig(){
 	//userconfig OVERWRITES items in config
-	post("\nimporting userconfig\n  ");
+	//post("\nimporting userconfig\n  ");
 	var uk = userconfig.getkeys();
 	if(uk==null) return 0;
 	for(var i=0;i<uk.length;i++){
 		var tk=userconfig.get(uk[i]);
 		if((typeof tk == "string")||(typeof tk == "number")){
 			config.replace(uk[i],tk);
-			post(uk[i]);
+			//post(uk[i]);
 		}else{
 			if(typeof tk == "object"){
 				tkk = tk.getkeys();
@@ -183,7 +184,7 @@ function process_userconfig(){
 						var ttkk = userconfig.get(uk[i]+"::"+tkk[ii]);
 						if(ttkk != null){
 							config.replace(uk[i]+"::"+tkk[ii],ttkk);
-							post(tkk[ii]);
+							//post(tkk[ii]);
 						}
 					}
 				}
@@ -200,11 +201,11 @@ function initialise_dictionaries(){
 	userconfig.parse('{ }');
 	userconfig.import_json("userconfig.json");
 	post("reading config\n");				
-	process_userconfig();
+	load_config_colours(); //separate fn so it can be called by core.space block
+	//process_userconfig();
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
 	click_b_s = config.get("click_buffer_scaledown");
-	load_config_colours(); //separate fn so it can be called by core.space block
 
 	wire_dia = config.get("wire_dia");
 	glow_amount = config.get("glow");

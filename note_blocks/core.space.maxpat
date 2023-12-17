@@ -178,14 +178,14 @@
 					"numinlets" : 2,
 					"numoutlets" : 4,
 					"outlettype" : [ "dictionary", "", "", "" ],
-					"patching_rect" : [ 456.0, 306.0, 63.0, 22.0 ],
+					"patching_rect" : [ 456.0, 306.0, 86.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
 ,
-					"text" : "dict config"
+					"text" : "dict userconfig"
 				}
 
 			}
@@ -350,8 +350,8 @@
 					"id" : "obj-7",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 9,
-					"outlettype" : [ "", "", "", "", "", "", "int", "int", "int" ],
+					"numoutlets" : 10,
+					"outlettype" : [ "", "", "", "", "", "", "int", "int", "int", "" ],
 					"patching_rect" : [ 288.0, 47.0, 103.0, 22.0 ],
 					"text" : "voiceheader"
 				}

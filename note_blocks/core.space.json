@@ -36,6 +36,10 @@
 			},
 			{
 				"contains" : [25,26,27]
+			},
+			{
+				"contains" : [28],
+				"height" : 0
 			}
 		],
 		"parameters" : [
@@ -234,7 +238,12 @@
 				"values" : ["uni", 0, 255, "lin"],
 				"wrap" : 0,
 				"default" : 0
-			}
+			},
+			{
+				"name" : "save colours to userconfig",
+				"type" : "button",
+				"values" : ["core","save","write_userconfig"]	
+ 			}
 		]
 	}
 }
