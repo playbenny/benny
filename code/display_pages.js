@@ -3833,6 +3833,7 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = "";	
 			mouse_index++;
 			y_offset += 1.1*fontheight;
+			
 			if(sidebar.mode == "block"){
 				sidebar.scopes.starty = y_offset;
 				sidebar.scopes.endy = y_offset+2*fontheight;
@@ -3855,17 +3856,22 @@ function draw_sidebar(){
 							click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-0.1*fontheight,sidebar.scopes.endy,mouse_index,2);
 						}
 					}
-
+					
 					y_offset += fontheight*2.1;						
 				}else if(blocktypes.contains(block_name+"::connections::in::midi")){
 					y_offset += fontheight*2.1;
 					lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,mainwindow_width-9,sidebar.scopes.endy,block_darkest);
 					click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,mainwindow_width-9,sidebar.scopes.endy,mouse_index,1);
 				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && !(displaymode == "custom") && !(displaymode == "panels")){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels")){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
-					sidebar.panel = 1;
+					var miplus16 = mouse_index + 16;
+					//this is a bit hacky, but because sometimes the ui may have fewer or more clickable
+					//elements depending on status, you just make this section take up max(16,actual length)
+					//ie if it has more than 16 elements then you hope it stays constant
+
 					if(ui_h>0){
+						sidebar.panel = 1;
 						ui_h *= fontheight;
 						//draw the panelui for this block here
 						if(!blocktypes.contains(block_name+"::no_edit")){
@@ -3876,13 +3882,13 @@ function draw_sidebar(){
 						custom_block = block;
 						y_offset += ui_h + 0.1*fontheight;
 					}
+					mouse_index = Math.max(miplus16,mouse_index);
 				}
 			}
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")){
 				var groups = [];
 				var params = [];
 				var knob = { x:0 , y:0 };
-				
 				if(!has_params){
 					lcd_main.message("paintrect", sidebar.x , y_offset, mainwindow_width-9, fontheight+y_offset,block_darkest );
 					lcd_main.message("moveto" ,sidebar.x + fontheight*0.2, fontheight+y_offset-9);
@@ -3990,7 +3996,7 @@ function draw_sidebar(){
 									}
 	
 									if(p_type=="button"){
-										paramslider_details[curp]=[];//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length - 1) / 2;
 										var pv2 = Math.floor(pv * statecount) * 2  + 1;
 										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
@@ -4491,7 +4497,7 @@ function draw_sidebar(){
 								wrap = params[plist[t]].get("wrap");
 								pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
 								if(p_type=="button"){
-									paramslider_details[curp]=[];//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+									paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									var statecount = (p_values.length - 1) / 2;
 									var pv2 = Math.floor(pv * statecount) * 2  + 1;
 									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);

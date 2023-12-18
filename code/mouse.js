@@ -156,7 +156,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.distance=0;
 					usermouse.clicked2d=-1;
 					usermouse.ids = id.split('-');
-					//	deferred_diag[deferred_diag.length] = "id set to "+id;
 					if(id=="background" || id=="block_menu_background"){
 						usermouse.clicked3d = "background";
 						usermouse.drag.starting_x = -1; // flag waiting for the first mouse message of a drag, because the initial click may be at wrong location with touch messages. usermouse.x;
@@ -191,6 +190,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				usermouse.last.got_i = usermouse.got_i;
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
+				//post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
 				if(usermouse.got_t>=2 && usermouse.got_t<=4){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
@@ -199,7 +199,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var p = mouse_click_parameters[usermouse.got_i];
 						var v = mouse_click_values[usermouse.got_i];
 						usermouse.drag.starting_value_x = f(p,"get");
-						if(/* (v>1)|| */(usermouse.got_t==4)){ //v is 
+						if((usermouse.got_t==4)){ 
 							usermouse.drag.starting_value_y = f(v,"get");
 						}else{
 							usermouse.drag.starting_value_y = -1;
@@ -225,7 +225,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 
 		// ##################################################
 		}else{						// RELEASE
-//			post("\nrelease\n2d3d is",usermouse.clicked2d,usermouse.clicked3d);
+			//post("\nrelease\n2d3d is",usermouse.clicked2d,usermouse.clicked3d);
+			//post("2d release",usermouse.last.got_i,usermouse.last.got_t,"was",usermouse.got_i);
 			if(usermouse.got_t==7){//passthrough
 				var f = mouse_click_actions[usermouse.got_i];
 				var p = mouse_click_parameters[usermouse.got_i];
@@ -253,7 +254,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						//post("f is",f,"index is",usermouse.last.got_i,usermouse.last.got_t);
 						//post("or",f.name);
 						f(p,v);
-						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
+						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.deferred|=2;
 					}
 					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider
 						if(mouse_click_actions[usermouse.last.got_i]==sidebar_parameter_knob){
