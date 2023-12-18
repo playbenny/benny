@@ -34,6 +34,7 @@ var MAX_PANEL_COLUMNS = 4;
 var SELF_CONNECT_THRESHOLD = 1200; //when dragging a block back onto itself
 var DOUBLE_CLICK_TIME = 8;
 var LONG_PRESS_TIME = 800;
+var SLIDER_CLICK_SET = 0;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var BLOCK_TEXTURE_SIZE = 128;
 var ANIM_TIME = 0.25;
@@ -337,6 +338,7 @@ var usermouse = {
 		last_x : 0,
 		last_y : 0,
 		distance : 0,
+		release_on_exit : 0,
 		dragging : {
 			connections : [],
 			voices : []
@@ -392,7 +394,7 @@ var redraw_flag = {
 	selective : 0
 }
 var paramslider_details = []; //indexed by param number
-
+//x1,y1,x2,y2,r,g,b,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,gets-overwritten-with-y-coord-returned(bottom),click_to_set
 var camera_position = [-2, 0, 23];
 var menu_camera_scroll = 0;
 

@@ -401,8 +401,6 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		if(!Array.isArray(params)) params = [params];
 		if(!Array.isArray(plist)) plist = [plist];
 		for(var p=0;p<plist.length;p++){
-			//lcd_main.message("paintrect", 9+(x+p/plist.length)*mainwindow_width/4,18+(y+2+has_states)*fontheight,7+(x+(p+1)/plist.length)*mainwindow_width/4,18+(y+3.9+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2]);
-			//parameter_v_slider(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],0);
 			var p_type = params[plist[p]].get("type");
 			//var p_values = params[plist[p]].get("values");
 			var wrap = params[plist[p]].get("wrap");
@@ -425,10 +423,11 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			var namelabely = 18+(y+2+has_states+0.4)*fontheight;
 			var h_slider = 0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
-			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider];
+			var click_to_set = 0;
+			if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
+			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 			labelled_parameter_v_slider(panelslider_index);
 			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
-				//var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[panelslider_index][8]+paramslider_details[panelslider_index][9]);				
 				//if it's a menu_b or menu_i store the next position in mouse_click_values
 				// now stores the paramslider_details index, so you can look up type, get num values, etc etc, on click, more efficient.
 				mouse_click_values[mouse_index] = panelslider_index; //(pv+1/p_values.length) % 1;
@@ -3991,7 +3990,7 @@ function draw_sidebar(){
 									}
 	
 									if(p_type=="button"){
-										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curp]=[];//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length - 1) / 2;
 										var pv2 = Math.floor(pv * statecount) * 2  + 1;
 										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
@@ -4000,10 +3999,12 @@ function draw_sidebar(){
 										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 										mouse_index++;
 									}else{
+										var click_to_set = 0;
+										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
 										if(h_slider==0){
-											paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+											paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 										}else{
-											paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+											paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 										}
 										namelabely = labelled_parameter_v_slider(curp);
 										paramslider_details[curp][17]=namelabely;
@@ -4490,14 +4491,14 @@ function draw_sidebar(){
 								wrap = params[plist[t]].get("wrap");
 								pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
 								if(p_type=="button"){
-									paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-										var statecount = (p_values.length - 1) / 2;
-										var pv2 = Math.floor(pv * statecount) * 2  + 1;
-										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
-										mouse_click_actions[mouse_index] = send_button_message;
-										mouse_click_parameters[mouse_index] = block;
-										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1]];
-										mouse_index++;
+									paramslider_details[curp]=[];//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+									var statecount = (p_values.length - 1) / 2;
+									var pv2 = Math.floor(pv * statecount) * 2  + 1;
+									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
+									mouse_click_actions[mouse_index] = send_button_message;
+									mouse_click_parameters[mouse_index] = block;
+									mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1]];
+									mouse_index++;
 								}else{
 									if(h_slider==0){
 										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],p_values[0],"",0,p_type,wrap,block_name,h_slider];

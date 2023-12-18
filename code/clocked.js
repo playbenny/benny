@@ -113,7 +113,6 @@ function frameclock(){
 						bangflag=1;
 						//post("\nREDRAW",i);
 						if((redraw_flag.targets[i]==1)&&(paramslider_details[i][16]!=0)&&(automap.mapped_c!=sidebar.selected)){
-							//lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],0,0,0);
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else{
 							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][3], paramslider_details[i][2], paramslider_details[i][17],backgroundcolour_current);
@@ -513,9 +512,7 @@ function do_drift(){
 		if(!is_empty(param_error_drift[i])){
 			for(t=param_error_drift.length;t--;){
 				if((param_error_drift[i][t]|0)!=0){
-					//param_error_spread[i][t]+=(Math.random()-0.5)*param_error_drift[i][t];
-					//deferred_diag.push("drift i,t"+i+"-"+t+" "+param_error_drift[i][t]);
-					safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
+					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
 				}
 			}
 		}

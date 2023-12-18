@@ -549,6 +549,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				var f = mouse_click_actions[usermouse.last.got_i];
 				var p = mouse_click_parameters[usermouse.last.got_i];
 				var v = mouse_click_values[usermouse.last.got_i];
+				if(usermouse.drag.release_on_exit && (usermouse.last.got_i != usermouse.got_i)){
+					//post("\nDRAGOUT!!!!");
+					usermouse.drag.release_on_exit = 0;
+					usermouse.left_button = 0;
+					f = "none";
+				}
 				if(f!="none"){
 					xdist/=(mainwindow_width*0.25);
 					ydist/=(mainwindow_height*0.3);
@@ -738,31 +744,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										for(var t=0;t<usermouse.drag.dragging.connections.length;t++){
 											draw_wire(usermouse.drag.dragging.connections[t]);
 										}
-							/*			if(usermouse.hover[1]!=usermouse.ids[1]){
-											//blocks_page.possible_connection = usermouse.hover[1];
-											//blocks_page.saved_color = blocks_cube[usermouse.hover[1]][0].color;
-											//blocks_cube[usermouse.hover[1]][0].color = [1, 1, 0.9, 1];
-											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
-												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::x") + 0.001 + 0.5*usermouse.drag.dragging.voices[t][1], blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::y")-0.001, 0];
-											}
-											if((oldpos[0] != blocks_cube[usermouse.ids[1]][0].position[0])||(oldpos[1] != blocks_cube[usermouse.ids[1]][0].position[1])||(oldpos[2] != blocks_cube[usermouse.ids[1]][0].position[2])){
-												for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
-													draw_wire(usermouse.drag.dragging.connections[tt]);
-												}
-											}
-										}else{
-											//blocks_page.possible_connection = usermouse.hover[1];
-											//blocks_page.saved_color = blocks_cube[usermouse.hover[1]][0].color;
-											//blocks_cube[usermouse.ids[1]][0].color = [1, 1, 0.9, 1];
-											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
-												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::x") + 0.001 + 0.5*usermouse.drag.dragging.voices[t][1], blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::space::y")-0.001, 0];
-											}
-											if((oldpos[0] != blocks_cube[usermouse.ids[1]][0].position[0])||(oldpos[1] != blocks_cube[usermouse.ids[1]][0].position[1])||(oldpos[2] != blocks_cube[usermouse.ids[1]][0].position[2])){
-												for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
-													draw_wire(usermouse.drag.dragging.connections[tt]);
-												}
-											}
-										}*/
 									}
 								}
 							}	
@@ -920,7 +901,9 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				p=v;
 			}
 		}
+		usermouse.shift=1;//forces it to 'get' even if its in clicktoset mode
 		var tv = f(p, "get");
+		usermouse.shift=shift;
 		if(shift){
 			if(alt){
 				tv += scroll * 0.001;

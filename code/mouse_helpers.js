@@ -617,16 +617,6 @@ function connection_menu_scroll(parameter,value){
 	}
 }
 
-function data_edit(parameter,value){
-//	post("DATA EDIT!!\n",parameter,"or",parameter[0],parameter[1],value);
-	if(value=="get"){
-		return voice_data_buffer.peek(1,parameter);
-	}else{
-		if(typeof value == 'number') voice_data_buffer.poke(1,parameter,Math.min(1,Math.max(0,value)))
-		redraw_flag.flag |= 2;// was 4?
-	}
-}
-
 function select_folder(parameter,value){
 	if(fullscreen){
 		world.message("fullscreen",0);
@@ -1146,11 +1136,60 @@ function static_mod_adjust(parameter,value){
 	}
 }
 
+function data_edit(parameter,value){
+	//post("\nDATA EDIT!!",parameter,"or",parameter[0],parameter[1],value);
+	if(value=="get"){
+		var clickset=0;
+		if(parameter[1]){
+			clickset = 1;
+			usermouse.drag.release_on_exit = 1;
+		}
+		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
+			return voice_data_buffer.peek(1,parameter[0]);
+		}else{
+			var newval;
+			if(parameter[1]==1){
+				newval = (parameter[3] - usermouse.y)/(parameter[3]-parameter[2]);
+			}else if(parameter[1]==2){
+				newval = (parameter[3] - usermouse.x)/(parameter[3]-parameter[2]);
+			}
+			if(newval!=null){
+				voice_data_buffer.poke(1,parameter[0],newval);
+			}
+			redraw_flag.flag |= 2;
+			return newval;
+		}
+	}else{
+		if(typeof value == 'number') voice_data_buffer.poke(1,parameter[0],Math.min(1,Math.max(0,value)))
+		redraw_flag.flag |= 2;// was 4?
+	}
+}
+	
 function sidebar_parameter_knob(parameter, value){
 	//post("\nP: ",parameter,"\nV:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
-		return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
+		//also: look up if this slider is set to clickset mode
+		var clickset=0;
+		if(paramslider_details[parameter[0]][18]){
+			clickset = 1;
+			usermouse.drag.release_on_exit = 1;
+		}
+		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
+			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
+		}else{
+			//TODO if paramslider_details[][18] == 2 then use x instead
+			var newval;
+			if(paramslider_details[parameter[0]][18]==2){
+				newval = (usermouse.x - paramslider_details[parameter[0]][2])/(paramslider_details[parameter[0]][0]-paramslider_details[parameter[0]][2]);
+			}else{
+				newval = (usermouse.y - paramslider_details[parameter[0]][3])/(paramslider_details[parameter[0]][1]-paramslider_details[parameter[0]][3]);
+			}
+			//post("\nsetting the slider to",newval);
+			if(typeof newval == "number") parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],newval);
+			redraw_flag.deferred|=1;
+			return newval;
+		}
 	}else{
 		//set value
 		safepoke(parameter_value_buffer,1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));

@@ -673,8 +673,13 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 	if(type=="data_v_scroll"){
 		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,voice_data_buffer.peek(1,dataindex));
 		mouse_click_actions[mouse_index] = data_edit;
-		mouse_click_parameters[mouse_index] = dataindex;
-		mouse_click_values[mouse_index] = "";
+		mouse_click_parameters[mouse_index] = [dataindex,0];
+		mouse_click_values[mouse_index] = 0;
+		if(paramindex==1){
+			mouse_click_parameters[mouse_index] = [dataindex,1,y1,y2];
+		}else if(paramindex==2){
+			mouse_click_parameters[mouse_index] = [dataindex,2,x1,x2];
+		} //for datasliders this holds the click_to_set value
 		mouse_index++;			
 	}else if(type=="param_v_scroll"){//0=block,1=paramno
 		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex));
