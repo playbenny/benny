@@ -13,7 +13,8 @@
 				"midi" : [ "pitch_in" ]
 			},
 			"out" : {
-				"audio" : [ "string out" ]
+				"audio" : [ "string out" ],
+				"midi" : ["through"]
 			}
 		},
 		"groups" : [

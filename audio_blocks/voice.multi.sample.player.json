@@ -13,7 +13,8 @@
 				"audio" : [ "fm", ""]
 			},
 			"out" : {
-				"audio" : [ "out" ]
+				"audio" : [ "out" ],
+				"midi" : ["through"]
 			}
 		},
 		"groups" : [

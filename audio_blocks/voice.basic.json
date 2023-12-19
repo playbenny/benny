@@ -13,7 +13,8 @@
 				"midi" : [ "notes", "sync" ]
 			},
 			"out" : {
-				"audio" : [ "osc", "env" ]
+				"audio" : [ "osc", "env" ],
+				"midi" : [ "through" ]
 			}
 		},
 		"groups" : [

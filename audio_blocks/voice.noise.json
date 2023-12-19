@@ -13,7 +13,8 @@
 				"midi" : [ "trigger" ]
 			},
 			"out" : {
-				"audio" : [ "noise", "s&h" ]
+				"audio" : [ "noise", "s&h" ],
+				"midi" : ["through"]
 			}
 		},
 		"groups" : [

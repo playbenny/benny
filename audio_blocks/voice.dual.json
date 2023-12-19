@@ -13,7 +13,8 @@
 				"midi" : [ "pitch","sync","osc2 detune","trigger1","trigger2","pitch_no_trigger" ]
 			},
 			"out" : {
-				"audio" : [ "mix", "alt" ]
+				"audio" : [ "mix", "alt" ],
+				"midi" : ["through"]
 			}
 		},
 		"groups" : [

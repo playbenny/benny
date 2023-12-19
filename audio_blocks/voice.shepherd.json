@@ -13,7 +13,8 @@
 				"midi" : [ "pitch_in" ]
 			},
 			"out" : {
-				"audio" : [ "osc out", "env out" ]
+				"audio" : [ "osc out", "env out" ],
+				"midi" : ["through"]
 			}
 		},
 		"groups" : [
