@@ -1,0 +1,17 @@
+{
+	"midi.stats" : {
+		"patcher" : "midi.stats",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Useful metrics about the incoming midi.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "notecount", "lowest", "highest", "quietest", "loudest", "time interval" ]
+			}
+		}
+	}
+}
