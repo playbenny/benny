@@ -729,18 +729,12 @@ function flock_axes(v){
 
 function center_view(resetz){
 	var i;
-	var tot_x = 0;
-	var tot_y = 0;
-	var tot_n = 0;
 	var x,y;
 	var maxx=0,minx=0,miny=0,maxy=0;
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
-			tot_n++;
 			x=blocks.get("blocks["+i+"]::space::x");
 			y=blocks.get("blocks["+i+"]::space::y");
-			tot_x+=x;
-			tot_y+=y;
 			if(x<minx){ 
 				minx=x;
 			}else if(x>maxx){
@@ -757,9 +751,8 @@ function center_view(resetz){
 	var h = maxy-miny;
 	var d = Math.max(w,h);
 	
-	if(tot_n == 0) tot_n=1;
-	camera_position[0] = (tot_x / tot_n)+2;
-	camera_position[1] = tot_y / tot_n;
+	camera_position[0] = (maxx+minx)*0.5;
+	camera_position[1] = 0.5*(maxy+miny);
 	if(resetz || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
 /*	messnamed("camera_control", "anim", "moveto", camera_position, 0.5);
 	messnamed("camera_control", "rotatexyz" , 0, 0, 0);
