@@ -696,14 +696,16 @@ function size(width,height,scale){
 		sidebar.meters.spread = 4;// * (MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS); //fontheight*3.5 / (MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS);
 		get_hw_meter_positions();
 		for(var number=0;number<draw_wave.length;number++){
-			for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
-				draw_wave[number][i]=new Array(128);
-				var t=0;
-				while(t<128){
-					draw_wave[number][i][t]=0;
-					t++;
-				} 
-			}			
+			if(waves_buffer[number] != undefined){
+				for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
+					draw_wave[number][i]=new Array(128);
+					var t=0;
+					while(t<128){
+						draw_wave[number][i][t]=0;
+						t++;
+					} 
+				}			
+			}
 		}
 		set_display_mode(displaymode,custom_block);
 		redraw_flag.flag=12;
