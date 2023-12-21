@@ -1166,7 +1166,7 @@ function data_edit(parameter,value){
 }
 	
 function sidebar_parameter_knob(parameter, value){
-	//post("\nP: ",parameter,"\nV:",value);
+	//post("\nP: ",parameter,"  V:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
 		//also: look up if this slider is set to clickset mode
@@ -1312,6 +1312,12 @@ function cycle_block_mode(block,setting){
 		p = (p+1) % poly_alloc.steal_modes.length;
 		blocks.replace(target,poly_alloc.steal_modes[p]);
 		voicealloc_poly.setvalue((block+1),"steal_mode",p);  //oldest
+	}else if(setting=="return"){
+		target = target+"poly::return_mode";
+		p = blocks.get(target);
+		p = 1 - p;
+		blocks.replace(target,p);
+		voicealloc_poly.setvalue((block+1),"return_mode",p);  //oldest
 	}else if(setting=="flock"){
 		target = target+"flock::mode";
 		p = flock_modes.indexOf(blocks.get(target));

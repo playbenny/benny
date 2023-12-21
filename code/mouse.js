@@ -262,7 +262,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							//post("params",pb);
 							if(alt == 1){
 								sidebar_parameter_knob(pb,param_defaults[pb[1]][pb[0]]);
-								redraw_flag.flag=2;								
+								redraw_flag.flag|=2;								
 							}else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
 									set_sidebar_mode("panel_assign");
@@ -275,7 +275,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
 								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
 								sidebar_parameter_knob(pb,pv);
-								redraw_flag.flag=2;
+								redraw_flag.flag|=2;
 							} 
 						}else if(mouse_click_actions[usermouse.last.got_i]==scope_zoom){
 							if(alt == 1){

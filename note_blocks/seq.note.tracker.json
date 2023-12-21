@@ -8,7 +8,8 @@
 		"default_polymode" : 	{
 				"stack_mode" : "1x",
 				"choose_mode" : "blind cycle",
-				"steal_mode" : "cyclic"
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
 		},
 		"connections" : {
 			"in" : {

@@ -94,6 +94,7 @@ function new_block(block_name,x,y){
 		blocks.replace("blocks["+new_block_index+"]::poly::stack_mode","1x");
 		blocks.replace("blocks["+new_block_index+"]::poly::choose_mode","cycle free");
 		blocks.replace("blocks["+new_block_index+"]::poly::steal_mode","oldest");
+		blocks.replace("blocks["+new_block_index+"]::poly::return_mode",1);
 		blocks.replace("blocks["+new_block_index+"]::poly::latching_mode",0);		
 	}
 	if(details.contains("panel::parameters")){
@@ -211,10 +212,11 @@ function new_block(block_name,x,y){
 	var stack = poly_alloc.stack_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::stack_mode"));
 	var choose = poly_alloc.choose_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::choose_mode"));
 	var steal = poly_alloc.steal_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::steal_mode"));
+	var returnmode = blocks.get("blocks["+new_block_index+"]::poly::return_mode");
 	voicealloc_poly.setvalue((new_block_index+1),"stack_mode",stack);  
 	voicealloc_poly.setvalue((new_block_index+1),"choose_mode",choose); 
 	voicealloc_poly.setvalue((new_block_index+1),"steal_mode",steal);  
-	
+	voicealloc_poly.setvalue((new_block_index+1),"return_mode",returnmode);
 	if(type=="audio"){ 
 		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", 0);

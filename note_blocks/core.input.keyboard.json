@@ -39,7 +39,7 @@
 				"values" : ["off","on"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0.55
+				"default" : 0.25
 			}
 		]
 	}

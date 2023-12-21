@@ -798,11 +798,14 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	var stack = poly_alloc.stack_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::stack_mode"));
 	var choose = poly_alloc.choose_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::choose_mode"));
 	var steal = poly_alloc.steal_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::steal_mode"));
-	
+	var returnmode = 0;
+	if(blocks.contains("blocks["+block_index+"]::poly::return_mode")){
+		returnmode = blocks.get("blocks["+block_index+"]::poly::return_mode");
+	} 
 	voicealloc_poly.setvalue((block_index +1),"stack_mode",stack);  
 	voicealloc_poly.setvalue((block_index +1),"choose_mode",choose);
 	voicealloc_poly.setvalue((block_index +1),"steal_mode",steal);  
-	
+	voicealloc_poly.setvalue((block_index +1),"return_mode",returnmode);
 	panelslider_visible[block_index] = [];
 	
 	if(type=="audio"){ 

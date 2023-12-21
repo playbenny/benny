@@ -188,7 +188,7 @@ function frameclock(){
 		lcd_main.message("bang");
 	}
 	redraw_flag.flag = 0;
-	if(redraw_flag.deferred!=0){
+	if(redraw_flag.deferred!=0){ //.deferred = skip a frame, |=128 makes it skip 2 frames
 		redraw_flag.flag = redraw_flag.deferred;
 		redraw_flag.deferred = 0;
 	}
