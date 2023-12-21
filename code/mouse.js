@@ -1010,7 +1010,7 @@ function keydown(key){
 	}else if(key == -28){
 		set_sidebar_mode("cpu");
 		redraw_flag.flag = 2;
-	}else if(sidebar.selected>=0){
+	}/*else if(sidebar.selected>=0){
 		if(key == 45){
 			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
 			if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
@@ -1024,7 +1024,7 @@ function keydown(key){
 				voicecount(sidebar.selected, current_p + 1);
 			}
 		}
-	}
+	}*/
 	if((sidebar.mode == "edit_label")||(sidebar.mode == "edit_state")){
 		// MODAL OVERIDES - IE EDIT LABEL MODE IN THE SIDEBAR TAKES OVER THE WHOLE KEYBOARD
 		//post("edit keys",key);
