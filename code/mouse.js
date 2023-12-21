@@ -774,14 +774,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		if(usermouse.ctrl && (usermouse.x > sidebar.x)){ // if ctrl held hover over sidebar param slider selects voice
 			if(usermouse.got_t == 2){
 				if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
-					var sl_no = mouse_click_parameters[usermouse.got_i][0];
-					var x1 = paramslider_details[sl_no][0];
-					var x2 = paramslider_details[sl_no][2];
-					var p = blocks.get("blocks["+mouse_click_parameters[usermouse.got_i][1]+"]::poly::voices");
-					var vh = Math.floor(p*(usermouse.x - x1)/(x2 - x1));
-					if(sidebar.selected_voice != vh){
-						sidebar.selected_voice = vh;
-						redraw_flag.flag |= 10;
+					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
+					if(current_p>1){
+						var sl_no = mouse_click_parameters[usermouse.got_i][0];
+						var x1 = paramslider_details[sl_no][0];
+						var x2 = paramslider_details[sl_no][2];
+						var p = blocks.get("blocks["+mouse_click_parameters[usermouse.got_i][1]+"]::poly::voices");
+						var vh = Math.floor(p*(usermouse.x - x1)/(x2 - x1));
+						if(sidebar.selected_voice != vh){
+							sidebar.selected_voice = vh;
+							redraw_flag.flag |= 10;
+						}
 					}
 				}
 			}
@@ -817,6 +820,7 @@ function mouse_released_on_a_thing_no_drag(){
 		}else if(usermouse.shift == 0){
 			var ti=0;
 			var afters=1;
+			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
 			//if(selected.block[usermouse.ids[1]] && (+usermouse.ids[2]-1 == sidebar.selected_voice)) afters = 0;
 			for(ti=0;ti<selected.wire.length;ti++){
 				selected.wire[ti]=0;
@@ -831,7 +835,7 @@ function mouse_released_on_a_thing_no_drag(){
 			var subvoices = 1;
 			if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices"))subvoices = blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
 			if(afters){
-				if(usermouse.ids[2] == 0){
+				if((usermouse.ids[2] == 0)||(current_p==1)){
 					sidebar.selected_voice = -1;
 				}else{
 					sidebar.selected_voice = ((usermouse.ids[2]-1)/subvoices)|0;
