@@ -819,27 +819,23 @@ function mouse_released_on_a_thing_no_drag(){
 			}
 		}else if(usermouse.shift == 0){
 			var ti=0;
-			var afters=1;
 			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-			//if(selected.block[usermouse.ids[1]] && (+usermouse.ids[2]-1 == sidebar.selected_voice)) afters = 0;
 			for(ti=0;ti<selected.wire.length;ti++){
 				selected.wire[ti]=0;
 			}
 			for(ti=0;ti<selected.block.length;ti++){
 				selected.block[ti]=0;
 			}
-			selected.block[usermouse.ids[1]]=afters;	
-			selected.block_count=afters;
+			selected.block[usermouse.ids[1]]=1;	
+			selected.block_count=1;
 			selected.wire_count=0;
 			usermouse.timer = DOUBLE_CLICK_TIME;
 			var subvoices = 1;
 			if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices"))subvoices = blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
-			if(afters){
-				if((usermouse.ids[2] == 0)||(current_p==1)){
-					sidebar.selected_voice = -1;
-				}else{
-					sidebar.selected_voice = ((usermouse.ids[2]-1)/subvoices)|0;
-				}
+			if((usermouse.ids[2] == 0)||(current_p==1)){
+				sidebar.selected_voice = -1;
+			}else{
+				sidebar.selected_voice = ((usermouse.ids[2]-1)/subvoices)|0;
 			}
 			if(sidebar.mode=="edit_label") set_sidebar_mode("block");
 		}else{
