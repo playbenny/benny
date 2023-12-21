@@ -3945,6 +3945,14 @@ function draw_sidebar(){
 							colour[1]=(colour[1]*3+blend_colour[1])>>2;
 							colour[2]=(colour[2]*3+blend_colour[2])>>2;
 						}
+						if(groups[i].contains("header")){
+							y_offset += fontheight * 0.1;
+							lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,colour[0]*bg_dark_ratio,colour[1]*bg_dark_ratio,colour[2]*bg_dark_ratio);
+							lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
+							lcd_main.message("frgb", colour);
+							lcd_main.message("write", groups[i].get("header"));
+							y_offset += fontheight*0.6;
+						}
 						h_slider = 3;
 						if(groups[i].contains("height")){
 							h_slider = groups[i].get("height");
