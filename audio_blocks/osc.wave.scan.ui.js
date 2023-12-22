@@ -56,7 +56,7 @@ function draw(){
 			highlight = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7,1);
 			if(o_hl[i]!=highlight){
 				o_hl[i]=highlight;
-				outlet(0, "custom_ui_element","waveform_slice_highlight",x_pos, y_pos, width+x_pos, (1+i)*unit+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block,wave,highlight); 
+				outlet(0, "custom_ui_element","waveform_slice_highlight",x_pos, y_pos, width+x_pos, (1+i)*unit+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block+1,wave,highlight); 
 			}
 		}
 	}
