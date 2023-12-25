@@ -461,22 +461,24 @@ function assign_block_colours(){
 	typecount = type_order.length;
 	
 	var cll = config.getsize("palette::gamut");
-	var t = Math.floor(cll/(typecount+1));
-	var t1=44;
+	var t = Math.floor(cll/(typecount));
+	var t1=40;
 	var t2;
 	var c=new Array(3);
 	for(var typ in type_order){	
 		t2=t1;
+		t1+=t;
 		for(i=0;i<cubecount;i++){
 			ty=types[i].split(".",4);
 			if(ty[0]==type_order[typ]){
 				t2++;
 				t2 = t2 % cll;
+				if(t2>t1-3) t2=t1-t;
 				c = config.get("palette::gamut["+t2+"]::colour");
 				blocktypes.replace(types[i]+"::colour",c);
+				//post("types[i]=",types[i],"t2=",t2,"c=",c,"\n");
 			}
 		}
-		t1+=t;
 	}
 }
 
