@@ -471,19 +471,10 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 			return [i,1];
 		}
 	}
-	var corecount = 4;
 	for(i=0;i<MAX_AUDIO_VOICES;i++){//tries to avoid core 1
-		if((i%corecount)==0) i++;
-		if(audio_patcherlist[i]=="blank.audio") return [i,0];
-	}
-	for(i=0;i<MAX_AUDIO_VOICES;i+=corecount){
 		if(audio_patcherlist[i]=="blank.audio") return [i,0];
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
-		if((i%corecount)==0) i++;
-		if(audio_patcherlist[i]=="recycling") return [i,0];
-	}
-	for(i=0;i<MAX_AUDIO_VOICES;i+=corecount){
 		if(audio_patcherlist[i]=="recycling") return [i,0];
 	}
 	post("\nERROR : can't find a free voice or one to recycle\n");
@@ -518,20 +509,10 @@ function next_free_voice(t,n){
 			if(note_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "audio"){
-		var corecount = 4;
 		for(i=0;i<MAX_AUDIO_VOICES;i++){
-			if((i%corecount)==0) i++;
-			if(audio_patcherlist[i]=="blank.audio") return i;
-		}
-		//^^tries to avoid core 1, then tries it
-		for(i=0;i<MAX_AUDIO_VOICES;i+=corecount){
 			if(audio_patcherlist[i]=="blank.audio") return i;
 		}
 		for(i=0;i<MAX_AUDIO_VOICES;i++){
-			if((i%corecount)==0) i++;
-			if(audio_patcherlist[i]=="recycling") return i;
-		}
-		for(i=0;i<MAX_AUDIO_VOICES;i+=corecount){
 			if(audio_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "hardware"){
