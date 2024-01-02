@@ -15,6 +15,10 @@ gets you more info - total voices of block, your voiceno within block, etc
 
 this is automatically sent to all voices once all blocks have loaded (eg when you load a song, or when you add a new block or voice) so no need to actually request it. it's also resent when any of the details change - eg if latching is turned on/off
 
+;to_blockmanager create_blank_wave_buffer $1 <- wave slot number $2 <- length?
+gets the js to get max to instantiate an empty buffer and give it a length, fills in the dictionary about it
+the looper/softcut block sends this, then waits and checks again.
+
 
 BLOCKS
 

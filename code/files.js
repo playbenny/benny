@@ -134,6 +134,47 @@ function preload_all_waves(){
 	}
 }
 
+function create_blank_wave_buffer(number,length, channels,name){
+	polybuffer_create_blank(length,channels);
+	get_polybuffer_info();
+	var buffername = "waves."+polybuffer_names.length;
+	waves_buffer[number]= new Buffer(buffername);
+	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name,buffername);
+	var d = new Dict;
+	d.name = "temp";
+	//if(number>waves_dict.getsize("waves")) 
+	//	waves_dict.append("waves","*");
+	d.replace("name",name);
+	d.replace("path","");
+	d.replace("length",waves_buffer[number].framecount());
+	d.replace("size",waves_buffer[number].length());
+	d.replace("channels",waves_buffer[number].channelcount());
+	d.replace("samplerate",waves_buffer[number].framecount()/waves_buffer[number].length());
+	d.replace("start",0);
+	d.replace("end",1);
+	d.replace("divisions",0);
+	d.replace("buffername",buffername);
+	waves_dict.replace("waves["+number+1+"]",d);
+	
+	draw_wave[number] = new Array(2*waves_buffer[number].channelcount());
+	for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
+		draw_wave[number][i]=new Array(128);
+		var t=0;
+		while(t<128){
+			draw_wave[number][i][t]=0;
+			t++;
+		} 
+	}
+	redraw_flag.flag |= 4;
+	store_wave_slices(number+1);
+	waves.age[number]=++waves.seq_no;
+}
+
+function polybuffer_create_blank(length){
+	waves_polybuffer.appendempty(length);
+	get_polybuffer_info();
+}
+
 function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer if not already loaded.
 	var exists=-1;
 	for(var i=0;i<polybuffer_names.length;i++){
@@ -165,7 +206,7 @@ function get_polybuffer_info(){
 
 //max calls this once a buffer is loaded
 function buffer_loaded(number,path,name,buffername){
-//	post("buffer",number,"has loaded into polyslot",polyslot);
+	post("buffer",number,"has loaded into polyslot",number,path,buffername);
 	waves_buffer[number]= new Buffer(buffername);
 	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name);
 	var tn=+number+1;
