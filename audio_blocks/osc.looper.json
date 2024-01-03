@@ -25,7 +25,7 @@
 				"height" : 2
 			},
 			{
-				"contains" : [8,9,10],
+				"contains" : [8,9],
 				"height" : 0
 			}
 		],
@@ -102,16 +102,9 @@
 				"wrap" : 0
 			},
 			{
-				"name" : "in2_mode",
+				"name" : "in2_mod_target",
 				"type" : "menu_i",
-				"values" : ["rate_mod", "position" ],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "out2_mode",
-				"type" : "menu_i",
-				"values" : ["position", "what else?" ],
+				"values" : ["rate", "position" ],
 				"wrap" : 0,
 				"default" : 0
 			}
