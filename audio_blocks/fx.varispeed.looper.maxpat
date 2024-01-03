@@ -602,8 +602,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 37.0, 269.0, 94.0, 22.0 ],
-					"text" : "gen~ osc.looper"
+					"patching_rect" : [ 37.0, 269.0, 140.0, 22.0 ],
+					"text" : "gen~ fx.varispeed.looper"
 				}
 
 			}
@@ -1243,7 +1243,16 @@
 				}
 
 			}
- ]
+ ],
+		"dependency_cache" : [ 			{
+				"name" : "fx.varispeed.looper.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : ".",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }

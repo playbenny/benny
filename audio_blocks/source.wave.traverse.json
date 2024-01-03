@@ -1,19 +1,18 @@
 {
-	"osc.wave.scan" : {
-		"patcher" : "osc.wave.scan",
+	"source.wave.traverse" : {
+		"patcher" : "source.wave.traverse",
 		"type" : "audio",
-		"block_ui_patcher" : "osc.wave.scan.ui",
+		"block_ui_patcher" : "source.wave.traverse.ui",
 		"help_text" : "A looping wave player that lets you fluidly move around the longer sample while staying quantised. EG if you have a long wav of a drum performance loaded you can 'play' it by moving the target parameter and this block will keep it in time.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
-		"ui_in_sidebar_height" : 4,
-		"subvoices" : 2,
+		"deprecated" : 1,
 		"connections" : {
 			"in" : { 
 				"midi" : [ "set target"]
 			},
 			"out" : {
-				"audio" : [ "waves" ],
+				"audio" : [ "audio out 1", "audio out 2" ],
 				"midi" : [ "target auto advance"]
 			}
 		},
@@ -23,7 +22,7 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [7,6,9,5,2]
+				"contains" : [7,7,6,6,5,2]
 			},
 			{
 				"contains" : [1,3,4,8],
@@ -84,7 +83,7 @@
 			{
 				"name" : "self advance",
 				"type" : "menu_i",
-				"values" : ["off", "on", "on if target>0"],
+				"values" : ["off", "on", "on if target>0","..and no loop"],
 				"wrap" : 0,
 				"default" : 0.6
 			},
@@ -101,13 +100,6 @@
 				"values" : ["uni", 0, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.25 
-			},
-			{
-				"name" : "loop",
-				"type" : "menu_i",
-				"values" : ["off", "on"],
-				"wrap" : 0,
-				"default" : 0.6
 			}
 		]
 	}

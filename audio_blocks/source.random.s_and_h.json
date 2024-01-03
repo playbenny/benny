@@ -1,6 +1,6 @@
 {
-	"osc.random.s_and_h" : {
-		"patcher" : "osc.random.s_and_h",
+	"source.random.s_and_h" : {
+		"patcher" : "source.random.s_and_h",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "multi colour noise source and shift register / s&h",

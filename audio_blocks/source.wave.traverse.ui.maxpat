@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 928.0, 139.0, 632.0, 480.0 ],
+		"rect" : [ 456.0, 139.0, 632.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -99,13 +99,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 269.0, 217.0, 112.0, 22.0 ],
+					"patching_rect" : [ 269.0, 217.0, 147.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "osc.wave.scan.ui",
+						"filename" : "source.wave.traverse.ui",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js osc.wave.scan.ui"
+					"text" : "js source.wave.traverse.ui"
 				}
 
 			}
@@ -177,7 +177,7 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "osc.wave.scan.ui.js",
+				"name" : "source.wave.traverse.ui.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",

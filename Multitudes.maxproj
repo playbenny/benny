@@ -65,7 +65,7 @@
 				"local" : 1
 			}
 ,
-			"osc.basic.maxpat" : 			{
+			"source.basic.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -155,12 +155,12 @@
 				"local" : 1
 			}
 ,
-			"osc.harmonic.maxpat" : 			{
+			"source.harmonic.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
 ,
-			"osc.random.s_and_h.maxpat" : 			{
+			"source.random.s_and_h.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -389,7 +389,7 @@
 				"local" : 1
 			}
 ,
-			"osc.basic.gendsp" : 			{
+			"source.basic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -419,12 +419,12 @@
 				"local" : 1
 			}
 ,
-			"osc.harmonic.gendsp" : 			{
+			"source.harmonic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"osc.random.s_and_h.gendsp" : 			{
+			"source.random.s_and_h.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -586,17 +586,17 @@
 				"local" : 1
 			}
 ,
-			"osc.basic.json" : 			{
+			"source.basic.json" : 			{
 				"kind" : "json",
 				"local" : 1
 			}
 ,
-			"osc.harmonic.json" : 			{
+			"source.harmonic.json" : 			{
 				"kind" : "json",
 				"local" : 1
 			}
 ,
-			"osc.random.s_and_h.json" : 			{
+			"source.random.s_and_h.json" : 			{
 				"kind" : "json",
 				"local" : 1
 			}

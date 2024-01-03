@@ -1,9 +1,9 @@
 {
-	"osc.looper" : {
-		"patcher" : "osc.looper",
+	"fx.varispeed.looper" : {
+		"patcher" : "fx.varispeed.looper",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Flexible buffer record/playback device loosely modelled on some features of monome norns' softcut: record and play into and out of the buffer can occur at any rate you like. Multiple voices can access the same or different wave buffers. The buffer it uses is tagged with timestamps and metadata and available (as one of the waves on the waves page) for other blocks to play or write into.",
+		"help_text" : "Flexible buffer record/playback device inspired by monome norns' softcut: record and play into and out of the buffer can occur at any rate you like. Multiple voices can access the same or different wave buffers. All jumps and loops are crossfaded smoothly. The buffer it uses is tagged with timestamps and metadata and available (as one of the waves on the waves page) for other blocks to play or write into. You can save this wave from there if you fill the buffer with something you like. Does an excellent impression of how BBD delays repitch, but is capable of far more - loopers, buffer-fx, repitchers, complex delays, sample-mangling, live resampling, etc",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {

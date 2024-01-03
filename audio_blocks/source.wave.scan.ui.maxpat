@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 2,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 928.0, 139.0, 632.0, 480.0 ],
+		"rect" : [ 456.0, 139.0, 632.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -91,13 +91,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 269.0, 217.0, 130.0, 22.0 ],
+					"patching_rect" : [ 269.0, 217.0, 129.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "osc.wave.traverse.ui",
+						"filename" : "source.wave.scan.ui",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js osc.wave.traverse.ui"
+					"text" : "js source.wave.scan.ui"
 				}
 
 			}
@@ -177,8 +177,8 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "osc.wave.traverse.ui.js",
-				"bootpath" : "~/Documents/james music/Multitudes/audio_blocks",
+				"name" : "source.wave.scan.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
