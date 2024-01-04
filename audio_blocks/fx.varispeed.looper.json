@@ -9,7 +9,7 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "record", "mod" ],
-				"midi" : [ "trigger" ]
+				"midi" : [ "trigger from start", "jump to position" ]
 			},
 			"out" : {
 				"audio" : [ "play", "out2" ]
@@ -18,11 +18,11 @@
 		"groups" : [
 			{ 
 				"contains" : [0,0,1,2,2,2],
-				"height" : 2
+				"height" : 4
 			},
 			{
 				"contains" : [3,3,4,4,5,6,6,7,7],
-				"height" : 2
+				"height" : 3
 			},
 			{
 				"contains" : [8,9],
@@ -52,10 +52,10 @@
 			{
 				"name" : "rate",
 				"type" : "float",
-				"values" : ["bi", -16, 16, "exp"],
+				"values" : ["bi", -16, 16, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0.5437
+				"default" : 0.53125
 			},
 			{
 				"name" : "loop_start",

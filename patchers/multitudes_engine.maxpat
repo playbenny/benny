@@ -8932,7 +8932,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 42.0, 231.0, 1063.0, 710.0 ],
+						"rect" : [ 40.0, 231.0, 1063.0, 710.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -9503,6 +9503,18 @@
 								}
 
 							}
+, 							{
+								"box" : 								{
+									"id" : "obj-14",
+									"maxclass" : "message",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 47.0, 370.0, 35.0, 22.0 ],
+									"text" : "clear"
+								}
+
+							}
  ],
 						"lines" : [ 							{
 								"patchline" : 								{
@@ -9543,6 +9555,13 @@
 								"patchline" : 								{
 									"destination" : [ "obj-95", 0 ],
 									"source" : [ "obj-12", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-110", 0 ],
+									"source" : [ "obj-14", 0 ]
 								}
 
 							}

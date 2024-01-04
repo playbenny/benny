@@ -170,8 +170,8 @@ function create_blank_wave_buffer(number,length, channels,name){
 	waves.age[number]=++waves.seq_no;
 }
 
-function polybuffer_create_blank(length){
-	waves_polybuffer.appendempty(length);
+function polybuffer_create_blank(length,channels){
+	waves_polybuffer.appendempty(length,channels);
 	get_polybuffer_info();
 }
 
