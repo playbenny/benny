@@ -144,7 +144,7 @@ function create_blank_wave_buffer(number,length, channels,name){
 	d.name = "temp";
 	//if(number>waves_dict.getsize("waves")) 
 	//	waves_dict.append("waves","*");
-	d.replace("name",name);
+	d.replace("name",name+"$"+length+"$"+channels);
 	d.replace("path","");
 	d.replace("length",waves_buffer[number].framecount());
 	d.replace("size",waves_buffer[number].length());
@@ -176,18 +176,26 @@ function polybuffer_create_blank(length,channels){
 }
 
 function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer if not already loaded.
-	var exists=-1;
-	for(var i=0;i<polybuffer_names.length;i++){
-		if(polybuffer_names[i] == wavename) exists=i;
-	}
-	if(exists==-1){
-		waves_polybuffer.append(wavepath);
-		//post("(loading)")
+	if(wavename.split("$")[0] == "unsaved.looper"){ //creates a blank buffer if a looper block needs one
+		var length = wavename.split("$")[1];
+		var channels = wavename.split("$")[2];
+		waves_polybuffer.appendempty(length,channels);
 		get_polybuffer_info();
 		return -1;
 	}else{
-		//post("[cache hit!",exists,"]");
-		return exists;
+		var exists=-1;
+		for(var i=0;i<polybuffer_names.length;i++){
+			if(polybuffer_names[i] == wavename) exists=i;
+		}
+		if(exists==-1){
+			waves_polybuffer.append(wavepath);
+			//post("(loading)")
+			get_polybuffer_info();
+			return -1;
+		}else{
+			//post("[cache hit!",exists,"]");
+			return exists;
+		}
 	}
 }
 

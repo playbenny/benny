@@ -17,11 +17,11 @@
 			"audio" : [ 225, 120, 25 ],
 			"midi" : [ 205, 200, 25 ],
 			"parameters" : [ 120, 225, 25 ],
-			"potential" : [255, 255, 255]
+			"potential" : [ 255, 255, 255 ]
 		}
 
 	}
 ,
-	"RECORD_FOLDER" : "C:/Users/jhold/Documents/",
+	"RECORD_FOLDER" : "C:/Users/jhold/Desktop/",
 	"TEMPLATES_FOLDER" : "templates"
 }
