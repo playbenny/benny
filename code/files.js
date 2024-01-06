@@ -179,6 +179,8 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 	if(wavename.split("$")[0] == "unsaved.looper"){ //creates a blank buffer if a looper block needs one
 		var length = wavename.split("$")[1];
 		var channels = wavename.split("$")[2];
+		if(typeof length != 'number') length = 1000000;
+		if(typeof channels != 'number') channels = 2;
 		waves_polybuffer.appendempty(length,channels);
 		get_polybuffer_info();
 		return -1;
