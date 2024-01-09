@@ -102,7 +102,7 @@
 				"wrap" : 0
 			},
 			{
-				"name" : "in2_mod_target",
+				"name" : "in2 modulates:",
 				"type" : "menu_i",
 				"values" : ["rate", "position" ],
 				"wrap" : 0,
