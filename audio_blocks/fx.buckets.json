@@ -8,104 +8,115 @@
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio", "mod" ]
+				"audio" : [ "audio", "mod" ],
+				"midi" : [ "pitch", "tap tempo"]
 			},
 			"out" : {
-				"audio" : [ "delay", "out2" ]
+				"audio" : [ "delay", "clock out" ]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,1,2,2,2],
+				"contains" : [0,0,1,2,3],
+				"height" : 3
+			},
+			{
+				"header" : "simulation parameters",
+				"contains" : [4,5,6,7],
 				"height" : 2
 			},
 			{
-				"contains" : [3,3,4,4,5,6,6,7,7],
+				"contains" : [8,9,10],
 				"height" : 2
-			},
-			{
-				"contains" : [8,9],
-				"height" : 0
 			}
 		],
 		"panel" : {
-			"parameters" : [2, 6, 7]
+			"parameters" : [0,1,2,3]
 		},
 		"parameters" : [
 			{
-				"name" : "wave",
-				"type" : "wave",
-				"values" : ["wave",0,256],
+				"name" : "rate_",
+				"type" : "float4",
+				"values" : ["uni", 0.001, 4, "exp"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.0874
 			},
 			{
-				"name" : "channel",
-				"type" : "int",
-				"values" : ["uni", 1, 2, "lin"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0.25
-			},
-			{
-				"name" : "rate",
+				"name" : "feedback_",
 				"type" : "float",
-				"values" : ["bi", -16, 16, "exp"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0.5437
-			},
-			{
-				"name" : "loop_start",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["bi",-1, 1, "exp"],
 				"wrap" : 0,
 				"default" : 0 
 			},
 			{
-				"name" : "loop_end",
+				"name" : "feedback_tilt eq",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "dry-wet_mix",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "loop_enable",
+				"name" : "chip_size_",
 				"type" : "menu_i",
-				"values" : ["off", "on"],
-				"default" : 0.75,
+				"values" : ["64","128","256","512","1024","2048","4096","8192", "16384", "32768", "65536"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.61
+			},
+			{
+				"name" : "clock_transition_time",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "anti_aliasing_prefilter",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "postfilter_ _",
+				"type" : "float",
+				"values" : ["uni", 0, 2, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "companding_",
+				"type" : "float",
+				"values" : ["uni", 1, 9, "lin"],
+				"default" : 0.125,
 				"wrap" : 0,
 				"error_scale" : 0
 			},
 			{
-				"name" : "record_level",
+				"name" : "saturation_",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 2, "lin"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0.5
 			},
 			{
-				"name" : "preserve_level",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "crossfade_time",
+				"name" : "two sine_modulation",
 				"type" : "float",
 				"error_scale" : 0,
-				"values" : ["uni", 0, 100, "lin"],
-				"default" : 0.1,
+				"values" : ["uni", 0, 2, "lin"],
+				"default" : 0,
 				"wrap" : 0
-			},
-			{
-				"name" : "in2_mod_target",
-				"type" : "menu_i",
-				"values" : ["rate", "position" ],
-				"wrap" : 0,
-				"default" : 0
 			}
 		]
 	}
