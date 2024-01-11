@@ -31,9 +31,8 @@ configuration
    
 temporary limits
 ----------------
-at the moment the code is fixed to 64 midi block voices, 64 audio block voices, 24 hw outs, click on 25, 12 hw ins. this will all be reconfigurable at startup in the end.
-at the moment only 2-in 2-out audio voices are supported. eventually 'wide' voices with more io will be possible.
-parameter refresh rate is about every 20ms at the moment. plan to speed it up to match vectorsize.
+at the moment the code is fixed to 64 midi block voices, 64 audio block voices, 24 hw outs, metronome click on 25, 12 hw ins. this will all be reconfigurable at startup in the end.
+at the moment the individual audio plugin voices are restricted to being 2-in 2-out. eventually 'wide' voices with more io will be possible.
 
 developing blocks
 -----------------
