@@ -23,11 +23,11 @@
 			{
 				"header" : "simulation parameters",
 				"contains" : [4,5,6,7],
-				"height" : 2
+				"height" : 1
 			},
 			{
-				"contains" : [8,9,10],
-				"height" : 2
+				"contains" : [8,9,10,11],
+				"height" : 1
 			}
 		],
 		"panel" : {
@@ -50,11 +50,11 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "feedback_tilt eq",
+				"name" : "highpass",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
+				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.2
 			},
 			{
 				"name" : "dry-wet_mix",
@@ -98,7 +98,7 @@
 			{
 				"name" : "companding_",
 				"type" : "float",
-				"values" : ["uni", 1, 9, "lin"],
+				"values" : ["uni", 1, 4, "lin"],
 				"default" : 0.125,
 				"wrap" : 0,
 				"error_scale" : 0
@@ -114,7 +114,15 @@
 				"name" : "two sine_modulation",
 				"type" : "float",
 				"error_scale" : 0,
-				"values" : ["uni", 0, 2, "lin"],
+				"values" : ["uni", 0, 1, "lin"],
+				"default" : 0,
+				"wrap" : 0
+			},
+			{
+				"name" : "unrealistic_bit depth",
+				"type" : "menu_i",
+				"error_scale" : 0,
+				"values" : ["off", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13","12","11","10","9","8","7","6","5","4","3","2","1"],
 				"default" : 0,
 				"wrap" : 0
 			}
