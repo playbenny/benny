@@ -38,7 +38,7 @@
 				"name" : "rate_",
 				"type" : "float4",
 				"values" : ["uni", 0.001, 4, "exp"],
-				"error_scale" : 0,
+				"error_scale" : 0.1,
 				"wrap" : 0,
 				"default" : 0.0874
 			},
@@ -54,7 +54,7 @@
 				"type" : "float",
 				"values" : ["bi", -1, 1, "exp"],
 				"wrap" : 0,
-				"default" : 0.2
+				"default" : 0.52
 			},
 			{
 				"name" : "dry-wet_mix",
@@ -108,6 +108,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 2, "lin"],
 				"wrap" : 0,
+				"error_scale" : 0,
 				"default" : 0.5
 			},
 			{
