@@ -733,7 +733,7 @@ function send_button_message(parameter, value){
 	}else if(value[0] == "core"){
 		messnamed("to_blockmanager",value[1]);
 	}
-	post("send button message",parameter,"value",value,"\n");
+	//post("send button message",parameter,"value",value,"\n");
 }
 
 function delete_state(state,block){
