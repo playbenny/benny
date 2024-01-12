@@ -32,7 +32,7 @@
 				"colour" : 20
 			},
 			{
-				"contains" : [12,13,14,15,16,17],
+				"contains" : [12,13,14,15,16,17,18],
 				"height" : 1,
 				"colour" : 30
 			}
@@ -164,7 +164,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : [0,1]
+				"values" : ["firstvoice","8th",6]
 			},
 			{
 				"name" : "3x16th",
@@ -172,7 +172,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : [0,1]
+				"values" : ["firstvoice","3/16",316]
 			},
 			{
 				"name" : "beat",
@@ -180,7 +180,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : [0,1]
+				"values" : ["firstvoice","beat",4]
 			},
 			{
 				"name" : "1.5xbeat",
@@ -188,7 +188,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : [0,1]
+				"values" : ["firstvoice","1.5x",3]
 			}
 		]
 	}
