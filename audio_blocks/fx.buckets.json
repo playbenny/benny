@@ -30,6 +30,11 @@
 				"contains" : [8,9,10,11],
 				"height" : 1,
 				"colour" : 20
+			},
+			{
+				"contains" : [12,13,14,15,16,17],
+				"height" : 1,
+				"colour" : 30
 			}
 		],
 		"panel" : {
@@ -128,6 +133,62 @@
 				"values" : ["off", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13","12","11","10","9","8","7","6","5","4","3","2","1"],
 				"default" : 0,
 				"wrap" : 0
+			},
+			{
+				"name" : "16th",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","16th",16]
+			},
+			{
+				"name" : "8thT",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","8thT",12]
+			},
+			{
+				"name" : "8th",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","8th",8]
+			},
+			{
+				"name" : "4thT",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : [0,1]
+			},
+			{
+				"name" : "3x16th",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : [0,1]
+			},
+			{
+				"name" : "beat",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : [0,1]
+			},
+			{
+				"name" : "1.5xbeat",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : [0,1]
 			}
 		]
 	}
