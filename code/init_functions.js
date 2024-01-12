@@ -476,6 +476,16 @@ function assign_block_colours(){
 				if(t2>t1-3) t2=t1-t;
 				c = config.get("palette::gamut["+t2+"]::colour");
 				blocktypes.replace(types[i]+"::colour",c);
+				var gps = blocktypes.get(types[i]+"::groups");
+				for(var gp in gps){
+					if(blocktypes.contains(types[i]+"::groups["+gp+"]::colour")){
+						var tc = blocktypes.get(types[i]+"::groups["+gp+"]::colour");
+						if(!Array.isArray(tc)){
+							var nc = config.get("palette::gamut["+((t2+tc)%cll)+"]::colour");
+							blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
+						}
+					}
+				}
 				//post("types[i]=",types[i],"t2=",t2,"c=",c,"\n");
 			}
 		}

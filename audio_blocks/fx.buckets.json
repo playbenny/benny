@@ -23,11 +23,13 @@
 			{
 				"header" : "simulation parameters",
 				"contains" : [4,5,6,7],
-				"height" : 1
+				"height" : 1,
+				"colour" : 10
 			},
 			{
 				"contains" : [8,9,10,11],
-				"height" : 1
+				"height" : 1,
+				"colour" : 20
 			}
 		],
 		"panel" : {
