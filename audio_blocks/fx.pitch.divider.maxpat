@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 85.0, 1533.0, 751.0 ],
+		"rect" : [ 40.0, 85.0, 1533.0, 751.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -69,8 +69,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 37.0, 269.0, 86.0, 22.0 ],
-					"text" : "gen~ fx.atoner"
+					"patching_rect" : [ 37.0, 269.0, 116.0, 22.0 ],
+					"text" : "gen~ fx.pitch.divider"
 				}
 
 			}
@@ -131,7 +131,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 107.0, 305.0, 42.0, 22.0 ],
+					"patching_rect" : [ 134.0, 305.0, 42.0, 22.0 ],
 					"text" : "out~ 2"
 				}
 
@@ -284,17 +284,10 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "fx.atoner.gendsp",
+				"name" : "fx.pitch.divider.gendsp",
 				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
 				"patcherrelativepath" : ".",
 				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "sm_sallenkey_functions.genexpr",
-				"bootpath" : "~/Documents/Max 8/Packages/smFilterPack/code/sm_genexpr",
-				"patcherrelativepath" : "../../../Max 8/Packages/smFilterPack/code/sm_genexpr",
-				"type" : "GenX",
 				"implicit" : 1
 			}
  ],

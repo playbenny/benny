@@ -1,9 +1,9 @@
 {
-	"fx.atoner" : {
-		"patcher" : "fx.atoner",
+	"fx.pitch.divider" : {
+		"patcher" : "fx.pitch.divider",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "rough model of the 4ms atoner, an octave divider",
+		"help_text" : "an octave divider / sub oscillator generator inspired by the 4ms atoner",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"connections" : {
