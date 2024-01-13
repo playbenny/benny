@@ -1,0 +1,8 @@
+{
+    "global" : {
+        "-27" : ["F11","toggle_fullscreen"]
+    },
+    "blocks" : {
+        "-3" : ["ESC", "key_escape('blocks'"]
+    }
+}
