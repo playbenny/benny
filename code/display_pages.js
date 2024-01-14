@@ -3843,18 +3843,51 @@ function draw_sidebar(){
 						automap.mapped_k=block;
 					}
 					//DRAW KEYBOARD AUTOMAP HEADER LINE
-					lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
-					lcd_main.message("frgb", block_colour);
-					lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
 					var midiins = blocktypes.get(block_name+"::connections::in::midi");
-					if(Array.isArray(midiins)) midiins = midiins[0];
+					if(!Array.isArray(midiins)) midiins = [midiins];
 					  // TODO INPUT SELECTION FOR AUTOMAP, ALSO STORE THIS (in blocktypes? for this session only)
-					lcd_main.message("write", "keyboard auto assign : "+midiins);
+					if(midiins.length>1){
+						lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-fontheight*1.1-9,y_offset+fontheight*0.5,block_darkest);
+						lcd_main.message("paintrect",mainwindow_width - 9 - 1*fontheight,y_offset,mainwindow_width-9-0.55*fontheight,y_offset+fontheight*0.5,block_darkest);
+						lcd_main.message("paintrect",mainwindow_width - 9 - 0.45*fontheight,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
+						lcd_main.message("frgb", block_colour);
+						if(automap.inputno_k>0){
+							lcd_main.message("moveto",mainwindow_width - 9 - fontheight*0.9,y_offset+0.4*fontheight);
+							lcd_main.message("write", "-");
+							click_zone(set_automap_k_input, automap.inputno_k-1, null, mainwindow_width - 9 - 1.1*fontheight,y_offset,mainwindow_width-9-0.6*fontheight,y_offset+fontheight*0.5,mouse_index,1);
+						}
+						if(automap.inputno_k<midiins.length-1){
+							lcd_main.message("moveto",mainwindow_width - 9 - fontheight*0.35,y_offset+0.4*fontheight);
+							lcd_main.message("write", "+");
+							click_zone(set_automap_k_input, automap.inputno_k+1, null, mainwindow_width - 9 - 0.5*fontheight,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,mouse_index,1);
+						}
+					}else{
+						lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
+					}
+					lcd_main.message("frgb", block_dark);
+					lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
+					var tmp = y_offset + 0.25*fontheight-2;
+					var tbt = y_offset + 0.5*fontheight-2;
+					lcd_main.message("moveto",sidebar.x+4,y_offset);
+					lcd_main.message("lineto",sidebar.x+4,tmp);
+					lcd_main.message("moveto",sidebar.x+6,y_offset);
+					lcd_main.message("lineto",sidebar.x+6,tbt);
+					lcd_main.message("moveto",sidebar.x+8,y_offset);
+					lcd_main.message("lineto",sidebar.x+8,tmp);
+					lcd_main.message("moveto",sidebar.x+12,y_offset);
+					lcd_main.message("lineto",sidebar.x+12,tmp);
+					lcd_main.message("moveto",sidebar.x+14,y_offset);
+					lcd_main.message("lineto",sidebar.x+14,tbt);
+					lcd_main.message("moveto",sidebar.x+16,y_offset);
+					lcd_main.message("lineto",sidebar.x+16,tmp);
+					
+					lcd_main.message("moveto", sidebar.x+26, y_offset+0.4*fontheight);
+					lcd_main.message("write", "AUTO > "+midiins[automap.inputno_k]);
 					y_offset += fontheight*0.6;
 				}
 			}
 			if(automap.available_c!=-1){
-				if((block_name != "core.input.control")&&has_params){
+				if((block_name != "core.input.control") && has_params){
 					if(automap.mapped_c!=block){
 						if(io_dict.contains("controllers::"+automap.devicename_c+"::rows")){
 							map_rows = io_dict.get("controllers::"+automap.devicename_c+"::rows");
@@ -3865,9 +3898,15 @@ function draw_sidebar(){
 					}
 					// DRAW AUTOMAP HEADER LINE
 					lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
-					lcd_main.message("frgb", block_colour);
-					lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
-					lcd_main.message("write", "controller auto assign : rows 1 - 4");
+					//lcd_main.message("frgb", block_colour);
+					var hf= 0.25*fontheight;
+					lcd_main.message("frgb", block_dark);
+					lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
+					lcd_main.message("frameoval",sidebar.x+13-hf,y_offset+4,sidebar.x+hf+9,y_offset+hf+hf-4);
+					lcd_main.message("moveto",sidebar.x+9,hf+y_offset-1);
+					lcd_main.message("lineto",sidebar.x+0.106*fontheight+9,fontheight*0.144+y_offset);
+					lcd_main.message("moveto", sidebar.x+26, y_offset+0.4*fontheight);
+					lcd_main.message("write", "AUTO > rows 1 - 4");
 					y_offset += fontheight*0.6;
 				}
 			}
