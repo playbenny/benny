@@ -321,7 +321,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 	var ww = (w + 2*(flags&2))/vlist.length;
 	var ww2 = ww - 2*(flags&2);
 	var pvm = (((blockno == sidebar.selected)&&(sidebar.selected_voice >=0))||(flags&2)) &&(!(flags&4));
-	if(view_changed===true) click_rectangle(x1,y1,x2+fontheight*0.1,y2,index+pvm,2);
+	if(view_changed===true) click_rectangle(x1,y1,x2/*+fontheight*0.1*/,y2,index+pvm,2);
 	for(var i=0;i<vlist.length;i++){
 		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
 		if(tvalue > 1) tvalue = 1;

@@ -131,6 +131,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.caps = caps;
 	usermouse.x = x;
 	usermouse.y = y;
+	usermouse.sidebar_scrolling = null;
 
 	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
@@ -860,10 +861,18 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.x = x;
 	usermouse.y = y;
 
-	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
-	b=tcell & 4095;
-	c=0;
-	d=tcell >> 12;
+
+	var tcell;
+	
+	if(usermouse.sidebar_scrolling!=null){
+		usermouse.sidebar_scrolling = null;
+		d = 999;
+	}else{
+		tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
+		b=tcell & 4095;
+		c=0;
+		d=tcell >> 12;
+	}
 
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
 		var id = glpicker.touch(x,y);
@@ -930,7 +939,9 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		}
 	}else if((sidebar.mode!='none')&&(x>sidebar.x)){
 		scroll_sidebar(scroll,"rel");
+		usermouse.sidebar_scrolling = true;
 	}else if((sidebar.mode=='file_menu')&&(x>mainwindow_width - 9 - fontheight * 15)){
+		usermouse.sidebar_scrolling = true;
 		scroll_sidebar(scroll,"rel");
 	}
 }

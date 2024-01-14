@@ -3130,7 +3130,6 @@ function draw_sidebar(){
 	var block_colour, block_dark, block_darkest;
 	var i,t;
 	var y_offset=0;
-	//		redraw_flag.targets = [];
 	count_selected_blocks_and_wires();
 	if(selected.block_count!=1){
 		if(automap.mapped_k!=-1){
@@ -3145,9 +3144,10 @@ function draw_sidebar(){
 		mouse_index--; //????
 	}
 
-	click_zone(scroll_sidebar, null, null, mainwindow_width-9,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
 	y_offset = 9 - sidebar.scroll.position;
-	//post("\nstarting y",y_offset);
+
+	// MODAL SIDEBAR MODES FIRST - EDIT LABEL, EDIT STATE, FILE, CPU
+
 	if(sidebar.mode == "edit_label"){
 		// EDIT BLOCK LABEL ##############################################################################################################
 		block = sidebar.selected;
@@ -3436,10 +3436,6 @@ function draw_sidebar(){
 		lcd_main.message("write", "clear");
 		lcd_main.message("moveto", mainwindow_width -9 - fontheight*2, 9+fontheight*0.75);
 		lcd_main.message("write", "everything");
-		//setfontsize(fontheight/1.6);
-
-
-		//setfontsize(fontheight/3.2);
 
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		y_offset = 9-sidebar.scroll.position;
@@ -3609,7 +3605,8 @@ function draw_sidebar(){
 			block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
 	
 			has_params = blocktypes.contains(block_name+"::parameters");
-			
+			var has_midi_in = blocktypes.contains(block_name+"::connections::in::midi");
+
 			var tii,ts;
 
 			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")){
@@ -3625,6 +3622,9 @@ function draw_sidebar(){
 				listvoice  = bvs[sidebar.selected_voice] - MAX_NOTE_VOICES;// voicemap.get(block+"["+sidebar.selected_voice+"]") - MAX_NOTE_VOICES; 
 				if(listvoice != sidebar.scopes.voice) sidebar.lastmode="retrig";
 			}else if(sidebar.scopes.midivoicelist.length!=bvs.length) sidebar.lastmode="retrig";
+
+
+
 			if(sidebar.mode != sidebar.lastmode){
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
@@ -3833,7 +3833,46 @@ function draw_sidebar(){
 			mouse_click_values[mouse_index] = "";	
 			mouse_index++;
 			y_offset += 1.1*fontheight;
+
+			var getmap = 0, map_rows = 1, map_cols = 128;
+			var map_x = 0, map_y = 0, maplist = [];
+			if(automap.available_k!=-1){
+				if((block_name != "core.input.keyboard")&&has_midi_in){
+					if(automap.mapped_k!=block){
+						note_poly.setvalue( automap.available_k, "maptarget", block);
+						automap.mapped_k=block;
+					}
+					//DRAW KEYBOARD AUTOMAP HEADER LINE
+					lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
+					lcd_main.message("frgb", block_colour);
+					lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
+					var midiins = blocktypes.get(block_name+"::connections::in::midi");
+					if(Array.isArray(midiins)) midiins = midiins[0];
+					  // TODO INPUT SELECTION FOR AUTOMAP, ALSO STORE THIS (in blocktypes? for this session only)
+					lcd_main.message("write", "keyboard auto assign : "+midiins);
+					y_offset += fontheight*0.6;
+				}
+			}
+			if(automap.available_c!=-1){
+				if((block_name != "core.input.control")&&has_params){
+					if(automap.mapped_c!=block){
+						if(io_dict.contains("controllers::"+automap.devicename_c+"::rows")){
+							map_rows = io_dict.get("controllers::"+automap.devicename_c+"::rows");
+							map_cols = io_dict.get("controllers::"+automap.devicename_c+"::columns");
+						}
+						getmap=1; //flag set, then it collects up map data
+						automap.mapped_c=block;
+					}
+					// DRAW AUTOMAP HEADER LINE
+					lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
+					lcd_main.message("frgb", block_colour);
+					lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
+					lcd_main.message("write", "controller auto assign : rows 1 - 4");
+					y_offset += fontheight*0.6;
+				}
+			}
 			
+
 			if(sidebar.mode == "block"){
 				sidebar.scopes.starty = y_offset;
 				sidebar.scopes.endy = y_offset+2*fontheight;
@@ -3914,29 +3953,6 @@ function draw_sidebar(){
 					var w_slider,h_slider,colour,plist;
 					var slidercount; //used to hide sliders that apply to not-yet-active voices
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
-					var getmap = 0;
-					if(automap.available_k!=-1){
-						if(automap.mapped_k!=block){
-							note_poly.setvalue( automap.available_k, "maptarget", block);
-							automap.mapped_k=block;
-						}
-					}
-					if(automap.available_c!=-1){
-						if((automap.mapped_c!=block) && (block_name != "core.input.control")){
-							var maplist = [];
-							var map_x = 0;
-							var map_y = 0;
-							var controllername = automap.devicename_c;
-							var map_rows = 1;
-							var map_cols = 128;
-							if(io_dict.contains("controllers::"+controllername+"::rows")){
-								map_rows = io_dict.get("controllers::"+controllername+"::rows");
-								map_cols = io_dict.get("controllers::"+controllername+"::columns");
-							}
-							getmap=1;
-							automap.mapped_c=block;
-						} 
-					}
 					for(i=0;i<groups.length;i++){
 						colour=block_colour;
 						if(groups[i].contains("colour")){
@@ -6495,6 +6511,8 @@ function draw_sidebar(){
 		lcd_main.message("frgb", menucolour);
 		lcd_main.message("moveto",mainwindow_width-5,p);
 		lcd_main.message("lineto",mainwindow_width-5,p+l2);
+		//click zone for the scrollbar
+		click_zone(scroll_sidebar, null, null, mainwindow_width-9,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
 	}
 	//	lcd_main.message("bang");
 	//outlet(8,"bang");

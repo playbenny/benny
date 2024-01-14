@@ -329,6 +329,7 @@ var usermouse = {
 	x : 0,
 	y : 0,
 	timer : 0,
+	sidebar_scrolling: null,
 	long_press_function : null,
 	drag : {
 		starting_x : 0,
