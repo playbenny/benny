@@ -13,7 +13,12 @@ function set_display_mode(mode,t){
 	}
 	var blocks_enabled=(mode=="blocks");
 	if(displaymode!=mode){
-		if((mode!="blocks")&&(mode!="panels")) sidebar.mode="none";
+		if((mode!="blocks")&&(mode!="panels")){
+			sidebar.mode="none";
+			remove_midi_scope();
+			sidebar.scopes.voice = -1;
+			audio_to_data_poly.setvalue(0,"vis_scope", 0);
+		}
 		if(mode == "blocks") blocks_enabled=1;
 		if(mode=="flocks"){
 			flock_axes(1);
@@ -21,11 +26,6 @@ function set_display_mode(mode,t){
 		}else{
 			flock_axes(0);
 		}
-		/*if(mode=="block_menu") {
-			menu_camera_scroll=0;
-		}else{
-			//hide_block_menu();
-		}*/
 		displaymode=mode;
 		camera();
 		//post("display mode set to "+mode+"\n");
@@ -3932,14 +3932,12 @@ function draw_sidebar(){
 			var current_p = blocks.get("blocks["+block+"]::poly::voices");
 
 			if(current_p>1){
-				// DRAW VOICE SELECTION LINE
-				
+				// DRAW VOICE SELECTION LINE			
 				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x+1.5*fontheight,y_offset+fontheight*0.5,block_darkest);
 				lcd_main.message("frgb", block_dark);
 				lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
 				lcd_main.message("write", "SELECTED : ");//, (sidebar.selected_voice == -1)?"block":("voice "+(sidebar.selected_voice+1)));
-				var sx = sidebar.x + 1.6*fontheight;
-				
+				var sx = sidebar.x + 1.6*fontheight;		
 				for(i=-1;i<current_p;i++){
 					var ex = sx + (((i==-1)?1:0.4) + (i>8)*0.2)*fontheight;
 					if(i==sidebar.selected_voice){
@@ -6556,6 +6554,7 @@ function draw_sidebar(){
 			if(sidebar.mode != sidebar.lastmode){
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
+				sidebar.scopes.voice = -1;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
 				remove_midi_scope();
 				redraw_flag.targets=[];
