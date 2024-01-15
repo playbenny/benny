@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3787942854,
+	"modificationdate" : 3788203473,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -181,12 +181,12 @@
 				"local" : 1
 			}
 ,
-			"upwrap2.maxpat" : 			{
+			"voice.basic.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
 ,
-			"voice.basic.maxpat" : 			{
+			"upwrap2.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -399,11 +399,6 @@
 				"local" : 1
 			}
 ,
-			"fx.atoner.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"fx.delay.tape.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -438,12 +433,12 @@
 				"kind" : "gendsp"
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
+			"voice.basic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"voice.basic.gendsp" : 			{
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -476,6 +471,16 @@
 			"seq.rene.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
+			}
+,
+			"fx.atoner.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"fx.2pole.filter.env.gendsp" : 			{
@@ -533,7 +538,12 @@
 ,
 			"fx.atoner.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"fx.delay.stretch.json" : 			{
@@ -744,6 +754,9 @@
 		}
 ,
 		"externals" : 		{
+			"ar.tapedither~.mxe64" : 			{
+				"kind" : "object"
+			}
 
 		}
 ,
