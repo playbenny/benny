@@ -249,7 +249,10 @@ var automap = {
 	mapped_k : -1,
 	devicename_c : "",
 	inputno_k : 0,
-	rowoffset_c : 0
+	offset_c : 0,
+	offset_range_c : 0,
+	c_cols : 4,
+	c_rows : 4
 }
 
 var wirecolour = [1,1,1,1];

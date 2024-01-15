@@ -1609,8 +1609,6 @@ function panel_assign_click(parameter,value){
 
 function set_automap_k_input(parameter,value){
 	automap.inputno_k = parameter;
-	automap.mapped_k = -1;
-	redraw_flag.flag |= 2;
 }
 
 function set_flock_preset(parameter,value){
