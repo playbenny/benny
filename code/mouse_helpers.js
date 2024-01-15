@@ -1121,7 +1121,12 @@ function static_mod_adjust(parameter,value){
 		return parameter_static_mod.peek(1,parameter[2]);
 	}else{
 		//set value
-		safepoke(parameter_static_mod,1,parameter[2],Math.max(-1,Math.min(1,value)));
+		var t = parameter_value_buffer.peek(1,MAX_PARAMETERS*parameter[1]+parameter[0]);
+		var t2 = t + Math.max(-1,Math.min(1,value));
+		t2 = Math.max(0,Math.min(1,t2));
+		t2 -= t;  //clip the value so that it + the param (at block level) value doesn't go off the edges
+		// TODO DONT DO THIS IF PARAM WRAP IS ON
+		safepoke(parameter_static_mod,1,parameter[2],t2);
 		rebuild_action_list = 1;
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings"))){// && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
