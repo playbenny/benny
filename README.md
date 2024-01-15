@@ -10,8 +10,7 @@ MULTITUDES
 installation
 ------------
 - install max (cycling74.com) but no need to buy it or subscribe, see the 'important' note below
-- for now (in the end i'll make gen versions of everything i use) you first need to install the ar. airwindows externals, they're in a zip in the root folder. you need to put them in documents/max 8/packages
-- in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore. there are more detailed configuration settings below.
+- in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore.
 - open 'multitudes.maxproj'
 
 IMPORTANT
