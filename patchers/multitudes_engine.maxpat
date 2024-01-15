@@ -7173,19 +7173,6 @@
 , 							{
 								"box" : 								{
 									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
-									"id" : "obj-25",
-									"maxclass" : "newobj",
-									"numinlets" : 1,
-									"numoutlets" : 2,
-									"outlettype" : [ "", "int" ],
-									"patching_rect" : [ 139.0, 566.0, 29.5, 22.0 ],
-									"text" : "t l 0"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
 									"id" : "obj-15",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
@@ -7896,6 +7883,26 @@
 , 							{
 								"patchline" : 								{
 									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
+									"destination" : [ "obj-107", 1 ],
+									"midpoints" : [ 148.5, 684.0, 70.0, 684.0 ],
+									"order" : 2,
+									"source" : [ "obj-15", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
+									"destination" : [ "obj-160", 1 ],
+									"midpoints" : [ 148.5, 684.0, 211.799999999999955, 684.0 ],
+									"order" : 1,
+									"source" : [ "obj-15", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
 									"destination" : [ "obj-21", 0 ],
 									"source" : [ "obj-15", 0 ]
 								}
@@ -7904,7 +7911,9 @@
 , 							{
 								"patchline" : 								{
 									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
-									"destination" : [ "obj-25", 0 ],
+									"destination" : [ "obj-98", 1 ],
+									"midpoints" : [ 148.5, 685.0, 285.0, 685.0, 285.0, 684.0, 297.0, 684.0, 297.0, 684.0, 320.799999999999955, 684.0 ],
+									"order" : 0,
 									"source" : [ "obj-15", 1 ]
 								}
 
@@ -8065,36 +8074,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-33", 0 ],
 									"source" : [ "obj-24", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
-									"destination" : [ "obj-107", 1 ],
-									"midpoints" : [ 148.5, 684.0, 70.0, 684.0 ],
-									"order" : 2,
-									"source" : [ "obj-25", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
-									"destination" : [ "obj-160", 1 ],
-									"midpoints" : [ 148.5, 684.0, 211.799999999999955, 684.0 ],
-									"order" : 1,
-									"source" : [ "obj-25", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"color" : [ 0.0, 0.435294117647059, 0.529411764705882, 1.0 ],
-									"destination" : [ "obj-98", 1 ],
-									"midpoints" : [ 148.5, 685.0, 285.0, 685.0, 285.0, 684.0, 297.0, 684.0, 297.0, 684.0, 320.799999999999955, 684.0 ],
-									"order" : 0,
-									"source" : [ "obj-25", 0 ]
 								}
 
 							}
@@ -13589,7 +13568,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager",
+						"filename" : "blockmanager.js",
 						"parameter_enable" : 0
 					}
 ,
@@ -15013,6 +14992,19 @@
 
 			}
  ],
+		"parameters" : 		{
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
 		"dependency_cache" : [ 			{
 				"name" : "ar.capacitor2~.mxe64",
 				"type" : "mx64"
@@ -15164,6 +15156,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "mutecontrol.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "note_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
@@ -15209,6 +15208,20 @@
 				"name" : "ui_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voice.basic.gendsp",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voice.basic.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}

@@ -1103,6 +1103,8 @@ function keydown(key){
 				select_all();
 			}else if(key == -5){
 				set_display_mode("blocks");
+			}else if(key == 109){
+				mute_selected_block(-1);
 			}
 		}else if(displaymode=="blocks"){
 			if(key == -19){
@@ -1146,6 +1148,8 @@ function keydown(key){
 			}else if((key == 114)||(key == 370)){ // R or ctrl R
 				//record arm
 				arm_selected_blocks();
+			}else if(key == 109){
+				mute_selected_block(-1);
 			}else if(key == 353){
 				select_all();
 			}else if(key == 355){

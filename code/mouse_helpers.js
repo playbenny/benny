@@ -1607,8 +1607,26 @@ function panel_assign_click(parameter,value){
 	redraw_flag.flag=4;	
 }
 
+function cycle_automap_offset(p,v){
+	automap.offset_c ++;
+	if(automap.offset_c>=automap.offset_range_c)automap.offset_c=0;
+}
+
 function set_automap_k_input(parameter,value){
 	automap.inputno_k = parameter;
+	note_poly.setvalue( automap.available_k, "maptargetinput", automap.inputno_k);
+}
+
+function select_block_by_name(parameter,value){
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if(blocks.contains("blocks["+i+"]::name")){
+			if(blocks.get("blocks["+i+"]::name")==parameter){
+				clear_blocks_selection();
+				selected.block[i] = 1;
+				return i;
+			}
+		}
+	}
 }
 
 function set_flock_preset(parameter,value){

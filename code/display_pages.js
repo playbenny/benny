@@ -3821,13 +3821,20 @@ function draw_sidebar(){
 
 			var getmap = 0;
 			var map_x = 0, map_y = 0, maplist = [];
-			var sx=0;
+			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
-					if(automap.mapped_k!=block){
-						note_poly.setvalue( automap.available_k, "maptarget", block);
+					if((automap.mapped_k!=block)||(automap.mapped_k_v!=sidebar.selected_voice)){
+						automap.mapped_k_v = sidebar.selected_voice;
+						if(sidebar.selected_voice == -1){
+							note_poly.setvalue( automap.available_k, "maptarget", block);
+						}else{
+							var vl=bvs[sidebar.selected_voice];
+							note_poly.setvalue( automap.available_k, "maptarget", MAX_BLOCKS + vl);
+						}
+						if(automap.mapped_k!=block) automap.inputno_k = 0;
 						automap.mapped_k=block;
-						automap.inputno_k=0;
+						note_poly.setvalue( automap.available_k, "maptargetinput", automap.inputno_k);
 					}
 					//DRAW KEYBOARD AUTOMAP HEADER LINE
 					var midiins = blocktypes.get(block_name+"::connections::in::midi");
@@ -3836,6 +3843,7 @@ function draw_sidebar(){
 					lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x+fontheight*2.1,y_offset+fontheight*0.5,block_darkest);
 					lcd_main.message("frgb", block_dark);
 					lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
+					click_zone(select_block_by_name,"core.input.keyboard", null, sidebar.x,y_offset,sidebar.x+22, y_offset+fontheight*0.5,mouse_index,1 ); 
 					var tmp = y_offset + 0.25*fontheight-2;
 					var tbt = y_offset + 0.5*fontheight-2;
 					lcd_main.message("moveto",sidebar.x+4,y_offset);
@@ -3877,6 +3885,8 @@ function draw_sidebar(){
 					if(sx>mainwindow_width-fontheight*2-9){
 						y_offset += fontheight*0.6;
 						sx=0;
+					}else{
+						sx = mainwindow_width - fontheight*2 -9;
 					}
 				}
 			}
@@ -3906,26 +3916,48 @@ function draw_sidebar(){
 					lcd_main.message("paintrect",sx,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
 					//lcd_main.message("frgb", block_colour);
 					var hf= 0.25*fontheight;
+					click_zone(select_block_by_name,"core.input.control", null, sx,y_offset,sx+22, y_offset+fontheight*0.5,mouse_index,1 ); 
+					click_zone(cycle_automap_offset, null, null, sx+24,y_offset,mainwindow_width-9,y_offset+0.5*mainwindow_width,mouse_index,1);
 					lcd_main.message("frgb", block_dark);
 					lcd_main.message("framerect",sx,y_offset,sx+22,y_offset+fontheight*0.5);
 					lcd_main.message("frameoval",sx+13-hf,y_offset+4,sx+hf+9,y_offset+hf+hf-4);
 					lcd_main.message("moveto",sx+9,hf+y_offset-1);
 					lcd_main.message("lineto",sx+0.106*fontheight+9,fontheight*0.144+y_offset);
 					lcd_main.message("moveto", sx+26, y_offset+0.4*fontheight);
-					lcd_main.message("write", "> ",automap.offset_c+1, "-" , automap.offset_c + automap.c_rows);
+					lcd_main.message("write", ">",automap.offset_c+1, "-" , automap.offset_c + automap.c_rows);
 					y_offset += fontheight*0.6;
 				}
 			}
 			
 			var current_p = blocks.get("blocks["+block+"]::poly::voices");
 
-			// DRAW VOICE SELECTION LINE
-			// todo this should probably be buttons?
-			lcd_main.message("paintrect",sidebar.x,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
-			lcd_main.message("frgb", block_dark);
-			lcd_main.message("moveto", sidebar.x+5, y_offset+0.4*fontheight);
-			lcd_main.message("write", "SELECTED : ", (sidebar.selected_voice == -1)?"block":("voice "+(sidebar.selected_voice+1)));
-			y_offset += fontheight*0.6;
+			if(current_p>1){
+				// DRAW VOICE SELECTION LINE
+				
+				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x+1.5*fontheight,y_offset+fontheight*0.5,block_darkest);
+				lcd_main.message("frgb", block_dark);
+				lcd_main.message("moveto", sidebar.x+0.1*fontheight, y_offset+0.4*fontheight);
+				lcd_main.message("write", "SELECTED : ");//, (sidebar.selected_voice == -1)?"block":("voice "+(sidebar.selected_voice+1)));
+				var sx = sidebar.x + 1.6*fontheight;
+				
+				for(i=-1;i<current_p;i++){
+					var ex = sx + (((i==-1)?1:0.4) + (i>8)*0.2)*fontheight;
+					if(i==sidebar.selected_voice){
+						lcd_main.message("paintrect",sx,y_offset,ex,y_offset+fontheight*0.5,block_dark);
+						lcd_main.message("frgb", block_colour);
+					}else{
+						lcd_main.message("paintrect",sx,y_offset,ex,y_offset+fontheight*0.5,block_darkest);
+						lcd_main.message("frgb", block_dark);
+						click_zone(select_voice, i, null, sx,y_offset,ex,y_offset+0.5*fontheight,mouse_index,1);
+					}
+					lcd_main.message("moveto", sx+0.1*fontheight,y_offset+0.4*fontheight);
+					lcd_main.message("write", (i == -1)?"block":(i+1));
+					sx = ex+0.1*fontheight;
+					if(sx>mainwindow_width-9)i=99999;
+				}
+				if(sx<mainwindow_width-9) lcd_main.message("paintrect",sx,y_offset,mainwindow_width - 9,y_offset+fontheight*0.5,block_darkest);
+				y_offset += fontheight*0.6;
+			}
 
 			if(sidebar.mode == "block"){
 				sidebar.scopes.starty = y_offset;
