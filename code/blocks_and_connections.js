@@ -2008,6 +2008,7 @@ function remove_block(block){
 	for(i=0;i<blocks_meter[block].length;i++){
 		blocks_meter[block][i].enable = 0;
 	}
+	if(record_arm[block]>0) set_block_record_arm(block,0);
 	post("removing block",block,"\n");
 	var i;
 	sidebar.scopes.voice = -1;
