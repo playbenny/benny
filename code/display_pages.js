@@ -3884,7 +3884,7 @@ function draw_sidebar(){
 					}
 					if(sx>mainwindow_width-fontheight*2-9){
 						y_offset += fontheight*0.6;
-						sx=0;
+						sx=sidebar.x;
 					}else{
 						sx = mainwindow_width - fontheight*2 -9;
 					}
