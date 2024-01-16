@@ -1,0 +1,107 @@
+{
+	"voice.organ" : {
+		"patcher" : "voice.organ",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "9 drawbar harmonics with a rough model of how the key contacts of a hammond tonewheel organ worked. the notes input blends between pressed and struck profiles based on velocity, with very quiet notes corresponding to partial keypresses that don't engage the switch for every harmonic. inspired by the paper 'Dynamic temporal behaviour of the keyboard action on the Hammond organ and its perceptual significance' by Giulio Moro, Andrew P. McPherson and Mark B. Sandler in JASA 142/5 2017.",
+		"max_polyphony" : 0,
+		"upsample" : 2,
+		"latching_enable" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "fm", "am" ],
+				"midi" : [ "notes" ]
+			},
+			"out" : {
+				"audio" : [ "osc", "out2" ],
+				"midi" : ["through"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4,5,6,7,8],
+				"colour" : 0
+			},
+			{
+				"contains" : [9],
+				"height" : 0,
+				"colour" : 10
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1,2,3,4,5,6,7,8]
+		},
+		"parameters" : [
+			{
+				"name" : "1",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "2",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "3",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.333
+			},
+			{
+				"name" : "4",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "5",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.20 
+			},
+			{
+				"name" : "6",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1667 
+			},
+			{
+				"name" : "7",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1429 
+			},
+			{
+				"name" : "8",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.125 
+			},
+			{
+				"name" : "9",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.125 
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin" ],
+				"wrap" : 0,
+				"default" : 0.75				
+			}
+		]
+	}
+}

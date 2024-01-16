@@ -1,0 +1,134 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 5,
+			"revision" : 7,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 334.0, 102.0, 734.0, 540.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 515.0, 512.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 515.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "//require \"filter_functions\";\r\nBuffer mtof_lookup(\"mtof_lookup\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\n//Buffer detuning(\"detuning\");\r\nData state(100);\r\n//in groups of 9:\r\n//0 - time offset\r\n//9 - position (0-1) and - for predelay\r\n//18 - rate\r\n//27 - level\r\n//36 - cubed\r\n//45 - inverse \r\n//54 - freq mult\r\nHistory f1,mgain;\r\nHistory ov(0);  //last non-zero velocity\r\nHistory oov(0); //just for detect change\r\nHistory otrig(0); //likewise\r\nHistory op(0); //old pitch\r\nHistory env(0);\r\nHistory slowcount(-10);\r\n\r\nParam voice_offset(0);\r\nParam voice_is(0);\r\nParam p(0,min=0,default=64,max=128);\r\nParam v(0,min=0,default=0,max=1000);\r\nParam panic(0);\r\n\r\nslowcount -= 1;\r\nif(slowcount<=0){\r\n\tif(slowcount<-10){\r\n\t\t//initialisation\r\n\t\tpoke(state,0.48,0,0);\r\n\t\tpoke(state,0.06,1,0);\r\n\t\tpoke(state,0.30,2,0);\r\n\t\tpoke(state,0.12,3,0);\r\n\t\tpoke(state,0.42,4,0);\r\n\t\tpoke(state,0.36,5,0);\r\n\t\tpoke(state,0.24,6,0);\r\n\t\tpoke(state,0.18,7,0);\r\n\t\tpoke(state,0,8,0);\r\n\t\tpoke(state,0.5,54,0);\r\n\t\tpoke(state,0.75,55,0);\r\n\t\tpoke(state,1,56,0);\r\n\t\tpoke(state,2,57,0);\r\n\t\tpoke(state,3,58,0);\r\n\t\tpoke(state,4,59,0);\r\n\t\tpoke(state,5,60,0);\r\n\t\tpoke(state,6,61,0);\r\n\t\tpoke(state,8,62,0);\r\n\t}\r\n\tslowcount = vectorsize;\r\n\tmgain = 0.33*(4*peek(prm,18+voice_offset,0, channels=1)-2);\r\n \tfor(i=0;i<9;i+=1){\r\n\t\tl = peek(prm,voice_offset + i, 0);\r\n\t\tol = peek(state,i+27,0);\r\n\t\tif(l!=ol){\r\n\t\t\tpoke(state,l,i+27,0);\r\n\t\t\tl =  0.001+mgain*l;\r\n\t\t\tc = l*l*l;\r\n\t\t\tpoke(state,c,i+36,0);\r\n\t\t\tpoke(state,1/l,i+45,0);\r\n\t\t}\r\n\t}\r\n}\r\n\r\npp = p+12*in1;\r\nif(pp!=op){\r\n\top = pp;\r\n\tif(op<0){\r\n\t\ttra = floor(-op/12)+1;\r\n\t\tf1 = sample(mtof_lookup,((op+0.5+12*tra)/128), (voice_is % 8), channels=1);\r\n\t\tf1 *= pow(2, -tra);\r\n\t}else{\t\r\n\t\tf1 = sample(mtof_lookup,((op+0.5)/128), (voice_is % 8), channels=1);\r\n\t}\r\n}\r\npha = phasor(f1);\r\n\r\nosc = 0;\r\nif(ov!=v){\r\n\tov = v;\r\n\tfor(i=0;i<9;i+=1){\r\n\t\toffs = peek(state, i, 0);\r\n\t\tif(v > offs){\r\n\t\t\tr1 = (2+noise())*0.16*(1+v)+(noise()>(1.5-v))*v*noise();\r\n\t\t\tx1 = r1 * offs; //peek(state,i,0);\r\n\t\t\tr1 = 1/r1;\r\n\t\t\tpoke(state,r1,18+i,0);\r\n\t\t}else{\r\n\t\t\tpoke(state,-abs(noise()),18+i,0);\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfor(i=0;i<9;i+=1){\r\n\tr1 = peek(state,18+i,0);\r\n\tx1 = peek(state,9+i,0);\r\n\tif(r1!=0){\r\n\t\tx1 += r1;\r\n\t\tpoke(state,x1,9+i,0);\r\n\t\tif(x1>1){\r\n\t\t\tpoke(state,1,9+i,0);\r\n\t\t\tpoke(state,0,18+i,0);\r\n\t\t}else if((r1<0)&&(x1<0)){\r\n\t\t\tpoke(state,0,9+i,0);\r\n\t\t\tpoke(state,0,18+i,0);\r\n\t\t}\r\n\t}\r\n\tif(x1>0){\r\n\t\tph = pha * peek(state,54+i,0);\r\n\t\tph -= floor(ph);\r\n\t\ty = cycle(ph, index=\"phase\");\r\n\t\to1 = y * peek(state,36+i,0);\r\n\t\to1 = sin(o1)*peek(state,45+i,0);\r\n\t\tosc += o1;\r\n\t}\r\n}\r\n\r\nosc *= 1+in2;\r\nosc = clip(osc,-0.999,0.999);\r\nosc = asin(osc);\r\n\r\n\r\nif(panic) {\r\n}\r\n\r\n//osc *= 1.5;\r\n//osc = clip(osc,-1.57,1.57);\r\nout1 = osc;//sin(osc)*1.5;\r\nout2 = peek(state,1,0);",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 44.0, 667.0, 463.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 512.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+ ]
+	}
+
+}
