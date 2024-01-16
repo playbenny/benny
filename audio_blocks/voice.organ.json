@@ -23,7 +23,7 @@
 				"colour" : 0
 			},
 			{
-				"contains" : [9],
+				"contains" : [9,10],
 				"height" : 0,
 				"colour" : 10
 			}
@@ -101,6 +101,13 @@
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				
+			},
+			{
+				"name" : "contact bounce time",
+				"type" : "float",
+				"values" : ["uni", 1, 10, "lin" ],
+				"wrap" : 0,
+				"default" : 0				
 			}
 		]
 	}
