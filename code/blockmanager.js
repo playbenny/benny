@@ -245,6 +245,8 @@ var param_defaults = [];
 var automap = {
 	available_c : -1,
 	available_k : -1,
+	available_k_block : -1,
+	already_k : 0, //if the keyboard is already connected to the current block don't auto
 	mapped_c : -1,
 	mapped_k : -1,
 	mapped_k_v : -1,
