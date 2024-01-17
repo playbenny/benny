@@ -112,7 +112,7 @@
 			{
 				"name" : "contact bounce time",
 				"type" : "float",
-				"values" : ["uni", 1, 10, "lin" ],
+				"values" : ["uni", 1, 10, "exp" ],
 				"wrap" : 0,
 				"default" : 0				
 			}
