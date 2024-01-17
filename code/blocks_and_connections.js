@@ -637,6 +637,7 @@ function send_all_voice_details(){
 }
 
 function create_connection_button(){
+	remove_automaps(); //they just get reassigned on draw sidebar, but this prevents keyb automap overriding a new keyboard - block mapping
 	var csize = connections.getsize("connections");
 	var w=1;
 	for(var i=1;i<csize;i++){ //look for an empty slot

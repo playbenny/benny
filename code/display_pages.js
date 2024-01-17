@@ -6583,18 +6583,7 @@ function draw_sidebar(){
 	}
 
 	if((sidebar.mode!="block")&&(sidebar.mode!="settings")&&(sidebar.mode!="settings_flockpreset")&&(sidebar.mode!="add_state")&&(sidebar.mode!="help")){ // DISABLE AUTOMAPPED MIDI CONTROLLERS
-		if(automap.available_c != -1){
-			if(automap.mapped_c != -1){
-				automap.mapped_c = -1;
-				note_poly.setvalue(automap.available_c,"automapped", 0);
-			}
-		}
-		if(automap.available_k != -1){
-			if(automap.mapped_k != -1){
-				automap.mapped_k = -1;
-				note_poly.setvalue(automap.available_k,"automapped", 0);
-			}
-		}
+		remove_automaps();
 	}
 	if(y_offset+sidebar.scroll.position >= mainwindow_height){
 		sidebar.scroll.max = fontheight + fontheight + sidebar.scroll.position+y_offset-mainwindow_height;
@@ -6620,6 +6609,21 @@ function draw_sidebar(){
 	//	lcd_main.message("bang");
 	//outlet(8,"bang");
 	view_changed = false;
+}
+
+function remove_automaps(){
+	if (automap.available_c != -1) {
+		if (automap.mapped_c != -1) {
+			automap.mapped_c = -1;
+			note_poly.setvalue(automap.available_c, "automapped", 0);
+		}
+	}
+	if (automap.available_k != -1) {
+		if (automap.mapped_k != -1) {
+			automap.mapped_k = -1;
+			note_poly.setvalue(automap.available_k, "automapped", 0);
+		}
+	}
 }
 
 function remove_midi_scope(){
