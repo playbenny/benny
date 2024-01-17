@@ -5,6 +5,13 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "9 drawbar harmonics with a rough model of how the key contacts of a hammond tonewheel organ worked. the notes input blends between pressed and struck profiles based on velocity, with very quiet notes corresponding to partial keypresses that don't engage the switch for every harmonic. inspired by the paper 'Dynamic temporal behaviour of the keyboard action on the Hammond organ and its perceptual significance' by Giulio Moro, Andrew P. McPherson and Mark B. Sandler in JASA 142/5 2017.",
 		"max_polyphony" : 0,
+		"default_polymode" : 	{
+			"stack_mode" : "1x",
+			"choose_mode" : "notememory",
+			"steal_mode" : "oldest",
+			"return_mode" : 1,
+			"latching_mode" : 0
+		},
 		"upsample" : 2,
 		"latching_enable" : 1,
 		"connections" : {
@@ -33,67 +40,67 @@
 		},
 		"parameters" : [
 			{
-				"name" : "1",
+				"name" : "sub_oct",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1 
 			},
 			{
-				"name" : "2",
+				"name" : "sub_5th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5 
+				"default" : 0.75 
 			},
 			{
-				"name" : "3",
+				"name" : "root",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.333
+				"default" : 0.5
 			},
 			{
-				"name" : "4",
+				"name" : "2nd",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
 			{
-				"name" : "5",
+				"name" : "3rd",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.20 
+				"default" : 0.05 
 			},
 			{
-				"name" : "6",
+				"name" : "fourth",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1667 
+				"default" : 0.25 
 			},
 			{
-				"name" : "7",
+				"name" : "5th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.1429 
+				"default" : 0.5 
 			},
 			{
-				"name" : "8",
+				"name" : "6th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.125 
+				"default" : 0.75 
 			},
 			{
-				"name" : "9",
+				"name" : "8th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.125 
+				"default" : 1.0
 			},
 			{
 				"name" : "gain",
