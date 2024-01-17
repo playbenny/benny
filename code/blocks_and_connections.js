@@ -2238,7 +2238,9 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				hardware_list[new_voice] = block_name;
 			}
 			var list = voicemap.get(block);
-			voicemap.replace(block, list, voiceoffset);
+			if(!Array.isArray(list)) list = [list];
+			list.push(voiceoffset);
+			voicemap.replace(block, list);
 			if(type=="audio"){  // turn on audio-to-data for the new voice
 				var tout;
 				for(tout=0;tout<NO_IO_PER_BLOCK;tout++){

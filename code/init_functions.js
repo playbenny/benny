@@ -503,6 +503,7 @@ function import_blocktypes(v)
 			post("  "+f.filename + "\n");
 			d.import_json(f.filename);
 			var keys = d.getkeys();
+			keys = keys.toString();
 			blocktypes.set(keys,d.get(keys));
 		}
 		f.next();

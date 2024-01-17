@@ -3,8 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 7,
+			"minor" : 6,
+			"revision" : 0,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -177,6 +177,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 138.25, 430.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -210,11 +214,12 @@
 					"id" : "obj-64",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 269.333333333333371, 502.0, 50.5, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -279,8 +284,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 742.0, 558.0, 50.0, 36.0 ],
-					"text" : "waves.39"
+					"patching_rect" : [ 742.0, 558.0, 76.0, 35.0 ],
+					"text" : "string u730017754"
 				}
 
 			}
@@ -361,11 +366,12 @@
 					"id" : "obj-30",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 31.833333333333343, 84.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -515,8 +521,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 7,
+							"minor" : 6,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -591,11 +597,12 @@
 									"id" : "obj-30",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
-									"numoutlets" : 4,
-									"outlettype" : [ "dictionary", "", "", "" ],
+									"numoutlets" : 5,
+									"outlettype" : [ "dictionary", "", "", "", "" ],
 									"patching_rect" : [ 174.833333333333343, 79.0, 63.0, 22.0 ],
 									"saved_object_attributes" : 									{
 										"embed" : 0,
+										"legacy" : 1,
 										"parameter_enable" : 0,
 										"parameter_mappable" : 0
 									}
@@ -748,8 +755,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 7,
+							"minor" : 6,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1035,8 +1042,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 7,
+							"minor" : 6,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1243,11 +1250,12 @@
 									"id" : "obj-39",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
-									"numoutlets" : 4,
-									"outlettype" : [ "dictionary", "", "", "" ],
+									"numoutlets" : 5,
+									"outlettype" : [ "dictionary", "", "", "", "" ],
 									"patching_rect" : [ 224.75, 336.0, 116.0, 22.0 ],
 									"saved_object_attributes" : 									{
 										"embed" : 0,
+										"legacy" : 1,
 										"parameter_enable" : 0,
 										"parameter_mappable" : 0
 									}
@@ -1497,7 +1505,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1245.0, 387.0, 150.0, 48.0 ],
+					"patching_rect" : [ 1245.0, 387.0, 150.0, 47.0 ],
 					"text" : "advance backwards when reversed\n"
 				}
 
@@ -1700,7 +1708,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 931.0, 1167.0, 150.0, 34.0 ],
+					"patching_rect" : [ 931.0, 1167.0, 150.0, 33.0 ],
 					"text" : "target autoadv sent as midi"
 				}
 
@@ -1772,7 +1780,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1017.5, 714.0, 103.0, 48.0 ],
+					"patching_rect" : [ 1017.5, 714.0, 103.0, 47.0 ],
 					"text" : "this is so that muted blocks stop advancing"
 				}
 
@@ -1905,7 +1913,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 138.25, 515.0, 150.0, 34.0 ],
+					"patching_rect" : [ 138.25, 515.0, 150.0, 33.0 ],
 					"text" : "this is so it starts playing on load if song is playing"
 				}
 
@@ -1977,7 +1985,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 319.5, 1102.0, 151.0, 103.0 ],
+					"patching_rect" : [ 319.5, 1102.0, 151.0, 100.0 ],
 					"text" : "this bit swaps the channels - so you can use 1 voice for 2 ch, or 2 voices for 2ch, up to you. the latter lets you flock/spread etc\\\n"
 				}
 
@@ -2265,7 +2273,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 572.0, 979.0, 69.0, 34.0 ],
+					"patching_rect" : [ 572.0, 979.0, 69.0, 33.0 ],
 					"text" : "xfade time in ms"
 				}
 
@@ -2398,7 +2406,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1021.0, 405.0, 150.0, 34.0 ],
+					"patching_rect" : [ 1021.0, 405.0, 150.0, 33.0 ],
 					"text" : "autoadvance, only for the first voice of a block"
 				}
 
@@ -2712,7 +2720,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1529.0, 512.0, 157.0, 75.0 ],
+					"patching_rect" : [ 1529.0, 512.0, 157.0, 74.0 ],
 					"text" : "early change:open a gate so the next beat triggers it. you know what fraction of a slice that is, just add it on and fire it"
 				}
 
@@ -2856,7 +2864,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1537.0, 461.0, 150.0, 34.0 ],
+					"patching_rect" : [ 1537.0, 461.0, 150.0, 33.0 ],
 					"text" : "here, add q-offset to human timing mean"
 				}
 
@@ -3001,7 +3009,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 399.5, 678.5, 108.0, 34.0 ],
+					"patching_rect" : [ 399.5, 678.5, 108.0, 33.0 ],
 					"text" : "ms per slice (via block settings)"
 				}
 
@@ -3026,7 +3034,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 519.5, 613.5, 113.0, 34.0 ],
+					"patching_rect" : [ 519.5, 613.5, 113.0, 33.0 ],
 					"text" : "ms per slice (via wave settings)"
 				}
 
@@ -3230,10 +3238,14 @@
 					"id" : "obj-45",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 7,
-					"outlettype" : [ "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 315.333333333333371, 516.0, 368.0, 22.0 ],
-					"text" : "dict.unpack start: end: divisions: length: size: channels: buffername:"
+					"numoutlets" : 8,
+					"outlettype" : [ "", "", "", "", "", "", "", "" ],
+					"patching_rect" : [ 315.333333333333371, 516.0, 428.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"legacy" : 1
+					}
+,
+					"text" : "dict.unpack start: end: divisions: length: size: channels: buffername: @legacy 1"
 				}
 
 			}
@@ -3256,7 +3268,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 334.75, 446.0, 150.0, 62.0 ],
+					"patching_rect" : [ 334.75, 446.0, 150.0, 60.0 ],
 					"text" : "get wave data, only enable play if you've got wave data\n"
 				}
 
@@ -3352,6 +3364,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 842.5, 1173.5, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -3387,10 +3403,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 162.5, 1143.5, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -3403,10 +3415,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 523.666666666666629, 5.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -3418,10 +3426,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 84.5, 1143.5, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -3434,10 +3438,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 486.666666666666629, 5.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -3450,10 +3450,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 388.5, 5.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
