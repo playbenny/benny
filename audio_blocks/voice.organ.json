@@ -13,7 +13,7 @@
 				"midi" : [ "notes" ]
 			},
 			"out" : {
-				"audio" : [ "osc", "out2" ],
+				"audio" : [ "warm", "cleaner" ],
 				"midi" : ["through"]
 			}
 		},
