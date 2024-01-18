@@ -1176,9 +1176,11 @@ function sidebar_parameter_knob(parameter, value){
 	if(value=="get"){
 		//also: look up if this slider is set to clickset mode
 		var clickset=0;
-		if(paramslider_details[parameter[0]][18]){
-			clickset = 1;
-			usermouse.drag.release_on_exit = 1;
+		if((Array.isArray(parameter))&&(Array.isArray(paramslider_details[parameter[0]]))){
+			if(paramslider_details[parameter[0]][18]){
+				clickset = 1;
+				usermouse.drag.release_on_exit = 1;
+			}
 		}
 		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
 			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
