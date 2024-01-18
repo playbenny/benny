@@ -805,9 +805,11 @@ function block_and_wire_colours(){ //for selection and mute etc
 					}
 				}else{
 					blocks_cube[i][t].color = block_c;
+
 					blocks_cube[i][t].position = [p[0],p[1],0];
 				}
 				if(block_mute) blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+				blocks_cube[i][t].dim = [12, 12]; // TEMP FIX FOR 8.6
 				if(t==0){
 					block_c = blocks.get("blocks["+i+"]::space::colour");
 					block_c[0] /= 256;
@@ -817,7 +819,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 		}
 	}
-	for(i=0;i<connections.getsize("connections");i++){
+	for(i=connections.getsize("connections")-1;i>=0;i--){
 		if((connections.contains("connections["+i+"]::conversion::mute"))){
 			var cfrom = connections.get("connections["+i+"]::from::number");
 			var cto = connections.get("connections["+i+"]::to::number");
@@ -844,6 +846,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 						//post(wires_colours[i][segment],"\n");
 						wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
 						wires[i][segment].enable = 1;
+						wires[i][segment].dim = [2,2];//TEMP FIX FOR 8.6
 					}		
 				}
 			}else{
@@ -1416,7 +1419,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 //	post("\nsetting W_C",connection_number,segment);
 //	post("col",col);
 	wires_colours[connection_number][segment] = [col[0],col[1],col[2]];
-	wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 0.7];
+	wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
 	wires[connection_number][segment].enable = visible;
 }
 
