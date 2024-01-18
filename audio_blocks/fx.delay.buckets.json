@@ -143,7 +143,7 @@
 				"values" : ["firstvoice","16th",16]
 			},
 			{
-				"name" : "8thT",
+				"name" : "8 T",
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
@@ -159,7 +159,7 @@
 				"values" : ["firstvoice","8th",8]
 			},
 			{
-				"name" : "4thT",
+				"name" : "4 T",
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
@@ -167,7 +167,7 @@
 				"values" : ["firstvoice","8th",6]
 			},
 			{
-				"name" : "3x16th",
+				"name" : "3 16th",
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
