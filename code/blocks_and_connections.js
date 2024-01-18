@@ -1224,8 +1224,7 @@ function remove_connection(connection_number){
 						m_index = (f_voice)*128+f_o_no;
 						var tvv = t_voice - MAX_NOTE_VOICES+MAX_AUDIO_VOICES*(t_i_no);
 						if(t_type == "hardware"){
-							//t_i_no = 0;
-							tvv = t_voice;
+							tvv = t_voice-1;
 						}
 						var tmod_id;
 						var idslist = mod_routemap.get(tvv);
@@ -1696,13 +1695,13 @@ function make_connection(cno){
 							var tvv = t_voice - MAX_NOTE_VOICES+MAX_AUDIO_VOICES*(t_i_no);
 							if(t_type == "hardware"){
 								//t_i_no = 0;
-								tvv = t_voice;// - MAX_NOTE_VOICES+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK;
+								tvv = t_voice-1;// - MAX_NOTE_VOICES+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK;
 							}
 							var tmod_id;
 							var idslist = mod_routemap.get(tvv);
-							if(typeof idslist == "number") idslist =[idslist];
+							if(!Array.isArray(idslist)) idslist =[idslist];
 							var tidslist = midi_routemap.get(m_index);
-							if(typeof tidslist == "number") tidslist=[tidslist];
+							if(!Array.isArray(tidslist)) tidslist=[tidslist];
 							if(is_empty(idslist)||is_empty(tidslist)){
 //								post("one or both empty so creating new modid");
 								mod_id++;
