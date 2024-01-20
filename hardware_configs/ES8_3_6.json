@@ -97,7 +97,7 @@
 				}
 			}
 		},
-		"hardware.out.3" : 			{
+		"hardware.io.3" : 			{
 			"type" : "hardware",
 			"help_text": "3 i/o",
 			"max_polyphony" : 1,
@@ -113,7 +113,7 @@
 				}
 			}
 		},
-		"hardware.out.4" : 			{
+		"hardware.io.4" : 			{
 			"type" : "hardware",
 			"help_text": "4 i/o",
 			"max_polyphony" : 1,
@@ -128,7 +128,7 @@
 					"hardware_channels" : [4 ]
 				}
 			}
-		},		"hardware.out.5" : 			{
+		},		"hardware.io.5" : 			{
 			"type" : "hardware",
 			"help_text": "5 i/o",
 			"max_polyphony" : 1,
@@ -144,7 +144,7 @@
 				}
 			}
 		},
-		"hardware.out.6" : 			{
+		"hardware.io.6" : 			{
 			"type" : "hardware",
 			"help_text": "6 i/o",
 			"max_polyphony" : 1,
@@ -160,7 +160,7 @@
 				}
 			}
 		},
-		"hardware.out.7" : 			{
+		"hardware.io.7" : 			{
 			"type" : "hardware",
 			"help_text": "7 i/o",
 			"max_polyphony" : 1,
@@ -176,7 +176,7 @@
 				}
 			}
 		},
-		"hardware.out.8" : 			{
+		"hardware.io.8" : 			{
 			"type" : "hardware",
 			"help_text": "8 i/o",
 			"max_polyphony" : 1,
@@ -192,7 +192,7 @@
 				}
 			}
 		},
-		"hardware.out.9" : 			{
+		"hardware.io.9" : 			{
 			"type" : "hardware",
 			"help_text": "9 i/o",
 			"max_polyphony" : 1,
@@ -208,7 +208,7 @@
 				}
 			}
 		},
-		"hardware.out.10" : 			{
+		"hardware.io.10" : 			{
 			"type" : "hardware",
 			"help_text": "10 i/o",
 			"max_polyphony" : 1,
@@ -297,7 +297,7 @@
 			}
 		},
 
-		"hardware.in.all" : 			{
+		"hardware.in.1+2" : 			{
 			"type" : "hardware",
 			"help_text": "in 1/2",
 			"exclusive" : 1,
