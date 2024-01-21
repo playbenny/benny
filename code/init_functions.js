@@ -7,11 +7,18 @@ function import_hardware(v){
 	
 	initialise_dictionaries();
 		
-	post("\nbuilding blocktypes database \n");
+	post("\nbuilding blocktypes database");
 	import_blocktypes("note_blocks");
 	import_blocktypes("audio_blocks");
-		
-	post("reading hardware database \n");
+	
+	if(!userconfig.contains("last_hardware_config") || (v!=userconfig.get("last_hardware_config"))){
+		//TODO SPLIT THIS, STORE JUST FILENAME?
+		userconfig.replace("last_hardware_config",v);
+		messnamed("write_userconfig","bang"); //userconfig.writeagain();
+		post("\nstoring hardware config choice")
+	}
+
+	post("\nreading hardware database");
 	d2.import_json(v);
 	
 	d = d2.get("hardware");
@@ -23,7 +30,7 @@ function import_hardware(v){
 																		//you math.floor((x-1)/2) and set that element of this array
 	for(i=0;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks[i] = "clip_dither";
 	for(i = 0; i < keys.length; i++){
-		post("  "+keys[i]+"\n");
+		post("\n  "+keys[i]);
 		blocktypes.set(keys[i],d.get(keys[i]));
 		var ob=null;
 		
@@ -85,14 +92,14 @@ function import_hardware(v){
 			}
 		}
 	}
-	post("last input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS,"\n");
+	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
 	get_hw_meter_positions();
-	post("reading midi io config\n");
+	post("\nreading midi io config");
 	d = d2.get("io");
 	var keys = d.getkeys();
 	for(i = 0; i < keys.length; i++){
 		t = d.get(keys[i]);
-		post("  "+keys[i]+" : "+t+"\n");
+		post("\n  "+keys[i]+" : "+t);
 		io_dict.set(keys[i],t);
 	}
 	var hardware_outs = io_dict.get("hardware");
