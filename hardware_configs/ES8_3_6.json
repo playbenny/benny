@@ -1,0 +1,314 @@
+{
+	"io" : 	{
+		"keyboards" : ["Xkey37","Xkey25","MIDIIN2 (MIDIMATE II)","Arturia KeyStep 32"],
+		"matrix" : "MIDIOUT2 (MIDIMATE II)",
+		"hardware" : "MIDIMATE II",
+		"matrix_switch" : {
+			"midi_out" : "MIDIMATE II",
+			"matrix_out" : 12,
+			"midi_control_channel" : 3,
+			"midi_control_cc" : 25
+		},
+		"controllers" : {
+			"JAMES_16e" : {
+				"name" : "JAMES_16e",
+				"substitute" : "Midi Fighter Twister",
+				"outputs" : 16,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 0,
+				"scaling" : 0.125,
+				"columns" : 4,
+				"rows" : 4,
+				"colour" : {
+					"type" : "midifighter",
+					"channel" : 2,
+					"first" : 0
+				}
+			},
+			"Midi Fighter Twister" : {
+				"name" : "Midi Fighter Twister",
+				"substitute" : "JAMES_16e",
+				"outputs" : 16,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 0,
+				"columns" : 4,
+				"rows" : 4,
+				"colour" : {
+					"type" : "midifighter",
+					"channel" : 2,
+					"first" : 0
+				},
+				"brightness" : {
+					"type" : "midifighter",
+					"channel" : 3,
+					"first" : 0,
+					"dim" : 19,
+					"bright" : 48
+				},
+				"value" : {
+					"type" : "cc",
+					"channel" : 1,
+					"first" : 0
+				},
+				"resets" : {
+					"type" : "cc",
+					"channel" : 2,
+					"first" : 0
+				},
+				"buttons" : {
+					"type" : "cc",
+					"function" : "global",
+					"channel" : 4,
+					"first" : 8
+				}
+			},
+			"LPD8" : {
+				"name" : "LPD8",
+				"substitute" : "none",
+				"outputs" : 8,
+				"type" : "potentiometer",
+				"channel" : 1,
+				"first" : 1,
+				"scaling" : 0.125,
+				"columns" : 4,
+				"rows" : 2,
+				"buttons" : {
+					"type" : "note",
+					"function" : "more",
+					"channel" : 1,
+					"first" : 36
+				}
+			}
+		},		
+		"triggers_in" :"TriggerIO"
+	},
+	"hardware" : 	{
+		"hardware.out.1+2" : 			{
+			"type" : "hardware",
+			"help_text": "all outs",
+			"max_polyphony" : 2,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 1, 2 ]
+				}
+			}
+		},
+		"hardware.io.3" : 			{
+			"type" : "hardware",
+			"help_text": "3 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 3 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [3 ]
+				}
+			}
+		},
+		"hardware.io.4" : 			{
+			"type" : "hardware",
+			"help_text": "4 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 4 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [4 ]
+				}
+			}
+		},		"hardware.io.5" : 			{
+			"type" : "hardware",
+			"help_text": "5 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 5 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [5 ]
+				}
+			}
+		},
+		"hardware.io.6" : 			{
+			"type" : "hardware",
+			"help_text": "6 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 6 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [6 ]
+				}
+			}
+		},
+		"hardware.io.7" : 			{
+			"type" : "hardware",
+			"help_text": "7 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 7 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [7 ]
+				}
+			}
+		},
+		"hardware.io.8" : 			{
+			"type" : "hardware",
+			"help_text": "8 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 8 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [8 ]
+				}
+			}
+		},
+		"hardware.io.9" : 			{
+			"type" : "hardware",
+			"help_text": "9 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 9 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [9 ]
+				}
+			}
+		},
+		"hardware.io.10" : 			{
+			"type" : "hardware",
+			"help_text": "10 i/o",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 10 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [10 ]
+				}
+			}
+		},
+		"hardware.out.11" : 			{
+			"type" : "hardware",
+			"help_text": "out 11",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 11 ]
+				}
+			}
+		},
+		"hardware.out.12" : 			{
+			"type" : "hardware",
+			"help_text": "out 12",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 12 ]
+				}
+			}
+		},
+		"hardware.out.13" : 			{
+			"type" : "hardware",
+			"help_text": "out 13",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 13 ]
+				}
+			}
+		},
+		"hardware.out.14" : 			{
+			"type" : "hardware",
+			"help_text": "out 14",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 14 ]
+				}
+			}
+		},
+		"hardware.out.15" : 			{
+			"type" : "hardware",
+			"help_text": "out 15",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 15 ]
+				}
+			}
+		},
+		"hardware.out.16" : 			{
+			"type" : "hardware",
+			"help_text": "out 16",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 16 ]
+				}
+			}
+		},
+
+		"hardware.in.1+2" : 			{
+			"type" : "hardware",
+			"help_text": "in 1/2",
+			"exclusive" : 1,
+			"max_polyphony" : 4,
+			"substitute" : "fx.filter.2pole",
+			"connections" : {
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [1,2 ]
+				}
+			}
+		}
+	}
+}
