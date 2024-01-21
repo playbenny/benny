@@ -1382,6 +1382,15 @@ function mute_all_blocks(action){
 	redraw_flag.flag=10;
 }
 
+function mute_selection(action){
+	if(selected.wire.indexOf(1)){
+		connection_mute_selected(action,null);
+	}
+	if(selected.block.indexOf(1)){
+		mute_selected_block(action);
+	}
+}
+
 function mute_selected_block(action){
 	//post("\n(un)muting selected block(s)",action);
 	var i;

@@ -1133,7 +1133,7 @@ function remove_connection(connection_number){
 						}
 						
 						t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
-						post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
+						//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
 					}
 				}
 				// find the route, then remove this polyvoice's connection
@@ -1548,7 +1548,7 @@ function make_connection(cno){
 							}
 							
 							t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
-							post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
+							//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
 						}
 					}
 

@@ -1149,7 +1149,7 @@ function keydown(key){
 				//record arm
 				arm_selected_blocks();
 			}else if(key == 109){
-				mute_selected_block(-1);
+				mute_selection(-1); //ed_block(-1);
 			}else if(key == 353){
 				select_all();
 			}else if(key == 355){
