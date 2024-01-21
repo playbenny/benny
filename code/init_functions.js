@@ -11,11 +11,11 @@ function import_hardware(v){
 	import_blocktypes("note_blocks");
 	import_blocktypes("audio_blocks");
 	
-	if(!userconfig.contains("last_hardware_config") || (v!=userconfig.get("last_hardware_config"))){
-		//TODO SPLIT THIS, STORE JUST FILENAME?
-		userconfig.replace("last_hardware_config",v);
-		messnamed("write_userconfig","bang"); //userconfig.writeagain();
-		post("\nstoring hardware config choice")
+	var vspl = v.split('/').pop();
+	if(!userconfig.contains("last_hardware_config") || (vspl!=userconfig.get("last_hardware_config"))){
+		userconfig.replace("last_hardware_config",vspl);
+		messnamed("write_userconfig","bang"); //userconfig.writeagain(); <--this seemed to crash max?
+		post("\nstoring hardware config choice",vspl);
 	}
 
 	post("\nreading hardware database");
