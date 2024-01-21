@@ -1399,7 +1399,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		var rotZ = Math.atan(pos_dif[1]/pos_dif[0]);
 	
 		if(from_pos[0]<=to_pos[0]) rotY	= -rotY;
-		if(usermouse.caps) post("\nroty",rotY,"rotz",rotZ);
+		//if(usermouse.caps) post("\nroty",rotY,"rotz",rotZ);
 		rotZ *= 57.29577951; //180/Math.PI;
 		rotY *= 57.29577951; //180/Math.PI;
 	}
