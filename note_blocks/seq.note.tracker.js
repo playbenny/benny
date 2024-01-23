@@ -35,6 +35,8 @@ var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 // 0 - playhead position (updated by player voice)
 // 1-1023 data values
 function setup(x1,y1,x2,y2,sw){ 
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	mini=0;
 	width = x2-x1;

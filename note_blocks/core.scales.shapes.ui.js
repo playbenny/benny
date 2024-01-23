@@ -29,7 +29,9 @@ var cursors = new Array(128); //holds last drawn position of playheads (per row)
 // 2 - playhead position (updated by player voice)
 // 3-131? data values
 function setup(x1,y1,x2,y2,sw){
-//	post("drawing sequencers");
+	//	post("drawing sequencers");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	var cl = config.getsize("palette::gamut");
 	for(var i =0;i<MAX_POOLS;i++){

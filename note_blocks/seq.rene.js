@@ -16,7 +16,9 @@ var cursors = []; //holds last drawn position of playheads (per row)
 var cell = new Array(16); //holds how many cursors are in this cell this update
 
 function setup(x1,y1,x2,y2,sw){
-//	post("drawing sequencers");
+	//	post("drawing sequencers");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	width = x2-x1;
 	height = y2-y1;
