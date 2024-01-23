@@ -1641,8 +1641,15 @@ function panel_assign_click(parameter,value){
 }
 
 function cycle_automap_offset(p,v){
-	automap.offset_c ++;
-	if(automap.offset_c>=automap.offset_range_c)automap.offset_c=0;
+	if(p>0){
+		automap.offset_c++;
+		if(automap.offset_c > automap.offset_range_c) automap.offset_c = 0;
+	}else{
+		automap.offset_c=0;
+		automap.mapped_c=-1;
+	}
+	automap.offset_range_c = -automap.offset_range_c; //this flags a remapping
+	redraw_flag.flag |= 2;
 }
 
 function set_automap_k_input(parameter,value){

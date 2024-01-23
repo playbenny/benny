@@ -3823,7 +3823,7 @@ function draw_sidebar(){
 			y_offset += 1.1*fontheight;
 
 			var getmap = 0;
-			var map_x = 0, map_y = 0, maplist = [];
+			var map_x = 0, map_y = 0, maplist = [], buttonmaplist = [], mapcolours = [];
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
@@ -3914,31 +3914,21 @@ function draw_sidebar(){
 			if(automap.available_c!=-1){
 				if((block_name != "core.input.control") && has_params){
 					if(automap.mapped_c!=block){
-						groups = blocktypes.get(block_name+"::groups");
-						if(!Array.isArray(groups)) groups=[groups];
-						var rc=0;
-						for(i=0;i<groups.length;i++){
-							var tot=0;
-							var lst=-1;
-							var plst=groups[i].get("contains");
-							if(!Array.isArray(plst)) plst=[plst];
-							for(var ti=0;ti<plst.length;ti++){
-								if(plst[ti]!=lst)tot+=1;
-								lst=plst[ti];
-							}
-							rc += Math.max(Math.floor(tot/automap.c_cols),1);
-						}
-						automap.offset_range_c = Math.max(0,rc - automap.c_rows);
 						automap.offset_c = 0;
 						getmap=1; //flag set, then it collects up map data
 						automap.mapped_c=block;
+					}else if(automap.offset_range_c < 0){
+						//we set it to negative to flag a change in offset, it gets recalced before the end of this fn
+						map_y = -automap.offset_c;
+						getmap = 1;
 					}
+					
 					// DRAW AUTOMAP HEADER LINE
 					lcd_main.message("paintrect",sx,y_offset,mainwindow_width-9,y_offset+fontheight*0.5,block_darkest);
 					//lcd_main.message("frgb", block_colour);
 					var hf= 0.25*fontheight;
 					click_zone(select_block_by_name,"core.input.control", null, sx,y_offset,sx+22, y_offset+fontheight*0.5,mouse_index,1 ); 
-					click_zone(cycle_automap_offset, null, null, sx+24,y_offset,mainwindow_width-9,y_offset+0.5*mainwindow_width,mouse_index,1);
+					click_zone(cycle_automap_offset, 1, null, sx+24,y_offset,mainwindow_width-9,y_offset+0.5*mainwindow_width,mouse_index,1);
 					lcd_main.message("frgb", block_dark);
 					lcd_main.message("framerect",sx,y_offset,sx+22,y_offset+fontheight*0.5);
 					lcd_main.message("frameoval",sx+13-hf,y_offset+4,sx+hf+9,y_offset+hf+hf-4);
@@ -4091,21 +4081,43 @@ function draw_sidebar(){
 								if(plist[tk]==plist[t]) wk++;
 							}
 							if(params[curp].contains("name")){
+								p_type = params[curp].get("type");
 								if(getmap==1){
-									maplist[maplist.length]= MAX_PARAMETERS*block+curp;
-									map_x++;
-									if(map_x>=automap.c_cols){
-										map_x=0;
-										map_y++;
-										if(map_y>=automap.c_rows){
-											getmap=-1;
+									if(p_type!="button"){
+										if(opvf){
+											var vl=voicemap.get(block);
+											if(!Array.isArray(vl))vl=[vl];
+											for(var vc=0;vc<current_p;vc++){
+												if((map_y>=0)&&(map_y<automap.c_rows)){
+													maplist[maplist.length]= -1;//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
+													mapcolours.push(colour[0]);
+													mapcolours.push(colour[1]);
+													mapcolours.push(colour[2]);
+												}
+												map_x++;
+												if(map_x>=automap.c_cols){
+													map_x=0;
+													map_y++;
+												}	
+											}
+										}else{
+											if((map_y>=0)&&(map_y<automap.c_rows)){
+												maplist[maplist.length]= MAX_PARAMETERS*block+curp;
+												mapcolours.push(colour[0]);
+												mapcolours.push(colour[1]);
+												mapcolours.push(colour[2]);
+											}
+											map_x++;
+											if(map_x>=automap.c_cols){
+												map_x=0;
+												map_y++;
+											}
 										}
-									}
+									}//buttons need target/message to be stored so are done later
 								}
 								if((y2>0)&&(y1<mainwindow_height)){
 									x1 = sidebar.x + w_slider*knob.x;
 									x2 = sidebar.x + w_slider*(knob.x+wk) - fontheight*0.1;
-									p_type = params[curp].get("type");
 									p_values = params[curp].get("values");
 									wrap = params[curp].get("wrap");
 									pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
@@ -4129,6 +4141,9 @@ function draw_sidebar(){
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
 										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
+										if(getmap!=0){
+											buttonmaplist.push(mouse_click_values[mouse_index]);
+										}
 										mouse_index++;
 									}else{
 										var click_to_set = 0;
@@ -4169,24 +4184,31 @@ function draw_sidebar(){
 						if(maxnamelabely>(y2)){
 							y_offset += maxnamelabely - y2;
 						}
-						if(map_x!=0){ //wrap round to the next row, padding maplist with -1s
-							if(getmap==1){
-								var tm;
-								for(tm=0;tm<(automap.c_cols-map_x);tm++){
-									maplist[maplist.length]=-1;
+						if(getmap==1){
+							if(map_x!=0){ //wrap round to the next row, padding maplist with -1s if still inside the row limit
+								if((map_y>=0) && (map_y<automap.c_rows)){
+									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
+										maplist.push(-1);
+										mapcolours.push(-1);
+									}
 								}
 								map_x=0;
 								map_y++;
-								if(map_y>=automap.c_rows){
-									getmap=-1;
-								}
 							}									
 						}
 					}
 					if(getmap!=0){
-						//post("maplist",maplist);
+						while(map_y<automap.c_rows){
+							mapcolours.push(-1);
+							map_x++;
+							if(map_x>=automap.c_rows){
+								map_x = 0;
+								map_y++;
+							}
+						}
+						automap.offset_range_c = Math.max(0,map_y - automap.c_rows + automap.offset_c);
 						note_poly.setvalue(automap.available_c,"maplist",maplist);
-						note_poly.setvalue(automap.available_c,"mapcolour",blocks.get("blocks["+block+"]::space::colour"));
+						note_poly.setvalue(automap.available_c,"mapcolour",mapcolours);
 					}
 				}
 				colour=block_colour;
@@ -6206,7 +6228,7 @@ function draw_sidebar(){
 		}else if((selected.block_count + selected.wire_count) > 1){ 
 			sidebar.editbtn = 0;
 			if(selected.wire_count>1){
-				sidebar.mode="wires";
+				sidebar.mode = "wires";
 			}else{
 				sidebar.mode = "blocks";
 			}

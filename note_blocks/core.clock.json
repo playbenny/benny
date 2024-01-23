@@ -20,12 +20,12 @@
 		"groups" : [
 			{ 
 				"contains" : [0, 0, 6, 10, 11],
-				"colour" : [255,255,255],
+				"colour" : 20,
 				"height" : 0
 			},
 			{ 
 				"contains" : [1,2,3,7,4,5],
-				"colour" : [128,128,128],
+				"colour" : 10,
 				"height" : 1
 			},
 			{
@@ -35,6 +35,7 @@
 			},
 			{
 				"contains" : [9],
+				"colour" : -20,
 				"height" : 2,
 				"onepervoice" : 1
 			}
