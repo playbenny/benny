@@ -6280,6 +6280,7 @@ function draw_sidebar(){
 						lcd_main.message("frgb" , block_colour);				
 						lcd_main.message("moveto", sidebar.x + 0.1*fontheight, fontheight*(0.4)+y_offset);
 						lcd_main.message("write", block_label);
+						click_zone(individual_multiselected_block,i,null, sidebar.x, y_offset, mainwindow_width, y_offset+0.5*fontheight,mouse_index,1);
 						y_offset+=0.5*fontheight;
 					}
 				}

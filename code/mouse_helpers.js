@@ -1391,6 +1391,23 @@ function mute_selection(action){
 	}
 }
 
+function individual_multiselected_block(b){
+	//this is clicks in the list of multiple selected blocks
+	//shift click - unselect
+	if(usermouse.shift){
+		selected.block[b] = 0;
+		redraw_flag.flag |= 4;
+	}
+	//ctrl click - mute
+	if(usermouse.ctrl){
+		mute_particular_block(b,-1);
+	}
+	//alt click - bypass?
+	if(usermouse.alt){
+		bypass_particular_block(b, -1);
+	}
+}
+
 function mute_selected_block(action){
 	//post("\n(un)muting selected block(s)",action);
 	var i;
