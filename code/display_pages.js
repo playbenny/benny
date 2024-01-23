@@ -1103,8 +1103,8 @@ function draw_wire(connection_number){
 			}else{
 				tconx =  ((to_number+0.5)/(num_ins));
 				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
-				if(to_type == "midi") to_pos[2] -= 0.25; //to_pos[1]-=0.25;
-				if(to_type == "parameters") to_pos[2] -= 0.125; //to_pos[1]+=0.25;
+				if(to_type == "midi") to_pos[2] -= 0.25;
+				if(to_type == "parameters") to_pos[2] -= 0.125;
 				if(to_type == "block"){
 					to_pos[2] -= 0.375;
 					tconx = 0.5;

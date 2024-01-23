@@ -591,12 +591,14 @@ function import_song(){
 						if(songs.contains(loading.songname+"::states::current::static_mod::"+b+"::"+i)){
 							stpv = songs.get(loading.songname+"::states::current::static_mod::"+b+"::"+i);
 							safepoke(parameter_static_mod,1,vl[i]*MAX_PARAMETERS,stpv);
-							if(!states.contains("states::current::static_mod::"+loading.mapping[b]+"::"+i))states.setparse("states::current::static_mod::"+loading.mapping[b]+"::"+i,"{}");
+							if(!states.contains("states::current::static_mod::"+loading.mapping[b]+"::"+i))states.setparse("states::current::static_mod::"+loading.mapping[b]+"::"+i,"[]");
 							states.replace("states::current::static_mod::"+loading.mapping[b]+"::"+i,stpv);
 						}
 					}
+					// LEGACY CODE: READS OLD STYLE SAVES, replace me once you've fixed all songfiles
 					stpv = songs.get(loading.songname+"::states::current::static_mod::"+b);
 					for(i=0;i<stpv.length;i+=3){
+						post("\nlegacy init static_mod",stpv[i],stpv[i+1],stpv[i+2]);
 						safepoke(parameter_static_mod,1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
 					}
 				}
@@ -967,7 +969,7 @@ function save_song(selectedonly){
 				if(!states.contains("states::current::static_mod"))states.setparse("states::current::static_mod","{}");
 				if(!states.contains("states::current::static_mod::"+b))states.setparse("states::current::static_mod::"+b,"{}");
 				for(var v=0;v<vl.length;v++){
-					if(pvm_vl[v]=1){
+					if(pvm_vl[v]==1){
 						if(!states.contains("states::current::static_mod::"+b+"::"+v))states.setparse("states::current::static_mod::"+b+"::"+v,"{}");
 						var tv=parameter_static_mod.peek(1,vl[v]*MAX_PARAMETERS,psize);
 						post("\nadding",tv.length,"values to current/static/",b,"vl",v);
