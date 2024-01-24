@@ -4625,10 +4625,7 @@ function draw_sidebar(){
 					for(i=0;i<groups.length;i++){
 						colour=block_colour;
 						if(groups[i].contains("colour")){
-							var blend_colour = groups[i].get("colour");
-							colour[0]=(colour[0]*3+blend_colour[0])>>2;
-							colour[1]=(colour[1]*3+blend_colour[1])>>2;
-							colour[2]=(colour[2]*3+blend_colour[2])>>2;
+							colour = groups[i].get("colour");
 						}
 						y1 = y_offset +  fontheight * 0.1;
 						y2 = y_offset +  fontheight * 1;
