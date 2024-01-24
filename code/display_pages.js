@@ -4143,8 +4143,9 @@ function draw_sidebar(){
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
 										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
-										if(getmap!=0){
-											buttonmaplist.push(mouse_click_values[mouse_index]);
+										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+											//but it's so much easier just to call this fn
+											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
 										}
 										mouse_index++;
 									}else{
@@ -4213,6 +4214,11 @@ function draw_sidebar(){
 						note_poly.setvalue(automap.available_c,"maplistopv",maplistopv);
 						note_poly.setvalue(automap.available_c,"maplist",maplist);
 						note_poly.setvalue(automap.available_c,"mapcolour",mapcolours);
+						if(buttonmaplist.length>0){
+							note_poly.setvalue(automap.available_c,"buttonmaplist",buttonmaplist);
+						}else{
+							note_poly.setvalue(automap.available_c,"buttonmaplist",-1);
+						}
 					}
 				}
 				colour=block_colour;

@@ -31,7 +31,6 @@ function resync_button(){
 
 function panic_button(){
 	var i;
-	//post("TODO: panic");
 	messnamed("panic","bang");
 	build_mod_sum_action_list();
 	sigouts.setvalue(0,0); //clears midi-audio sig~

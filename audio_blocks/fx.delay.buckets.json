@@ -140,7 +140,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","16th",16]
+				"values" : ["firstvoice","16",16]
 			},
 			{
 				"name" : "8 T",
@@ -148,7 +148,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","8thT",12]
+				"values" : ["firstvoice","8T",12]
 			},
 			{
 				"name" : "8th",
@@ -156,7 +156,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","8th",8]
+				"values" : ["firstvoice","8",8]
 			},
 			{
 				"name" : "4 T",
@@ -164,7 +164,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","8th",6]
+				"values" : ["firstvoice","4T",6]
 			},
 			{
 				"name" : "3 16th",

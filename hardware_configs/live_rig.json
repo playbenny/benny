@@ -59,7 +59,10 @@
 				},
 				"buttons" : {
 					"type" : "cc",
-					"function" : "global",
+					"globals" : {
+						"automap_toggle" : 0,
+						"automap_page" : 3
+					},
 					"channel" : 4,
 					"first" : 8
 				}
@@ -76,7 +79,6 @@
 				"rows" : 2,
 				"buttons" : {
 					"type" : "note",
-					"function" : "more",
 					"channel" : 1,
 					"first" : 36
 				}
