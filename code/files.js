@@ -583,10 +583,22 @@ function import_song(){
 			
 			for(b=0;b<loading.mapping.length;b++){
 				if(songs.contains(loading.songname+"::states::current::static_mod::"+b)){
-					stpv = songs.get(loading.songname+"::states::current::static_mod::"+b);
+					if(!states.contains("states::current::static_mod")) states.setparse("states::current::static_mod","{}");
+					if(!states.contains("states::current::static_mod::"+loading.mapping[b]))states.setparse("states::current::static_mod::"+loading.mapping[b],"{}");
 					var vl=voicemap.get(loading.mapping[b]);
 					if(!Array.isArray(vl)) vl=[vl];
+					for(i=0;i<vl.length;i++){
+						if(songs.contains(loading.songname+"::states::current::static_mod::"+b+"::"+i)){
+							stpv = songs.get(loading.songname+"::states::current::static_mod::"+b+"::"+i);
+							safepoke(parameter_static_mod,1,vl[i]*MAX_PARAMETERS,stpv);
+							if(!states.contains("states::current::static_mod::"+loading.mapping[b]+"::"+i))states.setparse("states::current::static_mod::"+loading.mapping[b]+"::"+i,"[]");
+							states.replace("states::current::static_mod::"+loading.mapping[b]+"::"+i,stpv);
+						}
+					}
+					// LEGACY CODE: READS OLD STYLE SAVES, replace me once you've fixed all songfiles
+					stpv = songs.get(loading.songname+"::states::current::static_mod::"+b);
 					for(i=0;i<stpv.length;i+=3){
+						post("\nlegacy init static_mod",stpv[i],stpv[i+1],stpv[i+2]);
 						safepoke(parameter_static_mod,1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
 					}
 				}
@@ -925,10 +937,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 function save_song(selectedonly){
 	if(selectedonly) post("\nTODO save selected blocks only isn't done yet sorry, this will save the whole thing.");
 	post("collecting data to save\n");
-//copy current param values into states[0]
+	//copy current param values into states[0]
 	var b,p,psize;
 	var store = [];
 	var per_v = [];
+	if(states.contains("states::current")) states.remove("states::current");
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(ui_patcherlist[b]!='blank.ui') ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
 		store[b] = [];
@@ -938,12 +951,29 @@ function save_song(selectedonly){
 		
 		if(blocks.contains("blocks["+b+"]::name")){
 			psize = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
+			var pvm_vl=[],pvm=0;
 			for(p=0;p<psize;p++){ 
 				store[b][p+1]=parameter_value_buffer.peek(1, MAX_PARAMETERS*b+p);
 				for(var v=0;v<vl.length;v++){
 					var tv=parameter_static_mod.peek(1,vl[v]*MAX_PARAMETERS+p);
 					if(tv!=0){
-						per_v[b].push(v,p,tv); // per voice static parameter mod is stored in savefile as voice, param, modval triplets
+						pvm_vl[v]=1;
+						pvm=1;
+//						per_v[b].push(v,p,tv); // per voice static parameter mod is stored in savefile as voice, param, modval triplets
+					}
+				}
+			}
+			if(pvm==1){
+				per_v[b] = new Dict;
+				if(!states.contains("states::current")) states.setparse("states::current","{}");
+				if(!states.contains("states::current::static_mod"))states.setparse("states::current::static_mod","{}");
+				if(!states.contains("states::current::static_mod::"+b))states.setparse("states::current::static_mod::"+b,"{}");
+				for(var v=0;v<vl.length;v++){
+					if(pvm_vl[v]==1){
+						if(!states.contains("states::current::static_mod::"+b+"::"+v))states.setparse("states::current::static_mod::"+b+"::"+v,"{}");
+						var tv=parameter_static_mod.peek(1,vl[v]*MAX_PARAMETERS,psize);
+						post("\nadding",tv.length,"values to current/static/",b,"vl",v);
+						states.replace("states::current::static_mod::"+b+"::"+v,tv);	
 					}
 				}
 			}
@@ -951,10 +981,9 @@ function save_song(selectedonly){
 			if(blocks.contains("blocks["+b+"]::mute")) store[b][0] = blocks.get("blocks["+b+"]::mute");
 		}
 	}
-	if(states.contains("states::current")) states.remove("states::current");
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
-		if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
+		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
 	}
 	post("current state stored");
 	if(panels_order.length){

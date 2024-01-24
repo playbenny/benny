@@ -22,6 +22,8 @@ function setup(x1,y1,x2,y2,sw){
 	// not done - needs to work out which controller it is, get row and column count from config
 	menucolour = config.get("palette::menu");
 	gamutl = config.getsize("palette::gamut");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	height = y2-y1;
 	x_pos = x1;

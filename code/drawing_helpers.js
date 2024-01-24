@@ -763,8 +763,8 @@ function center_view(resetz){
 }
 
 function request_redraw(n){
-	// post("\nreq redraw",n);
-	if(displaymode=="blocks") redraw_flag.flag |= n;
+	if(displaymode!="blocks") n &= 19; //removes 4, block redraw and 8, block colours
+	redraw_flag.flag |= n;
 }
 
 function draw_menu_hint(){

@@ -1133,7 +1133,7 @@ function remove_connection(connection_number){
 						}
 						
 						t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
-						post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
+						//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
 					}
 				}
 				// find the route, then remove this polyvoice's connection
@@ -1548,7 +1548,7 @@ function make_connection(cno){
 							}
 							
 							t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
-							post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
+							//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
 						}
 					}
 
@@ -2437,7 +2437,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		//build_mod_sum_action_list();
 		rebuild_action_list=1;
 	}
-	if(sidebar.mode=="block") sidebar.mode="retrig";
+	if(sidebar.mode=="block"){
+		sidebar.mode="retrig";
+		remove_automaps();
+	}	
 	redraw_flag.flag=4;
 //	rebuild_action_list = 1;
 }

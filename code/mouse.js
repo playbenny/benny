@@ -707,7 +707,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(drawwire == 1){
 										potential_connection.replace("from::number",usermouse.ids[1]);
 										potential_connection.replace("to::number",usermouse.hover[1]);
-										potential_connection.replace("to::voice",usermouse.hover[2]);
+										potential_connection.replace("to::type","potential");
+										var temptovoice = usermouse.hover[2];
+										if(blocks.contains("blocks["+usermouse.hover[1]+"]::subvoices")){
+											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
+											temptovoice = temptovoice / blocks.get("blocks["+usermouse.hover[1]+"]::subvoices");
+										}
+										potential_connection.replace("to::voice",temptovoice);
 										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
 										if(wires_potential_connection==-1){
 											var csize = connections.getsize("connections");
@@ -1149,7 +1155,7 @@ function keydown(key){
 				//record arm
 				arm_selected_blocks();
 			}else if(key == 109){
-				mute_selected_block(-1);
+				mute_selection(-1); //ed_block(-1);
 			}else if(key == 353){
 				select_all();
 			}else if(key == 355){

@@ -23,6 +23,8 @@ var o_w=-1;
 
 function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little fx/waveform hint window bottom right
 //	post("drawing sequencers");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	if(width != o_w){
 		for(var i=0;i<v_list.length;i++) {

@@ -31,7 +31,9 @@ var ph,start,lstart,end,lon,divs,offs;
 // 0 - playhead position (updated by player voice)
 // 1-1023 data values
 function setup(x1,y1,x2,y2,sw){ 
-//	post("drawing sequencers");
+	//	post("drawing sequencers");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	mini=0;
 	width = x2-x1;

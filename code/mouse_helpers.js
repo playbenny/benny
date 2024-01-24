@@ -1382,6 +1382,32 @@ function mute_all_blocks(action){
 	redraw_flag.flag=10;
 }
 
+function mute_selection(action){
+	if(selected.wire.indexOf(1)){
+		connection_mute_selected(action,null);
+	}
+	if(selected.block.indexOf(1)){
+		mute_selected_block(action);
+	}
+}
+
+function individual_multiselected_block(b){
+	//this is clicks in the list of multiple selected blocks
+	//shift click - unselect
+	if(usermouse.shift){
+		selected.block[b] = 0;
+		redraw_flag.flag |= 4;
+	}
+	//ctrl click - mute
+	if(usermouse.ctrl){
+		mute_particular_block(b,-1);
+	}
+	//alt click - bypass?
+	if(usermouse.alt){
+		bypass_particular_block(b, -1);
+	}
+}
+
 function mute_selected_block(action){
 	//post("\n(un)muting selected block(s)",action);
 	var i;
@@ -1615,8 +1641,15 @@ function panel_assign_click(parameter,value){
 }
 
 function cycle_automap_offset(p,v){
-	automap.offset_c ++;
-	if(automap.offset_c>=automap.offset_range_c)automap.offset_c=0;
+	if(p>0){
+		automap.offset_c++;
+		if(automap.offset_c > automap.offset_range_c) automap.offset_c = 0;
+	}else{
+		automap.offset_c=0;
+		automap.mapped_c=-1;
+	}
+	automap.offset_range_c = -automap.offset_range_c; //this flags a remapping
+	redraw_flag.flag |= 2;
 }
 
 function set_automap_k_input(parameter,value){
@@ -1797,8 +1830,16 @@ function block_edit(parameter,value){
 
 function automap_default(a,b){
 	if(sidebar.selected != -1){
-		safepoke(parameter_value_buffer,1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
-		note_poly.setvalue(b,"refresh");
+		if(a<0){
+			//post("\nI THINK THIS IS STATIC MOD RESET",a,b);
+			safepoke(parameter_static_mod,1,-a,0);
+			note_poly.setvalue(b+1, "refresh");
+			//note_poly.setvalue(automap.available_c,"refresh");
+		}else{
+			safepoke(parameter_value_buffer,1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
+			note_poly.setvalue(b+1,"refresh");
+			//note_poly.setvalue(automap.available_c,"refresh");
+		}
 	}
 }
 
