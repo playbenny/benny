@@ -488,7 +488,7 @@ function assign_block_colours(){
 					if(blocktypes.contains(types[i]+"::groups["+gp+"]::colour")){
 						var tc = blocktypes.get(types[i]+"::groups["+gp+"]::colour");
 						if(!Array.isArray(tc)){
-							var nc = config.get("palette::gamut["+((t2+tc)%cll)+"]::colour");
+							var nc = config.get("palette::gamut["+((t2+tc+cll)%cll)+"]::colour");
 							blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
 						}
 					}
