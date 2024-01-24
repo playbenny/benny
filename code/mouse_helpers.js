@@ -1830,8 +1830,16 @@ function block_edit(parameter,value){
 
 function automap_default(a,b){
 	if(sidebar.selected != -1){
-		safepoke(parameter_value_buffer,1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
-		note_poly.setvalue(b,"refresh");
+		if(a<0){
+			//post("\nI THINK THIS IS STATIC MOD RESET",a,b);
+			safepoke(parameter_static_mod,1,-a,0);
+			note_poly.setvalue(b+1, "refresh");
+			//note_poly.setvalue(automap.available_c,"refresh");
+		}else{
+			safepoke(parameter_value_buffer,1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
+			note_poly.setvalue(b+1,"refresh");
+			//note_poly.setvalue(automap.available_c,"refresh");
+		}
 	}
 }
 

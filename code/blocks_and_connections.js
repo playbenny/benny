@@ -2437,7 +2437,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		//build_mod_sum_action_list();
 		rebuild_action_list=1;
 	}
-	if(sidebar.mode=="block") sidebar.mode="retrig";
+	if(sidebar.mode=="block"){
+		sidebar.mode="retrig";
+		remove_automaps();
+	}	
 	redraw_flag.flag=4;
 //	rebuild_action_list = 1;
 }

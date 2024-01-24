@@ -3823,7 +3823,7 @@ function draw_sidebar(){
 			y_offset += 1.1*fontheight;
 
 			var getmap = 0;
-			var map_x = 0, map_y = 0, maplist = [], buttonmaplist = [], mapcolours = [];
+			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [];
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
@@ -4089,7 +4089,8 @@ function draw_sidebar(){
 											if(!Array.isArray(vl))vl=[vl];
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)&&(map_y<automap.c_rows)){
-													maplist[maplist.length]= -1;//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
+													maplist.push(0-(MAX_PARAMETERS*block+curp));//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
+													maplistopv.push(MAX_PARAMETERS*vl[vc]+curp);
 													mapcolours.push(colour[0]);
 													mapcolours.push(colour[1]);
 													mapcolours.push(colour[2]);
@@ -4102,7 +4103,8 @@ function draw_sidebar(){
 											}
 										}else{
 											if((map_y>=0)&&(map_y<automap.c_rows)){
-												maplist[maplist.length]= MAX_PARAMETERS*block+curp;
+												maplist.push(MAX_PARAMETERS*block+curp);
+												maplistopv.push(-1);
 												mapcolours.push(colour[0]);
 												mapcolours.push(colour[1]);
 												mapcolours.push(colour[2]);
@@ -4189,6 +4191,7 @@ function draw_sidebar(){
 								if((map_y>=0) && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
 										maplist.push(-1);
+										maplistopv.push(-1);
 										mapcolours.push(-1);
 									}
 								}
@@ -4207,6 +4210,7 @@ function draw_sidebar(){
 							}
 						}
 						automap.offset_range_c = Math.max(0,map_y - automap.c_rows + automap.offset_c);
+						note_poly.setvalue(automap.available_c,"maplistopv",maplistopv);
 						note_poly.setvalue(automap.available_c,"maplist",maplist);
 						note_poly.setvalue(automap.available_c,"mapcolour",mapcolours);
 					}
