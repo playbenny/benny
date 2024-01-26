@@ -14,7 +14,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2],
+				"contains" : [0,3,1,2],
 				"height" : 1
 			}			
 		],
@@ -40,6 +40,13 @@
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.25
+			},{
+				"name" : "sustain_debounce_time",
+				"type" : "int",
+				"values" : ["uni",0,1000, "exp"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
 			}
 		]
 	}
