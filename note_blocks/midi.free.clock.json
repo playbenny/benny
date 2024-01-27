@@ -10,12 +10,15 @@
 				"midi" : [ "reset in" ]
 			},
 			"out" : {
-				"midi" : [ "clock" ]
+				"midi" : [ "clock","output B","output C" ]
 			}
 		},
 		"groups" : [
 			{ 
 				"contains" : [0,0, 1,2]
+			},{
+				"contains" : [3,4,5],
+				"height":0
 			}		
 		],
 		"panel" : {
@@ -30,16 +33,37 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "multiplier",
+				"name" : "output_multiplier",
 				"type" : "int",
 				"values" : ["uni", 1, 32, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "run while_stopped",
+				"name" : "run_while_stopped",
 				"type" : "menu_i",
 				"values" : ["play only", "always"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "output B_divisor",
+				"type" : "int",
+				"values" : ["uni", 1, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.125
+			},
+			{
+				"name" : "output C_divisor",
+				"type" : "int",
+				"values" : ["uni", 1, 32, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "count_wrap",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			}
