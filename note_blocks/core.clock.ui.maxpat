@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 4,
+			"minor" : 6,
+			"revision" : 0,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 85.0, 1533.0, 743.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -45,7 +45,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1119.0, 144.0, 150.0, 48.0 ],
+					"patching_rect" : [ 1119.0, 144.0, 150.0, 47.0 ],
 					"text" : "once i have ui block recycling enabled, i don't think i'll need this"
 				}
 
@@ -104,7 +104,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 570.0, 590.5, 78.0, 22.0 ],
+					"patching_rect" : [ 509.0, 543.0, 78.0, 22.0 ],
 					"text" : "route looping"
 				}
 
@@ -222,7 +222,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 791.0, 573.0, 274.0, 22.0 ],
+					"patching_rect" : [ 819.25, 574.0, 274.0, 22.0 ],
 					"text" : "\"2 4\" \"3 4\" \"4 4\" \"5 4\" \"6 4\" \"7 4\" \"9 4\" \"10 4\" \"11 4\""
 				}
 
@@ -294,7 +294,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 150.5, 799.875, 54.0, 22.0 ],
+					"patching_rect" : [ 137.5, 735.0, 54.0, 22.0 ],
 					"text" : "pack 0 0"
 				}
 
@@ -305,7 +305,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 150.5, 853.0, 98.0, 22.0 ],
+					"patching_rect" : [ 137.5, 781.5, 98.0, 22.0 ],
 					"text" : "s request_tempo"
 				}
 
@@ -317,7 +317,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 570.0, 710.5, 150.0, 103.0 ],
+					"patching_rect" : [ 570.0, 710.5, 150.0, 100.0 ],
 					"text" : "this shit manages multiple clock blocks - newly added ones should acquire tempo, newly loaded ones should take over and kill old ones. mute/unmute revives"
 				}
 
@@ -353,7 +353,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "int", "int" ],
-					"patching_rect" : [ 124.5, 619.5, 65.0, 22.0 ],
+					"patching_rect" : [ 87.5, 590.5, 65.0, 22.0 ],
 					"text" : "change -1."
 				}
 
@@ -365,7 +365,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "float" ],
-					"patching_rect" : [ 337.5, 719.0, 29.5, 22.0 ],
+					"patching_rect" : [ 377.5, 749.5, 29.5, 22.0 ],
 					"text" : "t b f"
 				}
 
@@ -377,7 +377,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 337.5, 780.5, 172.0, 22.0 ],
+					"patching_rect" : [ 377.5, 811.5, 172.0, 22.0 ],
 					"text" : "peek~ parameter_value_buffer"
 				}
 
@@ -389,7 +389,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 337.5, 751.0, 29.5, 22.0 ],
+					"patching_rect" : [ 377.5, 781.5, 29.5, 22.0 ],
 					"text" : "i"
 				}
 
@@ -484,7 +484,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 570.0, 560.0, 67.0, 22.0 ],
+					"patching_rect" : [ 509.0, 512.0, 67.0, 22.0 ],
 					"text" : "r coreclock"
 				}
 
@@ -568,7 +568,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ -15.75, 710.125, 34.0, 22.0 ],
+					"patching_rect" : [ -16.0, 575.0, 34.0, 22.0 ],
 					"text" : "sel 1"
 				}
 
@@ -580,7 +580,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 42.5, 666.125, 32.0, 22.0 ],
+					"patching_rect" : [ 29.5, 659.0, 32.0, 22.0 ],
 					"text" : "gate"
 				}
 
@@ -616,7 +616,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 2,
 					"outlettype" : [ "float", "float" ],
-					"patching_rect" : [ 42.5, 746.75, 127.0, 22.0 ],
+					"patching_rect" : [ 29.5, 697.0, 127.0, 22.0 ],
 					"text" : "split -99999999999. 0."
 				}
 
@@ -628,7 +628,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1095.0, 484.0, 152.0, 75.0 ],
+					"patching_rect" : [ 1095.0, 484.0, 152.0, 74.0 ],
 					"text" : "NB this version DOES NOT need the tempo slide thing, because beats 2,3,4, etc are actually 1,2,3 etc through a delay"
 				}
 
@@ -663,7 +663,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 945.0, 455.5, 40.0, 22.0 ],
+					"patching_rect" : [ 945.0, 426.0, 40.0, 22.0 ],
 					"text" : "* 100."
 				}
 
@@ -674,7 +674,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 689.0, 445.5, 99.0, 22.0 ],
+					"patching_rect" : [ 689.0, 431.0, 99.0, 22.0 ],
 					"text" : "s humaniser_slip"
 				}
 
@@ -720,11 +720,12 @@
 					"id" : "obj-63",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 199.0, 193.75, 133.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -752,7 +753,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 945.0, 488.0, 108.0, 22.0 ],
+					"patching_rect" : [ 945.0, 458.0, 108.0, 22.0 ],
 					"text" : "prepend centerline"
 				}
 
@@ -790,7 +791,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 945.0, 407.5, 75.0, 22.0 ]
+					"patching_rect" : [ 945.0, 393.0, 75.0, 22.0 ]
 				}
 
 			}
@@ -801,7 +802,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 912.0, 407.5, 29.5, 22.0 ],
+					"patching_rect" : [ 912.0, 393.0, 29.5, 22.0 ],
 					"text" : "+ 0."
 				}
 
@@ -850,7 +851,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 689.0, 407.5, 200.0, 22.0 ],
+					"patching_rect" : [ 689.0, 393.0, 200.0, 22.0 ],
 					"text" : "expr -60000.*((1./($f2+$f1))-(1./$f2))"
 				}
 
@@ -862,7 +863,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 689.0, 375.5, 33.0, 22.0 ],
+					"patching_rect" : [ 689.0, 361.0, 33.0, 22.0 ],
 					"text" : "* 0.1"
 				}
 
@@ -886,7 +887,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 971.0, 321.0, 213.0, 62.0 ],
+					"patching_rect" : [ 971.0, 321.0, 213.0, 60.0 ],
 					"text" : "at tempo t a beat is (60000/t) ms\nat tempo t+d a beat is (60000/(t+d))ms\nso every beat you get ahead by 60000*(1/(t+d) - 1/t)"
 				}
 
@@ -898,7 +899,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 971.0, 261.0, 270.0, 48.0 ],
+					"patching_rect" : [ 971.0, 261.0, 270.0, 47.0 ],
 					"text" : "-1 if avg is too high, ie it's too far behind, so slow tempo and reduce the human_times values. we want to lose 10ms (1000 in this table)"
 				}
 
@@ -1257,6 +1258,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 306.0, 537.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -1281,7 +1286,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 94.5, 375.5, 149.0, 36.0 ],
+					"patching_rect" : [ 94.5, 375.5, 149.0, 35.0 ],
 					"text" : "expr ((pow(2.\\,$f1)-1)*59.9 +0.1)*1000."
 				}
 
@@ -1389,6 +1394,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 265.0, 537.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1401,6 +1410,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 85.0, 66.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
