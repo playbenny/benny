@@ -44,63 +44,72 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 1 
+				"default" : 1,
+				"click_set" : 1 
 			},
 			{
 				"name" : "sub_5th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75 
+				"default" : 0.75 ,
+				"click_set" : 1
 			},
 			{
 				"name" : "root",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.5,
+				"click_set" : 1
 			},
 			{
 				"name" : "2nd",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.25
+				"default" : 0.25,
+				"click_set" : 1
 			},
 			{
 				"name" : "3rd",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.05 
+				"default" : 0.05,
+				"click_set" : 1 
 			},
 			{
 				"name" : "fourth",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.25 
+				"default" : 0.25,
+				"click_set" : 1 
 			},
 			{
 				"name" : "5th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5 
+				"default" : 0.5,
+				"click_set" : 1 
 			},
 			{
 				"name" : "6th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75 
+				"default" : 0.75,
+				"click_set" : 1 
 			},
 			{
 				"name" : "8th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 1.0
+				"default" : 1.0,
+				"click_set" : 1
 			},
 			{
 				"name" : "gain",
@@ -112,9 +121,9 @@
 			{
 				"name" : "contact bounce time",
 				"type" : "float",
-				"values" : ["uni", 1, 10, "exp" ],
+				"values" : ["uni", 0, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0				
+				"default" : 0.134				
 			}
 		]
 	}
