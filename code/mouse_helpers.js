@@ -539,6 +539,15 @@ function select_voice(parameter,value){
 	redraw_flag.flag |= 10;
 }
 
+function sidebar_select_connection(num,val){
+	if(usermouse.ctrl){
+		var m = !connections.get("connections["+num+"]::conversion::mute");
+		connection_edit("connections["+num+"]::conversion::mute",m);
+	}else{
+		clear_blocks_selection();
+		selected.wire[num]=1; //^^this already flags a redraw
+	}
+}
 function show_new_block_menu(){
 	clear_blocks_selection();
 	blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);

@@ -250,7 +250,7 @@ function initialise_dictionaries(){
 	ANIM_TIME = config.get("ANIM_TIME");
 	waves_preloading = config.get("waves_preloading");
 	wires_show_all = config.get("WIRES_SHOW_ALL");
-
+	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	var maxmsp = config.get("maxmsp");
 	var messes = maxmsp.getkeys();
 	for(i=0;i<messes.length;i++){

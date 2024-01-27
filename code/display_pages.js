@@ -4048,6 +4048,22 @@ function draw_sidebar(){
 					var w_slider,h_slider,colour,plist;
 					var slidercount; //used to hide sliders that apply to not-yet-active voices
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
+					var mod_in_para = [];
+					if(MODULATION_IN_PARAMETERS_VIEW){
+						//see if any connections go to this parameter
+						for(var ci=connections.getsize("connections");ci>=0;ci--){
+							if(connections.contains("connections["+ci+"]::to::number")){
+								if(connections.get("connections["+ci+"]::to::number")==block){
+									if(connections.get("connections["+ci+"]::to::input::type")=="parameters"){
+										var ic=connections.get("connections["+ci+"]::to::input::number");
+										if(mod_in_para[ic]==null)mod_in_para[ic]=[];
+										mod_in_para[ic].push(ci);
+									}
+								}
+							}
+						}
+					}
+
 					for(i=0;i<groups.length;i++){
 						colour=block_colour;
 						if(groups[i].contains("colour")){
@@ -4169,6 +4185,27 @@ function draw_sidebar(){
 											mouse_click_values[mouse_index] = "";
 										}								
 										mouse_index++;
+										if(MODULATION_IN_PARAMETERS_VIEW){
+											if(Array.isArray(mod_in_para[curp])){
+												for(var ip=mod_in_para[curp].length;ip>0;ip--){
+													var namelabelyo = namelabely;
+													namelabely+=fontheight*0.3;
+													var scale = connections.get("connections["+mod_in_para[curp][ip-1]+"]::conversion::scale");
+													draw_h_slider((sidebar.x+mainwindow_width)*0.5, namelabelyo, mainwindow_width-9, namelabely,colour[0],colour[1],colour[2],mouse_index,scale);
+													mouse_click_actions[mouse_index] = connection_edit;
+													mouse_click_parameters[mouse_index] = "connections["+mod_in_para[curp][ip-1]+"]::conversion::scale";
+													post("\ndraw modulation connection",mod_in_para[curp][ip-1],mouse_click_parameters[mouse_index],scale);
+													mouse_click_values[mouse_index] = 0;
+													mouse_index++;
+									
+													lcd_main.message("moveto",sidebar.x,namelabely);
+													lcd_main.message("write", blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label")+" -> "+connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
+													click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,mainwindow_width,namelabely,mouse_index,1);
+													mouse_index++;
+												}
+											}
+											namelabely+=fontheight*0.1;
+										}
 									}
 								}else{
 									namearr = params[curp].get("name");
