@@ -80,7 +80,7 @@
 				"click_set" : 1 
 			},
 			{
-				"name" : "fourth",
+				"name" : "4th",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
