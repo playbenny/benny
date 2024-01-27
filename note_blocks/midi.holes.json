@@ -23,28 +23,28 @@
 		},
 		"parameters" : [
 			{
-				"name" : "skip note",
+				"name" : "skip_note",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "skip off",
+				"name" : "skip_off",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "skip every",
+				"name" : "skip_every",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "accent after skip",
+				"name" : "accent_after_skip",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
