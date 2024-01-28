@@ -34,7 +34,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "transpose octaves",
+				"name" : "octaves",
 				"type" : "int",
 				"values" : ["bi", -8, 8, "lin"],
 				"wrap" : 0,
@@ -55,7 +55,7 @@
 				"default" : 1 
 			},
 			{
-				"name" : "fold span",
+				"name" : "fold_span",
 				"type" : "menu_i",
 				"values" : ["1oct", "2oct", "3oct", "4oct"],
 				"error_scale" : 0,
@@ -63,7 +63,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "glissando",
+				"name" : "gliss",
 				"type" : "menu_i",
 				"values" : ["off", "on"],
 				"error_scale" : 0,
