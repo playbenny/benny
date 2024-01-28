@@ -752,9 +752,15 @@ function center_view(resetz){
 	var h = maxy-miny;
 	var d = Math.max(w,h);
 	
-	camera_position[0] = (maxx+minx)*0.5;
+	
 	camera_position[1] = 0.5*(maxy+miny);
 	if(resetz || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
+	if(sidebar.mode!="none"){
+		camera_position[0] = (maxx * 0.8 + minx * 0.2);
+		camera_position[2] *= 1.5;
+	}else{
+		camera_position[0] = (maxx+minx)*0.5;
+	}
 /*	messnamed("camera_control", "anim", "moveto", camera_position, 0.5);
 	messnamed("camera_control", "rotatexyz" , 0, 0, 0);
 	messnamed("camera_control", "direction", 0, 0, -1);*/
@@ -773,7 +779,7 @@ function draw_menu_hint(){
 	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
 	var topspace=(block_menu_d.mode == 3);
 	lcd_main.message("clear");
-	lcd_main.message("paintrect", sidebar.x,9,mainwindow_width-9,9+fontheight*(1+topspace),cod);
+	lcd_main.message("paintrect", sidebar.x,9,sidebar.x2,9+fontheight*(1+topspace),cod);
 	setfontsize(fontheight/1.6);
 	lcd_main.message("textface", "bold");
 	
@@ -800,7 +806,7 @@ function draw_menu_hint(){
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
 		var rowstart=0;
 		var rowend=36;
-		lcd_main.message("paintrect", sidebar.x,9+fontheight*(1.1+topspace),mainwindow_width-9,9+fontheight*(2.1+topspace),cod);
+		lcd_main.message("paintrect", sidebar.x,9+fontheight*(1.1+topspace),sidebar.x2,9+fontheight*(2.1+topspace),cod);
 		lcd_main.message("frgb",col);
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
 		lcd_main.message("write", usermouse.hover[1]);

@@ -251,6 +251,11 @@ function initialise_dictionaries(){
 	waves_preloading = config.get("waves_preloading");
 	wires_show_all = config.get("WIRES_SHOW_ALL");
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
+	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
+	sidebar.width_in_units = config.get("sidebar_width_in_units");
+	sidebar.width = fontheight*sidebar.width_in_units;
+	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
+	sidebar.x = sidebar.x2 -sidebar.width;
 	var maxmsp = config.get("maxmsp");
 	var messes = maxmsp.getkeys();
 	for(i=0;i<messes.length;i++){
@@ -711,8 +716,10 @@ function size(width,height,scale){
 		}
 		fontheight = (mainwindow_height-24) / 18;
 		fo1 = fontheight * 0.1;
-		sidebar.width = fontheight*8;
-		sidebar.x = mainwindow_width-sidebar.width -9;
+		sidebar.width = fontheight*sidebar.width_in_units;
+		sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
+		sidebar.x = sidebar.x2 -sidebar.width;
+
 		sidebar.meters.startx = 9+1.1* fontheight;
 		sidebar.meters.spread = 4;// * (MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS); //fontheight*3.5 / (MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS);
 		get_hw_meter_positions();

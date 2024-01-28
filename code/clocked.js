@@ -417,7 +417,7 @@ function sidebar_midi_scope(){
 	var ly=1,llx=-100;
 	x1 = sidebar.x;
 	y1 = sidebar.scopes.starty;
-	x2 = mainwindow_width-9;
+	x2 = sidebar.x2;
 	y2 = sidebar.scopes.endy;
 	/*if(sidebar.scopes.voicelist[0]>-1){
 		//if it's also displaying an audio scope, move this one down a bit

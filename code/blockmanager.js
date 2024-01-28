@@ -363,7 +363,10 @@ var sidebar = {
 	selected : -1,
 	selected_voice : 0, //this is eg voice 2 out of 4 for this block
 	width : 100,
+	width_in_units : 8,
 	x : 490,
+	x2 : 900,
+	scrollbar_width : 9,
 	meters : {
 		startx : 490,
 		spread : 2

@@ -44,6 +44,8 @@
 	"SCOPE_DEFAULT_ZOOM" : 0.65,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
 	"MODULATION_IN_PARAMETERS_VIEW" : 1,
+	"sidebar_scrollbar_width" : 9,
+	"sidebar_width_in_units" : 10,
 	"maxmsp" : {
 		"preempt" : 1,
 		"seteventinterval" : 2,

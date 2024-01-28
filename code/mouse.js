@@ -957,7 +957,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}else if((sidebar.mode!='none')&&(x>sidebar.x)){
 		scroll_sidebar(scroll,"rel");
 		usermouse.sidebar_scrolling = true;
-	}else if((sidebar.mode=='file_menu')&&(x>mainwindow_width - 9 - fontheight * 15)){
+	}else if((sidebar.mode=='file_menu')&&(x>sidebar.x2 - fontheight * 15)){
 		usermouse.sidebar_scrolling = true;
 		scroll_sidebar(scroll,"rel");
 	}
