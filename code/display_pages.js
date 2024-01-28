@@ -4234,7 +4234,6 @@ function draw_sidebar(){
 									pnam = pnam.replace("_"," ");
 									lcd_main.message("write", fromn+" -> "+pnam +" / "+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
 									click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,(sidebar.x*0.4+0.6*mainwindow_width),namelabely,mouse_index,1);
-									mouse_index++;
 								}
 	
 							}
@@ -5747,32 +5746,16 @@ function draw_sidebar(){
 		}else if(selected.wire_count == 1){ // if 1 connection selected
 			// CONNECTION DETAIL VIEW #######################################################################################################
 			i = selected.wire.indexOf(1);
-			sidebar.editbtn = 0;
-			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
-			if(view_changed===true) click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
-
-			lcd_main.message("paintrect", mainwindow_width-9-2.1*fontheight, y_offset, mainwindow_width-9-1.1*fontheight, fontheight+y_offset,menudarkest );
-			click_zone(insert_menu_button, i, 0, mainwindow_width-9-2.1*fontheight, y_offset, mainwindow_width-9-1.1*fontheight, fontheight+y_offset,mouse_index,1 );
-			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9-fontheight*2.2, fontheight+y_offset,menudarkest );
-			if(danger_button == mouse_index){
-				lcd_main.message("paintrect", mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,120,0,0 );
-				lcd_main.message("frgb" , 255,50,50);
-			}else{
-				lcd_main.message("paintrect", mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
-				lcd_main.message("frgb" , 255,0,0);
+			if(sidebar.editbtn!=0){
+				sidebar.editbtn = 0;
+				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
+				if(view_changed===true) click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 			}
-			click_zone(remove_connection_btn,i, mouse_index, mainwindow_width-9-fontheight, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
-			lcd_main.message("moveto" , mainwindow_width-9-fontheight*0.8, fontheight*0.75+y_offset);
-			lcd_main.message("write", "del");
-			lcd_main.message("frgb", menucolour );
-
-			lcd_main.message("moveto" , mainwindow_width-9-fontheight*2, fontheight*0.75+y_offset);
-			lcd_main.message("write", "ins");
-			
-			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,menudarkest );
+			lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
 			setfontsize(fontheight/1.6);
-
-			lcd_main.message("write", "connection");
+			lcd_main.message("frgb",menucolour);
+			lcd_main.message("write", "connection edit");
 
 			y_offset += 1.1* fontheight;
 
@@ -5827,7 +5810,7 @@ function draw_sidebar(){
 			sidebar.scopes.fg=menucolour;
 			click_zone(scope_zoom,null,null, sidebar.x, sidebar.scopes.starty,mainwindow_width-9,sidebar.scopes.endy,mouse_index,2);
 			y_offset += fontheight*2.1;
-/*			if((t_type=="midi")&&(f_type!="midi")){
+			/*if((t_type=="midi")&&(f_type!="midi")){
 				y_offset+=fontheight*2.1;
 				lcd_main.message("paintrect", sidebar.x, sidebar.scopes.endy+fo1,mainwindow_width-9,sidebar.scopes.endy+fontheight*2.1,menudarkest);
 			}*/
@@ -5842,9 +5825,7 @@ function draw_sidebar(){
 				var tii;
 				// SHOULD THIS BE f_type?
 				if((f_type=="midi")||(f_type=="block")||(f_type=="parameters")){
-					//
-
-				//	deferred_diag.push("assigning midi scope block to connection output",t_number,"voice",t_i_v,"input",t_i_no,"fov",f_o_v,"\n");
+					//	deferred_diag.push("assigning midi scope block to connection output",t_number,"voice",t_i_v,"input",t_i_no,"fov",f_o_v,"\n");
 					// need to add 1023 to the midi routemap for every source voice
 					// use f_o_v + f_number to look up in voicemap
 					// you've got out number too, so you pass those two to the assign fn which gets a list of m_indexes
@@ -5912,7 +5893,7 @@ function draw_sidebar(){
 						}						
 					}
 					
-//					post("\nLISTVOICE",listvoice);
+					//post("\nLISTVOICE",listvoice);
 					for(tii=0;tii<listvoice.length;tii++){
 						audio_to_data_poly.setvalue((listvoice[tii]+1+f_o_no*MAX_AUDIO_VOICES),"vis_scope", 1);
 						sidebar.scopes.voicelist[tii] = (listvoice[tii]+f_o_no*MAX_AUDIO_VOICES);
@@ -5922,12 +5903,12 @@ function draw_sidebar(){
 					sidebar.scopes.midi = -1;
 					//post("\naudio to midi scopes:",sidebar.scopes.voicelist,"midi",sidebar.scopes.midivoicelist,"outs",sidebar.scopes.midioutlist,"midi",sidebar.scopes.midi);
 					sidebar.scopes.voice = f_number; 
-//						post("scopes voicelist",sidebar.scopes.voicelist,"f_o_v",f_o_v);
+					//	post("scopes voicelist",sidebar.scopes.voicelist,"f_o_v",f_o_v);
 					sidebar.scopes.width = (sidebar.width + fo1)/listvoice.length;
 					messnamed("scope_size",(sidebar.scopes.width)/2);
 
 				}else if(f_type=="hardware"){
-//					post("todo assign connection hardware scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
+					//post("todo assign connection hardware scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					if(blocktypes.contains(f_name+"::connections::out::hardware_channels")){
 						var listch = blocktypes.get(f_name+"::connections::out::hardware_channels");
 						if(typeof listch == "number") listch = [listch];
@@ -5939,11 +5920,11 @@ function draw_sidebar(){
 							sidebar.scopes.width = (sidebar.width + fo1);
 							messnamed("scope_size",(sidebar.scopes.width)/2);
 							sidebar.scopes.voice = f_number; 
-//							post("\nSCOPES: ",sidebar.scopes.voicelist);
+							//post("\nSCOPES: ",sidebar.scopes.voicelist);
 						}
 					}
 				}//else { //from midi
-/*					sidebar.scopes.voice = -1;
+				/*	sidebar.scopes.voice = -1;
 					post("assigning midi scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					var listvoice = f_o_v.slice();
 					var voffset = -1;
@@ -5960,7 +5941,7 @@ function draw_sidebar(){
 						}							
 					}
 					sidebar.scopes.midi = f_number; 
-//						post("scopes voicelist",sidebar.scopes.voicelist);
+				//	post("scopes voicelist",sidebar.scopes.voicelist);
 					sidebar.scopes.width = (sidebar.width + fo1);
 					messnamed("midi_scope_source_voices",sidebar.scopes.voicelist);
 					messnamed("midi_scope_source_output",f_o_no);
@@ -6284,7 +6265,28 @@ function draw_sidebar(){
 					mouse_index++;			
 				}			
 			}
-			y_offset += fontheight*5;
+			y_offset += fontheight*4.7;
+			i = selected.wire.indexOf(1);
+			lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? menudark:menudarkest );
+			click_zone(insert_menu_button, i, 0, sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
+			lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
+			lcd_main.message("frgb",menucolour);
+			lcd_main.message("write", "insert block into connection");
+
+			y_offset += 1.1* fontheight;
+
+			if(danger_button == mouse_index){
+				lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,120,0,0 );
+				lcd_main.message("frgb" , 255,50,50);
+			}else{
+				lcd_main.message("paintrect", sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? menudark:menudarkest );
+				lcd_main.message("frgb" , 255,0,0);
+			}
+			click_zone(remove_connection_btn, i, mouse_index, sidebar.x, y_offset, mainwindow_width-9, fontheight+y_offset,mouse_index,1 );
+			lcd_main.message("moveto" , sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
+			lcd_main.message("write", "delete connection");
+			lcd_main.message("frgb", menucolour );
+			y_offset += 1.1* fontheight;
 		}else if((selected.block_count + selected.wire_count) > 1){ 
 			sidebar.editbtn = 0;
 			if(selected.wire_count>1){
