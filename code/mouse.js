@@ -499,10 +499,21 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if(usermouse.shift == 0){
 								var ti;
 								var afters=1 - selected.wire[usermouse.ids[1]];
-								for(ti=0;ti<selected.wire.length;ti++){
-									if(selected.wire[ti]){
+								
+								if(afters==1){
+									//ie if clicking a wire that wasn't selected, and shift isn't held, you clear the selection
+									for(ti=0;ti<selected.wire.length;ti++){
 										selected.wire[ti]=0;
 									}
+									selected.wire_count=0;
+								}
+								if(selected.wire_count>1){
+									//and if lots of things are selected (and one of them was clicked) you clear selection but keep that one selected
+									afters = 1;
+									for(ti=0;ti<selected.wire.length;ti++){
+										selected.wire[ti]=0;
+									}
+									selected.wire_count=1;						
 								}
 								for(ti=0;ti<selected.block.length;ti++){
 									selected.block[ti]=0;
