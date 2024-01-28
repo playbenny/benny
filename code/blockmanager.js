@@ -294,6 +294,7 @@ var midicolour;
 var parameterscolour;
 var blockcontrolcolour;
 var fontheight;
+var fo1;
 var backgroundcolour;
 var backgroundcolour_blocks;
 var backgroundcolour_block_menu;

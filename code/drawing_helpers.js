@@ -199,7 +199,7 @@ function labelled_parameter_v_slider(sl_no){
 	
 	namelabely=paramslider_details[sl_no][12];
 	for(var c = 0;c<paramslider_details[sl_no][11].length;c++){
-		lcd_main.message("moveto",paramslider_details[sl_no][0]+fontheight*0.1,namelabely);
+		lcd_main.message("moveto",paramslider_details[sl_no][0]+fo1,namelabely);
 		lcd_main.message("write",paramslider_details[sl_no][11][c]);				
 		namelabely+=0.4*fontheight;
 	}
@@ -210,7 +210,7 @@ function labelled_parameter_v_slider(sl_no){
 	if(!Array.isArray(vo)) vo = [vo];
 	var w = paramslider_details[sl_no][2] - paramslider_details[sl_no][0];
 	var ww = w / vo.length;
-	var x = paramslider_details[sl_no][0]+fontheight*0.1;
+	var x = paramslider_details[sl_no][0]+fo1;
 	var maskx = -1;
 	for(var i=0;i<vo.length;i++){
 		if(((sidebar.selected_voice>=0) && (sidebar.selected_voice!=i) &&(!(paramslider_details[sl_no][10]&4)))){
@@ -321,7 +321,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 	var ww = (w + 2*(flags&2))/vlist.length;
 	var ww2 = ww - 2*(flags&2);
 	var pvm = (((blockno == sidebar.selected)&&(sidebar.selected_voice >=0))||(flags&2)) &&(!(flags&4));
-	if(view_changed===true) click_rectangle(x1,y1,x2/*+fontheight*0.1*/,y2,index+pvm,2);
+	if(view_changed===true) click_rectangle(x1,y1,x2/*+fo1*/,y2,index+pvm,2);
 	for(var i=0;i<vlist.length;i++){
 		var tvalue = value+parameter_static_mod.peek(1,vlist[i]*MAX_PARAMETERS+paramno);
 		if(tvalue > 1) tvalue = 1;

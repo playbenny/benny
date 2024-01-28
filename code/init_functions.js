@@ -710,6 +710,7 @@ function size(width,height,scale){
 			click_b_w++;
 		}
 		fontheight = (mainwindow_height-24) / 18;
+		fo1 = fontheight * 0.1;
 		sidebar.width = fontheight*8;
 		sidebar.x = mainwindow_width-sidebar.width -9;
 		sidebar.meters.startx = 9+1.1* fontheight;
