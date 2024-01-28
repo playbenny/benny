@@ -17,8 +17,8 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 1],
-				"height" : 0
+				"contains" : [0, 0, 0, 1],
+				"height" : 2
 			}
 		],
 		"panel" : {

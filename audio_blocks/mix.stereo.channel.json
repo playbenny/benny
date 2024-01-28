@@ -30,7 +30,7 @@
 			{ 
 				"contains" : [3],
 				"onepervoice" : 1,
-				"height" : 1
+				"height" : 0
 			},
 			{ 
 				"contains" : [4], 

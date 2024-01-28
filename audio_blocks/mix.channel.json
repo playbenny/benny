@@ -24,7 +24,7 @@
 			{ 
 				"contains" : [1],
 				"onepervoice" : 1,
-				"height" : 1
+				"height" : 0
 			},
 			{ 
 				"contains" : [2],
@@ -34,7 +34,7 @@
 			{ 
 				"contains" : [3],
 				"onepervoice" : 1,
-				"height" : 1
+				"height" : 0
 			},
 			{ 
 				"contains" : [4], 

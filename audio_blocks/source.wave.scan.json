@@ -59,7 +59,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "quantise offset_beats",
+				"name" : "quantise_offset_beats",
 				"type" : "int",
 				"values" : ["uni", 0, 63, "lin"],
 				"error_scale" : 0,
@@ -67,7 +67,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "quantise offset_micro",
+				"name" : "quantise_offset_micro",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"error_scale" : 0,
@@ -75,14 +75,14 @@
 				"default" : 0
 			},
 			{
-				"name" : "pitch shift",
+				"name" : "pitch_shift",
 				"type" : "float",
 				"values" : ["bi", -24, 24, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "self advance",
+				"name" : "self_advance",
 				"type" : "menu_i",
 				"values" : ["off", "on", "on if target>0"],
 				"wrap" : 0,
