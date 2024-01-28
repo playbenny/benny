@@ -3933,7 +3933,7 @@ function draw_sidebar(){
 					lcd_main.message("framerect",sx,y_offset,sx+22,y_offset+fontheight*0.5);
 					lcd_main.message("frameoval",sx+13-hf,y_offset+4,sx+hf+9,y_offset+hf+hf-4);
 					lcd_main.message("moveto",sx+9,hf+y_offset-1);
-					lcd_main.message("lineto",sx+0.106*fontheight+9,fo144+y_offset);
+					lcd_main.message("lineto",sx+0.106*fontheight+9,fo1*1.44+y_offset);
 					lcd_main.message("moveto", sx+26, y_offset+0.4*fontheight);
 					lcd_main.message("write", ">",automap.offset_c+1, "-" , automap.offset_c + automap.c_rows);
 					y_offset += fontheight*0.6;

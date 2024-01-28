@@ -264,7 +264,7 @@ function blocks_paste(outside_connections){
 			var tk = tdc.getkeys();
 			if(Array.isArray(tk)){
 				for(var t=0;t<tk.length;t++){
-					new_connection = copy.get("connections::"+t);
+					new_connection = copy.get("connections::"+tk[t]);
 					var pfrom = paste_mapping[+new_connection.get("from::number")];
 					var pto = paste_mapping[+new_connection.get("to::number")];
 					if(pfrom != -1) new_connection.replace("from::number",pfrom);
