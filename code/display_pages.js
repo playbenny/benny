@@ -4191,16 +4191,19 @@ function draw_sidebar(){
 													var namelabelyo = namelabely;
 													namelabely+=fontheight*0.3;
 													var scale = connections.get("connections["+mod_in_para[curp][ip-1]+"]::conversion::scale");
-													draw_h_slider((sidebar.x+mainwindow_width)*0.5, namelabelyo, mainwindow_width-9, namelabely,colour[0],colour[1],colour[2],mouse_index,scale);
+													draw_h_slider((sidebar.x*2+3*mainwindow_width)*0.2, namelabelyo+fontheight*0.1, mainwindow_width-9, namelabely,colour[0],colour[1],colour[2],mouse_index,scale);
 													mouse_click_actions[mouse_index] = connection_edit;
 													mouse_click_parameters[mouse_index] = "connections["+mod_in_para[curp][ip-1]+"]::conversion::scale";
-													post("\ndraw modulation connection",mod_in_para[curp][ip-1],mouse_click_parameters[mouse_index],scale);
+													//post("\ndraw modulation connection",mod_in_para[curp][ip-1],mouse_click_parameters[mouse_index],scale);
 													mouse_click_values[mouse_index] = 0;
 													mouse_index++;
 									
 													lcd_main.message("moveto",sidebar.x,namelabely);
-													lcd_main.message("write", blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label")+" -> "+connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
-													click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,mainwindow_width,namelabely,mouse_index,1);
+													lcd_main.message("frgb",colour);
+													var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
+													fromn = fromn.split(".").pop();
+													lcd_main.message("write", fromn+" -> "+namearr +" / "+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
+													click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,(sidebar.x*2+3*mainwindow_width)*0.2,namelabely,mouse_index,1);
 													mouse_index++;
 												}
 											}
