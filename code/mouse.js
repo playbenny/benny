@@ -77,7 +77,8 @@ function picker_hover_and_special(id){
 				bulgingwire = -1;
 			}
 		}else{
-			usermouse.hover = thov.concat();
+			//usermouse.hover = thov.concat();
+			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if(bulgeamount==1) bulgeamount = 0.999;
 		}
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
@@ -480,7 +481,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								//meters_enable = 1;
 								block_meters_enable(1);
 							}
-							if((usermouse.hover[1] == usermouse.ids[1]) && (0.5*Math.round(2*displaypos[0]) == 0.5*Math.round(2*dictpos[0])) && (0.5*Math.round(2*displaypos[1]) == 0.5*Math.round(2*dictpos[1]))){
+							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
 									remove_potential_wire();
@@ -650,8 +651,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
 								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
-								if((usermouse.hover=="background") || (((block_x!=dictpos[0])||(block_y!=dictpos[1])||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))||(usermouse.hover[0]=="wires")||(usermouse.hover=="background")))){
-								//if((usermouse.hover=="background") || (((block_x!=dictpos[0])||(block_y!=dictpos[1])||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))){
+								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))||(usermouse.hover[0]=="wires")))){
 									remove_potential_wire();
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
@@ -663,42 +663,18 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											meters_updatelist.meters = [];
 											meters_updatelist.hardware = [];
 											meters_updatelist.midi = [];
-											//meters_enable = 0;
-											//var tv = new Array(3);
-											//var nometers = NO_IO_PER_BLOCK; //for eg hardware you actually need to get the name, look up in blocktypes how many io.
 											var ob=-1;
 											var bdx,bdy;
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
 												//post("dragin",usermouse.drag.dragging.voices[t][0],usermouse.drag.dragging.voices[t][1]);
 												if(ob!=usermouse.drag.dragging.voices[t][0]){
 													ob = usermouse.drag.dragging.voices[t][0];	
-													//b_t = blocks.get("blocks["+usermouse.drag.dragging.voices[t][0]+"]::type");
-													//nometers = 0; //note blocks have no meters
-													//if(b_t == "audio"){
-													//	nometers = NO_IO_PER_BLOCK;
-													//}else if(b_t == "hardware"){
-													//	b_t = blocks.get("blocks["+usermouse.ids[1]+"]::name");
-													//	nometers = 0;
-													//	if(blocktypes.contains(b_t+"::connections::in::hardware_channels")) nometers += blocktypes.getsize(b_t+"::connections::in::hardware_channels");
-													//	if(blocktypes.contains(b_t+"::connections::out::hardware_channels")) nometers += blocktypes.getsize(b_t+"::connections::out::hardware_channels");
-													//	if(blocktypes.contains(b_t+"::max_polyphony")) nometers /= blocktypes.get(b_t+"::max_polyphony");
-													//}
 													bdx = blocks.get("blocks["+ob+"]::space::x") + block_x - dictpos[0];
 													bdy = blocks.get("blocks["+ob+"]::space::y") + block_y - dictpos[1];
 												}
 												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
 												if(subvoices<1)subvoices = 1;
 												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
-												/*if(usermouse.drag.dragging.voices[t][1]>0){
-													for(tt=0;tt<nometers;tt++){ 
-														if(typeof blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt] !== 'undefined'){
-															tv = blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt].position;
-															tv[0] = blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[0] + 0.4 * tt/nometers;//block_x+0.5;
-															tv[2] = 0.2;
-															blocks_meter[usermouse.drag.dragging.voices[t][0]][(usermouse.drag.dragging.voices[t][1]-1)*nometers+tt].position = tv;
-														}
-													}
-												}*/
 											}
 											for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
@@ -706,7 +682,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
-									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 									// ############## INDICATE POSSIBLE CONNECTION by drawing a 'potential' wire	
 									var drawwire=1;
 									if(wires_potential_connection != -1){
