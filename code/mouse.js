@@ -974,7 +974,7 @@ function keydown(key){
 		if(keymap.contains("modal::"+sidebar.mode+"::"+key)){
 			var action = keymap.get("modal::"+sidebar.mode+"::"+key);
 			var paras = action.slice(2,99);
-			post("\nfound in keymap modal", action[0],action[1], "paras",paras);
+			//post("\nfound in keymap modal", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
 			return 1;		
 		}else if(keymap.contains("modal::"+sidebar.mode+"::all")){
@@ -982,7 +982,7 @@ function keydown(key){
 			var paras = action.slice(2,99);
 			if(!Array.isArray(paras)) paras=[paras];
 			paras.push(key);
-			post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
+			//post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
 			return 1;		
 		}
@@ -990,13 +990,13 @@ function keydown(key){
 	if(keymap.contains("global::"+key)){
 		var action = keymap.get("global::"+key);
 		var paras = action.slice(2,99);
-		post("\nfound in keymap", action[0],action[1], "paras",paras);
+		//post("\nfound in keymap", action[0],action[1], "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}else if(keymap.contains(displaymode+"::"+key)){
 		var action = keymap.get(displaymode+"::"+key);
 		var paras = action.slice(2,99);
-		post("\nfound in keymap for mode", displaymode,":", action, "paras",paras);
+		//post("\nfound in keymap for mode", displaymode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}else if(keymap.contains(displaymode+"::all")){
@@ -1004,13 +1004,13 @@ function keydown(key){
 		var paras = action.slice(2,99);
 		if(!Array.isArray(paras)) paras=[paras];
 		paras.push(key);
-		post("\nfound in keymap for mode - all - ", displaymode,":", action, "paras",paras);
+		//post("\nfound in keymap for mode - all - ", displaymode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}else if(keymap.contains("sidebar::"+sidebar.mode+"::"+key)){
 		var action = keymap.get("sidebar::"+sidebar.mode+"::"+key);
 		var paras = action.slice(2,99);
-		post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
+		//post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}
