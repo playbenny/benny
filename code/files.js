@@ -262,6 +262,7 @@ function buffer_loaded(number,path,name,buffername){
 }
 
 function load_next_song(slow){
+	if(loading.progress!=0) return 0;
 	var oc = usermouse.ctrl;
 	usermouse.ctrl = slow;
 	currentsong++;
@@ -273,6 +274,7 @@ function load_next_song(slow){
 }
 
 function load_song(){
+	if(currentsong<0) return -1;
 	if(playing) play_button();
 	meters_enable = 0;
 	clear_everything();

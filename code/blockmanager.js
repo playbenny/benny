@@ -41,6 +41,7 @@ var ANIM_TIME = 0.25;
 var UPSAMPLING = 1;
 var RECYCLING = 1;
 var MODULATION_IN_PARAMETERS_VIEW = 1;
+var BLOCKS_GRID = [100, 0.01];
 var BLOCK_MENU_CLICK_ACTION = "click";
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
@@ -418,6 +419,9 @@ var config = new Dict;
 config.name = "config";
 var userconfig = new Dict;
 userconfig.name = "userconfig";
+
+var keymap = new Dict;
+keymap.name = "keymap";
 
 var copy = new Dict;
 copy.name = "copy";

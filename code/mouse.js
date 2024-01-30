@@ -647,8 +647,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
 								var t = 0;
 								var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
-								var block_x = 0.25*Math.round(stw[0]*4); 
-								var block_y = 0.25*Math.round(stw[1]*4);
+								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
+								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 								if((usermouse.hover=="background") || (((block_x!=dictpos[0])||(block_y!=dictpos[1])||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))||(usermouse.hover[0]=="wires")||(usermouse.hover=="background")))){
 								//if((usermouse.hover=="background") || (((block_x!=dictpos[0])||(block_y!=dictpos[1])||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))){
@@ -965,271 +965,56 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 
 
 function keydown(key){
-	// GLOBAL KEYS ##############################################################################
-	if(key == -27){//f11 fullscreen
-		fullscreen = 1 - fullscreen;
-		world.message("fullscreen",fullscreen);
-		return;
-	}else if(key == 47){
-		deferred_diagnostics();
-	}else if(key == 96){
-		messnamed("panic","bang");
-	}else if(key == -3){//escape
-		//center_view();
-		if(displaymode=="panels"){
-			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
-				set_sidebar_mode("block");
-			}else if(sidebar.mode!="none"){
-				clear_blocks_selection();
-				if(sidebar.mode == "file_menu"){
-					set_sidebar_mode("none");
-					center_view(1);
-				} 
-			}else{
-				set_display_mode("blocks");
-			}
-		}else if((displaymode=="waves")&&(waves.selected!=-1)){
-			waves.selected=-1;
-			redraw_flag.flag |= 4;
-		}else{
-			set_display_mode("blocks");
-			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
-				set_sidebar_mode("block");
-			}else if(sidebar.mode!="none"){
-				clear_blocks_selection();
-				if(sidebar.mode == "file_menu"){
-					set_sidebar_mode("none");
-					center_view(1);
-				} 
-			}else{
-				center_view(1);
-				//redraw_flag.flag |= 4;//draw_blocks();
-			}
-		}
-	}else if((key == 254)&&(loading.progress==0)){
-		load_next_song(0);
-	}else if(key == -2){
-			play_button();
-	}else if(key == -23){
-		set_display_mode("waves");
-	}else if(key == -494){
-		set_display_mode("flocks");
-	}else if(key == -17){
-		set_display_mode("panels");
-	}else if(key == -18){
-		set_sidebar_mode("block");
-		redraw_flag.flag = 2;		
-		set_display_mode("blocks");
-	}else if(key == -20){
-		set_sidebar_mode("settings");
-		redraw_flag.flag = 2;
-		//if(displaymode!="panels") set_display_mode("blocks");
-	}else if(key == -22){
-		set_sidebar_mode("connections");
-		redraw_flag.flag = 2;
-		set_display_mode("blocks");
-	}else if(key == -25){
-		set_sidebar_mode("file_menu");
-		redraw_flag.flag = 2;
-		set_display_mode("blocks");
-	}else if(key == -26){
-		wires_show_all = !wires_show_all;
-		redraw_flag.flag = 8;
-	}else if(key == -28){
-		set_sidebar_mode("cpu");
-		redraw_flag.flag = 2;
-	}/*else if(sidebar.selected>=0){
-		if(key == 45){
-			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-			if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
-				voicecount(sidebar.selected, current_p - 1);
-			}
-		}else if((key == 555)||(key==573)){
-			var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
-			if(max_p ==0) max_p=9999999999999;
-			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-			if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
-				voicecount(sidebar.selected, current_p + 1);
-			}
-		}
-	}*/
-	if((sidebar.mode == "edit_label")||(sidebar.mode == "edit_state")){
-		// MODAL OVERIDES - IE EDIT LABEL MODE IN THE SIDEBAR TAKES OVER THE WHOLE KEYBOARD
-		//post("edit keys",key);
-		if((key==-6)||(key==-7)){
-			//delete
-			text_being_editted = text_being_editted.slice(0,-1);
-		}else if(key==-2){
-			key=46;
-		}else if(key==-4){
-			edit_label("ok",0);
-			return(0);
-		}else if(key==-3){
-			set_sidebar_mode("block");
-			return(0);
-		}else{
-			if(key>512) {
-				caps=1;
-				key-=512;
-				key-=32;
-			}
-			if((key>45)&&(key<123)){
-				text_being_editted = text_being_editted + String.fromCharCode(key);
-			}
-			//post(String.fromCharCode(key));
-		}
-		redraw_flag.flag |= 2;
-	}else{
-		if(displaymode=="custom_fullscreen"){
-			//post("fs keys",key);
-			if(key == -19) {
-				set_display_mode("custom",selected.block.indexOf(1));
-			}else if(key==-3){
-				set_display_mode("blocks");
-			}else{
-				ui_poly.setvalue( custom_block+1, "keydown", key);
-			}
-		}else if(displaymode=="custom"){
-			if(key == -19) {
-				set_display_mode("custom_fullscreen",selected.block.indexOf(1));
-			}else if(key==-3){
-				set_display_mode("blocks");
-			}else{
-				ui_poly.setvalue( custom_block+1, "keydown", key);
-			}
-		}else if(displaymode=="waves"){
-
-		}else if(displaymode=="panels"){
-			if(key == 45){
-				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
-					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
-						voicecount(sidebar.selected, current_p - 1);
-					}				
-				}
-			}else if((key == 43)||(key==573)){
-				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
-					var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
-					if(max_p ==0) max_p=9999999999999;
-					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
-						voicecount(sidebar.selected, current_p + 1);
-					}
-				}
-			}else if(key == 353){
-				select_all();
-			}else if(key == -5){
-				set_display_mode("blocks");
-			}else if(key == 109){
-				mute_selected_block(-1);
-			}
-		}else if(displaymode=="blocks"){
-			if(key == -19){
-				if(selected.block.indexOf(1)!=-1){
-					set_display_mode("custom",selected.block.indexOf(1));
-				}
-			}else if(key == -15){//home
-				center_view(1);
-			}else if(key == -4){//enter
-				if((sidebar.mode=="file_menu")&&(currentsong>-1)) load_song();
-			}else if((key == -6) || (key==-7)){
-				//delete, if any block or connection is selected
-				delete_selection();
-			}else if(key == 45){
-				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
-					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
-						voicecount(sidebar.selected, current_p - 1);
-					}
-				}else if(sidebar.mode == "blocks"){
-					multiselect_polychange(-1);
-				}
-			}else if((key == 43)||(key==573)){
-				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
-					var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
-					if(max_p ==0) max_p=9999999999999;
-					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
-						voicecount(sidebar.selected, current_p + 1);
-					}
-				}else if(sidebar.mode == "blocks"){
-					multiselect_polychange(1);
-				}
-			}else if(key == 98){ // B
-				//new_block_menu
-				blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
-				usermouse.clicked3d=-1;
-				block_menu_d.mode = 0;
-				show_new_block_menu();
-				//set_display_mode("block_menu");
-			}else if((key == 114)||(key == 370)){ // R or ctrl R
-				//record arm
-				arm_selected_blocks();
-			}else if(key == 109){
-				mute_selection(-1); //ed_block(-1);
-			}else if(key == 353){
-				select_all();
-			}else if(key == 355){
-				copy_selection();
-			}else if(key == 376){
-				copy_selection();
-				delete_selection();
-			}else if(key == 374){
-				blocks_paste(0);
-			}else if(key == 2422){
-				post("\npaste with ext connections");
-				blocks_paste(1);
-			}else if(key == -5){
-				set_display_mode("panels");
-			}else if(key == -9){
-				move_selected_blocks(0,0.5);
-			}else if(key == -10){
-				move_selected_blocks(0,-0.5);
-			}else if(key == -11){
-				move_selected_blocks(-0.5,0);
-			}else if(key == -12){
-				move_selected_blocks(0.5,0);
-			}else if(key == 503){
-				move_selected_blocks(0,0.25);
-			}else if(key == 502){
-				move_selected_blocks(0,-0.25);
-			}else if(key == 501){
-				move_selected_blocks(-0.25,0);
-			}else if(key == 500){
-				move_selected_blocks(0.25,0);
-			}
-		}else if(displaymode == "flocks"){
-			if(key == 45){
-				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
-					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name"))))	voicecount(sidebar.selected, current_p - 1);				
-				}
-			}else if((key == 43)||(key==573)){
-				if((sidebar.mode == "block")||(sidebar.mode == "settings")){
-					var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
-					if(max_p ==0) max_p=9999999999999;
-					var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
-					if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")&&((!blocktypes.contains(blocks.get("blocks["+sidebar.selected+"]::name")+"::plugin_name")))){
-						voicecount(sidebar.selected, current_p + 1);
-					}
-				}
-			}		
-		}else if(displaymode=="block_menu"){
-			if(key==-3) {
-				center_view();
-			}
-		}else if(displaymode=="connection_menu"){
-			if(key==-4){
-				create_connection_button();
-			}
-		}
-		if(keyrepeat_task.running==0){
-			keyrepeat_task = new Task(keydown, this, key);
-			keyrepeat_task.interval= 150;
-			keyrepeat_task.repeat(-1,300);			
+	if(keyrepeat_task.running==0){
+		keyrepeat_task = new Task(keydown, this, key);
+		keyrepeat_task.interval= 150;
+		keyrepeat_task.repeat(-1,300);			
+	}
+	if(keymap.contains("modal::"+sidebar.mode)){
+		if(keymap.contains("modal::"+sidebar.mode+"::"+key)){
+			var action = keymap.get("modal::"+sidebar.mode+"::"+key);
+			var paras = action.slice(2,99);
+			post("\nfound in keymap modal", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}else if(keymap.contains("modal::"+sidebar.mode+"::all")){
+			var action = keymap.get("modal::"+sidebar.mode+"::all");
+			var paras = action.slice(2,99);
+			if(!Array.isArray(paras)) paras=[paras];
+			paras.push(key);
+			post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
 		}
 	}
-
+	if(keymap.contains("global::"+key)){
+		var action = keymap.get("global::"+key);
+		var paras = action.slice(2,99);
+		post("\nfound in keymap", action[0],action[1], "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
+	}else if(keymap.contains(displaymode+"::"+key)){
+		var action = keymap.get(displaymode+"::"+key);
+		var paras = action.slice(2,99);
+		post("\nfound in keymap for mode", displaymode,":", action, "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
+	}else if(keymap.contains(displaymode+"::all")){
+		var action = keymap.get(displaymode+"::all");
+		var paras = action.slice(2,99);
+		if(!Array.isArray(paras)) paras=[paras];
+		paras.push(key);
+		post("\nfound in keymap for mode - all - ", displaymode,":", action, "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
+	}else if(keymap.contains("sidebar::"+sidebar.mode+"::"+key)){
+		var action = keymap.get("sidebar::"+sidebar.mode+"::"+key);
+		var paras = action.slice(2,99);
+		post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
+	}
+	post("\nunhandled key", key, sidebar.mode);
 }
 
 function keyup(key){

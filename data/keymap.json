@@ -1,8 +1,101 @@
 {
+    "modal" : {
+        "edit_label" : {
+            "-6" : ["del","edit_delete"],
+            "-7" : ["delete","edit_delete"],
+            "-4" : ["enter" , "edit_label", "ok"],
+            "-3" : ["ESC", "set_sidebar_mode","block"],
+            "all" : ["all","edit_typing"]
+        },
+        "edit_state_label" : {
+            "-6" : ["del","edit_delete"],
+            "-7" : ["delete","edit_delete"],
+            "-4" : ["enter" , "edit_state_label", "ok"],
+            "-3" : ["ESC", "set_sidebar_mode","block"],
+            "all" : ["all","edit_typing"]
+        }
+    },
     "global" : {
-        "-27" : ["F11","toggle_fullscreen"]
+        "-3" : ["ESC", "key_escape"],
+        "96" : ["`", "messnamed","panic","bang" ],
+        "254" : ["ctrl-space","load_next_song", 0],
+        "-2" : ["space", "play_button"],
+        "-494" : ["??" , "set_display_mode","flocks"],
+        "-17" : ["F1" , "set_display_mode","panels"],
+        "-18" : ["F2" , "blocks_and", "block" ],
+        "-20" : ["F4" , "set_sidebar_mode","settings"],
+        "-22" : ["F6" , "blocks_and","connections"],
+        "-23" : ["F7" , "set_display_mode","waves"],
+        "-24" : ["F8" , "blocks_and","file_menu"],
+        "-25" : ["F9" , "toggle_show_sidebar_para_mod"],
+        "-26" : ["F10", "toggle_show_all_wires"],
+        "-27" : ["F11", "toggle_fullscreen"],
+        "-28" : ["F12" , "set_sidebar_mode","cpu"],
+        "47" : ["??" , "deferred_diagnostics"]
+    },
+    "custom_fullscreen" : {
+        "-19" : ["F3", "selected_block_custom_mode", "custom" ],
+        "-3" : ["ESC", "key_escape"],
+        "all" : ["all", "custom_key_passthrough"]
+    },
+    "custom" : {
+        "-19" : ["F3", "selected_block_custom_mode", "custom_fullscreen" ],
+        "-3" : ["ESC", "key_escape"],
+        "all" : ["all", "custom_key_passthrough"]
     },
     "blocks" : {
-        "-3" : ["ESC", "key_escape('blocks'"]
+        "-19" : ["F3", "selected_block_custom_mode", "custom" ],
+        "-15" : ["home" , "center_view", 1],
+        "45" : ["-", "poly_key" , -1],
+        "43" : ["-", "poly_key" , 1],
+        "573" : ["-", "poly_key" , 1],
+        "353" : ["ctrl-A", "select_all"],
+        "-6" : ["del","delete_selection"],
+        "-7" : ["delete","delete_selection"],
+        "98" : ["B", "show_new_block_menu"],
+        "114" : ["R", "arm_selected_blocks"],
+        "370" : ["ctrl-R", "arm_selected_blocks"],
+        "109" : ["M", "mute_selection", -1],
+        "355" : ["ctrl-C", "copy_selection"],
+        "376" : ["ctrl-X", "cut_selection"],
+        "374" : ["ctrl-V", "blocks_paste", 0],
+        "2422" : ["ctrl-alt-V", "blocks_paste", 1],
+        "-5" : ["tab", "set_display_mode","panels"],
+        "-9" : ["UP", "move_selected_blocks", 0, 0.5],
+        "-10" : ["DOWN", "move_selected_blocks", 0, -0.5],
+        "-11" : ["LEFT", "move_selected_blocks", -0.5, 0 ],
+        "-12" : ["RIGHT", "move_selected_blocks", 0.5 , 0],
+        "503" : ["UP", "move_selected_blocks", 0, 0.25],
+        "502" : ["DOWN", "move_selected_blocks", 0, -0.25],
+        "501" : ["LEFT", "move_selected_blocks", -0.25, 0 ],
+        "500" : ["RIGHT", "move_selected_blocks", 0.25 , 0]
+    },
+    "panels" : {
+        "-19" : ["F3", "selected_block_custom_mode", "custom" ],
+        "45" : ["-", "poly_key" , -1],
+        "43" : ["-", "poly_key" , 1],
+        "573" : ["-", "poly_key" , 1],
+        "353" : ["ctrl-A", "select_all"],
+        "-5" : ["tab" , "set_display_mode", "blocks"],
+        "109" : ["M", "mute_selected_block", -1]
+    },
+    "flocks" : {
+        "45" : ["-", "poly_key" , -1],
+        "43" : ["-", "poly_key" , 1],
+        "573" : ["-", "poly_key" , 1]
+    },
+    "waves" : {
+
+    },
+    "block_menu" : {
+        "-3" : ["ESC", "center_view"]
+    },
+    "connection_menu" : {
+        "-4" : ["enter", "create_connection_button"]
+    },
+    "sidebar" : {
+        "file_menu" : {
+            "-4" : ["enter", "load_song"]
+        }
     }
 }

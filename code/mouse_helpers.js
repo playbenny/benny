@@ -1096,14 +1096,13 @@ function scroll_sidebar(parameter,value){
 	}
 }
 function edit_label(parameter,value){
+	post("\nok so",text_being_editted);
 	if(parameter == "ok"){
 		var block = selected.block.indexOf(1);
+		post("bblock",block);
 		if(block>-1){
 			if(text_being_editted!=""){
 				blocks.replace("blocks["+block+"]::label",text_being_editted);
-/*				for(var i=0;i<4;i++){
-					if(typeof blocks_label[block][i] != 'undefined') blocks_label[block][i].text("");
-				}*/
 				set_sidebar_mode("block");
 				redraw_flag.flag |= 4;
 			}	
@@ -1122,7 +1121,26 @@ function edit_state_label(parameter,value){
 		}		
 	}
 }
-
+function edit_delete(){
+	text_being_editted = text_being_editted.slice(0,-1);
+	redraw_flag.flag |= 2;
+}
+function edit_typing(key){
+	post("\ntyping,",key);
+	var caps = 0;
+	if(key==-2){
+		key=46;
+	}
+	if(key>512) {
+		caps=1;
+		key-=512;
+		key-=32;
+	}
+	if((key>45)&&(key<123)){
+		text_being_editted = text_being_editted + String.fromCharCode(key);
+	}
+	redraw_flag.flag |= 2;
+}
 function static_mod_adjust(parameter,value){
 	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	if(value=="get"){
@@ -2051,4 +2069,92 @@ function delete_selection(){
 	}
 	selected.anysel = 0;
 	redraw_flag.flag |= 12;
+}
+
+function toggle_fullscreen(){
+	fullscreen = 1 - fullscreen;
+	world.message("fullscreen",fullscreen);
+}
+
+function key_escape(){
+	if(displaymode=="panels"){
+		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
+			set_sidebar_mode("block");
+		}else if(sidebar.mode!="none"){
+			clear_blocks_selection();
+			if(sidebar.mode == "file_menu"){
+				set_sidebar_mode("none");
+				center_view(1);
+			} 
+		}else{
+			set_display_mode("blocks");
+		}
+	}else if((displaymode=="waves")&&(waves.selected!=-1)){
+		waves.selected=-1;
+		redraw_flag.flag |= 4;
+	}else{
+		set_display_mode("blocks");
+		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
+			set_sidebar_mode("block");
+		}else if(sidebar.mode!="none"){
+			clear_blocks_selection();
+			if(sidebar.mode == "file_menu"){
+				set_sidebar_mode("none");
+				center_view(1);
+			} 
+		}else{
+			center_view(1);
+		}
+	}
+}
+
+function blocks_and(side){
+	set_sidebar_mode(side);
+	redraw_flag.flag |= 2;		
+	set_display_mode("blocks");
+}
+
+function toggle_show_all_wires(){
+	wires_show_all = !wires_show_all;
+	redraw_flag.flag = 8;
+}
+function toggle_show_sidebar_para_mod(){
+	MODULATION_IN_PARAMETERS_VIEW = 1 - MODULATION_IN_PARAMETERS_VIEW;
+	redraw_flag.flag |= 2;
+}
+
+function selected_block_custom_mode(mode){
+	set_display_mode(mode,selected.block.indexOf(1));
+}
+
+function custom_key_passthrough(key){
+	ui_poly.setvalue( custom_block+1, "keydown", key);
+}
+
+function poly_key(dir){
+	if(dir<0){
+		if((sidebar.mode == "block")||(sidebar.mode == "settings")){
+			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
+			if((current_p>1)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
+				voicecount(sidebar.selected, current_p - 1);
+			}
+		}else if(sidebar.mode == "blocks"){
+			multiselect_polychange(-1);
+		}
+	}else{
+		if((sidebar.mode == "block")||(sidebar.mode == "settings")){
+			var max_p = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::max_polyphony");
+			if(max_p ==0) max_p=9999999999999;
+			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
+			if((max_p > current_p)&&(blocks.get("blocks["+sidebar.selected+"]::type")!="hardware")){
+				voicecount(sidebar.selected, current_p + 1);
+			}
+		}else if(sidebar.mode == "blocks"){
+			multiselect_polychange(1);
+		}
+	}
+}
+function cut_selection(){
+	copy_selection();
+	delete_selection();
 }
