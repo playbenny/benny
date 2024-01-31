@@ -78,7 +78,7 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	x_pos = x1;
 	y_pos = y1;
 	showcols=Math.floor(2*width/height);
-	if(width<sw*0.6){ 
+	if(width<sw*0.54){ 
 		mini=1;
 		showcols = v_list.length;		
 	}
