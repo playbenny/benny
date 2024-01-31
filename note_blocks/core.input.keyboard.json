@@ -6,7 +6,6 @@
 		"help_text" : "Midi keyboard input. Outputs notes played and the usual keyboard controllers. If auto assign is turned on then when a block is selected the keyboard notes are sent to that block instead, until the block is deselected. ",
 		"exclusive" : 1,
 		"max_polyphony" : 1,
-		"autoload" : 1,
 		"connections" : {
 			"out" : {
 				"midi" : [ "notes", "pressure", "bend", "bend-", "bend+", "modulation", "sustain" ]
