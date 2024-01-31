@@ -2936,7 +2936,6 @@ function draw_topbar(){
 			}else{
 				statecontents = states.contains("states::"+i);
 			}
-			//if(usermouse.left_button == 0) state_fade.position = -1; //feels a bit hacky, can we do this in the state_xfade fn?
 			if(statecontents){
 				if((state_fade.position>-1) && (state_fade.selected ==i)){
 					state_fade.x = x_o;
@@ -3014,6 +3013,14 @@ function draw_topbar(){
 			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
 			lcd_main.message("write", "merged");
 			x_o+=1.6;
+		}
+		if(displaymode == "custom_fullscreen"){
+			lcd_main.message("paintrect", mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
+			lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
+			lcd_main.message("moveto",mainwindow_width-9-fo1*2,9+fo1*6);
+			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
+			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
+			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
@@ -3927,9 +3934,9 @@ function draw_sidebar(){
 				}
 				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2, y_offset+0.5*fontheight,bc);
 				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+0.5*fontheight,mouse_index,1);
-				mouse_click_actions[sidebar.editbtn_index] = show_vst_editor;
-				mouse_click_parameters[sidebar.editbtn_index] = block;
-				mouse_click_values[sidebar.editbtn_index] = block;
+				mouse_click_actions[mouse_index] = show_vst_editor;
+				mouse_click_parameters[mouse_index] = block;
+				mouse_click_values[mouse_index] = block;
 				mouse_index++;
 				lcd_main.message("frgb" , fc);
 				lcd_main.message("moveto" ,sidebar.x+fo1, y_offset+fontheight*0.4);
@@ -5718,11 +5725,6 @@ function draw_sidebar(){
 		}else if(selected.wire_count == 1){ // if 1 connection selected
 			// CONNECTION DETAIL VIEW #######################################################################################################
 			i = selected.wire.indexOf(1);
-			if(sidebar.editbtn!=0){
-				sidebar.editbtn = 0;
-				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
-				if(view_changed===true) click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
-			}
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
 			setfontsize(fontheight/1.6);
@@ -6260,7 +6262,6 @@ function draw_sidebar(){
 			lcd_main.message("frgb", menucolour );
 			y_offset += 1.1* fontheight;
 		}else if((selected.block_count + selected.wire_count) > 1){ 
-			sidebar.editbtn = 0;
 			if(selected.wire_count>1){
 				sidebar.mode = "wires";
 			}else{
@@ -6311,9 +6312,6 @@ function draw_sidebar(){
 				lcd_main.message("frgb" ,0,0,0);
 				lcd_main.message("write", "copy");
 				click_zone(copy_selection, null,null, sidebar.x + fontheight*4.8, y_offset, sidebar.x+fontheight*5.8, fontheight+y_offset,mouse_index,1 );
-				sidebar.editbtn = 0;
-				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
-				click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 				
 				lcd_main.message("paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudark );
 				click_zone(mute_selected_block,0,null, sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,mouse_index,1 );
@@ -6419,9 +6417,6 @@ function draw_sidebar(){
 				lcd_main.message("frgb" , menucolour);
 				lcd_main.message("write", selected.wire_count, "connections selected");
 
-				sidebar.editbtn = 0;
-				lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
-				click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 			
 				lcd_main.message("paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudark );
 				click_zone(connection_mute_selected,0,null, sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,mouse_index,1 );
@@ -6513,9 +6508,6 @@ function draw_sidebar(){
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 			}
-			sidebar.editbtn = 0;
-			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
-			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
 			
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
@@ -6575,10 +6567,7 @@ function draw_sidebar(){
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 			}
-			sidebar.editbtn = 0;
-			lcd_main.message("paintrect", sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,backgroundcolour_current);
-			click_rectangle( sidebar.editbtn_x,9,sidebar.editbtn_x+fontheight,9+fontheight,0,0);				
-
+	
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
@@ -6628,7 +6617,6 @@ function draw_sidebar(){
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS,"vis_scope",1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 		}else{
-			sidebar.editbtn = 0;
 			sidebar.mode = "none";
 			center_view(1);
 			if(sidebar.mode != sidebar.lastmode){
