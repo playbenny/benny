@@ -8,7 +8,8 @@ var config = new Dict;
 config.name = "config";
 var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
 var block=-1;
-var menucolour;
+var blockcolour=[128,128,128];
+//var menucolour=[0,255,0];
 var display_row_offset = 0;
 var display_col_offset = 0;
 var currentvel=100;
@@ -37,7 +38,6 @@ var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 function setup(x1,y1,x2,y2,sw){ 
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	menucolour = config.get("palette::menu");
 	mini=0;
 	width = x2-x1;
 	height = y2-y1;
@@ -81,11 +81,11 @@ function draw(){
 		sx = 1.2*unit*(mini==0);
 		cw = (width - sx)/(i-0.05);
 		maxl = Math.floor((height-sy)/rh);
-		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
-		//outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
+		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		//outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		if(!mini){
 			outlet(0,"setfontsize",rh*0.8);
-			outlet(1,"frgb",menucolour);
+			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",x_pos,rh*1.0+y_pos);
 			outlet(1,"write","oct");
 			outlet(1,"moveto",x_pos,rh*1.7+y_pos);
@@ -96,10 +96,10 @@ function draw(){
 			rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 			rc = (4+rc)/24;
 			
-			outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc,menucolour[2]*rc);
+			outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc,blockcolour[2]*rc);
 			if(!mini){
 				outlet(1,"moveto",x_pos,sy+rh*(r+0.75)+y_pos);
-				outlet(1,"frgb",menucolour);
+				outlet(1,"frgb",blockcolour);
 				outlet(1,"write",rr);
 			}
 		}
@@ -114,9 +114,9 @@ function draw(){
 //			post("c,ls,le,lo",c,lstart[c],end[c],lon[c]);
 			if(!mini){
 				if(cursorx == c){
-					outlet(1,"frgb",menucolour);
+					outlet(1,"frgb",blockcolour);
 				}else{
-					outlet(1,"frgb",menucolour[0]*0.5,menucolour[1]*0.5,menucolour[2]*0.5);
+					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				}
 				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
 				outlet(1,"write", "voice");
@@ -199,14 +199,15 @@ function drawcell(c,r){
 		rr = r+display_row_offset;
 		rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 		rc = rc/24;
-		fc = [menucolour[0]*0.25,menucolour[1]*0.25,menucolour[2]*0.25];
+		fc = [blockcolour[0]*0.25,blockcolour[1]*0.25,blockcolour[2]*0.25];
 		var lp=1;
 		if((rr>=start[cc])&&(rr<end[cc])){
 			rc+=0.1;
-			fc=[menucolour[0],menucolour[1],menucolour[2]];
+			fc=[blockcolour[0],blockcolour[1],blockcolour[2]];
 			if((rr>=lstart[cc])&& lon[cc]){
-				fc[1]*=1.3;
-				fc[0]*=0.8;
+				fc[1]*=2.1;
+				fc[0]*=1.7;
+				fc[2]*=1.3;
 				lp=1.5;
 			} 
 		}
@@ -227,7 +228,7 @@ function drawcell(c,r){
 			var rc2 = rc + 0.2;
 			outlet(1,"paintrect",sx+(c+0.95*ts)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95*te)*cw+x_pos,sy+rh*(r+1)+y_pos,fc[0]*rc2,fc[1]*rc2*lp*0.5,255*rc2);
 		}else{// all not
-			outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,menucolour[0]*rc,menucolour[1]*rc*lp,menucolour[2]*rc);
+			outlet(1,"paintrect",sx+c*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
 		}
 		if(!mini){
 			outlet(1,"frgb",fc);
@@ -788,6 +789,8 @@ function voice_is(v){
 	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+		blockcolour = blocks.get("blocks["+block+"]::space::colour");
+		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
 	}
 //	post("seq.grid.ui loaded, block is",block);
 }
