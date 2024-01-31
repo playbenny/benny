@@ -28,7 +28,12 @@
 				"colour" : [255,255,255]
 			},
 			{
-				"contains" : [6,7,8]
+				"contains" : [6,7]
+			},
+			{
+				"contains" : [8,9,10],
+				"colour" : -20,
+				"height" : 0
 			}
 		],
 		"voice_data" : {},
@@ -96,6 +101,22 @@
 				"values" : ["play", "record"],
 				"wrap" : 0,
 				"default" : 0.25
+			},
+			{
+				"name" : "<_back",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","<_back",-1]
+			},
+			{
+				"name" : ">_fwd",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices",">_fwd", 1]
 			}
 		]
 	}
