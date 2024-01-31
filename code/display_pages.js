@@ -4035,7 +4035,7 @@ function draw_sidebar(){
 					y_offset += fontheight*1.1;
 				}else{
 					params = blocktypes.get(block_name+"::parameters");
-					if(blocktypes.getsize(block_name+"::parameters")==1)params = [params];
+					if(!Array.isArray(params))params = [params];
 					if(!blocktypes.contains(block_name+"::groups")){
 						var paramarray = [];
 						groups[0] = new Dict;
@@ -4043,10 +4043,9 @@ function draw_sidebar(){
 							paramarray[i] = i;
 						}
 						groups[0].replace("contains",paramarray);
-					}else if(blocktypes.getsize(block_name+"::groups")==1){
-						groups[0]=blocktypes.get(block_name+"::groups[0]");
 					}else{
 						groups = blocktypes.get(block_name+"::groups");
+						if(!Array.isArray(groups)) groups = [groups];
 					}
 
 					var w_slider,h_slider,colour,plist;
