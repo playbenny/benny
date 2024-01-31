@@ -3901,28 +3901,30 @@ function draw_sidebar(){
 				mouse_click_actions[mouse_index] = set_display_mode;
 				var ebg=block_darkest;
 				var efg=block_colour;
-				if(usermouse.clicked2d == mouse_index){
-					efg = block_darkest;
-					ebg = block_colour;
-					//mouse_click_parameters[smouse_index] = "custom_fullscreen";
-				}else if(displaymode=="custom"){
+				var et="<< edit"
+				if(displaymode=="custom"){
 					ebg = block_colour;
 					efg = block_darkest;
 					mouse_click_parameters[mouse_index] = "custom_fullscreen";
-				}else if(displaymode=="custom_fullscreen"){
+					et=">> edit fullscreen"
+				}/*else if(displaymode=="custom_fullscreen"){ //never happens, doesn't draw sidebar in fullscreen
 					ebg = block_colour;
 					efg = block_darkest;
 					mouse_click_parameters[mouse_index] = "custom";
-				}else{
+				}*/else{
 					mouse_click_parameters[mouse_index] = "custom";
+				}
+				if(usermouse.clicked2d == mouse_index){
+					efg = block_darkest;
+					ebg = menucolour;
 				}
 				mouse_click_values[mouse_index] = block;
 				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
 				lcd_main.message("frgb" , efg);
 				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
 				mouse_index++;
-				lcd_main.message("moveto" ,sidebar.x+fo1, y_offset+fontheight*0.4);
-				lcd_main.message("write", "edit");
+				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
+				lcd_main.message("write", et);
 
 				y_offset += fontheight*0.6;
 			}else if(blocktypes.contains(block_name+"::plugin_name")){
@@ -3939,8 +3941,8 @@ function draw_sidebar(){
 				mouse_click_values[mouse_index] = block;
 				mouse_index++;
 				lcd_main.message("frgb" , fc);
-				lcd_main.message("moveto" ,sidebar.x+fo1, y_offset+fontheight*0.4);
-				lcd_main.message("write", "edit");
+				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
+				lcd_main.message("write", "open vst");
 				y_offset += 0.6*fontheight;
 			}
 
