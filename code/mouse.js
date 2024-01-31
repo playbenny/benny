@@ -184,6 +184,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				var f = mouse_click_actions[usermouse.got_i];
 				var p = mouse_click_parameters[usermouse.got_i];
 				var v = mouse_click_values[usermouse.got_i];
+				//post("\npassthrough",f.toString(),p,v);
 				f(p,v);
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;				
 			}else{
@@ -651,7 +652,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
 								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
-								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))||(usermouse.hover[0]=="wires")))){
+								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))/*||(usermouse.hover[0]=="wires")*/))){ //i think hover can't get set to wires
 									remove_potential_wire();
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
@@ -682,7 +683,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
-									post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 									// ############## INDICATE POSSIBLE CONNECTION by drawing a 'potential' wire	
 									var drawwire=1;
 									if(wires_potential_connection != -1){

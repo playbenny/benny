@@ -662,8 +662,8 @@ function clear_everything_btn(parameter,value){
 }
 
 function custom_mouse_passthrough(parameter,value){
-	//post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
-	ui_poly.setvalue(parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
+	post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y,"OR SHOULD THE +1 BE ELSEWEHRE");
+	ui_poly.setvalue(parameter+1,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
 }
 function custom_direct_mouse_passthrough(parameter,value){
 	//post("\n\nCDIRECT MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
@@ -2116,7 +2116,7 @@ function blocks_and(side){
 
 function toggle_show_all_wires(){
 	wires_show_all = !wires_show_all;
-	redraw_flag.flag = 8;
+	redraw_flag.flag |= 4; //8;
 }
 function toggle_show_sidebar_para_mod(){
 	MODULATION_IN_PARAMETERS_VIEW = 1 - MODULATION_IN_PARAMETERS_VIEW;
