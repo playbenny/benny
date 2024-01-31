@@ -61,14 +61,14 @@
         "374" : ["ctrl-V", "blocks_paste", 0],
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
         "-5" : ["tab", "set_display_mode","panels"],
-        "-9" : ["UP", "move_selected_blocks", 0, 0.5],
-        "-10" : ["DOWN", "move_selected_blocks", 0, -0.5],
-        "-11" : ["LEFT", "move_selected_blocks", -0.5, 0 ],
-        "-12" : ["RIGHT", "move_selected_blocks", 0.5 , 0],
-        "503" : ["UP", "move_selected_blocks", 0, 0.25],
-        "502" : ["DOWN", "move_selected_blocks", 0, -0.25],
-        "501" : ["LEFT", "move_selected_blocks", -0.25, 0 ],
-        "500" : ["RIGHT", "move_selected_blocks", 0.25 , 0]
+        "-9" : ["UP", "move_selected_blocks", 0,1],
+        "-10" : ["DOWN", "move_selected_blocks", 0, -1],
+        "-11" : ["LEFT", "move_selected_blocks", -1, 0 ],
+        "-12" : ["RIGHT", "move_selected_blocks", 1 , 0],
+        "503" : ["UP", "move_selected_blocks", 0, 0.2],
+        "502" : ["DOWN", "move_selected_blocks", 0, -0.2],
+        "501" : ["LEFT", "move_selected_blocks", -0.2, 0 ],
+        "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0]
     },
     "panels" : {
         "-19" : ["F3", "selected_block_custom_mode", "custom" ],
