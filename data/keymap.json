@@ -23,9 +23,9 @@
         "-494" : ["??" , "set_display_mode","flocks"],
         "-17" : ["F1" , "set_display_mode","panels"],
         "-18" : ["F2" , "blocks_and", "block" ],
-        "-20" : ["F4" , "set_sidebar_mode","settings"],
-        "-22" : ["F6" , "blocks_and","connections"],
-        "-23" : ["F7" , "set_display_mode","waves"],
+        "-19" : ["F3" , "set_display_mode","waves"],
+        "-22" : ["F6" , "set_sidebar_mode","settings"],
+        "-23" : ["F7" , "blocks_and","connections"],
         "-24" : ["F8" , "blocks_and","file_menu"],
         "-25" : ["F9" , "toggle_show_sidebar_para_mod"],
         "-26" : ["F10", "toggle_show_all_wires"],
@@ -34,17 +34,17 @@
         "47" : ["??" , "deferred_diagnostics"]
     },
     "custom_fullscreen" : {
-        "-19" : ["F3", "selected_block_custom_mode", "custom" ],
+        "-20" : ["F4", "selected_block_custom_mode", "custom" ],
         "-3" : ["ESC", "key_escape"],
         "all" : ["all", "custom_key_passthrough"]
     },
     "custom" : {
-        "-19" : ["F3", "selected_block_custom_mode", "custom_fullscreen" ],
+        "-20" : ["F4", "selected_block_custom_mode", "custom_fullscreen" ],
         "-3" : ["ESC", "key_escape"],
         "all" : ["all", "custom_key_passthrough"]
     },
     "blocks" : {
-        "-19" : ["F3", "selected_block_custom_mode", "custom" ],
+        "-20" : ["F4", "selected_block_custom_mode", "custom" ],
         "-15" : ["home" , "center_view", 1],
         "45" : ["-", "poly_key" , -1],
         "43" : ["-", "poly_key" , 1],
@@ -71,7 +71,7 @@
         "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0]
     },
     "panels" : {
-        "-19" : ["F3", "selected_block_custom_mode", "custom" ],
+        "-20" : ["F4", "selected_block_custom_mode", "custom" ],
         "45" : ["-", "poly_key" , -1],
         "43" : ["-", "poly_key" , 1],
         "573" : ["-", "poly_key" , 1],
