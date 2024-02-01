@@ -654,24 +654,26 @@ function build_wave_remapping_list(){
 		}
 //		post("\nfreelist = ",freelist," agelist = ",waves.age);
 		for(i=0;i<MAX_WAVES;i++){
-			a=-1;
-			var lowest = waves.seq_no;
-			var lowp=-1;
-			do {
-				a++;
-				if(waves.age[a]<lowest){
-					lowest=waves.age[a];
-					lowp=a;
-				}
-				if(a==MAX_WAVES){
-					a=lowp;
-					freelist[a]=1;
-					waves.age[a]=waves.seq_no++;
-				}
-			} while (freelist[a]==0);
-			//post("\nmapping new wave "+i+" to slot "+a);
-			waves.remapping[i]=a;
-			freelist[a]=0;
+			if(songs.contains(loading.songname+"::waves["+i+"]::name")){
+				a=-1;
+				var lowest = waves.seq_no;
+				var lowp=-1;
+				do {
+					a++;
+					if(waves.age[a]<lowest){
+						lowest=waves.age[a];
+						lowp=a;
+					}
+					if(a==MAX_WAVES){
+						a=lowp;
+						freelist[a]=1;
+						waves.age[a]=waves.seq_no++;
+					}
+				} while (freelist[a]==0);
+				//post("\nmapping new wave "+i+" to slot "+a);
+				waves.remapping[i]=a;
+				freelist[a]=0;
+			}else{post("\nskipped blank slot ",i);}
 		}
 		post("\nremapping table goes like this ",waves.remapping);
 	}
@@ -974,7 +976,7 @@ function save_song(selectedonly){
 					if(pvm_vl[v]==1){
 						if(!states.contains("states::current::static_mod::"+b+"::"+v))states.setparse("states::current::static_mod::"+b+"::"+v,"{}");
 						var tv=parameter_static_mod.peek(1,vl[v]*MAX_PARAMETERS,psize);
-						post("\nadding",tv.length,"values to current/static/",b,"vl",v);
+						//post("\nadding",tv.length,"values to current/static/",b,"vl",v);
 						states.replace("states::current::static_mod::"+b+"::"+v,tv);	
 					}
 				}
