@@ -3,8 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 7,
+			"minor" : 6,
+			"revision" : 0,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -45,7 +45,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 562.0, 7.0, 150.0, 75.0 ],
+					"patching_rect" : [ 562.0, 7.0, 153.0, 74.0 ],
 					"text" : "first argument = custom param scan time - you can make non time critical blocks run slower to save cpu"
 				}
 
@@ -286,7 +286,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 425.14285714285711, 372.0, 22.0, 22.0 ],
+					"patching_rect" : [ 416.14285714285711, 388.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -334,7 +334,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 447.64285714285711, 315.0, 29.5, 22.0 ],
+					"patching_rect" : [ 481.64285714285711, 311.0, 29.5, 22.0 ],
 					"text" : "i"
 				}
 
@@ -538,7 +538,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 470.142857142857054, 274.0, 29.5, 22.0 ],
+					"patching_rect" : [ 500.0, 274.0, 29.5, 22.0 ],
 					"text" : "t 1 i"
 				}
 
@@ -623,7 +623,7 @@
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 34.0, 16.0, 30.0, 30.0 ]
 				}
 
@@ -675,7 +675,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-36", 0 ],
+					"destination" : [ "obj-60", 0 ],
 					"source" : [ "obj-15", 1 ]
 				}
 
