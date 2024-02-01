@@ -447,7 +447,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	var zoom_l = 1/*(1+0.99*(zoom_amount<0)*zoom_amount)*dl*(1-Math.abs(zoom_amount))+(zoom_amount>0)*zoom_amount;
 	var zoom_start = Math.min(1,Math.max(0,highlight+zoom_offset));
 	var zoom_end = zoom_start+zoom_l*/; //this is all ready for when you implement zoom BUT first make it show markers based on the stored ones 
-	//not just multiplying, ditto highlight pos and length. AND DO STRIPE WHILE YOUR AT IT
+	//not just multiplying, ditto highlight pos and length. AND DO STRIPE WHILE YOURE AT IT
 	var chunk = zoom_l*length/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
@@ -475,8 +475,8 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 			lcd_main.message("frgb",r,g,b);		
 		}
 		for(i=0;i<w;i++){
-			wmin = draw_wave[buffer-1][ch*2][i];
-			wmax = draw_wave[buffer-1][ch*2+1][i];
+			wmin = draw_wave[buffer-1][ch*2][i] |0;
+			wmax = draw_wave[buffer-1][ch*2+1][i] |0;
 			for(t=0;t<20;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
@@ -493,6 +493,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 			}
 			lcd_main.message("moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
 			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
+			//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
 		}
 	}
 }
@@ -528,8 +529,8 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 		lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
 		lcd_main.message("frgb",r,g,b);
 		for(i=0;i<w;i++){
-			wmin = draw_wave[buffer-1][ch*2][i];
-			wmax = draw_wave[buffer-1][ch*2+1][i];
+			wmin = draw_wave[buffer-1][ch*2][i] |0;
+			wmax = draw_wave[buffer-1][ch*2+1][i] |0;
 			for(t=0;t<20;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
@@ -553,7 +554,7 @@ function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 		}
 		lx = x1 +  (x2 - x1) * (value % 1);
 		lcd_main.message("paintrect",x1,y1,lx,y2,r>>1,g>>1,b>>1);
-		lcd_main.message("moveto", (x1+8), (y2-8));
+		lcd_main.message("moveto", (x1+fo1), (y2-fo1));
 		if(value>0.3) {
 			lcd_main.message("frgb", 0,0,0);
 		}else{
@@ -567,7 +568,7 @@ function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 		}
 		lx = x1 + (x2 - x1) * (1-((-value) % 1));
 		lcd_main.message("paintrect",lx,y1,x2,y2,r>>1,g>>1,b>>1);
-		lcd_main.message("moveto", (x1+8), (y2-8));
+		lcd_main.message("moveto", (x1+fo1), (y2-fo1));
 		if(value<-0.7) {
 			lcd_main.message("frgb", 0,0,0);
 		}else{

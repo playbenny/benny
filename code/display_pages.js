@@ -463,12 +463,12 @@ function draw_waves(){
 //		num_slots=1;
 //		slot_h = (mainwindow_height-fontheight*2-27);
 //	}else{
-	var bigsloth = mainwindow_height-fontheight*10.2-18; 
+	var bigsloth = mainwindow_height/2;//-fontheight*10.2-18; 
 	if(waves.selected == -1){
-		slot_h = (mainwindow_height-fontheight*1-27) / (num_slots);
+		slot_h = mainwindow_height/6;//(mainwindow_height-fontheight*1-27) / (num_slots);
 	}else{
 		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
-			slot_h = (mainwindow_height-fontheight*1-27-bigsloth) / (num_slots);
+			slot_h = mainwindow_height/6;//(mainwindow_height-fontheight*1-27-bigsloth) / (num_slots);
 		}else{
 			slot_h = fontheight*1.1;
 		}
@@ -534,10 +534,9 @@ function draw_waves(){
 				lcd_main.message("write","start");
 				lcd_main.message("moveto",mainwindow_width-13*fontheight,sloty+fontheight*0.6);
 				lcd_main.message("write","end");
-				lcd_main.message("moveto",sidebar.x2*fontheight,sloty+fontheight*0.6);
+				lcd_main.message("moveto",mainwindow_width - 9*fontheight,sloty+fontheight*0.6);
 				lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
-				
-				draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+fontheight*0.9,c[0],c[1],c[2],slot+1,mouse_index,2);
+				draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+slot_h,c[0],c[1],c[2],slot+1,mouse_index,2);
 				mouse_click_actions[mouse_index] = zoom_waves;
 				mouse_click_parameters[mouse_index] = slot;
 				mouse_click_values[mouse_index] = 0;
