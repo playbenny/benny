@@ -2125,7 +2125,7 @@ function toggle_show_sidebar_para_mod(){
 }
 
 function selected_block_custom_mode(mode){
-	set_display_mode(mode,selected.block.indexOf(1));
+	if(selected.block.indexOf(1)>=0) set_display_mode(mode,selected.block.indexOf(1));
 }
 
 function custom_key_passthrough(key){
