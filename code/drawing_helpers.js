@@ -433,7 +433,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	var w = Math.floor((x2-x1-1)/2);
 	if(!Array.isArray(draw_wave[buffer-1])) draw_wave[buffer-1] = [[],[],[],[]];
 	if(w!=draw_wave[buffer-1][0].length) {
-		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		draw_wave[buffer-1][0].length = w;
 		clear_wave_graphic(buffer,w);
 	}
