@@ -4623,7 +4623,7 @@ function draw_sidebar(){
 					var params = [];
 					var knob = { x:0 , y:0 };
 					params = blocktypes.get(block_name+"::parameters");
-					if(blocktypes.getsize(block_name+"::parameters")==1) params = [params];
+					if(!Array.isArray(params)) params = [params];
 					if(!blocktypes.contains(block_name+"::groups")){
 						var paramarray = [];
 						groups[0] = new Dict;
