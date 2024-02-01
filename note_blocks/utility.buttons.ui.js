@@ -48,7 +48,7 @@ function draw(){
 		for(var i=0;i<3;i++){
 			c = 0.2 + values[i];
 			outlet(1,"paintrect",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,c,c,c);
-			outlet(0,"custom_ui_element","mouse_passthrough",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,0,0,0,block+1,block+1,0);
+			outlet(0,"custom_ui_element","mouse_passthrough",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,0,0,0,block,block,0);
 		}	
 		//outlet(1,"bang");
 	}
@@ -62,7 +62,7 @@ function update(){
 				c = 0.2 + values[i];
 				ov[i]=values[i];
 				outlet(1,"paintrect",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,c,c,c);
-				outlet(0,"custom_ui_element","mouse_passthrough",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,0,0,0,block+1,block+1,0);
+				outlet(0,"custom_ui_element","mouse_passthrough",w3*(i+0.05)+x_pos,y_pos+0.05*height,w3*(i+0.95)+x_pos,height*0.95+y_pos,0,0,0,block,block,0);
 			}
 		}	
 		//outlet(1,"bang");
@@ -125,4 +125,8 @@ function store(){
 function send_note(xx,note,vel){
 	//post("\ntodo send note",xx,note,vel);
 	messnamed("utility.buttons",block,xx,note,vel);
+}
+
+function value_report(note,vel){
+	values[note] = vel;
 }
