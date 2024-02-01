@@ -458,124 +458,123 @@ function draw_waves(){
 	var num_slots = MAX_WAVES;//waves_dict.getsize("waves");
 	var slot;
 	var c=new Array(3);
-	var slot_h;
-//	if(num_slots==0){
-//		num_slots=1;
-//		slot_h = (mainwindow_height-fontheight*2-27);
-//	}else{
+	var slot_h = mainwindow_height/6;
 	var bigsloth = mainwindow_height/2;//-fontheight*10.2-18; 
-	if(waves.selected == -1){
-		slot_h = mainwindow_height/6;//(mainwindow_height-fontheight*1-27) / (num_slots);
-	}else{
-		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
-			slot_h = mainwindow_height/6;//(mainwindow_height-fontheight*1-27-bigsloth) / (num_slots);
-		}else{
-			slot_h = fontheight*1.1;
-		}
-	}
-//	}
 	setfontsize(fontheight/1.6);
 	var colinc = config.getsize("palette::gamut") / (num_slots+1);
-	var sloty = fontheight+18;
+	var sloty = fontheight+fo1+9-waves.scroll_position;
+	//post("\nwavescr",waves.scroll_position);
 	for(slot=0;slot<(num_slots);slot++){
-		if(waves_dict.contains("waves["+(slot+1)+"]::name")){
-			if(slot==waves.selected){
-				//draw controls bar and zoomed wave
-				c=config.get("palette::gamut["+Math.floor(slot*colinc)+"]::colour");
-				lcd_main.message("paintrect",9, sloty, sidebar.x2,sloty+0.9*fontheight,c[0],c[1],c[2]);
-
-				c=config.get("palette::gamut["+Math.floor(1+slot*colinc)+"]::colour");
-				draw_h_slider(sidebar.x2-17*fontheight,sloty+fo1,sidebar.x2-13.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::start"));
-				mouse_click_actions[mouse_index] = setup_waves;
-				mouse_click_parameters[mouse_index] = [slot+1,"start"];
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-
-				c=config.get("palette::gamut["+Math.floor(2+slot*colinc)+"]::colour");
-				draw_h_slider(sidebar.x2-13*fontheight,sloty+fo1,sidebar.x2-9.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::end"));
-				mouse_click_actions[mouse_index] = setup_waves;
-				mouse_click_parameters[mouse_index] = [slot+1,"end"];
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-
-				c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-				draw_h_slider(sidebar.x2-9*fontheight,sloty+fo1,sidebar.x2-5*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
-				mouse_click_actions[mouse_index] = setup_waves;
-				mouse_click_parameters[mouse_index] = [slot+1,"divisions"];
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-
-				lcd_main.message("paintrect",sidebar.x2-3*fontheight,sloty+fo1,sidebar.x2,sloty+fontheight*0.7,255,0,0);
-				click_rectangle(sidebar.x2-3*fontheight,sloty+fo1,sidebar.x2,sloty+fontheight*0.7,mouse_index,1);
-				mouse_click_actions[mouse_index] = delete_wave;
-				mouse_click_parameters[mouse_index] = slot;
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				lcd_main.message("frgb",menucolour);
-				lcd_main.message("moveto",sidebar.x2-2.7*fontheight,sloty+fontheight*0.6);
-				setfontsize(fontheight/3.2);
-				lcd_main.message("textface","normal");
-				lcd_main.message("write","delete");
+		if((sloty>fontheight)&&(sloty<mainwindow_height)){
+			if(waves_dict.contains("waves["+(slot+1)+"]::name")){
+				if(slot==waves.selected){
+					//draw controls bar and zoomed wave
+					c=config.get("palette::gamut["+Math.floor(slot*colinc)+"]::colour");
+					lcd_main.message("paintrect",9, sloty, sidebar.x2,sloty+0.9*fontheight,c[0],c[1],c[2]);
+	
+					c=config.get("palette::gamut["+Math.floor(1+slot*colinc)+"]::colour");
+					draw_h_slider(sidebar.x2-17*fontheight,sloty+fo1,sidebar.x2-13.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::start"));
+					mouse_click_actions[mouse_index] = setup_waves;
+					mouse_click_parameters[mouse_index] = [slot+1,"start"];
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+	
+					c=config.get("palette::gamut["+Math.floor(2+slot*colinc)+"]::colour");
+					draw_h_slider(sidebar.x2-13*fontheight,sloty+fo1,sidebar.x2-9.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::end"));
+					mouse_click_actions[mouse_index] = setup_waves;
+					mouse_click_parameters[mouse_index] = [slot+1,"end"];
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+	
+					c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
+					draw_h_slider(sidebar.x2-9*fontheight,sloty+fo1,sidebar.x2-5*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
+					mouse_click_actions[mouse_index] = setup_waves;
+					mouse_click_parameters[mouse_index] = [slot+1,"divisions"];
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+	
+					lcd_main.message("paintrect",sidebar.x2-3*fontheight,sloty+fo1,sidebar.x2,sloty+fontheight*0.7,255,0,0);
+					click_rectangle(sidebar.x2-3*fontheight,sloty+fo1,sidebar.x2,sloty+fontheight*0.7,mouse_index,1);
+					mouse_click_actions[mouse_index] = delete_wave;
+					mouse_click_parameters[mouse_index] = slot;
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					lcd_main.message("frgb",menucolour);
+					lcd_main.message("moveto",sidebar.x2-2.7*fontheight,sloty+fontheight*0.6);
+					setfontsize(fontheight/3.2);
+					lcd_main.message("textface","normal");
+					lcd_main.message("write","delete");
+					
+					c=config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour");
+					draw_stripe(9,sloty+fontheight*0.8,sidebar.x2,sloty+fontheight*1.3,c[0],c[1],c[2],slot+1,mouse_index);
+					mouse_click_actions[mouse_index] = wave_stripe_click;
+					mouse_click_parameters[mouse_index] = slot;
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
+					lcd_main.message("moveto",18,sloty+fontheight*0.6);
+					setfontsize(fontheight/2.4);
+					lcd_main.message("textface","bold");
+					lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
+					setfontsize(fontheight/3.2);
+					lcd_main.message("textface","normal");
+					lcd_main.message("moveto",mainwindow_width-17*fontheight,sloty+fontheight*0.6);
+					lcd_main.message("write","start");
+					lcd_main.message("moveto",mainwindow_width-13*fontheight,sloty+fontheight*0.6);
+					lcd_main.message("write","end");
+					lcd_main.message("moveto",mainwindow_width - 9*fontheight,sloty+fontheight*0.6);
+					lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
+					draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+slot_h,c[0],c[1],c[2],slot+1,mouse_index,2);
+					mouse_click_actions[mouse_index] = zoom_waves;
+					mouse_click_parameters[mouse_index] = slot;
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					
+					sloty+=bigsloth-slot_h;
+				}else{
+					c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
+					draw_stripe(9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index);
+					mouse_click_actions[mouse_index] = wave_stripe_click;
+					mouse_click_parameters[mouse_index] = slot;
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
+					lcd_main.message("moveto",18,sloty+fontheight*0.32);
+					setfontsize(fontheight/3.2);
+					lcd_main.message("textface","bold");
+					lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
+				}
 				
-				c=config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour");
-				draw_stripe(9,sloty+fontheight*0.8,sidebar.x2,sloty+fontheight*1.3,c[0],c[1],c[2],slot+1,mouse_index);
-				mouse_click_actions[mouse_index] = wave_stripe_click;
-				mouse_click_parameters[mouse_index] = slot;
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
-				lcd_main.message("moveto",18,sloty+fontheight*0.6);
-				setfontsize(fontheight/2.4);
-				lcd_main.message("textface","bold");
-				lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
-				setfontsize(fontheight/3.2);
-				lcd_main.message("textface","normal");
-				lcd_main.message("moveto",mainwindow_width-17*fontheight,sloty+fontheight*0.6);
-				lcd_main.message("write","start");
-				lcd_main.message("moveto",mainwindow_width-13*fontheight,sloty+fontheight*0.6);
-				lcd_main.message("write","end");
-				lcd_main.message("moveto",mainwindow_width - 9*fontheight,sloty+fontheight*0.6);
-				lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
-				draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+slot_h,c[0],c[1],c[2],slot+1,mouse_index,2);
-				mouse_click_actions[mouse_index] = zoom_waves;
-				mouse_click_parameters[mouse_index] = slot;
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				
-				sloty+=bigsloth;
 			}else{
+				//draw placeholder marker that's a load button
 				c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-				draw_stripe(9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index);
-				mouse_click_actions[mouse_index] = wave_stripe_click;
-				mouse_click_parameters[mouse_index] = slot;
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
+				lcd_main.message("framerect",9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2]);
+				//lcd_main.message("frgb",menudark);
 				lcd_main.message("moveto",18,sloty+fontheight*0.32);
 				setfontsize(fontheight/3.2);
 				lcd_main.message("textface","bold");
-				lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
+				lcd_main.message("write",slot+1,"---");
+				click_rectangle(9,sloty,sidebar.x2,sloty+slot_h-fo1,mouse_index,1);
+				mouse_click_actions[mouse_index] = load_wave;
+				mouse_click_parameters[mouse_index] = slot;
+				mouse_click_values[mouse_index] = "";	
+				mouse_index++;
 			}
-			
-		}else{
-			//draw placeholder marker that's a load button
-//			var b = mainwindow_height-9;
-	//		if(slot!=num_slots-1) b = 9+(slot+0.96)*slot_h;
-			c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-			lcd_main.message("framerect",9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2]);
-			//lcd_main.message("frgb",menudark);
-			lcd_main.message("moveto",18,sloty+fontheight*0.32);
-			setfontsize(fontheight/3.2);
-			lcd_main.message("textface","bold");
-			lcd_main.message("write",slot+1,"---");
-			click_rectangle(9,sloty,sidebar.x2,sloty+slot_h-fo1,mouse_index,1);
-			mouse_click_actions[mouse_index] = load_wave;
-			mouse_click_parameters[mouse_index] = slot;
-			mouse_click_values[mouse_index] = "";	
-			mouse_index++;
 		}
 		sloty+=slot_h;
 	}
+	lcd_main.message("frgb", menudarkest);
+	lcd_main.message("moveto",mainwindow_width-5,9);
+	lcd_main.message("lineto",mainwindow_width-5,mainwindow_height-9);		
+	var l = (mainwindow_height-18) / (/*mainwindow_height + sidebar.scroll.max*/ slot_h*(MAX_WAVES-1)+bigsloth - 18);
+	var l2 = (mainwindow_height-18) * l;
+	var p = waves.scroll_position * l + 9;
+	lcd_main.message("frgb", menucolour);
+	lcd_main.message("moveto",mainwindow_width-5,p);
+	lcd_main.message("lineto",mainwindow_width-5,p+l2);
+	//click zone for the scrollbar
+	click_zone(scroll_waves, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
+
 	lcd_main.message("bang");
 	//outlet(8,"bang");
 }

@@ -1096,6 +1096,18 @@ function scroll_sidebar(parameter,value){
 		redraw_flag.flag |= 2;
 	}
 }
+function scroll_waves(parameter,value){
+	if(value=="get"){
+		return -waves.scroll_position/5000;
+	}else if(value=="rel"){
+		waves.scroll_position = Math.min(Math.max(0,waves.scroll_position-parameter*100),mainwindow_height*(MAX_WAVES+2)/6-0.01);
+		redraw_flag.flag |= 4;
+	}else{
+		waves.scroll_position = Math.min(Math.max(0,-value*5000),mainwindow_height*(MAX_WAVES+2)/6-0.01);
+		redraw_flag.flag |= 4;
+	}
+}
+
 function edit_label(parameter,value){
 	post("\nok so",text_being_editted);
 	if(parameter == "ok"){

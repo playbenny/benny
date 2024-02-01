@@ -157,7 +157,8 @@ var waves = {
 	zoom_end : 1,
 	remapping : [],
 	age : [],
-	seq_no : 0
+	seq_no : 0,
+	scroll_position: 0
 }
 
 var quantpool = new Buffer("QUANTPOOL");
