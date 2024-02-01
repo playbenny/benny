@@ -433,7 +433,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	var w = Math.floor((x2-x1-1)/2);
 	if(!Array.isArray(draw_wave[buffer-1])) draw_wave[buffer-1] = [[],[],[],[]];
 	if(w!=draw_wave[buffer-1][0].length) {
-		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		draw_wave[buffer-1][0].length = w;
 		clear_wave_graphic(buffer,w);
 	}
@@ -452,21 +452,21 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	dl *= w;
-	for(ch=0;ch<chans;ch++){
-		lcd_main.message("frgb",90,90,90);
-		if(w>250){
-			for(t=0;t<d;t++){
-				i = Math.floor(t*dl+st);
-				lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
-				lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
-			}
-			lcd_main.message("frgb",255,255,255);
-			lcd_main.message("moveto",x1+st+st,y1+h*2*ch);
-			lcd_main.message("lineto",x1+st+st,y1+h*2*(ch+1));
-			i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
-			lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
-			lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));			
+	lcd_main.message("frgb",90,90,90);
+	if(w>250){
+		for(t=0;t<d;t++){
+			i = Math.floor(t*dl+st);
+			lcd_main.message("moveto",x1+i+i,y1);//+h*2*ch);
+			lcd_main.message("lineto",x1+i+i,y2-fo1);//1+h*2*(ch+1));
 		}
+		lcd_main.message("frgb",255,255,255);
+		lcd_main.message("moveto",x1+st+st,y1);//+h*2*ch);
+		lcd_main.message("lineto",x1+st+st,y2-fo1);//1+h*2*(ch+1));
+		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
+		lcd_main.message("moveto",x1+i+i,y1);//+h*2*ch);
+		lcd_main.message("lineto",x1+i+i,y2-fo1);//1+h*2*(ch+1));			
+	}
+	for(ch=0;ch<chans;ch++){
 		var curc=1;
 		if(highlight<1){ 
 			lcd_main.message("frgb", r>>1,g>>1,b>>1);
@@ -504,6 +504,7 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
+	//post("\nok so",x1,waves.zoom_start,w);
 	lcd_main.message("paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
 	w = Math.floor((w-1)/2);
 	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;

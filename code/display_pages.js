@@ -524,13 +524,13 @@ function draw_waves(){
 					lcd_main.message("write","end");
 					lcd_main.message("moveto",mainwindow_width - 9*fontheight,sloty+fontheight*0.6);
 					lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
-					draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+slot_h,c[0],c[1],c[2],slot+1,mouse_index,2);
+					draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index,2);
 					mouse_click_actions[mouse_index] = zoom_waves;
 					mouse_click_parameters[mouse_index] = slot;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					
-					sloty+=bigsloth-slot_h;
+					sloty+=bigsloth;
 				}else{
 					c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
 					draw_stripe(9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index);
