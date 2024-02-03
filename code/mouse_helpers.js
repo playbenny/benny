@@ -2171,3 +2171,9 @@ function cut_selection(){
 	copy_selection();
 	delete_selection();
 }
+function file_menu_arrows(dir){
+	currentsong+=dir;
+	post("\narrows,",currentsong);
+	currentsong = (currentsong + songlist.length) % (songlist.length);
+	redraw_flag.flag |= 2;
+}
