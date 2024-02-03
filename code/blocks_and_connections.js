@@ -337,7 +337,6 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 
 function send_audio_patcherlist(do_all){
 	var i;
-//	post("\nsorry",audio_upsamplelist,"\n and ",loaded_audio_patcherlist);
 	for(i = 0; i<MAX_AUDIO_VOICES; i++){
 		if((audio_patcherlist[i]!=loaded_audio_patcherlist[i])&&(audio_patcherlist[i]!="recycling")){
 			if(loading.wait>1) post("\n- loading voice "+i+"'s patcher");
@@ -351,10 +350,8 @@ function send_audio_patcherlist(do_all){
 			}else{
 				//post("loading",audio_patcherlist[i],"into",i+1,"\n");
 				var pn = (audio_patcherlist[i]+".maxpat");
-	//			post("i,",i,"uplist-i",audio_upsamplelist[i]);
 				if(audio_upsamplelist[i]>1){
 					pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
-	//				post("\n upsample message sent : "+ pn);
 				}
 				if(loaded_audio_patcherlist[i] == "reload"){
 					audio_poly.setvalue(i+1,"patchername","blank.audio.maxpat");
@@ -362,11 +359,7 @@ function send_audio_patcherlist(do_all){
 					still_checking_polys |=2;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
-				//if(loading.dont_automute!=0){
-				//	audio_poly.setvalue(i+1,"patchername","loading "+pn); //supresses autounmute
-				//}else{
-					audio_poly.setvalue(i+1,"patchername",pn);
-				//}
+				audio_poly.setvalue(i+1,"patchername",pn);
 				loaded_audio_patcherlist[i]=audio_patcherlist[i];
 				if(do_all!=1){
 					still_checking_polys |=2;
@@ -377,7 +370,6 @@ function send_audio_patcherlist(do_all){
 	}
 	still_checking_polys &= 5;
 	post("\nall audio blocks loaded");
-	loading.dont_automute=0;
 	redraw_flag.flag |= 4;
 }
 
@@ -417,7 +409,6 @@ function send_ui_patcherlist(do_all){
 }
 
 function update_all_voices_mutestatus(){
-	//post("\nmutestatus\n\n");
 	var k = voicemap.getkeys();
 	if(k!=null){
 		for(var i = 0; i<k.length;i++){

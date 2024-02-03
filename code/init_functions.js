@@ -140,7 +140,6 @@ function import_hardware(v){
 	//	redraw_flag.flag=4;
 	if((!usermouse.ctrl) && (songs.contains("autoload"))){
 		loading.merge = 0;
-		loading.dont_automute=1;
 		loading.progress=-1;
 		loading.mute_new=0;
 		loading.bundling=12;

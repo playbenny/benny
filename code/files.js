@@ -187,15 +187,17 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 	}else{
 		var exists=-1;
 		for(var i=0;i<polybuffer_names.length;i++){
-			if(polybuffer_names[i] == wavename) exists=i;
+			if(polybuffer_names[i] == wavename){
+				exists=i;
+			}
 		}
 		if(exists==-1){
 			waves_polybuffer.append(wavepath);
-			//post("(loading)")
+			//post("\n(loading)")
 			get_polybuffer_info();
 			return -1;
 		}else{
-			//post("[cache hit!",exists,"]");
+			post("\n(cache hit!",exists,")");
 			return exists;
 		}
 	}
@@ -279,7 +281,6 @@ function load_song(){
 	meters_enable = 0;
 	clear_everything();
 	loading.merge = 0;
-	loading.dont_automute=1;
 	loading.progress=-1;
 	loading.mute_new=0;
 	loading.bundling=12;

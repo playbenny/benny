@@ -532,7 +532,6 @@ var ext_matrix = {
 var loading = {
 	progress : 0,
 	songname : "",
-	dont_automute : 0, //if set to 1 then audio blocks don't automatically unmute on load - because the load routine does that depending on saved status once all are loaded.
 	mute_loaded : 0,
 	xoffset : 0,
 	ready_for_next_action : 0,
