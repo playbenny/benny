@@ -1,4 +1,6 @@
-var MAX_DATA = 1024;
+var MAX_DATA = 16384;
+var USED_DATA = 1024; //to save a bit of time loading and saving because this is a legacy block,
+ //remove this when i upgrade this to multi pattern
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;
@@ -938,12 +940,18 @@ function quer(){
 
 function store(){
 	var r;
-	var transf_arr = new Array(MAX_DATA);
+	var transf_arr = new Array(USED_DATA);
 	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], MAX_DATA);
+		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], USED_DATA);
+		for(var d_l=USED_DATA;(d_l>=0)&&(transf_arr[d_l]==0);d_l--){
+
+		}
+		d_l++;
+		post("\nsaving, voice",v_list[r]," data has a length of ",d_l);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
 }
+
 function remapping(froom,too){
 	post("\nremapping_list "+froom +" -> "+too+" .. ");
 	var cx,cy,cv,ct=0;

@@ -1,4 +1,3 @@
-var MAX_DATA = 1024;
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;
@@ -23,7 +22,6 @@ var o_w=-1;
 
 function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little fx/waveform hint window bottom right
 	//	post("drawing sequencers");
-	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	if(width != o_w){

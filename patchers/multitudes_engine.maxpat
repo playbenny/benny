@@ -9278,7 +9278,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 541.0, 366.0, 150.0, 62.0 ],
+									"patching_rect" : [ 541.0, 366.0, 150.0, 60.0 ],
 									"text" : "index = (voice*max_midi_outputs + outno)\n"
 								}
 
@@ -9302,7 +9302,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 728.0, 365.0, 150.0, 48.0 ],
+									"patching_rect" : [ 728.0, 365.0, 150.0, 47.0 ],
 									"text" : "index = (voice * max_midi_outputs + outno) * 128 + note"
 								}
 
@@ -9314,7 +9314,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 887.0, 300.0, 150.0, 131.0 ],
+									"patching_rect" : [ 887.0, 300.0, 150.0, 127.0 ],
 									"text" : "index = voice\nch 1 = flag for which voice goes to minmax -1 = all, -2=off\nch 2 = flag for if minmax has changed\nch 3 = held note count\n4,5 = min max note\n6,7 = min max vel"
 								}
 
@@ -9461,7 +9461,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 751.0, 429.0, 150.0, 34.0 ],
+									"patching_rect" : [ 751.0, 429.0, 150.0, 33.0 ],
 									"text" : "these buffers don't get wiped, no need"
 								}
 
@@ -9617,8 +9617,8 @@
 									"numinlets" : 1,
 									"numoutlets" : 2,
 									"outlettype" : [ "float", "bang" ],
-									"patching_rect" : [ 492.5, 247.0, 273.0, 22.0 ],
-									"text" : "buffer~ voice_data_buffer 3000 1 @format float32"
+									"patching_rect" : [ 492.5, 247.0, 280.0, 22.0 ],
+									"text" : "buffer~ voice_data_buffer 48000 1 @format float32"
 								}
 
 							}
@@ -9677,7 +9677,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 263.5, 387.0, 218.0, 48.0 ],
+									"patching_rect" : [ 263.5, 387.0, 218.0, 47.0 ],
 									"text" : "these hold the pools - forward and backward lookup, 1 is chromatic, 2 onwards are pools"
 								}
 
@@ -13787,7 +13787,7 @@
 					"fontname" : "Consolas Bold",
 					"fontsize" : 18.0,
 					"id" : "obj-52",
-					"items" : [ "ES8_3_6.json", ",", "live_rig.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
+					"items" : [ "live_rig.json", ",", "luke ES8_3_6.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -13861,7 +13861,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager",
+						"filename" : "blockmanager.js",
 						"parameter_enable" : 0
 					}
 ,
@@ -15454,6 +15454,27 @@
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.sample.tracker.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.sample.tracker.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "seq.sample.tracker.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"patcherrelativepath" : "../audio_blocks",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{

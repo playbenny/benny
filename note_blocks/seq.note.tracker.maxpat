@@ -45,7 +45,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 470.0, 580.0, 154.0, 60.0 ],
+					"patching_rect" : [ 470.0, 580.0, 157.0, 60.0 ],
 					"text" : "I THINK I WANT TO SWAP STEP RECORD TO USE THE POSITION OF THE USER CURSOR?"
 				}
 
@@ -224,7 +224,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 10,
-					"outlettype" : [ "", "", "", "", "", "", "int", "int", "int", "" ],
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "" ],
 					"patching_rect" : [ 507.0, 87.5, 82.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -1321,8 +1321,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 759.5, 690.0, 43.0, 22.0 ],
-					"text" : "* 1024"
+					"patching_rect" : [ 759.5, 690.0, 50.0, 22.0 ],
+					"text" : "* 16384"
 				}
 
 			}
@@ -1854,10 +1854,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 67.5, 1081.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1894,6 +1890,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 507.0, 54.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -3025,7 +3025,9 @@
 				}
 
 			}
- ]
+ ],
+		"dependency_cache" : [  ],
+		"autosave" : 0
 	}
 
 }

@@ -1,4 +1,4 @@
-var MAX_DATA = 1024;
+var MAX_DATA = 16384;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 //var voice_parameter_buffer = new Buffer("voice_parameter_buffer"); 

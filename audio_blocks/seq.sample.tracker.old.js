@@ -1,4 +1,4 @@
-var MAX_DATA = 1024;
+var MAX_DATA = 16384;
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;

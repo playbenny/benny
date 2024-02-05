@@ -1,4 +1,3 @@
-var MAX_DATA = 1024;
 var MAX_BLOCKS = 64;
 //var voice_data_buffer = new Buffer("voice_data_buffer"); 
 outlets = 3;
@@ -32,7 +31,6 @@ var beats_per_bar = 4; //TODO fetch timesig
 
 function setup(x1,y1,x2,y2,sw){
 	//	post("drawing sequencers");
-	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	menudark = [menucolour[0]>>2,menucolour[1]>>2,menucolour[2]>>2];

@@ -1,5 +1,5 @@
 outlets = 3;
-var MAX_DATA = 1024;
+//var MAX_DATA = 16384;
 var MAX_POOLS = 8;
 var pool_notes = new Array(MAX_POOLS);
 var pool_shape = new Array(MAX_POOLS);
@@ -22,15 +22,10 @@ var voicemap = new Dict;
 voicemap.name =  "voicemap";
 var v_list = new Array();
 var rh;
-var cursors = new Array(128); //holds last drawn position of playheads (per row)
-//data format: for each voice the buffer holds:
-// 0 - start (*128)
-// 1 - length (*128+1)
-// 2 - playhead position (updated by player voice)
-// 3-131? data values
+
 function setup(x1,y1,x2,y2,sw){
 	//	post("drawing sequencers");
-	MAX_DATA = config.get("MAX_DATA");
+	//MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	var cl = config.getsize("palette::gamut");
@@ -114,9 +109,6 @@ function draw_graphs(x1,y1,x2,y2,poolno){
 		if(pool_shape[poolno][i]>poolmax) poolmax = pool_shape[poolno][i];
 	}
 	for(i=0;i<pool_shape[poolno].length;i++){
-		//voice_data_buffer.poke(1,MAX_DATA*v_list[poolno]+i,pool_shape[poolno][i]/poolmax )
-		//needs to store the shape value in the data storage?
-		
 		//outlet(0,"custom_ui_element","data_v_scroll",x1+xunit*i,y1,x1+xunit*(i+1),y2,colours[poolno],MAX_DATA*v_list[poolno]+i);
 		outlet(1,"paintrect",x1+xunit*i,y1+(y2-y1)*(1-(pool_shape[poolno][i]/poolmax)),x1+xunit*(i+1),y2,colours[poolno]);
 		outlet(1,"frgb",0,0,0);
@@ -145,12 +137,7 @@ function loadbang(){
 }
 
 function store(){
-/*	var r;
-	var transf_arr = new Array(maxl+3);
-	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], maxl+3);
-		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
-	}*/
+
 }
 function mouse(x,y,l,s,a,c,scr){
 	
