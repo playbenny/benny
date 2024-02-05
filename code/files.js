@@ -695,12 +695,11 @@ function load_process_block_voices_and_data(block){
 		t = v_list.length;
 		if(loading.wait>1) post("\n- restoring data, voicelist",v_list,"so vlist lenght is",v_list.length,"and t is",t);
 		for(i=0;i<t;i++){
-			var vdata= new Array(MAX_DATA);
-			//post("\nvoice",i,"index",MAX_DATA*v_list[i]);
-			vdata = blocks.get("blocks["+block+"]::voice_data::"+i);
-			//post("\nvdata length:",vdata.length);//,"\nvdata:\n",vdata);
+			var vdata= blocks.get("blocks["+block+"]::voice_data::"+i);
+			for(var pad=vdata.length;pad<MAX_DATA;pad++) vdata.push(0);
+			//voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
 			safepoke(voice_data_buffer,1, MAX_DATA*v_list[i], vdata);
-		}
+		} //this takes 1ms per voice, in case you ever think of trying to optimise it..
 	}	
 	if(drawn==1) draw_block(block); //used to be outside the loop with a 'draw_blocks()' but maybe this is quicker?)
 }
