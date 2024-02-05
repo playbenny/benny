@@ -1,4 +1,5 @@
 var MAX_DATA = 16384;
+var USED_DATA = 1024;
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
@@ -802,9 +803,14 @@ function loadbang(){
 
 function store(){
 	var r;
-	var transf_arr = new Array(MAX_DATA); //this isn't the shortest it possibly could be but i think we can handle it.
+	var transf_arr = []; //this isn't the shortest it possibly could be but i think we can handle it.
 	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], MAX_DATA);
+		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], USED_DATA);
+		var d = 0;
+		while(d==0){
+			d = transf_arr.pop();
+		}
+		transf_arr.push(d);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
 }

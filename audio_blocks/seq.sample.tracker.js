@@ -943,11 +943,12 @@ function store(){
 	var transf_arr = new Array(USED_DATA);
 	for(r=0;r<v_list.length;r++){
 		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], USED_DATA);
-		for(var d_l=USED_DATA;(d_l>=0)&&(transf_arr[d_l]==0);d_l--){
-
+		var d = 0;
+		while(d==0){
+			d = transf_arr.pop();
 		}
-		d_l++;
-		post("\nsaving, voice",v_list[r]," data has a length of ",d_l);
+		transf_arr.push(d);
+		//post("\nsaving, voice",v_list[r]," data has a length of ",transf_arr.length);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
 }

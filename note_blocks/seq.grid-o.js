@@ -173,9 +173,14 @@ function store(){
 	}else{
 		post("error storing seq.grid - unknown block",block,v_list);
 	}
-	var transf_arr = new Array(maxl+3);
+	var transf_arr = [];
 	for(r=0;r<v_list.length;r++){
 		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], maxl+3);
+		var d = 0;
+		while(d==0){
+			d = transf_arr.pop();
+		}
+		transf_arr.push(d);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
 }
