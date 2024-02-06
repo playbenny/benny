@@ -5,6 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "A simple step sequencer. Each step has note, vel, on/off and length sliders. Adding more voices adds more playheads traversing the same sequence. ",
 		"max_polyphony" : 0,
+		"deprecated" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
