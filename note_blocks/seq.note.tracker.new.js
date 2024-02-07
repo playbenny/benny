@@ -37,6 +37,7 @@ var start=[],lstart=[],end=[],lon=[],divs=[],pattern_offs=[];
 var rcol = []; //row colour. per column arrays (ironically probably more storage than the actual data but i want a quick lookup when drawing)
 //explainer: if a row is 'grouped' into a round robin then the colour sequence doesn't advance, to keep it making sense.
 var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
+var discont_x,discont_x2,bh;
 //data format: for each voice the buffer holds:
 // 0 - playhead position (updated by player voice)
 // 1-16383 data values, split over a flexible number of columns (6) and patterns (16)
@@ -70,9 +71,10 @@ function setup(x1,y1,x2,y2,sw){
 	cursorx2=0;
 	cursory=0;
 	rh = 0.5*unit;
+	bh = Math.floor(0.333*rh);
 	sy = 1.2*unit*(mini==0);
 	sx = 1.2*unit*(mini==0);
-	cw = (width - sx)/(showcols-0.05);
+	cw = (width - sx)/(showcols+0.5-0.05);
 	maxl = Math.floor((height-sy)/rh);
 	baseoct=4;
 	currentvel=100;
@@ -91,17 +93,16 @@ function draw(){
 	if(block>=0){
 		drawflag=0;
 		var c,r,i,rr,rc;
-		for(i=0;i<v_list.length;i++) {
+		for(i=0;i<v_list.length;i++){
 			cursors[i]=-1;
 		}
-		i= showcols; //Math.min(4,Math.max(3,v_list.length));
+		i= showcols;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		//outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		if(!mini){
 			//TODO HEADER WITH LABELS FOR COLUMNS?
 			outlet(0,"setfontsize",rh*0.8);
 			outlet(1,"frgb",blockcolour);
-			outlet(1,"moveto",x_pos+sx,rh*0.8+y_pos);
+			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*1.7+y_pos);
 			if(cursorx2==0){
 				outlet(1,"write","note (base octave = "+(baseoct-2)+")");
 			}else if(cursorx2==1){
@@ -111,21 +112,15 @@ function draw(){
 			}else if(cursorx2==3){
 				outlet(1,"write","note delay (ms)");
 			}else if(cursorx2==4){
-				outlet(1,"write","skip : + = regular, - = chance");
+				outlet(1,"write","skip : +ve = regular, -ve = chance");
 			}
 		}
-		for(r=0;r<maxl;r++){			
+/*		for(r=0;r<maxl;r++){			
 			rr = r+display_row_offset;
 			rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
 			rc = (4+rc)/24;
 			
-			outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc,blockcolour[2]*rc);
-			if(!mini){
-				outlet(1,"moveto",x_pos,sy+rh*(r+0.75)+y_pos);
-				outlet(1,"frgb",blockcolour);
-				outlet(1,"write",rr);
-			}
-		}
+		}*/
 		if(!mini){
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
 		}
@@ -145,14 +140,25 @@ function draw(){
 					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				}
 				//outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
-				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.7+y_pos);
+				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*0.8+y_pos);
 				outlet(1,"write", "voice" + (c+1));
 			}
 			var r2= display_row_offset;
 			var rr=display_row_offset;
+			var or2=-1;
 			for(r=0;r<maxl;r++){
-				rcol[c][rr] = ((r2%2)==0)+((r2%4)==0)+((r2%8)==0)+((r2%16)==0);
-				rcol[c][rr] = rcol[c][rr]/24;
+				rc = ((r2%2)==0)+((r2%4)==0)+((r2%8)==0)+((r2%16)==0);
+				rc = rc/24;
+				rcol[c][rr] = rc;
+				if((!mini)&&(cursorx==c)){
+					outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc,blockcolour[2]*rc);
+					if(or2!=r2){
+						outlet(1,"moveto",x_pos,sy+rh*(r+0.75)+y_pos);
+						outlet(1,"frgb",blockcolour);
+						outlet(1,"write",r2);
+						or2=r2;
+					}
+				}
 				drawcell((c-display_col_offset),r);
 				rr++;
 				if(voice_data_buffer.peek(1, MAX_DATA*v_list[c] + 1 + pattern_offs[c] + UNIVERSAL_COLUMNS*rr + 5)>=0) r2++;
@@ -227,6 +233,7 @@ function drawcell(c,r){
 		var rr,rc,fc,i,ll,ss;
 		var values;
 		var cc = c+display_col_offset;
+		var ww= 0.95 + 0.5*(cursorx==cc);
 		rr = r+display_row_offset;
 		rc = rcol[cc][rr];
 		fc = [blockcolour[0]*0.25,blockcolour[1]*0.25,blockcolour[2]*0.25];
@@ -246,7 +253,25 @@ function drawcell(c,r){
 			fc=[0,0,0];
 		}
 		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[c],UNIVERSAL_COLUMNS);
-		var inset = (values[UNIVERSAL_COLUMNS-1] != 0) * 0.05;
+		var inset = 0;
+		var grp = values[UNIVERSAL_COLUMNS-1];
+		if(grp != 0){ 
+			inset = 0.05;
+			if(grp == 1){
+				outlet(1,"frgb",255,255,255);
+			}else if(grp<0){
+				var tv=voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+UNIVERSAL_COLUMNS*(rr+grp)+UNIVERSAL_COLUMNS-1+pattern_offs[c]);
+				if(tv == -grp){
+					outlet(1,"frgb",255,255,255);
+				}else{
+					outlet(1,"frgb",fc);
+				}
+			}else{
+				outlet(1,"frgb",fc);
+			}
+			outlet(1,"moveto",sx+(c+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos);
+			outlet(1,"lineto",sx+(c+0.5*(c>cursorx))*cw+x_pos,sy+rh*(1+r)+y_pos);
+		}
 		var rc2 = rc;
 		if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
 			var ts=0; 
@@ -254,10 +279,10 @@ function drawcell(c,r){
 			if(cc==sel_sx) ts = sel_sx2/(UNIVERSAL_COLUMNS)+(sel_sx2==0)*inset;
 			if(cc==sel_sy) te = (sel_ex2+1)/(UNIVERSAL_COLUMNS);
 			rc2 += 0.2;
-			outlet(1,"paintrect",sx+(c+inset)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
-			outlet(1,"paintrect",sx+(c+ts)*cw+x_pos,sy+rh*r+y_pos,sx+(c+te)*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc2,blockcolour[1]*rc2*lp,blockcolour[2]*rc2);
+			outlet(1,"paintrect",sx+(c+inset+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
+			outlet(1,"paintrect",sx+(c+ts+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos,sx+(c+te+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc2,blockcolour[1]*rc2*lp,blockcolour[2]*rc2);
 		}else{// all not
-			outlet(1,"paintrect",sx+(c+inset)*cw+x_pos,sy+rh*r+y_pos,sx+(c+0.95)*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
+			outlet(1,"paintrect",sx+(c+inset+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
 		}
 		if(!mini){
 			outlet(1,"frgb",fc);
@@ -281,20 +306,31 @@ function drawcell(c,r){
 					}
 				}
 				if(incell && (i==cursorx2)){
-					outlet(1,"paintrect",sx+(c+x/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
+					outlet(1,"paintrect",sx+(inset*(i==0)+c+(x-1)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1))+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
 					outlet(1,"frgb",255,255,255);
 					washighlight=1;
 				}else if(washighlight){
 					washighlight=0;
 					outlet(1,"frgb",fc);
 				}
+				//if(i==5){ outlet(1,"frgb",255,255,255); ss++;}
 				if(x==0){
 					ss = ("    " + ss).slice(-ll);
 				}else{
 					ss = ("....." + ss).slice(-ll);	
 				} 
-				outlet(1,"moveto",sx+(c+x/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
+				outlet(1,"moveto",sx+(c+x/(2+ll*(UNIVERSAL_COLUMNS-1))+0.5*(c>cursorx))*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
 				outlet(1,"write",ss);
+				var tx2=cursorx2;
+				if(tx2==0) tx2=1;
+				if((tx2==i)&&(c==cursorx)){
+					if(values[i]!=0){
+						discont_x = sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;
+						discont_x2 = sx+(c+0.5*values[i]/128+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;
+						outlet(1,"paintrect",discont_x,sy+rh*r+bh+y_pos,discont_x2,sy+rh*r+2*bh+y_pos,fc);
+					}
+					x+=0.5*(2+ll*(UNIVERSAL_COLUMNS-1));
+				}
 				x+=ll;
 			}
 		}else{
@@ -309,6 +345,15 @@ function drawcell(c,r){
 function mouse(x,y,lb,sh,al,ct,scr){
 	var ox = cursorx;
 	var oy = cursory;
+	var barpos = -1;
+	if(x>=discont_x){
+		if(x>=discont_x2){
+			x = x - discont_x2 + discont_x;
+		}else{
+			barpos = (x - discont_x)/(discont_x2-discont_x);
+			x = discont_x-5;
+		}
+	} 
 	var xx = x-x_pos;
 	var yy = y-y_pos;
 	var clickx = (xx-sx)/cw;
@@ -421,6 +466,11 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			sel_ex=-1;
 			sel_ey=-1;
 			drawflag=1;
+			if(barpos!=-1){
+				if(voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx])>0){
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]+cursorx2, Math.floor(barpos*128)+1);
+				}
+			}
 		}
 	}
 	var df=0;
@@ -509,6 +559,32 @@ function paste_columns(){
 	}
 }
 
+function toggle_grouping(){
+	var currently = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]+UNIVERSAL_COLUMNS-1);
+	if(currently==0){
+		if(cursory==0)cursory++;
+		var above = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1);
+		if(above==0){
+			//starting a new group? so the one above gets added (set to 1) and this one gets set as 1st, -1
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1,1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1+UNIVERSAL_COLUMNS,-1);
+		}else if(above<0){
+			//above was already a group so you just add yourself to that
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1+UNIVERSAL_COLUMNS,above-1);
+		}else if(above>0){
+			//i'm not sure how this could arise
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1+UNIVERSAL_COLUMNS,-1);
+		}
+	}else{ //whether you're removing the first cell of a group, or one in the middle, it makes sense to remove all the ones after too?
+		var yy = MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1+UNIVERSAL_COLUMNS
+		while(voice_data_buffer.peek(1,yy)!=0){
+			voice_data_buffer.poke(1, yy,0);
+			yy+=UNIVERSAL_COLUMNS;
+		}
+	}
+	drawflag=1;
+}
+
 function delete_selection(){
 	var i;
 	if(sel_ex==-1){
@@ -588,6 +664,9 @@ function keydown(key){
 		case -14:
 			cursory += 16;
 			if(cursory>=max_rows) cursory=max_rows-1;
+			break;
+		case 35:
+			toggle_grouping();
 			break;
 		case 500:
 			if(sel_ex==-1){

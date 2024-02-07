@@ -46,7 +46,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 512, "lin"],
 				"wrap" : 0,
-				"default" : 0.03125
+				"default" : 0
 			},
 			{
 				"name" : "loop_length",
