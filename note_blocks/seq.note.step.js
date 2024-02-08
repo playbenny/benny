@@ -107,7 +107,7 @@ function generate_extended_v_list() {
 						var xlist = voicemap.get(i);
 						if (!Array.isArray(xlist)) xlist = [xlist];
 						while (xlist.length) {
-							v_list.push(xlist.pop());
+							v_list.push(xlist.shift());
 							b_list.push(i);
 						}
 					}
@@ -170,8 +170,8 @@ function draw(){
 				//outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
 				var c2=Math.max(0,c-1);
 				if((c==display_col_offset)||(b_list[c]!=b_list[c2])){
+					outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*0.8+y_pos);
 					if(b_list[c]==block){
-						outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*0.8+y_pos);
 						outlet(1,"write", "this block:" + blocks.get("blocks["+block+"]::label"));
 					}else{
 						outlet(1,"write", "block "+b_list[c] + " "+blocks.get("blocks["+b_list[c]+"]::label"));
@@ -545,14 +545,29 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}
 	if(cursorx2!=ox2) df=1;
 	if(df){
-		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
+		if(cursorx!=ox)	request_sidebar_sel();
 		drawflag=1;
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
-			if((cursorx!=ox)&&(b_list[cursorx]==block))	messnamed("to_blockmanager","select_voice",cursorx,0);
+			if(cursorx!=ox) request_sidebar_sel();
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
+	}
+}
+
+function request_sidebar_sel(){
+	if(b_list[cursorx]==block){
+		messnamed("to_blockmanager","select_block_and_voice",b_list[cursorx],cursorx);
+	}else{
+		var c = cursorx;
+		var b=b_list[c];
+		while(b_list[c]==b){
+			c--;
+		}
+		c = cursorx - c - 1;
+		post("\nrequesting block and voice",b_list[cursorx],c);
+		messnamed("to_blockmanager","select_block_and_voice",b_list[cursorx],c);
 	}
 }
 
@@ -975,11 +990,11 @@ function keydown(key){
 		drawflag=1;
 	}
 	if(drawflag){
-		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
+		if(cursorx!=ox) request_sidebar_sel();
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
-			if((cursorx!=ox)&&(b_list[cursorx]==block))	messnamed("to_blockmanager","select_voice",cursorx,0);
+			if(cursorx!=ox) request_sidebar_sel();
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
 	}

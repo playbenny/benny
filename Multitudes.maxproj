@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3788203473,
+	"modificationdate" : 3790277977,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -370,6 +370,16 @@
 				}
 
 			}
+,
+			"seq.note.step.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -433,12 +443,12 @@
 				"kind" : "gendsp"
 			}
 ,
-			"voice.basic.gendsp" : 			{
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
+			"voice.basic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -499,6 +509,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
 					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"seq.note.step.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
 				}
 
 			}
@@ -713,7 +733,12 @@
 ,
 			"seq.note.steps.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes",
+					"projectrelativepath" : "."
+				}
+
 			}
 ,
 			"seq.note.tracker.json" : 			{
@@ -742,6 +767,16 @@
 			}
 ,
 			"midi.stats.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.note.step.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
