@@ -306,7 +306,7 @@ function drawcell(c,r){
 					}
 				}
 				if(incell && (i==cursorx2)){
-					outlet(1,"paintrect",sx+(inset*(i==0)+c+(x-1)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1))+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
+					outlet(1,"paintrect",sx+(inset*(i==0)+c+(x-0.5)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll+(i==0))/(2+ll*(UNIVERSAL_COLUMNS-1))+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
 					outlet(1,"frgb",255,255,255);
 					washighlight=1;
 				}else if(washighlight){
@@ -324,10 +324,12 @@ function drawcell(c,r){
 				var tx2=cursorx2;
 				if(tx2==0) tx2=1;
 				if((tx2==i)&&(c==cursorx)){
-					if(values[i]!=0){
-						discont_x = sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;
-						discont_x2 = sx+(c+0.5*values[i]/128+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;
-						outlet(1,"paintrect",discont_x,sy+rh*r+bh+y_pos,discont_x2,sy+rh*r+2*bh+y_pos,fc);
+					discont_x = sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;
+					discont_x2 = 0.5*cw+discont_x;
+					if(values[i]>0){
+						outlet(1,"paintrect",discont_x,sy+rh*r+bh+y_pos,discont_x+0.5*cw*values[i]/128,sy+rh*r+2*bh+y_pos,fc);
+					}else if(values[i]<0){
+						outlet(1,"paintrect",discont_x2+0.5*cw*values[i]/128,sy+rh*r+bh+y_pos,discont_x2,sy+rh*r+2*bh+y_pos,fc);
 					}
 					x+=0.5*(2+ll*(UNIVERSAL_COLUMNS-1));
 				}
@@ -344,16 +346,19 @@ function drawcell(c,r){
 
 function mouse(x,y,lb,sh,al,ct,scr){
 	var ox = cursorx;
+	var ox2 = cursorx2;
 	var oy = cursory;
 	var barpos = -1;
 	if(x>=discont_x){
+		//post("\nx was",x);
 		if(x>=discont_x2){
-			x = x - discont_x2 + discont_x;
+			x = x - 0.5*cw;
 		}else{
-			barpos = (x - discont_x)/(discont_x2-discont_x);
+			barpos = 2*(x - discont_x)/cw;
 			x = discont_x-5;
 		}
-	} 
+		//post(" is now ",x);
+	}//else{post("\nx",x,"discont",discont_x);}
 	var xx = x-x_pos;
 	var yy = y-y_pos;
 	var clickx = (xx-sx)/cw;
@@ -492,6 +497,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			}
 		}
 	}
+	if(cursorx2!=ox2) df=1;
 	if(df){
 		if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
 		drawflag=1;
