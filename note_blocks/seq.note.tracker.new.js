@@ -31,6 +31,7 @@ blocks.name = "blocks";
 var copy = new Dict;
 copy.name = "copy";
 var v_list = [];
+var b_list = [];
 var keymap = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 28, -1, 14, 16, -1, 19, 21, 23, -1, 26, -1, -1, -1, 31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 30, -1, 32, -1, -1, -1, -1, 8, 5, 4, 17, -1, 7, 9, 25, 11, -1, -1, 12, 10, 27, 29, 13, 18, 2, 20, 24, 6, 15, 3, 22, 1, -1, -1, -1, -1, -1];
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
 var start=[],lstart=[],end=[],lon=[],divs=[],pattern_offs=[];
@@ -50,6 +51,8 @@ var discont_x,discont_x2,bh;
 // - grouping (if 0 step is ungrouped. if negative then this step + that number = the first step of the group, where the current loop counter is stored as a positive number - 1=1st step.)
 function setup(x1,y1,x2,y2,sw){ 
 	MAX_DATA = config.get("MAX_DATA");
+	UNIVERSAL_COLUMNS = config.get("UNIVERSAL_COLUMNS");
+	UNIVERSAL_PATTERNS = config.get("UNIVERSAL_PATTERNS");
 	max_rows = Math.floor((MAX_DATA-1)/(UNIVERSAL_COLUMNS*UNIVERSAL_PATTERNS));
 	pattsize = max_rows*UNIVERSAL_COLUMNS;
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
@@ -60,21 +63,28 @@ function setup(x1,y1,x2,y2,sw){
 	y_pos = y1;
 	if(width<sw*0.6){ 
 		mini=1;
+		if(block>=0) generate_extended_v_list();
 		showcols = v_list.length;
+		var m=1;
+		for(i=0;i<showcols;i++){
+			m  = Math.max(m, Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1,1)) + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2,1)));
+		}
+		unit = height / m;
 	}else{
+		if(block>=0) generate_extended_v_list();
 		showcols=Math.floor(4*width/height);
+		unit = height / 18;
 	}
-	unit = height / 18;
 	display_row_offset = 0;
 	display_col_offset = 0;
 	cursorx=0;
-	cursorx2=0;
+	cursorx2=0-mini;
 	cursory=0;
 	rh = 0.5*unit;
 	bh = Math.floor(0.333*rh);
-	sy = 1.2*unit*(mini==0);
+	sy = 1.7*unit*(mini==0);
 	sx = 1.2*unit*(mini==0);
-	cw = (width - sx)/(showcols+0.5-0.05);
+	cw = (width - sx)/(showcols+((!mini)*0.5)-0.05);
 	maxl = Math.floor((height-sy)/rh);
 	baseoct=4;
 	currentvel=100;
@@ -82,10 +92,28 @@ function setup(x1,y1,x2,y2,sw){
 	for(i=0;i<128;i++){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
-	if(block>=0){
-		v_list = voicemap.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
-		draw();
+	draw();
+}
+
+function generate_extended_v_list() {
+	v_list = voicemap.get(block);
+	if (!Array.isArray(v_list)) v_list = [v_list];
+	for (var i = 0; i < v_list.length; i++) b_list[i] = block;
+	if(!mini){
+		for (var i = blocks.getsize("blocks") + 1; i > 0; i--) {
+			if (i != block) {
+				if (blocks.contains("blocks[" + i + "]::patcher")) {
+					if (blocks.get("blocks[" + i + "]::patcher") == "universal.step.sequence") {
+						var xlist = voicemap.get(i);
+						if (!Array.isArray(xlist)) xlist = [xlist];
+						while (xlist.length) {
+							v_list.push(xlist.pop());
+							b_list.push(i);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -98,11 +126,11 @@ function draw(){
 		}
 		i= showcols;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		outlet(0,"setfontsize",rh*0.8);
 		if(!mini){
 			//TODO HEADER WITH LABELS FOR COLUMNS?
-			outlet(0,"setfontsize",rh*0.8);
 			outlet(1,"frgb",blockcolour);
-			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*1.7+y_pos);
+			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*2.6+y_pos);
 			if(cursorx2==0){
 				outlet(1,"write","note (base octave = "+(baseoct-2)+")");
 			}else if(cursorx2==1){
@@ -114,14 +142,6 @@ function draw(){
 			}else if(cursorx2==4){
 				outlet(1,"write","skip : +ve = regular, -ve = chance");
 			}
-		}
-/*		for(r=0;r<maxl;r++){			
-			rr = r+display_row_offset;
-			rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
-			rc = (4+rc)/24;
-			
-		}*/
-		if(!mini){
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
 		}
 		for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
@@ -135,13 +155,30 @@ function draw(){
 			divs[c] =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
 			if(!mini){
 				if(cursorx == c){
-					outlet(1,"frgb",blockcolour);
+					if(b_list[c]==block){
+						outlet(1,"frgb",blockcolour);
+					}else{
+						outlet(1,"frgb",128,128,128);
+					}
 				}else{
-					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+					if(b_list[c]==block){
+						outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+					}else{
+						outlet(1,"frgb",64,64,64);
+					}
 				}
 				//outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
-				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*0.8+y_pos);
-				outlet(1,"write", "voice" + (c+1));
+				var c2=Math.max(0,c-1);
+				if((c==display_col_offset)||(b_list[c]!=b_list[c2])){
+					if(b_list[c]==block){
+						outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*0.8+y_pos);
+						outlet(1,"write", "this block:" + blocks.get("blocks["+block+"]::label"));
+					}else{
+						outlet(1,"write", "block "+b_list[c] + " "+blocks.get("blocks["+b_list[c]+"]::label"));
+					}
+				} 
+				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*1.7+y_pos);
+				outlet(1,"write", "voice " + (c+1));
 			}
 			var r2= display_row_offset;
 			var rr=display_row_offset;
@@ -230,17 +267,23 @@ function update(){
 
 function drawcell(c,r){
 	if((c>=0)&&(c<showcols)){
-		var rr,rc,fc,i,ll,ss;
+		var rr,rc,fc,bc,i,ll,ss;
 		var values;
 		var cc = c+display_col_offset;
-		var ww= 0.95 + 0.5*(cursorx==cc);
+		var ww= 0.95 + 0.5*(cursorx==cc)*(!mini);
 		rr = r+display_row_offset;
 		rc = rcol[cc][rr];
-		fc = [blockcolour[0]*0.25,blockcolour[1]*0.25,blockcolour[2]*0.25];
+		if(cursorx!=cc) rc *= 0.75;
+		if(b_list[cc]==block){
+			bc = [blockcolour[0],blockcolour[1],blockcolour[2]];
+		}else{
+			bc = [128,128,128];
+		}
+		fc = [bc[0]*0.25,bc[1]*0.25,bc[2]*0.25];
 		var lp=1;
 		if((rr>=start[cc])&&(rr<end[cc])){
 			rc+=0.1;
-			fc=[blockcolour[0],blockcolour[1],blockcolour[2]];
+			fc=[bc[0],bc[1],bc[2]];
 			if((rr>=lstart[cc])&& lon[cc]){
 				fc[1]*=2.1;
 				fc[0]*=1.7;
@@ -255,6 +298,7 @@ function drawcell(c,r){
 		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[c],UNIVERSAL_COLUMNS);
 		var inset = 0;
 		var grp = values[UNIVERSAL_COLUMNS-1];
+		var xoffs = 0.5*(cc>cursorx)*(!mini);
 		if(grp != 0){ 
 			inset = 0.05;
 			if(grp == 1){
@@ -269,8 +313,8 @@ function drawcell(c,r){
 			}else{
 				outlet(1,"frgb",fc);
 			}
-			outlet(1,"moveto",sx+(c+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos);
-			outlet(1,"lineto",sx+(c+0.5*(c>cursorx))*cw+x_pos,sy+rh*(1+r)+y_pos);
+			outlet(1,"moveto",sx+(c+xoffs)*cw+x_pos,sy+rh*r+y_pos);
+			outlet(1,"lineto",sx+(c+xoffs)*cw+x_pos,sy+rh*(1+r)+y_pos);
 		}
 		var rc2 = rc;
 		if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
@@ -279,16 +323,17 @@ function drawcell(c,r){
 			if(cc==sel_sx) ts = sel_sx2/(UNIVERSAL_COLUMNS)+(sel_sx2==0)*inset;
 			if(cc==sel_sy) te = (sel_ex2+1)/(UNIVERSAL_COLUMNS);
 			rc2 += 0.2;
-			outlet(1,"paintrect",sx+(c+inset+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
-			outlet(1,"paintrect",sx+(c+ts+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos,sx+(c+te+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc2,blockcolour[1]*rc2*lp,blockcolour[2]*rc2);
+			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
+			outlet(1,"paintrect",sx+(c+ts+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+te+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc2,bc[1]*rc2*lp,bc[2]*rc2);
 		}else{// all not
-			outlet(1,"paintrect",sx+(c+inset+0.5*(c>cursorx))*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc*lp,blockcolour[2]*rc);
+			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
 		}
 		if(!mini){
 			outlet(1,"frgb",fc);
 			var incell = ((cursorx==(cc))&&(cursory==rr));
 			var x=0;
 			var washighlight=0;
+			var steps = ((cursorx2==2)||(cursorx2==3)) ? 1000:128;
 			//var groupval = values[UNIVERSAL_COLUMNS-1];
 			for(i=0;i<UNIVERSAL_COLUMNS-1;i++){		//the last column is group, not an editable number
 				ll=3;
@@ -306,7 +351,7 @@ function drawcell(c,r){
 					}
 				}
 				if(incell && (i==cursorx2)){
-					outlet(1,"paintrect",sx+(inset*(i==0)+c+(x-0.5)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll+(i==0))/(2+ll*(UNIVERSAL_COLUMNS-1))+0.5*(c>cursorx))*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
+					outlet(1,"paintrect",sx+(inset*(i==0)+c+(x-0.5)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,sy+rh*r+y_pos,sx+(c+(x+ll+(i==0))/(2+ll*(UNIVERSAL_COLUMNS-1))+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,0,0,0);
 					outlet(1,"frgb",255,255,255);
 					washighlight=1;
 				}else if(washighlight){
@@ -319,17 +364,17 @@ function drawcell(c,r){
 				}else{
 					ss = ("....." + ss).slice(-ll);	
 				} 
-				outlet(1,"moveto",sx+(c+x/(2+ll*(UNIVERSAL_COLUMNS-1))+0.5*(c>cursorx))*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
+				outlet(1,"moveto",sx+(c+x/(2+ll*(UNIVERSAL_COLUMNS-1))+xoffs)*cw+3+x_pos,sy+rh*(r+0.75)+y_pos);
 				outlet(1,"write",ss);
 				var tx2=cursorx2;
 				if(tx2==0) tx2=1;
-				if((tx2==i)&&(c==cursorx)){
+				if((tx2==i)&&(cc==cursorx)){
 					discont_x = sx+(c+(x+ll)/(2+ll*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;
 					discont_x2 = 0.5*cw+discont_x;
 					if(values[i]>0){
-						outlet(1,"paintrect",discont_x,sy+rh*r+bh+y_pos,discont_x+0.5*cw*values[i]/128,sy+rh*r+2*bh+y_pos,fc);
+						outlet(1,"paintrect",discont_x,sy+rh*r+bh+y_pos,discont_x+0.5*cw*values[i]/steps,sy+rh*r+2*bh+y_pos,fc);
 					}else if(values[i]<0){
-						outlet(1,"paintrect",discont_x2+0.5*cw*values[i]/128,sy+rh*r+bh+y_pos,discont_x2,sy+rh*r+2*bh+y_pos,fc);
+						outlet(1,"paintrect",discont_x2+0.5*cw*values[i]/steps,sy+rh*r+bh+y_pos,discont_x2,sy+rh*r+2*bh+y_pos,fc);
 					}
 					x+=0.5*(2+ll*(UNIVERSAL_COLUMNS-1));
 				}
@@ -472,8 +517,9 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			sel_ey=-1;
 			drawflag=1;
 			if(barpos!=-1){
+				var steps = ((cursorx2==2)||(cursorx2==3)) ? 1000:128;
 				if(voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx])>0){
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]+cursorx2, Math.floor(barpos*128)+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]+cursorx2, Math.floor(barpos*steps)+1);
 				}
 			}
 		}
@@ -504,7 +550,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
-			if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
+			if((cursorx!=ox)&&(b_list[cursorx]==block))	messnamed("to_blockmanager","select_voice",cursorx,0);
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
 	}
@@ -582,10 +628,16 @@ function toggle_grouping(){
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1+UNIVERSAL_COLUMNS,-1);
 		}
 	}else{ //whether you're removing the first cell of a group, or one in the middle, it makes sense to remove all the ones after too?
-		var yy = MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]-1+UNIVERSAL_COLUMNS
+		var yyy = MAX_DATA*v_list[cursorx]+UNIVERSAL_COLUMNS*(cursory+1)+pattern_offs[cursorx];
+		var yy=yyy+UNIVERSAL_COLUMNS; //after
 		while(voice_data_buffer.peek(1,yy)!=0){
 			voice_data_buffer.poke(1, yy,0);
 			yy+=UNIVERSAL_COLUMNS;
+		}
+		var yy=yyy;
+		while(voice_data_buffer.peek(1,yy)!=0){
+			voice_data_buffer.poke(1, yy,0);
+			yy-=UNIVERSAL_COLUMNS;
 		}
 	}
 	drawflag=1;
@@ -927,7 +979,7 @@ function keydown(key){
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
 			drawcell(ox-display_col_offset,oy-display_row_offset);
-			if(cursorx!=ox)	messnamed("to_blockmanager","select_voice",cursorx,0);
+			if((cursorx!=ox)&&(b_list[cursorx]==block))	messnamed("to_blockmanager","select_voice",cursorx,0);
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
 	}
@@ -936,8 +988,7 @@ function keydown(key){
 function voice_is(v){
 	block = v;
 	if(block>=0){
-		v_list = voicemap.get(block);
-		if(typeof v_list=="number") v_list = [v_list];
+		generate_extended_v_list();
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
 	}
@@ -960,5 +1011,23 @@ function store(){
 		}
 		transf_arr.push(d);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
+	}
+}
+
+function reset_round_robins(){
+	for(var c = 0; c<v_list.length; c++){
+		var ov=-1;
+		for(var r = max_rows; r>0; r--){ //r is row+1 in this loop
+			var v = voice_data_buffer.peek(1, MAX_DATA*v_list[c] + UNIVERSAL_COLUMNS * r + pattern_offs[c]);
+			if(v>0){
+				if(ov>=0){
+					//orphaned counter, wipe it
+					voice_data_buffer.peek(1, MAX_DATA*v_list[c] + UNIVERSAL_COLUMNS * r + pattern_offs[c], 0);
+				}else{
+					voice_data_buffer.peek(1, MAX_DATA*v_list[c] + UNIVERSAL_COLUMNS * r + pattern_offs[c], 1);	
+				}
+			}
+			ov = v;
+		}
 	}
 }
