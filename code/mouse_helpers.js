@@ -534,6 +534,13 @@ function cpu_select_block(parameter,value){
 		select_block(0,value);
 	}
 }
+
+function select_block_and_voice(block,voice){
+	select_block(0,block);
+	sidebar.selected_voice = voice;
+	redraw_flag.flag |= 10;
+}
+
 function select_voice(parameter,value){
 	sidebar.selected_voice = parameter;
 	redraw_flag.flag |= 10;
