@@ -68,7 +68,8 @@
         "503" : ["UP", "move_selected_blocks", 0, 0.2],
         "502" : ["DOWN", "move_selected_blocks", 0, -0.2],
         "501" : ["LEFT", "move_selected_blocks", -0.2, 0 ],
-        "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0]
+        "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0],
+        "559" : ["?", "set_sidebar_mode", "help"]
     },
     "panels" : {
         "-20" : ["F4", "selected_block_custom_mode", "custom" ],
