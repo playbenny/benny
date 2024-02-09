@@ -2432,7 +2432,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		sidebar.mode="retrig";
 		remove_automaps();
 	}	
-	redraw_flag.flag=4;
+	if(((displaymode=="custom")||(displaymode=="custom_fullscreen"))&&(custom_block==block)){
+		set_display_mode(displaymode,custom_block);
+	}else{
+		redraw_flag.flag=4;
+	}
 //	rebuild_action_list = 1;
 }
 

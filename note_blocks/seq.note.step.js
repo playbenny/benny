@@ -121,10 +121,9 @@ function draw(){
 		for(i=0;i<v_list.length;i++){
 			cursors[i]=-1;
 		}
-		if(mini){
-			outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		}else{
-			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1,block,0);
+		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		if(!mini){
+			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
 			outlet(0,"setfontsize",Math.min(unit*0.4,uy*0.8));//draw side note list scrollbar
 			for(var y=view_y;y<view_y2;y++){
 				var shade = (3 + brightlist[y%12]) * 0.10;
@@ -301,32 +300,32 @@ function drawcell(cc,rr){
 			loop = 1.7;
 		}else{loop=1;}
 		outlet(1,drawtype,sx+ux*(rr-view_x),sy+(view_y2-y-1)*uy,sx+ux*(rr+1-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
-		if(cc==selected_voice){
-			if(selected_graph>0){
-				var steps=((selected_graph==2)||(selected_graph==3)) ? 1000:128;
-				var v= values[selected_graph]-1;
+	}
+	if(cc==selected_voice){ //draw sliders whether it's in view (y axis) or not
+		if(selected_graph>0){
+			var steps=((selected_graph==2)||(selected_graph==3)) ? 1000:128;
+			var v= values[selected_graph]-1;
+			v /= steps;
+			if(v>0){
+				outlet(1,"paintrect", sx+ux*(rr-view_x),graph_y2-graph_h*v,sx+ux*(rr+1-view_x),graph_y2,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
+			}else if(selected_graph==4){
+				outlet(1,"paintrect", sx+ux*(rr-view_x),graph_y,sx+ux*(rr+1-view_x),graph_y-graph_h*v,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
+			}
+		}else{
+			var steps=128;
+			var gy,gy2,gh=graph_h/(UNIVERSAL_COLUMNS-2);
+			for(var g=1;g<UNIVERSAL_COLUMNS-1;g++){
+				if(g==2) steps=1000;
+				if(g==4) steps=128;
+				var v= values[g]-1;
 				v /= steps;
+				gy=graph_y+(g-1)*gh;
+				gy2=graph_y+g*gh;
 				if(v>0){
-					outlet(1,"paintrect", sx+ux*(rr-view_x),graph_y2-graph_h*v,sx+ux*(rr+1-view_x),graph_y2,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
+					outlet(1,"paintrect", sx+ux*(rr-view_x),gy2-gh*v,sx+ux*(rr+1-view_x),gy2,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
 				}else{
-					outlet(1,"paintrect", sx+ux*(rr-view_x),graph_y,sx+ux*(rr+1-view_x),graph_y-graph_h*v,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
-				}
-			}else{
-				var steps=128;
-				var gy,gy2,gh=graph_h/(UNIVERSAL_COLUMNS-2);
-				for(var g=1;g<UNIVERSAL_COLUMNS-1;g++){
-					if(g==2) steps=1000;
-					if(g==4) steps=128;
-					var v= values[g]-1;
-					v /= steps;
-					gy=graph_y+(g-1)*gh;
-					gy2=graph_y+g*gh;
-					if(v>0){
-						outlet(1,"paintrect", sx+ux*(rr-view_x),gy2-gh*v,sx+ux*(rr+1-view_x),gy2,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
-					}else{
-						outlet(1,"paintrect", sx+ux*(rr-view_x),gy,sx+ux*(rr+1-view_x),gy-gh*v,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
-					}				
-				}
+					outlet(1,"paintrect", sx+ux*(rr-view_x),gy,sx+ux*(rr+1-view_x),gy-gh*v,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
+				}				
 			}
 		}
 	}
@@ -355,6 +354,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 					}else{
 						view_y+=scr;
 						view_y2+=scr;
+						calcscaling();
 					}
 					drawflag = 1;
 				}
@@ -378,9 +378,14 @@ function mouse(x,y,lb,sh,al,ct,scr){
 						}else{
 							view_x+=scr;
 							view_x2+=scr;
+							calcscaling();
 						}
 						drawflag = 1;
 					}
+				}else if(lb && al){//toggle the clicked cell into a group
+					cursory = Math.floor(view_x + view_w * (x-sx)/(width-sx));
+					toggle_grouping();
+					drawflag = 1;
 				}
 			}
 		}
@@ -388,7 +393,6 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		if(lb){
 			var clickx = Math.floor(view_x + view_w * (x-sx)/(width-sx));
 			var clicky = 1 + Math.floor(view_y2 - view_h * (y-sy)/(graph_y-sy));
-			post("\ncxcy",clickx,clicky);
 			var tn = voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]);
 			if(tn==clicky) clicky = 0;
 			voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],clicky);
@@ -401,184 +405,27 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}else{ //graph bit
 		var clickx = Math.floor(view_x + view_w * (x-sx)/(width-sx));
 		var clicky = (y-graph_y) * (1 + (selected_graph==0)*(UNIVERSAL_COLUMNS-3))/graph_h;
-		post("\ngraph cxcy",clickx,clicky);
 		var slider = selected_graph;
-		if(selected_graph==0) slider = Math.floor(clicky);
+		if(selected_graph==0) slider = Math.floor(clicky+1);
 		clicky = 1-(clicky%1);
-		post("slider,",slider,"val",clicky);
+		var steps = ((slider==2)||(slider==3)) ? 1000:128;
 		if(scr){
-			var tv=	voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,1);
-			if(tv>0){
-				tv+=scr;
-				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,tv);
+			var tv=	voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],UNIVERSAL_COLUMNS);
+			if(tv[0] > 0){
+				tv[slider] += scr * steps * 0.1;
+				if(slider<4){
+					if(tv[slider]<-1) tv[slider] = -1;
+				}else{
+					if(tv[4]<-100) tv[4]=-100;
+				}
+				if(tv[slider]>steps)tv[slider]=steps; 
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,tv[slider]);
+				drawflag = 1; //IDEALLY NO, JUST UPDATE THE ONE SLIDER
 			}
 		}else if(lb){
+			clicky *= steps;
 			voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,clicky);
 		}
-	}
-	return 0;
-	var ox = selected_voice;
-	var ox2 = selected_graph;
-	var oy = cursory;
-	var barpos = -1;
-	if(x>=discont_x){
-		//post("\nx was",x);
-		if(x>=discont_x2){
-			x = x - 0.5*cw;
-		}else{
-			barpos = 2*(x - discont_x)/cw;
-			x = discont_x-5;
-		}
-		//post(" is now ",x);
-	}//else{post("\nx",x,"discont",discont_x);}
-	var xx = x-x_pos;
-	var yy = y-y_pos;
-	var clickx = (xx-sx)/ux;// /cw;
-	var clickx2 = Math.floor((clickx % 1)*(UNIVERSAL_COLUMNS-1));
-	clickx = Math.floor(clickx);
-	var clicky = Math.floor((yy-sy)/rh);
-
-	if(scr!=0){
-		if((clickx<0)||(clickx>v_list.length-1)||(clicky<0)||(clicky>maxl)){
-			//outside cells, so scrolls
-			if(sh==0){
-				if(scr<0){
-					cursory=(cursory+1);
-					if(cursory>511)cursory=511;
-				}else{
-					cursory-=1;
-					if(cursory<0)cursory=0;
-				}
-			}else{
-				if(scr<0){
-					selected_graph++;
-					if(selected_graph>UNIVERSAL_COLUMNS-2){
-						selected_graph=0;
-						selected_voice=(selected_voice+1)%v_list.length;
-					}
-				}else{
-					selected_graph--;
-					if(selected_graph<1){
-						selected_graph=5;
-						selected_voice=(selected_voice+v_list.length-1)%v_list.length;
-					}
-				}			
-			}
-		}else{
-			selected_graph = clickx2;
-			selected_voice = Math.min(v_list.length-1,Math.floor(clickx));	
-			cursory = clicky;
-			if(((clickx>sel_sx)||((clickx==sel_sx)&&(clickx2>=sel_sx2)))&&((clickx<sel_ex)||((clickx==sel_ex)&&(clickx2<=sel_ex2)))&&(clicky>=sel_sy)&&(clicky<=sel_ey)){
-				for(var tx=sel_sx;tx<=sel_ex;tx++){
-					tt = clickx2;
-					var ts=0;
-					var te=2;
-					if((tx==sel_sx)&&(sel_sx2>0)) ts=1;
-					if((tx==sel_ex)&&(sel_ex2<1)) te=1;
-					if((tt>=ts)&&(tt<=te)){
-						for(var ty=sel_sy;ty<=sel_ey;ty++){
-							var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tt+1+UNIVERSAL_COLUMNS*ty+pattern_offs[tx]);
-							if(v>0){
-								if(scr>0){
-									v++;
-								}else{
-									v--;
-									if(v<1)v=1;
-								}
-								voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tt+1+UNIVERSAL_COLUMNS*ty+pattern_offs[tx],v);
-							}
-						}
-					}
-				}
-			}else{
-				var va = voice_data_buffer.peek(1,MAX_DATA*v_list[(clickx)]+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky),UNIVERSAL_COLUMNS);
-				var v = va[clickx2];
-				var ok=va[0]>0;
-				if((clickx2>1)&&(clickx2<4)) ok &= va[1]>0;
-				if(va[0]>0){
-					if(scr>0){
-						v++;
-						if(((clickx2<2)||(clickx2==4))&&(v>128))v=128;
-						if((clickx2>1)&&(v>999))v=999;
-					}else{
-						v--;
-						if((v<0)&&(clickx2!=4)) v=0;
-						if(v<-99) v=-99;
-					}
-					voice_data_buffer.poke(1,MAX_DATA*v_list[clickx]+clickx2+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky),v);
-				}
-			}
-		}
-	}else if(lb){
-		if(sh){
-			sel_sx = selected_voice;//+display_col_offset;
-			sel_sx2 = selected_graph;
-			sel_sy = cursory;//+display_row_offset;
-			selected_graph = clickx2;
-			selected_voice = Math.min(v_list.length-1,Math.floor(clickx));	
-			cursory = clicky;
-			sel_ex = selected_voice;//+display_col_offset;
-			sel_ex2 = selected_graph;
-			sel_ey = cursory;//+display_row_offset;
-			if(sel_ey<sel_sy){
-				var t = sel_sy;
-				sel_sy = sel_ey;
-				sel_ey = t;
-			}
-			if(sel_sx>sel_ex){
-				var t = sel_sx;
-				var t2 = sel_sx2;
-				sel_sx = sel_ex;
-				sel_sx2 = sel_ex2;
-				sel_ex = t;
-				sel_ex2 = t2;
-			}
-			//post("\nselection ",sel_sx,sel_ex,sel_sy,sel_ey,sel_sx2,sel_ex2);
-			drawflag=1;
-		}else{
-			selected_graph = clickx2;
-			selected_voice = Math.min(v_list.length-1,Math.floor(clickx));	
-			cursory = clicky;
-			sel_ex=-1;
-			sel_ey=-1;
-			drawflag=1;
-			if(barpos!=-1){
-				var steps = ((selected_graph==2)||(selected_graph==3)) ? 1000:128;
-				if(voice_data_buffer.peek(1, MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[selected_voice])>0){
-					voice_data_buffer.poke(1, MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[selected_voice]+selected_graph, Math.floor(barpos*steps)+1);
-				}
-			}
-		}
-	}
-	var df=0;
-	if(lb==0){
-		if(cursory/*-display_row_offset*/>30){
-//			display_row_offset=cursory-30;
-			df=1;
-		}else if(cursory/*-display_row_offset*/<5){
-//			display_row_offset=Math.max(0,cursory-5);
-			df=1;
-		}
-		if(v_list.length>showcols){
-			if(selected_voice/*-display_col_offset*/<1){
-//				display_col_offset=Math.max(0,selected_voice-1);
-				df=1;
-			}else if(selected_voice-display_col_offset>=showcols-2){
-//				display_col_offset=selected_voice-showcols+2;
-				df=1;
-			}
-		}
-	}
-	if(selected_graph!=ox2) df=1;
-	if(df){
-		if(selected_voice!=ox)	request_sidebar_sel();
-		drawflag=1;
-	}else{
-		if((selected_voice!=ox)||(cursory!=oy)){
-			drawcell(ox,oy);//-display_col_offset,oy-display_row_offset);
-			if(selected_voice!=ox) request_sidebar_sel();
-		}
-		drawcell(selected_voice,cursory);//-display_col_offset,cursory-display_row_offset);		
 	}
 }
 
