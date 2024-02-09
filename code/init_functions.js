@@ -718,6 +718,7 @@ function size(width,height,scale){
 			click_b_w++;
 		}
 		fontheight = (mainwindow_height-24) / 18;
+		fontsmall = fontheight / 3.2;
 		fo1 = fontheight * 0.1;
 		sidebar.width = fontheight*sidebar.width_in_units;
 		sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;

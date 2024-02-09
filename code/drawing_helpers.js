@@ -196,7 +196,7 @@ function labelled_parameter_v_slider(sl_no){
 	}else{
 		lcd_main.message("frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
 	}
-	setfontsize(fontheight/3.2);
+	setfontsize(fontsmall);
 	namelabely=paramslider_details[sl_no][12];
 	for(var c = 0;c<paramslider_details[sl_no][11].length;c++){
 		lcd_main.message("moveto",paramslider_details[sl_no][0]+fo1,namelabely);
@@ -793,7 +793,7 @@ function draw_menu_hint(){
 	var topspace=(block_menu_d.mode == 3);
 	lcd_main.message("clear");
 	lcd_main.message("paintrect", sidebar.x,9,sidebar.x2,9+fontheight*(1+topspace),cod);
-	setfontsize(fontheight/1.6);
+	setfontsize(fontsmall*2);
 	lcd_main.message("textface", "bold");
 	
 	lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);

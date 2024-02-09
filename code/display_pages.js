@@ -243,7 +243,7 @@ function draw_panel_edit(x,y,h,b){
 	var x1 = 9 + x * column_width;
 	column_width -= 9;
 	var x2 = x1 + column_width;
-	setfontsize(fontheight/3.2);
+	setfontsize(fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
 	lcd_main.message("moveto",fontheight*0.2+x1,18+y*fontheight+fontheight*1.5);
 	lcd_main.message("frgb", 255, 255, 255);
@@ -294,7 +294,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	column_width -= 9;
 	var x2 = x1+column_width;
 	cur_font_size=0;
-	setfontsize(fontheight/3.2);
+	setfontsize(fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
 	click_rectangle(x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mouse_index,1);
 	mouse_click_actions[mouse_index] = select_block;
@@ -460,7 +460,7 @@ function draw_waves(){
 	var c=new Array(3);
 	var slot_h = mainwindow_height/6;
 	var bigsloth = mainwindow_height/2;//-fontheight*10.2-18; 
-	setfontsize(fontheight/1.6);
+	setfontsize(fontsmall*2);
 	var colinc = config.getsize("palette::gamut") / (num_slots+1);
 	var sloty = fontheight+fo1+9-waves.scroll_position;
 	//post("\nwavescr",waves.scroll_position);
@@ -501,7 +501,7 @@ function draw_waves(){
 					mouse_index++;
 					lcd_main.message("frgb",menucolour);
 					lcd_main.message("moveto",sidebar.x2-2.7*fontheight,sloty+fontheight*0.6);
-					setfontsize(fontheight/3.2);
+					setfontsize(fontsmall);
 					lcd_main.message("textface","normal");
 					lcd_main.message("write","delete");
 					
@@ -513,10 +513,10 @@ function draw_waves(){
 					mouse_index++;
 					lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
 					lcd_main.message("moveto",18,sloty+fontheight*0.6);
-					setfontsize(fontheight/2.4);
+					setfontsize(fontsmall*1.5);
 					lcd_main.message("textface","bold");
 					lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
-					setfontsize(fontheight/3.2);
+					setfontsize(fontsmall);
 					lcd_main.message("textface","normal");
 					lcd_main.message("moveto",mainwindow_width-17*fontheight,sloty+fontheight*0.6);
 					lcd_main.message("write","start");
@@ -540,7 +540,7 @@ function draw_waves(){
 					mouse_index++;
 					lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
 					lcd_main.message("moveto",18,sloty+fontheight*0.32);
-					setfontsize(fontheight/3.2);
+					setfontsize(fontsmall);
 					lcd_main.message("textface","bold");
 					lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
 				}
@@ -551,7 +551,7 @@ function draw_waves(){
 				lcd_main.message("framerect",9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2]);
 				//lcd_main.message("frgb",menudark);
 				lcd_main.message("moveto",18,sloty+fontheight*0.32);
-				setfontsize(fontheight/3.2);
+				setfontsize(fontsmall);
 				lcd_main.message("textface","bold");
 				lcd_main.message("write",slot+1,"---");
 				click_rectangle(9,sloty,sidebar.x2,sloty+slot_h-fo1,mouse_index,1);
@@ -2731,7 +2731,7 @@ function draw_state_xfade(){
 }
 
 function draw_topbar(){
-	setfontsize(fontheight/3.2);
+	setfontsize(fontsmall);
 	lcd_main.message("textface", "bold");
 	lcd_main.message("pensize", 2, 2);
 	lcd_main.message("frgb",menucolour);
@@ -3037,7 +3037,7 @@ function draw_topbar(){
 			lcd_main.message("frgb", menucolour);
 			var y_offset=9+fontheight;
 			lcd_main.message("moveto", sidebar.x+fontheight*0.2, y_offset);
-			setfontsize(fontheight/1.6);
+			setfontsize(fontsmall*2);
 			lcd_main.message("write", "SONG NOTES");
 			
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
@@ -3156,9 +3156,9 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "block", "", sidebar.x, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(text_being_editted.length<15) setfontsize(fontheight/1.6);
+		if(text_being_editted.length<15) setfontsize(fontsmall*2);
 		lcd_main.message("write", text_being_editted);
-		setfontsize(fontheight/3.2);
+		setfontsize(fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*5.5,fontheight+y_offset,block_darkest);
 		lcd_main.message("frgb" , block_colour);
@@ -3201,9 +3201,9 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 255,255,255);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(text_being_editted.length<15) setfontsize(fontheight/1.6);
+		if(text_being_editted.length<15) setfontsize(fontsmall*2);
 		lcd_main.message("write", text_being_editted);
-		setfontsize(fontheight/3.2);
+		setfontsize(fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*5.5,fontheight+y_offset,block_darkest);
 		lcd_main.message("frgb" , block_colour);
@@ -3326,7 +3326,7 @@ function draw_sidebar(){
 				read_songs_folder("templates");
 			}
 		}
-		setfontsize(fontheight/1.6);
+		setfontsize(fontsmall*2);
 
 		y_offset += 0.4*fontheight;
 
@@ -3383,12 +3383,12 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", file_menu_x + fontheight*4.4, 9, file_menu_x+fontheight*6.5, 9+fontheight,greydarkest );
 			lcd_main.message("frgb" , greycolour);
 			click_zone(save_song, 1, "", file_menu_x + fontheight*4.4, 9, file_menu_x+fontheight*6.6, 9+fontheight,mouse_index,1 );
-			setfontsize(fontheight/3.2);
+			setfontsize(fontsmall);
 			lcd_main.message("moveto", file_menu_x + fontheight*4.6, 9+fontheight*0.45);
 			lcd_main.message("write", "save");
 			lcd_main.message("moveto", file_menu_x + fontheight*4.6, 9+fontheight*0.75);
 			lcd_main.message("write", "selected");
-			setfontsize(fontheight/1.6);
+			setfontsize(fontsmall*2);
 		}
 
 		lcd_main.message("paintrect", file_menu_x + fontheight*6.6, 9, file_menu_x+fontheight*8.7, 9+fontheight,greydarkest );
@@ -3400,12 +3400,12 @@ function draw_sidebar(){
 		lcd_main.message("paintrect", file_menu_x + fontheight*8.8, 9, file_menu_x+fontheight*10.9, 9+fontheight,greydarkest );
 		lcd_main.message("frgb" , greycolour);
 		click_zone(select_folder, "song", null, file_menu_x + fontheight*8.8, 9, file_menu_x+fontheight*11.0, 9+fontheight,mouse_index,1 );
-		setfontsize(fontheight/3.2);
+		setfontsize(fontsmall);
 		lcd_main.message("moveto", file_menu_x + fontheight*9.0, 9+fontheight*0.45);
 		lcd_main.message("write", "change");
 		lcd_main.message("moveto", file_menu_x + fontheight*9.0, 9+fontheight*0.75);
 		lcd_main.message("write", "folder");
-		setfontsize(fontheight/1.6);			
+		setfontsize(fontsmall*2);			
 
 		lcd_main.message("paintrect", sidebar.x2 - fontheight * 2.2, 9, sidebar.x2, 9+fontheight,greydarkest );
 		if(danger_button == mouse_index){
@@ -3414,7 +3414,7 @@ function draw_sidebar(){
 			lcd_main.message("frgb", greycolour);
 		}
 		click_zone( clear_everything_btn, null, mouse_index, sidebar.x2 - fontheight * 2.2, 9, sidebar.x2, 9+fontheight,mouse_index,1 );
-		setfontsize(fontheight/3.2);
+		setfontsize(fontsmall);
 		lcd_main.message("moveto", sidebar.x2 - fontheight*2, 9+fontheight*0.45);
 		lcd_main.message("write", "clear");
 		lcd_main.message("moveto", sidebar.x2 - fontheight*2, 9+fontheight*0.75);
@@ -3699,9 +3699,9 @@ function draw_sidebar(){
 				bntt = bnt[0];
 			}
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-			if(bntt.length<15) setfontsize(fontheight/1.6);
+			if(bntt.length<15) setfontsize(fontsmall*2);
 			lcd_main.message("write", bntt);
-			setfontsize(fontheight/3.2);
+			setfontsize(fontsmall);
 			if(view_changed===true) click_rectangle( sidebar.x2 - fontheight*2.4, y_offset, sidebar.x2 - fontheight*1.1, fontheight+y_offset,mouse_index,1 );
 			mouse_click_actions[mouse_index] = bypass_selected_block;
 			if(blocks.get("blocks["+block+"]::bypass")){
@@ -4434,7 +4434,7 @@ function draw_sidebar(){
 							}
 						}
 					}
-					setfontsize(fontheight/3.2);
+					setfontsize(fontsmall);
 				}
 				y_offset += fontheight * 4 * knob.y;
 				//y_offset += fontheight*1.1;
@@ -4608,7 +4608,7 @@ function draw_sidebar(){
 							}
 						}
 					}
-					setfontsize(fontheight/3.2);
+					setfontsize(fontsmall);
 				}
 				y_offset += fontheight * 4 * knob.y;
 				//y_offset += fontheight*1.1;
@@ -5363,7 +5363,7 @@ function draw_sidebar(){
 				if(conn_count){
 					for(var pass=0;pass<2;pass++){
 						for(i=0;i<cm;i++){
-							setfontsize(fontheight/3.2);
+							setfontsize(fontsmall);
 							if(connections.contains("connections["+i+"]::from::number")){
 								var comp;
 								if(pass==0){
@@ -5727,7 +5727,7 @@ function draw_sidebar(){
 			i = selected.wire.indexOf(1);
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
-			setfontsize(fontheight/1.6);
+			setfontsize(fontsmall*2);
 			lcd_main.message("frgb",menucolour);
 			lcd_main.message("write", "connection edit");
 
@@ -6512,7 +6512,7 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
-			setfontsize(fontheight/1.6);
+			setfontsize(fontsmall*2);
 			lcd_main.message("write", "input",sidebar.scopes.voice+1);
 			
 			y_offset += fontheight*1.1;
@@ -6536,7 +6536,7 @@ function draw_sidebar(){
 							lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
-							setfontsize(fontheight/2.4);
+							setfontsize(fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
 							y_offset += fontheight*1.1;
 							b=99999;ti=999999;
@@ -6571,7 +6571,7 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
-			setfontsize(fontheight/1.6);
+			setfontsize(fontsmall*2);
 			lcd_main.message("write", "output",sidebar.scopes.voice+1);
 
 			y_offset += fontheight*1.1;
@@ -6593,7 +6593,7 @@ function draw_sidebar(){
 							lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
-							setfontsize(fontheight/2.4);
+							setfontsize(fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
 							y_offset += fontheight*1.1;
 							b= 9999999; ti=999999;

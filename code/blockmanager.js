@@ -295,7 +295,7 @@ var audiocolour;
 var midicolour;
 var parameterscolour;
 var blockcontrolcolour;
-var fontheight;
+var fontheight,fontsmall;
 var fo1;
 var backgroundcolour;
 var backgroundcolour_blocks;
