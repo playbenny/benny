@@ -196,7 +196,7 @@ function labelled_parameter_v_slider(sl_no){
 	}else{
 		lcd_main.message("frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
 	}
-	
+	setfontsize(fontheight/3.2);
 	namelabely=paramslider_details[sl_no][12];
 	for(var c = 0;c<paramslider_details[sl_no][11].length;c++){
 		lcd_main.message("moveto",paramslider_details[sl_no][0]+fo1,namelabely);
