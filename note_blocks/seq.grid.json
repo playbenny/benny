@@ -17,7 +17,7 @@
 				"midi" : [ "trigger", "set position" ]
 			},
 			"out" : {
-				"midi" : [ "notes out", "velocities out" ]
+				"midi" : [ "values out as notes", "values out as velocities" ]
 			}
 		},
 		"groups" : [

@@ -30,11 +30,10 @@ function resync_button(){
 }
 
 function panic_button(){
-	var i;
 	messnamed("panic","bang");
 	build_mod_sum_action_list();
 	sigouts.setvalue(0,0); //clears midi-audio sig~
-	//for(i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
+	//for(var i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
 function count_selected_blocks_and_wires(){
 	selected.block_count =0;

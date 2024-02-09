@@ -2832,8 +2832,8 @@ function draw_topbar(){
 		lcd_main.message("frgb", 0,0,0);
 	}else{
 		lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,menudarkest );
+		lcd_main.message("frgb", menucolour);
 	}
-	lcd_main.message("frgb", menucolour);
 	lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
 	lcd_main.message("write", "all");
 	lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);

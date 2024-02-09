@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790277977,
+	"modificationdate" : 3790360728,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -380,6 +380,166 @@
 				}
 
 			}
+,
+			"core.clock-o.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.2.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.scales.shapes.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.space.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.states.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"midi.free.clock.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"midi.lfo.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"midi.lfo.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"midi.note.length.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"midi.rhythmes.alpes.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"midi.switch.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.grid.ui-o.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.grid-o.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.steps.old.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.2.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.2.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.new.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.o.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.note.tracker.o.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.note.tracker.old.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.old.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.trackerL.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.trackerL.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"universal.step.sequence.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.buttons.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.buttons.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.values.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
 
 		}
 ,
@@ -391,6 +551,11 @@
 ,
 			"voicealloc.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"core.clock.ui.js" : 			{
+				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -430,6 +595,11 @@
 			}
 ,
 			"blockmanager.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"core.input.control.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -483,6 +653,11 @@
 				"local" : 1
 			}
 ,
+			"seq.note.step.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
 			"fx.atoner.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1,
@@ -513,7 +688,37 @@
 
 			}
 ,
-			"seq.note.step.js" : 			{
+			"core.scales.shapes.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"core.space.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"midi.lfo.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.grid-o.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.2.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.new.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.o.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -521,6 +726,21 @@
 					"projectrelativepath" : "./note_blocks"
 				}
 
+			}
+,
+			"seq.note.tracker.old.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.trackerL.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"utility.buttons.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
 			}
 
 		}
@@ -784,6 +1004,111 @@
 					"projectrelativepath" : "./note_blocks"
 				}
 
+			}
+,
+			"core.clock-o.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"core.input.control.2.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"core.input.control.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"core.space.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"core.states.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"midi.free.clock.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"midi.lfo.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"midi.note.length.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"midi.rhythmes.alpes.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"midi.switch.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.grid-o.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.note.steps.old.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.2.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.new.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.o.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.note.tracker.old.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.note.trackerL.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.buttons.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.values.json" : 			{
+				"kind" : "json",
+				"local" : 1
 			}
 
 		}
