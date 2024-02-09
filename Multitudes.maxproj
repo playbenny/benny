@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790360728,
+	"modificationdate" : 3790362756,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -171,6 +171,16 @@
 				"toplevel" : 1
 			}
 ,
+			"core.input.control.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"core.input.keyboard.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -267,11 +277,6 @@
 			}
 ,
 			"seq.note.tracker.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"seq.note.tracker.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -383,57 +388,92 @@
 ,
 			"core.clock-o.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.input.control.2.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"core.input.control.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"core.input.control.ui.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.scales.shapes.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.space.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.states.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.free.clock.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.lfo.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.lfo.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.note.length.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.rhythmes.alpes.maxpat" : 			{
@@ -448,37 +488,72 @@
 ,
 			"midi.switch.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.grid.ui-o.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.grid-o.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.steps.old.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.2.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.2.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.new.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.o.maxpat" : 			{
@@ -503,42 +578,92 @@
 ,
 			"seq.note.tracker.old.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.old.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.trackerL.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.trackerL.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"universal.step.sequence.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"utility.buttons.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"utility.buttons.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"utility.values.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.note.tracker.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 
 		}
@@ -643,17 +768,57 @@
 				"local" : 1
 			}
 ,
-			"seq.note.tracker.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
 			"seq.rene.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
 ,
 			"seq.note.step.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"core.scales.shapes.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"midi.lfo.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.grid-o.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.2.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.new.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.o.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.old.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.trackerL.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"utility.buttons.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -688,37 +853,12 @@
 
 			}
 ,
-			"core.scales.shapes.ui.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
 			"core.space.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
-			"midi.lfo.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"seq.grid-o.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"seq.note.tracker.2.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"seq.note.tracker.new.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"seq.note.tracker.o.js" : 			{
+			"seq.note.tracker.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -726,21 +866,6 @@
 					"projectrelativepath" : "./note_blocks"
 				}
 
-			}
-,
-			"seq.note.tracker.old.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"seq.note.trackerL.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"utility.buttons.ui.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
 			}
 
 		}
@@ -961,11 +1086,6 @@
 
 			}
 ,
-			"seq.note.tracker.json" : 			{
-				"kind" : "json",
-				"local" : 1
-			}
-,
 			"seq.rene.json" : 			{
 				"kind" : "json",
 				"local" : 1
@@ -1008,42 +1128,82 @@
 ,
 			"core.clock-o.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.input.control.2.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.input.control.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.space.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.states.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.free.clock.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.lfo.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.note.length.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"midi.rhythmes.alpes.json" : 			{
@@ -1058,27 +1218,52 @@
 ,
 			"midi.switch.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.grid-o.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.steps.old.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.2.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.new.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.o.json" : 			{
@@ -1093,22 +1278,52 @@
 ,
 			"seq.note.tracker.old.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"seq.note.trackerL.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"utility.buttons.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"utility.values.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.note.tracker.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 
 		}
