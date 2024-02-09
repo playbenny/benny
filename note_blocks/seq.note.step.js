@@ -10,19 +10,20 @@ var voice_data_buffer = new Buffer("voice_data_buffer");
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var config = new Dict;
 config.name = "config";
-var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
+var width, height,x_pos,y_pos,unit,sx,sy,ux,uy;
 var block=-1;
 var blockcolour=[128,128,128];
-var display_row_offset = 0;
-var display_col_offset = 0;
+//var display_row_offset = 0;
+//var display_col_offset = 0;
 var currentvel=100;
 var cursorx=0;
-var cursorx2=0;
+//var cursorx2=0;
 var cursory=0;
-var baseoct=4;
+//var baseoct=4;
 var mini=0,showcols;
 var drawflag=0;
-var namelist;
+var namelist = ["C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "];
+var brightlist = [1,0,1,0,1,1,0,1,0,1,0,1];
 var note_names = new Array(128);
 var voicemap = new Dict;
 voicemap.name = "voicemap";
@@ -38,7 +39,9 @@ var start=[],lstart=[],end=[],lon=[],divs=[],pattern_offs=[];
 var rcol = []; //row colour. per column arrays (ironically probably more storage than the actual data but i want a quick lookup when drawing)
 //explainer: if a row is 'grouped' into a round robin then the colour sequence doesn't advance, to keep it making sense.
 var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
-var discont_x,discont_x2,bh;
+//var discont_x,discont_x2,bh;
+var view_x=0,view_x2=16,view_w=16,view_y=48,view_y2=96,view_h=48;
+var graph_y,graph_y2,graph_h;
 //data format: for each voice the buffer holds:
 // 0 - playhead position (updated by player voice)
 // 1-16383 data values, split over a flexible number of columns (6) and patterns (16)
@@ -69,26 +72,27 @@ function setup(x1,y1,x2,y2,sw){
 		for(i=0;i<showcols;i++){
 			m  = Math.max(m, Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1,1)) + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2,1)));
 		}
-		unit = height / m;
+		view_x2=m;
+		view_w=view_x2-view_x;
 	}else{
 		if(block>=0) generate_extended_v_list();
-		showcols=Math.floor(4*width/height);
-		unit = height / 18;
+		view_x2=16; view_x=0; view_w=16;
+		showcols=Math.floor(4 * width / height);
 	}
-	display_row_offset = 0;
-	display_col_offset = 0;
+	unit = height / 18;
+	//display_row_offset = 0;
+	//display_col_offset = 0;
 	cursorx=0;
-	cursorx2=0-mini;
+	//cursorx2=0-mini;
 	cursory=0;
-	rh = 0.5*unit;
-	bh = Math.floor(0.333*rh);
 	sy = 1.7*unit*(mini==0);
 	sx = 1.2*unit*(mini==0);
-	cw = (width - sx)/(showcols+((!mini)*0.5)-0.05);
-	maxl = Math.floor((height-sy)/rh);
-	baseoct=4;
+	graph_h = 0.3 * (height - sy);
+	graph_y2 = y2;
+	graph_y = y2 - graph_h;
+	ux = (width-sx) / view_w; //0.5*unit;
+	uy = (height-sy) / view_h;
 	currentvel=100;
-	namelist = ["C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "];
 	for(i=0;i<128;i++){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
@@ -126,8 +130,8 @@ function draw(){
 		}
 		i= showcols;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		outlet(0,"setfontsize",rh*0.8);
-		if(!mini){
+		outlet(0,"setfontsize",unit*0.4);
+/*		if(!mini){
 			//TODO HEADER WITH LABELS FOR COLUMNS?
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*2.6+y_pos);
@@ -143,8 +147,8 @@ function draw(){
 				outlet(1,"write","skip : +ve = regular, -ve = chance");
 			}
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
-		}
-		for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
+		}*/
+		for(c=0;c<v_list.length;c++){
 			if(!Array.isArray(rcol[c])) rcol[c] = [];
 			cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			start[c]  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
@@ -167,36 +171,38 @@ function draw(){
 						outlet(1,"frgb",64,64,64);
 					}
 				}
-				//outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
+				
 				var c2=Math.max(0,c-1);
-				if((c==display_col_offset)||(b_list[c]!=b_list[c2])){
-					outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*0.8+y_pos);
+				if((c==0)||(b_list[c]!=b_list[c2])){
+					outlet(1,"moveto", width*c/v_list.length+x_pos, unit*0.4+y_pos);
 					if(b_list[c]==block){
 						outlet(1,"write", "this block:" + blocks.get("blocks["+block+"]::label"));
 					}else{
 						outlet(1,"write", "block "+b_list[c] + " "+blocks.get("blocks["+b_list[c]+"]::label"));
 					}
 				} 
-				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx))+x_pos, rh*1.7+y_pos);
+				outlet(1,"moveto", width*c/v_list.length+x_pos, unit*0.85+y_pos);
 				outlet(1,"write", "voice " + (c+1));
 			}
-			var r2= display_row_offset;
-			var rr=display_row_offset;
+			var r2= 0;
+			var rr=0;
 			var or2=-1;
-			for(r=0;r<maxl;r++){
+			for(r=0;r<view_x2;r++){
 				rc = ((r2%2)==0)+((r2%4)==0)+((r2%8)==0)+((r2%16)==0);
 				rc = rc/24;
 				rcol[c][rr] = rc;
-				if((!mini)&&(cursorx==c)){
-					outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,blockcolour[0]*rc,blockcolour[1]*rc,blockcolour[2]*rc);
-					if(or2!=r2){
-						outlet(1,"moveto",x_pos,sy+rh*(r+0.75)+y_pos);
-						outlet(1,"frgb",blockcolour);
-						outlet(1,"write",r2);
-						or2=r2;
+				if((r>=view_x)){//&&(r<view_x2)){
+					if((!mini)&&(cursorx==c)){
+						outlet(1,"paintrect",x_pos+sx+ux*(r-view_x),unit*1.3+y_pos,x_pos+sx-ux*(r-view_x+1),height+sy+y_pos,blockcolour[0]*rc,blockcolour[1]*rc,blockcolour[2]*rc);
+						if(or2!=r2){
+							outlet(1,"moveto",x_pos+sx+ux*(r-view_x)+4,sy+y_pos-unit*0.4);
+							outlet(1,"frgb",blockcolour);
+							outlet(1,"write",r2);
+							or2=r2;
+						}
 					}
+					drawcell(c,r);
 				}
-				drawcell((c-display_col_offset),r);
 				rr++;
 				if(voice_data_buffer.peek(1, MAX_DATA*v_list[c] + 1 + pattern_offs[c] + UNIVERSAL_COLUMNS*rr + 5)>=0) r2++;
 			}
@@ -210,7 +216,7 @@ function update(){
 		draw();
 		return 0;
 	}
-	for(c=display_col_offset;c<v_list.length;c++){
+	for(c=0;c<v_list.length;c++){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 		t_lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
@@ -246,32 +252,29 @@ function update(){
 		}
 		if(d==1){
 			for(r=0;r<maxl;r++){			
-				drawcell((c-display_col_offset),r);
+				drawcell(c,r);
 			}
 		}else if(cursors[c]!=ph){
-			o = cursors[c]-display_row_offset;
+			o = cursors[c];
 			cursors[c]=ph;
 			//redraw cell that was old cursor
 			if((o>=0)&&(o<maxl)){
-				drawcell(c-display_col_offset,o);	
+				drawcell(c,o);	
 			}
 			
 			//draw new cursor cell
-			o = cursors[c]-display_row_offset;
+			o = cursors[c];
 			if((o>=0)&&(o<maxl)){
-				drawcell(c-display_col_offset,o);	
+				drawcell(c,o);	
 			}
 		}
 	}
 }
 
-function drawcell(c,r){
-	if((c>=0)&&(c<showcols)){
-		var rr,rc,fc,bc,i,ll,ss;
+function drawcell(cc,rr){
+	if((rr>=view_x)&&(rr<view_x2)){
+		var rc,fc,bc;
 		var values;
-		var cc = c+display_col_offset;
-		var ww= 0.95 + 0.5*(cursorx==cc)*(!mini);
-		rr = r+display_row_offset;
 		rc = rcol[cc][rr];
 		if(cursorx!=cc) rc *= 0.75;
 		if(b_list[cc]==block){
@@ -326,9 +329,9 @@ function drawcell(c,r){
 			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
 			outlet(1,"paintrect",sx+(c+ts+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+te+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc2,bc[1]*rc2*lp,bc[2]*rc2);
 		}else{// all not
-			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
+			outlet(1,"paintrect",sx+x_pos+(rr-view_x)*ux,sy+y_pos,sx+x_pos+(rr+1-view_x)*ux,graph_y,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
 		}
-		if(!mini){
+		if(0*!mini){
 			outlet(1,"frgb",fc);
 			var incell = ((cursorx==(cc))&&(cursory==rr));
 			var x=0;
@@ -383,7 +386,7 @@ function drawcell(c,r){
 		}else{
 			//values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[c],UNIVERSAL_COLUMNS);
 			for(i=0;i<2;i++){ //just plot note/vel squares in mini view?
-				if(values[i]!=0) outlet(1,"paintrect",sx+(c+(i*4)/7)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(i*4+1)/7)*cw+x_pos,sy+rh*(r+1)+y_pos,fc);
+				//if(values[i]!=0) outlet(1,"paintrect",sx+(c+(i*4)/7)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(i*4+1)/7)*cw+x_pos,sy+rh*(r+1)+y_pos,fc);
 			}
 		}
 	}
@@ -406,8 +409,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}//else{post("\nx",x,"discont",discont_x);}
 	var xx = x-x_pos;
 	var yy = y-y_pos;
-	var clickx = (xx-sx)/cw;
-	clickx += display_col_offset;
+	var clickx = (xx-sx)/ux;// /cw;
 	var clickx2 = Math.floor((clickx % 1)*(UNIVERSAL_COLUMNS-1));
 	clickx = Math.floor(clickx);
 	var clicky = Math.floor((yy-sy)/rh);
@@ -465,7 +467,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 					}
 				}
 			}else{
-				var va = voice_data_buffer.peek(1,MAX_DATA*v_list[(clickx)]+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky+display_row_offset),UNIVERSAL_COLUMNS);
+				var va = voice_data_buffer.peek(1,MAX_DATA*v_list[(clickx)]+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky),UNIVERSAL_COLUMNS);
 				var v = va[clickx2];
 				var ok=va[0]>0;
 				if((clickx2>1)&&(clickx2<4)) ok &= va[1]>0;
@@ -479,21 +481,21 @@ function mouse(x,y,lb,sh,al,ct,scr){
 						if((v<0)&&(clickx2!=4)) v=0;
 						if(v<-99) v=-99;
 					}
-					voice_data_buffer.poke(1,MAX_DATA*v_list[clickx]+clickx2+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky+display_row_offset),v);
+					voice_data_buffer.poke(1,MAX_DATA*v_list[clickx]+clickx2+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky),v);
 				}
 			}
 		}
 	}else if(lb){
 		if(sh){
-			sel_sx = cursorx+display_col_offset;
+			sel_sx = cursorx;//+display_col_offset;
 			sel_sx2 = cursorx2;
-			sel_sy = cursory+display_row_offset;
+			sel_sy = cursory;//+display_row_offset;
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
-			sel_ex = cursorx+display_col_offset;
+			sel_ex = cursorx;//+display_col_offset;
 			sel_ex2 = cursorx2;
-			sel_ey = cursory+display_row_offset;
+			sel_ey = cursory;//+display_row_offset;
 			if(sel_ey<sel_sy){
 				var t = sel_sy;
 				sel_sy = sel_ey;
@@ -526,19 +528,19 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	}
 	var df=0;
 	if(lb==0){
-		if(cursory-display_row_offset>30){
-			display_row_offset=cursory-30;
+		if(cursory/*-display_row_offset*/>30){
+//			display_row_offset=cursory-30;
 			df=1;
-		}else if(cursory-display_row_offset<5){
-			display_row_offset=Math.max(0,cursory-5);
+		}else if(cursory/*-display_row_offset*/<5){
+//			display_row_offset=Math.max(0,cursory-5);
 			df=1;
 		}
 		if(v_list.length>showcols){
-			if(cursorx-display_col_offset<1){
-				display_col_offset=Math.max(0,cursorx-1);
+			if(cursorx/*-display_col_offset*/<1){
+//				display_col_offset=Math.max(0,cursorx-1);
 				df=1;
 			}else if(cursorx-display_col_offset>=showcols-2){
-				display_col_offset=cursorx-showcols+2;
+//				display_col_offset=cursorx-showcols+2;
 				df=1;
 			}
 		}
@@ -549,10 +551,10 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		drawflag=1;
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
-			drawcell(ox-display_col_offset,oy-display_row_offset);
+			drawcell(ox,oy);//-display_col_offset,oy-display_row_offset);
 			if(cursorx!=ox) request_sidebar_sel();
 		}
-		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
+		drawcell(cursorx,cursory);//-display_col_offset,cursory-display_row_offset);		
 	}
 }
 
@@ -975,28 +977,14 @@ function keydown(key){
 			}	
 			break;
 	}
-	if(cursory-display_row_offset>30){
-		display_row_offset=cursory-30;
-		drawflag=1;
-	}else if(cursory-display_row_offset<5){
-		display_row_offset=Math.max(0,cursory-5);
-		drawflag=1;
-	}
-	if(cursorx-display_col_offset<=1){
-		display_col_offset=Math.max(0,cursorx-1);
-		drawflag=1;
-	}else if(cursorx-display_col_offset>=showcols-1){
-		display_col_offset=cursorx-showcols+1;
-		drawflag=1;
-	}
 	if(drawflag){
 		if(cursorx!=ox) request_sidebar_sel();
 	}else{
 		if((cursorx!=ox)||(cursory!=oy)){
-			drawcell(ox-display_col_offset,oy-display_row_offset);
+			drawcell(ox,oy);
 			if(cursorx!=ox) request_sidebar_sel();
 		}
-		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
+		drawcell(cursorx,cursory);		
 	}
 }
 
