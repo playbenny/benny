@@ -705,11 +705,9 @@ function size(width,height,scale){
 		reinitialise_block_menu();
 		post("main window : "+width+"x"+height+"px\n");
 		blocks_tex_sent = [];
-		//initialise_block_menu(-1);
 		mainwindow_width = width;
 		mainwindow_height = height;
 		if((typeof scale == "number") && (scale>0)) scale_2d = scale;
-		//click_matrix.dim= [width,height];
 		lcd_main.message("dim",width,height);
 		click_b_w=1; //work out the next power of two after the width, eg 640 --> 1024, use this for the click matrix row length for speed
 		var t = 1;// << click_b_s;
@@ -725,7 +723,7 @@ function size(width,height,scale){
 		sidebar.x = sidebar.x2 -sidebar.width;
 
 		sidebar.meters.startx = 9+1.1* fontheight;
-		sidebar.meters.spread = 4;// * (MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS); //fontheight*3.5 / (MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS);
+		sidebar.meters.spread = 4;
 		get_hw_meter_positions();
 		for(var number=0;number<draw_wave.length;number++){
 			if(waves_buffer[number] != undefined){

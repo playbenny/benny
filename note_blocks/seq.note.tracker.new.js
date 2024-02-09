@@ -95,28 +95,6 @@ function setup(x1,y1,x2,y2,sw){
 	draw();
 }
 
-function generate_extended_v_list() {
-	v_list = voicemap.get(block);
-	if (!Array.isArray(v_list)) v_list = [v_list];
-	for (var i = 0; i < v_list.length; i++) b_list[i] = block;
-	if(!mini){
-		for (var i = blocks.getsize("blocks") + 1; i > 0; i--) {
-			if (i != block) {
-				if (blocks.contains("blocks[" + i + "]::patcher")) {
-					if (blocks.get("blocks[" + i + "]::patcher") == "universal.step.sequence") {
-						var xlist = voicemap.get(i);
-						if (!Array.isArray(xlist)) xlist = [xlist];
-						while (xlist.length) {
-							v_list.push(xlist.shift());
-							b_list.push(i);
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 function draw(){
 	if(block>=0){
 		drawflag=0;
@@ -661,12 +639,12 @@ function toggle_grouping(){
 function delete_selection(){
 	var i;
 	if(sel_ex==-1){
-		for(i=cursory;i<512;i++){
+		for(i=cursory;i<max_rows;i++){
 			var rowvalues;
-			if(i<511){
-				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*(i+1),2);
+			if(i<max_rows-1){
+				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*(i+1),UNIVERSAL_COLUMNS);
 			}else{
-				rowvalues = [0,0];
+				rowvalues = [0,0,0,0,0,0];
 			}
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*i,rowvalues);
 		}
@@ -879,17 +857,17 @@ function keydown(key){
 		case -8:
 			//insert
 			for(i=max_rows-1;i>cursory;i--){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*(i-1),2);
+				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*(i-1),UNIVERSAL_COLUMNS);
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*i+pattern_offs[cursorx],rowvalues);
 			}
-			var rowvalues=[0,0,0,0,0];
+			var rowvalues=[0,0,0,0,0,0];
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx],rowvalues);
 			drawflag=1;
 			break;
 		case -7:
 		case 46:
 			if(cursorx2==0){
-				var rowvalues=[0,0,0,0,0];
+				var rowvalues=[0,0,0,0,0,0];
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx],rowvalues);
 			}else{
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+cursorx2+pattern_offs[cursorx],0);
@@ -1043,6 +1021,28 @@ function reset_round_robins(){
 				}
 			}
 			ov = v;
+		}
+	}
+}
+
+function generate_extended_v_list() {
+	v_list = voicemap.get(block);
+	if (!Array.isArray(v_list)) v_list = [v_list];
+	for (var i = 0; i < v_list.length; i++) b_list[i] = block;
+	if(!mini){
+		for (var i = blocks.getsize("blocks") + 1; i > 0; i--) {
+			if (i != block) {
+				if (blocks.contains("blocks[" + i + "]::patcher")) {
+					if (blocks.get("blocks[" + i + "]::patcher") == "universal.step.sequence") {
+						var xlist = voicemap.get(i);
+						if (!Array.isArray(xlist)) xlist = [xlist];
+						while (xlist.length) {
+							v_list.push(xlist.shift());
+							b_list.push(i);
+						}
+					}
+				}
+			}
 		}
 	}
 }
