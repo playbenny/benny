@@ -2143,7 +2143,17 @@ function toggle_show_sidebar_para_mod(){
 }
 
 function selected_block_custom_mode(mode){
-	if(selected.block.indexOf(1)>=0) set_display_mode(mode,selected.block.indexOf(1));
+	var se = selected.block.indexOf(1);
+	if(se>=0){
+		var na = blocks.get("blocks["+se+"]::patcher");
+		if(blocktypes.contains(na+"::block_ui_patcher") && (blocktypes.get(na+"::block_ui_patcher")!="blank.ui")){
+			if(blocktypes.contains(na+"::no_edit") && (blocktypes.get(na+"::no_edit")==1)){
+
+			}else{
+				set_display_mode(mode,selected.block.indexOf(1));
+			}
+		}
+	}
 }
 
 function custom_key_passthrough(key){

@@ -181,7 +181,7 @@ function frameclock(){
 		}else{
 			update_custom();
 		}
-		//sidebar_meters();
+		sidebar_meters();
 		bangflag=1;
 	}
 	if(bangflag) {
