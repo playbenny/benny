@@ -809,14 +809,6 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 			}
 			//post("\nGOT NEW",index);
 		}
-		if(!enab){
-			if(loading.progress!=0){
-				routing_buffer.poke(1,index,0);//enab);
-			}else{
-				routing_buffer.poke(1,index,1);//enab);
-			}
-		}else{
-		}
 		routing_buffer.poke(1,index,(enab||(loading.progress==0)));//enab);
 		routing_buffer.poke(1,index+1,type);
 		routing_buffer.poke(1,index+2,desttype);
@@ -2638,21 +2630,11 @@ function swap_block(block_name){
 			}
 		}
 		if(subv != o_subv){
-			var ts = blocks_cube[block_menu_d.swap_block_target].length;
-			for(;--ts>=0;){
-				post("\nTS ",ts,"if this doesn't get to zero there's a bug");
-				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
-				blocks_cube[block_menu_d.swap_block_target][ts].freepeer(); //enable = 0;
-				blocks_cube[block_menu_d.swap_block_target].pop(); //= null;
-			}
-			ts = blocks_meter[block_menu_d.swap_block_target].length;
-			for(;--ts>=0;){
-				blocks_meter[block_menu_d.swap_block_target][ts].freepeer(); //enable = 0;
-			}
-			blocks_meter[block_menu_d.swap_block_target].pop();			
+			clear_block_3d_objects(block_menu_d.swap_block_target);			
 		}
 	}
 	if(type == "hardware"){
+		clear_block_3d_objects(block_menu_d.swap_block_target);	
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
 	}else{
@@ -2792,13 +2774,24 @@ function swap_block(block_name){
 	}
 	if(type == "note"){
 		still_checking_polys |=1;
-//		send_note_patcherlist();
 	}else if(type == "audio"){
 		still_checking_polys |=2;
-		//send_audio_patcherlist();
 	}
 	block_menu_d.swap_block_target = -1;
-	redraw_flag.flag |= 4; //8;//6;
+	redraw_flag.flag |= 4; 
+}
+
+function clear_block_3d_objects(b){
+	var ts = blocks_cube[b].length;
+	for (; --ts >= 0;) {
+		blocks_cube[b][ts].freepeer(); 
+		blocks_cube[b].pop(); 
+	}
+	ts = blocks_meter[b].length;
+	for (; --ts >= 0;) {
+		blocks_meter[b][ts].freepeer();
+	}
+	blocks_meter[b].pop();
 }
 
 function build_mod_sum_action_list(){
