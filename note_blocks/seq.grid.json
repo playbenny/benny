@@ -14,26 +14,25 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "set position" ]
+				"midi" : [ "trigger", "note->position", "reset" ]
 			},
 			"out" : {
-				"midi" : [ "values out as notes", "values out as velocities" ]
+				"midi" : [ "as notes", "as velocities" ]
 			}
 		},
 		"groups" : [
 			{ 
 				"contains" : [2],
-				"colour" : [255,255,255],
 				"onepervoice" : 1
 			},
 			{ 
 				"contains" : [3],
-				"colour" : [255,255,255],
+				"colour" : 10,
 				"onepervoice" : 1
 			},
 			{ 
 				"contains" : [1],
-				"colour" : [255,255,255],
+				"colour" : 10,
 				"onepervoice" :1 
 			}
 		],

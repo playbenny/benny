@@ -22,6 +22,7 @@ var cursors = []; //holds last drawn position of playheads (per row)
 // 2 - playhead position (updated by player voice)
 // 3-131? data values
 var notelist = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var menucolour,menudark,block_colour=[0,255,0];
 
 function setup(x1,y1,x2,y2,sw){
 //	post("drawing sequencers");
@@ -37,6 +38,7 @@ function setup(x1,y1,x2,y2,sw){
 	y_pos = y1;
 	unit = height / 18;
 	if(block>=0){
+		block_colour = blocks.get("blocks["+block+"]::space::colour");
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 		draw();
@@ -66,8 +68,9 @@ function fulldraw(){
 	for(r=0;r<v_list.length;r++){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		
 		cursors[r]=ph;
-		for(c=maxl-1;c>=0;c--){			
-			outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,255*(c==ph),63+192*((c>=s[r])&&(c<s[r]+l[r])),255*(c==ph),MAX_DATA*v_list[r]+1+c,1);
+		for(c=maxl-1;c>=0;c--){		
+			var shade = (c==ph) ? 3 : (0.4+0.6*((c>=s[r])&&(c<s[r]+l[r])));	
+			outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,shade * block_colour[0],shade * block_colour[1],shade * block_colour[2],MAX_DATA*v_list[r]+1+c,1);
 			if(!mini){
 				outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.4);
 				outlet(1,"write",c);
@@ -114,7 +117,8 @@ function update(){
 			if(cursors[r]!=ph){
 				//redraw slider that was old cursor
 				if((cursors[r]>=0)&&(cursors[r]<maxl)){
-					outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,0,255,0,MAX_DATA*v_list[r]+1+cursors[r],1);
+					var shade = (0.4+0.6*((cursors[r]>=s[r])&&(cursors[r]<s[r]+l[r])));
+					outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,shade *block_colour[0],shade *block_colour[1],shade *block_colour[2],MAX_DATA*v_list[r]+1+cursors[r],1);
 					if(!mini){
 						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 						outlet(1,"write",cursors[r]);
@@ -133,19 +137,6 @@ function update(){
 				//draw new cursor slider
 				if(cursors[r]<maxl){
 					outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+1+ph,1);
-				/*	if(!mini){
-						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
-						outlet(1,"write",cursors[r]);
-						i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1+cursors[r])*128);
-						if(i>0){
-							i--;
-							outlet(1,"frgb",0,0,0);
-							outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit);
-							outlet(1,"write",i);
-							outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*1.5);
-							outlet(1,"write",notelist[i%12]+"-"+Math.floor(i/12));
-						}					
-					}*/
 				}
 			}
 		}
