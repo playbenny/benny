@@ -809,15 +809,30 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 			}
 			//post("\nGOT NEW",index);
 		}
-		routing_buffer.poke(1,index,enab);
+		if(!enab){
+			if(loading.progress!=0){
+				routing_buffer.poke(1,index,0);//enab);
+			}else{
+				routing_buffer.poke(1,index,1);//enab);
+			}
+		}else{
+		}
+		routing_buffer.poke(1,index,(enab||(loading.progress==0)));//enab);
 		routing_buffer.poke(1,index+1,type);
 		routing_buffer.poke(1,index+2,desttype);
 		routing_buffer.poke(1,index+3,destvoice);
 		routing_buffer.poke(1,index+4,destinput);
-		routing_buffer.poke(1,index+5,scalen);
-		routing_buffer.poke(1,index+6,scalev);
-		routing_buffer.poke(1,index+7,offsetn);
-		routing_buffer.poke(1,index+8,offsetv);
+		if(enab){
+			routing_buffer.poke(1,index+5,scalen);
+			routing_buffer.poke(1,index+6,scalev);
+			routing_buffer.poke(1,index+7,offsetn);
+			routing_buffer.poke(1,index+8,offsetv);
+		}else{
+			routing_buffer.poke(1,index+5,0);
+			routing_buffer.poke(1,index+6,0);
+			routing_buffer.poke(1,index+7,0);
+			routing_buffer.poke(1,index+8,0);
+		}
 		//post("\npoked into routing buffer starting at",index,"values",enab,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 		return index;
 	}else{
@@ -1607,7 +1622,7 @@ function make_connection(cno){
 							var tidslist = midi_routemap.get(m_index);
 							if(typeof tidslist == "number") tidslist=[tidslist];
 							if(is_empty(idslist)||is_empty(tidslist)){
-								post("\none or both empty so creating new modid");
+								//post("\none or both empty so creating new modid");
 								mod_id++;
 								tmod_id=mod_id;
 								safepoke(mod_buffer,1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
@@ -1619,17 +1634,17 @@ function make_connection(cno){
 								for(sx=0;sx<idslist.length;sx++){
 									for(sy=0;sy<tidslist.length;sy++){
 										if(idslist[sx]+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS==tidslist[sy]){
-											post("\nfoundindex",idslist[sx]);
-											post("\nPARAM IS ALREADY",tparamlist[idslist[sx]-1]);
+											//post("\nfoundindex",idslist[sx]);
+											//post("\nPARAM IS ALREADY",tparamlist[idslist[sx]-1]);
 											if(tparamlist[sx]==t_i_no) found = idslist[sx];
 										}
 									}
 								}
 								if(found!= -1){
-									post("\nFOUND",found);
+									//post("\nFOUND",found);
 									tmod_id = found;
 								}else{
-									post("\npresent but no matching id found");
+									//post("\npresent but no matching id found");
 									mod_id++;
 									tmod_id=mod_id;
 									safepoke(mod_buffer,1, mod_id, 0);
