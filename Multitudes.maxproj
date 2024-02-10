@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790362756,
+	"modificationdate" : 3790364786,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -665,6 +665,26 @@
 				}
 
 			}
+,
+			"midi.curve.map.1d.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"midi.curve.map.1d.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -798,11 +818,6 @@
 				"local" : 1
 			}
 ,
-			"seq.note.tracker.new.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
 			"seq.note.tracker.o.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
@@ -821,6 +836,21 @@
 			"utility.buttons.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
+			}
+,
+			"seq.note.tracker.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"seq.note.tracker.new.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"fx.atoner.gendsp" : 			{
@@ -858,7 +888,7 @@
 				"local" : 1
 			}
 ,
-			"seq.note.tracker.js" : 			{
+			"midi.curve.map.1d.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -1317,6 +1347,16 @@
 			}
 ,
 			"seq.note.tracker.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"midi.curve.map.1d.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{

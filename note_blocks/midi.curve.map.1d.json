@@ -1,0 +1,54 @@
+{
+	"midi.curve.map.1d" : {
+		"patcher" : "midi.curve.map.1d",
+		"type" : "note",
+		"block_ui_patcher" : "midi.curve.map.1d.ui",
+		"help_text" : "A step sequencer. One voice = one sequencer row. Values can be sent out as changing velocities of a fixed note, or changing notes with a fixed velocity. ",
+		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 6,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "in" ]
+			},
+			"out" : {
+				"midi" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"onepervoice" : 1
+			},
+			{
+				"contains" : [1],
+				"height":0,
+				"colour": -10
+			}
+		],
+		"voice_data" : {
+			"defaults" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		},
+		"parameters" : [
+			{
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "interpolation",
+				"type" : "menu_i",
+				"values" : ["off","on"],
+				"default" : 0.75,
+				"wrap" : 1
+			}
+		]
+	}
+}
