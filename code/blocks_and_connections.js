@@ -636,13 +636,13 @@ function create_connection_button(){
 			post("\nfound an empty slot to use");
 			connections.replace("connections["+i+"]",new_connection);
 			w=0;
-			make_connection(i);
+			make_connection(i,0);
 			i=csize;
 		}
 	}
 	if(w==1){
 		connections.append("connections",new_connection);
-		make_connection(connections.getsize("connections")-1);
+		make_connection(connections.getsize("connections")-1,0);
 	}
 	new_connection.clear();
 	//click_clear(0,0);
@@ -809,17 +809,18 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 			}
 			//post("\nGOT NEW",index);
 		}
-		routing_buffer.poke(1,index,(enab||(loading.progress==0)));//enab);
 		routing_buffer.poke(1,index+1,type);
 		routing_buffer.poke(1,index+2,desttype);
 		routing_buffer.poke(1,index+3,destvoice);
 		routing_buffer.poke(1,index+4,destinput);
 		if(enab){
+			routing_buffer.poke(1,index,1);
 			routing_buffer.poke(1,index+5,scalen);
 			routing_buffer.poke(1,index+6,scalev);
 			routing_buffer.poke(1,index+7,offsetn);
 			routing_buffer.poke(1,index+8,offsetv);
 		}else{
+			routing_buffer.poke(1,index,(loading.progress==0)?1:0);
 			routing_buffer.poke(1,index+5,0);
 			routing_buffer.poke(1,index+6,0);
 			routing_buffer.poke(1,index+7,0);
@@ -1318,12 +1319,12 @@ function remove_potential_wire(){
 	}										
 }
 
-function make_connection(cno){
+function make_connection(cno,existing){
 // takes the new connection dict and 
 // works out the route for the connection
 // makes the connection
 // (it has already been copied into the connections dict, at the slot we've been called with?)
-	//post("\nmake conn");
+// if existing==1 then it doesn't bother redoing modsumaction list, just adjusts routing.
 	var f_type = connections.get("connections["+cno+"]::from::output::type");
 	var t_type = connections.get("connections["+cno+"]::to::input::type");
 	var f_o_no = connections.get("connections["+cno+"]::from::output::number");
@@ -1836,7 +1837,7 @@ function make_connection(cno){
 		}
 		draw_wire(cno);
 	}
-	rebuild_action_list = 1;
+	if(!existing) rebuild_action_list = 1;
 }	
 
 function build_new_connection_menu(from, to, fromv,tov){
@@ -2409,10 +2410,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				var f_voice = connections.get("connections["+i+"]::from::voice");
 				var t_voice = connections.get("connections["+i+"]::to::voice");
 				if((connections.get("connections["+i+"]::from::number") == block) && (f_voice == "all")){
-					make_connection(i);
+					make_connection(i,0);
 //						post("TODO add the new voice to 'all' connections");
 				}else if((connections.get("connections["+i+"]::to::number") == block) && (t_voice == "all")){
-					make_connection(i);
+					make_connection(i,0);
 //						post("TODO add the new voice to 'all' connections");
 				}
 			}
@@ -2430,7 +2431,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	}else if(direction==-1){
 		for(i=0;i<hp;i++){
 			connections.replace("connections["+handful_n[i]+"]",handful[i]);
-			make_connection(handful_n[i]);
+			make_connection(handful_n[i],0);
 		}
 		//build_mod_sum_action_list();
 		rebuild_action_list=1;
@@ -2490,7 +2491,7 @@ function connection_edit_voices(connection, voice){
 		}
 	}
 	connections.replace("connections["+connection+"]",new_connection);
-	make_connection(connection);
+	make_connection(connection,0);
 	selected.wire[connection]=1;
 	wire_ends[connection][0]=-0.96969696;
 	sidebar.lastmode="recalculate";
@@ -2553,7 +2554,7 @@ function insert_block_in_connection(newblockname,newblock){
 	new_connection.replace("to::input::number",i_no);
 	new_connection.replace("to::input::type",intypes[i_no]);
 	connections.append("connections",new_connection);
-	make_connection(connections.getsize("connections")-1);
+	make_connection(connections.getsize("connections")-1,0);
 	new_connection.clear();
 	
 //	new_connection.parse('{}');
@@ -2575,7 +2576,7 @@ function insert_block_in_connection(newblockname,newblock){
 	new_connection.replace("from::output::type",outtypes[o_no]);
 	new_connection.replace("to",oldconn.get("to"));
 	connections.append("connections",new_connection);
-	make_connection(connections.getsize("connections")-1);
+	make_connection(connections.getsize("connections")-1,0);
 	new_connection.clear();
 	//click_clear(0,0);
 	//outlet(8,"bang");
@@ -2656,7 +2657,7 @@ function swap_block(block_name){
 		if(h>0){
 			for(i=0;i<h;i++){
 				connections.replace("connections["+handful_n[i]+"]",handful[i]);
-				make_connection(handful_n[i]);	
+				make_connection(handful_n[i],0);	
 			}
 		}
 	}
@@ -2798,7 +2799,7 @@ function build_mod_sum_action_list(){
 	//var ttt=new Date().getTime();
 	if(loading.progress>0) return 0;
 	messnamed("modulation_processor", "pause",1);
-	//post("\nBuilding new mod sum action list");
+	post("\nBuilding new mod sum action list");
 //this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
 // buffer has 4 channels. 
 // ch1 is the index of the destination, this repeats for all rows relating to this particular param/etc. it changing is the sign to sum up, dump the number, move on.

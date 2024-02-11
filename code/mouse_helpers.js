@@ -273,7 +273,7 @@ function blocks_paste(outside_connections){
 					}else{
 						connections.append("connections",new_connection);
 						var co = connections.getsize("connections")-1;
-						make_connection(co);
+						make_connection(co,0);
 						new_connection.clear();		
 						selected.wire[co]=1;
 						//draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
@@ -1541,7 +1541,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 			if(connections.contains("connections["+t+"]::from") && (connections.get("connections["+t+"]::from::number") == block)){
 				// then mute it or unmute it (if the connection itself is not muted)
 				if((connections.get("connections["+t+"]::conversion::mute")==0) && (connections.get("connections["+t+"]::from::output::type") == "hardware")){
-					make_connection(t);
+					make_connection(t,1);
 				}
 			}
 		}
@@ -1612,7 +1612,7 @@ function connection_edit(parameter,value){
 		var pm=parameter.split("[");
 		pm=pm[1].split("]");
 		//pm[0] holds the connection number
-		make_connection(pm[0]);
+		make_connection(pm[0],1);
 		if(pn[2]=="mute"){
 			draw_wire(pm[0]);
 			redraw_flag.flag |= 8;

@@ -712,7 +712,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 													connections.replace("connections["+i+"]",potential_connection);
 													wires_potential_connection = i;
 													w=0;
-													//make_connection(i);
 													i=csize;
 												}
 											}

@@ -530,7 +530,7 @@ function import_song(){
 				new_connection.replace("to::number",loading.mapping[new_connection.get("to::number")]);
 				connections.append("connections",new_connection);
 				var co = connections.getsize("connections")-1;
-				make_connection(co);
+				make_connection(co,0);
 				new_connection.clear();		
 				draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
 			}
