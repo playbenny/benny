@@ -312,10 +312,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								p2= p.split("::").pop();
 								if(p2=="scale"){
 									connection_edit(p,1);
-								}else if((p2=="offset")||(p2=="offset2")){
-									connection_edit(p,0.5);
+								}else if(p2=="offset"){
+									connection_edit(p,sidebar.connection.defaults.offset);
+								}else if(p2=="offset2"){
+									connection_edit(p,sidebar.connection.defaults.offset2);
+								}else if(p2=="vector"){
+									connection_edit(p,sidebar.connection.defaults.vector);
 								}else{
-									//post("\nzero",p2);
 									connection_edit(p,0);
 								}
 
