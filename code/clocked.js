@@ -105,7 +105,7 @@ function frameclock(){
 		bangflag=1;
 	}else{
 		if(redraw_flag.flag & 1){
-			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "settings")){
+			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "settings")||(sidebar.mode == "wire")){
 				var vch = view_changed;
 				view_changed = false;
 				for(i=0;i<redraw_flag.targets.length;i++){
@@ -241,14 +241,10 @@ function check_changed_queue(){
 		t-=1;
 		b = Math.floor(t/MAX_PARAMETERS);
 		p = Math.floor(t - b*MAX_PARAMETERS);
-		if(b==sidebar.selected){ //removed this next check because paramslider_details gets wiped outside these modes
-//			if((sidebar.mode == "block")||(sidebar.mode == "settings")||(sidebar.mode == "add_state")){
-				if(!is_empty(paramslider_details[i])){
-//					post("\ntesting",i,b,p);
-//					post("flagging",p,"as changed");
-					redraw_flag.targets[p] |= 1;
-					redraw_flag.flag |= 1;														
-//				}
+		if(b==sidebar.selected){
+			if(!is_empty(paramslider_details[p /*i*/])){
+				redraw_flag.targets[p] |= 1;
+				redraw_flag.flag |= 1;														
 			}
 		}
 		if(displaymode == "panels"){
@@ -257,7 +253,6 @@ function check_changed_queue(){
 				redraw_flag.flag |= 16;
 			}
 		}
-//		post("block",b,"param",p,"changed\n");
 		changed_queue_pointer += 1;
 		if(changed_queue_pointer > 1023){
 			changed_queue_pointer = 0;
@@ -266,7 +261,6 @@ function check_changed_queue(){
 			t = changed_queue.peek(0,changed_queue_pointer);
 		}
 	}
-//	if(i>0) post("read ",i,"changed queue events\n");
 }
 
 

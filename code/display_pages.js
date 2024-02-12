@@ -4680,10 +4680,8 @@ function draw_sidebar(){
 			click_zone(scope_zoom,null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,2);
 			y_offset += fontheight*2.1;
 			if(sidebar.mode != sidebar.lastmode){
-				if(sidebar.lastmode == "none") center_view(1);
+				center_view(1);
 				clear_sidebar_paramslider_details();
-				//sidebar.connection.show_from_outputs = 0;
-				//sidebar.connection.show_to_inputs = 0;
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
 				remove_midi_scope();
@@ -5013,7 +5011,7 @@ function draw_sidebar(){
 					mouse_index++;
 					lcd_main.message("frgb",type_colour_dark);
 					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*9);
-					lcd_main.message("write","offset",offset.toPrecision(2));
+					lcd_main.message("write","offset",(2*offset-1).toPrecision(2));
 					y_offset+=11*fo1;
 				}
 			}else if((connections.get("connections["+i+"]::from::output::type")=="midi")||(connections.get("connections["+i+"]::from::output::type")=="block")){
@@ -5118,12 +5116,6 @@ function draw_sidebar(){
 			section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
 			section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
 
-
-			//output scope here
-			if(t_type!="audio"){
-				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
-				y_offset += fo1*21;
-			}
 
 			//TO BLOCK, INPUT, VOICE labels/menus
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-1.5*fontheight, fontheight*0.6+y_offset,section_colour_darkest );
@@ -5234,11 +5226,80 @@ function draw_sidebar(){
 			}
 			y_offset+= fo1*7;			
 		
+
+			//output scope here
+			paramslider_details=[];
+			if(t_type=="audio"){
+				//no audio output scopes because i don't have A2D converters on the outputs of the matrix
+			}else if(t_type=="midi"){
+				//tell the routing patch to monitor this connection:
+
+				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
+				y_offset += fo1*21;
+			}else if(t_type=="parameters"){
+				var params=blocktypes.get(t_name+"::parameters");
+				curp = t_i_no;
+				var p_values = params[curp].get("values");
+				var wrap = params[curp].get("wrap");
+				var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
+				var namelabely=y_offset+fontheight*(0.4+2);
+				var namearr = params[curp].get("name").split("_");
+				var flags = (p_values[0]=="bi");
+				var opvf=0;//do i need to fetch this here or is it never relevant?
+				if(opvf){
+					flags |= 2;
+				}else if(params[curp].contains("nopervoice")){
+					flags &= 61;
+					flags |= 4; //removes 2 flag, adds 4 flag
+				}
+		
+				if(p_type=="button"){
+					paramslider_details[curp]=null;
+					var statecount = (p_values.length - 1) / 2;
+					var pv2 = Math.floor(pv * statecount) * 2  + 1;
+					draw_button(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index, p_values[pv2]);
+					mouse_click_actions[mouse_index] = send_button_message;
+					mouse_click_parameters[mouse_index] = block;
+					mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
+					if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+						//but it's so much easier just to call this fn
+						buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
+					}
+					mouse_index++;
+				}else{
+					var click_to_set = 0;
+					if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
+					if(h_slider==0){
+						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,2/*height*/,0,click_to_set];
+					}else{
+						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour[0],section_colour[1],section_colour[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,2,0,click_to_set];
+					}
+					parameter_v_slider(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,click_to_set);
+					//namelabely = labelled_parameter_v_slider(curp);
+					//paramslider_details[curp][17]=namelabely;
+					//redraw_flag.targets[curp] = 1;
+					sidebar.selected = t_number;
+					//paramslider_details is used for quick redraw of a single slider. index is curp
+					//ie is mouse_click_parameters[index][0]
+					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+					mouse_click_parameters[mouse_index] = [curp, t_number];
+					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
+						mouse_click_values[mouse_index] = curp+1;
+					}else{
+						mouse_click_values[mouse_index] = "";
+					}								
+					mouse_index++;
+				}
+				y_offset=namelabely;
+			}
+
+
 			//i = selected.wire.indexOf(1);
-			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? menudark:menudarkest );
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
 			click_zone(insert_menu_button, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 			lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
-			lcd_main.message("frgb",menucolour);
+			lcd_main.message("frgb",type_colour);
 			lcd_main.message("write", "insert block into connection");
 
 			y_offset += 1.1* fontheight;
@@ -5247,13 +5308,12 @@ function draw_sidebar(){
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,120,0,0 );
 				lcd_main.message("frgb" , 255,50,50);
 			}else{
-				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? menudark:menudarkest );
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
 				lcd_main.message("frgb" , 255,0,0);
 			}
 			click_zone(remove_connection_btn, i, mouse_index, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 			lcd_main.message("moveto" , sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
 			lcd_main.message("write", "delete connection");
-			lcd_main.message("frgb", menucolour );
 			y_offset += 1.1* fontheight;
 		}else if((selected.block_count + selected.wire_count) > 1){ 
 			if(selected.wire_count>1){

@@ -393,7 +393,12 @@ var sidebar = {
 	panel : 0,
 	connection : {
 		show_from_outputs : 0,
-		show_to_inputs : 0
+		show_to_inputs : 0,
+		defaults : {
+			offset : 0.5,
+			offset2 : 0.5,
+			vector : 0
+		}
 	}
 }
 
