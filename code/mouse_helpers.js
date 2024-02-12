@@ -2189,7 +2189,50 @@ function cut_selection(){
 }
 function file_menu_arrows(dir){
 	currentsong+=dir;
-	post("\narrows,",currentsong);
 	currentsong = (currentsong + songlist.length) % (songlist.length);
 	redraw_flag.flag |= 2;
+}
+
+
+function conn_show_from_outputs_list(parameter,value) {
+	if(value==-1){
+		sidebar.connection.show_from_outputs = 1 - sidebar.connection.show_from_outputs;
+	}else{
+		sidebar.connection.show_from_outputs = value;
+	}
+}
+
+function conn_show_to_inputs_list(parameter,value) {
+	if(value==-1)value = 1 - sidebar.connection.show_to_inputs;
+	sidebar.connection.show_to_inputs = value;
+}
+
+function conn_set_from_output(c,value){
+	var ty = value[0];
+	var o = value[1];
+	new_connection = connections.get("connections["+c+"]");
+	new_connection.replace("from::output::number",o);
+	new_connection.replace("from::output::type",ty);
+	remove_connection(c);
+	connections.replace("connections["+c+"]",new_connection);
+	make_connection(c,0);
+	selected.wire[c]=1;
+	wire_ends[c][0]=-0.96969696;
+	sidebar.lastmode="recalculate";
+	redraw_flag.flag |= 4;
+}
+
+function conn_set_to_input(c,value){
+	var ty = value[0];
+	var o = value[1];
+	new_connection = connections.get("connections["+c+"]");
+	new_connection.replace("to::input::number",o);
+	new_connection.replace("to::input::type",ty);
+	remove_connection(c);
+	connections.replace("connections["+c+"]",new_connection);
+	make_connection(c,0);
+	selected.wire[c]=1;
+	wire_ends[c][0]=-0.96969696;
+	sidebar.lastmode="recalculate";
+	redraw_flag.flag |= 4;
 }

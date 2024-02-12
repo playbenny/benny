@@ -396,7 +396,11 @@ var sidebar = {
 		fg: [255,255,255],
 		bg: [10,10,10]
 	},
-	panel : 0
+	panel : 0,
+	connection : {
+		show_from_outputs : 0,
+		show_to_inputs : 0
+	}
 }
 
 var mutemap = new Buffer("mutemap");
