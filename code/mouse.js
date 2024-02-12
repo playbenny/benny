@@ -656,7 +656,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									messnamed("camera_control","position",  camera_position);
 									messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
-							}else if(usermouse.ids[0] == "block"){
+							}else if((usermouse.ids[0] == "block")||(usermouse.ids[0] == "meter")){
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
 								var t = 0;
 								var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
@@ -714,6 +714,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											temptovoice = temptovoice / blocks.get("blocks["+usermouse.hover[1]+"]::subvoices");
 										}
 										potential_connection.replace("to::voice",temptovoice);
+										var tempfromvoice = usermouse.ids[2];
+										if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices")){
+											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
+											tempfromvoice = tempfromvoice / blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
+										}
+										potential_connection.replace("from::voice",tempfromvoice);
 										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
 										if(wires_potential_connection==-1){
 											var csize = connections.getsize("connections");
