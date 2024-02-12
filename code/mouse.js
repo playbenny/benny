@@ -240,7 +240,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			} else if(usermouse.clicked2d != -1){
 				if(usermouse.last.got_i == usermouse.got_i){
-					//post("2d release",usermouse.last.got_i,usermouse.last.got_t);
+					post("2d release",usermouse.last.got_i,usermouse.last.got_t);
 					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)||(usermouse.last.got_t == 6)){ // it's a button (1) or passthrough(7)
 						var f = mouse_click_actions[usermouse.last.got_i];
 						if(usermouse.last.got_t == 6){
@@ -305,6 +305,21 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								static_mod_adjust(pb,pv);
 								redraw_flag.flag=2;
 							} 
+						}else if(mouse_click_actions[usermouse.got_i]==connection_edit){
+							if(alt == 1){
+								var p = mouse_click_parameters[usermouse.last.got_i];
+								var v = mouse_click_values[usermouse.last.got_i];
+								p2= p.split("::").pop();
+								if(p2=="scale"){
+									connection_edit(p,1);
+								}else if((p2=="offset")||(p2=="offset2")){
+									connection_edit(p,0.5);
+								}else{
+									//post("\nzero",p2);
+									connection_edit(p,0);
+								}
+
+							}
 						}
 					}
 				}else if(mouse_click_actions[usermouse.last.got_i]==whole_state_xfade){ //end of state xfade

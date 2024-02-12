@@ -4255,7 +4255,7 @@ function draw_sidebar(){
 										var offset = connections.get("connections["+i+"]::conversion::offset");
 										var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 										var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
-										var col=config.get("palette::connections::"+connnections.get("connections["+i+"]::to::input::type"));
+										var col=config.get("palette::connections::"+connections.get("connections["+i+"]::to::input::type"));
 										
 										if(mute){
 											lcd_main.message("paintrect",sidebar.x2-fontheight, y_offset, sidebar.x2, fontheight+y_offset,128,128,128);

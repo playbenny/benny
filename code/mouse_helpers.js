@@ -2208,6 +2208,7 @@ function conn_set_from_output(c,value){
 	connections.replace("connections["+c+"]",new_connection);
 	make_connection(c,0);
 	selected.wire[c]=1;
+	sidebar.connection.show_from_outputs = 0;
 	wire_ends[c][0]=-0.96969696;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
@@ -2223,6 +2224,7 @@ function conn_set_to_input(c,value){
 	connections.replace("connections["+c+"]",new_connection);
 	make_connection(c,0);
 	selected.wire[c]=1;
+	sidebar.connection.show_to_inputs = 0;
 	wire_ends[c][0]=-0.96969696;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
