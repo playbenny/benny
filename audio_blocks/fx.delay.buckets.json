@@ -44,7 +44,7 @@
 			{
 				"name" : "rate_",
 				"type" : "float4",
-				"values" : ["uni", 0.001, 4, "exp"],
+				"values" : ["uni", 0.001, 8, "exp"],
 				"error_scale" : 0.1,
 				"wrap" : 0,
 				"default" : 0.0874
