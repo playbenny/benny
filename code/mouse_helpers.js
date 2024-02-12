@@ -621,15 +621,6 @@ function panel_edit_button(parameter,value){
 	}
 	redraw_flag.flag=4;
 }
-function connection_menu_scroll(parameter,value){
-	if(parameter=="from"){
-		connection_menu.replace("from::viewoffset",Math.max(0,connection_menu.get("from::viewoffset")+value));
-		redraw_flag.flag=4;
-	}else if(parameter=="to"){
-		connection_menu.replace("to::viewoffset",Math.max(0,connection_menu.get("to::viewoffset")+value));
-		redraw_flag.flag=4;		
-	}
-}
 
 function select_folder(parameter,value){
 	if(fullscreen){

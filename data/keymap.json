@@ -91,9 +91,6 @@
     "block_menu" : {
         "-3" : ["ESC", "center_view"]
     },
-    "connection_menu" : {
-        "-4" : ["enter", "create_connection_button"]
-    },
     "sidebar" : {
         "file_menu" : {
             "-4" : ["enter", "load_song"],

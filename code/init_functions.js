@@ -157,12 +157,6 @@ function load_config_colours(){
 	state_fade.lastcolour = menudark;
 	dimm=bg_dark_ratio;
 	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
-	matrixcolour = config.get("palette::connections::matrix");
-	hardwarecolour = config.get("palette::connections::hardware");
-	audiocolour = config.get("palette::connections::audio");
-	midicolour = config.get("palette::connections::midi");
-	parameterscolour = config.get("palette::connections::parameters");
-	blockcontrolcolour = config.get("palette::connections::block");
 	backgroundcolour = config.get("palette::background");
 	backgroundcolour_blocks = config.get("palette::background_blocks");
 	backgroundcolour_block_menu = config.get("palette::background_block_menu");

@@ -580,7 +580,7 @@ function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 }
 
 function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
-	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 4);
 	var lx = x1 + 8 + (x2-x1-16)*value_x;
 	var ly = y1 + 8 + (y2-y1-16)*(1-value_y);
@@ -588,8 +588,9 @@ function draw_2d_slider(x1,y1,x2,y2,r,g,b,index,value_x,value_y){
 }
 
 function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
-	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
-	lcd_main.message("frameoval",x1,y1,x2,y2,r,g,b);
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
+	lcd_main.message("frgb",r,g,b);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 2);
 	lcd_main.message("moveto",((x1+x2)/2),((y1+y2)/2));
 	lcd_main.message("lineto",(((x1+x2)/2)+Math.sin(6.28*angle)*(x2-x1-16)/2),(((y1+y2)/2)-Math.cos(6.28*angle)*(y2-y1-16)/2));

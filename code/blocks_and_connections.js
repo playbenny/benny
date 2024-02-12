@@ -627,30 +627,6 @@ function send_all_voice_details(){
 
 }
 
-function create_connection_button(){
-	remove_automaps(); //they just get reassigned on draw sidebar, but this prevents keyb automap overriding a new keyboard - block mapping
-	var csize = connections.getsize("connections");
-	var w=1;
-	for(var i=1;i<csize;i++){ //look for an empty slot
-		if(!connections.contains("connections["+i+"]::to::number")){
-			post("\nfound an empty slot to use");
-			connections.replace("connections["+i+"]",new_connection);
-			w=0;
-			make_connection(i,0);
-			i=csize;
-		}
-	}
-	if(w==1){
-		connections.append("connections",new_connection);
-		make_connection(connections.getsize("connections")-1,0);
-	}
-	new_connection.clear();
-	//click_clear(0,0);
-	//outlet(8,"bang");
-	set_display_mode("blocks");
-	redraw_flag.flag |= 4;
-}
-
 function add_to_midi_routemap(m_index,targetvalue){ 
 	//adds it if it needs to, returns index it is (now, or already) at
 
@@ -1302,7 +1278,7 @@ function remove_connection(connection_number){
 	rebuild_action_list = 1;
 }
 
-function remove_potential_wire(){
+function remove_potential_wire(gl_objects_only){
 	if(wires_potential_connection != -1){
 		if(Array.isArray(wires[wires_potential_connection])){
 			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
@@ -1310,12 +1286,14 @@ function remove_potential_wire(){
 				wires[wires_potential_connection].pop();
 			}
 		}
-		post("\nremoving",wires_potential_connection);
-		var empt=new Dict;  // wipe this one from the dictionary
-		connections.set("connections["+wires_potential_connection+"]", empt);
-		wire_ends[wires_potential_connection][3] = -99.94;
-		wire_ends[wires_potential_connection][1] = -99.94;
-		wires_potential_connection = -1;
+		if(gl_objects_only!=1){
+			post("\nremoving",wires_potential_connection);
+			var empt=new Dict;  // wipe this one from the dictionary
+			connections.set("connections["+wires_potential_connection+"]", empt);
+			wire_ends[wires_potential_connection][3] = -99.94;
+			wire_ends[wires_potential_connection][1] = -99.94;
+			wires_potential_connection = -1;
+		}
 	}										
 }
 
@@ -1842,25 +1820,21 @@ function make_connection(cno,existing){
 
 function build_new_connection_menu(from, to, fromv,tov){
 	// builds the connection menu and primes the new_connection one (that is eventually copied into 'connections')
-					
+	//remove_potential_wire();
+
+	sidebar.connection.show_from_outputs = 1;
+	sidebar.connection.show_to_inputs = 1;
+
 	var fromname = blocks.get('blocks['+from+']::name');
 	var toname = blocks.get('blocks['+to+']::name');
 	var totype = blocks.get('blocks['+to+']::type');
 	if(toname == null) return 0;
-	connection_menu.parse('{ }');
- 	connection_menu.replace("from::number",from);
-	connection_menu.replace("from::name", fromname);
-	connection_menu.replace("to::number", to);
-	connection_menu.replace("to::name" , toname);
-	connection_menu.replace("to::viewoffset", 0);
-	connection_menu.replace("from::viewoffset" , 0);
-	connection_menu.replace("from::voices", blocks.get('blocks['+from+']::poly::voices'));
-	connection_menu.replace("to::voices", blocks.get('blocks['+to+']::poly::voices'));
-	
+
 	new_connection.parse('{ }');
  	new_connection.replace("from::number",from);
 	new_connection.replace("to::number", to);
-	
+	new_connection.replace("from::output::type", "potential");
+	new_connection.replace("to::input::type","potential");
 
 	new_connection.replace("conversion::mute" , 0);
 	new_connection.replace("conversion::scale", 1);
@@ -1872,8 +1846,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var d = new Dict;
 	d = blocktypes.get(fromname);
 	if(d.contains("connections::out::hardware")){
-		connection_menu.replace("from::connections::hardware",d.get("connections::out::hardware"));
-		if(d.contains("connections::out::matrix_channels")) connection_menu.replace("from::connections::matrix",d.get("connections::out::hardware"));
 		if(!default_assigned){
 			default_assigned=2;
 			new_connection.replace("from::output::number",0);
@@ -1881,7 +1853,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}
 	}
 	if(d.contains("connections::out::audio")){
-		connection_menu.replace("from::connections::audio",d.get("connections::out::audio"));
 		if(!default_assigned){
 			default_assigned=2;
 			new_connection.replace("from::output::number",0);
@@ -1889,7 +1860,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}
 	}
 	if(d.contains("connections::out::midi")){
-		connection_menu.replace("from::connections::midi",d.get("connections::out::midi"));
 		if(!default_assigned){
 			default_assigned=1;
 			new_connection.replace("from::output::number",0);
@@ -1908,13 +1878,9 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if((new_connection.get("from::output::type")!="audio")&&(blocktypes.contains(fromname+"::subvoices"))) fromv /= blocktypes.get(fromname+"::subvoices");
 		new_connection.replace("from::voice", fromv + 1 );
 	}
-	//post("\n\n\nNEWCONN def_ass=",default_assigned);
 	var r_default_assigned=0;
 	d = blocktypes.get(toname);
-	post("toname",toname);
 	if(d.contains("connections::in::hardware")){
-		connection_menu.replace("to::connections::hardware",d.get("connections::in::hardware"));
-		if(d.contains("connections::in::matrix_channels")) connection_menu.replace("to::connections::matrix",d.get("connections::in::hardware"));
 		if(!r_default_assigned){
 			if(default_assigned==2){
 				r_default_assigned=1;
@@ -1928,12 +1894,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(default_assigned==1){
 				new_connection.replace("conversion::offset", 0.5);
-				//r_default_assigned=1;
 			}
 		}
 	}
 	if(d.contains("connections::in::audio")){
-		connection_menu.replace("to::connections::audio",d.get("connections::in::audio"));
 		if(!r_default_assigned){
 			if(default_assigned==2){
 				r_default_assigned=1;
@@ -1947,12 +1911,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(default_assigned==1){
 				new_connection.replace("conversion::offset", 0.5);
-				//r_default_assigned=1;
 			}
 		}
 	}
 	if(d.contains("connections::in::midi")){
-		connection_menu.replace("to::connections::midi",d.get("connections::in::midi"));
 		if((!r_default_assigned)&&(default_assigned==1)){
 			r_default_assigned=1;
 			if(d.contains("connections::in::default")){
@@ -1965,7 +1927,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("conversion::offset2", 0.5);
 		}
 	}
-	//post("\nNEWCONN r_def_ass=",r_default_assigned);
 	notall = 0;
 	if(blocktypes.contains(toname+"::connections::in::dontdefaultall")) notall = blocktypes.get(toname+"::connections::in::dontdefaultall");
 	if(tov == -1){
@@ -1981,23 +1942,22 @@ function build_new_connection_menu(from, to, fromv,tov){
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
 		new_connection.replace("conversion::force_unity" , 1);
 	} 
-	
-	if(d.contains("parameters")){
-		var i = 0;	
-		var params = [];	
-		while(d.contains('parameters['+i+']::name')){
-			if(d.contains('parameters['+i+']::nomap')){
-				params[i] = "nomap";
-			}else{
-				params[i] = d.get("parameters["+i+"]::name");
-			}
-			i++;
-		}
-		connection_menu.replace("to::connections::parameters", params);
-	}
-	if(totype!="hardware") connection_menu.replace("to::connections::block", ["mute toggle", "mute"]);
-}
 
+	if(wires_potential_connection>-1){
+		connections.replace("connections["+wires_potential_connection+"]",new_connection);
+		//remove_potential_wire(1);
+		make_connection(wires_potential_connection,0);
+		new_connection.clear();
+		sidebar_select_connection(wires_potential_connection);
+		if(sidebar.mode=="none")set_sidebar_mode("connection");
+		wires_potential_connection = -1;
+	}else{
+		post("\nERROR how have we got here without a potential connection?",fromname,toname);
+	}
+
+	redraw_flag.flag|=4;
+	//set_sidebar_mode("connection");
+}
 
 function remove_block(block){
 	//hide the cubes and meters first, to give the illusion it all happens fast

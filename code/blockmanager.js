@@ -289,12 +289,6 @@ var menucolour;
 var menudark;
 var menudarkest;
 var bg_dark_ratio = 0.2;
-var matrixcolour;
-var hardwarecolour;
-var audiocolour;
-var midicolour;
-var parameterscolour;
-var blockcontrolcolour;
 var fontheight,fontsmall;
 var fo1;
 var backgroundcolour;
@@ -454,9 +448,6 @@ var new_connection = new Dict;
 new_connection.name = "new_connection";
 var potential_connection = new Dict;
 potential_connection.name = "potential_connection";
-
-var connection_menu = new Dict;
-connection_menu.name = "connection_menu";
 
 var states = new Dict;
 states.name = "states";

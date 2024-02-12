@@ -457,10 +457,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									post("\nERROR hover was -1\n");
 								}else{
 									post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
-									remove_potential_wire();
 									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									usermouse.clicked3d=-1;
-									set_display_mode("connection_menu");
 								}
 							}else{ // ############## END OF DRAG MOVE BLOCKS ################
 								// MOVE BLOCK: - stores the dragged pos in the dict
@@ -485,9 +483,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
-									remove_potential_wire();
 									build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
-									set_display_mode("connection_menu");
 								}else{ // ################### A BUNCH OF MUNDANE TOGGLING SELECtiON - you released on a thing, no drag:
 									mouse_released_on_a_thing_no_drag();
 									usermouse.ids=['done',-1,-1];
@@ -695,7 +691,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(drawwire == 1){
 										potential_connection.replace("from::number",usermouse.ids[1]);
 										potential_connection.replace("to::number",usermouse.hover[1]);
-										potential_connection.replace("to::type","potential");
+										potential_connection.replace("to::input::type","potential");
+										potential_connection.replace("from::output::type","potential");
 										var temptovoice = usermouse.hover[2];
 										if(blocks.contains("blocks["+usermouse.hover[1]+"]::subvoices")){
 											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
@@ -886,14 +883,6 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		}else if(displaymode=="block_menu"){
 			menu_camera_scroll = Math.max(-3,Math.min(menu_length+3,menu_camera_scroll-scroll));
 			messnamed("camera_control","position", 2 , -93, menu_camera_scroll);
-		}else if(displaymode=="connection_menu"){
-			if(x<mainwindow_width/2){
-				connection_menu.replace("from::viewoffset",Math.max(0,connection_menu.get("from::viewoffset")+2*(scroll<0)-1));
-				redraw_flag.flag=4;
-			}else{
-				connection_menu.replace("to::viewoffset",Math.max(0,connection_menu.get("to::viewoffset")+2*(scroll<0)-1));
-				redraw_flag.flag=4;
-			}
 		}
 	}else if((d>=2) && (d<=4)){
 		var f = mouse_click_actions[b];
@@ -922,14 +911,6 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		var p = mouse_click_parameters[b];
 		var v = mouse_click_values[b];
 		f(p,scroll);
-	}else if(displaymode=="connection_menu"){
-		if(x<mainwindow_width/3){
-			connection_menu.replace("from::viewoffset",Math.max(0,connection_menu.get("from::viewoffset")+2*(scroll<0)-1));
-			redraw_flag.flag=4;
-		}else{
-			connection_menu.replace("to::viewoffset",Math.max(0,connection_menu.get("to::viewoffset")+2*(scroll<0)-1));
-			redraw_flag.flag=4;
-		}
 	}else if((sidebar.mode!='none')&&(x>sidebar.x)){
 		scroll_sidebar(scroll,"rel");
 		usermouse.sidebar_scrolling = true;
