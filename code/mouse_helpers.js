@@ -1741,7 +1741,8 @@ function flock_click(parameter,value){
 			post("didn't assign because all axes are already assigned");
 		}
 	}else{
-		if(match==2){
+		if(match==2){ //if assigned to Z -> unassign
+		}else if((match==1)&&(fplist[2]!=-1)){ //if it was Y, but something else is Z, then unassign
 		}else if(fplist[(match+1)%3]==-1){
 			fplist[(match+1)%3]=parameter[1];
 		}else if(fplist[(match+2)%3]==-1){
