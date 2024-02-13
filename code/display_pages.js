@@ -4518,14 +4518,14 @@ function draw_sidebar(){
 			if(sidebar.connection.default_in_applied != 0){
 				sidebar.connection.show_to_inputs = 1;
 			}else if(sidebar.mode!="wire"){
-				post("\n\nfolding because",sidebar.mode);
+				//post("\n\nfolding because",sidebar.mode);
 				sidebar.connection.show_to_inputs = 0;
 			}
 			if(sidebar.connection.default_out_applied != 0){
 				sidebar.connection.show_from_outputs = 1;
 			}else if(sidebar.mode!="wire"){
 				sidebar.connection.show_from_outputs = 0;
-				post("\n\nfolding because",sidebar.mode);
+				//post("\n\nfolding because",sidebar.mode);
 			}
 			var f_o_v = connections.get("connections["+i+"]::from::voice");
 			var t_i_v = connections.get("connections["+i+"]::to::voice");
@@ -4602,10 +4602,10 @@ function draw_sidebar(){
 			
 			// FROM BLOCK, OUTPUT, VOICE labels/menus
 
-			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-1.5*fontheight, fontheight*0.6+y_offset,section_colour_darkest );
-			click_zone(select_block,0,f_number,sidebar.x, y_offset, sidebar.x2-1.6*fontheight, fontheight*0.6+y_offset,mouse_index,1);
-			lcd_main.message("paintrect", sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, y_offset+fontheight*0.6, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
-			click_zone(select_block,0,f_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
+			click_zone(select_block,0,f_number,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
+			//lcd_main.message("paintrect", sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, y_offset+fontheight*0.6, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+			//click_zone(select_block,0,f_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
 			//^^this should be the select a new from block fn
 
 			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-15*fo1, fo1*13+y_offset,section_colour_darkest );
@@ -4620,8 +4620,8 @@ function draw_sidebar(){
 			lcd_main.message("frgb" , section_colour_dark);
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
 			lcd_main.message("write", "from");
-			lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
-			lcd_main.message("write", "change");
+			//lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
+			//lcd_main.message("write", "change");
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
 			lcd_main.message("write", "output");
 			lcd_main.message("frgb", section_colour );
@@ -5163,10 +5163,10 @@ function draw_sidebar(){
 
 
 			//TO BLOCK, INPUT, VOICE labels/menus
-			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-1.5*fontheight, fontheight*0.6+y_offset,section_colour_darkest );
-			click_zone(select_block,0,t_number,sidebar.x, y_offset, sidebar.x2-fo1*15, fo1*6+y_offset,mouse_index,1);
-			lcd_main.message("paintrect", sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, y_offset+fontheight*0.6, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
-			click_zone(select_block,0,t_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
+			click_zone(select_block,0,t_number,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
+			//lcd_main.message("paintrect", sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, y_offset+fontheight*0.6, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+			//click_zone(select_block,0,t_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
 			//^^this should be the select a new to block fn
 			
 			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-15*fo1, fo1*13+y_offset,section_colour_darkest );
@@ -5185,8 +5185,8 @@ function draw_sidebar(){
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
 			lcd_main.message("write", "input");
 			
-			lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
-			lcd_main.message("write", "change");
+			//lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
+			//lcd_main.message("write", "change");
 			
 			type_colour = config.get("palette::connections::"+t_type);
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
