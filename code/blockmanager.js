@@ -394,6 +394,8 @@ var sidebar = {
 	connection : {
 		show_from_outputs : 0,
 		show_to_inputs : 0,
+		default_out_applied : 0, //ie on a new connection
+		default_in_applied : 0,
 		defaults : {
 			offset : 0.5,
 			offset2 : 0.5,

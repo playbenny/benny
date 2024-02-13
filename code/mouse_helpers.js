@@ -517,6 +517,9 @@ function connection_select(parameter,value){
 	selected.wire[value] = 1;
 	selected.wire_count = 1;
 	selected.block_count = 0;
+	post("\nCONNSEL",connections.get("connections["+value+"]::to::input::type"),connections.get("connections["+value+"]::from::output::type"));
+	if(!sidebar.connection.default_in_applied) sidebar.connection.show_to_inputs = 0;
+	if(!sidebar.connection.default_out_applied) sidebar.connection.show_from_outputs = 0;
 	set_sidebar_mode("wire");
 	redraw_flag.flag |= 8;
 }
@@ -2103,6 +2106,8 @@ function conn_show_to_inputs_list(parameter,value) {
 function conn_set_from_output(c,value){
 	var ty = value[0];
 	var o = value[1];
+	sidebar.connection.default_out_applied = 0;
+	sidebar.connection.show_from_outputs = 0;
 	new_connection = connections.get("connections["+c+"]");
 	new_connection.replace("from::output::number",o);
 	new_connection.replace("from::output::type",ty);
@@ -2110,7 +2115,6 @@ function conn_set_from_output(c,value){
 	connections.replace("connections["+c+"]",new_connection);
 	make_connection(c,0);
 	selected.wire[c]=1;
-	sidebar.connection.show_from_outputs = 0;
 	wire_ends[c][0]=-0.96969696;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
@@ -2119,6 +2123,8 @@ function conn_set_from_output(c,value){
 function conn_set_to_input(c,value){
 	var ty = value[0];
 	var o = value[1];
+	sidebar.connection.default_in_applied = 0;
+	sidebar.connection.show_to_inputs = 0;
 	new_connection = connections.get("connections["+c+"]");
 	new_connection.replace("to::input::number",o);
 	new_connection.replace("to::input::type",ty);
@@ -2126,7 +2132,6 @@ function conn_set_to_input(c,value){
 	connections.replace("connections["+c+"]",new_connection);
 	make_connection(c,0);
 	selected.wire[c]=1;
-	sidebar.connection.show_to_inputs = 0;
 	wire_ends[c][0]=-0.96969696;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;

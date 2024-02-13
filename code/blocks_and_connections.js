@@ -1827,7 +1827,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 
 	var fromname = blocks.get('blocks['+from+']::name');
 	var toname = blocks.get('blocks['+to+']::name');
-	var totype = blocks.get('blocks['+to+']::type');
+	//var totype = blocks.get('blocks['+to+']::type');
 	if(toname == null) return 0;
 
 	new_connection.parse('{ }');
@@ -1841,27 +1841,28 @@ function build_new_connection_menu(from, to, fromv,tov){
 	new_connection.replace("conversion::vector", 0);	
 	new_connection.replace("conversion::offset", 0);	
 	
-	var default_assigned=0;
+	sidebar.connection.default_out_applied = 0;
+	sidebar.connection.default_in_applied = 0;
 	
 	var d = new Dict;
 	d = blocktypes.get(fromname);
 	if(d.contains("connections::out::hardware")){
-		if(!default_assigned){
-			default_assigned=2;
+		if(!sidebar.connection.default_out_applied){
+			sidebar.connection.default_out_applied=2;
 			new_connection.replace("from::output::number",0);
 			new_connection.replace("from::output::type","hardware");
 		}
 	}
 	if(d.contains("connections::out::audio")){
-		if(!default_assigned){
-			default_assigned=2;
+		if(!sidebar.connection.default_out_applied){
+			sidebar.connection.default_out_applied=2;
 			new_connection.replace("from::output::number",0);
 			new_connection.replace("from::output::type","audio");
 		}
 	}
 	if(d.contains("connections::out::midi")){
-		if(!default_assigned){
-			default_assigned=1;
+		if(!sidebar.connection.default_out_applied){
+			sidebar.connection.default_out_applied=1;
 			new_connection.replace("from::output::number",0);
 			new_connection.replace("from::output::type","midi");
 		}
@@ -1878,12 +1879,12 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if((new_connection.get("from::output::type")!="audio")&&(blocktypes.contains(fromname+"::subvoices"))) fromv /= blocktypes.get(fromname+"::subvoices");
 		new_connection.replace("from::voice", fromv + 1 );
 	}
-	var r_default_assigned=0;
+	sidebar.connection.default_in_applied = 0;
 	d = blocktypes.get(toname);
 	if(d.contains("connections::in::hardware")){
-		if(!r_default_assigned){
-			if(default_assigned==2){
-				r_default_assigned=1;
+		if(!sidebar.connection.default_in_applied){
+			if(sidebar.connection.default_applied==2){
+				sidebar.connection.default_in_applied=1;
 				if(d.contains("connections::in::default")){
 					new_connection.replace("to::input::number",d.get("connections::in::default"));
 				}else{
@@ -1892,15 +1893,15 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","hardware");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}else if(default_assigned==1){
+			}else if(sidebar.connection.default_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
 			}
 		}
 	}
 	if(d.contains("connections::in::audio")){
-		if(!r_default_assigned){
-			if(default_assigned==2){
-				r_default_assigned=1;
+		if(!sidebar.connection.default_in_applied){
+			if(sidebar.connection.default_applied==2){
+				sidebar.connection.default_in_applied=1;
 				if(d.contains("connections::in::default")){
 					new_connection.replace("to::input::number",d.get("connections::in::default"));
 				}else{
@@ -1909,14 +1910,14 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","audio");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}else if(default_assigned==1){
+			}else if(sidebar.connection.default_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
 			}
 		}
 	}
 	if(d.contains("connections::in::midi")){
-		if((!r_default_assigned)&&(default_assigned==1)){
-			r_default_assigned=1;
+		if((!sidebar.connection.default_in_applied)&&(sidebar.connection.default_applied==1)){
+			sidebar.connection.default_in_applied = 1;
 			if(d.contains("connections::in::default")){
 				new_connection.replace("to::input::number",d.get("connections::in::default"));
 			}else{
