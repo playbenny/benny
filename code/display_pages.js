@@ -1896,6 +1896,11 @@ function draw_sidebar(){
 		view_changed = true;
 	}
 	if((sidebar.scopes.midi_routing.number!=-1)){
+		if(!selected.wire[sidebar.scopes.midi_routing.number]){
+			var tz=[];
+			for(var i=0;i<128;i++) tz.push(0);
+			midi_scopes_buffer.poke(1,(sidebar.scopes.midi_routing.voice*128)*128,tz);			
+		}
 		remove_routing(0);
 		sidebar.scopes.midi_routing.number=-1;
 	}

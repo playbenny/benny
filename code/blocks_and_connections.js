@@ -1886,7 +1886,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	d = blocktypes.get(toname);
 	if(d.contains("connections::in::hardware")){
 		if(!sidebar.connection.default_in_applied){
-			if(sidebar.connection.default_applied==2){
+			if(sidebar.connection.default_in_applied==2){
 				sidebar.connection.default_in_applied=1;
 				if(d.contains("connections::in::default")){
 					new_connection.replace("to::input::number",d.get("connections::in::default"));
@@ -1896,14 +1896,14 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","hardware");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}else if(sidebar.connection.default_applied==1){
+			}else if(sidebar.connection.default_in_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
 			}
 		}
 	}
 	if(d.contains("connections::in::audio")){
 		if(!sidebar.connection.default_in_applied){
-			if(sidebar.connection.default_applied==2){
+			if(sidebar.connection.default_in_applied==2){
 				sidebar.connection.default_in_applied=1;
 				if(d.contains("connections::in::default")){
 					new_connection.replace("to::input::number",d.get("connections::in::default"));
@@ -1913,13 +1913,13 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","audio");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}else if(sidebar.connection.default_applied==1){
+			}else if(sidebar.connection.default_in_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
 			}
 		}
 	}
 	if(d.contains("connections::in::midi")){
-		if((!sidebar.connection.default_in_applied)&&(sidebar.connection.default_applied==1)){
+		if((!sidebar.connection.default_in_applied)&&(sidebar.connection.default_out_applied==1)){
 			sidebar.connection.default_in_applied = 1;
 			if(d.contains("connections::in::default")){
 				new_connection.replace("to::input::number",d.get("connections::in::default"));
