@@ -6089,6 +6089,66 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-60",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "int" ],
+									"patching_rect" : [ 434.0, 374.0, 35.0, 22.0 ],
+									"text" : "i 298"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-25",
+									"maxclass" : "newobj",
+									"numinlets" : 5,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 817.0, 501.0, 191.0, 22.0 ],
+									"text" : "expr $i1 + $i2 + $i2*$i3 + $i4 + $i5"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-24",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 397.0, 406.0, 63.0, 22.0 ],
+									"text" : "prepend 0"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-17",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 2,
+									"outlettype" : [ "", "bang" ],
+									"patching_rect" : [ 397.0, 374.0, 29.5, 22.0 ],
+									"text" : "t l b"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-16",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 2,
+									"outlettype" : [ "", "" ],
+									"patching_rect" : [ 361.0, 342.0, 55.0, 22.0 ],
+									"text" : "zl slice 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-141",
 									"maxclass" : "button",
 									"numinlets" : 1,
@@ -6649,14 +6709,14 @@
 									"id" : "obj-7",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
-									"numoutlets" : 6,
-									"outlettype" : [ "", "", "", "", "", "" ],
-									"patching_rect" : [ 15.0, 470.6875, 797.0, 22.0 ],
+									"numoutlets" : 9,
+									"outlettype" : [ "", "", "", "", "", "", "", "", "" ],
+									"patching_rect" : [ 15.0, 470.6875, 1189.0, 22.0 ],
 									"saved_object_attributes" : 									{
-										"legacy" : 1
+										"legacy" : 0
 									}
 ,
-									"text" : "dict.unpack MAX_BLOCKS: MAX_NOTE_VOICES: MAX_AUDIO_VOICES: MAX_CONNECTIONS_PER_OUTPUT: MAX_OUTPUTS_PER_VOICE:"
+									"text" : "dict.unpack MAX_BLOCKS: MAX_NOTE_VOICES: MAX_AUDIO_VOICES: MAX_CONNECTIONS_PER_OUTPUT: MAX_OUTPUTS_PER_VOICE: MAX_AUDIO_INPUTS: MAX_AUDIO_OUTPUTS: NO_IO_PER_BLOCK:"
 								}
 
 							}
@@ -6770,7 +6830,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 341.0, 388.6875, 50.0, 22.0 ]
+									"patching_rect" : [ 295.0, 357.0, 50.0, 22.0 ]
 								}
 
 							}
@@ -6890,7 +6950,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 892.0, 194.0, 157.0, 35.0 ],
+									"patching_rect" : [ 892.0, 194.0, 157.0, 36.0 ],
 									"text" : ";\r\nto_blockmanager cpu 0 100"
 								}
 
@@ -7307,7 +7367,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 987.0, 375.5, 202.0, 301.0 ],
+									"patching_rect" : [ 987.0, 375.5, 202.0, 310.0 ],
 									"text" : "this is input number, which is * 128 then added to note, rather than being a separate number in the list or anything.\n\nadvantages: poly can treat them as different sets of notes easily, only blocks that expect > 128 need even implement the % and /  you ened to decode it!\n\nthis is great\nand it's just a multiply/add\n\nalso: lets use input -1 (ie notes -128 to -1) as mute toggle input, -2 as mute direct control\n\nthese can be intercepted and interpretted in the wrap blocks. but they do need to tell the js that a mute change has happened."
 								}
 
@@ -7461,7 +7521,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 995.299999999999841, 371.0, 315.0, 154.0 ],
+									"patching_rect" : [ 995.299999999999841, 371.0, 315.0, 158.0 ],
 									"text" : "to: \n0-polyallocs\n128-note voices\n192 audio voices\n256 param mod buffer\n---\nmidi-audio ins and param mod are done from the buffer\nmod-list output numbering scheme:\n0-audio ins 1\n64-ins 2\n128-parameters"
 								}
 
@@ -7762,6 +7822,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-16", 0 ],
+									"source" : [ "obj-135", 4 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-33", 0 ],
 									"source" : [ "obj-135", 0 ]
 								}
@@ -7884,6 +7951,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-17", 0 ],
+									"source" : [ "obj-16", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-56", 0 ],
 									"source" : [ "obj-160", 0 ]
 								}
@@ -7914,6 +7988,20 @@
 								"patchline" : 								{
 									"destination" : [ "obj-98", 0 ],
 									"source" : [ "obj-167", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-24", 0 ],
+									"source" : [ "obj-17", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-60", 0 ],
+									"source" : [ "obj-17", 1 ]
 								}
 
 							}
@@ -7995,6 +8083,20 @@
 								"patchline" : 								{
 									"destination" : [ "obj-22", 0 ],
 									"source" : [ "obj-23", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-64", 0 ],
+									"source" : [ "obj-24", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-60", 1 ],
+									"source" : [ "obj-25", 0 ]
 								}
 
 							}
@@ -8394,6 +8496,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-64", 3 ],
+									"source" : [ "obj-60", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-69", 0 ],
 									"source" : [ "obj-61", 0 ]
 								}
@@ -8479,6 +8588,43 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-25", 2 ],
+									"source" : [ "obj-7", 7 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-25", 4 ],
+									"source" : [ "obj-7", 6 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-25", 3 ],
+									"source" : [ "obj-7", 5 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-25", 1 ],
+									"order" : 0,
+									"source" : [ "obj-7", 2 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-25", 0 ],
+									"order" : 0,
+									"source" : [ "obj-7", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-39", 0 ],
 									"order" : 2,
 									"source" : [ "obj-7", 0 ]
@@ -8488,6 +8634,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-40", 1 ],
+									"order" : 1,
 									"source" : [ "obj-7", 1 ]
 								}
 
@@ -8503,6 +8650,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-59", 1 ],
+									"order" : 1,
 									"source" : [ "obj-7", 2 ]
 								}
 
@@ -8789,7 +8937,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 541.0, 366.0, 150.0, 60.0 ],
+									"patching_rect" : [ 541.0, 366.0, 150.0, 62.0 ],
 									"text" : "index = (voice*max_midi_outputs + outno)\n"
 								}
 
@@ -8801,8 +8949,8 @@
 									"numinlets" : 1,
 									"numoutlets" : 2,
 									"outlettype" : [ "float", "bang" ],
-									"patching_rect" : [ 482.0, 338.0, 233.0, 22.0 ],
-									"text" : "buffer~ midi_scopes_change_buffer 100 1"
+									"patching_rect" : [ 482.0, 338.0, 239.0, 22.0 ],
+									"text" : "buffer~ midi_scopes_change_buffer 1000 1"
 								}
 
 							}
@@ -8813,7 +8961,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 728.0, 365.0, 150.0, 47.0 ],
+									"patching_rect" : [ 728.0, 365.0, 150.0, 48.0 ],
 									"text" : "index = (voice * max_midi_outputs + outno) * 128 + note"
 								}
 
@@ -8825,7 +8973,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 887.0, 300.0, 150.0, 127.0 ],
+									"patching_rect" : [ 887.0, 300.0, 150.0, 131.0 ],
 									"text" : "index = voice\nch 1 = flag for which voice goes to minmax -1 = all, -2=off\nch 2 = flag for if minmax has changed\nch 3 = held note count\n4,5 = min max note\n6,7 = min max vel"
 								}
 
@@ -8838,7 +8986,7 @@
 									"numoutlets" : 2,
 									"outlettype" : [ "float", "bang" ],
 									"patching_rect" : [ 728.0, 338.0, 207.0, 22.0 ],
-									"text" : "buffer~ midi_scopes_buffer 100000 1"
+									"text" : "buffer~ midi_scopes_buffer 120000 1"
 								}
 
 							}
@@ -8972,7 +9120,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 751.0, 429.0, 150.0, 33.0 ],
+									"patching_rect" : [ 751.0, 429.0, 150.0, 34.0 ],
 									"text" : "these buffers don't get wiped, no need"
 								}
 
@@ -9188,7 +9336,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 263.5, 387.0, 218.0, 47.0 ],
+									"patching_rect" : [ 263.5, 387.0, 218.0, 48.0 ],
 									"text" : "these hold the pools - forward and backward lookup, 1 is chromatic, 2 onwards are pools"
 								}
 
@@ -14971,6 +15119,55 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "core.clock.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.keyboard.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "display_pages.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/code",
 				"patcherrelativepath" : "../code",
@@ -15008,6 +15205,13 @@
 				"name" : "jitgltextureset.js",
 				"bootpath" : "C74:/packages/Jitter Tools/javascript",
 				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.delay.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -15061,6 +15265,20 @@
 			}
 , 			{
 				"name" : "stretch_looper.maxpat",
+				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.ui.js",
+				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
 				"patcherrelativepath" : "../output_blocks",
 				"type" : "JSON",

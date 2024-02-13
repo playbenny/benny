@@ -410,19 +410,12 @@ function sidebar_midi_scope(){
 	var x1,y1,x2,y2;
 	var ly=1,llx=-100;
 	x1 = sidebar.x;
-	y1 = sidebar.scopes.starty;
 	x2 = sidebar.x2;
-	y2 = sidebar.scopes.endy;
-	/*if(sidebar.scopes.voicelist[0]>-1){
-		//if it's also displaying an audio scope, move this one down a bit
-		t = fontheight*2.1;
-		y1 += t;
-		y2 += t;
-	}*/
-	
 	sx = (x2-x1)/128;
-	sy = (y2-y1-2)/128;
 	x1+=2;
+	y1 = sidebar.scopes.starty;
+	y2 = sidebar.scopes.endy;
+	sy = (y2-y1-2)/128;
 	y2-=2;
 	r =0;
 	//actually need to iterate over all voices/outputs?
@@ -448,6 +441,42 @@ function sidebar_midi_scope(){
 						v[t]=127;
 					}else if(r==1){
 						lcd_main.message("frgb",sidebar.scopes.fg);
+					}
+					lcd_main.message("moveto", x1+t*sx, y2);
+					lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
+					if(sidebar.scopes.midinames == 1){
+						if(t>llx+4){ly=1; llx=t;}else{ly++;}
+						lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
+						lcd_main.message("write", note_names[t]);
+					}
+				}
+			}
+		}
+	}
+	if(sidebar.scopes.midi_routing.number!=-1){
+		y1 = sidebar.scopes.midi_routing.starty;
+		y2 = sidebar.scopes.midi_routing.endy;
+		sy = (y2-y1-2)/128;
+		y2-=2;
+		r =0;
+		cha = 0;
+		if(midi_scopes_change_buffer.peek(1,(sidebar.scopes.midi_routing.voice*128))>0){ 
+			cha +=1;
+			midi_scopes_change_buffer.poke(1,(sidebar.scopes.midi_routing.voice*128),0);
+		}
+		if(cha>0){
+			lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.midi_routing.bg);
+			lcd_main.message("frgb",sidebar.scopes.midi_routing.fg);
+			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midi_routing.voice*128)*128,128);
+			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
+			for(t=0;t<128;t++){
+				if(v[t]){
+					if(Math.abs(v[t])>127){
+						if(r!=1)lcd_main.message("frgb",255,0,0);
+						r=1;
+						v[t]=127;
+					}else if(r==1){
+						lcd_main.message("frgb",sidebar.scopes.midi_routing.fg);
 					}
 					lcd_main.message("moveto", x1+t*sx, y2);
 					lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));

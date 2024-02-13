@@ -393,6 +393,7 @@ var sidebar = {
 			starty : 0,
 			endy : 0,
 			voice : 298,
+			number : -1,
 			fg: [255,255,255],
 			bg: [10,10,10]
 		}
@@ -652,7 +653,6 @@ function send_globals(){
 	messnamed("MAX_AUDIO_INPUTS",MAX_AUDIO_INPUTS);
 	messnamed("MAX_AUDIO_OUTPUTS",MAX_AUDIO_OUTPUTS);
 	messnamed("NO_IO_PER_BLOCK",NO_IO_PER_BLOCK);
-//	messnamed("MAX_BEZIER_SEGMENTS",MAX_BEZIER_SEGMENTS);
 	messnamed("MAX_PARAMETERS",MAX_PARAMETERS);
 	messnamed("MAX_MOD_IDS",MAX_MOD_IDS);
 	messnamed("MAX_WAVES", MAX_WAVES);

@@ -765,7 +765,7 @@ function remove_from_mod_routemap(m_index,targetvalue){
 
 function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice, destinput, scalen, scalev, offsetn, offsetv,cno,destvoiceno){
 //nb destvoiceno = 0 for polyrouter, voices go 1,2,3,4,5 etc
-	if((enab !== null) && (type !== null) && (desttype !== null) && (destvoice !== null) && (destinput !== null) && (scalen !== null) && (scalev !== null) && (offsetn !== null) && (offsetv !== null)){
+//	if((enab !== null) && (type !== null) && (desttype !== null) && (destvoice !== null) && (destinput !== null) && (scalen !== null) && (scalev !== null) && (offsetn !== null) && (offsetv !== null)){
 		var voindex = sourcevoice * MAX_OUTPUTS_PER_VOICE + sourceoutput;
 		var index = -1;
 		var baseindex = 9 * (MAX_CONNECTIONS_PER_OUTPUT * voindex);
@@ -803,11 +803,15 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 			routing_buffer.poke(1,index+8,0);
 		}
 		//post("\npoked into routing buffer starting at",index,"values",enab,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+		if(cno == sidebar.scopes.midi_routing.number){
+			//post("\ncopy this connection for metering");
+			set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
+		}
 		return index;
-	}else{
-		post("\n\n\n\n\n\n\n\n\n unsafe poke in routing",index, enab, type, scale, offn, offv, vect, inputno);
-		return -1;
-	}
+//	}else{
+//		post("\n\n\n\n\n\n\n\n\n unsafe poke in routing",index, enab, type, scale, offn, offv, vect, inputno);
+//		return -1;
+//	}
 }
 
 function remove_all_routings(){
@@ -1523,7 +1527,6 @@ function make_connection(cno,existing){
 								if(typeof chans == "number") chans = [chans];
 								chanout = chans[t_i_no];
 							}
-							
 							t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
 							//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
 						}

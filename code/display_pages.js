@@ -1895,6 +1895,10 @@ function draw_sidebar(){
 		sidebar.scroll.position = 0;
 		view_changed = true;
 	}
+	if((sidebar.scopes.midi_routing.number!=-1)){
+		remove_routing(0);
+		sidebar.scopes.midi_routing.number=-1;
+	}
 	sidebar.panel = 0;	
 	var block_colour, block_dark, block_darkest;
 	var i,t;
@@ -5281,15 +5285,14 @@ function draw_sidebar(){
 					routing_buffer.poke(1,index+6,scalev);
 					routing_buffer.poke(1,index+7,offsetn);
 					routing_buffer.poke(1,index+8,offsetv);*/
-				if(t_i_v=="all") t_i_v=-1;
-				if(Array.isArray(routing_index[i]) && Array.isArray(routing_index[i][t_i_v+1])){
-					var existing_conn_routing_index = routing_index[i][t_i_v+1][f_o_v+1];
-					var cp = routing_buffer.peek(1, existing_conn_routing_index+1, 8);
-					post("\ni would like to copy",existing_conn_routing_index,"thesae are the values",cp);
-					//set_routing(f_o_v, f_o_no, 1, cp[0], 5, cp[2], cp[3], cp[4], cp[5], cp[6], cp[7],-1,MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS);
-				}else{
-					post("\nrouting doesnt exist yet????",i,routing_index[i]);
-					if(Array.isArray(routing_index[i])) post("but at least",t_i_v,"so",routing_index[i][t_i_v],"or",routing_index[i][t_i_v+1]);
+				sidebar.scopes.midi_routing.starty = y_offset;
+				sidebar.scopes.midi_routing.endy = y_offset + fontheight*2;
+				sidebar.scopes.midi_routing.bg = section_colour_darkest;
+				sidebar.scopes.midi_routing.fg = section_colour;
+				if(sidebar.scopes.midi_routing.number != i){
+					remove_routing(0);
+					sidebar.scopes.midi_routing.number = i;
+					make_connection(i,1);
 				}
 				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
 				y_offset += fo1*21;
