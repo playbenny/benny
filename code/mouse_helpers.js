@@ -517,7 +517,6 @@ function connection_select(parameter,value){
 	selected.wire[value] = 1;
 	selected.wire_count = 1;
 	selected.block_count = 0;
-	post("\nCONNSEL",connections.get("connections["+value+"]::to::input::type"),connections.get("connections["+value+"]::from::output::type"));
 	if(!sidebar.connection.default_in_applied) sidebar.connection.show_to_inputs = 0;
 	if(!sidebar.connection.default_out_applied) sidebar.connection.show_from_outputs = 0;
 	set_sidebar_mode("wire");
