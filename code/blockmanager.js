@@ -388,7 +388,14 @@ var sidebar = {
 		midi : -1, //this is the target id for midi notes that you're watching
 		midinames : 1,
 		fg: [255,255,255],
-		bg: [10,10,10]
+		bg: [10,10,10],
+		midi_routing :{ //special post router meter shown on connections page
+			starty : 0,
+			endy : 0,
+			voice : 298,
+			fg: [255,255,255],
+			bg: [10,10,10]
+		}
 	},
 	panel : 0,
 	connection : {

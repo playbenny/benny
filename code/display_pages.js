@@ -4148,7 +4148,11 @@ function draw_sidebar(){
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour );
 				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 				lcd_main.message("frgb", 0,0,0);
-				lcd_main.message("write", "connections");
+				if(sidebar.selected_voice==-1){
+					lcd_main.message("write", "connections");
+				}else{
+					lcd_main.message("write", "connections (to/from voice "+sidebar.selected_voice+" only)");
+				}
 				y_offset += 1.1* fontheight;
 				if(conn_count){
 					for(var pass=1;pass>=0;pass--){
@@ -5225,7 +5229,7 @@ function draw_sidebar(){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fo1*6, fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
 					}else{
-						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(w+0.6), fontheight*0.6+y_offset, section_colour_dark);
+						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(w+0.8), fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
 					}
 					lcd_main.message("moveto" ,vx, fontheight*0.4+y_offset);
@@ -5268,7 +5272,27 @@ function draw_sidebar(){
 				//no audio output scopes because i don't have A2D converters on the outputs of the matrix
 			}else if(t_type=="midi"){
 				//tell the routing patch to monitor this connection:
-
+				//a special routing, a special imaginary connection, and a special destination voice no? desttype controls the gate in the routing patch,
+				//so a simple solution is a new type that then goes direct into the monitor slot. 
+				//index = routing_index[cno][destvoiceno][sourcevoice]; <- you can use this to find the existing connection and just copy the values out!
+				/*	routing_buffer.poke(1,index+1,type);
+					routing_buffer.poke(1,index+2,desttype);
+					routing_buffer.poke(1,index+3,destvoice);
+					routing_buffer.poke(1,index+4,destinput);
+					routing_buffer.poke(1,index+5,scalen);
+					routing_buffer.poke(1,index+6,scalev);
+					routing_buffer.poke(1,index+7,offsetn);
+					routing_buffer.poke(1,index+8,offsetv);*/
+				if(t_i_v=="all") t_i_v=-1;
+				if(Array.isArray(routing_index[i]) && Array.isArray(routing_index[i][t_i_v+1])){
+					var existing_conn_routing_index = routing_index[i][t_i_v+1][f_o_v];
+					//var cp = routing_buffer.peek(1, existing_conn_routing_index+1, 8);
+					post("\ni would like to copy",existing_conn_routing_index,"thesae are the values",cp);
+					//set_routing(f_o_v, f_o_no, 1, cp[0], 5, cp[2], cp[3], cp[4], cp[5], cp[6], cp[7],-1,MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS);
+				}else{
+					post("\nrouting doesnt exist yet????",i,routing_index[i]);
+					if(Array.isArray(routing_index[i])) post("but at least",t_i_v,"so",routing_index[i][t_i_v],"or",routing_index[i][t_i_v+1]);
+				}
 				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
 				y_offset += fo1*21;
 			}else if(t_type=="parameters"){
