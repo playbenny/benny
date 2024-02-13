@@ -679,6 +679,8 @@ function deferred_diagnostics(){
 }
 
 function safepoke(buffer,channel,index,value){
+	buffer.poke(channel,index,value);
+	return 1;
 	if(Array.isArray(value)){
 		var ok=1;
 		for(var i=value.length;i--;){
