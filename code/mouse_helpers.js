@@ -208,7 +208,7 @@ function blocks_paste(outside_connections){
 					if(copy.contains("block_data::"+copied_blocks[b])){
 						for(var t=0;t<vl.length;t++){
 							var vals = copy.get("block_data::"+copied_blocks[b]+"::"+t);
-							safepoke(voice_data_buffer, 1,MAX_DATA*vl[t],vals);
+							voice_data_buffer.poke( 1,MAX_DATA*vl[t],vals);
 						}
 					}
 					if(copy.contains("parameter_static_mod::"+copied_blocks[b])){
@@ -216,7 +216,7 @@ function blocks_paste(outside_connections){
 							if(copy.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
 								post("pasting static mod ",t,vl[t]);
 								var vals = copy.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
-								safepoke(parameter_static_mod,1,MAX_PARAMETERS*vl[t],vals);
+								parameter_static_mod.poke(1,MAX_PARAMETERS*vl[t],vals);
 							}
 						}
 					}
@@ -950,7 +950,7 @@ function fade_state(){
 			if((state_fade.position == 1)) m = state_fade.start[b][0];
 			if(m>-1) mute_particular_block(b,m);
 			for(var t=1;t<pv.length;t++){
-				safepoke(parameter_value_buffer, 1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
+				parameter_value_buffer.poke( 1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
 			}
 			if(state_fade.static_start[b]!=null){
 				if(Array.isArray(state_fade.static_start[b])){
@@ -960,7 +960,7 @@ function fade_state(){
 							for(var x=0;x<pv.length;x++){
 								if(state_fade.static_start[b][t][x]!=state_fade.static_end[b][t][x]){
 									var y = (1-state_fade.position)*state_fade.static_end[b][t][x] + state_fade.position*state_fade.static_start[b][t][x];
-									safepoke(parameter_static_mod, 1, MAX_PARAMETERS*vl[t]+x, y);
+									parameter_static_mod.poke( 1, MAX_PARAMETERS*vl[t]+x, y);
 								}
 							}
 						}
@@ -1165,7 +1165,7 @@ function static_mod_adjust(parameter,value){
 		t2 = Math.max(0,Math.min(1,t2));
 		t2 -= t;  //clip the value so that it + the param (at block level) value doesn't go off the edges
 		// TODO DONT DO THIS IF PARAM WRAP IS ON
-		safepoke(parameter_static_mod,1,parameter[2],t2);
+		parameter_static_mod.poke(1,parameter[2],t2);
 		rebuild_action_list = 1;
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings"))){// && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
@@ -1238,7 +1238,7 @@ function sidebar_parameter_knob(parameter, value){
 		}
 	}else{
 		//set value
-		safepoke(parameter_value_buffer,1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));
+		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
@@ -1837,7 +1837,7 @@ function block_edit(parameter,value){
 						mult = blocktypes.get(block_name+"::parameters["+i+"]::error_scale");
 					}
 //					param_error_spread[list[l]][i]=(Math.random()-0.5)*sprd*mult;
-					safepoke(parameter_error_spread_buffer,1, MAX_PARAMETERS*list[l]+i,(mulberry32()-0.5)*sprd*mult);
+					parameter_error_spread_buffer.poke(1, MAX_PARAMETERS*list[l]+i,(mulberry32()-0.5)*sprd*mult);
 				}			
 			}
 		}else if(pt[2]=="drift"){
@@ -1872,11 +1872,11 @@ function automap_default(a,b){
 	if(sidebar.selected != -1){
 		if(a<0){
 			//post("\nI THINK THIS IS STATIC MOD RESET",a,b);
-			safepoke(parameter_static_mod,1,-a,0);
+			parameter_static_mod.poke(1,-a,0);
 			note_poly.setvalue(b+1, "refresh");
 			//note_poly.setvalue(automap.available_c,"refresh");
 		}else{
-			safepoke(parameter_value_buffer,1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
+			parameter_value_buffer.poke(1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
 			note_poly.setvalue(b+1,"refresh");
 			//note_poly.setvalue(automap.available_c,"refresh");
 		}

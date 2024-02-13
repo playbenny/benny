@@ -78,9 +78,9 @@ function new_block(block_name,x,y){
 			var vd_def = [];
 			var vdi;
 			vd_def = details.get("voice_data::defaults");
-			safepoke(voice_data_buffer,1, MAX_DATA*(new_voice+t_offset),vd_def);
+			voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset),vd_def);
 			for(vdi=vd_def.length;vdi<MAX_DATA;vdi++){
-				safepoke(voice_data_buffer,1, MAX_DATA*(new_voice+t_offset)+vdi,0);
+				voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset)+vdi,0);
 			}
 		}
 	}
@@ -144,7 +144,7 @@ function new_block(block_name,x,y){
 		var drft = blocks.get("blocks["+new_block_index+"]::error::drift");
 		drft = drft*drft*drft*drft;
 		for(var i=0;i<paramslength;i++){
-			safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,0);
+			parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
 //			param_error_spread[voiceoffet][i]=0;
 			p_default = 0;
 			p_type = blocktypes.get(block_name+"::parameters["+i+"]::type");//params[i].get("type");
@@ -157,8 +157,8 @@ function new_block(block_name,x,y){
 			if(blocktypes.contains(block_name+"::parameters["+i+"]::default")){
 				p_default = blocktypes.get(block_name+"::parameters["+i+"]::default");
 			}
-			safepoke(parameter_value_buffer,1, MAX_PARAMETERS*new_block_index+i,p_default);
-			safepoke(parameter_static_mod,1, MAX_PARAMETERS*voiceoffset+i, 0);
+			parameter_value_buffer.poke(1, MAX_PARAMETERS*new_block_index+i,p_default);
+			parameter_static_mod.poke(1, MAX_PARAMETERS*voiceoffset+i, 0);
 			param_defaults[new_block_index][i] = p_default;
 			if(details.contains("parameters["+i+"]::error_scale")){
 				spr=sprd*details.get("parameters["+i+"]::error_scale");
@@ -200,10 +200,10 @@ function new_block(block_name,x,y){
 			}
 			// parameter info poked out here for paramwatcher
 			//post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
-			safepoke(parameter_info_buffer,1,MAX_PARAMETERS*new_block_index+i,p_min);
-			safepoke(parameter_info_buffer,2,MAX_PARAMETERS*new_block_index+i,p_max);
-			safepoke(parameter_info_buffer,3,MAX_PARAMETERS*new_block_index+i,p_steps);
-			safepoke(parameter_info_buffer,4,MAX_PARAMETERS*new_block_index+i,p_curve);
+			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
+			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
+			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);
+			parameter_info_buffer.poke(4,MAX_PARAMETERS*new_block_index+i,p_curve);
 		}		
 	}
 	// tell the polyalloc voice about its new job
@@ -1229,7 +1229,7 @@ function remove_connection(connection_number){
 						}
 						var vvv=tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS;
 						remove_from_midi_routemap(m_index,vvv);
-						safepoke(mod_buffer,1, tmod_id, 0);
+						mod_buffer.poke(1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
 						remove_routing(connection_number);
 						sigouts.setvalue(tvv+1,0);
@@ -1269,7 +1269,7 @@ function remove_connection(connection_number){
 						var vvv = MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+tmod_id+MAX_HARDWARE_MIDI_OUTS;
 						remove_from_midi_routemap(m_index,vvv);
 						remove_routing(connection_number);
-						safepoke(mod_buffer,1, tmod_id, 0)
+						mod_buffer.poke(1, tmod_id, 0)
 					}		
 				}		
 
@@ -1599,7 +1599,7 @@ function make_connection(cno,existing){
 								//post("\none or both empty so creating new modid");
 								mod_id++;
 								tmod_id=mod_id;
-								safepoke(mod_buffer,1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
+								mod_buffer.poke(1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
 							}else{
 								var found = -1;
 								var sx,sy;
@@ -1621,7 +1621,7 @@ function make_connection(cno,existing){
 									//post("\npresent but no matching id found");
 									mod_id++;
 									tmod_id=mod_id;
-									safepoke(mod_buffer,1, mod_id, 0);
+									mod_buffer.poke(1, mod_id, 0);
 								}
 							}
 
@@ -1708,7 +1708,7 @@ function make_connection(cno,existing){
 							
 							var vvv = tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS; 
 							add_to_midi_routemap(m_index,vvv);
-							safepoke(mod_buffer,1, tmod_id, 0); 		
+							mod_buffer.poke(1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
 							//post("midi to audio",tvv);
 							var enab = 1-conversion.get("mute");
@@ -1764,7 +1764,7 @@ function make_connection(cno,existing){
 //								post("one or both empty so creating new modid");
 								mod_id++;
 								tmod_id=mod_id;
-								safepoke(mod_buffer,1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
+								mod_buffer.poke(1, mod_id, 0); //<<this is eg how the values get poked in, set to 0 on connect for good housekeeping..							
 							}else{
 								var found = -1;
 								var sx,sy;
@@ -1787,7 +1787,7 @@ function make_connection(cno,existing){
 //									post("present but no matching id found");
 									mod_id++;
 									tmod_id=mod_id;
-									safepoke(mod_buffer,1, mod_id, 0);
+									mod_buffer.poke(1, mod_id, 0);
 								}
 							}
 
@@ -2181,9 +2181,9 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					post("\n\n\nPROBLEM",new_voice,t_offset,vd_def);
 					return -1;
 				}
-				safepoke(voice_data_buffer,1,MAX_DATA*(new_voice+t_offset),vd_def);
+				voice_data_buffer.poke(1,MAX_DATA*(new_voice+t_offset),vd_def);
 				for(vdi=vd_def.length;vdi<MAX_DATA;vdi++){
-					safepoke(voice_data_buffer,1, MAX_DATA*(new_voice+t_offset)+vdi,0);
+					voice_data_buffer.poke(1, MAX_DATA*(new_voice+t_offset)+vdi,0);
 				}
 				//post("new voice of an existing block so setting default data TODO BUT HOW DO WE KNOW ITS NEW? IS THIS THE RIGTH PLACE TO DO THIS?",new_voice+t_offset,MAX_DATA*(new_voice+t_offset));
 			}
@@ -2236,8 +2236,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					spr = sprd;
 				}
 				if(loading.wait>1) post(spr);
-				safepoke(parameter_static_mod,1, voiceoffset * MAX_PARAMETERS+i, 0);
-				safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
+				parameter_static_mod.poke(1, voiceoffset * MAX_PARAMETERS+i, 0);
+				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
 				var p_type = details.get("parameters["+i+"]::type");
 				var p_pol = details.get("parameters["+i+"]::values[0]");
@@ -2272,10 +2272,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				}
 				// parameter info poked out here for paramwatcher
 				//post("\nblock",block,"writing to p_i_b",MAX_PARAMETERS*block+i,p_min,p_max,p_steps,p_curve);
-				safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block+i,p_min);
-				safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block+i,p_max);
-				safepoke(parameter_info_buffer,3,MAX_PARAMETERS*block+i,p_steps);
-				safepoke(parameter_info_buffer,4,MAX_PARAMETERS*block+i,p_curve);
+				parameter_info_buffer.poke(1,MAX_PARAMETERS*block+i,p_min);
+				parameter_info_buffer.poke(2,MAX_PARAMETERS*block+i,p_max);
+				parameter_info_buffer.poke(3,MAX_PARAMETERS*block+i,p_steps);
+				parameter_info_buffer.poke(4,MAX_PARAMETERS*block+i,p_curve);
 			} //set param spreads
 			if(recycled){
 				if(type=="audio"){
@@ -2648,7 +2648,7 @@ function swap_block(block_name){
 			var vdi;
 			vd_def = details.get("voice_data::defaults")
 			for(vdi=0;vdi<vd_def.length;vdi++){
-				safepoke(voice_data_buffer,1, MAX_DATA*(voice)+vdi,vd_def[vdi]);
+				voice_data_buffer.poke(1, MAX_DATA*(voice)+vdi,vd_def[vdi]);
 			}
 			post("swapping block so setting default data");
 		}
@@ -2670,7 +2670,7 @@ function swap_block(block_name){
 			param_defaults[voice] = [];
 			for(var i=0;i<params.length;i++){
 				if(voice!=-1){
-					safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voice+i,0);
+					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voice+i,0);
 //					param_error_spread[voice][i]=0;
 					param_error_drift[voice][i]=0;
 				}
@@ -2685,8 +2685,8 @@ function swap_block(block_name){
 				if(params[i].contains("default")){
 					p_default = params[i].get("default");
 				}
-				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
-				safepoke(parameter_static_mod,1, voice  *MAX_PARAMETERS+i, 0);
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
+				parameter_static_mod.poke(1, voice  *MAX_PARAMETERS+i, 0);
 				param_defaults[block_menu_d.swap_block_target][i] = p_default;
 			}		
 		}
@@ -2800,10 +2800,6 @@ function build_mod_sum_action_list(){
 //			post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");			
 			list_pointer++;
 			for(t=0;t<slotlist.length;t++){
-				if(slotlist[t] === null){
-					post("\n\n\n\nunsafe poke! slotlist\n\n\n\n\n\n");
-					return -1;
-				}
 				mod_sum_action_list.poke(1,list_pointer,mv+1);
 				mod_sum_action_list.poke(2,list_pointer,slotlist[t]);
 				mod_sum_action_list.poke(3,list_pointer,4); //is it a modulation type input? i think so?
@@ -2866,10 +2862,6 @@ function build_mod_sum_action_list(){
 							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
 							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");
 							dest_index = ccout + chanout*128+midiout*16384;
-							if(dest_index === null){
-								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
-								return 0;
-							}
 							mod_sum_action_list.poke(1,list_pointer,dest_index);
 							mod_sum_action_list.poke(2,list_pointer,0);
 							mod_sum_action_list.poke(3,list_pointer,flag);
@@ -2879,15 +2871,6 @@ function build_mod_sum_action_list(){
 							extra = MAX_PARAMETERS*(voicelist[i])+p;
 							flock_id = is_flocked[extra]-1;
 							dest_index = flock_id;
-							if(dest_index === null){
-								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
-								return 0;
-							}
-							if(extra === null){
-								post("\n\n\n\n\nunsafe poke! extra\n\n\n\n\n");
-								return 0;
-							}
-
 							flock_buffer.poke(1,flock_id,1 +extra);
 
 							mod_sum_action_list.poke(1,list_pointer,dest_index); //flokcid
@@ -2897,10 +2880,6 @@ function build_mod_sum_action_list(){
 						}else{
 							dest_index = MAX_PARAMETERS*(voicelist[i])+p;
 							flag = 1;
-							if(dest_index === null){
-								post("\n\n\n\n\nunsafe poke! dest_index\n\n\n\n\n");
-								return 0;
-							}
 							mod_sum_action_list.poke(1,list_pointer,dest_index);
 							mod_sum_action_list.poke(2,list_pointer,b*MAX_PARAMETERS+p);
 							mod_sum_action_list.poke(3,list_pointer,flag);
@@ -2922,12 +2901,6 @@ function build_mod_sum_action_list(){
 						mod_sum_action_list.poke(3,list_pointer,2);
 						mod_sum_action_list.poke(4,list_pointer,0);
 						list_pointer++;
-
-						if(voicelist[i] === null){
-							post("\n\n\n\n\nunsafe poke! voicelist\n\n\n\n\n");
-							return 0;
-						}
-
 						mod_sum_action_list.poke(1,list_pointer,dest_index);
 						mod_sum_action_list.poke(2,list_pointer,MAX_PARAMETERS*voicelist[i]+p);
 						mod_sum_action_list.poke(3,list_pointer,3);
@@ -2937,11 +2910,7 @@ function build_mod_sum_action_list(){
 						if(has_mod){
 							for(t=0;t<slotlist.length;t++){
 								if(paramlist[t]==p){
-									if(slotlist[t] === null){
-										post("\n\n\n\n\nunsafe poke! slotlist\n\n\n\n\n");
-										return 0;
-									}
-		
+									
 									mod_sum_action_list.poke(1,list_pointer,dest_index);
 									mod_sum_action_list.poke(2,list_pointer,slotlist[t]);
 									mod_sum_action_list.poke(3,list_pointer,4);
@@ -2954,26 +2923,11 @@ function build_mod_sum_action_list(){
 					if(flock_id!=-1){
 						var fll=flocklist.length;
 						flocklist[fll]=voicelist[i];
-						if(voicelist[i] === null){
-							post("\n\n\n\n\nunsafe poke! voicelist\n\n\n\n\n");
-							return 0;
-						}
 
 						flockblocklist[fll]=b;
 						flockvoicelist[fll]=i;
 						flock_list_buffer.poke(1,fll+1,voicelist[i]);
 						//what's written to the action list is a whole new section, flag = 5 for the header row, index is voice no
-						if(blocks.get("blocks["+b+"]::flock::weight")  === null){
-							post("\n\n\n\n\nunsafe poke! weight\n\n\n\n\n");
-							return 0;
-						}
-						if(blocks.get("blocks["+b+"]::flock::friction") === null){
-							post("\n\n\n\n\nunsafe poke! friction\n\n\n\n\n");
-							return 0;
-						}
-						
-
-
 						mod_sum_action_list.poke(1,list_pointer,voicelist[i]);
 						mod_sum_action_list.poke(2,list_pointer,fll);
 						mod_sum_action_list.poke(3,list_pointer,5);
@@ -3020,8 +2974,4 @@ function build_mod_sum_action_list(){
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0; 
 	messnamed("modulation_processor", "pause", 0); //this message gets deferred (in the max patch) otherwise the gen doesn't get a frame to realise that pause has changed to 1 and back
-//post("ok, list length",list_pointer,"\n");
-//for(i=0;i<list_pointer;i++){
-//	post(i,mod_sum_action_list.peek(1,i),mod_sum_action_list.peek(2,i),mod_sum_action_list.peek(3,i),mod_sum_action_list.peek(4,i),"\n");
-//}
 }

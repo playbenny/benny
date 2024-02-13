@@ -593,7 +593,7 @@ function import_song(){
 					for(i=0;i<vl.length;i++){
 						if(songs.contains(loading.songname+"::states::current::static_mod::"+b+"::"+i)){
 							stpv = songs.get(loading.songname+"::states::current::static_mod::"+b+"::"+i);
-							safepoke(parameter_static_mod,1,vl[i]*MAX_PARAMETERS,stpv);
+							parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS,stpv);
 							if(!states.contains("states::current::static_mod::"+loading.mapping[b]+"::"+i))states.setparse("states::current::static_mod::"+loading.mapping[b]+"::"+i,"[]");
 							states.replace("states::current::static_mod::"+loading.mapping[b]+"::"+i,stpv);
 						}
@@ -602,7 +602,7 @@ function import_song(){
 					stpv = songs.get(loading.songname+"::states::current::static_mod::"+b);
 					for(i=0;i<stpv.length;i+=3){
 						post("\nlegacy init static_mod",stpv[i],stpv[i+1],stpv[i+2]);
-						safepoke(parameter_static_mod,1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
+						parameter_static_mod.poke(1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
 					}
 				}
 			}
@@ -698,7 +698,7 @@ function load_process_block_voices_and_data(block){
 			var vdata= blocks.get("blocks["+block+"]::voice_data::"+i);
 			for(var pad=vdata.length;pad<MAX_DATA;pad++) vdata.push(0);
 			//voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
-			safepoke(voice_data_buffer,1, MAX_DATA*v_list[i], vdata);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
 		} //this takes 1ms per voice, in case you ever think of trying to optimise it..
 	}	
 	if(drawn==1) draw_block(block); //used to be outside the loop with a 'draw_blocks()' but maybe this is quicker?)
@@ -792,8 +792,8 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		param_defaults[block_index] = [];
 		for(var i=0;i<params.length;i++){
 			if(new_voice!=-1){
-				safepoke(parameter_error_spread_buffer,1,MAX_PARAMETERS*voiceoffset+i,0);
-				safepoke(parameter_static_mod,1,MAX_PARAMETERS*voiceoffset+i,0);
+				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
+				parameter_static_mod.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
 				param_error_drift[voiceoffset][i]=0;
 			}
 			p_default = 0;
@@ -814,10 +814,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			}
 			
 			if(i+1<paramvalues.length){
-				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_index +i,paramvalues[i+1]);
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,paramvalues[i+1]);
 				param_defaults[block_index][i] = paramvalues[i+1]; //p_default; << new blocks the default is the default, when you load a song the default is the startup value of that param in the song instead.
 			}else{ // in the rare case that you've added some paramters to a block it should still load saves without errors.
-				safepoke(parameter_value_buffer,1, MAX_PARAMETERS*block_index +i,p_default);
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,p_default);
 				param_defaults[block_index][i] = p_default;
 			}
 			var p_pol = p_values[0]; //details.get("parameters["+i+"]::values[0]");
@@ -852,10 +852,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			}
 			// parameter info poked out here for paramwatcher
 			// post("\nload block",block_index,"writing to p_i_b",MAX_PARAMETERS*block_index+i,p_min,p_max,p_steps,p_curve);
-			safepoke(parameter_info_buffer,1,MAX_PARAMETERS*block_index+i,p_min);
-			safepoke(parameter_info_buffer,2,MAX_PARAMETERS*block_index+i,p_max);
-			safepoke(parameter_info_buffer,3,MAX_PARAMETERS*block_index+i,p_steps);
-			safepoke(parameter_info_buffer,4,MAX_PARAMETERS*block_index+i,p_curve);
+			parameter_info_buffer.poke(1,MAX_PARAMETERS*block_index+i,p_min);
+			parameter_info_buffer.poke(2,MAX_PARAMETERS*block_index+i,p_max);
+			parameter_info_buffer.poke(3,MAX_PARAMETERS*block_index+i,p_steps);
+			parameter_info_buffer.poke(4,MAX_PARAMETERS*block_index+i,p_curve);
 		}		
 	}
 	// if the block has per-voice data it gets loaded after voicecount
