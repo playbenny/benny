@@ -4,7 +4,7 @@ function import_hardware(v){
 	var d3 = new Dict;
 	var t;
 	var i;
-	
+	messnamed("getpath","bang");
 	initialise_dictionaries();
 		
 	post("\nbuilding blocktypes database");
@@ -388,6 +388,10 @@ function initialise_dictionaries(){
 	read_songs_folder("songs");
 	
 	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
+	if((projectpath!="")&&(TEMPLATES_FOLDER.indexOf("/")==-1)){
+		TEMPLATES_FOLDER = projectpath + "/" + TEMPLATES_FOLDER;
+		post("\ntemplates folder is ",TEMPLATES_FOLDER);
+	}
 	read_songs_folder("templates");	
 	// all the 3d ui stuff now
 

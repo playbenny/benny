@@ -534,6 +534,8 @@ var glow_amount=0.15;
 var monofont = "Consolas";
 var mainfont = "Consolas";
 
+var projectpath="";
+
 var ext_matrix = {
 	connections : [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16],
 	switch : -1
@@ -657,4 +659,9 @@ function send_globals(){
 	messnamed("MAX_WAVES_SLICES",MAX_WAVES_SLICES);
 	globals_requested = 0;
 }
+
+function patcherpath(path){
+	projectpath = path.split("patchers/");
+	projectpath = projectpath[0];
+} 
 
