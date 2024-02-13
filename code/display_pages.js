@@ -805,7 +805,6 @@ function block_and_wire_colours(){ //for selection and mute etc
 					blocks_cube[i][t].position = [p[0],p[1],0];
 				}
 				if(block_mute) blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
-				blocks_cube[i][t].dim = [12, 12]; // TEMP FIX FOR 8.6
 				if(t==0){
 					block_c = blocks.get("blocks["+i+"]::space::colour");
 					block_c[0] /= 256;
@@ -867,7 +866,6 @@ function block_and_wire_colours(){ //for selection and mute etc
 						tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
 						wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
 						wires[i][segment].enable = 1;
-						wires[i][segment].dim = [2,2];//TEMP FIX FOR 8.6
 					}		
 				}
 			}else{
@@ -5285,8 +5283,8 @@ function draw_sidebar(){
 					routing_buffer.poke(1,index+8,offsetv);*/
 				if(t_i_v=="all") t_i_v=-1;
 				if(Array.isArray(routing_index[i]) && Array.isArray(routing_index[i][t_i_v+1])){
-					var existing_conn_routing_index = routing_index[i][t_i_v+1][f_o_v];
-					//var cp = routing_buffer.peek(1, existing_conn_routing_index+1, 8);
+					var existing_conn_routing_index = routing_index[i][t_i_v+1][f_o_v+1];
+					var cp = routing_buffer.peek(1, existing_conn_routing_index+1, 8);
 					post("\ni would like to copy",existing_conn_routing_index,"thesae are the values",cp);
 					//set_routing(f_o_v, f_o_no, 1, cp[0], 5, cp[2], cp[3], cp[4], cp[5], cp[6], cp[7],-1,MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS);
 				}else{
