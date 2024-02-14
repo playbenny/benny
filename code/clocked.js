@@ -224,7 +224,8 @@ function prep_meter_updatelist(){
 				}
 			}else{
 				for(index =0;index<vmap.length;index++){
-					meters_updatelist.midi.push([k[i],index,vmap[index]]);
+					var wide = (!blocktypes.contains(blocks.get("blocks["+k[i]+"]::name")+"::connections::out::midi"));
+					meters_updatelist.midi.push([k[i],index,vmap[index],wide]);//the 4th element is 0 for normal, 1 for a full width bar?
 				}
 			}
 		}
@@ -315,16 +316,13 @@ function hardware_meters(){
 }
 
 function midi_meters(){
+	var minsize = Math.max(1,0.3*(camera_position[2]-20));
+	minsize *= minsize;
 	for(i = meters_updatelist.midi.length-1; i>=0; i--){
 		var block=meters_updatelist.midi[i][0];
 		var voice=meters_updatelist.midi[i][1];
 		if(blocks_meter[block][voice] !== 'undefined'){
 			var polyvoice = meters_updatelist.midi[i][2];
-			if(polyvoice === null){
-				post("\n\n\n\n unsafe poke");
-				sughstghldfjsl
-				return 0;
-			}
 			var mvals = [];
 			for(var ii=0;ii<7;ii++) mvals[ii] = midi_meters_buffer.peek(ii+1,polyvoice);
 			if(mvals[1]){
@@ -333,13 +331,18 @@ function midi_meters(){
 					blocks_meter[block][voice].enable = 0;
 				}else{
 					blocks_meter[block][voice].enable = 1;
-					var minsize = Math.max(1,0.3*(camera_position[2]-20));
-					minsize *= minsize;
+					var p_min, p_max, v_min, v_max;
 					var held = mvals[2]*0.05;
-					var p_min = (mvals[3])/(128 + minsize);
-					var p_max = (minsize + mvals[4])/(128 + minsize);
-					var v_min = (mvals[5])/(128 + minsize);
-					var v_max = (minsize + mvals[6])/(128 + minsize);
+					if(meters_updatelist.midi[i][3]==1){
+						p_min = 0; p_max = 1;
+						v_min = (mvals[5])/129;
+						v_max = (mvals[6]+1)/129;
+					}else{		
+						p_min = (mvals[3])/(128 + minsize);
+						p_max = (minsize + mvals[4])/(128 + minsize);
+						v_min = (mvals[5])/(128 + minsize);
+						v_max = (minsize + mvals[6])/(128 + minsize);
+					}
 					var tv=[];
 					tv = blocks_cube[block][voice+1].position;
 					tv[0] = tv[0] - 0.185 + (p_max+p_min)*0.185;

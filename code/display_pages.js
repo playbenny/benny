@@ -5035,17 +5035,44 @@ function draw_sidebar(){
 					sidebar.connection.defaults.vector = Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
-					draw_vector(sidebar.x, y_offset, sidebar.x2-fontheight*5.4, fontheight*2.6+y_offset, type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
+					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
-					draw_2d_slider(sidebar.x2-fontheight*5.3, y_offset, sidebar.x2-fontheight*2.7, fontheight*2.6+y_offset, type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
+					draw_2d_slider(sidebar.x2-fo1*15.5, y_offset+16.5*fo1, sidebar.x2, fo1*32+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+					mouse_index++;	
+					
+					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+					mouse_click_actions[mouse_index] = connection_edit;
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
-					y_offset+=28*fo1;
+	
+					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*16.5, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1);
+					mouse_click_actions[mouse_index] = connection_edit;
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;		
+					
+					draw_h_slider(sidebar.x, y_offset+fo1*22, sidebar.x2-fo1*16.5, fo1*32+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset2*2-1);
+					mouse_click_actions[mouse_index] = connection_edit;
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;	
+					
+					lcd_main.message("frgb",type_colour_dark);
+					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
+					lcd_main.message("write","projection angle",vector.toPrecision(2));
+					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*19);
+					lcd_main.message("write","note offset",Math.floor(256*offset-128));
+					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*30);
+					lcd_main.message("write","velocity offset",Math.floor(256*offset2-128));
+
+					y_offset += fo1*33;
 
 				}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
 					//offset is disabled for audio->parameter connections (just a maddening extra layer of user confusion)
@@ -5108,7 +5135,7 @@ function draw_sidebar(){
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 	
-					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*22, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1,offset2*2-1);
+					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*22, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = 0;
@@ -5139,17 +5166,46 @@ function draw_sidebar(){
 					sidebar.connection.defaults.vector = Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
-					draw_vector(sidebar.x, y_offset, sidebar.x2-fontheight*5.3, fontheight*2.6+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
+					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
-					draw_2d_slider(sidebar.x2-fontheight*5.3, y_offset, sidebar.x2-fontheight*2.7, fontheight*2.6+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
+					draw_2d_slider(sidebar.x2-fo1*15.5, y_offset+16.5*fo1, sidebar.x2, fo1*32+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
-					mouse_index++;			
-				}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
+					mouse_index++;	
+					
+					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+					mouse_click_actions[mouse_index] = connection_edit;
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+	
+					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*16.5, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1);
+					mouse_click_actions[mouse_index] = connection_edit;
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;		
+					
+					draw_h_slider(sidebar.x, y_offset+fo1*22, sidebar.x2-fo1*16.5, fo1*32+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset2*2-1);
+					mouse_click_actions[mouse_index] = connection_edit;
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;	
+					
+					lcd_main.message("frgb",type_colour_dark);
+					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
+					lcd_main.message("write","projection angle",vector.toPrecision(2));
+					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*19);
+					lcd_main.message("write","note offset",Math.floor(256*offset-128));
+					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*30);
+					lcd_main.message("write","velocity offset",Math.floor(256*offset2-128));
+
+					y_offset += fo1*33;
+				}/*else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
+					// actually no offset for this one
 					sidebar.connection.defaults.vector = 0.5; //Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
@@ -5162,7 +5218,7 @@ function draw_sidebar(){
 					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
 					lcd_main.message("write","offset",(2*vector-1).toPrecision(2));//offset);
 					y_offset+=11*fo1;
-				}			
+				}*/			
 			}
 
 			section_colour = blocks.get("blocks["+t_number+"]::space::colour");
