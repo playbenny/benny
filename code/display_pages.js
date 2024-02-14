@@ -4572,8 +4572,8 @@ function draw_sidebar(){
 			
 			y_offset += 1.1* fontheight;
 			
-			f_v_no *= from_subvoices;
-			t_v_no *= to_subvoices;
+			if((f_type=="audio")||(f_type=="hardware")||(f_type=="potential")) f_v_no *= from_subvoices;
+			if((t_type=="audio")||(t_type=="hardware")||(t_type=="potential")) t_v_no *= to_subvoices;
 
 			if(f_type=="parameters"){
 				var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
@@ -5217,6 +5217,7 @@ function draw_sidebar(){
 			
 
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fo1*4+y_offset);
+			lcd_main.message("frgb", section_colour_dark);
 			lcd_main.message("write", "voices");
 
 			var vi;
