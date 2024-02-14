@@ -2136,3 +2136,26 @@ function conn_set_to_input(c,value){
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
 }
+function fold_menus(){
+	post("\nfold",sidebar.connection.default_out_applied);
+	if(sidebar.connection.default_out_applied>0){
+		sidebar.connection.show_from_outputs = 0;
+		sidebar.connection.default_out_applied = 0;
+	} 
+	if(sidebar.connection.default_in_applied>0){
+		sidebar.connection.show_to_inputs = 0;
+		sidebar.connection.default_in_applied = 0;
+	}
+	redraw_flag.flag |= 2;
+}
+
+function clear_or_close(){
+	var s = selected.wire.indexOf(1);
+	post("\n\n\n\nclear or close,",s);
+	if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
+		remove_connection(s);
+	}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
+		remove_connection(s);
+	}
+	set_sidebar_mode("none");
+}

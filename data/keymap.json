@@ -96,6 +96,10 @@
             "-4" : ["enter", "load_song"],
             "-9" : ["up","file_menu_arrows", -1],
             "-10" : ["down","file_menu_arrows", 1]
+        },
+        "wire" : {
+            "-4" : ["enter", "fold_menus"],
+            "-3" : ["ESC", "clear_or_close"]
         }
     }
 }
