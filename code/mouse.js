@@ -240,7 +240,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			} else if(usermouse.clicked2d != -1){
 				if(usermouse.last.got_i == usermouse.got_i){
-					post("2d release",usermouse.last.got_i,usermouse.last.got_t);
+					//post("2d release",usermouse.last.got_i,usermouse.last.got_t);
 					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)||(usermouse.last.got_t == 6)){ // it's a button (1) or passthrough(7)
 						var f = mouse_click_actions[usermouse.last.got_i];
 						if(usermouse.last.got_t == 6){

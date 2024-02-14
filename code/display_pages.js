@@ -4655,7 +4655,7 @@ function draw_sidebar(){
 			var vi;
 			var vx=sidebar.x+fontheight*1.4;
 			for(vi=0;vi<=f_v_no;vi++){
-				if(vx > sidebar.x2 - fontheight*0.8){
+				if(vx > sidebar.x2 - fontheight*0.7){
 					vx = sidebar.x + fontheight*1.4;
 					y_offset+=fontheight * 0.7;
 					lcd_main.message("paintrect", sidebar.x, y_offset-fo1, sidebar.x2, 6*fo1+y_offset,section_colour_darkest );
@@ -5222,7 +5222,7 @@ function draw_sidebar(){
 			var vi;
 			var vx=sidebar.x+fontheight*1.4;
 			for(vi=0;vi<=t_v_no;vi++){
-				if(vx>sidebar.x2-fontheight*0.8){
+				if(vx>sidebar.x2-fontheight*0.6){
 					vx=sidebar.x+fontheight*1.4;
 					y_offset+=fontheight * 0.7;
 					lcd_main.message("paintrect", sidebar.x, y_offset-fo1, sidebar.x2, 6*fo1+y_offset,section_colour_darkest );
@@ -5230,17 +5230,17 @@ function draw_sidebar(){
 				if(vi==0){
 					click_rectangle( vx-fo1, y_offset, vx+fontheight*1.7, fontheight*0.6+y_offset, mouse_index,1);
 					var w=0;
-					if((t_i_no == 0) && ((t_type == "midi"))) w=0.3;
-					if(t_type == "block") w=0.5;
+					if((t_i_no == 0) && ((t_type == "midi"))) w=0.1;
+					if(t_type == "block") w=0.4;
 					if(t_i_v == "all"){
-						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fo1*6, fontheight*0.6+y_offset, section_colour);
+						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(w+0.6), fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
 					}else{
-						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(w+0.8), fontheight*0.6+y_offset, section_colour_dark);
+						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(w+0.6), fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
 					}
 					lcd_main.message("moveto" ,vx, fontheight*0.4+y_offset);
-					if(w>0.4){
+					if(w>0.3){
 						lcd_main.message("write", "block");
 						vx+=fontheight*(0.8+w);	
 					}else if(w>0){
