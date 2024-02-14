@@ -4653,6 +4653,7 @@ function draw_sidebar(){
 				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset);
 			}
 			
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.6+y_offset,section_colour_darkest );
