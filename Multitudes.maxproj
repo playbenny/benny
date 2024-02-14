@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790364786,
+	"modificationdate" : 3790778089,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -186,7 +186,22 @@
 				"local" : 1
 			}
 ,
+			"voiceheader.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"mutecontrol.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.note.step.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"universal.step.sequence.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -202,11 +217,6 @@
 			}
 ,
 			"core.scales.shapes.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"voiceheader.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -367,16 +377,6 @@
 			}
 ,
 			"midi.stats.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-					"projectrelativepath" : "./note_blocks"
-				}
-
-			}
-,
-			"seq.note.step.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
@@ -616,16 +616,6 @@
 
 			}
 ,
-			"universal.step.sequence.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-					"projectrelativepath" : "./note_blocks"
-				}
-
-			}
-,
 			"utility.buttons.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
@@ -677,6 +667,26 @@
 			}
 ,
 			"midi.curve.map.1d.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.1d.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.1d.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
@@ -749,6 +759,11 @@
 				"local" : 1
 			}
 ,
+			"parameterwatcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -758,8 +773,8 @@
 				"kind" : "gendsp"
 			}
 ,
-			"whitegaussnoise.gendsp" : 			{
-				"kind" : "gendsp",
+			"seq.note.step.js" : 			{
+				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -768,7 +783,7 @@
 				"local" : 1
 			}
 ,
-			"parameterwatcher.gendsp" : 			{
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -789,11 +804,6 @@
 			}
 ,
 			"seq.rene.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"seq.note.step.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -843,6 +853,11 @@
 				"local" : 1
 			}
 ,
+			"midi.curve.map.1d.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
 			"seq.note.tracker.new.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
@@ -888,7 +903,7 @@
 				"local" : 1
 			}
 ,
-			"midi.curve.map.1d.js" : 			{
+			"seq.1d.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -1357,6 +1372,16 @@
 			}
 ,
 			"midi.curve.map.1d.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.1d.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{

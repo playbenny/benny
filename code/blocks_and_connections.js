@@ -802,7 +802,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 			routing_buffer.poke(1,index+7,0);
 			routing_buffer.poke(1,index+8,0);
 		}
-		//post("\npoked into routing buffer starting at",index,"values",enab,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+		post("\npoked into routing buffer starting at",index,"values",enab,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 		if(cno == sidebar.scopes.midi_routing.number){
 			//post("\ncopy this connection for metering");
 			set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
@@ -1673,7 +1673,8 @@ function make_connection(cno,existing){
 						}else{
 							post("ERROR : ext matrix connections can only go to the ext matrix");
 						}
-					}else if(f_type == "midi"){
+					}else if((f_type == "midi")||(f_type == "parameters")){
+						post("\ngot to here");
 						if((t_type == "audio") || (t_type == "hardware")){
 							//this is a midi-audio connection for a single voice - works like parammod but eventually sends a number to the sig~ instead of to a buffer
 							m_index = (f_voice)*128+f_o_no;
@@ -1879,6 +1880,13 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::output::type","midi");
 		}
 	}
+	if(d.contains("connections::out::parameters")){
+		if(!sidebar.connection.default_out_applied){
+			sidebar.connection.default_out_applied=1;
+			new_connection.replace("from::output::number",0);
+			new_connection.replace("from::output::type","parameters");
+		}
+	}
 	var notall = 0;
 	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
 	var f_type = new_connection.get("from::output::type");
@@ -1896,7 +1904,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	d = blocktypes.get(toname);
 	if(d.contains("connections::in::hardware")){
 		if(!sidebar.connection.default_in_applied){
-			if(sidebar.connection.default_in_applied==2){
+			if(sidebar.connection.default_out_applied==2){
 				sidebar.connection.default_in_applied=1;
 				if(d.contains("connections::in::default")){
 					new_connection.replace("to::input::number",d.get("connections::in::default"));
@@ -1906,14 +1914,14 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","hardware");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}else if(sidebar.connection.default_in_applied==1){
+			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
 			}
 		}
 	}
 	if(d.contains("connections::in::audio")){
 		if(!sidebar.connection.default_in_applied){
-			if(sidebar.connection.default_in_applied==2){
+			if(sidebar.connection.default_out_applied==2){
 				sidebar.connection.default_in_applied=1;
 				if(d.contains("connections::in::default")){
 					new_connection.replace("to::input::number",d.get("connections::in::default"));
@@ -1923,7 +1931,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 				new_connection.replace("to::input::type","audio");
 				new_connection.replace("conversion::offset", 0);
 				new_connection.replace("conversion::offset2", 0.5);
-			}else if(sidebar.connection.default_in_applied==1){
+			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
 			}
 		}

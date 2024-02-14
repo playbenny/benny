@@ -1,0 +1,75 @@
+{
+	"seq.1d" : {
+		"patcher" : "seq.1d",
+		"type" : "note",
+		"block_ui_patcher" : "seq.1d.ui",
+		"help_text" : "A step sequencer for values. One voice = one sequencer row. Values can be sent out as changing velocities of a fixed note, or changing notes with a fixed velocity. ",
+		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 4,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger", "note->position", "reset" ]
+			},
+			"out" : {
+				"parameters" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [2],
+				"onepervoice" : 1
+			},
+			{ 
+				"contains" : [3],
+				"colour" : 10,
+				"onepervoice" : 1
+			},
+			{ 
+				"contains" : [1],
+				"colour" : 10,
+				"onepervoice" :1 
+			}
+		],
+		"voice_data" : {
+			"defaults" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		},
+		"parameters" : [
+			{
+				"name" : "clock",
+				"type" : "menu_i",
+				"width" : 3,
+				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
+				"error_scale" : 0,
+				"nomap" : 1,
+				"default" : 0.56
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["bi", -128, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "start",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.125
+			}
+		]
+	}
+}

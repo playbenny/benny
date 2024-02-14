@@ -4533,6 +4533,7 @@ function draw_sidebar(){
 			if(!Array.isArray(t_i_v)) t_i_v = [t_i_v];
 			f_o_v.sort();
 			t_i_v.sort();
+			post("\nfov",f_o_v);
 			var f_v_no = blocks.get("blocks["+f_number+"]::poly::voices");
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
 			var from_subvoices = Math.max(1,blocks.get('blocks['+f_number+']::subvoices'));
@@ -4574,11 +4575,11 @@ function draw_sidebar(){
 			
 			if((f_type=="audio")||(f_type=="hardware")||(f_type=="potential")){
 				f_v_no *= from_subvoices;
-				if(f_type=="potential") f_o_v *= 2;
+				if(f_type=="potential") f_o_v[0] *= 2;
 			}
 			if((t_type=="audio")||(t_type=="hardware")||(t_type=="potential")){
 				t_v_no *= to_subvoices;
-				if(t_type=="potential") t_i_v *= 2;
+				if(t_type=="potential") t_i_v[0] *= 2;
 			}
 
 			if(f_type=="parameters"){
@@ -4660,6 +4661,7 @@ function draw_sidebar(){
 			lcd_main.message("write", "voices");
 			var vi;
 			var vx=sidebar.x+fontheight*1.4;
+			post("f_o",f_o_v,typeof f_o_v);
 			for(vi=0;vi<=f_v_no;vi++){
 				if(vx > sidebar.x2 - fontheight*(0.4+0.1*(vi>9))){
 					vx = sidebar.x + fontheight*1.4;
