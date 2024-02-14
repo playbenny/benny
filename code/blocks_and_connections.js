@@ -1318,7 +1318,10 @@ function make_connection(cno,existing){
 	var t_block = 1* connections.get("connections["+cno+"]::to::number");
 	var to_block_type = blocks.get("blocks["+t_block+"]::type");
 	var f_subvoices = 1;
-	if(f_type=="audio") f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+	if(f_type=="audio"){
+		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
+	}
 	var t_subvoices = 1;
 	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 	var f_voices = [];
@@ -1553,16 +1556,18 @@ function make_connection(cno,existing){
 								outmsg[1] = t_voice - 1; 
 							}
 							if(force_unity){
-								outmsg[2] = (1-(hw_mute || conversion.get("mute")));
-								//post("\nforce unity matrix message",outmsg, "f, t",f_voice,t_voice);
+								//if f_u=1 then you just connect like pairs - L out to L in, R out to R in, x all voices.
+								var a = (outmsg[0]>=MAX_AUDIO_VOICES) == (outmsg[1]>=MAX_AUDIO_VOICES);
+								outmsg[2] = a * (1-(hw_mute || conversion.get("mute")));
+								//if(a==0) post("\nskipped a connection in force unity:",outmsg);
 							}else{
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
-							//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
+							//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							matrix.message(outmsg);
 						}else if(t_type == "midi"){
-				// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
+							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
 							post("\nturning on number",(f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							var enab = 1-conversion.get("mute");
@@ -1831,6 +1836,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var fromname = blocks.get('blocks['+from+']::name');
 	var toname = blocks.get('blocks['+to+']::name');
 	//var totype = blocks.get('blocks['+to+']::type');
+	var f_subvoices = 1;
+	var t_subvoices = 1;
+	if(blocks.contains("blocks["+from+"]::subvoices")) f_subvoices = blocks.get("blocks["+from+"]::subvoices");
+	if(blocks.contains("blocks["+to+"]::subvoices")) t_subvoices = blocks.get("blocks["+to+"]::subvoices");
 	if(toname == null) return 0;
 
 	new_connection.parse('{ }');
@@ -1872,6 +1881,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 	var notall = 0;
 	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
+	var f_type = new_connection.get("from::output::type");
 	if(fromv==-1){
 		if(notall){
 			new_connection.replace("from::voice", 1 );
@@ -1879,7 +1889,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::voice", "all" );		
 		}
 	}else{
-		if((new_connection.get("from::output::type")!="audio")&&(blocktypes.contains(fromname+"::subvoices"))) fromv /= blocktypes.get(fromname+"::subvoices");
+		if((f_type=="audio")||(f_type=="hardware")) fromv *= f_subvoices;
 		new_connection.replace("from::voice", fromv + 1 );
 	}
 	sidebar.connection.default_in_applied = 0;
@@ -1933,6 +1943,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 	notall = 0;
 	if(blocktypes.contains(toname+"::connections::in::dontdefaultall")) notall = blocktypes.get(toname+"::connections::in::dontdefaultall");
+	var t_type = new_connection.get("to::input::type");
 	if(tov == -1){
 		if(notall){
 			new_connection.replace("to::voice", 1 );
@@ -1940,9 +1951,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("to::voice", "all" );		
 		}
 	}else{
-		if((new_connection.get("to::input::type")!="audio")&&(blocktypes.contains(toname+"::subvoices"))) tov /= blocktypes.get(toname+"::subvoices");
+		if((t_type=="audio")||(t_type=="hardware")) tov *= t_subvoices;
 		new_connection.replace("to::voice", tov + 1 );
 	}
+	
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
 		new_connection.replace("conversion::force_unity" , 1);
 	} 

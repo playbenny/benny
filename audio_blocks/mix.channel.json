@@ -6,12 +6,13 @@
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
 		"max_polyphony" : 0,
 		"upsample" : 2,
+		"from_subvoices" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "sidechain in" ]
 			},
 			"out" : {
-				"audio" : [ "L out to bus", "R out to bus" ],
+				"audio" : [ "out to bus" ],
 				"force_unity" : 1
 			}
 		},
