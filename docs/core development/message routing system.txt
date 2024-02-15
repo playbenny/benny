@@ -44,7 +44,7 @@ the js compiles an 'action list' - every memory location to collect up and scale
 note->audio
 -----------
 
-presently the js sends setvalue messages to a mc.sig, based on things the gen modulation processor puts in a buffer. this needs to be upgraded to gen so it can work faster.
+a separate gen routine sends setvalue messages to a mc.sig, based on things the gen modulation processor puts in a buffer.
 
 
 i think there's something similar for midi that comes from modulation? brb
