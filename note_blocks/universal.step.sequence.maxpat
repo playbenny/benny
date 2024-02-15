@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 817.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,42 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-169",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 2,
+					"outlettype" : [ "int", "int" ],
+					"patching_rect" : [ 270.5, 970.0, 54.0, 22.0 ],
+					"text" : "split -1 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-104",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 293.0, 1174.0, 29.5, 22.0 ],
+					"text" : "!- 0."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-90",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "int", "float" ],
+					"patching_rect" : [ 241.0, 1142.0, 71.0, 22.0 ],
+					"text" : "unpack 0 0."
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-66",
 					"maxclass" : "newobj",
@@ -69,7 +105,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 584.5, 514.0, 175.5, 47.0 ],
+					"patching_rect" : [ 584.5, 514.0, 175.5, 48.0 ],
 					"text" : "sends out the current pattern number when playhead hits start/loopstart/loop-last-row"
 				}
 
@@ -165,7 +201,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 839.0, 1071.0, 150.0, 47.0 ],
+					"patching_rect" : [ 839.0, 1071.0, 150.0, 48.0 ],
 					"text" : "find next non-grouped cell for the next clock\n"
 				}
 
@@ -549,7 +585,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 803.0, 722.5, 158.0, 221.0 ],
+					"patching_rect" : [ 803.0, 722.5, 158.0, 227.0 ],
 					"text" : "for each clock:\nread just the group column for that row\nif 0 carry on\nif -: go read the group column for the row it points to, store that index\nif + (and once you've jumped for a -) look up the row the subcounter points to, then if it's in the group jump, if not then go to the first of the group. increment subpointer\nset clock to next non-loop cell for its next tick"
 				}
 
@@ -571,10 +607,10 @@
 					"id" : "obj-134",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 225.0, 1074.0, 52.0, 22.0 ],
-					"text" : "gate 2 1"
+					"text" : "gate 3 1"
 				}
 
 			}
@@ -585,8 +621,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 225.0, 1038.0, 93.0, 22.0 ],
-					"text" : "expr ($i1>0) + 1"
+					"patching_rect" : [ 225.0, 1038.0, 145.0, 22.0 ],
+					"text" : "expr ($i1>0) + ($i1>1) + 1"
 				}
 
 			}
@@ -597,7 +633,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 225.0, 1005.0, 29.5, 22.0 ],
+					"patching_rect" : [ 225.0, 975.0, 29.5, 22.0 ],
 					"text" : "t i i"
 				}
 
@@ -686,7 +722,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1469,7 +1505,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1059.0, 465.0, 354.0, 35.0 ],
+					"patching_rect" : [ 1059.0, 465.0, 354.0, 36.0 ],
 					"text" : "get UNIVERSAL_PATTERNS, get UNIVERSAL_COLUMNS, get MAX_DATA"
 				}
 
@@ -1500,7 +1536,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 838.0, 422.0, 158.0, 114.0 ],
+					"patching_rect" : [ 838.0, 422.0, 158.0, 117.0 ],
 					"text" : "<<at present the 'row sel' in goes to 'set counter immediately' - so you have to hit it just after the beat, the alternative you have to hit it just before. this one you can stutter-play the note too"
 				}
 
@@ -1548,7 +1584,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 425.0, 391.0, 150.0, 47.0 ],
+					"patching_rect" : [ 425.0, 391.0, 150.0, 48.0 ],
 					"text" : "if loop point is before start point it ignores it and plays whole pattern"
 				}
 
@@ -1656,7 +1692,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 160.0, 753.0, 150.0, 33.0 ],
+					"patching_rect" : [ 160.0, 753.0, 150.0, 34.0 ],
 					"text" : "now just stores pointer in row 0 of data"
 				}
 
@@ -1781,7 +1817,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -2003,7 +2039,7 @@
 									"maxclass" : "inlet",
 									"numinlets" : 0,
 									"numoutlets" : 1,
-									"outlettype" : [ "float" ],
+									"outlettype" : [ "int" ],
 									"patching_rect" : [ 51.0, 40.0, 30.0, 30.0 ]
 								}
 
@@ -2523,7 +2559,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -2811,7 +2847,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 967.0, 210.0, 150.0, 114.0 ],
+					"patching_rect" : [ 967.0, 210.0, 150.0, 117.0 ],
 					"text" : "0 = midi in for through or record\n1 = trigger-\nC = clock, B=backwards, D=reset\n2 = set position directly by note\n3 = reset"
 				}
 
@@ -3027,6 +3063,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 68.0, 1171.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -3063,10 +3103,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 507.0, 54.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -3163,6 +3199,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
 					"source" : [ "obj-103", 4 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-99", 0 ],
+					"source" : [ "obj-104", 0 ]
 				}
 
 			}
@@ -3565,6 +3608,13 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-137", 0 ],
+					"source" : [ "obj-134", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-90", 0 ],
 					"source" : [ "obj-134", 1 ]
 				}
 
@@ -3585,7 +3635,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-137", 2 ],
+					"destination" : [ "obj-169", 0 ],
 					"source" : [ "obj-136", 1 ]
 				}
 
@@ -3977,6 +4027,13 @@
 					"midpoints" : [ 94.0, 729.0, 133.0, 729.0 ],
 					"order" : 1,
 					"source" : [ "obj-168", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-137", 2 ],
+					"source" : [ "obj-169", 1 ]
 				}
 
 			}
@@ -4963,6 +5020,20 @@
 					"destination" : [ "obj-113", 0 ],
 					"midpoints" : [ 95.5, 561.0, 95.5, 561.0 ],
 					"source" : [ "obj-89", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-104", 0 ],
+					"source" : [ "obj-90", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-76", 0 ],
+					"source" : [ "obj-90", 0 ]
 				}
 
 			}
