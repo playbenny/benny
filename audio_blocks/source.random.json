@@ -1,9 +1,9 @@
 {
-	"source.random.s_and_h" : {
-		"patcher" : "source.random.s_and_h",
+	"source.random" : {
+		"patcher" : "source.random",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "multi colour noise source and shift register / s&h",
+		"help_text" : "Classic stepped and continuous random source.£Multi colour noise source£shift register£sample & hold£slew£quantise",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -13,7 +13,7 @@
 			},
 			"out" : {
 				"audio" : [ "noise", "s&h" ],
-				"midi" : [ "s&h" ]
+				"parameters" : [ "s&h" ]
 			}
 		},
 		"groups" : [

@@ -1,6 +1,6 @@
 {
-	"source.shepherd" : {
-		"patcher" : "source.shepherd",
+	"source.shepherd.osc" : {
+		"patcher" : "source.shepherd.osc",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Shepherd oscillator. Mixes multiple octaves of a wave to let you make scales that ascend or descend forever, or parts that fluidly morph between high and low frequencies, using the ideas of Roger Shepherd and his famous barberpole tone (which this block can recreate by connecting a rising sawtooth lfo to the fm input). Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. The rectangle portion of this oscillator uses code from Yofiel.com. ",

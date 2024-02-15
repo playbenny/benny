@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790799174,
+	"modificationdate" : 3790878365,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -186,6 +186,11 @@
 				"local" : 1
 			}
 ,
+			"midi.fold.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"voiceheader.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -257,11 +262,6 @@
 			}
 ,
 			"midi.delay.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"midi.fold.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -715,6 +715,251 @@
 				}
 
 			}
+,
+			"fx.delay.buckets.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.filter.2pole.env.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.filter.2pole.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.filter.fixed.bank.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.freqshift.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.pitch.divider.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.pitch.retune.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"fx.varispeed.looper.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"mix.bus.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"mix.channel.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"mix.stereo.channel.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"mix.stereo.channel.old.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.sample.tracker.old.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"seq.sample.tracker.old.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.dual.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.shape.oscillator.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.wave.scan.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.wave.scan.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.wave.traverse.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.wave.traverse.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.delay.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.env.asr.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.lowpass.highpass.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.mid.side.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.mixer.cascade.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.mixer.channel.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.self.tuner.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"utility.vca.env.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.dual.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.ks.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.multi.sample.player.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.organ.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.pitch.env.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.sample.player.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voice.shepherd.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"source.basic.osc.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.dual.osc.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.harmonic.osc.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.stepped+continous.random.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.osc.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.random.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -779,11 +1024,6 @@
 				"local" : 1
 			}
 ,
-			"parameterwatcher.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -793,17 +1033,22 @@
 				"kind" : "gendsp"
 			}
 ,
+			"whitegaussnoise.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"parameterwatcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"seq.note.step.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
 ,
 			"voice.basic.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -824,6 +1069,11 @@
 			}
 ,
 			"seq.rene.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"VST.manager.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -878,6 +1128,11 @@
 				"local" : 1
 			}
 ,
+			"seq.values.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
 			"seq.note.tracker.new.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
@@ -923,12 +1178,162 @@
 				"local" : 1
 			}
 ,
-			"seq.values.js" : 			{
+			"fx.delay.buckets.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"fx.pitch.divider.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"fx.varispeed.looper.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"mini.env.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"mix.channel.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"selftuner_fm.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"seq.sample.tracker.old.js" : 			{
 				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"source.dual.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.shape.oscillator.gendsp" : 			{
+				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-					"projectrelativepath" : "./note_blocks"
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.wave.scan.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"source.wave.traverse.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"utility.env.asr.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"utility.vca.env.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"voice.dual.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"voice.ks.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"voice.organ.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"voice.pitch.env.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"voice.shepherd.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.basic.osc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.dual.osc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.harmonic.osc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.stepped+continous.random.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.osc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.random.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
 				}
 
 			}
@@ -1420,6 +1825,361 @@
 				}
 
 			}
+,
+			"fx.delay.buckets.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.filter.2pole.env.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.filter.2pole.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.filter.fixed.bank.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.freqshift.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.pitch.divider.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.pitch.retune.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"fx.varispeed.looper.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"mix.bus.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"mix.channel.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"mix.stereo.channel.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"seq.sample.tracker.old.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"source.dual.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"source.shape.oscillator.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"source.wave.scan.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"source.wave.traverse.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.delay.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.env.asr.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.lowpass.highpass.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.mixer.cascade.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.mixer.channel.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.self.tuner.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.vca.env.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.dual.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.ks.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.multi.sample.player.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.organ.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.pitch.env.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.sample.player.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"voice.shepherd.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Capacitor264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.CStrip64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.DeRez264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Distortion64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.DPiano-E.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Elation64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Focus64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.MackEQ64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Mojo64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.PitchNasty64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Pockey264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Pressure464.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.Pro-C.2.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.RatshackReverb2.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.TAL-Chorus-LX-64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ToTape664.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ValhallaDelay.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ValhallaFreqEcho_x64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ValhallaRoom.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ValhallaSpaceModulator.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ValhallaSupermassive_x64.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ValhallaUberMod.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ZBandpass264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ZHighpass264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ZLowpass264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ZNotch264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"vst.ZRegion264.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"source.basic.osc.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.dual.osc.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.harmonic.osc.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.stepped+continous.random.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.osc.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.random.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -1433,6 +2193,16 @@
 		"other" : 		{
 			"osc_functions.genexpr" : 			{
 				"kind" : "genexpr",
+				"local" : 1
+			}
+,
+			"fx.delay.tape.zip" : 			{
+				"kind" : "file",
+				"local" : 1
+			}
+,
+			"osc.harmonic before converting to console.zip" : 			{
+				"kind" : "file",
 				"local" : 1
 			}
 

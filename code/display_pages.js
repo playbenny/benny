@@ -673,11 +673,15 @@ function initialise_block_menu(visible){
 						lcd_block_textures.message("brgb",col);
 						lcd_block_textures.message("clear");
 						lcd_block_textures.message("frgb",255,255,255);
-						lcd_block_textures.message("font",mainfont,30);
-						lcd_block_textures.message("textface","bold");
+						lcd_block_textures.message("font",mainfont,16);
+						lcd_block_textures.message("textface","normal");
 						for(var t=0;t<ts.length;t++){
-							lcd_block_textures.message("moveto",5, 28+t*30);
+							lcd_block_textures.message("moveto",5, 28+t*27);
 							lcd_block_textures.message("write",ts[t].replace(/_/g,' '));
+							if(t==0){
+								lcd_block_textures.message("textface","bold");
+								lcd_block_textures.message("font",mainfont,27);
+							}
 						}
 						lcd_block_textures.message("bang");
 	

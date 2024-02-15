@@ -71,11 +71,15 @@ function draw_block_texture(block){
 				lcd_block_textures.message("paintoval", 96,8,120,32);
 			}
 			lcd_block_textures.message("frgb",255,255,255);
-			lcd_block_textures.message("font",mainfont,25);
-			lcd_block_textures.message("textface","bold");
+			lcd_block_textures.message("font",mainfont,(bln.length>0)?16:25);
+			lcd_block_textures.message("textface","normal");
 			for(var t=0;t<bln.length;t++){
 				lcd_block_textures.message("moveto",5, 28+t*29);
 				lcd_block_textures.message("write",bln[t].replace(/_/g," "));
+				if(t==0){
+					lcd_block_textures.message("font",mainfont,25);
+					lcd_block_textures.message("textface","bold");		
+				}
 			}
 			lcd_block_textures.message("bang");
 		}
@@ -792,17 +796,20 @@ function request_redraw(n){
 
 function draw_menu_hint(){
 	var col = menucolour;
-	if(blocktypes.contains(usermouse.hover[1]+"::colour")) col = blocktypes.get(usermouse.hover[1]+"::colour");
+	if(blocktypes.contains(usermouse.hover[1]+"::colour")){
+		col = blocktypes.get(usermouse.hover[1]+"::colour");
+		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
+	}
 	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
-	var topspace=(block_menu_d.mode == 3);
+	var topspace=(block_menu_d.mode == 3)+1.1*(loading.progress!=0);
 	lcd_main.message("clear");
-	lcd_main.message("paintrect", sidebar.x,9,sidebar.x2,9+fontheight*(1+topspace),cod);
+	lcd_main.message("paintrect", sidebar.x,9+1.1*(loading.progress!=0)*fontheight,sidebar.x2,9+fontheight*(1+topspace),cod);
 	setfontsize(fontsmall*2);
 	lcd_main.message("textface", "bold");
 	
 	lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);
 	lcd_main.message("frgb",col);
-	lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*0.75);
+	lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(0.75+1.1*(loading.progress!=0)));
 	if(block_menu_d.mode == 1){
 		lcd_main.message("write", "swap block:");
 	}else if(block_menu_d.mode == 2){
@@ -811,7 +818,7 @@ function draw_menu_hint(){
 		lcd_main.message("write", "add new block:");
 	}else if(block_menu_d.mode == 3){
 		lcd_main.message("write", "substitute for "); 
-		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*1.75);
+		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.75+1.1*(loading.progress!=0)));
 		lcd_main.message("write",block_menu_d.swap_block_target);
 	}
 
