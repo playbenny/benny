@@ -405,7 +405,7 @@ function sidebar_meters(){
 	}
 
 	if(sidebar.scopes.voice>-1) sidebar_scopes();
-	if(sidebar.scopes.midi>-1) sidebar_midi_scope();
+	if((sidebar.scopes.midi>-1)||(sidebar.scopes.midi_routing.number>-1)) sidebar_midi_scope();
 }
 
 function sidebar_midi_scope(){
@@ -471,7 +471,6 @@ function sidebar_midi_scope(){
 			lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.midi_routing.bg);
 			lcd_main.message("frgb",sidebar.scopes.midi_routing.fg);
 			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midi_routing.voice*128)*128,128);
-			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
 			for(t=0;t<128;t++){
 				if(v[t]){
 					if(Math.abs(v[t])>127){

@@ -3,7 +3,7 @@
 		"patcher" : "midi.lfo",
 		"type" : "note",
 		"block_ui_patcher" : "midi.lfo.ui",
-		"help_text" : "A midi LFO, if you add more voices they're linked, so you can build eg quadrature lfos from this. NOTE if you modulate 'rate' this lfo will skip, if you want to modulate something modulate phase, or use a different lfo.",
+		"help_text" : "A midi LFO, if you add more voices they're linked, so you can build eg quadrature lfos from this. ££NOTE if you modulate 'rate' this lfo will skip, if you want to modulate something modulate phase, or use a different lfo.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"default_polymode" : 	{
@@ -17,7 +17,7 @@
 				"midi" : [ "reset" ]
 			},
 			"out" : {
-				"midi" : [ "out" ]
+				"parameters" : [ "out" ]
 			}
 		},
 		"groups" : [

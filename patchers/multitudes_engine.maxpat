@@ -6059,7 +6059,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 42.0, 82.0, 661.0, 582.0 ],
+						"rect" : [ 134.0, 134.0, 641.0, 582.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -15414,7 +15414,7 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "midi.delay.maxpat",
+				"name" : "midi.fold.maxpat",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",

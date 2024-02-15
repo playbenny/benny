@@ -4533,7 +4533,6 @@ function draw_sidebar(){
 			if(!Array.isArray(t_i_v)) t_i_v = [t_i_v];
 			f_o_v.sort();
 			t_i_v.sort();
-			post("\nfov",f_o_v);
 			var f_v_no = blocks.get("blocks["+f_number+"]::poly::voices");
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
 			var from_subvoices = Math.max(1,blocks.get('blocks['+f_number+']::subvoices'));
@@ -4662,7 +4661,6 @@ function draw_sidebar(){
 			lcd_main.message("write", "voices");
 			var vi;
 			var vx=sidebar.x+fontheight*1.4;
-			post("f_o",f_o_v,typeof f_o_v);
 			for(vi=0;vi<=f_v_no;vi++){
 				if(vx > sidebar.x2 - fontheight*(0.4+0.1*(vi>9))){
 					vx = sidebar.x + fontheight*1.4;
@@ -5365,7 +5363,9 @@ function draw_sidebar(){
 					remove_routing(0);
 					sidebar.scopes.midi_routing.number = i;
 					make_connection(i,1);
+					post("\n\n\nmade meter connection");
 				}
+				post("\nmeter routing number is",sidebar.scopes.midi_routing.number);
 				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
 				y_offset += fo1*21;
 			}else if(t_type=="parameters"){
