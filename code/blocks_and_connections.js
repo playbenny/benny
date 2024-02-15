@@ -766,52 +766,48 @@ function remove_from_mod_routemap(m_index,targetvalue){
 function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice, destinput, scalen, scalev, offsetn, offsetv,cno,destvoiceno){
 //nb destvoiceno = 0 for polyrouter, voices go 1,2,3,4,5 etc
 //	if((enab !== null) && (type !== null) && (desttype !== null) && (destvoice !== null) && (destinput !== null) && (scalen !== null) && (scalev !== null) && (offsetn !== null) && (offsetv !== null)){
-		var voindex = sourcevoice * MAX_OUTPUTS_PER_VOICE + sourceoutput;
-		var index = -1;
-		var baseindex = 9 * (MAX_CONNECTIONS_PER_OUTPUT * voindex);
-		//does this connection exist in the routing buffer already?
-		if(!Array.isArray(routing_index[cno][destvoiceno])) routing_index[cno][destvoiceno] = [];
-		if(typeof routing_index[cno][destvoiceno][sourcevoice] == "number" ){
-			index = routing_index[cno][destvoiceno][sourcevoice];
-			//post("\nFOUND EXISTING,",index);
-		}else{ //find an empty slot
-			for(var i=0;i<MAX_CONNECTIONS_PER_OUTPUT;i++){
-				var t = baseindex + 9 * i;
-				if(routing_buffer.peek(1,t + 1) == 0){ //compares on the 'type' entry
-					index = t;
-					routing_index[cno][destvoiceno][sourcevoice] = t;
-					i = 99999;
-				}
+	var voindex = sourcevoice * MAX_OUTPUTS_PER_VOICE + sourceoutput;
+	var index = -1;
+	var baseindex = 9 * (MAX_CONNECTIONS_PER_OUTPUT * voindex);
+	//does this connection exist in the routing buffer already?
+	if(!Array.isArray(routing_index[cno][destvoiceno])) routing_index[cno][destvoiceno] = [];
+	if(typeof routing_index[cno][destvoiceno][sourcevoice] == "number" ){
+		index = routing_index[cno][destvoiceno][sourcevoice];
+		//post("\nFOUND EXISTING,",index);
+	}else{ //find an empty slot
+		for(var i=0;i<MAX_CONNECTIONS_PER_OUTPUT;i++){
+			var t = baseindex + 9 * i;
+			if(routing_buffer.peek(1,t + 1) == 0){ //compares on the 'type' entry
+				index = t;
+				routing_index[cno][destvoiceno][sourcevoice] = t;
+				i = 99999;
 			}
-			//post("\nGOT NEW",index);
 		}
-		routing_buffer.poke(1,index+1,type);
-		routing_buffer.poke(1,index+2,desttype);
-		routing_buffer.poke(1,index+3,destvoice);
-		routing_buffer.poke(1,index+4,destinput);
-		if(enab){
-			routing_buffer.poke(1,index,1);
-			routing_buffer.poke(1,index+5,scalen);
-			routing_buffer.poke(1,index+6,scalev);
-			routing_buffer.poke(1,index+7,offsetn);
-			routing_buffer.poke(1,index+8,offsetv);
-		}else{
-			routing_buffer.poke(1,index,(loading.progress==0)?1:0);
-			routing_buffer.poke(1,index+5,0);
-			routing_buffer.poke(1,index+6,0);
-			routing_buffer.poke(1,index+7,0);
-			routing_buffer.poke(1,index+8,0);
-		}
-		post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
-		if(cno == sidebar.scopes.midi_routing.number){
-			//post("\ncopy this connection for metering");
-			set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
-		}
-		return index;
-//	}else{
-//		post("\n\n\n\n\n\n\n\n\n unsafe poke in routing",index, enab, type, scale, offn, offv, vect, inputno);
-//		return -1;
-//	}
+		//post("\nGOT NEW",index);
+	}
+	routing_buffer.poke(1,index+1,type);
+	routing_buffer.poke(1,index+2,desttype);
+	routing_buffer.poke(1,index+3,destvoice);
+	routing_buffer.poke(1,index+4,destinput);
+	if(enab){
+		routing_buffer.poke(1,index,1);
+		routing_buffer.poke(1,index+5,scalen);
+		routing_buffer.poke(1,index+6,scalev);
+		routing_buffer.poke(1,index+7,offsetn);
+		routing_buffer.poke(1,index+8,offsetv);
+	}else{
+		routing_buffer.poke(1,index,(loading.progress==0)?1:0);
+		routing_buffer.poke(1,index+5,0);
+		routing_buffer.poke(1,index+6,0);
+		routing_buffer.poke(1,index+7,0);
+		routing_buffer.poke(1,index+8,0);
+	}
+	//post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	if(cno == sidebar.scopes.midi_routing.number){
+		//post("\ncopy this connection for metering");
+		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
+	}
+	return index;
 }
 
 function remove_all_routings(){

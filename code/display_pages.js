@@ -5363,9 +5363,7 @@ function draw_sidebar(){
 					remove_routing(0);
 					sidebar.scopes.midi_routing.number = i;
 					make_connection(i,1);
-					post("\n\n\nmade meter connection");
 				}
-				post("\nmeter routing number is",sidebar.scopes.midi_routing.number);
 				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
 				y_offset += fo1*21;
 			}else if(t_type=="parameters"){
