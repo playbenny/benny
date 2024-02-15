@@ -73,6 +73,7 @@ function update(){
 			var ll = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*128)+1;
 			if(l[i]!=ll){
 				l[i]=ll;
+				cw[i] = (width)/(l[i] - 0.1);
 				change = 1;
 			}
 		}
@@ -85,12 +86,12 @@ function update(){
 			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
 			if(cursors[r]!=ph){
 				//redraw slider that was old cursor
-				if((cursors[r]>=0)&&(cursors[r]<maxl)){
+				if((cursors[r]>=0)&&(cursors[r]<l[r])){
 					outlet(0,"custom_ui_element","data_v_scroll", cursors[r]*cw[r]+x_pos,r*rh+y_pos,(1+cursors[r])*cw[r]+x_pos,(r+0.9)*rh+y_pos,block_colour[0],block_colour[1],block_colour[2],MAX_DATA*v_list[r]+1+cursors[r],1);
 				}
 				cursors[r]=ph;
 				//draw new cursor slider
-				if(cursors[r]<maxl){
+				if(cursors[r]<l[r]){
 					outlet(0,"custom_ui_element","data_v_scroll", ph*cw[r]+x_pos,r*rh+y_pos,(1+ph)*cw[r]+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+1+ph,1);
 				}
 			}

@@ -75,7 +75,7 @@ function draw_block_texture(block){
 			lcd_block_textures.message("textface","bold");
 			for(var t=0;t<bln.length;t++){
 				lcd_block_textures.message("moveto",5, 28+t*29);
-				lcd_block_textures.message("write",bln[t]);
+				lcd_block_textures.message("write",bln[t].replace(/_/g," "));
 			}
 			lcd_block_textures.message("bang");
 		}

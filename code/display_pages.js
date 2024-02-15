@@ -677,7 +677,7 @@ function initialise_block_menu(visible){
 						lcd_block_textures.message("textface","bold");
 						for(var t=0;t<ts.length;t++){
 							lcd_block_textures.message("moveto",5, 28+t*30);
-							lcd_block_textures.message("write",ts[t]);
+							lcd_block_textures.message("write",ts[t].replace(/_/g,' '));
 						}
 						lcd_block_textures.message("bang");
 	
