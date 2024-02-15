@@ -1,9 +1,9 @@
 {
-	"seq.1d" : {
-		"patcher" : "seq.1d",
+	"seq.values" : {
+		"patcher" : "seq.values",
 		"type" : "note",
-		"block_ui_patcher" : "seq.1d.ui",
-		"help_text" : "A step sequencer for values. One voice = one sequencer row. Values can be sent out as changing velocities of a fixed note, or changing notes with a fixed velocity. ",
+		"block_ui_patcher" : "seq.values.ui",
+		"help_text" : "A step sequencer for values. One voice = one sequencer row.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"default_polymode" : 	{

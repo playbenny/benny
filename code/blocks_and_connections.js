@@ -1933,7 +1933,7 @@ function make_connection(cno,existing){
 							//post("midi to audio",tvv);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
-							var offs = conversion.get("offset");
+							/*var offs = conversion.get("offset");
 							if(typeof offs === "number"){
 								var offn = offs;
 								var offv = 0;
@@ -1942,9 +1942,9 @@ function make_connection(cno,existing){
 								var offv = offs[1];
 							}
 							var vect = conversion.get("vector");
-							
+							*/
 							vvv += MAX_MOD_IDS * m_index;
-							set_routing(f_voice,f_o_no,enab,3,6,tmod_id,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
+							set_routing(f_voice,f_o_no,enab,3,6,tmod_id,t_i_no,0,scale,0,0,cno,v);
 						}else if(t_type == "midi"){
 							//this is a param-midi connection for a single voice
 							var enab = 1-conversion.get("mute");
@@ -2162,6 +2162,16 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("to::input::type","midi");
 			new_connection.replace("conversion::offset", 0.5);
 			new_connection.replace("conversion::offset2", 0.5);
+		}else if((!sidebar.connection.default_in_applied)&&(sidebar.connection.default_out_applied==2)){
+			sidebar.connection.default_in_applied = 1;
+			if(d.contains("connections::in::default")){
+				new_connection.replace("to::input::number",d.get("connections::in::default"));
+			}else{
+				new_connection.replace("to::input::number",0);
+			}
+			new_connection.replace("to::input::type","midi");
+			new_connection.replace("conversion::offset", 0.5);
+			new_connection.replace("conversion::offset2", 0.5);			
 		}
 	}
 	notall = 0;

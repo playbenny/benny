@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790778089,
+	"modificationdate" : 3790799174,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -695,6 +695,26 @@
 				}
 
 			}
+,
+			"seq.values.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.values.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -903,7 +923,7 @@
 				"local" : 1
 			}
 ,
-			"seq.1d.js" : 			{
+			"seq.values.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -1382,6 +1402,16 @@
 			}
 ,
 			"seq.1d.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"seq.values.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{

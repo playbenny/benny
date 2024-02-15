@@ -57,6 +57,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 359.0, 306.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 3"
 				}
 
@@ -68,6 +72,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 315.0, 306.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -79,13 +87,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 265.0, 217.0, 57.0, 22.0 ],
+					"patching_rect" : [ 265.0, 217.0, 78.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "seq.1d",
+						"filename" : "seq.values",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js seq.1d"
+					"text" : "js seq.values"
 				}
 
 			}
@@ -96,10 +104,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 269.0, 306.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -112,10 +116,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 265.0, 182.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -158,7 +158,7 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "seq.1d.js",
+				"name" : "seq.values.js",
 				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
