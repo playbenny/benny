@@ -830,29 +830,53 @@ function draw_menu_hint(){
 		setfontsize(fontheight/2.5);
 		lcd_main.message("textface", "normal");
 		var bold=0;
-		for(var i=0;i<hintrows;i++){
-			while((hint[rowend]!=' ')&&(rowend>1+rowstart)){ rowend--; }
+		var sameline=0;
+		for(var ri=0;ri<hintrows;ri++){
+			while(((hint[rowend]!=' ')&&(hint[rowend]!='£')) && (rowend>1+rowstart)){ rowend--; }
 			var sliced = hint.slice(rowstart,rowend);
-			if(sliced.indexOf("£")>-1){
+			if(!sameline) {
+				lcd_main.message("moveto",sidebar.x+fontheight*0.2,9+fontheight*(2.9+topspace+0.45*(ri)));
+				//lcd_main.message("moveto",sidebar.x+fontheight*0.2,y_offset+fontheight*(0.75+0.4*ri));
+			}else{
+				ri--;
+			}
+			sameline=0;
+			var newlineind = sliced.indexOf("£");
+			var boldind = sliced.indexOf("*");		
+			if((boldind>-1)&&(newlineind>-1)){
+				if(boldind<newlineind){
+					newlineind=-1;
+				}else{
+					boldind=-1;
+				}
+			}		
+			if(newlineind>-1){
 				rowend = rowstart+ sliced.indexOf("£");
 				sliced = hint.slice(rowstart,rowend);
+				sameline=0;
 			}
-			if(sliced.indexOf("*")>-1){
-				post("sliced",rowstart,rowend,sliced.indexOf("*"));
+			if(boldind>-1){
+				sameline=1;
 				bold=1-bold;
 				rowend = rowstart+ sliced.indexOf("*");
 				sliced = hint.slice(rowstart,rowend);
 			}
-			lcd_main.message("moveto",sidebar.x+fontheight*0.2,9+fontheight*(2.9+topspace+0.45*(i)));
 			lcd_main.message("write",sliced);
-			rowstart=rowend+1;
-			rowend+=36;
+			if(!sameline){
+				rowstart=rowend+1;
+				rowend+=36;
+			}else{
+				var t = rowstart+36;
+				rowstart=rowend+1
+				rowend=t;
+			}
 			if(bold){
 				lcd_main.message("textface", "bold");
 			}else{
 				lcd_main.message("textface", "normal");
-			}
+			}	
 		}
+		if(!bold) lcd_main.message("textface", "bold");
 		lcd_main.message("bang");
 	}
 }

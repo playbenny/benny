@@ -4289,8 +4289,9 @@ function draw_sidebar(){
 											mouse_index++;
 												//	lcd_main.message("frgb", menucolour);
 										}else{
-											lcd_main.message("moveto", sidebar.x2-fontheight*3.0, y_offset+fontheight*1.6);
-											lcd_main.message("write","gain locked @ unity");
+											lcd_main.message("moveto", sidebar.x+fo1*2, y_offset+fontheight*1.6);
+											lcd_main.message("frgb" , menucolour);
+											lcd_main.message("write","connection gain locked to unity");
 										}
 										if(connections.get("connections["+i+"]::from::output::type")=="hardware"){
 											if((connections.get("connections["+i+"]::to::input::type")=="audio")||(connections.get("connections["+i+"]::to::input::type")=="hardware")){
@@ -4896,8 +4897,9 @@ function draw_sidebar(){
 				lcd_main.message("write","flip");
 				click_zone(connection_edit, "connections["+i+"]::conversion::scale", -scale, sidebar.x2-fontheight*2.1,y_offset,sidebar.x2-fontheight*1.1,y_offset+fontheight*1.1,mouse_index, 1);
 			}else{
-				lcd_main.message("moveto", sidebar.x+fontheight*1.2, y_offset+fontheight*0.7);
-				lcd_main.message("write", "gain locked @ unity");
+				lcd_main.message("frgb" , type_colour);
+				lcd_main.message("moveto", sidebar.x+fo1*2, y_offset+fontheight*0.7);
+				lcd_main.message("write", "connection gain locked to unity");
 			}
 			y_offset+=11*fo1;
 			if(connections.get("connections["+i+"]::from::output::type")=="hardware"){

@@ -18,6 +18,7 @@
 				"height" : 0
 			},
 			{
+				"header" : "colours",
 				"contains" : [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
 				"height" : 0
 			}			
@@ -38,112 +39,112 @@
 				"wrap" : 0,
 				"default" : 0.0
 			},{
-				"name" : "colour",
+				"name" : "1",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.007812
 			},{
-				"name" : "",
+				"name" : "2",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.0625
 			},{
-				"name" : "",
+				"name" : "3",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.117188
 			},{
-				"name" : "",
+				"name" : "4",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.171875
 			},{
-				"name" : "",
+				"name" : "5",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.226562
 			},{
-				"name" : "",
+				"name" : "6",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.28125
 			},{
-				"name" : "",
+				"name" : "7",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.335938
 			},{
-				"name" : "",
+				"name" : "8",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.390625
 			},{
-				"name" : "",
+				"name" : "9",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.445312
 			},{
-				"name" : "",
+				"name" : "10",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.5
 			},{
-				"name" : "",
+				"name" : "11",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.554688
 			},{
-				"name" : "",
+				"name" : "12",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.609375
 			},{
-				"name" : "",
+				"name" : "13",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.664062
 			},{
-				"name" : "",
+				"name" : "14",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.71875
 			},{
-				"name" : "",
+				"name" : "15",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.773438 
 			},{
-				"name" : "",
+				"name" : "16",
 				"type" : "int",
 				"values" : ["uni",0,127,"lin"],
 				"error_scale" : 0,
