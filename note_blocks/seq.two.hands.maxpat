@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 995.0, 85.0, 890.0, 912.0 ],
+		"rect" : [ 995.0, 85.0, 890.0, 384.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 254.0, 236.0, 50.0, 22.0 ],
+					"text" : "25 3."
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-15",
 					"maxclass" : "message",
@@ -1036,6 +1048,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 494.0, 300.5, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1121,7 +1137,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-26",
@@ -1130,7 +1145,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 1166.0, 349.0, 50.0, 22.0 ],
-									"text" : "1."
+									"text" : "2."
 								}
 
 							}
@@ -1142,7 +1157,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 1091.0, 356.0, 50.0, 22.0 ],
-									"text" : "1."
+									"text" : "3."
 								}
 
 							}
@@ -1166,7 +1181,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 979.0, 422.0, 50.0, 22.0 ],
-									"text" : "1."
+									"text" : "0."
 								}
 
 							}
@@ -2034,10 +2049,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 195.0, 354.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -2074,10 +2085,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 87.0, 126.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -2809,7 +2816,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-27",
-					"items" : [ "Microsoft GS Wavetable Synth", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)" ],
+					"items" : [ "Microsoft GS Wavetable Synth", ",", "Xkey37" ],
 					"labelclick" : 1,
 					"maxclass" : "umenu",
 					"numinlets" : 1,
@@ -3468,6 +3475,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-130", 0 ],
+					"order" : 1,
+					"source" : [ "obj-31", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-17", 1 ],
+					"order" : 0,
 					"source" : [ "obj-31", 2 ]
 				}
 
