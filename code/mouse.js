@@ -279,7 +279,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
-								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
+								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 0.999;
 								sidebar_parameter_knob(pb,pv);
 								redraw_flag.flag|=2;
 							} 
