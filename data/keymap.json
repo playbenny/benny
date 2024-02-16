@@ -99,7 +99,8 @@
         },
         "wire" : {
             "-4" : ["enter", "fold_menus"],
-            "-3" : ["ESC", "clear_or_close"]
+            "-3" : ["ESC", "clear_or_close"],
+            "559" : ["?", "toggle_connection_help"]
         }
     }
 }

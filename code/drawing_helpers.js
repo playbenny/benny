@@ -894,7 +894,9 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset) {
 	if(connections.get("connections["+i+"]::from::output::type")==ty){
 		curr = (connections.get("connections["+i+"]::from::output::number"))
 	}
-	if (blocktypes.contains(f_name + "::connections::out::" + ty)) {
+	var desc = 0; // this enable displaying descriptions here, but it always feels like redundant text..
+	if(sidebar.connection.help && (blocktypes.contains(f_name + "::connections::out::descriptions::" + ty))) desc = 1;
+	if(blocktypes.contains(f_name + "::connections::out::" + ty)){
 		var l = blocktypes.get(f_name + "::connections::out::" + ty);
 		if (!Array.isArray(l)) l = [l];
 		var c = config.get("palette::connections::" + ty);
@@ -910,7 +912,15 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset) {
 			lcd_main.message("write", l[o]);
 			lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
 			lcd_main.message("write", ty);
-			click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+			if(desc && (blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]")!="")){
+				lcd_main.message("moveto", sidebar.x + fo1 * 15, y_offset + 11 * fo1);
+				//lcd_main.message("frgb", c);
+				lcd_main.message("write", blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]"));
+				click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 13 * fo1, mouse_index, 1);
+				y_offset+=7*fo1;
+			}else{
+				click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+			}
 			y_offset+=7*fo1;
 		}
 	}

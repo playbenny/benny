@@ -2151,11 +2151,16 @@ function fold_menus(){
 
 function clear_or_close(){
 	var s = selected.wire.indexOf(1);
-	post("\n\n\n\nclear or close,",s);
+	//post("\n\n\n\nclear or close,",s);
 	if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
 		remove_connection(s);
 	}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
 		remove_connection(s);
 	}
 	set_sidebar_mode("none");
+}
+
+function toggle_connection_help(){
+	sidebar.connection.help = 1 - sidebar.connection.help;
+	redraw_flag.flag |= 2;
 }

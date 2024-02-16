@@ -4447,9 +4447,9 @@ function draw_sidebar(){
 					setfontsize(fontsmall);
 					lcd_main.message("textface", "normal");
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
-					var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
+					var hintrows = 0.4+ hint.length / 35+hint.split("£").length-1;
 					var rowstart=0;
-					var rowend=28;
+					var rowend=36;
 					hint = hint+"                       ";
 					var bold=0;
 					var sameline=0;
@@ -4485,9 +4485,9 @@ function draw_sidebar(){
 						lcd_main.message("write",sliced);
 						if(!sameline){
 							rowstart=rowend+1;
-							rowend+=28;
+							rowend+=36;
 						}else{
-							var t = rowstart+28;
+							var t = rowstart+36;
 							rowstart=rowend+1
 							rowend=t;
 						}

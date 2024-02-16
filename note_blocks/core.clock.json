@@ -15,7 +15,7 @@
 				"midi" : [ "clock", "play" ],
 				"dontdefaultall" : 1,
 				"descriptions" : {
-					"midi" : [ "notes at the rate selected", "a held note that matches the status of the play control"]
+					"midi" : [ "notes at the rate selected", "status of the play control"]
 				}
 			}
 		},

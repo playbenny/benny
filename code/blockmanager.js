@@ -408,7 +408,8 @@ var sidebar = {
 			offset : 0.5,
 			offset2 : 0.5,
 			vector : 0
-		}
+		},
+		help: 0
 	}
 }
 
