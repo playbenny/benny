@@ -802,7 +802,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+7,0);
 		routing_buffer.poke(1,index+8,0);
 	}
-	post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	//post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 	if(cno == sidebar.scopes.midi_routing.number){
 		//post("\ncopy this connection for metering");
 		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
@@ -1562,7 +1562,6 @@ function make_connection(cno,existing){
 		for(i=0;i<f_voices.length;i++){
 			if(((t_type == "midi")||(t_type == "block")) && (t_voice_list == "all") && (to_block_type != "hardware")){ 
 	//midi that goes to a polyalloc - handled here not per-to-voice
-				post("\n\npoly assign section");
 				if(f_type == "midi"){ //midi to midi(polyrouter)
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
