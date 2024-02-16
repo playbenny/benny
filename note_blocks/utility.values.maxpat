@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 3,
+			"minor" : 6,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 85.0, 1533.0, 751.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -57,8 +57,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 343.0, 275.0, 58.0, 22.0 ],
-					"text" : "pak 2 0 0"
+					"patching_rect" : [ 343.0, 275.0, 61.0, 22.0 ],
+					"text" : "pak 2 0 0."
 				}
 
 			}
@@ -69,8 +69,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 270.0, 275.0, 58.0, 22.0 ],
-					"text" : "pak 1 0 0"
+					"patching_rect" : [ 270.0, 275.0, 61.0, 22.0 ],
+					"text" : "pak 1 0 0."
 				}
 
 			}
@@ -81,8 +81,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 202.0, 275.0, 58.0, 22.0 ],
-					"text" : "pak 0 0 0"
+					"patching_rect" : [ 202.0, 275.0, 61.0, 22.0 ],
+					"text" : "pak 0 0 0."
 				}
 
 			}
@@ -165,10 +165,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 202.0, 330.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -313,6 +309,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 412.5, 44.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
