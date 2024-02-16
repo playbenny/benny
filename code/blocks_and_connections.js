@@ -177,7 +177,6 @@ function new_block(block_name,x,y){
 				p_min = 0;
 				p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_max = p_steps-1;
-				post("\nmenu i",i,"p_values are",p_values,"p_min,max,steps",p_min,p_max,p_steps);
 
 			}else if(p_type=="menu_f"){
 				p_min=0;
@@ -185,7 +184,6 @@ function new_block(block_name,x,y){
 				p_steps = 0;
 			}else if(p_type=="int"){
 				p_steps=p_max - p_min + 1;
-				post("\nparam",i,"p_values are",p_values,"p_min,max,steps",p_min,p_max,p_steps);
 			}else if(p_type=="button"){
 				p_min = 0;
 				p_max = (p_values.length - 1 ) / 2;

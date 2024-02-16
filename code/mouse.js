@@ -477,7 +477,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
-									post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									usermouse.clicked3d=-1;
 								}
