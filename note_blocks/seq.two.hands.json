@@ -1,0 +1,230 @@
+{
+	"seq.two.hands" : {
+		"patcher" : "seq.two.hands",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Two hands for drumming",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "clock in" ]
+			},
+			"out" : {
+				"midi" : [ "Left Hand", "Right Hand" ]
+			}
+		},
+		"groups" : [
+			{
+				"contains" : [24, 25, 26], 
+				"height"	: 0,
+				"colour"	: 10
+			},
+			{ 
+				"contains" : [0, 1, 2, 3, 4, 5, 6, 7],
+				"header"	: "Steps"
+			},	
+			{ 
+				"contains" : [8, 9, 10, 11, 12, 13, 14, 15],
+				"header"	: "Velocities"
+			},	
+			{ 
+				"contains" : [16, 17 ,18 ,19 ,20, 21, 22, 23],
+				"header"	: "Notes"
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 5, 6, 7]
+		},
+		"parameters" : [
+			{
+				"name" : "0",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "1",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "2",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "3",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "4",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "5",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "6",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "7",
+				"type" : "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "8",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "9",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "10",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "11",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "12",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "13",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "14",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "15",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "16",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "17",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "18",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "19",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "20",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "21",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "22",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "23",
+				"type" : "int",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" :  0.787
+			},
+			{
+				"name" : "trig_type",
+				"type" : "menu_i",
+				"values" : ["Step Lock", "Note Trig", "Step Free"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "step_length",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 8
+			},
+			{
+				"name" : "velocity_length",
+				"type"	: "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 8
+			}
+		]
+	}
+}
