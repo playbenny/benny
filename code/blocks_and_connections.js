@@ -802,7 +802,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+7,0);
 		routing_buffer.poke(1,index+8,0);
 	}
-	//post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 	if(cno == sidebar.scopes.midi_routing.number){
 		//post("\ncopy this connection for metering");
 		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
@@ -1562,6 +1562,7 @@ function make_connection(cno,existing){
 		for(i=0;i<f_voices.length;i++){
 			if(((t_type == "midi")||(t_type == "block")) && (t_voice_list == "all") && (to_block_type != "hardware")){ 
 	//midi that goes to a polyalloc - handled here not per-to-voice
+				post("\n\npoly assign section");
 				if(f_type == "midi"){ //midi to midi(polyrouter)
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
@@ -1580,7 +1581,7 @@ function make_connection(cno,existing){
 					var offv = conversion.get("offset2");
 					var vect = conversion.get("vector");
 					set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
-				}else if(f_type == "parameters"){//audio to midi (polyrouter)
+				}else if(f_type == "parameters"){//param to midi (polyrouter)
 					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
@@ -1792,13 +1793,13 @@ function make_connection(cno,existing){
 							add_to_midi_routemap(m_index,vvv);
 							mod_buffer.poke(1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
-							//post("midi to audio",tvv);
+							post("midi to audio",tvv);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offs = conversion.get("offset");
 							if(typeof offs === "number"){
 								var offn = offs;
-								var offv = 0;
+								var offv = 0.5;
 							}else{
 								var offn = offs[0];
 								var offv = offs[1];
@@ -1934,7 +1935,7 @@ function make_connection(cno,existing){
 							add_to_midi_routemap(m_index,vvv);
 							mod_buffer.poke(1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
-							//post("midi to audio",tvv);
+							post("param to audio",tvv);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							/*var offs = conversion.get("offset");
