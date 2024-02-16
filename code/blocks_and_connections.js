@@ -182,7 +182,7 @@ function new_block(block_name,x,y){
 				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
 				p_steps = 0;
 			}else if(p_type=="int"){
-				p_steps=p_max;
+				p_steps=p_max - p_min + 1;
 			}else if(p_type=="button"){
 				p_min = 0;
 				p_max = (p_values.length - 1 ) / 2;

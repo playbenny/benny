@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 3,
+			"minor" : 6,
 			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 40.0, 82.0, 1215.0, 751.0 ],
+		"rect" : [ 802.0, 158.0, 1215.0, 751.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -80,7 +80,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 109.0, 390.0, 150.0, 75.0 ],
+					"patching_rect" : [ 178.0, 404.5, 150.0, 75.0 ],
 					"text" : "if noteoff is currently playing note, find the next most recent note and play that? (ie act as if it retriggered at input)"
 				}
 
@@ -1176,9 +1176,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [  ],
-		"autosave" : 0
+ ]
 	}
 
 }
