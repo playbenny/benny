@@ -2057,7 +2057,6 @@ function custom_key_passthrough(key){
 
 function qwertymidi(key,vel){
 	messnamed("qwertymidi",key + 12*qwertym.octave, vel);
-	post("\nQWER",key,vel);
 }
 function qwertymidispecial(command){
 	if(command=="octavedown"){
