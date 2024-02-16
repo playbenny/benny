@@ -102,5 +102,38 @@
             "-3" : ["ESC", "clear_or_close"],
             "559" : ["?", "toggle_connection_help"]
         }
+    },
+    "qwertymidi" : {
+        "122" : ["Z" , "qwertymidi", 0],
+        "115" : ["S" , "qwertymidi", 1],
+        "120" : ["X" , "qwertymidi", 2],
+        "100" : ["D" , "qwertymidi", 3],
+        "99" : ["C" , "qwertymidi", 4],
+        "118" : ["V" , "qwertymidi", 5],
+        "103" : ["G" , "qwertymidi", 6],
+        "98" : ["B" , "qwertymidi", 7],
+        "104" : ["H" , "qwertymidi", 8],
+        "110" : ["N" , "qwertymidi", 9],
+        "106" : ["J" , "qwertymidi", 10],
+        "109" : ["M" , "qwertymidi", 11],
+        "113" : ["Q" , "qwertymidi", 12],
+        "50" : ["2" , "qwertymidi", 13],
+        "119" : ["W" , "qwertymidi", 14],
+        "51" : ["3" , "qwertymidi", 15],
+        "101" : ["E" , "qwertymidi", 16],
+        "114" : ["R" , "qwertymidi", 17],
+        "53" : ["5" , "qwertymidi", 18],
+        "116" : ["T" , "qwertymidi", 19],
+        "54" : ["6" , "qwertymidi", 20],
+        "121" : ["Y" , "qwertymidi", 21],
+        "55" : ["7" , "qwertymidi", 22],
+        "117" : ["U" , "qwertymidi", 23],
+        "105" : ["I" , "qwertymidi", 24],
+        "57" : ["9" , "qwertymidi", 25],
+        "111" : ["O" , "qwertymidi", 26],
+        "48" : ["0" , "qwertymidi", 27],
+        "112" : ["P" , "qwertymidi", 28],
+        "44" : ["," , "qwertymidispecial", "octavedown"],
+        "108" : ["L" , "qwertymidispecial", "octaveup"]
     }
 }

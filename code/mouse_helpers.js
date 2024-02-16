@@ -2055,6 +2055,19 @@ function custom_key_passthrough(key){
 	ui_poly.setvalue( custom_block+1, "keydown", key);
 }
 
+function qwertymidi(key,vel){
+	messnamed("qwertymidi",key + 12*qwertym.octave, vel);
+	post("\nQWER",key,vel);
+}
+function qwertymidispecial(command){
+	if(command=="octavedown"){
+		qwertym.octave -= 1;
+		if(qwertym.octave < 0) qwertym.octave = 0;
+	}else if(command=="octaveup"){
+		if(qwertym.octave < 9) qwertym.octave += 1;
+	}
+	redraw_flag.flag |= 2;
+}
 function poly_key(dir){
 	if(dir<0){
 		if((sidebar.mode == "block")||(sidebar.mode == "settings")){

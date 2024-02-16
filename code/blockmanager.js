@@ -261,6 +261,11 @@ var automap = {
 	c_rows : 4
 }
 
+var qwertym = {
+	octave : 4,
+	vel : 100
+}
+
 var wirecolour = [1,1,1,1];
 
 var meter_positions = [];

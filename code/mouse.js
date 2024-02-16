@@ -129,7 +129,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.shift = shift;
 	usermouse.ctrl = ctrl;
 	usermouse.alt = alt;
-	usermouse.caps = caps;
+	if(usermouse.caps!=caps){
+		usermouse.caps = caps;
+		redraw_flag.flag |= 2; //so the qwertymidi indicator gets drawn
+	}
 	usermouse.x = x;
 	usermouse.y = y;
 	usermouse.sidebar_scrolling = null;
@@ -946,11 +949,6 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 
 
 function keydown(key){
-	if(keyrepeat_task.running==0){
-		keyrepeat_task = new Task(keydown, this, key);
-		keyrepeat_task.interval= 150;
-		keyrepeat_task.repeat(-1,300);			
-	}
 	if(keymap.contains("modal::"+sidebar.mode)){
 		if(keymap.contains("modal::"+sidebar.mode+"::"+key)){
 			var action = keymap.get("modal::"+sidebar.mode+"::"+key);
@@ -967,6 +965,20 @@ function keydown(key){
 			(eval(action[1])).apply(this,paras);
 			return 1;		
 		}
+	}
+	if(usermouse.caps && keymap.contains("qwertymidi::"+key)){
+		var action = keymap.get("qwertymidi::"+key);
+		var paras = action.slice(2,99);
+		if(!Array.isArray(paras)) paras=[paras];
+		paras.push(qwertym.vel);
+		//post("\nfound in keymap qwertmidi", action[0],action[1], "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
+	}
+	if(keyrepeat_task.running==0){
+		keyrepeat_task = new Task(keydown, this, key);
+		keyrepeat_task.interval= 150;
+		keyrepeat_task.repeat(-1,300);			
 	}
 	if(keymap.contains("sidebar::"+sidebar.mode+"::"+key)){
 		var action = keymap.get("sidebar::"+sidebar.mode+"::"+key);
@@ -1000,4 +1012,16 @@ function keydown(key){
 
 function keyup(key){
 	keyrepeat_task.cancel();
+	if(usermouse.caps && keymap.contains("qwertymidi::"+key)){
+		var action = keymap.get("qwertymidi::"+key);
+		if(action[1] == "qwertymidi"){
+			var paras = action.slice(2,99);
+			if(!Array.isArray(paras)) paras=[paras];
+			paras.push(0);
+			//post("\nfound in keymap qwertmidi", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}
+	}
+
 }
