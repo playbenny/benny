@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790878365,
+	"modificationdate" : 3790977130,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -61,11 +61,6 @@
 			}
 ,
 			"core.tuning.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"source.basic.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -191,6 +186,16 @@
 				"local" : 1
 			}
 ,
+			"source.basic.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
 			"voiceheader.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
@@ -213,7 +218,12 @@
 ,
 			"voice.basic.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"upwrap2.maxpat" : 			{
@@ -238,27 +248,52 @@
 ,
 			"voice.harmonic.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.mid-side.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.sidechain.compressor.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.vca.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.noise.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"midi.delay.maxpat" : 			{
@@ -283,12 +318,22 @@
 ,
 			"seq.note.steps.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"seq.note.tracker.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"seq.rene.maxpat" : 			{
@@ -300,7 +345,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 					"projectrelativepath" : "./patchers"
 				}
 
@@ -310,7 +355,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 					"projectrelativepath" : "./patchers"
 				}
 
@@ -320,7 +365,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 					"projectrelativepath" : "./patchers"
 				}
 
@@ -330,7 +375,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 					"projectrelativepath" : "./patchers"
 				}
 
@@ -340,7 +385,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 					"projectrelativepath" : "./patchers"
 				}
 
@@ -350,7 +395,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 					"projectrelativepath" : "./patchers"
 				}
 
@@ -370,7 +415,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -380,7 +425,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -390,7 +435,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -400,7 +445,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -410,7 +455,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -420,7 +465,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -430,7 +475,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -440,7 +485,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -450,7 +495,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -460,7 +505,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -470,7 +515,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -480,7 +525,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -490,7 +535,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -500,7 +545,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -510,7 +555,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -520,7 +565,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -530,7 +575,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -540,7 +585,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -550,7 +595,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -560,7 +605,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -570,7 +615,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -580,7 +625,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -590,7 +635,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -600,7 +645,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -610,7 +655,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -620,7 +665,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -630,7 +675,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -640,7 +685,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -650,7 +695,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -660,7 +705,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -670,7 +715,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -680,7 +725,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -690,7 +735,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -700,7 +745,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -710,7 +755,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -788,14 +833,19 @@
 ,
 			"source.dual.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"source.shape.oscillator.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -803,109 +853,209 @@
 ,
 			"source.shepherd.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.wave.scan.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.wave.scan.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.wave.traverse.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.wave.traverse.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.delay.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.env.asr.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.lowpass.highpass.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.mid.side.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.mixer.cascade.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.mixer.channel.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.self.tuner.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.vca.env.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.dual.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.ks.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.multi.sample.player.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.organ.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.pitch.env.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.sample.player.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.shepherd.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.basic.osc.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -915,7 +1065,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -925,7 +1075,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -935,7 +1085,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -945,7 +1095,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -955,7 +1105,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -979,11 +1129,6 @@
 				"local" : 1
 			}
 ,
-			"source.basic.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"seq.grid.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
@@ -1004,22 +1149,7 @@
 				"local" : 1
 			}
 ,
-			"source.harmonic.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"source.random.s_and_h.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"blockmanager.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"core.input.control.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -1035,6 +1165,11 @@
 ,
 			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"core.input.control.ui.js" : 			{
+				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -1133,24 +1268,9 @@
 				"local" : 1
 			}
 ,
-			"seq.note.tracker.new.js" : 			{
-				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-					"projectrelativepath" : "./note_blocks"
-				}
-
-			}
-,
-			"fx.atoner.gendsp" : 			{
+			"fx.delay.buckets.gendsp" : 			{
 				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-					"projectrelativepath" : "./note_blocks"
-				}
-
+				"local" : 1
 			}
 ,
 			"fx.2pole.filter.env.gendsp" : 			{
@@ -1159,26 +1279,6 @@
 			}
 ,
 			"fx.2pole.filter.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"env.asr.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
-					"projectrelativepath" : "./patchers"
-				}
-
-			}
-,
-			"core.space.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"fx.delay.buckets.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -1193,43 +1293,13 @@
 				"local" : 1
 			}
 ,
-			"mini.env.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"mix.channel.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"selftuner_fm.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
 			"seq.sample.tracker.old.js" : 			{
 				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"source.dual.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"source.shape.oscillator.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
-			}
-,
-			"source.shepherd.gendsp" : 			{
-				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
@@ -1248,6 +1318,11 @@
 				"local" : 1
 			}
 ,
+			"selftuner_fm.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"utility.vca.env.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -1259,6 +1334,11 @@
 			}
 ,
 			"voice.ks.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"mini.env.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -1280,29 +1360,119 @@
 ,
 			"source.basic.osc.gendsp" : 			{
 				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
+				"local" : 1
 			}
 ,
 			"source.dual.osc.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.harmonic.osc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.shepherd.osc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.random.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.basic.gendsp" : 			{
+				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
 			}
 ,
-			"source.harmonic.osc.gendsp" : 			{
+			"source.harmonic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.random.s_and_h.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"seq.note.tracker.new.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"fx.atoner.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"env.asr.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"core.space.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"source.dual.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
+,
+			"source.shape.oscillator.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"source.shepherd.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -1312,27 +1482,7 @@
 				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
-			}
-,
-			"source.shepherd.osc.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
-			}
-,
-			"source.random.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -1345,7 +1495,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
 					"projectrelativepath" : "./code"
 				}
 
@@ -1355,7 +1505,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
 					"projectrelativepath" : "./code"
 				}
 
@@ -1365,7 +1515,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
 					"projectrelativepath" : "./code"
 				}
 
@@ -1375,7 +1525,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
 					"projectrelativepath" : "./code"
 				}
 
@@ -1395,7 +1545,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
 					"projectrelativepath" : "./code"
 				}
 
@@ -1410,7 +1560,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/code",
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
 					"projectrelativepath" : "./code"
 				}
 
@@ -1428,17 +1578,32 @@
 ,
 			"source.basic.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"source.harmonic.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"source.random.s_and_h.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"seq.sample.tracker.json" : 			{
@@ -1521,16 +1686,6 @@
 				"local" : 1
 			}
 ,
-			"userconfig.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes",
-					"projectrelativepath" : "."
-				}
-
-			}
-,
 			"midi.sustain.json" : 			{
 				"kind" : "json",
 				"local" : 1
@@ -1550,7 +1705,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes",
+					"bootpath" : "~/Documents/GitHub/multitudes",
 					"projectrelativepath" : "."
 				}
 
@@ -1570,7 +1725,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1580,7 +1735,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1590,7 +1745,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1600,7 +1755,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1610,7 +1765,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1620,7 +1775,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1630,7 +1785,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1640,7 +1795,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1650,7 +1805,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1660,7 +1815,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1670,7 +1825,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1680,7 +1835,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1690,7 +1845,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1700,7 +1855,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1710,7 +1865,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1720,7 +1875,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1730,7 +1885,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1740,7 +1895,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1750,7 +1905,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1760,7 +1915,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1770,7 +1925,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1780,7 +1935,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1790,7 +1945,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1800,7 +1955,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1810,7 +1965,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1820,7 +1975,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 					"projectrelativepath" : "./note_blocks"
 				}
 
@@ -1888,14 +2043,19 @@
 ,
 			"source.dual.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"source.shape.oscillator.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -1903,229 +2063,449 @@
 ,
 			"source.shepherd.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.wave.scan.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.wave.traverse.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.delay.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.env.asr.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.lowpass.highpass.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.mixer.cascade.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.mixer.channel.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.self.tuner.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"utility.vca.env.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.dual.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.ks.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.multi.sample.player.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.organ.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.pitch.env.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.sample.player.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"voice.shepherd.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Capacitor264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.CStrip64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.DeRez264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Distortion64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.DPiano-E.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Elation64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Focus64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.MackEQ64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Mojo64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.PitchNasty64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Pockey264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Pressure464.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Pro-C.2.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.RatshackReverb2.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.TAL-Chorus-LX-64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ToTape664.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaDelay.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaFreqEcho_x64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaRoom.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaSpaceModulator.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaSupermassive_x64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaUberMod.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ZBandpass264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ZHighpass264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ZLowpass264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ZNotch264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ZRegion264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.basic.osc.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -2135,7 +2515,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -2145,7 +2525,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -2155,7 +2535,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -2165,7 +2545,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
 				}
 
@@ -2175,8 +2555,18 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"abb.two.hands.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
 				}
 
 			}
@@ -2198,12 +2588,22 @@
 ,
 			"fx.delay.tape.zip" : 			{
 				"kind" : "file",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"osc.harmonic before converting to console.zip" : 			{
 				"kind" : "file",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}

@@ -14,7 +14,7 @@ function import_hardware(v){
 	var vspl = v.split('/').pop();
 	if(!userconfig.contains("last_hardware_config") || (vspl!=userconfig.get("last_hardware_config"))){
 		userconfig.replace("last_hardware_config",vspl);
-		messnamed("write_userconfig","bang"); //userconfig.writeagain(); <--this seemed to crash max?
+		write_userconfig(); //userconfig.writeagain(); <--this seemed to crash max?
 		post("\nstoring hardware config choice",vspl);
 	}
 
@@ -173,7 +173,7 @@ function process_userconfig(){
 	if(uk==null) return 0;
 	for(var i=0;i<uk.length;i++){
 		var tk=userconfig.get(uk[i]);
-		if((typeof tk == "string")||(typeof tk == "number")){
+		if((typeof tk == "string")||(typeof tk == "number")||(Array.isArray(tk))){
 			config.replace(uk[i],tk);
 			//post(uk[i]);
 		}else{
@@ -473,6 +473,17 @@ function assign_block_colours(){
 	var type_order = config.get("type_order");
 	typecount = type_order.length;
 	
+	for(i=0;i<cubecount;i++){
+		ty=types[i].split(".",4);
+		var oc = type_order.indexOf(ty[0]);
+		if(oc==-1){
+			post("\nnew block name prefix "+ty[0]+" discovered. added to the type_order key in userconfig.json. you can reorder the block menu by editing this.");
+			type_order.push(ty[0]);
+			userconfig.replace("type_order",type_order);
+			write_userconfig(); //userconfig.writeagain(); //this crashes max?
+		}
+	}
+
 	var cll = config.getsize("palette::gamut");
 	var t = Math.floor(cll/(typecount));
 	var t1=40;
@@ -513,7 +524,7 @@ function import_blocktypes(v)
 	f.reset();
 	while (!f.end) {
 		if(f.extension == ".json"){
-			post("  "+f.filename + "\n");
+			post("\n  "+f.filename);
 			d.import_json(f.filename);
 			var keys = d.getkeys();
 			keys = keys.toString();

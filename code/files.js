@@ -1002,6 +1002,11 @@ function save_song(selectedonly){
 	set_sidebar_mode("none");
 }
 
+function write_userconfig(){
+	post("\nbet you 50p max crashes now.");
+	messnamed("write_userconfig","bang");//userconfig.writeagain();
+}
+
 function folder_select(folderstr){
 //	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
@@ -1009,28 +1014,23 @@ function folder_select(folderstr){
 			SONGS_FOLDER = folderstr;
 			post("\nselected new songs folder:",folderstr);
 			userconfig.replace("SONGS_FOLDER",folderstr);
-			userconfig.writeagain();
+			write_userconfig();
 			read_songs_folder("songs");
 		}else if(folder_target == "template"){
 			TEMPLATES_FOLDER = folderstr;
 			post("\nselected new templates folder:",folderstr);
 			userconfig.replace("TEMPLATES_FOLDER",folderstr);
-			userconfig.writeagain();
+			write_userconfig();
 			read_songs_folder("templates");
 		}else if(folder_target == "record"){
 			post("\nselected new record folder:",folderstr);
 			config.replace("RECORD_FOLDER",folderstr);
 			userconfig.replace("RECORD_FOLDER",folderstr);
-			userconfig.writeagain();
+			write_userconfig();
 			recording_flag = ((record_arm.indexOf(1)!=-1)+2*(folderstr!=""));
 		}
 	}
 	if(fullscreen) world.message("fullscreen",fullscreen);
-}
-
-function write_userconfig(){
-	userconfig.writeagain();
-	post("\nwrote userconfig to disk");
 }
 
 function purge_muted_trees(){
