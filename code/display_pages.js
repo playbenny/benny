@@ -659,7 +659,7 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
@@ -691,7 +691,7 @@ function initialise_block_menu(visible){
 						}
 						//col = config.get("palette::"+ts[0]);
 //						post("drawing menu block",ts);
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
@@ -916,7 +916,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	var tt=0;
 	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
-			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","mainwindow");
+			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
 			blocks_cube[i][t].dim = [12, 12];
 			blocks_cube[i][t].name = "block-"+i+"-"+t;
 			blocks_cube[i][t].shape = "cube";
@@ -947,7 +947,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					//post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
 					var tv=(t-1)/subvoices;
 					for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter-"+i+"-"+t+"-"+tt;
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
@@ -968,7 +968,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 						post("this hardware block seems to have no io?");
 					}else{
 						for(tt=0;tt<noio;tt++){
-							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
+							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","benny");
 							blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
 							blocks_meter[i][(t-1)*noio+tt].name = "meter-"+i+"-"+t+"-"+tt;
 							blocks_meter[i][(t-1)*noio+tt].shape = "cube";
@@ -977,7 +977,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					}					
 					
 				}else if(block_type == "note"){
-					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","mainwindow");
+					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","benny");
 					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
 					blocks_meter[i][t-1].name = "meter-"+i+"-"+t+"-0";
 					blocks_meter[i][t-1].shape = "cube";
@@ -1427,7 +1427,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		rotY *= 57.29577951; //180/Math.PI;
 	}
 	if(typeof wires[connection_number][segment] === 'undefined') {
-		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","mainwindow");
+		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","benny");
 		wires[connection_number][segment].shape = "plane";//"opencylinder";
 		wires[connection_number][segment].name = "wires-"+connection_number+"-"+segment;
 		wires[connection_number][segment].dim = [2,2];//[5, 2]; //[3,2]cyl is ribbons, [5,2] cuboids

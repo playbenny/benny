@@ -1259,7 +1259,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 13.0, 108.25, 169.0, 28.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 9.0, 67.0, 295.0, 28.0 ],
+					"presentation_rect" : [ 9.0, 97.0, 295.0, 28.0 ],
 					"text" : "hardware config:",
 					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ]
 				}
@@ -6015,8 +6015,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "jit_gl_texture", "", "" ],
-					"patching_rect" : [ 1181.0, 412.0, 399.0, 36.0 ],
-					"text" : "jit.gl.pass mainwindow @fxname bloom-hq @threshold 0.7 @bloom_amt 0.15 @white_point 1.8"
+					"patching_rect" : [ 1181.0, 412.0, 393.0, 36.0 ],
+					"text" : "jit.gl.pass benny @fxname bloom-hq @threshold 0.7 @bloom_amt 0.15 @white_point 1.8"
 				}
 
 			}
@@ -13891,8 +13891,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1181.0, 249.0, 390.0, 22.0 ],
-					"text" : "jit.gl.light mainwindow @position 10 20 50 @lookat 0 0 0 @name light3"
+					"patching_rect" : [ 1181.0, 249.0, 353.0, 22.0 ],
+					"text" : "jit.gl.light benny @position 10 20 50 @lookat 0 0 0 @name light3"
 				}
 
 			}
@@ -13904,8 +13904,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1181.0, 459.0, 398.0, 36.0 ],
-					"text" : "jit.gl.light mainwindow @position -25 -20 50 @lookat 0 0 0 @name light2 @ambient 0.23 0.21 0.22 1. @diffuse 0. 0. 0. 0."
+					"patching_rect" : [ 1181.0, 459.0, 365.0, 36.0 ],
+					"text" : "jit.gl.light benny @position -25 -20 50 @lookat 0 0 0 @name light2 @ambient 0.23 0.21 0.22 1. @diffuse 0. 0. 0. 0."
 				}
 
 			}
@@ -13942,7 +13942,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 13.0, 12.25, 147.0, 30.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 226.0, 97.0, 88.0, 30.0 ],
+					"presentation_rect" : [ 226.0, 127.0, 88.0, 30.0 ],
 					"text" : "start",
 					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ],
 					"textjustification" : 1
@@ -13957,8 +13957,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_gl_texture", "" ],
-					"patching_rect" : [ 1263.0, 201.0, 288.0, 36.0 ],
-					"text" : "jit.gl.camera mainwindow @cull_face 1 @antialias 1 @smooth_shading 1 @fsaa 1"
+					"patching_rect" : [ 1263.0, 201.0, 255.0, 36.0 ],
+					"text" : "jit.gl.camera benny @cull_face 1 @antialias 1 @smooth_shading 1 @fsaa 1"
 				}
 
 			}
@@ -14061,7 +14061,7 @@
 					"patching_rect" : [ 13.0, 71.25, 138.0, 30.0 ],
 					"prefix" : "~/Documents/GitHub/multitudes/hardware_configs/",
 					"presentation" : 1,
-					"presentation_rect" : [ 9.0, 97.0, 213.0, 30.0 ],
+					"presentation_rect" : [ 9.0, 127.0, 213.0, 30.0 ],
 					"textcolor" : [ 1.0, 0.898039215686275, 0.0, 1.0 ]
 				}
 
@@ -14123,7 +14123,8 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -14315,8 +14316,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "jit_matrix", "bang", "" ],
-					"patching_rect" : [ 788.0, 227.25, 177.0, 22.0 ],
-					"text" : "jit.world mainwindow @visible 0",
+					"patching_rect" : [ 788.0, 227.25, 144.0, 22.0 ],
+					"text" : "jit.world benny @visible 0",
 					"varname" : "world"
 				}
 
@@ -15448,10 +15449,6 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "ar.capacitor2~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}

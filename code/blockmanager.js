@@ -112,7 +112,7 @@ var lcd_main = this.patcher.getnamed("lcd_main");
 var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 var textureset_blocks = this.patcher.getnamed("textureset_blocks");
 
-var glpicker = new JitterObject("jit.gl.picker","mainwindow");
+var glpicker = new JitterObject("jit.gl.picker","benny");
 
 var scope_buffer = new Buffer("scope_buffer");
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
@@ -176,7 +176,7 @@ var click_i = new Int16Array(9900000); //more than 4k.
 var click_b_s = 2; //click buffer is scaled, >> click_b_s, so 
 var click_b_w = 11 >> click_b_s; //width of the screen log2 (ie so 2^this > actual width)
 
-var connections_sketch = new JitterObject("jit.gl.sketch","mainwindow");
+var connections_sketch = new JitterObject("jit.gl.sketch","benny");
 
 //these hold all the opengl objects (labels, blocks separate for the main one, in one for the menu one.)
 //var blocks_label = []; //called label-blockno-0
@@ -304,7 +304,7 @@ var backgroundcolour_current;
 
 //this is what a listener looks like
 //var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);
-//var picker = new JitterObject("jit.gl.picker","mainwindow");
+//var picker = new JitterObject("jit.gl.picker","benny");
 //picker.hover=0;
 //var picker_listener = new JitterListener(picker.getregisteredname(), picker_callback);
 

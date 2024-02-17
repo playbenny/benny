@@ -31,17 +31,14 @@ function loadbang(){
 		post("\nmessage to max: ",messes[i],m);
 	}
 	populate_lookup_tables();
-	var namelist = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
-	for(i=0;i<128;i++){
-		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
-	}
+	post("\nreticulating splines");
 	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 	
 	audio_poly = this.patcher.getnamed("audio_poly");
+	matrix = this.patcher.getnamed("matrix");
 	world = this.patcher.getnamed("world");
-	post("\nreticulating splines");
 	initialise_dictionaries("init");
 }
 
@@ -93,6 +90,10 @@ function initialise_reset(hardware_file){
 function initialise_dictionaries(hardware_file){
 	post("\n\ninit stage 2 : import dictionaries\n---------------------------");
 	var i; 
+	var namelist = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+	for(i=0;i<128;i++){
+		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
+	}
 	// get config first because a lot of things depend on it.
 	load_config_colours(); //separate fn so it can be called by core.space block
 	UPSAMPLING = config.get("UPSAMPLING");
@@ -265,14 +266,14 @@ function initialise_graphics() {
 	world.message("fps", 30);
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 
-	background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
+	background_cube = new JitterObject("jit.gl.gridshape", "benny");
 	background_cube.shape = "cube";
 	background_cube.scale = [100000, 100000, 1];
 	background_cube.position = [0, 0, -200];
 	background_cube.name = "background";
 	background_cube.color = [0, 0, 0, 1];
 
-	selection_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
+	selection_cube = new JitterObject("jit.gl.gridshape", "benny");
 	selection_cube.shape = "cube";
 	selection_cube.name = "selection";
 	selection_cube.color = [0.65, 0.65, 0.65, 0.15];
@@ -281,28 +282,28 @@ function initialise_graphics() {
 	selection_cube.blend_enable = 1;
 	selection_cube.enable = 0;
 
-	menu_background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
+	menu_background_cube = new JitterObject("jit.gl.gridshape", "benny");
 	menu_background_cube.shape = "cube";
 	menu_background_cube.scale = [1000, 1, 1000];
 	menu_background_cube.position = [0, -200, 0];
 	menu_background_cube.name = "block_menu_background";
 	menu_background_cube.color = [0, 0, 0, 1];
 
-	flock_cubexy = new JitterObject("jit.gl.gridshape", "mainwindow");
+	flock_cubexy = new JitterObject("jit.gl.gridshape", "benny");
 	flock_cubexy.shape = "cube";
 	flock_cubexy.scale = [flock_cube_size * 0.5 + 1, flock_cube_size * 0.5 + 1, 0.0001];
 	flock_cubexy.position = [0, 0, 3.999];
 	flock_cubexy.name = "flockcubexy";
 	flock_cubexy.color = [0.2, 0.2, 0.2, 1];
 
-	flock_cubeyz = new JitterObject("jit.gl.gridshape", "mainwindow");
+	flock_cubeyz = new JitterObject("jit.gl.gridshape", "benny");
 	flock_cubeyz.shape = "cube";
 	flock_cubeyz.scale = [0.0001, flock_cube_size * 0.5 + 1, flock_cube_size * 0.5 + 1];
 	flock_cubeyz.position = [-flock_cube_size * 0.5 - 1.00005, 0, 5 + flock_cube_size * 0.5];
 	flock_cubeyz.name = "flockcubeyz";
 	flock_cubeyz.color = [0.4, 0.4, 0.4, 1];
 
-	flock_cubexz = new JitterObject("jit.gl.gridshape", "mainwindow");
+	flock_cubexz = new JitterObject("jit.gl.gridshape", "benny");
 	flock_cubexz.shape = "cube";
 	flock_cubexz.scale = [flock_cube_size * 0.5 + 1, 0.0001, flock_cube_size * 0.5 + 1];
 	flock_cubexz.position = [0, -flock_cube_size * 0.5 - 1.00005, 5 + flock_cube_size * 0.5];
@@ -686,7 +687,7 @@ function populate_lookup_tables(){
 		osc_shape_lookup.poke(3,i, sqr_l[tt]*(1-t)+sqr_l[tt+1]*t);
 		osc_shape_lookup.poke(4,i, 0.5+0.48*(pw[tt]*(1-t)+pw[tt+1]*t));
 	}
-	post("populated pitch lookup with default 12TET 440Hz\nthere are other tunings available!\n");
+	post("\npopulated pitch lookup with default 12TET 440Hz\nthere are other tunings available!");
 	var mtof_l = new Buffer("mtof_lookup");
 	for(t=0;t<8;t++){
 		for(i=0;i<128;i++){
