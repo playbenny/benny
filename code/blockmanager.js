@@ -9,7 +9,7 @@ include("clocked.js");
 include("mouse_helpers.js");
 include("drawing_helpers.js");
 
-//these are all loaded from the config.json file now BUT MAX_PARAMATER and MAX_NOTE_VOICES and MAX_MOD_IDS need sending out
+//these are all loaded from the config.json file now BUT MAX_PARAMETER and MAX_NOTE_VOICES and MAX_MOD_IDS need sending out
 var MAX_BLOCKS = 128; 
 var MAX_NOTE_VOICES = 64;
 var MAX_AUDIO_VOICES = 64;
@@ -90,10 +90,13 @@ var state_fade = {
 	last: -1 //just for the colour fade on the slider.
 }
 
-var whole_state_xfade_create_task = new Task(create_whole_state_xfade_slider, this);
-var keyrepeat_task = new Task(keydown,this,0);
+var output_looper_active = 0;
+var output_looper_block = -1;
 
 var end_of_frame_fn = null;
+
+var whole_state_xfade_create_task = new Task(create_whole_state_xfade_slider, this);
+var keyrepeat_task = new Task(keydown,this,0);
 
 var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
 var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
@@ -106,17 +109,12 @@ var matrix = this.patcher.getnamed("matrix");
 var world = this.patcher.getnamed("world");
 var lcd_main = this.patcher.getnamed("lcd_main");
 
-var output_looper_active = 0;
-var output_looper_block = -1;
-
 var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 var textureset_blocks = this.patcher.getnamed("textureset_blocks");
 
 var glpicker = new JitterObject("jit.gl.picker","mainwindow");
 
 var scope_buffer = new Buffer("scope_buffer");
-var midi_scope_buffer = new Buffer("midi_scope_buffer"); //old one, to be replaced..
-
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
 var midi_scopes_buffer = new Buffer("midi_scopes_buffer");
 var midi_scopes_change_buffer = new Buffer("midi_scopes_change_buffer");
@@ -268,7 +266,7 @@ var qwertym = {
 
 var wirecolour = [1,1,1,1];
 
-var meter_positions = [];
+var meter_positions = [[],[]];
 
 var panels_custom = [];
 var panels_order = [];
@@ -577,10 +575,6 @@ function init(){
 	// the jit world sends this message, but at present we only initialise when a hardware mapping is selected.
 }
 
-function loadbang(){
-
-}
-
 function show_diagnostics(x){
 	debugmode = x;
 }
@@ -639,15 +633,6 @@ function outputfx(type, number, value){
 		meter_positions[1][1]=[(c[0]*0.2)|0,(c[1]*0.2)|0,(c[2]*0.2)|0];
 		output_looper_active = (value>0);
 		output_looper_block = number;
-	}
-}
-
-function request_waves_remapping(type, voice){
-	post("\n remapping request received,",type,voice,"the remapping i sent out is",waves.remapping);
-	if(type=="audio"){
-		audio_poly.setvalue((voice-MAX_NOTE_VOICES)+1,"remapping",waves.remapping);
-	}else if(type=="ui"){
-		ui_poly.setvalue(voice+1,"remapping",waves.remapping);
 	}
 }
 

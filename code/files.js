@@ -680,6 +680,15 @@ function build_wave_remapping_list(){
 	}
 }
 
+function request_waves_remapping(type, voice){
+	post("\n remapping request received,",type,voice,"the remapping i sent out is",waves.remapping);
+	if(type=="audio"){
+		audio_poly.setvalue((voice-MAX_NOTE_VOICES)+1,"remapping",waves.remapping);
+	}else if(type=="ui"){
+		ui_poly.setvalue(voice+1,"remapping",waves.remapping);
+	}
+}
+
 function load_process_block_voices_and_data(block){
 	var drawn=1;
 	t = blocks.get("blocks["+block +"]::poly::voices");
@@ -1004,7 +1013,8 @@ function save_song(selectedonly){
 
 function write_userconfig(){
 	post("\nbet you 50p max crashes now.");
-	messnamed("write_userconfig","bang");//userconfig.writeagain();
+	//messnamed("write_userconfig","bang");//
+	userconfig.writeagain();
 }
 
 function folder_select(folderstr){

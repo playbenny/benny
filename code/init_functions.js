@@ -1,20 +1,348 @@
+// INITIALISATION IS IN 4 MAIN FNS:
+// LOADBANG - called on first load, things like setting max scheduler settings,
+//      reading userconfig to find out what hardware config you last used
+// INITIALISE_DICTIONARIES - loads everything it can
+// IMPORT HARDWARE - once the user chooses hardware and confirms by hitting start,
+//   remaining init steps and then starts audio and graphics engines
+// INITIALISE RESET - just the resets you need to do when it reboots
+
+// loadbang runs itself and init dicts
+// start runs import hardware
+// restart calls reset,init dicts, import hardware 
+
+function loadbang(){
+	post("\n\nwelcome to benny\n\n\ninit stage 1 : initial-only actions\n------------------------------------");
+	messnamed("getpath","bang");
+	config.parse('{ }');
+	config.import_json("config.json");
+	userconfig.parse('{ }');
+	userconfig.import_json("userconfig.json");
+	if(userconfig.contains("last_hardware_config")){
+		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
+	}
+	keymap.parse('{}');
+	keymap.import_json("keymap.json");
+	process_userconfig();
+	var maxmsp = config.get("maxmsp");
+	var messes = maxmsp.getkeys();
+	for(i=0;i<messes.length;i++){
+		var m = maxmsp.get(messes[i]);
+		messnamed("max",messes[i],m);
+		post("\nmessage to max: ",messes[i],m);
+	}
+	populate_lookup_tables();
+	var namelist = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+	for(i=0;i<128;i++){
+		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
+	}
+	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
+	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
+	waves_dict.parse('{ "waves" : ['+emptys+'] }');
+	
+	audio_poly = this.patcher.getnamed("audio_poly");
+	world = this.patcher.getnamed("world");
+	post("\nreticulating splines");
+	initialise_dictionaries("init");
+}
+
+
+function initialise_reset(hardware_file){
+	post("\n\nreset stage 1 : resets\n------------------");
+	messnamed("getpath","bang");
+	config.parse('{ }');
+	config.import_json("config.json");
+	userconfig.parse('{ }');
+	userconfig.import_json("userconfig.json");
+	keymap.parse('{}');
+	keymap.import_json("keymap.json");
+	process_userconfig();
+
+	matrix.message("clear"); //clears the audio matrix
+	
+	sigouts.setvalue(0,0); // clear sigs
+
+	//wipe all the buffers
+	messnamed("clear_all_buffers","bang");
+	//waves_polybuffer.clear();
+	note_poly.setvalue(0,"enabled",0);
+	audio_poly.setvalue(0,"enabled",0);
+
+	//also empties all the dicts for re-initialisatoin:
+	blocktypes.parse('{ }');
+	voicemap.parse('{ }');
+	midi_routemap.parse('{ }');
+	hardware_metermap.parse('{ }');
+	mod_routemap.parse('{ }');
+	mod_param.parse('{ }');
+	states.parse('{ "states" : {}}');
+	songs.parse('{}');
+	song.parse('{}');
+	potential_connection.parse("{}");
+	potential_connection.replace("conversion::mute",0);
+	potential_connection.replace("from::output::number",0);
+	potential_connection.replace("from::output::type","potential");
+	potential_connection.replace("to::input::number",0);
+	potential_connection.replace("to::input::type","potential");
+	potential_connection.replace("from::voice",0);
+	
+	messnamed("update_midi_routemap","bang");
+
+	initialise_dictionaries(hardware_file);
+}
+
+function initialise_dictionaries(hardware_file){
+	post("\n\ninit stage 2 : import dictionaries\n---------------------------");
+	var i; 
+	// get config first because a lot of things depend on it.
+	load_config_colours(); //separate fn so it can be called by core.space block
+	UPSAMPLING = config.get("UPSAMPLING");
+	RECYCLING = config.get("RECYCLING");
+	click_b_s = config.get("click_buffer_scaledown");
+	wire_dia = config.get("wire_dia");
+	glow_amount = config.get("glow");
+	messnamed("bloom_amt",glow_amount);
+	mainfont = config.get("mainfont");
+	monofont = config.get("monofont");
+	BLOCK_MENU_CLICK_ACTION = config.get("BLOCK_MENU_CLICK_ACTION");
+	MAX_BLOCKS = config.get("MAX_BLOCKS");
+	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
+	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
+	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
+	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
+	MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
+	MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
+	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
+	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
+	BLOCKS_GRID = config.get("BLOCKS_GRID");
+	BLOCKS_GRID = [BLOCKS_GRID, 1/BLOCKS_GRID];
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	MAX_CONNECTIONS_PER_OUTPUT = config.get("MAX_CONNECTIONS_PER_OUTPUT");
+	MAX_OUTPUTS_PER_VOICE = config.get("MAX_OUTPUTS_PER_VOICE");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
+	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
+	MAX_WAVES = config.get("MAX_WAVES");
+	draw_wave.length = MAX_WAVES;
+	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
+	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
+	MAX_STATES = config.get("MAX_STATES");
+	MERGE_PURGE = config.get("MERGE_PURGE");
+	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
+	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
+	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
+	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
+	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
+	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
+	ANIM_TIME = config.get("ANIM_TIME");
+	waves_preloading = config.get("waves_preloading");
+	wires_show_all = config.get("WIRES_SHOW_ALL");
+	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
+	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
+	sidebar.width_in_units = config.get("sidebar_width_in_units");
+	sidebar.width = fontheight*sidebar.width_in_units;
+	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
+	sidebar.x = sidebar.x2 -sidebar.width;
+
+
+
+	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
+	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
+	for(i=0;i<MAX_NOTE_VOICES;i++) {
+		loaded_note_patcherlist[i]='_blank.note';
+	}
+	for(i=0;i<MAX_WAVES;i++){
+		waves.remapping[i]=i;
+		waves.age[i]=0;
+	}
+	for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
+		hardware_list[i] = "none";
+	}
+	
+	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
+	is_flocked=[];
+	for(;i--;){
+		is_flocked.push(0);
+	}
+	i = MAX_OUTPUTS_PER_VOICE * (MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_HARDWARE_BLOCKS);
+	next_free_routing_index=[];
+	for(;i--;){
+		next_free_routing_index.push(0);
+	}
+	for(i=0;i<256;i++) routing_index[i] = [];
+	
+	messnamed("play",0);
+
+	sidebar.mode = "none";
+	
+	var i;
+	for(i=0;i<MAX_NOTE_VOICES;i++) {
+		note_patcherlist[i]='blank.note';
+		note_poly.setvalue(i+1,"patchername","blank.note");
+		loaded_note_patcherlist[i]='blank.note';
+	}
+	for(i=0;i<MAX_AUDIO_VOICES;i++) {
+		audio_upsamplelist[i]=1;
+		audio_patcherlist[i]='blank.audio';
+		audio_poly.setvalue(i+1,"patchername","blank.audio");
+		loaded_audio_patcherlist[i]='blank.audio';
+	}
+	for(i=0;i<MAX_BLOCKS;i++) {
+		ui_patcherlist[i]='blank.ui';
+		loaded_ui_patcherlist[i] = 'blank.ui';
+		ui_poly.setvalue(i+1,"patchername","blank.ui");
+		selected.block[i]=0;
+		selected.wire[i]=0;
+		record_arm[i]=0;
+	}
+	still_checking_polys = 0;
+	audio_to_data_poly.setvalue(0, "vis_meter", 0);
+	audio_to_data_poly.setvalue(0, "vis_scope", 0);
+	audio_to_data_poly.setvalue(0, "out_value", 0);
+	audio_to_data_poly.setvalue(0, "out_trigger", 0);
+
+	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
+		audio_to_data_poly.setvalue(i, "vis_meter", 1);
+	}
+	var emptys="{}";
+	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
+	blocks.parse('{ "blocks" : ['+emptys+'] }');
+
+	connections.parse('{ "connections" : [ {} ] }');
+
+//	emptys="{}";
+//	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
+//	waves_dict.parse('{ "waves" : ['+emptys+'] }');
+		
+	send_note_patcherlist();
+	send_audio_patcherlist();
+
+	messnamed("config_loaded","bang");
+	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it
+	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
+	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
+	messnamed("MAX_AUDIO_VOICES", MAX_AUDIO_VOICES);
+	messnamed("MAX_AUDIO_INPUTS", MAX_AUDIO_INPUTS);
+	messnamed("MAX_AUDIO_OUTPUTS", MAX_AUDIO_OUTPUTS);
+	messnamed("NO_IO_PER_BLOCK", NO_IO_PER_BLOCK);
+	messnamed("MAX_DATA", MAX_DATA);
+
+	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
+
+
+	SONGS_FOLDER = config.get("SONGS_FOLDER");
+	read_songs_folder("songs");
+	
+	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
+	if((projectpath!="")&&(TEMPLATES_FOLDER.indexOf("/")==-1)){
+		TEMPLATES_FOLDER = projectpath + "/" + TEMPLATES_FOLDER;
+		post("\ntemplates folder is ",TEMPLATES_FOLDER);
+	}
+	read_songs_folder("templates");	
+			
+	post("\nbuilding blocktypes database");
+	import_blocktypes("note_blocks");
+	import_blocktypes("audio_blocks");
+
+	var preload_task = new Task(preload_all_waves, this);
+	preload_task.schedule(100);
+
+	if(hardware_file!="init"){
+		import_hardware(hardware_file);
+	}else{
+		post("\nall essential data loaded, please choose a hardware configuration and press start.");
+	}
+}
+
+function initialise_graphics() {
+	world.message("sendwindow", "idlemouse", 1);
+	world.message("sendwindow", "mousewheel", 1);
+	world.message("sendrender", "rotate_order", "zyx");
+	world.message("sendrender", "smooth_shading", 1);
+	world.message("visible", 1);
+	world.message("esc_fullscreen", 0);
+	world.message("fsmenubar", 0);
+	world.message("fsaa", 1);
+	world.message("fps", 30);
+	world.getsize(); //world.message( "getsize"); //get ui window ready
+
+	background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
+	background_cube.shape = "cube";
+	background_cube.scale = [100000, 100000, 1];
+	background_cube.position = [0, 0, -200];
+	background_cube.name = "background";
+	background_cube.color = [0, 0, 0, 1];
+
+	selection_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
+	selection_cube.shape = "cube";
+	selection_cube.name = "selection";
+	selection_cube.color = [0.65, 0.65, 0.65, 0.15];
+	selection_cube.scale = [1, 1, 1];
+	selection_cube.position = [0, 0, 0];
+	selection_cube.blend_enable = 1;
+	selection_cube.enable = 0;
+
+	menu_background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
+	menu_background_cube.shape = "cube";
+	menu_background_cube.scale = [1000, 1, 1000];
+	menu_background_cube.position = [0, -200, 0];
+	menu_background_cube.name = "block_menu_background";
+	menu_background_cube.color = [0, 0, 0, 1];
+
+	flock_cubexy = new JitterObject("jit.gl.gridshape", "mainwindow");
+	flock_cubexy.shape = "cube";
+	flock_cubexy.scale = [flock_cube_size * 0.5 + 1, flock_cube_size * 0.5 + 1, 0.0001];
+	flock_cubexy.position = [0, 0, 3.999];
+	flock_cubexy.name = "flockcubexy";
+	flock_cubexy.color = [0.2, 0.2, 0.2, 1];
+
+	flock_cubeyz = new JitterObject("jit.gl.gridshape", "mainwindow");
+	flock_cubeyz.shape = "cube";
+	flock_cubeyz.scale = [0.0001, flock_cube_size * 0.5 + 1, flock_cube_size * 0.5 + 1];
+	flock_cubeyz.position = [-flock_cube_size * 0.5 - 1.00005, 0, 5 + flock_cube_size * 0.5];
+	flock_cubeyz.name = "flockcubeyz";
+	flock_cubeyz.color = [0.4, 0.4, 0.4, 1];
+
+	flock_cubexz = new JitterObject("jit.gl.gridshape", "mainwindow");
+	flock_cubexz.shape = "cube";
+	flock_cubexz.scale = [flock_cube_size * 0.5 + 1, 0.0001, flock_cube_size * 0.5 + 1];
+	flock_cubexz.position = [0, -flock_cube_size * 0.5 - 1.00005, 5 + flock_cube_size * 0.5];
+	flock_cubexz.name = "flockcubexz";
+	flock_cubexz.color = [0.3, 0.3, 0.3, 1];
+
+	flock_axes(0);
+	//	messnamed("camera_control", "position", 0, 0, -2);
+	messnamed("camera_control", "direction", 0, 0, -1);
+	messnamed("camera_control", "position", camera_position);
+	messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0], blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1], blocks_page.highest), blocks_page.lowest), -1);
+	messnamed("camera_control", "lighting_enable", 1);
+	messnamed("camera_control", "lens_angle", 30);
+
+	var menutex_task = new Task(initialise_block_menu, this);
+	menutex_task.schedule(1000);
+}
+
+function stop_graphics(){
+	background_cube.freepeer();
+	selection_cube.freepeer();
+	menu_background_cube.freepeer();
+	flock_cubexy.freepeer();
+	flock_cubeyz.freepeer();
+	flock_cubexz.freepeer();
+	world.message("enable",0);
+}
+
 function import_hardware(v){
+	post("\n\ninit stage 3 : import hardware\n---------------------------------------");
 	var d2 = new Dict;
 	var d = new Dict;
 	var d3 = new Dict;
 	var t;
 	var i;
-	messnamed("getpath","bang");
-	initialise_dictionaries();
-		
-	post("\nbuilding blocktypes database");
-	import_blocktypes("note_blocks");
-	import_blocktypes("audio_blocks");
 	
 	var vspl = v.split('/').pop();
 	if(!userconfig.contains("last_hardware_config") || (vspl!=userconfig.get("last_hardware_config"))){
 		userconfig.replace("last_hardware_config",vspl);
-		write_userconfig(); //userconfig.writeagain(); <--this seemed to crash max?
+		write_userconfig();
 		post("\nstoring hardware config choice",vspl);
 	}
 
@@ -93,7 +421,6 @@ function import_hardware(v){
 		}
 	}
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
-	get_hw_meter_positions();
 	post("\nreading midi io config");
 	d = d2.get("io");
 	var keys = d.getkeys();
@@ -117,10 +444,15 @@ function import_hardware(v){
 		
 	}
 	messnamed("to_ext_matrix","read_config");
-	populate_lookup_tables();
 	transfer_input_lists();
 	post("\nsetting output blocks to:",output_blocks);
 	output_blocks_poly.patchername(output_blocks); //"master_1.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat");
+	post("\n\ninit stage 4 : start graphic and audio engines\n------------------------------------------");
+
+	initialise_graphics();
+
+	get_hw_meter_positions();
+
 	assign_block_colours();
 	
 	usermouse.queue = [];
@@ -129,15 +461,9 @@ function import_hardware(v){
 	set_display_mode("blocks");
 	
 	
-	//	center_view();
+	//	turn on audio engine
 	this.patcher.getnamed("audio_outputs").message('int',1);
 
-	var preload_task = new Task(preload_all_waves, this);
-	preload_task.schedule(3000);
-	
-	var menutex_task = new Task(initialise_block_menu, this);
-	menutex_task.schedule(1000);
-	//	redraw_flag.flag=4;
 	if((!usermouse.ctrl) && (songs.contains("autoload"))){
 		loading.merge = 0;
 		loading.progress=-1;
@@ -150,7 +476,6 @@ function import_hardware(v){
 }
 
 function load_config_colours(){
-	process_userconfig();
 	menucolour = config.get("palette::menu");
 	var dimm=0.5;
 	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
@@ -168,7 +493,7 @@ function load_config_colours(){
 
 function process_userconfig(){
 	//userconfig OVERWRITES items in config
-	//post("\nimporting userconfig\n  ");
+	post("\nreading config");				
 	var uk = userconfig.getkeys();
 	if(uk==null) return 0;
 	for(var i=0;i<uk.length;i++){
@@ -191,274 +516,6 @@ function process_userconfig(){
 			}
 		}
 	}
-}
-
-function initialise_dictionaries(){
-	var i; 
-	// get config first because a lot of things depend on it.
-	config.parse('{ }');
-	config.import_json("config.json");
-	userconfig.parse('{ }');
-	userconfig.import_json("userconfig.json");
-	keymap.parse('{}');
-	keymap.import_json("keymap.json");
-	post("reading config\n");				
-	load_config_colours(); //separate fn so it can be called by core.space block
-	//process_userconfig();
-	UPSAMPLING = config.get("UPSAMPLING");
-	RECYCLING = config.get("RECYCLING");
-	click_b_s = config.get("click_buffer_scaledown");
-
-	wire_dia = config.get("wire_dia");
-	glow_amount = config.get("glow");
-	messnamed("bloom_amt",glow_amount);
-	mainfont = config.get("mainfont");
-	monofont = config.get("monofont");
-	BLOCK_MENU_CLICK_ACTION = config.get("BLOCK_MENU_CLICK_ACTION");
-	MAX_BLOCKS = config.get("MAX_BLOCKS");
-	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
-	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
-	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
-	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
-	MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
-	MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
-	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
-	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
-	BLOCKS_GRID = config.get("BLOCKS_GRID");
-	BLOCKS_GRID = [BLOCKS_GRID, 1/BLOCKS_GRID];
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	MAX_CONNECTIONS_PER_OUTPUT = config.get("MAX_CONNECTIONS_PER_OUTPUT");
-	MAX_OUTPUTS_PER_VOICE = config.get("MAX_OUTPUTS_PER_VOICE");
-	MAX_DATA = config.get("MAX_DATA");
-	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
-	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
-	MAX_WAVES = config.get("MAX_WAVES");
-	draw_wave.length = MAX_WAVES;
-	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
-	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
-	MAX_STATES = config.get("MAX_STATES");
-	MERGE_PURGE = config.get("MERGE_PURGE");
-	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
-	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
-	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
-	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
-	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
-	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
-	ANIM_TIME = config.get("ANIM_TIME");
-	waves_preloading = config.get("waves_preloading");
-	wires_show_all = config.get("WIRES_SHOW_ALL");
-	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
-	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
-	sidebar.width_in_units = config.get("sidebar_width_in_units");
-	sidebar.width = fontheight*sidebar.width_in_units;
-	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
-	sidebar.x = sidebar.x2 -sidebar.width;
-	var maxmsp = config.get("maxmsp");
-	var messes = maxmsp.getkeys();
-	for(i=0;i<messes.length;i++){
-		var m = maxmsp.get(messes[i]);
-		messnamed("max",messes[i],m);
-		post("\nmessage to max: ",messes[i],m);
-	}
-
-
-//	connections_sketch.reset();
-//	request_globals(); //sends the global variables (MAX_DATA etc) out. IS THIS NEEDED AT THIS POINT?
-
-	matrix.message("clear"); //clears the audio matrix
-
-	//wipe all the buffers
-	messnamed("clear_all_buffers","bang");
-	waves_polybuffer.clear();
-	note_poly.setvalue(0,"enabled",0);
-	audio_poly.setvalue(0,"enabled",0);
-
-
-	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
-	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
-	for(i=0;i<MAX_NOTE_VOICES;i++) {
-		loaded_note_patcherlist[i]='_blank.note';
-	}
-	for(i=0;i<MAX_WAVES;i++){
-		waves.remapping[i]=i;
-		waves.age[i]=0;
-	}
-	for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
-		hardware_list[i] = "none";
-	}
-	
-	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
-	is_flocked=[];
-	for(;i--;){
-		is_flocked.push(0);
-	}
-	i = MAX_OUTPUTS_PER_VOICE * (MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_HARDWARE_BLOCKS);
-	next_free_routing_index=[];
-	for(;i--;){
-		next_free_routing_index.push(0);
-	}
-	for(i=0;i<256;i++) routing_index[i] = [];
-	//also empties all the dicts for re-initialisatoin:
-	blocktypes.parse('{ }');
-	voicemap.parse('{ }');
-	midi_routemap.parse('{ }');
-	hardware_metermap.parse('{ }');
-	mod_routemap.parse('{ }');
-	mod_param.parse('{ }');
-	states.parse('{ "states" : {}}');
-	songs.parse('{}');
-	song.parse('{}');
-	potential_connection.parse("{}");
-	potential_connection.replace("conversion::mute",0);
-	potential_connection.replace("from::output::number",0);
-	potential_connection.replace("from::output::type","potential");
-	potential_connection.replace("to::input::number",0);
-	potential_connection.replace("to::input::type","potential");
-	potential_connection.replace("from::voice",0);
-	
-	messnamed("update_midi_routemap","bang");
-	
-	messnamed("play",0);
-
-	sidebar.mode = "none";
-	
-	var i;
-	for(i=0;i<MAX_NOTE_VOICES;i++) {
-		note_patcherlist[i]='blank.note';
-		note_poly.setvalue(i+1,"patchername","blank.note");
-		loaded_note_patcherlist[i]='blank.note';
-	}
-	for(i=0;i<MAX_AUDIO_VOICES;i++) {
-		audio_upsamplelist[i]=1;
-		audio_patcherlist[i]='blank.audio';
-		audio_poly.setvalue(i+1,"patchername","blank.audio");
-		loaded_audio_patcherlist[i]='blank.audio';
-	}
-	for(i=0;i<MAX_BLOCKS;i++) {
-		ui_patcherlist[i]='blank.ui';
-		loaded_ui_patcherlist[i] = 'blank.ui';
-		ui_poly.setvalue(i+1,"patchername","blank.ui");
-		selected.block[i]=0;
-		selected.wire[i]=0;
-		record_arm[i]=0;
-	}
-	still_checking_polys = 0;
-	audio_to_data_poly.setvalue(0, "vis_meter", 0);
-	audio_to_data_poly.setvalue(0, "vis_scope", 0);
-	audio_to_data_poly.setvalue(0, "out_value", 0);
-	audio_to_data_poly.setvalue(0, "out_trigger", 0);
-
-	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
-		audio_to_data_poly.setvalue(i, "vis_meter", 1);
-	}
-	var emptys="{}";
-	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
-	blocks.parse('{ "blocks" : ['+emptys+'] }');
-
-	connections.parse('{ "connections" : [ {} ] }');
-
-	emptys="{}";
-	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
-	waves_dict.parse('{ "waves" : ['+emptys+'] }');
-
-
-	var namelist = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
-	for(i=0;i<128;i++){
-		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
-	}
-		
-	send_note_patcherlist();
-	send_audio_patcherlist();
-
-	messnamed("config_loaded","bang");
-	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it
-
-	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
-	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
-	messnamed("MAX_AUDIO_VOICES", MAX_AUDIO_VOICES);
-	messnamed("MAX_AUDIO_INPUTS", MAX_AUDIO_INPUTS);
-	messnamed("MAX_AUDIO_OUTPUTS", MAX_AUDIO_OUTPUTS);
-	messnamed("NO_IO_PER_BLOCK", NO_IO_PER_BLOCK);
-	messnamed("MAX_DATA", MAX_DATA);
-
-	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
-
-
-	SONGS_FOLDER = config.get("SONGS_FOLDER");
-	read_songs_folder("songs");
-	
-	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
-	if((projectpath!="")&&(TEMPLATES_FOLDER.indexOf("/")==-1)){
-		TEMPLATES_FOLDER = projectpath + "/" + TEMPLATES_FOLDER;
-		post("\ntemplates folder is ",TEMPLATES_FOLDER);
-	}
-	read_songs_folder("templates");	
-	// all the 3d ui stuff now
-
-	world.message( "sendwindow", "idlemouse", 1);
-	world.message( "sendwindow", "mousewheel", 1);
-	world.message( "sendrender", "rotate_order", "zyx");
-	world.message( "sendrender", "smooth_shading", 1);
-	world.message( "visible", 1);
-	world.message( "esc_fullscreen", 0);
-	world.message( "fsmenubar", 0);
-	world.message( "fsaa", 1);
-	world.message( "fps", 30);
-	world.getsize(); //world.message( "getsize"); //get ui window ready
-
-	background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
-	background_cube.shape = "cube";
-	background_cube.scale = [100000, 100000, 1 ];
-	background_cube.position = [0, 0, -200];
-	background_cube.name = "background";
-	background_cube.color = [0, 0, 0, 1];
-
-	selection_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
-	selection_cube.shape = "cube";
-	selection_cube.name = "selection";
-	selection_cube.color = [0.65, 0.65, 0.65, 0.15];
-	selection_cube.scale = [1, 1, 1 ];
-	selection_cube.position = [0, 0, 0];
-	selection_cube.blend_enable = 1;
-	selection_cube.enable = 0;
-
-	menu_background_cube = new JitterObject("jit.gl.gridshape", "mainwindow");
-	menu_background_cube.shape = "cube";
-	menu_background_cube.scale = [1000, 1, 1000 ];
-	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block_menu_background";
-	menu_background_cube.color = [0, 0, 0, 1];
-
-	flock_cubexy = new JitterObject("jit.gl.gridshape", "mainwindow");
-	flock_cubexy.shape = "cube";
-	flock_cubexy.scale = [flock_cube_size*0.5+1, flock_cube_size*0.5+1, 0.0001 ];
-	flock_cubexy.position = [0, 0, 3.999];
-	flock_cubexy.name = "flockcubexy";
-	flock_cubexy.color = [0.2,0.2,0.2,1];
-	
-	flock_cubeyz = new JitterObject("jit.gl.gridshape", "mainwindow");
-	flock_cubeyz.shape = "cube";
-	flock_cubeyz.scale = [0.0001, flock_cube_size*0.5+1, flock_cube_size*0.5+1 ];
-	flock_cubeyz.position = [-flock_cube_size*0.5-1.00005, 0,5+flock_cube_size*0.5];
-	flock_cubeyz.name = "flockcubeyz";
-	flock_cubeyz.color = [0.4,0.4,0.4,1];
-	
-	flock_cubexz = new JitterObject("jit.gl.gridshape", "mainwindow");
-	flock_cubexz.shape = "cube";
-	flock_cubexz.scale = [flock_cube_size*0.5+1, 0.0001, flock_cube_size*0.5+1 ];
-	flock_cubexz.position = [0, -flock_cube_size*0.5-1.00005,5+flock_cube_size*0.5];
-	flock_cubexz.name = "flockcubexz";
-	flock_cubexz.color = [0.3,0.3,0.3,1];
-	
-	flock_axes(0);
-	
-//	messnamed("camera_control", "position", 0, 0, -2);
-	messnamed("camera_control", "direction", 0, 0, -1);
-	messnamed("camera_control","position",  camera_position);
-	messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
-	messnamed("camera_control", "lighting_enable", 1);
-	messnamed("camera_control", "lens_angle", 30);
-	sigouts.setvalue(0,0); // clear sigs
 }
 
 function assign_block_colours(){
@@ -642,8 +699,7 @@ function populate_lookup_tables(){
 	}
 }
 
-function transfer_input_lists(){
-	// this routine also populates controller lists and keyboard input lists in all blocks in the db
+function transfer_input_lists(){ // this routine also populates controller lists and keyboard input lists in all blocks in the db
 	var k=blocktypes.getkeys();
 	var t, mk;
 	post("transferring controller and keyboard lists to blocks\n");
