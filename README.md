@@ -1,4 +1,4 @@
-MULTITUDES
+benny
 ----------
 - is a software playground for making live music or for making music live
 - integrates hardware and software, midi and audio, lets you connect anything to anything, extends into polyphony elegantly
@@ -11,7 +11,7 @@ installation
 ------------
 - install max (cycling74.com) but no need to buy it or subscribe, see the 'important' note below
 - in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore.
-- open 'multitudes.maxproj'
+- open 'benny.maxproj'
 
 IMPORTANT
 ---------
@@ -20,7 +20,6 @@ BUT if you decide you want to learn to build your own blocks you'll need to buy 
 
 configuration
 -------------
-- recommended max/msp audio settings: vector size same as audio buffer size, i work at 256 (any lower and the multicore processing doesn't run very efficiently) scheduler in audio interupt ticked, overdrive ticked. the program automatically sets some max/msp scheduler settings to optimal values, if you're an expert max user and want different values you can set them in config.json.
 - in the end, there'll be a hardware editor.. for now, using the hardware config .json files as an example, build your own, with entries for any pieces of modular or hardware you want to use. i recommend using an editor like vscode that has automatic syntax checking for json files.
 - the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
     - KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
