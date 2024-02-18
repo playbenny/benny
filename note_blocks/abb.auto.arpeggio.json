@@ -3,21 +3,21 @@
 		"patcher" : "abb.velocity.seq",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "8 step Velocity Sequencer",
+		"help_text" : "Two hands for drumming",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
 				"midi" : [ "clock in" ]
 			},
 			"out" : {
-				"midi" : [ "Seq out" ]
+				"midi" : [ "Left Hand", "Right Hand" ]
 			}
 		},
 		"groups" : [
 			{
 				"contains" : [16, 17, 18, 19], 
 				"height"	: 0,
-				"colour"	: 100
+				"colour"	: 10
 			},
 			{ 
 				"contains" : [0, 1, 2, 3, 4, 5, 6, 7],
