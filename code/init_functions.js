@@ -32,9 +32,18 @@ function loadbang(){
 	}
 	populate_lookup_tables();
 	post("\nreticulating splines");
+
 	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
+	states.parse('{ "states" : {}}'); //these dicts all need to be initialised, 
+	potential_connection.parse("{}"); //the others are fine to start from empty
+	potential_connection.replace("conversion::mute",0);
+	potential_connection.replace("from::output::number",0);
+	potential_connection.replace("from::output::type","potential");
+	potential_connection.replace("to::input::number",0);
+	potential_connection.replace("to::input::type","potential");
+	potential_connection.replace("from::voice",0);
 	
 	audio_poly = this.patcher.getnamed("audio_poly");
 	matrix = this.patcher.getnamed("matrix");
