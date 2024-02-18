@@ -2,7 +2,9 @@
 	"abb.velocity.seq" : {
 		"patcher" : "abb.velocity.seq",
 		"type" : "note",
-		"block_ui_patcher" : "self",
+		"block_ui_patcher" : "example.mini.ui",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
 		"help_text" : "8 step Velocity Sequencer",
 		"max_polyphony" : 0,
 		"connections" : {
