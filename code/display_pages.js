@@ -2826,7 +2826,8 @@ function draw_sidebar(){
 						groups = blocktypes.get(block_name+"::groups");
 						if(!Array.isArray(groups)) groups = [groups];
 					}
-
+					var vl = voicemap.get(block);
+					if(!Array.isArray(vl))vl=[vl];
 					var w_slider,h_slider,colour,plist;
 					var slidercount; //used to hide sliders that apply to not-yet-active voices
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
@@ -2845,7 +2846,6 @@ function draw_sidebar(){
 							}
 						}
 					}
-
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
 						colour=block_colour;
@@ -2884,8 +2884,8 @@ function draw_sidebar(){
 								if(getmap==1){
 									if(p_type!="button"){
 										if(opvf){
-											var vl=voicemap.get(block);
-											if(!Array.isArray(vl))vl=[vl];
+											//var vl=voicemap.get(block);
+											//if(!Array.isArray(vl))vl=[vl];
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)&&(map_y<automap.c_rows)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
@@ -2947,11 +2947,24 @@ function draw_sidebar(){
 											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);											
 										}
 										mouse_index++;
-									}else if((p_type=="menu_b") && (1 == 1)){
+									}else if((p_type=="menu_b") && (vl.length == 1)){
 										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length);// - 1) / 2;
 										var pv2 = Math.floor(pv * statecount);
-										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
+										var valcol;
+										if(params[curp].contains("colours")){
+											valcol = params[curp].get("colours["+pv2+"]");
+										}else{
+											var pv3;
+											if(statecount==2){
+												pv3 = pv*0.9 + 0.3;
+											}else{
+												pv3 = pv*0.6 + 0.7;
+											}
+											valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
+										}
+
+										draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
 										mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99];

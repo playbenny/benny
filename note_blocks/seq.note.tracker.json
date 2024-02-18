@@ -23,8 +23,13 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [9, 9, 0, 1,1, 2,2, 3, 4,4, 5],
+				"contains" : [ 0, 1, 2, 4],
 				"colour" : 0
+			},
+			{
+				"contains" : [9,9,3,5],
+				"height" : 0,
+				"colour" : -10
 			},
 			{
 				"contains" : [6,7,8],
@@ -57,7 +62,7 @@
 			},
 			{
 				"name" : "loop_enable",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["oneshot", "loop"],
 				"wrap" : 0,
 				"default" : 0.6
@@ -78,8 +83,9 @@
 			},
 			{
 				"name" : "midi in mode",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["through", "record" ],
+				"colours" : [ 0, [190,40,40]],
 				"wrap" : 0,
 				"default" : 0.16
 			},

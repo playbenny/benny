@@ -568,12 +568,31 @@ function assign_block_colours(){
 				c = config.get("palette::gamut["+t2+"]::colour");
 				blocktypes.replace(types[i]+"::colour",c);
 				var gps = blocktypes.get(types[i]+"::groups");
-				for(var gp in gps){
-					if(blocktypes.contains(types[i]+"::groups["+gp+"]::colour")){
-						var tc = blocktypes.get(types[i]+"::groups["+gp+"]::colour");
-						if(!Array.isArray(tc)){
-							var nc = config.get("palette::gamut["+((t2+tc+cll)%cll)+"]::colour");
-							blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
+				if(Array.isArray(gps)){
+					post("\ntypes",types[i]);
+					post("\ngrps",gps);
+					for(var gp in gps){
+						if(gps[gp].contains("colour")){
+							var tc = gps[gp].get("colour");
+							if(!Array.isArray(tc)){
+								var nc = config.get("palette::gamut["+((t2+tc+cll)%cll)+"]::colour");
+								blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
+							}
+						}
+					}
+				}	
+				var prms = blocktypes.get(types[i]+"::parameters");
+				if(Array.isArray(prms)){
+					for(var pp in prms){
+						if(prms[pp].contains("colours")){
+							var ttc = prms[pp].get("colours");
+							if(!Array.isArray(ttc)) ttc = [ttc];
+							for(var tt=0;tt<ttc.length;tt++){
+								if(!Array.isArray(ttc[tt])){
+									var nc = config.get("palette::gamut["+((t2+ttc[tt]+cll)%cll)+"]::colour");
+									blocktypes.replace(types[i]+"::parameters["+pp+"]::colours["+tt+"]",nc);								
+								}
+							}
 						}
 					}
 				}
