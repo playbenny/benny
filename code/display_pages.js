@@ -2944,10 +2944,23 @@ function draw_sidebar(){
 										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
-											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
+											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);											
 										}
 										mouse_index++;
 									}else if((p_type=="menu_b") && (1 == 1)){
+										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										var statecount = (p_values.length);// - 1) / 2;
+										var pv2 = Math.floor(pv * statecount);
+										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
+										mouse_click_actions[mouse_index] = send_button_message;
+										mouse_click_parameters[mouse_index] = block;
+										mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99];
+										mouse_index++;
+										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+											//but it's so much easier just to call this fn
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);
+										}
+									}else{
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
 										if(h_slider==0){
