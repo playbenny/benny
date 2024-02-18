@@ -2,7 +2,7 @@
 	"name" : "Multitudes",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3790977130,
+	"modificationdate" : 3791134802,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1110,6 +1110,22 @@
 				}
 
 			}
+,
+			"example.mini.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"benny_engine.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"toplevel" : 1
+			}
 
 		}
 ,
@@ -1145,25 +1161,6 @@
 			}
 ,
 			"wavefold.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"blockmanager.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"midirouter.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"output_queue_watcher.gendsp" : 			{
-				"kind" : "gendsp"
-			}
-,
-			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -1379,6 +1376,26 @@
 			}
 ,
 			"source.random.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"blockmanager.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"midirouter.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"output_queue_watcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}

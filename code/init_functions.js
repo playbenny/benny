@@ -569,8 +569,6 @@ function assign_block_colours(){
 				blocktypes.replace(types[i]+"::colour",c);
 				var gps = blocktypes.get(types[i]+"::groups");
 				if(Array.isArray(gps)){
-					post("\ntypes",types[i]);
-					post("\ngrps",gps);
 					for(var gp in gps){
 						if(gps[gp].contains("colour")){
 							var tc = gps[gp].get("colour");
