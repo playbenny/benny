@@ -801,7 +801,7 @@ function draw_menu_hint(){
 		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
 	}
 	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
-	var topspace=(block_menu_d.mode == 3)+1.1*(loading.progress!=0);
+	var topspace=(block_menu_d.mode == 3)+1.1*(loading.progress!=0)+1.1*(menu.search!="");
 	lcd_main.message("clear");
 	lcd_main.message("paintrect", sidebar.x,9+1.1*(loading.progress!=0)*fontheight,sidebar.x2,9+fontheight*(1+topspace),cod);
 	setfontsize(fontsmall*2);
@@ -810,6 +810,11 @@ function draw_menu_hint(){
 	lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);
 	lcd_main.message("frgb",col);
 	lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(0.75+1.1*(loading.progress!=0)));
+	if(menu.search!=""){
+		lcd_main.message("write","search: "+menu.search);
+		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+1.1*(loading.progress!=0)));
+	}
+	
 	if(block_menu_d.mode == 1){
 		lcd_main.message("write", "swap block:");
 	}else if(block_menu_d.mode == 2){

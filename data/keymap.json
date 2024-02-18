@@ -89,7 +89,8 @@
 
     },
     "block_menu" : {
-        "-3" : ["ESC", "center_view"]
+        "-3" : ["ESC", "center_view"],
+        "all" : ["all","type_to_search"]
     },
     "sidebar" : {
         "file_menu" : {

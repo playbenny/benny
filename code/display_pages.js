@@ -26,6 +26,7 @@ function set_display_mode(mode,t){
 		}else{
 			flock_axes(0);
 		}
+		if(mode == "block_menu") menu.search = "";
 		displaymode=mode;
 		camera();
 		//post("display mode set to "+mode+"\n");
@@ -49,7 +50,7 @@ function camera(){
 	if(displaymode == "custom"){
 		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
 	}else if(displaymode == "block_menu"){
-		messnamed("camera_control", "position", [2,-93,menu_camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
+		messnamed("camera_control", "position", [2,-93,menu.camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
 		messnamed("camera_control", "direction", 0, -1, 0);		
 	}else if(displaymode == "blocks"){ //this could be animated too?
@@ -646,6 +647,7 @@ function initialise_block_menu(visible){
 					}
 				}
 				blocks_menu[i].enable = vis;
+				blocks_menu[i].position = menu.original_position[i];
 			}
 		}
 	}else{
@@ -659,7 +661,7 @@ function initialise_block_menu(visible){
 				if(ts[0]==type_order[typ]){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
-						//						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
 						blocks_menu[i].shape = "cube";
@@ -667,8 +669,9 @@ function initialise_block_menu(visible){
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
 						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
+						menu.original_position[i]=[1000,1000,1000];
 					}else{
-//						post("\ndrawing menu texture:",i," label is ",ts,"\n");
+						//	post("\ndrawing menu texture:",i," label is ",ts,"\n");
 						messnamed("texture_generator","menu",i);
 						col = blocktypes.get(types[i]+"::colour");
 						lcd_block_textures.message("brgb",col);
@@ -697,6 +700,7 @@ function initialise_block_menu(visible){
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [x, -110, z];
+						menu.original_position[i]=[x,-110,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
 						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 						blocks_menu[i].texture = blocks_menu_texture[i];
@@ -710,7 +714,7 @@ function initialise_block_menu(visible){
 				}
 			}
 		}
-		menu_length = z;
+		menu.length = z;
 		blocks_tex_sent = []; // this is a good moment to ask for a redraw of any blocks that are loaded by now's textures
 		initialise_block_menu(visible); //to hide the core blocks if they're already loaded
 	}

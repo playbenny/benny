@@ -185,7 +185,14 @@ var blocks_cube_texture = [];
 var blocks_tex_sent= []; //each element is mutestate+label
 var blocks_menu_texture = [];
 var blocks_menu = []; //called menulabel-type or menublock-type
-var menu_length = 10; //endstop for the menu scroll
+var menu = {
+	length : 10,  //endstop for the menu scroll
+	search : "",
+	camera_scroll : 0,
+	original_position : []
+}; 
+
+
 var cubecount; //number of menu cubes
 var wires = []; // called wires-connectionno-segmentno
 var wires_colours = [];
@@ -429,7 +436,6 @@ var redraw_flag = {
 var paramslider_details = []; //indexed by param number
 //x1,y1,x2,y2,r,g,b,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,gets-overwritten-with-y-coord-returned(bottom),click_to_set
 var camera_position = [-2, 0, 23];
-var menu_camera_scroll = 0;
 
 var text_being_editted="";
 
@@ -437,6 +443,7 @@ var config = new Dict;
 config.name = "config";
 var userconfig = new Dict;
 userconfig.name = "userconfig";
+userconfig.filechanged = function(){};
 
 var keymap = new Dict;
 keymap.name = "keymap";

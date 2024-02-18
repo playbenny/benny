@@ -569,7 +569,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if(usermouse.clicked3d =="background") {
 					usermouse.drag.starting_value_y = camera_position[1];
 				}else{
-					usermouse.drag.starting_value_y = menu_camera_scroll;
+					usermouse.drag.starting_value_y = menu.camera_scroll;
 				}
 			}
 		}else{
@@ -780,8 +780,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.drag.last_y = y;
 							if((usermouse.clicked3d == "background")||(usermouse.clicked3d == "background_dragged")){
 								usermouse.clicked3d = "background_dragged";
-								menu_camera_scroll += ydist*0.04;
-								messnamed("camera_control","position", 2 , -93, menu_camera_scroll);	
+								menu.camera_scroll += ydist*0.04;
+								messnamed("camera_control","position", 2 , -93, menu.camera_scroll);	
 							}					
 						}
 					}
@@ -913,8 +913,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			messnamed("camera_control","position",  camera_position);
 			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){
-			menu_camera_scroll = Math.max(-3,Math.min(menu_length+3,menu_camera_scroll-scroll));
-			messnamed("camera_control","position", 2 , -93, menu_camera_scroll);
+			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-scroll));
+			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
 		}
 	}else if((d>=2) && (d<=4)){
 		var f = mouse_click_actions[b];

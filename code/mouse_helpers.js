@@ -2181,3 +2181,66 @@ function toggle_connection_help(){
 	sidebar.connection.help = 1 - sidebar.connection.help;
 	redraw_flag.flag |= 2;
 }
+
+function type_to_search(key){
+	if(key==-7){
+		menu.search = menu.search.slice(0, -1);
+	}else if(key==-6){
+		menu.search = "";
+	}else{
+		if(menu.search == ""){
+			menu.camera_scroll=0;
+			camera();
+		}
+		menu.search = menu.search + String.fromCharCode(key);
+	}
+	post("\ntype to search",menu.search);
+	if(menu.search!=""){
+		var type_order = config.get("type_order");
+		var types = blocktypes.getkeys();
+		var results = [];
+		for(var i=0;i<cubecount;i++){
+			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			}else{
+				var str = types[i];
+				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
+				if(str.indexOf(menu.search)!=-1){ //if you find the search in the name
+					var ts=types[i].split('.');
+					var tt = type_order.length;
+					for(var t in type_order){ // add the number of the block to an array indexed by the type
+						if(ts[0]==type_order[t]) tt = t;
+					}
+					if(!Array.isArray(results[tt])) results[tt] = [];
+					results[tt].push(i);
+					blocks_menu[i].enable = 1;
+				}else{
+					blocks_menu[i].enable = 0;
+				}
+			}
+		}
+		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
+		var z=-3.5; var x=-w;
+		for(var i =0;i<results.length;i++){
+			var f=0;
+			if(Array.isArray(results[i])){
+				for(var ii = 0;ii<results[i].length;ii++){
+					f=1;
+					blocks_menu[results[i][ii]].position = [x,-110,z];
+					x++;
+					if(x>w){
+						z++;
+						x=-w;
+					}
+				}
+				if(f){
+					z++;
+					z+=0.5;
+					x=-w;
+				}
+			}
+		}
+	}else{
+		initialise_block_menu(1);
+	}
+	draw_menu_hint();
+}
