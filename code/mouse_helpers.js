@@ -569,7 +569,8 @@ function show_new_block_menu(){
 function select_block(parameter,value){
 	//post("\nselblock,",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
-		if(blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher")!="blank.ui"){
+		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
+		if((ui!="blank.ui")&&(ui!="self")){
 			set_display_mode("custom",value);
 			return(1);
 		}
@@ -2042,10 +2043,15 @@ function selected_block_custom_mode(mode){
 	var se = selected.block.indexOf(1);
 	if(se>=0){
 		var na = blocks.get("blocks["+se+"]::name");
-		if(blocktypes.contains(na+"::block_ui_patcher") && (blocktypes.get(na+"::block_ui_patcher")!="blank.ui")){
-			if(blocktypes.contains(na+"::no_edit") && (blocktypes.get(na+"::no_edit")==1)){
-			}else{
-				set_display_mode(mode,selected.block.indexOf(1));
+		if(blocktypes.contains(na+"::block_ui_patcher")){
+			var ui = blocktypes.get(na+"::block_ui_patcher");
+			if(ui!="blank.ui"){
+				if(blocktypes.contains(na+"::no_edit") && (blocktypes.get(na+"::no_edit")==1)){
+				}else if(ui=="self"){
+					open_patcher(se, -1);
+				}else{
+					set_display_mode(mode,se);
+				}
 			}
 		}
 	}

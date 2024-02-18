@@ -58,7 +58,7 @@ function new_block(block_name,x,y){
 		}
 		if(details.contains("block_ui_patcher")){
 			var ui = details.get("block_ui_patcher");
-			if((ui == "") || (ui == 0)){
+			if((ui == "") || (ui == 0) || (ui == "self")){
 				ui_patcherlist[new_block_index] = "blank.ui";
 			}else{
 				ui_patcherlist[new_block_index] = ui;
@@ -68,7 +68,7 @@ function new_block(block_name,x,y){
 		//block_name = details.get("patcher");
 		blocks.replace("blocks["+new_block_index+"]::patcher",details.get("patcher"));
 		var ui = details.get("block_ui_patcher");
-		if((ui == "") || (ui == 0)){
+		if((ui == "") || (ui == 0) || (ui == "self")){
 			ui_patcherlist[new_block_index] = "blank.ui";
 		}else{
 			ui_patcherlist[new_block_index] = ui;
@@ -2865,7 +2865,7 @@ function swap_block(block_name){
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
 		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
 		var ui = details.get("block_ui_patcher");
-		if((ui == "") || (ui == 0)){
+		if((ui == "") || (ui == 0) || (ui == "self")){
 			ui_patcherlist[block_menu_d.swap_block_target] = "blank.ui";
 		}else{
 			ui_patcherlist[block_menu_d.swap_block_target] = ui;

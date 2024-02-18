@@ -816,7 +816,12 @@ function mouse_released_on_a_thing_no_drag(){
 		//										deferred_diag[deferred_diag.length] = "you clicked this block "+usermouse.ids[1];
 		if(usermouse.timer>0){
 			if(blocks.get("blocks["+usermouse.ids[1]+"]::type")!="hardware"){
-				if(blocktypes.get(blocks.get("blocks["+usermouse.ids[1]+"]::name")+"::block_ui_patcher")!="blank.ui"){
+				var ui ="blank.ui";
+				var na = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+				if(blocktypes.contains(na+"::block_ui_patcher")) ui = blocktypes.get(na+"::block_ui_patcher");
+				if(ui=="self"){
+					open_patcher(usermouse.ids[1],-1);
+				}else if(ui!="blank.ui"){
 					set_display_mode("custom",+usermouse.ids[1]);
 					if(selected.block[+usermouse.ids[1]]!=1) select_block(0,+usermouse.ids[1]);
 					return(0);

@@ -194,7 +194,8 @@ function draw_panels(){
 		} 
 		
 		var has_ui = 0;
-		if(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui"){
+		var ui = blocktypes.get(block_name+"::block_ui_patcher");
+		if((ui!="blank.ui")&&(ui!="self")){
 			has_ui = 1;
 			h+=4;
 			if(has_params) h-=0.5;
@@ -2698,6 +2699,7 @@ function draw_sidebar(){
 			//button to open editor. currently a full row, but it may easily fit on with some of the above stuff? but position needs to be consistent
 			if((block_type!="hardware")&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
 				mouse_click_actions[mouse_index] = set_display_mode;
+				mouse_click_values[mouse_index] = block;
 				var ebg=block_darkest;
 				var efg=block_colour;
 				var et="<< edit"
@@ -2707,17 +2709,21 @@ function draw_sidebar(){
 					mouse_click_parameters[mouse_index] = "custom_fullscreen";
 					et=">> edit fullscreen"
 				}/*else if(displaymode=="custom_fullscreen"){ //never happens, doesn't draw sidebar in fullscreen
-					ebg = block_colour;
-					efg = block_darkest;
-					mouse_click_parameters[mouse_index] = "custom";
-				}*/else{
-					mouse_click_parameters[mouse_index] = "custom";
+				}*/else{ // 'self' just pops open the patcher as if it was a vst editor
+					// nb this isn't a magic bullet for easy dev - these patchers still 
+					// need to store their data etc like the js-based ui's do.
+					if(blocktypes.get(block_name+"::block_ui_patcher")=="self"){
+						mouse_click_actions[mouse_index] = open_patcher;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = -1;
+					}else{
+						mouse_click_parameters[mouse_index] = "custom";
+					}
 				}
 				if(usermouse.clicked2d == mouse_index){
 					efg = block_darkest;
 					ebg = menucolour;
 				}
-				mouse_click_values[mouse_index] = block;
 				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
 				lcd_main.message("frgb" , efg);
 				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
@@ -2941,7 +2947,7 @@ function draw_sidebar(){
 											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
 										}
 										mouse_index++;
-									}else{
+									}else if((p_type=="menu_b") && (1 == 1)){
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
 										if(h_slider==0){

@@ -472,7 +472,7 @@ function import_song(){
 						}
 					}
 				}
-				if((t == 0) && (ui != "blank.ui")){
+				if((t == 0) && (ui != "blank.ui") && (ui != "self")){
 					for(i=0;i<MAX_BLOCKS;i++){
 						if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
 							//post("\nrecycling ui and block number:",i,ui);
@@ -772,7 +772,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 	//post("\n\nHERE, VOICEALLOC ",type,block_name,new_voice,offs);
 	var ui = blocktypes.get(block_name+"::block_ui_patcher");
-	if((ui == "") || (ui == 0) || is_empty(ui)){
+	if((ui == "") || (ui == 0) || is_empty(ui) || (ui=="self")){
 		ui_patcherlist[block_index] = "blank.ui";
 	}else{
 		ui_patcherlist[block_index] = ui;
