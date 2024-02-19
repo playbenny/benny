@@ -838,7 +838,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
 			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
 			var p_steps = 0;
-			if((p_type=="menu_i")||(p_type=="menu_b")){
+			if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 				p_min = 0;
 				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_steps = p_max;

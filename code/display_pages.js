@@ -431,7 +431,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
 			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 			labelled_parameter_v_slider(panelslider_index);
-			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 				//if it's a menu_b or menu_i store the next position in mouse_click_values
 				// now stores the paramslider_details index, so you can look up type, get num values, etc etc, on click, more efficient.
 				mouse_click_values[mouse_index] = panelslider_index; //(pv+1/p_values.length) % 1;
@@ -2959,28 +2959,55 @@ function draw_sidebar(){
 											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);											
 										}
 										mouse_index++;
-									}else if((p_type=="menu_b") && (vl.length == 1)){
+									}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1)){
 										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length);// - 1) / 2;
 										var pv2 = Math.floor(pv * statecount);
-										var valcol;
-										if(params[curp].contains("colours")){
-											valcol = params[curp].get("colours["+pv2+"]");
+										var h_s=h_slider;
+										if(h_slider==0){
+											h_s=1.5;
 										}else{
-											var pv3;
-											if(statecount==2){
-												pv3 = pv*0.9 + 0.3;
-											}else{
-												pv3 = pv*0.6 + 0.7;
-											}
-											valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
+											h_s+=0.9;
 										}
-
-										draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
-										mouse_click_actions[mouse_index] = send_button_message;
-										mouse_click_parameters[mouse_index] = block;
-										mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99];
-										mouse_index++;
+										if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
+											post("\nmenu_l",statecount,h_s);
+											var ys = fontheight*(h_s)/(statecount);
+											for(var bl=0;bl<statecount;bl++){
+												if(params[curp].contains("colours")){
+													valcol = params[curp].get("colours["+bl+"]");
+												}else{
+													valcol = colour;
+												}
+												if(bl==pv2){
+												}else{
+													valcol = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
+												}
+												draw_button(x1,y1+bl*ys,x2,y1+(bl+1)*ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
+												mouse_click_actions[mouse_index] = send_button_message;
+												mouse_click_parameters[mouse_index] = block;
+												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, bl/statecount];
+												mouse_index++;
+											}
+										}else{
+											var valcol;
+											if(params[curp].contains("colours")){
+												valcol = params[curp].get("colours["+pv2+"]");
+											}else{
+												var pv3;
+												if(statecount==2){
+													pv3 = pv*0.9 + 0.3;
+												}else{
+													pv3 = pv*0.6 + 0.7;
+												}
+												valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
+											}
+	
+											draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
+											mouse_click_actions[mouse_index] = send_button_message;
+											mouse_click_parameters[mouse_index] = block;
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99];
+											mouse_index++;
+										}
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
 											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);
@@ -2999,7 +3026,7 @@ function draw_sidebar(){
 										//ie is mouse_click_parameters[index][0]
 										mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 										mouse_click_parameters[mouse_index] = [curp, block];
-										if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+										if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 											//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 											mouse_click_values[mouse_index] = curp+1;
 										}else{
@@ -3198,7 +3225,7 @@ function draw_sidebar(){
 										pv = Math.min(pv,p_values.length-1);											
 									}
 									lcd_main.message("write", p_values[pv]+ "-"+ p_values[pv2]);										
-								}else if((p_type == "menu_i")||(p_type == "menu_b")){
+								}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
 									pv *= p_values.length;
 									pv = Math.min(Math.floor(pv),p_values.length-1);
 									lcd_main.message("write", p_values[pv]);
@@ -3386,7 +3413,7 @@ function draw_sidebar(){
 										pv = Math.min(pv,p_values.length-1);											
 									}
 									lcd_main.message("write", p_values[pv]+ "-"+ p_values[pv2]);										
-								}else if((p_type == "menu_i")||(p_type == "menu_b")){
+								}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
 									pv *= p_values.length;
 									pv = Math.min(Math.floor(pv),p_values.length-1);
 									lcd_main.message("write", p_values[pv]);
@@ -3553,7 +3580,7 @@ function draw_sidebar(){
 									//ie is mouse_click_parameters[index][0]
 									mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 									mouse_click_parameters[mouse_index] = [plist[t], block];
-									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 										//if it's a menu_b or menu_i store the next position in mouse_click_values
 										mouse_click_values[mouse_index] = plist[t];//(pv+1/p_values.length) % 1;
 									}else{
@@ -5471,7 +5498,7 @@ function draw_sidebar(){
 					//ie is mouse_click_parameters[index][0]
 					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 					mouse_click_parameters[mouse_index] = [curp, t_number];
-					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 						mouse_click_values[mouse_index] = curp+1;
 					}else{

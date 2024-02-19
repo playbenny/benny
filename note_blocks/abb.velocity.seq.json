@@ -159,7 +159,7 @@
 			},
 			{
 				"name" : "trig_type",
-				"type" : "menu_b",
+				"type" : "menu_l",
 				"values" : ["Step Lock", "Note Trig", "Step Free"],
 				"wrap" : 0,
 				"default" : 0

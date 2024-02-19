@@ -62,8 +62,9 @@
 			},
 			{
 				"name" : "loop_enable",
-				"type" : "menu_b",
+				"type" : "menu_l",
 				"values" : ["oneshot", "loop"],
+				"colours" : [-40, 20],
 				"wrap" : 0,
 				"default" : 0.6
 			},
@@ -83,7 +84,7 @@
 			},
 			{
 				"name" : "midi in mode",
-				"type" : "menu_b",
+				"type" : "menu_l",
 				"values" : ["through", "record" ],
 				"colours" : [ 0, [190,40,40]],
 				"wrap" : 0,

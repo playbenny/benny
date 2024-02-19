@@ -171,7 +171,7 @@ function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 	}
 }
 function draw_button(x1,y1,x2,y2,r,g,b,index,label){
-	var rat = bg_dark_ratio;
+	var rat = bg_dark_ratio*2;
 	if(usermouse.clicked2d==index) rat = 1 - rat;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
@@ -188,7 +188,7 @@ function labelled_parameter_v_slider(sl_no){
 	var wrap = paramslider_details[sl_no][14];
 
 	var click_to_step = 0;
-	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 		//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 		click_to_step = sl_no+1;
 	}								
@@ -257,7 +257,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 		}else{
 			pvp = p_values[pv]+ "-"+ p_values[pv2];
 		}	
-	}else if((p_type == "menu_i")||(p_type == "menu_b")){
+	}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
 		pv *= (p_values.length-0.0001);
 		pv = Math.min(Math.floor(pv),p_values.length-1);
 		pvp = p_values[pv];
