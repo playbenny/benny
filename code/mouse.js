@@ -340,7 +340,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if(displaymode=="block_menu"){
 					usermouse.timer = 0;
 					usermouse.long_press_function = null;
-					if(block_menu_d.mode == 0){ //post("BLOCK MENU",usermouse.clicked3d,usermouse.ids);
+					if(menu.mode == 0){ //post("BLOCK MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.clicked3d==-2){
 							usermouse.clicked3d=-3;
 						}
@@ -361,7 +361,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 						usermouse.clicked3d = -1;
-					}else if(block_menu_d.mode == 1){ //post("SWAP MENU",usermouse.clicked3d,usermouse.ids);
+					}else if(menu.mode == 1){ //post("SWAP MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
 							set_display_mode("blocks");
 						}else{
@@ -370,13 +370,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								set_display_mode("blocks");
 							}
 						}
-					}else if(block_menu_d.mode == 2){ //post("insert MENU",usermouse.clicked3d,usermouse.ids);
+					}else if(menu.mode == 2){ //post("insert MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
 							set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-								var f_no= connections.get("connections["+block_menu_d.connection_number+"]::from::number");
-								var t_no = connections.get("connections["+block_menu_d.connection_number+"]::to::number");
+								var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
+								var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
 								var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
 								var avy = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::y") + blocks.get("blocks["+t_no+"]::space::y")));
 								var r = new_block(usermouse.ids[1], avx,avy);
@@ -386,14 +386,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								insert_block_in_connection(usermouse.ids[1],r);							
 							}
 						}
-					}else if(block_menu_d.mode == 3){ //post("SUBSTITUTION MENU",usermouse.clicked3d,usermouse.ids);
+					}else if(menu.mode == 3){ //post("SUBSTITUTION MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
 							//set_display_mode("blocks");
 							post("sorry no, you have to pick a substitute");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								post("substitution found!!"+usermouse.ids[1]);
-								block_menu_d.swap_block_target = usermouse.ids[1];
+								menu.swap_block_target = usermouse.ids[1];
 								set_display_mode("blocks");
 								import_song();
 								//swap_block(usermouse.ids[1]);

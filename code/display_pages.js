@@ -26,8 +26,13 @@ function set_display_mode(mode,t){
 		}else{
 			flock_axes(0);
 		}
-		if(mode == "block_menu") menu.search = "";
 		displaymode=mode;
+		if(mode == "block_menu"){
+			if(menu.search!=""){
+				menu.search = "";
+				type_to_search(-6);
+			}
+		}
 		camera();
 		//post("display mode set to "+mode+"\n");
 		redraw_flag.flag=4;
@@ -603,7 +608,7 @@ function draw_block_menu(){
 
 function hide_block_menu(){
 	//post("\nhiding block menu\n");
-	for(var i=0;i<cubecount;i++){
+	for(var i=0;i<menu.cubecount;i++){
 		blocks_menu[i].enable = 0;
 	}
 }
@@ -627,16 +632,15 @@ function initialise_block_menu(visible){
 	var ts,swpt=0;
 	var col;
 	var vis=0;
-	//blocks_menu=[];
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
-		if(block_menu_d.mode == 1) swpt = blocks.get("blocks["+block_menu_d.swap_block_target+"]::type");
-		for(i=0;i<cubecount;i++){
+		if(menu.mode == 1) swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
+		for(i=0;i<menu.cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 				//skip this one
 //				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 			}else{
 				if(visible==1)vis=1;	
-				if(block_menu_d.mode == 1){
+				if(menu.mode == 1){
 					if(blocktypes.get(types[i]+"::type") != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
 				}
 				if(blocktypes.contains(types[i]+"::exclusive")){
@@ -650,13 +654,15 @@ function initialise_block_menu(visible){
 				blocks_menu[i].position = menu.original_position[i];
 			}
 		}
+		if(menu.mode == 1) menu_move_on_down_inside_the_empty_carriage();
 	}else{
+		post("\ninitialising block menu");
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
 		for(var typ in type_order){
 			z++;
 			z+=0.5;
 			x=-w;
-			for(i=0;i<cubecount;i++){
+			for(i=0;i<menu.cubecount;i++){
 				ts=types[i].split('.');
 				if(ts[0]==type_order[typ]){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
@@ -719,6 +725,7 @@ function initialise_block_menu(visible){
 		initialise_block_menu(visible); //to hide the core blocks if they're already loaded
 	}
 }
+
 
 function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 	for(var i=0;i<blocks_cube.length;i++){

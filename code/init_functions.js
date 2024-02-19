@@ -534,13 +534,13 @@ function assign_block_colours(){
 	var types = [];
 	types = blocktypes.getkeys();
 	types.sort();
-	cubecount = types.length;
+	menu.cubecount = types.length;
 	var i;
 	var typ,ty;
 	var type_order = config.get("type_order");
 	typecount = type_order.length;
 	
-	for(i=0;i<cubecount;i++){
+	for(i=0;i<menu.cubecount;i++){
 		ty=types[i].split(".",4);
 		var oc = type_order.indexOf(ty[0]);
 		if(oc==-1){
@@ -559,7 +559,7 @@ function assign_block_colours(){
 	for(var typ in type_order){	
 		t2=t1;
 		t1+=t;
-		for(i=0;i<cubecount;i++){
+		for(i=0;i<menu.cubecount;i++){
 			ty=types[i].split(".",4);
 			if(ty[0]==type_order[typ]){
 				t2++;

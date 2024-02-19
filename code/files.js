@@ -421,9 +421,8 @@ function import_song(){
 				if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
 					if(thisblock.contains("substitute")){
 						//use that then
-						post("the block type",block_name,"is not available in this hardware configuration. using");
 						block_name = thisblock.get("substitute");
-						post(block_name,"instead as a substitute");
+						post("\n",block_name,"is not available in this hardware configuration. substituting:",block_name);
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
 						//need to go through all connections, if connected to this block and type = hardware,
@@ -441,17 +440,18 @@ function import_song(){
 								}
 							}
 						}
-					}else if(block_menu_d.swap_block_target == -1){
-						post("the block type",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
-						block_menu_d.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
+					}else if(menu.swap_block_target == -1){
+						post("\n",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
+						menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
 						loading.progress = b;
-						block_menu_d.mode = 3;
+						menu.mode = 3;
+						initialise_block_menu(1);
 						set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
 						return -1;
 					}else{
-						post("loading selected susbstitute",block_menu_d.swap_block_target);
-						block_name = block_menu_d.swap_block_target;
-						block_menu_d.swap_block_target = -1;
+						post("loading selected susbstitute",menu.swap_block_target);
+						block_name = menu.swap_block_target;
+						menu.swap_block_target = -1;
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
 					}

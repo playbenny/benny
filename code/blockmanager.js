@@ -189,11 +189,14 @@ var menu = {
 	length : 10,  //endstop for the menu scroll
 	search : "",
 	camera_scroll : 0,
-	original_position : []
+	original_position : [],
+	mode : 0, //0=new block,1=swap block,2=insert in connection
+	swap_block_target : -1, //when swapping a block for another this holds the target
+	connection_number : -1,
+	cubecount : 0
 }; 
 
 
-var cubecount; //number of menu cubes
 var wires = []; // called wires-connectionno-segmentno
 var wires_colours = [];
 var wires_enable = []; //whether wire enable flag is set
@@ -285,12 +288,6 @@ var blocks_page = {
 	highest :0,
 	lowest: 0
 }	
-
-var block_menu_d = {
-	mode : 0, //0=new block,1=swap block,2=insert in connection
-	swap_block_target : -1, //when swapping a block for another this holds the target
-	connection_number : -1,
-}
 
 var touch_click=0;
 var stored_click = [];

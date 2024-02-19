@@ -801,38 +801,44 @@ function draw_menu_hint(){
 		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
 	}
 	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
-	var topspace=(block_menu_d.mode == 3)+1.1*(loading.progress!=0)+1.1*(menu.search!="");
+	var topspace=(menu.mode == 3)+1.1*(loading.progress!=0);
 	lcd_main.message("clear");
-	lcd_main.message("paintrect", sidebar.x,9+1.1*(loading.progress!=0)*fontheight,sidebar.x2,9+fontheight*(1+topspace),cod);
-	setfontsize(fontsmall*2);
+	lcd_main.message("paintrect", sidebar.x,9+1.1*(loading.progress!=0)*fontheight,sidebar.x2,9+(topspace+1)*fontheight,menudarkest);
+	lcd_main.message("frgb",menucolour);
 	lcd_main.message("textface", "bold");
-	
-	lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.21),mainwindow_width-10,9+fontheight*(3+topspace+0.45*hintrows),cod);
-	lcd_main.message("frgb",col);
-	lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(0.75+1.1*(loading.progress!=0)));
-	if(menu.search!=""){
-		lcd_main.message("write","search: "+menu.search);
-		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+1.1*(loading.progress!=0)));
-	}
-	
-	if(block_menu_d.mode == 1){
+	setfontsize(fontsmall*2);
+	lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(0.75+1.1*(loading.progress!=0)));
+	if(menu.mode == 1){
 		lcd_main.message("write", "swap block:");
-	}else if(block_menu_d.mode == 2){
+	}else if(menu.mode == 2){
 		lcd_main.message("write", "insert block in connection:");
-	}else if(block_menu_d.mode == 0){
+	}else if(menu.mode == 0){
 		lcd_main.message("write", "add new block:");
-	}else if(block_menu_d.mode == 3){
+	}else if(menu.mode == 3){
 		lcd_main.message("write", "substitute for "); 
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.75+1.1*(loading.progress!=0)));
-		lcd_main.message("write",block_menu_d.swap_block_target);
+		lcd_main.message("write", menu.swap_block_target);
 	}
-
+	if(menu.search!=""){
+		topspace += 1.1;
+		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),menucolour);
+		lcd_main.message("frgb",0,0,0);
+		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.75));
+		lcd_main.message("write","search: "+menu.search);
+	}
+	
+	
 	if(blocktypes.contains(usermouse.hover[1]+"::help_text")){
 		var hint=blocktypes.get(usermouse.hover[1]+"::help_text")+" ";
-//		post("\n"+usermouse.hover[1]+" : "+hint);
+		//		post("\n"+usermouse.hover[1]+" : "+hint);
 		
 		hint = hint+"                       ";
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
+		lcd_main.message("paintrect", sidebar.x,9+(topspace+1.1)*fontheight,sidebar.x2,9+fontheight*(2.1+topspace),cod);
+		
+		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.2),sidebar.x2,9+fontheight*(4.1+topspace+0.45*hintrows),cod);
+		lcd_main.message("frgb",col);
+		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.75));
 		var rowstart=0;
 		var rowend=36;
 		lcd_main.message("paintrect", sidebar.x,9+fontheight*(1.1+topspace),sidebar.x2,9+fontheight*(2.1+topspace),cod);
@@ -889,8 +895,8 @@ function draw_menu_hint(){
 			}	
 		}
 		if(!bold) lcd_main.message("textface", "bold");
-		lcd_main.message("bang");
 	}
+	lcd_main.message("bang");
 }
 	
 
