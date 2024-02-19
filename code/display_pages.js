@@ -3046,13 +3046,20 @@ function draw_sidebar(){
 									mouse_click_values[mouse_index] = 0;
 									mouse_index++;
 					
-									lcd_main.message("moveto",sidebar.x+fo1,namelabely);
+									lcd_main.message("moveto",sidebar.x+0.6*fo1,namelabely);
 									lcd_main.message("frgb",0.6*colour[0],0.6*colour[1],0.6*colour[2]);
-									var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
-									fromn = fromn.split(".").pop();
+									var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::name");
+									var froml = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
+									var ftype = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::type");
+									var fnum = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::number");
+									var fromn2 = blocktypes.get(fromn+"::connections::out::"+ftype+"["+fnum+"]");
+									froml = froml.split(".");
+									fromn = froml.pop();
+									fromn = froml.pop()+"."+fromn;
+									fromn = fromn+"/"+fromn2;
 									var pnam = params[curp].get("name");
 									pnam = pnam.replace("_"," ");
-									lcd_main.message("write", fromn+" -> "+pnam +" / "+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
+									lcd_main.message("write", fromn+" → "+pnam +"/"+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
 									click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,(sidebar.x*0.4+0.6*mainwindow_width),namelabely,mouse_index,1);
 								}
 	
