@@ -483,6 +483,10 @@ function import_hardware(v){
 		loading.songname = "autoload";
 		import_song();	
 	}	
+
+	slowclock_task = new Task(slowclock, this);
+	slowclock_task.interval = 900;
+	slowclock_task.repeat();
 }
 
 function load_config_colours(){
@@ -778,8 +782,8 @@ function deferred_diagnostics(){
 
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
+		post("\nmain window : "+width+"x"+height+"px");
 		reinitialise_block_menu();
-		post("main window : "+width+"x"+height+"px\n");
 		blocks_tex_sent = [];
 		mainwindow_width = width;
 		mainwindow_height = height;

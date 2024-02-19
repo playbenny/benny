@@ -335,7 +335,7 @@ function import_song(){
 			set_sidebar_mode("none");
 		}
 		set_display_mode("blocks");
-		post("loading from song",loading.songname,"\n");
+		post("\nloading from song",loading.songname);
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;
 		state_fade.lastcolour = [0,0,0];
@@ -447,6 +447,7 @@ function import_song(){
 						menu.mode = 3;
 						initialise_block_menu(1);
 						set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
+						camera();
 						return -1;
 					}else{
 						post("loading selected susbstitute",menu.swap_block_target);

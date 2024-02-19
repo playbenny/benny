@@ -9,7 +9,11 @@ function polycheck(){
 function slowclock(){
 	//here: check things that need to be copied into buffers have been, check up on things like deferred load happening
 	do_drift();
-	if(usermouse.qlb==0) world.getsize();
+	if(usermouse.qlb==0){
+		world.getsize();
+	}else{
+		post("\nQLB IS",usermouse.qlb);
+	}
 	if(globals_requested) send_globals();
 
 	recursions=0;
