@@ -335,7 +335,7 @@ function import_song(){
 			set_sidebar_mode("none");
 		}
 		set_display_mode("blocks");
-		post("loading from song",loading.songname,"\n");
+		post("\nloading from song",loading.songname);
 		loading.mapping = []; //loading.mapping[x] = the new blockno that block x has become
 		var thisblock,block_name;
 		state_fade.lastcolour = [0,0,0];
@@ -421,9 +421,8 @@ function import_song(){
 				if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
 					if(thisblock.contains("substitute")){
 						//use that then
-						post("the block type",block_name,"is not available in this hardware configuration. using");
 						block_name = thisblock.get("substitute");
-						post(block_name,"instead as a substitute");
+						post("\n",block_name,"is not available in this hardware configuration. substituting:",block_name);
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
 						//need to go through all connections, if connected to this block and type = hardware,
@@ -441,17 +440,22 @@ function import_song(){
 								}
 							}
 						}
-					}else if(block_menu_d.swap_block_target == -1){
-						post("the block type",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
-						block_menu_d.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
+					}else if(menu.swap_block_target == -1){
+						post("\n",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
+						menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
 						loading.progress = b;
-						block_menu_d.mode = 3;
-						set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
+						menu.camera_scroll=0;
+						menu.mode = 3;
+						initialise_block_menu(1);
+						//set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
+						menu.search="";
+						displaymode="block_menu";
+						camera();
 						return -1;
 					}else{
-						post("loading selected susbstitute",block_menu_d.swap_block_target);
-						block_name = block_menu_d.swap_block_target;
-						block_menu_d.swap_block_target = -1;
+						post("loading selected susbstitute",menu.swap_block_target);
+						block_name = menu.swap_block_target;
+						menu.swap_block_target = -1;
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
 					}
@@ -472,7 +476,7 @@ function import_song(){
 						}
 					}
 				}
-				if((t == 0) && (ui != "blank.ui")){
+				if((t == 0) && (ui != "blank.ui") && (ui != "self")){
 					for(i=0;i<MAX_BLOCKS;i++){
 						if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
 							//post("\nrecycling ui and block number:",i,ui);
@@ -680,6 +684,15 @@ function build_wave_remapping_list(){
 	}
 }
 
+function request_waves_remapping(type, voice){
+	post("\n remapping request received,",type,voice,"the remapping i sent out is",waves.remapping);
+	if(type=="audio"){
+		audio_poly.setvalue((voice-MAX_NOTE_VOICES)+1,"remapping",waves.remapping);
+	}else if(type=="ui"){
+		ui_poly.setvalue(voice+1,"remapping",waves.remapping);
+	}
+}
+
 function load_process_block_voices_and_data(block){
 	var drawn=1;
 	t = blocks.get("blocks["+block +"]::poly::voices");
@@ -763,7 +776,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 	//post("\n\nHERE, VOICEALLOC ",type,block_name,new_voice,offs);
 	var ui = blocktypes.get(block_name+"::block_ui_patcher");
-	if((ui == "") || (ui == 0) || is_empty(ui)){
+	if((ui == "") || (ui == 0) || is_empty(ui) || (ui=="self")){
 		ui_patcherlist[block_index] = "blank.ui";
 	}else{
 		ui_patcherlist[block_index] = ui;
@@ -825,7 +838,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
 			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
 			var p_steps = 0;
-			if((p_type=="menu_i")||(p_type=="menu_b")){
+			if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 				p_min = 0;
 				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_steps = p_max;
@@ -1002,6 +1015,12 @@ function save_song(selectedonly){
 	set_sidebar_mode("none");
 }
 
+function write_userconfig(){
+	post("\nbet you 50p max crashes now.");
+	//messnamed("write_userconfig","bang");//
+	userconfig.writeagain();
+}
+
 function folder_select(folderstr){
 //	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
@@ -1009,28 +1028,23 @@ function folder_select(folderstr){
 			SONGS_FOLDER = folderstr;
 			post("\nselected new songs folder:",folderstr);
 			userconfig.replace("SONGS_FOLDER",folderstr);
-			userconfig.writeagain();
+			write_userconfig();
 			read_songs_folder("songs");
 		}else if(folder_target == "template"){
 			TEMPLATES_FOLDER = folderstr;
 			post("\nselected new templates folder:",folderstr);
 			userconfig.replace("TEMPLATES_FOLDER",folderstr);
-			userconfig.writeagain();
+			write_userconfig();
 			read_songs_folder("templates");
 		}else if(folder_target == "record"){
 			post("\nselected new record folder:",folderstr);
 			config.replace("RECORD_FOLDER",folderstr);
 			userconfig.replace("RECORD_FOLDER",folderstr);
-			userconfig.writeagain();
+			write_userconfig();
 			recording_flag = ((record_arm.indexOf(1)!=-1)+2*(folderstr!=""));
 		}
 	}
 	if(fullscreen) world.message("fullscreen",fullscreen);
-}
-
-function write_userconfig(){
-	userconfig.writeagain();
-	post("\nwrote userconfig to disk");
 }
 
 function purge_muted_trees(){

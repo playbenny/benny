@@ -1,0 +1,190 @@
+{
+	"abb.velocity.seq" : {
+		"patcher" : "abb.velocity.seq",
+		"type" : "note",
+		"block_ui_patcher" : "example.mini.ui",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "8 step Velocity Sequencer",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "clock in" ]
+			},
+			"out" : {
+				"midi" : [ "Seq out" ]
+			}
+		},
+		"groups" : [
+			{
+				"contains" : [16, 17, 18, 19], 
+				"height"	: 0,
+				"colour"	: 100
+			},
+			{ 
+				"contains" : [0, 1, 2, 3, 4, 5, 6, 7],
+				"header"	: "Steps",
+				"height" : 0
+			},	
+			{ 
+				"contains" : [8, 9, 10, 11, 12, 13, 14, 15],
+				"header"	: "Velocities"
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 5, 6, 7]
+		},
+		"parameters" : [
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,40,70] , 40 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "→",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "trig_type",
+				"type" : "menu_l",
+				"values" : ["Step Lock", "Note Trig", "Step Free"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "step_length",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "velocity_length",
+				"type"	: "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "Note",
+				"type"	: "note",
+				"values" : ["uni", 1, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.47244
+			}
+		]
+	}
+}

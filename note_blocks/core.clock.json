@@ -9,11 +9,14 @@
 		"ui_in_sidebar_height" : 4,		
 		"connections" : {
 			"in" : {
-				"midi" : [ "sync loopback" ]
+				"midi" : [ "play" ]
 			},
 			"out" : {
 				"midi" : [ "clock", "play" ],
-				"dontdefaultall" : 1
+				"dontdefaultall" : 1,
+				"descriptions" : {
+					"midi" : [ "notes at the rate selected", "status of the play control"]
+				}
 			}
 		},
 		"groups" : [

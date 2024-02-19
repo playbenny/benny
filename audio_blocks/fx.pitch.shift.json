@@ -26,7 +26,7 @@
 		},
 		"parameters" : [
 			{
-				"name" : "shift amount",
+				"name" : "shift",
 				"type" : "float4",
 				"values" : ["bi", -24, 24,"lin"],
 				"error_scale" : 0.05,

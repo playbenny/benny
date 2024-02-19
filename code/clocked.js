@@ -63,6 +63,7 @@ function frameclock(){
 		}
 		slowclock();
 		draw_topbar();
+		if(displaymode=="block_menu") draw_menu_hint();
 		//sidebar_meters();
 		bangflag=1;
 		redraw_flag.flag = 0;// redraw_flag.flag & 59; //disables a 'redraw' (and hence a draw blocks)
@@ -165,14 +166,10 @@ function frameclock(){
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){
-//			clear_screens();
-//			draw_topbar();
-//			draw_sidebar();
 			draw_custom();
 		}else{
 			update_custom();
 		}
-		//if((state_fade.position>-1) && (state_fade.selected > -1))draw_state_xfade();
 		sidebar_meters();
 		bangflag=1;
 	}else if(displaymode == "custom_fullscreen"){

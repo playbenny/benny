@@ -87,7 +87,7 @@ function blocks_paste(outside_connections){
 					if(ty!=copied_type){
 						//then swap the selected block to this type, then copy settings params etc
 						//should this be only if just one selected??
-						block_menu_d.swap_block_target = i;
+						menu.swap_block_target = i;
 						swap_block(copied_type);
 					}
 					//copy params
@@ -453,14 +453,14 @@ function open_patcher(block,voice){
 }
 
 function swap_block_button(block){
-	block_menu_d.swap_block_target = block;
-	block_menu_d.mode = 1;
+	menu.swap_block_target = block;
+	menu.mode = 1;
 	set_display_mode("block_menu");
 }
 
 function insert_menu_button(cno){
-	block_menu_d.mode = 2;
-	block_menu_d.connection_number = cno;
+	menu.mode = 2;
+	menu.connection_number = cno;
 	//needs to set blocks_page.new_block_click_pos to the average of the 2 block's [x,y,z] TODO
 	set_display_mode("block_menu");
 }
@@ -562,14 +562,15 @@ function show_new_block_menu(){
 	usermouse.clicked3d=-1;
 	usermouse.timer = 0;
 	usermouse.long_press_function = null;
-	block_menu_d.mode = 0;
+	menu.mode = 0;
 	set_display_mode("block_menu");
 }
 
 function select_block(parameter,value){
 	//post("\nselblock,",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
-		if(blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher")!="blank.ui"){
+		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
+		if((ui!="blank.ui")&&(ui!="self")){
 			set_display_mode("custom",value);
 			return(1);
 		}
@@ -2008,17 +2009,27 @@ function key_escape(){
 		waves.selected=-1;
 		redraw_flag.flag |= 4;
 	}else{
-		set_display_mode("blocks");
-		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
-			set_sidebar_mode("block");
-		}else if(sidebar.mode!="none"){
-			clear_blocks_selection();
-			if(sidebar.mode == "file_menu"){
-				set_sidebar_mode("none");
-				center_view(1);
-			} 
+		if((displaymode=="block_menu")&&(menu.mode==3)){
+			if(menu.search!=""){
+				menu.search="";
+				draw_menu_hint();
+			}else{
+				post("\nsorry no you have to make a selection");
+				draw_menu_hint();
+			}
 		}else{
-			center_view(1);
+			set_display_mode("blocks");
+			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
+				set_sidebar_mode("block");
+			}else if(sidebar.mode!="none"){
+				clear_blocks_selection();
+				if(sidebar.mode == "file_menu"){
+					set_sidebar_mode("none");
+					center_view(1);
+				} 
+			}else{
+				center_view(1);
+			}
 		}
 	}
 }
@@ -2041,12 +2052,16 @@ function toggle_show_sidebar_para_mod(){
 function selected_block_custom_mode(mode){
 	var se = selected.block.indexOf(1);
 	if(se>=0){
-		var na = blocks.get("blocks["+se+"]::patcher");
-		if(blocktypes.contains(na+"::block_ui_patcher") && (blocktypes.get(na+"::block_ui_patcher")!="blank.ui")){
-			if(blocktypes.contains(na+"::no_edit") && (blocktypes.get(na+"::no_edit")==1)){
-
-			}else{
-				set_display_mode(mode,selected.block.indexOf(1));
+		var na = blocks.get("blocks["+se+"]::name");
+		if(blocktypes.contains(na+"::block_ui_patcher")){
+			var ui = blocktypes.get(na+"::block_ui_patcher");
+			if(ui!="blank.ui"){
+				if(blocktypes.contains(na+"::no_edit") && (blocktypes.get(na+"::no_edit")==1)){
+				}else if(ui=="self"){
+					open_patcher(se, -1);
+				}else{
+					set_display_mode(mode,se);
+				}
 			}
 		}
 	}
@@ -2056,6 +2071,18 @@ function custom_key_passthrough(key){
 	ui_poly.setvalue( custom_block+1, "keydown", key);
 }
 
+function qwertymidi(key,vel){
+	messnamed("qwertymidi",key + 12*qwertym.octave, vel);
+}
+function qwertymidispecial(command){
+	if(command=="octavedown"){
+		qwertym.octave -= 1;
+		if(qwertym.octave < 0) qwertym.octave = 0;
+	}else if(command=="octaveup"){
+		if(qwertym.octave < 9) qwertym.octave += 1;
+	}
+	redraw_flag.flag |= 2;
+}
 function poly_key(dir){
 	if(dir<0){
 		if((sidebar.mode == "block")||(sidebar.mode == "settings")){
@@ -2151,11 +2178,109 @@ function fold_menus(){
 
 function clear_or_close(){
 	var s = selected.wire.indexOf(1);
-	post("\n\n\n\nclear or close,",s);
+	//post("\n\n\n\nclear or close,",s);
 	if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
 		remove_connection(s);
 	}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
 		remove_connection(s);
 	}
 	set_sidebar_mode("none");
+}
+
+function toggle_connection_help(){
+	sidebar.connection.help = 1 - sidebar.connection.help;
+	redraw_flag.flag |= 2;
+}
+
+function type_to_search(key){
+	if(key==-7){
+		menu.search = menu.search.slice(0, -1);
+	}else if(key==-6){
+		menu.search = "";
+	}else{
+		if(menu.search == ""){
+			menu.camera_scroll=0;
+			camera();
+		}
+		menu.search = menu.search + String.fromCharCode(key);
+	}
+	if(menu.search!=""){
+		var type_order = config.get("type_order");
+		var types = blocktypes.getkeys();
+		var results = [];
+		for(var i=0;i<menu.cubecount;i++){
+			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			}else{
+				var str = types[i];
+				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
+				if(str.indexOf(menu.search)!=-1){ //if you find the search in the name
+					var ts=types[i].split('.');
+					var tt = type_order.length;
+					for(var t in type_order){ // add the number of the block to an array indexed by the type
+						if(ts[0]==type_order[t]){tt = t; t=9999;}
+					}
+					if(!Array.isArray(results[tt])) results[tt] = [];
+					results[tt].push(i);
+					blocks_menu[i].enable = 1;
+				}else{
+					blocks_menu[i].enable = 0;
+				}
+			}
+		}
+		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
+		var z=-3.5; var x=-w;
+		for(var i =0;i<results.length;i++){
+			var f=0;
+			if(Array.isArray(results[i])){
+				for(var ii = 0;ii<results[i].length;ii++){
+					f=1;
+					blocks_menu[results[i][ii]].position = [x,-110,z];
+					x++;
+					if(x>w){
+						z++;
+						x=-w;
+					}
+				}
+				if(f){
+					z++;
+					z+=0.5;
+					x=-w;
+				}
+			}
+		}
+	}else{
+		initialise_block_menu(1);
+	}
+	usermouse.hover[1] = null;
+	draw_menu_hint();
+}
+
+function menu_move_on_down_inside_the_empty_carriage(){
+	//squashes the block menu to only show visible blocks
+	var type_order = config.get("type_order");
+	var types = blocktypes.getkeys();
+	var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
+	var z=-3.5; var x=-w;
+	for(var t in type_order){
+		var f=0;
+		for(var i=0;i<menu.cubecount;i++){
+			var ts=types[i].split('.');
+			if(ts == type_order[t]){
+				if(blocks_menu.enable){
+					f=1;
+					blocks_menu[i].position = [x,-110,z];
+					x++;
+					if(x>w){
+						z++;
+						x=-w;
+					}
+				}
+			}
+		}
+		if(f){
+			z++;
+			z+=0.5;
+			x=-w;
+		}
+	}
 }

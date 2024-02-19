@@ -129,7 +129,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.shift = shift;
 	usermouse.ctrl = ctrl;
 	usermouse.alt = alt;
-	usermouse.caps = caps;
+	//if(usermouse.caps!=caps){
+		usermouse.caps = caps;
+	//	redraw_flag.flag |= 2; //so the qwertymidi indicator gets drawn
+	//}
 	usermouse.x = x;
 	usermouse.y = y;
 	usermouse.sidebar_scrolling = null;
@@ -276,7 +279,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[pnumber][8]+paramslider_details[pnumber][9]);
-								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
+								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 0.999;
 								sidebar_parameter_knob(pb,pv);
 								redraw_flag.flag|=2;
 							} 
@@ -337,7 +340,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if(displaymode=="block_menu"){
 					usermouse.timer = 0;
 					usermouse.long_press_function = null;
-					if(block_menu_d.mode == 0){ //post("BLOCK MENU",usermouse.clicked3d,usermouse.ids);
+					if(menu.mode == 0){ //post("BLOCK MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.clicked3d==-2){
 							usermouse.clicked3d=-3;
 						}
@@ -358,7 +361,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 						usermouse.clicked3d = -1;
-					}else if(block_menu_d.mode == 1){ //post("SWAP MENU",usermouse.clicked3d,usermouse.ids);
+					}else if(menu.mode == 1){ //post("SWAP MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
 							set_display_mode("blocks");
 						}else{
@@ -367,13 +370,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								set_display_mode("blocks");
 							}
 						}
-					}else if(block_menu_d.mode == 2){ //post("insert MENU",usermouse.clicked3d,usermouse.ids);
+					}else if(menu.mode == 2){ //post("insert MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
 							set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-								var f_no= connections.get("connections["+block_menu_d.connection_number+"]::from::number");
-								var t_no = connections.get("connections["+block_menu_d.connection_number+"]::to::number");
+								var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
+								var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
 								var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
 								var avy = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::y") + blocks.get("blocks["+t_no+"]::space::y")));
 								var r = new_block(usermouse.ids[1], avx,avy);
@@ -383,14 +386,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								insert_block_in_connection(usermouse.ids[1],r);							
 							}
 						}
-					}else if(block_menu_d.mode == 3){ //post("SUBSTITUTION MENU",usermouse.clicked3d,usermouse.ids);
+					}else if(menu.mode == 3){ //post("SUBSTITUTION MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
 							//set_display_mode("blocks");
 							post("sorry no, you have to pick a substitute");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								post("substitution found!!"+usermouse.ids[1]);
-								block_menu_d.swap_block_target = usermouse.ids[1];
+								menu.swap_block_target = usermouse.ids[1];
 								set_display_mode("blocks");
 								import_song();
 								//swap_block(usermouse.ids[1]);
@@ -474,7 +477,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
-									post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									usermouse.clicked3d=-1;
 								}
@@ -566,7 +569,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				if(usermouse.clicked3d =="background") {
 					usermouse.drag.starting_value_y = camera_position[1];
 				}else{
-					usermouse.drag.starting_value_y = menu_camera_scroll;
+					usermouse.drag.starting_value_y = menu.camera_scroll;
 				}
 			}
 		}else{
@@ -777,8 +780,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.drag.last_y = y;
 							if((usermouse.clicked3d == "background")||(usermouse.clicked3d == "background_dragged")){
 								usermouse.clicked3d = "background_dragged";
-								menu_camera_scroll += ydist*0.04;
-								messnamed("camera_control","position", 2 , -93, menu_camera_scroll);	
+								menu.camera_scroll += ydist*0.04;
+								messnamed("camera_control","position", 2 , -93, menu.camera_scroll);	
 							}					
 						}
 					}
@@ -813,7 +816,12 @@ function mouse_released_on_a_thing_no_drag(){
 		//										deferred_diag[deferred_diag.length] = "you clicked this block "+usermouse.ids[1];
 		if(usermouse.timer>0){
 			if(blocks.get("blocks["+usermouse.ids[1]+"]::type")!="hardware"){
-				if(blocktypes.get(blocks.get("blocks["+usermouse.ids[1]+"]::name")+"::block_ui_patcher")!="blank.ui"){
+				var ui ="blank.ui";
+				var na = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+				if(blocktypes.contains(na+"::block_ui_patcher")) ui = blocktypes.get(na+"::block_ui_patcher");
+				if(ui=="self"){
+					open_patcher(usermouse.ids[1],-1);
+				}else if(ui!="blank.ui"){
 					set_display_mode("custom",+usermouse.ids[1]);
 					if(selected.block[+usermouse.ids[1]]!=1) select_block(0,+usermouse.ids[1]);
 					return(0);
@@ -905,8 +913,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			messnamed("camera_control","position",  camera_position);
 			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){
-			menu_camera_scroll = Math.max(-3,Math.min(menu_length+3,menu_camera_scroll-scroll));
-			messnamed("camera_control","position", 2 , -93, menu_camera_scroll);
+			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-scroll));
+			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
 		}
 	}else if((d>=2) && (d<=4)){
 		var f = mouse_click_actions[b];
@@ -946,11 +954,6 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 
 
 function keydown(key){
-	if(keyrepeat_task.running==0){
-		keyrepeat_task = new Task(keydown, this, key);
-		keyrepeat_task.interval= 150;
-		keyrepeat_task.repeat(-1,300);			
-	}
 	if(keymap.contains("modal::"+sidebar.mode)){
 		if(keymap.contains("modal::"+sidebar.mode+"::"+key)){
 			var action = keymap.get("modal::"+sidebar.mode+"::"+key);
@@ -967,6 +970,20 @@ function keydown(key){
 			(eval(action[1])).apply(this,paras);
 			return 1;		
 		}
+	}
+	if(usermouse.caps && keymap.contains("qwertymidi::"+key)){
+		var action = keymap.get("qwertymidi::"+key);
+		var paras = action.slice(2,99);
+		if(!Array.isArray(paras)) paras=[paras];
+		paras.push(qwertym.vel);
+		//post("\nfound in keymap qwertmidi", action[0],action[1], "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
+	}
+	if(keyrepeat_task.running==0){
+		keyrepeat_task = new Task(keydown, this, key);
+		keyrepeat_task.interval= 150;
+		keyrepeat_task.repeat(-1,300);			
 	}
 	if(keymap.contains("sidebar::"+sidebar.mode+"::"+key)){
 		var action = keymap.get("sidebar::"+sidebar.mode+"::"+key);
@@ -1000,4 +1017,16 @@ function keydown(key){
 
 function keyup(key){
 	keyrepeat_task.cancel();
+	if(usermouse.caps && keymap.contains("qwertymidi::"+key)){
+		var action = keymap.get("qwertymidi::"+key);
+		if(action[1] == "qwertymidi"){
+			var paras = action.slice(2,99);
+			if(!Array.isArray(paras)) paras=[paras];
+			paras.push(0);
+			//post("\nfound in keymap qwertmidi", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}
+	}
+
 }

@@ -27,6 +27,12 @@ function set_display_mode(mode,t){
 			flock_axes(0);
 		}
 		displaymode=mode;
+		if(mode == "block_menu"){
+			if(menu.search!=""){
+				menu.search = "";
+				type_to_search(-6);
+			}
+		}
 		camera();
 		//post("display mode set to "+mode+"\n");
 		redraw_flag.flag=4;
@@ -49,7 +55,7 @@ function camera(){
 	if(displaymode == "custom"){
 		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
 	}else if(displaymode == "block_menu"){
-		messnamed("camera_control", "position", [2,-93,menu_camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
+		messnamed("camera_control", "position", [2,-93,menu.camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
 		messnamed("camera_control", "direction", 0, -1, 0);		
 	}else if(displaymode == "blocks"){ //this could be animated too?
@@ -57,11 +63,12 @@ function camera(){
 		messnamed("camera_control", "direction", 0, 0, -1);
 		messnamed("camera_control", "position",  camera_position, ANIM_TIME); //"anim", "moveto"
 //		messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
-		if(sidebar.mode=="file_menu"){
-			camera_position[2] += 50;
-			camera_position[0] = 8+Math.max(camera_position[0], blocks_page.rightmost);
-			messnamed("camera_control", "anim", "moveto", camera_position, ANIM_TIME);
-		}
+		//if(sidebar.mode=="file_menu"){
+			//center_view(1);
+			//camera_position[2] += 50;
+			//camera_position[0] = 8+Math.max(camera_position[0], blocks_page.rightmost);
+			//messnamed("camera_control", "anim", "moveto", camera_position, ANIM_TIME);
+		//}
 	}else if(displaymode == "waves"){
 		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
@@ -194,7 +201,8 @@ function draw_panels(){
 		} 
 		
 		var has_ui = 0;
-		if(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui"){
+		var ui = blocktypes.get(block_name+"::block_ui_patcher");
+		if((ui!="blank.ui")&&(ui!="self")){
 			has_ui = 1;
 			h+=4;
 			if(has_params) h-=0.5;
@@ -423,7 +431,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
 			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 			labelled_parameter_v_slider(panelslider_index);
-			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 				//if it's a menu_b or menu_i store the next position in mouse_click_values
 				// now stores the paramslider_details index, so you can look up type, get num values, etc etc, on click, more efficient.
 				mouse_click_values[mouse_index] = panelslider_index; //(pv+1/p_values.length) % 1;
@@ -601,7 +609,7 @@ function draw_block_menu(){
 
 function hide_block_menu(){
 	//post("\nhiding block menu\n");
-	for(var i=0;i<cubecount;i++){
+	for(var i=0;i<menu.cubecount;i++){
 		blocks_menu[i].enable = 0;
 	}
 }
@@ -625,16 +633,15 @@ function initialise_block_menu(visible){
 	var ts,swpt=0;
 	var col;
 	var vis=0;
-	//blocks_menu=[];
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
-		if(block_menu_d.mode == 1) swpt = blocks.get("blocks["+block_menu_d.swap_block_target+"]::type");
-		for(i=0;i<cubecount;i++){
+		if(menu.mode == 1) swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
+		for(i=0;i<menu.cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 				//skip this one
 //				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 			}else{
 				if(visible==1)vis=1;	
-				if(block_menu_d.mode == 1){
+				if(menu.mode == 1){
 					if(blocktypes.get(types[i]+"::type") != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
 				}
 				if(blocktypes.contains(types[i]+"::exclusive")){
@@ -645,29 +652,33 @@ function initialise_block_menu(visible){
 					}
 				}
 				blocks_menu[i].enable = vis;
+				blocks_menu[i].position = menu.original_position[i];
 			}
 		}
+		if(menu.mode == 1) menu_move_on_down_inside_the_empty_carriage();
 	}else{
+		post("\ninitialising block menu");
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
 		for(var typ in type_order){
 			z++;
 			z+=0.5;
 			x=-w;
-			for(i=0;i<cubecount;i++){
+			for(i=0;i<menu.cubecount;i++){
 				ts=types[i].split('.');
 				if(ts[0]==type_order[typ]){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
-						//						post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
+						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
 						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
+						menu.original_position[i]=[1000,1000,1000];
 					}else{
-//						post("\ndrawing menu texture:",i," label is ",ts,"\n");
+						//	post("\ndrawing menu texture:",i," label is ",ts,"\n");
 						messnamed("texture_generator","menu",i);
 						col = blocktypes.get(types[i]+"::colour");
 						lcd_block_textures.message("brgb",col);
@@ -691,11 +702,12 @@ function initialise_block_menu(visible){
 						}
 						//col = config.get("palette::"+ts[0]);
 //						post("drawing menu block",ts);
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_block-"+types[i]+"-"+i;
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [x, -110, z];
+						menu.original_position[i]=[x,-110,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
 						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 						blocks_menu[i].texture = blocks_menu_texture[i];
@@ -709,11 +721,12 @@ function initialise_block_menu(visible){
 				}
 			}
 		}
-		menu_length = z;
+		menu.length = z;
 		blocks_tex_sent = []; // this is a good moment to ask for a redraw of any blocks that are loaded by now's textures
 		initialise_block_menu(visible); //to hide the core blocks if they're already loaded
 	}
 }
+
 
 function blocks_enable(enab){ //shows or hides all the blocks/wires/text
 	for(var i=0;i<blocks_cube.length;i++){
@@ -916,7 +929,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	var tt=0;
 	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
-			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","mainwindow");
+			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
 			blocks_cube[i][t].dim = [12, 12];
 			blocks_cube[i][t].name = "block-"+i+"-"+t;
 			blocks_cube[i][t].shape = "cube";
@@ -947,7 +960,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					//post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
 					var tv=(t-1)/subvoices;
 					for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter-"+i+"-"+t+"-"+tt;
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
@@ -968,7 +981,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 						post("this hardware block seems to have no io?");
 					}else{
 						for(tt=0;tt<noio;tt++){
-							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","mainwindow");
+							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","benny");
 							blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
 							blocks_meter[i][(t-1)*noio+tt].name = "meter-"+i+"-"+t+"-"+tt;
 							blocks_meter[i][(t-1)*noio+tt].shape = "cube";
@@ -977,7 +990,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					}					
 					
 				}else if(block_type == "note"){
-					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","mainwindow");
+					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","benny");
 					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
 					blocks_meter[i][t-1].name = "meter-"+i+"-"+t+"-0";
 					blocks_meter[i][t-1].shape = "cube";
@@ -1427,7 +1440,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		rotY *= 57.29577951; //180/Math.PI;
 	}
 	if(typeof wires[connection_number][segment] === 'undefined') {
-		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","mainwindow");
+		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","benny");
 		wires[connection_number][segment].shape = "plane";//"opencylinder";
 		wires[connection_number][segment].name = "wires-"+connection_number+"-"+segment;
 		wires[connection_number][segment].dim = [2,2];//[5, 2]; //[3,2]cyl is ribbons, [5,2] cuboids
@@ -1468,7 +1481,7 @@ function set_sidebar_mode(mode){
 		sidebar.mode = mode;
 		if(mode=="file_menu"){
 			displaymode="blocks";
-			camera();
+			center_view(1);
 			redraw_flag.flag  |= 4;
 		}
 	}
@@ -2698,6 +2711,7 @@ function draw_sidebar(){
 			//button to open editor. currently a full row, but it may easily fit on with some of the above stuff? but position needs to be consistent
 			if((block_type!="hardware")&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
 				mouse_click_actions[mouse_index] = set_display_mode;
+				mouse_click_values[mouse_index] = block;
 				var ebg=block_darkest;
 				var efg=block_colour;
 				var et="<< edit"
@@ -2707,17 +2721,21 @@ function draw_sidebar(){
 					mouse_click_parameters[mouse_index] = "custom_fullscreen";
 					et=">> edit fullscreen"
 				}/*else if(displaymode=="custom_fullscreen"){ //never happens, doesn't draw sidebar in fullscreen
-					ebg = block_colour;
-					efg = block_darkest;
-					mouse_click_parameters[mouse_index] = "custom";
-				}*/else{
-					mouse_click_parameters[mouse_index] = "custom";
+				}*/else{ // 'self' just pops open the patcher as if it was a vst editor
+					// nb this isn't a magic bullet for easy dev - these patchers still 
+					// need to store their data etc like the js-based ui's do.
+					if(blocktypes.get(block_name+"::block_ui_patcher")=="self"){
+						mouse_click_actions[mouse_index] = open_patcher;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = -1;
+					}else{
+						mouse_click_parameters[mouse_index] = "custom";
+					}
 				}
 				if(usermouse.clicked2d == mouse_index){
 					efg = block_darkest;
 					ebg = menucolour;
 				}
-				mouse_click_values[mouse_index] = block;
 				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
 				lcd_main.message("frgb" , efg);
 				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
@@ -2820,7 +2838,8 @@ function draw_sidebar(){
 						groups = blocktypes.get(block_name+"::groups");
 						if(!Array.isArray(groups)) groups = [groups];
 					}
-
+					var vl = voicemap.get(block);
+					if(!Array.isArray(vl))vl=[vl];
 					var w_slider,h_slider,colour,plist;
 					var slidercount; //used to hide sliders that apply to not-yet-active voices
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
@@ -2839,7 +2858,6 @@ function draw_sidebar(){
 							}
 						}
 					}
-
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
 						colour=block_colour;
@@ -2878,8 +2896,8 @@ function draw_sidebar(){
 								if(getmap==1){
 									if(p_type!="button"){
 										if(opvf){
-											var vl=voicemap.get(block);
-											if(!Array.isArray(vl))vl=[vl];
+											//var vl=voicemap.get(block);
+											//if(!Array.isArray(vl))vl=[vl];
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)&&(map_y<automap.c_rows)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
@@ -2938,9 +2956,62 @@ function draw_sidebar(){
 										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
-											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
+											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);											
 										}
 										mouse_index++;
+									}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1)){
+										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										var statecount = (p_values.length);// - 1) / 2;
+										var pv2 = Math.floor(pv * statecount);
+										var h_s=h_slider;
+										if(h_slider==0){
+											h_s=1.5;
+										}else{
+											h_s+=0.9;
+										}
+										if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
+											post("\nmenu_l",statecount,h_s);
+											var ys = fontheight*(h_s)/(statecount);
+											for(var bl=0;bl<statecount;bl++){
+												if(params[curp].contains("colours")){
+													valcol = params[curp].get("colours["+bl+"]");
+												}else{
+													valcol = colour;
+												}
+												if(bl==pv2){
+												}else{
+													valcol = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
+												}
+												draw_button(x1,y1+bl*ys,x2,y1+(bl+1)*ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
+												mouse_click_actions[mouse_index] = send_button_message;
+												mouse_click_parameters[mouse_index] = block;
+												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, bl/statecount];
+												mouse_index++;
+											}
+										}else{
+											var valcol;
+											if(params[curp].contains("colours")){
+												valcol = params[curp].get("colours["+pv2+"]");
+											}else{
+												var pv3;
+												if(statecount==2){
+													pv3 = pv*0.9 + 0.3;
+												}else{
+													pv3 = pv*0.6 + 0.7;
+												}
+												valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
+											}
+	
+											draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
+											mouse_click_actions[mouse_index] = send_button_message;
+											mouse_click_parameters[mouse_index] = block;
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99];
+											mouse_index++;
+										}
+										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+											//but it's so much easier just to call this fn
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);
+										}
 									}else{
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
@@ -2955,7 +3026,7 @@ function draw_sidebar(){
 										//ie is mouse_click_parameters[index][0]
 										mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 										mouse_click_parameters[mouse_index] = [curp, block];
-										if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+										if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 											//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 											mouse_click_values[mouse_index] = curp+1;
 										}else{
@@ -3002,13 +3073,20 @@ function draw_sidebar(){
 									mouse_click_values[mouse_index] = 0;
 									mouse_index++;
 					
-									lcd_main.message("moveto",sidebar.x+fo1,namelabely);
+									lcd_main.message("moveto",sidebar.x+0.6*fo1,namelabely);
 									lcd_main.message("frgb",0.6*colour[0],0.6*colour[1],0.6*colour[2]);
-									var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
-									fromn = fromn.split(".").pop();
+									var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::name");
+									var froml = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
+									var ftype = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::type");
+									var fnum = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::number");
+									var fromn2 = blocktypes.get(fromn+"::connections::out::"+ftype+"["+fnum+"]");
+									froml = froml.split(".");
+									fromn = froml.pop();
+									fromn = froml.pop()+"."+fromn;
+									fromn = fromn+"/"+fromn2;
 									var pnam = params[curp].get("name");
 									pnam = pnam.replace("_"," ");
-									lcd_main.message("write", fromn+" -> "+pnam +" / "+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
+									lcd_main.message("write", fromn+" → "+pnam +"/"+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
 									click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,(sidebar.x*0.4+0.6*mainwindow_width),namelabely,mouse_index,1);
 								}
 	
@@ -3147,7 +3225,7 @@ function draw_sidebar(){
 										pv = Math.min(pv,p_values.length-1);											
 									}
 									lcd_main.message("write", p_values[pv]+ "-"+ p_values[pv2]);										
-								}else if((p_type == "menu_i")||(p_type == "menu_b")){
+								}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
 									pv *= p_values.length;
 									pv = Math.min(Math.floor(pv),p_values.length-1);
 									lcd_main.message("write", p_values[pv]);
@@ -3335,7 +3413,7 @@ function draw_sidebar(){
 										pv = Math.min(pv,p_values.length-1);											
 									}
 									lcd_main.message("write", p_values[pv]+ "-"+ p_values[pv2]);										
-								}else if((p_type == "menu_i")||(p_type == "menu_b")){
+								}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
 									pv *= p_values.length;
 									pv = Math.min(Math.floor(pv),p_values.length-1);
 									lcd_main.message("write", p_values[pv]);
@@ -3502,7 +3580,7 @@ function draw_sidebar(){
 									//ie is mouse_click_parameters[index][0]
 									mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 									mouse_click_parameters[mouse_index] = [plist[t], block];
-									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 										//if it's a menu_b or menu_i store the next position in mouse_click_values
 										mouse_click_values[mouse_index] = plist[t];//(pv+1/p_values.length) % 1;
 									}else{
@@ -4447,9 +4525,9 @@ function draw_sidebar(){
 					setfontsize(fontsmall);
 					lcd_main.message("textface", "normal");
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
-					var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
+					var hintrows = 0.4+ hint.length / 35+hint.split("£").length-1;
 					var rowstart=0;
-					var rowend=28;
+					var rowend=36;
 					hint = hint+"                       ";
 					var bold=0;
 					var sameline=0;
@@ -4485,9 +4563,9 @@ function draw_sidebar(){
 						lcd_main.message("write",sliced);
 						if(!sameline){
 							rowstart=rowend+1;
-							rowend+=28;
+							rowend+=36;
 						}else{
-							var t = rowstart+28;
+							var t = rowstart+36;
 							rowstart=rowend+1
 							rowend=t;
 						}
@@ -5420,7 +5498,7 @@ function draw_sidebar(){
 					//ie is mouse_click_parameters[index][0]
 					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 					mouse_click_parameters[mouse_index] = [curp, t_number];
-					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")){
+					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 						mouse_click_values[mouse_index] = curp+1;
 					}else{

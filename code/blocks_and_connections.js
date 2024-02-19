@@ -58,7 +58,7 @@ function new_block(block_name,x,y){
 		}
 		if(details.contains("block_ui_patcher")){
 			var ui = details.get("block_ui_patcher");
-			if((ui == "") || (ui == 0)){
+			if((ui == "") || (ui == 0) || (ui == "self")){
 				ui_patcherlist[new_block_index] = "blank.ui";
 			}else{
 				ui_patcherlist[new_block_index] = ui;
@@ -68,7 +68,7 @@ function new_block(block_name,x,y){
 		//block_name = details.get("patcher");
 		blocks.replace("blocks["+new_block_index+"]::patcher",details.get("patcher"));
 		var ui = details.get("block_ui_patcher");
-		if((ui == "") || (ui == 0)){
+		if((ui == "") || (ui == 0) || (ui == "self")){
 			ui_patcherlist[new_block_index] = "blank.ui";
 		}else{
 			ui_patcherlist[new_block_index] = ui;
@@ -173,10 +173,11 @@ function new_block(block_name,x,y){
 			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
 			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
 			var p_steps = 0;
-			if((p_type=="menu_i")||(p_type=="menu_b")){
+			if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 				p_min = 0;
-				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
-				p_steps = p_max;
+				p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
+				p_max = p_steps-1;
+
 			}else if(p_type=="menu_f"){
 				p_min=0;
 				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
@@ -2108,7 +2109,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 	var notall = 0;
 	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
-	var f_type = new_connection.get("from::output::type");
+	//var f_type = new_connection.get("from::output::type");
 	if(fromv==-1){
 		if(notall){
 			new_connection.replace("from::voice", 1 );
@@ -2116,7 +2117,11 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::voice", "all" );		
 		}
 	}else{
-		if((f_type=="audio")||(f_type=="hardware")) fromv *= f_subvoices;
+		/*if((f_type=="audio")||(f_type=="hardware")){
+			post("\nfromv was",fromv);
+			fromv *= f_subvoices;
+			post("      now fromv is",fromv+1);
+		}*/
 		new_connection.replace("from::voice", fromv + 1 );
 	}
 	sidebar.connection.default_in_applied = 0;
@@ -2180,7 +2185,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 	notall = 0;
 	if(blocktypes.contains(toname+"::connections::in::dontdefaultall")) notall = blocktypes.get(toname+"::connections::in::dontdefaultall");
-	var t_type = new_connection.get("to::input::type");
+	//var t_type = new_connection.get("to::input::type");
 	if(tov == -1){
 		if(notall){
 			new_connection.replace("to::voice", 1 );
@@ -2188,7 +2193,11 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("to::voice", "all" );		
 		}
 	}else{
-		if((t_type=="audio")||(t_type=="hardware")) tov *= t_subvoices;
+		/*if((t_type=="audio")||(t_type=="hardware")){
+			post("\ntov",tov);
+			tov *= t_subvoices;
+			post("      now",tov+1);
+		}*/
 		new_connection.replace("to::voice", tov + 1 );
 	}
 	
@@ -2494,7 +2503,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				var p_max = details.get("parameters["+i+"]::values[2]");
 				var p_curve = details.get("parameters["+i+"]::values[3]");
 				var p_steps = 0;
-				if((p_type=="menu_i")||(p_type=="menu_b")){
+				if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 					p_min = 0;
 					p_max = details.getsize("parameters["+i+"]::values");
 					p_steps = p_max;
@@ -2712,7 +2721,7 @@ function connection_edit_voices(connection, voice){
 }
 
 function insert_block_in_connection(newblockname,newblock){
-//	post("insert conn no", block_menu_d.connection_number);
+//	post("insert conn no", menu.connection_number);
 	// get the details of the inserted block
 	var details = new Dict;
 	details = blocktypes.get(newblockname);
@@ -2723,10 +2732,10 @@ function insert_block_in_connection(newblockname,newblock){
 	
 	//- copy all the connection details
 	var oldconn = new Dict;
-	oldconn = connections.get("connections["+block_menu_d.connection_number+"]");
+	oldconn = connections.get("connections["+menu.connection_number+"]");
 
 	// remove the connection
-	remove_connection(block_menu_d.connection_number);
+	remove_connection(menu.connection_number);
 	// make a new connection:
 	var f_type = oldconn.get("from::output::type");
 	var t_type = oldconn.get("to::input::type");
@@ -2798,7 +2807,7 @@ function insert_block_in_connection(newblockname,newblock){
 }
 
 function swap_block(block_name){
-	post("swapping block",block_menu_d.swap_block_target,"to",block_name);
+	post("swapping block",menu.swap_block_target,"to",block_name);
 	var details = new Dict;
 	// find an unused block number in blocks
 	// what type is it?	// look it up in the blocks dict:
@@ -2811,9 +2820,9 @@ function swap_block(block_name){
 	}
 	
 	var type = details.get("type")
-	var otype = blocks.get("blocks["+block_menu_d.swap_block_target+"]::type");
+	var otype = blocks.get("blocks["+menu.swap_block_target+"]::type");
 	var o_subv = 1;
-	if(otype == "audio") o_subv = blocks.get("blocks["+block_menu_d.swap_block_target+"]::subvoices");
+	if(otype == "audio") o_subv = blocks.get("blocks["+menu.swap_block_target+"]::subvoices");
 	var subv = 1;
 	if(type == "audio"){
 		if(details.contains("subvoices")){
@@ -2834,7 +2843,7 @@ function swap_block(block_name){
 		if(ratio!=1) post("\ntodo - i think here it needs to reassign connection voices differently?");
 		for(i=0;i<connections.getsize("connections");i++){
 			if(connections.contains("connections["+i+"]::from")){
-				if((connections.get("connections["+i+"]::from::number") == block_menu_d.swap_block_target)||(connections.get("connections["+i+"]::to::number") == block_menu_d.swap_block_target)){
+				if((connections.get("connections["+i+"]::from::number") == menu.swap_block_target)||(connections.get("connections["+i+"]::to::number") == menu.swap_block_target)){
 					handful[h] = connections.get("connections["+i+"]");
 					handful_n[h] = i;
 					h++;
@@ -2844,24 +2853,24 @@ function swap_block(block_name){
 			}
 		}
 		if(subv != o_subv){
-			clear_block_3d_objects(block_menu_d.swap_block_target);			
+			clear_block_3d_objects(menu.swap_block_target);			
 		}
 	}
 	if(type == "hardware"){
-		clear_block_3d_objects(block_menu_d.swap_block_target);	
-		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
-		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
+		clear_block_3d_objects(menu.swap_block_target);	
+		blocks.replace("blocks["+menu.swap_block_target+"]::name",block_name);
+		blocks.replace("blocks["+menu.swap_block_target+"]::label",block_name);
 	}else{
 		block_name = details.get("patcher");
-		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::name",block_name);
-		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::label",block_name);
+		blocks.replace("blocks["+menu.swap_block_target+"]::name",block_name);
+		blocks.replace("blocks["+menu.swap_block_target+"]::label",block_name);
 		var ui = details.get("block_ui_patcher");
-		if((ui == "") || (ui == 0)){
-			ui_patcherlist[block_menu_d.swap_block_target] = "blank.ui";
+		if((ui == "") || (ui == 0) || (ui == "self")){
+			ui_patcherlist[menu.swap_block_target] = "blank.ui";
 		}else{
-			ui_patcherlist[block_menu_d.swap_block_target] = ui;
+			ui_patcherlist[menu.swap_block_target] = ui;
 		}
-		blocks.replace("blocks["+block_menu_d.swap_block_target+"]::subvoices",subv);
+		blocks.replace("blocks["+menu.swap_block_target+"]::subvoices",subv);
 		still_checking_polys |=4;
 		//send_ui_patcherlist();
 	}
@@ -2875,18 +2884,18 @@ function swap_block(block_name){
 		}
 	}
 
-	selected.block[block_menu_d.swap_block_target] = 1;
-	blocks.replace("blocks["+block_menu_d.swap_block_target+"]::type",type);
+	selected.block[menu.swap_block_target] = 1;
+	blocks.replace("blocks["+menu.swap_block_target+"]::type",type);
 /*	blc=[128,128,128];
 	if(config.contains("palette::"+bln[0])){
 		blc=config.get("palette::"+bln[0]);
 	}
-	blocks.replace("blocks["+block_menu_d.swap_block_target+"]::space::colour", blc );*/
-	blocks.replace("blocks["+block_menu_d.swap_block_target+"]::space::colour", blocktypes.get(block_name+"::colour") );
-	draw_block_texture(block_menu_d.swap_block_target);
+	blocks.replace("blocks["+menu.swap_block_target+"]::space::colour", blc );*/
+	blocks.replace("blocks["+menu.swap_block_target+"]::space::colour", blocktypes.get(block_name+"::colour") );
+	draw_block_texture(menu.swap_block_target);
 
 	var voicelist = [];
-	voicelist = voicemap.get(block_menu_d.swap_block_target);
+	voicelist = voicemap.get(menu.swap_block_target);
 	if(typeof voicelist == "number") voicelist = [voicelist];
 	//post("voicelist is",voicelist);
 	var voice;
@@ -2934,9 +2943,9 @@ function swap_block(block_name){
 				if(params[i].contains("default")){
 					p_default = params[i].get("default");
 				}
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_menu_d.swap_block_target+i,p_default);
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*menu.swap_block_target+i,p_default);
 				parameter_static_mod.poke(1, voice  *MAX_PARAMETERS+i, 0);
-				param_defaults[block_menu_d.swap_block_target][i] = p_default;
+				param_defaults[menu.swap_block_target][i] = p_default;
 			}		
 		}
 		
@@ -2980,7 +2989,7 @@ function swap_block(block_name){
 					audio_to_data_poly.setvalue(ts[tii]+voffset,"out_trigger", 0);
 					ts[tii] = ts[tii]+voffset-1;
 				}
-				hardware_metermap.replace(block_menu_d.swap_block_target,ts);
+				hardware_metermap.replace(menu.swap_block_target,ts);
 			}
 			
 		}
@@ -2991,7 +3000,7 @@ function swap_block(block_name){
 	}else if(type == "audio"){
 		still_checking_polys |=2;
 	}
-	block_menu_d.swap_block_target = -1;
+	menu.swap_block_target = -1;
 	redraw_flag.flag |= 4; 
 }
 
