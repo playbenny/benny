@@ -164,9 +164,7 @@ function initialise_dictionaries(hardware_file){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
 	}
-	for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
-		hardware_list[i] = "none";
-	}
+	//for(i=0;i<MAX_HARDWARE_BLOCKS;i++) hardware_list[i] = "none";
 	
 	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];

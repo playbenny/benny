@@ -197,7 +197,7 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 			get_polybuffer_info();
 			return -1;
 		}else{
-			post("\n(cache hit!",exists,")");
+			post("[cache hit",exists,"]");
 			return exists;
 		}
 	}
@@ -771,7 +771,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		still_checking_polys |= 2;
 		offs=MAX_NOTE_VOICES;
 	}else if(type == "hardware"){
-		hardware_list[new_voice] = block_name;
+		//hardware_list[new_voice] = block_name;
 		offs=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 	}
 	//post("\n\nHERE, VOICEALLOC ",type,block_name,new_voice,offs);

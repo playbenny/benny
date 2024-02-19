@@ -1,7 +1,6 @@
 function new_block(block_name,x,y){
 	//post("new block");
 	var details = new Dict;
-//	var map = new Dict;
 	var new_voice = -1;
 	// find an unused block number in blocks
 	var new_block_index = next_free_block();
@@ -13,6 +12,11 @@ function new_block(block_name,x,y){
 		return -1;
 	}
 	var type = details.get("type");
+	var hwmidi = "";
+	var hwmidivoice = -1;
+	if((type=="hardware")&&(blocktypes.contains(block_name+"::midi_handler"))){
+		hwmidi = blocktypes.get(block_name+"::midi_handler");
+	}
 	var vst = 0;
 	var recycled=0;
 	if((type=="audio") && RECYCLING){
@@ -23,6 +27,11 @@ function new_block(block_name,x,y){
 		var tnv = find_note_voice_to_recycle(block_name);
 		new_voice = tnv[0];
 		recycled = tnv[1];
+	}else if((type=="hardware") && (hwmidi!="") && RECYCLING){
+		var tnv = find_note_voice_to_recycle(hwmidi);
+		new_voice = tnv[0];
+		recycled = tnv[1];
+		post("\nrecycling hardware midi handler:",tnv[0],tnv[1]);
 	}else{
 		new_voice = next_free_voice(type,block_name);
 	}
@@ -38,7 +47,10 @@ function new_block(block_name,x,y){
 		} 
 	}else if(type == "hardware"){
 		t_offset=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
-		hardware_list[new_voice] = block_name;
+		//hardware_list[new_voice] = block_name;
+		if(hwmidi){
+
+		}
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
@@ -508,9 +520,6 @@ function next_free_voice(t,n){
 			if(audio_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "hardware"){
-		//for(i=0;i<MAX_HARDWARE_BLOCKS;i++){
-		//	if(hardware_list[i]=="none") return i;
-		//}
 		if(blocktypes.contains(n)){
 			if(blocktypes.contains(n+"::connections::in::hardware_channels")){
 				t = blocktypes.get(n+"::connections::in::hardware_channels");
@@ -2455,7 +2464,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				audio_upsamplelist[new_voice] = blocks.get("blocks["+block+"]::upsample");
 			}else if(type == "hardware"){
 				voiceoffset = new_voice + MAX_NOTE_VOICES + MAX_AUDIO_VOICES;
-				hardware_list[new_voice] = block_name;
+				//hardware_list[new_voice] = block_name;
 			}
 			var list = voicemap.get(block);
 			if(!Array.isArray(list)) list = [list];
@@ -2916,7 +2925,7 @@ function swap_block(block_name){
 			audio_patcherlist[voice-MAX_NOTE_VOICES] = details.get("patcher");
 			post("setting",voice,"to",details.get("patcher"));
 		}else if(type == "hardware"){
-			hardware_list[voice-MAX_NOTE_VOICES-MAX_AUDIO_VOICES] = block_name;
+			//hardware_list[voice-MAX_NOTE_VOICES-MAX_AUDIO_VOICES] = block_name;
 		}
 		
 		if(details.contains("parameters")){
