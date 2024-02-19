@@ -253,6 +253,8 @@ function initialise_dictionaries(hardware_file){
 	import_blocktypes("note_blocks");
 	import_blocktypes("audio_blocks");
 
+	check_for_new_prefixes();
+
 	var preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 
@@ -532,11 +534,26 @@ function process_userconfig(){
 	}
 }
 
+function check_for_new_prefixes(){
+	var types = blocktypes.getkeys();
+	var type_order = config.get("type_order");
+	var found=0;
+	for(var i=0;i<types.length;i++){
+		ty=types[i].split(".",4);
+		var oc = type_order.indexOf(ty[0]);
+		if(oc==-1){
+			post("\nnew block name prefix "+ty[0]+" discovered. added to the type_order key in userconfig.json. you can reorder the block menu by editing this.");
+			type_order.push(ty[0]);
+			userconfig.replace("type_order",type_order);
+			found=1;
+		}
+	}
+	if(found)write_userconfig();
+}
 function assign_block_colours(){
 	//counts how many types of block there are:
 	var typecount=0;
-	var types = [];
-	types = blocktypes.getkeys();
+	var types = blocktypes.getkeys();
 	types.sort();
 	menu.cubecount = types.length;
 	var i;
@@ -544,16 +561,7 @@ function assign_block_colours(){
 	var type_order = config.get("type_order");
 	typecount = type_order.length;
 	
-	for(i=0;i<menu.cubecount;i++){
-		ty=types[i].split(".",4);
-		var oc = type_order.indexOf(ty[0]);
-		if(oc==-1){
-			post("\nnew block name prefix "+ty[0]+" discovered. added to the type_order key in userconfig.json. you can reorder the block menu by editing this.");
-			type_order.push(ty[0]);
-			userconfig.replace("type_order",type_order);
-			write_userconfig(); //userconfig.writeagain(); //this crashes max?
-		}
-	}
+
 
 	var cll = config.getsize("palette::gamut");
 	var t = Math.floor(cll/(typecount));
@@ -572,8 +580,8 @@ function assign_block_colours(){
 				c = config.get("palette::gamut["+t2+"]::colour");
 				blocktypes.replace(types[i]+"::colour",c);
 				var gps = blocktypes.get(types[i]+"::groups");
-				if(Array.isArray(gps)){
-					for(var gp in gps){
+				for(var gp in gps){
+					try{
 						if(gps[gp].contains("colour")){
 							var tc = gps[gp].get("colour");
 							if(!Array.isArray(tc)){
@@ -581,8 +589,12 @@ function assign_block_colours(){
 								blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
 							}
 						}
+					}catch(err){
+						post("\n\n>> ERROR >> the block:",types[i],"has corrupt groups in the json file.(",err.name,err.message,")");
+						blocktypes.remove(types[i]+"::groups["+gp+"]");
+						post("\ni have tried to remove the bad group but you should fix the file.\n");
 					}
-				}	
+				}
 				var prms = blocktypes.get(types[i]+"::parameters");
 				if(Array.isArray(prms)){
 					for(var pp in prms){

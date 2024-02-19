@@ -1016,8 +1016,7 @@ function save_song(selectedonly){
 }
 
 function write_userconfig(){
-	post("\nbet you 50p max crashes now.");
-	//messnamed("write_userconfig","bang");//
+	post("\nwriting userconfig");
 	userconfig.writeagain();
 }
 
