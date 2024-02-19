@@ -444,9 +444,12 @@ function import_song(){
 						post("\n",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
 						menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
 						loading.progress = b;
+						menu.camera_scroll=0;
 						menu.mode = 3;
 						initialise_block_menu(1);
-						set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
+						//set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
+						menu.search="";
+						displaymode="block_menu";
 						camera();
 						return -1;
 					}else{

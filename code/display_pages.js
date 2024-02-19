@@ -63,11 +63,12 @@ function camera(){
 		messnamed("camera_control", "direction", 0, 0, -1);
 		messnamed("camera_control", "position",  camera_position, ANIM_TIME); //"anim", "moveto"
 //		messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
-		if(sidebar.mode=="file_menu"){
-			camera_position[2] += 50;
-			camera_position[0] = 8+Math.max(camera_position[0], blocks_page.rightmost);
-			messnamed("camera_control", "anim", "moveto", camera_position, ANIM_TIME);
-		}
+		//if(sidebar.mode=="file_menu"){
+			//center_view(1);
+			//camera_position[2] += 50;
+			//camera_position[0] = 8+Math.max(camera_position[0], blocks_page.rightmost);
+			//messnamed("camera_control", "anim", "moveto", camera_position, ANIM_TIME);
+		//}
 	}else if(displaymode == "waves"){
 		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
@@ -1480,7 +1481,7 @@ function set_sidebar_mode(mode){
 		sidebar.mode = mode;
 		if(mode=="file_menu"){
 			displaymode="blocks";
-			camera();
+			center_view(1);
 			redraw_flag.flag  |= 4;
 		}
 	}

@@ -778,13 +778,11 @@ function center_view(resetz){
 	if(resetz || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
 	if(sidebar.mode!="none"){
 		camera_position[0] = (maxx * 0.8 + minx * 0.2);
+		if(sidebar.mode=="file_menu") camera_position[0] = (maxx);
 		camera_position[2] *= 1.5;
 	}else{
 		camera_position[0] = (maxx+minx)*0.5;
 	}
-/*	messnamed("camera_control", "anim", "moveto", camera_position, 0.5);
-	messnamed("camera_control", "rotatexyz" , 0, 0, 0);
-	messnamed("camera_control", "direction", 0, 0, -1);*/
 	camera();
 	redraw_flag.flag |= 8;	
 }
