@@ -50,7 +50,7 @@ function picker_hover_and_special(id){
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
 		usermouse.oid=id;
-		var thov =id.split('-'); // store hover - any picker id received when not waiting for click
+		var thov =id.split('£'); // store hover - any picker id received when not waiting for click
 		
 		if((thov[0]=="wires")&&(usermouse.clicked3d==-1)){  // wire bulge stuff for a bit
 			if(bulgingwire!=-1){
@@ -160,7 +160,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.last_y = usermouse.y;
 					usermouse.drag.distance=0;
 					usermouse.clicked2d=-1;
-					usermouse.ids = id.split('-');
+					usermouse.ids = id.split('£');
 					if(id=="background" || id=="block_menu_background"){
 						usermouse.clicked3d = "background";
 						usermouse.drag.starting_x = -1; // flag waiting for the first mouse message of a drag, because the initial click may be at wrong location with touch messages. usermouse.x;
@@ -349,7 +349,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								set_display_mode("blocks");
-								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
+								post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 								end_of_frame_fn = function(){
 									var r = new_block(usermouse.ids[1], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 									draw_block(r);

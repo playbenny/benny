@@ -1,0 +1,81 @@
+{
+	"io" : 	{
+		"keyboards" : ["Xkey37","Xkey25"],
+		"controllers" : {
+			"Midi Fighter Twister" : {
+				"name" : "Midi Fighter Twister",
+				"outputs" : 16,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 0,
+				"columns" : 4,
+				"rows" : 4,
+				"colour" : {
+					"type" : "midifighter",
+					"channel" : 2,
+					"first" : 0
+				},
+				"brightness" : {
+					"type" : "midifighter",
+					"channel" : 3,
+					"first" : 0,
+					"dim" : 19,
+					"bright" : 48
+				},
+				"value" : {
+					"type" : "cc",
+					"channel" : 1,
+					"first" : 0
+				},
+				"resets" : {
+					"type" : "cc",
+					"channel" : 2,
+					"first" : 0
+				}
+			}
+		}
+	},
+	"hardware" : 	{
+		"hardware.out.1+2" : 			{
+			"type" : "hardware",
+			"max_polyphony" : 2,
+			"output_block" : "stretch_looper",
+			"block_ui_patcher" : "stretch_looper.ui",
+			"ui_in_sidebar_height" : 6,		
+			"help_text" : "pc speakers",
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 1, 2 ]
+				}
+			}
+		},
+		"hardware.in.1+2" : 			{
+			"type" : "hardware",
+			"max_polyphony" : 2,
+			"help_text" : "pc microphones/inputs",
+			"connections" : {
+				"out" : {
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 1, 2 ]
+				}
+			}
+		},
+		"hardware.MFB-522.drums" : {
+			"type" : "hardware",
+			"max_polyphony" : 1,
+			"help_text" : "drum machine connected via midi",
+			"connections" : {
+				"out" : {
+					"hardware" : ["L in", "R in", "kick"],
+					"hardware_channels" : [ 18 , 1, 2]
+				},
+				"in" : {
+					"midi" : ["notes in"],
+					"midi_channels" : [10],
+					"midi_interfaces" : ["mio"]
+				}
+			}
+		}
+	}
+}
