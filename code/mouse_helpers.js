@@ -1423,9 +1423,11 @@ function mute_all_blocks(action){
 
 function mute_selection(action){
 	if(selected.wire.indexOf(1)){
+		post("\nmuting wire",action);
 		connection_mute_selected(action,null);
 	}
 	if(selected.block.indexOf(1)){
+		post("\nmuting block",action);
 		mute_selected_block(action);
 	}
 }

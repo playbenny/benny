@@ -4265,6 +4265,7 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-8",
@@ -6185,7 +6186,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 134.0, 134.0, 641.0, 582.0 ],
+						"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -7176,17 +7177,6 @@
 							}
 , 							{
 								"box" : 								{
-									"id" : "obj-152",
-									"maxclass" : "message",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 295.0, 357.0, 50.0, 22.0 ]
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"id" : "obj-135",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
@@ -7398,266 +7388,6 @@
 									"outlettype" : [ "int", "", "", "int" ],
 									"patching_rect" : [ 758.049999999999955, 136.0, 61.0, 22.0 ],
 									"text" : "counter"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-90",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 794.400000000000091, 896.0, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-91",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 775.033333333333417, 917.75, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-87",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 755.666666666666742, 872.0, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-88",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 736.300000000000068, 896.0, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-89",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 716.933333333333394, 917.75, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-86",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 697.56666666666672, 872.0, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-84",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 678.200000000000045, 896.0, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-79",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 640.366666666666674, 872.0, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-80",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 621.0, 896.0, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-81",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 601.633333333333326, 917.75, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-71",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 581.366666666666674, 872.0, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-68",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 562.0, 896.0, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-70",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 542.633333333333326, 917.75, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-67",
-									"maxclass" : "newobj",
-									"numinlets" : 0,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 592.749999999999886, 800.0, 95.0, 22.0 ],
-									"text" : "r hardware_midi"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-51",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 658.833333333333371, 917.75, 40.0, 22.0 ],
-									"text" : "ctlout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-50",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 523.399999999999864, 872.0, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-49",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 0,
-									"patching_rect" : [ 503.899999999999977, 896.0, 49.0, 22.0 ],
-									"text" : "noteout"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-48",
-									"maxclass" : "newobj",
-									"numinlets" : 1,
-									"numoutlets" : 16,
-									"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
-									"patching_rect" : [ 503.899999999999977, 832.0, 309.5, 22.0 ],
-									"text" : "spray 16 0 1"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-46",
-									"maxclass" : "newobj",
-									"numinlets" : 4,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 503.899999999999977, 800.0, 74.0, 22.0 ],
-									"text" : "pack 0 0 0 0"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-44",
-									"maxclass" : "newobj",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 503.899999999999977, 768.0, 29.5, 22.0 ],
-									"text" : "/ 16"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-42",
-									"maxclass" : "newobj",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 558.899999999999977, 768.0, 36.0, 22.0 ],
-									"text" : "% 16"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-26",
-									"maxclass" : "newobj",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 503.899999999999977, 739.0, 36.0, 22.0 ],
-									"text" : "- 256"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-20",
-									"maxclass" : "newobj",
-									"numinlets" : 3,
-									"numoutlets" : 2,
-									"outlettype" : [ "int", "int" ],
-									"patching_rect" : [ 503.899999999999977, 707.0, 76.0, 22.0 ],
-									"text" : "split 256 511"
 								}
 
 							}
@@ -8166,13 +7896,6 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-152", 1 ],
-									"source" : [ "obj-135", 3 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
 									"destination" : [ "obj-33", 0 ],
 									"source" : [ "obj-135", 0 ]
 								}
@@ -8203,13 +7926,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-3", 0 ],
 									"source" : [ "obj-137", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-48", 0 ],
-									"source" : [ "obj-137", 1 ]
 								}
 
 							}
@@ -8316,13 +8032,6 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-20", 0 ],
-									"source" : [ "obj-161", 1 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
 									"destination" : [ "obj-160", 0 ],
 									"source" : [ "obj-166", 0 ]
 								}
@@ -8339,13 +8048,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-107", 0 ],
 									"source" : [ "obj-2", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-26", 0 ],
-									"source" : [ "obj-20", 0 ]
 								}
 
 							}
@@ -8420,22 +8122,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-85", 1 ],
 									"source" : [ "obj-25", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-42", 0 ],
-									"order" : 0,
-									"source" : [ "obj-26", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-44", 0 ],
-									"order" : 1,
-									"source" : [ "obj-26", 0 ]
 								}
 
 							}
@@ -8602,141 +8288,8 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-46", 3 ],
-									"source" : [ "obj-42", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-46", 0 ],
-									"source" : [ "obj-44", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-48", 0 ],
-									"source" : [ "obj-46", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
 									"destination" : [ "obj-43", 0 ],
 									"source" : [ "obj-47", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-49", 0 ],
-									"source" : [ "obj-48", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-50", 0 ],
-									"source" : [ "obj-48", 1 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-51", 0 ],
-									"source" : [ "obj-48", 8 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-68", 0 ],
-									"source" : [ "obj-48", 3 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-70", 0 ],
-									"source" : [ "obj-48", 2 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-71", 0 ],
-									"source" : [ "obj-48", 4 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-79", 0 ],
-									"source" : [ "obj-48", 7 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-80", 0 ],
-									"source" : [ "obj-48", 6 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-81", 0 ],
-									"source" : [ "obj-48", 5 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-84", 0 ],
-									"source" : [ "obj-48", 9 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-86", 0 ],
-									"source" : [ "obj-48", 10 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-87", 0 ],
-									"source" : [ "obj-48", 13 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-88", 0 ],
-									"source" : [ "obj-48", 12 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-89", 0 ],
-									"source" : [ "obj-48", 11 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-90", 0 ],
-									"source" : [ "obj-48", 15 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-91", 0 ],
-									"source" : [ "obj-48", 14 ]
 								}
 
 							}
@@ -8877,13 +8430,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-109", 0 ],
 									"source" : [ "obj-66", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-48", 0 ],
-									"source" : [ "obj-67", 0 ]
 								}
 
 							}
@@ -13782,7 +13328,7 @@
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 13.0, 71.25, 138.0, 30.0 ],
-					"prefix" : "~/Documents/GitHub/Multitudes/hardware_configs/",
+					"prefix" : "~/Documents/GitHub/multitudes/hardware_configs/",
 					"presentation" : 1,
 					"presentation_rect" : [ 9.0, 127.0, 213.0, 30.0 ],
 					"textcolor" : [ 1.0, 0.898039215686275, 0.0, 1.0 ]
@@ -15133,10 +14679,6 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "ar.capacitor2~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}
@@ -15146,147 +14688,154 @@
 			}
 , 			{
 				"name" : "audio-to-data.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "audio-to-data.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "audio_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.audio.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.note.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blockmanager.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blocks_and_connections.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "clip_dither.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/output_blocks",
 				"patcherrelativepath" : "../output_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "clocked.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.clock.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.clock.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.clock.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.input.control.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.input.control.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.input.control.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "core.input.keyboard.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "display_pages.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "drawing_helpers.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "files.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
+				"name" : "generic.hardware.midi.handler.maxpat",
+				"bootpath" : "~/Documents/GitHub/multitudes/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "init_functions.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
@@ -15304,106 +14853,92 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "midi.rhythmes.alpes.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "midimonitor.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "midirouter.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "mouse.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "mouse_helpers.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "note_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "output_queue_watcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "parameters_and_modulation.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "stretch_looper.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "stretch_looper.ui.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "stretch_looper.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/output_blocks",
-				"patcherrelativepath" : "../output_blocks",
-				"type" : "JSON",
+				"name" : "parameterwatcher.gendsp",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"patcherrelativepath" : "../code",
+				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "ui_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "voicealloc.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
-				"bootpath" : "~/Documents/GitHub/Multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voiceheader.maxpat",
+				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "whitegaussnoise.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/code",
+				"bootpath" : "~/Documents/GitHub/multitudes/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
