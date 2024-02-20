@@ -69,15 +69,52 @@
 			"midi_in" : "mio",
 			"connections" : {
 				"out" : {
-					"hardware" : ["L in", "R in", "kick"],
-					"hardware_channels" : [ 18 , 1, 2]
+					"hardware" : ["mix"],
+					"hardware_channels" : [ 3 ]
 				},
 				"in" : {
 					"midi" : ["notes in"],
 					"midi_channels" : [10],
 					"midi_ranges" : [[35,51]]
 				}
-			}
+			},
+			"groups" : [
+				{
+					"contains" : [0,1,2]
+				}
+			],
+			"parameters" : [
+				{
+					"name" : "cctest1",
+					"type" : "float",
+					"values" : ["uni", 0, 1, "lin" ],
+					"cc_channel" : 10,
+					"cc_number" : 2,
+					"wrap" : 0,
+					"error_scale" : 0,
+					"default" : 0
+				},	
+				{
+					"name" : "cctest2",
+					"type" : "int",
+					"values" : ["uni", 0, 128, "lin" ],
+					"cc_channel" : 10,
+					"cc_number" : 7,
+					"wrap" : 0,
+					"error_scale" : 0,
+					"default" : 0
+				},
+				{
+					"name" : "pbtest",
+					"type" : "float",
+					"values" : ["bi", -12, 12, "lin" ],
+					"cc_channel" : 10,
+					"cc_number" : -1,
+					"wrap" : 0,
+					"error_scale" : 0,
+					"default" : 0.5
+				}				
+			]
 		}
 	}
 }
