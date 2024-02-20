@@ -2949,7 +2949,7 @@ function draw_sidebar(){
 									if(p_type=="button"){
 										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length - 1) / 2;
-										var pv2 = Math.floor(pv * statecount) * 2  + 1;
+										var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
 										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
@@ -2962,7 +2962,7 @@ function draw_sidebar(){
 									}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1)){
 										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length);// - 1) / 2;
-										var pv2 = Math.floor(pv * statecount);
+										var pv2 = Math.floor(pv * statecount * 0.99999);
 										var h_s=h_slider;
 										if(h_slider==0){
 											h_s=1.5;
@@ -2970,7 +2970,7 @@ function draw_sidebar(){
 											h_s+=0.9;
 										}
 										if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
-											post("\nmenu_l",statecount,h_s);
+											//post("\nmenu_l",statecount,h_s);
 											var ys = fontheight*(h_s)/(statecount);
 											for(var bl=0;bl<statecount;bl++){
 												if(params[curp].contains("colours")){
@@ -3001,11 +3001,10 @@ function draw_sidebar(){
 												}
 												valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
 											}
-	
 											draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 											mouse_click_actions[mouse_index] = send_button_message;
 											mouse_click_parameters[mouse_index] = block;
-											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99];
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((pv2+1)/statecount) % 0.99];
 											mouse_index++;
 										}
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
@@ -3560,7 +3559,7 @@ function draw_sidebar(){
 								if(p_type=="button"){
 									paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 									var statecount = (p_values.length - 1) / 2;
-									var pv2 = Math.floor(pv * statecount) * 2  + 1;
+									var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
 									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
 									mouse_click_actions[mouse_index] = send_button_message;
 									mouse_click_parameters[mouse_index] = block;
@@ -5470,7 +5469,7 @@ function draw_sidebar(){
 				if(p_type=="button"){
 					paramslider_details[curp]=null;
 					var statecount = (p_values.length - 1) / 2;
-					var pv2 = Math.floor(pv * statecount) * 2  + 1;
+					var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
 					draw_button(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index, p_values[pv2]);
 					mouse_click_actions[mouse_index] = send_button_message;
 					mouse_click_parameters[mouse_index] = block;
