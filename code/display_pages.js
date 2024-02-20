@@ -333,12 +333,12 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	var positions = []; 
 	var subvoices = 1;
 	if(blocks.contains("blocks["+b+"]::subvoices")) subvoices = blocks.get("blocks["+b+"]::subvoices");
+	var vmap = voicemap.get(b);
+	if(!Array.isArray(vmap)) vmap = [vmap];
 	if(blocktypes.contains(block_name+"::connections::out::audio")){
 		has_meters=1;
 		var mll =blocktypes.getsize(block_name+"::connections::out::audio");
 		if(subvoices>1) mll=subvoices;
-		var vmap = voicemap.get(b);
-		if(typeof vmap == "number") vmap = [vmap];
 		if(vmap !== 'null'){
 			for(var vm=0;vm<vmap.length;vm++){
 				for(i=0;i<mll;i++){
@@ -406,7 +406,6 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		if(!Array.isArray(plist)) plist = [plist];
 		for(var p=0;p<plist.length;p++){
 			var p_type = params[plist[p]].get("type");
-			//var p_values = params[plist[p]].get("values");
 			var wrap = params[plist[p]].get("wrap");
 			var namearr = params[plist[p]].get("name");
 			var noperv = 1; //params[plist[p]].contains("nopervoice");
@@ -427,21 +426,86 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			var namelabely = 18+(y+2+has_states+0.4)*fontheight;
 			var h_slider = 0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
-			var click_to_set = 0;
-			if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
-			paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
-			labelled_parameter_v_slider(panelslider_index);
-			if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
-				//if it's a menu_b or menu_i store the next position in mouse_click_values
-				// now stores the paramslider_details index, so you can look up type, get num values, etc etc, on click, more efficient.
-				mouse_click_values[mouse_index] = panelslider_index; //(pv+1/p_values.length) % 1;
-			}else{
-				mouse_click_values[mouse_index] = "";
+			if(p_type=="button"){
+				pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
+				paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
+				var statecount = (p_values.length - 1) / 2;
+				var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
+				draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2],mouse_index, p_values[pv2]);
+				mouse_click_actions[mouse_index] = send_button_message;
+				mouse_click_parameters[mouse_index] = block;
+				mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+plist[p], (pv+(1/statecount)) % 1];
+				if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+					//but it's so much easier just to call this fn
+					buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+plist[p], (pv+(1/statecount)) % 0.99);											
+				}
+				mouse_index++;
+			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vmap.length == 1)){
+				pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
+				var statecount = (p_values.length);// - 1) / 2;
+				var pv2 = Math.floor(pv * statecount * 0.99999);
+				var h_s=h_slider;
+				if(h_slider==0){
+					h_s=1.5;
+				}else{
+					h_s+=0.9;
+				}
+				if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
+					//post("\nmenu_l",statecount,h_s);
+					var ys = fontheight*(h_s)/(statecount);
+					for(var bl=0;bl<statecount;bl++){
+						if(params[plist[p]].contains("colours")){
+							valcol = params[plist[p]].get("colours["+bl+"]");
+						}else{
+							valcol = block_colour;
+						}
+						if(bl==pv2){
+						}else{
+							valcol = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
+						}
+						draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl,x1-2+((p+1)/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl+ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
+						mouse_click_actions[mouse_index] = send_button_message;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+plist[p], bl/statecount];
+						mouse_index++;
+					}
+				}else{
+					var valcol;
+					if(params[plist[p]].contains("colours")){
+						valcol = params[plist[p]].get("colours["+pv2+"]");
+					}else{
+						var pv3;
+						if(statecount==2){
+							pv3 = pv*0.9 + 0.3;
+						}else{
+							pv3 = pv*0.6 + 0.7;
+						}
+						valcol = [pv3*block_colour[0], pv3*block_colour[1], pv3*block_colour[2]];
+					}
+					draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
+					mouse_click_actions[mouse_index] = send_button_message;
+					mouse_click_parameters[mouse_index] = b;
+					mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], ((pv2+1.1) % statecount)/statecount];
+					mouse_index++;
+				}
+			}else{			
+				var click_to_set = 0;
+				if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
+				labelled_parameter_v_slider(panelslider_index);
+				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
+					//if it's a menu_b or menu_i store the next position in mouse_click_values
+					// now stores the paramslider_details index, so you can look up type, get num values, etc etc, on click, more efficient.
+					mouse_click_values[mouse_index] = panelslider_index; //(pv+1/p_values.length) % 1;
+				}else{
+					mouse_click_values[mouse_index] = "";
+				}
+				mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+				mouse_click_parameters[mouse_index] = [plist[p], b];
+				mouse_index++;
+				panelslider_index++;
 			}
-			mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-			mouse_click_parameters[mouse_index] = [plist[p], b];
-			mouse_index++;
-			panelslider_index++;
 		}
 	}else{
 		panelslider_visible[b]=[];
