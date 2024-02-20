@@ -66,7 +66,7 @@
 			"max_polyphony" : 1,
 			"help_text" : "drum machine connected via midi",
 			"midi_handler" : "generic.hardware.midi.handler",
-			"midi_interface" : "mio",
+			"midi_in" : "mio",
 			"connections" : {
 				"out" : {
 					"hardware" : ["L in", "R in", "kick"],

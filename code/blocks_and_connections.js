@@ -13,7 +13,6 @@ function new_block(block_name,x,y){
 	}
 	var type = details.get("type");
 	var hwmidi = "";
-	var hwmidivoice = -1;
 	if((type=="hardware")&&(blocktypes.contains(block_name+"::midi_handler"))){
 		hwmidi = blocktypes.get(block_name+"::midi_handler");
 	}
@@ -46,10 +45,12 @@ function new_block(block_name,x,y){
 			vst = 1;
 		} 
 	}else if(type == "hardware"){
-		t_offset=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 		//hardware_list[new_voice] = block_name;
 		if(hwmidi){
-
+			note_patcherlist[new_voice] = hwmidi;
+			t_offset=0;
+		}else{
+			t_offset=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 		}
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
@@ -136,11 +137,6 @@ function new_block(block_name,x,y){
 		blocks.replace("blocks["+new_block_index+"]::upsample", up);
 		audio_upsamplelist[new_voice] = up;
 	}
-/*	blc=[128,128,128];
-	if(config.contains("palette::"+bln[0])){
-		blc=config.get("palette::"+bln[0]);
-	}
-	blocks.replace("blocks["+new_block_index+"]::space::colour", blc );*/
 	blocks.replace("blocks["+new_block_index+"]::space::colour", blocktypes.get(block_name+"::colour") );
 	
 	// and set the params to defaults
@@ -220,7 +216,11 @@ function new_block(block_name,x,y){
 		}		
 	}
 	// tell the polyalloc voice about its new job
-	voicealloc_poly.setvalue((new_block_index+1),"type",type);
+	if(hwmidi!=""){
+		voicealloc_poly.setvalue((new_block_index+1),"type","note");
+	}else{
+		voicealloc_poly.setvalue((new_block_index+1),"type",type);
+	}
 	voicealloc_poly.setvalue((new_block_index+1),"voicelist",(new_voice+1));
 	var stack = poly_alloc.stack_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::stack_mode"));
 	var choose = poly_alloc.choose_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::choose_mode"));
@@ -307,6 +307,8 @@ function new_block(block_name,x,y){
 	}else if(type == "audio"){
 		still_checking_polys |=2;
 		// send_audio_patcherlist();
+	}else if(hwmidi!=""){
+		still_checking_polys |= 1;
 	}
 	still_checking_polys |=4;
 	//	send_ui_patcherlist();
@@ -520,22 +522,29 @@ function next_free_voice(t,n){
 			if(audio_patcherlist[i]=="recycling") return i;
 		}
 	}else if(t == "hardware"){
-		if(blocktypes.contains(n)){
-			if(blocktypes.contains(n+"::connections::in::hardware_channels")){
-				t = blocktypes.get(n+"::connections::in::hardware_channels");
-				if(Array.isArray(t)) t = t[0];
-				return t;
-			}else if(blocktypes.contains(n+"::connections::out::hardware_channels")){
-				t = blocktypes.get(n+"::connections::out::hardware_channels");
-				if(Array.isArray(t)) t = t[0];
-				return t+MAX_AUDIO_INPUTS;
-			}else{
-				post("\nerror? hardware has no input or output channels")
-				return -1;
+		if(blocktypes.contains(n+"::midi_handler")){
+			for(i=0;i<MAX_NOTE_VOICES;i++){
+				if(note_patcherlist[i]=="blank.note") return i;
 			}
+			for(i=0;i<MAX_NOTE_VOICES;i++){
+				if(note_patcherlist[i]=="recycling") return i;
+			}
+			post("\nfailed to find a voice for the midi handler patch");
+			return -1;
+		}else if(blocktypes.contains(n+"::connections::in::hardware_channels")){
+			t = blocktypes.get(n+"::connections::in::hardware_channels");
+			if(Array.isArray(t)) t = t[0];
+			return t;
+		}else if(blocktypes.contains(n+"::connections::out::hardware_channels")){
+			t = blocktypes.get(n+"::connections::out::hardware_channels");
+			if(Array.isArray(t)) t = t[0];
+			return t+MAX_AUDIO_INPUTS;
+		}else{
+			post("\nerror? hardware has no input or output channels")
+			return -1;
 		}
 	}
-	post("\nERROR : can't find a free voice\n");
+	post("\ncan't find a free voice, this block will not load\n");
 	return -1;
 }
 
@@ -903,7 +912,6 @@ function remove_connection(connection_number){
 	var t_voice_list = connections.get("connections["+connection_number+"]::to::voice");
 	var f_o_no = connections.get("connections["+connection_number+"]::from::output::number");
 	var t_i_no = connections.get("connections["+connection_number+"]::to::input::number");
-	var to_block_type = blocks.get("blocks["+t_block+"]::type");
 	var f_subvoices = 1;
 	if(f_type=="audio") f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
 	var t_subvoices = 1;
@@ -1088,7 +1096,7 @@ function remove_connection(connection_number){
 		}
 	}
 	for(i=0;i<f_voices.length;i++){
-		if(((t_type == "midi") || (t_type == "block")) && (t_voice_list == "all") && (to_block_type != "hardware")){
+		if(((t_type == "midi") || (t_type == "block")) && (t_voice_list == "all")){
 //midi that goes to a polyalloc - handled here not per-to-voice
 			if(f_type == "midi"){ //midi to midi(polyrouter)
 				remove_routing(connection_number);
@@ -1101,25 +1109,7 @@ function remove_connection(connection_number){
 			for(v=0;v<t_voices.length;v++){
 				t_voice = +t_voices[v];
 				if(t_type == "midi"){ //midi to an individual voice, so we need to offset
-					if(to_block_type == "audio"){
-						t_voice += MAX_BLOCKS;// + MAX_NOTE_VOICES;
-					}else if(to_block_type == "note"){
-						t_voice += MAX_BLOCKS;
-					}else if(to_block_type == "hardware"){ // HARDWARE JUST LOOKS UP AND REPLACES T_VOICE
-						var midiout = 0;
-						if(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::midi_output_number")){
-							midiout = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::midi_output_number");
-						}
-						var chanout=0;
-						if(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::connections::in::midi_ins_channels")){
-							var chans = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::midi_ins_channels");
-							if(typeof chans == "number") chans = [chans];
-							chanout = chans[t_i_no];
-						}
-						
-						t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
-						//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
-					}
+					t_voice += MAX_BLOCKS;// + MAX_NOTE_VOICES;
 				}
 				// find the route, then remove this polyvoice's connection
 				if(f_type == "audio" || f_type == "hardware"){
@@ -1395,7 +1385,6 @@ function make_connection(cno,existing){
 	var conversion = connections.get("connections["+cno+"]::conversion");
 	var f_block = 1* connections.get("connections["+cno+"]::from::number");
 	var t_block = 1* connections.get("connections["+cno+"]::to::number");
-	var to_block_type = blocks.get("blocks["+t_block+"]::type");
 	var f_subvoices = 1;
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
@@ -1570,7 +1559,7 @@ function make_connection(cno,existing){
 	}
 	if((!is_empty(t_voices))&&(!is_empty(f_voices))){
 		for(i=0;i<f_voices.length;i++){
-			if(((t_type == "midi")||(t_type == "block")) && (t_voice_list == "all") && (to_block_type != "hardware")){ 
+			if(((t_type == "midi")||(t_type == "block")) && (t_voice_list == "all")){ 
 	//midi that goes to a polyalloc - handled here not per-to-voice
 				if(f_type == "midi"){ //midi to midi(polyrouter)
 					var enab = 1-conversion.get("mute");
@@ -1604,22 +1593,7 @@ function make_connection(cno,existing){
 				for(v=0;v<t_voices.length;v++){
 					t_voice = +t_voices[v];
 					if(t_type == "midi"){ //midi to an individual voice, so we need to offset
-						if((to_block_type == "audio")||(to_block_type == "note")){
-							t_voice += MAX_BLOCKS;
-						}else if(to_block_type == "hardware"){ // HARDWARE JUST LOOKS UP AND REPLACES T_VOICE
-							var midiout = 0;
-							if(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::midi_output_number")){
-								midiout = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::midi_output_number");
-							}
-							var chanout=0;
-							if(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::connections::in::midi_ins_channels")){
-								var chans = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::midi_ins_channels");
-								if(typeof chans == "number") chans = [chans];
-								chanout = chans[t_i_no];
-							}
-							t_voice = MAX_BLOCKS + MAX_NOTE_VOICES + MAX_AUDIO_VOICES + midiout * 16 + chanout;
-							//post("harware midi out",midiout,"channelout",chanout,"so tv=",t_voice);
-						}
+						t_voice += MAX_BLOCKS;
 					}
 
 					// find the route, then enable / set parameters of this connection
