@@ -12,7 +12,8 @@
 				"midi" : [ "clock in" ]
 			},
 			"out" : {
-				"midi" : [ "Seq out" ]
+				"midi" : [ "Seq out" ],
+				"parameters" : ["Velocity"]
 			}
 		},
 		"groups" : [
@@ -39,7 +40,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
-				"colours" : [ [50,40,70] , 40 ],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -55,6 +56,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -62,6 +64,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -69,6 +72,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -76,6 +80,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -83,6 +88,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -90,6 +96,7 @@
 				"name" : "→",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 0.7
 			},
@@ -168,6 +175,7 @@
 				"name" : "step_length",
 				"type" : "int",
 				"values" : ["uni", 1, 8, "lin"],
+				"click_set" : 1,
 				"wrap" : 0,
 				"default" : 1
 			},
@@ -175,15 +183,17 @@
 				"name" : "velocity_length",
 				"type"	: "int",
 				"values" : ["uni", 1, 8, "lin"],
+				"click_set" : 1,
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
 				"name" : "Note",
-				"type"	: "note",
-				"values" : ["uni", 1, 127, "lin"],
+				"type"	: "int",
+				"values" : ["uni", -14, 14, "lin"],
+				"click_set" : 1,
 				"wrap" : 0,
-				"default" : 0.47244
+				"default" : 0.5
 			}
 		]
 	}

@@ -8,14 +8,18 @@
 		"help_text" : "Scale Master",
 		"max_polyphony" : 0,
 		"connections" : {
+			"in" : {
+				"midi" : [ "note in" ]
+			}
 	
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2],
+				"contains"	: [0, 1, 2],
 				"header"	: "Universal Scale",
-				"height" : 0
+				"height"	: 0
 			}
+		
 		],
 		"panel" : {
 			"parameters" : [0, 1, 2]
