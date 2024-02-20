@@ -203,10 +203,13 @@ function draw_panels(){
 		var has_ui = 0;
 		var ui = blocktypes.get(block_name+"::block_ui_patcher");
 		if((ui!="blank.ui")&&(ui!="self")){
-			has_ui = 1;
-			h+=4;
+			has_ui = 4;
+			if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
+				has_ui = Math.min(4,blocktypes.get(block_name+"::ui_in_sidebar_height"));
+			}
+			h+=has_ui;
 			if(has_params) h-=0.5;
-			panels_custom[panels_custom.length] = b;
+			panels_custom.push(b);
 		}
 
 		if(18+(y+h)*fontheight>mainwindow_height){
@@ -427,21 +430,17 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			var h_slider = 0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
 			if(p_type=="button"){
-				pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
-				paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
+				paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var statecount = (p_values.length - 1) / 2;
 				var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-				draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2],mouse_index, p_values[pv2]);
+				draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2],mouse_index, p_values[pv2]);
 				mouse_click_actions[mouse_index] = send_button_message;
-				mouse_click_parameters[mouse_index] = block;
-				mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+plist[p], (pv+(1/statecount)) % 1];
-				if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
-					//but it's so much easier just to call this fn
-					buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+plist[p], (pv+(1/statecount)) % 0.99);											
-				}
+				mouse_click_parameters[mouse_index] = b;
+				mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*b+plist[p], (pv+(1/statecount)) % 1];
 				mouse_index++;
 			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vmap.length == 1)){
-				pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
 				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var statecount = (p_values.length);// - 1) / 2;
 				var pv2 = Math.floor(pv * statecount * 0.99999);
@@ -466,8 +465,8 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 						}
 						draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl,x1-2+((p+1)/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl+ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
 						mouse_click_actions[mouse_index] = send_button_message;
-						mouse_click_parameters[mouse_index] = block;
-						mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+plist[p], bl/statecount];
+						mouse_click_parameters[mouse_index] = b;
+						mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], bl/statecount];
 						mouse_index++;
 					}
 				}else{
@@ -483,7 +482,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 						}
 						valcol = [pv3*block_colour[0], pv3*block_colour[1], pv3*block_colour[2]];
 					}
-					draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
+					draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 					mouse_click_actions[mouse_index] = send_button_message;
 					mouse_click_parameters[mouse_index] = b;
 					mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], ((pv2+1.1) % statecount)/statecount];
@@ -492,7 +491,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			}else{			
 				var click_to_set = 0;
 				if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
-				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 				labelled_parameter_v_slider(panelslider_index);
 				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 					//if it's a menu_b or menu_i store the next position in mouse_click_values
@@ -512,13 +511,13 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	}
 	if(has_ui){
 		if(!blocktypes.contains(block_name+"::no_edit")){
-			click_rectangle( x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mouse_index,1);
+			click_rectangle( x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mouse_index,1);
 			mouse_click_actions[mouse_index] = set_display_mode;
 			mouse_click_parameters[mouse_index] = "custom";
 			mouse_click_values[mouse_index] = b;
 			mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 		}
-		ui_poly.setvalue( b+1, "setup", x1,18+(y+h-4)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
+		ui_poly.setvalue( b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
 	}
 }
 
@@ -3024,7 +3023,9 @@ function draw_sidebar(){
 										}
 										mouse_index++;
 									}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1)){
-										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
+										var ppv2 = Math.floor(pv * statecount * 0.99999);;
+										pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
+										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length);// - 1) / 2;
 										var pv2 = Math.floor(pv * statecount * 0.99999);
 										var h_s=h_slider;
@@ -3068,12 +3069,12 @@ function draw_sidebar(){
 											draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 											mouse_click_actions[mouse_index] = send_button_message;
 											mouse_click_parameters[mouse_index] = block;
-											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((pv2+1.1) % statecount)/statecount];
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
 											mouse_index++;
 										}
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
-											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((pv2+1.1) % statecount)/statecount);
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
 										}
 									}else{
 										var click_to_set = 0;
