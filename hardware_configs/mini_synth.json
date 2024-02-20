@@ -130,6 +130,24 @@
 					"hardware_channels" : [2 ]
 				}
 			}
+		},
+		"hardware.MFB-522.drums" : {
+			"type" : "hardware",
+			"max_polyphony" : 1,
+			"help_text" : "drum machine connected via midi",
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "mio",
+			"connections" : {
+				"out" : {
+					"hardware" : ["L in", "R in", "kick"],
+					"hardware_channels" : [ 1, 2 , 3,4]
+				},
+				"in" : {
+					"midi" : ["notes in"],
+					"midi_channels" : [10],
+					"midi_ranges" : [[35,51]]
+				}
+			}
 		}
 	}
 }
