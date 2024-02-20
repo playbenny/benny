@@ -203,28 +203,31 @@ function prep_meter_updatelist(){
 	meters_updatelist.meters = [];
 	meters_updatelist.midi = [];
 	for(var i in k){
-		vmap = voicemap.get(k[i]);
-		if(typeof vmap == "number"){ vmap = [vmap]; }
-		if(vmap !== 'null'){
-			if(vmap[0]>=MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-				vmap = hardware_metermap.get(k[i]);
-				if(typeof vmap == "number"){
-					meters_updatelist.hardware.push([k[i],0,vmap,blocks.get("blocks["+k[i]+"]::space::y")]);
-				}else if(vmap !== 'null'){
-					for(index =0;index<vmap.length;index++){
-						meters_updatelist.hardware.push([k[i],index,vmap[index],blocks.get("blocks["+k[i]+"]::space::y")]);
-					}
-				}
-			}else if(vmap[0]>=MAX_NOTE_VOICES){
+		if(hardware_metermap.contains(k[i])){
+			vmap = hardware_metermap.get(k[i]);
+			if(typeof vmap == "number"){
+				meters_updatelist.hardware.push([k[i],0,vmap,blocks.get("blocks["+k[i]+"]::space::y")]);
+			}else if(vmap !== 'null'){
 				for(index =0;index<vmap.length;index++){
-					meters_updatelist.meters.push([k[i],index,vmap[index]-MAX_NOTE_VOICES] );
-				}
-			}else{
-				for(index =0;index<vmap.length;index++){
-					var wide = (!blocktypes.contains(blocks.get("blocks["+k[i]+"]::name")+"::connections::out::midi"));
-					meters_updatelist.midi.push([k[i],index,vmap[index],wide]);//the 4th element is 0 for normal, 1 for a full width bar?
+					meters_updatelist.hardware.push([k[i],index,vmap[index],blocks.get("blocks["+k[i]+"]::space::y")]);
 				}
 			}
+		}else{
+			vmap = voicemap.get(k[i]);
+			if(!Array.isArray(vmap)) vmap = [vmap];
+			if(vmap !== 'null'){
+				if(vmap[0]>=MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
+				}else if(vmap[0]>=MAX_NOTE_VOICES){
+					for(index =0;index<vmap.length;index++){
+						meters_updatelist.meters.push([k[i],index,vmap[index]-MAX_NOTE_VOICES] );
+					}
+				}else{
+					for(index =0;index<vmap.length;index++){
+						var wide = (!blocktypes.contains(blocks.get("blocks["+k[i]+"]::name")+"::connections::out::midi"));
+						meters_updatelist.midi.push([k[i],index,vmap[index],wide]);//the 4th element is 0 for normal, 1 for a full width bar?
+					}
+				}
+			}	
 		}
 	}
 	meters_enable = 1;

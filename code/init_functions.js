@@ -474,7 +474,7 @@ function import_hardware(v){
 	//	turn on audio engine
 	this.patcher.getnamed("audio_outputs").message('int',1);
 
-	if((!usermouse.ctrl) && (songs.contains("autoload"))){
+	if(songs.contains("autoload")){
 		loading.merge = 0;
 		loading.progress=-1;
 		loading.mute_new=0;
