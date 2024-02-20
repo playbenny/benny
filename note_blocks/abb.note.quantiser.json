@@ -31,7 +31,7 @@
 		},
 		"parameters" : [
 			{
-				"name" : "T",
+				"name" : "Ton",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"colours" : [ [50,40,70] , 40 ],
@@ -39,7 +39,7 @@
 				"default" : 1
 			},
 			{
-				"name" : "ST",
+				"name" : "SubT",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
@@ -47,30 +47,42 @@
 				"default" : 1
 			},
 			{
-				"name" : "M",
+				"name" : "Med",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "SD",
+				"name" : "SDom",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "SM",
+				"name" : "Dom",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "LN",
+				"name" : "SMed",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "LNot",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 0,
 				"default" : 1
 			},
