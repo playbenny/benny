@@ -2213,6 +2213,7 @@ function type_to_search(key){
 			}else{
 				var str = types[i];
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
+				str = str.toLowerCase();
 				if(str.indexOf(menu.search)!=-1){ //if you find the search in the name
 					var ts=types[i].split('.');
 					var tt = type_order.length;
