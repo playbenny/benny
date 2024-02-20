@@ -6,7 +6,7 @@
 		"ui_in_sidebar_height" : 1,		
 		"no_edit" : 1,
 		"help_text" : "Quantiser (needs Scale Master)",
-		"max_polyphony" : 0,
+		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {
 				"midi" : [ "note in" ]
@@ -17,9 +17,8 @@
 		},
 		"groups" : [
 			{
-				"contains" : [7, 8], 
-				"height"	: 2,
-				"colour"	: 100
+				"contains" : [7, 8]
+
 			},
 			{ 
 				"contains" : [0, 1, 2, 3, 4, 5, 6],
@@ -28,11 +27,11 @@
 			}
 		],
 		"panel" : {
-			"parameters" : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+			"parameters" : [0, 1, 2, 3, 4, 5, 6]
 		},
 		"parameters" : [
 			{
-				"name" : "Tonic",
+				"name" : "T",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"colours" : [ [50,40,70] , 40 ],
@@ -40,7 +39,7 @@
 				"default" : 1
 			},
 			{
-				"name" : "Supertonic",
+				"name" : "ST",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
@@ -48,28 +47,28 @@
 				"default" : 1
 			},
 			{
-				"name" : "Mediant",
+				"name" : "M",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "Subdominant",
+				"name" : "SD",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "Submediant",
+				"name" : "SM",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "LeadingNote",
+				"name" : "LN",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"wrap" : 0,
