@@ -1,6 +1,6 @@
 {
-	"SONGS_FOLDER" : "C:/Users/jhold/Documents/james music/live set/songs/",
-	"last_hardware_config" : "live_rig.json",
+	"SONGS_FOLDER" : "C:/Users/Luke/Documents/GitHub/Luke Saves/",
+	"last_hardware_config" : "no_hardware.json",
 	"WIRES_SHOW_ALL" : 1,
 	"glow" : 0.2,
 	"sidebar_scrollbar_width" : 9,
@@ -26,5 +26,6 @@
 	}
 ,
 	"RECORD_FOLDER" : "C:/Users/jhold/Desktop/",
-	"TEMPLATES_FOLDER" : "templates"
+	"TEMPLATES_FOLDER" : "templates",
+	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mix", "vst", "abb" ]
 }
