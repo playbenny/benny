@@ -3004,12 +3004,12 @@ function draw_sidebar(){
 											draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 											mouse_click_actions[mouse_index] = send_button_message;
 											mouse_click_parameters[mouse_index] = block;
-											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((pv2+1)/statecount) % 0.99];
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((pv2+1.1) % statecount)/statecount];
 											mouse_index++;
 										}
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
-											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((pv2+1.1) % statecount)/statecount);
 										}
 									}else{
 										var click_to_set = 0;
