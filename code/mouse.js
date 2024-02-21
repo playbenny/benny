@@ -292,15 +292,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
 							var pb = mouse_click_parameters[usermouse.got_i];
 							if(alt == 1){
+								usermouse.alt = 0; //so it actually resets rather than doing tilt
 								static_mod_adjust(pb,0);
+								usermouse.alt = 1;
 								redraw_flag.flag=2;
-							}else if(usermouse.ctrl == 1){
+							}/*else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
 									set_sidebar_mode("panel_assign");
 								}else{
 									set_sidebar_mode("flock");
 								}
-							}else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
+							}*/else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = static_mod_adjust(pb,"get");

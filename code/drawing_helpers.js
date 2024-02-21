@@ -338,7 +338,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 				if(view_changed===true){
 					click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
 					mouse_click_actions[index] = static_mod_adjust;
-					mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
+					mouse_click_parameters[index] = [paramno, blockno, vlist[i]];
 					mouse_click_values[index] = "";
 					if(click_to_step>0)mouse_click_values[index]=click_to_step;
 				}
@@ -353,7 +353,7 @@ function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_
 				if(view_changed===true) {
 					click_rectangle(x1+ww*i-click_b_s,y1-1,x1+ww*(i+1)+1+click_b_s,y2+1,index,2);
 					mouse_click_actions[index] = static_mod_adjust;
-					mouse_click_parameters[index] = [paramno, blockno, vlist[i]*MAX_PARAMETERS+paramno];
+					mouse_click_parameters[index] = [paramno, blockno, vlist[i]];
 					mouse_click_values[index] = "";
 					if(click_to_step>0)mouse_click_values[index]=click_to_step;
 				}
