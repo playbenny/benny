@@ -25,7 +25,7 @@
 				"name" : "mode",
 				"type" : "menu_l",
 				"values" : ["held", "pattern"],
-				"colours" : [-10, 10],
+				"colours" : [20, 10],
 				"wrap" : 1,
 				"error_scale" : 0,
 				"default" : 0.6
