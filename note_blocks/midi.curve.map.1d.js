@@ -52,13 +52,13 @@ function draw(){
 }
 
 function fulldraw(){
-	var i,c,r,ph;
+	var c,r,ph;
 	rh = height / v_list.length;
 	for(r=0;r<v_list.length;r++){
 		cw[r] = (width)/(l[r] - 0.1);
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		
 		cursors[r]=ph;
-		for(c=l[r];c>=0;c--){		
+		for(c=l[r]-1;c>=0;c--){		
 			outlet(0,"custom_ui_element","data_v_scroll", c*cw[r]+x_pos,r*rh+y_pos,(1+c)*cw[r]+x_pos,(r+0.9)*rh+y_pos,block_colour[0],block_colour[1],block_colour[2],MAX_DATA*v_list[r]+1+c,1);
 		}
 	}
