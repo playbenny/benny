@@ -4730,13 +4730,14 @@ function draw_sidebar(){
 			}
 
 			if(f_type=="parameters"){
-				var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
+				var f_o_name = blocktypes.get(f_name+"::connections::out::parameters["+f_o_no+"]");
 			}else if(f_type=="potential"){
 				var f_o_name = "?";
 				sidebar.connection.show_from_outputs = 1;
 			}else{
 				var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
 			}
+			//post("\nfoname",f_o_name,f_type,f_o_no);
 			if(t_type=="parameters"){
 				var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
 			}else if(t_type=="potential"){

@@ -17,7 +17,7 @@
 				"midi" : [ "trigger", "note->position", "reset" ]
 			},
 			"out" : {
-				"parameters" : [ "out" ]
+				"parameters" : [ "out", "playhead_position" ]
 			}
 		},
 		"groups" : [
@@ -34,6 +34,10 @@
 				"contains" : [1],
 				"colour" : 10,
 				"onepervoice" :1 
+			},
+			{
+				"contains" : [4],
+				"height" : 0
 			}
 		],
 		"voice_data" : {
@@ -69,6 +73,13 @@
 				"values" : ["uni", 1, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0.125
+			},
+			{
+				"name" : "trig velocity sense",
+				"type" : "menu_l",
+				"values" : [ "trigger only", "trig vel -> output value" ],
+				"wrap" : 1,
+				"default" : 0.25
 			}
 		]
 	}
