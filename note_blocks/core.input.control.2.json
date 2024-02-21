@@ -6,6 +6,7 @@
 		"help_text" : "Midi controller input 2. The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. This kind of input block does not use auto assign, just outputs the controls to wherever you route them.  ",
 		"exclusive" : 1,
 		"max_polyphony" : 1,
+		"deprecated" : 1,
 		"autoload" : 0,
 		"connections" : {
 			"out" : {

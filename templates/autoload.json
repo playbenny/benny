@@ -102,9 +102,9 @@
 			"mute" : 0
 		}
 , 		{
-			"patcher" : "core.input.control",
-			"name" : "core.input.control",
-			"label" : "core.input.control",
+			"patcher" : "core.input.control.auto",
+			"name" : "core.input.control.auto",
+			"label" : "core.input.control.auto",
 			"type" : "note",
 			"poly" : 			{
 				"stack_mode" : "1x",

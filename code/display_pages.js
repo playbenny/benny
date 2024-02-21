@@ -3034,9 +3034,19 @@ function draw_sidebar(){
 										if(h_slider==0){
 											h_s=1.5;
 										}else{
-											h_s+=0.9;
+											post("\nMAX",maxnamelabely);
+											if(maxnamelabely>0){
+												h_s = (maxnamelabely - y_offset)/fontheight; //+=0.9;
+											}else{
+												h_s += 0.4;
+											}
 										}
 										if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
+											if(params[curp].contains("force_label")){
+												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.3);
+												lcd_main.message("write",params[curp].get("name"));
+												h_s-=0.6;
+											}
 											var ys = fontheight*(h_s)/(statecount);
 											for(var bl=0;bl<statecount;bl++){
 												var valcol;

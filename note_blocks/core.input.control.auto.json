@@ -1,14 +1,15 @@
 {
-	"core.input.control" : {
-		"patcher" : "core.input.control",
+	"core.input.control.auto" : {
+		"patcher" : "core.input.control.auto",
 		"type" : "note",
-		"help_text" : "Midi controller input. The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. And if auto assign is turned on then when a block is selected the controller will auto assign to this block's parameters. When you deselect the block the midi controller goes back to it's normal mode - outputting values from this block. ",
+		"block_ui_patcher" : "core.input.control.auto.ui",
+		"ui_in_sidebar_height":7,
+		"help_text" : "Midi controller input with optional automapping.££The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. ££If auto assign is turned on then when a block is selected the controller will auto assign to this block's parameters. When you deselect the block the midi controller goes back to it's normal mode - outputting values from this block. ",
 		"exclusive" : 1,
-		"deprecated" : 1,
 		"max_polyphony" : 1,
 		"connections" : {
 			"out" : {
-				"midi" : [ "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16" ]
+				"parameters" : [ "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16" ]
 			}
 		},
 		"groups" : [
@@ -31,8 +32,8 @@
 				"default" : 0
 			},{
 				"name" : "auto assign",
-				"type" : "menu_i",
-				"values" : ["off","on"],
+				"type" : "menu_l",
+				"values" : ["auto assign OFF","auto assign ON"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.9

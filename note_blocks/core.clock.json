@@ -6,7 +6,7 @@
 		"help_text" : "Control tempo, swing, and microtiming settings for multiple free but synchronised clock sources. 1 voice = 1 clock. when you merge in another song that contains a clock, it won't adjust the global tempo until you unmute it. it shares timing sync ids with the first clock - ie voice one of every clock block is the same 'virtual player'. Click offset is measured in multiples of vector size, so it should stay consistent if you change vs in future.",
 		"max_polyphony" : 0,
 		"no_edit" : 1,
-		"ui_in_sidebar_height" : 4,		
+		"ui_in_sidebar_height" : 2,		
 		"connections" : {
 			"in" : {
 				"midi" : [ "play" ]
@@ -21,14 +21,9 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 6, 10, 11],
+				"contains" : [0, 0, 6, 10],
 				"colour" : 20,
-				"height" : 0
-			},
-			{ 
-				"contains" : [1,2,3,7,4,5],
-				"colour" : 10,
-				"height" : 1
+				"height" : 4
 			},
 			{
 				"contains" : [8],
@@ -40,6 +35,16 @@
 				"colour" : -20,
 				"height" : 2,
 				"onepervoice" : 1
+			},
+			{ 
+				"contains" : [1,2,3,11],
+				"colour" : 15,
+				"height" : 0
+			},
+			{ 
+				"contains" : [7,4,5],
+				"colour" : 10,
+				"height" : 0
 			}
 		],
 		"panel" : {
@@ -122,13 +127,14 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "time_signature",
-				"type" : "menu_i",
+				"name" : "time sig",
+				"type" : "menu_l",
 				"values" : ["2/4", "3/4", "4/4", "5/4", "6/4", "7/4", "9/4", "10/4", "11/4"],
 				"wrap" : 0,
 				"error_scale" : 0,
 				"default" : 0.25,
-				"nopervoice" : 1
+				"nopervoice" : 1,
+				"force_label" : 1
 			},
 			{
 				"name" : "click_offset",

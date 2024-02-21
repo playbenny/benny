@@ -175,10 +175,13 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label){
 	if(usermouse.clicked2d==index) rat = 1 - rat;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
-	lcd_main.message("moveto",x1+5,y1+fontheight*(0.4));
 	rat = (usermouse.clicked2d != index) * 2;
 	lcd_main.message("frgb",r*rat,g*rat,b*rat);
-	lcd_main.message("write",label);
+	label = label.split("_");
+	for(var i=0;i<label.length;i++){
+		lcd_main.message("moveto",x1+5,y1+fontheight*(0.4*(i+1)));
+		lcd_main.message("write",label[i]);
+	}
 	/*if(view_changed===true)*/ click_rectangle(x1,y1,x2,y2,index,1);
 }
 

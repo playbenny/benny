@@ -1,0 +1,32 @@
+{
+	"core.input.control.basic" : {
+		"patcher" : "core.input.control.basic",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Midi controller input.££The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. ££This kind of input block does not use auto assign, just outputs the controls to wherever you route them.  ",
+		"max_polyphony" : 1,
+		"connections" : {
+			"out" : {
+				"parameters" : [ "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64" ],
+				"midi" : ["button 1", "button 2", "button 3", "button 4", "button 5","button 6","button 7","button 8","button 9","button 10", "button 11", "button 12", "button 13", "button 14", "button 15", "button 16", "button 17", "button 18", "button 19","button 20","button 21","button 22","button 23","button 24","button 25","button 26","button 27","button 28","button 29", "button 30", "button 31","button 32"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0],
+				"height" : 5
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "controller number",
+				"type" : "menu_l",
+				"values" : ["1","2","3", "4", "5", "6", "7", "8"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.19
+			}
+		]
+	}
+}
+             
