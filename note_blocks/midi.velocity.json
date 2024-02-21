@@ -3,7 +3,7 @@
 		"patcher" : "midi.velocity",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "midi velocity processing",
+		"help_text" : "gate notes based on velocity£compress or expand velocity range£humanise velocity£control output velocity range",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -15,7 +15,12 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2, 3,4,5]
+				"contains" : [0, 1],
+				"header" : "filtering"
+			},
+			{
+				"contains" : [ 3, 2, 4,5],
+				"header" : "dynamics"
 			}		
 		],
 		"parameters" : [

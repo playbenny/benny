@@ -3034,36 +3034,45 @@ function draw_sidebar(){
 										if(h_slider==0){
 											h_s=1.5;
 										}else{
-											post("\nMAX",maxnamelabely);
 											if(maxnamelabely>0){
 												h_s = (maxnamelabely - y_offset)/fontheight; //+=0.9;
 											}else{
-												h_s += 0.4;
+												h_s += 0.9;//4;
 											}
 										}
-										if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
+										if((p_type=="menu_l")){//&&((h_s>=statecount * 0.3)||statecount<4)){
 											if(params[curp].contains("force_label")){
 												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.3);
 												lcd_main.message("write",params[curp].get("name"));
 												h_s-=0.6;
 											}
-											var ys = fontheight*(h_s)/(statecount);
+											var cols=1;
+											if(params[curp].contains("columns")) cols = params[curp].get("columns");
+											var colmod = -Math.floor(-statecount / cols);
+											var ys = (fontheight*h_s + fo1)/(colmod);
+											var valcol;
+											if(params[curp].contains("colours")){
+												valcol = params[curp].get("colours["+bl+"]");
+											}else{
+												valcol = colour;
+											}
+											var bx=0;by=0;bw = (x2-x1+fo1)/cols;
 											for(var bl=0;bl<statecount;bl++){
-												var valcol;
-												if(params[curp].contains("colours")){
-													valcol = params[curp].get("colours["+bl+"]");
-												}else{
-													valcol = colour;
-												}
+												var vlcl;
 												if(bl==pv2){
+													vlcl= valcol;
 												}else{
-													valcol = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
+													vlcl = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
 												}
-												draw_button(x1,y1+bl*ys,x2,y1+(bl+1)*ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
+												draw_button(x1+bx*bw,y1+by*ys,x1+((bx+1)*bw)-fo1,y1+(by+1)*ys-fo1,vlcl[0],vlcl[1],vlcl[2],mouse_index, p_values[bl]);
 												mouse_click_actions[mouse_index] = send_button_message;
 												mouse_click_parameters[mouse_index] = block;
 												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (bl+0.2)/statecount];
 												mouse_index++;
+												bx++;
+												if(bx>=cols){
+													by++; bx=0;
+												}
 											}
 										}else{
 											var valcol;
@@ -4600,9 +4609,9 @@ function draw_sidebar(){
 					setfontsize(fontsmall);
 					lcd_main.message("textface", "normal");
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
-					var hintrows = 0.4+ hint.length / 35+hint.split("£").length-1;
+					var hintrows = 0.4+ hint.length / 41+hint.split("£").length-1;
 					var rowstart=0;
-					var rowend=36;
+					var rowend=42;
 					hint = hint+"                       ";
 					var bold=0;
 					var sameline=0;
@@ -4638,9 +4647,9 @@ function draw_sidebar(){
 						lcd_main.message("write",sliced);
 						if(!sameline){
 							rowstart=rowend+1;
-							rowend+=36;
+							rowend+=42;
 						}else{
-							var t = rowstart+36;
+							var t = rowstart+42;
 							rowstart=rowend+1
 							rowend=t;
 						}

@@ -3,7 +3,7 @@
 		"patcher" : "midi.note.select",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "lets through notes that are in the pool, also splits to one output per note",
+		"help_text" : "filters notes based on whether they are in the selected note pool. ££also splits to one output per note",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {

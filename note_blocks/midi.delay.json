@@ -3,7 +3,7 @@
 		"patcher" : "midi.delay",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Delays midi events",
+		"help_text" : "Delays midi events, with optional filtering so that midi delay feedback doesn't go on forever.",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -15,10 +15,14 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 1,5]
+				"contains" : [0, 0, 0, 0, 1,5,5],
+				"header" : "time",
+				"height" : 4
 			},
 			{ 
-				"contains" : [2,3,4]
+				"contains" : [2,3,4],
+				"height" : 0,
+				"header" : "filtering"
 			}			
 		],
 		"panel" : {
@@ -27,14 +31,15 @@
 		"parameters" : [
 			{
 				"name" : "time",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n", "2b", "3b", "4b", "5b", "6b","7b","8b"],
 				"error_scale" : 0.5,
 				"wrap" : 0,
-				"default" : 0.46
+				"default" : 0.46,
+				"columns" : 4
 			},
 			{
-				"name" : "time mult",
+				"name" : "mult",
 				"type" : "float",
 				"values" : ["uni", 0, 2, "lin"],
 				"wrap" : 0,
@@ -62,7 +67,7 @@
 				"default" : 0.2
 			},
 			{
-				"name" : "time_offset_ms",
+				"name" : "offset (ms)",
 				"type" : "float",
 				"values" : ["bi", -50, 50, "lin"],
 				"wrap" : 0,

@@ -3,7 +3,7 @@
 		"patcher" : "midi.note.length",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "sets the length of midi notes. when set to zero the notes are passed as instantaneous triggers with no length. randomness increases the length of notes, the randomness shape control alters the distribution of random values from evenly spread (at 0) to more like a steep curve skewed towards zero (at 1).",
+		"help_text" : "sets the length of midi notes. ££when set to zero the notes are passed as instantaneous triggers with no length. ££randomness increases the length of notes, the randomness shape control alters the distribution of random values from evenly spread (at 0) to more like a steep curve skewed towards zero (at 1).",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -15,7 +15,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,1,2,3,4],
+				"contains" : [0,0,1,2,3,4],
 				"height" : 5
 			}		
 		],

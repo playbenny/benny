@@ -3,7 +3,7 @@
 		"patcher" : "midi.sustain",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "hold the last n notes",
+		"help_text" : "hold the last n notes. if n=0 it turns all notes into instantaneous triggers with no duration.",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -20,7 +20,7 @@
 		],
 		"parameters" : [
 			{
-				"name" : "sustain",
+				"name" : "number of notes to sustain",
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,

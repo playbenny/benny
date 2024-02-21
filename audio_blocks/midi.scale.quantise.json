@@ -3,7 +3,7 @@
 		"patcher" : "midi.scale.quantise",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Quantises notes to the scales defined in the core.scales.shapes module",
+		"help_text" : "Quantises notes to the scales defined in the core.scales.shapes module. ££Also supports CV input for audio-rate quantising of control signals.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -12,6 +12,7 @@
 				"midi" : [ "notes in" ]
 			},
 			"out" : {
+				"audio" : ["cv out"],
 				"midi" : [ "notes out" ]
 			}
 		},
@@ -31,14 +32,14 @@
 			},
 			{
 				"name" : "mode",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["quantise", "index"],
 				"wrap" : 1,
 				"error_scale" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "pre_shift",
+				"name" : "pre shift",
 				"type" : "int",
 				"values" : ["bi", -48, 48, "lin"],
 				"wrap" : 0,

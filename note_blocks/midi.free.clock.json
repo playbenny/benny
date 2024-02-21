@@ -15,7 +15,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0, 1,2]
+				"contains" : [0, 1,2]
 			},{
 				"contains" : [3,4,5],
 				"height":0
@@ -41,8 +41,8 @@
 			},
 			{
 				"name" : "run_while_stopped",
-				"type" : "menu_i",
-				"values" : ["play only", "always"],
+				"type" : "menu_l",
+				"values" : ["run_only_when_playing", "run_always"],
 				"wrap" : 0,
 				"default" : 0
 			},

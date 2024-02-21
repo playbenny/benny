@@ -3,7 +3,7 @@
 		"patcher" : "midi.switch",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Has multiple ins and outs, lets you select an input and route it to an output, (accomplishing the functions of the max gate and switch objects). Also lets you select i/o via midi and cycle through io via mid",
+		"help_text" : "Has multiple ins and outs, lets you select an input and route it to an output, (accomplishing the functions of the max gate and switch objects). Also lets you select i/o via midi and cycle through io via midi",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -40,36 +40,37 @@
 				"default" : 0
 			},
 			{
-				"name" : "in cycle min",
+				"name" : "in cycle_min",
 				"type" : "menu_i",
 				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "in cycle max",
+				"name" : "in cycle_max",
 				"type" : "menu_i",
 				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "out cycle max",
+				"name" : "out cycle_max",
 				"type" : "menu_i",
 				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "out cycle max",
+				"name" : "out cycle_max",
 				"type" : "menu_i",
 				"values" : ["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "cycle on_noteoff",
-				"type" : "menu_i",
+				"name" : "cycle on noteoff",
+				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["off", "in cycle", "out cycle" ],
 				"wrap" : 0,
 				"default" : 0

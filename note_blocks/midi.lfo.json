@@ -22,12 +22,11 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,3,4],
-				"colour" : [255,255,255]
+				"contains" : [0,1,3,4]
 			},
 			{ 
 				"contains" : [2],
-				"colour" : [255,255,255],
+				"colour" : 3,
 				"onepervoice" : 1
 			}
 		],
@@ -62,8 +61,8 @@
 			},
 			{
 				"name" : "follow_global_transport",
-				"type" : "menu_i",
-				"values" : ["free", "follow"],
+				"type" : "menu_l",
+				"values" : ["run_always", "follow_global_transport"],
 				"wrap" : 0,
 				"default" : 0.25
 			}

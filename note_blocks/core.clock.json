@@ -23,7 +23,7 @@
 			{ 
 				"contains" : [0, 0, 6, 10],
 				"colour" : 20,
-				"height" : 4
+				"height" : 5
 			},
 			{
 				"contains" : [8],
@@ -33,7 +33,7 @@
 			{
 				"contains" : [9],
 				"colour" : -20,
-				"height" : 2,
+				"height" : 0,
 				"onepervoice" : 1
 			},
 			{ 
