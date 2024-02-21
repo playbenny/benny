@@ -2918,7 +2918,6 @@ function draw_sidebar(){
 										var ic=connections.get("connections["+ci+"]::to::input::number");
 										if(mod_in_para[ic]==null)mod_in_para[ic]=[];
 										mod_in_para[ic].push(ci);
-										post("\nmodinpara",ic,ci);
 									}
 								}
 							}
