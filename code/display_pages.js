@@ -3120,6 +3120,9 @@ function draw_sidebar(){
 									if(MODULATION_IN_PARAMETERS_VIEW){
 										if(Array.isArray(mod_in_para[curp])){
 											this_group_mod_in_para.push(curp);
+										}else if((p_type == "menu_l")||(p_type == "menu_b")){
+											paramslider_details[curp] = null;
+											//there's no mod, so wipe the paramslider details so it can't draw a slider over the buttons
 										}
 										namelabely+=fo1;
 									}
