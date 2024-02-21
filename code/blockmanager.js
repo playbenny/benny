@@ -654,9 +654,3 @@ function send_globals(){
 	messnamed("MAX_WAVES_SLICES",MAX_WAVES_SLICES);
 	globals_requested = 0;
 }
-
-function patcherpath(path){
-	projectpath = path.split("patchers/");
-	projectpath = projectpath[0];
-} 
-

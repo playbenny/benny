@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 9.0, 58.0, 336.0, 236.0 ],
+		"rect" : [ 9.0, 58.0, 336.0, 268.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,46 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"bgcolor" : [ 0.301961, 0.301961, 0.301961, 1.0 ],
+					"bgcolor2" : [ 0.301961, 0.301961, 0.301961, 1.0 ],
+					"bgfillcolor_angle" : 270.0,
+					"bgfillcolor_autogradient" : 0.0,
+					"bgfillcolor_color" : [ 0.333, 0.302, 0.0, 1.0 ],
+					"bgfillcolor_color1" : [ 0.301961, 0.301961, 0.301961, 1.0 ],
+					"bgfillcolor_color2" : [ 0.2, 0.2, 0.2, 1.0 ],
+					"bgfillcolor_proportion" : 0.5,
+					"bgfillcolor_type" : "color",
+					"fontname" : "Consolas Bold",
+					"fontsize" : 18.0,
+					"gradient" : 1,
+					"id" : "obj-59",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 413.5, 8.25, 167.0, 30.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 145.0, 225.0, 169.0, 30.0 ],
+					"text" : "hardware manager",
+					"textcolor" : [ 1.0, 0.898, 0.0, 1.0 ],
+					"textjustification" : 1
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-35",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 428.5, 38.25, 134.0, 22.0 ],
+					"text" : "hardware_config_editor"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-68",
 					"linecount" : 2,
@@ -4774,28 +4814,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 26.0, 428.0, 52.0, 22.0 ],
 					"text" : "open $1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"bgcolor" : [ 0.301961, 0.301961, 0.301961, 1.0 ],
-					"bgcolor2" : [ 0.301961, 0.301961, 0.301961, 1.0 ],
-					"bgfillcolor_angle" : 270.0,
-					"bgfillcolor_autogradient" : 0.0,
-					"bgfillcolor_color" : [ 0.023529411764706, 0.0, 1.0, 1.0 ],
-					"bgfillcolor_color1" : [ 0.301961, 0.301961, 0.301961, 1.0 ],
-					"bgfillcolor_color2" : [ 0.2, 0.2, 0.2, 1.0 ],
-					"bgfillcolor_proportion" : 0.5,
-					"bgfillcolor_type" : "color",
-					"gradient" : 1,
-					"id" : "obj-138",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 428.5, 44.25, 192.0, 22.0 ],
-					"text" : "HARDWARE.CONFIG.MANAGER"
 				}
 
 			}
@@ -11976,56 +11994,6 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
-									"id" : "obj-29",
-									"maxclass" : "newobj",
-									"numinlets" : 0,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 177.0, 282.0, 56.0, 22.0 ],
-									"text" : "r getpath"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-26",
-									"linecount" : 2,
-									"maxclass" : "message",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 225.0, 377.0, 184.0, 36.0 ],
-									"text" : ";\r\nto_blockmanager patcherpath $1"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-120",
-									"maxclass" : "message",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 177.0, 314.0, 32.0, 22.0 ],
-									"text" : "path"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-88",
-									"maxclass" : "newobj",
-									"numinlets" : 1,
-									"numoutlets" : 2,
-									"outlettype" : [ "", "" ],
-									"patching_rect" : [ 177.0, 346.0, 67.0, 22.0 ],
-									"save" : [ "#N", "thispatcher", ";", "#Q", "end", ";" ],
-									"text" : "thispatcher"
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"id" : "obj-28",
 									"maxclass" : "button",
 									"numinlets" : 1,
@@ -12747,13 +12715,6 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-88", 0 ],
-									"source" : [ "obj-120", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
 									"destination" : [ "obj-16", 0 ],
 									"source" : [ "obj-14", 0 ]
 								}
@@ -12854,13 +12815,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-33", 0 ],
 									"source" : [ "obj-28", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-120", 0 ],
-									"source" : [ "obj-29", 0 ]
 								}
 
 							}
@@ -13036,13 +12990,6 @@
 								"patchline" : 								{
 									"destination" : [ "obj-9", 0 ],
 									"source" : [ "obj-8", 1 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-26", 0 ],
-									"source" : [ "obj-88", 1 ]
 								}
 
 							}
@@ -13391,7 +13338,8 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -13913,13 +13861,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-137", 0 ],
-					"source" : [ "obj-138", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-14", 0 ]
 				}
@@ -14224,6 +14165,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-137", 0 ],
+					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-116", 0 ],
 					"source" : [ "obj-36", 0 ]
 				}
@@ -14398,6 +14346,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-227", 1 ],
 					"source" : [ "obj-58", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-59", 0 ]
 				}
 
 			}
@@ -14677,24 +14632,6 @@
 
 			}
  ],
-		"parameters" : 		{
-			"obj-9.4::obj-11.1::obj-10" : [ "Scale Mode[1]", "Mode", 0 ],
-			"obj-9.4::obj-11.1::obj-11" : [ "Scale Transpose[1]", "Transpose", 0 ],
-			"obj-9.4::obj-11.1::obj-9" : [ "Scale Select[1]", "Scale", 0 ],
-			"obj-9.5::obj-11.1::obj-23" : [ "live.dial", "live.dial", 0 ],
-			"obj-9.5::obj-11.1::obj-25" : [ "live.dial[1]", "live.dial", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"

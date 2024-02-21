@@ -12,7 +12,10 @@
 
 function loadbang(){
 	post("\n\nwelcome to benny\n\n\ninit stage 1 : initial-only actions\n------------------------------------");
-	messnamed("getpath","bang");
+	var path = this.patcher.filepath;
+	projectpath = path.split("patchers/");
+	projectpath = projectpath[0];
+	post("\npath is",projectpath);
 	config.parse('{ }');
 	config.import_json("config.json");
 	userconfig.parse('{ }');
