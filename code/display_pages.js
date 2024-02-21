@@ -467,7 +467,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 						draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl,x1-2+((p+1)/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl+ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
 						mouse_click_actions[mouse_index] = send_button_message;
 						mouse_click_parameters[mouse_index] = b;
-						mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], bl/statecount];
+						mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], (bl+0.2)/statecount];
 						mouse_index++;
 					}
 				}else{
@@ -2918,6 +2918,7 @@ function draw_sidebar(){
 										var ic=connections.get("connections["+ci+"]::to::input::number");
 										if(mod_in_para[ic]==null)mod_in_para[ic]=[];
 										mod_in_para[ic].push(ci);
+										post("\nmodinpara",ic,ci);
 									}
 								}
 							}
@@ -3010,7 +3011,7 @@ function draw_sidebar(){
 										flags &= 61;
 										flags |= 4; //removes 2 flag, adds 4 flag
 									}
-	
+									
 									if(p_type=="button"){
 										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var statecount = (p_values.length - 1) / 2;
@@ -3037,7 +3038,6 @@ function draw_sidebar(){
 											h_s+=0.9;
 										}
 										if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
-											//post("\nmenu_l",statecount,h_s);
 											var ys = fontheight*(h_s)/(statecount);
 											for(var bl=0;bl<statecount;bl++){
 												var valcol;
@@ -3053,7 +3053,7 @@ function draw_sidebar(){
 												draw_button(x1,y1+bl*ys,x2,y1+(bl+1)*ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
 												mouse_click_actions[mouse_index] = send_button_message;
 												mouse_click_parameters[mouse_index] = block;
-												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, bl/statecount];
+												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (bl+0.2)/statecount];
 												mouse_index++;
 											}
 										}else{
@@ -3100,12 +3100,12 @@ function draw_sidebar(){
 											mouse_click_values[mouse_index] = "";
 										}								
 										mouse_index++;
-										if(MODULATION_IN_PARAMETERS_VIEW){
-											if(Array.isArray(mod_in_para[curp])){
-												this_group_mod_in_para.push(curp);
-											}
-											namelabely+=fo1;
+									}
+									if(MODULATION_IN_PARAMETERS_VIEW){
+										if(Array.isArray(mod_in_para[curp])){
+											this_group_mod_in_para.push(curp);
 										}
+										namelabely+=fo1;
 									}
 								}else{
 									namearr = params[curp].get("name");
@@ -3125,7 +3125,6 @@ function draw_sidebar(){
 							y_offset += maxnamelabely - y2;
 						}
 						if(this_group_mod_in_para.length>0){
-
 							namelabely = y_offset-fo1;
 							for(var cu=this_group_mod_in_para.length;cu>0;cu--){
 								var curp = this_group_mod_in_para[cu-1];
