@@ -431,7 +431,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 			panelslider_visible[b][plist[p]]=panelslider_index;
 			if(p_type=="button"){
 				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
-				paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
+				//paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var statecount = (p_values.length - 1) / 2;
 				var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
 				draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2],mouse_index, p_values[pv2]);
@@ -440,9 +440,10 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*b+plist[p], (pv+(1/statecount)) % 1];
 				mouse_index++;
 			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vmap.length == 1)){
-				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
-				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var statecount = (p_values.length);// - 1) / 2;
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); 
+				ppv2 = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]) * statecount * 0.99999);
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var pv2 = Math.floor(pv * statecount * 0.99999);
 				var h_s=h_slider;
 				if(h_slider==0){
@@ -485,9 +486,10 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 					draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 					mouse_click_actions[mouse_index] = send_button_message;
 					mouse_click_parameters[mouse_index] = b;
-					mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], ((pv2+1.1) % statecount)/statecount];
+					mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], ((ppv2+1.1) % statecount)/statecount];
 					mouse_index++;
 				}
+				panelslider_index++;
 			}else{			
 				var click_to_set = 0;
 				if(params[plist[p]].contains("click_set")) click_to_set = params[plist[p]].get("click_set");
@@ -3023,10 +3025,10 @@ function draw_sidebar(){
 										}
 										mouse_index++;
 									}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1)){
+										var statecount = (p_values.length);// - 1) / 2;
 										var ppv2 = Math.floor(pv * statecount * 0.99999);;
 										pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
 										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-										var statecount = (p_values.length);// - 1) / 2;
 										var pv2 = Math.floor(pv * statecount * 0.99999);
 										var h_s=h_slider;
 										if(h_slider==0){
@@ -3038,6 +3040,7 @@ function draw_sidebar(){
 											//post("\nmenu_l",statecount,h_s);
 											var ys = fontheight*(h_s)/(statecount);
 											for(var bl=0;bl<statecount;bl++){
+												var valcol;
 												if(params[curp].contains("colours")){
 													valcol = params[curp].get("colours["+bl+"]");
 												}else{
