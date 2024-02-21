@@ -245,7 +245,7 @@ function initialise_dictionaries(hardware_file){
 	
 	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
 	if((projectpath!="")&&(TEMPLATES_FOLDER.indexOf("/")==-1)){
-		TEMPLATES_FOLDER = projectpath + "/" + TEMPLATES_FOLDER;
+		TEMPLATES_FOLDER = projectpath + TEMPLATES_FOLDER;
 		post("\ntemplates folder is ",TEMPLATES_FOLDER);
 	}
 	read_songs_folder("templates");	
