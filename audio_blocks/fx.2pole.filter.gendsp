@@ -3,8 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 6,
+			"minor" : 6,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -51,7 +51,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "require \"sm_sallenkey_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\nParam p(0);\r\n\r\nHistory c, cut,res,drv,mix,kf(0);\r\n\r\nif(delta(phasor(60))<0){\r\n\tc = peek(prm,voice_offset, 0, channels=1);\r\n\tres = clip(peek(prm,1+voice_offset, 0, channels=1),0,0.99);\r\n\tdrv = 2*peek(prm,2+voice_offset, 0, channels=1);\r\n\tmix = peek(prm,3+voice_offset, 0, channels=1);\r\n\tkf = peek(prm,4+voice_offset, 0, channels=1)*2 -1;\r\n\tkf /= 64;\r\n}\r\n\r\ncut = clip(440*pow(2,(slide(c,1000,1000)+in2+p*kf)*16-8), 1, 20000);\r\n\r\nflp,fbp,fhp = skfTanNltoCoefMulti(in1,cut,slide(res,1000,1000),drv);\r\nm = slide(mix,1000,1000);\r\nout1 = flp*(1-m)+fhp*m;\r\nout2 = fbp;",
+					"code" : "require \"sm_sallenkey_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\nParam p(0);\r\n\r\nHistory c, cut,res,drv,mix,kf(0),upda(0);\r\n\r\nif(upda<=0){\r\n\tupda = vectorsize+5;\r\n\tc = peek(prm,voice_offset, 0, channels=1);\r\n\tres = clip(peek(prm,1+voice_offset, 0, channels=1),0,0.99);\r\n\tdrv = 2*peek(prm,2+voice_offset, 0, channels=1);\r\n\tmix = peek(prm,3+voice_offset, 0, channels=1);\r\n\tkf = peek(prm,4+voice_offset, 0, channels=1)*2 -1;\r\n\tkf /= 64;\r\n}\r\nupda-=1;\r\ncut = clip(440*pow(2,(slide(c,1000,1000)+in2+p*kf)*16-8), 1, 20000);\r\n\r\nflp,fbp,fhp = skfTanNltoCoefMulti(in1,cut,slide(res,1000,1000),drv);\r\nm = slide(mix,1000,1000);\r\nout1 = flp*(1-m)+fhp*m;\r\nout2 = fbp;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,

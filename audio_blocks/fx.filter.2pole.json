@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "surreal machines' zero delay feedback filter model",
 		"max_polyphony" : 0,
-		"upsample" : 2,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "cutoff" ],
@@ -17,8 +17,12 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,1,2,3,4],
-				"colour" : [255,100,100]
+				"contains" : [0,0,1]
+			},
+			{	
+				"contains" : [2,3,4],
+				"height" : 0,
+				"colour" : 10
 			}
 		],
 		"panel" : {
@@ -42,8 +46,8 @@
 			},
 			{
 				"name" : "circuit_saturation",
-				"type" : "menu_i",
-				"values" : ["off", "on"],
+				"type" : "menu_b",
+				"values" : ["saturation_off", "saturation_on"],
 				"wrap" : 0,
 				"default" : 1 
 			},

@@ -17,7 +17,7 @@
 		"groups" : [
 			{ 
 				"contains" : [0, 0, 1],
-				"height" : 0
+				"height" : 2
 			}
 		],
 		"parameters" : [
@@ -31,7 +31,7 @@
 			},
 			{
 				"name" : "quality",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["basic", "good", "better", "best"],
 				"wrap" : 0,
 				"default" : 0.3

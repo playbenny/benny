@@ -27,8 +27,8 @@
 			},
 			{
 				"header" : "simulation parameters",
-				"contains" : [4,5,6,7],
-				"height" : 1,
+				"contains" : [5,6,7,4],
+				"height" : 2,
 				"colour" : 10
 			},
 			{
@@ -42,7 +42,7 @@
 		},
 		"parameters" : [
 			{
-				"name" : "rate_",
+				"name" : "rate",
 				"type" : "float4",
 				"values" : ["uni", 0.001, 8, "exp"],
 				"error_scale" : 0.1,
@@ -50,7 +50,7 @@
 				"default" : 0.0874
 			},
 			{
-				"name" : "feedback_",
+				"name" : "feedback",
 				"type" : "float",
 				"values" : ["bi",-1, 1, "exp"],
 				"wrap" : 0,
@@ -71,10 +71,11 @@
 				"default" : 1
 			},
 			{
-				"name" : "chip_size_",
+				"name" : "chip_size",
 				"type" : "menu_l",
 				"values" : ["64","128","256","512","1024","2048","4096","8192", "16384", "32768", "65536"],
 				"error_scale" : 0,
+				"columns" : 2,
 				"wrap" : 0,
 				"default" : 0.61
 			},
@@ -95,7 +96,7 @@
 				"default" : 1
 			},
 			{
-				"name" : "postfilter_ _",
+				"name" : "postfilter",
 				"type" : "float",
 				"values" : ["uni", 0, 2, "lin"],
 				"error_scale" : 0,
@@ -103,7 +104,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "companding_",
+				"name" : "companding",
 				"type" : "float",
 				"values" : ["uni", 1, 4, "lin"],
 				"default" : 0.125,
@@ -111,7 +112,7 @@
 				"error_scale" : 0
 			},
 			{
-				"name" : "saturation_",
+				"name" : "saturation",
 				"type" : "float",
 				"values" : ["uni", 0, 2, "lin"],
 				"wrap" : 0,

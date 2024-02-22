@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 3,
+			"minor" : 6,
 			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 643.0, 173.0, 675.0, 600.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -51,9 +51,9 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "require \"filter_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\n\r\nHistory mult,asym,harm,modt;\r\n\r\nParam param0(0, min=0, default=0, max=128); //divide or freq\r\nParam param1(0, min=0, default=64, max=128); //mode\r\nParam param2(0, min=0, default=96, max=128); //filter mix\r\n\r\nParam voice_offset(0);\r\nx=0;\r\nif(delta(phasor(60))<0){\r\n\tmult = peek(prm,0+voice_offset, 0, channels=1);\r\n\tasym = peek(prm,1+voice_offset, 0, channels=1);\r\n\tharm = peek(prm,2+voice_offset, 0, channels=1);\r\n\tmodt = peek(prm,4+voice_offset, 0, channels=1);\r\n}\r\n\r\nif(modt<0.33){\r\n\tx = fold_multistage(in1, slide(mult*4, 1000, 1000)+in2+1, slide(asym,1000,1000), slide(harm*2,1000,1000)+0.8);\r\n}else if(modt<0.67){\r\n\tx = fold_multistage(in1, slide(mult*4, 1000, 1000)+1, slide(asym,1000,1000)+in2, slide(harm*2,1000,1000)+0.8);\t\r\n}else{\r\n\tx = fold_multistage(in1, slide(mult*4, 1000, 1000)+1, slide(asym,1000,1000), slide(harm*2,1000,1000)+0.8+in2);\t\r\n}\r\nout1 = x;\r\nout2 = 0;\r\n",
+					"code" : "require \"filter_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\n\r\nHistory mult,asym,harm,modt,upda(0);\r\n\r\nParam param0(0, min=0, default=0, max=128); //divide or freq\r\nParam param1(0, min=0, default=64, max=128); //mode\r\nParam param2(0, min=0, default=96, max=128); //filter mix\r\n\r\nParam voice_offset(0);\r\nx=0;\r\nif(upda<=0){\r\n\tupda = vectorsize+3;\r\n\tmult = peek(prm,0+voice_offset, 0, channels=1);\r\n\tasym = peek(prm,1+voice_offset, 0, channels=1);\r\n\tharm = peek(prm,2+voice_offset, 0, channels=1);\r\n\tmodt = peek(prm,4+voice_offset, 0, channels=1);\r\n}\r\nupda-=1;\r\n\r\nif(modt<0.33){\r\n\tx = fold_multistage(in1, slide(mult*4, 1000, 1000)+in2+1, slide(asym,1000,1000), slide(harm*2,1000,1000)+0.8);\r\n}else if(modt<0.67){\r\n\tx = fold_multistage(in1, slide(mult*4, 1000, 1000)+1, slide(asym,1000,1000)+in2, slide(harm*2,1000,1000)+0.8);\t\r\n}else{\r\n\tx = fold_multistage(in1, slide(mult*4, 1000, 1000)+1, slide(asym,1000,1000), slide(harm*2,1000,1000)+0.8+in2);\t\r\n}\r\nout1 = x;\r\nout2 = 0;\r\n",
 					"fontface" : 0,
-					"fontname" : "Lucida Console",
+					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-5",
 					"maxclass" : "codebox",

@@ -17,14 +17,14 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,1,7],
+				"contains" : [0,0,0,1],
 				"height" : 0
 			},
 			{
 				"contains" : [2,2,8,8, 3,9]
 			},
 			{
-				"contains" : [4,5,6],
+				"contains" : [4,5,6,7],
 				"height" : 2
 			}
 		],
@@ -84,7 +84,8 @@
 			},
 			{
 				"name" : "change mode",
-				"type" : "menu_i",
+				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["fixedrate", "octave","oct rev","bend"],
 				"error_scale" : 0,
 				"wrap" : 1

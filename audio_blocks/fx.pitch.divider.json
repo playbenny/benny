@@ -16,8 +16,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3],
-				"colour" : [255,100,100]
+				"contains" : [0,2,3,1]
 			}
 		],
 		"panel" : {
@@ -33,7 +32,7 @@
 			},
 			{
 				"name" : "mode",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["divider","atoner"],
 				"error_scale" : 0,
 				"wrap" : 1,
@@ -47,7 +46,7 @@
 				"default" : 0.5 
 			},
 			{
-				"name" : "filter cutoff offset",
+				"name" : "filter cutoff_offset",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
