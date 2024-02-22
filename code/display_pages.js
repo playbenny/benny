@@ -3298,64 +3298,6 @@ function draw_sidebar(){
 								lcd_main.message("moveto",x1+fo1,namelabely);
 								if(namelabely>maxnamelabely) maxnamelabely=namelabely;
 								
-								if(p_type == "menu_f"){
-									if(wrap){
-										pv *= (p_values.length);
-										pv = Math.floor(pv);
-										var pv2 = (pv+1) % (p_values.length);
-										pv = pv % (p_values.length);											
-									}else{
-										pv *= (p_values.length-1);
-										pv = Math.floor(pv);
-										var pv2 = Math.min(pv+1,p_values.length-1);
-										pv = Math.min(pv,p_values.length-1);											
-									}
-									lcd_main.message("write", p_values[pv]+ "-"+ p_values[pv2]);										
-								}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
-									pv *= p_values.length;
-									pv = Math.min(Math.floor(pv),p_values.length-1);
-									lcd_main.message("write", p_values[pv]);
-								}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
-									var pvp;
-									if(p_values[3] == "lin"){
-										pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-									}else if(p_values[3] == "exp"){
-										if(p_values[0] == "uni"){
-											pv = Math.pow(2, pv) - 1;
-										}else{
-											pv -=0.5;
-											pv *=2;
-											if(pv>=0){
-												pv = Math.pow(2, pv) - 1;
-											}else{
-												pv = -(Math.pow(2, -pv) - 1);
-											}
-											pv += 1;
-											pv /= 2;
-										}
-										pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-									}
-									if(p_type == "int"){
-										pvp = Math.floor(pv);
-									}else if(p_type == "note"){
-										pvp = note_names[Math.floor(pv)];
-									}else if(p_type == "float4"){
-										pvp = pv.toPrecision(4);
-									}else{
-										var pre=2;
-										if(pv>99){
-											pre=3;
-											if(pv>999){
-												pre=4;
-												if(pv>9999){
-													pre=5;
-												}
-											}
-										}
-										pvp = pv.toPrecision(pre);
-									}
-									lcd_main.message("write", pvp);
-								}
 								knob.x+=wk;
 								if(knob.x>=columns){
 									knob.x = 0;
@@ -3486,60 +3428,6 @@ function draw_sidebar(){
 								lcd_main.message("moveto",x1+fo1,namelabely);
 								if(namelabely>maxnamelabely) maxnamelabely=namelabely;
 								
-								if(p_type == "menu_f"){
-									if(wrap){
-										pv *= (p_values.length);
-										pv = Math.floor(pv);
-										var pv2 = (pv+1) % (p_values.length);
-										pv = pv % (p_values.length);											
-									}else{
-										pv *= (p_values.length-1);
-										pv = Math.floor(pv);
-										var pv2 = Math.min(pv+1,p_values.length-1);
-										pv = Math.min(pv,p_values.length-1);											
-									}
-									lcd_main.message("write", p_values[pv]+ "-"+ p_values[pv2]);										
-								}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
-									pv *= p_values.length;
-									pv = Math.min(Math.floor(pv),p_values.length-1);
-									lcd_main.message("write", p_values[pv]);
-								}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
-									var pvp;
-									if(p_values[3] == "lin"){
-										pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-									}else if(p_values[3] == "exp"){
-										if(p_values[0] == "uni"){
-											pv = Math.pow(2, pv) - 1;
-										}else{
-											pv -=0.5;
-											pv *=2;
-											if(pv>=0){
-												pv = Math.pow(2, pv) - 1;
-											}else{
-												pv = -(Math.pow(2, -pv) - 1);
-											}
-											pv += 1;
-											pv /= 2;
-										}
-										pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-									}
-									if(p_type == "int"){
-										pvp = Math.floor(pv);
-									}else if(p_type == "note"){
-										pvp = note_names[Math.floor(pv)];
-									}else if(p_type == "float4"){
-										pvp = pv.toPrecision(4);
-									}else{
-										pvp = pv.toPrecision(3);
-									}
-									lcd_main.message("write", pvp);
-								}
-								knob.x+=wk;
-								if(knob.x>=columns){
-									knob.x = 0;
-									//knob.y++;
-									y_offset += fontheight * (h_slider + 1 + 0.1*(h_slider==0));
-								}	
 							}
 							t += wk-1;
 						}

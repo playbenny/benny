@@ -285,6 +285,107 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 				pv += 1;
 				pv *= 0.5;
 			}
+		}else if(p_values[3] == "exp10"){
+			if(p_values[0] == "uni"){
+				pv = (Math.pow(10, pv) - 1)*0.11111111111111111111111111111111;
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = (Math.pow(10, pv) - 1)*0.11111111111111111111111111111111;
+				}else{
+					pv = -0.11111111111111111111111111111111*(Math.pow(10, -pv) - 1);
+				}
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		}else if(p_values[3] == "exp100"){
+			if(p_values[0] == "uni"){
+				pv = (Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = (Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
+				}else{
+					pv = -0.01010101010101010101010101010101*(Math.pow(100, -pv) - 1);
+				}
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		}else if(p_values[3] == "exp1000"){
+			if(p_values[0] == "uni"){
+				pv = (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
+				}else{
+					pv = -0.001001001001001001001001001001*(Math.pow(1000, -pv) - 1);
+				}
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		}else if(p_values[3] == "exp.1"){
+			if(p_values[0] == "uni"){
+				pv = -1.1111111111111111111111111111111*(Math.pow(.1, pv) - 1);
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
+				}else{
+					pv = 1.1111111111111111111111111111111*(Math.pow(0.1, -pv) - 1);
+				}
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		}else if(p_values[3] == "exp.01"){
+			if(p_values[0] == "uni"){
+				pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+				}else{
+					pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
+				}
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		}else if(p_values[3] == "exp.001"){
+			if(p_values[0] == "uni"){
+				pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+			}else{
+				pv -=0.5;
+				pv *=2;
+				if(pv>=0){
+					pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+				}else{
+					pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
+				}
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+		}else if(p_values[3] == "s"){
+			if(p_values[0] == "uni"){
+				pv = 0.5 - 0.5 * Math.cos(pv*PI);
+			}else{
+				pv -=0.5;
+				pv *=2;
+				pv = 0.5 - 0.5 * Math.cos(pv*PI);
+				pv += 1;
+				pv /= 2;
+			}
+			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
 		}
 		pvp = p_values[1] + (p_values[2]-p_values[1]-0.0001)*pv;
 		//pv = p_values[1] + (p_values[2]-p_values[1])*pv;

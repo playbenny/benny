@@ -185,30 +185,46 @@ function new_block(block_name,x,y){
 				p_min = 0;
 				p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_max = p_steps-1;
-
+				p_curve = 0;
 			}else if(p_type=="menu_f"){
 				p_min=0;
 				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
 				p_steps = 0;
+				p_curve = 0;
 			}else if(p_type=="int"){
 				p_steps=p_max - p_min + 1;
 			}else if(p_type=="button"){
 				p_min = 0;
 				p_max = (p_values.length - 1 ) / 2;
 				p_steps = p_max;
-				p_curve = "lin";
+				p_curve = 0;
 			}
 			if(p_curve == "lin"){
 				p_curve = 0;
 			}else {
-				if(p_pol=="uni"){
-					p_curve = 1;
-				}else{
+				if(p_curve =="exp"){
 					p_curve = 2;
+				}else if(p_curve =="exp10"){
+					p_curve = 10;
+				}else if(p_curve =="exp100"){
+					p_curve = 100;
+				}else if(p_curve =="exp1000"){
+					p_curve = 1000;
+				}else if(p_curve =="exp.1"){
+					p_curve = 0.1;
+				}else if(p_curve =="exp.01"){
+					p_curve = 0.01;
+				}else if(p_curve =="exp.001"){
+					p_curve = 0.001;
+				}else if(p_curve =="s"){
+					p_curve = 1;
+				}
+				if(p_pol!="uni"){
+					p_curve = -p_curve;
 				}
 			}
 			// parameter info poked out here for paramwatcher
-			//post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
+			post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
 			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
 			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
 			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);

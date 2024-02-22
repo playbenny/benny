@@ -842,10 +842,12 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				p_min = 0;
 				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
 				p_steps = p_max;
+				p_curve = 0;
 			}else if(p_type=="menu_f"){
 				p_min=0;
 				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
 				p_steps = 0;
+				p_curve = 0;
 			}else if(p_type=="int"){
 				p_steps=p_max;
 			}else if(p_type=="button"){
@@ -857,10 +859,25 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			if(p_curve == "lin"){
 				p_curve = 0;
 			}else {
-				if(p_pol=="uni"){
-					p_curve = 1;
-				}else{
+				if(p_curve =="exp"){
 					p_curve = 2;
+				}else if(p_curve =="exp10"){
+					p_curve = 10;
+				}else if(p_curve =="exp100"){
+					p_curve = 100;
+				}else if(p_curve =="exp1000"){
+					p_curve = 1000;
+				}else if(p_curve =="exp.1"){
+					p_curve = 0.1;
+				}else if(p_curve =="exp.01"){
+					p_curve = 0.01;
+				}else if(p_curve =="exp.001"){
+					p_curve = 0.001;
+				}else if(p_curve =="s"){
+					p_curve = 3;
+				}
+				if(p_pol!="uni"){
+					p_curve = -p_curve;
 				}
 			}
 			// parameter info poked out here for paramwatcher
