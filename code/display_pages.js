@@ -3043,6 +3043,7 @@ function draw_sidebar(){
 										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										if((p_type=="menu_l")){//&&((h_s>=statecount * 0.3)||statecount<4)){
 											if(params[curp].contains("force_label")){
+												lcd_main.message("frgb",colour);
 												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.3);
 												lcd_main.message("write",params[curp].get("name"));
 												h_s-=0.6;
@@ -3053,7 +3054,7 @@ function draw_sidebar(){
 											var ys = (fontheight*h_s + fo1)/(colmod);
 											var valcol;
 											var bx=0;by=0;bw = (x2-x1+fo1)/cols;
-											for(var bl=0;bl<statecount;bl++){
+											for(var bl=statecount-1;bl>=0;bl--){
 												if(params[curp].contains("colours")){
 													valcol = params[curp].get("colours["+bl+"]");
 												}else{
@@ -3428,6 +3429,12 @@ function draw_sidebar(){
 								lcd_main.message("moveto",x1+fo1,namelabely);
 								if(namelabely>maxnamelabely) maxnamelabely=namelabely;
 								
+								knob.x+=wk;
+								if(knob.x>=columns){
+									knob.x = 0;
+									//knob.y++;
+									y_offset += fontheight * (h_slider + 1 + 0.1*(h_slider==0));
+								}	
 							}
 							t += wk-1;
 						}

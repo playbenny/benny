@@ -3,7 +3,7 @@
 		"patcher" : "source.dual.osc",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A pair of basic oscillators with diverse cross modulation possibilities. Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. The rectangle portion of this oscillator uses code from Yofiel.com. ",
+		"help_text" : "A pair of basic oscillators with diverse cross modulation possibilities. ££Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. ££The rectangle portion of this oscillator uses code from Yofiel.com. ",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -12,7 +12,8 @@
 				"midi" : [ "pitch","sync","osc2 detune" ]
 			},
 			"out" : {
-				"audio" : [ "mix", "alt" ]
+				"audio" : [ "mix", "alt" ],
+				"midi" : [ "through" ]
 			}
 		},
 		"groups" : [

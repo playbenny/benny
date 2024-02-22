@@ -19,7 +19,7 @@
 		"groups" : [
 			{ 
 				"contains" : [0,0],
-				"colour" : [100,100,255]
+				"colour" : 10
 			},
 			{
 				"contains" : [1,2,3,4,5]

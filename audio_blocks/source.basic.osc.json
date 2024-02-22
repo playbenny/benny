@@ -12,13 +12,14 @@
 				"midi" : [ "pitch","sync" ]
 			},
 			"out" : {
-				"audio" : [ "osc", "sub" ]
+				"audio" : [ "osc", "sub" ],
+				"midi" : [ "through"]
 			}
 		},
 		"groups" : [
 			{ 
 				"contains" : [0,1,4],
-				"colour" : [255,0,0]
+				"colour" : 10
 			},
 			{
 				"contains" : [2,3,7,5,6,8]
@@ -66,15 +67,17 @@
 			},
 			{
 				"name" : "fm mode",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"error_scale" : 0,
-				"values" : ["fm" , "sync" , "sync&fm"],
+				"force_label" : 1,
+				"values" : ["fm" , "sync" , "sync_&fm"],
 				"wrap" : 1
 			},
 			{
 				"name" : "out2",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"error_scale" : 0,
+				"force_label" : 1,
 				"values" : ["sub" , "rect" , "tri", "noise"],
 				"wrap" : 1
 			},

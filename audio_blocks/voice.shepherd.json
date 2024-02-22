@@ -19,18 +19,23 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,4,5,6,9],
-				"colour" : [255,0,0]
+				"contains" : [0,0,1,2,7,8],
+				"height" : 3,
+				"colour" : 5
 			},
 			{
-				"contains" : [1,1,2,2,3]
+				"contains" : [4,5,6,9,3],
+				"height" : 2,
+				"colour" : 3
 			},
 			{
 				"contains" : [10,11,12],
-				"colour" : [0,0,255]
+				"colour" : -5,
+				"header" : "envelope",
+				"height" : 0
 			},
 			{
-				"contains" : [7,8,13,14,15,16,17],
+				"contains" : [13,14,15,16,17],
 				"height" : 0
 			}
 		],
@@ -61,8 +66,9 @@
 			},
 			{
 				"name" : "spacing",
-				"type" : "menu_i",
-				"values" : ["1 octave", "2 octaves"],
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["1_octave", "2_octaves"],
 				"wrap" : 0,
 				"error_scale" : 0,
 				"default" : 0
@@ -89,16 +95,18 @@
 				"error_scale" : 0
 			},
 			{
-				"name" : "modulation 1",
-				"type" : "menu_i",
+				"name" : "mod 1",
+				"type" : "menu_l",
 				"error_scale" : 0,
-				"values" : ["fm" , "sync" , "sync&fm", "shape", "centre", "width"],
+				"force_label" : 1,
+				"values" : ["fm" , "sync" , "sync_&fm", "shape", "centre", "width"],
 				"wrap" : 1
 			},
 			{
-				"name" : "modulation 2",
-				"type" : "menu_i",
+				"name" : "mod 2",
+				"type" : "menu_l",
 				"error_scale" : 0,
+				"force_label" : 1,
 				"values" : ["shape", "centre", "width"],
 				"wrap" : 1
 			},

@@ -263,6 +263,7 @@ function initialise_dictionaries(hardware_file){
 		import_hardware(hardware_file);
 	}else{
 		post("\nall essential data loaded, please choose a hardware configuration and press start.");
+		messnamed("ready_to_start","bang");
 	}
 }
 
@@ -587,6 +588,7 @@ function assign_block_colours(){
 							var tc = gps[gp].get("colour");
 							if(!Array.isArray(tc)){
 								var nc = config.get("palette::gamut["+((t2+tc+cll)%cll)+"]::colour");
+								nc = [nc[0]*1.2,nc[1]*1.2,nc[2]*1.2];
 								blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
 							}
 						}

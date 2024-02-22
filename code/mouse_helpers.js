@@ -1672,7 +1672,7 @@ function panel_assign_click(parameter,value){
 	}else{
 		fplist = [];
 	}
-	post("existing list",fplist);
+	//post("existing list",fplist);
 	var t;
 	var match=fplist.indexOf(parameter[1]);
 	if(match==-1){

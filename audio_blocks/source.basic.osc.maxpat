@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 356.0, 169.0, 732.0, 596.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,11 +40,27 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-23",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 158.0, 190.0, 63.0, 22.0 ],
+					"text" : "prepend 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-24",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 297.5, 509.0, 35.0, 22.0 ],
+					"patching_rect" : [ 598.0, 299.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -56,7 +72,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "int", "int" ],
-					"patching_rect" : [ 297.5, 445.0, 48.0, 22.0 ],
+					"patching_rect" : [ 598.0, 235.0, 48.0, 22.0 ],
 					"text" : "change"
 				}
 
@@ -68,7 +84,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 447.0, 348.0, 39.0, 22.0 ],
+					"patching_rect" : [ 417.0, 378.0, 39.0, 22.0 ],
 					"text" : "click~"
 				}
 
@@ -80,7 +96,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 447.0, 316.0, 22.0, 22.0 ],
+					"patching_rect" : [ 417.0, 346.0, 22.0, 22.0 ],
 					"text" : "t b"
 				}
 
@@ -92,7 +108,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 429.0, 284.0, 37.0, 22.0 ],
+					"patching_rect" : [ 399.0, 314.0, 37.0, 22.0 ],
 					"text" : "sel 0."
 				}
 
@@ -104,7 +120,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 429.0, 252.0, 29.5, 22.0 ],
+					"patching_rect" : [ 399.0, 282.0, 29.5, 22.0 ],
 					"text" : "f"
 				}
 
@@ -116,7 +132,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 429.0, 223.0, 22.0, 22.0 ],
+					"patching_rect" : [ 399.0, 253.0, 22.0, 22.0 ],
 					"text" : "t b"
 				}
 
@@ -164,7 +180,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 199.0, 359.0, 54.0, 22.0 ],
+					"patching_rect" : [ 515.0, 167.0, 54.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -248,7 +264,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 37.0, 269.0, 128.0, 22.0 ],
+					"patching_rect" : [ 37.0, 449.0, 128.0, 22.0 ],
 					"text" : "gen~ source.basic.osc"
 				}
 
@@ -260,7 +276,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 199.0, 389.0, 53.0, 22.0 ],
+					"patching_rect" : [ 515.0, 203.0, 53.0, 22.0 ],
 					"text" : "getvoice"
 				}
 
@@ -271,7 +287,11 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 199.0, 413.0, 35.0, 22.0 ],
+					"patching_rect" : [ 515.0, 235.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -283,7 +303,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 279.0, 345.0, 58.0, 22.0 ],
+					"patching_rect" : [ 579.0, 135.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -295,7 +315,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "int", "int" ],
-					"patching_rect" : [ 279.0, 413.0, 56.0, 22.0 ],
+					"patching_rect" : [ 579.0, 203.0, 56.0, 22.0 ],
 					"text" : "thispoly~"
 				}
 
@@ -306,11 +326,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 107.0, 305.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
+					"patching_rect" : [ 146.0, 485.0, 42.0, 22.0 ],
 					"text" : "out~ 2"
 				}
 
@@ -323,10 +339,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 101.0, 81.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -337,11 +349,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 37.0, 305.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
+					"patching_rect" : [ 37.0, 485.0, 42.0, 22.0 ],
 					"text" : "out~ 1"
 				}
 
@@ -354,10 +362,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 64.0, 81.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -370,10 +374,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 37.0, 81.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -385,7 +385,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 279.0, 377.0, 45.0, 22.0 ],
+					"patching_rect" : [ 579.0, 167.0, 45.0, 22.0 ],
 					"text" : "mute 0"
 				}
 
@@ -416,7 +416,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"order" : 1,
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-49", 0 ],
+					"order" : 0,
 					"source" : [ "obj-11", 0 ]
 				}
 
@@ -528,6 +537,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-23", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-22", 0 ],
 					"source" : [ "obj-3", 1 ]
 				}
@@ -626,16 +642,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [ 			{
-				"name" : "source.basic.osc.gendsp",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
-				"patcherrelativepath" : ".",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }

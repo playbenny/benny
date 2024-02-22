@@ -12,20 +12,23 @@
 				"midi" : [ "pitch_in" ]
 			},
 			"out" : {
-				"audio" : [ "osc out", "sines out" ]
+				"audio" : [ "osc out", "sines out" ],
+				"midi" : [ "through" ]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,4,5,6,9],
-				"colour" : [255,0,0]
+				"contains" : [0,1,2],
+				"colour" : 10
 			},
 			{
-				"contains" : [1,1,2,2,3]
+				"contains" : [4,5,6,9,3],
+				"colour" : 5,
+				"height" : 2
 			},
 			{
-				"contains" : [7,8,10],
-				"height" : 0
+				"contains" : [10,7,8],
+				"height" : 4
 			}
 		],
 		"panel" : {
@@ -55,8 +58,9 @@
 			},
 			{
 				"name" : "spacing",
-				"type" : "menu_i",
-				"values" : ["1 octave", "2 octaves"],
+				"type" : "menu_l",
+				"values" : ["1_octave", "2_octaves"],
+				"force_label" : 1,
 				"wrap" : 0,
 				"error_scale" : 0,
 				"default" : 0
@@ -84,14 +88,16 @@
 			},
 			{
 				"name" : "modulation 1",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"error_scale" : 0,
-				"values" : ["fm" , "sync" , "sync&fm", "shape", "centre", "width"],
+				"force_label" : 1,
+ 				"values" : ["fm" , "sync" , "sync&fm", "shape", "centre", "width"],
 				"wrap" : 1
 			},
 			{
 				"name" : "modulation 2",
-				"type" : "menu_i",
+				"type" : "menu_l",
+				"force_label" : 1,
 				"error_scale" : 0,
 				"values" : ["shape", "centre", "width"],
 				"wrap" : 1

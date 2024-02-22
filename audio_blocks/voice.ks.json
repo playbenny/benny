@@ -20,11 +20,11 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,2],
-				"colour" : [255,0,0]
+				"colour" : 10
 			},
 			{ 
 				"contains" : [3,4,5,6,7],
-				"colour" : [128,13,100],
+				"colour" : 5,
 				"height" : 0
 			},
 			{

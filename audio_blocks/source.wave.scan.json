@@ -19,14 +19,16 @@
 		},
 		"groups" : [
 			{
-				"contains" : [0,0],
-				"height" : 0
+				"contains" : [0],
+				"colour" : 3
 			},
 			{ 
-				"contains" : [7,6,9,5,2]
+				"contains" : [7,5,6,2],
+				"height" : 4
 			},
 			{
-				"contains" : [1,3,4,8],
+				"contains" : [9,1,3,4,8],
+				"colour" : -3,
 				"height" : 0
 			}
 		],
@@ -52,8 +54,9 @@
 			},
 			{
 				"name" : "direction",
-				"type" : "menu_i",
-				"values" : ["forward", "reverse","reverse but_advance forward"],
+				"type" : "menu_l",
+				"values" : ["forward", "reverse","rev but_advance_fwd"],
+				"force_label" : 1,
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0
@@ -82,14 +85,15 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "self_advance",
-				"type" : "menu_i",
-				"values" : ["off", "on", "on if target>0"],
+				"name" : "advance",
+				"type" : "menu_l",
+				"values" : ["off", "on", "on if_target>0"],
+				"force_label" : 1,
 				"wrap" : 0,
 				"default" : 0.6
 			},
 			{
-				"name" : "target",
+				"name" : "target_position",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
@@ -104,8 +108,8 @@
 			},
 			{
 				"name" : "loop",
-				"type" : "menu_i",
-				"values" : ["off", "on"],
+				"type" : "menu_l",
+				"values" : ["loop off", "loop on"],
 				"wrap" : 0,
 				"default" : 0.6
 			}
