@@ -439,7 +439,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				mouse_click_parameters[mouse_index] = b;
 				mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*b+plist[p], (pv+(1/statecount)) % 1];
 				mouse_index++;
-			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vmap.length == 1)){
+			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vmap.length == 1) && (p_values.length<4)){
 				var statecount = (p_values.length);// - 1) / 2;
 				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); 
 				ppv2 = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]) * statecount * 0.99999);
@@ -451,8 +451,9 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				}else{
 					h_s+=0.9;
 				}
-				if((p_type=="menu_l")&&((h_s>=statecount * 0.3)||statecount<4)){
+				if((p_type=="menu_l")/*&&((h_s>=statecount * 0.3)||statecount<4)*/){
 					//post("\nmenu_l",statecount,h_s);
+					paramslider_details[panelslider_index]=null;
 					var ys = fontheight*(h_s)/(statecount);
 					for(var bl=0;bl<statecount;bl++){
 						if(params[plist[p]].contains("colours")){
@@ -3636,22 +3637,22 @@ function draw_sidebar(){
 								if(plist[tk]==plist[t]) wk++;
 							}
 							if(params[plist[t]].contains("name")){
-								x1 = sidebar.x + fontheight*2.2+ w_slider*knob.x;
-								x2 = sidebar.x + w_slider*(knob.x+wk) + fontheight*2.1;
 								p_type = params[plist[t]].get("type");
-								p_values = params[plist[t]].get("values");
-								wrap = params[plist[t]].get("wrap");
-								pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
 								if(p_type=="button"){
 									paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-									var statecount = (p_values.length - 1) / 2;
+									/*var statecount = (p_values.length - 1) / 2;
 									var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
 									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
 									mouse_click_actions[mouse_index] = send_button_message;
 									mouse_click_parameters[mouse_index] = block;
 									mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1]];
-									mouse_index++;
+									mouse_index++;*/
 								}else{
+									x1 = sidebar.x + fontheight*2.2+ w_slider*knob.x;
+									x2 = sidebar.x + w_slider*(knob.x+wk) + fontheight*2.1;
+									p_values = params[plist[t]].get("values");
+									wrap = params[plist[t]].get("wrap");
+									pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
 									if(h_slider==0){
 										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],p_values[0],"",0,p_type,wrap,block_name,h_slider];
 									}else{
@@ -3672,10 +3673,10 @@ function draw_sidebar(){
 										mouse_click_values[mouse_index] = "";
 									}								
 									mouse_index++;
+									knob.x+=wk;
+									t += wk-1;
 								}
-								knob.x+=wk;
 							}
-							t += wk-1;
 						}
 						knob.x += 0.2;
 					}
