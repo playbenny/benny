@@ -58,6 +58,7 @@
         "376" : ["ctrl-X", "cut_selection"],
         "374" : ["ctrl-V", "blocks_paste", 0],
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
+        "-4" : ["enter", "set_display_mode","block_menu"],
         "-5" : ["tab", "set_display_mode","panels"],
         "-9" : ["UP", "move_selected_blocks", 0,1],
         "-10" : ["DOWN", "move_selected_blocks", 0, -1],

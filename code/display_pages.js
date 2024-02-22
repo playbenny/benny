@@ -3045,12 +3045,10 @@ function draw_sidebar(){
 											if(params[curp].contains("force_label")){
 												if(maxnamelabely<0){
 													maxnamelabely = y1+fontheight*(h_s-0.6);
-													post("\nY",maxnamelabely);
 													lcd_main.message("moveto",x1+4,maxnamelabely);
 													maxnamelabely=-9999;
 													h_s-=0.4;
 												}else{
-													post("\ny",maxnamelabely-fontheight*0.3);
 													lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
 												}
 												h_s-=0.6;

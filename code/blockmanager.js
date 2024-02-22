@@ -282,7 +282,7 @@ var panels_custom = [];
 var panels_order = [];
 
 var blocks_page = {
-	new_block_click_pos : 0,
+	new_block_click_pos : [0,0],
 	leftmost : 0,
 	rightmost : 0,
 	highest :0,
