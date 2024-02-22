@@ -47,15 +47,13 @@
         "-20" : ["F4", "selected_block_custom_mode", "custom" ],
         "-15" : ["home" , "center_view", 1],
         "45" : ["-", "poly_key" , -1],
-        "43" : ["-", "poly_key" , 1],
-        "573" : ["-", "poly_key" , 1],
+        "43" : ["+", "poly_key" , 1],
+        "573" : ["+", "poly_key" , 1],
         "353" : ["ctrl-A", "select_all"],
         "-6" : ["del","delete_selection"],
         "-7" : ["delete","delete_selection"],
-        "98" : ["B", "show_new_block_menu"],
-        "114" : ["R", "arm_selected_blocks"],
         "370" : ["ctrl-R", "arm_selected_blocks"],
-        "109" : ["M", "mute_selection", -1],
+        "365" : ["ctrl-M", "mute_selection", -1],
         "355" : ["ctrl-C", "copy_selection"],
         "376" : ["ctrl-X", "cut_selection"],
         "374" : ["ctrl-V", "blocks_paste", 0],
@@ -69,7 +67,8 @@
         "502" : ["DOWN", "move_selected_blocks", 0, -0.2],
         "501" : ["LEFT", "move_selected_blocks", -0.2, 0 ],
         "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0],
-        "559" : ["?", "set_sidebar_mode", "help"]
+        "559" : ["?", "set_sidebar_mode", "help"],
+        "all" : ["all", "show_and_search_new_block_menu"]
     },
     "panels" : {
         "-20" : ["F4", "selected_block_custom_mode", "custom" ],
@@ -89,6 +88,7 @@
 
     },
     "block_menu" : {
+        "-4" : ["enter", "blocks_menu_enter"],
         "all" : ["all","type_to_search"]
     },
     "sidebar" : {

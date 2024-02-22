@@ -3043,10 +3043,19 @@ function draw_sidebar(){
 										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										if((p_type=="menu_l")){//&&((h_s>=statecount * 0.3)||statecount<4)){
 											if(params[curp].contains("force_label")){
-												lcd_main.message("frgb",colour);
-												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.3);
-												lcd_main.message("write",params[curp].get("name"));
+												if(maxnamelabely<0){
+													maxnamelabely = y1+fontheight*(h_s-0.6);
+													post("\nY",maxnamelabely);
+													lcd_main.message("moveto",x1+4,maxnamelabely);
+													maxnamelabely=-9999;
+													h_s-=0.4;
+												}else{
+													post("\ny",maxnamelabely-fontheight*0.3);
+													lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
+												}
 												h_s-=0.6;
+												lcd_main.message("frgb",colour);
+												lcd_main.message("write",params[curp].get("name"));
 											}
 											var cols=1;
 											if(params[curp].contains("columns")) cols = params[curp].get("columns");

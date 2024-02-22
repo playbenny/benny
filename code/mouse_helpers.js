@@ -2283,7 +2283,7 @@ function menu_move_on_down_inside_the_empty_carriage(){
 		for(var i=0;i<menu.cubecount;i++){
 			var ts=types[i].split('.');
 			if(ts == type_order[t]){
-				if(blocks_menu.enable){
+				if(blocks_menu[i].enable){
 					f=1;
 					blocks_menu[i].position = [x,-110,z];
 					x++;
@@ -2298,6 +2298,38 @@ function menu_move_on_down_inside_the_empty_carriage(){
 			z++;
 			z+=0.5;
 			x=-w;
+		}
+	}
+}
+
+function show_and_search_new_block_menu(key){
+	if((key>=97)&& (key<=122)){
+		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
+		show_new_block_menu();
+		type_to_search(key);
+	}else{post("\nkeycode",key);}
+}
+
+function blocks_menu_enter(){
+	var count=0,sel=-1;
+	for(var i=0;i<menu.cubecount;i++){
+		if(blocks_menu[i].enable){
+			count++;
+			sel=i;
+		}
+	}
+	if(count==1){
+		var types = blocktypes.getkeys();
+		post("\nnew block",sel,types[sel]);
+		set_display_mode("blocks");
+		//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
+		end_of_frame_fn = function(){
+			var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+			draw_block(r);
+			selected.block[r] = 1;
+			sidebar.scopes.voice = -1;
+			sidebar.selected_voice = -1;
+			redraw_flag.flag |= 8;
 		}
 	}
 }
