@@ -3028,7 +3028,6 @@ function draw_sidebar(){
 										var statecount = (p_values.length);// - 1) / 2;
 										var ppv2 = Math.floor(pv * statecount * 0.99999);;
 										pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
-										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										var pv2 = Math.floor(pv * statecount * 0.99999);
 										var h_s=h_slider;
 										if(h_slider==0){
@@ -3040,6 +3039,7 @@ function draw_sidebar(){
 												h_s += 0.9;//4;
 											}
 										}
+										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
 										if((p_type=="menu_l")){//&&((h_s>=statecount * 0.3)||statecount<4)){
 											if(params[curp].contains("force_label")){
 												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.3);
@@ -3120,10 +3120,10 @@ function draw_sidebar(){
 									if(MODULATION_IN_PARAMETERS_VIEW){
 										if(Array.isArray(mod_in_para[curp])){
 											this_group_mod_in_para.push(curp);
-										}else if((p_type == "menu_l")||(p_type == "menu_b")){
+										}/*else if((p_type == "menu_l")||(p_type == "menu_b")){
 											paramslider_details[curp] = null;
 											//there's no mod, so wipe the paramslider details so it can't draw a slider over the buttons
-										}
+										}*/
 										namelabely+=fo1;
 									}
 								}else{
