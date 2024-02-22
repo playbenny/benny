@@ -3,8 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 7,
+			"minor" : 6,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -62,7 +62,7 @@
 					"patching_rect" : [ 358.5, 380.0, 228.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "1501voices",
+						"name" : "6795voices",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 512,
@@ -87,7 +87,7 @@
 					"patching_rect" : [ 251.5, 322.0, 228.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "1501voices",
+						"name" : "6795voices",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 512,
@@ -468,8 +468,8 @@
 					"numinlets" : 4,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 358.5, 407.0, 97.0, 22.0 ],
-					"text" : "pack 0 notes 0 0"
+					"patching_rect" : [ 358.5, 407.0, 100.0, 22.0 ],
+					"text" : "pack 0 notes 0 0."
 				}
 
 			}
@@ -492,8 +492,8 @@
 					"numinlets" : 4,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 251.5, 356.0, 97.0, 22.0 ],
-					"text" : "pack 0 notes 0 0"
+					"patching_rect" : [ 251.5, 356.0, 100.0, 22.0 ],
+					"text" : "pack 0 notes 0 0."
 				}
 
 			}
@@ -532,8 +532,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 7,
+							"minor" : 6,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -936,6 +936,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 294.75, 19.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 2"
 				}
 
@@ -1091,10 +1095,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 223.0, 476.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1107,10 +1107,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 35.0, 69.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 

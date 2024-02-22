@@ -6203,7 +6203,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
+						"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -13338,8 +13338,7 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -14633,6 +14632,10 @@
 			}
  ],
 		"dependency_cache" : [ 			{
+				"name" : "ar.capacitor2~.mxe64",
+				"type" : "mx64"
+			}
+, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}
@@ -14642,98 +14645,147 @@
 			}
 , 			{
 				"name" : "audio-to-data.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "audio-to-data.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "audio_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.audio.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.note.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blank.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blockmanager.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "blocks_and_connections.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "clip_dither.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/output_blocks",
+				"bootpath" : "~/Documents/GitHub/benny/output_blocks",
 				"patcherrelativepath" : "../output_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "clocked.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
+				"name" : "core.clock.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.auto.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.auto.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.auto.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.keyboard.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "display_pages.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "drawing_helpers.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "files.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "init_functions.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
@@ -14751,78 +14803,155 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "midi.holes.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.lfo.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.lfo.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.lfo.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.sustain.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "midi.velocity.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "midimonitor.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "midirouter.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "mouse.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "mouse_helpers.js",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "note_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "output_queue_watcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "parameters_and_modulation.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
+				"name" : "parameterwatcher.gendsp",
+				"bootpath" : "~/Documents/GitHub/benny/code",
+				"patcherrelativepath" : "../code",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "stretch_looper.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "ui_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "voicealloc.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
-				"bootpath" : "~/Documents/GitHub/multitudes/patchers",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voiceheader.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "whitegaussnoise.gendsp",
-				"bootpath" : "~/Documents/GitHub/multitudes/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
