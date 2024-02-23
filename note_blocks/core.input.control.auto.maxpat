@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+		"rect" : [ 660.0, 146.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -49,7 +49,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -625,7 +625,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 6,
 					"outlettype" : [ "", "", "", "", "", "" ],
-					"patching_rect" : [ 2096.5, 938.0, 252.0, 35.0 ],
+					"patching_rect" : [ 2096.5, 938.0, 252.0, 36.0 ],
 					"saved_object_attributes" : 					{
 						"legacy" : 0
 					}
@@ -912,7 +912,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1197,7 +1197,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1070.0, 261.0, 55.0, 89.0 ],
+					"patching_rect" : [ 1070.0, 261.0, 55.0, 91.0 ],
 					"text" : "-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 8 -1 -1 -1"
 				}
 
@@ -1358,7 +1358,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1643,7 +1643,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1271.0, 1632.0, 150.0, 47.0 ],
+					"patching_rect" : [ 1271.0, 1632.0, 150.0, 48.0 ],
 					"text" : "writes stuff out to a the data buffer so the ui can see it"
 				}
 
@@ -2027,7 +2027,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -2839,7 +2839,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1100.0, 1253.5, 150.0, 74.0 ],
+					"patching_rect" : [ 1100.0, 1253.5, 150.0, 75.0 ],
 					"text" : "midifighter: 17-49 = off-dim-bright. 0 = bright. 1-16 are flashes (do not use)\n"
 				}
 
@@ -2887,7 +2887,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 913.571428571428669, 1759.5, 155.0, 74.0 ],
+					"patching_rect" : [ 913.571428571428669, 1759.5, 155.0, 75.0 ],
 					"text" : "this is a list of outputs from the controller that are connected to something. you can use this to dim the other leds"
 				}
 
@@ -3154,7 +3154,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -3530,7 +3530,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 971.0, 1148.75, 153.0, 47.0 ],
+					"patching_rect" : [ 971.0, 1148.75, 153.0, 48.0 ],
 					"text" : "offset (ie the 'first' value) is not done for value/colour yet"
 				}
 
@@ -3687,7 +3687,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 1945.0, 893.0, 221.0, 35.0 ],
+					"patching_rect" : [ 1945.0, 893.0, 221.0, 36.0 ],
 					"saved_object_attributes" : 					{
 						"legacy" : 1
 					}
@@ -3708,7 +3708,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -4370,7 +4370,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -4772,7 +4772,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 4.0, 1016.0, 227.0, 35.0 ],
+					"patching_rect" : [ 4.0, 1016.0, 227.0, 36.0 ],
 					"text" : ";\r\nto_blockmanager automap_default $1 $2"
 				}
 
@@ -5322,7 +5322,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1140.071428571428669, 436.359375, 107.0, 49.0 ],
+					"patching_rect" : [ 1140.071428571428669, 436.359375, 107.0, 50.0 ],
 					"text" : "0 6 10 11 1 2 3 7 4 5 -1 -1 -8 -1 -1 -1"
 				}
 
@@ -5655,7 +5655,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 344.571428571428669, 491.0, 273.0, 35.0 ],
+					"patching_rect" : [ 344.571428571428669, 491.0, 273.0, 36.0 ],
 					"text" : ";\r\nto_blockmanager do_automap controller $2 $1 $3"
 				}
 
@@ -6248,6 +6248,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 183.0, 1234.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -6284,10 +6288,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 629.071428571428669, 134.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -8634,6 +8634,14 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-215", 0 ],
+					"order" : 1,
+					"source" : [ "obj-39", 6 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-219", 0 ],
 					"order" : 0,
 					"source" : [ "obj-39", 0 ]
@@ -8674,6 +8682,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-278", 0 ],
+					"order" : 0,
 					"source" : [ "obj-39", 6 ]
 				}
 
@@ -8698,6 +8707,14 @@
 					"destination" : [ "obj-41", 1 ],
 					"order" : 1,
 					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-42", 0 ],
+					"order" : 2,
+					"source" : [ "obj-39", 6 ]
 				}
 
 			}
@@ -9373,9 +9390,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [  ],
-		"autosave" : 0
+ ]
 	}
 
 }

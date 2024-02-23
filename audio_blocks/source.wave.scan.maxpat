@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 40.0, 82.0, 1061.0, 595.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -188,6 +188,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 138.25, 430.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -211,7 +215,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 269.333333333333371, 502.0, 50.5, 22.0 ],
+					"patching_rect" : [ 180.75, 278.0, 50.5, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 1,
@@ -492,7 +496,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -690,7 +694,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 1009.5, 221.0, 130.0, 22.0 ],
+					"patching_rect" : [ 1009.5, 205.0, 130.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -726,7 +730,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1013,7 +1017,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1475,7 +1479,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1265.0, 387.0, 150.0, 47.0 ],
+					"patching_rect" : [ 1265.0, 387.0, 150.0, 48.0 ],
 					"text" : "advance backwards when reversed\n"
 				}
 
@@ -1666,7 +1670,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 931.0, 1167.0, 150.0, 33.0 ],
+					"patching_rect" : [ 931.0, 1167.0, 150.0, 34.0 ],
 					"text" : "target autoadv sent as midi"
 				}
 
@@ -1738,7 +1742,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1017.5, 714.0, 103.0, 47.0 ],
+					"patching_rect" : [ 1017.5, 714.0, 103.0, 48.0 ],
 					"text" : "this is so that muted blocks stop advancing"
 				}
 
@@ -1859,7 +1863,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 138.25, 515.0, 150.0, 33.0 ],
+					"patching_rect" : [ 138.25, 515.0, 150.0, 34.0 ],
 					"text" : "this is so it starts playing on load if song is playing"
 				}
 
@@ -1931,7 +1935,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 319.5, 1102.0, 151.0, 100.0 ],
+					"patching_rect" : [ 319.5, 1102.0, 151.0, 103.0 ],
 					"text" : "this bit swaps the channels - so you can use 1 voice for 2 ch, or 2 voices for 2ch, up to you. the latter lets you flock/spread etc\\\n"
 				}
 
@@ -1943,7 +1947,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 275.0, 1106.5, 33.0, 22.0 ],
+					"patching_rect" : [ 319.833333333333371, 1053.5, 33.0, 22.0 ],
 					"text" : "== 1"
 				}
 
@@ -2219,7 +2223,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 572.0, 979.0, 69.0, 33.0 ],
+					"patching_rect" : [ 572.0, 979.0, 69.0, 34.0 ],
 					"text" : "xfade time in ms"
 				}
 
@@ -2339,7 +2343,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1010.0, 441.0, 150.0, 33.0 ],
+					"patching_rect" : [ 1010.0, 441.0, 150.0, 34.0 ],
 					"text" : "autoadvance, only for the first voice of a block"
 				}
 
@@ -2627,7 +2631,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1529.0, 512.0, 157.0, 74.0 ],
+					"patching_rect" : [ 1529.0, 512.0, 157.0, 75.0 ],
 					"text" : "early change:open a gate so the next beat triggers it. you know what fraction of a slice that is, just add it on and fire it"
 				}
 
@@ -2711,7 +2715,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1537.0, 461.0, 150.0, 33.0 ],
+					"patching_rect" : [ 1537.0, 461.0, 150.0, 34.0 ],
 					"text" : "here, add q-offset to human timing mean"
 				}
 
@@ -2856,7 +2860,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 399.5, 678.5, 108.0, 33.0 ],
+					"patching_rect" : [ 399.5, 678.5, 108.0, 34.0 ],
 					"text" : "ms per slice (via block settings)"
 				}
 
@@ -2881,7 +2885,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 519.5, 613.5, 113.0, 33.0 ],
+					"patching_rect" : [ 519.5, 613.5, 113.0, 34.0 ],
 					"text" : "ms per slice (via wave settings)"
 				}
 
@@ -2980,7 +2984,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"patching_rect" : [ 375.5, 221.0, 29.5, 22.0 ],
-					"text" : "+ 1"
+					"text" : "i"
 				}
 
 			}
@@ -3102,7 +3106,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 334.75, 446.0, 150.0, 60.0 ],
+					"patching_rect" : [ 334.75, 446.0, 150.0, 62.0 ],
 					"text" : "get wave data, only enable play if you've got wave data\n"
 				}
 
@@ -3198,6 +3202,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 842.5, 1173.5, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -3233,10 +3241,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 162.5, 1143.5, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -3249,10 +3253,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 523.666666666666629, 5.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -3264,10 +3264,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 84.5, 1143.5, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -3280,10 +3276,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 486.666666666666629, 5.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -3296,10 +3288,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 388.5, 5.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -4575,7 +4563,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-146", 0 ],
-					"midpoints" : [ 457.5, 657.0, 864.0, 657.0, 864.0, 405.0, 1008.0, 405.0, 1008.0, 318.0, 1245.5, 318.0 ],
+					"midpoints" : [ 457.5, 657.0, 864.0, 657.0, 864.0, 405.0, 1008.0, 405.0, 1008.0, 302.0, 1245.5, 302.0 ],
 					"order" : 0,
 					"source" : [ "obj-33", 0 ]
 				}
@@ -4766,7 +4754,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-102", 0 ],
-					"midpoints" : [ 463.333333333333314, 360.0, 888.0, 360.0, 888.0, 1089.0, 284.5, 1089.0 ],
+					"midpoints" : [ 463.333333333333314, 100.0, 888.0, 100.0, 888.0, 1048.0, 329.333333333333371, 1048.0 ],
 					"order" : 1,
 					"source" : [ "obj-53", 7 ]
 				}
@@ -4775,7 +4763,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-107", 0 ],
-					"midpoints" : [ 426.0, 432.0, 941.0, 432.0 ],
+					"midpoints" : [ 426.0, 102.0, 941.0, 102.0 ],
 					"order" : 2,
 					"source" : [ "obj-53", 3 ]
 				}
@@ -4800,7 +4788,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-175", 0 ],
-					"midpoints" : [ 426.0, 471.0, 1137.0, 471.0 ],
+					"midpoints" : [ 426.0, 98.0, 1137.0, 98.0 ],
 					"order" : 1,
 					"source" : [ "obj-53", 3 ]
 				}
