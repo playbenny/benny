@@ -929,7 +929,14 @@ function remove_connection(connection_number){
 	var f_o_no = connections.get("connections["+connection_number+"]::from::output::number");
 	var t_i_no = connections.get("connections["+connection_number+"]::to::input::number");
 	var f_subvoices = 1;
-	if(f_type=="audio") f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+	if(f_type=="audio"){
+		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+	}else if(f_type=="parameters"){
+		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
+			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
+			
+		}
+	}
 	var t_subvoices = 1;
 	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 	
@@ -1405,6 +1412,11 @@ function make_connection(cno,existing){
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
 		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
+	}else if(f_type=="parameters"){
+		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
+			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
+			
+		}
 	}
 	var t_subvoices = 1;
 	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
@@ -1596,7 +1608,7 @@ function make_connection(cno,existing){
 					var vect = conversion.get("vector");
 					set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 				}else if(f_type == "parameters"){//param to midi (polyrouter)
-					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
+					//audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");

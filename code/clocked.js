@@ -273,7 +273,7 @@ function check_changed_queue(){
 function meters(){
 	for(i = meters_updatelist.meters.length-1; i>=0; i--){
 		var voice = meters_updatelist.meters[i][1];
-		if(voice !== 'undefined'){
+		try{//if(voice !== 'undefined'){
 			var block = meters_updatelist.meters[i][0];
 			var polyvoice = meters_updatelist.meters[i][2];
 			var tv=[];
@@ -295,7 +295,7 @@ function meters(){
 					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale = tv;
 				}
 			}
-		}else{post("\nmeter undef ", i,"  l: ",meters_updatelist[i]);}
+		}catch(err){post("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
 	}
 }
 

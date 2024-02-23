@@ -218,17 +218,17 @@ function get_polybuffer_info(){
 
 //max calls this once a buffer is loaded
 function buffer_loaded(number,path,name,buffername){
-	post("buffer",number,"has loaded into polyslot",number,path,buffername);
 	waves_buffer[number]= new Buffer(buffername);
-	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name);
+	post("buffer",number,"has loaded into polyslot",number,/*path,buffername);
+	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),*/"name",name);
 	var tn=+number+1;
 	var exists=0;
 	if(waves_dict.contains("waves["+tn+"]::name")){
 		if(waves_dict.get("waves["+tn+"]::path")==path){
-			post("not overwriting existing wave info in dictionary");
+			//post("not overwriting existing wave info in dictionary");
 			exists=1;
 		}else{
-			post("path doesn't match so overwriting",waves_dict.get("waves["+tn+"]::path"),path);
+			post("\npath doesn't match so overwriting",waves_dict.get("waves["+tn+"]::path"),path);
 		}
 	}
 	if(!exists){

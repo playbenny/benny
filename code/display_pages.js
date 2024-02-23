@@ -1535,7 +1535,6 @@ function set_sidebar_mode(mode){
 	if(mode!=sidebar.mode){
 		sidebar.scroll.position = 0;
 		sidebar.scroll.max = 0;
-		//if((mode!="connection")&&(wires_potential_connection!=-1)) remove_potential_wire(0);
 		if((sidebar.mode == "none")||(mode=="none")) center_view(1);
 		if(mode=="block"){
 			sidebar.scopes.voice = -1;//causes it to ask te right block to display a scope
@@ -4608,6 +4607,8 @@ function draw_sidebar(){
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
 			var from_subvoices = Math.max(1,blocks.get('blocks['+f_number+']::subvoices'));
 			var to_subvoices = Math.max(1,blocks.get('blocks['+t_number+']::subvoices'));
+			var t_i_name,f_o_name;
+
 
 			var mute = connections.get("connections["+i+"]::conversion::mute");
 			var scale = connections.get("connections["+i+"]::conversion::scale");
@@ -4651,27 +4652,26 @@ function draw_sidebar(){
 				t_v_no *= to_subvoices;
 				if(t_type=="potential") t_i_v[0] *= 2;
 			}
-
 			if(f_type=="parameters"){
-				var f_o_name = blocktypes.get(f_name+"::connections::out::parameters["+f_o_no+"]");
+				f_o_name = blocktypes.get(f_name+"::connections::out::parameters["+f_o_no+"]");
 			}else if(f_type=="potential"){
-				var f_o_name = "?";
+				f_o_name = "?";
 				sidebar.connection.show_from_outputs = 1;
 			}else{
-				var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
+				f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
 			}
 			//post("\nfoname",f_o_name,f_type,f_o_no);
 			if(t_type=="parameters"){
-				var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
+				t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
 			}else if(t_type=="potential"){
-				var t_i_name = "?";
+				t_i_name = "?";
 				sidebar.connection.show_to_inputs = 1;
 			}else if(t_type=="block"){
 				t_v_no = 0;
 				if(t_i_no == 0){
-					var t_i_name = "mute toggle";
+					t_i_name = "mute toggle";
 				}else if(t_i_no == 1){
-					var t_i_name = "mute";
+					t_i_name = "mute";
 				}
 			}else{
 				var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
@@ -4829,8 +4829,6 @@ function draw_sidebar(){
 						sidebar.scopes.midivoicelist[tii] = vm[+tf_o_v[tii]];
 						sidebar.scopes.midioutlist[tii] = +f_o_no;
 					}
-					//post("\nassigning midi scope for connection",i,"from block",f_number,"the voices are",sidebar.scopes.midivoicelist,"and the outs are",sidebar.scopes.midioutlist);
-					//assign_midi_scope("connection",i,m_index);
 					sidebar.scopes.width = (sidebar.width + fo1);
 				}else if(f_type=="audio"){
 					//post("assigning connection audio scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
