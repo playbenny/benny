@@ -17,13 +17,17 @@
 		},
 		"groups" : [
 			{
-				"contains" : [7, 8]
+				"contains" : [7, 8, 13]
 
 			},
 			{ 
 				"contains" : [0, 1, 2, 3, 4, 5, 6],
 				"header"	: "Scale Degrees",
 				"height" : 0
+			},
+			{
+				"contains"	:[9, 10, 11, 12],
+				"header"	:"Modify"
 			}
 		],
 		"panel" : {
@@ -99,6 +103,41 @@
 				"values" : ["uni", -2, 2, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "Gap",
+				"type"	: "int",
+				"values" : ["uni", 1, 23, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Limit",
+				"type"	: "int",
+				"values" : ["uni", 1, 17, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Size",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Up/Down",
+				"type"	: "int",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Length",
+				"type"	: "int",
+				"values" : ["uni", 10, 1000, "lin"],
+				"wrap" : 0,
+				"default" : 0
 			}
 		]
 	}
