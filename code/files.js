@@ -269,9 +269,9 @@ function load_next_song(slow){
 	usermouse.ctrl = slow;
 	currentsong++;
 	if(currentsong<0)currentsong=0;
-	post("\nload next, current is", currentsong, songlist[currentsong]);
-	load_song();
 	if(currentsong==songlist.length)currentsong=0;
+	post("\nload next song: ", currentsong, songlist[currentsong]);
+	load_song();
 	usermouse.ctrl = oc;
 }
 
@@ -417,31 +417,28 @@ function import_song(){
 			//post("\n",b,"type",typeof thisblock, thisblock.toString());
 			if(thisblock.contains("name")){
 				block_name = thisblock.get("name");
+				var oname = block_name;
 				if(loading.wait>1) post("\nloading block "+b+" : "+block_name);
 				if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
 					if(thisblock.contains("substitute")){
 						//use that then
 						block_name = thisblock.get("substitute");
-						post("\n",block_name,"is not available in this hardware configuration. substituting:",block_name);
+						post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
+						var oty = thisblock.get("type");
+						var ty = blocktypes.get(block_name+"::type");
 						thisblock.replace("name",block_name);
-						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
-						//need to go through all connections, if connected to this block and type = hardware,
-						//adjust to type = audio.
-						var con_l = songs.getsize(loading.songname+"::connections");
-						for(;con_l-- >=0;){
-							if(songs.contains(loading.songname+"::connections["+con_l+"]::from")){
-								if((songs.get(loading.songname+"::connections["+con_l+"]::from::number")==b)&&(songs.get(loading.songname+"::connections["+con_l+"]::from::output::type")=="hardware")){
-									songs.replace(loading.songname+"::connections["+con_l+"]::from::output::type","audio");
-								}
-							}
-							if(songs.contains(loading.songname+"::connections["+con_l+"]::to")){
-								if((songs.get(loading.songname+"::connections["+con_l+"]::to::number")==b)&&(songs.get(loading.songname+"::connections["+con_l+"]::to::input::type")=="hardware")){
-									songs.replace(loading.songname+"::connections["+con_l+"]::to::input::type","audio");
-								}
-							}
-						}
+						thisblock.replace("type",ty);
+						swap_block_check_connections(b,oname,oty,block_name,ty);
+					}else if(loading.recent_substitutions.contains(block_name)){
+						block_name = loading.recent_substitutions.get(block_name);
+						post("\n",oname," is not available in this hardware configuration but you already picked ",block_name," as a replacement");
+						var oty = thisblock.get("type");
+						var ty = blocktypes.get(block_name+"::type");
+						thisblock.replace("name",block_name);
+						thisblock.replace("type",ty);
+						swap_block_check_connections(b,oname,oty,block_name,ty);
 					}else if(menu.swap_block_target == -1){
-						post("\n",block_name,"was not found and no automatic substitution is known, prompting user for substitute selection");
+						post("\n",block_name,"was not found and no automatic substitution is known. please choose a substitue");
 						menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
 						loading.progress = b;
 						menu.camera_scroll=0;
@@ -456,8 +453,11 @@ function import_song(){
 						post("loading selected susbstitute",menu.swap_block_target);
 						block_name = menu.swap_block_target;
 						menu.swap_block_target = -1;
+						var oty = thisblock.get("type");
+						var ty = blocktypes.get(block_name+"::type");
 						thisblock.replace("name",block_name);
-						thisblock.replace("type",blocktypes.get(block_name+"::type")); //i think you might need to do a better job here
+						thisblock.replace("type",ty);
+						swap_block_check_connections(b,oname,oty,block_name,ty);
 					}
 				}
 				t=0;
@@ -641,6 +641,27 @@ function import_song(){
 		changed_queue_pointer = 0;
 //		lcd_main.message("paintrect",9,9,mainwindow_width,fontheight,backgroundcolour_blocks);
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
+	}
+}
+
+function swap_block_check_connections(b,oldname,oldtype,newname,newtype){
+	//this is just for during load, the connection hasn't been made yet so ammending the dict entry is enough
+	var con_l = songs.getsize(loading.songname + "::connections");
+	for (; con_l-- >= 0;) {
+		if (songs.contains(loading.songname + "::connections[" + con_l + "]::from")) {
+			if(songs.get(loading.songname + "::connections[" + con_l + "]::from::number") == b){
+				if(songs.get(loading.songname + "::connections[" + con_l + "]::from::output::type") == "hardware"){
+					songs.replace(loading.songname + "::connections[" + con_l + "]::from::output::type", "audio");
+				}
+			}
+		}
+		if (songs.contains(loading.songname + "::connections[" + con_l + "]::to")) {
+			if(songs.get(loading.songname + "::connections[" + con_l + "]::to::number") == b){
+				if(songs.get(loading.songname + "::connections[" + con_l + "]::to::input::type") == "hardware"){
+					songs.replace(loading.songname + "::connections[" + con_l + "]::to::input::type", "audio");
+				}
+			}
+		}
 	}
 }
 

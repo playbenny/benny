@@ -35,7 +35,6 @@ function loadbang(){
 	}
 	populate_lookup_tables();
 	post("\nreticulating splines");
-
 	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
@@ -353,6 +352,9 @@ function import_hardware(v){
 	var t;
 	var i;
 	
+	loading.recent_substitutions = new Dict;
+	loading.recent_substitutions.parse("{}");
+
 	var vspl = v.split('/').pop();
 	if(!userconfig.contains("last_hardware_config") || (vspl!=userconfig.get("last_hardware_config"))){
 		userconfig.replace("last_hardware_config",vspl);

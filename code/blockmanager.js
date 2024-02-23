@@ -561,7 +561,8 @@ var loading = {
 	merge : 0,
 	mutelist : [], //each entry is [blockno,mute], you resend the message once everything should've loaded
 	purgelist : [], //list of blocks to be deleted, and everything solely connected to them too. (for merge purge)
-	wave_paramlist : [] //list of [blockno,paramno] that are wave parameters that have been remapped - it uses this list to apply the remapping to preset states too
+	wave_paramlist : [], //list of [blockno,paramno] that are wave parameters that have been remapped - it uses this list to apply the remapping to preset states too
+	recent_substitutions : 0 //this is made into a dict where we keep a record of user substitutions during load, so we don't have to ask twice.
 }
 
 var cpu_meter = {

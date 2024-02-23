@@ -396,6 +396,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								post("substitution found!!"+usermouse.ids[1]);
+								loading.recent_substitutions.replace(menu.swap_block_target, usermouse.ids[1]);
 								menu.swap_block_target = usermouse.ids[1];
 								set_display_mode("blocks");
 								import_song();
