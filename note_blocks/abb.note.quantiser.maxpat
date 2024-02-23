@@ -201,10 +201,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 63.0, 988.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -371,8 +367,8 @@
 									"numinlets" : 0,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 214.5, 305.0, 55.0, 22.0 ],
-									"text" : "r rset_all"
+									"patching_rect" : [ 214.5, 305.0, 81.0, 22.0 ],
+									"text" : "r #0rset_all"
 								}
 
 							}
@@ -781,6 +777,7 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-7",
@@ -861,8 +858,8 @@
 									"numinlets" : 0,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 290.0, 241.0, 55.0, 22.0 ],
-									"text" : "r rset_all"
+									"patching_rect" : [ 290.0, 241.0, 81.0, 22.0 ],
+									"text" : "r #0rset_all"
 								}
 
 							}
@@ -1207,13 +1204,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-41",
-					"linecount" : 4,
+					"linecount" : 3,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 767.5, 455.0, 38.0, 64.0 ],
-					"text" : "A#/Bb Minor"
+					"patching_rect" : [ 767.5, 455.0, 32.0, 50.0 ],
+					"text" : "F Lydian"
 				}
 
 			}
@@ -2311,6 +2308,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 762.0, 393.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -2347,6 +2348,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 654.0, 165.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -2421,7 +2426,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"comment" : "",
