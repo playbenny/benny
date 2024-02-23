@@ -25,14 +25,15 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,2,3,4,5],
-				"colour" : [255,255,255]
+				"colour" : 10
 			},
 			{
-				"contains" : [6,7]
+				"contains" : [6,7],
+				"height" : 0
 			},
 			{
 				"contains" : [8,9,10],
-				"colour" : -20,
+				"colour" : -10,
 				"height" : 0
 			}
 		],
@@ -62,7 +63,7 @@
 			},
 			{
 				"name" : "loop_enable",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["oneshot", "loop"],
 				"wrap" : 0,
 				"default" : 0.6
@@ -97,8 +98,9 @@
 			},
 			{
 				"name" : "midi_in",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["play", "record"],
+				"force_label" : 1,
 				"wrap" : 0,
 				"default" : 0.25
 			},

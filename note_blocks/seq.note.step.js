@@ -361,7 +361,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			}
 		}
 	}else if(y<sy){//top rows
-		if(y<sy-uy){//very top, voice select
+		if(y<sy-unit*0.6){//very top, voice select
 			selected_voice = Math.floor(v_list.length*x/width);
 			drawflag = 1;
 		}else{//timeline (a timeline? in this software? call it something else please you imperialist pig)

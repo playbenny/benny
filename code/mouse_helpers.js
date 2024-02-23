@@ -1087,12 +1087,12 @@ function toggle_panel(parameter,value){
 }
 function scroll_sidebar(parameter,value){
 	if(value=="get"){
-		return -sidebar.scroll.position/300;
+		return -sidebar.scroll.position/400;
 	}else if(value=="rel"){
-		sidebar.scroll.position = Math.min(Math.max(0,sidebar.scroll.position-parameter*100),sidebar.scroll.max-0.01);
+		sidebar.scroll.position = Math.min(Math.max(0,sidebar.scroll.position-parameter*1000),sidebar.scroll.max-0.01);
 		redraw_flag.flag |= 2;
 	}else{
-		sidebar.scroll.position = Math.min(Math.max(0,-value*300),sidebar.scroll.max-0.01);
+		sidebar.scroll.position = Math.min(Math.max(0,-value*400),sidebar.scroll.max-0.01);
 		redraw_flag.flag |= 2;
 	}
 }
