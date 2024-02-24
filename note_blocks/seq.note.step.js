@@ -6,6 +6,7 @@ var UNIVERSAL_COLUMNS = 6;
 var UNIVERSAL_PATTERNS = 16;
 var max_rows = 10;
 var pattsize = 1;
+var step_time = 125; //ms per step, measured by voice 0 and reported back
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var config = new Dict;
@@ -285,21 +286,56 @@ function drawcell(cc,rr){
 	if(rr>view_x2) return 0;
 	var values = voice_data_buffer.peek(1,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc],UNIVERSAL_COLUMNS);
 	var y = values[0];
+	var shade = 0.5 + values[1]/256;
+	if(cursors[cc]==rr) shade *= 2;
+	var loop = lon[cc] && (rr>=lstart[cc]) && (rr<end[cc]);
+	if(loop){
+		shade *= 0.8;
+		loop = 1.7;
+	}else{loop=1;}
 	if((y>view_y)&&(y<view_y2)){
 		y--;
-		var shade = 0.5 + values[1]/256;
 		if(cc==selected_voice){
 			drawtype = "paintrect";
 		}else{
 			drawtype = "framerect";
 		}
-		if(cursors[cc]==rr) shade *= 2;
-		var loop = lon[cc] && (rr>=lstart[cc]) && (rr<end[cc]);
-		if(loop){
-			shade *= 0.8;
-			loop = 1.7;
-		}else{loop=1;}
-		outlet(1,drawtype,sx+ux*(rr-view_x),sy+(view_y2-y-1)*uy,sx+ux*(rr+1-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
+		var w = values[2];
+		var nx = view_x2;
+		for(t=rr+1;t<=view_x2;t++){
+			if(voice_data_buffer.peek(1,MAX_DATA*v_list[cc]+2+UNIVERSAL_COLUMNS*t+pattern_offs[cc])>0){
+				var td = voice_data_buffer.peek(1,MAX_DATA*v_list[cc]+4+UNIVERSAL_COLUMNS*t+pattern_offs[cc])
+				if(td>0){
+					td = td*7.9285714/step_time;
+					nx=Math.min(nx,t+td);
+				}else{
+					nx=Math.min(nx,t);//-rr;
+					t=999999999999999;
+				}
+			}
+		}
+		post("\nnx",nx);
+		var d = values[3];
+		if(d>0){
+			d = d*7.9285714/step_time;
+			if(cc==selected_voice){// a little indicator line for when a note starts
+				outlet(1,"frgb",blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
+				outlet(1,"moveto",sx+ux*(rr-view_x),sy+(view_y2-y-0.5)*uy);
+				outlet(1,"lineto",sx+ux*(rr-view_x+d),sy+(view_y2-y-0.5)*uy);
+			}
+		}else{d=0;}
+		if(w==0){
+			//find the next note,set w
+			w = nx - rr - d;
+		}else if(w==1){ //instantaneous
+			w = 0.2;
+		}else{//length in ms so
+			w = (w-2)*7.9285714;
+			w /= step_time;
+			w = Math.min(Math.max(w,0.2),nx-rr-d);
+		}
+		post("d",d,"w",w);
+		outlet(1,drawtype,sx+ux*(rr-view_x+d),sy+(view_y2-y-1)*uy,sx+ux*(rr+w+d-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
 	}
 	if(cc==selected_voice){ //draw sliders whether it's in view (y axis) or not
 		if(selected_graph>0){
@@ -323,7 +359,7 @@ function drawcell(cc,rr){
 				gy2=graph_y+g*gh;
 				if(v>0){
 					outlet(1,"paintrect", sx+ux*(rr-view_x),gy2-gh*v,sx+ux*(rr+1-view_x),gy2,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
-				}else{
+				}else if((g>3)&(values[g]<-1)){
 					outlet(1,"paintrect", sx+ux*(rr-view_x),gy,sx+ux*(rr+1-view_x),gy-gh*v,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);//,MAX_DATA*v_list[cc]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[cc]+selected_graph,1);
 				}				
 			}
@@ -395,10 +431,12 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			var clicky = 1 + Math.floor(view_y2 - view_h * (y-sy)/(graph_y-sy));
 			var tn = voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]);
 			if(tn==clicky) clicky = 0;
-			voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],clicky);
 			if(clicky!=0){
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],clicky);
 				var tv = voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+2+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]);
 				if(tv==0) voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+2+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],currentvel);
+			}else{
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],[0,0,0,0,0,0]);
 			}
 			drawflag = 1;
 		}
@@ -928,4 +966,8 @@ function generate_extended_v_list() {
 			}
 		}
 	}
+}
+
+function steptime_is(time){
+	step_time = time;
 }
