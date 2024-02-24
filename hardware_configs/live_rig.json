@@ -1,8 +1,6 @@
 {
 	"io" : 	{
 		"keyboards" : ["Xkey37","Xkey25","MIDIIN2 (MIDIMATE II)"],
-		"matrix" : "MIDIOUT2 (MIDIMATE II)",
-		"hardware" : "MIDIMATE II",
 		"matrix_switch" : {
 			"midi_out" : "MIDIMATE II",
 			"matrix_out" : 12,
