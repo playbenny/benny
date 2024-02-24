@@ -758,7 +758,11 @@ function render_controls(){
 		controls[ii].presentation_position(30,y_pos);
 		ii++;
 		controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.exclusive."+ii);
-		controls[ii].message("set", cd.get(cdk[p]+"::exclusive"));
+		if(cd.contains(cdk[p]+"::exclusive")){
+			controls[ii].message("set", cd.get(cdk[p]+"::exclusive"));
+		}else{
+			controls[ii].message("set", 0);
+		}
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
