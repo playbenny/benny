@@ -9,12 +9,14 @@ var pattsize = 1;
 var step_time = 125; //ms per step, measured by voice 0 and reported back
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
+var parameter_value_buffer = new Buffer("parameter_value_buffer");
 var config = new Dict;
 config.name = "config";
 var width, height,x_pos,y_pos,unit,sx,sy,ux,uy;
 var block=-1;
 var blockcolour=[128,128,128];
 var currentvel=100;
+var defaultlength=1;
 var selected_graph = 0; //0=off, 1=vel, 2=len, 3=delay, 4=chance
 var selected_voice=0;
 var mini=0;
@@ -64,6 +66,7 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
+	unit = height / 18;
 	if(width<sw*0.6){ 
 		mini=1;
 		if(block>=0) generate_extended_v_list();
@@ -72,15 +75,16 @@ function setup(x1,y1,x2,y2,sw){
 			m  = Math.max(m, Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1,1)) + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2,1)));
 		}
 		view_x2=m;
+		sx=x_pos; 
+		sy=y_pos;
 	}else{
+		sy = y_pos + 1.7*unit*(mini==0);
+		sx = x_pos + 1.2*unit*(mini==0);
 		if(block>=0) generate_extended_v_list();
 		view_x2=16; view_x=0; view_w=16;
 	}
-	unit = height / 18;
 	selected_voice=0;
 	selected_graph=1;
-	sy = y_pos + 1.7*unit*(mini==0);
-	sx = x_pos + 1.2*unit*(mini==0);
 	graph_h = 0.2 * height;// * (selected_graph!=0);
 	graph_y2 = y2;
 	graph_y = y2 - graph_h;
@@ -111,8 +115,10 @@ function calcscaling() {
 	}
 	view_w = view_x2 - view_x;
 	view_h = view_y2 - view_y;
-	ux = (width - sx) / view_w;
+	ux = (width - sx*(mini==0)) / view_w;
 	uy = (graph_y - sy - 0.1 * unit) / view_h;
+	//y_click = 1 + Math.floor(view_y2 - view_h * (y-sy)/(graph_y-sy));
+	//(graph_y-sy)*(view_y2 - y_click +1)/view_h = y-sy;
 }
 
 function draw(){
@@ -314,30 +320,31 @@ function drawcell(cc,rr){
 				}
 			}
 		}
-		post("\nnx",nx);
 		var d = values[3];
 		if(d>0){
 			d = d*7.9285714/step_time;
 			if(cc==selected_voice){// a little indicator line for when a note starts
 				outlet(1,"frgb",blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
 				outlet(1,"moveto",sx+ux*(rr-view_x),sy+(view_y2-y-0.5)*uy);
-				outlet(1,"lineto",sx+ux*(rr-view_x+d),sy+(view_y2-y-0.5)*uy);
+				outlet(1,"lineto",sx+ux*Math.min(view_x2,rr-view_x+d),sy+(view_y2-y-0.5)*uy);
 			}
 		}else{d=0;}
-		if(w==0){
-			//find the next note,set w
-			w = nx - rr - d;
-		}else if(w==1){ //instantaneous
-			w = 0.2;
-		}else{//length in ms so
-			w = (w-2)*7.9285714;
-			w /= step_time;
-			w = Math.min(Math.max(w,0.2),nx-rr-d);
+		if((rr-view_x+d)<view_x2){
+			if(w==0){
+				//find the next note,set w
+				w = nx - rr - d;
+			}else if(w==1){ //instantaneous
+				w = 0.2;
+			}else{//length in ms so
+				w = (w-2)*7.9285714;
+				w /= step_time;
+				w = Math.min(Math.max(w,0.2),nx-rr-d);
+			}
+			//post("\n",drawtype,sx+ux*(rr-view_x+d),sy+(view_y2-y-1)*uy,sx+ux*(rr+w+d-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
+			outlet(1,drawtype,sx+ux*(rr-view_x+d),sy+(view_y2-y-1)*uy,sx+ux*(rr+w+d-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
 		}
-		post("d",d,"w",w);
-		outlet(1,drawtype,sx+ux*(rr-view_x+d),sy+(view_y2-y-1)*uy,sx+ux*(rr+w+d-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
 	}
-	if(cc==selected_voice){ //draw sliders whether it's in view (y axis) or not
+	if((mini==0)&&(cc==selected_voice)){ //draw sliders whether it's in view (y axis) or not
 		if(selected_graph>0){
 			var steps=((selected_graph==2)||(selected_graph==3)) ? 1000:128;
 			var v= values[selected_graph]-1;
@@ -369,6 +376,7 @@ function drawcell(cc,rr){
 }
 
 function mouse(x,y,lb,sh,al,ct,scr){
+	check_defaults();
 	if(x<sx){//left column
 		if(y>graph_y){
 			if(lb){
@@ -430,13 +438,17 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			var clickx = Math.floor(view_x + view_w * (x-sx)/(width-sx));
 			var clicky = 1 + Math.floor(view_y2 - view_h * (y-sy)/(graph_y-sy));
 			var tn = voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]);
-			if(tn==clicky) clicky = 0;
-			if(clicky!=0){
-				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],clicky);
-				var tv = voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+2+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]);
-				if(tv==0) voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+2+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],currentvel);
+			if(ct){
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],[-1,0,0,0,0,0]);
 			}else{
-				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],[0,0,0,0,0,0]);
+				if(tn==clicky) clicky = 0;
+				if(clicky!=0){
+					voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],clicky);
+					var tv = voice_data_buffer.peek(1,MAX_DATA*v_list[selected_voice]+2+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]);
+					if(tv==0) voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+2+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],[currentvel,defaultlength,0,0]);
+				}else{
+					voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice],[0,0,0,0,0,0]);
+				}
 			}
 			drawflag = 1;
 		}
@@ -458,12 +470,21 @@ function mouse(x,y,lb,sh,al,ct,scr){
 				}
 				if(tv[slider]>steps)tv[slider]=steps; 
 				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,tv[slider]);
+				if(slider==1) parameter_value_buffer.poke(1,MAX_PARAMETERS*block+11,tv[1]/128);
 				drawflag = 1; //IDEALLY NO, JUST UPDATE THE ONE SLIDER
 			}
 		}else if(lb){
-			clicky *= steps;
-			voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,clicky);
+			if(al && (slider>1)){
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,0);
+			}else if(al){
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,currentvel);
+			}else{
+				clicky *= steps;
+				if(slider==1) parameter_value_buffer.poke(1,MAX_PARAMETERS*block+11,clicky/128);
+				voice_data_buffer.poke(1,MAX_DATA*v_list[selected_voice]+1+UNIVERSAL_COLUMNS*clickx+pattern_offs[selected_voice]+slider,clicky);
+			}
 		}
+		
 	}
 }
 
@@ -598,6 +619,7 @@ function delete_selection(){
 }
 
 function keydown(key){
+	check_defaults();
 	var ox = selected_voice;
 	return 0;
 	var oy = cursory;
@@ -898,6 +920,18 @@ function keydown(key){
 	}
 }
 
+function check_defaults(){
+	currentvel = Math.floor(127.99*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[0]+11,1));
+	defaultlength = 3*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[0]+10,1);
+	if(defaultlength<1){
+		defaultlength = 0;
+	}else if(defaultlength<2){
+		defaultlength = step_time*0.126126+2;
+	}else{
+		defaultlength = 1;
+	}
+}
+
 function voice_is(v){
 	block = v;
 	if(block>=0){
@@ -969,5 +1003,10 @@ function generate_extended_v_list() {
 }
 
 function steptime_is(time){
-	step_time = time;
+	if(abs(step_time-time)>5){
+		step_time = time;
+		check_defaults();		
+	}else{
+		step_time = time;
+	}
 }
