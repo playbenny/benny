@@ -28,6 +28,7 @@
 				"name" : "Midi Fighter Twister",
 				"substitute" : "JAMES_16e",
 				"outputs" : 16,
+				"scaling" : 1,
 				"type" : "encoder",
 				"channel" : 1,
 				"first" : 0,
@@ -67,7 +68,7 @@
 			},
 			"LPD8" : {
 				"name" : "LPD8",
-				"substitute" : "none",
+				"substitute" : "LPD8 mk2",
 				"outputs" : 8,
 				"type" : "potentiometer",
 				"channel" : 1,

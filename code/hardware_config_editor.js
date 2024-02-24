@@ -50,50 +50,8 @@ var midi_interfaces = {
 var configfile = new Dict;
 configfile.name = "configfile";
 
-var controls = { //basically build a structure here that mirrors the json's structure, just to hold max objects - labels and interface ones
-	keyboards : {
-		header : 0,
-		label : [],
-		control : [], //button to rotate through assignment groups
-		value : [] //holds which group or if disabled
-		// key should be [[1,2],3,[4,5]] where subarrays represent substitutable groups
-	},
-	matrix_switch :{
-		header : 0,
-		label: [],
-		control : [] //from here on control will hold various types or subarrays of controls
-	},
-	controllers : {
-		item : {
-			header : 0,
-			label : [],
-			control : [],
-			section : {
-				header :0,
-				name :[],
-				control : []
-			}
-		}
-	},
-	hardware : {
-		item : {
-			header : 0,
-			label : [],
-			control : [],
-			connections : {
-				in : {
-					label : [],
-					control : []
-				},
-				out : {
-					label : [],
-					control : []
-				}	
-			}
-		}
-	}
-
-}
+var controls = [];
+var values = [];
 
 function loadbang(){
 	configfile.parse("{}");
@@ -104,13 +62,6 @@ function loadbang(){
 	post("\n path is",filepath);
 	outlet(0,"getmidi","bang");
 	outlet(0,"library","read",filepath+"/data/hardware_library.json");
-/*
-	myObj = this.patcher.newdefault(10, 10, "umenu");
-	myObj.message("append","test1");
-	myObj.message("append","test2");
-	myObj.presentation(1);
-	myObj.presentation_position(100,100);
-*/
 	post("\ninterfaces list:\nins:",midi_interfaces.in,"\nouts:",midi_interfaces.out);
 }
 
@@ -162,63 +113,228 @@ function midiouts(name){
 }
 
 function render_controls(){
-	post("\ndelet");
 	deleteall();
-	post("\nrender");
 	var y_pos = 50;
 	var ii=0;
-	if(typeof controls.keyboards.header !== "object") controls.keyboards.header = this.patcher.newdefault(10, 100, "comment");
-	controls.keyboards.header.message("set", "keyboards");
-	controls.keyboards.header.presentation(1);
-	controls.keyboards.header.presentation_position(10,y_pos);
-	y_pos+=unit.header;
+	controls[ii]= this.patcher.newdefault(10, 100, "comment");
+	controls[ii].message("set", "keyboards");
+	controls[ii].presentation(1);
+	controls[ii].presentation_position(10,y_pos);
+	ii++;
 	var d = configfile.get("io::keyboards");
+	//y_pos+=unit.header;
 	for(var i=0;i<midi_interfaces.in.length;i++){
-		if(typeof controls.keyboards.label[ii] !== "object") controls.keyboards.label[ii] = this.patcher.newdefault(10, 100, "comment");
-		controls.keyboards.label[ii].message("set", midi_interfaces.in[i]);
-		controls.keyboards.label[ii].presentation(1);
-		controls.keyboards.label[ii].presentation_position(20,y_pos);
+		var enab = d.indexOf(midi_interfaces.in[i]);
+		var c;
+		if(enab==-1){
+			enab = "disabled";
+			c = [0.5, 0.396, 0. , 1];
+		}else{
+			enab = "enabled";
+			c = [1.000, 0.792, 0.000, 1.000];
+		}
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.in[i], "@textoncolor", c, "@varname", "keyboards."+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [midi_interfaces.in[i],enab];
 		y_pos+=unit.row;
 		ii++;
 	}
 	for(var i=0;i<midi_interfaces.not_present_in.length;i++){
-		if(typeof controls.keyboards.label[ii] !== "object") controls.keyboards.label[ii] = this.patcher.newdefault(10, 100, "comment");
-		controls.keyboards.label[ii].message("set", "("+ midi_interfaces.not_present_in[i]+")");
-		controls.keyboards.label[ii].presentation(1);
-		controls.keyboards.label[ii].presentation_position(20,y_pos);
-		var group = -1;
-		var grpsflag = 0;
-		for(var p=0;p<d.length;p++){
-			if(Array.isArray(d[p])){
-				grpsflag = 1;
-				for(var pp=0;pp<d[p].length;pp++){
-					if(d[p][pp] == midi_interfaces.not_present_in[i]) group = p; 
-				}
-			}else{
-				if(d[p] == midi_interfaces.not_present_in[i]) group = p; 
-			}
-		}
+		var enab = d.indexOf(midi_interfaces.not_present_in[i]); 
 		var c;
-		if(group==-1){
-			group = "disabled";
-			c = [0.7, 0.55, 0. , 1];
+		if(enab==-1){
+			enab = "disabled";
+			c = [0.5, 0.396, 0. , 1];
 		}else{
-			if(grpsflag){
-				group = "substitution group "+(group+1);
-			}else{
-				group = "enabled";
-			}
+			enab = "enabled";
 			c = [1.000, 0.792, 0.000, 1.000];
 		}
-		if(typeof controls.keyboards.control[ii] !== "object") controls.keyboards.control[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  group, "@textoncolor", c, "@varname", "keyboards.control."+ii);
-		controls.keyboards.control[ii].listener = new MaxobjListener(controls.keyboards.control[ii], keybcallback);
-		controls.keyboards.control[ii].presentation(1);
-		controls.keyboards.control[ii].presentation_position(20+unit.col,y_pos);
-		controls.keyboards.value[ii] = [midi_interfaces.not_present_in[i],group];
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.not_present_in[i], "@textoncolor", c, "@varname", "keyboards."+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [midi_interfaces.not_present_in[i],enab];
 		y_pos+=unit.row;
 		ii++;
 	}
+	y_pos+=unit.header;
+	controls[ii]= this.patcher.newdefault(10, 100, "comment");
+	controls[ii].message("set", "controllers");
+	controls[ii].presentation(1);
+	controls[ii].presentation_position(10,y_pos);
+	ii++;
+	var cd = configfile.get("io::controllers");
+	var cdk = cd.getkeys();
+	y_pos+=unit.header;
+	for(var p=0;p<cdk.length;p++){
+		controls[ii]= this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", cdk[p]);
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(20,y_pos);
+		y_pos+=unit.row;
+		ii++;
+		//now all the general controller settings:
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "substitutes");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		//y_pos+=unit.row;
+		ii++;
+		d = cd.get(cdk[p]+"::substitute");
+		if(!Array.isArray(d)) d = [d];
+		post("\nsubs",d);
+		for(var i=0;i<midi_interfaces.in.length;i++){
+			var enab = d.indexOf(midi_interfaces.in[i]);
+			var c;
+			if(enab==-1){
+				enab = "disabled";
+				c = [0.5, 0.396, 0. , 1];
+			}else{
+				enab = "enabled";
+				c = [1.000, 0.792, 0.000, 1.000];
+			}
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.in[i], "@textoncolor", c, "@varname", "substitute."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+			values[ii] = [midi_interfaces.in[i],enab,cdk[i]];
+			y_pos+=unit.row;
+			ii++;
+		}
+		for(var i=0;i<midi_interfaces.not_present_in.length;i++){
+			var enab = d.indexOf(midi_interfaces.not_present_in[i]); 
+			var c;
+			if(enab==-1){
+				enab = "disabled";
+				c = [0.5, 0.396, 0. , 1];
+			}else{
+				enab = "enabled";
+				c = [1.000, 0.792, 0.000, 1.000];
+			}
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.not_present_in[i], "@textoncolor", c, "@varname", "substitute."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+			values[ii] = [midi_interfaces.not_present_in[i],enab,cdk[p]];
+			y_pos+=unit.row;
+			ii++;
+		}
+		y_pos+=unit.row;
+		//"outputs" : 16,
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "number of outputs");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.outputs"+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].message("set", cd.get(cdk[p]+"::outputs"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
 
+		//"type" : "encoder",
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "type");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "controller.type"+ii);
+		controls[ii].message("append", "encoder");
+		controls[ii].message("append", "potentiometer");
+		controls[ii].message("set", cd.get(cdk[p]+"::type"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
+
+		//"channel" : 1,
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "midi channel");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.channel"+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].message("set", cd.get(cdk[p]+"::channel"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
+
+		//"first" : 0,
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "cc of first control");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.first"+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].message("set", cd.get(cdk[p]+"::first"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
+
+		//"scaling" : 0.125,
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "scaling");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "flonum" , "@varname", "controller.scaling"+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].message("set", cd.get(cdk[p]+"::scaling"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
+
+		//"columns" : 4,
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "number of columns");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.columns"+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].message("set", cd.get(cdk[p]+"::columns"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
+
+		
+		//"rows" : 4,
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "number of rows");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.rows"+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].message("set", cd.get(cdk[p]+"::rows"));
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p]];
+		y_pos+=unit.row;
+		ii++;
+
+
+
+
+		y_pos+=unit.row;
+	}
 }
 
 function keybcallback(data){
@@ -227,64 +343,41 @@ function keybcallback(data){
 	var id = data.maxobject.varname.split('.');
 	var ch=0;
 	if(id[0]=="keyboards"){
-		var v = controls.keyboards.value[id[2]];
+		var v = values[id[1]];
 		var d = configfile.get("io::keyboards");
-		if(v[1]=="enabled"){//so disable it //actually //so move everything else into a group
-			post("\ndisabling");
-			for(var p=0;p<d.length;p++){
-				if(Array.isArray(d[p])){ //actually if it says 'enabled' it's not in a subarray is it
-					for(pp=0;pp<d[p].length;pp++){
-						if(d[p][pp]==v[0]){
-							d[p].splice(pp,1);
-							ch=1;
-						}
-					}
-				}else{
-					if(d[p]==v[0]){
-						d.splice(p,1);
-						ch=1;
-					}
-				}
+		if(v[1]=="enabled"){ 
+			p = d.indexOf(v[0]);
+			if(p != -1){
+				d.splice(p,1);
+				configfile.replace("io::keyboards",d);
+				ch=1;
 			}
 		}else if(v[1]=="disabled"){//so enable it
-			post("\nenabling");
-			d.push(v[0]);
+			configfile.append("io::keyboards",v[0]);
 			ch=1;
-		}else{
-			post("\nelse");
 		}
-		if(ch){
-			configfile.replace("io::keyboards",d);
-			post("\nreplaced,",d);
+	}else if(id[0]=="substitute"){
+		var v = values[id[1]];
+		var d = configfile.get("io::controllers::"+v[2]+"::substitute");
+		if(v[1]=="enabled"){ 
+			p = d.indexOf(v[0]);
+			if(p != -1){
+				d.splice(p,1);
+				configfile.replace("io::keyboards",d);
+				ch=1;
+			}
+		}else if(v[1]=="disabled"){//so enable it
+			configfile.append("io::controllers::"+v[2]+"::substitute",v[0]);
+			ch=1;
 		}
 	}
 	if(ch) render_controls();
 }
-/*
-    Listen to a Max Object for attributes or value changes:
-    var myListener = new MaxobjListener(<max_obj>, <callback_function>);
-    The Callback function can be used like this:
-    function MyCallback(data)
-    {
-    data.value; // the output of the Max object
-    data.maxobject; // the object itself
-    }
-
-    To make the "this" inside a callback refer to the current object, you can write the callback directly inside the object in this way:
-
-var MyCallback = (function(data) 
-{
-post(this.myObjProperty); 
-} ).bind(this);
-*/
 
 function deleteall(){
-	if(typeof controls.keyboards.header == "object") this.patcher.remove(controls.keyboards.header);
-	for(var i=0;i<controls.keyboards.control.length;i++){
-		this.patcher.remove(controls.keyboards.control[i]);
-		this.patcher.remove(controls.keyboards.label[i]);
+	for(var i=0;i<controls.length;i++){
+		this.patcher.remove(controls[i]);
 	}
-	controls.keyboards.control=[];
-	controls.keyboards.label=[];
-
+	controls=[];
+	values=[];
 }
