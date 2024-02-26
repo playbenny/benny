@@ -2305,8 +2305,9 @@ function menu_move_on_down_inside_the_empty_carriage(){
 function show_and_search_new_block_menu(key){
 	if((key>=97)&& (key<=122)){
 		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
+		menu.search = "";
 		show_new_block_menu();
-		type_to_search(key);
+		end_of_frame_fn = function(){type_to_search(key);};
 	}else{post("\nkeycode",key);}
 }
 
