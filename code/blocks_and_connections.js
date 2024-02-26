@@ -401,7 +401,15 @@ function send_audio_patcherlist(do_all){
 	}
 	still_checking_polys &= 5;
 	post("\nall audio blocks loaded");
+	if(deferred_matrix.length) process_deferred_matrix();
 	redraw_flag.flag |= 4;
+}
+
+function process_deferred_matrix(){
+	post("\nprocessing deferred matrix connections");
+	while(deferred_matrix.length){
+		matrix.message(deferred_matrix.pop());
+	}
 }
 
 function send_ui_patcherlist(do_all){
@@ -1654,7 +1662,11 @@ function make_connection(cno,existing){
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
 							//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
-							matrix.message(outmsg);
+							if(loading.progress!=0){
+								deferred_matrix.push(outmsg);
+							}else{
+								matrix.message(outmsg);
+							}
 						}else if(t_type == "midi"){
 							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
 							//post("\nturning on number",(f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES));

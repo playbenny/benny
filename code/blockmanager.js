@@ -106,6 +106,7 @@ var audio_poly = this.patcher.getnamed("audio_poly");
 var audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
 var sigouts = this.patcher.getnamed("sigouts");
 var matrix = this.patcher.getnamed("matrix");
+var deferred_matrix = [];
 var world = this.patcher.getnamed("world");
 var lcd_main = this.patcher.getnamed("lcd_main");
 
