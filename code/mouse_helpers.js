@@ -2179,6 +2179,7 @@ function conn_set_to_input(c,value){
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
 }
+
 function fold_menus(){
 	post("\nfold",sidebar.connection.default_out_applied);
 	if(sidebar.connection.default_out_applied>0){
@@ -2189,7 +2190,9 @@ function fold_menus(){
 		sidebar.connection.show_to_inputs = 0;
 		sidebar.connection.default_in_applied = 0;
 	}
-	redraw_flag.flag |= 2;
+	//make_connection(selected.wire.indexOf(1),1);
+	wire_ends[selected.wire.indexOf(1)][0]=-0.96969696;
+	redraw_flag.flag |= 10;
 }
 
 function clear_or_close(){
@@ -2303,7 +2306,7 @@ function menu_move_on_down_inside_the_empty_carriage(){
 }
 
 function show_and_search_new_block_menu(key){
-	if((key>=97)&& (key<=122)){
+	if(!usermouse.caps && (key>=97)&& (key<=122)){
 		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
