@@ -4291,11 +4291,7 @@ function draw_sidebar(){
 										var f_type = connections.get("connections["+i+"]::from::output::type");
 										var t_i_no = connections.get("connections["+i+"]::to::input::number");
 										var t_type = connections.get("connections["+i+"]::to::input::type");
-										if(f_type=="parameters"){
-											var f_o_name = blocktypes.get(f_name+"::parameters["+f_o_no+"]::name");
-										}else{
-											var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
-										}
+										var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
 										if(t_type=="parameters"){
 											var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
 										}else{
