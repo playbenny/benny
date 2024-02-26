@@ -207,7 +207,7 @@ var view_changed = true; //whether you're redrawing click buffers or not
 var wires_enable_animate = []; // list of [wireno,target enable value,current seg,direction,length];
 
 var wires_show_all = 1;
-
+var last_connection_made = -1;
 var wires_potential_connection = -1; //if illustrating a potential connection you set this
 //to the (unused) conn no you use for drawing the wire, then set back to -1 when you freepeer it
 

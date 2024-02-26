@@ -2068,6 +2068,7 @@ function make_connection(cno,existing){
 		draw_wire(cno);
 	}
 	if(!existing) rebuild_action_list = 1;
+	last_connection_made=cno;
 }	
 
 function build_new_connection_menu(from, to, fromv,tov){
@@ -3255,4 +3256,10 @@ function build_mod_sum_action_list(){
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0; 
 	messnamed("modulation_processor", "pause", 0); //this message gets deferred (in the max patch) otherwise the gen doesn't get a frame to realise that pause has changed to 1 and back
+}
+
+function mute_last_connection(){
+//called by the midi router if it thinks feedback is happening
+connection_edit("connections["+last_connection_made+"]::conversion::mute",1);
+post("\n\nFEEDBACK PANIC! there were so many midi messages i muted the last new connection to try to prevent a meltdown");
 }

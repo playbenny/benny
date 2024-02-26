@@ -1637,16 +1637,16 @@ function connection_mute_selected(parameter,value){
 	//post("\nmute sel conns",i,parameter,value);
 	if(parameter==0){//unmute all
 		for(;i>=0;--i){
-			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",0)
+			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",0);
 		}	
 	}else if(parameter==1){ //mute all
 		for(;i>=0;--i){
-			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",1)
+			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",1);
 		}	
 	}else if(parameter==-1){ //toggle all
 		for(;i>=0;--i){
 			m=connections.get("connections["+i+"]::conversion::mute");
-			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",!m)
+			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",!m);
 		}	
 	}
 }
