@@ -159,6 +159,9 @@ function initialise_dictionaries(hardware_file){
 
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
+	note_poly.message("voices", MAX_NOTE_VOICES);
+	audio_poly.message("voices", MAX_AUDIO_VOICES);
+
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		loaded_note_patcherlist[i]='_blank.note';
 	}
@@ -445,21 +448,8 @@ function import_hardware(v){
 		post("\n  "+keys[i]+" : "+t);
 		io_dict.set(keys[i],t);
 	}
-	var hardware_outs = io_dict.get("hardware");
-	if(typeof hardware_outs == "string") hardware_outs = [hardware_outs];
-	if(hardware_outs!=null){
-		for(i=0;i<8;i++){
-			if(i<hardware_outs.length){
-				messnamed("hardware_midi", i, hardware_outs[i]);
-				messnamed("hardware_midi", i+8, hardware_outs[i]);
-			}else{
-				messnamed("hardware_midi", i, "None");
-				messnamed("hardware_midi", i+8, "None");
-			}
-		}
-		
-	}
-	messnamed("to_ext_matrix","read_config");
+
+	//messnamed("to_ext_matrix","read_config");
 	transfer_input_lists();
 	post("\nsetting output blocks to:",output_blocks);
 	output_blocks_poly.patchername(output_blocks); //"master_1.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat");
@@ -467,7 +457,10 @@ function import_hardware(v){
 
 	initialise_graphics();
 
-	get_hw_meter_positions();
+	var audioiolists = get_hw_meter_positions();
+	this.patcher.getnamed("audio_outputs").message('list',audioiolists[1]);
+	this.patcher.getnamed("audio_inputs").message('list',audioiolists[0]);
+	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
 
 	assign_block_colours();
 	
@@ -475,7 +468,6 @@ function import_hardware(v){
 	world.message( "enable", 1);
 
 	set_display_mode("blocks");
-	
 	
 	//	turn on audio engine
 	this.patcher.getnamed("audio_outputs").message('int',1);

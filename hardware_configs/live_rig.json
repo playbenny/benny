@@ -299,6 +299,18 @@
 					"hardware_channels" : [ 18 ]
 				}
 			}
+		},
+		"hardware.rme.headphone.out" : {
+			"type" : "hardware",
+			"help_text": "output to the rme headphone out",
+			"click_out" : 1,
+			"cue_out" : 1,
+			"connections" : {
+				"in" : {
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 25 ]
+				}
+			}
 		}
 	}
 }

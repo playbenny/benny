@@ -25,6 +25,7 @@ function set_display_mode(mode,t){
 		}else{
 			flock_axes(0);
 		}
+		if((mode == "blocks") && (displaymode == "panels")) block_and_wire_colours();
 		displaymode=mode;
 		if(mode == "block_menu"){
 			if(menu.search!=""){
@@ -48,7 +49,7 @@ function set_display_mode(mode,t){
 		}
 	}
 	blocks_enable(blocks_enabled);
-	if(mode == "blocks") block_and_wire_colours();
+	
 }
 
 function camera(){
@@ -121,10 +122,12 @@ function redraw(){
 
 function get_hw_meter_positions(){
 	var x=0;
+	var inlist = []; var outlist = [];
 	meter_positions = [];
 	var positions = []; //hw input meter positions
 	for(i=0;i<MAX_USED_AUDIO_INPUTS;i++){
 		if(input_used[i]) {
+			inlist.push(i+1);
 			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i)];
 			x++;
 		}
@@ -134,11 +137,13 @@ function get_hw_meter_positions(){
 	positions = []; //hw output meter positions
 	for(i=0;i<MAX_USED_AUDIO_OUTPUTS;i++){
 		if(output_used[i]){
+			outlist.push(i+1);
 			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i+MAX_AUDIO_INPUTS)];
 			x++;
 		} 
 	}
 	meter_positions[1] = [menucolour,menudarkest,positions];
+	return [inlist,outlist];
 }
 
 function draw_panels(){
