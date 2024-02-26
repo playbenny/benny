@@ -19,7 +19,6 @@ function set_display_mode(mode,t){
 			sidebar.scopes.voice = -1;
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
 		}
-		if(mode == "blocks") blocks_enabled=1;
 		if(mode=="flocks"){
 			flock_axes(1);
 			blocks_enabled=1; //really you could/should just show the right ones for the flock view here? or maybe flock view does it TODOTODO
@@ -45,10 +44,11 @@ function set_display_mode(mode,t){
 				redraw_flag.flag=4;
 			}else{
 				clear_blocks_selection();
-			}		
+			}	
 		}
 	}
 	blocks_enable(blocks_enabled);
+	if(mode == "blocks") block_and_wire_colours();
 }
 
 function camera(){
