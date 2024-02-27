@@ -2190,8 +2190,7 @@ function fold_menus(){
 		sidebar.connection.show_to_inputs = 0;
 		sidebar.connection.default_in_applied = 0;
 	}
-	//make_connection(selected.wire.indexOf(1),1);
-	wire_ends[selected.wire.indexOf(1)][0]=-0.96969696;
+	wire_ends[selected.wire.indexOf(1)][0]=-0.96969696; //forces it to redraw it
 	redraw_flag.flag |= 10;
 }
 

@@ -170,6 +170,7 @@ function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 		lcd_main.message("paintrect",x1,y1,x2,ly,r,g,b);
 	}
 }
+
 function draw_button(x1,y1,x2,y2,r,g,b,index,label){
 	var rat = bg_dark_ratio*2;
 	if(usermouse.clicked2d==index) rat = 1 - rat;
@@ -186,9 +187,7 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label){
 }
 
 function labelled_parameter_v_slider(sl_no){
-	var p_values= blocktypes.get(paramslider_details[sl_no][15]+"::parameters["+paramslider_details[sl_no][9]+"]::values");
 	var p_type=paramslider_details[sl_no][13];
-	var wrap = paramslider_details[sl_no][14];
 
 	var click_to_step = 0;
 	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
@@ -226,6 +225,8 @@ function labelled_parameter_v_slider(sl_no){
 			pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*vo[i]+paramslider_details[sl_no][9]);	
 			pv = Math.min(1,Math.max(0,pv));
 			if((pv!=ov)&&(x>maskx)){
+				var p_values= blocktypes.get(paramslider_details[sl_no][15]+"::parameters["+paramslider_details[sl_no][9]+"]::values");
+				var wrap = paramslider_details[sl_no][14];
 				var label = get_parameter_label(p_type,wrap,pv,p_values);
 				maskx = x + fontheight*0.2*label.length;
 				//if(maskx<paramslider_details[sl_no][2]){
