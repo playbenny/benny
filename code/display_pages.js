@@ -341,16 +341,16 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	var positions = []; 
 	var subvoices = 1;
 	if(blocks.contains("blocks["+b+"]::subvoices")) subvoices = blocks.get("blocks["+b+"]::subvoices");
-	var vmap = voicemap.get(b);
-	if(!Array.isArray(vmap)) vmap = [vmap];
+	var vl = voicemap.get(b);
+	if(!Array.isArray(vl)) vl = [vl];
 	if(blocktypes.contains(block_name+"::connections::out::audio")){
 		has_meters=1;
 		var mll =blocktypes.getsize(block_name+"::connections::out::audio");
 		if(subvoices>1) mll=subvoices;
-		if(vmap !== 'null'){
-			for(var vm=0;vm<vmap.length;vm++){
+		if(vl !== 'null'){
+			for(var vm=0;vm<vl.length;vm++){
 				for(i=0;i<mll;i++){
-					positions[positions.length] = [mx*sidebar.meters.spread, 18+y*fontheight+fontheight*1.1, 16+y*fontheight+fontheight*1.9, 1+((vmap[vm] - MAX_NOTE_VOICES)+MAX_AUDIO_VOICES*i)];
+					positions[positions.length] = [mx*sidebar.meters.spread, 18+y*fontheight+fontheight*1.1, 16+y*fontheight+fontheight*1.9, 1+((vl[vm] - MAX_NOTE_VOICES)+MAX_AUDIO_VOICES*i)];
 					mx++;
 				}
 				mx++;
@@ -415,7 +415,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		for(var p=0;p<plist.length;p++){
 			var p_type = params[plist[p]].get("type");
 			var wrap = params[plist[p]].get("wrap");
-			var namearr = params[plist[p]].get("name");
+			//var namearr = params[plist[p]].get("name");
 			var noperv = 1; //params[plist[p]].contains("nopervoice");
 			var p_values = params[plist[p]].get("values");
 			var flags = (p_values[0]=="bi") + 4*noperv;
@@ -430,23 +430,115 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				}
 				//look up what group contains this param, look up if that group has onepervoice flag
 			}			
-			namearr = namearr.split("_");
+			//namearr = namearr.split("_");
 			var namelabely = 18+(y+2+has_states+0.4)*fontheight;
 			var h_slider = 0;
 			panelslider_visible[b][plist[p]]=panelslider_index;
+			var curp = plist[p];
+			var y1 = 18+(y+2+has_states)*fontheight;
+			var y2 = 18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight;
+			if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length != 1)) p_type = "menu_i";
 			if(p_type=="button"){
-				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
+				parameter_button(panelslider_index);
+				mouse_click_actions[mouse_index] = send_button_message;
+				mouse_click_parameters[mouse_index] = b;
+				mouse_index++;
+			}else if((p_type=="menu_l")){
+				var h_s=h_slider;
+				if(h_slider==0){
+					h_s=1.5;
+				}else{
+					if(maxnamelabely>0){
+						h_s = (maxnamelabely - y_offset)/fontheight; //+=0.9;
+					}else{
+						h_s += 0.9;//4;
+					}
+				}
+				/*if(params[curp].contains("force_label")){
+					if(maxnamelabely<0){
+						maxnamelabely = y1+fontheight*(h_s-0.6);
+						lcd_main.message("moveto",x1+4,maxnamelabely);
+						maxnamelabely=-9999;
+						h_s-=0.4;
+					}else{
+						lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
+					}
+					h_s-=0.6;
+					lcd_main.message("frgb",block_colour);
+					lcd_main.message("write",params[curp].get("name"));
+				}*/
+				var cols=1;
+				if(params[curp].contains("columns")) cols = params[curp].get("columns");
+				var valcol;
+				if(params[curp].contains("colours")){
+					valcol = params[curp].get("colours");//["+bl+"]");
+				}else{
+					valcol = [block_colour];
+				}
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,valcol,0,0,mouse_index,b,curp,flags,cols,statecount,p_type,wrap,vl[0],h_s,p_values];
+				mouse_index = parameter_menu_l(panelslider_index);
+			}else if((p_type=="menu_b")){
+				var statecount = (p_values.length);// - 1) / 2;
+				pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*b+curp);
+				var ppv2 = Math.floor(pv * statecount * 0.99999);;
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
+				var pv2 = Math.floor(pv * statecount * 0.99999);
+				var valcol;
+				if(params[curp].contains("colours")){
+					valcol = params[curp].get("colours["+pv2+"]");
+				}else{
+					var pv3;
+					if(statecount==2){
+						pv3 = pv*0.9 + 0.3;
+					}else{
+						pv3 = pv*0.6 + 0.7;
+					}
+					valcol = [pv3*block_colour[0], pv3*block_colour[1], pv3*block_colour[2]];
+				}
+				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,valcol[0],valcol[1],valcol[2],mouse_index,b,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider];
+				parameter_button(panelslider_index);
+				mouse_click_actions[mouse_index] = send_button_message;
+				mouse_click_parameters[mouse_index] = b;
+				mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+curp, ((ppv2+1.1) % statecount)/statecount];
+				mouse_index++;
+			}else{
+				namearr = params[curp].get("name");
+				namearr = namearr.split("_");
+				var click_to_set = 0;
+				if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
+				if(h_slider==0){
+					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
+				}else{
+					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0],block_colour[1],block_colour[2],mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
+				}
+				namelabely = labelled_parameter_v_slider(panelslider_index);
+				paramslider_details[panelslider_index][17]=namelabely;
+				//paramslider_details is used for quick redraw of a single slider. index is curp
+				//ie is mouse_click_parameters[index][0]
+				mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+				mouse_click_parameters[mouse_index] = [curp, b];
+				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
+					//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
+					mouse_click_values[mouse_index] = curp+1;
+				}else{
+					mouse_click_values[mouse_index] = "";
+				}								
+				mouse_index++;
+			}
+/*			if(p_type=="button"){
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
 				//paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var statecount = (p_values.length - 1) / 2;
 				var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-				draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2],mouse_index, p_values[pv2]);
+				draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2],mouse_index, p_values[pv2],pv);
 				mouse_click_actions[mouse_index] = send_button_message;
 				mouse_click_parameters[mouse_index] = b;
 				mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*b+plist[p], (pv+(1/statecount)) % 1];
 				mouse_index++;
-			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vmap.length == 1) && (p_values.length<4)){
+			}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1) && (p_values.length<4)){
 				var statecount = (p_values.length);// - 1) / 2;
-				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vmap[0]+plist[p]); 
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+plist[p]); 
 				ppv2 = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]) * statecount * 0.99999);
 				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*has_ui+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
 				var pv2 = Math.floor(pv * statecount * 0.99999);
@@ -456,7 +548,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				}else{
 					h_s+=0.9;
 				}
-				if((p_type=="menu_l")/*&&((h_s>=statecount * 0.3)||statecount<4)*/){
+				if((p_type=="menu_l")){
 					//post("\nmenu_l",statecount,h_s);
 					paramslider_details[panelslider_index]=null;
 					var ys = fontheight*(h_s)/(statecount);
@@ -470,7 +562,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 						}else{
 							valcol = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
 						}
-						draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl,x1-2+((p+1)/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl+ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
+						draw_button(x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl,x1-2+((p+1)/plist.length)*column_width,18+(y+2+has_states)*fontheight+ys*bl+ys,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl],0);
 						mouse_click_actions[mouse_index] = send_button_message;
 						mouse_click_parameters[mouse_index] = b;
 						mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+plist[p], (bl+0.2)/statecount];
@@ -512,7 +604,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				mouse_click_parameters[mouse_index] = [plist[p], b];
 				mouse_index++;
 				panelslider_index++;
-			}
+			}*/
 		}
 	}else{
 		panelslider_visible[b]=[];
@@ -2928,6 +3020,7 @@ function draw_sidebar(){
 							}
 						}
 					}
+					post("\ndrawing sidebar params");
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
 						colour=block_colour;
@@ -3003,10 +3096,7 @@ function draw_sidebar(){
 									x2 = sidebar.x + w_slider*(knob.x+wk) - fo1;
 									p_values = params[curp].get("values");
 									wrap = params[curp].get("wrap");
-									pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
 									namelabely=y1+fontheight*(0.4+h_slider);
-									namearr = params[curp].get("name");
-									namearr = namearr.split("_");
 									var flags = (p_values[0]=="bi");
 									if(opvf){
 										flags |= 2;
@@ -3014,26 +3104,25 @@ function draw_sidebar(){
 									}else if(params[curp].contains("nopervoice")){
 										flags &= 61;
 										flags |= 4; //removes 2 flag, adds 4 flag
-									}
-									
+									} 
+
+									if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length != 1)) p_type = "menu_i";
 									if(p_type=="button"){
-										paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-										var statecount = (p_values.length - 1) / 2;
-										var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-										draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
+										paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
+										parameter_button(curp);
+										//pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
+										//var statecount = (p_values.length - 1) / 2;
+										//var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
+										/*draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);*/
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
-										mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
+										//mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
 											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);											
 										}
 										mouse_index++;
-									}else if(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length == 1)){
-										var statecount = (p_values.length);// - 1) / 2;
-										var ppv2 = Math.floor(pv * statecount * 0.99999);;
-										pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
-										var pv2 = Math.floor(pv * statecount * 0.99999);
+									}else if((p_type=="menu_l")){
 										var h_s=h_slider;
 										if(h_slider==0){
 											h_s=1.5;
@@ -3044,71 +3133,66 @@ function draw_sidebar(){
 												h_s += 0.9;//4;
 											}
 										}
-										paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-										if((p_type=="menu_l")){//&&((h_s>=statecount * 0.3)||statecount<4)){
-											if(params[curp].contains("force_label")){
-												if(maxnamelabely<0){
-													maxnamelabely = y1+fontheight*(h_s-0.6);
-													lcd_main.message("moveto",x1+4,maxnamelabely);
-													maxnamelabely=-9999;
-													h_s-=0.4;
-												}else{
-													lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
-												}
-												h_s-=0.6;
-												lcd_main.message("frgb",colour);
-												lcd_main.message("write",params[curp].get("name"));
-											}
-											var cols=1;
-											if(params[curp].contains("columns")) cols = params[curp].get("columns");
-											var colmod = -Math.floor(-statecount / cols);
-											var ys = (fontheight*h_s + fo1)/(colmod);
-											var valcol;
-											var bx=0;by=0;bw = (x2-x1+fo1)/cols;
-											for(var bl=statecount-1;bl>=0;bl--){
-												if(params[curp].contains("colours")){
-													valcol = params[curp].get("colours["+bl+"]");
-												}else{
-													valcol = colour;
-												}
-												if(bl==pv2){
-												}else{
-													valcol = [0.3*valcol[0], 0.3*valcol[1], 0.3*valcol[2]];
-												}
-												draw_button(x1+bx*bw,y1+by*ys,x1+((bx+1)*bw)-fo1,y1+(by+1)*ys-fo1,valcol[0],valcol[1],valcol[2],mouse_index, p_values[bl]);
-												mouse_click_actions[mouse_index] = send_button_message;
-												mouse_click_parameters[mouse_index] = block;
-												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, (bl+0.2)/statecount];
-												mouse_index++;
-												bx++;
-												if(bx>=cols){
-													by++; bx=0;
-												}
-											}
-										}else{
-											var valcol;
-											if(params[curp].contains("colours")){
-												valcol = params[curp].get("colours["+pv2+"]");
+										if(params[curp].contains("force_label")){
+											if(maxnamelabely<0){
+												maxnamelabely = y1+fontheight*(h_s-0.6);
+												lcd_main.message("moveto",x1+4,maxnamelabely);
+												maxnamelabely=-9999;
+												h_s-=0.4;
 											}else{
-												var pv3;
-												if(statecount==2){
-													pv3 = pv*0.9 + 0.3;
-												}else{
-													pv3 = pv*0.6 + 0.7;
-												}
-												valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
+												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
 											}
-											draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
-											mouse_click_actions[mouse_index] = send_button_message;
-											mouse_click_parameters[mouse_index] = block;
-											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
-											mouse_index++;
+											h_s-=0.6;
+											lcd_main.message("frgb",colour);
+											lcd_main.message("write",params[curp].get("name"));
 										}
+										var cols=1;
+										if(params[curp].contains("columns")) cols = params[curp].get("columns");
+										var valcol;
+										if(params[curp].contains("colours")){
+											valcol = params[curp].get("colours");//["+bl+"]");
+										}else{
+											valcol = [colour];
+										}
+										paramslider_details[curp]=[x1,y1,x2,y2,valcol,0,0,mouse_index,block,curp,flags,cols,statecount,p_type,wrap,vl[0],h_s,p_values];
+										mouse_index = parameter_menu_l(curp);
+										
+										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+											//but it's so much easier just to call this fn
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+										}
+									}else if((p_type=="menu_b")){
+										var statecount = (p_values.length);// - 1) / 2;
+										pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
+										var ppv2 = Math.floor(pv * statecount * 0.99999);;
+										pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
+										var pv2 = Math.floor(pv * statecount * 0.99999);
+										var valcol;
+										if(params[curp].contains("colours")){
+											valcol = params[curp].get("colours["+pv2+"]");
+										}else{
+											var pv3;
+											if(statecount==2){
+												pv3 = pv*0.9 + 0.3;
+											}else{
+												pv3 = pv*0.6 + 0.7;
+											}
+											valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
+										}
+										paramslider_details[curp]=[x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider];
+										parameter_button(curp);
+										//draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
+										mouse_click_actions[mouse_index] = send_button_message;
+										mouse_click_parameters[mouse_index] = block;
+										mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+										mouse_index++;
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
 											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
 										}
 									}else{
+										namearr = params[curp].get("name");
+										namearr = namearr.split("_");
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
 										if(h_slider==0){
@@ -3546,13 +3630,6 @@ function draw_sidebar(){
 								p_type = params[plist[t]].get("type");
 								if(p_type=="button"){
 									paramslider_details[curp]=null;//[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider];
-									/*var statecount = (p_values.length - 1) / 2;
-									var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-									draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);
-									mouse_click_actions[mouse_index] = send_button_message;
-									mouse_click_parameters[mouse_index] = block;
-									mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1]];
-									mouse_index++;*/
 								}else{
 									x1 = sidebar.x + fontheight*2.2+ w_slider*knob.x;
 									x2 = sidebar.x + w_slider*(knob.x+wk) + fontheight*2.1;
@@ -5459,7 +5536,7 @@ function draw_sidebar(){
 					paramslider_details[curp]=null;
 					var statecount = (p_values.length - 1) / 2;
 					var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-					draw_button(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index, p_values[pv2]);
+					draw_button(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index, p_values[pv2],pv);
 					mouse_click_actions[mouse_index] = send_button_message;
 					mouse_click_parameters[mouse_index] = block;
 					mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];

@@ -196,7 +196,7 @@ function new_block(block_name,x,y){
 			}else if(p_type=="button"){
 				p_min = 0;
 				p_max = (p_values.length - 1 ) / 2;
-				p_steps = p_max;
+				p_steps = p_max+1;
 				p_curve = 0;
 			}
 			if(p_curve == "lin"){

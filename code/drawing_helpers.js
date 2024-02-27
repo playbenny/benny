@@ -171,9 +171,9 @@ function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 	}
 }
 
-function draw_button(x1,y1,x2,y2,r,g,b,index,label){
+function draw_button(x1,y1,x2,y2,r,g,b,index,label,value){
 	var rat = bg_dark_ratio*2;
-	if(usermouse.clicked2d==index) rat = 1 - rat;
+	if((usermouse.clicked2d==index)||(value>0.5)) rat = 1 - rat;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	rat = (usermouse.clicked2d != index) * 2;
@@ -183,9 +183,49 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label){
 		lcd_main.message("moveto",x1+5,y1+fontheight*(0.4*(i+1)));
 		lcd_main.message("write",label[i]);
 	}
-	/*if(view_changed===true)*/ click_rectangle(x1,y1,x2,y2,index,1);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index,1);
+}
+function parameter_button(p){
+	var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p][11]+paramslider_details[p][9]);
+	var statecount = (paramslider_details[p][17].length - 1) / 2;
+	var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
+	//post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
+	draw_button(paramslider_details[p][0],paramslider_details[p][1],paramslider_details[p][2],paramslider_details[p][3],paramslider_details[p][4],paramslider_details[p][5],paramslider_details[p][6],paramslider_details[p][7], paramslider_details[p][17][pv2],pv);
+	mouse_click_values[paramslider_details[p][7]] = [paramslider_details[p][17][0],paramslider_details[p][17][pv2+1], MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (pv+(1/statecount)) % 1];
 }
 
+function parameter_menu_l(p){
+	var mi = paramslider_details[p][7];
+	var statecount = (paramslider_details[p][17].length);// - 1) / 2;
+	var pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*paramslider_details[p][15]+paramslider_details[p][9]); //
+	var pv2 = Math.floor(pv * statecount * 0.99999);
+	var colmod = -Math.floor(-statecount / paramslider_details[p][11]);
+	var ys = (fontheight*paramslider_details[p][16] + fo1)/(colmod);
+	var valcol = paramslider_details[p][4];
+	var vc;
+	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
+	for(var bl=statecount-1;bl>=0;bl--){
+		if(valcol.length==1){
+			vc = valcol[0];
+		}else{
+			vc = valcol[bl];
+		}
+		if(bl==pv2){
+		}else{
+			vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
+		}
+		draw_button(paramslider_details[p][0]+bx*bw,paramslider_details[p][1]+by*ys,paramslider_details[p][0]+((bx+1)*bw)-fo1,paramslider_details[p][1]+(by+1)*ys-fo1,vc[0],vc[1],vc[2],mi, paramslider_details[p][17][bl],0);
+		mouse_click_actions[mi] = send_button_message;
+		mouse_click_parameters[mi] = paramslider_details[p][8];
+		mouse_click_values[mi] = ["param","",MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (bl+0.2)/statecount];
+		mi++;
+		bx++;
+		if(bx>=paramslider_details[p][11]){
+			by++; bx=0;
+		}
+	}
+	return mi;
+}
 function labelled_parameter_v_slider(sl_no){
 	var p_type=paramslider_details[sl_no][13];
 
@@ -229,11 +269,9 @@ function labelled_parameter_v_slider(sl_no){
 				var wrap = paramslider_details[sl_no][14];
 				var label = get_parameter_label(p_type,wrap,pv,p_values);
 				maskx = x + fontheight*0.2*label.length;
-				//if(maskx<paramslider_details[sl_no][2]){
-					lcd_main.message("moveto",x,namelabely);
-					lcd_main.message("write",label);
-					if(!(paramslider_details[sl_no][10]&2))ov=pv;
-				//}
+				lcd_main.message("moveto",x,namelabely);
+				lcd_main.message("write",label);
+				if(!(paramslider_details[sl_no][10]&2))ov=pv;
 			}
 			x+=ww;
 		}
