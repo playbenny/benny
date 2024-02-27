@@ -729,7 +729,7 @@ function render_controls(){
 	y_pos+=unit.row+2;
 
 	for(var p=0;p<cdk.length;p++){
-		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", cdk[p]);
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
@@ -742,13 +742,13 @@ function render_controls(){
 		controls[ii].presentation(1);
 		controls[ii].presentation_position(30,y_pos);
 		ii++;
-		controls[ii] = this.patcher.newdefault(10, 100, "textedit" , "@varname", "hardware.help_text."+ii);
-		controls[ii].message("set", cd.get(cdk[p]+"::help_text"));
+		controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardware.help_text."+ii);
+		controls[ii].message("set",cd.get(cdk[p]+"::help_text").split(" "));
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
-		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,60);
 		values[ii] = [cdk[p]];
-		y_pos+=unit.row;
+		y_pos+=unit.row*3;
 		ii++;
 
 		//	"exclusive" : 1,
@@ -802,6 +802,131 @@ function render_controls(){
 		values[ii] = [cdk[p]];
 		y_pos+=unit.row;
 		ii++;
+
+		if(cd.contains(cdk[p]+"::connections::in::hardware")){
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "click out");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.click_out."+ii);
+			if(cd.contains(cdk[p]+"::click_out")){
+				controls[ii].message("set", cd.get(cdk[p]+"::click_out"));
+			}else{
+				controls[ii].message("set", 0);
+			}
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+			values[ii] = [cdk[p]];
+			y_pos+=unit.row;
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "cue out");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.cue_out."+ii);
+			if(cd.contains(cdk[p]+"::click_out")){
+				controls[ii].message("set", cd.get(cdk[p]+"::cue_out"));
+			}else{
+				controls[ii].message("set", 0);
+			}
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+			values[ii] = [cdk[p]];
+			y_pos+=unit.row;
+			ii++;
+		}
+		
+		controls[ii] = this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "connections");
+		controls[ii].presentation(1);
+		controls[ii].presentation_position(30,y_pos);
+		y_pos+=unit.row;
+		ii++;
+		if(cd.contains(cdk[p]+"::connections::in::hardware")){
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "in (to hardware, from computer)");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(40,y_pos);
+			y_pos+=unit.row;
+			ii++;
+			hwl = cd.get(cdk[p]+"::connections::in::hardware");
+			hwc = cd.get(cdk[p]+"::connections::in::hardware_channels");
+
+			for(var i = 0; i< hwl.length;i++){
+				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardware.in.name."+ii);
+				controls[ii].message("set",hwl[i].split(" "));
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col-60,22);
+				values[ii] = [cdk[p]];
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii);
+				controls[ii].message("set", hwc[i]);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+				values[ii] = [cdk[p]];
+				ii++;	
+				y_pos+=22;
+				controls[ii] = this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", "test signal");
+				controls[ii].presentation(1);
+				controls[ii].presentation_position(20+unit.col,y_pos);
+				controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardwaretestsignal."+ii);
+				controls[ii].message("append","none");
+				controls[ii].message("append","tones");
+				controls[ii].message("append","pink noise");
+				controls[ii].message("append","lfo");
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col,20);
+				values[ii] = [cdk[p],hwc];
+				y_pos+=unit.row;
+				ii++;
+			}
+		}
+		if(cd.contains(cdk[p]+"::connections::out::hardware")){
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "out (from hardware, to computer)");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(40,y_pos);
+			y_pos+=unit.row;
+			ii++;
+			hwl = cd.get(cdk[p]+"::connections::out::hardware");
+			hwc = cd.get(cdk[p]+"::connections::out::hardware_channels");
+
+			for(var i = 0; i< hwl.length;i++){
+				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardware.out.name."+ii);
+				controls[ii].message("set",hwl[i].split(" "));
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col-60,22);
+				values[ii] = [cdk[p]];
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii);
+				controls[ii].message("set", hwc[i]);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+				values[ii] = [cdk[p]];
+				y_pos+=22;
+				ii++;	
+				controls[ii] = this.patcher.newdefault(10, 100, "meter~");
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "adc~");
+				controls[ii].message("list", hwc[i]);
+				this.patcher.connect(controls[ii],0,controls[ii-1],0);
+				y_pos+=22;
+			}
+		}
+
+
 		//	"connections" : {
 		//		"in" : {
 		//			"hardware" : [ "in", "cutoff" ],

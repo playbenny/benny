@@ -455,19 +455,6 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 						h_s += 0.9;//4;
 					}
 				}
-				/*if(params[curp].contains("force_label")){
-					if(maxnamelabely<0){
-						maxnamelabely = y1+fontheight*(h_s-0.6);
-						lcd_main.message("moveto",x1+4,maxnamelabely);
-						maxnamelabely=-9999;
-						h_s-=0.4;
-					}else{
-						lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
-					}
-					h_s-=0.6;
-					lcd_main.message("frgb",block_colour);
-					lcd_main.message("write",params[curp].get("name"));
-				}*/
 				var cols=1;
 				if(params[curp].contains("columns")) cols = params[curp].get("columns");
 				var valcol;
