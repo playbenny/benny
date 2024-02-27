@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -51,7 +51,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "require \"sm_sallenkey_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\n\r\nHistory counter(0);\r\nHistory outsign(1);\r\nHistory outlevel(0);\r\nHistory waitflag(0);\r\nHistory filterfreq(440);\r\nHistory upda(0);\r\n\r\nHistory div,mod,mix,off,drv;\r\n\r\nif(upda<=0){\r\n\tupda=vectorsize+25;\r\n\tdiv = peek(prm,voice_offset, 0, channels=1);\r\n\tmod = peek(prm,1+voice_offset, 0, channels=1);\r\n\tmix = peek(prm,2+voice_offset, 0, channels=1);\r\n\toff = peek(prm,3+voice_offset, 0, channels=1);\r\n\tdrv = peek(prm,4+voice_offset, 0, channels=1);\r\n}\r\nupda-=1;\r\n\r\noutlevel=0;\r\nif(mod<0.5){\r\n\tcounter += ((delta(in1 > 0))!=0);\r\n\tif(counter >= div*16) {\r\n\t\tfilterfreq = 440 / (1 + (div*16));\r\n\t\tcounter = 0;\r\n\t\toutsign *= -1;\r\n\t\toutlevel = outsign;\r\n\t}\r\n}else{\r\n\tt = (delta(in1 > 0));\r\n\tfilterfreq = mtof((div+in2)*128);\r\n\tif((waitflag<=0) && (t!=0)){\r\n\t\twaitflag = samplerate/filterfreq;\r\n\t\toutsign *= -1;\r\n\t\toutlevel = outsign;\t\t\r\n\t}\r\n\tif(waitflag>0) waitflag-=1;\r\n}\r\n\r\nx = outlevel;\r\n\r\ncut = clip(filterfreq*pow(2,(off-0.5)*8, 1, 20000));\r\nflp,fbp,fhp = skfTanNltoCoefMulti(x,cut,clip(drv/1.1,0,0.99),0.9);\r\n//flp=dcblock(flp);\r\n//fbp=dcblock(fbp);\r\n\r\nx = mix * fhp + (1-mix)*flp;\r\n\r\nout1 = x;\r\nout2 = outlevel;",
+					"code" : "require \"sm_sallenkey_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\n\r\nHistory counter(0);\r\nHistory outsign(1);\r\nHistory outlevel(0);\r\nHistory waitflag(0);\r\nHistory filterfreq(440);\r\nHistory upda(0);\r\n\r\nHistory div,mod,mix,off,drv,spk;\r\n\r\nif(upda<=0){\r\n\tupda=vectorsize+25;\r\n\tdiv = peek(prm,voice_offset, 0, channels=1);\r\n\tmod = peek(prm,1+voice_offset, 0, channels=1);\r\n\tmix = peek(prm,2+voice_offset, 0, channels=1);\r\n\toff = peek(prm,3+voice_offset, 0, channels=1);\r\n\tdrv = peek(prm,4+voice_offset, 0, channels=1);\r\n\tspk = peek(prm,5+voice_offset, 0, channels=1);\r\n\tspk = -1.001001001001001001001001001001*(pow(0.001, spk) - 1);\r\n}\r\nupda-=1;\r\n\r\noutlevel*=spk;\r\nif(mod<0.5){\r\n\tcounter += ((delta(in1 > 0))!=0);\r\n\tif(counter >= div*16) {\r\n\t\tfilterfreq = 440 / (1 + (div*16));\r\n\t\tcounter = 0;\r\n\t\toutsign *= -1;\r\n\t\toutlevel = outsign;\r\n\t}\r\n}else{\r\n\tt = (delta(in1 > 0));\r\n\tfilterfreq = mtof((div+in2)*128);\r\n\tif((waitflag<=0) && (t!=0)){\r\n\t\twaitflag = samplerate/filterfreq;\r\n\t\toutsign *= -1;\r\n\t\toutlevel = outsign;\t\t\r\n\t}\r\n\tif(waitflag>0) waitflag-=1;\r\n}\r\n\r\nx = outlevel;\r\n\r\ncut = clip(filterfreq*pow(2,(off-0.5)*8), 1, 20000);\r\nflp,fbp,fhp = skfTanNltoCoefMulti(x,cut,clip(drv/1.1,0,0.99),0.9);\r\n//flp=dcblock(flp);\r\n//fbp=dcblock(fbp);\r\n\r\nx = mix * fhp + (1-mix)*flp;\r\n\r\nout1 = x;\r\nout2 = outlevel;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,

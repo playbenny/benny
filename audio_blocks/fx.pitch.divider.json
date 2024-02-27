@@ -16,7 +16,11 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,2,3,1]
+				"contains" : [0,1,5]
+			},
+			{
+				"contains" : [3,2,4],
+				"colour" : 10
 			}
 		],
 		"panel" : {
@@ -40,8 +44,8 @@
 			},
 			{
 				"name" : "filter mix",
-				"type" : "float",
-				"values" : ["bi", 0, 1, "lin"],
+				"type" : "menu_f",
+				"values" : ["lowpass", "highpass"],
 				"wrap" : 0,
 				"default" : 0.5 
 			},
@@ -57,7 +61,14 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5 
+				"default" : 0.75 
+			},
+			{
+				"name" : "spike/_square",
+				"type" : "menu_f",
+				"values" : ["spike","square"],
+				"wrap" : 0,
+				"default": 0.75
 			}
 		]
 	}
