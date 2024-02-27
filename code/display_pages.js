@@ -3020,7 +3020,7 @@ function draw_sidebar(){
 							}
 						}
 					}
-					post("\ndrawing sidebar params");
+								
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
 						colour=block_colour;

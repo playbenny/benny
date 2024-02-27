@@ -113,15 +113,10 @@ function frameclock(){
 					if(redraw_flag.targets[i] && Array.isArray(paramslider_details[i])){ //check it's defined (as sometimes if clock runs during its construction you got errors
 						bangflag=1;
 						if(paramslider_details[i][13]=="menu_l"){
-							post("\nmenu-l single update");
 							parameter_menu_l(i);
-							//redraw_flag.deferred |= 4;
-							//post("\nnot updating buttons in clock routine, scheduling a redraw");
 						}else if(paramslider_details[i][13] == "menu_b"){
-							post("\nmenu-b single update");
 							parameter_button(i);
 						}else if(paramslider_details[i][13] == "button"){
-							post("\nbutton single update", i);
 							parameter_button(i);
 						}else if((redraw_flag.targets[i]==1)&&((paramslider_details[i][16]|0)!=0)&&(automap.mapped_c!=sidebar.selected)){
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
@@ -144,15 +139,10 @@ function frameclock(){
 						bangflag=1;
 						i = MAX_PARAMETERS + t;
 						if(paramslider_details[i][13]=="menu_l"){
-							post("\nmenu-l single update P");
 							parameter_menu_l(i);
-							//redraw_flag.deferred |= 4;
-							//post("\nnot updating buttons in clock routine, scheduling a redraw");
 						}else if(paramslider_details[i][13] == "menu_b"){
-							post("\nmenu-b single update P");
 							parameter_button(i);
 						}else if(paramslider_details[i][13] == "button"){
-							post("\nbutton single update");
 							parameter_button(i);
 						}else if((redraw_flag.paneltargets[t]==1)&&(paramslider_details[i][16]!=0)){
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
