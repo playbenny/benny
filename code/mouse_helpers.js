@@ -157,10 +157,16 @@ function blocks_paste(outside_connections,target){
 					post("\ncan't paste this block, it's exclusive, only one instance is allowed.");
 					new_block_index = -1;
 				}else{
-					pasteoffset[0] += 2;
-					pasteoffset[1] -= 0.25;
-					var px = td.get(copied_blocks[b]+"::space::x")+pasteoffset[0];
-					var py = td.get(copied_blocks[b]+"::space::y")+pasteoffset[1];
+					var px, py;
+					if(target==undo){
+						px = td.get(copied_blocks[b]+"::space::x");
+						py = td.get(copied_blocks[b]+"::space::y");
+					}else{
+						pasteoffset[0] += 2;
+						pasteoffset[1] -= 0.25;
+						var px = td.get(copied_blocks[b]+"::space::x")+pasteoffset[0];
+						var py = td.get(copied_blocks[b]+"::space::y")+pasteoffset[1];
+					}
 					new_block_index = new_block(name,px,py);
 				}
 				if(new_block_index==-1){

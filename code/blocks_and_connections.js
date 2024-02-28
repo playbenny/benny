@@ -649,6 +649,10 @@ function get_voice_details(voiceis){
 function send_all_voice_details(){
 	post("\nsend all voice details");
 	var vlk = voicemap.getkeys();
+	if(!Array.isArray(vlk)){
+		post("\nno voices to send to!");
+		return -1;
+	}
 	for(var v=0;v<vlk.length;v++){
 		var vl = voicemap.get(vlk[v]);
 		if(!Array.isArray(vl)) vl = [vl];
