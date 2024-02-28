@@ -17,14 +17,21 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0]
+				"contains" : [0,1]
 			}
 		],
 		"parameters" : [
 			{
-				"name" : "threshold",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"name" : "default_slope",
+				"type" : "button",
+				"values" : ["firstvoice", "default_slope", "default_slope"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "calculate_slope",
+				"type" : "button",
+				"values" : ["firstvoice", "calculate_slope", "calculate_slope"],
 				"wrap" : 0,
 				"default" : 0.2
 			}
