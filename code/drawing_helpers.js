@@ -185,6 +185,7 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label,value){
 	}
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index,1);
 }
+
 function parameter_button(p){
 	var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p][11]+paramslider_details[p][9]);
 	var statecount = (paramslider_details[p][17].length - 1) / 2;

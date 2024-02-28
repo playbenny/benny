@@ -3166,7 +3166,7 @@ function draw_sidebar(){
 											}
 											valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
 										}
-										paramslider_details[curp]=[x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider];
+										paramslider_details[curp]=[x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
 										parameter_button(curp);
 										//draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 										mouse_click_actions[mouse_index] = send_button_message;

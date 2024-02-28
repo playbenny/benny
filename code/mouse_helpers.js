@@ -162,10 +162,10 @@ function blocks_paste(outside_connections,target){
 						px = td.get(copied_blocks[b]+"::space::x");
 						py = td.get(copied_blocks[b]+"::space::y");
 					}else{
-						pasteoffset[0] += 2;
-						pasteoffset[1] -= 0.25;
 						var px = td.get(copied_blocks[b]+"::space::x")+pasteoffset[0];
 						var py = td.get(copied_blocks[b]+"::space::y")+pasteoffset[1];
+						pasteoffset[0] += 2;
+						pasteoffset[1] -= 0.25;
 					}
 					new_block_index = new_block(name,px,py);
 				}
@@ -300,7 +300,7 @@ function blocks_paste(outside_connections,target){
 function copy_block(block,target){
 	if(target==null)target=copy;
 	//block itself 
-	pasteoffset = [0,0];
+	pasteoffset = [2,-0.25];
 	var tb = blocks.get("blocks["+block+"]");
 	target.setparse("blocks::"+block,"{}");
 	target.replace("blocks::"+block,tb);
