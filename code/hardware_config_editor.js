@@ -199,6 +199,7 @@ function render_controls(){
 	ii++;
 	y_pos+=unit.row;
 	library_controllers.presentation_rect(20,y_pos,2*unit.col,20);
+	library_controllers.presentation(1);
 	y_pos+=unit.row+2;
 	var cd = configfile.get("io::controllers");
 	var cdk = cd.getkeys();
@@ -728,6 +729,7 @@ function render_controls(){
 	var cdk = cd.getkeys();
 	y_pos+=unit.row; 
 	library_hardware.presentation_rect(20,y_pos,2*unit.col,20);
+	library_hardware.presentation(1);
 	y_pos+=unit.row+2;
 
 	for(var p=0;p<cdk.length;p++){
