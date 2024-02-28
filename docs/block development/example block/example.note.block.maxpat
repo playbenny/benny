@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 88.0, 817.0, 595.0 ],
+		"rect" : [ 34.0, 76.0, 817.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,41 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"bgcolor" : [ 0.709803921568627, 0.741176470588235, 0.333333333333333, 1.0 ],
+					"id" : "obj-58",
+					"linecount" : 3,
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ 348.0, 12.0, 116.0, 50.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict have_a_look example.note.block.json"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-54",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 21.0, 13.0, 331.0, 48.0 ],
+					"presentation_linecount" : 5,
+					"text" : "A PATCHER LIKE THIS IS ONE VOICE OF YOUR BLOCK. PUT THE PATCHER AND THE JSON FILE IN THE NOTE_BLOCKS FOLDER",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-36",
 					"maxclass" : "newobj",
@@ -156,7 +191,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 271.0, 240.0, 176.0, 20.0 ],
+					"patching_rect" : [ 271.0, 289.0, 176.0, 20.0 ],
 					"text" : "MIDI NOTES IN",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -169,7 +204,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 51.0, 129.0, 97.0, 34.0 ],
+					"patching_rect" : [ 51.0, 178.0, 97.0, 34.0 ],
 					"text" : "output number, note, velocity"
 				}
 
@@ -181,7 +216,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 58.0, 163.0, 67.0, 22.0 ],
+					"patching_rect" : [ 58.0, 212.0, 67.0, 22.0 ],
 					"text" : "pack 0 0 0."
 				}
 
@@ -477,7 +512,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 323.0, 136.0, 136.0, 34.0 ],
+					"patching_rect" : [ 323.0, 185.0, 136.0, 34.0 ],
 					"text" : "when this turns off your block should turn off too"
 				}
 
@@ -489,7 +524,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 174.0, 136.0, 116.0, 62.0 ],
+					"patching_rect" : [ 174.0, 185.0, 116.0, 62.0 ],
 					"text" : "parameters out here, output as the ranges you defined in the .json file"
 				}
 
@@ -500,7 +535,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 271.0, 21.0, 176.0, 20.0 ],
+					"patching_rect" : [ 271.0, 70.0, 176.0, 20.0 ],
 					"text" : "NOTE BLOCK ESSENTIALS",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -525,18 +560,18 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 323.0, 107.0, 24.0, 24.0 ]
+					"patching_rect" : [ 323.0, 156.0, 24.0, 24.0 ]
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-5",
-					"linecount" : 7,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 111.0, 434.0, 274.0, 103.0 ],
+					"patching_rect" : [ 25.5, 493.5, 429.0, 75.0 ],
 					"text" : "midi notes are slightly special:\nNOTE NUMBER = 128 * input number + midi note, the above is an example of how to separate them out\nVELOCITY: 0-128 is like normal midi, \nor -1 to -128 are instantaneous zero length trigger events"
 				}
 
@@ -548,7 +583,7 @@
 					"numinlets" : 9,
 					"numoutlets" : 9,
 					"outlettype" : [ "", "", "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 174.0, 108.0, 116.0, 22.0 ],
+					"patching_rect" : [ 174.0, 157.0, 116.0, 22.0 ],
 					"text" : "route 0 1 2 3 4 5 6 9"
 				}
 
@@ -559,8 +594,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 10,
-					"outlettype" : [ "", "", "", "", "", "", "int", "int", "int", "" ],
-					"patching_rect" : [ 160.0, 61.0, 82.0, 22.0 ],
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "" ],
+					"patching_rect" : [ 160.0, 110.0, 82.0, 22.0 ],
 					"text" : "voiceheader"
 				}
 
@@ -572,7 +607,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 160.0, 337.0, 43.0, 22.0 ],
+					"patching_rect" : [ 160.0, 386.0, 43.0, 22.0 ],
 					"text" : "% 128"
 				}
 
@@ -584,7 +619,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 171.0, 404.0, 32.0, 22.0 ],
+					"patching_rect" : [ 171.0, 453.0, 32.0, 22.0 ],
 					"text" : "gate"
 				}
 
@@ -596,7 +631,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 236.0, 366.0, 29.5, 22.0 ],
+					"patching_rect" : [ 236.0, 415.0, 29.5, 22.0 ],
 					"text" : "t i 1"
 				}
 
@@ -608,7 +643,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 208.0, 366.0, 22.0, 22.0 ],
+					"patching_rect" : [ 208.0, 415.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -632,7 +667,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 128.0, 369.0, 50.5, 22.0 ],
+					"patching_rect" : [ 128.0, 418.0, 50.5, 22.0 ],
 					"text" : "gate 4"
 				}
 
@@ -644,7 +679,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 160.0, 274.0, 29.5, 22.0 ],
+					"patching_rect" : [ 160.0, 323.0, 29.5, 22.0 ],
 					"text" : "t i i"
 				}
 
@@ -656,7 +691,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 128.0, 337.0, 29.5, 22.0 ],
+					"patching_rect" : [ 128.0, 386.0, 29.5, 22.0 ],
 					"text" : "+ 1"
 				}
 
@@ -668,7 +703,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 128.0, 309.0, 35.0, 22.0 ],
+					"patching_rect" : [ 128.0, 358.0, 35.0, 22.0 ],
 					"text" : "/ 128"
 				}
 
@@ -1009,7 +1044,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 128.0, 404.0, 36.0, 22.0 ],
+					"patching_rect" : [ 128.0, 453.0, 36.0, 22.0 ],
 					"text" : "% 12"
 				}
 
@@ -1057,7 +1092,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 236.0, 404.0, 28.0, 22.0 ],
+					"patching_rect" : [ 236.0, 453.0, 28.0, 22.0 ],
 					"text" : "abs"
 				}
 
@@ -1069,7 +1104,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 208.0, 334.0, 34.0, 22.0 ],
+					"patching_rect" : [ 208.0, 383.0, 34.0, 22.0 ],
 					"text" : "sel 0"
 				}
 
@@ -1081,7 +1116,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 160.0, 239.0, 67.0, 22.0 ],
+					"patching_rect" : [ 160.0, 288.0, 67.0, 22.0 ],
 					"text" : "unpack 0 0"
 				}
 
@@ -1093,7 +1128,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 30.0, 61.0, 53.0, 22.0 ],
+					"patching_rect" : [ 30.0, 110.0, 53.0, 22.0 ],
 					"text" : "getvoice"
 				}
 
@@ -1104,7 +1139,11 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 30.0, 194.0, 35.0, 22.0 ],
+					"patching_rect" : [ 30.0, 243.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1116,7 +1155,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 90.0, 20.0, 58.0, 22.0 ],
+					"patching_rect" : [ 90.0, 69.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -1128,7 +1167,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "int", "int" ],
-					"patching_rect" : [ 90.0, 94.0, 56.0, 22.0 ],
+					"patching_rect" : [ 90.0, 143.0, 56.0, 22.0 ],
 					"text" : "thispoly~"
 				}
 
@@ -1140,11 +1179,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 160.0, 20.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
+					"patching_rect" : [ 160.0, 69.0, 28.0, 22.0 ],
 					"text" : "in 1"
 				}
 
@@ -1156,7 +1191,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 90.0, 61.0, 45.0, 22.0 ],
+					"patching_rect" : [ 90.0, 110.0, 45.0, 22.0 ],
 					"text" : "mute 0"
 				}
 
@@ -1171,7 +1206,7 @@
 					"mode" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 16.75, 8.0, 452.0, 214.0 ],
+					"patching_rect" : [ 17.0, 62.0, 452.0, 214.0 ],
 					"proportion" : 0.5
 				}
 
@@ -1217,6 +1252,21 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 468.0, 188.0, 452.0, 395.0 ],
+					"proportion" : 0.5
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"angle" : 270.0,
+					"bgcolor" : [ 0.666666666666667, 0.658823529411765, 0.431372549019608, 1.0 ],
+					"bordercolor" : [ 0.667, 0.6, 0.431, 1.0 ],
+					"id" : "obj-44",
+					"maxclass" : "panel",
+					"mode" : 0,
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 17.0, 8.0, 452.0, 214.0 ],
 					"proportion" : 0.5
 				}
 
@@ -1501,7 +1551,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-38", 0 ],
-					"midpoints" : [ 99.5, 52.0, 39.5, 52.0 ],
+					"midpoints" : [ 99.5, 101.0, 39.5, 101.0 ],
 					"order" : 1,
 					"source" : [ "obj-8", 0 ]
 				}
@@ -1516,21 +1566,7 @@
 
 			}
  ],
-		"dependency_cache" : [ 			{
-				"name" : "parameterwatcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../../../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : "../../../patchers",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
+		"dependency_cache" : [  ],
 		"autosave" : 0
 	}
 
