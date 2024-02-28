@@ -3,7 +3,7 @@
 		"patcher" : "utility.self.tuner",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "self-tuning midi to cv converter. connect your osc's output to the listen input. connect the cv output to the osc cv input. play notes.",
+		"help_text" : "self-tuning midi to cv converter. ££connect your osc's output to the listen input. connect the cv output to the osc cv input. optionally if you want to modulate the osc's frequency do it THROUGH this block, via the second input. play notes into the midi input here. ££if you have more than one oscillator you can add more voices to the tuner for polyphonic midi. the midi through out is useful for lining envelopes up with voices.££IMPORTANT make sure you've used the hardware config tool to run at least one loopback test so it can store the measured loopback latency for your current system. this helps tuner stability.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -12,7 +12,8 @@
 				"midi" : [ "notes" ]
 			},
 			"out" : {
-				"audio" : [ "cv" ]
+				"audio" : [ "cv" ],
+				"midi" : [ "through" ]
 			}
 		},
 		"groups" : [
