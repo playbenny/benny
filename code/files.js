@@ -925,7 +925,27 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	voicealloc_poly.setvalue((block_index +1),"steal_mode",steal);  
 	voicealloc_poly.setvalue((block_index +1),"return_mode",returnmode);
 	panelslider_visible[block_index] = [];
-	
+	if(blocks.contains("blocks["+block_index+"]::panel::parameters")){
+		var ppl = blocks.get("blocks["+block_index+"]::panel::parameters");
+		var maxp = 0;
+		if(blocktypes.contains(block_name+"::parameters")){
+			maxp=blocktypes.getsize(block_name+"::parameters");
+		}
+		for(var pp=0;pp<ppl;pp++){
+			if(ppl[pp]>=maxp){
+				maxp=0;
+				pp=999;
+			}
+		}
+		if(maxp==0){
+			blocks.remove("blocks["+block_index+"]::panel::parameters");
+			post("\nremoving panel params that dont seem to exist in this config");
+			if(!blocks.contains("blocks["+block_index+"]::block_ui_patcher")){
+				blocks.remove("blocks["+block_index+"]::panel");
+				post(" and removing it from the panels page entirely");
+			}
+		}
+	}
 	if(type=="audio"){ 
 		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", 0);
