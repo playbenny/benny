@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3791452227,
+	"modificationdate" : 3791975129,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1125,6 +1125,11 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"toplevel" : 1
+			}
+,
+			"example.note.block.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 
 		}
@@ -2586,6 +2591,11 @@
 					"projectrelativepath" : "./note_blocks"
 				}
 
+			}
+,
+			"example.note.block.json" : 			{
+				"kind" : "json",
+				"local" : 1
 			}
 
 		}

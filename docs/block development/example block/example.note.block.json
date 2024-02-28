@@ -18,18 +18,17 @@
 		},
 		"groups" : [
 			{
-				"contains" : [16, 17, 18, 19], 
+				"contains" : [3, 4, 4, 5, 6], 
 				"height"	: 0,
-				"colour"	: 100
+				"colour"	: 10,
+				"header" : "example header"
 			},
 			{ 
-				"contains" : [0, 1, 2, 3, 4, 5, 6, 7],
-				"header"	: "Steps",
+				"contains" : [0, 1, 2, 10],
 				"height" : 0
 			},	
 			{ 
-				"contains" : [8, 9, 10, 11, 12, 13, 14, 15],
-				"header"	: "Velocities"
+				"contains" : [7, 8, 9]
 			}
 		],
 		"panel" : {
@@ -37,144 +36,81 @@
 		},
 		"parameters" : [
 			{
-				"name" : "→",
+				"name" : "a toggle",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "→",
-				"type" : "int",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" : 0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "↓",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0.787
-			},
-			{
-				"name" : "trig_type",
-				"type" : "menu_i",
-				"values" : ["Step Lock", "Note Trig", "Step Free"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "step_length",
+				"name" : "an integer",
 				"type" : "int",
-				"values" : ["uni", 1, 8, "lin"],
+				"values" : ["uni", 0, 100, "lin"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0
 			},
 			{
-				"name" : "velocity_length",
-				"type"	: "int",
-				"values" : ["uni", 1, 8, "lin"],
+				"name" : "a float_exp2",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0
 			},
 			{
-				"name" : "Note",
-				"type"	: "int",
-				"values" : ["uni", 1, 127, "lin"],
+				"name" : "bipolar",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.47244
+				"default" : 0.5
+			},
+			{
+				"name" : "steep_exponential",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp100"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "a menu",
+				"type" : "menu_i",
+				"values" : ["one", "two", "three", "four"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "a floating_point_menu",
+				"type" : "menu_f",
+				"values" : ["one", "two", "three", "four"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "choices",
+				"force_label" : 1,
+				"type" : "menu_l",
+				"values" : ["one", "two", "three"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "other_choices",
+				"type" : "menu_l",
+				"values" : ["look", "no", "label","but","col","umns"],
+				"columns" : 2,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "wave",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0
+			},
+			{
+				"name" : "button",
+				"type" : "button",
+				"values" : ["firstvoice", "one", 1]
 			}
 		]
 	}
