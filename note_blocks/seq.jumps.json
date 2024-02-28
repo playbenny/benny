@@ -1,0 +1,63 @@
+{
+	"seq.jumps" : {
+		"patcher" : "seq.jumps",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "takes the incoming note, if it's above C3 it steps up the notepool, if it's below C3 it steps down. the further from C3, the bigger the step. notes in the reset input reset the position in the scale to the one nearest the reset note. ",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in","reset in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2,3,4]
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "pool",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "start_note",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "floor",
+				"type" : "note",
+				"values" : ["uni", 0, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "ceiling",
+				"type" : "note",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : ["reflect", "wrap 1oct", "wrap 2oct", "wrap 3oct"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0,
+				"force_label" : 1
+			}
+		]
+	}
+}
