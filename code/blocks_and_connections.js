@@ -1988,7 +1988,7 @@ function make_connection(cno,existing){
 							if(t_voice<MAX_NOTE_VOICES){
 								set_routing(f_voice,f_o_no,enab,2,2,t_voice,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 							}else{
-								set_routing(f_voice,f_o_no,enab,2,3,t_voice-MAX_AUDIO_VOICES,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
+								set_routing(f_voice,f_o_no,enab,2,3,t_voice-MAX_NOTE_VOICES,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 							}
 						}else if(t_type == "block"){
 							//this is a midi-block control connection for a single voice
