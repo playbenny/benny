@@ -96,7 +96,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer voice_parameter_buffer(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\nParam pointer;\r\nHistory o_p;\r\n\r\nHistory slow, st, le;\r\n\r\nif(slow<=0){\r\n\tslow = vectorsize+324;\r\n\tst = 16*peek(voice_parameter_buffer,voice_offset,0);\r\n \tle = 16*peek(voice_parameter_buffer,voice_offset+1,0);\t\r\n}\r\nslow-=1;\r\n\r\nif(pointer!=o_p){\r\n\to_p = pointer;\r\n}\r\n\r\npo = floor(pointer + (2+in1) * le);\r\npo += st;\r\npo = po % le;\r\n\r\n\r\nno = peek(voice_parameter_buffer,voice_offset+6+po,0);\r\nve = peek(voice_parameter_buffer,voice_offset+22+po,0);\r\n\r\nout1 = no*2-1;\r\nout2 = ve;\r\nout3 = po;\r\nout4 = (delta(po)!=0);",
+					"code" : "Buffer voice_parameter_buffer(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\nParam pointer;\r\nHistory o_p;\r\n\r\nHistory slow, st, le, mi;\r\n\r\nif(slow<=0){\r\n\tslow = vectorsize+324;\r\n\tst = 16*peek(voice_parameter_buffer,voice_offset,0);\r\n \tle = 16*peek(voice_parameter_buffer,voice_offset+1,0);\t\r\n\tmi = peek(voice_parameter_buffer,voice_offset+2,0)>0.5;\r\n}\r\nslow-=1;\r\n\r\nif(pointer!=o_p){\r\n\to_p = pointer;\r\n}\r\n\r\npo = floor(pointer + (2+in1) * le);\r\npo += st;\r\npo = po % le;\r\n\r\n\r\nno = peek(voice_parameter_buffer,voice_offset+3+po,0);\r\nve = peek(voice_parameter_buffer,voice_offset+19+po,0);\r\n\r\nout1 = no*2-1;\r\nout2 = ve;\r\nout3 = po;\r\nout4 = (delta(po*mi)!=0);",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
