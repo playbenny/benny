@@ -54,7 +54,6 @@ function blocks_paste(outside_connections,target){
 // if not, paste in the blocks in the clipboard and their connections as new blocks
 // outside connections = 1 if it should also paste connections from outside the copied blocks
 	if(target==null){
-		post("\ntarget is copy");
 		target=copy;
 	}
 	if(target.contains("blocks")){

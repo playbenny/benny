@@ -850,7 +850,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+7,0);
 		routing_buffer.poke(1,index+8,0);
 	}
-	post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	//post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 	if(cno == sidebar.scopes.midi_routing.number){
 		//post("\ncopy this connection for metering");
 		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
@@ -2755,8 +2755,8 @@ function insert_block_in_connection(newblockname,newblock){
 	details = blocktypes.get(newblockname);
 	var intypes = details.get("connections::in").getkeys();
 	var outtypes = details.get("connections::out").getkeys();
-	if(!Array.isArray(intypes))	intypes=[intypes,"*"];
-	if(!Array.isArray(outtypes)) outtypes=[outtypes,"*"];
+	if(!Array.isArray(intypes))	intypes=[intypes];
+	if(!Array.isArray(outtypes)) outtypes=[outtypes];
 	
 	//- copy all the connection details
 	var oldconn = new Dict;
@@ -2782,11 +2782,13 @@ function insert_block_in_connection(newblockname,newblock){
 		if(o_no==-1) o_no=0;
 		post("matching output type not found, next best chosen");
 	}
-	
+	// so what i'm calling i_no and o_no are actually type number, not output number. 
+	//we have no idea which output number / input number within the types, but switching is easy! :)
+	//there is a 'default' key we could check if we're feeling clever?
+	//post("\n\n\ninsert, ",i_no,o_no,f_type,t_type,"intypes",intypes,"outtypes",outtypes);
 	//one conversion is 'default' and the other is the one from the old conn. usually first one is default
 	var defaultpos=0;
 	if((f_type != intypes[i_no])&&(outtypes[o_no]==t_type))defaultpos = 1;
-//	new_connection.replace("conversion",f_conv);
 	new_connection.parse('{}');
 	if(defaultpos){//this is the rare exception where default is the second one.
 		new_connection.replace("conversion::mute" , 0);
@@ -2801,7 +2803,7 @@ function insert_block_in_connection(newblockname,newblock){
 	new_connection.replace("from",oldconn.get("from"));
 	new_connection.replace("to::number",newblock);
 	new_connection.replace("to::voice","all");
-	new_connection.replace("to::input::number",i_no);
+	new_connection.replace("to::input::number",0/*i_no*/);
 	new_connection.replace("to::input::type",intypes[i_no]);
 	connections.append("connections",new_connection);
 	make_connection(connections.getsize("connections")-1,0);
@@ -2822,7 +2824,7 @@ function insert_block_in_connection(newblockname,newblock){
 	}
 	new_connection.replace("from::number",newblock);
 	new_connection.replace("from::voice","all");
-	new_connection.replace("from::output::number",o_no);
+	new_connection.replace("from::output::number",0/*o_no*/);
 	new_connection.replace("from::output::type",outtypes[o_no]);
 	new_connection.replace("to",oldconn.get("to"));
 	connections.append("connections",new_connection);
