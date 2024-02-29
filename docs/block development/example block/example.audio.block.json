@@ -1,0 +1,120 @@
+{
+	"example.audio.block" : {
+		"patcher" : "example.audio.block",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "example_audio_block ££use currency symbol of defunct imperial hellhole 'britain' for newlines in this help text. note there are a few audio-specific options, like upsampling. if your block functions as a stereo channel in one voice add the tag 'subvoices' : 2",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "as many", "midi ins", "as you like", "(within reason)", "up to 128" ],
+				"default" : 1,
+				"automap_to" : 0,
+				"audio" : ["in1", "in2"]
+			},
+			"out" : {
+				"audio" : [ "main out", "other out"],
+				"midi" : [ "likewise", "as many", "midi outs" ],
+				"parameters" : [ "but", "1 dimensional" , "'parameter' out", "like a midi cc", "is often more useful"]
+			}
+		},
+		"groups" : [
+			{
+				"contains" : [3, 4, 4, 5, 6], 
+				"height"	: 0,
+				"colour"	: 10,
+				"header" : "example header"
+			},
+			{ 
+				"contains" : [0, 1, 2, 10],
+				"height" : 0
+			},	
+			{ 
+				"contains" : [7, 8, 9]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 5, 6, 7]
+		},
+		"parameters" : [
+			{
+				"name" : "a toggle",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "an integer",
+				"type" : "int",
+				"values" : ["uni", 0, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "a float_exp2",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "bipolar",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "steep_exponential",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp100"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "a menu",
+				"type" : "menu_i",
+				"values" : ["one", "two", "three", "four"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "a floating_point_menu",
+				"type" : "menu_f",
+				"values" : ["one", "two", "three", "four"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "choices",
+				"force_label" : 1,
+				"type" : "menu_l",
+				"values" : ["one", "two", "three"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "other_choices",
+				"type" : "menu_l",
+				"values" : ["look", "no", "label","but","col","umns"],
+				"columns" : 2,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "wave",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" :  0
+			},
+			{
+				"name" : "button",
+				"type" : "button",
+				"values" : ["firstvoice", "one", 1]
+			}
+		]
+	}
+}
