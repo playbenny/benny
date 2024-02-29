@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 817.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 817.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,6 +40,42 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-42",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 616.5, 622.0, 130.0, 22.0 ],
+					"text" : "peek~ QUANTPOOL 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-41",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 482.0, 622.0, 124.0, 22.0 ],
+					"text" : "peek~ INDEXPOOL 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-40",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 480.0, 576.0, 373.0, 48.0 ],
+					"text" : "and notepools store their scales in these handy lookup buffers - channel = pool no (see example audio patcher for more useful preprepared buffers)"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"bgcolor" : [ 0.709803921568627, 0.741176470588235, 0.333333333333333, 1.0 ],
 					"id" : "obj-58",
 					"linecount" : 3,
@@ -67,7 +103,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 21.0, 13.0, 331.0, 48.0 ],
-					"presentation_linecount" : 5,
 					"text" : "A PATCHER LIKE THIS IS ONE VOICE OF YOUR BLOCK. PUT THE PATCHER AND THE JSON FILE IN THE NOTE_BLOCKS FOLDER",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
@@ -484,23 +519,23 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-30",
-					"linecount" : 8,
+					"linecount" : 12,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 723.0, 105.0, 150.0, 117.0 ],
-					"text" : "if you have 'button' type controls they can either send their messages to the block ui patcher, the first voice, or all voices. if this voice gets a button message it comes out here"
+					"patching_rect" : [ 668.0, 39.0, 246.0, 172.0 ],
+					"text" : "if you have 'button' type controls they can either send their messages to the block ui patcher, the first voice, or all voices. if this voice gets a button message it comes out here. it works this way (different from other parameters) to minimise latency. the 'buckets' delay is an example of this parameter type.\nif you route modulation to a 'button' control that comes out like normal parameter modulation, so you may want your patch to respond to both."
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-28",
-					"linecount" : 3,
+					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 488.0, 122.0, 217.0, 48.0 ],
+					"patching_rect" : [ 487.0, 90.0, 176.0, 62.0 ],
 					"text" : "messages about events or user buttons. the resync patcher sends a bang just before the first beat of a bar."
 				}
 
@@ -548,7 +583,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 729.0, 61.0, 50.0, 22.0 ]
+					"patching_rect" : [ 729.0, 16.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -1140,10 +1175,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 243.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1180,6 +1211,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 160.0, 69.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -1236,7 +1271,7 @@
 					"mode" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 17.0, 188.0, 452.0, 395.0 ],
+					"patching_rect" : [ 17.0, 228.0, 452.0, 418.0 ],
 					"proportion" : 0.5
 				}
 
@@ -1251,7 +1286,7 @@
 					"mode" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 468.0, 188.0, 452.0, 395.0 ],
+					"patching_rect" : [ 462.0, 188.0, 458.0, 459.0 ],
 					"proportion" : 0.5
 				}
 
