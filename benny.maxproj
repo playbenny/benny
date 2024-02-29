@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3792054218,
+	"modificationdate" : 3792060652,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -552,16 +552,6 @@
 			}
 ,
 			"seq.grid-o.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-					"projectrelativepath" : "./note_blocks"
-				}
-
-			}
-,
-			"seq.note.steps.old.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
@@ -1145,6 +1135,16 @@
 			"example.audio.block.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
+			}
+,
+			"seq.analogue.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}
@@ -2626,6 +2626,16 @@
 			"example.audio.block.json" : 			{
 				"kind" : "json",
 				"local" : 1
+			}
+,
+			"seq.analogue.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}

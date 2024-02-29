@@ -1,11 +1,10 @@
 {
-	"seq.note.steps" : {
-		"patcher" : "seq.note.steps",
-		"type" : "note",
+	"seq.analogue" : {
+		"patcher" : "seq.analogue",
+		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A simple step sequencer. Each step has note, vel, on/off and length sliders. Adding more voices adds more playheads traversing the same sequence. ",
+		"help_text" : "A simple 'analogue-style' step sequencer. Each step has note, vel, and on/off. ££Unlike many other sequencers in benny, adding more voices adds more playheads traversing the same sequence. ££You can clock this sequencer from midi or from audio pulses, or you can use an audio signal to set the playhead position, enabling audio-rate scanning of the sequence.",
 		"max_polyphony" : 0,
-		"deprecated" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
@@ -14,69 +13,34 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "advance", "setpos", "resync" ]
+				"audio" : [ "clock pulse", "set position"],
+				"midi" : [ "advance", "set position" ]
 			},
 			"out" : {
-				"midi" : [ "notes", "trigger", "loop pulse" ],
-				"humanise" : 1
+				"audio" : [ "note value", "vel value"],
+				"midi" : [ "notes" , "position", "step out 1","step out 2","step out 3","step out 4","step out 5","step out 6","step out 7","step out 8","step out 9","step out 10","step out 11","step out 12","step out 13","step out 14","step out 15","step out 16"]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [  2,3,4,5],
-				"colour" : [255,255,255]
+				"contains" : [  0,1]
 			},
 			{ 
-				"contains" : [6,7,8,9, 10,11,12,13, 14,15,16,17, 18,19,20,21],
-				"colour" : [90,255,0]
+				"contains" : [2,3,4,5, 6,7,8,9, 10,11,12,13, 14,15,16,17],
+				"colour" : 3
 			},
 			{ 
-				"contains" : [22,23,24,25, 26,27,28,29, 30,31,32,33, 34,35,36,37],
-				"colour" : [180,200,0],
+				"contains" : [18,19,20,21, 22,23,24,25, 26,27,28,29, 30,31,32,33],
+				"colour" : 6,
 				"height" : 2
 			},
 			{ 
-				"contains" : [38,39,40,41, 42,43,44,45, 46,47,48,49, 50,51,52,53],
-				"colour" : [180,200,0],
+				"contains" : [34,35,36,37, 38,39,40,41, 42,43,44,45, 46,47,48,49],
+				"colour" : 9,
 				"height" : 0				
-			},
-			{ 
-				"contains" : [54,55,56,57, 58,59,60,61, 62,63,64,65, 66,67,68,69],
-				"colour" : [180,200,0],
-				"height" : 0				
-			}			
+			}		
 		],
 		"parameters" : [
-			{
-				"name" : "clock",
-				"type" : "menu_i",
-				"width" : 3,
-				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
-				"error_scale" : 0,
-				"nomap" : 1,
-				"default" : 0.56
-			},
-			{
-				"name" : "offset",
-				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
-				"nomap" : 1,
-				"default" : 0.5
-			},
-			{
-				"name" : "hold",
-				"type" : "menu_i",
-				"values" : ["0", "1"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "length",
-				"type" : "int",
-				"values" : ["uni", 1, 16, "lin"],
-				"wrap" : 0,
-				"default" : 0.45 
-			},
 			{
 				"name" : "start",
 				"type" : "int",
@@ -85,12 +49,11 @@
 				"default" : 0 
 			},
 			{
-				"name" : "root",
-				"type" : "note",
-				"values" : ["uni", 0, 92, "lin"],
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 1, 16, "lin"],
 				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.4 
+				"default" : 0.99 
 			},
 			{
 				"name" : "note",
@@ -475,134 +438,6 @@
 				"wrap" : 0,
 				"click_set" : 1,
 				"default" : 1
-			},
-			{
-				"name" : "length",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
-			},
-			{
-				"name" : "",
-				"type" : "int",
-				"values" : ["uni", 0, 16, "lin"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 0.08
 			}
 		]
 	}
