@@ -269,7 +269,8 @@ var automap = {
 	c_cols : 4,
 	c_rows : 4,
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
-	mapped_q : -1 //if it's mapped this is a list of the ones to clear
+	mapped_q : -1, //if it's mapped this is the block it's mapped to
+	mapped_q_channels : []
 }
 
 var qwertym = {

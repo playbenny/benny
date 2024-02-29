@@ -2831,6 +2831,20 @@ function draw_sidebar(){
 					y_offset += fontheight*0.6;
 				}
 			}
+			if(automap.available_q!=-1){
+				if((block_type=="audio")||(block_type=="hardware")){
+					if(automap.mapped_q != block){
+						if(automap.mapped_q!=-1){
+							post("\ntodo need to unmap old cue connection");
+						}
+						automap.mapped_q = block;
+						post("\nneed to find channels and map the cue out");
+					}
+				}else if(automap.mapped_q!=-1){
+					post("\nunmap automap cue");
+					automap.mapped_q = -1;
+				}
+			}
 			
 			var current_p = blocks.get("blocks["+block+"]::poly::voices");
 
