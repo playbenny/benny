@@ -364,6 +364,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 	}
 	still_checking_polys &= 6;
 	post("\nall note blocks loaded");
+	redraw_flag.flag |= 4;
 }
 
 function send_audio_patcherlist(do_all){
@@ -849,7 +850,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+7,0);
 		routing_buffer.poke(1,index+8,0);
 	}
-	//post("\npoked into routing buffer starting at",index,"values",enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 	if(cno == sidebar.scopes.midi_routing.number){
 		//post("\ncopy this connection for metering");
 		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
@@ -1427,7 +1428,6 @@ function make_connection(cno,existing){
 	}else if(f_type=="parameters"){
 		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
 			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
-			
 		}
 	}
 	var t_subvoices = 1;
