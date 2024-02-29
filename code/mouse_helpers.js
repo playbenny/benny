@@ -1981,13 +1981,18 @@ function zoom_waves(parameter,value){
 		waves.zoom_end -= w*value;
 		redraw_flag.flag |= 4;
 	}
-	
+	waves.selected = parameter;
 }
 
 function wave_stripe_click(parameter,value){
 	post("stripe click",parameter,value);
 	waves.selected = parameter;
 	redraw_flag.flag = 4;
+	if(value=="get"){
+		return 0;
+	}else{
+
+	}
 }
 
 function delete_wave(parameter,value){

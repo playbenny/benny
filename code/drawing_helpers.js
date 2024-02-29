@@ -553,7 +553,6 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 function clear_wave_graphic(n,newl){
 	var t;
 	if(Array.isArray(draw_wave[n-1])){
-		//post("\nclearing wave graphic",n);
 		var i = 0;
 		while(i<4){
 			if(Array.isArray(draw_wave[n-1][i])){
@@ -579,9 +578,11 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	var hle ;
 	var wmin,wmax;
 	var w = Math.floor((x2-x1-1)/2);
-	if(!Array.isArray(draw_wave[buffer-1])) draw_wave[buffer-1] = [[],[],[],[]];
+	if(!Array.isArray(draw_wave[buffer-1])){
+		draw_wave[buffer-1] = [[],[],[],[]];
+	}
 	if(w!=draw_wave[buffer-1][0].length) {
-		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		draw_wave[buffer-1][0].length = w;
 		clear_wave_graphic(buffer,w);
 	}
@@ -592,9 +593,9 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	dl /= d;
 	hls = w*(highlight);
 	hle = w*(highlight+dl);
-	var zoom_l = 1/*(1+0.99*(zoom_amount<0)*zoom_amount)*dl*(1-Math.abs(zoom_amount))+(zoom_amount>0)*zoom_amount;
+	var zoom_l = (1+0.99*(zoom_amount<0)*zoom_amount)*dl*(1-Math.abs(zoom_amount))+(zoom_amount>0)*zoom_amount;
 	var zoom_start = Math.min(1,Math.max(0,highlight+zoom_offset));
-	var zoom_end = zoom_start+zoom_l*/; //this is all ready for when you implement zoom BUT first make it show markers based on the stored ones 
+	var zoom_end = zoom_start+zoom_l; //this is all ready for when you implement zoom BUT first make it show markers based on the stored ones 
 	//not just multiplying, ditto highlight pos and length. AND DO STRIPE WHILE YOURE AT IT
 	var chunk = zoom_l*length/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
@@ -623,8 +624,10 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 			lcd_main.message("frgb",r,g,b);		
 		}
 		for(i=0;i<w;i++){
-			wmin = draw_wave[buffer-1][ch*2][i] |0;
-			wmax = draw_wave[buffer-1][ch*2+1][i] |0;
+			wmin = draw_wave[buffer-1][ch*2][i];
+			wmax = draw_wave[buffer-1][ch*2+1][i];
+			if(isNaN(wmin))wmin=0;
+			if(isNaN(wmax))wmax=0;
 			for(t=0;t<20;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
@@ -652,8 +655,8 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
-	//post("\nok so",x1,waves.zoom_start,w);
-	lcd_main.message("paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
+//	post("\nok so",buffer,index,x1,waves.zoom_start,w);
+	if(waves.selected == buffer) lcd_main.message("paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
 	w = Math.floor((w-1)/2);
 	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
@@ -678,8 +681,10 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 		lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
 		lcd_main.message("frgb",r,g,b);
 		for(i=0;i<w;i++){
-			wmin = draw_wave[buffer-1][ch*2][i] |0;
-			wmax = draw_wave[buffer-1][ch*2+1][i] |0;
+			wmin = draw_wave[buffer-1][ch*2][i];
+			wmax = draw_wave[buffer-1][ch*2+1][i];
+			if(isNaN(wmin))wmin=0;
+			if(isNaN(wmax))wmax=0;
 			for(t=0;t<20;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
@@ -692,6 +697,9 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 		}
 	}
 }
+
+
+
 function draw_h_slider_labelled(x1,y1,x2,y2,r,g,b,index,value){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 2);
