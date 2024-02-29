@@ -35,9 +35,6 @@ function loadbang(){
 	}
 	populate_lookup_tables();
 	post("\nreticulating splines");
-	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
-	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
-	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 	states.parse('{ "states" : {}}'); //these dicts all need to be initialised, 
 	potential_connection.parse("{}"); //the others are fine to start from empty
 	potential_connection.replace("conversion::mute",0);
@@ -166,10 +163,15 @@ function initialise_dictionaries(hardware_file){
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		loaded_note_patcherlist[i]='_blank.note';
 	}
+	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
+		emptys= emptys+",{}";
 	}
+	//for(i=0;i<=MAX_WAVES;i++)	
+	waves_dict.parse('{ "waves" : ['+emptys+'] }');
+
 	//for(i=0;i<MAX_HARDWARE_BLOCKS;i++) hardware_list[i] = "none";
 	
 	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);

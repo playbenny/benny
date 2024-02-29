@@ -612,8 +612,8 @@ function draw_waves(){
 	var num_slots = MAX_WAVES;//waves_dict.getsize("waves");
 	var slot;
 	var c=new Array(3);
-	var slot_h = mainwindow_height/6;
-	var bigsloth = mainwindow_height/2;//-fontheight*10.2-18; 
+	var slot_h = mainwindow_height*0.16;
+	var bigsloth = mainwindow_height*0.7;//-fontheight*10.2-18; 
 	setfontsize(fontsmall*2);
 	var colinc = config.getsize("palette::gamut") / (num_slots+1);
 	var sloty = fontheight+fo1+9-waves.scroll_position;
@@ -624,7 +624,7 @@ function draw_waves(){
 				if(slot==waves.selected){
 					//draw controls bar and zoomed wave
 					c=config.get("palette::gamut["+Math.floor(slot*colinc)+"]::colour");
-					lcd_main.message("paintrect",9, sloty, sidebar.x2,sloty+0.9*fontheight,c[0],c[1],c[2]);
+					lcd_main.message("framerect",9, sloty, sidebar.x2,sloty+0.9*fontheight,c[0],c[1],c[2]);
 	
 					c=config.get("palette::gamut["+Math.floor(1+slot*colinc)+"]::colour");
 					draw_h_slider(sidebar.x2-17*fontheight,sloty+fo1,sidebar.x2-13.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::start"));
@@ -660,7 +660,7 @@ function draw_waves(){
 					lcd_main.message("write","delete");
 					
 					c=config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour");
-					draw_stripe(9,sloty+fontheight*0.8,sidebar.x2,sloty+fontheight*1.3,c[0],c[1],c[2],slot+1,mouse_index);
+					draw_stripe(9,sloty+fontheight*0.8,sidebar.x2,sloty+fontheight*1.8,c[0],c[1],c[2],slot+1,mouse_index);
 					mouse_click_actions[mouse_index] = wave_stripe_click;
 					mouse_click_parameters[mouse_index] = slot;
 					mouse_click_values[mouse_index] = 0;
@@ -678,7 +678,7 @@ function draw_waves(){
 					lcd_main.message("write","end");
 					lcd_main.message("moveto",mainwindow_width - 9*fontheight,sloty+fontheight*0.6);
 					lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
-					draw_waveform(9,sloty+fontheight*1.3,sidebar.x2,sloty+bigsloth+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index,2);
+					draw_zoomable_waveform(9,sloty+fontheight*1.8,sidebar.x2,sloty+bigsloth+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index,2);
 					mouse_click_actions[mouse_index] = zoom_waves;
 					mouse_click_parameters[mouse_index] = slot;
 					mouse_click_values[mouse_index] = 0;

@@ -566,11 +566,8 @@ function clear_wave_graphic(n,newl){
 		}
 	}
 }
-function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom_amount){
-	if(zoom_amount==null){
-		zoom_offset=-1;
-		zoom_amount=1;
-	}
+
+function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){//},zoom_offset,zoom_amount){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
@@ -583,6 +580,9 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	}
 	if(w!=draw_wave[buffer-1][0].length) {
 		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		if(isNaN(draw_wave[buffer-1][0].length)){ 
+			draw_wave[buffer-1][0] = [];
+		}
 		draw_wave[buffer-1][0].length = w;
 		clear_wave_graphic(buffer,w);
 	}
@@ -593,11 +593,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	dl /= d;
 	hls = w*(highlight);
 	hle = w*(highlight+dl);
-	var zoom_l = (1+0.99*(zoom_amount<0)*zoom_amount)*dl*(1-Math.abs(zoom_amount))+(zoom_amount>0)*zoom_amount;
-	var zoom_start = Math.min(1,Math.max(0,highlight+zoom_offset));
-	var zoom_end = zoom_start+zoom_l; //this is all ready for when you implement zoom BUT first make it show markers based on the stored ones 
-	//not just multiplying, ditto highlight pos and length. AND DO STRIPE WHILE YOURE AT IT
-	var chunk = zoom_l*length/w;
+	var chunk = length/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	dl *= w;
@@ -605,15 +601,15 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	if(w>250){
 		for(t=0;t<d;t++){
 			i = Math.floor(t*dl+st);
-			lcd_main.message("moveto",x1+i+i,y1);//+h*2*ch);
-			lcd_main.message("lineto",x1+i+i,y2-fo1);//1+h*2*(ch+1));
+			lcd_main.message("moveto",x1+i+i,y1);
+			lcd_main.message("lineto",x1+i+i,y2-fo1);
 		}
 		lcd_main.message("frgb",255,255,255);
-		lcd_main.message("moveto",x1+st+st,y1);//+h*2*ch);
-		lcd_main.message("lineto",x1+st+st,y2-fo1);//1+h*2*(ch+1));
+		lcd_main.message("moveto",x1+st+st,y1);
+		lcd_main.message("lineto",x1+st+st,y2-fo1);
 		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
-		lcd_main.message("moveto",x1+i+i,y1);//+h*2*ch);
-		lcd_main.message("lineto",x1+i+i,y2-fo1);//1+h*2*(ch+1));			
+		lcd_main.message("moveto",x1+i+i,y1);
+		lcd_main.message("lineto",x1+i+i,y2-fo1);		
 	}
 	for(ch=0;ch<chans;ch++){
 		var curc=1;
@@ -649,29 +645,119 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom
 	}
 }
 
+
+function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom_amount){
+	if(zoom_amount==null){
+		zoom_offset=-1;
+		zoom_amount=1;
+	}
+	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
+	var i,t,ch,s,dl,d,st;
+	var hls;
+	var hle ;
+	var wmin,wmax;
+	var w = Math.floor((x2-x1-1)/2);
+	if(!Array.isArray(draw_wave[buffer-1])){
+		draw_wave[buffer-1] = [[],[],[],[]];
+	}
+	if(w!=draw_wave[buffer-1][0].length) {
+		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		draw_wave[buffer-1][0].length = w;
+		clear_wave_graphic(buffer,w);
+	}
+	var length = waves_dict.get("waves["+buffer+"]::length");
+	st = Math.floor(waves_dict.get("waves["+buffer+"]::start"));//*w);
+	d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
+	dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
+	dl /= d;
+	hls = w*(highlight);
+	hle = w*(highlight+dl);
+	//var zoom_l = (1+0.99*(zoom_amount<0)*zoom_amount)*dl*(1-Math.abs(zoom_amount))+(zoom_amount>0)*zoom_amount;
+	//var zoom_start = Math.min(1,Math.max(0,highlight+zoom_offset));
+	//var zoom_end = zoom_start+zoom_l; //this is all ready for when you implement zoom BUT first make it show markers based on the stored ones 
+	//not just multiplying, ditto highlight pos and length. AND DO STRIPE WHILE YOURE AT IT
+	var chunk = (waves.zoom_end-waves.zoom_start)*length/w;
+	var chunkstart = waves.zoom_start*length / chunk;
+	var chans = waves_dict.get("waves["+buffer+"]::channels");
+	var h = 0.5*(y2-y1)/chans;
+	//dl *= w;
+	lcd_main.message("frgb",90,90,90);
+	if(w>250){
+		for(t=0;t<d;t++){
+			i = Math.floor(w*((t*dl+st)-waves.zoom_start)/(waves.zoom_end-waves.zoom_start));
+			lcd_main.message("moveto",x1+i+i,y1);
+			lcd_main.message("lineto",x1+i+i,y2-fo1);
+		}
+		lcd_main.message("frgb",255,255,255);
+		lcd_main.message("moveto",x1+st+st,y1);
+		lcd_main.message("lineto",x1+st+st,y2-fo1);
+		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
+		lcd_main.message("moveto",x1+i+i,y1);
+		lcd_main.message("lineto",x1+i+i,y2-fo1);		
+	}
+	for(ch=0;ch<chans;ch++){
+		var curc=1;
+		if(highlight<1){ 
+			lcd_main.message("frgb", r>>1,g>>1,b>>1);
+			curc=0;
+		}else{
+			lcd_main.message("frgb",r,g,b);		
+		}
+		for(i=0;i<w;i++){
+			/*wmin = draw_wave[buffer-1][ch*2][i]|0;
+			wmax = draw_wave[buffer-1][ch*2+1][i]|0;
+			if(isNaN(wmin))wmin=0;
+			if(isNaN(wmax))*/wmin=0; wmax=0;
+			for(t=0;t<20;t++){
+				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+chunkstart+Math.random())*chunk));
+				if(s>wmax) wmax=s;
+				if(s<wmin) wmin=s;
+			}
+			//draw_wave[buffer-1][ch*2][i] = wmin;
+			//draw_wave[buffer-1][ch*2+1][i] = wmax;
+			if((i>=hls)&&(i<=hle)&&(curc==0)){
+				lcd_main.message("frgb",r,g,b);
+				curc=1;
+			}else if((i>hle)&&(curc==1)){
+				curc=0;
+				lcd_main.message("frgb", r>>1,g>>1,b>>1);
+			}
+			lcd_main.message("moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
+			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
+			//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
+		}
+	}
+}
+
 function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
+	if(!Array.isArray(draw_wave[buffer-1])){
+		draw_wave[buffer-1] = [[],[],[],[]];
+	}
 	var i,t,ch,s,dl,d,st;
 	var wmin,wmax;
 	var w = x2-x1;
 //	post("\nok so",buffer,index,x1,waves.zoom_start,w);
-	if(waves.selected == buffer) lcd_main.message("paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
+	if(waves.selected == buffer-1) lcd_main.message("paintrect", x1+waves.zoom_start*w, y1, x1+waves.zoom_end*w,y2, r*bg_dark_ratio*2,g*bg_dark_ratio*2,b*bg_dark_ratio*2);
 	w = Math.floor((w-1)/2);
 	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	for(ch=0;ch<chans;ch++){
-		lcd_main.message("frgb",50,50,50);
 		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
 		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
 		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
 		dl /= d;
 		dl *= w;
-		for(t=0;t<d;t++){
-			i = Math.floor(t*dl+st);
-			lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
-			lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
+		if(!(waves.selected == buffer-1)){			
+			lcd_main.message("frgb",50,50,50);
+			for(t=0;t<d;t++){
+				i = Math.floor(t*dl+st);
+				lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
+				lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
+			}
 		}
 		lcd_main.message("frgb",90,90,90);
 		lcd_main.message("moveto",x1+st+st,y1+h*2*ch);

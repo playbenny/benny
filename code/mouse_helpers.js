@@ -1972,26 +1972,41 @@ function store_wave_slices(waveno){
 }
 
 function zoom_waves(parameter,value){
-	post("zoom wavse TODO",parameter,value);
+//	post("zoom wavse TODO",parameter,value);
 	if(value=="get"){
 		return 0;//waves.zoom_start;
 	}else{
 		var w = waves.zoom_end- waves.zoom_start;
-		waves.zoom_start += w*value;
-		waves.zoom_end -= w*value;
+		var skew = usermouse.x / mainwindow_width;
+		waves.zoom_start += (skew)* w*value;
+		waves.zoom_end -= (1-skew)*w*value;
 		redraw_flag.flag |= 4;
 	}
 	waves.selected = parameter;
 }
 
 function wave_stripe_click(parameter,value){
-	post("stripe click",parameter,value);
+	post("\nstripe click",parameter,value);
 	waves.selected = parameter;
 	redraw_flag.flag = 4;
 	if(value=="get"){
+		var skew = usermouse.x / mainwindow_width;
+		var wl = waves.zoom_end - waves.zoom_start;
+		waves.zoom_start = skew - 0.5*wl;
+		waves.zoom_end = skew + 0.5*wl;
+		redraw_flag.flag |= 4;
 		return 0;
 	}else{
+		var skew = usermouse.x / mainwindow_width;
+		var wl = waves.zoom_end - waves.zoom_start;
+		waves.zoom_start = skew - 0.5*wl;
+		waves.zoom_end = skew + 0.5*wl;
 
+		var w = waves.zoom_end- waves.zoom_start;
+		waves.zoom_start += (skew)* w*value;
+		waves.zoom_end -= (1-skew)*w*value;
+
+		redraw_flag.flag |= 4;
 	}
 }
 
