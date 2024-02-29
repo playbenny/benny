@@ -267,7 +267,9 @@ var automap = {
 	offset_c : 0,
 	offset_range_c : 0,
 	c_cols : 4,
-	c_rows : 4
+	c_rows : 4,
+	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
+	mapped_q : -1 //if it's mapped this is a list of the ones to clear
 }
 
 var qwertym = {

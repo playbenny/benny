@@ -425,7 +425,7 @@ function import_hardware(v){
 		}
 		if(d.contains(keys[i]+"::connections::in::hardware_channels")){
 			var ch = d.get(keys[i]+"::connections::in::hardware_channels");
-			if(typeof ch == "number") ch = [ch];
+			if(!Array.isArray(ch)) ch = [ch];
 			for(t=0;t<ch.length;t++){
 				output_used[ch[t]-1]=1;
 				if(ob!=null){
@@ -433,6 +433,12 @@ function import_hardware(v){
 					output_blocks[hch] = ob;
 				}
 				if(ch[t]>MAX_USED_AUDIO_OUTPUTS) MAX_USED_AUDIO_OUTPUTS = ch[t];
+			}
+			if(d.contains(keys[i]+"::cue_out")){
+				automap.available_q = ch;
+			}
+			if(d.contains(keys[i]+"::click_out")){
+				post("\nfound click out but reassign not implemented");
 			}
 		}
 		if(d.contains(keys[i]+"::connections::out::hardware_channels")){

@@ -2080,6 +2080,9 @@ function draw_sidebar(){
 			note_poly.setvalue( automap.available_k, "maptarget", "none");
 			automap.mapped_k=-1;
 		}
+		if(automap.mapped_q!=-1){
+			post("\nTODO NEED TO UNMAP AUTO-Q OUTS");
+		}
 	}
 	var has_params=0;
 	var block;
