@@ -1980,21 +1980,42 @@ function zoom_waves(parameter,value){
 		var skew = usermouse.x / mainwindow_width;
 		waves.zoom_start += (skew)* w*value;
 		waves.zoom_end -= (1-skew)*w*value;
+		if(waves.zoom_start<0){
+			waves.zoom_end -= waves.zoom_start;
+			if(waves.zoom_end>1)waves.zoom_end = 1;
+			waves.zoom_start = 0;
+		}else if(waves.zoom_end > 1){
+			waves.zoom_start -= (waves.zoom_end-1);
+			if(waves.zoom_start<0)waves.zoom_start=0;
+			waves_zoom_end = 1;
+		}
 		redraw_flag.flag |= 4;
 	}
-	waves.selected = parameter;
 }
 
 function wave_stripe_click(parameter,value){
-	post("\nstripe click",parameter,value);
-	waves.selected = parameter;
-	redraw_flag.flag = 4;
+	//	post("\nstripe click",parameter,value);
+	redraw_flag.flag |= 4;
+	if(	waves.selected != parameter){
+		waves.zoom_start=0;
+		waves.zoom_end = 1;
+		waves.selected = parameter;
+		return 0;
+	}
 	if(value=="get"){
 		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
 		waves.zoom_start = skew - 0.5*wl;
 		waves.zoom_end = skew + 0.5*wl;
-		redraw_flag.flag |= 4;
+		if(waves.zoom_start<0){
+			waves.zoom_end -= waves.zoom_start;
+			if(waves.zoom_end>1)waves.zoom_end = 1;
+			waves.zoom_start = 0;
+		}else if(waves.zoom_end > 1){
+			waves.zoom_start -= (waves.zoom_end-1);
+			if(waves.zoom_start<0)waves.zoom_start=0;
+			waves_zoom_end = 1;
+		}
 		return 0;
 	}else{
 		var skew = usermouse.x / mainwindow_width;
@@ -2005,8 +2026,15 @@ function wave_stripe_click(parameter,value){
 		var w = waves.zoom_end- waves.zoom_start;
 		waves.zoom_start += (skew)* w*value;
 		waves.zoom_end -= (1-skew)*w*value;
-
-		redraw_flag.flag |= 4;
+		if(waves.zoom_start<0){
+			waves.zoom_end -= waves.zoom_start;
+			if(waves.zoom_end>1)waves.zoom_end = 1;
+			waves.zoom_start = 0;
+		}else if(waves.zoom_end > 1){
+			waves.zoom_start -= (waves.zoom_end-1);
+			if(waves.zoom_start<0)waves.zoom_start=0;
+			waves_zoom_end = 1;
+		}
 	}
 }
 
