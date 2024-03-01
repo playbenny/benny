@@ -1980,6 +1980,11 @@ function zoom_waves(parameter,value){
 		var skew = usermouse.x / mainwindow_width;
 		waves.zoom_start += (skew)* w*value;
 		waves.zoom_end -= (1-skew)*w*value;
+		if(waves.zoom_start>waves.zoom_end){
+			var t = waves.zoom_start;
+			waves.zoom_start=waves.zoom_end;
+			waves.zoom_end = t;
+		}
 		if(waves.zoom_start<0){
 			waves.zoom_end -= waves.zoom_start;
 			if(waves.zoom_end>1)waves.zoom_end = 1;
@@ -2026,6 +2031,12 @@ function wave_stripe_click(parameter,value){
 		var w = waves.zoom_end- waves.zoom_start;
 		waves.zoom_start += (skew)* w*value;
 		waves.zoom_end -= (1-skew)*w*value;
+		
+		if(waves.zoom_start>waves.zoom_end){
+			var t = waves.zoom_start;
+			waves.zoom_start=waves.zoom_end;
+			waves.zoom_end = t;
+		}
 		if(waves.zoom_start<0){
 			waves.zoom_end -= waves.zoom_start;
 			if(waves.zoom_end>1)waves.zoom_end = 1;

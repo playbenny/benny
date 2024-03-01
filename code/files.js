@@ -157,11 +157,14 @@ function create_blank_wave_buffer(number,length, channels,name){
 	waves_dict.replace("waves["+number+1+"]",d);
 	
 	draw_wave[number] = new Array(2*waves_buffer[number].channelcount());
-	for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
-		draw_wave[number][i]=new Array(128);
+	for(var i=0;i<waves_buffer[number].channelcount();i++){
 		var t=0;
-		while(t<128){
-			draw_wave[number][i][t]=0;
+		var ii=i*2;
+		draw_wave[number][ii]=new Array(mainwindow_width/2);
+		draw_wave[number][ii+1]=new Array(mainwindow_width/2);
+		while(t<mainwindow_width/2){
+			draw_wave[number][ii][t]=1;
+			draw_wave[number][ii+1][t]=-1;
 			t++;
 		} 
 	}
@@ -250,11 +253,14 @@ function buffer_loaded(number,path,name,buffername){
 		tn++;
 	}
 	draw_wave[number] = new Array(2*waves_buffer[number].channelcount());
-	for(var i=0;i<waves_buffer[number].channelcount()*2;i++){
-		draw_wave[number][i]=new Array(128);
+	for(var i=0;i<waves_buffer[number].channelcount();i++){
 		var t=0;
-		while(t<128){
-			draw_wave[number][i][t]=0;
+		var ii=2*i;
+		draw_wave[number][ii]=new Array(mainwindow_width/2);
+		draw_wave[number][ii+1]=new Array(mainwindow_width/2);
+		while(t<mainwindow_width/2){
+			draw_wave[number][ii][t]=1;
+			draw_wave[number][ii+1][t]=-1;
 			t++;
 		} 
 	}
