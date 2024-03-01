@@ -158,7 +158,9 @@ function initialise_dictionaries(hardware_file){
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
 	note_poly.message("voices", MAX_NOTE_VOICES);
+	post("\n-",MAX_NOTE_VOICES," note voice slots available");
 	audio_poly.message("voices", MAX_AUDIO_VOICES);
+	post("\n-",MAX_AUDIO_VOICES," audio voice slots available");
 
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		loaded_note_patcherlist[i]='_blank.note';
@@ -471,8 +473,17 @@ function import_hardware(v){
 	initialise_graphics();
 
 	var audioiolists = get_hw_meter_positions();
-	this.patcher.getnamed("audio_outputs").message('list',audioiolists[1]);
-	this.patcher.getnamed("audio_inputs").message('list',audioiolists[0]);
+	var old_dac = this.patcher.getnamed("audio_outputs");//message('list',audioiolists[1]);
+	var old_adc = this.patcher.getnamed("audio_inputs");
+	this.patcher.remove(old_dac);
+	this.patcher.remove(old_adc);
+	//message('list',audioiolists[0]);
+	var new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);
+	var new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);
+	var opinterleave = this.patcher.getnamed("op_interleave");
+	var ipcombine = this.patcher.getnamed("ip_combine");
+	this.patcher.connect(opinterleave, 0, new_dac, 0);
+	this.patcher.connect(new_adc,0,ipcombine,1);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
 	//post("\nout used",output_used,"in used",input_used);
 	keys = blocktypes.getkeys();
@@ -500,7 +511,18 @@ function import_hardware(v){
 	} //this section ^^ eg ifyou have eg 2xES6 with an adat soundcard you'll have in channels 1 2 3 4 5 6 9 10 11 12 13 14. 
 	//so we tell the adc~ to listen to those channels, then RENUMBER the channels in the blocktypes dict, to refer to the 
 	//sequential number of the io rather than the channel number
+	//audioiolists[0].length
+	post("\n\nso max ins",MAX_AUDIO_INPUTS," max used ",MAX_USED_AUDIO_INPUTS," and len ",audioiolists[0].length);
+	post("\n\nso max outs",MAX_AUDIO_OUTPUTS," max used ",MAX_USED_AUDIO_OUTPUTS," and len ",audioiolists[1].length);
 
+	var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_USED_AUDIO_INPUTS;
+	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_USED_AUDIO_OUTPUTS;
+	post("\n i think matrix should be ",MAX_AUDIO_VOICES," * ",NO_IO_PER_BLOCK," + either",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixins,"or",matrixouts);
+	sigouts.chans(matrixouts);
+	this.patcher.getnamed("mc_separate").chans(MAX_AUDIO_VOICES,MAX_AUDIO_VOICES);
+	matrix.numouts(matrixouts);
+	output_blocks_poly.voices(MAX_USED_AUDIO_OUTPUTS/2);
+	audio_to_data_poly.voices(MAX_USED_AUDIO_INPUTS + MAX_USED_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
 	assign_block_colours();
 	
 	usermouse.queue = [];
@@ -509,7 +531,7 @@ function import_hardware(v){
 	set_display_mode("blocks");
 	
 	//	turn on audio engine
-	this.patcher.getnamed("audio_outputs").message('int',1);
+	new_dac.message('int',1);
 
 	if(songs.contains("autoload")){
 		loading.merge = 0;
