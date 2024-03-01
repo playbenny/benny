@@ -474,6 +474,32 @@ function import_hardware(v){
 	this.patcher.getnamed("audio_outputs").message('list',audioiolists[1]);
 	this.patcher.getnamed("audio_inputs").message('list',audioiolists[0]);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
+	//post("\nout used",output_used,"in used",input_used);
+	keys = blocktypes.getkeys();
+	for(i=0;i<keys.length;i++){
+		if(keys[i].split(".")[0] == "hardware"){
+			if(blocktypes.contains(keys[i]+"::connections::in::hardware_channels")){
+				var ch = blocktypes.get(keys[i]+"::connections::in::hardware_channels");
+				if(!Array.isArray(ch)) ch=[ch];
+				for(var ci=0;ci<ch.length;ci++){
+					ch[ci] = audioiolists[1].indexOf(ch[ci])+1;
+				}
+				blocktypes.replace(keys[i]+"::connections::in::hardware_channels",ch);
+			}
+			if(blocktypes.contains(keys[i]+"::connections::out::hardware_channels")){
+				var ch = blocktypes.get(keys[i]+"::connections::out::hardware_channels");
+				if(!Array.isArray(ch)) ch=[ch];
+				for(var ci=0;ci<ch.length;ci++){
+					//post("\nwas",ch[ci]);
+					ch[ci] = audioiolists[0].indexOf(ch[ci])+1;
+					//post(" is ",ch[ci]);
+				}
+				blocktypes.replace(keys[i]+"::connections::out::hardware_channels",ch);
+			}
+		}
+	} //this section ^^ eg ifyou have eg 2xES6 with an adat soundcard you'll have in channels 1 2 3 4 5 6 9 10 11 12 13 14. 
+	//so we tell the adc~ to listen to those channels, then RENUMBER the channels in the blocktypes dict, to refer to the 
+	//sequential number of the io rather than the channel number
 
 	assign_block_colours();
 	

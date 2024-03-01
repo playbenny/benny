@@ -470,6 +470,7 @@ function swap_block_button(block){
 	menu.swap_block_target = block;
 	menu.mode = 1;
 	set_display_mode("block_menu");
+	//menu_move_on_down_inside_the_empty_carriage();
 }
 
 function insert_menu_button(cno){

@@ -2082,6 +2082,7 @@ function draw_sidebar(){
 		}
 		if(automap.mapped_q!=-1){
 			post("\nTODO NEED TO UNMAP AUTO-Q OUTS");
+			automap.mapped_q = -1;
 		}
 	}
 	var has_params=0;

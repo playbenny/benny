@@ -74,7 +74,7 @@ var meters_updatelist = {
 var debug = 0;
 
 var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
-var input_used = new Array(MAX_AUDIO_OUTPUTS+2);
+var input_used = new Array(MAX_AUDIO_INPUTS+2);
 
 var state_fade = {
 	start : [],

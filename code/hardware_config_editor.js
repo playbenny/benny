@@ -992,7 +992,7 @@ function keybcallback(data){
 		if(id[1]=="in"){
 			if(id[2]=="channel"){
 				var t=+id[3];
-				post("\nset out channel object",t+2,"to ",data.value);
+				post("\nset in channel object",t+2,"to ",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::hardware_channels["+values[id[3]][1]+"]",data.value);
 				controls[t+2].message("list", data.value);
 			}else if(id[2]=="name"){
@@ -1002,7 +1002,7 @@ function keybcallback(data){
 		}else if(id[1]=="out"){
 			if(id[2]=="channel"){
 				var t=+id[3];
-				post("\nset out channel object",t+2,"to ",data.value);
+				post("\nset out channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
 				controls[t+2].message("list", data.value);
 			}else if(id[2]=="name"){
