@@ -37,31 +37,20 @@ installation
 
 configuration
 -------------
-- in the end, there'll be a hardware editor.. for now, using the hardware config .json files as an example, build your own, with entries for any pieces of modular or hardware you want to use. i recommend using an editor like vscode that has automatic syntax checking for json files.
+- open the hardware editor, choose a configuration to start from. some example files are included.
+- the recommended method with any outboard hardware is to define your blocks as things like 'x filter' or 'mono voice' rather than just abstracting your computer audio/midi io as a block. although this is a bit more effort in the setup it pays off in a more fluid experience patching, and enables things like swapping and substituting for no-longer available pieces of hardware.
 - the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
     - KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
     - KNOWN ISSUE if you change your mind how you want the parameters organised you can't load a vst's config and edit it, you just have to do it again 
     - KNOWN ISSUE on windows max sometimes can't find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
 - all the visual/ui preferences are in config.json. this gets overwritten when you update the software, so if you want to change a setting copy the relevant entry you want to change the value of over to userconfig.json.
+- the default numbers of note and audio voice slots can be changed, but baseline cpu usage of the system's matrix mixer grows fast with audio voice count.
    
-temporary limits
-----------------
-at the moment the code is fixed to 64 midi block voices, 64 audio block voices, 24 hw outs, metronome click on 25, 12 hw ins. this will all be reconfigurable at startup in the end.
-at the moment the individual audio plugin voices are restricted to being 2-in 2-out. eventually 'wide' voices with more io will be possible.
-
 developing blocks
 -----------------
-tutorial still to come, but steal some bits out of my patchers and here's some notes. 
-every patch needs:
+have a look in docs / block development / example patchers
+every block needs, at minimum:
 - a .json file describing its inputs, outputs, parameters
 - a .maxpat file (that does the processing - note or audio - for one voice of your block)
-    - this needs to send a few messages out:
-        - on load: 'getvoice' out of its first (main) outlet, then the system will reply with bits of information it needs to look up its parameters etc. you can't use the normal max method (thispoly) to determine which voice you are, because you may well be loaded in any number of wrapping subpatches.
-        - block mute status (from a thispoly object) out the second outlet
-        - any notes etc, preceded by the output number (eg 0 54 126) is a loud g# on the first output
-    - it needs to respond to messages too:
-        - notes: received as pairs, but the input number is note/128. eg 0-127 first input, 128-255 second etc
-        - mute: pass this (1 or 0) direct to a thispoly
-        - voice_is, voice_offset - for knowing where to look up parameters. for a gen example see voice.basic, for the simplest possible way of getting parameters steal the 'voice_header' subpatch that appears in eg midi.lfo. this looks up the .json file and spits out parameters for you, already scaled to the right ranges.
-- (optional) a second .maxpat file that is for rendering a ui in the panels / sidebar / custom / fullscreen views. only really realistic to do this in javascript OR can also just be for global, per-block, processing, such as managing save data.
-  - this also needs to send out a getvoice, and gets a number of function calls from the main system: setup (tells it the size of the rendering window etc), voice_is (tells it what block it's attached to), draw (draw a full ui), update (update ui efficiently), and store (prepare for save - data has to be copied from buffer memory into the blocks dict, and this is where that happens)
+the examples tell you everything you need to do. there are handy things like pitch lookup tables and shared memory for things like sequence storage and your patch can fairly easily manipulate any part of the song or set. 
+optionally blocks can draw their own fullscreen / mini ui views like some of mine do. this is a 'block_ui_patcher' - a different patch, loaded separately from the voices. there's a max-only example in the note blocks folder, or you can look at the javascript-powered uis of any of the built in sequencers.
