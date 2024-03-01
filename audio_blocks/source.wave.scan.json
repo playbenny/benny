@@ -10,7 +10,7 @@
 		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"midi" : [ "set target"]
+				"midi" : [ "set target", "subloop", "pitch", "p_trig"]
 			},
 			"out" : {
 				"audio" : [ "waves" ],

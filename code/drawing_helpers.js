@@ -579,7 +579,7 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){//},zoom_offset
 		draw_wave[buffer-1] = [[],[],[],[]];
 	}
 	if(w!=draw_wave[buffer-1][0].length) {
-		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		if(isNaN(draw_wave[buffer-1][0].length)){ 
 			draw_wave[buffer-1][0] = [];
 		}
@@ -622,9 +622,10 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){//},zoom_offset
 		for(i=0;i<w;i++){
 			wmin = draw_wave[buffer-1][ch*2][i];
 			wmax = draw_wave[buffer-1][ch*2+1][i];
-			if(isNaN(wmin))wmin=1;
-			if(isNaN(wmax))wmax=-1;
-			for(t=0;t<20;t++){
+			t=2;
+			if(isNaN(wmin)){ wmin=1; t=20 }
+			if(isNaN(wmax)){ wmax=-1; t=20}
+			for(;t>=0;t--){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
 				if(s<wmin) wmin=s;
@@ -662,7 +663,7 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 		draw_wave[buffer-1] = [[],[],[],[]];
 	}
 	if(w!=draw_wave[buffer-1][0].length) {
-		post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
+		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		draw_wave[buffer-1][0].length = w;
 		clear_wave_graphic(buffer,w);
 	}
