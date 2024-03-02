@@ -1,43 +1,9 @@
 outlets = 1;
 inlets = 1;
-
-/*
-var myObj = this.patcher.newdefault(<obj_pos_x>, <obj_pos_y>, "<max_obj_name>");
-
-Add arguments to Object when creating it:
-var anotherObject = p.newdefault(100, 100, "combine", "text", "::", "moretext")
-
-Add Object to Presentation:
-maxObject.presentation(1); // note that it's a function
-
-Move Object:maxObject.message("patching_position", [posX, posY]);
-
-Create a new "bpatcher" object with attributes:
-var myNewObject = p.newdefault(100, 100, "bpatcher", "@name", "myPatch", "@args", name);
-
-Get patcher file path: var filepath = this.patcher.filepath;
-
-Add Object to Presentation:
-maxObject.presentation(1); // note that it's a function
-
-Move Object:maxObject.message("patching_position", [posX, posY]);
-
-Rescale Max Object:
-this.patcher.script("sendbox", <max_obj>.varname, "patching_rect", [ <obj_pos_x>, <obj_pos_y>, <obj_size_x>, <obj_size_y> ]);
-
-Hide a Max Object:
-<max_obj>.hidden = val;
-
-Rescale Max Object in Presentation:
-this.patcher.script("sendbox", <max_obj>.varname, "presentation_rect", [ <obj_pos_x>, <obj_pos_y>, <obj_size_x>, <obj_size_y> ]);
-
-
-*/
-
 var unit = {
 	header : 30,
 	row : 20,
-	col : 180
+	col : 220
 }
 
 var filepath = "";
@@ -45,7 +11,8 @@ var midi_interfaces = {
 	in : [],
 	out : [],
 	not_present_in : [],
-	not_present_out : []
+	not_present_out : [],
+	not_used_in : []
 }
 var configfile = new Dict;
 configfile.name = "configfile";
@@ -104,7 +71,17 @@ function configloaded(path){
 	// render the controls
 	var in_list = [];
 	var out_list = [];
-	var d = configfile.get("io::keyboards");
+	var d = configfile.get("io::controllers");
+	var k = d.getkeys();
+	for(var i=0;i<k.length;i++){
+		in_list.push(d.get(k[i]+"::name"));
+	}
+	for(var i=0;i<midi_interfaces.in.length;i++){
+		if(in_list.indexOf(midi_interfaces.in[i])==-1){
+			midi_interfaces.not_used_in.push(midi_interfaces.in[i]);
+		}
+	}
+	d = configfile.get("io::keyboards");
 	if(d!==null){
 		for(var i = 0; i<d.length ; i++){
 			if(Array.isArray(d[i])){
@@ -116,12 +93,8 @@ function configloaded(path){
 			}
 		}
 	}
-	d = configfile.get("io::controllers");
-	var k = d.getkeys();
-	for(var i=0;i<k.length;i++){
-		in_list.push(d.get(k[i]+"::name"));
-	}
 	post("\n collected in list",in_list);
+	post("\n and these interfaces are present but not used for controllers: ",midi_interfaces.not_used_in);
 	for(var i=0;i<in_list.length;i++){
 		if(midi_interfaces.in.indexOf(in_list[i])==-1){
 			midi_interfaces.not_present_in.push(in_list[i]);
@@ -198,18 +171,23 @@ function render_controls(){
 	controls[ii].presentation_rect(10,y_pos,2*unit.col+10,20);
 	ii++;
 	y_pos+=unit.row;
-	library_controllers.presentation(1);
-	library_controllers.presentation_rect(20,y_pos,2*unit.col,20);
-	y_pos+=unit.row+2;
 	var cd = configfile.get("io::controllers");
 	var cdk = cd.getkeys();
+	if(cdk==null)cdk=[];
 	for(var p=0;p<cdk.length;p++){
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", cdk[p]);
 		controls[ii].presentation(1);
-		controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
-		y_pos+=unit.row;
+		controls[ii].presentation_rect(20,y_pos,100+unit.col,20);
 		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove controller", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller."+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
+		values[ii] = [cdk[p]];
+		ii++;
+		y_pos+=unit.row;
+
 		//now all the general controller settings:
 		controls[ii] = this.patcher.newdefault(10, 100, "comment");
 		controls[ii].message("set", "substitutes");
@@ -378,7 +356,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.colour."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::colour"];
 			ii++;
 			y_pos+=unit.row;
@@ -437,7 +415,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.colour."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::colour"];
 			ii++;
 			y_pos+=unit.row;
@@ -452,7 +430,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.brightness."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::brightness"];
 			ii++;
 			y_pos+=unit.row;
@@ -538,7 +516,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.brightness."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::brightness"];
 			ii++;
 			y_pos += unit.row;
@@ -553,7 +531,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.value."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::value"];
 			ii++;			
 			y_pos+=unit.row;
@@ -612,7 +590,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.value."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::value"];
 			ii++;
 			y_pos+=unit.row;
@@ -627,7 +605,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.resets."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::resets"];
 			ii++;
 			y_pos+=unit.row;
@@ -686,7 +664,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0, 0, 1.0], "@varname", "add.controller.resets."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::resets"];
 			ii++;
 			y_pos+=unit.row;
@@ -701,7 +679,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.buttons."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::buttons"];
 			ii++;			
 			y_pos+=unit.row;
@@ -760,7 +738,7 @@ function render_controls(){
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.buttons.globals."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+				controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 				values[ii] = [cdk[p]+"::buttons::globals"];
 				ii++;
 				y_pos+=unit.row;
@@ -802,7 +780,7 @@ function render_controls(){
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.buttons.globals."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+				controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 				values[ii] = [cdk[p]+"::buttons::globals"];
 				ii++;
 				y_pos+=unit.row;
@@ -817,7 +795,7 @@ function render_controls(){
 			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.buttons."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 			values[ii] = [cdk[p]+"::buttons"];
 			ii++;			
 			y_pos+=unit.row;
@@ -827,6 +805,35 @@ function render_controls(){
 		y_pos+=unit.row;
 		
 	}
+	//recalc list of not-used interfaces (ie possible controllers to add)
+	var d = configfile.get("io::controllers");
+	var k = d.getkeys();
+	var in_list=[]; 
+	midi_interfaces.not_used_in=[];
+	if(k==null)k=[];
+	for(var i=0;i<k.length;i++){
+		in_list.push(d.get(k[i]+"::name"));
+	}
+	for(var i=0;i<midi_interfaces.in.length;i++){
+		if(in_list.indexOf(midi_interfaces.in[i])==-1){
+			midi_interfaces.not_used_in.push(midi_interfaces.in[i]);
+		}
+	}
+	if(midi_interfaces.not_used_in.length>0){
+		for(var i=0;i<midi_interfaces.not_used_in.length;i++){
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add controller: "+midi_interfaces.not_used_in[i], "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20,y_pos,2*unit.col-40,20);
+			values[ii] = [midi_interfaces.not_used_in[i]];
+			ii++;			
+			y_pos+=unit.row;
+		}
+	}
+	library_controllers.presentation(1);
+	library_controllers.presentation_rect(20,y_pos,2*unit.col,20);
+	y_pos+=unit.row+2;
+
 	y_pos+=unit.header;
 	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 	controls[ii].message("set", "hardware");
@@ -836,9 +843,6 @@ function render_controls(){
 	var cd = configfile.get("hardware");
 	var cdk = cd.getkeys();
 	y_pos+=unit.row; 
-	library_hardware.presentation(1);
-	library_hardware.presentation_rect(20,y_pos,2*unit.col,20);
-	y_pos+=unit.row+2;
 
 	for(var p=0;p<cdk.length;p++){
 		controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@keymode", 1, "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
@@ -846,12 +850,12 @@ function render_controls(){
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		testlist.message("append",cdk[p]);
 		controls[ii].presentation(1);
-		controls[ii].presentation_rect(20,y_pos,60+unit.col,20);
+		controls[ii].presentation_rect(20,y_pos,100+unit.col,20);
 		ii++;
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove block", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.block."+ii);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
-		controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+		controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 		values[ii] = [cdk[p],"block"];
 		ii++;
 		y_pos+=unit.row;
@@ -1015,7 +1019,7 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p],i];
 				ii++;			
-				y_pos+=unit.row;
+				y_pos+=2*unit.row;
 			}
 		}
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.in.channel."+ii);
@@ -1068,16 +1072,16 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p],i];
 				ii++;			
-				y_pos+=unit.row;
+				y_pos+=2*unit.row;
 			}
 		}
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware output channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.out.channel."+ii);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-		values[ii] = [cdk[p],"connections::out::hardware"];
+		values[ii] = [cdk[p]];
 		ii++;			
-		y_pos+=unit.row;
+		y_pos+=2*unit.row;
 		//	"connections" : {
 		//		"in" : {
 		//			"hardware" : [ "in", "cutoff" ],
@@ -1096,6 +1100,10 @@ function render_controls(){
 	ii++;			
 	y_pos+=unit.row;
 
+	library_hardware.presentation(1);
+	library_hardware.presentation_rect(20,y_pos,2*unit.col,20);
+	y_pos+=unit.row+2;
+
 
 }
 
@@ -1103,7 +1111,6 @@ function keybcallback(data){
 	post("\nvalue",data.value);
 	post(" - object",data.maxobject.varname);
 	var id = data.maxobject.varname.split('.');
-	var ch=0;
 	if(id[0]=="keyboards"){
 		var v = values[id[1]];
 		var d = configfile.get("io::keyboards");
@@ -1112,11 +1119,9 @@ function keybcallback(data){
 			if(p != -1){
 				d.splice(p,1);
 				configfile.replace("io::keyboards",d);
-				ch=1;
 			}
 		}else if(v[1]=="disabled"){//so enable it
 			configfile.append("io::keyboards",v[0]);
-			ch=1;
 		}
 	}else if(id[0]=="substitute"){
 		var v = values[id[1]];
@@ -1126,11 +1131,9 @@ function keybcallback(data){
 			if(p != -1){
 				d.splice(p,1);
 				configfile.replace("io::keyboards",d);
-				ch=1;
 			}
 		}else if(v[1]=="disabled"){//so enable it
 			configfile.append("io::controllers::"+v[2]+"::substitute",v[0]);
-			ch=1;
 		}
 	}else if(id[0]=="controller"){
 		var v = values[id[2]];
@@ -1169,8 +1172,138 @@ function keybcallback(data){
 		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]);
 	}else if(id[0]=="hardwarename"){
 		post("\nchanging name not implemented, edit the json file directly");
+	}else if(id[0]=="add"){
+		if(id[1]=="controller"){
+			if(id[2]=="colour"){
+				configfile.setparse("io::controllers::"+values[id[3]],"{}");
+				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::type","midifighter");
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+			}else if(id[2]=="value"){
+				configfile.setparse("io::controllers::"+values[id[3]],"{}");
+				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::type","cc");
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+			}else if(id[2]=="brightness"){
+				configfile.setparse("io::controllers::"+values[id[3]],"{}");
+				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::type","midifighter");
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::dim", 0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::bright", 127);
+			}else if(id[2]=="resets"){
+				configfile.setparse("io::controllers::"+values[id[3]],"{}");
+				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::type","cc");
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+			}else if(id[2]=="buttons"){
+				if(id[3]=="globals"){
+					configfile.setparse("io::controllers::"+values[id[4]],"{}");
+					configfile.replace("io::controllers::"+values[id[4]]+"::automap_toggle",0);
+					configfile.replace("io::controllers::"+values[id[4]]+"::automap_page",1);
+				}else{
+					configfile.setparse("io::controllers::"+values[id[3]],"{}");
+					configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
+					configfile.replace("io::controllers::"+values[id[3]]+"::type","cc");
+					configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+				}
+			}else{
+				post("\nid2 is",id[2]);
+				configfile.setparse("io::controllers::"+values[id[2]],"{}");
+				configfile.replace("io::controllers::"+values[id[2]]+"::name", values[id[2]]);
+				configfile.replace("io::controllers::"+values[id[2]]+"::substitute" , []);
+				configfile.replace("io::controllers::"+values[id[2]]+"::outputs" , 16);
+				configfile.replace("io::controllers::"+values[id[2]]+"::type" , "encoder");
+				configfile.replace("io::controllers::"+values[id[2]]+"::channel", 1);
+				configfile.replace("io::controllers::"+values[id[2]]+"::first",  0);
+				configfile.replace("io::controllers::"+values[id[2]]+"::scaling", 0.125);
+				configfile.replace("io::controllers::"+values[id[2]]+"::columns", 4);
+				configfile.replace("io::controllers::"+values[id[2]]+"::rows", 4);
+			}
+		}else if(id[1] == "hardware"){
+			post("\nadd hw ch",id,"vvv",values[id[4]]);
+			if(id[2] == "in"){
+				if(configfile.contains("hardware::"+values[id[4]][0]+"::connections::in::hardware")){
+					var tn = configfile.get("hardware::"+values[id[4]][0]+"::connections::in::hardware");
+					var tc = configfile.get("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels");
+					tn.push("new");
+					tc.push(0);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",tn);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",tc);
+				}else{
+					configfile.setparse("hardware::"+values[id[4]][0]+"::connections::in" , "{ }");
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",["new"]);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",[0]);
+				}
+			}else if(id[2]=="out"){
+				if(configfile.contains("hardware::"+values[id[4]][0]+"::connections::out::hardware")){
+					var tn = configfile.get("hardware::"+values[id[4]][0]+"::connections::out::hardware");
+					var tc = configfile.get("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels");
+					tn.push("new");
+					tc.push(0);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",tn);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
+				}else{
+					configfile.setparse("hardware::"+values[id[4]][0]+"::connections::out" , "{ }");
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",["new"]);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",[0]);
+				}
+			}else{
+				configfile.setparse("hardware::"+values[id[3]],"{}");
+				configfile.replace("hardware::"+values[id[3]]+"::name", values[id[3]]);
+				configfile.replace("hardware::"+values[id[3]]+"::substitute" , []);
+				configfile.replace("hardware::"+values[id[3]]+"::max_polyphony" , 1);
+				configfile.replace("hardware::"+values[id[3]]+"::help_text" , "about your block");
+				configfile.replace("hardware::"+values[id[3]]+"::exclusive", 0);
+				configfile.replace("hardware::"+values[id[3]]+"::click_out",  0);
+				configfile.replace("hardware::"+values[id[3]]+"::cue_out", 0);
+				configfile.replace("hardware::"+values[id[3]]+"::connections", "{}");
+			}
+		}
+		deleteall();
+		render_controls();
+	}else if(id[0]=="remove"){
+		if(id[1]=="controller"){
+			if(id[2]=="colour"){
+				configfile.remove("io::controllers::"+values[id[3]]);
+			}else if(id[2]=="value"){
+				configfile.remove("io::controllers::"+values[id[3]]);
+			}else if(id[2]=="brightness"){
+				configfile.remove("io::controllers::"+values[id[3]]);
+			}else if(id[2]=="resets"){
+				configfile.remove("io::controllers::"+values[id[3]]);
+			}else if(id[2]=="buttons"){
+				if(id[3]=="globals"){
+					configfile.remove("io::controllers::"+values[id[4]]);
+				}else{
+					configfile.remove("io::controllers::"+values[id[3]]);
+				}
+			}else{
+				//post("\nid2 is",id[2]);
+				configfile.remove("io::controllers::"+values[id[2]]);
+			}
+		}else if(id[1] == "hardware"){
+			if(id[2] == "in"){
+				var tn = configfile.get("hardware::"+values[id[4]][0]+"::connections::in::hardware");
+				var tc = configfile.get("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels");
+				tn.splice(values[id[4]][1],1);
+				tc.splice(values[id[4]][1],1);
+				configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",tn);
+				configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",tc);
+			}else if(id[2]=="out"){
+				var tc = configfile.get("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels");
+				var tn = configfile.get("hardware::"+values[id[4]][0]+"::connections::out::hardware");
+				tn.splice(values[id[4]][1],1);
+				tc.splice(values[id[4]][1],1);
+				configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",tn);
+				configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
+			}else{
+				post("\nhw id2 =",id[2]);
+			}
+		}
+		deleteall();
+		render_controls();
 	}
-	if(ch) render_controls();
 }
 
 function deleteall(){

@@ -1101,8 +1101,6 @@
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 908.0, 65.0, 78.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 608.0, 47.0, 78.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -1134,8 +1132,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 468.5, 161.0, 53.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 762.0, 47.0, 53.0, 22.0 ],
 					"text" : "deleteall"
 				}
 
@@ -1478,8 +1474,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 466.0, 328.0, 58.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 691.0, 47.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
