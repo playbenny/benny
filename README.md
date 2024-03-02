@@ -49,6 +49,7 @@ configuration
 developing blocks
 -----------------
 have a look in docs / block development / example patchers
+
 every block needs, at minimum:
 - a .json file describing its inputs, outputs, parameters
 - a .maxpat file (that does the processing - note or audio - for one voice of your block)
