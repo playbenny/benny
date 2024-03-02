@@ -118,8 +118,8 @@ function initialise_dictionaries(hardware_file){
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
 	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
 	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
-	MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
-	MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
+	//MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
+	//MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
 	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
 	sidebar.scopes.midi_routing.voice = MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_AUDIO_VOICES * NO_IO_PER_BLOCK + MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS;
 	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
@@ -515,12 +515,13 @@ function import_hardware(v){
 	//so we tell the adc~ to listen to those channels, then RENUMBER the channels in the blocktypes dict, to refer to the 
 	//sequential number of the io rather than the channel number
 	//audioiolists[0].length
-	post("\n\nso max ins",MAX_AUDIO_INPUTS," max used ",MAX_USED_AUDIO_INPUTS," and len ",audioiolists[0].length);
-	post("\n\nso max outs",MAX_AUDIO_OUTPUTS," max used ",MAX_USED_AUDIO_OUTPUTS," and len ",audioiolists[1].length);
-
-	var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_USED_AUDIO_INPUTS;
-	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_USED_AUDIO_OUTPUTS;
-	post("\n i think matrix should be ",MAX_AUDIO_VOICES," * ",NO_IO_PER_BLOCK," + either",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixins,"or",matrixouts);
+	post("\nso max ins",MAX_AUDIO_INPUTS," max used ",MAX_USED_AUDIO_INPUTS," and len ",audioiolists[0].length);
+	post("\nso max outs",MAX_AUDIO_OUTPUTS," max used ",MAX_USED_AUDIO_OUTPUTS," and len ",audioiolists[1].length);
+	MAX_AUDIO_INPUTS = audioiolists[0].length;
+	MAX_AUDIO_OUTPUTS = audioiolists[1].length;
+	//var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS;
+	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_OUTPUTS;
+	//post("\n i think matrix should be ",MAX_AUDIO_VOICES," * ",NO_IO_PER_BLOCK," + either",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixins,"or",matrixouts);
 	sigouts.chans(matrixouts);
 	this.patcher.getnamed("mc_separate").chans(MAX_AUDIO_VOICES,MAX_AUDIO_VOICES);
 	matrix.numouts(matrixouts);
