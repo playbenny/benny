@@ -37,7 +37,7 @@ this.patcher.script("sendbox", <max_obj>.varname, "presentation_rect", [ <obj_po
 var unit = {
 	header : 30,
 	row : 20,
-	col : 150
+	col : 180
 }
 
 var filepath = "";
@@ -375,6 +375,12 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
 			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.colour."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::colour"];
+			ii++;
 			y_pos+=unit.row;
 			//	"type" : "midifighter",
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -423,6 +429,18 @@ function render_controls(){
 
 		}else{
 			//add key button
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "led colour cc");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.colour."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::colour"];
+			ii++;
+			y_pos+=unit.row;
 		}
 		//"brightness" : {
 		if(cd.contains(cdk[p]+"::brightness")){
@@ -430,6 +448,12 @@ function render_controls(){
 			controls[ii].message("set", "led brightness cc");
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.brightness."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::brightness"];
 			ii++;
 			y_pos+=unit.row;
 			//	"type" : "midifighter",
@@ -506,6 +530,18 @@ function render_controls(){
 			ii++;
 		}else{
 			//add key button
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "led brightness cc");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.brightness."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::brightness"];
+			ii++;
+			y_pos += unit.row;
 		}
 		//"value" : {
 		if(cd.contains(cdk[p]+"::value")){
@@ -514,6 +550,12 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
 			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.value."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::value"];
+			ii++;			
 			y_pos+=unit.row;
 			//	"type" : "midifighter",
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -562,6 +604,18 @@ function render_controls(){
 
 		}else{
 			//add key button
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "led value cc");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.value."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::value"];
+			ii++;
+			y_pos+=unit.row;
 		}	
 		//"resets" : {
 		if(cd.contains(cdk[p]+"::resets")){
@@ -569,6 +623,12 @@ function render_controls(){
 			controls[ii].message("set", "reset buttons");
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.resets."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::resets"];
 			ii++;
 			y_pos+=unit.row;
 			//	"type" : "midifighter",
@@ -618,6 +678,18 @@ function render_controls(){
 
 		}else{
 			//add key button
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "reset buttons");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0, 0, 1.0], "@varname", "add.controller.resets."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::resets"];
+			ii++;
+			y_pos+=unit.row;
 		}	
 		//"buttons" : {
 		if(cd.contains(cdk[p]+"::buttons")){
@@ -626,6 +698,12 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
 			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.buttons."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::buttons"];
+			ii++;			
 			y_pos+=unit.row;
 			//	"type" : "midifighter",
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -679,6 +757,12 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(40,y_pos,2*unit.col,20);
 				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.buttons.globals."+ii);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+				values[ii] = [cdk[p]+"::buttons::globals"];
+				ii++;
 				y_pos+=unit.row;
 				//		"automap_toggle" : 0,
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -710,9 +794,33 @@ function render_controls(){
 				ii++;
 			}else{
 				//add key button
+				controls[ii] = this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", "button map to global functions");
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(40,y_pos,2*unit.col,20);
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.buttons.globals."+ii);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+				values[ii] = [cdk[p]+"::buttons::globals"];
+				ii++;
+				y_pos+=unit.row;
 			}
 		}else{
 			//add key button
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "controller buttons");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.buttons."+ii);
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+			values[ii] = [cdk[p]+"::buttons"];
+			ii++;			
+			y_pos+=unit.row;
 		}	
 		
 
@@ -733,14 +841,20 @@ function render_controls(){
 	y_pos+=unit.row+2;
 
 	for(var p=0;p<cdk.length;p++){
-		controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@keymode", 1, "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", cdk[p]);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		testlist.message("append",cdk[p]);
 		controls[ii].presentation(1);
-		controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
-		y_pos+=unit.row;
+		controls[ii].presentation_rect(20,y_pos,60+unit.col,20);
 		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove block", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.block."+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-60,20);
+		values[ii] = [cdk[p],"block"];
+		ii++;
+		y_pos+=unit.row;
 		//now all the general hardware block settings:
 		//			"help_text": "arp filter module",
 		controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -748,7 +862,7 @@ function render_controls(){
 		controls[ii].presentation(1);
 		controls[ii].presentation_position(30,y_pos);
 		ii++;
-		controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardware.help_text."+ii);
+		controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.help_text."+ii);
 		controls[ii].message("set",cd.get(cdk[p]+"::help_text").split(" "));
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
@@ -862,7 +976,7 @@ function render_controls(){
 			hwl = cd.get(cdk[p]+"::connections::in::hardware");
 			hwc = cd.get(cdk[p]+"::connections::in::hardware_channels");
 			for(var i = 0; i< hwc.length;i++){
-				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardware.in.name."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.in.name."+ii);
 				if(i<hwl.length){
 					controls[ii].message("set",hwl[i].split(" "));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -897,6 +1011,14 @@ function render_controls(){
 				ii++;
 			}
 		}
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.in.channel."+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p],"connections::in::hardware"];
+		ii++;			
+		y_pos+=unit.row;
+
 		if(cd.contains(cdk[p]+"::connections::out::hardware")){
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
 			controls[ii].message("set", "out (from hardware, to computer)");
@@ -907,7 +1029,7 @@ function render_controls(){
 			hwl = cd.get(cdk[p]+"::connections::out::hardware");
 			hwc = cd.get(cdk[p]+"::connections::out::hardware_channels");
 			for(var i = 0; i< hwc.length;i++){
-				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardware.out.name."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.out.name."+ii);
 				if(i<hwl.length){
 					controls[ii].message("set",hwl[i].split(" "));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -935,8 +1057,13 @@ function render_controls(){
 				y_pos+=22;
 			}
 		}
-
-
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware output channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.out.channel."+ii);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		values[ii] = [cdk[p],"connections::out::hardware"];
+		ii++;			
+		y_pos+=unit.row;
 		//	"connections" : {
 		//		"in" : {
 		//			"hardware" : [ "in", "cutoff" ],
@@ -944,8 +1071,16 @@ function render_controls(){
 		//		"out" : {
 		//			"hardware" : [ "out" ],
 		//			"hardware_channels" : [ 2 ]
-		y_pos+=unit.row;
 	}
+
+	controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add another hardware block", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.newblock."+ii);
+	controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+	controls[ii].presentation(1);
+	controls[ii].presentation_rect(30,y_pos,unit.col*2-20,20);
+	values[ii] = ["hardware.newblock"];
+	ii++;			
+	y_pos+=unit.row;
+
 
 }
 
