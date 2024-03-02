@@ -234,16 +234,6 @@ function initialise_dictionaries(hardware_file){
 	send_note_patcherlist();
 	send_audio_patcherlist();
 
-	messnamed("config_loaded","bang");
-	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it
-	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
-	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
-	messnamed("MAX_AUDIO_VOICES", MAX_AUDIO_VOICES);
-	messnamed("MAX_AUDIO_INPUTS", MAX_AUDIO_INPUTS);
-	messnamed("MAX_AUDIO_OUTPUTS", MAX_AUDIO_OUTPUTS);
-	messnamed("NO_IO_PER_BLOCK", NO_IO_PER_BLOCK);
-	messnamed("MAX_DATA", MAX_DATA);
-
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
 
 
@@ -519,6 +509,8 @@ function import_hardware(v){
 	post("\nso max outs",MAX_AUDIO_OUTPUTS," max used ",MAX_USED_AUDIO_OUTPUTS," and len ",audioiolists[1].length);
 	MAX_AUDIO_INPUTS = audioiolists[0].length;
 	MAX_AUDIO_OUTPUTS = audioiolists[1].length;
+	config.set("MAX_AUDIO_INPUTS",MAX_AUDIO_INPUTS);
+	config.set("MAX_AUDIO_OUTPUTS",MAX_AUDIO_OUTPUTS);
 	//var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS;
 	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_OUTPUTS;
 	//post("\n i think matrix should be ",MAX_AUDIO_VOICES," * ",NO_IO_PER_BLOCK," + either",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixins,"or",matrixouts);
@@ -527,6 +519,21 @@ function import_hardware(v){
 	matrix.numouts(matrixouts);
 	output_blocks_poly.voices(MAX_USED_AUDIO_OUTPUTS/2);
 	audio_to_data_poly.voices(MAX_USED_AUDIO_INPUTS + MAX_USED_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
+
+	messnamed("config_loaded","bang");
+	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it
+	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
+	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
+	messnamed("MAX_AUDIO_VOICES", MAX_AUDIO_VOICES);
+	messnamed("MAX_AUDIO_INPUTS", MAX_AUDIO_INPUTS);
+	messnamed("MAX_AUDIO_OUTPUTS", MAX_AUDIO_OUTPUTS);
+	messnamed("NO_IO_PER_BLOCK", NO_IO_PER_BLOCK);
+	messnamed("MAX_DATA", MAX_DATA);
+
+
+
+
+
 	assign_block_colours();
 	
 	usermouse.queue = [];
