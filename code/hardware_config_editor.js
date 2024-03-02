@@ -198,8 +198,8 @@ function render_controls(){
 	controls[ii].presentation_rect(10,y_pos,2*unit.col+10,20);
 	ii++;
 	y_pos+=unit.row;
-	library_controllers.presentation_rect(20,y_pos,2*unit.col,20);
 	library_controllers.presentation(1);
+	library_controllers.presentation_rect(20,y_pos,2*unit.col,20);
 	y_pos+=unit.row+2;
 	var cd = configfile.get("io::controllers");
 	var cdk = cd.getkeys();
@@ -836,8 +836,8 @@ function render_controls(){
 	var cd = configfile.get("hardware");
 	var cdk = cd.getkeys();
 	y_pos+=unit.row; 
-	library_hardware.presentation_rect(20,y_pos,2*unit.col,20);
 	library_hardware.presentation(1);
+	library_hardware.presentation_rect(20,y_pos,2*unit.col,20);
 	y_pos+=unit.row+2;
 
 	for(var p=0;p<cdk.length;p++){
@@ -1009,6 +1009,13 @@ function render_controls(){
 				values[ii] = [cdk[p],hwc[i]];
 				y_pos+=unit.row;
 				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.in.channel."+ii);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+				values[ii] = [cdk[p],i];
+				ii++;			
+				y_pos+=unit.row;
 			}
 		}
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.in.channel."+ii);
@@ -1055,6 +1062,13 @@ function render_controls(){
 				this.patcher.connect(controls[ii],0,controls[ii-1],0);
 				ii++;
 				y_pos+=22;
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.out.channel."+ii);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+				values[ii] = [cdk[p],i];
+				ii++;			
+				y_pos+=unit.row;
 			}
 		}
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware output channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.out.channel."+ii);
@@ -1072,11 +1086,12 @@ function render_controls(){
 		//			"hardware" : [ "out" ],
 		//			"hardware_channels" : [ 2 ]
 	}
+	y_pos+=unit.row;
 
 	controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add another hardware block", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.newblock."+ii);
 	controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 	controls[ii].presentation(1);
-	controls[ii].presentation_rect(30,y_pos,unit.col*2-20,20);
+	controls[ii].presentation_rect(0,y_pos,unit.col*2+20,20);
 	values[ii] = ["hardware.newblock"];
 	ii++;			
 	y_pos+=unit.row;
