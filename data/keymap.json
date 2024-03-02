@@ -53,6 +53,7 @@
         "-6" : ["del","delete_selection"],
         "-7" : ["delete","delete_selection"],
         "370" : ["ctrl-R", "arm_selected_blocks"],
+        "109" : ["m", "mute_selection", -1],
         "365" : ["ctrl-M", "mute_selection", -1],
         "355" : ["ctrl-C", "copy_selection"],
         "376" : ["ctrl-X", "cut_selection"],
@@ -79,7 +80,8 @@
         "573" : ["-", "poly_key" , 1],
         "353" : ["ctrl-A", "select_all"],
         "-5" : ["tab" , "set_display_mode", "blocks"],
-        "109" : ["M", "mute_selected_block", -1]
+        "109" : ["M", "mute_selected_block", -1],
+        "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "flocks" : {
         "45" : ["-", "poly_key" , -1],
