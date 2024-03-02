@@ -472,18 +472,21 @@ function import_hardware(v){
 
 	initialise_graphics();
 
+	post("\nbuilding new audio graph");
 	var audioiolists = get_hw_meter_positions();
 	var old_dac = this.patcher.getnamed("audio_outputs");//message('list',audioiolists[1]);
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
 	this.patcher.remove(old_adc);
 	//message('list',audioiolists[0]);
-	var new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);
-	var new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);
+	var new_adc = this.patcher.newdefault(654,497, "mc.adc~", "@varname", "audio_inputs", audioiolists[0]);
+	var new_dac = this.patcher.newdefault(667,882, "mc.dac~", "@varname", "audio_outputs", audioiolists[1]);
 	var opinterleave = this.patcher.getnamed("op_interleave");
 	var ipcombine = this.patcher.getnamed("ip_combine");
+	var openbut = this.patcher.getnamed("openbutton");
 	this.patcher.connect(opinterleave, 0, new_dac, 0);
 	this.patcher.connect(new_adc,0,ipcombine,1);
+	this.patcher.connect(openbut,0,new_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
 	//post("\nout used",output_used,"in used",input_used);
 	keys = blocktypes.getkeys();
