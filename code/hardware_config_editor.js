@@ -81,6 +81,18 @@ function configloaded(path){
 			midi_interfaces.not_used_in.push(midi_interfaces.in[i]);
 		}
 	}
+	d = configfile.get("hardware");
+	k = d.getkeys();
+	if(k!==null){
+		for(var i=0;i<k.length;i++){
+			if(configfile.contains("hardware::"+k[i]+"::midi_in")){
+				var tm = configfile.get("hardware::"+k[i]+"::midi_in");
+				if(out_list.indexOf(tm)==-1){
+					out_list.push(configfile.get("hardware::"+k[i]+"::midi_in"));
+				}
+			}
+		}
+	}
 	d = configfile.get("io::keyboards");
 	if(d!==null){
 		for(var i = 0; i<d.length ; i++){
@@ -845,12 +857,13 @@ function render_controls(){
 	y_pos+=unit.row; 
 
 	for(var p=0;p<cdk.length;p++){
+		testlist.message("append",cdk[p]);
 		controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@keymode", 1, "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", cdk[p]);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
-		testlist.message("append",cdk[p]);
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20,y_pos,100+unit.col,20);
+		values[ii] = [cdk[p]];
 		ii++;
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove block", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.block."+ii);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -1082,7 +1095,6 @@ function render_controls(){
 			hwc = cd.get(cdk[p]+"::connections::in::midi_channels");
 			hwr = cd.get(cdk[p]+"::connections::in::midi_ranges");
 			for(var i = 0; i< hwc.length;i++){
-				post("\n for i",i,"hwr is",hwr[i]);
 				controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.midi.in.name."+ii);
 				if(i<hwl.length){
 					controls[ii].message("set",hwl[i].split(" "));
@@ -1285,7 +1297,44 @@ function keybcallback(data){
 		for(var oo=0;oo<3;oo++) testmatrix.message(0,values[id[1]][1],0);
 		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]);
 	}else if(id[0]=="hardwarename"){
-		post("\nchanging name not implemented, edit the json file directly");
+		var newname = data.value.toString();
+		if(newname!=values[id[1]]){
+			configfile.setparse("hardware::"+newname,"{}");
+			var cd = configfile.get("hardware::"+values[id[1]]);
+			if(cd!==null){
+				var ck = cd.getkeys();
+				for(var tc=0;tc<ck.length;tc++){
+					if(ck[tc]!=="connections"){
+						configfile.replace("hardware::"+newname+"::"+ck[tc].toString(),cd.get(ck[tc]));
+						post("\nreplace ","hardware::"+newname+"::"+ck[tc].toString(),cd.get(ck[tc]));
+					}
+				}
+				configfile.setparse("hardware::"+newname+"::connections","{}");
+				if(configfile.contains("hardware::"+values[id[1]]+"::connections::in")){
+					configfile.setparse("hardware::"+newname+"::connections::in","{}");
+					var cd = configfile.get("hardware::"+values[id[1]]+"::connections::in");
+					if(cd!==null){
+						var ck = cd.getkeys();
+						for(var tc=0;tc<ck.length;tc++){
+							configfile.replace("hardware::"+newname+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+							post("\nreplace ","hardware::"+newname+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+						}
+					}
+				}
+				if(configfile.contains("hardware::"+values[id[1]]+"::connections::out")){
+					configfile.setparse("hardware::"+newname+"::connections::out","{}");
+					var cd = configfile.get("hardware::"+values[id[1]]+"::connections::out");
+					if(cd!==null){
+						var ck = cd.getkeys();
+						for(var tc=0;tc<ck.length;tc++){
+							configfile.replace("hardware::"+newname+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
+							post("\nreplace ","hardware::"+newname+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
+						}
+					}
+				}
+				configfile.remove("hardware::"+values[id[1]]);
+			}
+		}
 	}else if(id[0]=="add"){
 		if(id[1]=="controller"){
 			if(id[2]=="colour"){
@@ -1378,7 +1427,8 @@ function keybcallback(data){
 					configfile.setparse("hardware::"+values[id[5]][0]+"::connections::in" , "{ }");
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi",["new"]);
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_channels",[0]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges",[[0,127]]);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges",["*"]);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges[0]",[0,127]);
 				}
 				if(!configfile.contains("hardware::"+values[id[5]][0]+"::midi_handler")){
 					configfile.replace("hardware::"+values[id[5]][0]+"::midi_handler","generic.hardware.midi.handler");
@@ -1395,8 +1445,6 @@ function keybcallback(data){
 				configfile.replace("hardware::"+values[id[3]]+"::connections", "{}");
 			}
 		}
-		deleteall();
-		render_controls();
 	}else if(id[0]=="remove"){
 		if(id[1]=="controller"){
 			if(id[2]=="colour"){
@@ -1438,9 +1486,15 @@ function keybcallback(data){
 				post("\nhw id2 =",id[2]);
 			}
 		}
-		deleteall();
-		render_controls();
+	}else if(id[0]=="hardwaremiditestsignal"){
+		post("\nstart hw midi test",id[1],data.value, values[id[1]]);
+		var range = configfile.get("hardware::"+values[id[1]][0]+"::connections::in::midi_ranges["+values[id[1]][1]+"]");
+		var ch = configfile.get("hardware::"+values[id[1]][0]+"::connections::in::midi_channels["+values[id[1]][1]+"]");
+		var mport = configfile.get("hardware::"+values[id[1]][0]+"::midi_in");
+		this.patcher.messnamed("miditester",range[0],range[1]-range[0],ch,mport);
 	}
+	deleteall();
+	render_controls();
 }
 
 function deleteall(){
