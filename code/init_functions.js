@@ -333,6 +333,9 @@ function initialise_graphics() {
 }
 
 function stop_graphics(){
+	post("\nstopping graphics and deleting dac/adc");
+	this.patcher.remove(old_dac);
+	this.patcher.remove(old_adc);
 	background_cube.freepeer();
 	selection_cube.freepeer();
 	menu_background_cube.freepeer();
@@ -464,19 +467,19 @@ function import_hardware(v){
 
 	post("\nbuilding new audio graph");
 	var audioiolists = get_hw_meter_positions();
-	var old_dac = this.patcher.getnamed("audio_outputs");//message('list',audioiolists[1]);
-	var old_adc = this.patcher.getnamed("audio_inputs");
+	if(old_dac==null) old_dac = this.patcher.getnamed("audio_outputs");
+	if(old_adc==null) old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
 	this.patcher.remove(old_adc);
 	//message('list',audioiolists[0]);
-	var new_adc = this.patcher.newdefault(654,497, "mc.adc~", "@varname", "audio_inputs", audioiolists[0]);
-	var new_dac = this.patcher.newdefault(667,882, "mc.dac~", "@varname", "audio_outputs", audioiolists[1]);
+	old_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);//, "@varname", "audio_inputs");
+	old_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);//, "@varname", "audio_outputs");
 	var opinterleave = this.patcher.getnamed("op_interleave");
 	var ipcombine = this.patcher.getnamed("ip_combine");
 	var openbut = this.patcher.getnamed("openbutton");
-	this.patcher.connect(opinterleave, 0, new_dac, 0);
-	this.patcher.connect(new_adc,0,ipcombine,1);
-	this.patcher.connect(openbut,0,new_dac,0);
+	this.patcher.connect(opinterleave, 0, old_dac, 0);
+	this.patcher.connect(old_adc,0,ipcombine,1);
+	this.patcher.connect(openbut,0,old_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
 	//post("\nout used",output_used,"in used",input_used);
 	keys = blocktypes.getkeys();
@@ -540,7 +543,7 @@ function import_hardware(v){
 	set_display_mode("blocks");
 	
 	//	turn on audio engine
-	new_dac.message('int',1);
+	old_dac.message('int',1);
 
 	if(songs.contains("autoload")){
 		loading.merge = 0;

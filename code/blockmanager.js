@@ -98,6 +98,8 @@ var end_of_frame_fn = null;
 var whole_state_xfade_create_task = new Task(create_whole_state_xfade_slider, this);
 var keyrepeat_task = new Task(keydown,this,0);
 
+var old_dac = null;
+var old_adc = null;
 var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
 var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
 var ui_poly = this.patcher.getnamed("ui_poly");
