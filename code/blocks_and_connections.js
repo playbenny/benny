@@ -850,7 +850,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+7,0);
 		routing_buffer.poke(1,index+8,0);
 	}
-	post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	//post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 	if(cno == sidebar.scopes.midi_routing.number){
 		//post("\ncopy this connection for metering");
 		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);

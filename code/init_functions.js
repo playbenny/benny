@@ -505,8 +505,6 @@ function import_hardware(v){
 	//so we tell the adc~ to listen to those channels, then RENUMBER the channels in the blocktypes dict, to refer to the 
 	//sequential number of the io rather than the channel number
 	//audioiolists[0].length
-	post("\nso max ins",MAX_AUDIO_INPUTS," max used ",MAX_USED_AUDIO_INPUTS," and len ",audioiolists[0].length);
-	post("\nso max outs",MAX_AUDIO_OUTPUTS," max used ",MAX_USED_AUDIO_OUTPUTS," and len ",audioiolists[1].length);
 	MAX_AUDIO_INPUTS = audioiolists[0].length;
 	MAX_AUDIO_OUTPUTS = audioiolists[1].length;
 	config.set("MAX_AUDIO_INPUTS",MAX_AUDIO_INPUTS);
