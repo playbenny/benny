@@ -40,6 +40,22 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-58",
+					"linecount" : 7,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 161.0, 463.0, 50.0, 105.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 163.0, 460.0, 129.0, 50.0 ],
+					"text" : ";\r\nto_blockmanager send_all_voice_details"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"bgcolor" : [ 0.109803921568627, 0.109803921568627, 0.109803921568627, 1.0 ],
 					"fontname" : "Consolas Bold",
 					"fontsize" : 16.0,
