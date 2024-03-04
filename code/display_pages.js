@@ -4314,7 +4314,7 @@ function draw_sidebar(){
 				if(sidebar.selected_voice==-1){
 					lcd_main.message("write", "connections");
 				}else{
-					lcd_main.message("write", "connections (to/from voice "+sidebar.selected_voice+" only)");
+					lcd_main.message("write", "connections (to/from voice "+sidebar.selected_voice+1+" only)");
 				}
 				y_offset += 1.1* fontheight;
 				if(conn_count){
