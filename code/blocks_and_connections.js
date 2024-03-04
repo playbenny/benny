@@ -224,7 +224,7 @@ function new_block(block_name,x,y){
 				}
 			}
 			// parameter info poked out here for paramwatcher
-			//post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
+			//if(p_type=="int") post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
 			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
 			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
 			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);

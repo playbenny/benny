@@ -867,8 +867,8 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			var p_steps = 0;
 			if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 				p_min = 0;
-				p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
-				p_steps = p_max;
+				p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
+				p_max = p_steps-1;
 				p_curve = 0;
 			}else if(p_type=="menu_f"){
 				p_min=0;
@@ -876,11 +876,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				p_steps = 0;
 				p_curve = 0;
 			}else if(p_type=="int"){
-				p_steps=p_max;
+				p_steps=p_max - p_min + 1;
 			}else if(p_type=="button"){
 				p_min = 0;
 				p_max = (p_values.length - 1 ) / 2;
-				p_steps = p_max;
+				p_steps = p_max+1;
 				p_curve = 0;
 			}
 			if(p_curve == "lin"){
