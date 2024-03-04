@@ -2081,7 +2081,8 @@ function draw_sidebar(){
 			automap.mapped_k=-1;
 		}
 		if(automap.mapped_q!=-1){
-			post("\nTODO NEED TO UNMAP AUTO-Q OUTS");
+			set_automap_q(0);
+			automap.mapped_q_channels = [];
 			automap.mapped_q = -1;
 		}
 	}
@@ -2834,16 +2835,41 @@ function draw_sidebar(){
 			}
 			if(automap.available_q!=-1){
 				if((block_type=="audio")||(block_type=="hardware")){
-					if(automap.mapped_q != block){
+					if(automap.mapped_q != block+"."+sidebar.selected_voice){
 						if(automap.mapped_q!=-1){
-							post("\ntodo need to unmap old cue connection");
+							set_automap_q(0);
+							automap.mapped_q_channels = [];
+							automap.mapped_q = -1;
 						}
-						automap.mapped_q = block;
-						post("\nneed to find channels and map the cue out");
+						automap.mapped_q = block+"."+sidebar.selected_voice;
+						if(sidebar.selected_voice == -1){
+							automap.mapped_q_channels = voicemap.get(block);
+							if(!Array.isArray(automap.mapped_q_channels)) automap.mapped_q_channels=[automap.mapped_q_channels];
+						}else{
+							automap.mapped_q_channels = [voicemap.get(block+"["+sidebar.selected_voice+"]")];
+						}
+						if(block_type=="audio"){ //TODO ADD CHOICE OVER OUTPUT NUMBER
+							for(tc=0;tc<automap.mapped_q_channels.length;tc++) automap.mapped_q_channels[tc]-=MAX_NOTE_VOICES;
+						}else if(block_type=="hardware"){
+							if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
+								var newlist = blocktypes.get(block_name+"::connections::out::hardware_channels");
+								if(!Array.isArray(newlist)) newlist = [newlist];
+								automap.mapped_q_channels = [];
+								for(tc=0;tc<newlist.length;tc++){
+									automap.mapped_q_channels.push(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+newlist[tc]-1);
+								}
+							}else{
+								automap.mapped_q = -1;
+								automap.mapped_q_channels = [];
+							}
+						}
+						if(automap.mapped_q!=-1) set_automap_q(automap.q_gain);
 					}
 				}else if(automap.mapped_q!=-1){
 					post("\nunmap automap cue");
+					set_automap_q(0);
 					automap.mapped_q = -1;
+					automap.mapped_q_channels = [];
 				}
 			}
 			
@@ -5998,6 +6024,15 @@ function draw_sidebar(){
 	//	lcd_main.message("bang");
 	//outlet(8,"bang");
 	view_changed = false;
+}
+
+function set_automap_q(v) {
+	for (var qc = 0; qc < automap.mapped_q_channels.length; qc++) {
+		for (var oc = 0; oc < automap.available_q.length; oc++) {
+			matrix.message(automap.mapped_q_channels[qc], MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+automap.available_q[oc]-1, v);
+			post("\nmatrix ", automap.mapped_q_channels[qc], MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+automap.available_q[oc]-1, v);
+		}
+	}
 }
 
 function remove_automaps(){

@@ -272,7 +272,7 @@ function new_block(block_name,x,y){
 		ts="no";
 		if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
 			ts = blocktypes.get(block_name+"::connections::in::hardware_channels");	
-			if(typeof ts=="number") ts=[ts];
+			if(!Array.isArray(ts)) ts=[ts];
 			split = ts.length;
 		}
 		if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
@@ -281,7 +281,7 @@ function new_block(block_name,x,y){
 				if(!Array.isArray(ts)) ts = [ts];
 			}else{
 				var ts2 = blocktypes.get(block_name+"::connections::out::hardware_channels");
-				if(typeof ts2=="number") ts2=[ts2];				
+				if(!Array.isArray(ts2)) ts2=[ts2];				
 				for(tii=0;tii<ts2.length;tii++){
 					ts[ts.length]=ts2[tii];
 				}

@@ -433,6 +433,7 @@ function import_hardware(v){
 			}
 			if(d.contains(keys[i]+"::cue_out")){
 				automap.available_q = ch;
+				post("\ncue out is on channel(s)",ch);
 			}
 			if(d.contains(keys[i]+"::click_out")){
 				post("\nfound click out but reassign not implemented");
