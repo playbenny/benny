@@ -378,6 +378,7 @@ function import_hardware(v){
 	var output_blocks=[]; //output blocks are in pairs, eg #1 is ch's 1+2. so, for every output channel you find ("in" to a block, mind), 
 																		//you math.floor((x-1)/2) and set that element of this array
 	for(i=0;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks[i] = "clip_dither";
+
 	for(i = 0; i < keys.length; i++){
 		post("\n  "+keys[i]);
 		blocktypes.set(keys[i],d.get(keys[i]));
@@ -449,6 +450,11 @@ function import_hardware(v){
 		}
 	}
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
+	if(output_blocks.length<MAX_USED_AUDIO_OUTPUTS/2){
+		for(i=output_blocks.length;i<MAX_USED_AUDIO_OUTPUTS/2;i++) output_blocks.push("clip_dither");
+	}else{
+		output_blocks.splice(MAX_USED_AUDIO_OUTPUTS);
+	}
 	post("\nreading midi io config");
 	d = d2.get("io");
 	var keys = d.getkeys();
