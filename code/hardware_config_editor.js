@@ -22,6 +22,10 @@ blocktypes.name = "blocktypes";
 var controls = [];
 var values = [];
 
+var y_pos = 50;
+var ii=0;
+
+
 var library_hardware = this.patcher.getnamed("hardware_library");
 var library_controllers = this.patcher.getnamed("controller_library");
 var testmatrix = this.patcher.getnamed("testmatrix");
@@ -130,8 +134,8 @@ function midiouts(name){
 
 function render_controls(){
 	deleteall();
-	var y_pos = 50;
-	var ii=0;
+	y_pos = 50;
+	ii=0;
 	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 	controls[ii].message("set", "keyboards");
 	controls[ii].presentation(1);
@@ -149,6 +153,7 @@ function render_controls(){
 		}else{
 			enab = "enabled";
 			c = [1.000, 0.792, 0.000, 1.000];
+			add_midimonitors(midi_interfaces.in[i]);
 		}
 		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.in[i], "@textoncolor", c, "@varname", "keyboards."+ii);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -198,6 +203,8 @@ function render_controls(){
 		controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
 		values[ii] = [cdk[p]];
 		ii++;
+
+		add_midimonitors(cdk[p]);
 		y_pos+=unit.row;
 
 		//now all the general controller settings:
@@ -225,6 +232,8 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [midi_interfaces.in[i],enab,cdk[i]];
+				add_midimonitors(midi_interfaces.in[i]);
+
 				y_pos+=unit.row;
 				ii++;
 			}
@@ -1503,4 +1512,29 @@ function deleteall(){
 	}
 	controls=[];
 	values=[];
+}
+
+function add_midimonitors(interface){
+	controls[ii] = this.patcher.newdefault(10, 100, "comment");
+	controls[ii].message("set", "--- --- --");
+	controls[ii].presentation(1);
+	controls[ii].presentation_position(20+2*unit.col,y_pos);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 100, "prepend set");
+	this.patcher.connect(controls[ii],0,controls[ii-1],0);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 120, "pack", 0,0,0);
+	this.patcher.connect(controls[ii],0,controls[ii-1],0);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 120, "notein", "@name", interface);
+	this.patcher.connect(controls[ii],0,controls[ii-1],0);
+	this.patcher.connect(controls[ii],1,controls[ii-1],1);
+	this.patcher.connect(controls[ii],2,controls[ii-1],2);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 120, "ctlin", "@name", interface);
+	this.patcher.connect(controls[ii],0,controls[ii-2],0);
+	this.patcher.connect(controls[ii],1,controls[ii-2],1);
+	this.patcher.connect(controls[ii],2,controls[ii-2],2);
+	ii++;
+
 }
