@@ -361,7 +361,8 @@
 				}
 
 			}
-
+,
+			"talk_in" : 1
 		}
 ,
 		"hardware.rme.headphone.out" : 		{

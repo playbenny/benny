@@ -949,7 +949,7 @@ function render_controls(){
 		y_pos+=unit.row;
 		ii++;
 
-		if(cd.contains(cdk[p]+"::connections::in::hardware")){
+		if(cd.contains(cdk[p]+"::connections::in::hardware")&&!cd.contains(cdk[p]+"::connections::out::hardware")){
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
 			controls[ii].message("set", "click out");
 			controls[ii].presentation(1);
@@ -957,7 +957,7 @@ function render_controls(){
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.click_out."+ii);
 			if(cd.contains(cdk[p]+"::click_out")){
-				controls[ii].message("set", cd.get(cdk[p]+"::click_out"));
+				controls[ii].message("set", (cd.get(cdk[p]+"::click_out"))>0);
 			}else{
 				controls[ii].message("set", 0);
 			}
@@ -973,8 +973,8 @@ function render_controls(){
 			controls[ii].presentation_position(30,y_pos);
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.cue_out."+ii);
-			if(cd.contains(cdk[p]+"::click_out")){
-				controls[ii].message("set", cd.get(cdk[p]+"::cue_out"));
+			if(cd.contains(cdk[p]+"::cue_out")){
+				controls[ii].message("set", (cd.get(cdk[p]+"::cue_out"))>0);
 			}else{
 				controls[ii].message("set", 0);
 			}
@@ -986,6 +986,25 @@ function render_controls(){
 			ii++;
 		}
 		
+		if(cd.contains(cdk[p]+"::connections::out::hardware")&&!cd.contains(cdk[p]+"::connections::in::hardware")){
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "talk mic in");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.talk_in."+ii);
+			if(cd.contains(cdk[p]+"::talk_in")){
+				controls[ii].message("set", (cd.get(cdk[p]+"::talk_in")>0));
+			}else{
+				controls[ii].message("set", 0);
+			}
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+			values[ii] = [cdk[p]];
+			y_pos+=unit.row;
+			ii++;
+		}
 		controls[ii] = this.patcher.newdefault(10, 100, "comment");
 		controls[ii].message("set", "connections");
 		controls[ii].presentation(1);
@@ -1018,11 +1037,10 @@ function render_controls(){
 				controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
 				values[ii] = [cdk[p],i];
 				ii++;	
-				y_pos+=22;
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
-				controls[ii].message("set", "test signal");
+				controls[ii].message("set", "send test signal");
 				controls[ii].presentation(1);
-				controls[ii].presentation_position(20+unit.col,y_pos);
+				controls[ii].presentation_position(20+2*unit.col,y_pos);
 				ii++;
 				controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardwaretestsignal."+ii);
 				controls[ii].message("append","none");
@@ -1031,7 +1049,7 @@ function render_controls(){
 				controls[ii].message("append","lfo");
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col,20);
+				controls[ii].presentation_rect(20+2.5*unit.col,y_pos,0.5*unit.col,20);
 				values[ii] = [cdk[p],hwc[i]];
 				y_pos+=unit.row;
 				ii++;
@@ -1190,11 +1208,10 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
 				values[ii] = [cdk[p],i];
-				y_pos+=22;
 				ii++;	
 				controls[ii] = this.patcher.newdefault(10, 100, "meter~");
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
+				controls[ii].presentation_rect(20+unit.col*2,y_pos,unit.col,22);
 				ii++;
 				controls[ii] = this.patcher.newdefault(10, 100, "adc~");
 				controls[ii].message("list", hwc[i]);
@@ -1299,6 +1316,7 @@ function keybcallback(data){
 			}
 		}else{
 			var v = values[id[2]];
+			post("\nwrote: ","hardware::"+v[0]+"::"+id[1],data.value);
 			configfile.replace("hardware::"+v[0]+"::"+id[1],data.value);
 		}
 	}else if(id[0]=="hardwaretestsignal"){
@@ -1451,6 +1469,7 @@ function keybcallback(data){
 				configfile.replace("hardware::"+values[id[3]]+"::exclusive", 0);
 				configfile.replace("hardware::"+values[id[3]]+"::click_out",  0);
 				configfile.replace("hardware::"+values[id[3]]+"::cue_out", 0);
+				configfile.replace("hardware::"+values[id[3]]+"::talk_in", 0);
 				configfile.replace("hardware::"+values[id[3]]+"::connections", "{}");
 			}
 		}
