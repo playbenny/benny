@@ -224,7 +224,7 @@ function new_block(block_name,x,y){
 				}
 			}
 			// parameter info poked out here for paramwatcher
-			//if(p_type=="int") post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
+			//if((p_type=="int")&&(p_min<0)) post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
 			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
 			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
 			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);
@@ -2525,35 +2525,54 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				parameter_static_mod.poke(1, voiceoffset * MAX_PARAMETERS+i, 0);
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
+				/* DONT NEED TO POKE PARAMINFOBUFFER BECAUSE NEW BLOCK DOES IT AND ITS PER BLOCK
 				var p_type = details.get("parameters["+i+"]::type");
-				var p_pol = details.get("parameters["+i+"]::values[0]");
-				var p_min = details.get("parameters["+i+"]::values[1]");
-				var p_max = details.get("parameters["+i+"]::values[2]");
-				var p_curve = details.get("parameters["+i+"]::values[3]");
+				var p_values = details.get("parameters["+i+"]::values");
+				var p_pol = p_values[0]; 
+				var p_min = p_values[1]; 
+				var p_max = p_values[2]; 
+				var p_curve = p_values[3];
 				var p_steps = 0;
 				if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 					p_min = 0;
-					p_max = details.getsize("parameters["+i+"]::values");
-					p_steps = p_max;
+					p_steps = p_values.length;
+					p_max = p_steps-1;
+					p_curve = 0;
 				}else if(p_type=="menu_f"){
 					p_min=0;
-					p_max = details.getsize("parameters["+i+"]::values");
+					p_max = p_values.length;
 					p_steps = 0;
+					p_curve = 0;
 				}else if(p_type=="int"){
-					p_steps=p_max;
+					p_steps=p_max - p_min + 1;
 				}else if(p_type=="button"){
 					p_min = 0;
-					p_max = (details.getsize("parameters["+i+"]::values") - 1 ) / 2;
-					p_steps = p_max;
-					p_curve = "lin";
+					p_max = (p_values.length - 1 ) / 2;
+					p_steps = p_max+1;
+					p_curve = 0;
 				}
 				if(p_curve == "lin"){
 					p_curve = 0;
 				}else {
-					if(p_pol=="uni"){
-						p_curve = 1;
-					}else{
+					if(p_curve =="exp"){
 						p_curve = 2;
+					}else if(p_curve =="exp10"){
+						p_curve = 10;
+					}else if(p_curve =="exp100"){
+						p_curve = 100;
+					}else if(p_curve =="exp1000"){
+						p_curve = 1000;
+					}else if(p_curve =="exp.1"){
+						p_curve = 0.1;
+					}else if(p_curve =="exp.01"){
+						p_curve = 0.01;
+					}else if(p_curve =="exp.001"){
+						p_curve = 0.001;
+					}else if(p_curve =="s"){
+						p_curve = 1;
+					}
+					if(p_pol!="uni"){
+						p_curve = -p_curve;
 					}
 				}
 				// parameter info poked out here for paramwatcher
@@ -2561,7 +2580,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				parameter_info_buffer.poke(1,MAX_PARAMETERS*block+i,p_min);
 				parameter_info_buffer.poke(2,MAX_PARAMETERS*block+i,p_max);
 				parameter_info_buffer.poke(3,MAX_PARAMETERS*block+i,p_steps);
-				parameter_info_buffer.poke(4,MAX_PARAMETERS*block+i,p_curve);
+				parameter_info_buffer.poke(4,MAX_PARAMETERS*block+i,p_curve); */
 			} //set param spreads
 			if(recycled){
 				if(type=="audio"){
