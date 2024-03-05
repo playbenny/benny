@@ -12,10 +12,12 @@
 				"midi" : [ "play" ]
 			},
 			"out" : {
-				"midi" : [ "clock", "play" ],
+				"midi" : [ "clock",  "play" ],
+				"parameters" : [ "bar count" ],
 				"dontdefaultall" : 1,
 				"descriptions" : {
-					"midi" : [ "notes at the rate selected", "status of the play control"]
+					"midi" : [ "notes at the rate selected", "status of the play control"],
+					"parameters" : [ "bar counter" ]
 				}
 			}
 		},
