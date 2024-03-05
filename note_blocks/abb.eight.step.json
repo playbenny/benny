@@ -12,13 +12,13 @@
 				"midi" : [ "note in" ]
 			},
 			"out" : {
-				"midi" : [ "note out" ]
+				"midi" : [ "note out", "inverted note out" ]
 			}
 		},
 		"groups" : [
 
 			{ 
-				"contains" : [0, 1, 2],
+				"contains" : [0, 1, 2, 3],
 				"header"	: "8 Step Controls"
 			}
 		],
@@ -34,7 +34,7 @@
 				"default" : 0.15
 			},
 			{
-                "name" : "Order",
+                "name" : "Phase",
 				"type"	: "int",
 				"values" : ["uni", 0, 7, "lin"],
 				"wrap" : 1,
@@ -46,6 +46,13 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 1,
 				"default" : 0
+			},
+			{
+                "name" : "Length",
+				"type"	: "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.98
 			}
 		]
 	}
