@@ -899,8 +899,8 @@ function size(width,height,scale){
 				for(var i=0;i<waves_buffer[number].channelcount();i++){
 					var t=0;
 					var ii=i*2;
-					draw_wave[number][ii]=new Array(mainwindow_width/2);
-					draw_wave[number][ii+1]=new Array(mainwindow_width/2);
+					draw_wave[number][ii]=new Array(mainwindow_width/2)|0;
+					draw_wave[number][ii+1]=new Array(mainwindow_width/2)|0;
 					while(t<mainwindow_width/2){
 						draw_wave[number][ii][t]=1;
 						draw_wave[number][ii+1][t]=-1;
@@ -915,10 +915,12 @@ function size(width,height,scale){
 }
 
 function songs_audit(){
+	songs_audit_process("core.input.control", "core.input.control.auto");
+	songs_audit_process("core.input.control.2", "core.input.control.basic");
+}
+function songs_audit_process(hunting,replacing){
 	//temporary fn to go through songs, replace old blocks with new versions and tweak connection params
 	var sk = songs.getkeys();
-	var hunting = "core.input.control";
-	var replacing = "core.input.control.auto";
 	post("\nsongs audit");
 	for(var s=0;s<sk.length;s++){
 		post("\n auditing song:",sk[s]);

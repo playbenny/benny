@@ -6030,7 +6030,7 @@ function set_automap_q(v) {
 	for (var qc = 0; qc < automap.mapped_q_channels.length; qc++) {
 		for (var oc = 0; oc < automap.available_q.length; oc++) {
 			matrix.message(automap.mapped_q_channels[qc], MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+automap.available_q[oc]-1, v);
-			post("\nmatrix ", automap.mapped_q_channels[qc], MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+automap.available_q[oc]-1, v);
+			//post("\nmatrix ", automap.mapped_q_channels[qc], MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+automap.available_q[oc]-1, v);
 		}
 	}
 }
