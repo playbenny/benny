@@ -915,10 +915,10 @@ function size(width,height,scale){
 }
 
 function songs_audit(){
-	songs_audit_process("core.input.control", "core.input.control.auto");
-	songs_audit_process("core.input.control.2", "core.input.control.basic");
+	songs_audit_process("core.input.control", "core.input.control.auto","parameters");
+	songs_audit_process("core.input.control.2", "core.input.control.basic","parameters");
 }
-function songs_audit_process(hunting,replacing){
+function songs_audit_process(hunting,replacing,replace_con_type_with){
 	//temporary fn to go through songs, replace old blocks with new versions and tweak connection params
 	var sk = songs.getkeys();
 	post("\nsongs audit");
@@ -927,19 +927,23 @@ function songs_audit_process(hunting,replacing){
 		var found = -1;
 		var blks = songs.get(sk[s]+"::blocks");
 		for(var b=0;b<blks.length;b++){
-			if(blks[b].get("patcher")==hunting) found=b;
+			if(blks[b].contains("patcher")) if(blks[b].get("patcher")==hunting) found=b;
 		}
 		if(found!=-1){
 			post("\n  found block ",hunting," in block ",found);
 			songs.replace(sk[s]+"::blocks["+found+"]::patcher",replacing);
 			songs.replace(sk[s]+"::blocks["+found+"]::name",replacing);
-			var cons = songs.get(sk[s]+"::connections");
-			for(var c=0;c<cons.length;c++){
-				if(cons[c].get("from::number")==found){
-					post("\n   connection number",c,"comes from the replaced block");
-					songs.replace(sk[s]+"::connections["+c+"]::from::output::type","parameters");
+			if(replace_con_type_with != null){
+				var cons = songs.get(sk[s]+"::connections");
+				for(var c=0;c<cons.length;c++){
+					if(cons[c].contains("from")){
+						if(cons[c].get("from::number")==found){
+							post("\n   connection number",c,"comes from the replaced block");
+							songs.replace(sk[s]+"::connections["+c+"]::from::output::type",replace_con_type_with);
+						} 
+					}
+				}
 
-				} 
 			}
 		}else{
 			post("\n  DIDNT FIND IT IN THIS SONG");
