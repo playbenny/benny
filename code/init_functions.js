@@ -945,8 +945,8 @@ function songs_audit_process(hunting,replacing,replace_con_type_with){
 				}
 
 			}
-		}else{
+		}/*else{
 			post("\n  DIDNT FIND IT IN THIS SONG");
-		}
+		}*/
 	}
 }
