@@ -1310,11 +1310,6 @@ function record_button(){
 }
 
 function arm_selected_blocks(){
-	if(usermouse.ctrl){
-		for(var b=0;b<MAX_BLOCKS;b++){
-			set_block_record_arm(b,0);
-		}		
-	}
 	for(var b=0;b<MAX_BLOCKS;b++){
 		if(selected.block[b]) set_block_record_arm(b,-1);
 	}
