@@ -159,7 +159,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["voices","lfo_sine","lfo 1"]
+				"values" : ["firstvoice","sine","lfo 1"]
 			},
 			{
 				"name" : "- - -",
@@ -167,7 +167,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["voices","lfo_pulse","lfo 2"]
+				"values" : ["block","- - - -","lfo 2"]
 			},
 			{
 				"name" : "SQR",
@@ -175,7 +175,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["voices","lfo_square","lfo 3"]
+				"values" : ["voices","square","lfo 3"]
 			},
 			{
 				"name" : "SLOW_SINE",
@@ -183,7 +183,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["voices","lfo_slow","lfo 4"]
+				"values" : ["voices","slow_sine","lfo 4"]
 			}
 		]
 	}

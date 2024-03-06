@@ -41,15 +41,12 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-76",
-					"linecount" : 6,
+					"linecount" : 3,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 169.0, 335.0, 50.0, 91.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 3,
-					"presentation_rect" : [ 169.0, 335.0, 104.0, 50.0 ],
+					"patching_rect" : [ 985.0, 17.25, 112.0, 50.0 ],
 					"text" : ";\r\nto_blockmanager songs_audit"
 				}
 
@@ -13716,10 +13713,11 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager.js",
+						"filename" : "blockmanager",
 						"parameter_enable" : 0
 					}
 ,
@@ -13976,6 +13974,31 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 667.0, 882.0, 100.0, 22.0 ],
 					"text" : "mc.dac~ 1 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"linecount" : 4,
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "multichannelsignal" ],
+					"patching_rect" : [ 654.0, 497.0, 100.0, 64.0 ],
+					"text" : "mc.adc~ 1 2 3 4 5 6 9 10 11 12 13 17 18 19 20 21 22"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"linecount" : 5,
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 667.0, 882.0, 100.0, 77.0 ],
+					"text" : "mc.dac~ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26"
 				}
 
 			}
@@ -14397,6 +14420,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-31", 1 ],
+					"source" : [ "obj-20", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-21", 0 ]
 				}
@@ -14502,8 +14532,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"order" : 0,
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-90", 0 ],
-					"order" : 1,
+					"order" : 2,
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -14511,7 +14549,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-94", 0 ],
-					"order" : 0,
+					"order" : 1,
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -14834,8 +14872,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"order" : 1,
+					"source" : [ "obj-70", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-90", 0 ],
-					"order" : 2,
+					"order" : 3,
 					"source" : [ "obj-70", 0 ]
 				}
 
@@ -14843,7 +14889,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-94", 0 ],
-					"order" : 1,
+					"order" : 2,
 					"source" : [ "obj-70", 0 ]
 				}
 
@@ -15018,7 +15064,7 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-15.3::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
+			"obj-15.1::obj-11.1::obj-14.1::obj-23" : [ "vst~[6]", "vst~", 0 ],
 			"obj-95.1::obj-270" : [ "vst~[4]", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
@@ -15036,6 +15082,13 @@
 				"name" : "ValhallaDelay.maxsnap",
 				"bootpath" : "~/Documents/GitHub/benny/data",
 				"patcherrelativepath" : "../data",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "airwindows Console7Channel.maxsnap",
+				"bootpath" : "~/Documents/Max 8/Snapshots",
+				"patcherrelativepath" : "../../../Max 8/Snapshots",
 				"type" : "mx@s",
 				"implicit" : 1
 			}
@@ -15115,6 +15168,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "clip_dither.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/output_blocks",
+				"patcherrelativepath" : "../output_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "clocked.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
@@ -15143,13 +15203,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "core.input.control.2.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "core.input.control.auto.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
@@ -15165,6 +15218,13 @@
 			}
 , 			{
 				"name" : "core.input.control.auto.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.basic.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
@@ -15383,20 +15443,6 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "GenX",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "source.basic.osc.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "source.basic.osc.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
