@@ -3242,7 +3242,7 @@ function build_mod_sum_action_list(){
 						list_pointer++;
 						//then the row2's have different flags as they cover a load of variables
 						mod_sum_action_list.poke(1,list_pointer,voicelist[i]);
-						mod_sum_action_list.poke(2,list_pointer,0.001+0.1*Math.pow(4*blocks.get("blocks["+b+"]::flock::weight"),-4));//1/weight
+						mod_sum_action_list.poke(2,list_pointer,0.001+0.3*Math.pow(4*blocks.get("blocks["+b+"]::flock::weight"),-4));//1/weight
 						mod_sum_action_list.poke(3,list_pointer,5);
 						mod_sum_action_list.poke(4,list_pointer,1-Math.pow(0.5*blocks.get("blocks["+b+"]::flock::friction"),2));//friction
 						list_pointer++;
