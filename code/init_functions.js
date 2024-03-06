@@ -899,8 +899,8 @@ function size(width,height,scale){
 				for(var i=0;i<waves_buffer[number].channelcount();i++){
 					var t=0;
 					var ii=i*2;
-					draw_wave[number][ii]=new Array(mainwindow_width/2)|0;
-					draw_wave[number][ii+1]=new Array(mainwindow_width/2)|0;
+					draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
+					draw_wave[number][ii+1]=new Array((mainwindow_width/2)|0);
 					while(t<mainwindow_width/2){
 						draw_wave[number][ii][t]=1;
 						draw_wave[number][ii+1][t]=-1;
