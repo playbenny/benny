@@ -476,7 +476,6 @@ function update_all_voices_mutestatus(){
 		}
 	}
 	send_all_voice_details();
-//	messnamed("loading_complete","bang");
 }
 
 function poly_loaded(type,number){
