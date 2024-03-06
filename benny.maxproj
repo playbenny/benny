@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3792348722,
+	"modificationdate" : 3792574054,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1146,6 +1146,21 @@
 				}
 
 			}
+,
+			"core.input.control.auto.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.auto.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.basic.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
 
 		}
 ,
@@ -1531,6 +1546,11 @@
 					"projectrelativepath" : "./audio_blocks"
 				}
 
+			}
+,
+			"core.input.control.auto.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
 			}
 
 		}
@@ -2644,6 +2664,16 @@
 					"projectrelativepath" : "./audio_blocks"
 				}
 
+			}
+,
+			"core.input.control.auto.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"core.input.control.basic.json" : 			{
+				"kind" : "json",
+				"local" : 1
 			}
 
 		}

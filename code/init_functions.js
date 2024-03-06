@@ -913,3 +913,34 @@ function size(width,height,scale){
 		redraw_flag.flag=12;
 	}
 }
+
+function songs_audit(){
+	//temporary fn to go through songs, replace old blocks with new versions and tweak connection params
+	var sk = songs.getkeys();
+	var hunting = "core.input.control";
+	var replacing = "core.input.control.auto";
+	post("\nsongs audit");
+	for(var s=0;s<sk.length;s++){
+		post("\n auditing song:",sk[s]);
+		var found = -1;
+		var blks = songs.get(sk[s]+"::blocks");
+		for(var b=0;b<blks.length;b++){
+			if(blks[b].get("patcher")==hunting) found=b;
+		}
+		if(found!=-1){
+			post("\n  found block ",hunting," in block ",found);
+			songs.replace(sk[s]+"::blocks["+found+"]::patcher",replacing);
+			songs.replace(sk[s]+"::blocks["+found+"]::name",replacing);
+			var cons = songs.get(sk[s]+"::connections");
+			for(var c=0;c<cons.length;c++){
+				if(cons[c].get("from::number")==found){
+					post("\n   connection number",c,"comes from the replaced block");
+					songs.replace(sk[s]+"::connections["+c+"]::from::output::type","parameters");
+
+				} 
+			}
+		}else{
+			post("\n  DIDNT FIND IT IN THIS SONG");
+		}
+	}
+}
