@@ -16,7 +16,19 @@
 			{
 				"contains" : [3,4],
 				"height" : 0
-			}		
+			},
+			{
+				"contains" : [16,17,18,19],
+				"height" : 0,
+				"colour" : 5,
+				"header" : "siren LFO"
+			},
+			{
+				"contains" : [10,11,12,13,14,15],
+				"height" : 0,
+				"colour" : 10,
+				"header" : "move loop"
+			}			
 		],
 		"panel" : {
 			"parameters" : [5, 0, 1, 2, 3, 4]
@@ -92,7 +104,87 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
-			}			
+			},
+			{
+				"name" : "<<<",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","<<<","move -4000"]
+			},
+			{
+				"name" : "<<",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","<<","move -2000"]
+			},
+			{
+				"name" : "<",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","<","move -500"]
+			},
+			{
+				"name" : ">",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices",">","move 500"]
+			},
+			{
+				"name" : ">>",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices",">>","move 2000"]
+			},
+			{
+				"name" : ">>>",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices",">>>","move 4000"]
+			},
+			{
+				"name" : "SINE^",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","lfo_sine","lfo 1"]
+			},
+			{
+				"name" : "- - -",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","lfo_pulse","lfo 2"]
+			},
+			{
+				"name" : "SQR",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","lfo_square","lfo 3"]
+			},
+			{
+				"name" : "SLOW_SINE",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","lfo_slow","lfo 4"]
+			}
 		]
 	}
 }
