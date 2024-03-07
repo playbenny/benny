@@ -16,6 +16,8 @@ function loadbang(){
 	projectpath = path.split("patchers/");
 	projectpath = projectpath[0];
 	post("\npath is",projectpath);
+	var dropdown = this.patcher.getnamed("hw_dropdown");
+	dropdown.message("prefix", projectpath+"hardware_configs");
 	config.parse('{ }');
 	config.import_json("config.json");
 	userconfig.parse('{ }');

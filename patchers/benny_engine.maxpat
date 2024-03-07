@@ -13653,7 +13653,8 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 9.0, 217.0, 215.0, 30.0 ],
 					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ],
-					"types" : ".json"
+					"types" : ".json",
+					"varname" : "hw_dropdown"
 				}
 
 			}
