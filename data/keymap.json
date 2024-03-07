@@ -7,7 +7,7 @@
             "-3" : ["ESC", "set_sidebar_mode","block"],
             "all" : ["all","edit_typing"]
         },
-        "edit_state_label" : {
+        "edit_state" : {
             "-6" : ["del","edit_delete"],
             "-7" : ["delete","edit_delete"],
             "-4" : ["enter" , "edit_state_label", "ok"],
