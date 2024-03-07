@@ -3825,7 +3825,7 @@ function draw_sidebar(){
 				lcd_main.message("write", "block settings");
 				y_offset += 1.1* fontheight;
 
-				if((block_type == "audio")||(block_type == "hardware")){
+				if((block_type == "audio")){//||(block_type == "hardware")){ //TODO build hw recording!
 					if(usermouse.clicked2d == mouse_index){
 						lcd_main.message("paintrect", sidebar.x2-7.6*fontheight, y_offset, sidebar.x2-6.6*fontheight, fontheight+y_offset,255,158,150 );
 						lcd_main.message("frgb" ,255,255,255);
@@ -3844,19 +3844,21 @@ function draw_sidebar(){
 				}
 
 				var bc, fc;
-				bc = block_darkest;
-				fc = [255,128,50];
-				if(usermouse.clicked2d == mouse_index){ 
-					bc = fc;
-					fc = [0,0,0];
+				if(block_type!="hardware"){
+					bc = block_darkest;
+					fc = [255,128,50];
+					if(usermouse.clicked2d == mouse_index){ 
+						bc = fc;
+						fc = [0,0,0];
+					}
+					lcd_main.message("paintrect", sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-5.5*fontheight, fontheight+y_offset,bc );
+					click_zone(hard_reload_block,block,null, sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-5.5*fontheight, fontheight+y_offset,mouse_index,1 );
+					lcd_main.message("frgb" ,fc);
+					lcd_main.message("moveto" ,sidebar.x2-6.4*fontheight, fontheight*0.5+y_offset);
+					lcd_main.message("write", "re-");
+					lcd_main.message("moveto" ,sidebar.x2-6.4*fontheight, fontheight*0.75+y_offset);
+					lcd_main.message("write", "load");
 				}
-				lcd_main.message("paintrect", sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-5.5*fontheight, fontheight+y_offset,bc );
-				click_zone(hard_reload_block,block,null, sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-5.5*fontheight, fontheight+y_offset,mouse_index,1 );
-				lcd_main.message("frgb" ,fc);
-				lcd_main.message("moveto" ,sidebar.x2-6.4*fontheight, fontheight*0.5+y_offset);
-				lcd_main.message("write", "re-");
-				lcd_main.message("moveto" ,sidebar.x2-6.4*fontheight, fontheight*0.75+y_offset);
-				lcd_main.message("write", "load");
 
 				if(usermouse.clicked2d == mouse_index){ 
 					bc = block_colour;
@@ -3873,20 +3875,22 @@ function draw_sidebar(){
 				lcd_main.message("moveto" ,sidebar.x2-5.3*fontheight, fontheight*0.75+y_offset);
 				lcd_main.message("write", "name");
 
-				if(usermouse.clicked2d == mouse_index){ 
-					bc = block_colour;
-					fc = block_darkest;
-				}else{
-					bc = block_darkest;
-					fc = block_colour;
+				if(block_type!="hardware"){
+					if(usermouse.clicked2d == mouse_index){ 
+						bc = block_colour;
+						fc = block_darkest;
+					}else{
+						bc = block_darkest;
+						fc = block_colour;
+					}
+					lcd_main.message("paintrect", sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight+y_offset,bc );
+					click_zone(open_patcher, block, -1, sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight+y_offset,mouse_index,1 );
+					lcd_main.message("frgb" , fc);
+					lcd_main.message("moveto" ,sidebar.x2-4.2*fontheight, fontheight*0.5+y_offset);
+					lcd_main.message("write", "open");
+					lcd_main.message("moveto" ,sidebar.x2-4.2*fontheight, fontheight*0.75+y_offset);
+					lcd_main.message("write", "patch");
 				}
-				lcd_main.message("paintrect", sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight+y_offset,bc );
-				click_zone(open_patcher, block, -1, sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight+y_offset,mouse_index,1 );
-				lcd_main.message("frgb" , fc);
-				lcd_main.message("moveto" ,sidebar.x2-4.2*fontheight, fontheight*0.5+y_offset);
-				lcd_main.message("write", "open");
-				lcd_main.message("moveto" ,sidebar.x2-4.2*fontheight, fontheight*0.75+y_offset);
-				lcd_main.message("write", "patch");
 				
 				if(usermouse.clicked2d == mouse_index){ 
 					bc = block_colour;
