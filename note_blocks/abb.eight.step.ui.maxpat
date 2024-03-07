@@ -440,8 +440,8 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 7.0, 130.0, 104.0, 22.0 ],
-					"text" : "r mini-ui-message"
+					"patching_rect" : [ 7.0, 130.0, 131.0, 22.0 ],
+					"text" : "r eightstep-ui-message"
 				}
 
 			}

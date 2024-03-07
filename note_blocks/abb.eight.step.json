@@ -2,7 +2,7 @@
 	"abb.eight.step" : {
 		"patcher" : "abb.eight.step",
 		"type" : "note",
-		"block_ui_patcher" : "example.mini.ui",
+		"block_ui_patcher" : "abb.eight.step.ui",
 		"ui_in_sidebar_height" : 1,		
 		"no_edit" : 1,
 		"help_text" : "new note",
