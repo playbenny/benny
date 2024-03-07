@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 15.0, 69.0, 332.0, 398.0 ],
+		"rect" : [ 59.0, 72.0, 338.0, 398.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,19 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-76",
+					"linecount" : 3,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 985.0, 17.25, 112.0, 50.0 ],
+					"text" : ";\r\nto_blockmanager songs_audit"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-58",
 					"linecount" : 7,
@@ -13629,17 +13642,18 @@
 					"fontname" : "Consolas Bold",
 					"fontsize" : 18.0,
 					"id" : "obj-52",
-					"items" : [ "live_rig.json", ",", "luke ES8_3_6.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
+					"items" : [ "live_rig.json", ",", "live_rig_no_cue.json", ",", "luke ES8_3_6.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 397.0, 204.5, 138.0, 30.0 ],
-					"prefix" : "~/Documents/GitHub/multitudes/hardware_configs/",
+					"prefix" : "~/Documents/GitHub/benny/hardware_configs/",
 					"presentation" : 1,
 					"presentation_rect" : [ 9.0, 217.0, 215.0, 30.0 ],
-					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ]
+					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ],
+					"types" : ".json"
 				}
 
 			}
@@ -13920,12 +13934,12 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-20",
+					"id" : "obj-89",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 645.0, 455.0, 74.0, 22.0 ],
+					"patching_rect" : [ 636.0, 527.0, 100.0, 22.0 ],
 					"text" : "mc.adc~ 1 2",
 					"varname" : "audio_inputs"
 				}
@@ -13933,11 +13947,11 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-25",
+					"id" : "obj-94",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 664.0, 862.0, 74.0, 22.0 ],
+					"patching_rect" : [ 657.0, 862.0, 100.0, 22.0 ],
 					"text" : "mc.dac~ 1 2",
 					"varname" : "audio_outputs"
 				}
@@ -14361,13 +14375,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-31", 1 ],
-					"source" : [ "obj-20", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-21", 0 ]
 				}
@@ -14473,7 +14480,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
+					"destination" : [ "obj-94", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -14796,7 +14803,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
+					"destination" : [ "obj-94", 0 ],
 					"order" : 1,
 					"source" : [ "obj-70", 0 ]
 				}
@@ -14883,6 +14890,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-227", 0 ],
 					"source" : [ "obj-86", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-31", 1 ],
+					"source" : [ "obj-89", 0 ]
 				}
 
 			}

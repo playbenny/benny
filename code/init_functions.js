@@ -899,8 +899,8 @@ function size(width,height,scale){
 				for(var i=0;i<waves_buffer[number].channelcount();i++){
 					var t=0;
 					var ii=i*2;
-					draw_wave[number][ii]=new Array(mainwindow_width/2);
-					draw_wave[number][ii+1]=new Array(mainwindow_width/2);
+					draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
+					draw_wave[number][ii+1]=new Array((mainwindow_width/2)|0);
 					while(t<mainwindow_width/2){
 						draw_wave[number][ii][t]=1;
 						draw_wave[number][ii+1][t]=-1;
@@ -911,5 +911,42 @@ function size(width,height,scale){
 		}
 		set_display_mode(displaymode,custom_block);
 		redraw_flag.flag=12;
+	}
+}
+
+function songs_audit(){
+	songs_audit_process("core.input.control", "core.input.control.auto","parameters");
+	songs_audit_process("core.input.control.2", "core.input.control.basic","parameters");
+}
+function songs_audit_process(hunting,replacing,replace_con_type_with){
+	//temporary fn to go through songs, replace old blocks with new versions and tweak connection params
+	var sk = songs.getkeys();
+	post("\nsongs audit");
+	for(var s=0;s<sk.length;s++){
+		post("\n auditing song:",sk[s]);
+		var found = -1;
+		var blks = songs.get(sk[s]+"::blocks");
+		for(var b=0;b<blks.length;b++){
+			if(blks[b].contains("patcher")) if(blks[b].get("patcher")==hunting) found=b;
+		}
+		if(found!=-1){
+			post("\n  found block ",hunting," in block ",found);
+			songs.replace(sk[s]+"::blocks["+found+"]::patcher",replacing);
+			songs.replace(sk[s]+"::blocks["+found+"]::name",replacing);
+			if(replace_con_type_with != null){
+				var cons = songs.get(sk[s]+"::connections");
+				for(var c=0;c<cons.length;c++){
+					if(cons[c].contains("from")){
+						if(cons[c].get("from::number")==found){
+							post("\n   connection number",c,"comes from the replaced block");
+							songs.replace(sk[s]+"::connections["+c+"]::from::output::type",replace_con_type_with);
+						} 
+					}
+				}
+
+			}
+		}/*else{
+			post("\n  DIDNT FIND IT IN THIS SONG");
+		}*/
 	}
 }

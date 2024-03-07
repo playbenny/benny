@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 59.0, 107.0, 600.0, 450.0 ],
+		"rect" : [ 614.0, 183.0, 600.0, 450.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -52,7 +52,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Param pitch(440);\r\nParam lfo_mode(1);\r\nParam lfo_speed(1);\r\nParam siren_gain(0.3);\r\nParam v(0);\r\n\r\nHistory ov(0),tv(0);\r\no2=0;\r\nif(v!=ov){\r\n\tif((v==0)&&(ov>=127)){\r\n\t}else{\r\n\t\tov = v;\r\n\t\ttv = v/128;\r\n\t}\r\n}\r\nlfo = phasor(lfo_speed);\r\nlfop = selector(lfo_mode,2+cycle(lfo),1,0.9*(lfo>0.5)+1, 0.5 - 0.5*cycle(lfo));\r\npit = pitch * lfop;\r\ngain = selector(lfo_mode,1,lfo>0.5,1,1);\r\nout1 = phasor(pit)*gain*siren_gain*slide(tv,100,100);",
+					"code" : "onepole(input){\r\n\tHistory y0(0);\r\n\r\n\tParam cutoff(1000, max=20000, min=1);\r\n\r\n\tcoeff_a = clip(sin(abs(cutoff) * 2 * PI / samplerate), 0, 1);\r\n\tmix5 = mix(y0, input, coeff_a);\r\n\ty0 = fixdenorm(mix5);\r\n\treturn mix5;\r\n}\r\n\r\nParam pitch(440);\r\nParam lfo_mode(1);\r\nParam lfo_speed(1);\r\nParam siren_gain(0.3);\r\nParam v(0);\r\n\r\nHistory ov(0),tv(0);\r\nif(v!=ov){\r\n/*\tif((v==0)&&(ov>=127)){\r\n\t}else{\r\n*/\t\tov = v;\r\n\t\ttv = v/128;\r\n//\t}\r\n}\r\nlfo = phasor(lfo_speed*(1-0.98*(lfo_mode==4)));\r\nlfop = selector(lfo_mode,2+cycle(lfo),1,0.9*(lfo>0.5)+1, 0.5 - 0.5*cycle(lfo));\r\npit = pitch * lfop;\r\ngain = selector(lfo_mode,1,lfo>0.5,1,1);\r\nsq =  onepole((phasor(pit)>0.5)-0.5, cutoff=4000);\r\nout1 = sq*gain*siren_gain*slide(tv,100,100);",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
