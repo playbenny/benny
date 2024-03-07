@@ -3279,7 +3279,13 @@ function draw_sidebar(){
 									var namelabelyo = namelabely;
 									namelabely+=fontheight*0.3;
 									var scale = connections.get("connections["+mod_in_para[curp][ip-1]+"]::conversion::scale");
-									draw_h_slider((sidebar.x*0.4+0.6*mainwindow_width), namelabelyo+fo1, sidebar.x2, namelabely,colour[0],colour[1],colour[2],mouse_index,scale);
+									var thisco;
+									if(connections.get("connections["+mod_in_para[curp][ip-1]+"]::conversion::mute")==1){
+										thisco = [120,120,120];
+									}else{
+										thisco = [colour[0],colour[1],colour[2]];
+									}
+									draw_h_slider((sidebar.x*0.4+0.6*mainwindow_width), namelabelyo+fo1, sidebar.x2, namelabely,thisco[0],thisco[1],thisco[2],mouse_index,scale);
 									mouse_click_actions[mouse_index] = connection_edit;
 									mouse_click_parameters[mouse_index] = "connections["+mod_in_para[curp][ip-1]+"]::conversion::scale";
 									//post("\ndraw modulation connection",mod_in_para[curp][ip-1],mouse_click_parameters[mouse_index],scale);
@@ -3287,7 +3293,7 @@ function draw_sidebar(){
 									mouse_index++;
 					
 									lcd_main.message("moveto",sidebar.x+0.6*fo1,namelabely);
-									lcd_main.message("frgb",0.6*colour[0],0.6*colour[1],0.6*colour[2]);
+									lcd_main.message("frgb",0.6*thisco[0],0.6*thisco[1],0.6*thisco[2]);
 									var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::name");
 									var froml = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
 									var ftype = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::type");
