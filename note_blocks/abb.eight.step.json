@@ -20,6 +20,14 @@
 			{ 
 				"contains" : [0, 1, 2, 3],
 				"header"	: "8 Step Controls"
+			},
+			{ 
+				"contains" : [4, 5, 6, 7, 8, 9, 10, 11],
+				"header"	: "Velocities"
+			},
+			{
+				"contains"	: [12],
+				"header"	: "Rules"
 			}
 		],
 		"panel" : {
@@ -53,6 +61,77 @@
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0.98
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "trig_type",
+				"type" : "menu_l",
+				"values" : ["Vel A", "Vel B", "Vel C"],
+				"wrap" : 0,
+				"default" : 0
 			}
 		]
 	}
