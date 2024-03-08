@@ -593,19 +593,21 @@ function show_diagnostics(x){
 }
 
 function diagnostics(){
-	post("\n\n\n\ndiagnostics\n-----------\n");
-	post("display mode",displaymode,"\n");
+	post("\n\n\n\ndiagnostics\n-----------");
+	post("\ndisplay mode",displaymode);
 	if(displaymode=="custom") post("--",custom_block);
-	post("sidebar mode",sidebar.mode,"\n");
-	post("sidebar selected", sidebar.selected, "\n");
-	post("scope selected",sidebar.scopes.voice, sidebar.scopes.voicelist, "\n");
-	post("block selected",selected.block,"\n");
-	if(voicemap.contains(selected.block.indexOf(1))) post("- its voices: ",voicemap.get(selected.block.indexOf(1)),"\n");
-	post("wire selected",selected.wire,"\n");
-	post("panels list: ",panels_order,"\n");
-	post("note patcherlist: \n",note_patcherlist,"\n loaded note patcherlist: \n",loaded_note_patcherlist,"\n audio patcherlist: \n",audio_patcherlist,"\n loaded audio patcherlist: \n",loaded_audio_patcherlist,"\n upsampling list: \n",audio_upsamplelist,"\n ui patcherlist: \n",ui_patcherlist,"\n loaded ui patcherlist: \n",loaded_ui_patcherlist,"\n vst list:\n",vst_list,"\n\n");
-	post("Number of items in the waves polybuffer:", waves_polybuffer.count); 
-	post("Memory used in the waves polybuffer:", waves_polybuffer.size/1048576, " megabytes\n"); 
+	post("\nsidebar mode",sidebar.mode);
+	post("\nsidebar selected", sidebar.selected);
+	post("\nscope selected",sidebar.scopes.voice, sidebar.scopes.voicelist);
+	post("\nnblock selected",selected.block);
+	if(voicemap.contains(selected.block.indexOf(1))) post("- its voices: ",voicemap.get(selected.block.indexOf(1)));
+	post("\nwire selected",selected.wire);
+	post("\npanels list: ",panels_order);
+	post("\nnote patcherlist: \n",note_patcherlist,"\n loaded note patcherlist: \n",loaded_note_patcherlist,"\n audio patcherlist: \n",audio_patcherlist,"\n loaded audio patcherlist: \n",loaded_audio_patcherlist,"\n upsampling list: \n",audio_upsamplelist,"\n ui patcherlist: \n",ui_patcherlist,"\n loaded ui patcherlist: \n",loaded_ui_patcherlist,"\n vst list:\n",vst_list,"\n\n");
+	post("\nNumber of items in the waves polybuffer:", waves_polybuffer.count); 
+	post("\nMemory used in the waves polybuffer:", waves_polybuffer.size/1048576, " megabytes"); 
+	post("\nredrawflag targets",redraw_flag.targets);
+	post("\nredrawflag paneltargets",redraw_flag.paneltargets);
 	deferred_diagnostics();
 }
 

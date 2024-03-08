@@ -10,7 +10,9 @@
 		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"midi" : [ "set target", "subloop", "pitch", "p_trig"]
+				"midi" : [ "set target", "subloop", "pitch", "p_trig"],
+				"default" : 0,
+				"automap_to" : 1
 			},
 			"out" : {
 				"audio" : [ "waves" ],
@@ -20,7 +22,8 @@
 		"groups" : [
 			{
 				"contains" : [0],
-				"colour" : 3
+				"colour" : 3,
+				"height" : 0
 			},
 			{ 
 				"contains" : [7,5,6,2],
