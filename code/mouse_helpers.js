@@ -1079,9 +1079,7 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			set_sidebar_mode("block");
 		}
 	}
-}	
-
-
+}
 
 function show_vst_editor(parameter,value){
 	var vlist = /*audio_*/voicemap.get(value);
@@ -1124,10 +1122,10 @@ function scroll_waves(parameter,value){
 }
 
 function edit_label(parameter,value){
-	post("\nok so",text_being_editted);
+	//post("\nok so",text_being_editted);
 	if(parameter == "ok"){
 		var block = selected.block.indexOf(1);
-		post("bblock",block);
+		//post("bblock",block);
 		if(block>-1){
 			if(text_being_editted!=""){
 				blocks.replace("blocks["+block+"]::label",text_being_editted);
@@ -1137,6 +1135,7 @@ function edit_label(parameter,value){
 		}		
 	}
 }
+
 function edit_state_label(parameter,value){
 	if(parameter == "ok"){
 		var state = sidebar.selected;
@@ -1169,6 +1168,8 @@ function edit_typing(key){
 	}
 	redraw_flag.flag |= 2;
 }
+
+
 function static_mod_adjust(parameter,value){
 	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno

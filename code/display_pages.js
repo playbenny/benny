@@ -1660,7 +1660,7 @@ function clear_screens(){
 		}
 		mouse_index=1;
 		click_clear(0,0);
-		mouse_click_actions[0] = "none";
+		mouse_click_actions[0] = null;
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
