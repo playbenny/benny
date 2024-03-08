@@ -22,7 +22,8 @@
 		"groups" : [
 			{
 				"contains" : [0],
-				"colour" : 3
+				"colour" : 3,
+				"height" : 0
 			},
 			{ 
 				"contains" : [7,5,6,2],

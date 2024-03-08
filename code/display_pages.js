@@ -450,26 +450,27 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 					h_s=1.5;
 				}else{
 					if(maxnamelabely>0){
-						h_s = (maxnamelabely - y_offset)/fontheight; //+=0.9;
+						h_s = (maxnamelabely - y_offset)/fontheight;
 					}else{
-						h_s += 0.9;//4;
+						h_s += 0.9;
 					}
 				}
 				var cols=1;
 				if(params[curp].contains("columns")) cols = params[curp].get("columns");
+				if(p_values.length/cols > cols) cols = (p_values.length/cols) |0;
 				var valcol;
 				if(params[curp].contains("colours")){
-					valcol = params[curp].get("colours");//["+bl+"]");
+					valcol = params[curp].get("colours");
 				}else{
 					valcol = [block_colour];
 				}
 				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,valcol,0,0,mouse_index,b,curp,flags,cols,statecount,p_type,wrap,vl[0],h_s,p_values];
 				mouse_index = parameter_menu_l(panelslider_index);
 			}else if((p_type=="menu_b")){
-				var statecount = (p_values.length);// - 1) / 2;
+				var statecount = (p_values.length);
 				pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*b+curp);
-				var ppv2 = Math.floor(pv * statecount * 0.99999);;
-				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp); //
+				var ppv2 = Math.floor(pv * statecount * 0.99999);
+				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+curp);
 				var pv2 = Math.floor(pv * statecount * 0.99999);
 				var valcol;
 				if(params[curp].contains("colours")){
