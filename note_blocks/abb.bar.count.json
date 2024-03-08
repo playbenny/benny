@@ -1,0 +1,37 @@
+{
+	"abb.bar.count" : {
+		"patcher" : "abb.bar.count",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "note in" ]
+			},
+			"out" : {
+				"midi" : [ "note out" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0],
+				"header"	: "Bar Length"
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "Bar Length",
+				"type" : "menu_l",
+				"values" : ["16", "12", "8"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

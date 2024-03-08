@@ -140,11 +140,11 @@
 				"default" : 0
 			},
 			{
-				"name" : "Mode",
+				"name" : "(friend)",
 				"type"	: "int",
-				"values" : ["uni", -7, 7, "lin"],
+				"values" : ["uni", 0, 14, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0
 			}
 		]
 	}

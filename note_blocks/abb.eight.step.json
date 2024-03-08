@@ -26,7 +26,7 @@
 				"header"	: "Velocities"
 			},
 			{
-				"contains"	: [12],
+				"contains"	: [12, 13],
 				"header"	: "Rules"
 			}
 		],
@@ -130,6 +130,13 @@
 				"name" : "trig_type",
 				"type" : "menu_l",
 				"values" : ["Vel A", "Vel B", "Vel C"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+                "name" : "Bar Reset",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			}
