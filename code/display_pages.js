@@ -513,6 +513,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				}								
 				mouse_index++;
 			}
+			panelslider_index++;
 /*			if(p_type=="button"){
 				pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[0]+plist[p]); //parameter_value_buffer.peek(1,MAX_PARAMETERS*b+plist[p]);
 				//paramslider_details[plist[p]]=[x1+(p/plist.length)*column_width,18+(y+2+has_states)*fontheight,x1-2+((p+1)/plist.length)*column_width,18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight, block_colour[0], block_colour[1], block_colour[2], mouse_index,b,plist[p],flags, namearr,namelabely,p_type,wrap,block_name,h_slider,0];
