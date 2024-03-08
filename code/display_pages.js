@@ -2740,7 +2740,17 @@ function draw_sidebar(){
 								var vl=bvs[sidebar.selected_voice];
 								note_poly.setvalue( automap.available_k, "maptarget", MAX_BLOCKS + vl);
 							}
-							if(automap.mapped_k!=block) automap.inputno_k = 0;
+							if(automap.mapped_k!=block){
+								//see if there's a default automap target input stored
+								if(blocks.contains("blocks["+block+"]::automap_to")){
+									automap.inputno_k = blocks.get("blocks["+block+"]::automap_to");
+								}else if(blocktypes.contains(block_name+"::connections::in::automap_to")){
+									automap.inputno_k = blocktypes.get(block_name+"::connections::in::automap_to");
+								}else{
+									automap.inputno_k = 0;
+								}
+								blocks.replace("blocks["+block+"]::automap_to",automap.inputno_k);
+							}
 							automap.mapped_k=block;
 							note_poly.setvalue( automap.available_k, "maptargetinput", automap.inputno_k);
 						}else{
