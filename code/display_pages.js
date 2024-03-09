@@ -1371,10 +1371,12 @@ function draw_wire(connection_number){
 			to_anglevector = [0, -0.4, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
-			if((dist<4.5)&&(cfrom!=cto)){
-				segments_to_use /= 4; //flag for short wires - use less segments.
-			}else if((dist<9)&&(cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
-				segments_to_use /= 2;
+			if((cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
+				if(dist<4.5){
+					segments_to_use /= 4; //flag for short wires - use less segments.
+				}else if(dist<9){
+					segments_to_use /= 2;
+				}
 			}
 			segments_to_use = 4*(Math.max(1,Math.round(segments_to_use/4)));
 			var bez_prep=[];
@@ -1744,7 +1746,7 @@ function draw_topbar(){
 	draw_cpu_meter();
 
 
-	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
+	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;//4.8;
 
 	if(recording_flag==3){
 		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );
