@@ -1284,19 +1284,19 @@ function draw_wire(connection_number){
 			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			if((from_type=="audio")){// || (from_type=="hardware") || (from_type=="matrix")){
 				fconx = ((from_number+0.5)/(NO_IO_PER_BLOCK)) ;
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.125 ];
 			}else{
 				fconx = ((from_number+0.5)/(num_outs));
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.125 ];
 				if(from_type == "midi") from_pos[2]-=0.25;
 				if(from_type == "parameters") from_pos[2]-=0.125;
 			}
 			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
 				tconx = ((to_number+0.5)/(NO_IO_PER_BLOCK));
-				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
+				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2]-0.125 ];
 			}else{
 				tconx =  ((to_number+0.5)/(num_ins));
-				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
+				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] -0.125 ];
 				if(to_type == "midi") to_pos[2] -= 0.25;
 				if(to_type == "parameters") to_pos[2] -= 0.125;
 				if(to_type == "block"){
