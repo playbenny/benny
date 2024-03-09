@@ -937,12 +937,13 @@ function block_and_wire_colours(){ //for selection and mute etc
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
 		selected.anysel = 1; 
 	}
+	var search=(sidebar.mode=="edit_state"); //if search==1 this is about highlighting blocks to the user, so dark ones are darker, mute doesn't darken so much, wires don't get the highlight
 	anymuted=0;
 	var subv=1; //
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
 			draw_block_texture(i);
-			block_c = [1,1,1,1];
+			block_c = [1,1,1,1]; //the first one is white, the others have no texture
 			block_mute = blocks.get("blocks["+i+"]::mute");
 			block_v = blocks.get("blocks["+i+"]::poly::voices");
 			subvoices = Math.max(1,blocks.get("blocks["+i+"]::subvoices"));
@@ -953,8 +954,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			for(t=0;t<=block_v*subvoices;t++){
 				var p = blocks_cube[i][t].position;
 				if(selected.anysel){
-					
-					if(selected.block[i]){
+					if(selected.block[i]){ //
 						if((sidebar.selected_voice==-1)){
 							blocks_cube[i][t].color = block_c; 
 						}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
@@ -962,18 +962,24 @@ function block_and_wire_colours(){ //for selection and mute etc
 						}else{
 							blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 						}
-
 						blocks_cube[i][t].position = [p[0],p[1],1];
 					}else{
-						blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1];
+						if(block_mute||search){
+							blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
+						}else{
+							blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+						}
 						blocks_cube[i][t].position = [p[0],p[1],0];
 					}
 				}else{
-					blocks_cube[i][t].color = block_c;
-
+					if(block_mute){
+						blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];	
+					}else{
+						blocks_cube[i][t].color = block_c;
+					}
 					blocks_cube[i][t].position = [p[0],p[1],0];
 				}
-				if(block_mute) blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+				
 				if(t==0){
 					block_c = blocks.get("blocks["+i+"]::space::colour");
 					block_c[0] /= 256;

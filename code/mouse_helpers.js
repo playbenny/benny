@@ -1335,7 +1335,7 @@ function set_record_arm(block,x){
 
 function set_block_record_arm(block,x){
 	var tt = blocks.get("blocks["+block+"]::type");
-	if((tt=="audio")||(tt=="hardware")){
+	if((tt=="audio")){//||(tt=="hardware")){
 		if(x==0){
 			record_arm[block] = 0;
 		}else if(x==1){
