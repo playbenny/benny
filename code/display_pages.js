@@ -1284,23 +1284,23 @@ function draw_wire(connection_number){
 			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			if((from_type=="audio")){// || (from_type=="hardware") || (from_type=="matrix")){
 				fconx = ((from_number+0.5)/(NO_IO_PER_BLOCK)) ;
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.125 ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.25 ];
 			}else{
 				fconx = ((from_number+0.5)/(num_outs));
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.125 ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.25 ];
 				if(from_type == "midi") from_pos[2]-=0.25;
 				if(from_type == "parameters") from_pos[2]-=0.125;
 			}
 			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
 				tconx = ((to_number+0.5)/(NO_IO_PER_BLOCK));
-				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2]-0.125 ];
+				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2]-0.25 ];
 			}else{
 				tconx =  ((to_number+0.5)/(num_ins));
-				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] -0.125 ];
-				if(to_type == "midi") to_pos[2] -= 0.25;
+				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] -0.25 ];
+				if(to_type == "midi") to_pos[2] -= 0.1875;
 				if(to_type == "parameters") to_pos[2] -= 0.125;
 				if(to_type == "block"){
-					to_pos[2] -= 0.375;
+					to_pos[2] -= 0.25;
 					tconx = 0.5;
 				} 
 			}
@@ -1402,7 +1402,7 @@ function draw_wire(connection_number){
 			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
 			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -0.3*Math.max(0,mvl-2);
+			blob_position[2] =  -0.25 -0.3*Math.max(0,mvl-2);
 			var mv3=mvl*0.05;
 			
 			mv3 = mv3 * mv3 * mv3 * 20;
