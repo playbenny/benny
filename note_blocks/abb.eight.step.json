@@ -35,7 +35,7 @@
 		},
 		"parameters" : [
 			{
-                "name" : "Desity",
+                "name" : "Density",
 				"type"	: "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,

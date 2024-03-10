@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "example.mini.ui",
 		"ui_in_sidebar_height" : 1,		
 		"no_edit" : 1,
-		"help_text" : "Quantiser (needs Scale Master)",
+		"help_text" : "Note Processor, Quantiser and beyond",
 		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {
@@ -26,7 +26,7 @@
 				"height" : 0
 			},
 			{
-				"contains"	:[9, 10, 11, 12],
+				"contains"	:[9, 10, 11, 12, 15],
 				"header"	:"Modify"
 			}
 		],
@@ -91,7 +91,7 @@
 				"default" : 1
 			},
 			{
-				"name" : "Shift",
+				"name" : "Degree",
 				"type"	: "int",
 				"values" : ["uni", -14, 14, "lin"],
 				"wrap" : 0,
@@ -126,11 +126,11 @@
 				"default" : 0
 			},
 			{
-				"name" : "Up/Down",
-				"type"	: "int",
-				"values" : ["uni", 0, 1, "lin"],
+				"name" : "U[/Dpwn",
+				"type" : "menu_l",
+				"values" : ["Down", "Up"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 1
 			},
 			{
 				"name" : "Length",
@@ -143,6 +143,13 @@
 				"name" : "(friend)",
 				"type"	: "int",
 				"values" : ["uni", 0, 14, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Bar Reset",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			}
