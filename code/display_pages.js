@@ -937,12 +937,13 @@ function block_and_wire_colours(){ //for selection and mute etc
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
 		selected.anysel = 1; 
 	}
+	var search=(sidebar.mode=="edit_state"); //if search==1 this is about highlighting blocks to the user, so dark ones are darker, mute doesn't darken so much, wires don't get the highlight
 	anymuted=0;
 	var subv=1; //
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
 			draw_block_texture(i);
-			block_c = [1,1,1,1];
+			block_c = [1,1,1,1]; //the first one is white, the others have no texture
 			block_mute = blocks.get("blocks["+i+"]::mute");
 			block_v = blocks.get("blocks["+i+"]::poly::voices");
 			subvoices = Math.max(1,blocks.get("blocks["+i+"]::subvoices"));
@@ -953,8 +954,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			for(t=0;t<=block_v*subvoices;t++){
 				var p = blocks_cube[i][t].position;
 				if(selected.anysel){
-					
-					if(selected.block[i]){
+					if(selected.block[i]){ //
 						if((sidebar.selected_voice==-1)){
 							blocks_cube[i][t].color = block_c; 
 						}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
@@ -962,18 +962,24 @@ function block_and_wire_colours(){ //for selection and mute etc
 						}else{
 							blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 						}
-
 						blocks_cube[i][t].position = [p[0],p[1],1];
 					}else{
-						blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1];
+						if(block_mute||search){
+							blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
+						}else{
+							blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+						}
 						blocks_cube[i][t].position = [p[0],p[1],0];
 					}
 				}else{
-					blocks_cube[i][t].color = block_c;
-
+					if(block_mute){
+						blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];	
+					}else{
+						blocks_cube[i][t].color = block_c;
+					}
 					blocks_cube[i][t].position = [p[0],p[1],0];
 				}
-				if(block_mute) blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+				
 				if(t==0){
 					block_c = blocks.get("blocks["+i+"]::space::colour");
 					block_c[0] /= 256;
@@ -1278,23 +1284,23 @@ function draw_wire(connection_number){
 			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			if((from_type=="audio")){// || (from_type=="hardware") || (from_type=="matrix")){
 				fconx = ((from_number+0.5)/(NO_IO_PER_BLOCK)) ;
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.25 ];
 			}else{
 				fconx = ((from_number+0.5)/(num_outs));
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.25 ];
 				if(from_type == "midi") from_pos[2]-=0.25;
 				if(from_type == "parameters") from_pos[2]-=0.125;
 			}
 			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
 				tconx = ((to_number+0.5)/(NO_IO_PER_BLOCK));
-				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
+				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2]-0.25 ];
 			}else{
 				tconx =  ((to_number+0.5)/(num_ins));
-				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
-				if(to_type == "midi") to_pos[2] -= 0.25;
+				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] -0.25 ];
+				if(to_type == "midi") to_pos[2] -= 0.1875;
 				if(to_type == "parameters") to_pos[2] -= 0.125;
 				if(to_type == "block"){
-					to_pos[2] -= 0.375;
+					to_pos[2] -= 0.25;
 					tconx = 0.5;
 				} 
 			}
@@ -1365,10 +1371,12 @@ function draw_wire(connection_number){
 			to_anglevector = [0, -0.4, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
-			if((dist<4.5)&&(cfrom!=cto)){
-				segments_to_use /= 4; //flag for short wires - use less segments.
-			}else if((dist<9)&&(cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
-				segments_to_use /= 2;
+			if((cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
+				if(dist<4.5){
+					segments_to_use /= 4; //flag for short wires - use less segments.
+				}else if(dist<9){
+					segments_to_use /= 2;
+				}
 			}
 			segments_to_use = 4*(Math.max(1,Math.round(segments_to_use/4)));
 			var bez_prep=[];
@@ -1394,7 +1402,7 @@ function draw_wire(connection_number){
 			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
 			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -0.3*Math.max(0,mvl-2);
+			blob_position[2] =  -0.25 -0.3*Math.max(0,mvl-2);
 			var mv3=mvl*0.05;
 			
 			mv3 = mv3 * mv3 * mv3 * 20;
@@ -1660,7 +1668,7 @@ function clear_screens(){
 		}
 		mouse_index=1;
 		click_clear(0,0);
-		mouse_click_actions[0] = "none";
+		mouse_click_actions[0] = null;
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
@@ -1738,7 +1746,7 @@ function draw_topbar(){
 	draw_cpu_meter();
 
 
-	x_o = 1.3 + 4*(MAX_USED_AUDIO_INPUTS+MAX_USED_AUDIO_OUTPUTS)/fontheight;//4.8;
+	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;//4.8;
 
 	if(recording_flag==3){
 		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );
@@ -1987,70 +1995,6 @@ function draw_topbar(){
 		lcd_main.message("write", loading.songname);
 		//lcd_main.message("write", "-ing");
 		mouse_index++;
-		if(songs.contains(songlist[currentsong]+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
-			var hint = songs.get(songlist[currentsong]+"::notepad");
-			lcd_main.message("paintrect", sidebar.x, 9, sidebar.x2 ,mainwindow_height -9,64,64,64);
-			lcd_main.message("frgb", menucolour);
-			var y_offset=9+fontheight;
-			lcd_main.message("moveto", sidebar.x+fontheight*0.2, y_offset);
-			setfontsize(fontsmall*2);
-			lcd_main.message("write", "SONG NOTES");
-			
-			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-			lcd_main.message("textface", "normal");
-			// this is copied from the 'help' display. £ is newline * is bold
-			var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
-			var rowstart=0;
-			var rowend=20;
-			hint = hint+"                       ";
-			var bold=0;
-			var sameline=0;
-			for(var ri=0;ri<hintrows;ri++){
-				while((hint[rowend]!=' ') && (rowend>1+rowstart)){ rowend--; }
-				var sliced = hint.slice(rowstart,rowend);
-				if(!sameline) {
-					lcd_main.message("moveto",sidebar.x+fontheight*0.2,y_offset+fontheight*(0.75+0.6*ri));
-				}else{
-					ri--;
-				}
-				sameline=0;					
-				var newlineind = sliced.indexOf("£");
-				var boldind = sliced.indexOf("*");		
-				if((boldind>-1)&&(newlineind>-1)){
-					if(boldind<newlineind){
-						newlineind=-1;
-					}else{
-						boldind=-1;
-					}
-				}		
-				if(newlineind>-1){
-					rowend = rowstart+ sliced.indexOf("£");
-					sliced = hint.slice(rowstart,rowend);
-					sameline=0;
-				}
-				if(boldind>-1){
-					sameline=1;
-					bold=1-bold;
-					rowend = rowstart+ sliced.indexOf("*");
-					sliced = hint.slice(rowstart,rowend);
-				}
-				lcd_main.message("write",sliced);
-				if(!sameline){
-					rowstart=rowend+1;
-					rowend+=20;
-				}else{
-					var t = rowstart+20;
-					rowstart=rowend+1
-					rowend=t;
-				}
-				if(bold){
-					lcd_main.message("textface", "bold");
-				}else{
-					lcd_main.message("textface", "normal");
-				}	
-			}
-			if(!bold) lcd_main.message("textface", "bold");
-		}
 	}
 	
 }

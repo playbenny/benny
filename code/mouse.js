@@ -256,10 +256,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						if(usermouse.last.got_i != danger_button){
 							danger_button = -1;
 						} 
-						//if(Array.isArray(f)) post("f is an array",mouse_click_actions[usermouse.last.got_i][0],mouse_click_actions[usermouse.last.got_i][1]);
-						//post("f is",f,"index is",usermouse.last.got_i,usermouse.last.got_t);
-						//post("or",f.name);
-						f(p,v);
+						if(f!=null)	f(p,v);
 						if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.deferred|=2;
 					}
 					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider

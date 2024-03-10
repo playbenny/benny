@@ -18,11 +18,11 @@
 		"groups" : [	 
 			{ 
 				"contains" : [3,6, 4,7, 5,8],
-				"height" : 0
+				"height" : 2
 			},		 
 			{ 
 				"contains" : [9, 10, 11],
-				"height" : 0
+				"height" : 2
 			}		 
 		],
 		"parameters" : [
@@ -90,25 +90,28 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "A_mode",
-				"type" : "menu_i",
+				"name" : "A mode",
+				"type" : "menu_l",
 				"values" : ["HOLD", "TOGGLE", "TRIGGER"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0,
+				"force_label" : 1
 			},
 			{
-				"name" : "B_mode",
-				"type" : "menu_i",
+				"name" : "B mode",
+				"type" : "menu_l",
 				"values" : ["HOLD", "TOGGLE", "TRIGGER"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0,
+				"force_label" : 1
 			},
 			{
-				"name" : "C_mode",
-				"type" : "menu_i",
+				"name" : "C mode",
+				"type" : "menu_l",
 				"values" : ["HOLD", "TOGGLE", "TRIGGER"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0,
+				"force_label" : 1
 			}
 		]
 	}

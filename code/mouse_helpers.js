@@ -904,7 +904,15 @@ function fire_whole_state_btn(state,value){
 	//post("\nwhole state btn")
 	if(usermouse.ctrl){
 		sidebar.selected = state;
+		//need to now select just the blocks that are in this state
+		var stat = states.get("states::"+state);
+		var sc_list = stat.getkeys();
+		selected.block=[];
 		set_sidebar_mode("edit_state");
+		for(var i = 128;i>=0;i--) selected.block.push(0);
+		for(var i = sc_list.length-1;i>=0;i--) selected.block[sc_list[i]]=1;
+		post("\nselected these blocks",sc_list);
+		block_and_wire_colours();
 	}else{
 		fire_whole_state(state);
 	}
@@ -1079,9 +1087,7 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			set_sidebar_mode("block");
 		}
 	}
-}	
-
-
+}
 
 function show_vst_editor(parameter,value){
 	var vlist = /*audio_*/voicemap.get(value);
@@ -1124,10 +1130,10 @@ function scroll_waves(parameter,value){
 }
 
 function edit_label(parameter,value){
-	post("\nok so",text_being_editted);
+	//post("\nok so",text_being_editted);
 	if(parameter == "ok"){
 		var block = selected.block.indexOf(1);
-		post("bblock",block);
+		//post("bblock",block);
 		if(block>-1){
 			if(text_being_editted!=""){
 				blocks.replace("blocks["+block+"]::label",text_being_editted);
@@ -1137,6 +1143,7 @@ function edit_label(parameter,value){
 		}		
 	}
 }
+
 function edit_state_label(parameter,value){
 	if(parameter == "ok"){
 		var state = sidebar.selected;
@@ -1169,6 +1176,8 @@ function edit_typing(key){
 	}
 	redraw_flag.flag |= 2;
 }
+
+
 function static_mod_adjust(parameter,value){
 	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
@@ -1326,7 +1335,7 @@ function set_record_arm(block,x){
 
 function set_block_record_arm(block,x){
 	var tt = blocks.get("blocks["+block+"]::type");
-	if((tt=="audio")||(tt=="hardware")){
+	if((tt=="audio")){//||(tt=="hardware")){
 		if(x==0){
 			record_arm[block] = 0;
 		}else if(x==1){

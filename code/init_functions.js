@@ -828,7 +828,7 @@ function populate_lookup_tables(){
 function transfer_input_lists(){ // this routine also populates controller lists and keyboard input lists in all blocks in the db
 	var k=blocktypes.getkeys();
 	var t, mk;
-	post("transferring controller and keyboard lists to blocks\n");
+	post("\ntransferring controller and keyboard lists to blocks");
 	if(io_dict.contains("controllers")){  //looks for blocks with a param called 'controller number' and populates the menu list with the current set of controllers
 		for(t in k){
 			var ps = blocktypes.getsize(k[t]+"::parameters");
