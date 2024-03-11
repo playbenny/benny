@@ -37,6 +37,8 @@ function loadbang(){
 	filepath = this.patcher.filepath;
 	filepath = filepath.split("/patchers");
 	filepath = filepath[0];
+	var dropdown = this.patcher.getnamed("hw_list");
+	dropdown.message("prefix", filepath+"/hardware_configs");
 	post("\n path is",filepath);
 	outlet(0,"getmidi","bang");
 	outlet(0,"library","read",filepath+"/data/hardware_library.json");
