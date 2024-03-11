@@ -26,7 +26,7 @@
 				"height" : 0
 			},
 			{
-				"contains"	:[9, 10, 11, 12],
+				"contains"	:[9, 10, 11, 12, 15],
 				"header"	:"Modify"
 			}
 		],
@@ -143,6 +143,13 @@
 				"name" : "(friend)",
 				"type"	: "int",
 				"values" : ["uni", 0, 14, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Bar Reset",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			}
