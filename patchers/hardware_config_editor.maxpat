@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 100.0, 100.0, 853.0, 616.0 ],
+		"rect" : [ 274.0, 124.0, 853.0, 616.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -41,14 +41,14 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-101",
-					"linecount" : 35,
+					"linecount" : 33,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 606.0, 42.0, 152.0, 489.0 ],
+					"patching_rect" : [ 606.0, 42.0, 159.0, 462.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 24,
-					"presentation_rect" : [ 604.0, 130.0, 212.5, 338.0 ],
+					"presentation_linecount" : 23,
+					"presentation_rect" : [ 604.0, 130.0, 217.0, 324.0 ],
 					"text" : "in order to use the self-tuner midi to cv block we need to measure the LOOPBACK LATENCY - the time for a signal to go out and back in to the computer. this is rarely accurately reported by sound drivers so we measure it instead. once your setup is complete, from the list above choose a piece of hardware that can be set to pass audio as close to unmodified as possible - a wide open filter, or a delay set to dry only, or if you have nothing suitable, a wire from your soundcard's output to its input.\n\nthen just click the round button until the time value measured stabilises. as an example, my RME digiface/expert sleepers modules measure 590 here.\n\nfinally click save or save as at the top and this value will be stored in the json file along with your hardware setup."
 				}
 
@@ -1980,9 +1980,11 @@
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 5.0, 6.0, 330.0, 23.0 ],
-					"prefix" : "~/Documents/GitHub/multitudes/hardware_configs/",
+					"prefix" : "C:/Users/jhold/Documents/GitHub/bennyhardware_configs",
 					"presentation" : 1,
-					"presentation_rect" : [ 10.0, 10.5, 213.0, 23.0 ]
+					"presentation_rect" : [ 10.0, 10.5, 213.0, 23.0 ],
+					"types" : ".json",
+					"varname" : "hw_list"
 				}
 
 			}
