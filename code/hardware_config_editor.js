@@ -324,19 +324,21 @@ function render_controls(){
 		ii++;
 
 		//"scaling" : 0.125,
-		controls[ii] = this.patcher.newdefault(10, 100, "comment");
-		controls[ii].message("set", "scaling");
-		controls[ii].presentation(1);
-		controls[ii].presentation_position(30,y_pos);
-		ii++;
-		controls[ii] = this.patcher.newdefault(10, 100, "flonum" , "@varname", "controller.scaling."+ii);
-		controls[ii].message("set", cd.get(cdk[p]+"::scaling"));
-		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
-		controls[ii].presentation(1);
-		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-		values[ii] = [cdk[p]];
-		y_pos+=unit.row;
-		ii++;
+		if(cd.get(cdk[p]+"::type")=="encoder"){
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "scaling");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(30,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "flonum" , "@varname", "controller.scaling."+ii);
+			controls[ii].message("set", cd.get(cdk[p]+"::scaling"));
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+			values[ii] = [cdk[p]];
+			y_pos+=unit.row;
+			ii++;
+		}
 
 		//"columns" : 4,
 		controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -391,6 +393,7 @@ function render_controls(){
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "controllersubkey.colour.type."+ii);
 			controls[ii].message("append", "midifighter");
+			controls[ii].message("append", "novation launchcontrol");
 			controls[ii].message("set", cd.get(cdk[p]+"::colour::type"));
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
@@ -465,6 +468,7 @@ function render_controls(){
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "controllersubkey.brightness.type."+ii);
 			controls[ii].message("append", "midifighter");
+			controls[ii].message("append", "novation launchcontrol");
 			controls[ii].message("set", cd.get(cdk[p]+"::brightness::type"));
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
@@ -547,7 +551,7 @@ function render_controls(){
 		//"value" : {
 		if(cd.contains(cdk[p]+"::value")){
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
-			controls[ii].message("set", "value feedback cc");
+			controls[ii].message("set", "value feedback messages");
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
 			ii++;
@@ -565,6 +569,7 @@ function render_controls(){
 			controls[ii].presentation_position(40,y_pos);
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "controllersubkey.value.type."+ii);
+			controls[ii].message("append", "note");
 			controls[ii].message("append", "cc");
 			controls[ii].message("set", cd.get(cdk[p]+"::value::type"));
 			controls[ii].presentation(1);
@@ -639,6 +644,7 @@ function render_controls(){
 			controls[ii].presentation_position(40,y_pos);
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "controllersubkey.resets.type."+ii);
+			controls[ii].message("append", "note");
 			controls[ii].message("append", "cc");
 			controls[ii].message("set", cd.get(cdk[p]+"::resets::type"));
 			controls[ii].presentation(1);
@@ -713,6 +719,7 @@ function render_controls(){
 			controls[ii].presentation_position(40,y_pos);
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "controllersubkey.buttons.type."+ii);
+			controls[ii].message("append", "note");
 			controls[ii].message("append", "cc");
 			controls[ii].message("set", cd.get(cdk[p]+"::buttons::type"));
 			controls[ii].presentation(1);
@@ -738,12 +745,27 @@ function render_controls(){
 	
 			//"first" : 0,
 			controls[ii] = this.patcher.newdefault(10, 100, "comment");
-			controls[ii].message("set", "cc of first control");
+			controls[ii].message("set", "cc/note of first button");
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(40,y_pos);
 			ii++;
 			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.first."+ii);
 			controls[ii].message("set", cd.get(cdk[p]+"::buttons::first"));
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
+			values[ii] = [cdk[p]];
+			y_pos+=unit.row;
+			ii++;
+
+			//"count" : 24,
+			controls[ii] = this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "number of buttons");
+			controls[ii].presentation(1);
+			controls[ii].presentation_position(40,y_pos);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.count."+ii);
+			controls[ii].message("set", cd.get(cdk[p]+"::buttons::count"));
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);

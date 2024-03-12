@@ -41,14 +41,14 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-101",
-					"linecount" : 33,
+					"linecount" : 31,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 606.0, 42.0, 159.0, 462.0 ],
+					"patching_rect" : [ 606.0, 42.0, 163.0, 434.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 23,
-					"presentation_rect" : [ 604.0, 130.0, 217.0, 324.0 ],
+					"presentation_rect" : [ 604.0, 130.0, 220.0, 324.0 ],
 					"text" : "in order to use the self-tuner midi to cv block we need to measure the LOOPBACK LATENCY - the time for a signal to go out and back in to the computer. this is rarely accurately reported by sound drivers so we measure it instead. once your setup is complete, from the list above choose a piece of hardware that can be set to pass audio as close to unmodified as possible - a wide open filter, or a delay set to dry only, or if you have nothing suitable, a wire from your soundcard's output to its input.\n\nthen just click the round button until the time value measured stabilises. as an example, my RME digiface/expert sleepers modules measure 590 here.\n\nfinally click save or save as at the top and this value will be stored in the json file along with your hardware setup."
 				}
 
@@ -1653,10 +1653,10 @@
 					"id" : "obj-43",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 356.199999999999989, 101.0, 93.0, 22.0 ],
-					"text" : "opendialog json"
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "bang" ],
+					"patching_rect" : [ 356.199999999999989, 101.0, 91.0, 22.0 ],
+					"text" : "savedialog json"
 				}
 
 			}
@@ -1973,14 +1973,14 @@
 					"fontname" : "Consolas Bold",
 					"fontsize" : 12.0,
 					"id" : "obj-52",
-					"items" : [ "live_rig.json", ",", "luke ES8_3_6.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
+					"items" : [ "live_rig.json", ",", "live_rig_no_cue.json", ",", "live_rig_no_cue_novation.json", ",", "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 5.0, 6.0, 330.0, 23.0 ],
-					"prefix" : "C:/Users/jhold/Documents/GitHub/bennyhardware_configs",
+					"prefix" : "~/Documents/GitHub/benny/hardware_configs/",
 					"presentation" : 1,
 					"presentation_rect" : [ 10.0, 10.5, 213.0, 23.0 ],
 					"types" : ".json",
@@ -2412,6 +2412,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-47", 0 ],
+					"order" : 1,
+					"source" : [ "obj-46", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-57", 0 ],
+					"order" : 0,
 					"source" : [ "obj-46", 0 ]
 				}
 

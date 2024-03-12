@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 59.0, 72.0, 338.0, 398.0 ],
+		"rect" : [ 59.0, 72.0, 338.0, 421.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -80,7 +80,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 413.5, 8.25, 100.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 9.0, 286.0, 159.0, 29.0 ],
+					"presentation_rect" : [ 9.0, 308.0, 159.0, 29.0 ],
 					"text" : "hardware manager",
 					"textoncolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ]
 				}
@@ -4048,7 +4048,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 467.0, 862.0, 100.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 9.0, 323.0, 142.0, 29.0 ],
+					"presentation_rect" : [ 9.0, 345.0, 142.0, 29.0 ],
 					"text" : "audio settings",
 					"textoncolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ]
 				}
@@ -4962,7 +4962,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 550.5, 8.25, 100.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 9.0, 360.0, 117.0, 29.0 ],
+					"presentation_rect" : [ 9.0, 382.0, 117.0, 29.0 ],
 					"text" : "vst manager",
 					"textoncolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ]
 				}
@@ -13545,7 +13545,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 397.0, 133.25, 100.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 226.0, 217.0, 88.0, 30.0 ],
+					"presentation_rect" : [ 226.0, 252.0, 88.0, 30.0 ],
 					"text" : " ",
 					"textoncolor" : [ 1.0, 0.827, 0.0, 1.0 ]
 				}
@@ -13642,7 +13642,7 @@
 					"fontname" : "Consolas Bold",
 					"fontsize" : 18.0,
 					"id" : "obj-52",
-					"items" : [ "live_rig.json", ",", "live_rig_no_cue.json", ",", "luke ES8_3_6.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
+					"items" : [ "live_rig.json", ",", "live_rig_no_cue.json", ",", "live_rig_no_cue_novation.json", ",", "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -13651,7 +13651,7 @@
 					"patching_rect" : [ 397.0, 204.5, 138.0, 30.0 ],
 					"prefix" : "~/Documents/GitHub/benny/hardware_configs/",
 					"presentation" : 1,
-					"presentation_rect" : [ 9.0, 217.0, 215.0, 30.0 ],
+					"presentation_rect" : [ 9.0, 217.0, 305.0, 30.0 ],
 					"textcolor" : [ 1.0, 0.827450980392157, 0.0, 1.0 ],
 					"types" : ".json",
 					"varname" : "hw_dropdown"

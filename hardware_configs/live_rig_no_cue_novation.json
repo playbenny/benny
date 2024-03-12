@@ -78,7 +78,7 @@
 ,
 			"LPD8" : 			{
 				"name" : "LPD8",
-				"substitute" : [ "LPD8 mk2" ],
+				"substitute" : [ "LPD8 mk2", "Launch Control XL" ],
 				"outputs" : 8,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -96,7 +96,7 @@
 ,
 			"LPD8 mk2" : 			{
 				"name" : "LPD8 mk2",
-				"substitute" : [ "LPD8" ],
+				"substitute" : [ "LPD8", "Launch Control XL" ],
 				"outputs" : 8,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -108,6 +108,25 @@
 					"type" : "note",
 					"channel" : 1,
 					"first" : 36
+				}
+
+			}
+,
+			"Launch Control XL" : 			{
+				"name" : [ "Launch Control XL" ],
+				"substitute" : [  ],
+				"outputs" : 32,
+				"type" : 1,
+				"channel" : 1,
+				"first" : 1,
+				"scaling" : 0.125,
+				"columns" : 8,
+				"rows" : 4,
+				"buttons" : 				{
+					"first" : 1,
+					"type" : 0,
+					"channel" : 1,
+					"count" : 24
 				}
 
 			}
