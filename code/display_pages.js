@@ -5721,7 +5721,7 @@ function draw_sidebar(){
 				lcd_main.message("write", "polyphony");		
 	
 				lcd_main.message("paintrect", sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,menudarkest );
-				click_rectangle(multiselect_polychange, -1, null, sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,mouse_index,1 );
+				click_zone(multiselect_polychange, -1, null, sidebar.x + fontheight*5.9, y_offset, sidebar.x+fontheight*6.9, fontheight+y_offset,mouse_index,1 );
 				lcd_main.message("frgb" , menucolour);				
 				//lcd_main.message("moveto", sidebar.x + fontheight*6, fontheight*0.5+y_offset);
 				//lcd_main.message("write", "un");
