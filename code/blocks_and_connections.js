@@ -943,6 +943,7 @@ function remove_connection(connection_number){
 	var f_subvoices = 1;
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
 	}else if(f_type=="parameters"){
 		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
 			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
@@ -1035,24 +1036,16 @@ function remove_connection(connection_number){
 			}			
 		}else{
 			if(f_voice_list == "all"){
-				ta = voicemap.get(f_block);
-				if(!ta.length){
-					f_voices[0] = ta;
-				}else{
-					f_voices = ta;
-				}
+				f_voices = voicemap.get(f_block);
+				if(!Array.isArray(f_voices)) f_voices = [f_voices];
 			}else{
-				if(typeof f_voice_list == 'number'){
-					f_voices[0] = voicemap.get(f_block+"["+(f_voice_list-1)+"]");
-				}else{
-					for(v=0;v<f_voice_list.length;v++){
-						f_voices[v] = voicemap.get(f_block+"["+(f_voice_list[v]-1)+"]");
-					}
+				if(!Array.isArray(f_voice_list)) f_voice_list = [f_voice_list];
+				for(v=0;v<f_voice_list.length;v++){
+					f_voices[v] = voicemap.get(f_block+"["+(f_voice_list[v]-1)+"]");
 				}
 			}
 		}
 	}
-	
 	if(t_type == "matrix"){ // work out which polyvoices/matrix slots correspond
 		max_poly = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::max_polyphony");
 		varr = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::matrix_channels");
@@ -1150,6 +1143,7 @@ function remove_connection(connection_number){
 				if(f_type == "audio" || f_type == "hardware"){
 					if(t_type == "audio" || t_type == "hardware"){
 						var outmsg = new Array(3);
+						var force_unity = 0;
 						if(f_type == "audio"){
 							outmsg[0] = f_voice - MAX_NOTE_VOICES + f_o_no * MAX_AUDIO_VOICES;
 						}else{
@@ -1157,6 +1151,11 @@ function remove_connection(connection_number){
 						}
 						if(t_type == "audio"){
 							outmsg[1] = t_voice + t_i_no * MAX_AUDIO_VOICES- MAX_NOTE_VOICES;
+							if(f_type == "audio"){
+								if(connections.contains("connections["+connection_number+"]::conversion::force_unity")){
+									force_unity = 1;
+								}
+							}
 						}else{
 							outmsg[1] = t_voice - 1;
 						}
@@ -1168,7 +1167,7 @@ function remove_connection(connection_number){
 						turn_off_audio_to_data_if_unused((f_voice)+(f_o_no+1)*MAX_AUDIO_VOICES);
 					}else if(t_type == "parameters"){
 						m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
-						post("starting tvoice",t_voice);
+						//post("starting tvoice",t_voice);
 						t_voice+=2*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS;
 						var tvv = t_voice;
 						var tmod_id;
