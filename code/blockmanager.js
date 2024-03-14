@@ -313,8 +313,6 @@ var backgroundcolour_current;
 
 //this is what a listener looks like
 //var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);
-//var picker = new JitterObject("jit.gl.picker","benny");
-//picker.hover=0;
 //var picker_listener = new JitterListener(picker.getregisteredname(), picker_callback);
 
 var mouse_click_actions = [];

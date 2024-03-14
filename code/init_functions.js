@@ -283,6 +283,7 @@ function initialise_graphics() {
 	background_cube.scale = [100000, 100000, 1];
 	background_cube.position = [0, 0, -200];
 	background_cube.name = "background";
+	background_cube.filterclass = "block";
 	background_cube.color = [0, 0, 0, 1];
 
 	selection_cube = new JitterObject("jit.gl.gridshape", "benny");

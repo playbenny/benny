@@ -143,7 +143,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	//post(usermouse.got_i,usermouse.got_t);
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
+			//because picker uses AABB hit detection it sees wires as being huge, so
+			//first set filter, see if youre over a block
+			glpicker.filters = "block"; 
 			var id = glpicker.touch(x,y);
+			glpicker.filters = "all";
+			if(id == null){ // and if not.. see if there's a wire there
+				id = glpicker.touch(x,y);
+			} 
 			picker_hover_and_special(id);
 		}
 	}

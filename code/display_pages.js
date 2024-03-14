@@ -1091,6 +1091,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			blocks_cube[i][t].dim = [12, 12];
 			blocks_cube[i][t].name = "block£"+i+"£"+t;
 			blocks_cube[i][t].shape = "cube";
+			blocks_cube[i][t].filterclass = "block";
 			if(selected.anysel){
 				if(selected.block[i]){
 					blocks_cube[i][t].color = [1,1,1,1];//[block_c[0]/256,block_c[1]/256,block_c[2]/256,1];
@@ -1122,6 +1123,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter£"+i+"£"+t+"£"+tt;
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].filterclass = "block";
 						//blocks_meter[i][t*NO_IO_PER_BLOCK+tt].blend_enable = 0;
 						//post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
 					}						
@@ -1143,6 +1145,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 							blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
 							blocks_meter[i][(t-1)*noio+tt].name = "meter£"+i+"£"+t+"£"+tt;
 							blocks_meter[i][(t-1)*noio+tt].shape = "cube";
+							blocks_meter[i][(t-1)*noio+tt].filterclass = "block";
 							//blocks_meter[i][t*noio+tt].blend_enable = 0;
 						}
 					}					
@@ -1152,6 +1155,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
 					blocks_meter[i][t-1].name = "meter£"+i+"£"+t+"£0";
 					blocks_meter[i][t-1].shape = "cube";
+					blocks_meter[i][t-1].filterclass = "block";
 				}	
 			}
 		}
