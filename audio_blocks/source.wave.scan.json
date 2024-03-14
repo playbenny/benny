@@ -58,7 +58,7 @@
 			{
 				"name" : "direction",
 				"type" : "menu_l",
-				"values" : ["forward", "reverse","rev but_advance_fwd"],
+				"values" : ["forward","rev but_advance_fwd", "reverse"],
 				"force_label" : 1,
 				"error_scale" : 0,
 				"wrap" : 0,
