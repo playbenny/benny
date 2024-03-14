@@ -13,6 +13,11 @@
             "-4" : ["enter" , "edit_state_label", "ok"],
             "-3" : ["ESC", "set_sidebar_mode","block"],
             "all" : ["all","edit_typing"]
+        },
+        "block_search" : {
+            "-4" : ["enter", "set_sidebar_mode", "none"],
+            "-3" : ["ESC", "set_sidebar_mode", "none"],
+            "all" : ["all", "block_search_typing"]
         }
     },
     "global" : {
@@ -30,8 +35,7 @@
         "-25" : ["F9" , "toggle_show_sidebar_para_mod"],
         "-26" : ["F10", "toggle_show_all_wires"],
         "-27" : ["F11", "toggle_fullscreen"],
-        "-28" : ["F12" , "set_sidebar_mode","cpu"],
-        "47" : ["??" , "deferred_diagnostics"]
+        "-28" : ["F12" , "set_sidebar_mode","cpu"]
     },
     "custom_fullscreen" : {
         "-20" : ["F4", "selected_block_custom_mode", "custom" ],
@@ -71,6 +75,7 @@
         "501" : ["LEFT", "move_selected_blocks", -0.2, 0 ],
         "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0],
         "559" : ["?", "set_sidebar_mode", "help"],
+        "47" : ["/" , "set_sidebar_mode", "block_search"],
         "all" : ["all", "show_and_search_new_block_menu"]
     },
     "panels" : {

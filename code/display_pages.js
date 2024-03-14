@@ -2091,6 +2091,33 @@ function draw_sidebar(){
 		lcd_main.message("moveto" ,sidebar.x+fontheight*7.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "ok");
 		
+	}else if(sidebar.mode == "block_search"){
+		// type to search for blocks in your patch ##############################################################################################################
+		if(sidebar.mode != sidebar.lastmode){
+			clear_sidebar_paramslider_details();
+			sidebar.lastmode = sidebar.mode;
+			audio_to_data_poly.setvalue(0,"vis_scope", 0);
+			remove_midi_scope();
+			redraw_flag.targets=[];
+			text_being_editted = "";
+		}
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,menucolour);
+		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , 0,0,0);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		if(text_being_editted.length<15) setfontsize(fontsmall*2);
+		lcd_main.message("write", text_being_editted);
+		setfontsize(fontsmall);
+		y_offset+=1.1*fontheight;
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*6.8,fontheight+y_offset,menudarkest);
+		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		lcd_main.message("write", "type to search blocks in your song");
+		lcd_main.message("paintrect", sidebar.x+fontheight*6.9, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,menudark);
+		click_zone(set_sidebar_mode, "none", "", sidebar.x+fontheight*7, y_offset, sidebar.x+fontheight*8,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , 255,255,255);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*7, fontheight*0.75+y_offset);
+		lcd_main.message("write", "cancel");		
 	}else if(sidebar.mode == "edit_state"){
 		// EDIT STATE  ##############################################################################################################
 		var cll = config.getsize("palette::gamut");

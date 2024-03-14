@@ -2388,12 +2388,48 @@ function menu_move_on_down_inside_the_empty_carriage(){
 }
 
 function show_and_search_new_block_menu(key){
-	if(!usermouse.caps && (key>=97)&& (key<=122)){
+	/*if(sidebar.mode == "block_search"){
+		block_search_typing(key);
+	}else*/ if(!usermouse.caps && (key>=97)&& (key<=122)){
 		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
 	}else{post("\nkeycode",key);}
+}
+
+function block_search_typing(key){
+	if(key==-7){
+		text_being_editted = text_being_editted.slice(0, -1);
+	}else if(key==-6){
+		text_being_editted = "";
+	}else{
+		if(text_being_editted == ""){
+			post("\nhello whats this");
+		}
+		text_being_editted = text_being_editted + String.fromCharCode(key);
+	}	
+	post("\nHELLO SEARCH IS",text_being_editted);
+	if(text_being_editted!=""){
+		ch=0;
+		for(var i=0;i<blocks.getsize("blocks");i++){
+			var hit = 0;
+			var str = "";
+			if(blocks.contains("blocks["+i+"]::name")) str = str + blocks.get("blocks["+i+"]::name");
+			if(blocks.contains("blocks["+i+"]::label")) str = str + blocks.get("blocks["+i+"]::label");
+			var t = selected.block[i];
+			str = str.toLowerCase();
+			if(str.indexOf(text_being_editted.toLowerCase())!=-1){
+				selected.block[i] = 1;
+			}else{
+				selected.block[i] = 0;
+			}
+			ch |= (selected.block[i]!=t)
+			
+		}
+		if(ch)block_and_wire_colours();
+	}
+	redraw_flag.flag|=2;
 }
 
 function blocks_menu_enter(){
