@@ -1577,7 +1577,6 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
 	var seglength = 0;
-
 	for(t=0;t<3;t++){
 		avg_pos[t] = (from_pos[t] + to_pos[t])/2;
 		pos_dif[t] = (to_pos[t] - from_pos[t]);
