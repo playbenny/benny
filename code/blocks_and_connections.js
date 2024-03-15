@@ -1819,7 +1819,7 @@ function make_connection(cno,existing){
 							add_to_midi_routemap(m_index,vvv);
 							mod_buffer.poke(1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
-							post("midi to audio",tvv);
+							//post("midi to audio",tvv);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offs = conversion.get("offset");
