@@ -1054,6 +1054,15 @@ function draw_menu_hint(){
 	lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(0.75+1.1*(loading.progress!=0)));
 	if(menu.mode == 1){
 		lcd_main.message("write", "swap block:");
+		if(!menu.show_all_types){
+			topspace += 1.1;
+			lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),menudark);
+			lcd_main.message("frgb",0,0,0);
+			lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.75));
+			setfontsize(fontheight/2.5);
+			lcd_main.message("write","click to show all types");
+			click_zone(menu_show_all,1,1,sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),mouse_index,1);		
+		}
 	}else if(menu.mode == 2){
 		lcd_main.message("write", "insert block in connection:");
 	}else if(menu.mode == 0){

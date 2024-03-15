@@ -774,7 +774,7 @@ function reinitialise_block_menu(){
 }
 
 function initialise_block_menu(visible){		
-	//post("\nshowing block menu\n");
+	//post("\nshowing block menu",visible);
 	var i; // draw cubes distributed on the xz plane, rotated 90 degrees about the x axis, y = -110
 	var t;
 	var z = -5;
@@ -786,20 +786,27 @@ function initialise_block_menu(visible){
 	var col;
 	var vis=0;
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
-		if(menu.mode == 1) swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
+		if(menu.mode == 1){
+			swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
+			if(swpt=="hardware") swpt = "audio";
+		}
 		for(i=0;i<menu.cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 				//skip this one
 //				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 			}else{
-				if(visible==1)vis=1;	
-				if(menu.mode == 1){
-					if(blocktypes.get(types[i]+"::type") != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
-				}
-				if(blocktypes.contains(types[i]+"::exclusive")){
-					for(t = 0;t<MAX_BLOCKS;t++){
-						if(blocks.get("blocks["+t+"]::name") == types[i]){
-							vis=0; // this is to hide blocks eg clock when there's one already out (as you can't have more than one of them)
+				if(visible==1){
+					vis=1;	
+					if((menu.mode == 1)&&!(menu.show_all_types)){
+						var tt = blocktypes.get(types[i]+"::type");
+						if(tt=="hardware") tt=="audio";
+						if(tt != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
+					}
+					if(blocktypes.contains(types[i]+"::exclusive")){
+						for(t = 0;t<MAX_BLOCKS;t++){
+							if(blocks.get("blocks["+t+"]::name") == types[i]){
+								vis=0; // this is to hide blocks eg clock when there's one already out (as you can't have more than one of them)
+							}
 						}
 					}
 				}
@@ -807,7 +814,7 @@ function initialise_block_menu(visible){
 				blocks_menu[i].position = menu.original_position[i];
 			}
 		}
-		if(menu.mode == 1) menu_move_on_down_inside_the_empty_carriage();
+		if(menu.mode == 1) squash_block_menu();
 	}else{
 		post("\ninitialising block menu");
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );

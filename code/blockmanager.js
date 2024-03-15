@@ -194,7 +194,8 @@ var menu = {
 	mode : 0, //0=new block,1=swap block,2=insert in connection
 	swap_block_target : -1, //when swapping a block for another this holds the target
 	connection_number : -1,
-	cubecount : 0
+	cubecount : 0,
+	show_all_types : 0 //to override swap type filtering
 }; 
 
 

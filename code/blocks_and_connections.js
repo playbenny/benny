@@ -2855,6 +2855,8 @@ function insert_block_in_connection(newblockname,newblock){
 }
 
 function swap_block(block_name){
+	// if type changes you need to allocate a new voice number, this is where it falls down atm
+
 	post("swapping block",menu.swap_block_target,"to",block_name);
 	var details = new Dict;
 	// find an unused block number in blocks
@@ -2879,170 +2881,81 @@ function swap_block(block_name){
 			subv = 2;
 		}
 	} 
-	var redo_connections = 0;
-	if((type=="hardware")||(otype=="hardware")||(type != otype)||(subv != o_subv)){
-		redo_connections = 1;
-		
-		// collect up connections to/from this block, disconnect them all
-		var handful = [];
-		var handful_n = [];
-		var h=0;
-		var ratio = subv/o_subv;
-		if(ratio!=1) post("\ntodo - i think here it needs to reassign connection voices differently?");
-		for(i=0;i<connections.getsize("connections");i++){
-			if(connections.contains("connections["+i+"]::from")){
-				if((connections.get("connections["+i+"]::from::number") == menu.swap_block_target)||(connections.get("connections["+i+"]::to::number") == menu.swap_block_target)){
-					handful[h] = connections.get("connections["+i+"]");
-					handful_n[h] = i;
-					h++;
-					remove_connection(i);
-					//wire_ends[i][0] += 0.05;
+	// collect up connections to/from this block, disconnect them all
+	var handful = [];
+	var handful_n = [];
+	var h=0;
+	var ratio = subv/o_subv;
+	if(ratio!=1) post("\ntodo - i think here it needs to reassign connection voices differently?");
+	for(i=0;i<connections.getsize("connections");i++){
+		if(connections.contains("connections["+i+"]::from")){
+			if((connections.get("connections["+i+"]::from::number") == menu.swap_block_target)||(connections.get("connections["+i+"]::to::number") == menu.swap_block_target)){
+				handful[h] = connections.get("connections["+i+"]");
+				handful_n[h] = i;
+				h++;
+				remove_connection(i);
+				//wire_ends[i][0] += 0.05;
+			}
+		}
+	}
+	var x = blocks.get("blocks["+menu.swap_block_target+"]::space::x");
+	var y = blocks.get("blocks["+menu.swap_block_target+"]::space::y");
+	remove_block(menu.swap_block_target);
+	menu.swap_block_target = new_block(block_name,x,y);
+	post("\nreplacement block",menu.swap_block_target);
+	draw_block(menu.swap_block_target);
+	rebuild_action_list = 1;
+	
+	// put all the connections back
+	if(h>0){
+		for(i=0;i<h;i++){
+			if(+handful[i].get("from::number")==menu.swap_block_target){
+				//check we have that type of output
+				post("\noutput check",i);
+				var oty = handful[i].get("from::output::type");
+				var onu = handful[i].get("from::output::number");
+				if(!details.contains("connections::out::"+oty)){
+					if((oty=="hardware")&&(details.contains("connections::out::audio"))){
+						handful[i].replace("from::output::type","audio");
+					}else if((oty=="audio")&&(details.contains("connections::out::hardware"))){
+						handful[i].replace("from::output::type","hardware");
+					}else{
+						handful[i].replace("from::output::type","potential");
+					}
+					post(" - replaced");
 				}
+				var nn = details.getsize("connections::out::"+handful[i].get("from::output::type"));
+				if(onu>=nn){
+					handful[i].replace("from::output::number",nn-1);
+					post(" - renumbered");
+				}
+			}else{
+				//check we have that type of input
+				post("\ninput check");
+				var oty = handful[i].get("to::input::type");
+				var onu = handful[i].get("to::input::number");
+				if(!details.contains("connections::in::"+oty)){
+					if((oty=="hardware")&&(details.contains("connections::in::audio"))){
+						handful[i].replace("to::input::type","audio");
+					}else if((oty=="audio")&&(details.contains("connections::in::hardware"))){
+						handful[i].replace("to::input::type","hardware");
+					}else{
+						handful[i].replace("to::input::type","potential");
+					}
+					post(" - replaced");
+				}
+				var nn = details.getsize("connections::in::"+handful[i].get("to::input::type"));
+				if(onu>=nn){
+					handful[i].replace("to::input::number",nn-1);
+					post(" - renumber	ed");
+				}
+
 			}
-		}
-		if(subv != o_subv){
-			clear_block_3d_objects(menu.swap_block_target);			
-		}
-	}
-	if(type == "hardware"){
-		clear_block_3d_objects(menu.swap_block_target);	
-		blocks.replace("blocks["+menu.swap_block_target+"]::name",block_name);
-		blocks.replace("blocks["+menu.swap_block_target+"]::label",block_name);
-	}else{
-		block_name = details.get("patcher");
-		blocks.replace("blocks["+menu.swap_block_target+"]::name",block_name);
-		blocks.replace("blocks["+menu.swap_block_target+"]::label",block_name);
-		var ui = details.get("block_ui_patcher");
-		if((ui == "") || (ui == 0) || (ui == "self")){
-			ui_patcherlist[menu.swap_block_target] = "blank.ui";
-		}else{
-			ui_patcherlist[menu.swap_block_target] = ui;
-		}
-		blocks.replace("blocks["+menu.swap_block_target+"]::subvoices",subv);
-		still_checking_polys |=4;
-		//send_ui_patcherlist();
-	}
-	if(redo_connections){
-		// put all the connections back
-		if(h>0){
-			for(i=0;i<h;i++){
-				connections.replace("connections["+handful_n[i]+"]",handful[i]);
-				make_connection(handful_n[i],0);	
-			}
+			connections.replace("connections["+handful_n[i]+"]",handful[i]);
+			make_connection(handful_n[i],0);	
 		}
 	}
 
-	selected.block[menu.swap_block_target] = 1;
-	blocks.replace("blocks["+menu.swap_block_target+"]::type",type);
-/*	blc=[128,128,128];
-	if(config.contains("palette::"+bln[0])){
-		blc=config.get("palette::"+bln[0]);
-	}
-	blocks.replace("blocks["+menu.swap_block_target+"]::space::colour", blc );*/
-	blocks.replace("blocks["+menu.swap_block_target+"]::space::colour", blocktypes.get(block_name+"::colour") );
-	draw_block_texture(menu.swap_block_target);
-
-	var voicelist = [];
-	voicelist = voicemap.get(menu.swap_block_target);
-	if(typeof voicelist == "number") voicelist = [voicelist];
-	//post("voicelist is",voicelist);
-	var voice;
-	for(var ti =0;ti<voicelist.length;ti++){
-		voice= voicelist[ti];
-		if(details.contains("voice_data::defaults")){
-			var vd_def = [];
-			var vdi;
-			vd_def = details.get("voice_data::defaults")
-			for(vdi=0;vdi<vd_def.length;vdi++){
-				voice_data_buffer.poke(1, MAX_DATA*(voice)+vdi,vd_def[vdi]);
-			}
-			post("swapping block so setting default data");
-		}
-		if(type == "note"){
-			note_patcherlist[voice] = details.get("patcher");
-		}else if(type == "audio"){
-			audio_patcherlist[voice-MAX_NOTE_VOICES] = details.get("patcher");
-			post("setting",voice,"to",details.get("patcher"));
-		}else if(type == "hardware"){
-			//hardware_list[voice-MAX_NOTE_VOICES-MAX_AUDIO_VOICES] = block_name;
-		}
-		
-		if(details.contains("parameters")){
-			var params = [];
-			params = details.get("parameters");
-			var p_type,p_values,p_default;
-//			param_error_spread[voice]= [];
-			param_error_drift[voice] = [];
-			param_defaults[voice] = [];
-			for(var i=0;i<params.length;i++){
-				if(voice!=-1){
-					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voice+i,0);
-//					param_error_spread[voice][i]=0;
-					param_error_drift[voice][i]=0;
-				}
-				p_default = 0;
-				p_type = params[i].get("type");
-				p_values = params[i].get("values");
-				if(p_type == "float"){
-					if(p_values[0]=="bi"){
-						p_default = 0.5;
-					}
-				}
-				if(params[i].contains("default")){
-					p_default = params[i].get("default");
-				}
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*menu.swap_block_target+i,p_default);
-				parameter_static_mod.poke(1, voice  *MAX_PARAMETERS+i, 0);
-				param_defaults[menu.swap_block_target][i] = p_default;
-			}		
-		}
-		
-		if(type=="audio"){ 
-			audio_to_data_poly.setvalue((voice+1), "vis_meter", 1);
-			audio_to_data_poly.setvalue((voice+1), "vis_scope", 0);
-			audio_to_data_poly.setvalue((voice+1), "out_value", 0);
-			audio_to_data_poly.setvalue((voice+1), "out_trigger", 0);
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-			audio_to_data_poly.setvalue((voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
-		}else if(type=="hardware"){
-			//hardware_metermap[new_block_index] = [];
-			var voffset=MAX_AUDIO_VOICES*2+MAX_AUDIO_INPUTS;
-			var ts, tii,split;
-			ts="no";
-			if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
-				ts = blocktypes.get(block_name+"::connections::in::hardware_channels");	
-				if(typeof ts=="number") ts=[ts];
-				split = ts.length;
-			}
-			if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
-				if(ts=="no"){
-					ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
-					if(!Array.isArray(ts)) ts = [ts];
-				}else{
-					var ts2 = blocktypes.get(block_name+"::connections::out::hardware_channels");
-					if(typeof ts2=="number") ts2=[ts2];				
-					for(tii=0;tii<ts2.length;tii++){
-						ts[ts.length]=ts2[tii];
-					}
-				}
-			}
-			if(ts!="no"){
-				for(tii=0;tii<ts.length;tii++){
-					if(tii==split) voffset-=MAX_AUDIO_INPUTS;
-					audio_to_data_poly.setvalue(ts[tii]+voffset,"vis_meter", 1);
-					audio_to_data_poly.setvalue(ts[tii]+voffset,"vis_scope", 0);
-					audio_to_data_poly.setvalue(ts[tii]+voffset,"out_value", 0);
-					audio_to_data_poly.setvalue(ts[tii]+voffset,"out_trigger", 0);
-					ts[tii] = ts[tii]+voffset-1;
-				}
-				hardware_metermap.replace(menu.swap_block_target,ts);
-			}
-			
-		}
-		rebuild_action_list = 1;
-	}
 	if(type == "note"){
 		still_checking_polys |=1;
 	}else if(type == "audio"){
@@ -3050,19 +2963,6 @@ function swap_block(block_name){
 	}
 	menu.swap_block_target = -1;
 	redraw_flag.flag |= 4; 
-}
-
-function clear_block_3d_objects(b){
-	var ts = blocks_cube[b].length;
-	for (; --ts >= 0;) {
-		blocks_cube[b][ts].freepeer(); 
-		blocks_cube[b].pop(); 
-	}
-	ts = blocks_meter[b].length;
-	for (; --ts >= 0;) {
-		blocks_meter[b][ts].freepeer();
-	}
-	blocks_meter[b].pop();
 }
 
 function build_mod_sum_action_list(){

@@ -468,9 +468,10 @@ function open_patcher(block,voice){
 
 function swap_block_button(block){
 	menu.swap_block_target = block;
+	menu.show_all_types = 0;
 	menu.mode = 1;
 	set_display_mode("block_menu");
-	//menu_move_on_down_inside_the_empty_carriage();
+	//squash_block_menu();
 }
 
 function insert_menu_button(cno){
@@ -2357,7 +2358,13 @@ function type_to_search(key){
 	draw_menu_hint();
 }
 
-function menu_move_on_down_inside_the_empty_carriage(){
+function menu_show_all(){
+	menu.show_all_types = 1;
+	initialise_block_menu(1);
+	redraw_flag.flag = 4;
+}
+
+function squash_block_menu(){
 	//squashes the block menu to only show visible blocks
 	var type_order = config.get("type_order");
 	var types = blocktypes.getkeys();
@@ -2367,7 +2374,7 @@ function menu_move_on_down_inside_the_empty_carriage(){
 		var f=0;
 		for(var i=0;i<menu.cubecount;i++){
 			var ts=types[i].split('.');
-			if(ts == type_order[t]){
+			if(ts[0] == type_order[t]){
 				if(blocks_menu[i].enable){
 					f=1;
 					blocks_menu[i].position = [x,-110,z];
@@ -2404,12 +2411,11 @@ function block_search_typing(key){
 	}else if(key==-6){
 		text_being_editted = "";
 	}else{
-		if(text_being_editted == ""){
+		/*if(text_being_editted == ""){
 			post("\nhello whats this");
-		}
+		}*/
 		text_being_editted = text_being_editted + String.fromCharCode(key);
 	}	
-	post("\nHELLO SEARCH IS",text_being_editted);
 	if(text_being_editted!=""){
 		ch=0;
 		for(var i=0;i<blocks.getsize("blocks");i++){
@@ -2424,10 +2430,9 @@ function block_search_typing(key){
 			}else{
 				selected.block[i] = 0;
 			}
-			ch |= (selected.block[i]!=t)
-			
+			ch |= (selected.block[i]!=t);
 		}
-		if(ch)block_and_wire_colours();
+		if(ch) block_and_wire_colours();
 	}
 	redraw_flag.flag|=2;
 }
