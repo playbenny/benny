@@ -195,6 +195,18 @@ function parameter_button(p){
 	mouse_click_values[paramslider_details[p][7]] = [paramslider_details[p][17][0],paramslider_details[p][17][pv2+1], MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (pv+(1/statecount)) % 1];
 }
 
+function parameter_menu_b(p){
+	//this is sort of incomplete - this type doesn't expect to be modulated so just asks for a redraw if it is
+	//this fn doesn't calculate colour (requires a lookup of param details)
+	var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p][11]+paramslider_details[p][9]);
+	var statecount = (paramslider_details[p][17].length);
+	var pv2 = Math.floor(pv * statecount * 0.99999);
+	//post("\nbutton, list is",paramslider_details[p][17],"pv2 is",pv2,"and label is",paramslider_details[p][17][pv2]);
+	//post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
+	draw_button(paramslider_details[p][0],paramslider_details[p][1],paramslider_details[p][2],paramslider_details[p][3],paramslider_details[p][4],paramslider_details[p][5],paramslider_details[p][6],paramslider_details[p][7], paramslider_details[p][17][pv2],pv);
+	mouse_click_values[paramslider_details[p][7]] = [paramslider_details[p][17][0],paramslider_details[p][17][pv2+1], MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (pv+(1/statecount)) % 1];
+}
+
 function parameter_menu_l(p){
 	var mi = paramslider_details[p][7];
 	var statecount = (paramslider_details[p][17].length);// - 1) / 2;

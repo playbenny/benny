@@ -485,7 +485,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 					valcol = [pv3*block_colour[0], pv3*block_colour[1], pv3*block_colour[2]];
 				}
 				paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,valcol[0],valcol[1],valcol[2],mouse_index,b,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider];
-				parameter_button(panelslider_index);
+				parameter_menu_b(panelslider_index);
 				mouse_click_actions[mouse_index] = send_button_message;
 				mouse_click_parameters[mouse_index] = b;
 				mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*b+curp, ((ppv2+1.1) % statecount)/statecount];
@@ -3204,7 +3204,7 @@ function draw_sidebar(){
 											valcol = [pv3*colour[0], pv3*colour[1], pv3*colour[2]];
 										}
 										paramslider_details[curp]=[x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
-										parameter_button(curp);
+										parameter_menu_b(curp);
 										//draw_button(x1,y1,x2,y2,valcol[0],valcol[1],valcol[2],mouse_index, p_values[pv2]);
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;

@@ -115,7 +115,7 @@ function frameclock(){
 						if(paramslider_details[i][13]=="menu_l"){
 							parameter_menu_l(i);
 						}else if(paramslider_details[i][13] == "menu_b"){
-							parameter_button(i);
+							redraw_flag.deferred|=2;// parameter_menu_b(i);
 						}else if(paramslider_details[i][13] == "button"){
 							parameter_button(i);
 						}else if((redraw_flag.targets[i]==1)&&((paramslider_details[i][16]|0)!=0)&&(automap.mapped_c!=sidebar.selected)){
@@ -141,7 +141,7 @@ function frameclock(){
 						if(paramslider_details[i][13]=="menu_l"){
 							parameter_menu_l(i);
 						}else if(paramslider_details[i][13] == "menu_b"){
-							parameter_button(i);
+							redraw_flag.deferred|=2;// parameter_menu_b(i);
 						}else if(paramslider_details[i][13] == "button"){
 							parameter_button(i);
 						}else if((redraw_flag.paneltargets[t]==1)&&(paramslider_details[i][16]!=0)){
