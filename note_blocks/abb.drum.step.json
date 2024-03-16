@@ -3,7 +3,7 @@
 		"patcher" : "abb.drum.step",
 		"type" : "note",
 		"block_ui_patcher" : "abb.drum.step.ui",
-		"ui_in_sidebar_height" : 1,		
+		"ui_in_sidebar_height" : 2,		
 		"no_edit" : 1,
 		"help_text" : "new note",
 		"max_polyphony" : 1,
