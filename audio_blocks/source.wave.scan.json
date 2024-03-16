@@ -90,7 +90,7 @@
 			{
 				"name" : "advance",
 				"type" : "menu_l",
-				"values" : ["off", "on", "on if_target>0"],
+				"values" : ["off", "on", "on if_target_>0"],
 				"force_label" : 1,
 				"wrap" : 0,
 				"default" : 0.6

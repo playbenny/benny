@@ -178,7 +178,12 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label,value){
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	rat = (usermouse.clicked2d != index) * 2;
 	lcd_main.message("frgb",r*rat,g*rat,b*rat);
-	label = label.split("_");
+	if((y2-y1)>fontheight*0.7){
+		post("\ndecided",y2-y1,fontheight*0.4);
+		label = label.split("_");
+	}else{
+		if(!Array.isArray(label)) label = [label];
+	}
 	for(var i=0;i<label.length;i++){
 		lcd_main.message("moveto",x1+5,y1+fontheight*(0.4*(i+1)));
 		lcd_main.message("write",label[i]);

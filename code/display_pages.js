@@ -3155,6 +3155,8 @@ function draw_sidebar(){
 												h_s = (maxnamelabely - y_offset)/fontheight; //+=0.9;
 											}else{
 												h_s += 0.9;//4;
+												maxnamelabely = y1+fontheight*h_s;//_offset+h_s;
+												post("\nset max",maxnamelabely,y_offset,h_s);
 											}
 										}
 										if(params[curp].contains("force_label")){
