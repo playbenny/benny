@@ -1,0 +1,231 @@
+{
+	"abb.sixteen.step" : {
+		"patcher" : "abb.sixteen.step",
+		"type" : "note",
+		"block_ui_patcher" : "abb.sixteen.step.ui",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "note in" ]
+			},
+			"out" : {
+				"midi" : [ "note out", "inverted note out" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0, 1, 2, 3],
+				"header"	: "Rules"
+			},
+			{
+				"contains"	: [22, 23, 24, 12, 13],
+				"header"	: "More Rules"
+			},
+			{ 
+				"contains" : [4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21],
+				"header"	: "Velocities"
+			}
+			
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 5, 6]
+		},
+		"parameters" : [
+			{
+                "name" : "Density",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.15
+			},
+			{
+                "name" : "Phase",
+				"type"	: "int",
+				"values" : ["uni", 0, 7, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+                "name" : "Bunch",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+                "name" : "Length",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0.99
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "trig_type",
+				"type" : "menu_l",
+				"values" : ["Vel A", "Vel B", "Vel C"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+                "name" : "Bar Reset",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+				"name" : "↓",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"click_set" : 1,
+				"wrap" : 0,
+				"default" : 0.787
+			},
+			{
+                "name" : "D Offset",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.15
+			},
+			{
+                "name" : "P Offset",
+				"type"	: "int",
+				"values" : ["uni", 0, 7, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+                "name" : "B Offset",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			}
+		]
+	}
+}
