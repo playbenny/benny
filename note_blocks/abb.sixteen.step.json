@@ -210,7 +210,7 @@
 				"type"	: "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.15
+				"default" : 0
 			},
 			{
                 "name" : "P Offset",
