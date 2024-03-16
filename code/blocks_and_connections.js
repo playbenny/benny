@@ -1813,8 +1813,7 @@ function make_connection(cno,existing){
 									tmod_id=mod_id;
 								}
 							}
-							
-							
+
 							var vvv = tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS; 
 							add_to_midi_routemap(m_index,vvv);
 							mod_buffer.poke(1, tmod_id, 0); 		
@@ -2077,9 +2076,10 @@ function make_connection(cno,existing){
 function build_new_connection_menu(from, to, fromv,tov){
 	// builds the connection menu and primes the new_connection one (that is eventually copied into 'connections')
 	//remove_potential_wire();
-
 	sidebar.connection.show_from_outputs = 1;
 	sidebar.connection.show_to_inputs = 1;
+
+	//post("\n so i've been told tov is ",tov);
 
 	var fromname = blocks.get('blocks['+from+']::name');
 	var toname = blocks.get('blocks['+to+']::name');
@@ -2212,7 +2212,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 	notall = 0;
 	if(blocktypes.contains(toname+"::connections::in::dontdefaultall")) notall = blocktypes.get(toname+"::connections::in::dontdefaultall");
-	//var t_type = new_connection.get("to::input::type");
+	var t_type = new_connection.get("to::input::type");
 	if(tov == -1){
 		if(notall){
 			new_connection.replace("to::voice", 1 );
@@ -2220,12 +2220,13 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("to::voice", "all" );		
 		}
 	}else{
-		/*if((t_type=="audio")||(t_type=="hardware")){
-			post("\ntov",tov);
-			tov *= t_subvoices;
-			post("      now",tov+1);
-		}*/
-		new_connection.replace("to::voice", tov + 1 );
+		if(!((t_type=="audio")||(t_type=="hardware"))){
+//			post("\ntov",tov);
+			tov /= t_subvoices;
+			tov |= 0;
+//			post("      now",tov);
+		}
+		new_connection.replace("to::voice", tov+1);
 	}
 	
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){

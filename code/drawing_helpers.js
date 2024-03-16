@@ -179,7 +179,6 @@ function draw_button(x1,y1,x2,y2,r,g,b,index,label,value){
 	rat = (usermouse.clicked2d != index) * 2;
 	lcd_main.message("frgb",r*rat,g*rat,b*rat);
 	if((y2-y1)>fontheight*0.7){
-		post("\ndecided",y2-y1,fontheight*0.4);
 		label = label.split("_");
 	}else{
 		if(!Array.isArray(label)) label = [label];
