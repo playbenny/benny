@@ -1616,7 +1616,11 @@ function make_connection(cno,existing){
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
 					var vect = conversion.get("vector");
-					set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+					if(t_type == "midi"){
+						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+					}else{
+						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+					}
 				}else if(f_type == "parameters"){//param to midi (polyrouter)
 					//audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 					var enab = 1-conversion.get("mute");
@@ -1624,7 +1628,11 @@ function make_connection(cno,existing){
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
 					var vect = conversion.get("vector");
-					set_routing(f_voices[i],f_o_no, enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+					if(t_type == "midi"){
+						set_routing(f_voices[i],f_o_no, enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+					}else{
+						set_routing(f_voices[i],f_o_no, enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+					}
 				}
 			}else{
 				f_voice = +f_voices[i];
@@ -2525,62 +2533,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				parameter_static_mod.poke(1, voiceoffset * MAX_PARAMETERS+i, 0);
 				parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*voiceoffset+i,(mulberry32()-0.5)*spr);
 				param_error_drift[voiceoffset][i]=0.01*drft*spr;
-				/* DONT NEED TO POKE PARAMINFOBUFFER BECAUSE NEW BLOCK DOES IT AND ITS PER BLOCK
-				var p_type = details.get("parameters["+i+"]::type");
-				var p_values = details.get("parameters["+i+"]::values");
-				var p_pol = p_values[0]; 
-				var p_min = p_values[1]; 
-				var p_max = p_values[2]; 
-				var p_curve = p_values[3];
-				var p_steps = 0;
-				if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
-					p_min = 0;
-					p_steps = p_values.length;
-					p_max = p_steps-1;
-					p_curve = 0;
-				}else if(p_type=="menu_f"){
-					p_min=0;
-					p_max = p_values.length;
-					p_steps = 0;
-					p_curve = 0;
-				}else if(p_type=="int"){
-					p_steps=p_max - p_min + 1;
-				}else if(p_type=="button"){
-					p_min = 0;
-					p_max = (p_values.length - 1 ) / 2;
-					p_steps = p_max+1;
-					p_curve = 0;
-				}
-				if(p_curve == "lin"){
-					p_curve = 0;
-				}else {
-					if(p_curve =="exp"){
-						p_curve = 2;
-					}else if(p_curve =="exp10"){
-						p_curve = 10;
-					}else if(p_curve =="exp100"){
-						p_curve = 100;
-					}else if(p_curve =="exp1000"){
-						p_curve = 1000;
-					}else if(p_curve =="exp.1"){
-						p_curve = 0.1;
-					}else if(p_curve =="exp.01"){
-						p_curve = 0.01;
-					}else if(p_curve =="exp.001"){
-						p_curve = 0.001;
-					}else if(p_curve =="s"){
-						p_curve = 1;
-					}
-					if(p_pol!="uni"){
-						p_curve = -p_curve;
-					}
-				}
-				// parameter info poked out here for paramwatcher
-				//post("\nblock",block,"writing to p_i_b",MAX_PARAMETERS*block+i,p_min,p_max,p_steps,p_curve);
-				parameter_info_buffer.poke(1,MAX_PARAMETERS*block+i,p_min);
-				parameter_info_buffer.poke(2,MAX_PARAMETERS*block+i,p_max);
-				parameter_info_buffer.poke(3,MAX_PARAMETERS*block+i,p_steps);
-				parameter_info_buffer.poke(4,MAX_PARAMETERS*block+i,p_curve); */
 			} //set param spreads
 			if(recycled){
 				if(type=="audio"){
