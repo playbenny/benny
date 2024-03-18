@@ -1,16 +1,17 @@
 {
 	"io" : 	{
-		"keyboards" : ["Xkey37","Xkey25","MIDIIN2 (MIDIMATE II)","Arturia KeyStep 32"],
+		"keyboards" : [ "Xkey37", "Xkey25", "MIDIIN2 (MIDIMATE II)", "Arturia KeyStep 32" ],
 		"matrix" : "MIDIOUT2 (MIDIMATE II)",
 		"hardware" : "MIDIMATE II",
-		"matrix_switch" : {
+		"matrix_switch" : 		{
 			"midi_out" : "MIDIMATE II",
 			"matrix_out" : 12,
 			"midi_control_channel" : 3,
 			"midi_control_cc" : 25
-		},
-		"controllers" : {
-			"JAMES_16e" : {
+		}
+,
+		"controllers" : 		{
+			"JAMES_16e" : 			{
 				"name" : "JAMES_16e",
 				"substitute" : "Midi Fighter Twister",
 				"outputs" : 16,
@@ -20,13 +21,15 @@
 				"scaling" : 0.125,
 				"columns" : 4,
 				"rows" : 4,
-				"colour" : {
+				"colour" : 				{
 					"type" : "midifighter",
 					"channel" : 2,
 					"first" : 0
 				}
-			},
-			"Midi Fighter Twister" : {
+
+			}
+,
+			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
 				"substitute" : "JAMES_16e",
 				"outputs" : 16,
@@ -35,36 +38,42 @@
 				"first" : 0,
 				"columns" : 4,
 				"rows" : 4,
-				"colour" : {
+				"colour" : 				{
 					"type" : "midifighter",
 					"channel" : 2,
 					"first" : 0
-				},
-				"brightness" : {
+				}
+,
+				"brightness" : 				{
 					"type" : "midifighter",
 					"channel" : 3,
 					"first" : 0,
 					"dim" : 19,
 					"bright" : 48
-				},
-				"value" : {
+				}
+,
+				"value" : 				{
 					"type" : "cc",
 					"channel" : 1,
 					"first" : 0
-				},
-				"resets" : {
+				}
+,
+				"resets" : 				{
 					"type" : "cc",
 					"channel" : 2,
 					"first" : 0
-				},
-				"buttons" : {
+				}
+,
+				"buttons" : 				{
 					"type" : "cc",
 					"function" : "global",
 					"channel" : 4,
 					"first" : 8
 				}
-			},
-			"LPD8" : {
+
+			}
+,
+			"LPD8" : 			{
 				"name" : "LPD8",
 				"substitute" : "none",
 				"outputs" : 8,
@@ -74,401 +83,504 @@
 				"scaling" : 0.125,
 				"columns" : 4,
 				"rows" : 2,
-				"buttons" : {
+				"buttons" : 				{
 					"type" : "note",
 					"function" : "more",
 					"channel" : 1,
 					"first" : 36
 				}
+
 			}
-		},		
-		"triggers_in" :"TriggerIO"
-	},
+
+		}
+,
+		"triggers_in" : "TriggerIO"
+	}
+,
 	"hardware" : 	{
-		"hardware.out.1+2" : 			{
+		"hardware.out.1+2" : 		{
 			"type" : "Prism Monitor 5+6",
-			"help_text": "all outs",
+			"help_text" : "all outs",
 			"max_polyphony" : 2,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 5, 6 ]
 				}
+
 			}
-			
-		},
-		"hardware.io.1" : 			{
+
+		}
+,
+		"hardware.io.1" : 		{
 			"type" : "hardware",
-			"help_text": "Prism 1 i/o",
+			"help_text" : "Prism 1 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 1 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [1 ]
+			"connections" : 			{
+				"in" : 				{
+					"midi" : [ "new" ],
+					"midi_channels" : [ 10 ],
+					"midi_ranges" : [ [ 0, 127 ] ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 1 ]
+				}
+
 			}
-		},
-		"hardware.io.2" : 			{
+,
+			"midi_handler" : "generic.hardware.midi.handler"
+		}
+,
+		"hardware.io.2" : 		{
 			"type" : "hardware",
-			"help_text": "Prism 2 i/o",
+			"help_text" : "Prism 2 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 2 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [2 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 2 ]
+				}
+
 			}
-		},
-		"hardware.io.3" : 			{
+
+		}
+,
+		"hardware.io.3" : 		{
 			"type" : "hardware",
-			"help_text": "3 i/o",
+			"help_text" : "3 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 3 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [3 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 3 ]
+				}
+
 			}
-		},
-		"hardware.io.4" : 			{
+
+		}
+,
+		"hardware.io.4" : 		{
 			"type" : "hardware",
-			"help_text": "4 i/o",
+			"help_text" : "4 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 4 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [4 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 4 ]
+				}
+
 			}
-		},		"hardware.io.5" : 			{
+
+		}
+,
+		"hardware.io.5" : 		{
 			"type" : "hardware",
-			"help_text": "Prism Monitor L 5 i/o",
+			"help_text" : "Prism Monitor L 5 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 5 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [5 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 5 ]
+				}
+
 			}
-		},
-		"hardware.io.6" : 			{
+
+		}
+,
+		"hardware.io.6" : 		{
 			"type" : "hardware",
-			"help_text": "Prism Monitor R 6 i/o",
+			"help_text" : "Prism Monitor R 6 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 6 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [6 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 6 ]
+				}
+
 			}
-		},
-		"hardware.io.7+8" : 			{
+
+		}
+,
+		"hardware.io.7+8" : 		{
 			"type" : "hardware",
-			"help_text": "Prism Headphones 7+8 i/o",
+			"help_text" : "Prism Headphones 7+8 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 7, 8 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [7, 8 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 7, 8 ]
+				}
+
 			}
-		},
-		"hardware.io_9.Apogee_1" : 			{
+
+		}
+,
+		"hardware.io_9.Apogee_1" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 1 i/o",
+			"help_text" : "Apogee 1 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 9 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [9 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 9 ]
+				}
+
 			}
-		},
-		"hardware.io_10.Apogee_2" : 			{
+
+		}
+,
+		"hardware.io_10.Apogee_2" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 2 i/o",
+			"help_text" : "Apogee 2 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 10 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [10 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 10 ]
+				}
+
 			}
-		},
-		"hardware.io_11.Apogee_3" : 			{
+
+		}
+,
+		"hardware.io_11.Apogee_3" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 3 i/o",
+			"help_text" : "Apogee 3 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 11 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [11 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 11 ]
+				}
+
 			}
-		},
-		"hardware.io_12.Apogee_4" : 			{
+
+		}
+,
+		"hardware.io_12.Apogee_4" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 4 i/o",
+			"help_text" : "Apogee 4 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 12 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [12 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 12 ]
+				}
+
 			}
-		},
-		"hardware.io_13.Apogee_5" : 			{
+
+		}
+,
+		"hardware.io_13.Apogee_5" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 5 i/o",
+			"help_text" : "Apogee 5 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 13 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [13 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 13 ]
+				}
+
 			}
-		},
-		"hardware.io_14.Apogee_6" : 			{
+
+		}
+,
+		"hardware.io_14.Apogee_6" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 6 i/o",
+			"help_text" : "Apogee 6 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 14 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [14 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 14 ]
+				}
+
 			}
-		},
-		"hardware.io_15.Apogee_7" : 			{
+
+		}
+,
+		"hardware.io_15.Apogee_7" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 7 i/o",
+			"help_text" : "Apogee 7 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 15 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [15 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 15 ]
+				}
+
 			}
-		},
-		"hardware.io_16.Apogee_8" : 			{
+
+		}
+,
+		"hardware.io_16.Apogee_8" : 		{
 			"type" : "hardware",
-			"help_text": "Apogee 8 i/o",
+			"help_text" : "Apogee 8 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 16 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [16 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 16 ]
+				}
+
 			}
-		},
-		"hardware.io_17.ExS_1" : 			{
+
+		}
+,
+		"hardware.io_17.ExS_1" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 1 i/o",
+			"help_text" : "ExS 1 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 17 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [17 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 17 ]
+				}
+
 			}
-		},
-		"hardware.io_18.ExS_2" : 			{
+
+		}
+,
+		"hardware.io_18.ExS_2" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 2 i/o",
+			"help_text" : "ExS 2 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 18 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [18 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 18 ]
+				}
+
 			}
-		},
-		"hardware.io_19.ExS_3" : 			{
+
+		}
+,
+		"hardware.io_19.ExS_3" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 3 i/o",
+			"help_text" : "ExS 3 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 19 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [19 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 19 ]
+				}
+
 			}
-		},
-		"hardware.io_20.ExS_4" : 			{
+
+		}
+,
+		"hardware.io_20.ExS_4" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 4 i/o",
+			"help_text" : "ExS 4 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 20 ]
-				},
-				"out" : {
+				}
+,
+				"out" : 				{
 					"hardware" : [ "in" ],
 					"hardware_channels" : [ 20 ]
 				}
+
 			}
-		},
-		"hardware.io_21.ExS_5" : 			{
+
+		}
+,
+		"hardware.io_21.ExS_5" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 5 i/o",
+			"help_text" : "ExS 5 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 21 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [21 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 21 ]
+				}
+
 			}
-		},"hardware.io_22.ExS_6" : 			{
+
+		}
+,
+		"hardware.io_22.ExS_6" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 6 i/o",
+			"help_text" : "ExS 6 i/o",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 22 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [22 ]
 				}
+,
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 22 ]
+				}
+
 			}
-		},
-		"hardware.out_23.ExS_7" : 			{
+
+		}
+,
+		"hardware.out_23.ExS_7" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 7 out",
+			"help_text" : "ExS 7 out",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 23 ]
 				}
+
 			}
-		},
-		"hardware.out_24.ExS_8" : 			{
+
+		}
+,
+		"hardware.out_24.ExS_8" : 		{
 			"type" : "hardware",
-			"help_text": "ExS 8 out",
+			"help_text" : "ExS 8 out",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 24 ]
 				}
-			}
-		},
 
-		"hardware.in.1+2" : 			{
+			}
+
+		}
+,
+		"hardware.in.1+2" : 		{
 			"type" : "hardware",
-			"help_text": "in 1/2",
+			"help_text" : "in 1/2",
 			"exclusive" : 1,
 			"max_polyphony" : 4,
 			"substitute" : "fx.filter.2pole",
-			"connections" : {
-				"out" : {
+			"connections" : 			{
+				"out" : 				{
 					"hardware" : [ "in" ],
-					"hardware_channels" : [1,2 ]
+					"hardware_channels" : [ 1, 2 ]
 				}
+
 			}
+
 		}
+
 	}
+
 }
