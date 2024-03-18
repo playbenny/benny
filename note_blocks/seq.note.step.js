@@ -235,7 +235,7 @@ function update(){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 		t_lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
-		t_end  = t_lstart + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		t_end  = t_lstart + 1 + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
 		t_lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 		t_p_offs =  pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 		t_divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
@@ -294,7 +294,7 @@ function drawcell(cc,rr){
 	var y = values[0];
 	var shade = 0.5 + values[1]/256;
 	if(cursors[cc]==rr) shade *= 2;
-	var loop = lon[cc] && (rr>=lstart[cc]) && (rr<end[cc]);
+	var loop = lon[cc] && (rr>=lstart[cc]) && (rr<=end[cc]);
 	if(loop){
 		shade *= 0.8;
 		loop = 1.7;
