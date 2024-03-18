@@ -129,7 +129,7 @@
 			{
 				"name" : "trig_type",
 				"type" : "menu_l",
-				"values" : ["Vel A", "Vel B", "Vel C"],
+				"values" : ["Vel Lock", "Vel Phase", "Vel Trig"],
 				"wrap" : 0,
 				"default" : 0
 			},
