@@ -727,9 +727,9 @@ function is_empty(obj){
 
 function f_to_db(f){
 	if(f>0){
-		return 20*Math.log(f);
+		return 8.68588963*Math.log(f); //==20*ln(f)/ln(10)
 	}else if(f<0){ //minus numbers invert the signal so i'm using this slightly nonstandard notation of -db to signify that.. sorry
-		return -20*Math.log(-f);
+		return 8.68588963*Math.log(-f);
 	}else{
 		return -144.0;
 	}

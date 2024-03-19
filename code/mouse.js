@@ -331,6 +331,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									connection_edit(p,0);
 								}
 
+							}else{
+								if(p2=="scale"){
+									config_toggle_gain_display_format();
+								}
 							}
 						}
 					}

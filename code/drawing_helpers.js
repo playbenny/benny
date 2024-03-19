@@ -115,8 +115,9 @@ function gain_display(gain){
 		if(gain===0){
 			s="-inf";
 		}else{
-			var g = f_to_db(gain);
+			var g = f_to_db(Math.abs(gain));
 			s = g.toPrecision(2)+"dB";
+			if(gain<0) s = "(inverted) "+s;
 		}
 		return s; 
 	}
