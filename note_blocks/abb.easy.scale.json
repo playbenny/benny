@@ -1,0 +1,99 @@
+{
+	"abb.easy.scale" : {
+		"patcher" : "abb.easy.scale",
+		"type" : "note",
+		"block_ui_patcher" : "example.mini.ui",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "Easy Scale",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "note in" ]
+			}
+	
+		},
+		"groups" : [
+			{
+				"contains" 	: [0, 7, 8],
+				"header"	:	"Scale"
+			},
+			{ 
+				"contains"	: [1, 2, 3, 4, 5, 6],
+				"header"	: "Scale Degrees",
+				"height"	: 0
+			}
+		
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "Tonic",
+				"type" : "int",
+				"values" : ["uni", -12, 12, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "SuperT",
+				"type" : "menu_l",
+				"values" : ["♭", "♮", "♯"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Mediant",
+				"type" : "menu_l",
+				"values" : ["♭", "♮", "♯"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "SubDom",
+				"type" : "menu_l",
+				"values" : ["♭", "♮", "♯"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Dominant",
+				"type" : "menu_l",
+				"values" : ["♭", "♮", "♯"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "SubMed",
+				"type" : "menu_l",
+				"values" : ["♭", "♮", "♯"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+			,
+			{
+				"name" : "Leading",
+				"type" : "menu_l",
+				"values" : ["♭", "♮", "♯"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Mode",
+				"type" : "int",
+				"values" : ["uni", -7, 7, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "MEMORY",
+				"type" : "int",
+				"values" : ["uni", 0, 4, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+			
+		]
+	}
+}

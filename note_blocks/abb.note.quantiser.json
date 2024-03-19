@@ -126,7 +126,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "U[/Dpwn",
+				"name" : "Up/Dpwn",
 				"type" : "menu_l",
 				"values" : ["Down", "Up"],
 				"wrap" : 0,
