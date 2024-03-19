@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 817.0, 595.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,12 +40,193 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-86",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 583.0, 871.0, 150.0, 48.0 ],
+					"text" : "this one tells you which voices are which blocks, isn't saved with the song."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-84",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 549.0, 792.0, 225.0, 36.0 ],
+					"text" : ";\r\nto_blockmanager make_connection $1 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-82",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 597.0, 744.0, 150.0, 62.0 ],
+					"text" : "if you adjust a connection request the core js updates it like this:\n"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-80",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 30.0, 652.0, 176.0, 34.0 ],
+					"presentation_linecount" : 2,
+					"text" : "SAVING DATA WITH THE SONGFILE",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-79",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 38.0, 905.0, 384.0, 103.0 ],
+					"text" : "this is an example of saving something in the blocks dictionary and retrieving it later. any keys you add to the blocks dictionary get saved in the songfile, it doesn't have to be called saved_data.\n\nthe key 'voice_data' is reserved, if blocks do have this key then on load its contents (an array of floats) is copied into voice_data_buffer for you."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-76",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 150.0, 871.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-72",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 181.0, 838.0, 138.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"legacy" : 0
+					}
+,
+					"text" : "dict.unpack saved_data:"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-71",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 145.0, 806.0, 55.0, 22.0 ],
+					"text" : "zl.slice 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-66",
+					"maxclass" : "number",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 218.0, 666.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-64",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 214.0, 773.0, 123.0, 22.0 ],
+					"text" : "sprintf get blocks[%d]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-63",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 214.0, 738.0, 169.0, 22.0 ],
+					"text" : "1 2 3 example_saved 4 5 data"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-60",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 134.0, 738.0, 53.0, 22.0 ],
+					"text" : "prepend"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-52",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 134.0, 703.0, 233.0, 22.0 ],
+					"text" : "sprintf set replace blocks[%d]::saved_data"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ 134.0, 773.0, 65.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict blocks"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-42",
 					"maxclass" : "newobj",
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 616.5, 622.0, 130.0, 22.0 ],
+					"patching_rect" : [ 629.5, 1006.0, 130.0, 22.0 ],
 					"text" : "peek~ QUANTPOOL 1"
 				}
 
@@ -57,7 +238,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 482.0, 622.0, 124.0, 22.0 ],
+					"patching_rect" : [ 494.5, 1006.0, 124.0, 22.0 ],
 					"text" : "peek~ INDEXPOOL 1"
 				}
 
@@ -69,7 +250,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 480.0, 576.0, 373.0, 48.0 ],
+					"patching_rect" : [ 492.5, 960.0, 373.0, 48.0 ],
 					"text" : "and notepools store their scales in these handy lookup buffers - channel = pool no (see example audio patcher for more useful preprepared buffers)"
 				}
 
@@ -115,7 +296,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 634.0, 526.0, 63.0, 22.0 ],
+					"patching_rect" : [ 492.5, 722.0, 63.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -134,8 +315,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 483.0, 514.0, 150.0, 34.0 ],
-					"text" : "feel free to use these dictionaries.."
+					"patching_rect" : [ 487.0, 660.0, 259.5, 34.0 ],
+					"text" : "feel free to use these dictionaries.. they get saved with the song"
 				}
 
 			}
@@ -146,7 +327,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 550.0, 550.0, 82.0, 22.0 ],
+					"patching_rect" : [ 492.5, 871.0, 82.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -165,7 +346,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 634.0, 550.0, 95.0, 22.0 ],
+					"patching_rect" : [ 492.5, 746.0, 95.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -184,7 +365,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 483.0, 550.0, 65.0, 22.0 ],
+					"patching_rect" : [ 491.5, 698.0, 65.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -259,12 +440,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-45",
-					"linecount" : 10,
+					"linecount" : 17,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 499.0, 356.0, 152.0, 144.0 ],
-					"text" : "every voice has 16384 bytes of data storage preallocated to it. use to communicate between voices, to hold patterns, to communicate with a ui patcher.\nblocks with a ui patcher can store this data in saved songfiles."
+					"patching_rect" : [ 482.0, 400.0, 188.0, 241.0 ],
+					"text" : "every voice has 16384 bytes of data storage preallocated to it. use to communicate between voices, to hold patterns, to communicate with a ui patcher.\n\nblocks with a ui patcher - the ui patcher is sent a 'store' message when a song is saved, which is a good time to write the data you want saving into the blocks dictionary (see below). if your block has no ui patcher you can also manage reading and writing from your own keys in the blocks dictionary yourself. see below left."
 				}
 
 			}
@@ -452,7 +633,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 531.0, 260.0, 150.0, 48.0 ],
-					"text" : "to write to a parameter of this voice: paramno/value here"
+					"text" : "to write to a parameter of this block: paramno/value here"
 				}
 
 			}
@@ -535,7 +716,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 487.0, 90.0, 176.0, 62.0 ],
+					"patching_rect" : [ 487.0, 90.0, 179.0, 62.0 ],
 					"text" : "messages about events or user buttons. the resync patcher sends a bang just before the first beat of a bar."
 				}
 
@@ -1175,6 +1356,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 243.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1211,10 +1396,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 160.0, 69.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1286,7 +1467,7 @@
 					"mode" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 462.0, 188.0, 458.0, 459.0 ],
+					"patching_rect" : [ 469.0, 188.0, 449.0, 874.0 ],
 					"proportion" : 0.5
 				}
 
@@ -1302,6 +1483,21 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 17.0, 8.0, 452.0, 214.0 ],
+					"proportion" : 0.5
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"angle" : 270.0,
+					"bgcolor" : [ 0.666666666666667, 0.541176470588235, 0.431372549019608, 1.0 ],
+					"bordercolor" : [ 0.667, 0.6, 0.431, 1.0 ],
+					"id" : "obj-77",
+					"maxclass" : "panel",
+					"mode" : 0,
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 17.0, 644.0, 452.0, 418.0 ],
 					"proportion" : 0.5
 				}
 
@@ -1359,6 +1555,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-31", 0 ],
+					"order" : 0,
+					"source" : [ "obj-103", 6 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-66", 0 ],
+					"order" : 1,
 					"source" : [ "obj-103", 6 ]
 				}
 
@@ -1417,6 +1622,13 @@
 					"destination" : [ "obj-73", 0 ],
 					"midpoints" : [ 762.5, 532.0, 762.5, 532.0 ],
 					"source" : [ "obj-24", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-71", 0 ],
+					"source" : [ "obj-27", 1 ]
 				}
 
 			}
@@ -1513,6 +1725,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-60", 0 ],
+					"source" : [ "obj-52", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-57", 0 ],
 					"source" : [ "obj-55", 0 ]
 				}
@@ -1534,6 +1753,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-27", 0 ],
+					"source" : [ "obj-60", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-55", 0 ],
 					"source" : [ "obj-62", 1 ]
 				}
@@ -1543,6 +1769,36 @@
 				"patchline" : 				{
 					"destination" : [ "obj-67", 0 ],
 					"source" : [ "obj-62", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-60", 0 ],
+					"source" : [ "obj-63", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-27", 0 ],
+					"source" : [ "obj-64", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-52", 0 ],
+					"order" : 1,
+					"source" : [ "obj-66", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-64", 0 ],
+					"order" : 0,
+					"source" : [ "obj-66", 0 ]
 				}
 
 			}
@@ -1564,6 +1820,20 @@
 				"patchline" : 				{
 					"destination" : [ "obj-48", 1 ],
 					"source" : [ "obj-70", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-72", 0 ],
+					"source" : [ "obj-71", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-76", 1 ],
+					"source" : [ "obj-72", 0 ]
 				}
 
 			}
