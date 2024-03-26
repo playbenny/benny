@@ -16,6 +16,7 @@
 			}
 		},
 		"groups" : [
+			
 			{
 				"contains" : [7, 8, 13, 14]
 
@@ -28,6 +29,11 @@
 			{
 				"contains"	:[9, 10, 11, 12, 15],
 				"header"	:"Modify"
+			},
+			{
+				"contains":[16,17,18,19,20,21,22,23,24,25,26],
+				"header":"constrain output octaves",
+				"height":0
 			}
 		],
 		"panel" : {
@@ -100,7 +106,7 @@
 			{
 				"name" : "Octave",
 				"type"	: "int",
-				"values" : ["uni", -2, 2, "lin"],
+				"values" : ["uni", -3, 3, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
@@ -135,7 +141,7 @@
 			{
 				"name" : "Length",
 				"type"	: "int",
-				"values" : ["uni", 10, 1000, "lin"],
+				"values" : ["uni", 50, 1000, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
@@ -152,6 +158,94 @@
 				"values" : ["uni", -7, 7, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "oct",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"colours" : [ [50,20,20], 30 ],
+				"wrap" : 0,
+				"default" : 0.7
 			}
 		]
 	}
