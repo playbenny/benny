@@ -2945,60 +2945,60 @@ function draw_sidebar(){
 					mouse_index = Math.max(miplus16,mouse_index);
 				}
 			}
-						//button to open editor. currently a full row, but it may easily fit on with some of the above stuff? but position needs to be consistent
-						if((block_type!="hardware")&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
-							mouse_click_actions[mouse_index] = set_display_mode;
-							mouse_click_values[mouse_index] = block;
-							var ebg=block_darkest;
-							var efg=block_colour;
-							var et="<< edit"
-							if(displaymode=="custom"){
-								ebg = block_colour;
-								efg = block_darkest;
-								mouse_click_parameters[mouse_index] = "custom_fullscreen";
-								et=">> edit fullscreen"
-							}/*else if(displaymode=="custom_fullscreen"){ //never happens, doesn't draw sidebar in fullscreen
-							}*/else{ // 'self' just pops open the patcher as if it was a vst editor
-								// nb this isn't a magic bullet for easy dev - these patchers still 
-								// need to store their data etc like the js-based ui's do.
-								if(blocktypes.get(block_name+"::block_ui_patcher")=="self"){
-									mouse_click_actions[mouse_index] = open_patcher;
-									mouse_click_parameters[mouse_index] = block;
-									mouse_click_values[mouse_index] = -1;
-								}else{
-									mouse_click_parameters[mouse_index] = "custom";
-								}
-							}
-							if(usermouse.clicked2d == mouse_index){
-								efg = block_darkest;
-								ebg = menucolour;
-							}
-							lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
-							lcd_main.message("frgb" , efg);
-							if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
-							mouse_index++;
-							lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
-							lcd_main.message("write", et);
-			
-							y_offset += fontheight*0.6;
-						}else if(blocktypes.contains(block_name+"::plugin_name")){
-							var fc = block_colour;
-							var bc = block_darkest;
-							if(usermouse.clicked2d == mouse_index){
-								fc = block_darkest;
-								bc = block_colour;
-							}
-							lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2, y_offset+0.5*fontheight,bc);
-							if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+0.5*fontheight,mouse_index,1);
-							mouse_click_actions[mouse_index] = show_vst_editor;
-							mouse_click_parameters[mouse_index] = block;
-							mouse_click_values[mouse_index] = block;
-							mouse_index++;
-							lcd_main.message("frgb" , fc);
-							lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
-							lcd_main.message("write", "open vst");
-							y_offset += 0.6*fontheight;
-						}
+			//button to open editor. currently a full row, but it may easily fit on with some of the above stuff? but position needs to be consistent
+			if((block_type!="hardware")&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
+				mouse_click_actions[mouse_index] = set_display_mode;
+				mouse_click_values[mouse_index] = block;
+				var ebg=block_darkest;
+				var efg=block_colour;
+				var et="<< edit"
+				if(displaymode=="custom"){
+					ebg = block_colour;
+					efg = block_darkest;
+					mouse_click_parameters[mouse_index] = "custom_fullscreen";
+					et=">> edit fullscreen"
+				}/*else if(displaymode=="custom_fullscreen"){ //never happens, doesn't draw sidebar in fullscreen
+				}*/else{ // 'self' just pops open the patcher as if it was a vst editor
+					// nb this isn't a magic bullet for easy dev - these patchers still 
+					// need to store their data etc like the js-based ui's do.
+					if(blocktypes.get(block_name+"::block_ui_patcher")=="self"){
+						mouse_click_actions[mouse_index] = open_patcher;
+						mouse_click_parameters[mouse_index] = block;
+						mouse_click_values[mouse_index] = -1;
+					}else{
+						mouse_click_parameters[mouse_index] = "custom";
+					}
+				}
+				if(usermouse.clicked2d == mouse_index){
+					efg = block_darkest;
+					ebg = menucolour;
+				}
+				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
+				lcd_main.message("frgb" , efg);
+				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
+				mouse_index++;
+				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
+				lcd_main.message("write", et);
+
+				y_offset += fontheight*0.6;
+			}else if(blocktypes.contains(block_name+"::plugin_name")){
+				var fc = block_colour;
+				var bc = block_darkest;
+				if(usermouse.clicked2d == mouse_index){
+					fc = block_darkest;
+					bc = block_colour;
+				}
+				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2, y_offset+0.5*fontheight,bc);
+				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+0.5*fontheight,mouse_index,1);
+				mouse_click_actions[mouse_index] = show_vst_editor;
+				mouse_click_parameters[mouse_index] = block;
+				mouse_click_values[mouse_index] = block;
+				mouse_index++;
+				lcd_main.message("frgb" , fc);
+				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
+				lcd_main.message("write", "open vst");
+				y_offset += 0.6*fontheight;
+			}
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")){
 				var groups = [];
 				var params = [];

@@ -1024,13 +1024,25 @@ function save_song(selectedonly){
 	var per_v = [];
 	if(states.contains("states::current")) states.remove("states::current");
 	for(b=0;b<MAX_BLOCKS;b++){
-		if(ui_patcherlist[b]!='blank.ui') ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
+		if((ui_patcherlist[b]!='blank.ui')&&(ui_patcherlist[b]!='self')) ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
 		store[b] = [];
 		per_v[b] = [];
 		var vl = voicemap.get(b);
 		if(!Array.isArray(vl)) vl = [vl];
-		
 		if(blocks.contains("blocks["+b+"]::name")){
+			var ty=blocks.get("blocks["+b+"]::type");
+			post("\ntype",ty);
+			if(ty == "note"){
+				for(v=0;v<vl.length;v++){
+					note_poly.setvalue(vl[v]+1,"store");
+					post(">",vl[v]+1);
+				}
+			}else if(ty == "audio"){
+				for(v=0;v<vl.length;v++){			
+					audio_poly.setvalue(vl[v]+1-MAX_NOTE_VOICES,"store");
+					post(">",vl[v]+1-MAX_NOTE_VOICES);
+				}
+			}
 			psize = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
 			var pvm_vl=[],pvm=0;
 			for(p=0;p<psize;p++){ 
