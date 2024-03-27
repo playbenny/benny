@@ -1,5 +1,5 @@
 benny
-----------
+-----
 - is a software playground for making live music or for making music live
 - integrates hardware and software, midi and audio, lets you connect anything to anything
 - extends into polyphony elegantly
@@ -21,7 +21,6 @@ concepts
 - meters in benny always show you the minimum and maximum value that happened in the last frame of video. every voice of every block has some kind of meter. midi meters show you the lowest note, highest note, lowest velocity and highest velocity.
 - you can store multiple hardware configuration files for different setups you use. if a hardware block isn't available when loading a song, benny will either auto-substitute or prompt you to choose a replacement. the goal is for a benny-based live set to tolerate on the road equipment failures with minimum fuss.
 - all send/return loops to hardware have aliasing preventing softclip and dither on the outputs. any audio block can be upsampled and run at a higher internal frequency
-- all outputs optionally have audio processing. in my setup the output looper lets you capture a loop and manipulate it while the next song loads.
 
 installation
 ------------
