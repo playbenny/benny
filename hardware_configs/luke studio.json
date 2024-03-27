@@ -569,7 +569,7 @@
 			"type" : "hardware",
 			"help_text" : "in 1/2",
 			"exclusive" : 1,
-			"max_polyphony" : 4,
+			"max_polyphony" : 2,
 			"substitute" : "fx.filter.2pole",
 			"connections" : 			{
 				"out" : 				{

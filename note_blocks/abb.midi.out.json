@@ -1,11 +1,10 @@
 {
 	"abb.midi.out" : {
 		"patcher" : "abb.midi.out",
-		"type" : "note",
-		"ui_in_sidebar_height" : 1,		
-		"no_edit" : 1,
+		"type" : "note",	
 		"help_text" : "new note",
 		"max_polyphony" : 1,
+		"block_ui_patcher"	:	"self",
 		"connections" : {
 			"in" : {
 				"midi" : [ "note in" ]
