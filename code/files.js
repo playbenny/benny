@@ -1031,16 +1031,13 @@ function save_song(selectedonly){
 		if(!Array.isArray(vl)) vl = [vl];
 		if(blocks.contains("blocks["+b+"]::name")){
 			var ty=blocks.get("blocks["+b+"]::type");
-			post("\ntype",ty);
 			if(ty == "note"){
 				for(v=0;v<vl.length;v++){
 					note_poly.setvalue(vl[v]+1,"store");
-					post(">",vl[v]+1);
 				}
 			}else if(ty == "audio"){
 				for(v=0;v<vl.length;v++){			
 					audio_poly.setvalue(vl[v]+1-MAX_NOTE_VOICES,"store");
-					post(">",vl[v]+1-MAX_NOTE_VOICES);
 				}
 			}
 			psize = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
