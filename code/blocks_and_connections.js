@@ -1162,11 +1162,11 @@ function remove_connection(connection_number){
 						//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
 						matrix.message(outmsg);
 					}else if((t_type == "midi") || (t_type == "block")){
-						if(f_type == "hardware") f_voice += MAX_NOTE_VOICES;
+						if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 						remove_routing(connection_number);
 						turn_off_audio_to_data_if_unused((f_voice)+(f_o_no+1)*MAX_AUDIO_VOICES);
 					}else if(t_type == "parameters"){
-						if(f_type == "hardware") f_voice += MAX_NOTE_VOICES;
+						if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 						m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 						//post("starting tvoice",t_voice);
 						t_voice+=2*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS;
@@ -1682,7 +1682,7 @@ function make_connection(cno,existing){
 						}else if(t_type == "midi"){
 							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
 							//post("\nturning on number",(f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
-							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES;
+							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
@@ -1697,7 +1697,7 @@ function make_connection(cno,existing){
 								set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,3,t_voice-MAX_NOTE_VOICES,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 							}
 						}else if(t_type == "block"){
-							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES;
+							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
@@ -1707,7 +1707,7 @@ function make_connection(cno,existing){
 							//i had this commented out for fear of a crash? set_conversion(c_ind,enab,2,scale,offn,offv,vect,-(1+t_i_no));
 							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 						}else if(t_type == "parameters"){
-							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES;
+							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 							t_voice+=2*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS;
