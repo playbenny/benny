@@ -1,0 +1,71 @@
+{
+	"abb.midi.out" : {
+		"patcher" : "abb.midi.out",
+		"type" : "note",	
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"block_ui_patcher"	:	"self",
+		"connections" : {
+			"in" : {
+				"midi" : [ "note in" ]
+			},
+			"out" : {
+				"midi" : [ "note out 1", "note out 2" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0,1,2,3,4,5],
+				"header"	: "Outputs"
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1,2,3,4,5]
+		},
+		"parameters" : [
+			{
+				"name" : "OB6",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Arp",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Moog",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "AMS",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "soft1",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "soft2",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

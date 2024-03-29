@@ -330,8 +330,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}else{
 									connection_edit(p,0);
 								}
-
 							}else{
+								var p = mouse_click_parameters[usermouse.last.got_i];
+								p2= p.split("::").pop();
 								if(p2=="scale"){
 									config_toggle_gain_display_format();
 								}

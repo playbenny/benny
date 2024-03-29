@@ -2894,6 +2894,57 @@ function draw_sidebar(){
 				y_offset += fontheight*0.6;
 			}
 
+			if(sidebar.mode == "block"){
+				sidebar.scopes.starty = y_offset;
+				sidebar.scopes.endy = y_offset+2*fontheight;
+				sidebar.scopes.bg = block_darkest;
+				sidebar.scopes.fg = block_colour;
+				
+				if(block_type == "audio" || block_type == "hardware"){
+					if(sidebar.selected_voice != -1){
+						for(i=0;i<NO_IO_PER_BLOCK;i++){
+							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+							if(view_changed===true) click_rectangle( sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+						}
+						mouse_click_actions[mouse_index] = scope_zoom;
+						mouse_click_parameters[mouse_index] = "-1";
+						mouse_click_values[mouse_index] = "";	
+						mouse_index++;
+					}else{
+						for(i=0;i<sidebar.scopes.voicelist.length;i++){
+							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+							click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+						}
+					}
+					
+					y_offset += fontheight*2.1;						
+				}else if(blocktypes.contains(block_name+"::connections::in::midi")){
+					y_offset += fontheight*2.1;
+					lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,block_darkest);
+					click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,1);
+				}
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels")){
+					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
+					var miplus16 = mouse_index + 16;
+					//this is a bit hacky, but because sometimes the ui may have fewer or more clickable
+					//elements depending on status, you just make this section take up max(16,actual length)
+					//ie if it has more than 16 elements then you hope it stays constant
+
+					if(ui_h>0){
+						sidebar.panel = 1;
+						ui_h *= fontheight;
+						//draw the panelui for this block here
+						if(!blocktypes.contains(block_name+"::no_edit")){
+							click_zone(set_display_mode, "custom", block, sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mouse_index,1);
+							//if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
+						}
+						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width);
+						custom_block = block;
+						y_offset += ui_h + fo1;
+					}
+					mouse_index = Math.max(miplus16,mouse_index);
+				}
+			}
 			//button to open editor. currently a full row, but it may easily fit on with some of the above stuff? but position needs to be consistent
 			if((block_type!="hardware")&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
 				mouse_click_actions[mouse_index] = set_display_mode;
@@ -2947,58 +2998,6 @@ function draw_sidebar(){
 				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
 				lcd_main.message("write", "open vst");
 				y_offset += 0.6*fontheight;
-			}
-
-			if(sidebar.mode == "block"){
-				sidebar.scopes.starty = y_offset;
-				sidebar.scopes.endy = y_offset+2*fontheight;
-				sidebar.scopes.bg = block_darkest;
-				sidebar.scopes.fg = block_colour;
-				
-				if(block_type == "audio" || block_type == "hardware"){
-					if(sidebar.selected_voice != -1){
-						for(i=0;i<NO_IO_PER_BLOCK;i++){
-							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
-							if(view_changed===true) click_rectangle( sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
-						}
-						mouse_click_actions[mouse_index] = scope_zoom;
-						mouse_click_parameters[mouse_index] = "-1";
-						mouse_click_values[mouse_index] = "";	
-						mouse_index++;
-					}else{
-						for(i=0;i<sidebar.scopes.voicelist.length;i++){
-							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
-							click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
-						}
-					}
-					
-					y_offset += fontheight*2.1;						
-				}else if(blocktypes.contains(block_name+"::connections::in::midi")){
-					y_offset += fontheight*2.1;
-					lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,block_darkest);
-					click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,1);
-				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels")){
-					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
-					var miplus16 = mouse_index + 16;
-					//this is a bit hacky, but because sometimes the ui may have fewer or more clickable
-					//elements depending on status, you just make this section take up max(16,actual length)
-					//ie if it has more than 16 elements then you hope it stays constant
-
-					if(ui_h>0){
-						sidebar.panel = 1;
-						ui_h *= fontheight;
-						//draw the panelui for this block here
-						if(!blocktypes.contains(block_name+"::no_edit")){
-							click_zone(set_display_mode, "custom", block, sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mouse_index,1);
-							//if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
-						}
-						ui_poly.setvalue( block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width);
-						custom_block = block;
-						y_offset += ui_h + fo1;
-					}
-					mouse_index = Math.max(miplus16,mouse_index);
-				}
 			}
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")){
 				var groups = [];
