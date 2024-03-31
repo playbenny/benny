@@ -1090,7 +1090,8 @@ function save_song(selectedonly){
 
 function write_userconfig(){
 	post("\nwriting userconfig");
-	userconfig.writeagain();
+	userconfig.export_json(projectpath+"userconfig.json");
+	//userconfig.writeagain();
 }
 
 function folder_select(folderstr){

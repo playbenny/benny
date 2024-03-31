@@ -21,7 +21,21 @@ function loadbang(){
 	config.parse('{ }');
 	config.import_json("config.json");
 	userconfig.parse('{ }');
-	userconfig.import_json("userconfig.json");
+	post("\nlooking for userconfig:",projectpath+"userconfig.json");
+	var userconfigfile = new File(projectpath+"userconfig.json");
+	if(userconfigfile.isopen){
+		userconfigfile.close();
+		userconfig.import_json(projectpath+"userconfig.json");
+		post("OK");
+	}else{
+		post("\n-------------\nfirst run. hello!\nsetting songs folder and templates folder, you can change these in the file menu.");
+		userconfig.replace("last_hardware_config","no_hardware");
+		userconfig.replace("TEMPLATES_FOLDER", projectpath+"templates");
+		userconfig.replace("SONGS_FOLDER", projectpath+"demosongs");
+		userconfig.replace("glow", 0.2);
+		userconfig.export_json(projectpath+"userconfig.json");
+		//FIRSTRUN = 1;
+	}
 	if(userconfig.contains("last_hardware_config")){
 		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
 	}
