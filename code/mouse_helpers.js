@@ -2305,6 +2305,7 @@ function type_to_search(key){
 			camera();
 		}
 		menu.search = menu.search + String.fromCharCode(key);
+		menu.search = menu.search.replace(".","");
 	}
 	if(menu.search!=""){
 		var type_order = config.get("type_order");
@@ -2316,6 +2317,8 @@ function type_to_search(key){
 				var str = types[i];
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
 				str = str.toLowerCase();
+				while(str.indexOf(".")>=0) str = str.replace(".","");
+				//post("\nSTR IS NOW",str,menu.search);
 				if(str.indexOf(menu.search)!=-1){ //if you find the search in the name
 					var ts=types[i].split('.');
 					var tt = type_order.length;
