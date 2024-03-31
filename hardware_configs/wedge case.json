@@ -186,7 +186,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff" ],
-					"hardware_channels" : [ 13, 24 ]
+					"hardware_channels" : [ 13, 18 ]
 				}
 ,
 				"out" : 				{
@@ -227,8 +227,8 @@
 			"substitute" : "fx.wavefold",
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "X" ],
-					"hardware_channels" : [ 8, 24 ]
+					"hardware" : [ "in", "X", "Y" ],
+					"hardware_channels" : [ 8, 23, 24 ]
 				}
 ,
 				"out" : 				{
@@ -311,8 +311,8 @@
 			"substitute" : "fx.filter.2pole",
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "cutoff", "cutoff cv2 (kbd)" ],
-					"hardware_channels" : [ 5, 6, 24 ]
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 5, 16 ]
 				}
 ,
 				"out" : 				{
