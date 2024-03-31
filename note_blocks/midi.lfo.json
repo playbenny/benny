@@ -41,7 +41,7 @@
 			{
 				"name" : "rate",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 1, "exp.001"],
 				"error_scale" : 0,
 				"default" : 0.26
 			},

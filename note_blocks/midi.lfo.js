@@ -84,6 +84,7 @@ function drawcurves(){
 			var sh=Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v])*4096);
 			var shp=[shape_buffer.peek(1, sh),shape_buffer.peek(2, sh),shape_buffer.peek(3, sh),shape_buffer.peek(4, sh)];
 			var ra=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+1);
+			ra = -1.001001001001001001001001001001*(Math.pow(0.001, ra) - 1);
 			ra = 1/(10000 - 9950*ra);
 			var wa=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+3);
 			if(wa<0.5){
