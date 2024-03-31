@@ -799,7 +799,7 @@ function initialise_block_menu(visible){
 					vis=1;	
 					if((menu.mode == 1)&&!(menu.show_all_types)){
 						var tt = blocktypes.get(types[i]+"::type");
-						if(tt=="hardware") tt=="audio";
+						if(tt=="hardware") tt="audio";
 						if(tt != swpt) vis=0; //this is for swap mode, you can only swap an audio into an audio, etc
 					}
 					if(blocktypes.contains(types[i]+"::exclusive")){
