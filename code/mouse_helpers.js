@@ -1279,7 +1279,7 @@ function sidebar_parameter_knob(parameter, value){
 		}
 	}else{
 		//set value
-		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(1,value)));
+		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],Math.max(0,Math.min(/*1*/0.9999999,value)));
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
@@ -2318,7 +2318,6 @@ function type_to_search(key){
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
 				str = str.toLowerCase();
 				while(str.indexOf(".")>=0) str = str.replace(".","");
-				//post("\nSTR IS NOW",str,menu.search);
 				if(str.indexOf(menu.search)!=-1){ //if you find the search in the name
 					var ts=types[i].split('.');
 					var tt = type_order.length;
