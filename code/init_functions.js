@@ -28,12 +28,21 @@ function loadbang(){
 		userconfig.import_json(projectpath+"userconfig.json");
 		post("OK");
 	}else{
+		userconfigfile.close();
 		post("\n-------------\nfirst run. hello!\nsetting songs folder and templates folder, you can change these in the file menu.");
-		userconfig.replace("last_hardware_config","no_hardware");
-		userconfig.replace("TEMPLATES_FOLDER", projectpath+"templates");
-		userconfig.replace("SONGS_FOLDER", projectpath+"demosongs");
-		userconfig.replace("glow", 0.2);
-		userconfig.export_json(projectpath+"userconfig.json");
+		var newuserconfig = new Dict;
+		newuserconfig.parse("{}");
+		newuserconfig.replace("last_hardware_config","no_hardware.json");
+		newuserconfig.replace("TEMPLATES_FOLDER", projectpath+"templates");
+		newuserconfig.replace("SONGS_FOLDER", projectpath+"demosongs");
+		newuserconfig.replace("glow", 0.2);
+		newuserconfig.export_json(projectpath+"userconfig.json");
+		post("\ntry close");
+		newuserconfig.close();
+		post("\ntry freepeer");
+		newuserconfig.freepeer();
+		userconfig.import_json(projectpath+"userconfig.json");
+		post("OK");
 		//FIRSTRUN = 1;
 	}
 	if(userconfig.contains("last_hardware_config")){
@@ -475,14 +484,19 @@ function import_hardware(v){
 	var keys = d.getkeys();
 	for(i = 0; i < keys.length; i++){
 		t = d.get(keys[i]);
-		post("\n  "+keys[i]+" : "+t);
 		io_dict.set(keys[i],t);
+		if(keys[i]=="controllers"){
+			post("\n  controllers : "+t.getkeys());
+		}else if(keys[i]=="marix_switch"){
+			post("\n  matrix switch : ok");
+		}else{
+			post("\n  "+keys[i]+" : "+t);
+		}
 	}
-
 	//messnamed("to_ext_matrix","read_config");
 	transfer_input_lists();
 	post("\nsetting output blocks to:",output_blocks);
-	output_blocks_poly.patchername(output_blocks); //"master_1.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat", "clip_dither.maxpat");
+	output_blocks_poly.patchername(output_blocks); 
 	post("\n\ninit stage 4 : start graphic and audio engines\n------------------------------------------");
 
 	initialise_graphics();
@@ -493,7 +507,6 @@ function import_hardware(v){
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
 	this.patcher.remove(old_adc);
-	//message('list',audioiolists[0]);
 	new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);//, "@varname", "audio_inputs");
 	new_adc.message("sendbox", "varname", "audio_inputs");
 	new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);//, "@varname", "audio_outputs");
@@ -505,7 +518,6 @@ function import_hardware(v){
 	this.patcher.connect(new_adc,0,ipcombine,1);
 	this.patcher.connect(openbut,0,new_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
-	//post("\nout used",output_used,"in used",input_used);
 	keys = blocktypes.getkeys();
 	for(i=0;i<keys.length;i++){
 		if(keys[i].split(".")[0] == "hardware"){
