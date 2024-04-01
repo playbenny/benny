@@ -25,7 +25,13 @@ function set_display_mode(mode,t){
 		}else{
 			flock_axes(0);
 		}
-		if((mode == "blocks") && (displaymode == "panels")) block_and_wire_colours();
+		if(mode == "blocks"){
+			if(displaymode == "panels") block_and_wire_colours();
+			if(displaymode == "flocks"){
+				draw_blocks();
+
+			}
+		}
 		displaymode=mode;
 		if(mode == "block_menu"){
 			if(menu.search!=""){
@@ -48,8 +54,7 @@ function set_display_mode(mode,t){
 			}	
 		}
 	}
-	blocks_enable(blocks_enabled);
-	
+	blocks_enable(blocks_enabled);	
 }
 
 function camera(){

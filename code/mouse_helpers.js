@@ -1283,7 +1283,7 @@ function sidebar_parameter_knob(parameter, value){
 		if(!usermouse.shift&&(parameter[2]==1)){
 			value = (100+value) % 1;
 		}else{
-			value = Math.max(0,Math.min(/*1*/0.9999999,value));
+			value = Math.max(0,Math.min(0.9999999,value));
 		}
 		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],value);
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
