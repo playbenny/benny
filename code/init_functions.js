@@ -146,7 +146,6 @@ function initialise_dictionaries(hardware_file){
 	//MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
 	//MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
 	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
-	sidebar.scopes.midi_routing.voice = MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_AUDIO_VOICES * NO_IO_PER_BLOCK + MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS;
 	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
 	BLOCKS_GRID = config.get("BLOCKS_GRID");
 	BLOCKS_GRID = [BLOCKS_GRID, 1/BLOCKS_GRID];
@@ -548,6 +547,7 @@ function import_hardware(v){
 	MAX_AUDIO_OUTPUTS = audioiolists[1].length;
 	config.set("MAX_AUDIO_INPUTS",MAX_AUDIO_INPUTS);
 	config.set("MAX_AUDIO_OUTPUTS",MAX_AUDIO_OUTPUTS);
+	sidebar.scopes.midi_routing.voice = MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_AUDIO_VOICES * NO_IO_PER_BLOCK + MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS;
 	//var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS;
 	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_OUTPUTS;
 	//post("\n i think matrix should be ",MAX_AUDIO_VOICES," * ",NO_IO_PER_BLOCK," + either",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixins,"or",matrixouts);
