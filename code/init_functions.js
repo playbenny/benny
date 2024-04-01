@@ -375,7 +375,11 @@ function import_hardware(v){
 	var d3 = new Dict;
 	var t;
 	var i;
-	
+
+	var old_clickdac =this.patcher.getnamed("click_output");
+	this.patcher.remove(old_clickdac);
+	var click_enabled = 0;	
+
 	loading.recent_substitutions = new Dict;
 	loading.recent_substitutions.parse("{}");
 
@@ -460,7 +464,12 @@ function import_hardware(v){
 				post("\ncue out is on channel(s)",ch);
 			}
 			if(d.contains(keys[i]+"::click_out")){
-				post("\nfound click out but reassign not implemented");
+				post("\nfound click out");
+				var clickdac = this.patcher.newdefault(90,208, "dac~", ch);
+				clickdac.message("sendbox", "varname", "click_output");
+				click_enabled = 1;
+				var global_transport_and_click = this.patcher.getnamed("global_transport_and_click");
+				for(var ccc=0;ccc<ch.length;ccc++) this.patcher.connect(global_transport_and_click, 1, clickdac, ccc);
 			}
 		}
 		if(d.contains(keys[i]+"::connections::out::hardware_channels")){
@@ -501,14 +510,15 @@ function import_hardware(v){
 	initialise_graphics();
 
 	post("\nbuilding new audio graph");
+	messnamed("click_enabled",click_enabled);
 	var audioiolists = get_hw_meter_positions();
 	var old_dac = this.patcher.getnamed("audio_outputs");
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
 	this.patcher.remove(old_adc);
-	new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);//, "@varname", "audio_inputs");
+	new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);
 	new_adc.message("sendbox", "varname", "audio_inputs");
-	new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);//, "@varname", "audio_outputs");
+	new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);
 	new_dac.message("sendbox", "varname", "audio_outputs");
 	var opinterleave = this.patcher.getnamed("op_interleave");
 	var ipcombine = this.patcher.getnamed("ip_combine");
