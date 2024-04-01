@@ -505,7 +505,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				//paramslider_details is used for quick redraw of a single slider. index is curp
 				//ie is mouse_click_parameters[index][0]
 				mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-				mouse_click_parameters[mouse_index] = [curp, b];
+				mouse_click_parameters[mouse_index] = [curp, b,wrap];
 				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 					//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 					mouse_click_values[mouse_index] = curp+1;
@@ -3230,7 +3230,7 @@ function draw_sidebar(){
 										//paramslider_details is used for quick redraw of a single slider. index is curp
 										//ie is mouse_click_parameters[index][0]
 										mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-										mouse_click_parameters[mouse_index] = [curp, block];
+										mouse_click_parameters[mouse_index] = [curp, block,wrap];
 										if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 											//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 											mouse_click_values[mouse_index] = curp+1;
@@ -3679,7 +3679,7 @@ function draw_sidebar(){
 									//paramslider_details is used for quick redraw of a single slider. index is plist[t]
 									//ie is mouse_click_parameters[index][0]
 									mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-									mouse_click_parameters[mouse_index] = [plist[t], block];
+									mouse_click_parameters[mouse_index] = [plist[t], block,wrap];
 									if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 										//if it's a menu_b or menu_i store the next position in mouse_click_values
 										mouse_click_values[mouse_index] = plist[t];//(pv+1/p_values.length) % 1;
@@ -5590,14 +5590,11 @@ function draw_sidebar(){
 						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour[0],section_colour[1],section_colour[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3,0,click_to_set];
 					}
 					parameter_v_slider(sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,click_to_set);
-					//namelabely = labelled_parameter_v_slider(curp);
-					//paramslider_details[curp][17]=namelabely;
-					//redraw_flag.targets[curp] = 1;
 					sidebar.selected = t_number;
 					//paramslider_details is used for quick redraw of a single slider. index is curp
 					//ie is mouse_click_parameters[index][0]
 					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-					mouse_click_parameters[mouse_index] = [curp, t_number];
+					mouse_click_parameters[mouse_index] = [curp, t_number,wrap];
 					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
 						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 						mouse_click_values[mouse_index] = curp+1;
