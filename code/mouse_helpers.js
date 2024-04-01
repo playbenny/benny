@@ -157,14 +157,11 @@ function blocks_paste(outside_connections,target){
 					new_block_index = -1;
 				}else{
 					var px, py;
-					if(target==undo){
-						px = td.get(copied_blocks[b]+"::space::x");
-						py = td.get(copied_blocks[b]+"::space::y");
-					}else{
-						var px = td.get(copied_blocks[b]+"::space::x")+pasteoffset[0];
-						var py = td.get(copied_blocks[b]+"::space::y")+pasteoffset[1];
-						pasteoffset[0] += 2;
-						pasteoffset[1] -= 0.25;
+					px = td.get(copied_blocks[b]+"::space::x");
+					py = td.get(copied_blocks[b]+"::space::y");
+					if(target!=undo){
+						px += pasteoffset[0];
+						py += pasteoffset[1];
 					}
 					new_block_index = new_block(name,px,py);
 				}
@@ -291,6 +288,10 @@ function blocks_paste(outside_connections,target){
 						//draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
 					}
 				}				
+			}
+			if(target!=undo){
+				pasteoffset[0] += 2;
+				pasteoffset[1] -= 0.25;				
 			}
 		}
 	}
