@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -45,7 +45,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1119.0, 144.0, 150.0, 47.0 ],
+					"patching_rect" : [ 1119.0, 144.0, 150.0, 48.0 ],
 					"text" : "once i have ui block recycling enabled, i don't think i'll need this"
 				}
 
@@ -317,7 +317,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 570.0, 710.5, 150.0, 100.0 ],
+					"patching_rect" : [ 570.0, 710.5, 150.0, 103.0 ],
 					"text" : "this shit manages multiple clock blocks - newly added ones should acquire tempo, newly loaded ones should take over and kill old ones. mute/unmute revives"
 				}
 
@@ -628,7 +628,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1095.0, 484.0, 152.0, 74.0 ],
+					"patching_rect" : [ 1095.0, 484.0, 152.0, 75.0 ],
 					"text" : "NB this version DOES NOT need the tempo slide thing, because beats 2,3,4, etc are actually 1,2,3 etc through a delay"
 				}
 
@@ -639,8 +639,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 498.0, 317.0, 111.0, 22.0 ],
-					"text" : "s humaniser_mean"
+					"patching_rect" : [ 498.0, 317.0, 109.0, 22.0 ],
+					"text" : "s mean_clock_drift"
 				}
 
 			}
@@ -674,8 +674,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 689.0, 431.0, 99.0, 22.0 ],
-					"text" : "s humaniser_slip"
+					"patching_rect" : [ 689.0, 431.0, 70.0, 22.0 ],
+					"text" : "s clock_slip"
 				}
 
 			}
@@ -887,7 +887,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 971.0, 321.0, 213.0, 60.0 ],
+					"patching_rect" : [ 971.0, 321.0, 213.0, 62.0 ],
 					"text" : "at tempo t a beat is (60000/t) ms\nat tempo t+d a beat is (60000/(t+d))ms\nso every beat you get ahead by 60000*(1/(t+d) - 1/t)"
 				}
 
@@ -899,8 +899,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 971.0, 261.0, 270.0, 47.0 ],
-					"text" : "-1 if avg is too high, ie it's too far behind, so slow tempo and reduce the human_times values. we want to lose 10ms (1000 in this table)"
+					"patching_rect" : [ 971.0, 261.0, 270.0, 48.0 ],
+					"text" : "-1 if avg is too high, ie it's too far behind, so slow tempo and reduce the clock_time_errors values. we want to lose 10ms (1000 in this table)"
 				}
 
 			}
@@ -966,27 +966,26 @@
 			}
 , 			{
 				"box" : 				{
-					"editor_rect" : [ 185.0, 272.0, 300.0, 300.0 ],
+					"editor_rect" : [ 100.0, 100.0, 300.0, 300.0 ],
 					"embed" : 0,
 					"id" : "obj-17",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "bang" ],
-					"patching_rect" : [ 633.0, 176.125, 110.0, 22.0 ],
+					"patching_rect" : [ 633.0, 176.125, 148.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "human_times",
+						"name" : "clock_time_errors",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
-						"range" : 5000,
+						"range" : 128,
 						"showeditor" : 0,
-						"signed" : 1,
 						"size" : 8
 					}
 ,
 					"showeditor" : 0,
-					"text" : "table human_times"
+					"text" : "table clock_time_errors"
 				}
 
 			}
@@ -1136,27 +1135,26 @@
 			}
 , 			{
 				"box" : 				{
-					"editor_rect" : [ 202.0, 173.0, 300.0, 300.0 ],
+					"editor_rect" : [ 100.0, 100.0, 300.0, 300.0 ],
 					"embed" : 0,
 					"id" : "obj-36",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "bang" ],
-					"patching_rect" : [ 292.5, 259.75, 110.0, 22.0 ],
+					"patching_rect" : [ 292.5, 259.75, 148.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "human_times",
+						"name" : "clock_time_errors",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
-						"range" : 5000,
+						"range" : 128,
 						"showeditor" : 0,
-						"signed" : 1,
 						"size" : 8
 					}
 ,
 					"showeditor" : 0,
-					"text" : "table human_times"
+					"text" : "table clock_time_errors"
 				}
 
 			}
@@ -1203,27 +1201,26 @@
 			}
 , 			{
 				"box" : 				{
-					"editor_rect" : [ 258.0, 448.0, 300.0, 300.0 ],
+					"editor_rect" : [ 100.0, 100.0, 300.0, 300.0 ],
 					"embed" : 0,
 					"id" : "obj-7",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "bang" ],
-					"patching_rect" : [ 385.0, 138.0, 110.0, 22.0 ],
+					"patching_rect" : [ 385.0, 138.0, 148.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "human_times",
+						"name" : "clock_time_errors",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
-						"range" : 5000,
+						"range" : 128,
 						"showeditor" : 0,
-						"signed" : 1,
 						"size" : 8
 					}
 ,
 					"showeditor" : 0,
-					"text" : "table human_times"
+					"text" : "table clock_time_errors"
 				}
 
 			}
@@ -1258,10 +1255,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 306.0, 537.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -1286,7 +1279,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 94.5, 375.5, 149.0, 35.0 ],
+					"patching_rect" : [ 94.5, 375.5, 149.0, 36.0 ],
 					"text" : "expr ((pow(2.\\,$f1)-1)*59.9 +0.1)*1000."
 				}
 
@@ -1394,10 +1387,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 265.0, 537.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1410,10 +1399,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 85.0, 66.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
