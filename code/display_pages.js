@@ -1639,7 +1639,7 @@ function set_sidebar_mode(mode){
 	if(mode!=sidebar.mode){
 		sidebar.scroll.position = 0;
 		sidebar.scroll.max = 0;
-		if((sidebar.mode == "none")||(mode=="none")) center_view(1);
+		//if((sidebar.mode == "none")||(mode=="none")) center_view(1);
 		if(mode=="block"){
 			sidebar.scopes.voice = -1;//causes it to ask te right block to display a scope
 		}else{
@@ -5984,7 +5984,7 @@ function draw_sidebar(){
 			messnamed("scope_size",(sidebar.scopes.width)/2);
 		}else{
 			sidebar.mode = "none";
-			center_view(1);
+			//center_view(1);
 			if(sidebar.mode != sidebar.lastmode){
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
