@@ -385,8 +385,8 @@
 		"hardware.rme.headphone.out" : 		{
 			"type" : "hardware",
 			"help_text" : "output to the rme headphone out",
-			"click_out" : 1,
-			"cue_out" : 0,
+			"click_out" : 0,
+			"cue_out" : 1,
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "out", "out" ],
