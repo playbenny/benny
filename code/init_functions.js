@@ -463,7 +463,7 @@ function import_hardware(v){
 				automap.available_q = ch;
 				post("\ncue out is on channel(s)",ch);
 			}
-			if(d.contains(keys[i]+"::click_out")){
+			if((d.contains(keys[i]+"::click_out"))&&(d.get(keys[i]+"::click_out") == 1)){
 				post("\nfound click out");
 				var clickdac = this.patcher.newdefault(90,208, "dac~", ch);
 				clickdac.message("sendbox", "varname", "click_output");
