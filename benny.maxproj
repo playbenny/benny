@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3792645325,
+	"modificationdate" : 3795168993,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -51,6 +51,11 @@
 			}
 ,
 			"core.clock.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"voiceheader.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -194,11 +199,6 @@
 					"projectrelativepath" : "./audio_blocks"
 				}
 
-			}
-,
-			"voiceheader.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
 			}
 ,
 			"mutecontrol.maxpat" : 			{
@@ -1171,6 +1171,11 @@
 				}
 
 			}
+,
+			"pepper_parachute.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
 
 		}
 ,
@@ -1189,6 +1194,11 @@
 			}
 ,
 			"voicealloc.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"parameterwatcher.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
 			}
@@ -1220,11 +1230,6 @@
 ,
 			"core.input.control.ui.js" : 			{
 				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"parameterwatcher.gendsp" : 			{
-				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
@@ -2694,6 +2699,11 @@
 					"projectrelativepath" : "./hardware_configs"
 				}
 
+			}
+,
+			"pepper_parachute.json" : 			{
+				"kind" : "json",
+				"local" : 1
 			}
 
 		}

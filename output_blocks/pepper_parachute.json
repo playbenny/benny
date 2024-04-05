@@ -1,0 +1,28 @@
+{
+	"pepper_parachute" : {
+		"patcher" : "pepper_parachute",
+		"type" : "output",
+		"help_text" : "integration with my parachute emergency looper patch that runs on bela pepper",
+		"max_polyphony" : 0,
+		"groups" : [
+			{ 
+				"contains" : [0, 0],
+				"header" : "emergency looper"
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "initial loop length_(beats)",
+				"type" : "int",
+				"values" : ["uni", 1, 64, "lin"],
+				"wrap" : 0,
+				"default" : 0.06
+			},
+			{
+				"name" : "dummy",
+				"type" : "menu_l",
+				"values" : ["theres a bug where hardware output block params dont work if there's only 1 so this is a workaround until i fix that"]
+			}
+		]
+	}
+}

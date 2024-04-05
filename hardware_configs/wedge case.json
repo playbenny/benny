@@ -327,15 +327,19 @@
 		"hardware.filter.chloe.1" : 		{
 			"type" : "hardware",
 			"help_text" : "this is the left side of the chloe filter",
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "MIDI function",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff", "lpg" ],
-					"hardware_channels" : [ 9, 19, 23 ]
-				}
-,
+					"hardware_channels" : [ 9, 19, 23 ],
+					"midi" : ["lpg"],
+					"midi_channels" : [10],
+					"midi_ranges" : [[0,0]]
+				},
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 9 ]
@@ -348,13 +352,18 @@
 		"hardware.filter.chloe.2" : 		{
 			"type" : "hardware",
 			"help_text" : "this is the right side of the chloe filter",
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "MIDI function",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff", "lpg" ],
-					"hardware_channels" : [ 10, 20, 24 ]
+					"hardware_channels" : [ 10, 20, 24 ],
+					"midi" : ["lpg"],
+					"midi_channels" : [10],
+					"midi_ranges" : [[0,0]]
 				}
 ,
 				"out" : 				{
