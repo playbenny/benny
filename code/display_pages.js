@@ -1307,7 +1307,7 @@ function draw_wire(connection_number){
 				if(from_type == "midi") from_pos[2]-=0.25;
 				if(from_type == "parameters") from_pos[2]-=0.125;
 			}
-			if((to_type=="audio") || (to_type=="hardware") || (to_type=="matrix")){
+			if((to_type=="audio")){//} || (to_type=="hardware") || (to_type=="matrix")){
 				tconx = ((to_number+0.5)/(NO_IO_PER_BLOCK));
 				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2]-0.25 ];
 			}else{

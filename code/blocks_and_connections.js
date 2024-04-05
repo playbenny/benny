@@ -2927,7 +2927,7 @@ function build_mod_sum_action_list(){
 	if(loading.progress>0) return 0;
 	messnamed("modulation_processor", "pause",1);
 	post("\nBuilding new mod sum action list");
-//this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
+// this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
 // buffer has 4 channels. 
 // ch1 is the index of the destination, this repeats for all rows relating to this particular param/etc. it changing is the sign to sum up, dump the number, move on.
 // row 1 is always:
@@ -2975,8 +2975,8 @@ function build_mod_sum_action_list(){
 	
 
 	
-	var midiout,lockup,locked,flag,dest_index,extra,has_mod,wrap;
-//	var voffset=0;
+	var lockup,locked,flag,dest_index,extra,has_mod,wrap;
+//	var midiout,voffset=0;
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(blocks.contains("blocks["+b+"]::name")){
 			var bname = blocks.get("blocks["+b+"]::name");
@@ -2988,11 +2988,11 @@ function build_mod_sum_action_list(){
 				lockup *= lockup * 0.003;
 				voicelist = voicemap.get(b);
 				if(!Array.isArray(voicelist)) voicelist = [voicelist];
-				if(btype=="hardware"){
+				/*if(btype=="hardware"){
 					if(blocktypes.contains(bname+"::midi_output_number")){
 						midiout = blocktypes.get(bname+"::midi_output_number");
 					}	
-				}
+				}*/
 
 				for(i=0;i<voicelist.length;i++){
 					locked = 0;
@@ -3020,7 +3020,7 @@ function build_mod_sum_action_list(){
 							wrap = 2 - blocktypes.get(bname+"::parameters["+p+"]::wrap"); 
 						}
 						
-						if(midiout>-1){
+						/*if(midiout>-1){
 							flag = 4;
 							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
 							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");
@@ -3029,7 +3029,8 @@ function build_mod_sum_action_list(){
 							mod_sum_action_list.poke(2,list_pointer,0);
 							mod_sum_action_list.poke(3,list_pointer,flag);
 							mod_sum_action_list.poke(4,list_pointer,wrap);
-						}else if(is_flocked[MAX_PARAMETERS*(voicelist[i])+p]>0){
+						}else */
+						if(is_flocked[MAX_PARAMETERS*(voicelist[i])+p]>0){
 							flag = 2;
 							extra = MAX_PARAMETERS*(voicelist[i])+p;
 							flock_id = is_flocked[extra]-1;
