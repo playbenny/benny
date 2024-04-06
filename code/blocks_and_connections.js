@@ -419,7 +419,7 @@ function send_ui_patcherlist(do_all){
 		if((loaded_ui_patcherlist[i]!=ui_patcherlist[i])&&(ui_patcherlist[i]!="recycling")){
 			if(RECYCLING && (ui_patcherlist[i] == "blank.ui")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				ui_patcherlist[i] = "recycling";
-				ui_poly.setvalue(i+1, "muteouts", 1); //doesn't strictly mute the outs but i'm just using the same message for consistancy
+				ui_poly.setvalue(i+1, "muteouts", 1); //doesn't strictly mute the outs but i'm just using the same message for consistency
 				if(!do_all){
 					still_checking_polys |= 4;
 					return 1;
@@ -433,7 +433,7 @@ function send_ui_patcherlist(do_all){
 					still_checking_polys |=4;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
-				post("\nui patcher load message sent",i+1,pn);
+				//post("\nui patcher load message sent",i+1,pn);
 				ui_poly.setvalue(i+1,"patchername",pn);
 				loaded_ui_patcherlist[i]=ui_patcherlist[i];
 				if(do_all!=1){
