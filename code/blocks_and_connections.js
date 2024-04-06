@@ -2,8 +2,8 @@ function new_block(block_name,x,y){
 	//post("new block");
 	var details = new Dict;
 	var new_voice = -1;
-	// find an unused block number in blocks
-	var new_block_index = next_free_block();
+	// find an unused block number in blocks, passing the block name so we can search for ui patchers to recycle
+	var new_block_index = next_free_block(block_name);
 	// what type is it?	// look it up in the blocks dict:
 	if(blocktypes.contains(block_name)){
 		details = blocktypes.get(block_name);
@@ -433,6 +433,7 @@ function send_ui_patcherlist(do_all){
 					still_checking_polys |=4;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
+				post("\nui patcher load message sent",i+1,pn);
 				ui_poly.setvalue(i+1,"patchername",pn);
 				loaded_ui_patcherlist[i]=ui_patcherlist[i];
 				if(do_all!=1){
@@ -573,19 +574,25 @@ function next_free_voice(t,n){
 }
 
 
-function next_free_block(type){
-	if(type!==null){
+function next_free_block(block_name){
+	if(block_name!==null){
+		var ui = blocktypes.get(block_name+"::block_ui_patcher");
 		//search for a recycling candidate
-		for(i=0;i<MAX_BLOCKS;i++){
-			if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==type) && !blocks.contains("blocks["+i+"]::name")){
-				post("\n-found ui patcher recycling candidate..");
-				for(t=0;t<loading.mapping.length;t++){
-					if(loading.mapping[t] == i){
-						post("failed, already in use");
-						t=999999999;
+		if((ui!="blank.ui")&&(ui!="self")){
+			for(i=0;i<MAX_BLOCKS;i++){
+				if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==ui) && !blocks.contains("blocks["+i+"]::name")){
+					post("\n-found ui patcher recycling candidate..");
+					for(t=0;t<loading.mapping.length;t++){
+						if(loading.mapping[t] == i){
+							post("failed, already in use");
+							t=999999999;
+						}
+					}
+					if(t<999999999){
+						loaded_ui_patcherlist[i] = "recycling";
+						return i; 	
 					}
 				}
-				if(t<999999999) return i; 	
 			}
 		}
 	}

@@ -107,3 +107,4 @@ function quer(){
 function store(){
 
 }
+function enabled(){}

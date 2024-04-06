@@ -468,7 +468,6 @@ function import_song(){
 				}
 				t=0;
 				var excl = blocktypes.contains(block_name+"::exclusive");
-				var ui = blocktypes.get(block_name+"::block_ui_patcher");
 				//var type = blocktypes.get(block_name+"::type");
 				if(excl){
 					if(loading.wait>1) post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
@@ -482,19 +481,20 @@ function import_song(){
 						}
 					}
 				}
+				/*var ui = blocktypes.get(block_name+"::block_ui_patcher");
 				if((t == 0) && (ui != "blank.ui") && (ui != "self")){
 					for(i=0;i<MAX_BLOCKS;i++){
 						if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
-							//post("\nrecycling ui and block number:",i,ui);
+							post("\nrecycling ui and block number:",i,ui);
 							t= 1;
 							loading.mapping[b] = i;
 							//ui_patcherlist[i] = ui; //something muteouts 0? - if there's a mechanism to disable ui patchers then here you should enable..
 							i=MAX_BLOCKS;
 						}
 					}
-				}
+				}*/
 				if(t==0){
-					loading.mapping[b] = next_free_block();
+					loading.mapping[b] = next_free_block(block_name);
 				}
 				if(!excl){
 					song_select.current_blocks.push(loading.mapping[b]);

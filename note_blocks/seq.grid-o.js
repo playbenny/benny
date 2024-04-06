@@ -188,3 +188,4 @@ function store(){
 function keydown(key){
 	
 }
+function enabled(){}
