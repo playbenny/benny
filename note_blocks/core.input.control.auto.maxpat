@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -2744,7 +2744,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 608.904761904761926, 1796.0, 253.0, 22.0 ],
-					"text" : "- 12 13 14 2 6 6 11 0 8 9 10"
+					"text" : "- 0 1 4 5 8 9 12 13 2 6 7 3 15 11"
 				}
 
 			}
@@ -3768,6 +3768,18 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-5",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 492.0, 302.0, 101.0, 22.0 ],
+									"text" : "loadmess waiting"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-4",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
@@ -4061,7 +4073,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 272.678571428571331, 360.375, 228.821428571428669, 22.0 ],
-									"text" : "\"Midi Fighter Twister\""
+									"text" : "JAMES_16e"
 								}
 
 							}
@@ -4352,6 +4364,13 @@
 								"patchline" : 								{
 									"destination" : [ "obj-191", 0 ],
 									"source" : [ "obj-4", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-161", 1 ],
+									"source" : [ "obj-5", 0 ]
 								}
 
 							}
@@ -6260,10 +6279,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 183.0, 1234.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -6300,6 +6315,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 629.071428571428669, 134.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 

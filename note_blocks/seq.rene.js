@@ -103,3 +103,4 @@ function mouse(x,y,l,s,a,c,scr){
 function store(){
 	//nothing to store for this block, the paramdata just holds cursor
 }
+function enabled(){}

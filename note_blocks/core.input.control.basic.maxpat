@@ -1202,7 +1202,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 749.071428571428669, 1821.0, 169.0, 22.0 ],
-					"text" : "- 0 4 1 5 2 3"
+					"text" : "- 0 1 2 4 5 6 3"
 				}
 
 			}
@@ -2230,7 +2230,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 2086.071428571428442, 958.75, 50.0, 22.0 ],
-					"text" : "0"
+					"text" : "36"
 				}
 
 			}
@@ -2254,7 +2254,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1912.0, 958.75, 108.0, 22.0 ],
-					"text" : "0"
+					"text" : "note"
 				}
 
 			}
@@ -2321,6 +2321,18 @@
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-9",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 490.0, 291.0, 101.0, 22.0 ],
+									"text" : "loadmess waiting"
+								}
+
+							}
+, 							{
 								"box" : 								{
 									"id" : "obj-10",
 									"maxclass" : "newobj",
@@ -2675,7 +2687,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 272.678571428571331, 360.375, 228.821428571428669, 22.0 ],
-									"text" : "\"Launch Control XL\""
+									"text" : "waiting"
 								}
 
 							}
@@ -3015,6 +3027,13 @@
 								"patchline" : 								{
 									"destination" : [ "obj-8", 0 ],
 									"source" : [ "obj-7", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-161", 1 ],
+									"source" : [ "obj-9", 0 ]
 								}
 
 							}
@@ -4850,7 +4869,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 211.0, 589.0, 322.0, 22.0 ],
-					"text" : "\"Launch Control XL\""
+					"text" : "\"LPD8 mk2\""
 				}
 
 			}
@@ -4921,6 +4940,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 131.0, 1207.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -4957,10 +4980,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 629.071428571428669, 128.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -6567,6 +6586,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-141", 0 ],
+					"order" : 1,
+					"source" : [ "obj-274", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-215", 0 ],
+					"order" : 0,
 					"source" : [ "obj-274", 0 ]
 				}
 

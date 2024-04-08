@@ -135,3 +135,4 @@ function send_note(xx,note,vel){
 function value_report(note,vel){
 	values[note] = vel;
 }
+function enabled(){}

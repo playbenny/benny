@@ -443,3 +443,4 @@ function store(){
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
 }
+function enabled(){}

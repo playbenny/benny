@@ -1046,3 +1046,4 @@ function generate_extended_v_list() {
 		}
 	}
 }
+function enabled(){}

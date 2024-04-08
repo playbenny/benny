@@ -545,3 +545,4 @@ function finalise_remapping(){
 		}
 	}
 }
+function enabled(){}
