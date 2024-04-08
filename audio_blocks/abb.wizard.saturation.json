@@ -1,0 +1,64 @@
+{
+	"abb.wizard.saturation" : {
+		"patcher" : "abb.wizard.saturation",
+		"type" : "audio",
+		"block_ui_patcher" : "self",
+		"help_text" : "W I Z A R D S A T U R A T I O N",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in"]
+			},
+			"out" : {
+				"audio" : [ "WIZARD" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3, 4],
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4]
+		},
+		"parameters" : [
+			{
+				"name" : "Drive_In",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Harmonic",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Drive_Out",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Fold",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Output_Trim",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 1
+			}	
+		]
+	}
+}
