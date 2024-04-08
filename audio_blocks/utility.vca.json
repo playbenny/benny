@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "log/lin vca",
 		"max_polyphony" : 0,
-		"upsample" : 2,
+		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "level in" ]
