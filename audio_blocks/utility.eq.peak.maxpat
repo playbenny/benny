@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 448.0, 113.0, 640.0, 480.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -45,7 +45,7 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 171.0, 273.0, 87.0, 22.0 ],
+					"patching_rect" : [ 189.0, 279.0, 87.0, 22.0 ],
 					"text" : "mutecontrol_fx"
 				}
 
@@ -120,8 +120,140 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "signal" ],
-					"patching_rect" : [ 37.0, 269.0, 107.0, 22.0 ],
-					"text" : "gen~ fx.2pole.filter"
+					"patcher" : 					{
+						"fileversion" : 1,
+						"appversion" : 						{
+							"major" : 8,
+							"minor" : 6,
+							"revision" : 2,
+							"architecture" : "x64",
+							"modernui" : 1
+						}
+,
+						"classnamespace" : "dsp.gen",
+						"rect" : [ 40.0, 82.0, 1061.0, 595.0 ],
+						"bglocked" : 0,
+						"openinpresentation" : 0,
+						"default_fontsize" : 12.0,
+						"default_fontface" : 0,
+						"default_fontname" : "Arial",
+						"gridonopen" : 1,
+						"gridsize" : [ 15.0, 15.0 ],
+						"gridsnaponopen" : 1,
+						"objectsnaponopen" : 1,
+						"statusbarvisible" : 2,
+						"toolbarvisible" : 1,
+						"lefttoolbarpinned" : 0,
+						"toptoolbarpinned" : 0,
+						"righttoolbarpinned" : 0,
+						"bottomtoolbarpinned" : 0,
+						"toolbars_unpinned_last_save" : 0,
+						"tallnewobj" : 0,
+						"boxanimatetime" : 200,
+						"enablehscroll" : 1,
+						"enablevscroll" : 1,
+						"devicewidth" : 0.0,
+						"description" : "",
+						"digest" : "",
+						"tags" : "",
+						"style" : "",
+						"subpatcher_template" : "",
+						"assistshowspatchername" : 0,
+						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-3",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 614.0, 573.0, 35.0, 22.0 ],
+									"text" : "out 2"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"code" : "require \"sm_sallenkey_functions\";\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\nParam p(0);\r\n\r\nHistory c, cut,res,drv,ll,lr,upda(0);\r\n\r\nif(upda<=0){\r\n\tupda = vectorsize+5;\r\n\tc = peek(prm,voice_offset, 0, channels=1);\r\n\tres = clip(peek(prm,1+voice_offset, 0, channels=1),0,0.99);\r\n\tgain = -36+72*peek(prm,2+voice_offset, 0, channels=1);\r\n\tpan = -2+ 4 * peek(prm,3+voice_offset, 0, channels=1);\r\n\tdrv = 2*peek(prm,4+voice_offset, 0, channels=1);\r\n\tc = pow(2,c)-1;\r\n\tc = clip(8000*c,0,15000);\r\n\tc2 = c * (1 + 0.01*noise());\r\n\tgain = dbtoa(gain)-1;\r\n\tp2 = clip(pan,-1,1);\r\n\tp3 = pan-p2;\r\n\tll = (1-p2-clip(p3,0,1))*gain;\r\n\tlr = (1+p2-clip(-p3,0,1))*gain;\r\n}\r\nupda-=1;\r\ncut = slide(c,600,1100);\r\ncut2 = slide(c2,1200,700);\r\nflp,fbp,fhp = skfTanNltoCoefMulti(in1,cut,slide(res,1000,1000),drv);\r\nflp2,fbp2,fhp2 = skfTanNltoCoefMulti(in2,cut,slide(res,1000,1000),drv);\r\n\r\nout1 = in1+fbp*ll;\r\nout2 = in2+fbp2*lr;",
+									"fontface" : 0,
+									"fontname" : "<Monospaced>",
+									"fontsize" : 12.0,
+									"id" : "obj-5",
+									"maxclass" : "codebox",
+									"numinlets" : 2,
+									"numoutlets" : 2,
+									"outlettype" : [ "", "" ],
+									"patching_rect" : [ 50.0, 46.0, 583.0, 512.0 ]
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-1",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+									"text" : "in 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-2",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 614.0, 14.0, 28.0, 22.0 ],
+									"text" : "in 2"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-4",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 46.5, 573.0, 35.0, 22.0 ],
+									"text" : "out 1"
+								}
+
+							}
+ ],
+						"lines" : [ 							{
+								"patchline" : 								{
+									"destination" : [ "obj-5", 0 ],
+									"source" : [ "obj-1", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-5", 1 ],
+									"source" : [ "obj-2", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-3", 0 ],
+									"source" : [ "obj-5", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-4", 0 ],
+									"source" : [ "obj-5", 0 ]
+								}
+
+							}
+ ]
+					}
+,
+					"patching_rect" : [ 37.0, 269.0, 111.0, 22.0 ],
+					"text" : "gen~ utility.eq.peak"
 				}
 
 			}
@@ -182,7 +314,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 125.0, 305.0, 42.0, 22.0 ],
+					"patching_rect" : [ 134.0, 343.0, 42.0, 22.0 ],
 					"text" : "out~ 2"
 				}
 

@@ -230,3 +230,4 @@ function store(){
 	//post("\ntodo send note",xx,note,vel);
 	messnamed("utility.buttons",block,xx,note,vel);
 }*/
+function enabled(){}

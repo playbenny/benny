@@ -1,0 +1,23 @@
+{
+	"abb.nord.drum" : {
+		"patcher" : "abb.nord.drum",
+		"type" : "note",	
+		"help_text" : "outputs to nord drum on channel 10, notes 60, 61, 62, 63",
+		"max_polyphony" : 1,
+		"block_ui_patcher"	:	"self",
+		"connections" : {
+			"in" : {
+				"midi" : [ "ch1", "ch2", "ch3", "ch4" ]
+			}
+		},
+		"groups" : [
+
+
+		],
+		"panel" : {
+		},
+		"parameters" : [
+			
+		]
+	}
+}

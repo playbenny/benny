@@ -1,6 +1,6 @@
 {
 	"mix.stereo.channel" : {
-		"patcher" : "mix.stereo.channel.old",
+		"patcher" : "mix.stereo.channel",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
@@ -20,7 +20,7 @@
 			{ 
 				"contains" : [0],
 				"onepervoice" : 1,
-				"height" : 4
+				"height" : 3
 			},
 			{ 
 				"contains" : [2],
@@ -36,13 +36,7 @@
 				"contains" : [4], 
 				"onepervoice" : 1,
 				"height" : 0
-			},
-			{ 
-				"contains" : [5], 
-				"onepervoice" : 1,
-				"height" : 0
-			}
-			
+			}			
 		],
 		"panel" : {
 			"parameters" : [0]
