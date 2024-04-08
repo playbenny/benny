@@ -3,7 +3,7 @@
 		"patcher" : "utility.eq.peak",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "a single band of stereo peak/notch eq, all parameters are smoothed, this block was designed with flocking in mind - eg for eq peaks that move out of each other's way.££pan goes wider than the stereo field - ie if abs(pan)>1 the opposite effect starts to happen on the other side - a peak on the left gets a cut on the right, etc.",
+		"help_text" : "a single band of nonstandard stereo peak/notch eq. partially gain compensated, airwindows style nonlinear internal summing, selfmod. cut is a subtle (undistorted) notch, boost fades from a peak kind of shape into more of a bandpass at the extreme settings. ££all parameters are smoothed, this block was designed with flocking in mind - eg for eq peaks that move out of each other's way.££pan goes wider than the stereo field - ie if abs(pan)>1 the opposite effect starts to happen on the other side - a peak on the left gets a cut on the right, etc.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"subvoices" : 2,
