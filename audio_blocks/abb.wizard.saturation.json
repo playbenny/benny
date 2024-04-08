@@ -2,10 +2,10 @@
 	"abb.wizard.saturation" : {
 		"patcher" : "abb.wizard.saturation",
 		"type" : "audio",
-		"block_ui_patcher" : "self",
+		"block_ui_patcher" : "blank.ui",
 		"help_text" : "W I Z A R D S A T U R A T I O N",
 		"max_polyphony" : 0,
-		"upsample" : 1,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in"]
