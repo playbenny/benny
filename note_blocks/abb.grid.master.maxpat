@@ -40,6 +40,71 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-119",
+					"linecount" : 5,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1611.0, 745.0, 50.0, 77.0 ],
+					"presentation_linecount" : 5,
+					"text" : "\"MIDIOUT2 (LPMiniMK3 MIDI)\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-117",
+					"linecount" : 5,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 849.0, 653.0, 50.0, 77.0 ],
+					"presentation_linecount" : 5,
+					"text" : "\"MIDIOUT2 (LPMiniMK3 MIDI)\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-104",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 1460.0, 558.0, 58.0, 22.0 ],
+					"text" : "loadbang"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-47",
+					"linecount" : 5,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1460.0, 620.5, 50.0, 77.0 ],
+					"presentation_linecount" : 5,
+					"text" : "\"MIDIOUT2 (LPMiniMK3 MIDI)\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-103",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1307.5, 664.0, 40.0, 22.0 ],
+					"text" : "ctlout"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-50",
 					"maxclass" : "button",
 					"numinlets" : 1,
@@ -5469,19 +5534,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-119",
-					"linecount" : 5,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 1581.0, 604.0, 50.0, 77.0 ],
-					"text" : "\"MIDIIN2 (LPMiniMK3 MIDI)\""
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-92",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -5513,32 +5565,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 925.0, 787.0, 62.0, 22.0 ],
 					"text" : "1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-43",
-					"linecount" : 5,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 1608.0, 491.5, 50.0, 77.0 ],
-					"text" : "\"MIDIIN2 (LPMiniMK3 MIDI)\""
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-35",
-					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 0,
-					"patching_rect" : [ 1290.0, 665.0, 40.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 32.0, 92.0, 40.0, 22.0 ],
-					"text" : "ctlout"
 				}
 
 			}
@@ -40831,62 +40857,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-17",
-					"maxclass" : "button",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 1440.0, 387.5, 24.0, 24.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial",
-					"fontsize" : 13.0,
-					"id" : "obj-27",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 1401.0, 500.5, 55.0, 23.0 ],
-					"text" : "midiinfo"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontface" : 0,
-					"fontname" : "Arial",
-					"fontsize" : 13.0,
-					"id" : "obj-28",
-					"items" : [ "LPMiniMK3 MIDI", ",", "MIDIIN2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIIN2 (ESI M8U eX)", ",", "MIDIIN3 (ESI M8U eX)", ",", "MIDIIN4 (ESI M8U eX)", ",", "MIDIIN5 (ESI M8U eX)", ",", "MIDIIN6 (ESI M8U eX)", ",", "MIDIIN7 (ESI M8U eX)", ",", "MIDIIN8 (ESI M8U eX)", ",", "MIDIIN9 (ESI M8U eX)", ",", "MIDIIN10 (ESI M8U eX)", ",", "MIDIIN11 (ESI M8U eX)", ",", "MIDIIN12 (ESI M8U eX)", ",", "MIDIIN13 (ESI M8U eX)", ",", "MIDIIN14 (ESI M8U eX)", ",", "MIDIIN15 (ESI M8U eX)", ",", "MIDIIN16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIIN2 (Launch Control XL)" ],
-					"maxclass" : "umenu",
-					"numinlets" : 1,
-					"numoutlets" : 3,
-					"outlettype" : [ "int", "", "" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 1401.0, 542.5, 150.0, 23.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial",
-					"fontsize" : 13.0,
-					"id" : "obj-29",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 1437.0, 463.5, 77.0, 23.0 ],
-					"text" : "loadmess 0"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-379",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -40904,7 +40874,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "int", "int" ],
-					"patching_rect" : [ 808.0, 732.0, 41.0, 22.0 ],
+					"patching_rect" : [ 704.5, 708.0, 41.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 31.5, 62.0, 41.0, 22.0 ],
 					"text" : "notein"
@@ -46490,7 +46460,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1263.0, 1644.0, 68.0, 50.0 ],
-					"text" : "3 hold 60 0 529 0 4 2736 0"
+					"text" : "60 hold 60 0 529 0 0 2741 0"
 				}
 
 			}
@@ -48240,7 +48210,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 474.0, 312.0, 50.0, 22.0 ],
-									"text" : "0 4 2736 0"
+									"text" : "0 0 2741 0"
 								}
 
 							}
@@ -53487,10 +53457,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 475.0, 1843.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -54935,6 +54901,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 3633.332934856414795, 302.523802995681763, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -54971,6 +54941,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 3526.190089464187622, 88.238112211227417, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -55849,6 +55823,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"source" : [ "obj-104", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-222", 0 ],
 					"source" : [ "obj-106", 0 ]
 				}
@@ -55928,6 +55909,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-21", 1 ],
 					"source" : [ "obj-116", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-344", 0 ],
+					"source" : [ "obj-117", 0 ]
 				}
 
 			}
@@ -56193,13 +56181,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-168", 0 ],
 					"source" : [ "obj-167", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-29", 0 ],
-					"source" : [ "obj-17", 0 ]
 				}
 
 			}
@@ -57311,13 +57292,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-28", 0 ],
-					"source" : [ "obj-27", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-174", 0 ],
 					"source" : [ "obj-270", 10 ]
 				}
@@ -57574,13 +57548,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-35", 0 ],
-					"source" : [ "obj-28", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-372", 0 ],
 					"order" : 1,
 					"source" : [ "obj-280", 0 ]
@@ -57655,13 +57622,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-281", 0 ],
 					"source" : [ "obj-289", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-27", 1 ],
-					"source" : [ "obj-29", 0 ]
 				}
 
 			}
@@ -58166,14 +58126,14 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-35", 1 ],
+					"destination" : [ "obj-103", 1 ],
 					"source" : [ "obj-338", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-35", 0 ],
+					"destination" : [ "obj-103", 0 ],
 					"source" : [ "obj-338", 0 ]
 				}
 
@@ -58898,6 +58858,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-85", 0 ],
 					"source" : [ "obj-45", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-103", 0 ],
+					"source" : [ "obj-47", 0 ]
 				}
 
 			}
