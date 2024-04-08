@@ -1,6 +1,6 @@
 var MAX_BLOCKS = 64;
 //var voice_data_buffer = new Buffer("voice_data_buffer"); 
-var parameter_value_buffer = new Buffer("parameter_value_buffer");
+//var parameter_value_buffer = new Buffer("parameter_value_buffer");
 outlets = 3;
 
 var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
@@ -23,13 +23,13 @@ var beats_per_bar = 4; //TODO fetch timesig
 function setup(x1,y1,x2,y2,sw){
 	var config = new Dict;
 	config.name = "config";
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	menudark = [menucolour[0]>>2,menucolour[1]>>2,menucolour[2]>>2];
 	for(var i=0;i<16;i++){
 		gamut[i] = config.get("palette::gamut["+i*8+"]::colour");
 	}
-	beats_per_bar = Math.floor(2 + 9*parameter_value_buffer.peek(1, MAX_PARAMETERS*block + 10));
+	//MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	//beats_per_bar = Math.floor(2 + 9*parameter_value_buffer.peek(1, MAX_PARAMETERS*block + 10));
 	width = x2-x1-1-(width<300);
 	height = y2-y1;
 	x_pos = x1;
@@ -94,6 +94,9 @@ function tick(){
 
 function beatn(b){
 	beat = b;
+}
+function timesig(n){
+	beats_per_bar = n;
 }
 
 function centerline(c){
