@@ -17,17 +17,33 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,1,1,4]
-			},
-			{
-				"contains" : [2,3]
+				"contains" : [0],
+				"onepervoice" : 1
+			},{
+				"contains": [1],
+				"height" : 0,
+				"onepervoice" : 1,
+				"colour" : 10
+			},{
+				"contains" : [2],
+				"onepervoice" : 1,
+				"colour" : 20
+			},{
+				"contains" : [3],
+				"height" : 0,
+				"onepervoice" : 1,
+				"colour" : 30
+			},{
+				"contains" : [4,5],
+				"height" : 0,
+				"colour" : 40
 			}
 		],
 		"parameters" : [
 			{
 				"name" : "frequency",
 				"type" : "float",
-				"values" : ["uni", 0, 8000, "exp"],
+				"values" : ["uni", 0, 8000, "exp10"],
 				"wrap" : 0,
 				"default" : 0.2
 			},
@@ -55,6 +71,14 @@
 			},
 			{
 				"name" : "drive",
+				"type" : "float",
+				"error_scale" : 0,
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "selfmod",
 				"type" : "float",
 				"error_scale" : 0,
 				"values" : ["uni", 0, 1, "lin"],
