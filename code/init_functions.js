@@ -873,26 +873,16 @@ function transfer_input_lists(){ // this routine also populates controller lists
 			for(pt=0;pt<ps;pt++){
 				if(blocktypes.get(k[t]+"::parameters["+pt+"]::name")=="controller number"){
 					var cn = io_dict.get("controllers");
-					var cnfk;
 					mk = cn.getkeys();
-					if(typeof mk == 'string'){
-						mk= [mk];
-					}
-					for(cnfk in mk){
-						blocktypes.replace(k[t]+"::parameters["+pt+"]::values["+cnfk+"]",mk[cnfk]);
-					}
+					if(!Array.isArray(mk)) mk= [mk];
+					blocktypes.replace(k[t]+"::parameters["+pt+"]::values",mk);
 				}
 			}
 		}
 	}
 	if(blocktypes.contains("core.input.keyboard")){
 		if(io_dict.contains("keyboards")){
-			var cn = io_dict.getsize("keyboards");
-			var cnfk;
-			
-			for(cnfk=0;cnfk<cn;cnfk++){
-				blocktypes.replace("core.input.keyboard::parameters[1]::values["+cnfk+"]",io_dict.get("keyboards["+cnfk+"]"));
-			}
+			blocktypes.replace("core.input.keyboard::parameters[1]::values",io_dict.get("keyboards"));
 		}
 	}
 }
