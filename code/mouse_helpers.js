@@ -2455,16 +2455,40 @@ function blocks_menu_enter(){
 	}
 	if(count==1){
 		var types = blocktypes.getkeys();
-		post("\nnew block",sel,types[sel]);
-		set_display_mode("blocks");
-		//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
-		end_of_frame_fn = function(){
-			var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+		if(menu.mode == 0){
+			post("\nnew block",sel,types[sel]);
+			set_display_mode("blocks");
+			//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
+			end_of_frame_fn = function(){
+				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+				draw_block(r);
+				selected.block[r] = 1;
+				sidebar.scopes.voice = -1;
+				sidebar.selected_voice = -1;
+				redraw_flag.flag |= 8;
+			}
+		}else if(menu.mode == 1){
+			swap_block(types[sel]);
+			set_display_mode("blocks");
+		}else if(menu.mode == 2){
+			var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
+			var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
+			var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
+			var avy = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::y") + blocks.get("blocks["+t_no+"]::space::y")));
+			var r = new_block(types[sel], avx,avy);
+			
 			draw_block(r);
-			selected.block[r] = 1;
-			sidebar.scopes.voice = -1;
-			sidebar.selected_voice = -1;
-			redraw_flag.flag |= 8;
+			//set_display_mode("blocks");
+			insert_block_in_connection(types[sel],r);							
+
+		}else if(menu.mode == 3){
+			post("substitution found!!"+types[sel]);
+			loading.recent_substitutions.replace(menu.swap_block_target, types[sel]);
+			menu.swap_block_target = types[sel];
+			set_display_mode("blocks");
+			import_song();
+			//swap_block(usermouse.ids[1]);
+			//set_display_mode("blocks");
 		}
 	}
 }
