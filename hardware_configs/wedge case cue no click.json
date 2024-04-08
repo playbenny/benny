@@ -29,7 +29,7 @@
 ,
 			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
-				"substitute" : "JAMES_16e",
+				"substitute" : [ "JAMES_16e" ],
 				"outputs" : 16,
 				"scaling" : 1,
 				"type" : "encoder",
@@ -78,7 +78,7 @@
 ,
 			"LPD8" : 			{
 				"name" : "LPD8",
-				"substitute" : "LPD8 mk2",
+				"substitute" : [ "LPD8 mk2", "Launch Control XL" ],
 				"outputs" : 8,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -96,7 +96,7 @@
 ,
 			"LPD8 mk2" : 			{
 				"name" : "LPD8 mk2",
-				"substitute" : "LPD8",
+				"substitute" : [ "LPD8",  "Launch Control XL" ],
 				"outputs" : 8,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -108,6 +108,30 @@
 					"type" : "note",
 					"channel" : 1,
 					"first" : 36
+				}
+
+			}
+,
+			"Launch Control XL" : 			{
+				"name" : [ "Launch Control XL" ],
+				"substitute" : [ "LPD8 mk2", "LPD8" ],
+				"outputs" : 32,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 1,
+				"scaling" : 1,
+				"columns" : 8,
+				"rows" : 4,
+				"buttons" : 				{
+					"first" : 0,
+					"type" : 0,
+					"channel" : 1,
+					"count" : 24,
+					"globals" : 					{
+						"automap_toggle" : 17,
+						"automap_page" : 18
+					}
+
 				}
 
 			}
@@ -335,10 +359,11 @@
 				"in" : 				{
 					"hardware" : [ "in", "cutoff", "lpg" ],
 					"hardware_channels" : [ 9, 19, 23 ],
-					"midi" : ["lpg"],
-					"midi_channels" : [2],
-					"midi_ranges" : [[0,0]]
-				},
+					"midi" : [ "lpg" ],
+					"midi_channels" : [ 2 ],
+					"midi_ranges" : [ [ 0, 0 ] ]
+				}
+,
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 9 ]
@@ -347,7 +372,7 @@
 			}
 
 		}
-		,
+,
 		"hardware.filter.chloe.2" : 		{
 			"type" : "hardware",
 			"help_text" : "this is the right side of the chloe filter",
@@ -360,11 +385,11 @@
 				"in" : 				{
 					"hardware" : [ "in", "cutoff", "lpg" ],
 					"hardware_channels" : [ 10, 20, 24 ],
-					"midi" : ["lpg"],
-					"midi_channels" : [2],
-					"midi_ranges" : [[1,1]]
+					"midi" : [ "lpg" ],
+					"midi_channels" : [ 2 ],
+					"midi_ranges" : [ [ 1, 1 ] ]
 				}
-		,
+,
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 10 ]
@@ -373,7 +398,7 @@
 			}
 
 		}
-		,
+,
 		"hardware.in.ext" : 		{
 			"type" : "hardware",
 			"help_text" : "mic input",
