@@ -1,0 +1,66 @@
+{
+	"utility.eq.peak" : {
+		"patcher" : "utility.eq.peak",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "a single band of stereo peak/notch eq, all parameters are smoothed, this block was designed with flocking in mind - eg for eq peaks that move out of each other's way.££pan goes wider than the stereo field - ie if abs(pan)>1 the opposite effect starts to happen on the other side - a peak on the left gets a cut on the right, etc.",
+		"max_polyphony" : 0,
+		"upsample" : 2,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,1,1,4]
+			},
+			{
+				"contains" : [2,3]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "float",
+				"values" : ["uni", 0, 8000, "exp"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "q",
+				"type" : "float",
+				"values" : ["uni", 0.05, 8, "exp"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -36, 36, "exp10"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "pan",
+				"type" : "float",
+				"error_scale" : 0,
+				"values" : ["bi", -2, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"error_scale" : 0,
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}
