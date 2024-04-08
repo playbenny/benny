@@ -1,21 +1,12 @@
 var MAX_BLOCKS = 64;
 //var voice_data_buffer = new Buffer("voice_data_buffer"); 
+var parameter_value_buffer = new Buffer("parameter_value_buffer");
 outlets = 3;
-var config = new Dict;
-config.name = "config";
+
 var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl;
 var block=-1;
 var blocks = new Dict;
 blocks.name = "blocks"
-var voicemap = new Dict;
-voicemap.name =  "voicemap";
-var v_list = new Array();
-var cursors = new Array(128); //holds last drawn position of playheads (per row)
-//data format: for each voice the buffer holds:
-// 0 - start (*128)
-// 1 - length (*128+1)
-// 2 - playhead position (updated by player voice)
-// 3-131? data values
 var muted=0;
 var beat=0;
 var obeat=0;
@@ -30,13 +21,15 @@ var ccol=128;
 var beats_per_bar = 4; //TODO fetch timesig
 
 function setup(x1,y1,x2,y2,sw){
-	//	post("drawing sequencers");
+	var config = new Dict;
+	config.name = "config";
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
 	menudark = [menucolour[0]>>2,menucolour[1]>>2,menucolour[2]>>2];
 	for(var i=0;i<16;i++){
 		gamut[i] = config.get("palette::gamut["+i*8+"]::colour");
 	}
+	beats_per_bar = Math.floor(2 + 9*parameter_value_buffer.peek(1, MAX_PARAMETERS*block + 10));
 	width = x2-x1-1-(width<300);
 	height = y2-y1;
 	x_pos = x1;
@@ -48,9 +41,6 @@ function draw(){
 	headpos = 0;
 	ohp = 0;
 	outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,menucolour[0]*0.1,menucolour[1]*0.08,menucolour[2]*0.02);
-}
-function resync(){
-	beat = -1;
 }
 function times(value,voice){
 	if(headpos>63) draw();
@@ -80,29 +70,30 @@ function times(value,voice){
 	}
 
 	if(beat!=obeat){
-		var nw=width-20;
-		var nh=height-20;
-		if(nw>nh)nw=nh;
-		var xx=0.5*width + 0.5*nw*Math.sin(6.283*obeat/beats_per_bar);
-		var yy=0.5*height - 0.5*nh*Math.cos(6.283*obeat/beats_per_bar);
-		outlet(1,"paintrect",x_pos+xx-9,y_pos+yy-9,x_pos+xx+9,y_pos+yy+9,0,0,0);
+		draw_slice(obeat,[0,0,0]);
 		obeat = beat;
-		
-		xx=0.5*width + 0.5*nw*Math.sin(6.283*beat/beats_per_bar);
-		yy=0.5*height - 0.5*nh*Math.cos(6.283*beat/beats_per_bar);
 		if(beat==0){
-			outlet(1,"paintrect",x_pos+xx-9,y_pos+yy-9,x_pos+xx+9,y_pos+yy+9,255,255,255);
+			draw_slice(beat,[255,255,255]);
 		}else{
-			outlet(1,"paintrect",x_pos+xx-9,y_pos+yy-9,x_pos+xx+9,y_pos+yy+9,menucolour);
+			draw_slice(beat,menucolour);
 		}
 	}
 }
-function tick(t){
+function draw_slice(beat,colour){
+	var nh=height*0.5;
+	var xx1=x_pos+nh + nh*Math.sin(6.283*(beat-0.5)/beats_per_bar);
+	var yy1=y_pos+nh - nh*Math.cos(6.283*(beat-0.5)/beats_per_bar);
+	var xx2=x_pos+nh + nh*Math.sin(6.283*(beat+0.5)/beats_per_bar);
+	var yy2=y_pos+nh - nh*Math.cos(6.283*(beat+0.5)/beats_per_bar);
+	outlet(1,"frgb",colour);
+	outlet(1,"paintpoly",x_pos+nh,y_pos+nh,xx1,yy1,xx2,yy2,x_pos+nh,y_pos+nh);
+}
+function tick(){
 	headpos+=0.25;
-	if((t%4)==0){
-		beat++;
-		beat = beat % beats_per_bar;
-	}
+}
+
+function beatn(b){
+	beat = b;
 }
 
 function centerline(c){
@@ -146,3 +137,4 @@ function loadbang(){
 function store(){
 
 }
+function enabled(){}
