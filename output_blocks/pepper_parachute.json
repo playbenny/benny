@@ -6,11 +6,11 @@
 		"max_polyphony" : 0,
 		"groups" : [
 			{ 
-				"contains" : [0, 0],
+				"contains" : [0, 1],
 				"header" : "emergency looper"
 			}
 		],
-		"panel" : [0,0],
+		"panel" : [0,1],
 		"parameters" : [
 			{
 				"name" : "initial loop length_(beats)",
@@ -20,9 +20,11 @@
 				"default" : 0.06
 			},
 			{
-				"name" : "dummy",
+				"name" : "beat subdivisions",
 				"type" : "menu_l",
-				"values" : ["theres a bug where hardware output block params dont work if there's only 1 so this is a workaround until i fix that"]
+				"values" : [1,2,3,4],
+				"wrap" : 0,
+				"default" : 0
 			}
 		]
 	}
