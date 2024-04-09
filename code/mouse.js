@@ -140,20 +140,39 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
+
+	var id = null;
 	//post(usermouse.got_i,usermouse.got_t);
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
-			//because picker uses AABB hit detection it sees wires as being huge, so
-			//first set filter, see if youre over a block
-			glpicker.filters = "block"; 
-			var id = glpicker.touch(x,y);
-			glpicker.filters = "all";
-			if(id == null){ // and if not.. see if there's a wire there
-				post("\nnoblock",id);
+			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.
+			//instead first do a manual check of blocks and if that doesn't see anything try picker for wires.
+			if(displaymode=="blocks"){
+				var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+				for(var i=0;i<MAX_BLOCKS;i++){
+					if(blocks.contains("blocks["+i+"]::space::x")){
+						var by = Math.abs(blocks.get("blocks["+i+"]::space::y")-stw[1]);
+						if(by<0.5){
+							var bx = blocks.get("blocks["+i+"]::space::x")-stw[0];
+							var bv = blocks.get("blocks["+i+"]::poly::voices");
+							if((bx<0.5)&&(bx>-0.5*(1+bv))){
+								//post("\nITS THIS BLOCK!",i,blocks.get("blocks["+i+"]::name"));
+								if(bx>-0.5){
+									//post(" - the block itself");
+									id="block£"+i+"£"+0;
+								}else{
+									bv = Math.floor(bx*-2);
+									//post(" - voice",bv);
+									id="block£"+i+"£"+bv;
+								}
+							}
+						}
+
+					}
+				}
+			}
+			if(id==null){
 				id = glpicker.touch(x,y);
-				post(" then ",id);
-			} else{
-				post("\nblock", id);
 			}
 			picker_hover_and_special(id);
 		}
