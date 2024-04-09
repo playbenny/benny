@@ -39,9 +39,6 @@
 		"hardware.out.1+2" : 			{
 			"type" : "hardware",
 			"max_polyphony" : 2,
-			"output_block" : "stretch_looper",
-			"block_ui_patcher" : "stretch_looper.ui",
-			"ui_in_sidebar_height" : 6,		
 			"help_text" : "pc speakers",
 			"connections" : {
 				"in" : {
