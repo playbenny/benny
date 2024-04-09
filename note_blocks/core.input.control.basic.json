@@ -25,6 +25,12 @@
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.19
+			},
+			{
+				"name" : "spare",
+				"type" : "menu_l",
+				"values" : ["none"],
+				"nomap" : 1
 			}
 		]
 	}

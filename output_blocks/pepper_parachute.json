@@ -10,7 +10,9 @@
 				"header" : "emergency looper controls"
 			}
 		],
-		"panel" : [0,1],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
 		"parameters" : [
 			{
 				"name" : "initial loop length_(beats)",
