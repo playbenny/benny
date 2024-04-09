@@ -165,9 +165,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//post(" - voice",bv);
 									id="block£"+i+"£"+bv;
 								}
+								i=MAX_BLOCKS;
 							}
 						}
-
 					}
 				}
 			}
