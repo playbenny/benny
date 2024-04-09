@@ -7,7 +7,7 @@
 		"groups" : [
 			{ 
 				"contains" : [0, 1],
-				"header" : "emergency looper"
+				"header" : "emergency looper controls"
 			}
 		],
 		"panel" : [0,1],
@@ -17,7 +17,7 @@
 				"type" : "int",
 				"values" : ["uni", 1, 64, "lin"],
 				"wrap" : 0,
-				"default" : 0.06
+				"default" : 0.24
 			},
 			{
 				"name" : "beat subdivisions",

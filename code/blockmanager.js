@@ -273,7 +273,10 @@ var automap = {
 	q_gain : 0.125, //default gain for cue auto connections
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to
-	mapped_q_channels : []
+	mapped_q_channels : [],
+	lock_c : 0,
+	lock_k : 0,
+	lock_q : 0
 }
 
 var qwertym = {

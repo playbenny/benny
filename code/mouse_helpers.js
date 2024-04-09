@@ -2492,3 +2492,22 @@ function blocks_menu_enter(){
 		}
 	}
 }
+
+function toggle_automap_lock(type){
+	if(type=="control"){
+		automap.lock_c = 1-automap.lock_c;
+	}else if(type == "keyboard"){
+		automap.lock_k = 1 - automap.lock_k;
+	}else if(type == "cue"){
+		automap.lock_q = 1 - automap.lock_q;
+	}
+	redraw_flag.flag |= 4;
+}
+
+function tab_between_display_modes(){
+	if(displaymode == "blocks"){
+		set_display_mode("panels");
+	}else{
+		set_display_mode("blocks");
+	}
+}

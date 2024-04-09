@@ -871,7 +871,7 @@ function transfer_input_lists(){ // this routine also populates controller lists
 			var ps = blocktypes.getsize(k[t]+"::parameters");
 			var pt;
 			for(pt=0;pt<ps;pt++){
-				if(blocktypes.get(k[t]+"::parameters["+pt+"]::name")=="controller number"){
+				if(blocktypes.get(k[t]+"::parameters["+pt+"]::name")=="controller"){
 					var cn = io_dict.get("controllers");
 					mk = cn.getkeys();
 					if(!Array.isArray(mk)) mk= [mk];
