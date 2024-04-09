@@ -276,7 +276,22 @@ var automap = {
 	mapped_q_channels : [],
 	lock_c : 0,
 	lock_k : 0,
-	lock_q : 0
+	lock_q : 0,
+	colours_c : {
+		darkest : [],
+		dark : [],
+		colour : []
+	},
+	colours_k : {
+		darkest : [],
+		dark : [],
+		colour : []
+	},
+	colours_q : {
+		darkest : [],
+		dark : [],
+		colour : []
+	}
 }
 
 var qwertym = {

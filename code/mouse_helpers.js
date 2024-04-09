@@ -2511,3 +2511,19 @@ function tab_between_display_modes(){
 		set_display_mode("blocks");
 	}
 }
+
+function automap_k_click(p,v){
+	if(usermouse.ctrl){
+		select_block_by_name("core.input.keyboard");
+	}else{
+		//lock
+		if(v==-1){
+			automap.lock_k = 1 - automap.lock_k;
+		}else{
+			automap.lock_k = (v!=0);
+		}
+		if(automap.lock_k==0){
+			if(sidebar.selected!=automap.mapped_k) automap.mapped_k = -1;
+		}
+	}
+}
