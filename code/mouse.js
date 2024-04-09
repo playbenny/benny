@@ -149,8 +149,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			var id = glpicker.touch(x,y);
 			glpicker.filters = "all";
 			if(id == null){ // and if not.. see if there's a wire there
+				post("\nnoblock",id);
 				id = glpicker.touch(x,y);
-			} 
+				post(" then ",id);
+			} else{
+				post("\nblock", id);
+			}
 			picker_hover_and_special(id);
 		}
 	}
