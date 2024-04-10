@@ -581,7 +581,7 @@ function next_free_block(block_name){
 		if((ui!="blank.ui")&&(ui!="self")){
 			for(i=0;i<MAX_BLOCKS;i++){
 				if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==ui) && !blocks.contains("blocks["+i+"]::name")){
-					post("\n-found ui patcher recycling candidate..");
+					//post("\n-found ui patcher recycling candidate..");
 					for(t=0;t<loading.mapping.length;t++){
 						if(loading.mapping[t] == i){
 							post("failed, already in use");

@@ -265,6 +265,7 @@ var automap = {
 	mapped_k : -1,
 	mapped_k_v : -1,
 	devicename_c : "",
+	count : 0,
 	inputno_k : 0,
 	offset_c : 0,
 	offset_range_c : 0,
