@@ -1681,12 +1681,14 @@ function clear_screens(){
 		}else{
 			backgroundcolour_current = backgroundcolour;
 		}
-		mouse_index=1;
+		mouse_index=2;
 		click_clear(0,0);
-		mouse_click_actions[0] = null;
+		mouse_click_actions[0] = do_nothing;
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
+	scrollbar_index = 3;//mouse_index;
+	mouse_index=4;
 	lcd_main.message("brgb", backgroundcolour_current);
 	lcd_main.message("clear");
 	//mouse_index++;
@@ -2051,9 +2053,9 @@ function draw_sidebar(){
 	var block;
 	if(/*(sidebar.mode!="none")||*/((selected.block_count+selected.wire_count)>0)){
 		click_zone(do_nothing, null, null, sidebar.x,0,sidebar.x2,mainwindow_height,0,1); //was 0);
-		mouse_index--; //????
+		mouse_index--; //because this is using an already assigned index no, but click_zone increments mouse_index
 	}
-
+	
 	y_offset = 9 - sidebar.scroll.position;
 
 	// MODAL SIDEBAR MODES FIRST - EDIT LABEL, EDIT STATE, FILE, CPU
@@ -2760,7 +2762,7 @@ function draw_sidebar(){
 			}
 			
 			if(automap.available_c!=-1){
-				if((block_name != "core.input.control.auto") && has_params){
+				if((block_name != "core.input.control.auto") && (block_name != "core.input.control.basic") && has_params){
 					if((automap.mapped_c!=block&&!automap.lock_c)){
 						automap.offset_c = 0;
 						getmap=1; //flag set, then it collects up map data
@@ -2923,7 +2925,6 @@ function draw_sidebar(){
 				}
 			}
 
-			
 			if(automap.mapped_c!=-1){
 				// DRAW AUTOMAP HEADER LINE
 				lcd_main.message("paintrect",sx,y_offset,sidebar.x2,y_offset+fontheight*0.5,automap.colours_c.darkest);
@@ -2970,15 +2971,16 @@ function draw_sidebar(){
 				lcd_main.message("write", automap.offset_c+1, "-" , automap.offset_c + automap.c_rows);
 				click_zone(cycle_automap_offset, 1, null, sx-2,y_offset,sidebar.x2,y_offset+0.5*fontheight,mouse_index,1);
 				sx += fontheight * 1.6;
-				if(/*(c_section_start == 0)&&*/(sx<sidebar.x+0.5*sidebar.width)){
+				var isnext = (automap.mapped_q!=-1);
+				if(isnext&&/*(c_section_start == 0)&&*/(sx<sidebar.x+0.5*sidebar.width)){
 					var osx=sx;
 					sx = sidebar.x+0.5*sidebar.width;
 					lcd_main.message("paintrect",osx ,y_offset,sx-fo1,y_offset+fontheight*0.5,automap.colours_c.darkest[0]*0.5,automap.colours_c.darkest[1]*0.5,automap.colours_c.darkest[2]*0.5);
-				}else if((c_section_start == 0.33)&&(sx<sidebar.x+0.66*sidebar.width)){
+				}else if(isnext&&(c_section_start == 0.33)&&(sx<sidebar.x+0.66*sidebar.width)){
 					var osx=sx;
 					sx = sidebar.x+0.667*sidebar.width;
 					lcd_main.message("paintrect",osx ,y_offset,sx-fo1,y_offset+fontheight*0.5,automap.colours_c.darkest[0]*0.5,automap.colours_c.darkest[1]*0.5,automap.colours_c.darkest[2]*0.5);
-				}else if((c_section_start == 0.5)&&(sx<sidebar.x+0.75*sidebar.width)){
+				}else if(isnext&&(c_section_start == 0.5)&&(sx<sidebar.x+0.75*sidebar.width)){
 					var osx=sx;
 					sx = sidebar.x+0.75*sidebar.width;
 					lcd_main.message("paintrect",osx ,y_offset,sx-fo1,y_offset+fontheight*0.5,automap.colours_c.darkest[0]*0.5,automap.colours_c.darkest[1]*0.5,automap.colours_c.darkest[2]*0.5);
@@ -6192,7 +6194,7 @@ function draw_sidebar(){
 		lcd_main.message("moveto",sbx,p);
 		lcd_main.message("lineto",sbx,p+l2);
 		//click zone for the scrollbar
-		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
+		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,scrollbar_index,2);
 	}
 	view_changed = false;
 }

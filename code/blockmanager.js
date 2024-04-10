@@ -441,7 +441,8 @@ var sidebar = {
 			vector : 0
 		},
 		help: 0
-	}
+	},
+	scrollbar_index : 2
 }
 
 var mutemap = new Buffer("mutemap");

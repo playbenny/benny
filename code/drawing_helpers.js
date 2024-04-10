@@ -10,9 +10,9 @@ function click_oval(x1,y1,x2,y2,index,type){
 // click-zone takes care of whether it needs to be drawn, increments the counter whatever
 function click_zone(action,parameters,values,x1,y1,x2,y2,index,type){
 	if(view_changed===true){
-		mouse_click_actions[mouse_index] = action;
-		mouse_click_parameters[mouse_index] = parameters;
-		mouse_click_values[mouse_index] = values;
+		mouse_click_actions[index] = action;
+		mouse_click_parameters[index] = parameters;
+		mouse_click_values[index] = values;
 		click_rectangle(x1,y1,x2,y2,index,type);
 	}
 	mouse_index++;
