@@ -30,7 +30,8 @@
 				"name" : "spare",
 				"type" : "menu_l",
 				"values" : ["none"],
-				"nomap" : 1
+				"nomap" : 1,
+				"default" : 0
 			}
 		]
 	}

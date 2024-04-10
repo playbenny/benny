@@ -42,7 +42,7 @@
 				"values" : ["auto_assign_OFF","auto_assign_ON"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0.25
+				"default" : 0.75
 			},{
 				"name" : "sustain_debounce (ms)",
 				"type" : "int",
