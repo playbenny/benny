@@ -1172,7 +1172,7 @@ function draw_menu_hint(){
 }
 	
 
-function conn_draw_from_outputs_list(i, f_name, ty, y_offset) {
+function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 	var curr=-1;
 	if(connections.get("connections["+i+"]::from::output::type")==ty){
 		curr = (connections.get("connections["+i+"]::from::output::number"))
@@ -1183,7 +1183,9 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset) {
 		var l = blocktypes.get(f_name + "::connections::out::" + ty);
 		if (!Array.isArray(l)) l = [l];
 		var c = config.get("palette::connections::" + ty);
-		for (var o = 0; o < l.length; o++) {
+		var len = l.length;
+		if(truncate!=null) len = Math.min(len,truncate);
+		for (var o = 0; o < len; o++) {
 			if(curr==o){
 				lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
 				lcd_main.message("frgb", 0,0,0);

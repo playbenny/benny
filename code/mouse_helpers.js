@@ -2561,3 +2561,17 @@ function automap_q_click(p,v){
 		}*/
 	//}
 }
+
+function conn_assign_controller_moved(type,number){
+	if(type == "parameters"){
+		post("\nyou moved controller param number",number);
+	}else{
+		post("\nyou pressed controller button number",number);
+	}
+	i = selected.wire.indexOf(1);
+	conn_set_from_output(i, [type, number]);
+}
+
+function conn_toggle_control_auto_assign(){
+	post("\ntodo toggle auto-turn-on-auto");
+}

@@ -4968,15 +4968,51 @@ function draw_sidebar(){
 			//click_zone(select_block,0,f_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
 			//^^this should be the select a new from block fn
 
-			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-15*fo1, fo1*13+y_offset,section_colour_darkest );
-			lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
-			click_zone(conn_show_from_outputs_list,0,-1,sidebar.x, y_offset+0.7*fontheight, sidebar.x2, fontheight*1.3+y_offset,mouse_index,1);
-			
+			var is_core_control = 0 ; 
+			var auto_pick_controller = 0;
+			var f_n_a = f_name;
+			var param_count = null;
+			var button_count = null;
+			f_n_a = f_n_a.split(".");
+			if((f_n_a[0]=="core")&&(f_n_a[1]=="input")&&(f_n_a[2]=="control")){
+				is_core_control = 1; //it's either core.input.control.auto or .basic so
+				// check if we need to trim the list of midi outs / param outs / available colours
+				var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
+				
+				param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+				button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+				
+				//i think we should adjust the list of displayed params, colours, if it's changed.
 
-		
+				//and support for removing the globals from the buttons list?
+
+				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
+				// auto is always visible as a button, auto-enables if it's turned on in config and the list is open. disabling it if list is open disables it in config?
+				var firv = voicemap.get(f_number);
+				if(Array.isArray(firv)) firv=firv[0];
+
+				if(sidebar.connection.show_from_outputs){
+					auto_pick_controller = 1;
+					note_poly.setvalue(firv+1,"connection_assign_mode",1);
+				}else{
+					note_poly.setvalue(firv+1,"connection_assign_mode",0);
+				}
+			}
 
 			setfontsize(fontsmall);
 
+			click_zone(conn_show_from_outputs_list,0,-1,sidebar.x, y_offset+0.7*fontheight, sidebar.x2, fontheight*1.3+y_offset,mouse_index,1);
+			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(1+is_core_control)*15*fo1, fo1*13+y_offset,section_colour_darkest );
+			lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+			if(is_core_control){
+				var tbc = (auto_pick_controller)? section_colour_dark:section_colour_darkest;
+				tbc = (usermouse.clicked2d==mouse_index)? section_colour:tbc;
+				lcd_main.message("paintrect", sidebar.x2-fo1*29, y_offset+fo1*7, sidebar.x2-fo1*15, y_offset+fo1*13, tbc );
+				lcd_main.message("frgb", section_colour );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
+				lcd_main.message("write", "auto");
+				click_zone(conn_toggle_control_auto_assign,0,-1,sidebar.x2-fo1*29, y_offset+0.7*fontheight, sidebar.x2-fo1*15, fontheight*1.3+y_offset,mouse_index,1);
+			}
 			lcd_main.message("frgb" , section_colour_dark);
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
 			lcd_main.message("write", "from");
@@ -5003,10 +5039,11 @@ function draw_sidebar(){
 					lcd_main.message("write", "hide");
 				}
 				y_offset+=1.4*fontheight;
-				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset);
-				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset);
-				y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset);
-				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
+				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset, param_count);
+				if(is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, button_count);
 			}
 			
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.6+y_offset,section_colour_darkest );
