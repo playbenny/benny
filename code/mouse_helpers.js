@@ -2527,3 +2527,37 @@ function automap_k_click(p,v){
 		}
 	}
 }
+
+function automap_c_click(p,v){
+	if(usermouse.ctrl){
+		select_block_by_name("core.input.control.auto");
+	}else{
+		//lock
+		if(v==-1){
+			automap.lock_c = 1 - automap.lock_c;
+		}else{
+			automap.lock_c = (v!=0);
+		}
+		if(automap.lock_c==0){
+			if(sidebar.selected!=automap.mapped_c) automap.mapped_c = -1;
+		}
+	}
+}
+function automap_q_click(p,v){
+	/*if(usermouse.ctrl){
+		select_block_by_name("core.input.keyboard");
+	}else{*/
+		//lock
+		if(v==-1){
+			automap.lock_q = 1 - automap.lock_q;
+		}else{
+			automap.lock_q = (v!=0);
+		}
+		redraw_flag.flag = 2;
+		/*if(automap.lock_q==0){
+			var mq = automap.mapped_q.split(".");
+
+			if(sidebar.selected!=automap.mapped_q) automap.mapped_q = -1;
+		}*/
+	//}
+}

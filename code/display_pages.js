@@ -2037,11 +2037,11 @@ function draw_sidebar(){
 	var y_offset=0;
 	count_selected_blocks_and_wires();
 	if(selected.block_count!=1){
-		if(automap.mapped_k!=-1){
+		if((automap.mapped_k!=-1)&&!automap.lock_k){
 			note_poly.setvalue( automap.available_k, "maptarget", "none");
-			automap.mapped_k=-1;
+			automap.mapped_k = -1;
 		}
-		if(automap.mapped_q!=-1){
+		if((automap.mapped_q!=-1)&&!automap.lock_q){
 			set_automap_q(0);
 			automap.mapped_q_channels = [];
 			automap.mapped_q = -1;
@@ -2708,8 +2708,11 @@ function draw_sidebar(){
 			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [];
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
+				post("\nhere");
 				if((block_name != "core.input.keyboard")&&has_midi_in){
+					post("2",automap.mapped_k,block,"OR",automap.mapped_k_v,sidebar.selected_voice,")AND",!automap.lock_k);
 					if(((automap.mapped_k!=block)||(automap.mapped_k_v!=sidebar.selected_voice))&&!automap.lock_k){
+						post("3");
 						//check connections for wires from keyboard to this block\
 						automap.already_k = 0;
 						for(var ci =connections.getsize("connections");ci>0;ci--){
@@ -2739,7 +2742,7 @@ function draw_sidebar(){
 								}
 								blocks.replace("blocks["+block+"]::automap_to",automap.inputno_k);
 							}
-							automap.mapped_k=block;
+							automap.mapped_k = block;
 							automap.colours_k.colour = block_colour;
 							automap.colours_k.dark = block_dark;
 							automap.colours_k.darkest = block_darkest;
@@ -2747,27 +2750,30 @@ function draw_sidebar(){
 						}else{
 							automap.already_k = 1;
 							automap.mapped_k_v = sidebar.selected_voice;
-							automap.mapped_k=block;
+							automap.mapped_k = block;
 							automap.colours_k.colour = block_colour;
 							automap.colours_k.dark = block_dark;
 							automap.colours_k.darkest = block_darkest;
 							automap.inputno_k = -1;
 						}
 					}
+				}else{
+					if(!automap.lock_k) automap.mapped_k = -1;
 				}
-				if((automap.mapped_k>-1) && (automap.already_k==0)){
+				post("already",automap.already_k);
+				if((automap.mapped_k!=-1) && (automap.already_k==0)){
 					//DRAW KEYBOARD AUTOMAP HEADER LINE
 					var midiins = blocktypes.get(blocks.get("blocks["+automap.mapped_k+"]::name")+"::connections::in::midi");
 					if(!Array.isArray(midiins)) midiins = [midiins];
 					lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x+fontheight*2.1,y_offset+fontheight*0.5,automap.colours_k.darkest);
 					click_zone(automap_k_click,-1, -1, sidebar.x,y_offset,sidebar.x+22, y_offset+fontheight*0.5,mouse_index,1 ); 
-					if(usermouse.clicked2d == mouse_index-1){
+					if(!usermouse.ctrl && (usermouse.clicked2d == mouse_index-1)){
 						//lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
 						lcd_main.message("frgb", automap.colours_k.colour);
 						lcd_main.message("paintrect",sidebar.x+fo1,y_offset+2.5*fo1,sidebar.x+22-fo1,y_offset+fontheight*0.45,automap.colours_k.colour);
 						lcd_main.message("moveto",sidebar.x+1.5*fo1,y_offset+(2.5-1.5*automap.lock_k)*fo1);
-						lcd_main.message("lineto",sidebar.x+1.5*fo1,y_offset+fo1*0.5);
-						lcd_main.message("lineto",sidebar.x+20-1.5*fo1,y_offset+fo1*0.5);
+						lcd_main.message("lineto",sidebar.x+1.5*fo1,y_offset+fo1*(1-0.5*automap.lock_k));
+						lcd_main.message("lineto",sidebar.x+20-1.5*fo1,y_offset+fo1*(1-0.5*automap.lock_k));
 						lcd_main.message("lineto",sidebar.x+20-1.5*fo1,y_offset+2.5*fo1);
 						sx = sidebar.x+ 26 + 0.3*fontheight;
 					}else{
@@ -2793,7 +2799,7 @@ function draw_sidebar(){
 						lcd_main.message("lineto",sidebar.x+16,tmp);				
 						if(automap.lock_k && block!=automap.mapped_k){
 							var labl = blocks.get("blocks["+automap.mapped_k+"]::label");
-							sx=sidebar.x+ 26 + (0.3+labl.length*0.2)*fontheight;
+							sx=sidebar.x+ 26 + (0.1+labl.length*0.18)*fontheight;
 							lcd_main.message("paintrect",sidebar.x+fontheight*2.1,y_offset,sx-fo1,y_offset+fontheight*0.5,automap.colours_k.darkest);
 							lcd_main.message("frgb", automap.colours_k.dark);
 							lcd_main.message("moveto", sidebar.x+26, y_offset+0.2*fontheight);
@@ -2824,41 +2830,74 @@ function draw_sidebar(){
 						lcd_main.message("write", midiins[ti]);		
 						sx += bw2;		
 					}
-					if(sx<sidebar.x2){
+					if((sx>sidebar.x2-(sidebar.width-fo1)*0.5)||(block!=automap.mapped_k)){
 						lcd_main.message("paintrect",sx ,y_offset,sidebar.x2,y_offset+fontheight*0.5,automap.colours_k.darkest);
-					}
-					if((sx>mainwindow_width-fontheight*2-9)||(block!=automap.mapped_k)){
 						y_offset += fontheight*0.6;
 						sx=sidebar.x;
 					}else{
-						sx = mainwindow_width - fontheight*2 -9;
+						var osx=sx;
+						sx = sidebar.x2-sidebar.width*0.5;
+						lcd_main.message("paintrect",osx ,y_offset,sx-fo1,y_offset+fontheight*0.5,automap.colours_k.darkest);
 					}
 				}
 			}
 			if(automap.available_c!=-1){
 				if((block_name != "core.input.control.auto") && has_params){
-					if(automap.mapped_c!=block){
+					if((automap.mapped_c!=block&&!automap.lock_c)){
 						automap.offset_c = 0;
 						getmap=1; //flag set, then it collects up map data
 						automap.mapped_c=block;
+						automap.colours_c.colour = block_colour;
+						automap.colours_c.dark = block_dark;
+						automap.colours_c.darkest = block_darkest;
 					}else if(automap.offset_range_c < 0){
 						//we set it to negative to flag a change in offset, it gets recalced before the end of this fn
 						map_y = -automap.offset_c;
 						getmap = 1;
 					}
-					
+				}else{
+					if(!automap.lock_c) automap.mapped_c=-1;
+				}
+				if(automap.mapped_c!=-1){
 					// DRAW AUTOMAP HEADER LINE
-					lcd_main.message("paintrect",sx,y_offset,sidebar.x2,y_offset+fontheight*0.5,block_darkest);
-					//lcd_main.message("frgb", block_colour);
+					lcd_main.message("paintrect",sx,y_offset,sidebar.x2,y_offset+fontheight*0.5,automap.colours_c.darkest);
 					var hf= 0.25*fontheight;
-					click_zone(select_block_by_name,"core.input.control.auto", null, sx,y_offset,sx+22, y_offset+fontheight*0.5,mouse_index,1 ); 
-					click_zone(cycle_automap_offset, 1, null, sx+24,y_offset,sidebar.x2,y_offset+0.5*mainwindow_width,mouse_index,1);
-					lcd_main.message("frgb", block_dark);
-					lcd_main.message("framerect",sx,y_offset,sx+22,y_offset+fontheight*0.5);
-					lcd_main.message("frameoval",sx+13-hf,y_offset+4,sx+hf+9,y_offset+hf+hf-4);
-					lcd_main.message("moveto",sx+9,hf+y_offset-1);
-					lcd_main.message("lineto",sx+0.106*fontheight+9,fo1*1.44+y_offset);
-					lcd_main.message("moveto", sx+26, y_offset+0.4*fontheight);
+					click_zone(automap_c_click,null,-1, sx,y_offset,sx+22, y_offset+fontheight*0.5,mouse_index,1 ); 
+					if(!usermouse.ctrl && (usermouse.clicked2d == mouse_index-1)){
+						//lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
+						lcd_main.message("frgb", automap.colours_k.colour);
+						lcd_main.message("paintrect",sx+fo1,y_offset+2.5*fo1,sx+22-fo1,y_offset+fontheight*0.45,automap.colours_k.colour);
+						lcd_main.message("moveto",sx+1.5*fo1,y_offset+(2.5-1.5*automap.lock_k)*fo1);
+						lcd_main.message("lineto",sx+1.5*fo1,y_offset+fo1*(1-0.5*automap.lock_k));
+						lcd_main.message("lineto",sx+20-1.5*fo1,y_offset+fo1*(1-0.5*automap.lock_k));
+						lcd_main.message("lineto",sx+20-1.5*fo1,y_offset+2.5*fo1);
+					}else{
+						if(automap.lock_c){
+							lcd_main.message("frgb", automap.colours_c.colour);
+						}else{
+							lcd_main.message("frgb", automap.colours_c.dark);
+						}
+						lcd_main.message("framerect",sx,y_offset,sx+22,y_offset+fontheight*0.5);
+						lcd_main.message("frameoval",sx+13-hf,y_offset+4,sx+hf+9,y_offset+hf+hf-4);
+						lcd_main.message("moveto",sx+9,hf+y_offset-1);
+						lcd_main.message("lineto",sx+0.106*fontheight+9,fo1*1.44+y_offset);
+					}
+					sx += 26;
+					if(automap.lock_c && block!=automap.mapped_c){
+						var labl = blocks.get("blocks["+automap.mapped_c+"]::label");
+						lcd_main.message("paintrect",sx+fontheight*2.1,y_offset,sidebar.x2,y_offset+fontheight*0.5,automap.colours_c.darkest);
+						lcd_main.message("frgb", automap.colours_c.dark);
+						lcd_main.message("moveto", sx, y_offset+0.2*fontheight);
+						lcd_main.message("write", "locked to");
+						lcd_main.message("frgb", automap.colours_c.colour);
+						lcd_main.message("moveto", sx, y_offset+0.4*fontheight);
+						lcd_main.message("write", labl);
+						var osx=sx;
+						sx += (0.1+labl.length*0.18)*fontheight;
+						click_zone(select_block,null, automap.mapped_c, osx-2,y_offset,sx, y_offset+fontheight*0.5,mouse_index,1 );
+					}
+					lcd_main.message("moveto", sx, y_offset+0.4*fontheight);
+					click_zone(cycle_automap_offset, 1, null, sx-2,y_offset,sidebar.x2,y_offset+0.5*fontheight,mouse_index,1);
 					lcd_main.message("write", ">",automap.offset_c+1, "-" , automap.offset_c + automap.c_rows);
 					y_offset += fontheight*0.6;
 				}
@@ -2869,9 +2908,12 @@ function draw_sidebar(){
 						if(automap.mapped_q!=-1){
 							set_automap_q(0);
 							automap.mapped_q_channels = [];
-							automap.mapped_q = -1;
+							//automap.mapped_q = -1;
 						}
 						automap.mapped_q = block+"."+sidebar.selected_voice;
+						automap.colours_q.colour = block_colour;
+						automap.colours_q.dark = block_dark;
+						automap.colours_q.darkest = block_darkest;
 						if(sidebar.selected_voice == -1){
 							automap.mapped_q_channels = voicemap.get(block);
 							if(!Array.isArray(automap.mapped_q_channels)) automap.mapped_q_channels=[automap.mapped_q_channels];
@@ -2901,8 +2943,15 @@ function draw_sidebar(){
 					automap.mapped_q = -1;
 					automap.mapped_q_channels = [];
 				}
+				if(automap.mapped_q!=-1){
+					lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,automap.colours_q.darkest);
+					lcd_main.message("moveto", sidebar.x+fo1,y_offset+4*fo1);
+					lcd_main.message("frgb",automap.colours_q.colour);
+					lcd_main.message("write","automap cue indicator here");
+					y_offset+=fo1*6;
+				}
 			}
-			
+			post("\nautomap kcq",automap.mapped_c,automap.mapped_k,automap.mapped_q,"avails",automap.available_k,automap.available_k,automap.available_q);
 			var current_p = blocks.get("blocks["+block+"]::poly::voices");
 
 			if(current_p>1){
@@ -6046,21 +6095,24 @@ function draw_sidebar(){
 			click_rectangle(sidebar.x,y_offset+1,mainwindow_width,mainwindow_height,ttt,ttt);
 		}
 	}
-	if((sidebar.scroll.max>0)){ //&&(sidebar.mode != "none")){
-		lcd_main.message("frgb", menudarkest);
-		lcd_main.message("moveto",mainwindow_width-5,9);
-		lcd_main.message("lineto",mainwindow_width-5,mainwindow_height-9);		
+	if((sidebar.scroll.max>0)){
+		var sbx = mainwindow_width-sidebar.scrollbar_width*0.5;
 		var l = (mainwindow_height-18) / (mainwindow_height + sidebar.scroll.max - 18);
 		var l2 = (mainwindow_height-18) * l;
 		var p = sidebar.scroll.position * l + 9;
-		lcd_main.message("frgb", menucolour);
-		lcd_main.message("moveto",mainwindow_width-5,p);
-		lcd_main.message("lineto",mainwindow_width-5,p+l2);
+		lcd_main.message("frgb", block_darkest);
+		lcd_main.message("moveto",sbx,9);
+		lcd_main.message("lineto",sbx,mainwindow_height-9);		
+		if(mouse_index==usermouse.clicked2d){
+			lcd_main.message("frgb", block_colour);
+		}else{
+			lcd_main.message("frgb", block_dark);
+		}
+		lcd_main.message("moveto",sbx,p);
+		lcd_main.message("lineto",sbx,p+l2);
 		//click zone for the scrollbar
 		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
 	}
-	//	lcd_main.message("bang");
-	//outlet(8,"bang");
 	view_changed = false;
 }
 
@@ -6074,13 +6126,13 @@ function set_automap_q(v) {
 }
 
 function remove_automaps(){
-	if (automap.available_c != -1) {
+	if((automap.available_c != -1) && !automap.lock_c){
 		if (automap.mapped_c != -1) {
 			automap.mapped_c = -1;
 			note_poly.setvalue(automap.available_c, "automapped", 0);
 		}
 	}
-	if (automap.available_k != -1) {
+	if((automap.available_k != -1) && !automap.lock_k){
 		if (automap.mapped_k != -1) {
 			automap.mapped_k = -1;
 			note_poly.setvalue(automap.available_k, "automapped", 0);
