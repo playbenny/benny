@@ -116,7 +116,7 @@
 				"name" : [ "Launch Control XL" ],
 				"substitute" : [ "LPD8 mk2", "LPD8" ],
 				"outputs" : 32,
-				"type" : "encoder",
+				"type" : "potentiometer",
 				"channel" : 1,
 				"first" : 1,
 				"scaling" : 1,
@@ -124,7 +124,7 @@
 				"rows" : 4,
 				"buttons" : 				{
 					"first" : 0,
-					"type" : 0,
+					"type" : "note",
 					"channel" : 1,
 					"count" : 24,
 					"globals" : 					{
