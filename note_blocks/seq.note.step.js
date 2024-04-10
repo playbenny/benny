@@ -1010,3 +1010,4 @@ function steptime_is(time){
 		step_time = time;
 	}
 }
+function enabled(){}
