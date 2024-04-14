@@ -6114,6 +6114,20 @@ function draw_automap_headers(y_offset, sx, block) {
 			lcd_main.message("write", midiins[ti]);
 			sx += bw2;
 		}
+		if(usermouse.caps){
+			var bw2 = fo1 * 14;
+			var ex = sx + bw2 - fo1;
+			lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+			click_zone(qwertymidi_octave, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
+			lcd_main.message("frgb", automap.colours_k.darkest);
+			lcd_main.message("moveto", sx + fo1, y_offset + 0.25 * fontheight);
+			lcd_main.message("write", "octave");
+			lcd_main.message("frgb", automap.colours_k.colour);
+			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+			lcd_main.message("write", qwertym.octave);
+			sx += bw2;
+		
+		}
 
 		if ((sx < sidebar.x + (sidebar.width) / automap.count)) {
 			var osx = sx;

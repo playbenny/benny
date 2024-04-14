@@ -1254,6 +1254,19 @@ function data_edit(parameter,value){
 		redraw_flag.flag |= 2;// was 4?
 	}
 }
+
+function qwertymidi_octave(parameter, value){
+	if(value=="get"){
+		var t = Math.floor(qwertym.octf * 12);
+		if(t!=qwertym.octave) qwertym.octf = qwertym.octave/12;
+		return(qwertym.octf);
+	}else{
+		value = Math.max(0,Math.min(0.9999999,value));
+		qwertym.octf = value;
+		qwertym.octave = Math.floor(value*12);
+		redraw_flag.flag |= 2;
+	}
+}
 	
 function sidebar_parameter_knob(parameter, value){
 	//post("\nP: ",parameter,"  V:",value);

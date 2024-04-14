@@ -129,10 +129,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.shift = shift;
 	usermouse.ctrl = ctrl;
 	usermouse.alt = alt;
-	//if(usermouse.caps!=caps){
-		usermouse.caps = caps;
-	//	redraw_flag.flag |= 2; //so the qwertymidi indicator gets drawn
-	//}
+	if(usermouse.caps!=caps) redraw_flag.flag |= 2; //so the qwertymidi indicator gets drawn
+	usermouse.caps = caps;
+	
 	usermouse.x = x;
 	usermouse.y = y;
 	usermouse.sidebar_scrolling = null;
