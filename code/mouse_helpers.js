@@ -440,6 +440,10 @@ function hard_reload_block(b){
 }
 
 function open_patcher(block,voice){
+	if(block == null){
+		block = sidebar.selected;
+		voice = sidebar.selected_voice;
+	}
 	if(block>-1){
 		var vm = voicemap.get(block);
 		if(!Array.isArray(vm)) vm = [vm];
