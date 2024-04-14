@@ -1,8 +1,8 @@
 {
 	"io" : 	{
-		"keyboards" : ["Xkey37","Xkey25"],
-		"controllers" : {
-			"Midi Fighter Twister" : {
+		"keyboards" : [ "Xkey37", "Xkey25" ],
+		"controllers" : 		{
+			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
 				"outputs" : 16,
 				"type" : "encoder",
@@ -10,53 +10,80 @@
 				"first" : 0,
 				"columns" : 4,
 				"rows" : 4,
-				"colour" : {
+				"colour" : 				{
 					"type" : "midifighter",
 					"channel" : 2,
 					"first" : 0
-				},
-				"brightness" : {
+				}
+,
+				"brightness" : 				{
 					"type" : "midifighter",
 					"channel" : 3,
 					"first" : 0,
 					"dim" : 19,
 					"bright" : 48
-				},
-				"value" : {
+				}
+,
+				"value" : 				{
 					"type" : "cc",
 					"channel" : 1,
 					"first" : 0
-				},
-				"resets" : {
+				}
+,
+				"resets" : 				{
 					"type" : "cc",
 					"channel" : 2,
 					"first" : 0
 				}
+,
+				"buttons" : 				{
+					"first" : 8,
+					"type" : "cc",
+					"channel" : 4,
+					"count" : 6,
+					"globals" : 					{
+						"automap_toggle" : 0,
+						"automap_page" : 1,
+						"lock_automap_control" : 2
+					}
+
+				}
+
 			}
+
 		}
-	},
+
+	}
+,
 	"hardware" : 	{
-		"hardware.out.1+2" : 			{
+		"hardware.out.1+2" : 		{
 			"type" : "hardware",
 			"max_polyphony" : 2,
 			"help_text" : "pc speakers",
-			"connections" : {
-				"in" : {
+			"connections" : 			{
+				"in" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 1, 2 ]
 				}
+
 			}
-		},
-		"hardware.in.1+2" : 			{
+
+		}
+,
+		"hardware.in.1+2" : 		{
 			"type" : "hardware",
 			"max_polyphony" : 2,
 			"help_text" : "pc microphones/inputs",
-			"connections" : {
-				"out" : {
+			"connections" : 			{
+				"out" : 				{
 					"hardware" : [ "in" ],
 					"hardware_channels" : [ 1, 2 ]
 				}
+
 			}
+
 		}
+
 	}
+
 }

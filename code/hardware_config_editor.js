@@ -115,23 +115,23 @@ function configloaded(path){
 	post("\n and these interfaces are present but not used for controllers: ",midi_interfaces.not_used_in);
 	for(var i=0;i<in_list.length;i++){
 		if(midi_interfaces.in.indexOf(in_list[i])==-1){
-			midi_interfaces.not_present_in.push(in_list[i]);
+			if(midi_interfaces.not_present_in.indexOf(in_list[i])==-1) midi_interfaces.not_present_in.push(in_list[i]);
 		}
 	}
 	for(var i=0;i<out_list.length;i++){
 		if(midi_interfaces.out.indexOf(out_list[i])==-1){
-			midi_interfaces.not_present_out.push(out_list[i]);
+			if(midi_interfaces.not_present_out.indexOf(out_list[i])==-1) midi_interfaces.not_present_out.push(out_list[i]);
 		}
 	}
 	render_controls();
 }
 
 function midiins(name){
-	midi_interfaces.in.push(name);
+	if(midi_interfaces.in.indexOf(name)==-1) midi_interfaces.in.push(name);
 }
 
 function midiouts(name){
-	midi_interfaces.out.push(name);
+	if(midi_interfaces.out.indexOf(name)==-1) midi_interfaces.out.push(name);
 }
 
 function render_controls(){
@@ -725,7 +725,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
-			values[ii] = [cdk[p]+"::buttons::type"];
+			values[ii] = [cdk[p]];
 			y_pos+=unit.row;
 			ii++;
 
@@ -739,7 +739,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
-			values[ii] = [cdk[p]+"::buttons::channel"];
+			values[ii] = [cdk[p]];
 			y_pos+=unit.row;
 			ii++;
 	
@@ -754,7 +754,7 @@ function render_controls(){
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
-			values[ii] = [cdk[p]+"::buttons::first"];
+			values[ii] = [cdk[p]];
 			y_pos+=unit.row;
 			ii++;
 
@@ -769,7 +769,7 @@ function render_controls(){
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
-			values[ii] = [cdk[p]+"::buttons::count"];
+			values[ii] = [cdk[p]];
 			y_pos+=unit.row;
 			ii++;
 
@@ -1446,10 +1446,11 @@ function keybcallback(data){
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1],data.value);
 	}else if(id[0]=="controllersubkey"){
 		var v = values[id[3]];
+		//post("\nid4 = ",id[3],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2],data.value);
 	}else if(id[0]=="controllersubkey2"){
 		var v = values[id[4]];
-		post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
+		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 	}else if(id[0]=="hardware"){
 		if(id[1]=="in"){
@@ -1697,21 +1698,26 @@ function add_midimonitors(interface){
 	controls[ii].presentation(1);
 	controls[ii].presentation_position(20+2*unit.col,y_pos);
 	ii++;
-	controls[ii] = this.patcher.newdefault(10, 100, "prepend set");
+	controls[ii] = this.patcher.newdefault(10, 100, "prepend set note");
 	this.patcher.connect(controls[ii],0,controls[ii-1],0);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 100, "prepend set cc  ");
+	this.patcher.connect(controls[ii],0,controls[ii-2],0);
 	ii++;
 	controls[ii] = this.patcher.newdefault(10, 120, "pack", 0,0,0);
-	this.patcher.connect(controls[ii],0,controls[ii-1],0);
+	this.patcher.connect(controls[ii],0,controls[ii-2],0);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 120, "pack", 0,0,0);
+	this.patcher.connect(controls[ii],0,controls[ii-2],0);
 	ii++;
 	controls[ii] = this.patcher.newdefault(10, 120, "notein", "@name", interface);
-	this.patcher.connect(controls[ii],0,controls[ii-1],0);
-	this.patcher.connect(controls[ii],1,controls[ii-1],1);
-	this.patcher.connect(controls[ii],2,controls[ii-1],2);
+	this.patcher.connect(controls[ii],0,controls[ii-2],0);
+	this.patcher.connect(controls[ii],1,controls[ii-2],1);
+	this.patcher.connect(controls[ii],2,controls[ii-2],2);
 	ii++;
 	controls[ii] = this.patcher.newdefault(10, 120, "ctlin", "@name", interface);
 	this.patcher.connect(controls[ii],0,controls[ii-2],0);
 	this.patcher.connect(controls[ii],1,controls[ii-2],1);
 	this.patcher.connect(controls[ii],2,controls[ii-2],2);
 	ii++;
-
 }
