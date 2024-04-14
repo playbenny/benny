@@ -650,7 +650,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
-			values[ii] = [cdk[p]];
+			values[ii] = [cdk[p]+"::resets::type"];
 			y_pos+=unit.row;
 			ii++;
 
@@ -664,7 +664,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
-			values[ii] = [cdk[p]];
+			values[ii] = [cdk[p]+"::resets::channel"];
 			y_pos+=unit.row;
 			ii++;
 	
@@ -775,6 +775,7 @@ function render_controls(){
 
 			if(cd.contains(cdk[p]+"::buttons::globals")){
 				//	"globals" : {
+				var tv;
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "button map to global functions");
 				controls[ii].presentation(1);
@@ -794,11 +795,13 @@ function render_controls(){
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
 				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::automap_toggle"));
+				tv = cd.get(cdk[p]+"::buttons::globals::automap_toggle");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::automap_toggle"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"automap_page" : 3
@@ -808,11 +811,13 @@ function render_controls(){
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
 				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::automap_page"));
+				tv = cd.get(cdk[p]+"::buttons::globals::automap_page");
+				if(tv==null) tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::automap_page"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		" lock controller automap" : 0,
@@ -821,12 +826,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::lock_automap_control"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_control."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::lock_automap_control");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::lock_automap_control"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"keyboard automap lock" : 3
@@ -835,12 +842,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::lock_automap_keyboard"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_keyboard."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::lock_automap_keyboard");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::lock_automap_keyboard"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"cue automap lock" : 0,
@@ -849,12 +858,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::lock_automap_cue"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_cue."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::lock_automap_cue");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::lock_automap_cue"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"toggle display mode" : 3
@@ -863,12 +874,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::toggle_display_mode"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.toggle_display_mode."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::toggle_display_mode");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::toggle_display_mode"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"play" : 0,
@@ -877,12 +890,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::play"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.play."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::play");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::play"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"resync" : 3
@@ -891,12 +906,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::resync"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.resync."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::resync");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::resync"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"panic" : 0,
@@ -905,12 +922,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::panic"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.panic."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::panic");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::panic"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 				//		"mute selected" : 3
@@ -919,12 +938,14 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(50,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii);
-				controls[ii].message("set", cd.get(cdk[p]+"::buttons::globals::mute_selected"));
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.mute_selected."+ii);
+				tv = cd.get(cdk[p]+"::buttons::globals::mute_selected");
+				if(tv==null)tv=-1;
+				controls[ii].message("set", tv);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
-				values[ii] = [cdk[p]+"::buttons::globals::mute_selected"];
+				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
 			}else{
@@ -934,7 +955,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(40,y_pos,2*unit.col,20);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.buttons.globals."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1,0, 1], "@varname", "add.controller.buttons.globals."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
@@ -949,7 +970,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_position(30,y_pos);
 			ii++;
-			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.buttons."+ii);
+			controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1,0, 1], "@varname", "add.controller.buttons."+ii);
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
@@ -957,10 +978,7 @@ function render_controls(){
 			ii++;			
 			y_pos+=unit.row;
 		}	
-		
-
 		y_pos+=unit.row;
-		
 	}
 	//recalc list of not-used interfaces (ie possible controllers to add)
 	var d = configfile.get("io::controllers");
@@ -1429,6 +1447,10 @@ function keybcallback(data){
 	}else if(id[0]=="controllersubkey"){
 		var v = values[id[3]];
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2],data.value);
+	}else if(id[0]=="controllersubkey2"){
+		var v = values[id[4]];
+		post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
+		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 	}else if(id[0]=="hardware"){
 		if(id[1]=="in"){
 			if(id[2]=="channel"){

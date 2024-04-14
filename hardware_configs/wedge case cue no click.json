@@ -96,7 +96,7 @@
 ,
 			"LPD8 mk2" : 			{
 				"name" : "LPD8 mk2",
-				"substitute" : [ "LPD8",  "Launch Control XL" ],
+				"substitute" : [ "LPD8", "Launch Control XL" ],
 				"outputs" : 8,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -128,8 +128,11 @@
 					"channel" : 1,
 					"count" : 24,
 					"globals" : 					{
-						"automap_toggle" : 17,
-						"automap_page" : 18
+						"automap_toggle" : 20,
+						"automap_page" : 21,
+						"lock_automap_control" : 16,
+						"lock_automap_keyboard" : 17,
+						"lock_automap_cue" : 18
 					}
 
 				}
