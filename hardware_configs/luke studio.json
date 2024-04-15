@@ -2,7 +2,6 @@
 	"io" : 	{
 		"keyboards" : [ "Xkey37", "Xkey25", "MIDIIN2 (MIDIMATE II)", "Arturia KeyStep 32" ],
 		"matrix" : "MIDIOUT2 (MIDIMATE II)",
-		"hardware" : "MIDIMATE II",
 		"matrix_switch" : 		{
 			"midi_out" : "MIDIMATE II",
 			"matrix_out" : 12,
@@ -11,27 +10,9 @@
 		}
 ,
 		"controllers" : 		{
-			"JAMES_16e" : 			{
-				"name" : "JAMES_16e",
-				"substitute" : "Midi Fighter Twister",
-				"outputs" : 16,
-				"type" : "encoder",
-				"channel" : 1,
-				"first" : 0,
-				"scaling" : 0.125,
-				"columns" : 4,
-				"rows" : 4,
-				"colour" : 				{
-					"type" : "midifighter",
-					"channel" : 2,
-					"first" : 0
-				}
-
-			}
-,
 			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
-				"substitute" : "JAMES_16e",
+				"substitute" : "none",
 				"outputs" : 16,
 				"type" : "encoder",
 				"channel" : 1,
@@ -93,14 +74,12 @@
 			}
 
 		}
-,
-		"triggers_in" : "TriggerIO"
 	}
 ,
 	"hardware" : 	{
 		"hardware.out.1+2" : 		{
-			"type" : "Prism Monitor 5+6",
-			"help_text" : "all outs",
+			"type" : "hardware",
+			"help_text" : "Prism Monitor 5+6",
 			"max_polyphony" : 2,
 			"exclusive" : 1,
 			"connections" : 			{
@@ -108,9 +87,7 @@
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 5, 6 ]
 				}
-
 			}
-
 		}
 ,
 		"hardware.io.1" : 		{
@@ -570,7 +547,6 @@
 			"help_text" : "in 1/2",
 			"exclusive" : 1,
 			"max_polyphony" : 2,
-			"substitute" : "fx.filter.2pole",
 			"connections" : 			{
 				"out" : 				{
 					"hardware" : [ "in" ],
@@ -578,9 +554,8 @@
 				}
 
 			}
-
+			
 		}
-
 	}
 
 }
