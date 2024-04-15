@@ -418,6 +418,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		if(!Array.isArray(params)) params = [params];
 		if(!Array.isArray(plist)) plist = [plist];
 		for(var p=0;p<plist.length;p++){
+			post("\nplp",plist[p]);
 			var p_type = params[plist[p]].get("type");
 			var wrap = params[plist[p]].get("wrap");
 			//var namearr = params[plist[p]].get("name");
@@ -2535,6 +2536,7 @@ function draw_sidebar(){
 		if(selected.block_count != 1){
 			var sx = sidebar.x;
 			automap.count = ((automap.mapped_c!=-1)&&(automap.lock_c)) + (automap.mapped_k!=-1) + (automap.mapped_q!=-1);
+			if(automap.count == 1) sx += sidebar.width*0.5;
 			if(automap.count) y_offset = draw_automap_headers(y_offset, sx, block);
 		}
 		block_colour = menucolour;
@@ -2762,7 +2764,10 @@ function draw_sidebar(){
 						}
 					}
 				}else{
-					if(!automap.lock_k) automap.mapped_k = -1;
+					if(!automap.lock_k){
+						 automap.mapped_k = -1;
+						 note_poly.setvalue(automap.available_k, "automapped", 0);
+					}
 				}
 			}
 			
@@ -2775,13 +2780,12 @@ function draw_sidebar(){
 						automap.colours_c.colour = block_colour;
 						automap.colours_c.dark = block_dark;
 						automap.colours_c.darkest = block_darkest;
-					}else if(automap.offset_range_c < 0){
-						//we set it to negative to flag a change in offset, it gets recalced before the end of this fn
-						map_y = -automap.offset_c;
-						getmap = 1;
 					}
 				}else{
-					if(!automap.lock_c) automap.mapped_c=-1;
+					if(!automap.lock_c){
+						automap.mapped_c=-1;
+						note_poly.setvalue(automap.available_c, "automapped", 0);					
+					}
 				}
 			}
 
@@ -3062,7 +3066,7 @@ function draw_sidebar(){
 											//var vl=voicemap.get(block);
 											//if(!Array.isArray(vl))vl=[vl];
 											for(var vc=0;vc<current_p;vc++){
-												if((map_y>=0)&&(map_y<automap.c_rows)){
+												if((map_y>=0)){//&&(map_y<automap.c_rows)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
 													maplistopv.push(MAX_PARAMETERS*vl[vc]+curp);
 													mapcolours.push(colour[0]);
@@ -3076,7 +3080,7 @@ function draw_sidebar(){
 												}	
 											}
 										}else{
-											if((map_y>=0)&&(map_y<automap.c_rows)){
+											if((map_y>=0)){//&&(map_y<automap.c_rows)){
 												maplist.push(MAX_PARAMETERS*block+curp);
 												maplistopv.push(-1);
 												mapcolours.push(colour[0]);
@@ -3285,7 +3289,7 @@ function draw_sidebar(){
 						}
 						if(getmap==1){
 							if(map_x!=0){ //wrap round to the next row, padding maplist with -1s if still inside the row limit
-								if((map_y>=0) && (map_y<automap.c_rows)){
+								if((map_y>=0)){// && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
 										maplist.push(-1);
 										maplistopv.push(-1);
@@ -3298,15 +3302,16 @@ function draw_sidebar(){
 						}
 					}
 					if(getmap!=0){
-						while(map_y<automap.c_rows){
+						while(map_y<automap.c_rows){ //pads out the list up to rows x cols long.
 							mapcolours.push(-1);
 							map_x++;
-							if(map_x>=automap.c_rows){
+							if(map_x>=automap.c_cols){
 								map_x = 0;
 								map_y++;
 							}
 						}
 						automap.offset_range_c = Math.max(0,map_y - automap.c_rows + automap.offset_c);
+						note_poly.setvalue(automap.available_c, "automap_offset", automap.offset_c);
 						note_poly.setvalue(automap.available_c,"maplistopv",maplistopv);
 						note_poly.setvalue(automap.available_c,"maplist",maplist);
 						note_poly.setvalue(automap.available_c,"mapcolour",mapcolours);
@@ -6289,7 +6294,7 @@ function remove_midi_scope(){
 	sidebar.scopes.midioutlist = [];
 }
 
-function do_automap(type, voice, onoff, name){
+function do_automap(type, voice, onoff, name){ // this is called from outside
 	if(type=="controller"){
 		if(onoff==0){
 			automap.available_c = -1;
