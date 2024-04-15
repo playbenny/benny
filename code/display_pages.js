@@ -2534,6 +2534,7 @@ function draw_sidebar(){
 		// BLOCK SCOPES AND PARAMS #######################################################################################################	
 		if(selected.block_count != 1){
 			var sx = sidebar.x;
+			automap.count = ((automap.mapped_c!=-1)&&(automap.lock_c)) + (automap.mapped_k!=-1) + (automap.mapped_q!=-1);
 			if(automap.count) y_offset = draw_automap_headers(y_offset, sx, block);
 		}
 		block_colour = menucolour;
