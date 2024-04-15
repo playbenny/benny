@@ -446,6 +446,8 @@ var sidebar = {
 	scrollbar_index : 2
 }
 
+var y_offset;
+
 var mutemap = new Buffer("mutemap");
 
 var redraw_flag = {

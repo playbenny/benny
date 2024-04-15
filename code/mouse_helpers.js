@@ -588,7 +588,6 @@ function show_new_block_menu(){
 }
 
 function select_block(parameter,value){
-	//post("\nselblock,",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
 		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
 		if((ui!="blank.ui")&&(ui!="self")){
@@ -614,6 +613,9 @@ function select_block(parameter,value){
 		selected.wire_count = 0;
 		redraw_flag.flag |= 2;
 		if(displaymode == "blocks") redraw_flag.flag |= 8;
+		if(usermouse.ctrl && (displaymode == "panels")){
+			set_sidebar_mode("edit_label");
+		}
 	}
 }
 
@@ -1114,12 +1116,12 @@ function toggle_panel(parameter,value){
 }
 function scroll_sidebar(parameter,value){
 	if(value=="get"){
-		return -sidebar.scroll.position/400;
+		return -sidebar.scroll.position/1500;
 	}else if(value=="rel"){
-		sidebar.scroll.position = Math.min(Math.max(0,sidebar.scroll.position-parameter*1000),sidebar.scroll.max-0.01);
+		sidebar.scroll.position = Math.min(Math.max(0,sidebar.scroll.position-parameter*400),sidebar.scroll.max-0.01);
 		redraw_flag.flag |= 2;
 	}else{
-		sidebar.scroll.position = Math.min(Math.max(0,-value*400),sidebar.scroll.max-0.01);
+		sidebar.scroll.position = Math.min(Math.max(0,-value*1500),sidebar.scroll.max-0.01);
 		redraw_flag.flag |= 2;
 	}
 }

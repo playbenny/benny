@@ -14,17 +14,21 @@ var obeat=0;
 var headpos=0;
 var ohp=0;
 var last_times=new Array();
-var menudark;
+var menudark,menudarkest;
 var gamut=new Array();
 var center = 0;
 var ccol=128;
 var beats_per_bar = 4; //TODO fetch timesig
 
 function setup(x1,y1,x2,y2,sw){
+	var blocktypes = new Dict;
+	blocktypes.name = "blocktypes";
 	var config = new Dict;
 	config.name = "config";
-	menucolour = config.get("palette::menu");
-	menudark = [menucolour[0]>>2,menucolour[1]>>2,menucolour[2]>>2];
+	menucolour = blocktypes.get("core.clock::colour");
+	menucolour = [Math.min(menucolour[0]*1.5,255),Math.min(menucolour[1]*1.5,255),Math.min(menucolour[2]*1.5,255)];
+	menudark = [menucolour[0]>>1,menucolour[1]>>1,menucolour[2]>>1];
+	menudarkest = [menucolour[0]*0.2, menucolour[1]*0.2, menucolour[2]*0.2];
 	for(var i=0;i<16;i++){
 		gamut[i] = config.get("palette::gamut["+i*8+"]::colour");
 	}
@@ -40,7 +44,7 @@ function setup(x1,y1,x2,y2,sw){
 function draw(){
 	headpos = 0;
 	ohp = 0;
-	outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,menucolour[0]*0.1,menucolour[1]*0.08,menucolour[2]*0.02);
+	outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,menudarkest);
 }
 function times(value,voice){
 	if(headpos>63) draw();
@@ -132,6 +136,7 @@ function voice_is(v){
 			} 
 		}
 	}
+	//menucolour = blocks.get("blocks["+v+"]::space::colour");
 }
 
 function voice_offset(){}
