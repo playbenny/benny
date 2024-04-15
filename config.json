@@ -11,7 +11,7 @@
 	"wire_dia" : 0.03,
 	"glow" : 0.2,
 	"monofont" : "Consolas",
-	"mainfont" : "Consolas",
+	"mainfont" : "Arial",
 	"BLOCK_MENU_CLICK_ACTION" : "double_click",
 	"new_block_menu_mouse_action_note" : [ "click", "long_click", "double_click", "ctrl_click", "alt_click" ],
 	"MAX_BEZIER_SEGMENTS" : 16,
