@@ -948,7 +948,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			messnamed("camera_control","position",  camera_position);
 			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){
-			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-scroll));
+			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));
 			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
 		}
 	}else if((d>=2) && (d<=4)){
