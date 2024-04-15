@@ -83,10 +83,12 @@ function draw_slice(beat,colour){
 	var nh=height*0.5;
 	var xx1=x_pos+nh + nh*Math.sin(6.283*(beat-0.5)/beats_per_bar);
 	var yy1=y_pos+nh - nh*Math.cos(6.283*(beat-0.5)/beats_per_bar);
-	var xx2=x_pos+nh + nh*Math.sin(6.283*(beat+0.5)/beats_per_bar);
-	var yy2=y_pos+nh - nh*Math.cos(6.283*(beat+0.5)/beats_per_bar);
+	var xx2=x_pos+nh + nh*Math.sin(6.283*beat/beats_per_bar);
+	var yy2=y_pos+nh - nh*Math.cos(6.283*beat/beats_per_bar);
+	var xx3=x_pos+nh + nh*Math.sin(6.283*(beat+0.5)/beats_per_bar);
+	var yy3=y_pos+nh - nh*Math.cos(6.283*(beat+0.5)/beats_per_bar);
 	outlet(1,"frgb",colour);
-	outlet(1,"paintpoly",x_pos+nh,y_pos+nh,xx1,yy1,xx2,yy2,x_pos+nh,y_pos+nh);
+	outlet(1,"paintpoly",x_pos+nh,y_pos+nh,xx1,yy1,xx2,yy2,xx3,yy3,x_pos+nh,y_pos+nh);
 }
 function tick(){
 	headpos+=0.25;

@@ -69,7 +69,6 @@
 			}
 ,
 			"panel" : 			{
-				"parameters" : [ 7, 1, 5 ],
 				"enable" : 1
 			}
 ,
@@ -112,7 +111,7 @@
 			}
 ,
 			"panel" : 			{
-				"enable" : 1
+				"enable" : 0
 			}
 ,
 			"error" : 			{
@@ -196,8 +195,7 @@
 			}
 ,
 			"panel" : 			{
-				"parameters" : [ 0, 1, 2, 3, 4 ],
-				"enable" : 1
+				"enable" : 0
 			}
 ,
 			"error" : 			{

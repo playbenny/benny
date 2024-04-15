@@ -418,7 +418,6 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 		if(!Array.isArray(params)) params = [params];
 		if(!Array.isArray(plist)) plist = [plist];
 		for(var p=0;p<plist.length;p++){
-			post("\nplp",plist[p]);
 			var p_type = params[plist[p]].get("type");
 			var wrap = params[plist[p]].get("wrap");
 			//var namearr = params[plist[p]].get("name");
