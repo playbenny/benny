@@ -4816,7 +4816,7 @@ function draw_sidebar(){
 				tbc = (usermouse.clicked2d==mouse_index)? section_colour:tbc;
 				lcd_main.message("paintrect", sidebar.x2-fo1*29, y_offset+fo1*7, sidebar.x2-fo1*15, y_offset+fo1*13, tbc );
 				lcd_main.message("frgb", section_colour );
-				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
+				lcd_main.message("moveto" ,sidebar.x2-fo1*27, fo1*11+y_offset);
 				lcd_main.message("write", "auto");
 				click_zone(conn_toggle_control_auto_assign,0,-1,sidebar.x2-fo1*29, y_offset+0.7*fontheight, sidebar.x2-fo1*15, fontheight*1.3+y_offset,mouse_index,1);
 			}
