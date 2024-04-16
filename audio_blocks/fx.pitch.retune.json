@@ -3,15 +3,17 @@
 		"patcher" : "fx.pitch.retune",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "autotune",
+		"help_text" : "automatic retuner, autotune-like, compatible with the notepools defined in the core.scales.shapes block or with midi in to set the available notes. also outputs detected pitch (though a limitation of the max object it uses means this is just note, not octave).",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio in" ]
+				"audio" : [ "audio in" ],
+				"midi" : [ "set available notes" ]
 			},
 			"out" : {
-				"audio" : [ "audio out" ]
+				"audio" : [ "audio out" ],
+				"midi" : [ "detected pitch out" ]
 			}
 		},
 		"groups" : [

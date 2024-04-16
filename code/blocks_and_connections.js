@@ -2105,6 +2105,8 @@ function build_new_connection_menu(from, to, fromv,tov){
 	//var totype = blocks.get('blocks['+to+']::type');
 	var f_subvoices = 1;
 	var t_subvoices = 1;
+	var fpoly = f_subvoices*blocks.get("blocks["+from+"]::poly::voices");
+	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(blocks.contains("blocks["+from+"]::subvoices")) f_subvoices = blocks.get("blocks["+from+"]::subvoices");
 	if(blocks.contains("blocks["+to+"]::subvoices")) t_subvoices = blocks.get("blocks["+to+"]::subvoices");
 	if(toname == null) return 0;
@@ -2156,7 +2158,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var notall = 0;
 	var spreadwide = 0;
 	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
-	//var f_type = new_connection.get("from::output::type");
 	if(fromv==-1){
 		if(notall){
 			new_connection.replace("from::voice", 1 );
@@ -2165,12 +2166,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 			if(tov==-1) spreadwide = 1;
 		}
 	}else{
-		/*if((f_type=="audio")||(f_type=="hardware")){
-			post("\nfromv was",fromv);
-			fromv *= f_subvoices;
-			post("      now fromv is",fromv+1);
-		}*/
 		new_connection.replace("from::voice", fromv + 1 );
+	}
+	if(spreadwide){
+		if((fpoly==1)||(tpoly==1)) spreadwide = 0;
 	}
 	sidebar.connection.default_in_applied = 0;
 	d = blocktypes.get(toname);
