@@ -1112,7 +1112,8 @@ function draw_menu_hint(){
 		lcd_main.message("frgb",col);
 		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.75));
 		var rowstart=0;
-		var rowend=36;
+		var rowl = 54;
+		var rowend=rowl;
 		lcd_main.message("paintrect", sidebar.x,9+fontheight*(1.1+topspace),sidebar.x2,9+fontheight*(2.1+topspace),cod);
 		lcd_main.message("frgb",col);
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
@@ -1154,9 +1155,9 @@ function draw_menu_hint(){
 			lcd_main.message("write",sliced);
 			if(!sameline){
 				rowstart=rowend+1;
-				rowend+=36;
+				rowend+=rowl;
 			}else{
-				var t = rowstart+36;
+				var t = rowstart+rowl;
 				rowstart=rowend+1
 				rowend=t;
 			}
