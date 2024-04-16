@@ -3552,7 +3552,10 @@ function draw_sidebar(){
 				var sc=0;
 				var statex=0;
 				if(states.contains("states::current")) sc=-1;
-				var x_inc=8.1 / (MAX_STATES-sc);
+				var colt = (1+Math.floor((MAX_STATES-sc) / sidebar.width_in_units));
+				var roww = -Math.floor(-(MAX_STATES-sc)/colt);
+				var x_inc= (sidebar.width_in_units + 0.1)/roww;
+				post("\nmaxs",MAX_STATES,sidebar.width_in_units,"colt,",colt,"roww",roww,"x_inc",x_inc);
 		
 				// draw a button for each possible state
 				for(;sc<MAX_STATES;sc++){
@@ -3595,12 +3598,12 @@ function draw_sidebar(){
 						}
 					}	
 					statex+=x_inc;
-					if(statex>7.1){
+					if(statex>(sidebar.width_in_units-0.9)){
 						y_offset += 1* fontheight;
 						statex=0;
 					}
 				}
-				y_offset += fo1;
+				y_offset += fo1 + (statex!=0)*fontheight;
 			}else if(has_params){
 				click_zone(set_sidebar_mode,"add_state",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_darkest );
