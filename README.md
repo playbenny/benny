@@ -4,7 +4,7 @@ benny
 - integrates hardware and software, midi and audio, lets you connect anything to anything
 - extends into polyphony elegantly
 - is anti-timeline and tries not to impose a structure on you
-- aims for a low-density, glance-able interface that works for touch and mouse/keyboard use
+- aims for a low-density, glance-able interface that works for touch and mouse/keyboard use ([shortcut keys](https://github.com/jamesholdenmusic/benny/blob/main/docs/key%20commands.txt))
 - is an extendible and hackable place to host your own max patches
 
 concepts
