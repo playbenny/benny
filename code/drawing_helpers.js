@@ -1077,9 +1077,9 @@ function draw_menu_hint(){
 			lcd_main.message("frgb",0,0,0);
 			setfontsize(fontheight/2.5);
 			lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.35));
-			lcd_main.message("write","just showing matching types, click");
+			lcd_main.message("write","just showing (potentially) matching types,");
 			lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.8));
-			lcd_main.message("write","here to show all");
+			lcd_main.message("write","click here to show all");
 			click_zone(menu_show_all,1,1,sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),mouse_index,1);		
 		}
 	}else if(menu.mode == 2){
