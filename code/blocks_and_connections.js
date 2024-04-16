@@ -2098,7 +2098,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	sidebar.connection.show_from_outputs = 1;
 	sidebar.connection.show_to_inputs = 1;
 
-	//post("\n so i've been told tov is ",tov);
+	post("\n so i've been told tov is ",tov);
 
 	var fromname = blocks.get('blocks['+from+']::name');
 	var toname = blocks.get('blocks['+to+']::name');
@@ -2154,13 +2154,15 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}
 	}
 	var notall = 0;
+	var spreadwide = 0;
 	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
 	//var f_type = new_connection.get("from::output::type");
 	if(fromv==-1){
 		if(notall){
 			new_connection.replace("from::voice", 1 );
 		}else{
-			new_connection.replace("from::voice", "all" );		
+			new_connection.replace("from::voice", "all" );
+			if(tov==-1) spreadwide = 1;
 		}
 	}else{
 		/*if((f_type=="audio")||(f_type=="hardware")){
@@ -2182,7 +2184,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 					new_connection.replace("to::input::number",0);
 				}
 				new_connection.replace("to::input::type","hardware");
-				new_connection.replace("conversion::offset", 0);
+				new_connection.replace("conversion::offset", spreadwide);
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
@@ -2199,7 +2201,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 					new_connection.replace("to::input::number",0);
 				}
 				new_connection.replace("to::input::type","audio");
-				new_connection.replace("conversion::offset", 0);
+				new_connection.replace("conversion::offset", spreadwide);
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
@@ -2770,9 +2772,12 @@ function insert_block_in_connection(newblockname,newblock){
 	//post("\n\n\ninsert, ",i_no,o_no,f_type,t_type,"intypes",intypes,"outtypes",outtypes);
 	//one conversion is 'default' and the other is the one from the old conn. usually first one is default
 	var defaultpos=0;
-	if((f_type != intypes[i_no])&&(outtypes[o_no]==t_type))defaultpos = 1;
+	var ftt = (f_type == "hardware") ? "audio" : f_type;
+	var ttt = (t_type == "hardware") ? "audio" : t_type;
+	if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
+	if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
 	new_connection.parse('{}');
-	if(defaultpos){//this is the rare exception where default is the second one.
+	if(defaultpos == 1){//this is the rare exception where default is the second one.
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
@@ -2793,9 +2798,7 @@ function insert_block_in_connection(newblockname,newblock){
 	
 //	new_connection.parse('{}');
 //	new_connection.replace("conversion",t_conv); 
-	if(defaultpos){//this is the rare exception where default is the second one.
-		new_connection.replace("conversion", oldconn.get("conversion"));
-	}else{
+	if(defaultpos==2){//this is the rare exception where default is the second one.
 		new_connection.parse('{}');
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
@@ -2803,7 +2806,11 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::offset", 0);
 		new_connection.replace("conversion::offset2", 0.5);
 		if((t_type=="midi")&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+	}else{
+		new_connection.replace("conversion", oldconn.get("conversion"));
+		if(defaultpos==0) new_connection.replace("conversion::scale", 1);
 	}
+	post("\ndefaultpos was ",defaultpos);
 	new_connection.replace("from::number",newblock);
 	new_connection.replace("from::voice","all");
 	new_connection.replace("from::output::number",0/*o_no*/);
