@@ -1952,7 +1952,7 @@ function draw_topbar(){
 				x_o+=1.2;
 			}
 		}
-		if(anymuted){
+		if(anymuted || mix_block_has_mutes){
 			x_o+=0.2;
 			if(usermouse.clicked2d == mouse_index){
 				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,0,0,0 );

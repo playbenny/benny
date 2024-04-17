@@ -1470,6 +1470,11 @@ function song_select_button(id){
 	redraw_flag.flag = 8;
 }
 
+function mixermutes(m){
+	mix_block_has_mutes = m;
+	redraw_flag.flag |= 2;
+}
+
 function mute_all_blocks(action){
 	var i;
 	var av=0;
@@ -1480,6 +1485,7 @@ function mute_all_blocks(action){
 	}
 	if(av!=-1) anymuted=av;
 	redraw_flag.flag=10;
+	if(av==0) messnamed("unmute_all","bang");
 }
 
 function mute_selection(action){

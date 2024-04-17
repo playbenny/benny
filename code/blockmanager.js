@@ -450,6 +450,8 @@ var y_offset;
 
 var mutemap = new Buffer("mutemap");
 
+var mix_block_has_mutes = 0; //if a mixer channel is muted the unmute all button lights in the topbar
+
 var redraw_flag = {
 	flag : 0,
 	deferred : 0,
