@@ -43,10 +43,10 @@
 					"id" : "obj-50",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ -123.0, 72.0, 60.0, 22.0 ],
-					"text" : "t getvoice"
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ -123.0, 72.0, 70.0, 22.0 ],
+					"text" : "t getvoice 0"
 				}
 
 			}
@@ -1209,6 +1209,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-5", 7 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-30", 0 ],
+					"source" : [ "obj-50", 1 ]
 				}
 
 			}
