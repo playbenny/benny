@@ -40,6 +40,42 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-50",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -123.0, 72.0, 60.0, 22.0 ],
+					"text" : "t getvoice"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"comment" : "connect me to out 1",
+					"id" : "obj-49",
+					"index" : 1,
+					"maxclass" : "outlet",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ -123.0, 149.0, 30.0, 30.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-47",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 641.0, 84.0, 58.0, 22.0 ],
+					"text" : "loadbang"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-55",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -201,9 +237,9 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 641.0, 113.0, 58.0, 22.0 ],
-					"text" : "loadbang"
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 641.0, 115.0, 54.0, 22.0 ],
+					"text" : "deferlow"
 				}
 
 			}
@@ -235,11 +271,11 @@
 				"box" : 				{
 					"comment" : "passthrough of unrecognised messages",
 					"id" : "obj-7",
-					"index" : 10,
+					"index" : 11,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1005.0, 52.0, 30.0, 30.0 ]
+					"patching_rect" : [ 589.0, 285.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -262,7 +298,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 425.14285714285711, 274.0, 22.0, 22.0 ],
+					"patching_rect" : [ 437.0, 274.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -286,7 +322,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 410.14285714285711, 242.0, 34.0, 22.0 ],
+					"patching_rect" : [ 422.0, 242.0, 34.0, 22.0 ],
 					"text" : "sel 0"
 				}
 
@@ -430,7 +466,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 77.0, 142.0, 52.0, 22.0 ],
+					"patching_rect" : [ -64.0, 142.0, 52.0, 22.0 ],
 					"text" : "mute $1"
 				}
 
@@ -443,7 +479,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 77.0, 174.0, 30.0, 30.0 ]
+					"patching_rect" : [ -64.0, 174.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -451,11 +487,11 @@
 				"box" : 				{
 					"comment" : "notes",
 					"id" : "obj-17",
-					"index" : 1,
+					"index" : 3,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 25.0, 179.0, 30.0, 30.0 ]
+					"patching_rect" : [ -1.0, 174.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -475,7 +511,7 @@
 				"box" : 				{
 					"comment" : "voice offset - the start location in the voice_parameter_buffer",
 					"id" : "obj-11",
-					"index" : 6,
+					"index" : 7,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -487,7 +523,7 @@
 				"box" : 				{
 					"comment" : "how many voices the current block has",
 					"id" : "obj-10",
-					"index" : 9,
+					"index" : 10,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -499,7 +535,7 @@
 				"box" : 				{
 					"comment" : "what voice number in the current block this is",
 					"id" : "obj-9",
-					"index" : 8,
+					"index" : 9,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -511,7 +547,7 @@
 				"box" : 				{
 					"comment" : "block number",
 					"id" : "obj-8",
-					"index" : 7,
+					"index" : 8,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -655,7 +691,7 @@
 				"box" : 				{
 					"comment" : "voice enabled / disabled - 1 / 0",
 					"id" : "obj-4",
-					"index" : 4,
+					"index" : 5,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -667,7 +703,7 @@
 				"box" : 				{
 					"comment" : "voice_is (which voice of the loader poly this is loaded into)",
 					"id" : "obj-3",
-					"index" : 5,
+					"index" : 6,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -679,7 +715,7 @@
 				"box" : 				{
 					"comment" : "parameters when they change, in parameter number parameter value pairs",
 					"id" : "obj-2",
-					"index" : 3,
+					"index" : 4,
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -734,6 +770,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-13", 0 ],
 					"order" : 1,
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-50", 0 ],
+					"order" : 2,
 					"source" : [ "obj-14", 0 ]
 				}
 
@@ -1064,6 +1108,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-35", 1 ],
 					"source" : [ "obj-48", 0 ]
 				}
@@ -1158,6 +1209,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-5", 7 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-49", 0 ],
+					"source" : [ "obj-50", 0 ]
 				}
 
 			}
