@@ -2,7 +2,8 @@
 	"mix.bus" : {
 		"patcher" : "mix.bus",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "mix.bus.ui",
+		"ui_in_sidebar_height" : 8,
 		"help_text" : "every mix.channel/stereo.channel etc block has to be routed, at unity gain, to one of these, to make the magic work.",
 		"max_polyphony" : 2,
 		"upsample" : 2,
@@ -15,6 +16,22 @@
 			"out" : {
 				"audio" : [ "out" ]
 			}
-		}
+		},
+		"groups" : [
+			{
+				"contains" : [0],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "controller",
+				"type" : "menu_l",
+				"values" : ["1"],
+				"wrap" : 1,
+				"columns" : 3,
+				"default" : 0
+			}
+		]
 	}
 }

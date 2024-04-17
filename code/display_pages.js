@@ -2846,7 +2846,7 @@ function draw_sidebar(){
 					if(!blocktypes.contains(block_name+"::groups")){
 						var paramarray = [];
 						groups[0] = new Dict;
-						for(i=0;i<params.getsize();i++){
+						for(i=0;i<params.length;i++){
 							paramarray[i] = i;
 						}
 						groups[0].replace("contains",paramarray);

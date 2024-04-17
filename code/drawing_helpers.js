@@ -1003,6 +1003,8 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_parameters[mouse_index] = paramindex; //custom_block+1;
 		mouse_click_values[mouse_index] = [r,g,b,dataindex,highlight];
 		mouse_index++;				
+	}else if(type="param_v_scroll_2"){
+		//labelled_parameter_v_slider()
 	}
 }
 
