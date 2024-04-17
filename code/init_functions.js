@@ -867,14 +867,15 @@ function transfer_input_lists(){ // this routine also populates controller lists
 	var t, mk;
 	post("\ntransferring controller and keyboard lists to blocks");
 	if(io_dict.contains("controllers")){  //looks for blocks with a param called 'controller number' and populates the menu list with the current set of controllers
+		var cn = io_dict.get("controllers");
+		mk = cn.getkeys();
+		if(!Array.isArray(mk)) mk= [mk];
+		mk.splice(0,0,"none");
 		for(t in k){
 			var ps = blocktypes.getsize(k[t]+"::parameters");
 			var pt;
 			for(pt=0;pt<ps;pt++){
 				if(blocktypes.get(k[t]+"::parameters["+pt+"]::name")=="controller"){
-					var cn = io_dict.get("controllers");
-					mk = cn.getkeys();
-					if(!Array.isArray(mk)) mk= [mk];
 					blocktypes.replace(k[t]+"::parameters["+pt+"]::values",mk);
 				}
 			}
