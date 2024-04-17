@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3796222363,
+	"modificationdate" : 3796237216,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1178,7 +1178,22 @@
 			}
 ,
 			"generic.hardware.midi.handler.maxpat" : 			{
-				"kind" : "patcher"
+				"kind" : "patcher",
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
+			}
+,
+			"mix.channel.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}
@@ -1574,6 +1589,16 @@
 ,
 			"utility.eq.peak.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"mix.channel.ui.js" : 			{
+				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",

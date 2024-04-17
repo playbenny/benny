@@ -2,7 +2,8 @@
 	"mix.channel" : {
 		"patcher" : "mix.channel",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "mix.channel.ui",
+		"ui_in_sidebar_height" : 2,
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mix.bus BLOCK.",
 		"max_polyphony" : 0,
 		"upsample" : 2,

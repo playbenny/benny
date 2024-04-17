@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 1,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 85.0, 1061.0, 595.0 ],
+		"rect" : [ 42.0, 85.0, 817.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -112,7 +112,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "paramno value (0-1 range) SET the voice's parameter value",
+					"comment" : "paramno value (-1 to +1 range) SET the per voice offset of the parameter ",
 					"id" : "obj-56",
 					"index" : 3,
 					"maxclass" : "inlet",
