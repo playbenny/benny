@@ -997,14 +997,13 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_parameters[mouse_index] = dataindex;//+1; //custom_block+1;
 		mouse_click_values[mouse_index] = 0;
 		mouse_index++;		
-	}else if(type =="direct_button"){ // draw the button yourself so you can get your text nice, leaves r,g,b free to carry target(type),target(number),message 
+	}else if(type =="direct_button"){ // draw the button yourself so you can get your text nice, leaves r,g,b free to carry target(type),target(number),message
+		// so far only used on stretch looper. downside is it can't respond visually to mouse click
 		click_rectangle( x1, y1, x2, y2, mouse_index, 7);
 		mouse_click_actions[mouse_index] = custom_direct_mouse_button;
 		mouse_click_parameters[mouse_index] = paramindex; //custom_block+1;
 		mouse_click_values[mouse_index] = [r,g,b,dataindex,highlight];
 		mouse_index++;				
-	}else if(type="param_v_scroll_2"){
-		//labelled_parameter_v_slider()
 	}
 }
 
