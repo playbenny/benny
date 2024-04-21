@@ -20,6 +20,9 @@ blocks.name = "blocks";
 var v_list = [];
 var omute = [];
 var osolo = [];
+var mcv = new Dict;
+mcv.name = "mixer_channel_voicings";
+var no_voicings = 1;
 
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
@@ -34,6 +37,9 @@ function setup(x1,y1,x2,y2,sw){
 	}
 	unit = height / (mini?10:18);
 	u1 = 0.1 * unit;
+	var voicings_list = mcv.getkeys();
+	no_voicings = voicings_list.length;
+	//post("\nno_vo",no_voicings);
 	if(block>=0){
 		scan_for_channels();
 		draw();
@@ -46,13 +52,22 @@ function draw(){
 		var fgc = block_colour;
 		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 		for(var v=0;v<v_list.length;v++){
-			draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
+			//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
+			draw_eq_curve(block,v_list[v],x_pos+x,y_pos,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
 			x+=cw;
 		}
 		//draw_channels(b,v,x_pos+x*cw,y_pos,x_pos+xx*cw-u1,y_pos+height-unit*4.1,fgc,bgc);
 	}
 }
-
+function draw_eq_curve(b,v,x1,y1,x2,y2,fg,bg){
+	outlet(1,"paintrect",x1,y1,x2,y2,bg);
+	var h=y2-y1;
+	var shape = Math.floor(no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v+2));
+	var amount = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v+3);
+	var sweep = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v+4);
+	var voicing = mcv.get(shape);
+	post("\nvoinc",voicing);
+}
 function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
 	var h=y2-y1;
@@ -61,16 +76,16 @@ function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
 	}
 }
 function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
-	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	outlet(1,"paintrect",x1+u1,y1+u1,x2-u1,0.5*(y1+y2-u1),fg[0]*0.5,fg[1]*0.5,fg[2]*0.5);
-	outlet(0,"custom_ui_element","direct_button",x1,y1,x2,0.5*(y1+y2),"output",block,"mute",1,v_list[v],0);
-	outlet(1,"paintrect",x1+u1,0.5*(y1+y2+u1),x2-u1,y2-u1,fg[0]*0.5,fg[1]*0.5,fg[2]*0.5);
-	outlet(0,"custom_ui_element","direct_button",x1,y1,x2,0.5*(y1+y2),"output",block,"solo",1,v_list[v],0);
-	outlet(1, "frgb" , 0,0,0);
-	outlet(1, "moveto", x1+2*u1,0.25*y1+0.75*y2);
-	outlet(1, "write", "mute");
-	outlet(1, "moveto", x1+2*u1,0.75*y1+0.25*y2);
-	outlet(1, "write", "solo");
+	//outlet(1,"paintrect",x1,y1,x2,y2,bg);
+	//outlet(1,"paintrect",x1+u1,y1+u1,x2-u1,0.5*(y1+y2-u1),fg[0]*0.5,fg[1]*0.5,fg[2]*0.5);
+	outlet(0,"custom_ui_element","opv_button",x1,y1,x2,0.5*(y1+y2),130,130,130,5,v_list[v],"mute",block);
+	//outlet(1,"paintrect",x1+u1,0.5*(y1+y2+u1),x2-u1,y2-u1,fg[0]*0.5,fg[1]*0.5,fg[2]*0.5);
+	outlet(0,"custom_ui_element","opv_button",x1,0.5*(y1+y2),x2,y2,255,20,20,6,v_list[v],"solo",block);
+	//outlet(1, "frgb" , 0,0,0);
+	//outlet(1, "moveto", x1+2*u1,0.25*y1+0.75*y2);
+	//outlet(1, "write", "mute");
+	//outlet(1, "moveto", x1+2*u1,0.75*y1+0.25*y2);
+	//outlet(1, "write", "solo");
 }
 /*		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0);

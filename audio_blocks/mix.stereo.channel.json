@@ -4,6 +4,7 @@
 		"type" : "audio",
 		"block_ui_patcher" : "mix.channel.ui",
 		"ui_in_sidebar_height" : 2,
+		"no_edit" : 1,
 		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
 		"max_polyphony" : 0,
 		"upsample" : 2,
@@ -91,14 +92,16 @@
 			{
 				"name" : "mute",
 				"type" : "menu_b",
-				"values" : ["off", "on"],
+				"values" : ["mute off", "mute on"],
+				"colours" : [0, [130,130,130]],
 				"wrap" : 1,
 				"default" : 0.1
 			},
 			{
 				"name" : "solo",
 				"type" : "menu_b",
-				"values" : ["off", "on"],
+				"values" : ["solo off", "solo on"],
+				"colours" : [0, [255,20,20]],
 				"wrap" : 1,
 				"default" : 0.1
 			}
