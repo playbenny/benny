@@ -195,7 +195,7 @@ function parameter_button(p){
 	var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p][11]+paramslider_details[p][9]);
 	var statecount = (paramslider_details[p][17].length - 1) / 2;
 	var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-	//post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
+	post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
 	draw_button(paramslider_details[p][0],paramslider_details[p][1],paramslider_details[p][2],paramslider_details[p][3],paramslider_details[p][4],paramslider_details[p][5],paramslider_details[p][6],paramslider_details[p][7], paramslider_details[p][17][pv2],pv);
 	mouse_click_values[paramslider_details[p][7]] = [paramslider_details[p][17][0],paramslider_details[p][17][pv2+1], MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (pv+(1/statecount)) % 1];
 }
@@ -473,10 +473,11 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 }
 
 function parameter_v_slider(x1,y1,x2,y2,r,g,b,index,blockno,paramno,flags,click_to_step){
-		// flags this was 'pol' now contains more info..
+		// flags
 		// &= 1 - bipolar not unipolar
 		// &= 2 - onepervoice
 		// &= 4 - no per voice modulation on this one
+		// 
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	var vlist = voicemap.get(blockno); 
 	var ly, value;
@@ -944,7 +945,7 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	}
 }
 
-function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight){
+function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight,xp1,xp2,xp3,xp4){
 	if(type=="data_v_scroll"){
 		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,voice_data_buffer.peek(1,dataindex));
 		mouse_click_actions[mouse_index] = data_edit;
@@ -1004,6 +1005,42 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_parameters[mouse_index] = paramindex; //custom_block+1;
 		mouse_click_values[mouse_index] = [r,g,b,dataindex,highlight];
 		mouse_index++;				
+	}else if(type=="opv_button"){
+		// for opv controls, eg mixer control page, it'd be better to have them as an extension of
+		//paramslider_details, i think? then they get free live updates and all the mixer page has to do is ask for them to be drawn
+		//post("\nsuggested curp",paramslider_details.length,"data",dataindex,"param",paramindex,"highlight",highlight,xp1,xp2,xp3,xp4);
+		var curp = paramslider_details.length;
+		var flags = 0; 
+		var namelabely = y2; 
+		var p_type="menu_b";
+		var block = xp1;//dataindex; 
+		var wrap=0; 
+		var block_name=blocks.get("blocks["+xp1+"]::name"); 
+		var h_slider=0;
+		var p_values=blocktypes.get(block_name+"::parameters["+dataindex+"]::values");
+		//[1,highlight]; //<<i think i've got to get some meaningful values in here. xp1 has blockno
+		//post("name",block_name,"values",p_values);
+		//also why does it draw it wrong 1st? what's going on there?
+		var vc=view_changed;
+		view_changed = true;
+		//paramslider_details[curp]=[x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index,block,dataindex,flags,paramindex,namelabely,p_type,wrap,block_name,h_slider,p_values];
+		//post("--voice",paramslider_details[curp][11],"--param",paramslider_details[curp][9]);
+		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
+		var pv2 = Math.floor(pv * 1.99999);
+		//post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
+		draw_button(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, highlight,pv>0.5);
+		mouse_click_actions[mouse_index] = static_mod_adjust;
+		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
+		mouse_click_values[mouse_index] = (pv<=0.5);
+		//if(click_to_step>0)mouse_click_values[index]=click_to_step;
+
+		//parameter_button(curp);
+		view_changed = vc;
+		//mouse_click_actions[mouse_index] = send_button_message;
+		//mouse_click_parameters[mouse_index] = block;
+		//mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
+		mouse_index++;		
+		//draw_button(x1,y1,x2,y2,r,g,b,mouse_index,"label",value);
 	}
 }
 

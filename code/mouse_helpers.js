@@ -764,8 +764,10 @@ function send_button_message(parameter, value){
 		}
 	}else if(value[0] == "core"){
 		messnamed("to_blockmanager",value[1]);
+	}else{
+		post("unhandled send button message",parameter,"value",value,"\n");
+
 	}
-	//post("send button message",parameter,"value",value,"\n");
 }
 
 function delete_state(state,block){
@@ -1214,7 +1216,7 @@ function static_mod_adjust(parameter,value){
 			// TODO DONT DO THIS IF PARAM WRAP IS ON
 			parameter_static_mod.poke(1,addr,t2);
 		}
-		rebuild_action_list = 1;
+		//rebuild_action_list = 1;
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings"))){// && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
