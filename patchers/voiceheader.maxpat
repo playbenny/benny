@@ -112,7 +112,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "paramno value (-1 to +1 range) SET the per voice offset of the parameter ",
+					"comment" : "send a pair of numbers: paramno, value (-1 to +1 range) to set the per voice offset of the parameter for this particular voice",
 					"id" : "obj-56",
 					"index" : 3,
 					"maxclass" : "inlet",
@@ -125,7 +125,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "paramno value (0-1 range) SET the block's parameter value",
+					"comment" : "send a pair of numbers: paramno, value (0-1 range) to set the _block's_ parameter value",
 					"id" : "obj-54",
 					"index" : 2,
 					"maxclass" : "inlet",
@@ -247,12 +247,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-29",
-					"linecount" : 5,
+					"linecount" : 3,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 562.0, 7.0, 153.0, 75.0 ],
-					"text" : "first argument = custom param scan time - you can make non time critical blocks run slower to save cpu"
+					"patching_rect" : [ 442.0, 7.0, 273.0, 48.0 ],
+					"text" : "voiceheader's first argument = custom param scan time - you can make non time critical blocks run slower to save cpu"
 				}
 
 			}
