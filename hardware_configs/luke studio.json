@@ -392,39 +392,39 @@
 
 		}
 ,
-		"hardware.io_17.ExS_1" : 		{
+		"hardware.Prophet.VCF" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 1 i/o",
+			"help_text" : "ES-3 outs 1 and 5, ES-6 in 1",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 17, 21 ]
+				}
+,
+				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 17 ]
 				}
-,
-				"out" : 				{
-					"hardware" : [ "in" ],
-					"hardware_channels" : [ 17 ]
-				}
 
 			}
 
 		}
 ,
-		"hardware.io_18.ExS_2" : 		{
+		"hardware.SEMSVF.VCF" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 2 i/o",
+			"help_text" : "ES-3 outs 2 and 6, ES-6 in 2",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 18 ]
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 18, 22 ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "in" ],
+					"hardware" : [ "out" ],
 					"hardware_channels" : [ 18 ]
 				}
 
@@ -432,19 +432,19 @@
 
 		}
 ,
-		"hardware.io_19.ExS_3" : 		{
+		"hardware.ARP4023.VCF" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 3 i/o",
+			"help_text" : "ES-3 outs 3 and 7, ES-6 in 3",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 19 ]
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 19,23 ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "in" ],
+					"hardware" : [ "out" ],
 					"hardware_channels" : [ 19 ]
 				}
 
@@ -452,19 +452,19 @@
 
 		}
 ,
-		"hardware.io_20.ExS_4" : 		{
+		"hardware.MMG.VCF" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 4 i/o",
+			"help_text" : "ES-3 out 4 and 8, ES-6 in 4",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 20 ]
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 20,24 ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "in" ],
+					"hardware" : [ "out" ],
 					"hardware_channels" : [ 20 ]
 				}
 
@@ -472,19 +472,19 @@
 
 		}
 ,
-		"hardware.io_21.ExS_5" : 		{
+		"hardware.Sarajewo.BBD" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 5 i/o",
+			"help_text" : "Es-8 out 5, ES-6 in 5",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 21 ]
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 29 ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "in" ],
+					"hardware" : [ "out" ],
 					"hardware_channels" : [ 21 ]
 				}
 
@@ -492,50 +492,34 @@
 
 		}
 ,
-		"hardware.io_22.ExS_6" : 		{
+		"hardware.Ribbon.CV" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 6 i/o",
+			"help_text" : "ES-6 in 6",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 22 ]
-				}
-,
 				"out" : 				{
-					"hardware" : [ "in" ],
+					"hardware" : [ "out" ],
 					"hardware_channels" : [ 22 ]
 				}
 
 			}
-
 		}
-,
-		"hardware.out_23.ExS_7" : 		{
+,		
+		"hardware.QPAS.VCF" : 		{
 			"type" : "hardware",
-			"help_text" : "ExS 7 out",
+			"help_text" : "Es-8 out 7 and 8, ES-8 in 3 and 4",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 23 ]
+					"hardware" : [ "out L", "out R", "cutoff" ],
+					"hardware_channels" : [ 31, 32, 30 ]
 				}
-
-			}
-
-		}
 ,
-		"hardware.out_24.ExS_8" : 		{
-			"type" : "hardware",
-			"help_text" : "ExS 8 out",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 24 ]
+				"out" : 				{
+					"hardware" : [ "in L", "in R" ],
+					"hardware_channels" : [ 27, 28 ]
 				}
 
 			}

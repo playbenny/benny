@@ -47,7 +47,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1611.0, 745.0, 50.0, 77.0 ],
-					"presentation_linecount" : 5,
 					"text" : "\"MIDIOUT2 (LPMiniMK3 MIDI)\""
 				}
 
@@ -61,7 +60,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 849.0, 653.0, 50.0, 77.0 ],
-					"presentation_linecount" : 5,
 					"text" : "\"MIDIOUT2 (LPMiniMK3 MIDI)\""
 				}
 
@@ -87,7 +85,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1460.0, 620.5, 50.0, 77.0 ],
-					"presentation_linecount" : 5,
 					"text" : "\"MIDIOUT2 (LPMiniMK3 MIDI)\""
 				}
 
@@ -135,7 +132,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-52",
-					"items" : [ "LPMiniMK3 MIDI", ",", "MIDIIN2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIIN2 (ESI M8U eX)", ",", "MIDIIN3 (ESI M8U eX)", ",", "MIDIIN4 (ESI M8U eX)", ",", "MIDIIN5 (ESI M8U eX)", ",", "MIDIIN6 (ESI M8U eX)", ",", "MIDIIN7 (ESI M8U eX)", ",", "MIDIIN8 (ESI M8U eX)", ",", "MIDIIN9 (ESI M8U eX)", ",", "MIDIIN10 (ESI M8U eX)", ",", "MIDIIN11 (ESI M8U eX)", ",", "MIDIIN12 (ESI M8U eX)", ",", "MIDIIN13 (ESI M8U eX)", ",", "MIDIIN14 (ESI M8U eX)", ",", "MIDIIN15 (ESI M8U eX)", ",", "MIDIIN16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIIN2 (Launch Control XL)" ],
+					"items" : [ "LPMiniMK3 MIDI", ",", "MIDIIN2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIIN2 (ESI M8U eX)", ",", "MIDIIN3 (ESI M8U eX)", ",", "MIDIIN4 (ESI M8U eX)", ",", "MIDIIN5 (ESI M8U eX)", ",", "MIDIIN6 (ESI M8U eX)", ",", "MIDIIN7 (ESI M8U eX)", ",", "MIDIIN8 (ESI M8U eX)", ",", "MIDIIN9 (ESI M8U eX)", ",", "MIDIIN10 (ESI M8U eX)", ",", "MIDIIN11 (ESI M8U eX)", ",", "MIDIIN12 (ESI M8U eX)", ",", "MIDIIN13 (ESI M8U eX)", ",", "MIDIIN14 (ESI M8U eX)", ",", "MIDIIN15 (ESI M8U eX)", ",", "MIDIIN16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIIN2 (Launch Control XL)", ",", "HYDRASYNTH KB" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -41394,7 +41391,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-226",
-					"items" : [ "LPMiniMK3 MIDI", ",", "MIDIIN2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIIN2 (ESI M8U eX)", ",", "MIDIIN3 (ESI M8U eX)", ",", "MIDIIN4 (ESI M8U eX)", ",", "MIDIIN5 (ESI M8U eX)", ",", "MIDIIN6 (ESI M8U eX)", ",", "MIDIIN7 (ESI M8U eX)", ",", "MIDIIN8 (ESI M8U eX)", ",", "MIDIIN9 (ESI M8U eX)", ",", "MIDIIN10 (ESI M8U eX)", ",", "MIDIIN11 (ESI M8U eX)", ",", "MIDIIN12 (ESI M8U eX)", ",", "MIDIIN13 (ESI M8U eX)", ",", "MIDIIN14 (ESI M8U eX)", ",", "MIDIIN15 (ESI M8U eX)", ",", "MIDIIN16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIIN2 (Launch Control XL)" ],
+					"items" : [ "LPMiniMK3 MIDI", ",", "MIDIIN2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIIN2 (ESI M8U eX)", ",", "MIDIIN3 (ESI M8U eX)", ",", "MIDIIN4 (ESI M8U eX)", ",", "MIDIIN5 (ESI M8U eX)", ",", "MIDIIN6 (ESI M8U eX)", ",", "MIDIIN7 (ESI M8U eX)", ",", "MIDIIN8 (ESI M8U eX)", ",", "MIDIIN9 (ESI M8U eX)", ",", "MIDIIN10 (ESI M8U eX)", ",", "MIDIIN11 (ESI M8U eX)", ",", "MIDIIN12 (ESI M8U eX)", ",", "MIDIIN13 (ESI M8U eX)", ",", "MIDIIN14 (ESI M8U eX)", ",", "MIDIIN15 (ESI M8U eX)", ",", "MIDIIN16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIIN2 (Launch Control XL)", ",", "HYDRASYNTH KB" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -53457,6 +53454,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 475.0, 1843.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -54874,23 +54875,11 @@
 				"box" : 				{
 					"id" : "obj-191",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 10,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "", "" ],
+					"numinlets" : 3,
+					"numoutlets" : 11,
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "" ],
 					"patching_rect" : [ 3526.190089464187622, 116.809537649154663, 257.000000000000057, 22.0 ],
 					"text" : "voiceheader"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-32",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 3633.332934856414795, 259.666664838790894, 53.0, 22.0 ],
-					"text" : "getvoice"
 				}
 
 			}
@@ -54900,11 +54889,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 3633.332934856414795, 302.523802995681763, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
+					"patching_rect" : [ 3434.0, 141.5, 35.0, 22.0 ],
 					"text" : "out 1"
 				}
 
@@ -54941,10 +54926,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 3526.190089464187622, 88.238112211227417, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -56399,14 +56380,14 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-130", 0 ],
-					"source" : [ "obj-191", 2 ]
+					"source" : [ "obj-191", 3 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-18", 0 ],
-					"source" : [ "obj-191", 0 ]
+					"source" : [ "obj-191", 2 ]
 				}
 
 			}
@@ -56414,7 +56395,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-199", 0 ],
 					"order" : 0,
-					"source" : [ "obj-191", 7 ]
+					"source" : [ "obj-191", 8 ]
 				}
 
 			}
@@ -56422,7 +56403,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-26", 0 ],
 					"order" : 1,
-					"source" : [ "obj-191", 7 ]
+					"source" : [ "obj-191", 8 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 0 ],
+					"source" : [ "obj-191", 0 ]
 				}
 
 			}
@@ -56436,7 +56424,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-98", 0 ],
-					"source" : [ "obj-191", 6 ]
+					"source" : [ "obj-191", 7 ]
 				}
 
 			}
@@ -57892,13 +57880,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-33", 0 ],
-					"source" : [ "obj-32", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-314", 0 ],
 					"source" : [ "obj-320", 0 ]
 				}
@@ -59148,16 +59129,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-32", 0 ],
-					"order" : 0,
-					"source" : [ "obj-8", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
-					"order" : 1,
 					"source" : [ "obj-8", 0 ]
 				}
 

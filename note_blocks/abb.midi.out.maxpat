@@ -21,16 +21,16 @@
 		"gridsnaponopen" : 1,
 		"objectsnaponopen" : 1,
 		"statusbarvisible" : 2,
-		"toolbarvisible" : 0,
+		"toolbarvisible" : 1,
 		"lefttoolbarpinned" : 2,
 		"toptoolbarpinned" : 2,
 		"righttoolbarpinned" : 2,
 		"bottomtoolbarpinned" : 2,
-		"toolbars_unpinned_last_save" : 0,
+		"toolbars_unpinned_last_save" : 15,
 		"tallnewobj" : 0,
 		"boxanimatetime" : 200,
-		"enablehscroll" : 0,
-		"enablevscroll" : 0,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
 		"devicewidth" : 333.0,
 		"description" : "",
 		"digest" : "",
@@ -39,6 +39,21 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1496.0, 337.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
+					"text" : "out 1"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-13",
 					"maxclass" : "button",
@@ -770,7 +785,7 @@
 									"numinlets" : 0,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 80.0, 100.0, 75.0, 22.0 ],
+									"patching_rect" : [ 80.0, 61.0, 75.0, 22.0 ],
 									"text" : "r #0notein"
 								}
 
@@ -1062,7 +1077,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 525.0, 306.0, 56.0, 22.0 ],
+					"patching_rect" : [ 525.0, 285.0, 56.0, 22.0 ],
 					"text" : "r #0n2"
 				}
 
@@ -1222,7 +1237,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-75",
-					"items" : [ "Microsoft GS Wavetable Synth", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "UC Midi Port 1", ",", "UC Midi Port 2", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)" ],
+					"items" : [ "Microsoft GS Wavetable Synth", ",", "LPMiniMK3 MIDI", ",", "MIDIOUT2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)", ",", "HYDRASYNTH KB" ],
 					"labelclick" : 1,
 					"maxclass" : "umenu",
 					"numinlets" : 1,
@@ -1385,7 +1400,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-64",
-					"items" : [ "Microsoft GS Wavetable Synth", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "UC Midi Port 1", ",", "UC Midi Port 2", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)" ],
+					"items" : [ "Microsoft GS Wavetable Synth", ",", "LPMiniMK3 MIDI", ",", "MIDIOUT2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)", ",", "HYDRASYNTH KB" ],
 					"labelclick" : 1,
 					"maxclass" : "umenu",
 					"numinlets" : 1,
@@ -1482,7 +1497,7 @@
 					"patching_rect" : [ 582.0, 268.5, 45.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 187.0, 103.0, 126.0, 22.0 ],
-					"text" : "2"
+					"text" : "1"
 				}
 
 			}
@@ -1538,7 +1553,7 @@
 					"presentation" : 1,
 					"presentation_linecount" : 2,
 					"presentation_rect" : [ 185.0, 156.0, 129.0, 36.0 ],
-					"text" : "\"MIDIOUT16 (ESI M8U eX)\""
+					"text" : "\"MIDIOUT2 (ESI M8U eX)\""
 				}
 
 			}
@@ -1548,7 +1563,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-50",
-					"items" : [ "Microsoft GS Wavetable Synth", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "UC Midi Port 1", ",", "UC Midi Port 2", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)" ],
+					"items" : [ "Microsoft GS Wavetable Synth", ",", "LPMiniMK3 MIDI", ",", "MIDIOUT2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)", ",", "HYDRASYNTH KB" ],
 					"labelclick" : 1,
 					"maxclass" : "umenu",
 					"numinlets" : 1,
@@ -1749,7 +1764,7 @@
 					"presentation" : 1,
 					"presentation_linecount" : 2,
 					"presentation_rect" : [ 23.0, 156.0, 129.0, 36.0 ],
-					"text" : "\"MIDIOUT2 (ESI M8U eX)\""
+					"text" : "\"MIDIOUT6 (ESI M8U eX)\""
 				}
 
 			}
@@ -1759,7 +1774,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-10",
-					"items" : [ "Microsoft GS Wavetable Synth", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "UC Midi Port 1", ",", "UC Midi Port 2", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)" ],
+					"items" : [ "Microsoft GS Wavetable Synth", ",", "LPMiniMK3 MIDI", ",", "MIDIOUT2 (LPMiniMK3 MIDI)", ",", "ESI M8U eX", ",", "MIDIOUT2 (ESI M8U eX)", ",", "MIDIOUT3 (ESI M8U eX)", ",", "MIDIOUT4 (ESI M8U eX)", ",", "MIDIOUT5 (ESI M8U eX)", ",", "MIDIOUT6 (ESI M8U eX)", ",", "MIDIOUT7 (ESI M8U eX)", ",", "MIDIOUT8 (ESI M8U eX)", ",", "MIDIOUT9 (ESI M8U eX)", ",", "MIDIOUT10 (ESI M8U eX)", ",", "MIDIOUT11 (ESI M8U eX)", ",", "MIDIOUT12 (ESI M8U eX)", ",", "MIDIOUT13 (ESI M8U eX)", ",", "MIDIOUT14 (ESI M8U eX)", ",", "MIDIOUT15 (ESI M8U eX)", ",", "MIDIOUT16 (ESI M8U eX)", ",", "Launch Control XL", ",", "MIDIOUT2 (Launch Control XL)", ",", "HYDRASYNTH KB" ],
 					"labelclick" : 1,
 					"maxclass" : "umenu",
 					"numinlets" : 1,
@@ -2171,7 +2186,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1414.0, 205.0, 77.0, 22.0 ],
+					"patching_rect" : [ 1414.0, 211.0, 77.0, 22.0 ],
 					"text" : "s #0notein"
 				}
 
@@ -2381,10 +2396,10 @@
 				"box" : 				{
 					"id" : "obj-191",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 10,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 1490.0, 82.0, 257.000000000000057, 22.0 ],
+					"numinlets" : 3,
+					"numoutlets" : 11,
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "" ],
+					"patching_rect" : [ 1492.200000000000045, 49.659863471984863, 257.000000000000057, 22.0 ],
 					"text" : "voiceheader"
 				}
 
@@ -2443,7 +2458,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1490.0, 38.0, 28.0, 22.0 ],
+					"patching_rect" : [ 1492.200000000000045, 5.442176818847656, 28.0, 22.0 ],
 					"text" : "in 1"
 				}
 
@@ -2594,21 +2609,28 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-130", 0 ],
-					"source" : [ "obj-191", 2 ]
+					"source" : [ "obj-191", 3 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
-					"source" : [ "obj-191", 6 ]
+					"source" : [ "obj-191", 7 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-17", 0 ],
+					"source" : [ "obj-191", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-26", 0 ],
-					"source" : [ "obj-191", 7 ]
+					"source" : [ "obj-191", 8 ]
 				}
 
 			}
@@ -2622,7 +2644,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-39", 0 ],
-					"source" : [ "obj-191", 0 ]
+					"source" : [ "obj-191", 2 ]
 				}
 
 			}
