@@ -22,7 +22,17 @@ var v_list = []; // list of voices of the channels connected to this mixer
 var v_name = []; 
 var v_colour = [];
 var v_type = [];
-
+var omute = [];
+var osolo = [];
+var mcv = new Dict;
+mcv.name = "mixer_channel_voicings";
+var no_voicings = 1;
+var oshape = [];
+var osweep = [];
+var oamount = [];
+var shape = [];
+var sweep = [];
+var amount = [];
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
@@ -45,6 +55,7 @@ function setup(x1,y1,x2,y2,sw){
 function draw(){
 	if(block>=0){
 		var x=0;
+		check_params_for_changes();
 		for(var b=0;b<b_list.length;b++){
 			var fgc = b_colour[b];
 			var bgc = [fgc[0]*0.5,fgc[1]*0.5,fgc[2]*0.5];
@@ -59,6 +70,92 @@ function draw(){
 	}
 }
 
+function update(){
+	if(check_params_for_changes()==1){
+		var x=0;
+		var fgc = block_colour;
+		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
+		for(var v=0;v<v_list.length;v++){
+			draw_eq_curve(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
+			x+=cw;
+		}
+	}
+}
+
+
+
+function check_params_for_changes(){
+	var dr=0;
+	for(var v=0;v<v_list.length;v++){
+		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
+		shape[v] = Math.floor(no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2));
+		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
+		sweep[v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)-2);
+		if((shape[v]!=oshape[v])||(amount[v]!=oamount[v])||(sweep[v]!=osweep[v])) dr = 1;
+	}
+	return dr;
+}
+
+function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+	outlet(1,"paintrect",x1,y1,x2,y2,bg);
+	var h=y2-y1;
+	var voicing = mcv.get(shp);
+	/* the numbers in a voicings list:
+	low: freq, res, -1=hpf, otherwise it's shelf gain
+	mid: f, res, gain (db)
+	high: f, res
+	width */
+	//post("\nvoicing",voicing);
+	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
+	voicing[0] *= swp;
+	voicing[3] *= swp;
+	voicing[6] *= swp;
+	var w=x2-x1; // we want to show about 12 octaves, starting at 6Hz, so one pixel is 12/w octaves
+	var step=0.12*w; //Math.pow(2,12/w);
+	var w2 = 0.2 / w;
+	voicing[0] = Math.log(voicing[0]*0.2+0.01)*step; //1/log(2)
+	voicing[3] = Math.log(voicing[3]*0.2+0.01)*step;
+	voicing[6] = Math.log(voicing[6]*0.2+0.01)*step;
+	outlet(1,"frgb",fg);
+	//voicing[2] = Math.pow(2,voicing[2]*0.16667);
+	voicing[5] = Math.pow(2,voicing[5]*0.16667)-1;
+	for(x=0;x<w;x+=2){
+		var g = 0;
+		if(voicing[2]==-1){//hpf
+			if(x<voicing[0]){
+				var d = (voicing[0]-x);
+				g -= d*d*w2;
+			}
+			//g += voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
+		}else{
+			if(x<voicing[0]){
+				g += voicing[2];
+			}else{
+				var d = x-voicing[0];
+				g += voicing[2]*(Math.pow(2.718,-d*d*0.005*voicing[1]));
+			}
+		}
+		if(voicing[5]!=0){
+			var d = x-voicing[3];
+			g += voicing[5]*Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]));
+		}
+		if(x>=voicing[6]){
+			var d = (x-voicing[6]);
+			g -= d*d*w2;
+		}
+		g+=1;
+		g = g * amnt + (1-amnt);
+		g *= 0.5 * h;
+		if((x==0)||(g<1)){
+			outlet(1,"moveto",x+x1,y2-Math.max(1,g));
+		}else{
+			outlet(1,"lineto",x+x1,y2-g);
+		}
+	}
+}
+
+
 function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
 	var h=y2-y1;
@@ -67,13 +164,10 @@ function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
 	}
 }
 function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
-	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	if(v==0){
-		outlet(1,"moveto",x1+u1,y2-0.5*unit);
-		outlet(1,"frgb",fg);
-		outlet(1,"write",b_name[b])
-	}
+	outlet(0,"custom_ui_element","opv_button",x1,y1,x2,0.5*(y1+y2),130,130,130,5,v_list[v],"mute",block);
+	outlet(0,"custom_ui_element","opv_button",x1,0.5*(y1+y2),x2,y2,255,20,20,6,v_list[v],"solo",block);
 }
+
 /*		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0);
 		var c,r,i,rr,rc;
@@ -138,9 +232,7 @@ function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
 		}
 		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);*/
 
-function update(){
 
-}
 
 
 function voice_is(v){

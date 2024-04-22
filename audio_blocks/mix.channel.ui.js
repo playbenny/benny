@@ -105,7 +105,7 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 	high: f, res
 	width */
 	//post("\nvoicing",voicing);
-	post("\nfreqs",voicing[0],voicing[3],voicing[6]);
+	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
 	voicing[0] *= swp;
 	voicing[3] *= swp;
 	voicing[6] *= swp;
@@ -161,16 +161,8 @@ function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
 	}
 }
 function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
-	//outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	//outlet(1,"paintrect",x1+u1,y1+u1,x2-u1,0.5*(y1+y2-u1),fg[0]*0.5,fg[1]*0.5,fg[2]*0.5);
 	outlet(0,"custom_ui_element","opv_button",x1,y1,x2,0.5*(y1+y2),130,130,130,5,v_list[v],"mute",block);
-	//outlet(1,"paintrect",x1+u1,0.5*(y1+y2+u1),x2-u1,y2-u1,fg[0]*0.5,fg[1]*0.5,fg[2]*0.5);
 	outlet(0,"custom_ui_element","opv_button",x1,0.5*(y1+y2),x2,y2,255,20,20,6,v_list[v],"solo",block);
-	//outlet(1, "frgb" , 0,0,0);
-	//outlet(1, "moveto", x1+2*u1,0.25*y1+0.75*y2);
-	//outlet(1, "write", "mute");
-	//outlet(1, "moveto", x1+2*u1,0.75*y1+0.25*y2);
-	//outlet(1, "write", "solo");
 }
 /*		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0);
