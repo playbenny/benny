@@ -25,6 +25,16 @@
 				"height" : 4
 			},
 			{ 
+				"contains" : [5], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			}	,
+			{ 
+				"contains" : [6], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			},
+			{ 
 				"contains" : [1],
 				"onepervoice" : 1,
 				"height" : 0
@@ -43,17 +53,7 @@
 				"contains" : [4], 
 				"onepervoice" : 1,
 				"height" : 0
-			},
-			{ 
-				"contains" : [5], 
-				"onepervoice" : 1,
-				"height" : 0
-			}	,
-			{ 
-				"contains" : [6], 
-				"onepervoice" : 1,
-				"height" : 0
-			}				
+			}			
 		],
 		"panel" : {
 			"parameters" : [0]

@@ -501,7 +501,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				namearr = namearr.split("_");
 				var click_to_set = 0;
 				if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
-				if(h_slider==0){
+				if(h_slider<1){
 					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 				}else{
 					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0],block_colour[1],block_colour[2],mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
@@ -3067,7 +3067,7 @@ function draw_sidebar(){
 										namearr = namearr.split("_");
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
-										if(h_slider==0){
+										if(h_slider<1){
 											paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 										}else{
 											paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
@@ -3109,7 +3109,7 @@ function draw_sidebar(){
 							}
 							t += wk-1;
 						}
-						if(maxnamelabely>(y2)){
+						if((h_slider>=1) && (maxnamelabely>(y2))){
 							y_offset += maxnamelabely - y2;
 						}
 						if(this_group_mod_in_para.length>0){
@@ -3255,7 +3255,7 @@ function draw_sidebar(){
 								if(p_type=="button"){
 									lcd_main.message("framerect", x1, y1, x2, y2, 50,50,50 );
 								}else{
-									if(h_slider==0){
+									if(h_slider<1){
 										parameter_v_slider(x1,y1,x2,y2,50,50,50,0,block,plist[t],p_values[0]);
 									}else{
 										parameter_v_slider(x1,y1,x2,y2,50,50,50,0,block,plist[t],p_values[0]);
@@ -3385,7 +3385,7 @@ function draw_sidebar(){
 								if(p_type=="button"){
 									lcd_main.message("framerect", x1, y1, x2, y2, 50,50,50 );
 								}else{
-									if(h_slider==0){
+									if(h_slider<1){
 										parameter_v_slider(x1,y1,x2,y2,50,50,50,0,block,plist[t],p_values[0]);
 									}else{
 										parameter_v_slider(x1,y1,x2,y2,50,50,50,0,block,plist[t],p_values[0]);
@@ -3515,7 +3515,7 @@ function draw_sidebar(){
 									p_values = params[plist[t]].get("values");
 									wrap = params[plist[t]].get("wrap");
 									pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+plist[t]);
-									if(h_slider==0){
+									if(h_slider<1){
 										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,plist[t],p_values[0],"",0,p_type,wrap,block_name,h_slider];
 									}else{
 										paramslider_details[plist[t]]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,plist[t],p_values[0],"",0,p_type,wrap,block_name,h_slider];
@@ -5472,7 +5472,7 @@ function draw_sidebar(){
 				}else{
 					var click_to_set = 0;
 					if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
-					if(h_slider==0){
+					if(h_slider<1){
 						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3/*height*/,0,click_to_set];
 					}else{
 						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour[0],section_colour[1],section_colour[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3,0,click_to_set];

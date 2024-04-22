@@ -25,6 +25,16 @@
 				"height" : 3
 			},
 			{ 
+				"contains" : [5], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			}	,
+			{ 
+				"contains" : [6], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			},
+			{ 
 				"contains" : [2],
 				"onepervoice" : 1,
 				"height" : 0
@@ -36,16 +46,6 @@
 			},
 			{ 
 				"contains" : [4], 
-				"onepervoice" : 1,
-				"height" : 0
-			},
-			{ 
-				"contains" : [5], 
-				"onepervoice" : 1,
-				"height" : 0
-			}	,
-			{ 
-				"contains" : [6], 
 				"onepervoice" : 1,
 				"height" : 0
 			}				
@@ -93,7 +93,7 @@
 				"name" : "mute",
 				"type" : "menu_b",
 				"values" : ["mute off", "mute on"],
-				"colours" : [0, [130,130,130]],
+				"colours" : [[90,90,90], [130,130,130]],
 				"wrap" : 1,
 				"default" : 0.1
 			},
@@ -101,7 +101,7 @@
 				"name" : "solo",
 				"type" : "menu_b",
 				"values" : ["solo off", "solo on"],
-				"colours" : [0, [255,20,20]],
+				"colours" : [[128,20,20], [255,20,20]],
 				"wrap" : 1,
 				"default" : 0.1
 			}
