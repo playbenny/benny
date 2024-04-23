@@ -46,7 +46,7 @@ function setup(x1,y1,x2,y2,sw){
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
 	no_voicings = voicings_list.length;
-	post("\nno_vo",no_voicings);
+	//post("\nno_vo",no_voicings);
 	if(block>=0){
 		scan_for_channels();
 		//check_params_for_changes();
@@ -164,71 +164,6 @@ function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
 	outlet(0,"custom_ui_element","opv_button",x1,y1,x2,0.5*(y1+y2),130,130,130,5,v_list[v],"mute",block);
 	outlet(0,"custom_ui_element","opv_button",x1,0.5*(y1+y2),x2,y2,255,20,20,6,v_list[v],"solo",block);
 }
-/*		drawflag=0;
-		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0);
-		var c,r,i,rr,rc;
-		for(i=0;i<v_list.length;i++) {
-			cursors[i]=-1;
-		}
-		i= showcols; 
-		rh = 0.5*unit;
-		sy = 1.2*unit;
-		sx = 1.2*unit;
-		cw = (width - sx)/i;
-		maxl = Math.floor((height-sy)/rh);
-		if(!mini){
-			outlet(1,"paintrect",x_pos+sx,y_pos,x_pos+width,sy+y_pos,block_colour[0]*0.1,block_colour[1]*0.1,block_colour[2]*0.1);
-			outlet(0,"setfontsize",rh*0.8);
-			outlet(1,"frgb",block_colour);
-			outlet(1,"moveto",3+sx+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","octave");
-			outlet(1,"moveto",3+sx+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",baseoct-2);
-			outlet(1,"moveto",3+sx+0.2*cw+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","vel");
-			outlet(1,"moveto",3+sx+0.2*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",currentvel);
-			outlet(1,"moveto",3+sx+0.4*cw+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","wave");
-			outlet(1,"moveto",3+sx+0.4*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",(1+currentwave));
-			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*0.75+y_pos);
-			outlet(1,"write","slice");
-			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",currentslice+1);
-			if(cursorx2<4) draw_wave_hint(currentwave,currentslice);
-			for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
-				cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
-				l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
-				s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
-				l_on[c] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3)
-				outlet(1,"moveto", 3+sx+cw*(c-display_col_offset)+x_pos, rh*2.15+y_pos);
-				if(cursorx == c){
-					outlet(1,"frgb",block_colour);
-				}else{
-					outlet(1,"frgb",block_colour[0]*0.5,block_colour[1]*0.5,block_colour[2]*0.5);
-				}
-				outlet(1,"write", "voice", c+1);
-				for(r=0;r<maxl;r++){			
-					drawcell((c-display_col_offset),r);
-				}
-			}
-		}
-		for(r=0;r<maxl;r++){			
-			rr = r+display_row_offset;
-			rc = ((rr%2)==0)+((rr%4)==0)+((rr%8)==0)+((rr%16)==0);
-			rc = (4+rc)/24;
-			
-			outlet(1,"paintrect",x_pos,sy+rh*r+y_pos,sx-9+x_pos,sy+rh*(r+1)+y_pos,block_colour[0]*rc,block_colour[1]*rc,block_colour[2]*rc);
-			outlet(1,"moveto",3+x_pos,sy+rh*(r+0.75)+y_pos);
-			if(!mini){
-				outlet(1,"frgb",block_colour);
-				outlet(1,"write",rr);
-			}
-		}
-		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,sy+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);*/
-
-
 
 function voice_is(v){
 	block = v;

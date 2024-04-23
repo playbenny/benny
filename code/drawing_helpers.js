@@ -1009,15 +1009,8 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		// for opv controls, eg mixer control page, it'd be better to have them as an extension of
 		//paramslider_details, i think? then they get free live updates and all the mixer page has to do is ask for them to be drawn
 		//post("\nsuggested curp",paramslider_details.length,"data",dataindex,"param",paramindex,"highlight",highlight,xp1,xp2,xp3,xp4);
-		var curp = paramslider_details.length;
-		var flags = 0; 
-		var namelabely = y2; 
-		var p_type="menu_b";
 		var block = xp1;//dataindex; 
-		var wrap=0; 
 		var block_name=blocks.get("blocks["+xp1+"]::name"); 
-		var h_slider=0;
-		var p_values=blocktypes.get(block_name+"::parameters["+dataindex+"]::values");
 		//[1,highlight]; //<<i think i've got to get some meaningful values in here. xp1 has blockno
 		//post("name",block_name,"values",p_values);
 		//also why does it draw it wrong 1st? what's going on there?
@@ -1026,7 +1019,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		//paramslider_details[curp]=[x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index,block,dataindex,flags,paramindex,namelabely,p_type,wrap,block_name,h_slider,p_values];
 		//post("--voice",paramslider_details[curp][11],"--param",paramslider_details[curp][9]);
 		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
-		var pv2 = Math.floor(pv * 1.99999);
+		//var pv2 = Math.floor(pv * 1.99999);
 		//post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
 		draw_button(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, highlight,pv>0.5);
 		mouse_click_actions[mouse_index] = static_mod_adjust;
