@@ -217,6 +217,7 @@ function draw_panels(){
 			if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
 				has_ui = Math.min(4,blocktypes.get(block_name+"::ui_in_sidebar_height"));
 			}
+			if(blocktypes.contains(block_name+"::no_ui_in_panel")) has_ui = 0;
 			h+=has_ui;
 			if(has_params) h-=0.5;
 			panels_custom.push(b);
@@ -3045,17 +3046,17 @@ function draw_sidebar(){
 											}
 											paramslider_details[curp]=[x1+v*ww,y1,x1+v*ww+ww2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[v],namelabely,p_type,wrap,block_name,h_slider,p_values];
 											parameter_menu_b(curp);
-											if(vl.length==1){
+											/*if(vl.length==1){
 												mouse_click_actions[mouse_index] = send_button_message;
 												mouse_click_parameters[mouse_index] = block;
 												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
-											}else{
+											}else{*/
 												mouse_click_actions[mouse_index] = static_mod_adjust;
 												mouse_click_parameters[mouse_index] = [curp, block, vl[v]];
 												//post("\npv,sc",pv,statecount);
-												mouse_click_values[mouse_index] = ((1+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+												mouse_click_values[mouse_index] = ((1.01+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
 												
-											}
+											//}
 											mouse_index++;
 											if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 												//but it's so much easier just to call this fn

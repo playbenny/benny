@@ -1010,7 +1010,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		//paramslider_details, i think? then they get free live updates and all the mixer page has to do is ask for them to be drawn
 		//post("\nsuggested curp",paramslider_details.length,"data",dataindex,"param",paramindex,"highlight",highlight,xp1,xp2,xp3,xp4);
 		var block = xp1;//dataindex; 
-		var block_name=blocks.get("blocks["+xp1+"]::name"); 
+		//var block_name=blocks.get("blocks["+xp1+"]::name"); 
 		//[1,highlight]; //<<i think i've got to get some meaningful values in here. xp1 has blockno
 		//post("name",block_name,"values",p_values);
 		//also why does it draw it wrong 1st? what's going on there?
@@ -1025,6 +1025,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_actions[mouse_index] = static_mod_adjust;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
 		mouse_click_values[mouse_index] = (pv<=0.5);
+		
 		//if(click_to_step>0)mouse_click_values[index]=click_to_step;
 
 		//parameter_button(curp);
