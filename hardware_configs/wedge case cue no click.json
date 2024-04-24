@@ -133,6 +133,11 @@
 						"lock_automap_control" : 16,
 						"lock_automap_keyboard" : 17,
 						"lock_automap_cue" : 18
+					},
+					"values" : {
+						"type" : "cc",
+						"channel" : 1,
+						"first" : 0
 					}
 
 				}
