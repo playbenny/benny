@@ -2,6 +2,7 @@ var MAX_DATA = 16384;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
+var parameter_value_buffer = new Buffer("parameter_value_buffer");
 outlets = 4;
 var config = new Dict;
 config.name = "config";
@@ -206,7 +207,7 @@ function voice_is(v){
 
 function scan_for_channels(){
 	if(block>=0){
-		var vx_list=[];
+		var bx_list=[];
 		v_list=[];
 		b_list=[];
 		b_name=[];
@@ -214,6 +215,14 @@ function scan_for_channels(){
 		b_type=[];
 		cols = 0;
 		for(var b=0;b<blocks.getsize("blocks");b++){
+			if(blocks.contains("blocks["+b+"]::name")){
+				var nam = blocks.get("blocks["+b+"]::name");
+				var n2 = nam.split(".");
+				if((n2[0] == "mix")&&(n2[1] != "bus")){
+					b_list.push(b);
+					bx_list.push(blocks.get("blocks["+b+"]::space::x"));
+				}
+			}
 			shape[b] = [];
 			oshape[b] = [];
 			amount[b] = [];
@@ -222,12 +231,27 @@ function scan_for_channels(){
 			osweep[b] = [];
 			omute[b] = [];
 			osolo[b] = [];
-			if(blocks.contains("blocks["+b+"]::name")){
+		}
+		post("\nsorting mixer channel groups by x position",bx_list);
+		for(var bb=1;bb<b_list.length;bb++){
+			if(bx_list[bb]<bx_list[bb-1]){
+				var bt=b_list[bb-1];
+				b_list[bb-1]=b_list[bb];
+				b_list[bb]=bt;
+				bt=bx_list[bb-1];
+				bx_list[bb-1]=bx_list[bb];
+				bx_list[bb]=bt;
+				bb--;
+			}
+		}
+		for(var bb=0;bb<b_list.length;bb++){
+			b=b_list[bb];
+			//if(blocks.contains("blocks["+b+"]::name")){
 				var nam = blocks.get("blocks["+b+"]::name");
 				var n2 = nam.split(".");
 				if((n2[0] == "mix")&&(n2[1] != "bus")){
-					b_list.push(b);
-					vx_list.push(blocks.get("blocks["+b+"]::space::x"));
+					//b_list.push(b);
+					//bx_list.push(blocks.get("blocks["+b+"]::space::x"));
 					if(blocks.contains("blocks["+b+"]::label")){
 						b_name.push(blocks.get("blocks["+b+"]::label"));
 						b_type.push(nam);
@@ -239,11 +263,15 @@ function scan_for_channels(){
 					var vl = map.get(b);
 					if(!Array.isArray(vl)) vl = [vl];
 					v_list.push(vl);
-					for(var t=0;t<vl.length;t++) outlet(3,vl[t]*MAX_PARAMETERS);
+					for(var t=0;t<vl.length;t++){
+						outlet(3,vl[t]*MAX_PARAMETERS);
+					}
+					parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
+
 					cols += vl.length;
 					post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 				}
-			}
+			//}
 		}
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
 		block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
