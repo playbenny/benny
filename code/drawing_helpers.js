@@ -1024,7 +1024,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		draw_button(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, highlight,pv>0.5);
 		mouse_click_actions[mouse_index] = static_mod_adjust;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
-		mouse_click_values[mouse_index] = (pv<=0.5);
+		mouse_click_values[mouse_index] = 0.99* (pv<=0.5);
 		
 		//if(click_to_step>0)mouse_click_values[index]=click_to_step;
 

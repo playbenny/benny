@@ -2,11 +2,11 @@ var MAX_DATA = 16384;
 var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
-outlets = 3;
+outlets = 4;
 var config = new Dict;
 config.name = "config";
 var block_colour = [128,128,128];
-var width, height,x_pos,y_pos,unit,u1,cw,cols;
+var width, height,x_pos,y_pos,unit,u1,cw,cols,bv,clist,controller;
 var block=-1;
 var display_row_offset = 0;
 var display_col_offset = 0;
@@ -17,6 +17,8 @@ var map = new Dict;
 map.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
+var blocktypes = new Dict;
+blocktypes.name = "blocktypes";
 var b_list = [];
 var v_list = []; // list of voices of the channels connected to this mixer
 var v_name = []; 
@@ -33,6 +35,7 @@ var oamount = [];
 var shape = [];
 var sweep = [];
 var amount = [];
+
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
@@ -53,6 +56,10 @@ function setup(x1,y1,x2,y2,sw){
 }
 
 function draw(){
+	update(1);
+}
+
+function update(force){
 	if(block>=0){
 		var x=0;
 		for(var b=0;b<b_list.length;b++){
@@ -60,8 +67,17 @@ function draw(){
 			var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
 			for(var v=v_list[b].length-1;v>=0;v--){
-				draw_mutesolo(b,v,x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height,fgc,bgc);
-				if(check_eq_params_for_changes(b,v)){
+				var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
+				if((omute[b][v]!=mute)||force){
+					omute[b][v] = mute;
+					outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2,130,130,130,5,v_list[b][v],"mute",b_list[b]);
+				}
+				var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
+				if((osolo[b][v]!=solo)||force){
+					osolo[b][v] = solo;
+					outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
+				}
+				if(check_eq_params_for_changes(b,v)||force){
 					draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
 					oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 				}
@@ -73,28 +89,12 @@ function draw(){
 	}
 }
 
-function update(){
-	//if(check_params_for_changes()==1){
-		/*var x=0;
-		var fgc = block_colour;
-		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
-		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
-			oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
-			x+=cw;
-		}*/
-		draw();
-	//}
-}
-
-
-
 function check_eq_params_for_changes(b,v){
 	var dr=0;
 	//for(var b=0;b<b_list.length;b++){
 	//	for(var v=0;v<v_list[b].length;v++){
 			//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
-			shape[b][v] = Math.floor(no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
+			shape[b][v] = Math.floor(0.99*no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
 			amount[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+3);
 			sweep[b][v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4)-2);
 			if((shape[b][v]!=oshape[b][v])||(amount[b][v]!=oamount[b][v])||(sweep[b][v]!=osweep[b][v])) dr = 1;
@@ -112,7 +112,7 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 	mid: f, res, gain (db)
 	high: f, res
 	width */
-	//post("\nvoicing",voicing);
+	//post("\nvoicing",shp,"is",voicing);
 	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
 	voicing[0] *= swp;
 	voicing[3] *= swp;
@@ -169,14 +169,21 @@ function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
 		outlet(0,"custom_ui_element","param_v_scroll",x1+u1,y1,x2-u1,y2,fg[0],fg[1],fg[2],[block,5+r]);
 	}
 }
-function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
-	outlet(0,"custom_ui_element","opv_button",x1,y1,x2,0.5*(y1+y2),130,130,130,5,v_list[b][v],"mute",block);
-	outlet(0,"custom_ui_element","opv_button",x1,0.5*(y1+y2),x2,y2,255,20,20,6,v_list[b][v],"solo",block);
-}
+
 
 function voice_is(v){
 	block = v;
 	scan_for_channels();
+	bv = map.get(v);
+	if(Array.isArray(bv)) bv=bv[0];
+	clist = blocktypes.get("mix.bus::parameters[0]::values");
+	controller = Math.floor(0.99*clist.length * voice_parameter_buffer.peek(1,bv*MAX_PARAMETERS));
+	post("\nMixer controller selection:",clist[controller]);
+	outlet(2,clist[controller]);
+	var voicings_list = mcv.getkeys();
+	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
+	no_voicings = voicings_list.length;
+
 }
 
 function scan_for_channels(){
@@ -195,6 +202,8 @@ function scan_for_channels(){
 			oamount[b] = [];
 			sweep[b] = [];
 			osweep[b] = [];
+			omute[b] = [];
+			osolo[b] = [];
 			if(blocks.contains("blocks["+b+"]::name")){
 				var nam = blocks.get("blocks["+b+"]::name");
 				var n2 = nam.split(".");
@@ -212,6 +221,7 @@ function scan_for_channels(){
 					var vl = map.get(b);
 					if(!Array.isArray(vl)) vl = [vl];
 					v_list.push(vl);
+					for(var t=0;t<vl.length;t++) outlet(3,vl[t]*MAX_PARAMETERS);
 					cols += vl.length;
 					post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 				}
@@ -222,6 +232,7 @@ function scan_for_channels(){
 		block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
 		for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
 		cw = (width+u1) / cols;
+		outlet(3,"bang");
 	}
 }
 

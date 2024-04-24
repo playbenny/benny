@@ -43,9 +43,6 @@ function setup(x1,y1,x2,y2,sw){
 	}
 	unit = height / (mini?10:18);
 	u1 = 0.1 * unit;
-	var voicings_list = mcv.getkeys();
-	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
-	no_voicings = voicings_list.length;
 	//post("\nno_vo",no_voicings);
 	if(block>=0){
 		scan_for_channels();
@@ -168,6 +165,10 @@ function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
 function voice_is(v){
 	block = v;
 	scan_for_channels();
+	var voicings_list = mcv.getkeys();
+	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
+	no_voicings = voicings_list.length;
+
 }
 
 function scan_for_channels(){

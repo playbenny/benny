@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "mix.bus.ui",
 		"ui_in_sidebar_height" : 8,
 		"help_text" : "every mix.channel/stereo.channel etc block has to be routed, at unity gain, to one of these, to make the magic work.",
-		"max_polyphony" : 2,
+		"max_polyphony" : 1,
 		"upsample" : 2,
 		"subvoices" : 2,
 		"connections" : {
