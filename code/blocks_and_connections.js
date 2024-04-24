@@ -2105,10 +2105,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 	//var totype = blocks.get('blocks['+to+']::type');
 	var f_subvoices = 1;
 	var t_subvoices = 1;
-	var fpoly = f_subvoices*blocks.get("blocks["+from+"]::poly::voices");
-	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(blocks.contains("blocks["+from+"]::subvoices")) f_subvoices = blocks.get("blocks["+from+"]::subvoices");
 	if(blocks.contains("blocks["+to+"]::subvoices")) t_subvoices = blocks.get("blocks["+to+"]::subvoices");
+	var fpoly = f_subvoices*blocks.get("blocks["+from+"]::poly::voices");
+	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
 
 	new_connection.parse('{ }');
