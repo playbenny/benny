@@ -2098,7 +2098,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	sidebar.connection.show_from_outputs = 1;
 	sidebar.connection.show_to_inputs = 1;
 
-	post("\n so i've been told tov is ",tov);
+	//post("\n so i've been told tov is ",tov);
 
 	var fromname = blocks.get('blocks['+from+']::name');
 	var toname = blocks.get('blocks['+to+']::name');
