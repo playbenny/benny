@@ -1189,7 +1189,7 @@ function edit_typing(key){
 
 
 function static_mod_adjust(parameter,value){
-	post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){

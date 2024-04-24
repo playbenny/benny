@@ -6,7 +6,8 @@ outlets = 4;
 var config = new Dict;
 config.name = "config";
 var block_colour = [128,128,128];
-var width, height,x_pos,y_pos,unit,u1,cw,cols,bv,clist,controller;
+var width, height,x_pos,y_pos,unit,u1,cw,cols,bv,clist;
+var controller=-1;
 var block=-1;
 var display_row_offset = 0;
 var display_col_offset = 0;
@@ -35,6 +36,7 @@ var oamount = [];
 var shape = [];
 var sweep = [];
 var amount = [];
+var stored_controller = "";
 
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
@@ -52,6 +54,13 @@ function setup(x1,y1,x2,y2,sw){
 	if(block>=0){
 		scan_for_channels();
 		draw();
+		var tco = Math.floor(0.99*clist.length * voice_parameter_buffer.peek(1,bv*MAX_PARAMETERS));
+		if(tco!=controller){
+			controller = tco;
+			post("\nMixer controller selection:",clist[controller]);
+			outlet(2,clist[controller]);
+			blocks.replace("blocks["+block+"]::selected_controller",clist[controller]);
+		}	
 	}
 }
 
@@ -177,9 +186,18 @@ function voice_is(v){
 	bv = map.get(v);
 	if(Array.isArray(bv)) bv=bv[0];
 	clist = blocktypes.get("mix.bus::parameters[0]::values");
-	controller = Math.floor(0.99*clist.length * voice_parameter_buffer.peek(1,bv*MAX_PARAMETERS));
-	post("\nMixer controller selection:",clist[controller]);
-	outlet(2,clist[controller]);
+	if(!Array.isArray(clist)) clist = [clist];
+	if(blocks.contains("blocks["+v+"]::stored_controller")){
+		stored_controller = blocks.get("blocks["+v+"]::stored_controller");
+		post("\nfound a stored controller in savefile:",stored_controller);
+		controller = clist.indexof(stored_controller);
+		if(controller!=-1){
+			parameter_value_buffer.poke(1,0.99*bv*MAX_PARAMETERS,controller/clist.length);
+		}else{
+			post("\nerror restoring controller selection");
+		}
+		
+	}
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
 	no_voicings = voicings_list.length;
