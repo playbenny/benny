@@ -748,6 +748,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	if(loading.wait>1) post("\nloading block: ",block_name," into ",block_index," was_exclu=",was_exclusive);//,"index",block_index,"paramvalues",paramvalues);
 	var new_voice=-1;
 	var type = blocktypes.get(block_name+"::type");
+	var hwmidi = "";
+	if((type=="hardware")&&(blocktypes.contains(block_name+"::midi_handler"))){
+		hwmidi = blocktypes.get(block_name+"::midi_handler");
+	}
 	var offs = 0;
 	var recycled = 0;
 	var up = 1;
@@ -773,6 +777,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			var tnv = find_note_voice_to_recycle(blocktypes.get(block_name+"::patcher"), up);
 			new_voice = tnv[0];
 			recycled = tnv[1];
+		}else if((type=="hardware") && (hwmidi!="") && RECYCLING){
+			var tnv = find_note_voice_to_recycle(hwmidi);
+			new_voice = tnv[0];
+			recycled = tnv[1];
+			post("\nrecycling hardware midi handler:",tnv[0],tnv[1]);
 		}else{
 			new_voice = next_free_voice(type,block_name);
 		}
@@ -787,7 +796,6 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			post("\nblock was excl but poly so i'm just getting a free slot");
 			new_voice = next_free_voice(type,block_name);
 		}
-		//if(type=="hardware") 
 	}
 	if(type == "note"){
 		note_patcherlist[new_voice] = blocktypes.get(block_name+"::patcher");
@@ -798,10 +806,13 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		still_checking_polys |= 2;
 		offs=MAX_NOTE_VOICES;
 	}else if(type == "hardware"){
-		//hardware_list[new_voice] = block_name;
-		offs=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
+		if(hwmidi){
+			note_patcherlist[new_voice] = hwmidi;
+			offs=0;
+		}else{
+			offs=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
+		}
 	}
-	//post("\n\nHERE, VOICEALLOC ",type,block_name,new_voice,offs);
 	var ui = blocktypes.get(block_name+"::block_ui_patcher");
 	if((ui == "") || (ui == 0) || is_empty(ui) || (ui=="self")){
 		ui_patcherlist[block_index] = "blank.ui";
@@ -917,7 +928,12 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 	// if the block has per-voice data it gets loaded after voicecount
 	// tell the polyalloc voice about its new job
-	voicealloc_poly.setvalue((block_index +1),"type",type);
+	if(hwmidi!=""){
+		voicealloc_poly.setvalue((block_index+1),"type","note");
+	}else{
+		voicealloc_poly.setvalue((block_index+1),"type",type);
+	}
+	//voicealloc_poly.setvalue((block_index +1),"type",type);
 	voicealloc_poly.setvalue((block_index +1),"voicelist",(new_voice+1));
 	var stack = poly_alloc.stack_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::stack_mode"));
 	var choose = poly_alloc.choose_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::choose_mode"));
