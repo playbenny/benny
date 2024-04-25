@@ -190,6 +190,8 @@ function blocks_paste(outside_connections,target){
 					blocks.replace("blocks["+new_block_index+"]::space::colour",target.get("blocks::"+copied_blocks[b]+"::space::colour"));
 					if(target.contains("blocks::"+copied_blocks[b]+"::upsample")) blocks.replace("blocks["+new_block_index+"]::upsample",target.get("blocks::"+copied_blocks[b]+"::upsample"));
 					if(target.contains("blocks::"+copied_blocks[b]+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",target.get("blocks::"+copied_blocks[b]+"::subvoices"));
+					if(target.contains("blocks::"+copied_blocks[b]+"::from_subvoices")) blocks.replace("blocks["+new_block_index+"]::from_subvoices",target.get("blocks::"+copied_blocks[b]+"::from_subvoices"));
+					if(target.contains("blocks::"+copied_blocks[b]+"::to_subvoices")) blocks.replace("blocks["+new_block_index+"]::to_subvoices",target.get("blocks::"+copied_blocks[b]+"::to_subvoices"));
 					if(target.contains("blocks::"+copied_blocks[b]+"::mute")) blocks.replace("blocks["+new_block_index+"]::mute",target.get("blocks::"+copied_blocks[b]+"::mute"));
 					if(target.contains("blocks::"+copied_blocks[b]+"::bypass")) blocks.replace("blocks["+new_block_index+"]::bypass",target.get("blocks::"+copied_blocks[b]+"::bypass"));
 					

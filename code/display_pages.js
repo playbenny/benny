@@ -1335,8 +1335,14 @@ function draw_wire(connection_number){
 			var to_list = [];
 			var tv=0,fv=0,tl;
 			var from_subvoices=1, to_subvoices=1;
-			if((from_type=="audio")&&(blocks.contains("blocks["+cfrom+"]::subvoices"))) from_subvoices = blocks.get("blocks["+cfrom+"]::subvoices");
-			if((to_type=="audio")&&(blocks.contains("blocks["+cto+"]::subvoices"))) to_subvoices = blocks.get("blocks["+cto+"]::subvoices");
+			if(from_type=="audio"){
+				if(blocks.contains("blocks["+cfrom+"]::subvoices"))	from_subvoices = blocks.get("blocks["+cfrom+"]::subvoices");
+				if(blocks.contains("blocks["+cfrom+"]::from_subvoices")) from_subvoices = blocks.get("blocks["+cfrom+"]::from_subvoices");
+			}
+			if(to_type=="audio"){
+				if(blocks.contains("blocks["+cto+"]::subvoices")) to_subvoices = blocks.get("blocks["+cto+"]::subvoices");
+				if(blocks.contains("blocks["+cto+"]::to_subvoices")) to_subvoices = blocks.get("blocks["+cto+"]::to_subvoices");
+			}
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
 				fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
 				if(fv>1) from_multi = 1;
@@ -4570,8 +4576,18 @@ function draw_sidebar(){
 			t_i_v.sort();
 			var f_v_no = blocks.get("blocks["+f_number+"]::poly::voices");
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
-			var from_subvoices = Math.max(1,blocks.get('blocks['+f_number+']::subvoices'));
-			var to_subvoices = Math.max(1,blocks.get('blocks['+t_number+']::subvoices'));
+			var from_subvoices = 1;
+			var to_subvoices = 1;
+			if(f_type=="audio"){
+				if(blocks.contains("blocks["+f_number+"]::from_subvoices")){
+					from_subvoices = blocks.get("blocks["+f_number+"]::from_subvoices");
+				}else if(blocks.contains("blocks["+f_number+"]::subvoices"))	from_subvoices = blocks.get("blocks["+f_number+"]::subvoices");
+			}
+			if(t_type=="audio"){
+				if(blocks.contains("blocks["+t_number+"]::to_subvoices")){
+					to_subvoices = blocks.get("blocks["+t_number+"]::to_subvoices");
+				}else if(blocks.contains("blocks["+t_number+"]::subvoices")) to_subvoices = blocks.get("blocks["+t_number+"]::subvoices");
+			}			
 			var t_i_name,f_o_name;
 
 

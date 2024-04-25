@@ -262,6 +262,8 @@ function new_block(block_name,x,y){
 		}else{
 			if(!blocktypes.contains(block_name+"::subvoices")) blocktypes.replace(block_name+"::subvoices",1);
 			blocks.replace("blocks["+new_block_index+"]::subvoices",blocktypes.get(block_name+"::subvoices"));
+			if(blocktypes.contains(block_name+"::from_subvoices")) blocks.replace("blocks["+new_block_index+"]::from_subvoices",blocktypes.get(block_name+"::from_subvoices"));
+			if(blocktypes.contains(block_name+"::to_subvoices")) blocks.replace("blocks["+new_block_index+"]::to_subvoices",blocktypes.get(block_name+"::to_subvoices"));
 		}
 		//if(blocks.get("blocks["+new_block_index+"]::subvoices")>1){
 		//	voicecount(new_block_index,blocks.get("blocks["+new_block_index+"]::subvoices"));
@@ -1428,16 +1430,16 @@ function make_connection(cno,existing){
 	var f_block = 1* connections.get("connections["+cno+"]::from::number");
 	var t_block = 1* connections.get("connections["+cno+"]::to::number");
 	var f_subvoices = 1;
+	var t_subvoices = 1;
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
+		t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
 	}else if(f_type=="parameters"){
 		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
 			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
 		}
 	}
-	var t_subvoices = 1;
-	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 	var f_voices = [];
 	var t_voices = [];
 	var f_voice,t_voice;
@@ -1680,7 +1682,7 @@ function make_connection(cno,existing){
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
-							//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+							post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							if(loading.progress!=0){
 								deferred_matrix.push(outmsg);
 							}else{
@@ -2106,7 +2108,9 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var f_subvoices = 1;
 	var t_subvoices = 1;
 	if(blocks.contains("blocks["+from+"]::subvoices")) f_subvoices = blocks.get("blocks["+from+"]::subvoices");
+	if((f_subvoices==1)&&(blocktypes.contains(fromname+"::from_subvoices")))f_subvoices=blocktypes.get(fromname+"::from_subvoices");
 	if(blocks.contains("blocks["+to+"]::subvoices")) t_subvoices = blocks.get("blocks["+to+"]::subvoices");
+	if((t_subvoices==1)&&(blocktypes.contains(toname+"::to_subvoices")))t_subvoices=blocktypes.get(toname+"::to_subvoices");
 	var fpoly = f_subvoices*blocks.get("blocks["+from+"]::poly::voices");
 	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
@@ -2241,10 +2245,8 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}
 	}else{
 		if(!((t_type=="audio")||(t_type=="hardware"))){
-//			post("\ntov",tov);
 			tov /= t_subvoices;
 			tov |= 0;
-//			post("      now",tov);
 		}
 		new_connection.replace("to::voice", tov+1);
 	}
@@ -2252,7 +2254,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
 		new_connection.replace("conversion::force_unity" , 1);
 	} 
-
+	
 	if(wires_potential_connection>-1){
 		connections.replace("connections["+wires_potential_connection+"]",new_connection);
 		//remove_potential_wire(1);
@@ -2266,7 +2268,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 
 	redraw_flag.flag|=4;
-	//set_sidebar_mode("connection");
 }
 
 function remove_block(block){
