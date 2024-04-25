@@ -1,0 +1,43 @@
+{
+	"utility.pan.mono" : {
+		"patcher" : "utility.pan.mono",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "takes a mono input, lets you adjust pan. has audio-rate control input.",
+		"max_polyphony" : 2,
+		"upsample" : 1,
+		"from_subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "mono in", "pan in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,1]
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "pan",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "side_gain",
+				"type" : "float",
+				"values" : ["bi", -6, 6, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}
