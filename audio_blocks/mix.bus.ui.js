@@ -6,6 +6,7 @@ var parameter_value_buffer = new Buffer("parameter_value_buffer");
 outlets = 4;
 var config = new Dict;
 config.name = "config";
+var ovhash = -1;
 var block_colour = [128,128,128];
 var width, height,x_pos,y_pos,unit,u1,cw,cols,bv,clist;
 var controller=-1;
@@ -34,6 +35,8 @@ var no_voicings = 1;
 var oshape = [];
 var osweep = [];
 var oamount = [];
+var level = [];
+var olevel = [];
 var shape = [];
 var sweep = [];
 var amount = [];
@@ -53,8 +56,6 @@ function setup(x1,y1,x2,y2,sw){
 	unit = height / 18;
 	u1 = 0.1 * unit;
 	if(block>=0){
-		scan_for_channels();
-		draw();
 		var tco = Math.floor(0.99*clist.length * voice_parameter_buffer.peek(1,bv*MAX_PARAMETERS));
 		if(tco!=controller){
 			controller = tco;
@@ -62,6 +63,9 @@ function setup(x1,y1,x2,y2,sw){
 			outlet(2,clist[controller]);
 			blocks.replace("blocks["+block+"]::selected_controller",clist[controller]);
 		}	
+		ovhash = -1;
+		scan_for_channels();
+		draw();
 	}
 }
 
@@ -91,9 +95,13 @@ function update(force){
 					draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
 					oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 				}
+				level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
+				if((olevel[b][v]!=level[b][v])||force){
+					olevel[b][v] = level[b][v];
+					outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+				}
 			}
 			var xx = x+v_list[b].length;
-			draw_channels(b,v,x_pos+x*cw,y_pos+unit*4.1,x_pos+xx*cw-u1,y_pos+height-unit*4.1,fgc,bgc);
 			x = xx;
 		}
 	}
@@ -172,17 +180,10 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 }
 
 
-function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
-	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	var h=y2-y1;
-	if(b_type[b]=="mix.channel.stereo"){
-		outlet(0,"custom_ui_element","param_v_scroll",x1+u1,y1,x2-u1,y2,fg[0],fg[1],fg[2],[block,5+r]);
-	}
-}
-
 
 function voice_is(v){
 	block = v;
+	ovhash = -1;
 	scan_for_channels();
 	bv = map.get(v);
 	if(Array.isArray(bv)) bv=bv[0];
@@ -202,83 +203,85 @@ function voice_is(v){
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
 	no_voicings = voicings_list.length;
-
 }
 
 function scan_for_channels(){
 	if(block>=0){
 		var bx_list=[];
-		v_list=[];
-		b_list=[];
-		b_name=[];
-		b_colour=[];
-		b_type=[];
-		cols = 0;
+		var tb_list=[];
+		var hash = 0;
 		for(var b=0;b<blocks.getsize("blocks");b++){
 			if(blocks.contains("blocks["+b+"]::name")){
 				var nam = blocks.get("blocks["+b+"]::name");
 				var n2 = nam.split(".");
 				if((n2[0] == "mix")&&(n2[1] != "bus")){
-					b_list.push(b);
+					tb_list.push(b);
 					bx_list.push(blocks.get("blocks["+b+"]::space::x"));
+					hash += (b+1) * map.getsize(b);
 				}
 			}
-			shape[b] = [];
-			oshape[b] = [];
-			amount[b] = [];
-			oamount[b] = [];
-			sweep[b] = [];
-			osweep[b] = [];
-			omute[b] = [];
-			osolo[b] = [];
-		}
-		post("\nsorting mixer channel groups by x position",bx_list);
-		for(var bb=1;bb<b_list.length;bb++){
-			if(bx_list[bb]<bx_list[bb-1]){
-				var bt=b_list[bb-1];
-				b_list[bb-1]=b_list[bb];
-				b_list[bb]=bt;
-				bt=bx_list[bb-1];
-				bx_list[bb-1]=bx_list[bb];
-				bx_list[bb]=bt;
-				bb--;
+			if(!Array.isArray(shape[b])){
+				shape[b] = [];
+				oshape[b] = [];
+				amount[b] = [];
+				oamount[b] = [];
+				sweep[b] = [];
+				osweep[b] = [];
+				omute[b] = [];
+				osolo[b] = [];
+				level[b] = [];
+				olevel[b] = [];
 			}
 		}
-		for(var bb=0;bb<b_list.length;bb++){
-			b=b_list[bb];
-			//if(blocks.contains("blocks["+b+"]::name")){
+		if(hash!=ovhash){
+			ovhash=hash;
+			b_list = tb_list.slice();
+			v_list=[];
+			b_name=[];
+			b_colour=[];
+			b_type=[];
+			cols = 0;
+			post("\nsorting mixer channel groups by x position",bx_list);
+			for(var bb=1;bb<b_list.length;bb++){
+				if(bx_list[bb]<bx_list[bb-1]){
+					var bt=b_list[bb-1];
+					b_list[bb-1]=b_list[bb];
+					b_list[bb]=bt;
+					bt=bx_list[bb-1];
+					bx_list[bb-1]=bx_list[bb];
+					bx_list[bb]=bt;
+					bb--;
+				}
+			}
+			for(var bb=0;bb<b_list.length;bb++){
+				b=b_list[bb];
 				var nam = blocks.get("blocks["+b+"]::name");
-				var n2 = nam.split(".");
-				if((n2[0] == "mix")&&(n2[1] != "bus")){
-					//b_list.push(b);
-					//bx_list.push(blocks.get("blocks["+b+"]::space::x"));
-					if(blocks.contains("blocks["+b+"]::label")){
-						b_name.push(blocks.get("blocks["+b+"]::label"));
-						b_type.push(nam);
-					}else{
-						b_name.push(nam);
-						b_type.push(nam);
-					}
-					b_colour.push(blocks.get("blocks["+b+"]::space::colour"));
-					var vl = map.get(b);
-					if(!Array.isArray(vl)) vl = [vl];
-					v_list.push(vl);
-					for(var t=0;t<vl.length;t++){
-						outlet(3,vl[t]*MAX_PARAMETERS);
-					}
-					parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
-
-					cols += vl.length;
-					post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
+				if(blocks.contains("blocks["+b+"]::label")){
+					b_name.push(blocks.get("blocks["+b+"]::label"));
+					b_type.push(nam);
+				}else{
+					b_name.push(nam);
+					b_type.push(nam);
 				}
-			//}
+				b_colour.push(blocks.get("blocks["+b+"]::space::colour"));
+				var vl = map.get(b);
+				if(!Array.isArray(vl)) vl = [vl];
+				v_list.push(vl);
+				for(var t=0;t<vl.length;t++){
+					outlet(3,vl[t]*MAX_PARAMETERS);
+				}
+				parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
+
+				cols += vl.length;
+				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
+			}
+			block_colour = blocks.get("blocks["+block+"]::space::colour");
+			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
+			block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
+			for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
+			cw = (width+u1) / cols;
+			outlet(3,"bang");
 		}
-		block_colour = blocks.get("blocks["+block+"]::space::colour");
-		block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
-		block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
-		for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
-		cw = (width+u1) / cols;
-		outlet(3,"bang");
 	}
 }
 

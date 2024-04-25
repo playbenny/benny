@@ -1006,35 +1006,29 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_values[mouse_index] = [r,g,b,dataindex,highlight];
 		mouse_index++;				
 	}else if(type=="opv_button"){
-		// for opv controls, eg mixer control page, it'd be better to have them as an extension of
-		//paramslider_details, i think? then they get free live updates and all the mixer page has to do is ask for them to be drawn
-		//post("\nsuggested curp",paramslider_details.length,"data",dataindex,"param",paramindex,"highlight",highlight,xp1,xp2,xp3,xp4);
 		var block = xp1;//dataindex; 
-		//var block_name=blocks.get("blocks["+xp1+"]::name"); 
-		//[1,highlight]; //<<i think i've got to get some meaningful values in here. xp1 has blockno
-		//post("name",block_name,"values",p_values);
-		//also why does it draw it wrong 1st? what's going on there?
 		var vc=view_changed;
 		view_changed = true;
-		//paramslider_details[curp]=[x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index,block,dataindex,flags,paramindex,namelabely,p_type,wrap,block_name,h_slider,p_values];
-		//post("--voice",paramslider_details[curp][11],"--param",paramslider_details[curp][9]);
 		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
-		//var pv2 = Math.floor(pv * 1.99999);
-		//post("\ndrawing param button, values", statecount, pv, MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], paramslider_details[p][17], pv2, paramslider_details[p][17][pv2])
 		draw_button(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, highlight,pv>0.5);
 		mouse_click_actions[mouse_index] = static_mod_adjust;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
 		mouse_click_values[mouse_index] = 0.99* (pv<=0.5);
-		
-		//if(click_to_step>0)mouse_click_values[index]=click_to_step;
-
-		//parameter_button(curp);
 		view_changed = vc;
-		//mouse_click_actions[mouse_index] = send_button_message;
-		//mouse_click_parameters[mouse_index] = block;
-		//mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 		mouse_index++;		
-		//draw_button(x1,y1,x2,y2,r,g,b,mouse_index,"label",value);
+	}else if(type=="opv_v_slider"){
+		var block = highlight; 
+		var vc=view_changed;
+		view_changed = true;
+		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
+		//post("\nslider",dataindex,block,paramindex,pv);
+		draw_v_slider(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, pv);
+		mouse_click_actions[mouse_index] = static_mod_adjust;
+		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
+		mouse_click_values[mouse_index] = null; //0.99* (pv<=0.5);
+		view_changed = vc;
+		mouse_index++;		
+
 	}
 }
 
