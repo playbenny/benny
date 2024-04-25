@@ -1682,7 +1682,7 @@ function make_connection(cno,existing){
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
-							post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+							//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							if(loading.progress!=0){
 								deferred_matrix.push(outmsg);
 							}else{
