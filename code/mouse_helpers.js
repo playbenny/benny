@@ -913,18 +913,22 @@ function whole_state_xfade(parameter,value){ //called by the slider
 	}
 }
 function fire_whole_state_btn(state,value){
-	//post("\nwhole state btn")
+	post("\nwhole state btn",state,value);
 	if(usermouse.ctrl){
-		sidebar.selected = state;
-		//need to now select just the blocks that are in this state
-		var stat = states.get("states::"+state);
-		var sc_list = stat.getkeys();
-		selected.block=[];
-		set_sidebar_mode("edit_state");
-		for(var i = 128;i>=0;i--) selected.block.push(0);
-		for(var i = sc_list.length-1;i>=0;i--) selected.block[sc_list[i]]=1;
-		post("\nselected these blocks",sc_list);
-		block_and_wire_colours();
+		if(state==-1){
+			select_all();
+		}else{
+			sidebar.selected = state;
+			//need to now select just the blocks that are in this state
+			var stat = states.get("states::"+state);
+			var sc_list = stat.getkeys();
+			selected.block=[];
+			set_sidebar_mode("edit_state");
+			for(var i = MAX_BLOCKS;i>=0;i--) selected.block.push(0);
+			for(var i = sc_list.length-1;i>=0;i--) selected.block[sc_list[i]]=1;
+			post("\nselected these blocks",sc_list);
+			block_and_wire_colours();
+		}
 	}else{
 		fire_whole_state(state);
 	}
