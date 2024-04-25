@@ -960,7 +960,10 @@ function remove_connection(connection_number){
 		}
 	}
 	var t_subvoices = 1;
-	if(t_type=="audio") t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
+	if(t_type=="audio"){
+		t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
+		if((t_subvoices==1)&&(blocks.contains("blocks["+t_block+"]::to_subvoices"))) t_subvoices = blocks.get("blocks["+t_block+"]::to_subvoices");
+	}
 	
 	var f_voices = [];
 	var t_voices = [];
@@ -1415,6 +1418,7 @@ function remove_potential_wire(gl_objects_only){
 }
 
 function make_connection(cno,existing){
+	post("\nmaking connection",cno);
 // takes the new connection dict and 
 // works out the route for the connection
 // makes the connection
@@ -1433,13 +1437,18 @@ function make_connection(cno,existing){
 	var t_subvoices = 1;
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
-		t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
 		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
 	}else if(f_type=="parameters"){
 		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
 			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
 		}
 	}
+	var t_subvoices = 1;
+	if(t_type=="audio"){
+		t_subvoices = Math.max(1,blocks.get("blocks["+t_block+"]::subvoices"));
+		if((t_subvoices==1)&&(blocks.contains("blocks["+t_block+"]::to_subvoices"))) t_subvoices = blocks.get("blocks["+t_block+"]::to_subvoices");
+	}
+	post("f_s",f_subvoices,"t_s",t_subvoices,blocks.get("blocks["+f_block+"]::name"));
 	var f_voices = [];
 	var t_voices = [];
 	var f_voice,t_voice;
@@ -1682,7 +1691,7 @@ function make_connection(cno,existing){
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 							}
-							//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+							post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							if(loading.progress!=0){
 								deferred_matrix.push(outmsg);
 							}else{
@@ -2114,7 +2123,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var fpoly = f_subvoices*blocks.get("blocks["+from+"]::poly::voices");
 	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
-
+	post("\nBNCM",f_subvoices,t_subvoices);
 	new_connection.parse('{ }');
  	new_connection.replace("from::number",from);
 	new_connection.replace("to::number", to);
