@@ -15,7 +15,7 @@
 		},
 		"parameters" : [
 			{
-				"name" : "initial loop length_(beats)",
+				"name" : "initial loop length_(in divisions)",
 				"type" : "int",
 				"values" : ["uni", 1, 64, "lin"],
 				"wrap" : 0,
@@ -26,7 +26,7 @@
 				"type" : "menu_l",
 				"values" : [1,2,3,4],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.95
 			}
 		]
 	}
