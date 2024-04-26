@@ -51,8 +51,8 @@ function draw(){
 		maxl=1;
 		for(i=0;i<v_list.length;i++) {
 			cursors[i]=-1;
-			l[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+3)*128)+1;
-			s[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2)*128);
+			l[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+3)*127.99)+1;
+			s[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2)*127.99);
 			if(l[i]+s[i]>maxl) maxl = l[i]+s[i];
 		}
 		fulldraw();
@@ -95,12 +95,12 @@ function update(){
 		change = 0;
 		for(i=0;i<v_list.length;i++) {
 			//cursors[i]=-1;
-			var ll = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+3)*128)+1;
+			var ll = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+3)*127.99)+1;
 			if(l[i]!=ll){
 				l[i]=ll;
 				change = 1;
 			}
-			ll = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2)*128);
+			ll = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2)*127.99);
 			if(s[i] != ll){
 				s[i]=ll;
 				change = 1;
@@ -122,7 +122,7 @@ function update(){
 					if(!mini){
 						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 						outlet(1,"write",cursors[r]);
-						i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1+cursors[r])*128);
+						i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1+cursors[r])*127.99);
 						if(i>0){
 							i--;
 							outlet(1,"frgb",menucolour);
@@ -166,8 +166,8 @@ function store(){
 			maxl=1;
 			for(i=0;i<v_list.length;i++){
 				cursors[i]=-1;
-				l  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1)*128)+3;
-				s  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*128)+2;
+				l  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1)*127.99)+3;
+				s  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*127.99)+2;
 				if(l+s>maxl) maxl = l+s;
 			}		
 		}
