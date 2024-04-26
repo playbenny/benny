@@ -1040,12 +1040,12 @@ function save_song(selectedonly){
 	var per_v = [];
 	if(states.contains("states::current")) states.remove("states::current");
 	for(b=0;b<MAX_BLOCKS;b++){
-		if((ui_patcherlist[b]!='blank.ui')&&(ui_patcherlist[b]!='self')) ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
 		store[b] = [];
 		per_v[b] = [];
-		var vl = voicemap.get(b);
-		if(!Array.isArray(vl)) vl = [vl];
 		if(blocks.contains("blocks["+b+"]::name")){
+			var vl = voicemap.get(b);
+			if(!Array.isArray(vl)) vl = [vl];
+			if((ui_patcherlist[b]!='blank.ui')&&(ui_patcherlist[b]!='self')) ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
 			var ty=blocks.get("blocks["+b+"]::type");
 			if(ty == "note"){
 				for(v=0;v<vl.length;v++){
