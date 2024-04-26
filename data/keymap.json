@@ -57,7 +57,6 @@
         "-6" : ["del","delete_selection"],
         "-7" : ["delete","delete_selection"],
         "370" : ["ctrl-R", "arm_selected_blocks"],
-        "109" : ["m", "mute_selection", -1],
         "365" : ["ctrl-M", "mute_selection", -1],
         "355" : ["ctrl-C", "copy_selection"],
         "376" : ["ctrl-X", "cut_selection"],
