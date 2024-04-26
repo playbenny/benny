@@ -292,7 +292,8 @@ var automap = {
 		darkest : [],
 		dark : [],
 		colour : []
-	}
+	},
+	assignmode : 0 //actually covers all controllers, if it's in move-to-pick mode this is 1.
 }
 
 var qwertym = {

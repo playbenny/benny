@@ -2611,3 +2611,8 @@ function conn_assign_controller_moved(type,number){
 function conn_toggle_control_auto_assign(){
 	post("\ntodo toggle auto-turn-on-auto");
 }
+
+function turn_off_controller_assign_mode(){
+	note_poly.setvalue(0,"connection_assign_mode",0);
+	automap.assignmode = 0;
+}

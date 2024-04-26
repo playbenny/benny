@@ -2029,6 +2029,7 @@ function draw_sidebar(){
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		clear_sidebar_paramslider_details();
+		if(automap.assignmode)turn_off_controller_assign_mode();
 		sidebar.scroll.position = 0;
 		view_changed = true;
 	}
@@ -4693,7 +4694,9 @@ function draw_sidebar(){
 				if(sidebar.connection.show_from_outputs){
 					auto_pick_controller = 1;
 					note_poly.setvalue(firv+1,"connection_assign_mode",1);
+					automap.assignmode = 1;
 				}else{
+					automap.assignmode = 0;
 					note_poly.setvalue(firv+1,"connection_assign_mode",0);
 				}
 			}
