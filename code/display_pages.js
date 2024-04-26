@@ -2677,7 +2677,7 @@ function draw_sidebar(){
 							}else if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
 								automap.mapped_q = -1;
 								automap.mapped_q_channels = [];
-								post("\n\nTODO: we can only cue signals back from hardware. ones going only TO hardware would require a separate bit of routing code that isn't done.");
+								//post("\n\nTODO: we can only cue signals back from hardware. ones going only TO hardware would require a separate bit of routing code that isn't done.");
 								/*
 								var newlist = blocktypes.get(block_name+"::connections::in::hardware_channels");
 								if(!Array.isArray(newlist)) newlist = [newlist];
