@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 0,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -94,7 +94,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 712.0, 648.0, 76.0, 35.0 ],
+					"patching_rect" : [ 712.0, 648.0, 76.0, 36.0 ],
 					"text" : "string u826029556"
 				}
 
@@ -368,7 +368,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -469,7 +469,7 @@
 										"appversion" : 										{
 											"major" : 8,
 											"minor" : 6,
-											"revision" : 0,
+											"revision" : 1,
 											"architecture" : "x64",
 											"modernui" : 1
 										}
@@ -1139,7 +1139,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1471,7 +1471,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 6,
-							"revision" : 0,
+							"revision" : 1,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1933,7 +1933,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1215.0, 477.0, 150.0, 47.0 ],
+					"patching_rect" : [ 1215.0, 477.0, 150.0, 48.0 ],
 					"text" : "advance backwards when reversed\n"
 				}
 
@@ -2073,6 +2073,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-185",
+					"int" : 1,
 					"maxclass" : "gswitch2",
 					"numinlets" : 2,
 					"numoutlets" : 2,
@@ -2148,7 +2149,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 901.0, 1257.0, 150.0, 33.0 ],
+					"patching_rect" : [ 901.0, 1257.0, 150.0, 34.0 ],
 					"text" : "target autoadv sent as midi"
 				}
 
@@ -2220,7 +2221,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 987.5, 804.0, 103.0, 47.0 ],
+					"patching_rect" : [ 987.5, 804.0, 103.0, 48.0 ],
 					"text" : "this is so that muted blocks stop advancing"
 				}
 
@@ -2377,7 +2378,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 108.25, 605.0, 150.0, 33.0 ],
+					"patching_rect" : [ 108.25, 605.0, 150.0, 34.0 ],
 					"text" : "this is so it starts playing on load if song is playing"
 				}
 
@@ -2449,7 +2450,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 289.5, 1192.0, 151.0, 100.0 ],
+					"patching_rect" : [ 289.5, 1192.0, 151.0, 103.0 ],
 					"text" : "this bit swaps the channels - so you can use 1 voice for 2 ch, or 2 voices for 2ch, up to you. the latter lets you flock/spread etc\\\n"
 				}
 
@@ -2733,6 +2734,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-231",
+					"int" : 1,
 					"maxclass" : "gswitch2",
 					"numinlets" : 2,
 					"numoutlets" : 2,
@@ -2761,7 +2763,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 542.0, 1069.0, 69.0, 33.0 ],
+					"patching_rect" : [ 542.0, 1069.0, 69.0, 34.0 ],
 					"text" : "xfade time in ms"
 				}
 
@@ -2858,8 +2860,8 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 508.5, 375.0, 109.0, 22.0 ],
-					"text" : "r humaniser_mean"
+					"patching_rect" : [ 508.5, 375.0, 107.0, 22.0 ],
+					"text" : "r mean_clock_drift"
 				}
 
 			}
@@ -2894,7 +2896,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 991.0, 495.0, 150.0, 33.0 ],
+					"patching_rect" : [ 991.0, 495.0, 150.0, 34.0 ],
 					"text" : "autoadvance, only for the first voice of a block"
 				}
 
@@ -2955,7 +2957,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 28.850000000000023, 423.0, 189.0, 35.0 ],
+					"patching_rect" : [ 28.850000000000023, 423.0, 189.0, 36.0 ],
 					"text" : ";\r\nto_blockmanager request_globals"
 				}
 
@@ -3221,7 +3223,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1499.0, 602.0, 157.0, 74.0 ],
+					"patching_rect" : [ 1499.0, 602.0, 157.0, 75.0 ],
 					"text" : "early change:open a gate so the next beat triggers it. you know what fraction of a slice that is, just add it on and fire it"
 				}
 
@@ -3365,7 +3367,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1507.0, 551.0, 150.0, 33.0 ],
+					"patching_rect" : [ 1507.0, 551.0, 150.0, 34.0 ],
 					"text" : "here, add q-offset to human timing mean"
 				}
 
@@ -3510,7 +3512,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 369.5, 768.5, 108.0, 33.0 ],
+					"patching_rect" : [ 369.5, 768.5, 108.0, 34.0 ],
 					"text" : "ms per slice (via block settings)"
 				}
 
@@ -3535,7 +3537,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 489.5, 703.5, 113.0, 33.0 ],
+					"patching_rect" : [ 489.5, 703.5, 113.0, 34.0 ],
 					"text" : "ms per slice (via wave settings)"
 				}
 
@@ -3805,7 +3807,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 304.75, 536.0, 150.0, 60.0 ],
+					"patching_rect" : [ 304.75, 536.0, 150.0, 62.0 ],
 					"text" : "get wave data, only enable play if you've got wave data\n"
 				}
 
@@ -4093,6 +4095,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 812.5, 1263.5, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -4128,10 +4134,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 132.5, 1233.5, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -4144,10 +4146,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 21.5, 133.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -4159,10 +4157,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 54.5, 1233.5, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -4175,10 +4169,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ -15.5, 133.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -4191,10 +4181,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ -42.5, 133.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -6516,7 +6502,9 @@
 				}
 
 			}
- ]
+ ],
+		"dependency_cache" : [  ],
+		"autosave" : 0
 	}
 
 }
