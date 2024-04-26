@@ -113,23 +113,22 @@ function loadbang(){
 }
 
 function store(){
-	var r;
 	if(block>=0){
-		var i,l,s;
+		var i,s,r;
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+		var transf_arr = [];
+		for(r=0;r<v_list.length;r++){
+			transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], l[r]);
+			var d = 0;
+			while(d==0){
+				d = transf_arr.pop();
+			}
+			transf_arr.push(d);
+			blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
+		}
 	}else{
 		post("error storing curve.map.1d - unknown block",block,v_list);
-	}
-	var transf_arr = [];
-	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], l[r]);
-		var d = 0;
-		while(d==0){
-			d = transf_arr.pop();
-		}
-		transf_arr.push(d);
-		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
 }
 
