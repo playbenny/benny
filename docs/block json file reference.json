@@ -1,0 +1,170 @@
+block json file reference
+-------------------------
+
+json doesn't support comments, so i've listed the keys and interspersed explanations. copy them
+out into your own json files, removing all my comments.
+
+use an editor that will check the syntax of json for you, it'll save you time.
+
+the whole thing is in {}, and contains one key, which is named as the block name, 
+and the json file has to be saved as the same name too. eg this example is based on utility.delay.json
+
+{
+	"utility.delay" : { //the block name. '.' and '+' make newlines in the block labels
+        //if you want your own prefix (eg my friend luke starts the name of all his blocks with abb.)
+        //benny will automatically add a new section to the end of the blocks page. you can reorder
+        //the sections editing userconfig.json
+		"patcher" : "utility.delay",   //the name of the max patch for a voice of your block
+		"type" : "audio",  //audio, or note. in the hw config file "hardware" is a possibility.
+		"block_ui_patcher" : "blank.ui", //write "blank.ui" unless it has a separate ui drawing max patch
+        //in which case write the name here. 
+        //OR if you write "self" then benny lets you pop open the voice's max patch so you can
+        // build your block a UI in a separate max window rather than inside benny if you prefer.
+		//ui keys:
+        //"ui_in_sidebar_height" : 1, //if this key is present it draws the ui in the sidebar above the parameters, using this many rows of space. your ui can adjust to proportions if you want it to...
+		//"no_ui_in_panel" : 1,//this key prevents it displaying the ui in the panels page of benny
+		//"no_edit" : 1,//this key prevents the ui being popped open from the sidebar/panels - it can't be made the main focus of the window ever.
+		"help_text" : "the help text is displayed under 'help' and in the blocks menu",
+		"synonyms" : "bbd", //other words that you want it to show up under when people type to search - 
+        // eg, my fx.delay.buckets i think of as a bbd even though that's not in the name so i want it to come up if i type bbd..
+		"max_polyphony" : 0, //0=unlimited polyphony, 1-... = sets a hard limit on how many voices are allowed
+		"upsample" : 1, //[OPTIONAL, AUDIO BLOCKS ONLY]does it default to upsampling, if so how many x 
+		    //the subvoices keys work like this: normal blocks 1 voice is 1 channel, with a mod input
+            //and a second output. some blocks though, a voice has (eg) pairs of ins and outs, like for
+            //example a stereo vst.
+            //this influences default ways it considers wiring the blocks up, as well as the display.
+            //some rare blocks have one kind of ins and one kind of outs. you can set those - see the examples
+            //underneath, but you have to still set subvoices = 2. an example of this is a mono input-ed stereo
+            //panner block
+            //
+        // "subvoices" : 2, //[OPTIONAL, AUDIO BLOCKS ONLY]
+            //"from_subvoices": 2,
+            // "to_subvoices" : 1, //<ie the input is 2 inputs, the output is 1 output in stereo
+		// "exclusive" : 1, //only allow one of this block per song
+        "connections" : {
+            //depending on block type.. all blocks can input + output midi and output parameters (1d values like an lfo)
+            //block can output several kinds of thing if it wants to. or not.
+			"in" : { 
+                //"audio" : [ "in" , "one or two audio ins"], //[AUDIO BLOCKS ONLY]
+                "midi" : ["notes in", "aux trigger", "transpose in"]
+            },
+            "out" : {
+                    "audio" : [ "out", "one or two audio outs" ]//, remember commas after every line apart from the last one of a {}
+                    //or "parameters" [ "value", "value2", "etc" ]
+                    //or "midi" : ["notes out 1", "other notes out", "filtered notes", "delayed notes", "etc" ]
+                }
+            },
+        // if you want parameters, you need a groups key. each group is a row of parameters
+		"groups" : [
+			{ 
+                //every group needs the "contains" key, with a list of parameter numbers
+				"contains" : [0,1,1,3] //if you repeat a parameter number it makes that slider (or whatever)
+                //twice as wide. etc. [0,0,0,0,0,0,1,1,1,3] is allowed..
+			},
+            {
+                "contains" : [2,2,5], //must have a contains key!
+                "header" : "text for a narrow label above the row",
+                "colour" : -10, // the prefered way is to do it like this, a single number, a jump
+                //relative to the block colour in the rainbow palette defined in 'config.json'.
+                //eg something like -10,-5,0,5,10 is a nice spread of colours for the rows 
+                //the idea being it supports user palettes if people have a preferred rainbow eg
+                //for accessibility?? BUT
+                //if you absolutely must specifiy an absolute RGB then you can like this [255, 20, 20]
+                "height" : 1 //height of the sliders. if >=1 then you get sliders with label text below
+                //if 0 you get sliders of height 1 with superimposed label text
+                //if between 0 < x < 1 you get a thin row. good for rows of buttons?
+            },
+            {
+                "contains" : [4],
+                "onepervoice" : 1 //normally a block acts like there is one slider for all the voices
+                //but by holding ctrl (or ctrl-alt-shift? i forget the tilt key combo rn TODO) you can
+                //adjust individual voices as an offset from the block-level value. BUT, for example for
+                //mixer channel blocks, where you expect a row of polyphonic voices as the channels of a 
+                //mixer, the user wants to default to controlling the individual voice values. the overall
+                //block level value is kind of obscured, but is set by the 'default' key under the parameter
+            }
+		],
+		"parameters" : [
+			{
+				"name" : "delay_samples", //must have a name
+				"type" : "float", // a floating-point number (gets written to 2sf iirce TODO check)
+                // or "float4", //a floating-point number with more digits of precision displayed
+                // or "int", // an integer
+				"values" : ["uni", 0, 1000, "lin"], //this is what values for these types looks like - "uni" or "bi", min, max, then the shape
+                //possible shapes: "lin", 
+                //  "exp" is a pow(2,x) curve
+                //  "exp10", "exp100", "exp1000" are progressively more squashed
+                //  "log" is the opposite, with "log10", "log100", "log1000"
+                // the voiceheader subpatch you put in every block outputs parameters with range and curve
+                // applied ready for you to use in your patcher.
+				"wrap" : 0, // modulation, controllers with encoders, etc, will wrap around
+				"default" : 0.12 // NOTE this is in the 0-1 range used internally for params,
+                     // not in the range/curve you specified. at the moment trial and error or
+                     // setting, then saving, then looking at the savefile (at the end, 'current' state)
+			},
+			{
+                "name" : "delay_signal_vectors",
+				"type" : "int",
+				"values" : ["bi", 0, 32, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0, //under settings for every block there's a facility to add random
+                //deviations to the parameter values of each voice - like a wonky old polysynth.
+                //the 'error_scale' parameter, if present, multiplies those deviations - so you can 
+                //disable it entirely per-parameter, or accentuate the effect in places where it works
+				"default" : 0
+			},
+			{
+                "name" : "delay_in_calendar_units",
+                "type" : "menu_i",
+                // a series of menu choices with no inbetween states
+                // or "menu_f", // a series of menu choices with smooth fades between them (eg osc state)
+                // or "menu_b", // a button that toggles or cycles
+                //     works in conjunction with onepervoice and polyphony
+                // or "menu_l", // a row or grid or column of buttons
+                // _b and _l are really just fancy ways to draw menu_i, so in some circumstances it falls back to drawing the _i version at the moment
+                // or "button", // this is different to the menu button, it just sends a 'button pressed' message to the voice or all the voices or etc
+				"values" : ["day", "week", "month", "year"], // just list the menu entries
+				"wrap" : 0, // as with other types, does it wrap (with modulation, or controllers with encoders, or scrollwheel or dragging on the slider)
+				"error_scale" : 0,
+				"default" : 0.49 //this is the second entry, "week" (think of 0-1 divided into 4 slices)
+			},
+			{
+				"name" : "repeat",
+				"type" : "menu_b", 
+				"values" : ["on", "off"],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "action!",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","8",8] // a list, in groups of 3 as follows:
+                //"firstvoice","voices" - all voices,"block" - to the ui patcher,"core" - run a fn in the core js.. (advanced..)
+                //"8" < this is the label on the button
+                //8 <- this can be a number or a "string like this" and it gets sent to the max patcher you specified (in1 - it'll come out the last output of the voiceheader subpatcher) 
+            },
+			{
+				"name" : "chip_size",
+				"type" : "menu_l",
+				"values" : ["64","128","256","512","1024","2048","4096","8192", "16384", "32768", "65536"],
+				"error_scale" : 0,
+				"columns" : 4, // note here how specifying a number of columns makes it divide the list into chunks that make the ui make sense
+                // this key taken from fx.delay.buckets  
+				"wrap" : 0,
+				"default" : 0.61
+			},
+			{
+				"name" : "delay_beats",
+				"type" : "float",
+				"error_scale" : 0,
+				"values" : ["uni", 0, 8000, "exp10"],
+				"wrap" : 0,
+				"default" : 0
+			}
+
+		]
+	}
+}

@@ -4,6 +4,7 @@
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Bucket Brigade Delay emulation. Accurate model of writing into a delay line with variable sample rate, responds to input changes in the same way a real BBD does. Additionally includes pre-filter, compander, soft sat, boundary loss and clock leakage, post-filter, HPF in one of two positions, and bit depth quantise (to simulate an early digi-delay rather than a BBD).",
+		"synonyms" : "BBD",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
