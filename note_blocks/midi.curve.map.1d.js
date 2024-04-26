@@ -130,8 +130,6 @@ function store(){
 				blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 			}
 		}
-	}else{
-		post("error storing curve.map.1d - unknown block",block,v_list);
 	}
 }
 
