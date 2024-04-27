@@ -49,9 +49,20 @@ and the json file has to be saved as the same name too. eg this example is based
                 "midi" : ["notes in", "aux trigger", "transpose in"]
             },
             "out" : {
-                    "audio" : [ "out", "one or two audio outs" ]//, remember commas after every line apart from the last one of a {}
+                    "audio" : [ "out", "one or two audio outs" ],
                     //or "parameters" [ "value", "value2", "etc" ]
                     //or "midi" : ["notes out 1", "other notes out", "filtered notes", "delayed notes", "etc" ]
+                    "dontdefaultall" : 1,//normally connections from a block with many voices assume
+                    //you're connecting from all. some blocks it's always going to be an individual voice
+                    //which is what this key is for. saves a click..
+                    "midi" : [ "clock",  "play" ],
+                    "parameters" : [ "bar count" ],
+                    "descriptions" : { //optional help text for the connections menu
+                        "midi" : [ "notes at the rate selected", "status of the play control"],
+                        "parameters" : [ "bar counter" ],
+                        "audio" : ["main output", "this out has a very special set of functions described here"]
+                    }
+    
                 }
             },
         // if you want parameters, you need a groups key. each group is a row of parameters
@@ -154,6 +165,7 @@ and the json file has to be saved as the same name too. eg this example is based
 				"columns" : 4, // note here how specifying a number of columns makes it divide the list into chunks that make the ui make sense
                 // this key taken from fx.delay.buckets  
 				"wrap" : 0,
+                "nomap" : 1, // the nomap key makes it impossible to make a connection to modulate this parameter
 				"default" : 0.61
 			},
 			{
