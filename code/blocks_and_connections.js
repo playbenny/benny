@@ -2115,9 +2115,9 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var f_subvoices = 1;
 	var t_subvoices = 1;
 	if(blocks.contains("blocks["+from+"]::subvoices")) f_subvoices = blocks.get("blocks["+from+"]::subvoices");
-	if((f_subvoices==1)&&(blocktypes.contains(fromname+"::from_subvoices")))f_subvoices=blocktypes.get(fromname+"::from_subvoices");
+	if(blocks.contains("blocks["+from+"]::from_subvoices")) f_subvoices=blocks.get("blocks["+from+"]::from_subvoices");
 	if(blocks.contains("blocks["+to+"]::subvoices")) t_subvoices = blocks.get("blocks["+to+"]::subvoices");
-	if((t_subvoices==1)&&(blocktypes.contains(toname+"::to_subvoices")))t_subvoices=blocktypes.get(toname+"::to_subvoices");
+	if(blocks.contains("blocks["+to+"]::to_subvoices")) t_subvoices = blocks.get("blocks["+to+"]::to_subvoices");
 	var fpoly = f_subvoices*blocks.get("blocks["+from+"]::poly::voices");
 	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
@@ -2134,6 +2134,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	
 	sidebar.connection.default_out_applied = 0;
 	sidebar.connection.default_in_applied = 0;
+	var spreadwide = 0;
 	
 	var d = new Dict;
 	d = blocktypes.get(fromname);
@@ -2166,7 +2167,6 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}
 	}
 	var notall = 0;
-	var spreadwide = 0;
 	if(blocktypes.contains(fromname+"::connections::out::dontdefaultall")) notall = blocktypes.get(fromname+"::connections::out::dontdefaultall");
 	if(fromv==-1){
 		if(notall){
@@ -2253,8 +2253,19 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if(!((t_type=="audio")||(t_type=="hardware"))){
 			tov /= t_subvoices;
 			tov |= 0;
+			tov +=1;
+		}else{
+			var ttov = tov * t_subvoices+1;
+			tov=[];
+			for(var tsi=0;tsi<t_subvoices;tsi++){
+				tov.push(ttov+tsi);
+			}
+			if((t_subvoices==2)&&(f_subvoices==2)){
+				new_connection.replace("conversion::offset",1);
+				//this make stereo-stereo ones go wide
+			}
 		}
-		new_connection.replace("to::voice", tov+1);
+		new_connection.replace("to::voice", tov);
 	}
 	
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){

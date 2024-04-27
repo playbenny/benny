@@ -768,7 +768,6 @@ function send_button_message(parameter, value){
 		messnamed("to_blockmanager",value[1]);
 	}else{
 		post("unhandled send button message",parameter,"value",value,"\n");
-
 	}
 }
 

@@ -750,16 +750,24 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										potential_connection.replace("to::input::type","potential");
 										potential_connection.replace("from::output::type","potential");
 										var temptovoice = usermouse.hover[2];
-										if(blocks.contains("blocks["+usermouse.hover[1]+"]::subvoices")){
+										/*if(blocks.contains("blocks["+usermouse.hover[1]+"]::subvoices")){
+											var t_sub = blocks.get("blocks["+usermouse.hover[1]+"]::subvoices");
+											if(t_sub>1){
+												if(blocks.contains("blocks["+usermouse.hover[1]+"]::to_subvoices")){
+													t_sub = blocks.get("blocks["+usermouse.hover[1]+"]::to_subvoices");
+												}
+											}
+											post("\nsubv",t_sub,blocks.get("blocks["+usermouse.hover[1]+"]::name"));
+
 											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
-											temptovoice = temptovoice / blocks.get("blocks["+usermouse.hover[1]+"]::subvoices");
-										}
+											temptovoice = temptovoice/t_sub;
+										}*/
 										potential_connection.replace("to::voice",temptovoice);
 										var tempfromvoice = usermouse.ids[2];
-										if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices")){
+										/*if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices")){
 											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
 											tempfromvoice = tempfromvoice / blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
-										}
+										}*/
 										potential_connection.replace("from::voice",tempfromvoice);
 										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
 										if(wires_potential_connection==-1){
