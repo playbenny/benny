@@ -1252,6 +1252,7 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 		for(var p=0;p<t;p++){
 			if(blocktypes.contains(t_name+"::parameters["+p+"]::nomap") && (blocktypes.get(t_name+"::parameters["+p+"]::nomap")==1)){
 				//skip
+				l.push(null);
 			}else{
 				l.push(blocktypes.get(t_name+"::parameters["+p+"]::name"));
 			}
@@ -1263,19 +1264,21 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 	if(l.length>0){
 		var c = config.get("palette::connections::" + ty);
 		for (var o = 0; o < l.length; o++) {
-			if(curr==o){
-				lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
-				lcd_main.message("frgb", 0,0,0);
-			}else{
-				lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c[0] * bg_dark_ratio, c[1] * bg_dark_ratio, c[2] * bg_dark_ratio);
-				lcd_main.message("frgb", c);
+			if(l[o]!=null){
+				if(curr==o){
+					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
+					lcd_main.message("frgb", 0,0,0);
+				}else{
+					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c[0] * bg_dark_ratio, c[1] * bg_dark_ratio, c[2] * bg_dark_ratio);
+					lcd_main.message("frgb", c);
+				}
+				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
+				lcd_main.message("write", l[o]);
+				lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
+				lcd_main.message("write", ty);
+				click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+				y_offset+=7*fo1;
 			}
-			lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
-			lcd_main.message("write", l[o]);
-			lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
-			lcd_main.message("write", ty);
-			click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
-			y_offset+=7*fo1;
 		}
 	}
 	return y_offset;
