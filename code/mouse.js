@@ -618,9 +618,24 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				var v = mouse_click_values[usermouse.last.got_i];
 				if(usermouse.drag.release_on_exit && (usermouse.last.got_i != usermouse.got_i)){
 					//post("\nDRAGOUT!!!!");
-					usermouse.drag.release_on_exit = 0;
-					usermouse.left_button = 0;
-					f = "none";
+					//nb here you should check what you've dragged onto
+					//and only do this if you've dragged onto another click-to-set slider
+					//(i think from the index -> param slider details 18?)
+					var ppp=1;
+					var ppf=mouse_click_actions[usermouse.got_i];
+					if(ppf == data_edit){
+						ppp=0;
+					}else if(ppf == sidebar_parameter_knob){
+						ppp = mouse_click_parameters[usermouse.got_i];
+						ppp = paramslider_details[ppp[0]][18];
+					}else{
+						ppp=1;
+					}
+					if(!ppp){
+						usermouse.drag.release_on_exit = 0;
+						usermouse.left_button = 0;
+						f = "none";
+					}
 				}
 				if(f!="none"){
 					xdist/=(mainwindow_width*0.25);
