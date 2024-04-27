@@ -648,7 +648,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}
 					if(usermouse.drag.starting_value_y==-1){
-						xdist += ydist;
+						if(usermouse.drag.release_on_exit){
+							xdist=ydist; //click-to-set sliders don't respond to horizontal drag
+						}else{
+							xdist += ydist;
+						}
 					}else{
 						f(v,usermouse.drag.starting_value_y+ydist);
 					}
