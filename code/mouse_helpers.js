@@ -1252,6 +1252,7 @@ function data_edit(parameter,value){
 			}else if(parameter[1]==2){
 				newval = (parameter[3] - usermouse.x)/(parameter[3]-parameter[2]);
 			}
+			newval = Math.min(1,Math.max(0,newval));
 			if(newval!=null){
 				voice_data_buffer.poke(1,parameter[0],newval);
 			}
