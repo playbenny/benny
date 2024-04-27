@@ -157,32 +157,23 @@ function loadbang(){
 }
 
 function store(){
-	var r;
 	if(block>=0){
-		if(maxl<1){
-			var i,l,s;
-			v_list = voicemap.get(block);
-			if(typeof v_list=="number") v_list = [v_list];
+		v_list = voicemap.get(block);
+		if(typeof v_list=="number") v_list = [v_list];
+		for(var i=0;i<v_list.length;i++){
 			maxl=1;
-			for(i=0;i<v_list.length;i++){
-				cursors[i]=-1;
-				l  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1)*127.99)+3;
-				s  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*127.99)+2;
-				if(l+s>maxl) maxl = l+s;
-			}		
-		}
+			for(var l = MAX_DATA-1;l>0;l--){
+				if(voice_data_buffer.peek(1, MAX_DATA*v_list[i]+l)!=0){
+					maxl=l+1;
+					l=0;
+				}
+			}
+			var transf_arr = [];
+			transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[i], maxl);
+			blocks.replace("blocks["+block+"]::voice_data::"+i, transf_arr);
+		}		
 	}else{
-		post("error storing seq.grid - unknown block",block,v_list);
-	}
-	var transf_arr = [];
-	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], maxl+1);
-		var d = 0;
-		while(d==0){
-			d = transf_arr.pop();
-		}
-		transf_arr.push(d);
-		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
+		post("error storing seq.values - unknown block",block,v_list);
 	}
 }
 
