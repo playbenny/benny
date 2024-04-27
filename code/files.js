@@ -780,8 +780,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		}else if((type=="hardware") && (hwmidi!="") && RECYCLING){
 			var tnv = find_note_voice_to_recycle(hwmidi);
 			new_voice = tnv[0];
-			recycled = tnv[1];
-			post("\nrecycling hardware midi handler:",tnv[0],tnv[1]);
+			recycled = tnv[1]; //this is for the note voice that handles hardware midi
 		}else{
 			new_voice = next_free_voice(type,block_name);
 		}
