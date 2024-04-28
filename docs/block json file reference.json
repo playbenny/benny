@@ -65,6 +65,13 @@ and the json file has to be saved as the same name too. eg this example is based
     
                 }
             },
+        "default_polymode" : { //optional, defines default polyphony allocator behaviour for the block
+            "stack_mode" : "1x",
+            "choose_mode" : "cycle free",
+            "steal_mode" : "oldest",
+            "return_mode" : 1,
+            "latching" : 0
+        },
         // if you want parameters, you need a groups key. each group is a row of parameters
 		"groups" : [
 			{ 
@@ -177,6 +184,13 @@ and the json file has to be saved as the same name too. eg this example is based
 				"default" : 0
 			}
 
-		]
+		],
+        "panel_parameters" : [0,1,1,2], //default parameters for the panels page view of this block
+         //optional key, if not present (and there's no ui to display on a panel) it doesn't default
+         //to including a panel for the block (the user can turn it on by selecting some params for it though)
+        "voice_data" : { // whole key is optional
+            "defaults" : [ 0,0,0,0,0,0,0,0,0 ] //up to 16000 values that are loaded into the 'voice data' buffer as a default
+             // (voice data is a load of fast data storage allocated for each voice to use. eg my sequencers often use this to store patterns)
+        }
 	}
 }
