@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3796237216,
+	"modificationdate" : 3797142174,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1127,7 +1127,7 @@
 				"local" : 1
 			}
 ,
-			"core.input.control.basic.maxpat" : 			{
+			"mix.channel.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -1135,6 +1135,16 @@
 			"pepper_parachute.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
+			}
+,
+			"core.input.control.basic.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"example.note.block.maxpat" : 			{
@@ -1186,7 +1196,7 @@
 
 			}
 ,
-			"mix.channel.ui.maxpat" : 			{
+			"source.random.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
@@ -1472,6 +1482,11 @@
 				"local" : 1
 			}
 ,
+			"mix.channel.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
 			"output_queue_watcher.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -1597,7 +1612,7 @@
 
 			}
 ,
-			"mix.channel.ui.js" : 			{
+			"source.random.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
