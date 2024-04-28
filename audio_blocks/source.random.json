@@ -2,7 +2,10 @@
 	"source.random" : {
 		"patcher" : "source.random",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "source.random.ui",
+		"ui_in_sidebar_height" : 3,
+		"no_edit": 1,
+		"synonyms" : "shift register hold",
 		"help_text" : "Classic stepped and continuous random source.£Multi colour noise source£shift register£sample & hold£slew£quantise",
 		"max_polyphony" : 0,
 		"upsample" : 1,
