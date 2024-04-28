@@ -9,7 +9,8 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in" ],
-				"midi" : [ "set available notes" ]
+				"midi" : [ "set available notes" ],
+				"automap_poly" : 0
 			},
 			"out" : {
 				"audio" : [ "audio out" ],

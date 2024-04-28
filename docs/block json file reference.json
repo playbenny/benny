@@ -46,7 +46,13 @@ and the json file has to be saved as the same name too. eg this example is based
             //block can output several kinds of thing if it wants to. or not.
 			"in" : { 
                 //"audio" : [ "in" , "one or two audio ins"], //[AUDIO BLOCKS ONLY]
-                "midi" : ["notes in", "aux trigger", "transpose in"]
+                "midi" : ["notes in", "aux trigger", "transpose in"],
+                "default" : 0, //optional, tell it the default input that connections go to
+				"automap_to" : 1, //optional, tell it the default target for midi keyboard automap
+                "automap_poly" : 0 //optional, if set 0 it automaps to the first voice instead of to the block polyallocator
+                     //useful for blocks where the individual voices work with polyphonic midi input - for example
+                     //fx.pitch.retune - its midi input is 'allowed notes' so with this setting when you select it
+                     //the keyboard controls the notes allowed (without this setting the keyboard could only pick one note at a time)
             },
             "out" : {
                     "audio" : [ "out", "one or two audio outs" ],

@@ -2590,7 +2590,16 @@ function draw_sidebar(){
 						if(ci>-2){
 							automap.mapped_k_v = sidebar.selected_voice;
 							if(sidebar.selected_voice == -1){
-								note_poly.setvalue( automap.available_k, "maptarget", block);
+								if(blocktypes.contains(block_name+"::connections::in::automap_poly")&&blocktypes.get(block_name+"::connections::in::automap_poly")==0){
+									// force selection to not be block if this key is set 
+									sidebar.selected_voice = 0; //this is a little hacky but it works?
+									block_and_wire_colours();
+									automap.mapped_k_v = 0;
+									var vl=bvs[sidebar.selected_voice];
+									note_poly.setvalue( automap.available_k, "maptarget", MAX_BLOCKS + vl);
+								}else{
+									note_poly.setvalue( automap.available_k, "maptarget", block);
+								}
 							}else{
 								var vl=bvs[sidebar.selected_voice];
 								note_poly.setvalue( automap.available_k, "maptarget", MAX_BLOCKS + vl);
