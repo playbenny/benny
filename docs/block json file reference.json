@@ -21,9 +21,9 @@ and the json file has to be saved as the same name too. eg this example is based
         //OR if you write "self" then benny lets you pop open the voice's max patch so you can
         // build your block a UI in a separate max window rather than inside benny if you prefer.
 		//ui keys:
-        //"ui_in_sidebar_height" : 1, //if this key is present it draws the ui in the sidebar above the parameters, using this many rows of space. your ui can adjust to proportions if you want it to...
-		//"no_ui_in_panel" : 1,//this key prevents it displaying the ui in the panels page of benny
-		//"no_edit" : 1,//this key prevents the ui being popped open from the sidebar/panels - it can't be made the main focus of the window ever.
+        "ui_in_sidebar_height" : 1, //if this key is present it draws the ui in the sidebar above the parameters, using this many rows of space. your ui can adjust to proportions if you want it to...
+		"no_ui_in_panel" : 1,//this key prevents it displaying the ui in the panels page of benny
+		"no_edit" : 1,//this key prevents the ui being popped open from the sidebar/panels - it can't be made the main focus of the window ever.
 		"help_text" : "the help text is displayed under 'help' and in the blocks menu",
 		"synonyms" : "bbd", //other words that you want it to show up under when people type to search - 
         // eg, my fx.delay.buckets i think of as a bbd even though that's not in the name so i want it to come up if i type bbd..
@@ -37,10 +37,10 @@ and the json file has to be saved as the same name too. eg this example is based
             //underneath, but you have to still set subvoices = 2. an example of this is a mono input-ed stereo
             //panner block
             //
-        // "subvoices" : 2, //[OPTIONAL, AUDIO BLOCKS ONLY]
-            //"from_subvoices": 2,
-            // "to_subvoices" : 1, //<ie the input is 2 inputs, the output is 1 output in stereo
-		// "exclusive" : 1, //only allow one of this block per song
+        "subvoices" : 2, //[OPTIONAL, AUDIO BLOCKS ONLY]
+            "from_subvoices": 2,
+            "to_subvoices" : 1, //<ie the input is 2 inputs, the output is 1 output in stereo
+		"exclusive" : 1, //[OPTIONAL] only allow one of this block per song
         "connections" : {
             //depending on block type.. all blocks can input + output midi and output parameters (1d values like an lfo)
             //block can output several kinds of thing if it wants to. or not.
