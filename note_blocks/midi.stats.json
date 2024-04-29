@@ -2,6 +2,7 @@
 	"midi.stats" : {
 		"patcher" : "midi.stats",
 		"type" : "note",
+		"synonyms" : "info count",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Useful metrics about the incoming midi:£-notecount£-lowest£-highest£-quietest£-loudest£-time interval between notes",
 		"max_polyphony" : 0,
