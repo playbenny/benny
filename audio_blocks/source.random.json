@@ -9,6 +9,9 @@
 		"help_text" : "Classic stepped and continuous random source.£Multi colour noise source£shift register£sample & hold£slew£quantise",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"voice_data" : {
+			"defaults" : [ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+		},
 		"connections" : {
 			"in" : { 
 				"audio" : [ "trigger", "audio" ],

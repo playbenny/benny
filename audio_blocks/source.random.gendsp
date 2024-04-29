@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 2,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -73,7 +73,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer prm(\"voice_parameter_buffer\");\r\nBuffer vdata(\"voice_data_buffer\");\r\nParam voice_offset(0);\r\nParam data_offset(0);\r\nParam tr(0);\r\nParam v(0);\r\nParam panic(0);\r\n\r\nHistory col, c1, c2, len, prob, blnd, shp, t2, t3,rng;\r\nHistory ov(0), held(0),point(0);\r\n\r\nHistory pink(0);\r\nHistory dark(0);\r\nHistory pois1(0);\r\nHistory pois(0);\r\nHistory upda(0);\r\n\r\nif(upda<=0){\r\n\tupda = vectorsize + 43;\r\n\tcol = 5.99*peek(prm,0+voice_offset, 0, channels=1);\r\n\tc1 = floor(col);\r\n\tc2 = abs(col-5)/16;\r\n\tt2 = col - c1;\r\n\tt3 = 1-t2;\r\n\tlen = floor(31*peek(prm,1+voice_offset, 0, channels=1))+0.9;\r\n\tprob = peek(prm,2+voice_offset, 0, channels=1);\r\n\tblnd = peek(prm,3+voice_offset, 0, channels=1);\r\n\tshp = pow(10,20*peek(prm, 4+voice_offset, 0, channels=1));\r\n\trng = (2+126*peek(prm, 5+voice_offset, 0, channels=1))/128;\r\n}\r\nupda-=1;\r\nwhite = (noise() + noise() + noise() + noise() + noise() + noise() + noise() + noise())/6;\r\npink += 0.1*white - 0.01*pink;\r\ndark += 0.01* pink - dark*0.01;\r\nblue = white*white*white;\r\npois1 += white*c2;\r\nif(pois1> 1){\r\n\tpois=1;\r\n\tpois1=0;\r\n}else if(pois1< -1){\r\n\tpois=-1;\r\n\tpois1=0;\r\n}else{\r\n\tpois=0;\r\n}\r\n\r\n\r\nx=0;\r\nif(c1==0){\r\n\tx = t3*dark + t2*pink;\r\n}else if(c1==1){\r\n\tx = t3*pink + t2*white;\r\n}else if(c1==2){\r\n\tx = t3*white + t2*blue;\r\n}else if(c1==3){\r\n\tx = t3*blue + t2*pois;\r\n}else if(c1==4){\r\n\tx = t3*pois + t2*in2;\r\n}else{\r\n\tx = t3*in2 + t2*dark;\r\n}\r\nx = clip(x,-1,1);\r\n\r\nout1 = x;\r\no3=0;\r\nif(tr+v+in1>ov){\r\n\to3=1;\r\n\t//trigger s&h\r\n\tpoint += 1;\r\n\t\r\n\tif(abs(noise())<= prob){\r\n\t\tpoke(vdata, (1-blnd)*peek(vdata,data_offset+point,0) + blnd*x, data_offset+point, 0);//(1-blnd)*peek(register,point,0) + blnd*x);\r\n\t}\r\n\theld = peek(vdata,data_offset+point,0);\r\n\tpoke(vdata, point-1,data_offset);\r\n\tif(point>=len){\r\n\t\tpoint=1;\r\n\t}\r\n}\r\n\tov=tr+v+in1+0.1;\r\nout4=o3;\r\nout3=rng*held;\r\nout2=slide(held,shp,shp);\r\n",
+					"code" : "Buffer prm(\"voice_parameter_buffer\");\r\nBuffer vdata(\"voice_data_buffer\");\r\nParam voice_offset(0);\r\nParam data_offset(0);\r\nParam tr(0);\r\nParam v(0);\r\nParam panic(0);\r\n\r\nHistory col, c1, c2, len, prob, blnd, shp, t2, t3,rng;\r\nHistory ov(0), held(0),point(0);\r\n\r\nHistory pink(0);\r\nHistory dark(0);\r\nHistory pois1(0);\r\nHistory pois(0);\r\nHistory upda(0);\r\n\r\nif(upda<=0){\r\n\tupda = vectorsize + 43;\r\n\tcol = 5.99*peek(prm,0+voice_offset, 0, channels=1);\r\n\tc1 = floor(col);\r\n\tc2 = abs(col-5)/16;\r\n\tt2 = col - c1;\r\n\tt3 = 1-t2;\r\n\tlen = floor(30.99*peek(prm,1+voice_offset, 0, channels=1))+1;\r\n\tprob = peek(prm,2+voice_offset, 0, channels=1);\r\n\tblnd = peek(prm,3+voice_offset, 0, channels=1);\r\n\tshp = pow(10,20*peek(prm, 4+voice_offset, 0, channels=1));\r\n\trng = (2+126*peek(prm, 5+voice_offset, 0, channels=1))/128;\r\n}\r\nupda-=1;\r\nwhite = (noise() + noise() + noise() + noise() + noise() + noise() + noise() + noise())/6;\r\npink += 0.1*white - 0.01*pink;\r\ndark += 0.01* pink - dark*0.01;\r\nblue = white*white*white;\r\npois1 += white*c2;\r\nif(pois1> 1){\r\n\tpois=1;\r\n\tpois1=0;\r\n}else if(pois1< -1){\r\n\tpois=-1;\r\n\tpois1=0;\r\n}else{\r\n\tpois=0;\r\n}\r\n\r\n\r\nx=0;\r\nif(c1==0){\r\n\tx = t3*dark + t2*pink;\r\n}else if(c1==1){\r\n\tx = t3*pink + t2*white;\r\n}else if(c1==2){\r\n\tx = t3*white + t2*blue;\r\n}else if(c1==3){\r\n\tx = t3*blue + t2*pois;\r\n}else if(c1==4){\r\n\tx = t3*pois + t2*in2;\r\n}else{\r\n\tx = t3*in2 + t2*dark;\r\n}\r\nout1 = x;\r\n\r\nx = clip(x*0.5+0.5,0,1);\r\n\r\no3=0;\r\nif(tr+v+in1>ov){\r\n\to3=1;\r\n\t//trigger s&h\r\n\tpoint += 1;\r\n\t\r\n\tif(abs(noise())<= prob){\r\n\t\tpoke(vdata, (1-blnd)*peek(vdata,data_offset+point,0) + blnd*x, data_offset+point, 0);//(1-blnd)*peek(register,point,0) + blnd*x);\r\n\t}\r\n\theld = peek(vdata,data_offset+point,0);\r\n\tpoke(vdata, point-1,data_offset);\r\n\tif(point>=len){\r\n\t\tpoint=0;\r\n\t}\r\n}\r\n\tov=tr+v+in1+0.1;\r\nout4=o3;\r\nout3=rng*held;\r\nout2=slide(2*held-1,shp,shp);\r\n",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -82,7 +82,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 50.0, 47.0, 583.0, 512.0 ]
+					"patching_rect" : [ 50.0, 47.0, 970.0, 523.0 ]
 				}
 
 			}

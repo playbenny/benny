@@ -94,6 +94,7 @@ function update(){
 		}		
 		for(r=0;r<v_list.length;r++){
 			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
+			cursors[r] -= (l[r]==1);
 			if(cursors[r]!=ph){
 				//redraw slider that was old cursor
 				if((cursors[r]>=0)&&(cursors[r]<maxl)){
