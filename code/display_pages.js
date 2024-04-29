@@ -2573,7 +2573,7 @@ function draw_sidebar(){
 			y_offset += 1.1*fontheight;
 
 			var getmap = 0;
-			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [];
+			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [], mapwrap = [];
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
@@ -2928,14 +2928,14 @@ function draw_sidebar(){
 							}
 							if(params[curp].contains("name")){
 								p_type = params[curp].get("type");
+								wrap = params[curp].get("wrap");
 								if(getmap==1){
 									if(p_type!="button"){
 										if(opvf){
-											//var vl=voicemap.get(block);
-											//if(!Array.isArray(vl))vl=[vl];
 											for(var vc=0;vc<current_p;vc++){
-												if((map_y>=0)){//&&(map_y<automap.c_rows)){
-													maplist.push(0-(MAX_PARAMETERS*block+curp));//TODO ONE PER VOICE MAX_PARAMETERS*vl[vc]+curp;
+												if((map_y>=0)){
+													maplist.push(0-(MAX_PARAMETERS*block+curp));
+													mapwrap.push(wrap);
 													maplistopv.push(MAX_PARAMETERS*vl[vc]+curp);
 													mapcolours.push(colour[0]);
 													mapcolours.push(colour[1]);
@@ -2950,6 +2950,7 @@ function draw_sidebar(){
 										}else{
 											if((map_y>=0)){//&&(map_y<automap.c_rows)){
 												maplist.push(MAX_PARAMETERS*block+curp);
+												mapwrap.push(wrap);
 												maplistopv.push(-1);
 												mapcolours.push(colour[0]);
 												mapcolours.push(colour[1]);
@@ -2967,7 +2968,6 @@ function draw_sidebar(){
 									x1 = sidebar.x + w_slider*knob.x;
 									x2 = sidebar.x + w_slider*(knob.x+wk) - fo1;
 									p_values = params[curp].get("values");
-									wrap = params[curp].get("wrap");
 									namelabely=y1+fontheight*(0.4+h_slider);
 									var flags = (p_values[0]=="bi");
 									if(opvf){
@@ -3198,6 +3198,7 @@ function draw_sidebar(){
 						note_poly.setvalue(automap.available_c, "automap_offset", automap.offset_c);
 						note_poly.setvalue(automap.available_c,"maplistopv",maplistopv);
 						note_poly.setvalue(automap.available_c,"maplist",maplist);
+						note_poly.setvalue(automap.available_c,"mapwrap",mapwrap);
 						note_poly.setvalue(automap.available_c,"mapcolour",mapcolours);
 						if(buttonmaplist.length>0){
 							note_poly.setvalue(automap.available_c,"buttonmaplist",buttonmaplist);
