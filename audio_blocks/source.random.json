@@ -1,12 +1,12 @@
 {
-	"source.random" : {
+	"source.random.noise.s&h" : {
 		"patcher" : "source.random",
 		"type" : "audio",
 		"block_ui_patcher" : "source.random.ui",
 		"ui_in_sidebar_height" : 3,
 		"no_edit": 1,
-		"synonyms" : "shift register hold",
-		"help_text" : "Classic stepped and continuous random source.£Multi colour noise source£shift register£sample & hold£slew£quantise",
+		"synonyms" : "shift register sample hold sah noise",
+		"help_text" : "inspired by the buchla stepped and continuous random.£- multiple colours of noise£- blending shift register£- sample & hold£- slew£- quantise£- audio input can be used with the s&h / shift register£- the midi 'both' input feeds the note value into the s&h's audio input (if noise colour slider is on audio input) and also triggers a step, so you can use it to do sublooping type shift register effects on midi patterns.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"voice_data" : {
@@ -15,7 +15,7 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "trigger", "audio" ],
-				"midi" : [ "trigger" ]
+				"midi" : [ "trigger", "both" ]
 			},
 			"out" : {
 				"audio" : [ "noise", "s&h" ],
@@ -48,7 +48,7 @@
 				"values" : ["uni", 1,32, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.125
 			},
 			{
 				"name" : "replace_chance",

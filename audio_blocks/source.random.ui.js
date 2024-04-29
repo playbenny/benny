@@ -12,6 +12,7 @@ blocks.name = "blocks"
 var voicemap = new Dict;
 voicemap.name =  "voicemap";
 var mini = 0;
+var ov1 = 0; //if shift reg length is 1, use this to see if you need to redraw the slider
 var v_list = [];
 var l = [];
 var cursors = []; //holds last drawn position of playheads (per row)
@@ -64,10 +65,14 @@ function fulldraw(){
 	rh = height / i;
 	sx = 0;
 	for(r=0;r<v_list.length;r++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		
-		cursors[r]=ph;
-		for(c=maxl-1;c>=0;c--){		
-			var shade = (c==ph) ? 3 : 1;	
+		if(l[r]==1){
+			ph=-1;
+		}else{
+			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		
+		}
+		cursors[r] = ph;
+		for(c=maxl-1; c>=0; c--){		
+			var shade = (c==ph) ? 3 : (0.9*(c < l[r]) + 0.1);	
 			outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,shade * block_colour[0],shade * block_colour[1],shade * block_colour[2],MAX_DATA*v_list[r]+1+c,1);
 		}
 	}
@@ -93,18 +98,24 @@ function update(){
 			return 0;
 		}		
 		for(r=0;r<v_list.length;r++){
-			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
-			cursors[r] -= (l[r]==1);
-			if(cursors[r]!=ph){
-				//redraw slider that was old cursor
-				if((cursors[r]>=0)&&(cursors[r]<maxl)){
-					var shade = 1;
-					outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,shade *block_colour[0],shade *block_colour[1],shade *block_colour[2],MAX_DATA*v_list[r]+1+cursors[r],1);
+			if(l[r]==1){
+				ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+1));
+				if(ph!=ov1){
+					ov1=ph;
+					outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,block_colour[0],block_colour[1],block_colour[2],MAX_DATA*v_list[r]+1,1);
 				}
-				cursors[r]=ph;
-				//draw new cursor slider
-				if(cursors[r]<maxl){
-					outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+1+ph,1);
+			}else{
+				ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
+				if(cursors[r]!=ph){
+					//redraw slider that was old cursor
+					if((cursors[r]>=0)&&(cursors[r]<maxl)){
+						outlet(0,"custom_ui_element","data_v_scroll", sx+cursors[r]*cw+x_pos,r*rh+y_pos,sx+(0.9+cursors[r])*cw+x_pos,(r+0.9)*rh+y_pos,block_colour[0],block_colour[1],block_colour[2],MAX_DATA*v_list[r]+1+cursors[r],1);
+					}
+					cursors[r]=ph;
+					//draw new cursor slider
+					if(cursors[r]<maxl){
+						outlet(0,"custom_ui_element","data_v_scroll", sx+ph*cw+x_pos,r*rh+y_pos,sx+(0.9+ph)*cw+x_pos,(r+0.9)*rh+y_pos,255,255,255,MAX_DATA*v_list[r]+1+ph,1);
+					}
 				}
 			}
 		}
