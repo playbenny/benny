@@ -870,19 +870,19 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,p_default);
 				param_defaults[block_index][i] = p_default;
 			}
-			var p_pol = p_values[0]; //details.get("parameters["+i+"]::values[0]");
-			var p_min = p_values[1]; //details.get("parameters["+i+"]::values[1]");
-			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
-			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
+			var p_pol = p_values[0]; 
+			var p_min = p_values[1]; 
+			var p_max = p_values[2]; 
+			var p_curve = p_values[3]; 
 			var p_steps = 0;
 			if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
 				p_min = 0;
-				p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
+				p_steps = p_values.length; 
 				p_max = p_steps-1;
 				p_curve = 0;
 			}else if(p_type=="menu_f"){
 				p_min=0;
-				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
+				p_max = p_values.length;
 				p_steps = 0;
 				p_curve = 0;
 			}else if(p_type=="int"){
@@ -891,6 +891,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				p_min = 0;
 				p_max = (p_values.length - 1 ) / 2;
 				p_steps = p_max+1;
+				p_curve = 0;
+			}else if(p_type=="wave"){
+				p_min = 0;
+				p_steps = MAX_WAVES;
+				p_max = p_steps - 1;
 				p_curve = 0;
 			}
 			if(p_curve == "lin"){

@@ -569,13 +569,11 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 }
 
 function clear_wave_graphic(n,newl){
-	var t;
 	if(!Array.isArray(draw_wave[n-1])) draw_wave[n-1]=[[],[],[],[]];
-
 	var i = 0;
 	while(i<4){
-		//if(!Array.isArray(draw_wave[n-1][i])) draw_wave[n-1][i] = [];
-		t = 0;
+		if(!Array.isArray(draw_wave[n-1][i])) draw_wave[n-1][i] = [];
+		var t = 0;
 		while(t<newl){
 			draw_wave[n-1][i][t]=0;
 			t++;
