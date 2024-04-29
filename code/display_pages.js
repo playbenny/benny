@@ -2515,6 +2515,7 @@ function draw_sidebar(){
 				lcd_main.message("write", bnt[0]);
 				if(bnt.length>2){
 					bntt = bnt[1]+"."+bnt[2];
+					if(bnt.length>3)bntt = bntt +"."+bnt[3];
 				}else{
 					bntt = bnt[1];
 				}
