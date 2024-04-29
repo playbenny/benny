@@ -76,7 +76,7 @@
 				"type" : "int",
 				"values" : ["uni", 2,128, "lin" ],
 				"wrap" : 0,
-				"default" : 0.25
+				"default" : 1
 			}			
 		]
 	}
