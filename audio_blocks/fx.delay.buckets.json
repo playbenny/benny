@@ -81,7 +81,7 @@
 				"default" : 0.61
 			},
 			{
-				"name" : "clock_transition_time",
+				"name" : "clock_edge_amount",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"error_scale" : 0,
