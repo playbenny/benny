@@ -570,39 +570,42 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 
 function clear_wave_graphic(n,newl){
 	var t;
-	if(Array.isArray(draw_wave[n-1])){
-		var i = 0;
-		while(i<4){
-			if(Array.isArray(draw_wave[n-1][i])){
-				t = 0;
-				while(t<newl){
-					draw_wave[n-1][i][t]=0;
-					t++;
-				} 
-			} 
-			i++;
-		}
+	if(!Array.isArray(draw_wave[n-1])) draw_wave[n-1]=[[],[],[],[]];
+
+	var i = 0;
+	while(i<4){
+		//if(!Array.isArray(draw_wave[n-1][i])) draw_wave[n-1][i] = [];
+		t = 0;
+		while(t<newl){
+			draw_wave[n-1][i][t]=0;
+			t++;
+		}  
+		i++;
 	}
 }
 
-function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){//},zoom_offset,zoom_amount){
+function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
-	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
+	var w = Math.floor((x2-x1-1)/2);
 	var i,t,ch,s,dl,d,st;
 	var hls;
 	var hle ;
 	var wmin,wmax;
-	var w = Math.floor((x2-x1-1)/2);
+	var subsamples = 2; //for the stochastic rendering
+	if(view_changed===true){
+		click_rectangle(x1,y1,x2,y2,index, 3);
+	}
 	if(!Array.isArray(draw_wave[buffer-1])){
 		draw_wave[buffer-1] = [[],[],[],[]];
+		subsamples = 20;
 	}
 	if(w!=draw_wave[buffer-1][0].length) {
-		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		if(isNaN(draw_wave[buffer-1][0].length)){ 
 			draw_wave[buffer-1][0] = [];
 		}
 		draw_wave[buffer-1][0].length = w;
 		clear_wave_graphic(buffer,w);
+		subsamples = 20;
 	}
 	var length = waves_dict.get("waves["+buffer+"]::length");
 	st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
@@ -640,9 +643,9 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){//},zoom_offset
 		for(i=0;i<w;i++){
 			wmin = draw_wave[buffer-1][ch*2][i];
 			wmax = draw_wave[buffer-1][ch*2+1][i];
-			t=2;
-			if(isNaN(wmin)){ wmin=1; t=20 }
-			if(isNaN(wmax)){ wmax=-1; t=20}
+			t=subsamples;
+			/*if(isNaN(wmin)){ wmin=1; }
+			if(isNaN(wmax)){ wmax=-1; }*/
 			for(;t>=0;t--){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
