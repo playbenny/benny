@@ -518,15 +518,29 @@ function draw_scope(x1,y1,x2,y2,voice){
 	c=-1;
 	oc=-1;
 	lcd_main.message("paintrect", x1,y1,x2,y2, sidebar.scopes.bg);
-	for(t=0;t<(x2-x1-2)/2;t++){
-		mmin = scope_buffer.peek(1,256*(voice+1)+ t+1);
-		mmax = scope_buffer.peek(2,256*(voice+1)+ t+1);
-		if((mmin>=-1) && (mmin<=1) && (mmax<=1) && (mmax>=-1)){
-			c=0;
-		}else{
+	var w=(x2-x1-2);
+	var w2 = w*0.5;
+	var w3 = Math.min(255,w2);
+	var wi = w3 / w2;
+	var h1 = (y1+y2)*0.5;
+	var h2 = (y2-y1-4)*0.5;
+	var t=256*(voice+1)+1;
+	for(var x=x1|0;x<x2-1;x+=2){
+		/*var t2 = t |0; //interpolating version - you only really see the difference if the scope is more than 255 pixels wide, tends to be on connection page
+		var t3 = t-t2;
+		var t4 = 1-t3;
+		mmin = t4*scope_buffer.peek(1,t2)+t3*scope_buffer.peek(1,t2+1);
+		mmax = t4*scope_buffer.peek(2,t2)+t3*scope_buffer.peek(2,t2+1);*/
+		var t2 = t|0; //cheaper version
+		mmin = scope_buffer.peek(1,t2);
+		mmax = scope_buffer.peek(2,t2);
+		t+=wi;
+		if((mmin<-1) || (mmin>1) || (mmax>1) || (mmax<-1)){
 			c=1;
 			mmax = Math.min(Math.max(mmax, -1), 1);
 			mmin = Math.min(Math.max(mmin, -1), 1);
+		}else{
+			c=0;
 		}
 		if(c!=oc){
 			if(c==1){
@@ -535,8 +549,8 @@ function draw_scope(x1,y1,x2,y2,voice){
 				lcd_main.message("frgb", sidebar.scopes.fg);
 			}
 		}
-		lcd_main.message("moveto", x1+t*2, (y1+y2)/2 - (y2-y1-4)*0.5*mmax -1);
-		lcd_main.message("lineto", x1+t*2, (y1+y2)/2 - (y2-y1-4)*0.5*mmin );
+		lcd_main.message("moveto", x, h1 - h2*mmax -1);
+		lcd_main.message("lineto", x, h1 - h2*mmin );
 	}		
 }
 
