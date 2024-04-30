@@ -513,7 +513,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 				//ie is mouse_click_parameters[index][0]
 				mouse_click_actions[mouse_index] = sidebar_parameter_knob;
 				mouse_click_parameters[mouse_index] = [curp, b,wrap];
-				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
+				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="wave")){
 					//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 					mouse_click_values[mouse_index] = curp+1;
 				}else{

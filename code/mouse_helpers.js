@@ -765,10 +765,32 @@ function send_button_message(parameter, value){
 			}
 		}
 	}else if(value[0] == "core"){
-		messnamed("to_blockmanager",value[1]);
+		messnamed("to_blockmanager",value[1],parameter);
 	}else{
 		post("unhandled send button message",parameter,"value",value,"\n");
 	}
+}
+
+function request_load_wave(block){
+	//this is for when a block has a button to request a wave, it finds an empty slot,
+	//prompts for a file, loads it and then sets the slider in the requesting block to point
+	//at it
+	post("\nwave load request");
+	for(var i=0;i<MAX_WAVES;i++){
+		if(!waves_dict.contains("waves["+(i+1)+"]::name")){
+			load_wave(i);
+			var block_name = blocks.get("blocks["+block+"]::name");
+			var params = blocktypes.get(block_name+"::parameters");
+			for(var p=0;p<params.length;p++){
+				if(params[p].get("type")=="wave"){
+					parameter_value_buffer.poke(1,MAX_PARAMETERS*block+p,i/MAX_WAVES);
+					return 1;
+				}
+			}
+			return 0.5;
+		}
+	}
+
 }
 
 function delete_state(state,block){
