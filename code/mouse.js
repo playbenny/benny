@@ -997,7 +997,23 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				tv += scroll * 0.01;
 			}
 		}else{
-			tv += scroll *0.1;
+			if((f==sidebar_parameter_knob)||(f==static_mod_adjust)){ //tries to line up scrollwheel steps with slider values for int/menu types
+				var t=paramslider_details[p[0]][13];
+				var l = 10;
+				var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
+				if(t=="int"){
+					l = p_values[2] - p_values[1] + 1;
+				}else if((t=="menu_i")||(t=="menu_l")){
+					l = p_values.length;
+				}
+				if(scroll>0){
+					tv += 1 / l;
+				}else if(scroll<0){
+					tv -= 1 / l;
+				}
+			}else{
+				tv += scroll *0.1;
+			}
 		}
 		f(p,tv);
 	}else if(d==7){
