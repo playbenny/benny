@@ -18,7 +18,7 @@
 		},
 		"groups" : [
 			{
-				"contains" : [0,0],
+				"contains" : [0,0,0,9],
 				"height" : 0
 			},
 			{ 
@@ -100,6 +100,12 @@
 				"values" : ["uni", 0, 4, "lin"],
 				"wrap" : 0,
 				"default" : 0.25 
+			},
+			{
+				"name" : "load_wave",
+				"type" : "button",
+				"values" : ["core","load_wave","request_load_wave"],
+				"default" : 0
 			}
 		]
 	}

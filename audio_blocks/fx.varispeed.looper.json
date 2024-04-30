@@ -17,7 +17,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,1],
+				"contains" : [0,0,0,1,10],
 				"height" : 0
 			},
 			{
@@ -110,6 +110,12 @@
 				"type" : "menu_l",
 				"values" : ["in2 > rate", "in2 > position" ],
 				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "load_wave",
+				"type" : "button",
+				"values" : ["core","load_wave","request_load_wave"],
 				"default" : 0
 			}
 		]

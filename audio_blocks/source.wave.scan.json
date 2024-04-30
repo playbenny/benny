@@ -21,7 +21,7 @@
 		},
 		"groups" : [
 			{
-				"contains" : [0],
+				"contains" : [0,0,0,10],
 				"colour" : 3,
 				"height" : 0
 			},
@@ -115,6 +115,12 @@
 				"values" : ["loop off", "loop on"],
 				"wrap" : 0,
 				"default" : 0.6
+			},
+			{
+				"name" : "load_wave",
+				"type" : "button",
+				"values" : ["core","load_wave","request_load_wave"],
+				"default" : 0
 			}
 		]
 	}

@@ -105,10 +105,17 @@
 			},
 			{
 				"name" : "wave",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0
+				"type" : "wave",
+				"values" : ["wave",0,256],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "load_wave",
+				"type" : "button",
+				"values" : ["core","load_wave","request_load_wave"],
+				"default" : 0
 			},
 			{
 				"name" : "button",

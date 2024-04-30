@@ -101,13 +101,6 @@
 				"default" : 0.787
 			},
 			{
-				"name" : "wave",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin"],
-				"wrap" : 0,
-				"default" :  0
-			},
-			{
 				"name" : "button",
 				"type" : "button",
 				"values" : ["firstvoice", "one", 1]

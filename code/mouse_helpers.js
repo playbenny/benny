@@ -783,7 +783,8 @@ function request_load_wave(block){
 			var params = blocktypes.get(block_name+"::parameters");
 			for(var p=0;p<params.length;p++){
 				if(params[p].get("type")=="wave"){
-					parameter_value_buffer.poke(1,MAX_PARAMETERS*block+p,i/MAX_WAVES);
+					parameter_value_buffer.poke(1,MAX_PARAMETERS*block+p,(i+0.01)/MAX_WAVES);
+					redraw_flag.flag |= 2;
 					return 1;
 				}
 			}
