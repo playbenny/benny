@@ -2292,16 +2292,20 @@ function conn_set_from_output(c,value){
 function conn_set_to_input(c,value){
 	var ty = value[0];
 	var o = value[1];
-	sidebar.connection.default_in_applied = 0;
 	sidebar.connection.show_to_inputs = 0;
 	new_connection = connections.get("connections["+c+"]");
 	new_connection.replace("to::input::number",o);
 	new_connection.replace("to::input::type",ty);
+	if((ty=="midi")&&(sidebar.connection.default_in_applied!=0)&&(new_connection.get("conversion::offset")==0)){
+		//post("\nnew default applied");
+		new_connection.replace("conversion::offset",0.5);
+	}
 	remove_connection(c);
 	connections.replace("connections["+c+"]",new_connection);
 	make_connection(c,0);
 	selected.wire[c]=1;
 	wire_ends[c][0]=-0.96969696;
+	sidebar.connection.default_in_applied = 0;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
 }
