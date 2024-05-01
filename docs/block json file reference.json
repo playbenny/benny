@@ -184,6 +184,7 @@ and the json file has to be saved as the same name too. eg this example is based
 			{
 				"name" : "delay_beats",
 				"type" : "float",
+                "nopervoice" : 1, //this disables separate per-voice values for this param 
 				"error_scale" : 0,
 				"values" : ["uni", 0, 8000, "exp10"],
 				"wrap" : 0,

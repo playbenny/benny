@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3797142174,
+	"modificationdate" : 3797433243,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1119,12 +1119,22 @@
 ,
 			"core.input.control.auto.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.input.control.auto.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"mix.channel.ui.maxpat" : 			{
@@ -1204,6 +1214,11 @@
 					"projectrelativepath" : "./audio_blocks"
 				}
 
+			}
+,
+			"utility.xfade.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 
 		}
@@ -1472,18 +1487,8 @@
 				"local" : 1
 			}
 ,
-			"core.input.control.auto.ui.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"mix.channel.ui.js" : 			{
-				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -1494,6 +1499,21 @@
 ,
 			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"core.input.control.auto.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"mix.channel.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"source.random.ui.js" : 			{
+				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -1612,8 +1632,8 @@
 
 			}
 ,
-			"source.random.ui.js" : 			{
-				"kind" : "javascript",
+			"utility.xfade.gendsp" : 			{
+				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
@@ -2756,6 +2776,11 @@
 			}
 ,
 			"pepper_parachute.json" : 			{
+				"kind" : "json",
+				"local" : 1
+			}
+,
+			"utility.xfade.json" : 			{
 				"kind" : "json",
 				"local" : 1
 			}

@@ -2978,7 +2978,7 @@ function draw_sidebar(){
 										flags |= 4; //removes 2 flag, adds 4 flag
 									} 
 
-									if((/*(p_type=="menu_b")||*/(p_type=="menu_l")) && (vl.length != 1)) p_type = "menu_i";
+									if((/*(p_type=="menu_b")||*/(p_type=="menu_l")) && (vl.length != 1)&&!params[curp].contains("nopervoice")) p_type = "menu_i";
 									if(p_type=="button"){
 										paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
 										parameter_button(curp);
