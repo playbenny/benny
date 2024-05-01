@@ -687,7 +687,7 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 		clear_wave_graphic(buffer,w);
 	}
 	var length = waves_dict.get("waves["+buffer+"]::length");
-	st = Math.floor(waves_dict.get("waves["+buffer+"]::start"));//*w);
+	st = waves_dict.get("waves["+buffer+"]::start");//*w);
 	d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
 	dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
 	dl /= d;
@@ -771,13 +771,14 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	for(ch=0;ch<chans;ch++){
-		st = Math.floor(waves_dict.get("waves["+buffer+"]::start")*w);
+		st = waves_dict.get("waves["+buffer+"]::start");
 		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
-		dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
+		dl = waves_dict.get("waves["+buffer+"]::end") - st;
+		st = Math.floor(st*w);
 		dl /= d;
 		dl *= w;
-		if(!(waves.selected == buffer-1)){			
-			lcd_main.message("frgb",40,40,40);
+		if(!(waves.selected == buffer-1)||(dl!=1)){			
+			lcd_main.message("frgb",60,60,60);
 			for(t=0;t<d;t++){
 				i = Math.floor(t*dl+st);
 				lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
