@@ -59,7 +59,7 @@
 				"name" : "midi out_enable",
 				"type" : "menu_b",
 				"values" : ["midi_out_off", "midi_out_on"],
-				"wrap" : 0,
+				"wrap" : 1,
 				"default" : 0.99 
 			},
 			{

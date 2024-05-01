@@ -48,8 +48,8 @@
 				"name" : "circuit_saturation",
 				"type" : "menu_b",
 				"values" : ["saturation_off", "saturation_on"],
-				"wrap" : 0,
-				"default" : 1 
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "lp/hp_mix",

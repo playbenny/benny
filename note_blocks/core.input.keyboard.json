@@ -41,7 +41,7 @@
 				"type" : "menu_b",
 				"values" : ["auto_assign_OFF","auto_assign_ON"],
 				"error_scale" : 0,
-				"wrap" : 0,
+				"wrap" : 1,
 				"default" : 0.75
 			},{
 				"name" : "sustain_debounce (ms)",
@@ -55,7 +55,7 @@
 				"type" : "menu_b",
 				"values" : ["qwerty_midi_OFF","qwerty_midi_ON"],
 				"error_scale" : 0,
-				"wrap" : 0,
+				"wrap" : 1,
 				"default" : 0.75
 			}
 		]

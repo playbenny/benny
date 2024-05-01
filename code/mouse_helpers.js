@@ -1302,7 +1302,7 @@ function qwertymidi_octave(parameter, value){
 }
 	
 function sidebar_parameter_knob(parameter, value){
-	//post("\nP: ",parameter,"  V:",value);
+	//post("\nsidebar parameter knob P: ",parameter,"  V:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
 		//also: look up if this slider is set to clickset mode

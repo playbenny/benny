@@ -39,7 +39,7 @@
 				"name" : "a toggle",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
-				"wrap" : 0,
+				"wrap" : 1,
 				"default" : 0
 			},
 			{

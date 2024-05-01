@@ -80,7 +80,7 @@
 				"type" : "menu_b",
 				"values" : ["loop_off", "loop_on"],
 				"default" : 0.75,
-				"wrap" : 0,
+				"wrap" : 1,
 				"error_scale" : 0
 			},
 			{

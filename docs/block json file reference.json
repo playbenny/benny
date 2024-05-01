@@ -156,7 +156,7 @@ and the json file has to be saved as the same name too. eg this example is based
 				"name" : "repeat",
 				"type" : "menu_b", 
 				"values" : ["on", "off"],
-				"wrap" : 1,
+				"wrap" : 1, //<<WRAP MUST BE ON FOR menu_b buttons to work right
 				"default" : 0.1
 			},
 			{

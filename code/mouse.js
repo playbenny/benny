@@ -1009,7 +1009,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 						usermouse.scroll_accumulator = 0;
 						tv -= 1 / (p_values[2] - p_values[1] + 1);
 					}
-				}else if((t=="menu_i")||(t=="menu_l")){
+				}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")){
 					usermouse.scroll_accumulator += scroll;
 					if(usermouse.scroll_accumulator > 0.22 ){
 						usermouse.scroll_accumulator = 0;

@@ -3036,6 +3036,7 @@ function draw_sidebar(){
 											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
 										}
 									}else if((p_type=="menu_b")){
+										wrap = 1;
 										var statecount = (p_values.length);
 										pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
 										var ppv2 = Math.floor(pv * statecount * 0.99999); 
