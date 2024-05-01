@@ -791,7 +791,27 @@ function request_load_wave(block){
 			return 0.5;
 		}
 	}
+}
 
+function request_edit_wave(block){
+	//this is for when a block has a button to request a wave, it finds an empty slot,
+	//prompts for a file, loads it and then sets the slider in the requesting block to point
+	//at it
+	//first check there is a wave, if not then just pop open the load box instead
+	
+	var block_name = blocks.get("blocks["+block+"]::name");
+	var params = blocktypes.get(block_name+"::parameters");
+	for(var p=0;p<params.length;p++){
+		if(params[p].get("type")=="wave"){
+			waves.selected = Math.floor(MAX_WAVES*parameter_value_buffer.peek(1,MAX_PARAMETERS*block+p));
+			post("\nwave edit request",waves.selected);
+			if(!waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
+				load_wave(waves.selected);
+			}
+			set_display_mode("waves");
+			return 0;
+		}
+	}
 }
 
 function delete_state(state,block){
@@ -2043,18 +2063,17 @@ function store_wave_slices(waveno){
 }
 
 function zoom_waves(parameter,value){
-//	post("zoom wavse TODO",parameter,value);
 	if(value=="get"){
 		return 0;//waves.zoom_start;
 	}else{
-		var w = waves.zoom_end- waves.zoom_start;
+		var w = Math.max(waves.zoom_end- waves.zoom_start,0.00001);
 		var skew = usermouse.x / mainwindow_width;
 		waves.zoom_start += (skew)* w*value;
 		waves.zoom_end -= (1-skew)*w*value;
 		if(waves.zoom_start>waves.zoom_end){
 			var t = waves.zoom_start;
 			waves.zoom_start=waves.zoom_end;
-			waves.zoom_end = t;
+			waves.zoom_end = t+0.00001;
 		}
 		if(waves.zoom_start<0){
 			waves.zoom_end -= waves.zoom_start;
