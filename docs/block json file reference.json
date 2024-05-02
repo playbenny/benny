@@ -124,7 +124,8 @@ and the json file has to be saved as the same name too. eg this example is based
 				"wrap" : 0, // modulation, controllers with encoders, etc, will wrap around
 				"default" : 0.12 // NOTE this is in the 0-1 range used internally for params,
                      // not in the range/curve you specified. at the moment trial and error or
-                     // setting, then saving, then looking at the savefile (at the end, 'current' state)
+                     // setting, then saving, then looking at the savefile (at the end, 'current' state) is the best way to find these values
+                     // NEVER set default to 1 (think of the range as 0-1 not including 1)
 			},
 			{
                 "name" : "delay_signal_vectors",
