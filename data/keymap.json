@@ -63,6 +63,7 @@
         "374" : ["ctrl-V", "blocks_paste", 0],
         "378" : ["ctrl-Z", "undo_button"],
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
+        "2037" : ["alt-left arrow", "back_button"],
         "-4" : ["enter", "set_display_mode","block_menu"],
         "-5" : ["tab", "set_display_mode","panels"],
         "-9" : ["UP", "move_selected_blocks", 0,1],

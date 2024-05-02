@@ -445,7 +445,8 @@ var sidebar = {
 		},
 		help: 0
 	},
-	scrollbar_index : 2
+	scrollbar_index : 2,
+	back : []
 }
 
 var y_offset;

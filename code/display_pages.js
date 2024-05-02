@@ -2434,6 +2434,7 @@ function draw_sidebar(){
 
 			if(sidebar.mode != sidebar.lastmode){
 				clear_sidebar_paramslider_details();
+				store_back([sidebar.mode,block, sidebar.selected_voice,sidebar.scroll.position]);
 				sidebar.lastmode = sidebar.mode;
 				sidebar.scopes.voice = -1;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -4817,6 +4818,7 @@ function draw_sidebar(){
 			click_zone(scope_zoom,null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,2);
 			y_offset += fontheight*2.1;
 			if(sidebar.mode != sidebar.lastmode){
+				store_back(["wire",i,sidebar.scroll.position]);
 				center_view(1);
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;

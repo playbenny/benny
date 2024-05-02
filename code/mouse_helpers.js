@@ -572,6 +572,7 @@ function select_voice(parameter,value){
 
 function sidebar_select_connection(num,val){
 	if(usermouse.ctrl){
+		if(!connections.contains("connections["+num+"]::conversion")) post("\n?????",num);
 		var m = !connections.get("connections["+num+"]::conversion::mute");
 		connection_edit("connections["+num+"]::conversion::mute",m);
 	}else{
@@ -768,6 +769,55 @@ function send_button_message(parameter, value){
 		messnamed("to_blockmanager",value[1],parameter);
 	}else{
 		post("unhandled send button message",parameter,"value",value,"\n");
+	}
+}
+
+function back_button(){
+	if(sidebar.back.length>0){
+		var back = sidebar.back.pop();
+		//contains sidebar mode, then if it was a block one it contains the selected block and voice and scroll position
+		//or if it was a connection it contains the selected connection and scroll position
+		//or? 
+		if(back[0]==sidebar.mode){
+			if(back[0]=="wire"){
+				if(((back[1]==selected.wire.indexOf(1)))&&(sidebar.back.length>0)) back = sidebar.back.pop();
+			}else if((back[0]=="block")||(back[0]=="connections")){
+				if(((back[1]==sidebar.selected&(back[2]==sidebar.selected_voice)))&&(sidebar.back.length>0)) back = sidebar.back.pop();
+			}
+		}
+		post("\nsidebar back",back, typeof back);
+		if(back[0]=="wire"){
+			clear_blocks_selection();
+			sidebar_select_connection(back[1],null);
+			sidebar.scroll.position = back[2];
+		}else if((back[0]=="block")||(back[0]=="connections")){
+			clear_blocks_selection();
+			select_block_and_voice(back[1],back[2]);
+			set_sidebar_mode(back[0]);
+			sidebar.scroll.position = back[3];
+		}
+	}
+}
+
+function store_back(contents){
+	if(sidebar.back.length>0){
+		//if(sidebar.back.length>sidebar.backpointer) sidebar.back.slice(0,sidebar.backpointer);
+		mostrecent = sidebar.back[sidebar.back.length-1];
+		if(mostrecent.length!=contents.length){
+			sidebar.back.push(contents);
+		}else{
+			//post("\ntesting",mostrecent,"vs",contents);
+			for(var i=0;i<mostrecent.length-1;i++){
+				if(mostrecent[i]!=contents[i]){
+					sidebar.back.push(contents);
+					return 0;
+				}
+			}
+			var skip = sidebar.back.pop();
+			sidebar.back.push(contents);
+		}
+	}else{
+		sidebar.back.push(contents);
 	}
 }
 
