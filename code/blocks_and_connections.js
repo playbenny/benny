@@ -855,8 +855,8 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+6,scalev);
 		routing_buffer.poke(1,index+7,offsetn);
 		routing_buffer.poke(1,index+8,offsetv);
-	}else{
-		routing_buffer.poke(1,index,(loading.progress==0)?1:0);
+	}else{ //the enab key isn't passed to the router, the gains and offsets are just set to zero. this is so muting a modulation returns the modulated value to what it was
+		routing_buffer.poke(1,index,1); //(loading.progress==0)?1:0);
 		routing_buffer.poke(1,index+5,0);
 		routing_buffer.poke(1,index+6,0);
 		routing_buffer.poke(1,index+7,0);
@@ -1434,6 +1434,10 @@ function make_connection(cno,existing){
 	var f_voice_list = connections.get("connections["+cno+"]::from::voice");
 	var t_voice_list = connections.get("connections["+cno+"]::to::voice");
 	var conversion = connections.get("connections["+cno+"]::conversion");
+	if((!existing)&&conversion.get("mute")==1){
+		post("\nno point making this muted connection");
+		return 0;
+	}
 	var f_block = 1* connections.get("connections["+cno+"]::from::number");
 	var t_block = 1* connections.get("connections["+cno+"]::to::number");
 	var f_subvoices = 1;
