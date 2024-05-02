@@ -46,7 +46,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,40,70] , 40 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "SubT",
@@ -54,7 +54,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "Med",
@@ -62,7 +62,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "SDom",
@@ -70,7 +70,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "Dom",
@@ -78,7 +78,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "SMed",
@@ -86,7 +86,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "LNot",
@@ -94,7 +94,7 @@
 				"values" : ["0", "1"],
 				"colours" : [ [50,20,20], 30 ],
 				"wrap" : 1,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "Degree",
