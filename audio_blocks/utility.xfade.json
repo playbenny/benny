@@ -1,0 +1,60 @@
+{
+	"utility.xfade" : {
+		"patcher" : "utility.xfade",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "each voice of this is just a vca controlled by the main xfade slider, so it can xfade between either inputs or outputs.££to fade one input signal between a number of outputs connect the input to every voice. ££to xfade between a number of inputs connect every output to a single destination.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "left/mono in", "right/mod in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,1,2,3]
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "xfade",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "transition_width",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"nopervoice" : 1,
+				"default" : 1
+			},
+			{
+				"name" : "midpoint_gain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"nopervoice" : 1,
+				"default" : 1
+			},
+			{
+				"name" : "input2",
+				"type" : "menu_l",
+				"nopervoice" : 1,
+				"values" : ["stereo", "mono +_modulation"],
+				"wrap" : 1,
+				"default" : 0
+			}
+		]
+	}
+}
