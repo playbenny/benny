@@ -862,7 +862,7 @@ function set_routing(sourcevoice, sourceoutput, enab, type, desttype, destvoice,
 		routing_buffer.poke(1,index+7,0);
 		routing_buffer.poke(1,index+8,0);
 	}
-	//post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
+	//post("\npoked into routing buffer starting at",index,"values",sourcevoice, sourceoutput, "so", enab,type,desttype,destvoice,destinput,scalen,scalev,offsetn,offsetv);
 	if(cno == sidebar.scopes.midi_routing.number){
 		//post("\ncopy this connection for metering");
 		set_routing(sourcevoice, sourceoutput, enab, type, 5, destvoice, destinput, scalen, scalev, offsetn, offsetv,0,destvoiceno);
@@ -1872,6 +1872,7 @@ function make_connection(cno,existing){
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
 							t_voice-=MAX_BLOCKS;
+							//post("\nf_voice,f_o_no,enab,4,2,t_voice,t_i_no,1,scale,offn*256-128,offv*256-128,cno,v\n",f_voice,f_o_no,enab,4,2,t_voice,t_i_no,1,scale,offn*256-128,offv*256-128,cno,v);
 							if(t_voice<MAX_NOTE_VOICES){
 								set_routing(f_voice,f_o_no,enab,4,2,t_voice,t_i_no,1,scale,offn*256-128,offv*256-128,cno,v);
 							}else{
