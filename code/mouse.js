@@ -990,49 +990,67 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		usermouse.shift=1;//forces it to 'get' even if its in clicktoset mode
 		var tv = f(p, "get");
 		usermouse.shift=shift;
-		if(shift){
-			if(alt){
-				tv += scroll * 0.001;
-			}else{
-				tv += scroll * 0.01;
-			}
-		}else{
-			if((f==sidebar_parameter_knob)||(f==static_mod_adjust)){ //tries to line up scrollwheel steps with slider values for int/menu types
-				var t=paramslider_details[p[0]][13];
-				var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
-				if(t=="int"){
-					usermouse.scroll_accumulator += scroll;
-					if(usermouse.scroll_accumulator > 0.22 ){
-						usermouse.scroll_accumulator = 0;
-						tv += 1 / (p_values[2] - p_values[1] + 1);
-					}else if(usermouse.scroll_accumulator < -0.22){
-						usermouse.scroll_accumulator = 0;
-						tv -= 1 / (p_values[2] - p_values[1] + 1);
-					}
-				}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")){
-					usermouse.scroll_accumulator += scroll;
-					if(usermouse.scroll_accumulator > 0.22 ){
-						usermouse.scroll_accumulator = 0;
-						tv += 1 / p_values.length;
-					}else if(usermouse.scroll_accumulator < -0.22){
-						usermouse.scroll_accumulator = 0;
-						tv -= 1 / p_values.length;
-					}
-				}else if((t=="wave")){
-					usermouse.scroll_accumulator += scroll;
-					if(usermouse.scroll_accumulator > 0.22 ){
-						usermouse.scroll_accumulator = 0;
-						tv += 1 / MAX_WAVES;
-					}else if(usermouse.scroll_accumulator < -0.22){
-						usermouse.scroll_accumulator = 0;
-						tv -= 1 / MAX_WAVES;
-					}
-				}else{
-					tv += scroll*0.1;
+		
+		if((f==sidebar_parameter_knob)||(f==static_mod_adjust)){ //tries to line up scrollwheel steps with slider values for int/menu types
+			var scalar = ((shift)?0.1:1);
+			if(f!=static_mod_adjust) scalar *= ((alt)?0.01:1);
+			var t=paramslider_details[p[0]][13];
+			var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
+			if(t=="int"){
+				usermouse.scroll_accumulator += scroll*scalar;
+				if(usermouse.scroll_accumulator > 0.22 ){
+					usermouse.scroll_accumulator = 0;
+					tv += 1 / (p_values[2] - p_values[1] + 1);
+				}else if(usermouse.scroll_accumulator < -0.22){
+					usermouse.scroll_accumulator = 0;
+					tv -= 1 / (p_values[2] - p_values[1] + 1);
+				}
+			}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")){
+				usermouse.scroll_accumulator += scroll*scalar;
+				scalar = (f==static_mod_adjust)?0.5:1; //this isn't right, i don't understand what's going on here, p_values.length is right, so static_mod_adjust must mangle it but it doesn't? 
+				if(usermouse.scroll_accumulator > 0.22 ){
+					usermouse.scroll_accumulator = 0;
+					tv += 1 / (p_values.length);
+				}else if(usermouse.scroll_accumulator < -0.22){
+					usermouse.scroll_accumulator = 0;
+					tv -= 1 / (p_values.length);
+				}
+			}else if((t=="menu_f")){
+				usermouse.scroll_accumulator += scroll;
+				if(usermouse.scroll_accumulator > 0.22 ){
+					usermouse.scroll_accumulator = 0;
+					tv += scalar / (p_values.length+1);
+				}else if(usermouse.scroll_accumulator < -0.22){
+					usermouse.scroll_accumulator = 0;
+					tv -= scalar / (p_values.length+1);
+				}
+			}else if((t=="wave")){
+				usermouse.scroll_accumulator += scroll*scalar;
+				if(usermouse.scroll_accumulator > 0.22 ){
+					usermouse.scroll_accumulator = 0;
+					tv += 1 / MAX_WAVES;
+				}else if(usermouse.scroll_accumulator < -0.22){
+					usermouse.scroll_accumulator = 0;
+					tv -= 1 / MAX_WAVES;
+				}
+			}if((t=="float")&&(p_values[3]=="lin")){
+				var range = p_values[2]-p_values[1];
+				range = Math.floor((Math.log(Math.abs(range))/Math.log(10))-1.3);
+				scalar *= Math.pow(10,range);
+				usermouse.scroll_accumulator += scroll;
+				if(usermouse.scroll_accumulator > 0.22 ){
+					usermouse.scroll_accumulator = 0;
+					tv += scalar / (p_values[2] - p_values[1] );
+				}else if(usermouse.scroll_accumulator < -0.22){
+					usermouse.scroll_accumulator = 0;
+					tv -= scalar / (p_values[2] - p_values[1] );
 				}
 			}else{
-				tv += scroll *0.1;
+				tv += scroll*0.1*scalar;
 			}
+		}else{
+			var scalar = ((alt)?0.01:1) * ((shift)?0.1:1);
+			tv += scroll *0.1*scalar;
 		}
 		f(p,tv);
 	}else if(d==7){
