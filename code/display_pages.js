@@ -3651,8 +3651,10 @@ function draw_sidebar(){
 				var cll = config.getsize("palette::gamut")/MAX_STATES;
 				var c = new Array(3);
 				var sc=0;
+				var overflowed=0;
 				if(states.contains("states::current")) sc=-1;
-				var scw = 6.5*fontheight / (MAX_STATES - sc);
+				//var width = 0.1*(MAX_STATES-sc)+0.9*(states.getsize())//i gave up here because it's hard to actually get the size without running the loop below..
+				var scw = 0.6*fontheight; //6.5*fontheight / (MAX_STATES - sc);
 				var statex=0;
 				// draw a button for each possible state
 				for(;sc<MAX_STATES;sc++){
@@ -3676,8 +3678,16 @@ function draw_sidebar(){
 					if(slotfilled){
 						lcd_main.message("paintrect", sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,c );							
 						click_zone(fire_block_state,sc,block, sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,mouse_index,1 );							
+						statex+=1.2;
+					}else{
+						statex+=0.2;
 					}
-					statex+=1;
+					if((statex+1)*scw+1.7*fontheight>sidebar.width){
+						overflowed += 0.8*fontheight;
+						statex = 0;
+						y_offset+=0.8*fontheight;
+						lcd_main.message("paintrect", sidebar.x, y_offset+0.2, sidebar.x2, fontheight+y_offset,block_darkest );
+					}
 				}
 				
 				
