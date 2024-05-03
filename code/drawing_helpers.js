@@ -431,7 +431,6 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 				pv += 1;
 				pv /= 2;
 			}
-			//pv = p_values[1] + (p_values[2]-p_values[1])*pv;
 		}else if(p_values[3] == "s"){
 			if(p_values[0] == "uni"){
 				pv = 0.5 - 0.5 * Math.cos(pv*PI);
@@ -442,33 +441,22 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 				pv += 1;
 				pv /= 2;
 			}
-			//pv = p_values[1] + (p_values[2]-p_values[1])*pv;
 		}
 		pvp = p_values[1] + (p_values[2]-p_values[1]-0.0001)*pv;
-		//pv = p_values[1] + (p_values[2]-p_values[1])*pv;
 		if(p_type == "int"){
 			pvp = Math.floor(p_values[1] + (0.99+p_values[2]-p_values[1])*pv);
 		}else if(p_type == "note"){
 			pvp = note_names[Math.floor(pvp)];
 		}else if(p_type == "float4"){
 			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-			pvp = pv.toPrecision(4);
+			var pre = 4+Math.floor(Math.log(Math.abs(pv*10)+0.1)/Math.log(10));
+			pvp = pv.toPrecision(pre);
 		}else{
 			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-			var pre=2;
-			if(pv>=1){
-				pre=3;
-				if(pv>999){
-					pre=4;
-					if(pv>9999){
-						pre=5;
-					}
-				}
-			}
+			var pre = 2+Math.floor(Math.log(Math.abs(pv*10)+0.1)/Math.log(10));
 			pvp = pv.toPrecision(pre);
 		}
 	}
-	//lcd_main.message("write", pvp);
 	return pvp;
 }
 
