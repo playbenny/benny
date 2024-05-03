@@ -117,7 +117,7 @@
 				"width" : 3,
 				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
 				"error_scale" : 0,
-				"wrap" : 1,
+				"wrap" : 0,
 				"default" : 0.6
 			},
 			{
