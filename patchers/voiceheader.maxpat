@@ -409,7 +409,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 437.0, 274.0, 22.0, 22.0 ],
+					"patching_rect" : [ 464.0, 274.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -421,7 +421,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 410.14285714285711, 274.0, 22.0, 22.0 ],
+					"patching_rect" : [ 437.0, 274.0, 22.0, 22.0 ],
 					"text" : "t 1"
 				}
 
@@ -433,7 +433,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 422.0, 242.0, 34.0, 22.0 ],
+					"patching_rect" : [ 437.0, 240.0, 34.0, 22.0 ],
 					"text" : "sel 0"
 				}
 
@@ -505,7 +505,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 416.14285714285711, 388.0, 22.0, 22.0 ],
+					"patching_rect" : [ 452.0, 380.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -517,7 +517,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 410.14285714285711, 347.0, 34.0, 22.0 ],
+					"patching_rect" : [ 437.0, 347.0, 34.0, 22.0 ],
 					"text" : "sel 1"
 				}
 
@@ -529,7 +529,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 410.14285714285711, 315.0, 29.5, 22.0 ],
+					"patching_rect" : [ 437.0, 315.0, 29.5, 22.0 ],
 					"text" : "t i i"
 				}
 
@@ -541,7 +541,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 448.64285714285711, 348.0, 52.0, 22.0 ],
+					"patching_rect" : [ 476.0, 347.0, 52.0, 22.0 ],
 					"text" : "gate 1 1"
 				}
 
@@ -553,7 +553,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 481.64285714285711, 311.0, 29.5, 22.0 ],
+					"patching_rect" : [ 509.0, 304.0, 29.5, 22.0 ],
 					"text" : "i"
 				}
 
@@ -733,7 +733,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 3,
 					"outlettype" : [ "bang", "bang", "int" ],
-					"patching_rect" : [ 453.642857142857054, 433.0, 46.0, 22.0 ],
+					"patching_rect" : [ 481.0, 433.0, 46.0, 22.0 ],
 					"text" : "Uzi 1 0"
 				}
 
@@ -745,7 +745,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 453.642857142857054, 396.0, 56.0, 22.0 ],
+					"patching_rect" : [ 481.0, 396.0, 56.0, 22.0 ],
 					"text" : "metro 40"
 				}
 
@@ -757,7 +757,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 500.0, 274.0, 29.5, 22.0 ],
+					"patching_rect" : [ 528.0, 272.0, 29.5, 22.0 ],
 					"text" : "t 1 i"
 				}
 
