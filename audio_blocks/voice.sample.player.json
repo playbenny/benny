@@ -19,7 +19,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 0, 12],
+				"contains" : [0, 0, 0, 12,13],
 				"height" : 0
 			},
 			{ 
@@ -129,7 +129,13 @@
 				"type" : "button",
 				"values" : ["core","load_wave","request_load_wave"],
 				"default" : 0
-			}
+			},
+			{
+				"name" : "edit_wave",
+				"type" : "button",
+				"values" : ["core","edit_wave","request_edit_wave"],
+				"default" : 0
+			}	
 		]
 	}
 }
