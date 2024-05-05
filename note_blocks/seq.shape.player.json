@@ -15,7 +15,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2, 3]
+				"contains" : [0, 0,17, 1, 2, 3]
 			},
 			{ 
 				"contains" : [4, 4, 15,16],
@@ -153,6 +153,12 @@
 				"type" : "float",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
 				"default" : 0
 			}
 		]

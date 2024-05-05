@@ -10,9 +10,17 @@
 		"connections" : {
 			"in" : {
 				"midi" : [ "notes in" ],
-				"dontdefaultall" : 1
+				"dontdefaultall" : 1,
+				"automap_poly" : 0
 			}
 		},
+        "default_polymode" : { 
+            "stack_mode" : "1x",
+            "choose_mode" : "cycle free",
+            "steal_mode" : "oldest",
+            "return_mode" : 0,
+            "latching" : 0
+        },
 		"groups" : [
 			{ 
 				"contains" : [0],

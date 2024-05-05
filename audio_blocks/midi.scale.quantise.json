@@ -18,7 +18,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 1,2]
+				"contains" : [0, 0, 3, 1,2]
 			}		
 		],
 		"parameters" : [
@@ -44,6 +44,12 @@
 				"values" : ["bi", -48, 48, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
 			}
 		]
 	}

@@ -864,6 +864,31 @@ function request_edit_wave(block){
 	}
 }
 
+function jump_to_scales_shapes(){
+	//first see if it has been added
+	for(var i =0;i<MAX_BLOCKS;i++){
+		if(blocks.contains("blocks["+i+"]::name")){
+			if(blocks.get("blocks["+i+"]::name")=="core.scales.shapes"){
+				clear_blocks_selection();
+				select_block(i);
+				return 1;
+			}
+		}
+	}
+	var x=0; var y=0;
+	if(sidebar.selected!=-1){
+		if(blocks.contains("blocks["+sidebar.selected+"]::space")){
+			x = -2+blocks.get("blocks["+sidebar.selected+"]::space::x");
+			y = -2+blocks.get("blocks["+sidebar.selected+"]::space::y");
+		}
+	}
+	clear_blocks_selection();
+	new_block("core.scales.shapes",x,y);
+	draw_blocks();
+	select_block_by_name("core.scales.shapes");
+	redraw_flag.flag |= 2;
+}
+
 function delete_state(state,block){
 	//if block = -1 it deletes the whole state, if not it just removes that block from this state, if state=-1 it deletes that block from all states.
 	if(state == -1){

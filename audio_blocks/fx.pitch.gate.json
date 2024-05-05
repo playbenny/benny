@@ -18,7 +18,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0],
+				"contains" : [0, 0, 0, 1],
 				"height" : 0
 			}
 		],
@@ -30,6 +30,12 @@
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.15
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
 			}
 		]
 	}

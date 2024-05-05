@@ -15,7 +15,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2,3,4]
+				"contains" : [0,5, 1, 2,3,4]
 			}			
 		],
 		"parameters" : [
@@ -57,6 +57,12 @@
 				"wrap" : 0,
 				"default" : 0,
 				"force_label" : 1
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
 			}
 		]
 	}

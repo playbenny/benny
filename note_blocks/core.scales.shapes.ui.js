@@ -142,4 +142,5 @@ function store(){
 function mouse(x,y,l,s,a,c,scr){
 	
 }
+function keydown(){}
 function enabled(){}
