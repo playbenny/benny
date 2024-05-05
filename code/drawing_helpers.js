@@ -686,20 +686,19 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	if(w>250){
-		lcd_main.message("frgb",40,40,40);
-		for(t=0;t<d;t++){
+		lcd_main.message("frgb",90,90,90);
+		for(t=0;t<=d;t++){
 			i = Math.floor(w*((t*dl+st)-waves.zoom_start)/(waves.zoom_end-waves.zoom_start));
-			if((i>0)&&(i<w)){
+			if(t==d){
+				lcd_main.message("frgb",90,90,90);
+			}else if(t==1){
+				lcd_main.message("frgb",40,40,40);
+			}
+			//if((i>0)&&(i<w)){
 				lcd_main.message("moveto",x1+i+i,y1);
 				lcd_main.message("lineto",x1+i+i,y2-fo1);
-			}
+			//}
 		}
-/*		lcd_main.message("frgb",255,255,255);
-		lcd_main.message("moveto",x1+st+st,y1);
-		lcd_main.message("lineto",x1+st+st,y2-fo1);
-		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
-		lcd_main.message("moveto",x1+i+i,y1);
-		lcd_main.message("lineto",x1+i+i,y2-fo1);	*/	
 	}
 	for(ch=0;ch<chans;ch++){
 		var curc=1;
