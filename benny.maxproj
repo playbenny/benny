@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3797433243,
+	"modificationdate" : 3797664837,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1218,7 +1218,22 @@
 ,
 			"utility.xfade.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"fx.pitch.gate.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}
@@ -1517,6 +1532,11 @@
 				"local" : 1
 			}
 ,
+			"utility.xfade.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"source.basic.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1,
@@ -1623,16 +1643,6 @@
 			}
 ,
 			"utility.eq.peak.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
-			}
-,
-			"utility.xfade.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
@@ -2783,6 +2793,16 @@
 			"utility.xfade.json" : 			{
 				"kind" : "json",
 				"local" : 1
+			}
+,
+			"fx.pitch.gate.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}
