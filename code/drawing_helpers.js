@@ -1053,7 +1053,7 @@ function center_view(resetz){
 	
 	
 	camera_position[1] = 0.5*(maxy+miny);
-	if(resetz || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
+	if((resetz&&AUTOZOOM_ON_SELECT) || (camera_position[2]<1)) camera_position[2] = 23*Math.sqrt(d/8);
 	if(sidebar.mode!="none"){
 		camera_position[0] = (maxx * 0.8 + minx * 0.2);
 		if(sidebar.mode=="file_menu") camera_position[0] = (maxx);

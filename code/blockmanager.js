@@ -42,6 +42,7 @@ var UPSAMPLING = 1;
 var RECYCLING = 1;
 //var FIRSTRUN = 0;
 var MODULATION_IN_PARAMETERS_VIEW = 1;
+var AUTOZOOM_ON_SELECT = 1;
 var BLOCKS_GRID = [100, 0.01];
 var BLOCK_MENU_CLICK_ACTION = "click";
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
