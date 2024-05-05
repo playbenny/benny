@@ -12,7 +12,7 @@
 				"midi" : [ "set available notes" ]
 			},
 			"out" : {
-				"audio" : [ "audio out" ],
+				"audio" : [ "passed audio", "rejected audio" ],
 				"midi" : [ "detected pitch out" ]
 			}
 		},
