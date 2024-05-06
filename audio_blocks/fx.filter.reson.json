@@ -1,0 +1,71 @@
+{
+	"fx.filter.reson" : {
+		"patcher" : "fx.filter.reson",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper max msp's reson~ object, a simple digital biquad resonant bandpass filter with audio-rate modulation of one parameter of your choice. optionally frequencies can be quantised to the notes of a scale defined in core.scales.shapes",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "mod in" ]
+			},
+			"out" : {
+				"audio" : [ "audio out" ]
+			}
+		},
+		"groups" : [
+			{ 
+                "height" : 4,
+				"contains" : [0,1,2,5]
+			},
+            {
+                "contains" : [3,3,4],
+                "header" : "frequency quantise scale",
+                "height" : 2
+            }
+		],
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "float",
+				"values" : ["uni", 1, 20000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.25
+			},{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -12, 12, "exp"],
+				"wrap" : 0,
+				"default" : 0.75
+			},{
+				"name" : "Q",
+				"type" : "float",
+				"values" : ["uni", 0.1, 200, "exp"],
+				"wrap" : 0,
+				"default" : 0.25
+			},{
+				"name" : "frequency quantise pool",
+				"type" : "menu_l",
+				"values" : ["none", "chromatic", "1", "2", "3", "4", "5", "6", "7", "8"],
+                "columns" : 3,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
+			},
+            {
+				"name" : "audio mod target",
+				"type" : "menu_l",
+                "force_label" : 1,
+                "values" : ["frequency", "frequency_(post quantise)", "gain", "Q"],
+				"wrap" : 1,
+				"default" : 0
+			}
+		]
+	}
+}
