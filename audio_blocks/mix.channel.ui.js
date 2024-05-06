@@ -84,7 +84,7 @@ function check_params_for_changes(){
 	var dr=0;
 	for(var v=0;v<v_list.length;v++){
 		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
-		shape[v] = Math.floor(no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2));
+		shape[v] = Math.floor(no_voicings*0.999*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2));
 		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
 		sweep[v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)-2);
 		if((shape[v]!=oshape[v])||(amount[v]!=oamount[v])||(sweep[v]!=osweep[v])) dr = 1;
@@ -165,10 +165,6 @@ function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
 function voice_is(v){
 	block = v;
 	scan_for_channels();
-	var voicings_list = mcv.getkeys();
-	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
-	no_voicings = voicings_list.length;
-
 }
 
 function scan_for_channels(){
@@ -187,6 +183,9 @@ function scan_for_channels(){
 			omute.push(-1);
 			osolo.push(-1);
 		}
+		var voicings_list = mcv.getkeys();
+		if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
+		no_voicings = voicings_list.length;
 	}
 }
 
@@ -197,7 +196,7 @@ function loadbang(){
 }
 
 function quer(){
-	post("vlist is",v_list);
+	post("vlist is",v_list,"novoicings =",no_voicings);
 }
 
 function store(){

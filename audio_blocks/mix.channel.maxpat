@@ -45,7 +45,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 328.0, 13.0, 150.0, 62.0 ],
+					"patching_rect" : [ 328.0, 13.0, 153.0, 62.0 ],
 					"text" : "sets mute/solo param to 0, for legacy projects (i don't think it could get set any way now?)"
 				}
 
@@ -219,7 +219,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 3,
 					"numoutlets" : 11,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "" ],
+					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
 					"patching_rect" : [ 250.75, 154.0, 113.5, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -1154,6 +1154,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 250.75, 116.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -1201,10 +1205,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 77.0, 869.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -1822,7 +1822,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 816.831785440444946, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 1, 1, 0, 0, 21000.0, 1.0, 0.699999988079071, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 1, 1, 0, 0, 10000.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -1837,7 +1837,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 537.260356869016391, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 20.0, 1.0, 0.699999988079071, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 2, 1, 0, 0, 220.0, 1.0, 0.899999976158142, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -2030,23 +2030,23 @@
 							}
 , 							{
 								"key" : 3,
-								"value" : [ 110, 1.1, -1, 0, 0, 0, 10000, 0.5, 0.7 ]
+								"value" : [ 110, 1.1, -1, 150, 0.4, 1, 9000, 0.5, 0.7 ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ 220, 0.9, -1, 0, 0, 0, 10000, 0.5, 1.1 ]
+								"value" : [ 220, 0.9, -1, 666, 0.7, 1.5, 10000, 0.5, 1.1 ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ 440, 0.5, -1, 0, 0, 0, 12000, 0.6, 1.25 ]
+								"value" : [ 440, 0.5, -1, 1250, 0.5, 2, 12000, 0.6, 1.25 ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ 880, 0.4, -1, 0, 0, 0, 15000, 0.7, 1.5 ]
+								"value" : [ 880, 0.4, -1, 2500, 0.4, 2, 15000, 0.7, 1.5 ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ 1760, 0.3, -1, 0, 0, 0, 20000, 0.7, 2 ]
+								"value" : [ 1760, 0.3, -1, 5000, 0.3, 2, 20000, 0.7, 2 ]
 							}
  ]
 					}
@@ -2158,10 +2158,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 202.0, 154.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -2185,10 +2181,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 214.75, 817.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -2201,10 +2193,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 457.0, 431.556071519851685, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -2216,10 +2204,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 156.75, 817.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -2232,10 +2216,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 343.0, 431.556071519851685, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 

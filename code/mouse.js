@@ -991,7 +991,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		var tv = f(p, "get");
 		usermouse.shift=shift;
 		
-		if((f==sidebar_parameter_knob)||(f==static_mod_adjust)){ //tries to line up scrollwheel steps with slider values for int/menu types
+		if((f==sidebar_parameter_knob)||((f==static_mod_adjust)&&(p[3]!="custom_opv"))){ //tries to line up scrollwheel steps with slider values for int/menu types
+			//that last bit - maybe a temp fix. look at this once you've got mixer bus ui working 100%
 			var scalar = ((shift)?0.1:1);
 			if(f!=static_mod_adjust) scalar *= ((alt)?0.01:1);
 			var t=paramslider_details[p[0]][13];

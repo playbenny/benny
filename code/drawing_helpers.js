@@ -1013,7 +1013,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		//post("\nslider",dataindex,block,paramindex,pv);
 		draw_v_slider(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, pv);
 		mouse_click_actions[mouse_index] = static_mod_adjust;
-		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
+		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex,"custom_opv"];
 		mouse_click_values[mouse_index] = null; //0.99* (pv<=0.5);
 		view_changed = vc;
 		mouse_index++;		
