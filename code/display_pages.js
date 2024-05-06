@@ -2932,7 +2932,10 @@ function draw_sidebar(){
 								wrap = params[curp].get("wrap");
 								if(getmap==1){
 									if(p_type!="button"){
-										if(opvf){
+										if(opvf && (p_type=="menu_b")){
+											//these should get added to button map list instead
+											//is it here or later?
+										}else if(opvf){
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));
@@ -2949,6 +2952,7 @@ function draw_sidebar(){
 												}	
 											}
 										}else{
+											//should this also exclude menu_b from mappings here?
 											if((map_y>=0)){//&&(map_y<automap.c_rows)){
 												maplist.push(MAX_PARAMETERS*block+curp);
 												mapwrap.push(wrap);
