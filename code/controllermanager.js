@@ -1,8 +1,9 @@
 outlets = 4;
 inlets = 1;
 
-var parameter_value_buffer = new Buffer("parameter_value_buffer");
+var firstbootwait = true;
 
+var parameter_value_buffer = new Buffer("parameter_value_buffer");
 
 var blocks = new Dict();
 blocks.name = "blocks";
@@ -27,17 +28,25 @@ var selected_in_dict = null;
 var selected = null;
 var selection_type = null; //null, dict, param
 
+var prev_blockno = -1;
+var block_enable = 0;
+
 function loadbang(){
     MAX_PARAMETERS = config.get("MAX_PARAMETERS");
     post("\ncontroller manager loaded");
 }
 
 function block(bn){
+    if(firstbootwait){
+        var wait_task = new Task(done_waiting, this);
+        wait_task.schedule(2000);    
+    }
     blockno = bn;
+    if(bn>-1) prev_blockno = bn;
     //the block message is what causes it to do the lookups
     if(blocks.contains("blocks["+blockno+"]::name")){
         blockname = blocks.get("blocks["+blockno+"]::name");
-        post("\ncontroller manager initialising for block",blockno,",",blockname);
+        post("\ncontroller manager initialising for block",blockno,blockname);
         var l = blocktypes.getsize(blockname+"::parameters");
         for(var i = 0;i<l;i++){
             if(blocktypes.get(blockname+"::parameters["+i+"]::name")=="controller"){
@@ -51,14 +60,14 @@ function block(bn){
         }
         controllerslist = blocktypes.get(blockname+"::parameters["+parameternumber+"]::values");
         controllercount = controllerslist.length;
-        post("\nparameter number",parameternumber,"and there are",controllercount,"controllers available in this hardware configuration");
+        if(firstbootwait) post("there are",controllercount,"controllers available in this hardware configuration");
         selected = null; 
         selection_type = null;
         selected_in_dict = null;
         if(blocks.contains("blocks["+blockno+"]::selected_controller")){
             selected_in_dict = blocks.get("blocks["+blockno+"]::selected_controller");
-            set_param(selected_in_dict);
             post("\ncontroller selection from savefile:",selected_in_dict);
+            set_param(selected_in_dict);
             var is = ispresent(selected_in_dict);
             //post("is present?",is);
             if(is==-1){
@@ -100,19 +109,40 @@ function block(bn){
 
 function param(value){
     if(blockno>-1){
-        post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
-        if(controllerslist[value]==selected_in_dict){
-            post("\nslider is same as value already stored in the dictionary");
+        if(firstbootwait&&(value==0)){
+            //post("\nignoring the zero value received on block load");
         }else{
-            blocks.replace("blocks["+blockno+"]::selected_controller",controllerslist[value]);
-            selected_in_dict = controllerslist[value];
-            post("\nhave stored this selection in the dictionary");
-        }
+            firstbootwait = false;
+            //post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
+            if(controllerslist[value]==selected_in_dict){
+                //post("\nslider is same as value already stored in the dictionary");
+            }else if((selection_type=="notfound")&&(selected=="none")){
+                post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
+            }else{
+                blocks.replace("blocks["+blockno+"]::selected_controller",controllerslist[value]);
+                selected_in_dict = controllerslist[value];
+                post("\nslider selection:",controllerslist[value],"storing to dictionary");
+            }
+        } 
     }
 }
 
 function append(inputname){
     controllersavailablelist.push(inputname);
+}
+
+function enabled(enab){
+    if(firstbootwait&&enab){
+
+    }else{
+        if(enab && (blockno==-1) && (prev_blockno!=-1)){
+            block(prev_blockno);
+        }else if(!enab){
+            if(blockno!=-1){
+                block(-1);
+            }
+        }
+    }
 }
 
 function ispresent(controller){
@@ -129,7 +159,9 @@ function ispresent(controller){
 function clear(){
     controllersavailablelist = [];
 }
-
+function done_waiting(){
+    firstbootwait=false;
+}
 function set_param(value){
     if(blockno > -1){
         var para = -1;
@@ -137,7 +169,7 @@ function set_param(value){
             if(value == controllerslist[i]) para = i;
         }
         if(para > -1){
-            post("\nstoring controller selection to parameter",0.99*(para+0.5)/controllercount);
+            //post("\nstoring controller selection to parameter",0.99*(para+0.5)/controllercount);
             parameter_value_buffer.poke(1,blockno*MAX_PARAMETERS+parameternumber,0.99*(para+0.5)/controllercount);
         }
     }
