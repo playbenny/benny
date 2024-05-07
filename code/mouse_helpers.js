@@ -1397,10 +1397,10 @@ function unscale_parameter(block, parameter, value){
 	var blockname = blocks.get("blocks["+block+"]::name");
 	var p_type = blocktypes.get(blockname+"::parameters["+parameter+"]::type");
 	var p_values = blocktypes.get(blockname+"::parameters["+parameter+"]::values");
-	post("\n\n\n\n",blockname,p_type,p_values,"value requested",value);
+	//post("\n\n\n\n",blockname,p_type,p_values,"value requested",value);
 	if((p_type == "int")||(p_type == "float")||(p_type == "float4")||(p_type == "note")){ //anything but menus
 		var pv = (value - p_values[1])/(p_values[2]-p_values[1]);
-		post("\nrescaled first:",pv);
+		//post("\nrescaled first:",pv);
 		if(p_values[0]== "bi"){
 			pv -= 0.5;
 			pv *= 2;
@@ -1454,17 +1454,17 @@ function unscale_parameter(block, parameter, value){
 			pv += 1;
 			pv *= 0.5;
 		}
-		post("uncurved",pv);
+		//post("uncurved",pv);
 		return pv;
 	}else{
-		post("\nit's a menu, there are ",p_values.length," items");
+		//post("\nit's a menu, there are ",p_values.length," items");
 		var test = p_values.indexOf(value);
 		if(test!=-1){
 			post("\nfound a string match,",test);
 			return test/p_values.length;
 		}else{
 			test = value;
-			post("\nnumber received,",test,p_values[test]);
+			//post("\nnumber received,",test,p_values[test]);
 			return test/p_values.length;
 		}
 	}
