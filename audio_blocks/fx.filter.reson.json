@@ -8,7 +8,8 @@
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio in", "mod in" ]
+				"audio" : [ "audio in", "mod in" ],
+				"midi" : [ "set frequency by note" ]
 			},
 			"out" : {
 				"audio" : [ "audio out" ]
@@ -22,7 +23,7 @@
             {
                 "contains" : [3,3,3,3,3,3,4],
                 "header" : "frequency quantise scale",
-                "height" : 1
+                "height" : 0
             }
 		],
 		"parameters" : [
@@ -35,13 +36,13 @@
 			},{
 				"name" : "gain",
 				"type" : "float",
-				"values" : ["bi", -12, 12, "exp"],
+				"values" : ["bi", -48, 48, "exp"],
 				"wrap" : 0,
 				"default" : 0.75
 			},{
 				"name" : "Q",
 				"type" : "float",
-				"values" : ["uni", 0.1, 200, "exp"],
+				"values" : ["uni", 0.1, 400, "exp"],
 				"wrap" : 0,
 				"default" : 0.25
 			},{
