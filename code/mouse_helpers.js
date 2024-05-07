@@ -1383,6 +1383,94 @@ function data_edit(parameter,value){
 	}
 }
 
+function request_set_block_parameter(block, parameter, value){
+	var v = unscale_parameter(block,parameter,value);
+	parameter_value_buffer.poke(1,MAX_PARAMETERS*block+parameter,v);
+}
+function request_set_voice_parameter(block,voice,parameter,value){
+	var v = unscale_parameter(block,parameter,value);
+	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
+	parameter_static_mod.poke(1,MAX_PARAMETERS*voice+parameter,v-bv);
+}
+
+function unscale_parameter(block, parameter, value){
+	var blockname = blocks.get("blocks["+block+"]::name");
+	var p_type = blocktypes.get(blockname+"::parameters["+parameter+"]::type");
+	var p_values = blocktypes.get(blockname+"::parameters["+parameter+"]::values");
+	post("\n\n\n\n",blockname,p_type,p_values,"value requested",value);
+	if((p_type == "int")||(p_type == "float")||(p_type == "float4")||(p_type == "note")){ //anything but menus
+		var pv = (value - p_values[1])/(p_values[2]-p_values[1]);
+		post("\nrescaled first:",pv);
+		if(p_values[0]== "bi"){
+			pv -= 0.5;
+			pv *= 2;
+		}
+		if(p_values[3] == "exp"){
+			if(pv>=0){
+				pv = Math.log(pv+1)/Math.log(2);
+			}else{
+				pv = -Math.log(-pv+1)/Math.log(2);
+			}
+		}else if(p_values[3] == "exp10"){
+			if(pv>=0){
+				pv = (Math.log(pv*9 + 1))*0.434294; //this magic number = 1/ln(10)
+			}else{
+				pv = -(Math.log(-pv*9 + 1))*0.434294;
+			}
+		}else if(p_values[3] == "exp100"){
+			if(pv>=0){
+				pv = (Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
+			}else{
+				pv = -0.01010101010101010101010101010101*(Math.pow(100, -pv) - 1);
+			}
+		}else if(p_values[3] == "exp1000"){
+			if(pv>=0){
+				pv = (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
+			}else{
+				pv = -0.001001001001001001001001001001*(Math.pow(1000, -pv) - 1);
+			}
+		}else if(p_values[3] == "exp.1"){
+			if(pv>=0){
+				pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
+			}else{
+				pv = 1.1111111111111111111111111111111*(Math.pow(0.1, -pv) - 1);
+			}
+		}else if(p_values[3] == "exp.01"){
+			if(pv>=0){
+				pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+			}else{
+				pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
+			}
+		}else if(p_values[3] == "exp.001"){
+			if(pv>=0){
+				pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+			}else{
+				pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
+			}
+		}else if(p_values[3] == "s"){
+			pv = 0.5 - 0.5 * Math.acos(pv*PI);
+		}
+		if(p_values[0]== "bi"){
+			pv += 1;
+			pv *= 0.5;
+		}
+		post("uncurved",pv);
+		return pv;
+	}else{
+		post("\nit's a menu, there are ",p_values.length," items");
+		var test = p_values.indexOf(value);
+		if(test!=-1){
+			post("\nfound a string match,",test);
+			return test/p_values.length;
+		}else{
+			test = value;
+			post("\nnumber received,",test,p_values[test]);
+			return test/p_values.length;
+		}
+	}
+}
+
+
 function qwertymidi_octave(parameter, value){
 	if(value=="get"){
 		var t = Math.floor(qwertym.octf * 12);

@@ -401,7 +401,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 				pv += 1;
 				pv /= 2;
 			}
-			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
+			//pv = p_values[1] + (p_values[2]-p_values[1])*pv;
 		}else if(p_values[3] == "exp.01"){
 			if(p_values[0] == "uni"){
 				pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
