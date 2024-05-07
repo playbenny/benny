@@ -20,9 +20,9 @@
 				"contains" : [0,1,2,5]
 			},
             {
-                "contains" : [3,3,4],
+                "contains" : [3,3,3,3,3,3,4],
                 "header" : "frequency quantise scale",
-                "height" : 2
+                "height" : 1
             }
 		],
 		"parameters" : [
@@ -48,7 +48,7 @@
 				"name" : "frequency quantise pool",
 				"type" : "menu_l",
 				"values" : ["none", "chromatic", "1", "2", "3", "4", "5", "6", "7", "8"],
-                "columns" : 3,
+                "columns" : 5,
 				"wrap" : 1,
 				"default" : 0
 			},

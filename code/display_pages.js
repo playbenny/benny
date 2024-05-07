@@ -2985,7 +2985,7 @@ function draw_sidebar(){
 
 									if((/*(p_type=="menu_b")||*/(p_type=="menu_l")) && (vl.length != 1)&&!params[curp].contains("nopervoice")) p_type = "menu_i";
 									if(p_type=="button"){
-										paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
+										paramslider_details[curp]=[x1,y1,x2,y2/*maxnamelabely*/,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
 										parameter_button(curp);
 										//pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
 										//var statecount = (p_values.length - 1) / 2;
