@@ -193,10 +193,9 @@
 			},
 			{
 				"name" : "attack",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
-				"error_scale" : 2,
 				"default" : 0.05
 			},
 			{
@@ -204,15 +203,13 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
-				"error_scale" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "release",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
-				"error_scale" : 4,
 				"default" : 0.15
 			},
 			{
@@ -245,10 +242,9 @@
 			},			
 			{
 				"name" : "attack",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
-				"error_scale" : 2,
 				"default" : 0.05
 			},
 			{
@@ -256,15 +252,13 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
-				"error_scale" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "release",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
-				"error_scale" : 4,
 				"default" : 0.15
 			},
 			{
