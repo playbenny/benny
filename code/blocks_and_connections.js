@@ -2183,7 +2183,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::voice", 1 );
 		}else{
 			new_connection.replace("from::voice", "all" );
-			if(tov==-1) spreadwide = 1;
+			if(tov==-1){
+				if(fpoly*f_subvoices==tpoly*t_subvoices) spreadwide = 1;
+				post("\nspreadW",spreadwide);
+			}
 		}
 	}else{
 		new_connection.replace("from::voice", fromv + 1 );
