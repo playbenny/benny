@@ -2357,7 +2357,9 @@ function key_escape(){
 		redraw_flag.flag |= 4;
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
-			post("\nabort 3d drag!!");
+			usermouse.clicked3d=-1;
+			draw_blocks();
+			//post("\nabort 3d drag!!",usermouse.drag.dragging.voices[0],blocks.get("blocks["+usermouse.drag.dragging.voices[0][0]+"]::space::x"));
 		}else if((displaymode=="block_menu")&&(menu.mode==3)){
 			if(menu.search!=""){
 				menu.search="";
