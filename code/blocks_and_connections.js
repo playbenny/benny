@@ -2898,10 +2898,12 @@ function swap_block(block_name){
 	}
 	var x = blocks.get("blocks["+menu.swap_block_target+"]::space::x");
 	var y = blocks.get("blocks["+menu.swap_block_target+"]::space::y");
+	var v = blocks.get("blocks["+menu.swap_block_target+"]::poly::voices");
 	remove_block(menu.swap_block_target);
 	menu.swap_block_target = new_block(block_name,x,y);
 	post("\nreplacement block",menu.swap_block_target);
 	draw_block(menu.swap_block_target);
+	voicecount(menu.swap_block_target, v);
 	rebuild_action_list = 1;
 	
 	// put all the connections back
