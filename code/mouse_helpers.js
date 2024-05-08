@@ -2356,7 +2356,9 @@ function key_escape(){
 		waves.selected=-1;
 		redraw_flag.flag |= 4;
 	}else{
-		if((displaymode=="block_menu")&&(menu.mode==3)){
+		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
+			post("\nabort 3d drag!!");
+		}else if((displaymode=="block_menu")&&(menu.mode==3)){
 			if(menu.search!=""){
 				menu.search="";
 				draw_menu_hint();
