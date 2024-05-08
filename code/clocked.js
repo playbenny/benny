@@ -525,7 +525,7 @@ function draw_scope(x1,y1,x2,y2,voice){
 	var h1 = (y1+y2)*0.5;
 	var h2 = (y2-y1-4)*0.5;
 	var t=256*(voice+1)+1;
-	for(var x=x1|0;x<x2-1;x+=2){
+	for(var x=x1|0;x<x2-2;x+=2){
 		/*var t2 = t |0; //interpolating version - you only really see the difference if the scope is more than 255 pixels wide, tends to be on connection page
 		var t3 = t-t2;
 		var t4 = 1-t3;
