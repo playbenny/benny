@@ -1,8 +1,8 @@
 benny
 -----
-- is a software playground for making live music or for making music live
+- is a modular software playground for making live music
 - integrates hardware and software, midi and audio, lets you connect anything to anything
-- extends into polyphony elegantly
+- extends nearly everything into polyphony elegantly and flexibly
 - is anti-timeline and tries not to impose a structure on you
 - aims for a low-density, glance-able interface that works for touch and mouse/keyboard use
 - is an extendible and hackable place to host your own max patches
