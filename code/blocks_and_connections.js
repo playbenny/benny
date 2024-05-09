@@ -2183,7 +2183,10 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::voice", 1 );
 		}else{
 			new_connection.replace("from::voice", "all" );
-			if(tov==-1) spreadwide = 1;
+			if(tov==-1){
+				if(fpoly*f_subvoices==tpoly*t_subvoices) spreadwide = 1;
+				post("\nspreadW",spreadwide);
+			}
 		}
 	}else{
 		new_connection.replace("from::voice", fromv + 1 );
@@ -2898,10 +2901,12 @@ function swap_block(block_name){
 	}
 	var x = blocks.get("blocks["+menu.swap_block_target+"]::space::x");
 	var y = blocks.get("blocks["+menu.swap_block_target+"]::space::y");
+	var v = blocks.get("blocks["+menu.swap_block_target+"]::poly::voices");
 	remove_block(menu.swap_block_target);
 	menu.swap_block_target = new_block(block_name,x,y);
 	post("\nreplacement block",menu.swap_block_target);
 	draw_block(menu.swap_block_target);
+	voicecount(menu.swap_block_target, v);
 	rebuild_action_list = 1;
 	
 	// put all the connections back

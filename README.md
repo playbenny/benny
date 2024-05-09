@@ -7,6 +7,9 @@ benny
 - aims for a low-density, glance-able interface that works for touch and mouse/keyboard use
 - is an extendible and hackable place to host your own max patches
 
+30 minute intro to benny video:
+https://www.youtube.com/watch?v=Hs_4T_gjoWw
+
 concepts
 --------
 - the cubes in benny are called 'blocks'. they all make or process sound or musical data. the first page you land on is the blocks page. hit enter, double click or start typing to find blocks to add.

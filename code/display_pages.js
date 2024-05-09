@@ -2418,7 +2418,7 @@ function draw_sidebar(){
 			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")){
 			}else{
 				sidebar.mode = "block";
-				center_view(1);
+				if(AUTOZOOM_ON_SELECT)center_view(1);
 			}
 			if(sidebar.selected != block) sidebar.lastmode = "retrig";
 			var bvs = voicemap.get(block);
@@ -4833,7 +4833,7 @@ function draw_sidebar(){
 			y_offset += fontheight*2.1;
 			if(sidebar.mode != sidebar.lastmode){
 				store_back(["wire",i,sidebar.scroll.position]);
-				center_view(1);
+				if(AUTOZOOM_ON_SELECT)center_view(1);
 				clear_sidebar_paramslider_details();
 				sidebar.lastmode = sidebar.mode;
 				audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -5570,7 +5570,7 @@ function draw_sidebar(){
 				sidebar.mode = "blocks";
 			}
 			if(sidebar.mode != sidebar.lastmode){
-				if(sidebar.lastmode == "none") center_view(1);
+				if((sidebar.lastmode == "none")&&AUTOZOOM_ON_SELECT) center_view(1);
 				clear_sidebar_paramslider_details();
 				sidebar.scroll.position = 0;
 				sidebar.lastmode = sidebar.mode;

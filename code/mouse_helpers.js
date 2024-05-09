@@ -772,9 +772,38 @@ function send_button_message(parameter, value){
 	}
 }
 
+function fwd_button(){
+	if(sidebar.fwd.length>0){
+		var fwd = sidebar.fwd.pop();
+		store_back([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);;
+		//contains sidebar mode, then if it was a block one it contains the selected block and voice and scroll position
+		//or if it was a connection it contains the selected connection and scroll position
+		//or? 
+		if(fwd[0]==sidebar.mode){
+			if(fwd[0]=="wire"){
+				if(((fwd[1]==selected.wire.indexOf(1)))&&(sidebar.fwd.length>0)) fwd = sidebar.fwd.pop();
+			}else if((fwd[0]=="block")||(fwd[0]=="connections")){
+				if(((fwd[1]==sidebar.selected&(fwd[2]==sidebar.selected_voice)))&&(sidebar.fwd.length>0)) fwd = sidebar.fwd.pop();
+			}
+		}
+		post("\nsidebar fwd",fwd, typeof fwd);
+		if(fwd[0]=="wire"){
+			clear_blocks_selection();
+			sidebar_select_connection(fwd[1],null);
+			sidebar.scroll.position = fwd[2];
+		}else if((fwd[0]=="block")||(fwd[0]=="connections")){
+			clear_blocks_selection();
+			select_block_and_voice(fwd[1],fwd[2]);
+			set_sidebar_mode(fwd[0]);
+			sidebar.scroll.position = fwd[3];
+		}
+	}
+}
+
 function back_button(){
 	if(sidebar.back.length>0){
 		var back = sidebar.back.pop();
+		store_fwd([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);;
 		//contains sidebar mode, then if it was a block one it contains the selected block and voice and scroll position
 		//or if it was a connection it contains the selected connection and scroll position
 		//or? 
@@ -820,6 +849,29 @@ function store_back(contents){
 		sidebar.back.push(contents);
 	}
 }
+
+function store_fwd(contents){
+	if(sidebar.fwd.length>0){
+		//if(sidebar.back.length>sidebar.backpointer) sidebar.back.slice(0,sidebar.backpointer);
+		mostrecent = sidebar.fwd[sidebar.fwd.length-1];
+		if(mostrecent.length!=contents.length){
+			sidebar.fwd.push(contents);
+		}else{
+			//post("\ntesting",mostrecent,"vs",contents);
+			for(var i=0;i<mostrecent.length-1;i++){
+				if(mostrecent[i]!=contents[i]){
+					sidebar.fwd.push(contents);
+					return 0;
+				}
+			}
+			var skip = sidebar.fwd.pop();
+			sidebar.fwd.push(contents);
+		}
+	}else{
+		sidebar.fwd.push(contents);
+	}
+}
+
 
 function request_load_wave(block){
 	//this is for when a block has a button to request a wave, it finds an empty slot,
@@ -2356,7 +2408,11 @@ function key_escape(){
 		waves.selected=-1;
 		redraw_flag.flag |= 4;
 	}else{
-		if((displaymode=="block_menu")&&(menu.mode==3)){
+		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
+			usermouse.clicked3d=-1;
+			draw_blocks();
+			//post("\nabort 3d drag!!",usermouse.drag.dragging.voices[0],blocks.get("blocks["+usermouse.drag.dragging.voices[0][0]+"]::space::x"));
+		}else if((displaymode=="block_menu")&&(menu.mode==3)){
 			if(menu.search!=""){
 				menu.search="";
 				draw_menu_hint();
