@@ -944,6 +944,20 @@ function turn_off_audio_to_data_if_unused(voice){
 
 // REMOVE CONNECTION ###################################################################################################
 function remove_connection(connection_number){	
+
+	for(i=0;i<wires[connection_number].length;i++){ // disable the wires
+		wires[connection_number][i].freepeer(); //enable=0;
+	}
+	wires[connection_number]=[];
+	wire_ends[connection_number][0] = -1.057;
+	selected.wire[connection_number] = 0;
+
+	if(connections.contains("connections["+connection_number+"]::overlap")){
+		var empt=new Dict;  // wipe this one from the dictionary
+		connections.set("connections["+connection_number+"]", empt);
+		return -1;
+		//if it was flagged as overlapping then no connection was made and there's nothing to remove
+	}
 	// post("removing connection",connection_number,"\n");
 	var f_type = connections.get("connections["+connection_number+"]::from::output::type");
 	var t_type = connections.get("connections["+connection_number+"]::to::input::type");
@@ -978,12 +992,6 @@ function remove_connection(connection_number){
 	var max_poly;
 	var varr=[];
 	
-	for(i=0;i<wires[connection_number].length;i++){ // disable the wires
-		wires[connection_number][i].freepeer(); //enable=0;
-	}
-	wires[connection_number]=[];
-	wire_ends[connection_number][0] = -1.057;
-	selected.wire[connection_number] = 0;
 	
 	// work out which polyvoices/matrix slots correspond
 	if(f_type == "matrix"){
@@ -1427,6 +1435,15 @@ function make_connection(cno,existing){
 // makes the connection
 // (it has already been copied into the connections dict, at the slot we've been called with?)
 // if existing==1 then it doesn't bother redoing modsumaction list, just adjusts routing.
+	//first: check if the connection overlaps any existing ones, if it does, we don't make it, just flag it as overlapping
+	if((existing==0)&&(loading.progress==0)){
+		if(check_for_connection_overlap(cno)){
+			connections.replace("connections["+cno+"]::overlap",1);
+			return -1;
+		}else if(connections.contains("connections["+cno+"]::overlap")){
+			connections.remove("connections["+cno+"]::overlap");
+		}
+	}
 	var f_type = connections.get("connections["+cno+"]::from::output::type");
 	var t_type = connections.get("connections["+cno+"]::to::input::type");
 	var f_o_no = connections.get("connections["+cno+"]::from::output::number");
@@ -2185,7 +2202,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 			new_connection.replace("from::voice", "all" );
 			if(tov==-1){
 				if(fpoly*f_subvoices==tpoly*t_subvoices) spreadwide = 1;
-				post("\nspreadW",spreadwide);
+				//post("\nspreadW",spreadwide);
 			}
 		}
 	}else{
@@ -2284,11 +2301,16 @@ function build_new_connection_menu(from, to, fromv,tov){
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
 		new_connection.replace("conversion::force_unity" , 1);
 	} 
+
 	
 	if(wires_potential_connection>-1){
 		connections.replace("connections["+wires_potential_connection+"]",new_connection);
-		//remove_potential_wire(1);
-		make_connection(wires_potential_connection,0);
+		if(check_for_connection_overlap(wires_potential_connection)){
+			connections.replace("connections["+wires_potential_connection+"]::overlap",1);
+		}else{
+			//remove_potential_wire(1);
+			make_connection(wires_potential_connection,0);
+		}
 		new_connection.clear();
 		sidebar_select_connection(wires_potential_connection);
 		if(sidebar.mode=="none")set_sidebar_mode("connection");
@@ -2298,6 +2320,76 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}
 
 	redraw_flag.flag|=4;
+}
+
+function check_for_connection_overlap(n){
+	var l = connections.getsize("connections");
+	//var overlap = 0;
+	var f_n = connections.get("connections["+n+"]::from::number");
+	var t_n = connections.get("connections["+n+"]::to::number");
+	var f_t = connections.get("connections["+n+"]::from::output::type");
+	var t_t = connections.get("connections["+n+"]::to::input::type");
+	var f_v = connections.get("connections["+n+"]::from::voice");
+	if(!Array.isArray(f_v)) f_v = [f_v];
+	var t_v = connections.get("connections["+n+"]::to::voice");
+	if(!Array.isArray(t_v)) f_v = [t_v];
+	var f_i = connections.get("connections["+n+"]::from::output::number");
+	var t_i = connections.get("connections["+n+"]::to::input::number");
+	for(var ti=0;ti<l;ti++){
+		if(ti==n){
+		}else{
+			if((connections.contains("connections["+ti+"]::from::number"))&&(connections.get("connections["+ti+"]::from::number")==f_n)){
+				if(connections.get("connections["+ti+"]::to::number")==t_n){
+					//post("\nfrom and to match");
+					if((connections.get("connections["+ti+"]::from::output::type")==f_t)&&(connections.get("connections["+ti+"]::to::input::type")==t_t)){
+						//post("\ntypes match");
+						if((connections.get("connections["+ti+"]::from::output::number")==f_i)&&(connections.get("connections["+ti+"]::to::input::number")==t_i)){
+							//inputs / outputs match	
+							var frommatch=0;
+							var fv = new_connection.get("from::voice");
+							if((f_v == "all") || (fv == "all")){
+								frommatch = 1;
+							}else{
+								if(!Array.isArray(fv)) fv = [fv];
+								for(vi=0;vi<fv.length;vi++){
+									for(vii=0;vii<f_v.length;vii++){
+										if(fv[vi]==f_v[vii]){
+											frommatch = 1;
+											vii = 9999; vi = 9999;
+										}
+									}
+								}
+							}
+							if(frommatch){
+								var tomatch=0;
+								var tv = new_connection.get("to::voice");
+								if((t_v == "all") || (tv == "all")){
+									tomatch = 1;
+								}else{
+									if(!Array.isArray(tv)) tv = [tv];
+									for(vi=0;vi<tv.length;vi++){
+										for(vii=0;vii<t_v.length;vii++){
+											if(tv[vi]==t_v[vii]){
+												tomatch = 1;
+												vii = 9999; vi = 9999;
+											}
+										}
+									}
+								}
+								if(tomatch){
+									return 1;
+									//post("\noverlapping connection");
+									//ti=99999;
+									//overlap = 1;
+								}	
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return 0;
 }
 
 function remove_block(block){

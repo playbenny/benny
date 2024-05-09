@@ -1271,10 +1271,15 @@ function draw_wire(connection_number){
 			}
 		}
 		if(drawme){
+			
 			var cmute = connections.get("connections["+connection_number+"]::conversion::mute");
 			var from_number = connections.get("connections["+connection_number+"]::from::output::number");
-			var from_type = connections.get("connections["+connection_number+"]::from::output::type");
 			var to_number = connections.get("connections["+connection_number+"]::to::input::number");
+			if(connections.contains("connections["+connection_number+"]::overlap")){
+				from_type = "potential";
+				to_type = "potential";
+			}
+			var from_type = connections.get("connections["+connection_number+"]::from::output::type");
 			var to_type = connections.get("connections["+connection_number+"]::to::input::type");
 			var from_name = blocks.get("blocks["+cfrom+"]::name");
 			var num_outs = Math.max(1,blocktypes.getsize(from_name+"::connections::out::"+from_type));
