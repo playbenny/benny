@@ -25,7 +25,7 @@ concepts
 - you can store multiple hardware configuration files for different setups you use. if a hardware block isn't available when loading a song, benny will either auto-substitute or prompt you to choose a replacement. the goal is for a benny-based live set to tolerate on the road equipment failures with minimum fuss.
 - all send/return loops to hardware have aliasing preventing softclip and dither on the outputs. any audio block can be upsampled and run at a higher internal frequency
 - you can arm any blocks to record apart from (at the moment) hardware ones, which you need to route to something else to record.
-- ([shortcut keys](https://github.com/jamesholdenmusic/benny/blob/main/docs/key%20commands.txt))
+- [shortcut keys](https://github.com/jamesholdenmusic/benny/blob/main/docs/key%20commands.txt)
 
 installation
 ------------
