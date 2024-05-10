@@ -4,6 +4,7 @@ ESC - back out of menus, unselect, recenter blocks view, cancel dragging
 ` - all off - ends all midi notes, etc
 space - play button
 ctrl-space - load next song
+CAPS LOCK - when on, the qwerty keyboard is 2.5 octaves of notes - starting at Z up to M for the first octave, then from Q to ]. L and , go up and down an octave
 F1 - panels view
 F2 - blocks view
 F3 - waves view
