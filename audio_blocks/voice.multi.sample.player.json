@@ -4,7 +4,7 @@
 		"type" : "audio",
 		"synonyms" : "melotron",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "multisample player with slices, offset, timestretch, and a set of loose emulations of melotron mechanics - pitch wobble, motor drag (proportional to the number of notes held down), and a finite limit set on rewind speed. ££this voice expects you to load a wave with an ascending scale, evenly spaced, with the slices set",
+		"help_text" : "multisample player with slices, offset, timestretch, and a set of loose emulations of melotron mechanics - pitch wobble, motor drag (proportional to the number of notes held down*), and a finite limit set on rewind speed. ££this voice expects you to load a wave with an ascending scale, evenly spaced, with the slices set.££* motor drag only works when an actual connection has been made - it won't work when auto-assign keyboard is played into the block.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,

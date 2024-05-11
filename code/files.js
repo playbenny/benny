@@ -216,6 +216,7 @@ function get_polybuffer_info(){
 			polybuffer_channels[i] = t[6*i+4];
 		}
 	}
+	messnamed("update_wave_colls","bang");
 	//>> TODO send polybuffer into to other blocks?
 }
 
@@ -267,6 +268,8 @@ function buffer_loaded(number,path,name,buffername){
 	if(displaymode=="waves") redraw_flag.flag |= 4;
 	store_wave_slices(tn);
 	waves.age[number]=++waves.seq_no;
+	messnamed("update_wave_colls","bang");
+
 }
 
 function load_next_song(slow){
@@ -630,7 +633,7 @@ function import_song(){
 		for(i=0;i<loading.mutelist.length;i++){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
-		
+		messnamed("update_wave_colls","bang");
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
