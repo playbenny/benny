@@ -45,7 +45,19 @@ configuration
     - KNOWN ISSUE on windows max sometimes can't find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
 - all the visual/ui preferences are in config.json. this gets overwritten when you update the software, so if you want to change a setting copy the relevant entry you want to change the value of over to userconfig.json.
 - the default numbers of note and audio voice slots can be changed, but baseline cpu usage of the system's matrix mixer grows fast with audio voice count.
-   
+
+contributing
+------------
+
+benny is currently in private beta but will be released as open source under the hippocratic license 3.0. contributions are welcome!
+- report bugs on github.com under the 'issues' tab above. a good bug report contains a clear description of the problem and steps or attached files to reliably reproduce it
+- if you want to contribute blocks and have them in the main repo just let me know. if you want, you can choose your own prefix for your blocks so you can have your own section in the menu.
+- if you want to fix a bug:
+  - create a new branch of the repository
+  - fix the bug in your branch
+  - submit a pull request to have your fix merged back into the main repo
+- any questions, ask!
+
 developing blocks
 -----------------
 have a look in docs / block development / example patchers
