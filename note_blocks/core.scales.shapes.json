@@ -3,13 +3,13 @@
 		"patcher" : "core.scales.shapes",
 		"type" : "note",
 		"block_ui_patcher" : "core.scales.shapes.ui",
-		"help_text" : "Scales and shapes storage. In 'held' mode the currently held notes are stored along with the order they were added. In 'pattern' mode a phrase played in is turned into a list of notes and the order they were added. The seq.shape.player can play back these patterns, various pitch quantisation blocks can use the stored lists of notes too. If you add more voices to this block you can have more stored scales and shapes. ",
+		"help_text" : "Scales and shapes storage. You can make scales (dynamically if you want!) using midi input in two ways: ££For midi into the 'held' input the currently held notes are stored along with the order they were added. ££A phrase played into the 'pattern' input is turned into a list of notes and the order they were added. ££Scales can also span two octaves, if the scale you input is bigger than an octave then it treats it as being two.££You can edit scales by clicking the keyboard graphics in the ui, but at the moment you can't edit the order of a pattern that way.££The seq.shape.player can play back these patterns, various pitch quantisation blocks can use the stored lists of notes too. ££If you add more voices to this block you can have more stored scales and shapes. ",
 		"exclusive" : 1,
-		"ui_in_sidebar_height" : 4,		
+		"ui_in_sidebar_height" : 5,		
 		"max_polyphony" : 8,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in" ],
+				"midi" : [ "patterns in", "held notes in" ],
 				"dontdefaultall" : 1,
 				"automap_poly" : 0
 			}
@@ -20,24 +20,6 @@
             "steal_mode" : "oldest",
             "return_mode" : 0,
             "latching" : 0
-        },
-		"groups" : [
-			{ 
-				"contains" : [0],
-				"height" : 0,
-				"onepervoice" : 1
-			}			
-		],
-		"parameters" : [
-			{
-				"name" : "mode",
-				"type" : "menu_l",
-				"values" : ["held", "pattern"],
-				"colours" : [20, 10],
-				"wrap" : 1,
-				"error_scale" : 0,
-				"default" : 0.6
-			}
-		]
+        }
 	}
 }

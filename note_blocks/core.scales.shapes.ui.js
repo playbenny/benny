@@ -87,6 +87,8 @@ function draw_keyboard(x1,y1,x2,y2,poolno){
 				if(pool_notes[poolno][t]==i+24) c = colours[poolno];
 			}
 			outlet(1,"paintrect",x1+xunit*x,y1,x1+xunit*(x+0.9),y2,c);
+			outlet(0,"custom_ui_element","direct_button",x1+xunit*x,y1,x1+xunit*(x+0.9),y2,"note",block,"togglenote",i,v_list[poolno]+1,poolno+1);//,v_list[0],0);
+
 		}
 	}
 	for(var i=0;i<24;i++){
@@ -97,6 +99,7 @@ function draw_keyboard(x1,y1,x2,y2,poolno){
 			}
 			x = 7*(i>11) + keybx[i%12];
 			outlet(1,"paintrect",x1+xunit*x,y1,x1+xunit*(x+0.9),y1*0.3+0.7*y2,c);
+			outlet(0,"custom_ui_element","direct_button",x1+xunit*x,y1,x1+xunit*(x+0.9),y1*0.3+0.7*y2,"note",block,"togglenote",i,v_list[poolno]+1,poolno+1);//,v_list[0],0);
 		}
 	}
 }

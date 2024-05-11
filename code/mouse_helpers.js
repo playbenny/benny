@@ -708,9 +708,9 @@ function custom_direct_mouse_button(parameter,value){
 		//post("output block button",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
 		output_blocks_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "note"){
-		note_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
+		note_poly.setvalue(parameter,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "audio"){
-		audio_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
+		audio_poly.setvalue(parameter,value[2],usermouse.left_button,value[3],value[4]);
 	}
 }
 
