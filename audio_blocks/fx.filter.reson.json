@@ -3,7 +3,7 @@
 		"patcher" : "fx.filter.reson",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "wrapper max msp's reson~ object, a simple digital biquad resonant bandpass filter with audio-rate modulation of one parameter of your choice. optionally frequencies can be quantised to the notes of a scale defined in core.scales.shapes",
+		"help_text" : "wrapper for max msp's reson~ object, a simple digital biquad resonant bandpass filter with audio-rate modulation of one parameter of your choice. optionally frequencies can be quantised to the notes of a scale defined in core.scales.shapes",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
