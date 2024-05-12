@@ -34,7 +34,7 @@
 			{
 				"contains" : [8,9,10],
 				"colour" : -10,
-				"height" : 0
+				"height" : 1
 			}
 		],
 		"voice_data" : {},

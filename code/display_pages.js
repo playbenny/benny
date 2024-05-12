@@ -619,7 +619,6 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 
 function draw_waves(){
 	messnamed("update_wave_colls","bang");
-
 	var num_slots = MAX_WAVES;//waves_dict.getsize("waves");
 	var slot;
 	var c=new Array(3);
