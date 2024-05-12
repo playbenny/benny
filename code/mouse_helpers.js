@@ -652,6 +652,7 @@ function panel_edit_button(parameter,value){
 }
 
 function select_folder(parameter,value){
+	sidebar.files_page = "songs";
 	if(fullscreen){
 		world.message("fullscreen",0);
 	}
@@ -685,6 +686,14 @@ function clear_everything_btn(parameter,value){
 	}else{
 		danger_button = value;
 	}
+}
+function files_switch_folder(){
+	if(sidebar.files_page=="songs"){
+		sidebar.files_page="templates";
+	}else{
+		sidebar.files_page="songs";
+	}
+	redraw_flag.flag |= 2;
 }
 
 function custom_mouse_passthrough(parameter,value){

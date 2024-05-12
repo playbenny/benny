@@ -448,7 +448,8 @@ var sidebar = {
 	},
 	scrollbar_index : 2,
 	back : [],
-	fwd : []
+	fwd : [],
+	files_page : "songs"
 }
 
 var y_offset;

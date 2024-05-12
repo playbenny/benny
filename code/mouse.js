@@ -127,7 +127,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.last.shift = usermouse.shift;
 	usermouse.last.alt = usermouse.alt;
 	usermouse.shift = shift;
-	usermouse.ctrl = ctrl;
+	if(usermouse.ctrl != ctrl){
+		usermouse.ctrl = ctrl;
+		if(sidebar.mode == "file_menu") redraw_flag.flag |= 2;
+	}
 	usermouse.alt = alt;
 	if(usermouse.caps!=caps) redraw_flag.flag |= 2; //so the qwertymidi indicator gets drawn
 	usermouse.caps = caps;

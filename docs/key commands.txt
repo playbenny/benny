@@ -17,6 +17,8 @@ F10 - toggle showing all wires or just those of the selected block (improves per
 F11 - toggle fullscreen
 F12 - show resource usage page
 
+ctrl-alt-F12 - hard restart benny
+
 BLOCKS PAGE
 
 shift drag - selection rectangle
