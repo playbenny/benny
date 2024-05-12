@@ -5400,7 +5400,7 @@ function draw_sidebar(){
 				y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset);
 				y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset);
 				y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset);
-				y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
+				if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
 			}
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, 6*fo1+y_offset,section_colour_darkest );
 			
@@ -5421,7 +5421,10 @@ function draw_sidebar(){
 					click_rectangle( vx-fo1, y_offset, vx+fontheight*1.7, fontheight*0.6+y_offset, mouse_index,1);
 					var w=0;
 					if((t_i_no == 0) && ((t_type == "midi"))) w=0.1;
-					if(t_type == "block") w=0.4;
+					if(t_type == "block"){
+						w=0.4;
+						t_i_v = "all";
+					}
 					if(t_i_v == "all"){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(w+0.6), fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
