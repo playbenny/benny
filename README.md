@@ -43,7 +43,7 @@ configuration
     - KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
     - KNOWN ISSUE if you change your mind how you want the parameters organised you can't load a vst's config and edit it, you just have to do it again 
     - KNOWN ISSUE on windows max sometimes can't find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
-- all the visual/ui preferences are in config.json. this gets overwritten when you update the software, so if you want to change a setting copy the relevant entry you want to change the value of over to userconfig.json.
+- all the visual/ui preferences are in config.json. if you want to change a setting copy the relevant entry you want to change the value of over to userconfig.json, anything it finds in userconfig overrides the defaults in config.json
 - the default numbers of note and audio voice slots can be changed, but baseline cpu usage of the system's matrix mixer grows fast with audio voice count.
 
 contributing
