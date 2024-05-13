@@ -45,7 +45,8 @@
 	"SCOPE_DEFAULT_ZOOM" : 0.65,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
 	"MODULATION_IN_PARAMETERS_VIEW" : 1,
-	"AUTOZOOM_ON_SELECT" : 0,
+	"AUTOZOOM_ON_SELECT" : 1,
+	"AUTO_INCREMENT_SAVE_KEY" : 1,
 	"sidebar_scrollbar_width" : 18,
 	"sidebar_width_in_units" : 10,
 	"maxmsp" : {

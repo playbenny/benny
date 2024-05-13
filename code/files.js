@@ -269,7 +269,6 @@ function buffer_loaded(number,path,name,buffername){
 	store_wave_slices(tn);
 	waves.age[number]=++waves.seq_no;
 	messnamed("update_wave_colls","bang");
-
 }
 
 function load_next_song(slow){
@@ -1038,8 +1037,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	}
 }
 
-function save_song(selectedonly){
-	if(selectedonly) post("\nTODO save selected blocks only isn't done yet sorry, this will save the whole thing.");
+function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	post("collecting data to save\n");
 	//copy current param values into states[0]
 	var b,p,psize;
@@ -1107,13 +1105,104 @@ function save_song(selectedonly){
 		world.message("fullscreen",0);
 	}
 //copy blocks and connections and states and properties into one dict
-	messnamed("trigger_save_as","bang");
+	if(selectedonly){
+		messnamed("trigger_save_selected", "bang");
+	}else if(saveas || (loading.songname=="")){
+		messnamed("trigger_save_as","bang");
+	}else{
+		messnamed("trigger_save","bang");
+	}
 	set_sidebar_mode("none");
+}
+
+function save_selected_pruning(){
+	var ss = new Dict;
+	ss.name = "songselected";
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if(selected.block[i]==0){
+			if(ss.contains("blocks["+i+"]::name")){
+				ss.setparse("blocks["+i+"]", "{}");
+			}
+		}
+	}
+	var l = ss.getsize("connections");
+	for(i=0;i<l;i++){
+		if(ss.contains("connections["+i+"]::from")){
+			if(selected.block[ss.get("connections["+i+"]::from::number")]==0){
+				ss.setparse("connections["+i+"]","{}");
+			}else if(selected.block[ss.get("connections["+i+"]::to::number")]==0){
+				ss.setparse("connections["+i+"]","{}");
+			}
+		}
+	}
+	if(ss.contains("states")){
+		var sss = ss.get("states");
+		var l = sss.getkeys();
+		if(l!=null){
+			if(!Array.isArray(l)) l = [l];
+			var ll = l.length;
+			for(i=0;i<ll;i++){
+				var ssk = sss.get(l[i]);
+				var k = ssk.getkeys();
+				if(k!=null){
+					var kl=k.length;
+					var remd = 0;
+					for(var ii=0;ii<kl;ii++){
+						if(selected.block[k[ii]]==0){
+							//post("\nabout to remove",l[i],"::",k[ii]);
+							ss.remove("states::"+l[i]+"::"+k[ii]);
+							remd = 1;
+						}
+					}
+					if(remd && (l[i]!="current")){
+						//post("\ncheck to see if we need to remove whole key");
+						sss = ss.get("states");
+						var ssk = sss.get(l[i]); //reget it because you've changed it..
+						k = ssk.getsize();
+						//post("\nstate pruning",l[i],remd,k);
+						if(k==0) ss.remove("states::"+l[i]);
+					}
+				}
+			}
+		}
+
+	}
+	messnamed("trigger_save_selected_ready","bang");
+}
+
+function save_hotkey(){
+	keyrepeat_task.cancel();
+	if((loading.songname != "")&&(loading.songname!="autoload")&&(config.get("AUTO_INCREMENT_SAVE_KEY")==1)){
+		post("\nsong name was",loading.songname);
+		var na = loading.songname.split(".json")[0];
+		//post("\nNA",na);
+		var num = na.match(/\d+/);//.pop();
+		if(!Array.isArray(num)) num = [num|0];
+		//post("num",num,"length",num.length);
+		num = num[num.length-1];
+		num |= 0;
+		na = na.split(num)[0];
+		num++;
+		//post("num",num);
+		loading.songname = na+num+".json";
+		post("\nincrementing filename, saving as:",SONGS_FOLDER+loading.songname);
+		messnamed("save_named",SONGS_FOLDER+loading.songname);
+	}else{
+		if((loading.songname != "")&&(loading.songname!="autoload")){
+			messnamed("trigger_save","bang");
+		}else{
+			messnamed("trigger_save_as","bang");
+		}
+	}
 }
 
 function write_userconfig(){
 	post("\nwriting userconfig");
 	userconfig.writeagain();
+}
+
+function file_written(fname){//called when max reports successfully saving the current song dict so we have the filename
+	loading.songname = fname.split("/").pop();
 }
 
 function folder_select(folderstr){

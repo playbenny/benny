@@ -2394,11 +2394,13 @@ function draw_sidebar(){
 			setfontsize(fontsmall*2);
 		}
 
-		lcd_main.message("paintrect", sidebar.x2 - fontheight * 4.6, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,greydarkest );
-		lcd_main.message("frgb" , greycolour);
-		click_zone(save_song, 0, "", sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
-		lcd_main.message("moveto", sidebar.x2 - fontheight * 4.4, 9+fontheight*0.75);
-		lcd_main.message("write", "save");				
+		if((loading.songname != "")&&(loading.songname!="autoload")){
+			lcd_main.message("paintrect", sidebar.x2 - fontheight * 4.6, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,greydarkest );
+			lcd_main.message("frgb" , greycolour);
+			click_zone(save_song, 0, "", sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
+			lcd_main.message("moveto", sidebar.x2 - fontheight * 4.4, 9+fontheight*0.75);
+			lcd_main.message("write", "save");				
+		}
 
 		lcd_main.message("paintrect", sidebar.x2 - fontheight * 2.4, 9, sidebar.x2, 9+fontheight,greydarkest );
 		if(danger_button == mouse_index){
@@ -5616,6 +5618,20 @@ function draw_sidebar(){
 				lcd_main.message("write", "multiple blocks selected");
 				y_offset += 1.1*fontheight;
 				
+
+				var cavg = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
+				var	greydarkest = [cavg,cavg,cavg];
+				cavg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
+				var greycolour = [cavg,cavg,cavg];
+				lcd_main.message("paintrect", sidebar.x2- fontheight*6.3, y_offset, sidebar.x2- fontheight*4.4, fontheight+y_offset,greydarkest );
+				lcd_main.message("frgb" ,greycolour);
+				click_zone(save_song,1,1, sidebar.x2 - fontheight*6.3, y_offset, sidebar.x2 - fontheight*4.4, fontheight+y_offset,mouse_index,1 );
+				lcd_main.message("moveto" ,sidebar.x2 - fontheight*6.2, fontheight*0.5+y_offset);
+				lcd_main.message("write", "save");
+				lcd_main.message("moveto" ,sidebar.x2 - fontheight*6.2, fontheight*0.75+y_offset);
+				lcd_main.message("write", "selected");
+			
+
 				var recarmflag=0;
 				for(var tb=0;tb<MAX_BLOCKS;tb++){
 					if(selected.block[tb]){

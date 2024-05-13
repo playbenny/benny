@@ -24,6 +24,7 @@
         "-3" : ["ESC", "key_escape"],
         "96" : ["`", "messnamed","panic","bang" ],
         "254" : ["ctrl-space","load_next_song", 0],
+        "371" : ["ctrl-S","save_hotkey"],
         "-2" : ["space", "play_button"],
         "-494" : ["??" , "set_display_mode","flocks"],
         "-17" : ["F1" , "set_display_mode","panels"],
