@@ -2400,7 +2400,7 @@ function draw_sidebar(){
 		if((loading.songname != "")&&(loading.songname!="autoload")){
 			lcd_main.message("paintrect", sidebar.x2 - fontheight * 4.6, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,greydarkest );
 			lcd_main.message("frgb" , greycolour);
-			click_zone(save_song, 0, "", sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
+			click_zone(save_song, 0, 0, sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
 			lcd_main.message("moveto", sidebar.x2 - fontheight * 4.4, 9+fontheight*0.75);
 			lcd_main.message("write", "save");				
 		}
@@ -2411,7 +2411,7 @@ function draw_sidebar(){
 		}else{
 			lcd_main.message("frgb", greycolour);
 		}
-		click_zone( save_song, 0, "", sidebar.x2 - fontheight * 2.5, 9, sidebar.x2, 9+fontheight,mouse_index,1 );
+		click_zone( save_song, 0, 1, sidebar.x2 - fontheight * 2.5, 9, sidebar.x2, 9+fontheight,mouse_index,1 );
 		//setfontsize(fontsmall);
 		lcd_main.message("moveto", sidebar.x2 - fontheight*2.2, 9+fontheight*0.75);
 		lcd_main.message("write", "save as");

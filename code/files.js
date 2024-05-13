@@ -1049,7 +1049,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 }
 
 function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
-	post("collecting data to save\n");
+	post("\ncollecting data to save\nselo=",selectedonly,"saveas=",saveas);
 	//copy current param values into states[0]
 	var b,p,psize;
 	var store = [];
@@ -1117,10 +1117,13 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 //copy blocks and connections and states and properties into one dict
 	if(selectedonly){
+		post("\nsaving selection only");
 		messnamed("trigger_save_selected", "bang");
-	}else if(saveas || (loading.songname=="")){
+	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
+		post("\nsave as");
 		messnamed("trigger_save_as","bang");
 	}else{
+		post("\nsave");
 		messnamed("trigger_save","bang");
 	}
 	set_sidebar_mode("none");
