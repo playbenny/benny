@@ -298,7 +298,8 @@ function load_song(){
 	loading.mute_new=0;
 	loading.bundling=12;
 	loading.wait=1;
-	loading.songname = songlist[0][currentsong];
+	var df = (sidebar.files_page == "templates")|0;
+	loading.songname = songlist[df][currentsong];
 	if(usermouse.ctrl){
 		loading.bundling=1;
 		loading.wait=20;
