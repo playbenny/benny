@@ -1038,9 +1038,13 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					tv -= 1 / MAX_WAVES;
 				}
 			}if((t=="float")&&(p_values[3]=="lin")){
-				var range = p_values[2]-p_values[1];
-				range = Math.floor((Math.log(Math.abs(range))/Math.log(10))-1.3);
-				scalar *= Math.pow(10,range);
+				if(p_values.length==5){
+					scalar *= p_values[4];
+				}else{
+					var range = p_values[2]-p_values[1];
+					range = Math.floor((Math.log(Math.abs(range))/Math.log(10))-0.1);
+					scalar *= Math.pow(10,range);
+				}
 				usermouse.scroll_accumulator += scroll;
 				if(usermouse.scroll_accumulator > 0.22 ){
 					usermouse.scroll_accumulator = 0;
