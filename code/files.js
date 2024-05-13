@@ -21,12 +21,13 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	if(fpath[fpath.length-1] !== "/" ) fpath = fpath+"/";
 	while(!f.end){
 		if(f.extension == ".json"){
-			ts = f.filename.split(".");
+			/*ts = f.filename.split(".");
 			tss = "";
 			for(var t=0;t<ts.length-1;t++){
 				tss = tss + ts[t];
 				if(t>0) tss = tss + ".";
-			}
+			}*/
+			tss = f.filename.split(".json")[0];
 			var tsd = f.moddate.toString();
 			if(df<2) songlist[df][i] = tss;
 			if(songs.contains(tss)){
@@ -1187,23 +1188,19 @@ function save_selected_pruning(){
 function save_hotkey(){
 	keyrepeat_task.cancel();
 	if((loading.songname != "")&&(loading.songname!="autoload")&&(config.get("AUTO_INCREMENT_SAVE_KEY")==1)){
-		post("\nsong name was",loading.songname);
+		//post("\nsong name was",loading.songname);
 		var na = loading.songname.split(".json")[0];
 		//post("\nNA",na);
-		var num = na.match(/\d+/);//.pop();
+		var num = na.match(/(\d+)(?!.*\d)/);///\d+/);//.pop();
 		//post("num",num,"length",num.length);
 		if(!Array.isArray(num)) num = [num|0];
-		num = num[num.length-1];
+		num = num.pop();//[num.length-1];
 		num |= 0;
-		var nas = na.split(num);
+		var npos = na.lastIndexOf(num);
+		if(npos==0) npos = na.length();
+		var nas = na.slice(0,npos);
 		num++;
-		if(nas.length >1){
-			//post("\nnas is",nas,"and 1 is",nas[1],"so i'm adding a 0");
-			loading.songname = na + ".0.json";
-		}else{
-			loading.songname = na[0]+num+".json";
-		}
-		//post("num",num);
+		loading.songname = nas+num+".json";
 		post("\nincrementing filename, saving as:",SONGS_FOLDER+loading.songname);
 		messnamed("save_named",SONGS_FOLDER+loading.songname);
 	}else{
