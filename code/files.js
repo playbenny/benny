@@ -1117,13 +1117,13 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 //copy blocks and connections and states and properties into one dict
 	if(selectedonly){
-		post("\nsaving selection only");
+		//post("\nsaving selection only");
 		messnamed("trigger_save_selected", "bang");
 	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
-		post("\nsave as");
+		//post("\nsave as");
 		messnamed("trigger_save_as","bang");
 	}else{
-		post("\nsave");
+		//post("\nsave");
 		messnamed("trigger_save","bang");
 	}
 	set_sidebar_mode("none");
@@ -1191,14 +1191,19 @@ function save_hotkey(){
 		var na = loading.songname.split(".json")[0];
 		//post("\nNA",na);
 		var num = na.match(/\d+/);//.pop();
-		if(!Array.isArray(num)) num = [num|0];
 		//post("num",num,"length",num.length);
+		if(!Array.isArray(num)) num = [num|0];
 		num = num[num.length-1];
 		num |= 0;
-		na = na.split(num)[0];
+		var nas = na.split(num);
 		num++;
+		if(nas.length >1){
+			//post("\nnas is",nas,"and 1 is",nas[1],"so i'm adding a 0");
+			loading.songname = na + ".0.json";
+		}else{
+			loading.songname = na[0]+num+".json";
+		}
 		//post("num",num);
-		loading.songname = na+num+".json";
 		post("\nincrementing filename, saving as:",SONGS_FOLDER+loading.songname);
 		messnamed("save_named",SONGS_FOLDER+loading.songname);
 	}else{
