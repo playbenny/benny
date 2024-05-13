@@ -2286,7 +2286,9 @@ function draw_sidebar(){
 		var	greydarkest = [cavg,cavg,cavg];
 		cavg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
 		var greycolour = [cavg,cavg,cavg];
+		var fpage = 0;
 		if(sidebar.files_page == "templates"){
+			fpage = 1;
 			greydarkest = [greydarkest[0]*0.8,greydarkest[1]*0.8,greydarkest[2]*1.2];
 			greycolour = [greycolour[0]*0.8,greycolour[1]*0.8,greycolour[2]*1.2];
 		}	 
@@ -2304,18 +2306,18 @@ function draw_sidebar(){
 
 		y_offset += 0.4*fontheight;
 
-		for(i=0;i<songlist.length;i++){
+		for(i=0;i<songlist[fpage].length;i++){
 			y_offset += 1.1*fontheight;
 			if(i==currentsong){
 				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,greycolour );
 				lcd_main.message("frgb", 0, 0, 0 );
 				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
-				lcd_main.message("write" , songlist[i]);
+				lcd_main.message("write" , songlist[fpage][i]);
 			}else{
 				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,greydarkest );	
 				lcd_main.message("frgb" , greycolour);
 				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
-				lcd_main.message("write" , songlist[i]);
+				lcd_main.message("write" , songlist[fpage][i]);
 			}
 			click_zone(select_song,i,i, file_menu_x , y_offset, sidebar.x2, y_offset+1.1*fontheight,mouse_index,1 );
 		}

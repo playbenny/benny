@@ -1688,10 +1688,10 @@ function send_record_arm_messages(block){
 	for(var i =0; i<vl.length;i++){
 		//post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
 		var path = config.get("RECORD_FOLDER");
-		if(typeof songlist[currentsong] == 'undefined'){
+		if((loading.songname == "autoload")||(loading.songname=="")){
 			path = path + "untitled";
 		}else{
-			path = path +songlist[currentsong];
+			path = path +songlist[0][currentsong];
 		}
 		path = path + "-" + (da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
 		//post("\npath is ",path);
@@ -2552,8 +2552,9 @@ function cut_selection(){
 	delete_selection();
 }
 function file_menu_arrows(dir){
+	var df = (sidebar.files_page == "templates");
 	currentsong+=dir;
-	currentsong = (currentsong + songlist.length) % (songlist.length);
+	currentsong = (currentsong + songlist[df].length) % (songlist[df].length);
 	redraw_flag.flag |= 2;
 }
 

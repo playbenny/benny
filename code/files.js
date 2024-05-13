@@ -13,7 +13,8 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	}
 	post("\nreading songs from folder: ",folder_name_or_path);
 	f.reset();
-	if(df==0) songlist = [];
+	if(df==0) songlist[0] = [];
+	if(df==1) songlist[1] = [];
 	var fpath = f.pathname;
 	var i=0, ts, tss;
 	if(!Array.isArray(songs_moddate[df])) songs_moddate[df] = [];
@@ -27,7 +28,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				if(t>0) tss = tss + ".";
 			}
 			var tsd = f.moddate.toString();
-			if(df==0) songlist[i] = tss;//f.filename;
+			if(df<2) songlist[df][i] = tss;
 			if(songs.contains(tss)){
 				if(tsd!=songs_moddate[df][i]) songs.remove(tss);
 			}
@@ -42,13 +43,13 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 		f.next();
 	}
 	f.close();
-	if((preload_list.length == 0) && (df==0)){
-		for(var i=0;i<songlist.length;i++){
-			if(songs.contains(songlist[i]+"::waves")){
-				var ws=songs.getsize(songlist[i]+"::waves");
+	if((preload_list.length == 0) && (df<2)){
+		for(var i=0;i<songlist[df].length;i++){
+			if(songs.contains(songlist[df][i]+"::waves")){
+				var ws=songs.getsize(songlist[df][i]+"::waves");
 				for(var t=0;t<ws;t++){
-					var pat = songs.get(songlist[i]+"::waves["+t+"]::path");
-					var nam = songs.get(songlist[i]+"::waves["+t+"]::name");
+					var pat = songs.get(songlist[df][i]+"::waves["+t+"]::path");
+					var nam = songs.get(songlist[df][i]+"::waves["+t+"]::name");
 					if(pat!=null){
 						preload_list.push([pat,nam]);
 						//polybuffer_load_wave(pat,nam);
@@ -56,15 +57,15 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				}
 			}
 			var bc=0, vc_n=0, vc_a=0, vc_h=0;
-			if(songs.contains(songlist[i]+"::blocks")){
-				var bs=songs.getsize(songlist[i]+"::blocks");
+			if(songs.contains(songlist[df][i]+"::blocks")){
+				var bs=songs.getsize(songlist[df][i]+"::blocks");
 				for(var t=0;t<bs;t++){
-					if(songs.contains(songlist[i]+"::blocks["+t+"]::type")){
+					if(songs.contains(songlist[df][i]+"::blocks["+t+"]::type")){
 						bc++;
-						var ty = songs.get(songlist[i]+"::blocks["+t+"]::type");
-						var vc = songs.get(songlist[i]+"::blocks["+t+"]::poly::voices");
-						if(songs.contains(songlist[i]+"::blocks["+t+"]::subvoices")){
-							var sb=songs.get(songlist[i]+"::blocks["+t+"]::subvoices");
+						var ty = songs.get(songlist[df][i]+"::blocks["+t+"]::type");
+						var vc = songs.get(songlist[df][i]+"::blocks["+t+"]::poly::voices");
+						if(songs.contains(songlist[df][i]+"::blocks["+t+"]::subvoices")){
+							var sb=songs.get(songlist[df][i]+"::blocks["+t+"]::subvoices");
 							if(sb>1) vc/=sb;
 						}
 						if(ty=="note"){
@@ -281,8 +282,8 @@ function load_next_song(slow){
 	usermouse.ctrl = slow;
 	currentsong++;
 	if(currentsong<0)currentsong=0;
-	if(currentsong==songlist.length)currentsong=0;
-	post("\nload next song: ", currentsong, songlist[currentsong]);
+	if(currentsong==songlist[0].length)currentsong=0;
+	post("\nload next song: ", currentsong, songlist[0][currentsong]);
 	load_song();
 	usermouse.ctrl = oc;
 }
@@ -297,7 +298,7 @@ function load_song(){
 	loading.mute_new=0;
 	loading.bundling=12;
 	loading.wait=1;
-	loading.songname = songlist[currentsong];
+	loading.songname = songlist[0][currentsong];
 	if(usermouse.ctrl){
 		loading.bundling=1;
 		loading.wait=20;
@@ -318,14 +319,15 @@ function merge_song(){
 		loading.mute_new=0;
 		loading.bundling=4;
 	}
-	loading.songname = songlist[currentsong];
+	df = (sidebar.files_page == "templates");
+	loading.songname = songlist[df][currentsong];
 	song_select.previous_name = song_select.current_name;
 	song_select.previous_blocks = song_select.current_blocks.slice();
-	song_select.current_name = songlist[currentsong];
+	song_select.current_name = songlist[df][currentsong];
 	song_select.current_blocks = [];
 	song_select.show = 1;
 	if(MERGE_PURGE>0) purge_muted_trees();
-	import_song(songlist[currentsong]);
+	import_song(songlist[df][currentsong]);
 }
 
 // this fn is called repeatedly, at each call it loads a bit more song, then sets a flag

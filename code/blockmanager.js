@@ -550,7 +550,7 @@ var loaded_note_patcherlist = new Array(MAX_NOTE_VOICES);
 var loaded_ui_patcherlist = new Array(MAX_BLOCKS);
 var vst_list = new Array(MAX_AUDIO_VOICES);
 
-var songlist;
+var songlist = [[],[]]; //two pages - songs, templates
 var currentsong = -1;
 
 var fullscreen = 0;
