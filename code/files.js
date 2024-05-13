@@ -13,9 +13,9 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	}
 	post("\nreading songs from folder: ",folder_name_or_path);
 	f.reset();
-	var i=0, ts, tss;
 	if(df==0) songlist = [];
 	var fpath = f.pathname;
+	var i=0, ts, tss;
 	if(!Array.isArray(songs_moddate[df])) songs_moddate[df] = [];
 	if(fpath[fpath.length-1] !== "/" ) fpath = fpath+"/";
 	while(!f.end){
@@ -32,39 +32,10 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				if(tsd!=songs_moddate[df][i]) songs.remove(tss);
 			}
 			if(!songs.contains(tss)){
-				song.import_json(fpath+f.filename);
 				songs_moddate[df][i] = tsd;
+				song.import_json(fpath+f.filename);
+				copy_song_to_songs_dict(tss);
 				post("\npreloaded songfile:",f.filename);
-				var songkeys = song.getkeys();
-				for(k in songkeys){
-					//post(songkeys[k]);
-					if(k==0){
-						songs.setparse(tss+"::"+songkeys[k]);
-					}else{
-						songs.setparse(tss+"::"+songkeys[k], "*");
-					}
-					var typ = song.gettype(songkeys[k]);
-					var typ2="";
-					if(typ=="array"){
-						typ2 = song.gettype(songkeys[k]+"[0]");
-//						post("FIRST ELEMENT TYPE",typ2);
-					}
-					if(typ2=="dictionary"){
-						//have to iterate through the outer array
-						var siz = song.getsize(songkeys[k]);
-						for(var kk=0;kk<siz;kk++){
-							if(kk==0){
-								songs.append(tss+"::"+songkeys[k]);
-							}else{
-								songs.append(tss+"::"+songkeys[k],"*");
-							}
-							songs.setparse(tss+"::"+songkeys[k]+"["+kk+"]", "*");
-							songs.replace(tss+"::"+songkeys[k]+"["+kk+"]", song.get(songkeys[k]+"["+kk+"]"));
-						}
-					}else{
-						songs.replace(tss+"::"+songkeys[k], song.get(songkeys[k]));
-					}
-				}
 			}
 			i++;
 		}
@@ -108,6 +79,39 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
 		}	
+	}
+}
+
+function copy_song_to_songs_dict(tss) {
+	var songkeys = song.getkeys();
+	for (var k in songkeys) {
+		//post(songkeys[k]);
+		if (k == 0) {
+			songs.setparse(tss + "::" + songkeys[k]);
+		} else {
+			songs.setparse(tss + "::" + songkeys[k], "*");
+		}
+		var typ = song.gettype(songkeys[k]);
+		var typ2 = "";
+		if (typ == "array") {
+			typ2 = song.gettype(songkeys[k] + "[0]");
+			//						post("FIRST ELEMENT TYPE",typ2);
+		}
+		if (typ2 == "dictionary") {
+			//have to iterate through the outer array
+			var siz = song.getsize(songkeys[k]);
+			for (var kk = 0; kk < siz; kk++) {
+				if (kk == 0) {
+					songs.append(tss + "::" + songkeys[k]);
+				} else {
+					songs.append(tss + "::" + songkeys[k], "*");
+				}
+				songs.setparse(tss + "::" + songkeys[k] + "[" + kk + "]", "*");
+				songs.replace(tss + "::" + songkeys[k] + "[" + kk + "]", song.get(songkeys[k] + "[" + kk + "]"));
+			}
+		} else {
+			songs.replace(tss + "::" + songkeys[k], song.get(songkeys[k]));
+		}
 	}
 }
 

@@ -2323,7 +2323,6 @@ function draw_sidebar(){
 
 		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight,0,0,0 );
 		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
-		click_zone(load_song, "","", file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
 		if(!playing){
 			lcd_main.message("frgb" , greycolour);
 		}else{
@@ -2334,6 +2333,7 @@ function draw_sidebar(){
 			}
 		}
 		if(usermouse.ctrl){
+			click_zone(load_elsewhere_choose, "","", file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
 			setfontsize(fontsmall);
 			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.45);
 			lcd_main.message("write", "load from");
@@ -2341,6 +2341,7 @@ function draw_sidebar(){
 			lcd_main.message("write", "elsewhere");
 			setfontsize(fontsmall*2);
 		}else{
+			click_zone(load_song, "","", file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
 			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75);
 			lcd_main.message("write", "load");
 		}

@@ -651,6 +651,35 @@ function panel_edit_button(parameter,value){
 	redraw_flag.flag=4;
 }
 
+function load_elsewhere_choose(){
+	//post("\nL E C");
+	messnamed("open_elsewhere","bang");
+}
+
+function load_elsewhere(fname){
+	post("\nyou chose:",fname);
+	usermouse.ctrl = 0;
+	var ts = fname.split("/").pop();
+	ts = ts.split(".");
+	var tss = "";
+	for(var t=0;t<ts.length-1;t++){
+		tss = tss + ts[t];
+		if(t>0) tss = tss + ".";
+	}
+	song.import_json(fname);
+	copy_song_to_songs_dict(tss);
+	if(playing) play_button();
+	meters_enable = 0;
+	clear_everything();
+	loading.merge = 0;
+	loading.progress=-1;
+	loading.mute_new=0;
+	loading.bundling=12;
+	loading.wait=1;
+	loading.songname = tss;
+	import_song();
+}
+
 function select_folder(parameter,value){
 	sidebar.files_page = "songs";
 	if(fullscreen){
