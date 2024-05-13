@@ -163,6 +163,15 @@ function blocks_paste(outside_connections,target){
 						px += pasteoffset[0];
 						py += pasteoffset[1];
 					}
+					for(var i=0;i<MAX_BLOCKS;i++){ //crude collision detection
+						if(blocks.contains("blocks["+i+"]::space::x")){
+							if((px == blocks.get("blocks["+i+"]::space::x"))&&(py == blocks.get("blocks["+i+"]::space::y"))){
+								px+=0.5;
+								py+=0.5;
+								i=-1;
+							}
+						}
+					}
 					new_block_index = new_block(name,px,py);
 				}
 				if(new_block_index==-1){
