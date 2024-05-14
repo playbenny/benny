@@ -666,6 +666,7 @@ function load_elsewhere_choose(){
 }
 
 function load_elsewhere(fname){
+	if(fname == "cancel") return 0;
 	post("\nyou chose:",fname);
 	usermouse.ctrl = 0;
 	var ts = fname.split("/").pop();
