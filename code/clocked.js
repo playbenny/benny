@@ -72,6 +72,7 @@ function frameclock(){
 		sidebar_meters();
 		bangflag=1;
 		redraw_flag.flag = 0;
+		if(loading.progress>MAX_BLOCKS+loading.mapping.length) polycheck();
 	}else{
 		if(rebuild_action_list){
 			build_mod_sum_action_list();

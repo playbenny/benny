@@ -541,7 +541,10 @@ function import_song(){
 		} while (loading.progress<t);
 		output_blocks_poly.setvalue(0,"load_complete");
 		loading.ready_for_next_action=loading.wait;
-		if(t!=0) center_view(1);
+		if(t!=0){
+			center_view(1);
+			post("\ndone loading blocks, voices and data");
+		} 
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections")){
 		t=MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections");
 		i=3*loading.bundling; //7;
@@ -563,6 +566,9 @@ function import_song(){
 			if(i==0) t = 0;
 		} while (loading.progress<t);
 		loading.ready_for_next_action=loading.wait;
+		if(t!=0){
+			post("\ndone loading connections");
+		}
 	}else{ 
 		var stpv = [];
 		if((songs.contains(loading.songname+"::states"))&&((loading.songname != "autoload")||(config.get("AUTOLOAD_INCLUDES_STATES")==1))){
