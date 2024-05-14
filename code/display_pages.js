@@ -2035,8 +2035,10 @@ function draw_sidebar(){
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		clear_sidebar_paramslider_details();
-		if(automap.assignmode)turn_off_controller_assign_mode();
-		sidebar.scroll.position = 0;
+		if(sidebar.lastmode!="recalculate"){
+			if(automap.assignmode)turn_off_controller_assign_mode();
+			sidebar.scroll.position = 0;
+		}
 		view_changed = true;
 	}
 	if((sidebar.scopes.midi_routing.number!=-1)){
