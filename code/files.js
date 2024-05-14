@@ -1205,9 +1205,9 @@ function save_hotkey(){
 		messnamed("save_named",SONGS_FOLDER+loading.songname);
 	}else{
 		if((loading.songname != "")&&(loading.songname!="autoload")){
-			messnamed("trigger_save","bang");
+			save_song(0,0); //save
 		}else{
-			messnamed("trigger_save_as","bang");
+			save_song(0,1); //save as
 		}
 	}
 }
