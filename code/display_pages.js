@@ -2615,6 +2615,8 @@ function draw_sidebar(){
 								if((connections.get("connections["+ci+"]::from::number")==automap.available_k_block)&&(connections.get("connections["+ci+"]::to::number")==block)){
 									//post("skipping keyboard auto assign because there is already a keyboard connection to this block");
 									ci = -999;
+									automap.mapped_k = -1;
+									note_poly.setvalue(automap.available_k, "automapped", 0);
 								}
 							}
 						}
