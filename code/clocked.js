@@ -82,7 +82,8 @@ function frameclock(){
 			bulgeamount -= 0.1;
 			if(bulgeamount<=0)bulgeamount =0;
 			if(Array.isArray(wires[bulgingwire])){
-				for(var i=0;i<wires[bulgingwire].length;i++){
+				var ll = wires[bulgingwire].length;
+				for(var i=0;i<ll;i++){
 					var ta = wires[bulgingwire][i].scale;
 					ta[1] = wire_dia * (1 + bulgeamount);
 					wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
@@ -109,7 +110,8 @@ function frameclock(){
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "settings")||(sidebar.mode == "wire")){
 				var vch = view_changed;
 				view_changed = false;
-				for(i=0;i<redraw_flag.targets.length;i++){
+				var ll = redraw_flag.targets.length;
+				for(i=0;i<ll;i++){
 					if(redraw_flag.targets[i] && Array.isArray(paramslider_details[i])){ //check it's defined (as sometimes if clock runs during its construction you got errors
 						bangflag=1;
 						if(paramslider_details[i][13]=="menu_l"){
@@ -134,7 +136,8 @@ function frameclock(){
 			if(displaymode == "panels"){
 				var vch = view_changed;
 				view_changed = false;
-				for(t=0;t<redraw_flag.paneltargets.length;t++){
+				var ll = redraw_flag.paneltargets.length;
+				for(t=0;t<ll;t++){
 					if(redraw_flag.paneltargets[t]){
 						bangflag=1;
 						i = MAX_PARAMETERS + t;

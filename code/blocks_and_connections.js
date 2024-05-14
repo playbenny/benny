@@ -1198,9 +1198,9 @@ function remove_connection(connection_number){
 						var tmod_id;
 						// post("looking up",tvv,"in mod routes\n");
 						var idslist = mod_routemap.get(tvv);
-						if(typeof idslist == "number") idslist =[idslist];
+						if(!Array.isArray(idslist)) idslist =[idslist];
 						var tidslist = midi_routemap.get(m_index);
-						if(typeof tidslist == "number") tidslist=[tidslist];
+						if(!Array.isArray(tidslist)) tidslist=[tidslist];
 						var found = -1;
 						var sx,sy;
 						var tparamlist = mod_param.get(tvv);
@@ -1263,8 +1263,8 @@ function remove_connection(connection_number){
 						var tmod_id;
 						var idslist = mod_routemap.get(tvv);
 						var tidslist = midi_routemap.get(m_index);
-						if(typeof idslist == "number") idslist =[idslist];
-						if(typeof tidslist == "number") tidslist=[tidslist];
+						if(!Array.isArray(idslist)) idslist =[idslist];
+						if(!Array.isArray(tidslist)) tidslist=[tidslist];
 						var found = -1;
 						var sx,sy;
 
@@ -1336,8 +1336,8 @@ function remove_connection(connection_number){
 						var tmod_id;
 						var idslist = mod_routemap.get(tvv);
 						var tidslist = midi_routemap.get(m_index);
-						if(typeof idslist == "number") idslist =[idslist];
-						if(typeof tidslist == "number") tidslist=[tidslist];
+						if(!Array.isArray(idslist)) idslist =[idslist];
+						if(!Array.isArray(tidslist)) tidslist=[tidslist];
 						var found = -1;
 						var sx,sy;
 
@@ -1754,9 +1754,9 @@ function make_connection(cno,existing){
 							t_voice+=2*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS;
 							var tmod_id;
 							var idslist = mod_routemap.get(t_voice);
-							if(typeof idslist == "number") idslist =[idslist];
+							if(!Array.isArray(idslist)) idslist =[idslist];
 							var tidslist = midi_routemap.get(m_index);
-							if(typeof tidslist == "number") tidslist=[tidslist];
+							if(!Array.isArray(tidslist)) tidslist=[tidslist];
 							if(is_empty(idslist)||is_empty(tidslist)){
 								//post("\none or both empty so creating new modid");
 								mod_id++;
@@ -1919,9 +1919,9 @@ function make_connection(cno,existing){
 							var tvv = t_voice;
 							var tmod_id;
 							var idslist = mod_routemap.get(tvv);
-							if(typeof idslist == "number") idslist =[idslist];
+							if(!Array.isArray(idslist)) idslist =[idslist];
 							var tidslist = midi_routemap.get(m_index);
-							if(typeof tidslist == "number") tidslist=[tidslist];
+							if(!Array.isArray(tidslist)) tidslist=[tidslist];
 							//post("ids",idslist,"tids",tidslist);
 							if(is_empty(idslist)||is_empty(tidslist)){
 								//post("one or both empty so creating new modid");
@@ -2062,9 +2062,9 @@ function make_connection(cno,existing){
 							var tvv = t_voice;
 							var tmod_id;
 							var idslist = mod_routemap.get(tvv);
-							if(typeof idslist == "number") idslist =[idslist];
+							if(!Array.isArray(idslist)) idslist =[idslist];
 							var tidslist = midi_routemap.get(m_index);
-							if(typeof tidslist == "number") tidslist=[tidslist];
+							if(!Array.isArray(tidslist)) tidslist=[tidslist];
 							//post("ids",idslist,"tids",tidslist);
 							if(is_empty(idslist)||is_empty(tidslist)){
 								//post("one or both empty so creating new modid");

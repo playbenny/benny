@@ -2507,7 +2507,7 @@ function draw_sidebar(){
 							voffset += MAX_AUDIO_INPUTS;
 						}
 						//post("setting up hardware scopes",ts);
-						if(typeof ts == "number") ts= [ts];
+						if(!Array.isArray(ts)) ts= [ts];
 						if(!is_empty(ts)){
 							if(ts[0] != sidebar.scopes.voice){
 								for(tii=0;tii<ts.length;tii++){
