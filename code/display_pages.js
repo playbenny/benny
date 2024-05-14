@@ -4916,30 +4916,38 @@ function draw_sidebar(){
 					//post("assigning connection audio scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					sidebar.scopes.voicelist = [];
 					audio_to_data_poly.setvalue(0, "vis_scope", 0);
-					var listvoice;
-					if(!blocks.get("blocks["+f_number+"]::subvoices")>1){
+					var listvoice = [];
+					if(from_subvoices<=1){
 						if(f_o_v=="all"){
 							listvoice = voicemap.get(f_number);
-							if(typeof listvoice == "number") listvoice = [listvoice];
+							if(!Array.isArray(listvoice)) listvoice = [listvoice];
 							for(tii=0;tii<listvoice.length;tii++) listvoice[tii] -= MAX_NOTE_VOICES;
 						}else{
 							listvoice = f_o_v.slice();
 							var t_listvoice = voicemap.get(f_number);
-							if(typeof listvoice == "number") listvoice = [listvoice];
-							if(typeof t_listvoice == "number") t_listvoice = [t_listvoice];
+							if(!Array.isArray(listvoice)) listvoice = [listvoice];
+							if(!Array.isArray(t_listvoice)) t_listvoice = [t_listvoice];
 							for(tii=0;tii<listvoice.length;tii++) listvoice[tii] = t_listvoice[listvoice[tii]-1]-MAX_NOTE_VOICES;
 						}
 					}else{
 						if(f_o_v=="all"){
-							listvoice = voicemap.get(f_number);
-							if(typeof listvoice == "number") listvoice = [listvoice];//, listvoice + MAX_AUDIO_VOICES];
-							for(tii=0;tii<listvoice.length;tii++) listvoice[tii] -= MAX_NOTE_VOICES;
+							var s_listvoice = voicemap.get(f_number);
+							if(!Array.isArray(s_listvoice)) s_listvoice = [s_listvoice];//, listvoice + MAX_AUDIO_VOICES];
+							for(tii=0;tii<s_listvoice.length;tii++){
+								for(var tiii=0;tiii<from_subvoices;tiii++){
+									listvoice[tii*from_subvoices+tiii] = s_listvoice[tii] - MAX_NOTE_VOICES + tiii*MAX_AUDIO_VOICES;
+								}
+							}
 						}else{
-							listvoice = f_o_v.slice();
+							var s_listvoice = f_o_v.slice();
 							var t_listvoice = voicemap.get(f_number);
-							if(typeof listvoice == "number") listvoice = [listvoice];//, listvoice + MAX_AUDIO_VOICES];
-							if(typeof t_listvoice == "number") t_listvoice = [t_listvoice];//, t_listvoice + MAX_AUDIO_VOICES];
-							for(tii=0;tii<listvoice.length;tii++) listvoice[tii] = t_listvoice[listvoice[tii]-1]-MAX_NOTE_VOICES;
+							if(!Array.isArray(s_listvoice)) s_listvoice = [s_listvoice];//, listvoice + MAX_AUDIO_VOICES];
+							if(!Array.isArray(t_listvoice)) t_listvoice = [t_listvoice];//, t_listvoice + MAX_AUDIO_VOICES];
+							for(tii=0;tii<s_listvoice.length;tii++){
+								for(var tiii=0;tiii<from_subvoices;tiii++){
+									listvoice[tii*from_subvoices+tiii] = t_listvoice[s_listvoice[tii]-1]-MAX_NOTE_VOICES+tiii*MAX_AUDIO_VOICES;
+								}
+							}
 						}						
 					}
 					
@@ -4961,7 +4969,7 @@ function draw_sidebar(){
 					//post("todo assign connection hardware scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
 					if(blocktypes.contains(f_name+"::connections::out::hardware_channels")){
 						var listch = blocktypes.get(f_name+"::connections::out::hardware_channels");
-						if(typeof listch == "number") listch = [listch];
+						if(!Array.isArray(listch)) listch = [listch];
 						var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 						if(!is_empty(listch)){
 							sidebar.scopes.voicelist = [];
@@ -4982,7 +4990,7 @@ function draw_sidebar(){
 						listvoice = voicemap.get(f_number);
 						voffset=0;
 					}
-					if(typeof listvoice == "number") listvoice = [listvoice];
+					if(!Array.isArray(listvoice)) listvoice = [listvoice];
 					sidebar.scopes.voicelist = [];
 					audio_to_data_poly.setvalue(0, "vis_scope", 1);
 					if(!is_empty(listvoice)){
