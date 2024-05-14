@@ -130,7 +130,7 @@ and the json file has to be saved as the same name too. eg this example is based
 			{
                 "name" : "delay_signal_vectors",
 				"type" : "int",
-				"values" : ["bi", 0, 32, "lin"],
+				"values" : ["bi", 0, 32, "lin", 0.25], //<<if it's set to "lin" AND you add a 5th value, that's the scrollwheel step
 				"wrap" : 0,
 				"error_scale" : 0, //under settings for every block there's a facility to add random
                 //deviations to the parameter values of each voice - like a wonky old polysynth.

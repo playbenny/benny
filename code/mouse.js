@@ -1042,7 +1042,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					scalar *= p_values[4];
 				}else{
 					var range = p_values[2]-p_values[1];
-					range = Math.floor((Math.log(Math.abs(range))/Math.log(10))-0.1);
+					range = Math.floor((Math.log(Math.abs(range))/Math.log(10))-0.9);
 					scalar *= Math.pow(10,range);
 				}
 				usermouse.scroll_accumulator += scroll;
