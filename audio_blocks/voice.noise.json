@@ -3,14 +3,14 @@
 		"patcher" : "voice.noise",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "noise source + VCA + ENV",
+		"help_text" : "noise source + VCA + ENV. midi to the 'damp' input causes the envelope to close quickly.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"latching_enable" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "colour", "ext source" ],
-				"midi" : [ "trigger" ]
+				"midi" : [ "trigger" , "damp" ]
 			},
 			"out" : {
 				"audio" : [ "noise", "s&h" ],
