@@ -53,6 +53,8 @@
         "-15" : ["home" , "center_view", 1],
         "45" : ["-", "poly_key" , -1],
         "43" : ["+", "poly_key" , 1],
+        "61" : ["+ (mac)", "poly_key", 1],
+        "555" : ["+ (mac)", "poly_key", 1],
         "573" : ["+", "poly_key" , 1],
         "353" : ["ctrl-A", "select_all"],
         "-6" : ["del","delete_selection"],
