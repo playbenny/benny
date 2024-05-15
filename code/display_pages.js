@@ -4723,7 +4723,7 @@ function draw_sidebar(){
 			// FROM BLOCK, OUTPUT, VOICE labels/menus
 
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
-			click_zone(select_block,0,f_number,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
+			click_zone(jump_to_block_at_connection_end,0,0,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
 			//lcd_main.message("paintrect", sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, y_offset+fontheight*0.6, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
 			//click_zone(select_block,0,f_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
 			//^^this should be the select a new from block fn
@@ -5388,7 +5388,7 @@ function draw_sidebar(){
 
 			//TO BLOCK, INPUT, VOICE labels/menus
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
-			click_zone(select_block,0,t_number,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
+			click_zone(jump_to_block_at_connection_end,1,1,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
 			//lcd_main.message("paintrect", sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, y_offset+fontheight*0.6, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
 			//click_zone(select_block,0,t_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
 			//^^this should be the select a new to block fn

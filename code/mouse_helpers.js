@@ -2035,8 +2035,10 @@ function connection_mute_selected(parameter,value){
 		}	
 	}else if(parameter==-1){ //toggle all
 		for(;i>=0;--i){
-			m=connections.get("connections["+i+"]::conversion::mute");
-			if(selected.wire[i]) connection_edit("connections["+i+"]::conversion::mute",!m);
+			if(selected.wire[i]){
+				var m=connections.get("connections["+i+"]::conversion::mute");
+				connection_edit("connections["+i+"]::conversion::mute",!m);
+			}
 		}	
 	}
 }
