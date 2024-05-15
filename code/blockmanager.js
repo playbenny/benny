@@ -232,6 +232,8 @@ var flockvoicelist=[];
 var flock_cube_size=20;
 var blocks_meter = []; //called meter-blockno-outputno, they're a sub-array
 
+var startup_loadfile = "autoload";
+
 var selected = {
 	block : [],
 	wire : [],

@@ -591,16 +591,20 @@ function import_hardware(v){
 	
 	//	turn on audio engine
 	new_dac.message('int',1);
-
-	if(songs.contains("autoload")){
-		loading.merge = 0;
-		loading.progress=-1;
-		loading.mute_new=0;
-		loading.bundling=12;
-		loading.wait=1;
-		loading.songname = "autoload";
-		import_song();	
-	}	
+	if(startup_loadfile=="autoload"){
+		if(songs.contains(startup_loadfile/*"autoload"*/)){
+			loading.merge = 0;
+			loading.progress=-1;
+			loading.mute_new=0;
+			loading.bundling=12;
+			loading.wait=1;
+			loading.songname = "autoload";
+			import_song();	
+		}	
+	}else{
+		load_elsewhere(startup_loadfile);
+	}
+	startup_loadfile = "";
 
 	slowclock_task = new Task(slowclock, this);
 	slowclock_task.interval = 900;
