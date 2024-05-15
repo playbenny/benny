@@ -143,7 +143,7 @@ function get_hw_meter_positions(){
 	for(i=0;i<MAX_USED_AUDIO_OUTPUTS;i++){
 		if(output_used[i]){
 			outlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i+MAX_AUDIO_INPUTS)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i+MAX_USED_AUDIO_INPUTS)];
 			x++;
 		} 
 	}
@@ -5880,6 +5880,7 @@ function draw_sidebar(){
 			//need to get the name of this input, and the block it's on.
 			var bk = blocktypes.getkeys();
 			var t;
+			var linkblock = null;
 			for(var b=0;b<bk.length;b++){
 				if(blocktypes.contains(bk[b]+"::connections::out::hardware_channels")){
 					t = blocktypes.get(bk[b]+"::connections::out::hardware_channels");
@@ -5899,6 +5900,22 @@ function draw_sidebar(){
 							setfontsize(fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
 							y_offset += fontheight*1.1;
+							post("\nlooking for blocks named",bk[b]);
+							for(var bb=0;bb<MAX_BLOCKS;bb++){
+								if(blocks.contains("blocks["+bb+"]::name")&&(blocks.get("blocks["+bb+"]::name")==bk[b])){
+									post("\nthe link is to block",bb,bk[b]);
+									var bbc = blocks.get("blocks["+bb+"]::space::colour");
+									lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.5+y_offset,bbc[0]*bg_dark_ratio,bbc[1]*bg_dark_ratio,bbc[2]*bg_dark_ratio );
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.25+y_offset);
+									lcd_main.message("frgb", bbc);
+									setfontsize(fontsmall);
+									lcd_main.message("write", "click to jump to this block");	
+									click_zone(select_block,bb,bb, sidebar.x, y_offset, sidebar.x2, fontheight*0.5+y_offset,mouse_index,1);
+
+									y_offset += fontheight*0.6;
+									bb=999999999;
+								}
+							}
 							b=99999;ti=999999;
 						}
 					}
