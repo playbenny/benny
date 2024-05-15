@@ -141,7 +141,7 @@
 			{
 				"name" : "motor_drag",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin" ],
+				"values" : ["uni", 0, 1, "exp10" ],
 				"wrap" : 0,
 				"default" : 0,
 				"error_scale" : 0
