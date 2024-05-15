@@ -1758,14 +1758,14 @@ function draw_topbar(){
 		mouse_index++;
 	
 		for(i=0;i<meter_positions[0][2].length;i++){
-			click_rectangle( meter_positions[0][2][i][0]-1, meter_positions[0][2][i][1]-1, meter_positions[0][2][i][0]+6, meter_positions[0][2][i][2], mouse_index, 1);
+			click_rectangle( meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
 			mouse_click_actions[mouse_index] = hw_meter_click;
 			mouse_click_parameters[mouse_index] = i;
 			mouse_click_values[mouse_index] = "in";
 			mouse_index++;
 		}
 		for(i=0;i<meter_positions[1][2].length;i++){
-			click_rectangle( meter_positions[1][2][i][0]-1, meter_positions[1][2][i][1]-1, meter_positions[1][2][i][0]+6, meter_positions[1][2][i][2], mouse_index, 1);
+			click_rectangle( meter_positions[1][2][i][0], meter_positions[1][2][i][1], meter_positions[1][2][i][0]+3, meter_positions[1][2][i][2], mouse_index, 1);
 			mouse_click_actions[mouse_index] = hw_meter_click;
 			mouse_click_parameters[mouse_index] = i;
 			mouse_click_values[mouse_index] = "out";
@@ -5880,7 +5880,6 @@ function draw_sidebar(){
 			//need to get the name of this input, and the block it's on.
 			var bk = blocktypes.getkeys();
 			var t;
-			var linkblock = null;
 			for(var b=0;b<bk.length;b++){
 				if(blocktypes.contains(bk[b]+"::connections::out::hardware_channels")){
 					t = blocktypes.get(bk[b]+"::connections::out::hardware_channels");
@@ -5899,23 +5898,14 @@ function draw_sidebar(){
 							lcd_main.message("frgb", menucolour);
 							setfontsize(fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
-							y_offset += fontheight*1.1;
-							post("\nlooking for blocks named",bk[b]);
 							for(var bb=0;bb<MAX_BLOCKS;bb++){
 								if(blocks.contains("blocks["+bb+"]::name")&&(blocks.get("blocks["+bb+"]::name")==bk[b])){
-									post("\nthe link is to block",bb,bk[b]);
-									var bbc = blocks.get("blocks["+bb+"]::space::colour");
-									lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.5+y_offset,bbc[0]*bg_dark_ratio,bbc[1]*bg_dark_ratio,bbc[2]*bg_dark_ratio );
-									lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.25+y_offset);
-									lcd_main.message("frgb", bbc);
-									setfontsize(fontsmall);
-									lcd_main.message("write", "click to jump to this block");	
-									click_zone(select_block,bb,bb, sidebar.x, y_offset, sidebar.x2, fontheight*0.5+y_offset,mouse_index,1);
-
-									y_offset += fontheight*0.6;
+									//post("\nthe link is to block",bb,bk[b]);
+									click_zone(select_block,bb,bb, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
 									bb=999999999;
 								}
 							}
+							y_offset += fontheight*1.1;
 							b=99999;ti=999999;
 						}
 					}
@@ -5972,6 +5962,13 @@ function draw_sidebar(){
 							lcd_main.message("frgb", menucolour);
 							setfontsize(fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
+							for(var bb=0;bb<MAX_BLOCKS;bb++){
+								if(blocks.contains("blocks["+bb+"]::name")&&(blocks.get("blocks["+bb+"]::name")==bk[b])){
+									//post("\nthe link is to block",bb,bk[b]);
+									click_zone(select_block,bb,bb, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+									bb=999999999;
+								}
+							}
 							y_offset += fontheight*1.1;
 							b= 9999999; ti=999999;
 						}
