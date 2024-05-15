@@ -715,6 +715,25 @@ function remove_connection_btn(cno,value){
 	}	
 }
 
+function jump_to_block_at_connection_end(which){
+	var i=selected.wire.indexOf(1);
+	post("\njump",which,i);
+	var target = -1;
+	if(which==0){
+		target = connections.get("connections["+i+"]::from::number");
+	}else{
+		target = connections.get("connections["+i+"]::to::number");
+	}
+	if(target!=-1){
+		post(target);
+		for(i=0;i<connections.getsize();i++) selected.wire[i]=0;
+		selected.wire_count = 0;
+		//selected.block[target] = 1;
+		select_block(0,target);
+		set_sidebar_mode("connections");
+	}
+}
+
 function remove_block_btn(block,value){
 	if(value == danger_button){
 		remove_block(block);

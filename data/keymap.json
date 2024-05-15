@@ -114,6 +114,8 @@
         "wire" : {
             "-4" : ["enter", "fold_menus"],
             "-3" : ["ESC", "clear_or_close"],
+            "2039" : ["alt+up" , "jump_to_block_at_connection_end" , 0],
+            "2038" : ["alt+down" , "jump_to_block_at_connection_end", 1],
             "559" : ["?", "toggle_connection_help"]
         }
     },
