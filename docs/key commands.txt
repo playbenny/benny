@@ -40,6 +40,7 @@ ctrl-z - undo (currently only undoes delete block, more to come)
 del, backspace - delete selection
 alt-left arrow - back to previous sidebar view
 alt-right arrow - forward to next sidebar view (if you've gone back already..)
+alt-up/down, if you have a wire selected - takes you to the block at the start or end of the wire
 enter - open new block menu
 tab - toggle between blocks / panels views
 up/down/left/right - move selected blocks
