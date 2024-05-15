@@ -2672,7 +2672,6 @@ function draw_sidebar(){
 					}
 				}
 			}
-			
 			if(automap.available_c!=-1){
 				if((block_name != "core.input.control.auto") && (block_name != "core.input.control.basic") && has_params){
 					if((automap.mapped_c!=block&&!automap.lock_c)){
@@ -3234,6 +3233,7 @@ function draw_sidebar(){
 							}
 						}
 						automap.offset_range_c = Math.max(0,map_y - automap.c_rows + automap.offset_c);
+						note_poly.setvalue(automap.available_c, "automapped", 1);
 						note_poly.setvalue(automap.available_c, "automap_offset", automap.offset_c);
 						note_poly.setvalue(automap.available_c,"maplistopv",maplistopv);
 						note_poly.setvalue(automap.available_c,"maplist",maplist);
@@ -6425,10 +6425,12 @@ function remove_midi_scope(){
 function do_automap(type, voice, onoff, name){ // this is called from outside
 	if(type=="controller"){
 		if(onoff==0){
+			note_poly.setvalue(automap.available_c,"automapped", 0);
 			automap.available_c = -1;
-				note_poly.setvalue(automap.available_c,"automapped", 0);
+			automap.mapped_c = -1;
 		}else{
 			automap.available_c = voice;
+			redraw_flag.flag |= 2;
 		} 
 		automap.devicename_c = name;
 		if(io_dict.contains("controllers::"+automap.devicename_c+"::rows")){
@@ -6438,8 +6440,8 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 	}else if(type=="keyboard"){
 		if(onoff==0){
 			if(automap.mapped_k!=-1){
-				automap.mapped_k = -1;
 				note_poly.setvalue(automap.available_k,"automapped", 0);
+				automap.mapped_k = -1;
 			}
 			automap.available_k = -1;
 		}else{
