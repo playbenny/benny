@@ -7,7 +7,7 @@
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in" ]
+				"midi" : [ "notes in", "force pass next", "force discard next" ]
 			},
 			"out" : {
 				"midi" : [ "passed", "discarded" ]
