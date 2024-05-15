@@ -135,7 +135,7 @@
 						"lock_automap_cue" : 18
 					},
 					"values" : {
-						"type" : "cc",
+						"type" : "note",
 						"channel" : 1,
 						"first" : 0
 					}

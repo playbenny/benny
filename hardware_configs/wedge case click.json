@@ -136,7 +136,7 @@
 					}
 ,
 					"values" : 					{
-						"type" : "cc",
+						"type" : "note",
 						"channel" : 1,
 						"first" : 0
 					}

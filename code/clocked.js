@@ -29,14 +29,21 @@ function slowclock(){
 function frameclock(){
 	var bangflag=0;
 	var i,t;
+	var otc=-1;
 	if(usermouse.queue.length>0){
 		//deferred_diag.push("mouse queue length "+usermouse.queue.length+" count is "+usermouse.qcount+" qlb is "+usermouse.qlb);
 		while(usermouse.queue.length>0){
 			var entry = usermouse.queue.shift();
 			//post("\nprocessing mouse queue",entry);
+			var tcell = click_i[(entry[0]>>click_b_s)+((entry[1]>>click_b_s)<<click_b_w)];
 			if((entry[2]!=usermouse.left_button)||(usermouse.queue.length==0)){ //(entry[2]==0)||
 				omouse(entry[0],entry[1],entry[2],entry[3],entry[4],entry[5],entry[6],entry[7]);
+			}else{
+				if((tcell!=otc)&&(otc!=-1)){
+					post("\n\n\n\n\nDID FADER BUG OCCUR NOW?");
+				}
 			}
+			otc = tcell;
 		}
 	}
 
