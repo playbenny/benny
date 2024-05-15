@@ -301,7 +301,7 @@ function load_song(){
 		loading.merge = 0;
 		loading.progress=-1;
 		loading.mute_new=0;
-		loading.bundling=12;
+		loading.bundling=16;
 		loading.wait=1;
 		loading.songname = songlist[df][currentsong];
 		if(usermouse.ctrl){
@@ -393,9 +393,9 @@ function import_song(){
 		if(current_x_max>-999){
 			loading.xoffset = current_x_max + 4 - new_x_min;
 		}
-		if(songs.contains(loading.songname+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
+		/*if(songs.contains(loading.songname+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
 			post("\n\n\nSONG NOTES\n\n"+songs.get(loading.songname+"::notepad"));
-		}
+		}*/
 		loading.progress++;
 		loading.ready_for_next_action=loading.wait;//loading.bundling;
 	}else if(loading.progress<MAX_BLOCKS){
@@ -530,7 +530,7 @@ function import_song(){
 		loading.ready_for_next_action=loading.wait;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length){
 		t = MAX_BLOCKS+loading.mapping.length;
-		i=loading.bundling;//*4; //this determines how many of these are done at once (before handing exection back to max etc), i don't think they take long though?
+		i=loading.bundling*2; //this determines how many of these are done at once (before handing exection back to max etc), i don't think they take long though?
 		do {
 			b=loading.progress-MAX_BLOCKS;
 			if(loading.wait>1) post("\nloading block voices and data for block", b, "<b map>", loading.mapping[b],typeof loading.mapping[b]);
@@ -547,7 +547,7 @@ function import_song(){
 		} 
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections")){
 		t=MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections");
-		i=3*loading.bundling; //7;
+		i=loading.bundling;
 		do{ 
 			b=loading.progress-MAX_BLOCKS-loading.mapping.length;
 			if(loading.wait>1) post("\nloading connection number",b);

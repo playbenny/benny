@@ -29,7 +29,6 @@ function slowclock(){
 function frameclock(){
 	var bangflag=0;
 	var i,t;
-	//var otc=-1;
 	if(usermouse.queue.length>0){
 		//deferred_diag.push("mouse queue length "+usermouse.queue.length+" count is "+usermouse.qcount+" qlb is "+usermouse.qlb);
 		while(usermouse.queue.length>0){
@@ -38,12 +37,7 @@ function frameclock(){
 			//var tcell = click_i[(entry[0]>>click_b_s)+((entry[1]>>click_b_s)<<click_b_w)];
 			if((entry[2]!=usermouse.left_button)||(usermouse.queue.length==0)){ //(entry[2]==0)||
 				omouse(entry[0],entry[1],entry[2],entry[3],entry[4],entry[5],entry[6],entry[7]);
-			}/*else{
-				if((tcell!=otc)&&(otc!=-1)){
-					post("\ntcellchange",tcell);
-				}
-			}*/
-			//otc = tcell;
+			}
 		}
 	}
 
@@ -61,6 +55,8 @@ function frameclock(){
 	}
 	
 	if(loading.ready_for_next_action){
+		//post("\nloading progress:",loading.progress,"loading wait",loading.ready_for_next_action);
+		if(loading.progress>MAX_BLOCKS) polycheck();
 		loading.ready_for_next_action--;
 		if(loading.ready_for_next_action==0){
 			import_song();
@@ -68,18 +64,14 @@ function frameclock(){
 			lcd_main.message("brgb", backgroundcolour_blocks);
 			lcd_main.message("clear");
 		}
-		slowclock();
+		//slowclock();
 		draw_topbar();
 		if(displaymode=="block_menu") draw_menu_hint();
 		//sidebar_meters();
-		bangflag=1;
-		redraw_flag.flag = 0;// redraw_flag.flag & 59; //disables a 'redraw' (and hence a draw blocks)
-	}else if(loading.progress!=0){
-		draw_topbar();
-		sidebar_meters();
-		bangflag=1;
-		redraw_flag.flag = 0;
-		if(loading.progress>MAX_BLOCKS+loading.mapping.length) polycheck();
+		//bangflag=1;
+		//redraw_flag.flag = 0;// redraw_flag.flag & 59; //disables a 'redraw' (and hence a draw blocks)
+		lcd_main.message("bang");
+		return 1;
 	}else{
 		if(rebuild_action_list){
 			build_mod_sum_action_list();
@@ -176,10 +168,6 @@ function frameclock(){
 			bangflag = 1;
 		}
 		if(sidebar.panel) update_custom();
-	}else if(displaymode == "flocks"){
-		sidebar_meters();
-		move_flock_blocks();
-		bangflag=1;
 	}else if(displaymode == "panels"){
 		sidebar_meters();
 		update_custom_panels();
@@ -202,6 +190,10 @@ function frameclock(){
 			update_custom();
 		}
 		sidebar_meters();
+		bangflag=1;
+	}else if(displaymode == "flocks"){
+		sidebar_meters();
+		move_flock_blocks();
 		bangflag=1;
 	}
 	if(bangflag) {
@@ -402,12 +394,13 @@ function sidebar_meters(){
 	}
 	for(i=0;i<l;i++){
 		lcd_main.message("frgb", meter_positions[i][1]);
-		for(ii=0;ii<meter_positions[i][2].length;ii++){
+		var ll = meter_positions[i][2].length;
+		for(ii=0;ii<ll;ii++){
 			lcd_main.message("moveto", meter_positions[i][2][ii][0],meter_positions[i][2][ii][1]);
 			lcd_main.message("lineto", meter_positions[i][2][ii][0],meter_positions[i][2][ii][2]);			
 		}
 		lcd_main.message("frgb", meter_positions[i][0]);
-		for(ii=0;ii<meter_positions[i][2].length;ii++){
+		for(ii=0;ii<ll;ii++){
 			mmin = Math.min(Math.max(scope_buffer.peek(1,meter_positions[i][2][ii][3]), -1), 1);
 			mmax = Math.min(Math.max(scope_buffer.peek(2,meter_positions[i][2][ii][3]), -1), 1);
 			var mh=meter_positions[i][2][ii][2]-meter_positions[i][2][ii][1]-2;
@@ -422,7 +415,7 @@ function sidebar_meters(){
 	}
 	if(peakflag){
 		lcd_main.message("frgb", 255, 20, 20);
-		for(i=0;i<peaklist.length;i++){
+		for(i=peaklist.length-1;i>=0;i--){
 			lcd_main.message("moveto",peaklist[i][0],peaklist[i][1]);
 			lcd_main.message("lineto",peaklist[i][0],peaklist[i][2]);
 		}
