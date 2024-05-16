@@ -1130,8 +1130,9 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		//post("\nsave as");
 		messnamed("trigger_save_as","bang");
 	}else{
-		//post("\nsave");
-		messnamed("trigger_save","bang");
+		post("\nsave",loading.songname);
+		messnamed("save_named",SONGS_FOLDER+loading.songname);
+		//messnamed("trigger_save","bang");
 	}
 	set_sidebar_mode("none");
 }
