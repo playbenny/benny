@@ -1209,7 +1209,8 @@ function save_hotkey(){
 		num++;
 		loading.songname = nas+num+".json";
 		post("\nincrementing filename, saving as:",SONGS_FOLDER+loading.songname);
-		messnamed("save_named",SONGS_FOLDER+loading.songname);
+		save_song(0,0); //save
+		//messnamed("save_named",SONGS_FOLDER+loading.songname);
 	}else{
 		if((loading.songname != "")&&(loading.songname!="autoload")){
 			save_song(0,0); //save
