@@ -98,7 +98,8 @@ function block(bn){
             }
         }else{
             post("\nno controller selection found in dict");
-            selection_type = "notfound";
+            selection_type = "notfoundindict";
+            selected_in_dict = null;
             selected = "none";
         }
     }
