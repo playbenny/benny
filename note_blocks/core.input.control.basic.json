@@ -1,6 +1,6 @@
 {
 	"core.input.control.basic" : {
-		"patcher" : "core.input.control.auto",
+		"patcher" : "core.input.control",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Midi controller input.££The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. ££This kind of input block does not use auto assign, just outputs the controls to wherever you route them.  ",

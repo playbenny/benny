@@ -1,6 +1,6 @@
 {
 	"core.input.control.auto" : {
-		"patcher" : "core.input.control.auto",
+		"patcher" : "core.input.control",
 		"type" : "note",
 		"block_ui_patcher" : "core.input.control.auto.ui",
 		"ui_in_sidebar_height":7,
