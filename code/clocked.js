@@ -56,7 +56,7 @@ function frameclock(){
 	
 	if(loading.ready_for_next_action){
 		//post("\nloading progress:",loading.progress,"loading wait",loading.ready_for_next_action);
-		if(loading.progress>MAX_BLOCKS) polycheck();
+		if(loading.progress>=MAX_BLOCKS+loading.mapping.length) polycheck();
 		loading.ready_for_next_action--;
 		if(loading.ready_for_next_action==0){
 			import_song();
@@ -72,24 +72,23 @@ function frameclock(){
 		//redraw_flag.flag = 0;// redraw_flag.flag & 59; //disables a 'redraw' (and hence a draw blocks)
 		lcd_main.message("bang");
 		return 1;
-	}else{
-		if(rebuild_action_list){
-			build_mod_sum_action_list();
-			rebuild_action_list=0;
-		}
-		if(still_checking_polys) polycheck();
-		if((bulgeamount>0) && (bulgeamount<1)){
-			bulgeamount -= 0.1;
-			if(bulgeamount<=0)bulgeamount =0;
-			if(Array.isArray(wires[bulgingwire])){
-				var ll = wires[bulgingwire].length;
-				for(var i=0;i<ll;i++){
-					var ta = wires[bulgingwire][i].scale;
-					ta[1] = wire_dia * (1 + bulgeamount);
-					wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
-				}
-				if(bulgeamount==0) bulgingwire=-1;			
+	}
+	if(rebuild_action_list){
+		build_mod_sum_action_list();
+		rebuild_action_list=0;
+	}
+	if(still_checking_polys) polycheck();
+	if((bulgeamount>0) && (bulgeamount<1)){
+		bulgeamount -= 0.1;
+		if(bulgeamount<=0)bulgeamount =0;
+		if(Array.isArray(wires[bulgingwire])){
+			var ll = wires[bulgingwire].length;
+			for(var i=0;i<ll;i++){
+				var ta = wires[bulgingwire][i].scale;
+				ta[1] = wire_dia * (1 + bulgeamount);
+				wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
 			}
+			if(bulgeamount==0) bulgingwire=-1;			
 		}
 	}
 	if(redraw_flag.flag & 8){
