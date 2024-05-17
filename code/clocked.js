@@ -56,7 +56,7 @@ function frameclock(){
 	
 	if(loading.ready_for_next_action){
 		//post("\nloading progress:",loading.progress,"loading wait",loading.ready_for_next_action);
-		if(loading.progress>=MAX_BLOCKS+loading.mapping.length) polycheck();
+		if(loading.progress>=MAX_BLOCKS) polycheck();
 		loading.ready_for_next_action--;
 		if(loading.ready_for_next_action==0){
 			import_song();

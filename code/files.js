@@ -651,6 +651,10 @@ function import_song(){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
 		messnamed("update_wave_colls","bang");
+		if(still_checking_polys==0){
+			update_all_voices_mutestatus();
+		}
+		if(deferred_matrix.length) process_deferred_matrix();
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
