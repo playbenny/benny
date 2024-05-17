@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1038.0, 847.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -1370,9 +1370,9 @@
 				"box" : 				{
 					"id" : "obj-103",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
+					"numinlets" : 3,
 					"numoutlets" : 11,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "" ],
+					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
 					"patching_rect" : [ 507.0, 87.5, 82.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -1560,7 +1560,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 838.0, 422.0, 158.0, 117.0 ],
+					"patching_rect" : [ 859.833333333333371, 424.5, 158.0, 117.0 ],
 					"text" : "<<at present the 'row sel' in goes to 'set counter immediately' - so you have to hit it just after the beat, the alternative you have to hit it just before. this one you can stutter-play the note too"
 				}
 
@@ -1802,18 +1802,6 @@
 					"outlettype" : [ "int", "int" ],
 					"patching_rect" : [ 61.0, 503.0, 57.0, 22.0 ],
 					"text" : "split 0 64"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-72",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"patching_rect" : [ 907.500000000000114, 381.0, 36.0, 22.0 ],
-					"text" : "- 128"
 				}
 
 			}
@@ -2919,7 +2907,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 796.0, 446.0, 29.5, 22.0 ],
+					"patching_rect" : [ 816.5, 445.0, 29.5, 22.0 ],
 					"text" : "i"
 				}
 
@@ -3687,7 +3675,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-15", 3 ],
-					"midpoints" : [ 805.5, 438.0, 156.0, 438.0, 156.0, 342.0, 102.5, 342.0 ],
+					"midpoints" : [ 826.0, 471.0, 181.0, 471.0, 181.0, 342.0, 102.5, 342.0 ],
 					"source" : [ "obj-14", 0 ]
 				}
 
@@ -4491,7 +4479,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-72", 0 ],
+					"destination" : [ "obj-14", 0 ],
 					"source" : [ "obj-48", 0 ]
 				}
 
@@ -4819,13 +4807,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-14", 0 ],
-					"source" : [ "obj-72", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-50", 0 ],
 					"midpoints" : [ 78.0, 855.0, 78.0, 855.0 ],
 					"source" : [ "obj-73", 0 ]
@@ -5130,23 +5111,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [ 			{
-				"name" : "parameterwatcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : "../patchers",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }
