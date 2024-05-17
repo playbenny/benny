@@ -122,7 +122,12 @@ function param(value){
             }else{
                 blocks.replace("blocks["+blockno+"]::selected_controller",controllerslist[value]);
                 selected_in_dict = controllerslist[value];
+                selected = selected_in_dict;
+                selection_type = "dict";
                 post("\nslider selection:",controllerslist[value],"storing to dictionary");
+                outlet(3, blockname);
+                outlet(2, selected);
+                outlet(1, selection_type);   
             }
         } 
     }
