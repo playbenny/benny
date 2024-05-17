@@ -3,8 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 3,
+			"minor" : 6,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -75,9 +75,9 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer logexp(\"logexp\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\n//Param p(0,min=0,default=64,max=128);\r\n//Param v(0,min=0,default=0,max=1000);\r\n\r\nshape = peek(prm,0+voice_offset, 0, channels=1);\r\ngain  = 2*peek(prm,1+voice_offset, 0, channels=1)-1;\r\noffset= 2*peek(prm,2+voice_offset, 0, channels=1)-1;\r\n\r\ntg =  in2 + offset;//,-1,1;\r\nif(shape<0.5){\r\n\ttg = gain * 2 *(lookup(logexp, clip(tg,-1,1), 0, channels=1) * (0.5-shape) + shape*tg);\r\n}else{\r\n\ttg = gain * 2 *(256*lookup(logexp, clip(tg/16,-1,1), 1, channels=1) * (shape-0.5) + (1-shape)*tg);\t\r\n}\r\n\r\nout1 = in1*tg;\r\nout2 = tg;",
+					"code" : "Buffer logexp(\"logexp\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\n//Param p(0,min=0,default=64,max=128);\r\n//Param v(0,min=0,default=0,max=1000);\r\n\r\nHistory count(10000);\r\nHistory shape(0.5);\r\nHistory gain(1);\r\nHistory offset(0);\r\n\r\ncount -= 1;\r\nif(count<0){\r\n\tshape = peek(prm,0+voice_offset, 0, channels=1);\r\n\tgain  = 2*peek(prm,1+voice_offset, 0, channels=1)-1;\r\n\toffset= 2*peek(prm,2+voice_offset, 0, channels=1)-1;\r\n\tcount = vectorsize;\r\n}\r\n\r\ntg =  in2 + offset;//,-1,1;\r\nif(shape<=0.5){\r\n\ttg = gain * 2 *(lookup(logexp, clip(tg,-1,1), 0, channels=1) * (0.5-shape) + shape*tg);\r\n}else{\r\n\ttg = gain * 2 *(lookup(logexp, clip(tg,-1,1), 1, channels=1) * (shape-0.5) + (1-shape)*tg);\t\r\n}\r\n\r\nout1 = in1*tg;\r\nout2 = tg;",
 					"fontface" : 0,
-					"fontname" : "Lucida Console",
+					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-3",
 					"maxclass" : "codebox",
