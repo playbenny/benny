@@ -56,21 +56,18 @@ function frameclock(){
 	
 	if(loading.ready_for_next_action){
 		//post("\nloading progress:",loading.progress,"loading wait",loading.ready_for_next_action);
-		if(loading.progress>=MAX_BLOCKS) polycheck();
+		//if(loading.progress>=MAX_BLOCKS+loading.mapping.length) polycheck();
 		loading.ready_for_next_action--;
 		if(loading.ready_for_next_action==0){
 			import_song();
-			//clear_screens();
 			lcd_main.message("brgb", backgroundcolour_blocks);
 			lcd_main.message("clear");
 		}
-		//slowclock();
 		draw_topbar();
 		if(displaymode=="block_menu") draw_menu_hint();
 		//sidebar_meters();
-		//bangflag=1;
-		//redraw_flag.flag = 0;// redraw_flag.flag & 59; //disables a 'redraw' (and hence a draw blocks)
 		lcd_main.message("bang");
+		if(still_checking_polys) polycheck();
 		return 1;
 	}
 	if(rebuild_action_list){
