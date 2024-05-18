@@ -2589,7 +2589,7 @@ function cut_selection(){
 	delete_selection();
 }
 function file_menu_arrows(dir){
-	var df = (sidebar.files_page == "templates");
+	var df = (sidebar.files_page == "templates")|0;
 	currentsong+=dir;
 	currentsong = (currentsong + songlist[df].length) % (songlist[df].length);
 	redraw_flag.flag |= 2;
