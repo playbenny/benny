@@ -870,14 +870,9 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				parameter_static_mod.poke(1,MAX_PARAMETERS*voiceoffset+i,0);
 				param_error_drift[voiceoffset][i]=0;
 			}
-			p_default = 0;
 			p_type = params[i].get("type");
 			p_values = params[i].get("values");
-			if(p_type == "float"){
-				if(p_values[0]=="bi"){
-					p_default = 0.5;
-				}
-			}else if(p_type == "wave"){
+			if(p_type == "wave"){
 				var curwav = Math.floor(MAX_WAVES * paramvalues[i+1]);
 				post("\nprocessing remapping for block",block_index,block_name," wave was ",curwav," and will be ",waves.remapping[curwav]);
 				paramvalues[i+1] = (waves.remapping[curwav]+0.2)/MAX_WAVES;
@@ -885,6 +880,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			}
 			if(params[i].contains("default")){
 				p_default = params[i].get("default");
+			}else{
+				p_default = 0;
+				if((p_type == "float") && (p_values[0]=="bi")){
+					p_default = 0.5;
+				}
 			}
 			
 			if(i+1<paramvalues.length){
