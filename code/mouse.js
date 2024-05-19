@@ -997,7 +997,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		if((f==sidebar_parameter_knob)||((f==static_mod_adjust)&&(p[3]!="custom_opv"))){ //tries to line up scrollwheel steps with slider values for int/menu types
 			//that last bit - maybe a temp fix. look at this once you've got mixer bus ui working 100%
 			var scalar = ((shift)?0.1:1);
-			if(f!=static_mod_adjust) scalar *= ((alt)?0.01:1);
+			if(f!=static_mod_adjust) scalar = (((alt)&&(shift))?0.01:1);
 			var t=paramslider_details[p[0]][13];
 			var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
 			if(t=="int"){
@@ -1014,19 +1014,27 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				scalar = (f==static_mod_adjust)?0.5:1; //this isn't right, i don't understand what's going on here, p_values.length is right, so static_mod_adjust must mangle it but it doesn't? 
 				if(usermouse.scroll_accumulator > 0.22 ){
 					usermouse.scroll_accumulator = 0;
-					tv += 1 / (p_values.length);
+					tv += scalar / (p_values.length);
 				}else if(usermouse.scroll_accumulator < -0.22){
 					usermouse.scroll_accumulator = 0;
-					tv -= 1 / (p_values.length);
+					tv -= scalar / (p_values.length);
 				}
 			}else if((t=="menu_f")){
-				usermouse.scroll_accumulator += scroll;
-				if(usermouse.scroll_accumulator > 0.22 ){
-					usermouse.scroll_accumulator = 0;
-					tv += scalar / (p_values.length+1);
-				}else if(usermouse.scroll_accumulator < -0.22){
-					usermouse.scroll_accumulator = 0;
-					tv -= scalar / (p_values.length+1);
+				if((alt)&&(!shift)){
+					usermouse.scroll_accumulator += scroll;
+					if(usermouse.scroll_accumulator > 0.22 ){
+						usermouse.scroll_accumulator = 0;
+						tv += scalar / (p_values.length+1);
+					}else if(usermouse.scroll_accumulator < -0.22){
+						usermouse.scroll_accumulator = 0;
+						tv -= scalar / (p_values.length+1);
+					}
+				}else{
+					if(scroll>0){
+						tv += 0.1*scalar / (p_values.length+1);
+					}else{	
+						tv -= 0.1*scalar / (p_values.length+1);
+					}
 				}
 			}else if((t=="wave")){
 				usermouse.scroll_accumulator += scroll*scalar;
