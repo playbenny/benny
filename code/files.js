@@ -521,7 +521,6 @@ function import_song(){
 				load_block(block_name,loading.mapping[b],songs.get(loading.songname+"::states::current::"+b)||[],excl);
 			}
 		}
-		
 		loading.progress=MAX_BLOCKS;
 		meters_updatelist.hardware = [];
 		meters_updatelist.meters = [];
@@ -539,9 +538,9 @@ function import_song(){
 			i--;
 			if(i==0) t = 0;		
 		} while (loading.progress<t);
-		output_blocks_poly.setvalue(0,"load_complete");
 		loading.ready_for_next_action=loading.wait;
 		if(t!=0){
+			output_blocks_poly.setvalue(0,"load_complete");
 			center_view(1);
 			post("\ndone loading blocks, voices and data");
 		} 
@@ -1457,7 +1456,7 @@ function clear_everything(){
 	//messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 
-	post("clearing everything\n");
+	post("\nclearing everything");
 	sigouts.setvalue(0,0); // clear sigs
 	song_select.previous_name="";
 	song_select.previous_blocks=[];

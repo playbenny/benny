@@ -53,7 +53,9 @@ function frameclock(){
 			}
 		}
 	}
-	
+
+	if(still_checking_polys) polycheck();
+
 	if(loading.ready_for_next_action){
 		//post("\nloading progress:",loading.progress,"loading wait",loading.ready_for_next_action);
 		//if(loading.progress>=MAX_BLOCKS+loading.mapping.length) polycheck();
@@ -67,14 +69,12 @@ function frameclock(){
 		if(displaymode=="block_menu") draw_menu_hint();
 		//sidebar_meters();
 		lcd_main.message("bang");
-		if(still_checking_polys) polycheck();
 		return 1;
 	}
 	if(rebuild_action_list){
 		build_mod_sum_action_list();
 		rebuild_action_list=0;
 	}
-	if(still_checking_polys) polycheck();
 	if((bulgeamount>0) && (bulgeamount<1)){
 		bulgeamount -= 0.1;
 		if(bulgeamount<=0)bulgeamount =0;
