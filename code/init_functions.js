@@ -460,7 +460,7 @@ function import_hardware(v){
 				}
 				if(ch[t]>MAX_USED_AUDIO_OUTPUTS) MAX_USED_AUDIO_OUTPUTS = ch[t];
 			}
-			if(d.contains(keys[i]+"::cue_out")){
+			if((d.contains(keys[i]+"::cue_out"))&&(d.get(keys[i]+"::cue_out")==1)){
 				automap.available_q = ch;
 				post("\ncue out is on channel(s)",ch);
 			}
