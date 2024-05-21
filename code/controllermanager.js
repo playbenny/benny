@@ -23,6 +23,7 @@ var blockno = -1;
 var blockname = null;
 var parameternumber = -1; //the number of the parameter that holds the controller number
 var controllercount = -1; //the number of controllers on the parameter slider
+var lastparam;
 
 var selected_in_dict = null;
 var selected = null;
@@ -130,6 +131,17 @@ function param(value){
                 outlet(1, selection_type);   
             }
         } 
+    }
+}
+
+function checkparam(){
+    if(blockno>-1){
+        var gotparam = Math.floor(parameter_value_buffer.peek(1,blockno*MAX_PARAMETERS+parameternumber)*controllercount);
+        if(gotparam != lastparam){
+            post("\nparam read",gotparam);
+            lastparam = gotparam;
+            param(lastparam);
+        }
     }
 }
 
