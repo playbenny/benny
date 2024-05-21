@@ -650,7 +650,7 @@ function delete_selection(){
 	}else{
 		for(i=sel_sy;i<=sel_ey;i++){
 			for(var tx=0;tx<=v_list.length;tx++){
-				for(var tx2=0;tx2<2;tx2++){
+				for(var tx2=0;tx2<UNIVERSAL_COLUMNS;tx2++){
 					if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
 						if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
 							voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+pattern_offs[tx]+UNIVERSAL_COLUMNS*i+tx2,0);
