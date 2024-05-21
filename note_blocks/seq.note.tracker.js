@@ -922,7 +922,7 @@ function keydown(key){
 					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx],0);
 				}else if(key>0){
 					if(keymap[key]>-1){
-						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx]);
+						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+1+pattern_offs[cursorx]);
 						if(t<=0) t = currentvel+1;
 						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+pattern_offs[cursorx],baseoct*12+keymap[key]);
 						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+UNIVERSAL_COLUMNS*cursory+1+pattern_offs[cursorx],t);
