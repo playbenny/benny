@@ -104,9 +104,8 @@ function draw(){
 		}
 		i= showcols;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		outlet(0,"setfontsize",rh*0.8);
 		if(!mini){
-			//TODO HEADER WITH LABELS FOR COLUMNS?
+			outlet(0,"setfontsize",rh*0.8);
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*2.6+y_pos);
 			if(cursorx2==0){
@@ -818,24 +817,50 @@ function keydown(key){
 			baseoct--;
 			if(baseoct<0)baseoct=0;
 			break;
+		case 43:
 		case 61:
+		case 555:
 		case 573:
-			var tv=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*cursory+cursorx2);
-			if(tv>0){
-				tv++;
-				if(tv>128)tv=128;
-				if(cursorx2==1)	currentvel = tv-1;
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*cursory+cursorx2,tv);
+			if(sel_ex==-1){
+				var x1=cursorx;
+				var x2=cursorx2;
+				var y=cursory;
+				increment_cell(x1, y, x2);
+			}else{
+				for(var y=sel_sy;y<=sel_ey;y++){
+					var x1=sel_sx;
+					var x2=sel_sx2;
+					while((x1<=sel_ex)&&(x2<=sel_ex2)){
+						increment_cell(x1,y,x2);
+						x2++;
+						if(x2>=UNIVERSAL_COLUMNS){
+							x2=0;
+							x1++;
+						}
+					}
+				}
 			}
 			drawflag=1;
 			break;
 		case 45:
-			var tv=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*cursory+cursorx2);
-			if(tv>0){
-				tv--;
-				if(tv<1)tv=1;
-				if(cursorx2==1)	currentvel = tv-1;
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+pattern_offs[cursorx]+UNIVERSAL_COLUMNS*cursory+cursorx2,tv);
+			if(sel_ex==-1){
+				var x1=cursorx;
+				var x2=cursorx2;
+				var y=cursory;
+				decrement_cell(x1, y, x2);
+			}else{
+				for(var y=sel_sy;y<=sel_ey;y++){
+					var x1=sel_sx;
+					var x2=sel_sx2;
+					while((x1<=sel_ex)&&(x2<=sel_ex2)){
+						decrement_cell(x1,y,x2);
+						x2++;
+						if(x2>=UNIVERSAL_COLUMNS){
+							x2=0;
+							x1++;
+						}
+					}
+				}
 			}
 			drawflag=1;
 			break;
@@ -976,6 +1001,28 @@ function keydown(key){
 		}
 		drawcell(cursorx-display_col_offset,cursory-display_row_offset);		
 	}
+}
+
+function increment_cell(x1, y, x2) {
+	var tv = voice_data_buffer.peek(1, MAX_DATA * v_list[x1] + 1 + pattern_offs[x1] + UNIVERSAL_COLUMNS * y + x2);
+	if(tv > 0) {
+		tv++;
+		if (tv > 128) tv = 128;
+		if (x2 == 1) currentvel = tv - 1;
+		voice_data_buffer.poke(1, MAX_DATA * v_list[x1] + 1 + pattern_offs[x1] + UNIVERSAL_COLUMNS * y + x2, tv);
+	}
+	return tv;
+}
+
+function decrement_cell(x1, y, x2) {
+	var tv = voice_data_buffer.peek(1, MAX_DATA * v_list[x1] + 1 + pattern_offs[x1] + UNIVERSAL_COLUMNS * y + x2);
+	if(tv > 0) {
+		tv--;
+		if(tv<1) tv=1;
+		if(x2 == 1) currentvel = tv - 1;
+		voice_data_buffer.poke(1, MAX_DATA * v_list[x1] + 1 + pattern_offs[x1] + UNIVERSAL_COLUMNS * y + x2, tv);
+	}
+	return tv;
 }
 
 function voice_is(v){
