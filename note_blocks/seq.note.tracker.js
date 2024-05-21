@@ -423,9 +423,9 @@ function mouse(x,y,lb,sh,al,ct,scr){
 				for(var tx=sel_sx;tx<=sel_ex;tx++){
 					tt = clickx2;
 					var ts=0;
-					var te=2;
-					if((tx==sel_sx)&&(sel_sx2>0)) ts=1;
-					if((tx==sel_ex)&&(sel_ex2<1)) te=1;
+					var te=UNIVERSAL_COLUMNS;
+					if((tx==sel_sx)) ts=sel_sx2;
+					if((tx==sel_ex)) te=sel_ex2;
 					if((tt>=ts)&&(tt<=te)){
 						for(var ty=sel_sy;ty<=sel_ey;ty++){
 							var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tt+1+UNIVERSAL_COLUMNS*ty+pattern_offs[tx]);
@@ -875,8 +875,8 @@ function keydown(key){
 			paste_columns();
 			break;
 		case -6:
-		case -7:
-			//del or delete
+		//case -7:
+			//del (delete does what . does)
 			delete_selection();
 			break;
 		case -8:
