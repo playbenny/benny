@@ -4546,7 +4546,7 @@ function draw_sidebar(){
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
 					var hintrows = 0.4+ hint.length / 45+hint.split("£").length-1;
 					var rowstart=0;
-					var rowend=46;
+					var rowend=8*sidebar.width_in_units;
 					hint = hint+"                       ";
 					var bold=0;
 					var sameline=0;
