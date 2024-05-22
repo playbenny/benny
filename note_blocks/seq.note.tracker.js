@@ -294,18 +294,29 @@ function drawcell(c,r){
 			outlet(1,"lineto",sx+(c+xoffs)*cw+x_pos,sy+rh*(1+r)+y_pos);
 		}
 		var rc2 = rc;
-		if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
-			var ts=0; 
-			var te=1;
-			if(cc==sel_sx) ts = sel_sx2/(UNIVERSAL_COLUMNS)+(sel_sx2==0)*inset;
-			if(cc==sel_sy) te = (sel_ex2+1)/(UNIVERSAL_COLUMNS);
-			rc2 += 0.2;
-			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
-			outlet(1,"paintrect",sx+(c+ts+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+te+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc2,bc[1]*rc2*lp,bc[2]*rc2);
-		}else{// all not
-			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
-		}
 		if(!mini){
+			if((rr>=sel_sy)&&(rr<=sel_ey)&&(cc>=sel_sx)&&(cc<=sel_ex)){
+				var ts=0; 
+				var te=1;
+				//start sx+(c+inset*(sel_sx2==0)+(3*sel_sx2 + (sel_sx2!=0)-0.5)/(2+(3+(sel_sx2==0))*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,
+				//end sx+(c+(x+(3+(sel_ex2==0))+(sel_ex2==0))/(2+(3+(sel_ex2==0))*(UNIVERSAL_COLUMNS-1))+xoffs)*cw+x_pos
+				x = 3*sel_sx2 + (sel_sx2!=0)
+				if(cc==sel_sx){
+					ts = sx+(c+inset*(sel_sx2==0)+(3*sel_sx2 + (sel_sx2!=0)-0.5)/(2+(3+(sel_sx2==0))*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos;//sel_sx2/(UNIVERSAL_COLUMNS)+(sel_sx2==0)*inset;
+				}else{
+					ts = sx+(c+inset+xoffs)*cw+x_pos;
+				}
+				if(cc==sel_ex){
+					te = sx+(c+((3*sel_ex2 + (sel_ex2!=0))+(3+(sel_ex2==0))+(sel_ex2==0))/(2+(3+(sel_ex2==0))*(UNIVERSAL_COLUMNS-1))+xoffs)*cw+x_pos;
+				}else{
+					te = sx+(c+ww+xoffs)*cw+x_pos;// sx+(c+(3*(UNIVERSAL_COLUMNS-1) + 4)/(2+3*(UNIVERSAL_COLUMNS-1))+xoffs)*cw+x_pos;
+				} //te = (sel_ex2+1)/(UNIVERSAL_COLUMNS);
+				rc2 += 0.2;
+				outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
+				outlet(1,"paintrect",ts,sy+rh*r+y_pos,te,sy+rh*(r+1)+y_pos,bc[0]*rc2,bc[1]*rc2*lp,bc[2]*rc2);
+			}else{// all not
+				outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
+			}
 			outlet(1,"frgb",fc);
 			var incell = ((cursorx==(cc))&&(cursory==rr));
 			var x=0;
@@ -359,6 +370,7 @@ function drawcell(c,r){
 			}
 		}else{
 			//values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+UNIVERSAL_COLUMNS*rr+pattern_offs[c],UNIVERSAL_COLUMNS);
+			outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
 			for(i=0;i<2;i++){ //just plot note/vel squares in mini view?
 				if(values[i]!=0) outlet(1,"paintrect",sx+(c+(i*4)/7)*cw+x_pos,sy+rh*r+y_pos,sx+(c+(i*4+1)/7)*cw+x_pos,sy+rh*(r+1)+y_pos,fc);
 			}
@@ -416,9 +428,9 @@ function mouse(x,y,lb,sh,al,ct,scr){
 				}			
 			}
 		}else{
-			cursorx2 = clickx2;
-			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
-			cursory = clicky;
+			//cursorx2 = clickx2;
+			//cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
+			//cursory = clicky;
 			if(((clickx>sel_sx)||((clickx==sel_sx)&&(clickx2>=sel_sx2)))&&((clickx<sel_ex)||((clickx==sel_ex)&&(clickx2<=sel_ex2)))&&(clicky>=sel_sy)&&(clicky<=sel_ey)){
 				for(var tx=sel_sx;tx<=sel_ex;tx++){
 					tt = clickx2;
@@ -459,6 +471,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 					voice_data_buffer.poke(1,MAX_DATA*v_list[clickx]+clickx2+1+pattern_offs[clickx]+UNIVERSAL_COLUMNS*(clicky+display_row_offset),v);
 				}
 			}
+			drawflag = 1;
 		}
 	}else if(lb){
 		if(sh){
@@ -727,7 +740,7 @@ function keydown(key){
 				sel_ey=cursory;
 				sel_sy=cursory;
 			}
-			if(sel_ex==cursorx){
+			if((sel_ex==cursorx)&&(sel_ex2==cursorx2)){
 				cursorx2++;
 				if(cursorx2>UNIVERSAL_COLUMNS-2){
 					cursorx2=0;
@@ -744,17 +757,29 @@ function keydown(key){
 				sel_sx2 = cursorx2;
 				sel_sx = cursorx;
 			}
+			drawflag=1;
 			break;
 		case 501:
 			if(sel_ex==-1){
 				sel_ex=cursorx;
-				sel_sx=cursorx;
 				sel_ex2=cursorx2;
-				sel_sx2=cursorx2;
+				/*if((cursorx2>0)||(cursorx>0)){
+					cursorx2--;
+					if(cursorx2<0){
+						cursorx--;
+						cursorx2 = UNIVERSAL_COLUMNS -1;
+					}else{
+						sel_sx=cursorx;
+						sel_sx2=cursorx2;
+					}
+				}else{*/ //this didn't work well, selection wasn't displaying right.
+					sel_sx=cursorx;
+					sel_sx2=cursorx2;
+				//}
 				sel_ey=cursory;
 				sel_sy=cursory;
 			}
-			if(sel_ex==cursorx){
+			if((sel_ex==cursorx)&&(sel_ex2==cursorx2)){
 				cursorx2--;
 				if(cursorx2<0){
 					cursorx2=UNIVERSAL_COLUMNS-2;
@@ -771,6 +796,7 @@ function keydown(key){
 				sel_sx2 = cursorx2;
 				sel_sx = cursorx;
 			}
+			drawflag =1;
 			break;
 		case 502:
 			if(sel_ex==-1){
@@ -799,12 +825,12 @@ function keydown(key){
 				sel_ey=cursory;
 				sel_sy=cursory;
 			}
-			if(sel_ey==cursory){
-				cursory=(cursory+max_rows-1) % max_rows;
-				sel_ey=cursory;
-			}else if(sel_sy==cursory){
+			if(sel_sy==cursory){
 				cursory=(cursory+max_rows-1) % max_rows;
 				sel_sy==cursory;
+			}else if(sel_ey==cursory){
+				cursory=(cursory+max_rows-1) % max_rows;
+				sel_ey=cursory;
 			}
 			drawflag=1;
 			break;
