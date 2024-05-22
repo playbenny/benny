@@ -71,7 +71,7 @@
 			{
 				"name" : "offset",
 				"type" : "int",
-				"values" : ["bi", -512, 512, "lin"],
+				"values" : ["bi", -512, 512, "lin",4],
 				"wrap" : 0,
 				"default" : 0.5
 			},

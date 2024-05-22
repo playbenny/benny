@@ -32,6 +32,8 @@ var copy = new Dict;
 copy.name = "copy";
 var v_list = [];
 var b_list = [];
+var bl_list = [];
+var timegrid = [];
 var keymap = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 28, -1, 14, 16, -1, 19, 21, 23, -1, 26, -1, -1, -1, 31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 30, -1, 32, -1, -1, -1, -1, 8, 5, 4, 17, -1, 7, 9, 25, 11, -1, -1, 12, 10, 27, 29, 13, 18, 2, 20, 24, 6, 15, 3, 22, 1, -1, -1, -1, -1, -1];
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
 var start=[],lstart=[],end=[],lon=[],divs=[],pattern_offs=[];
@@ -131,19 +133,21 @@ function draw(){
 			pattern_offs[c] = pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 			divs[c] =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
 			if(!mini){
+				var col=[];
 				if(cursorx == c){
 					if(b_list[c]==block){
-						outlet(1,"frgb",blockcolour);
+						col = blockcolour;
 					}else{
-						outlet(1,"frgb",128,128,128);
+						col = [128,128,128];
 					}
 				}else{
 					if(b_list[c]==block){
-						outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+						col = [blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5];
 					}else{
-						outlet(1,"frgb",64,64,64);
+						col = [64,64,64];
 					}
 				}
+				outlet(1,"frgb",col);
 				//outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01)+x_pos, rh*1.0+y_pos);
 				var c2=Math.max(0,c-1);
 				if((c==display_col_offset)||(b_list[c]!=b_list[c2])){
@@ -155,9 +159,13 @@ function draw(){
 					}
 				}
 				c2=Math.min(v_list.length-1,c+1);
-				if(b_list[c]!=b_list[c2]){
-					//outlet(0,"")
-					outlet(1,"moveto", sx+cw*(c-display_col_offset+0.91+0.5*(c>cursorx)*(sel_ex==-1))+x_pos, rh*0.8+y_pos);
+				if((c>=v_list.length-1)||(b_list[c]!=b_list[c2])){
+					var bx1= sx+cw*(c-display_col_offset+0.85+0.5*(c>=cursorx)*(sel_ex==-1))+x_pos;
+					var bx2= sx+cw*(c-display_col_offset+0.95+0.5*(c>=cursorx)*(sel_ex==-1))+x_pos;
+					outlet(1,"paintrect",bx1,y_pos,bx2,y_pos+0.12*cw,blockcolour[0]*0.3,blockcolour[1]*0.3,blockcolour[2]*0.3);
+					outlet(0,"custom_ui_element","direct_button",bx1,y_pos,bx2,y_pos+0.15*cw,"core","voicecount",b_list[c],bl_list[c]+1);//,v_list[0],0);
+					outlet(1,"moveto", sx+cw*(c-display_col_offset+0.87+0.5*(c>=cursorx)*(sel_ex==-1))+x_pos, rh*0.8+y_pos);
+					outlet(1,"frgb",col);
 					outlet(1,"write", "+");
 				}
 				outlet(1,"moveto", sx+cw*(c-display_col_offset+0.01+0.5*(c>cursorx)*(sel_ex==-1))+x_pos, rh*1.7+y_pos);
@@ -166,8 +174,34 @@ function draw(){
 			var r2= display_row_offset;
 			var rr=display_row_offset;
 			var or2=-1;
+			timegrid[c] = Math.floor(voice_parameter_buffer.peek(1,v_list[c]*MAX_PARAMETERS+5,1)*14.999 + 2);
 			for(r=0;r<maxl;r++){
-				rc = ((r2%2)==0)+((r2%4)==0)+((r2%8)==0)+((r2%16)==0);
+				var rc3=r2;
+				switch(timegrid[c]){
+					case 9:
+					case 15:
+					case 12:
+						rc3 %= 3;
+					case 1:
+					case 3:
+					case 5:
+					case 7:
+					case 10:
+					case 11:
+					case 13:
+						rc = 3 - 2.5*(rc3 % timegrid[c])/timegrid[c];
+						break;
+					case 12:
+						rc3 %= 12;
+					case 2:
+					case 4:
+					case 8:
+					case 16:
+					default:
+						rc = ((rc3%2)==0)+((rc3%4)==0)+((rc3%8)==0)+((rc3%16)==0);
+						break;
+				}
+				//rc = ((r2%2)==0)+((r2%4)==0)+((r2%8)==0)+((r2%16)==0);
 				rc = rc/24;
 				rcol[c][rr] = rc;
 				if((!mini)&&(cursorx==c)){
@@ -194,6 +228,10 @@ function update(){
 		return 0;
 	}
 	for(c=display_col_offset;c<v_list.length;c++){
+		if(voice_parameter_buffer.peek(1,v_list[c]*MAX_PARAMETERS+5,1)!=timegrid[c]){
+			draw();
+			return 2;
+		}
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 		t_lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
@@ -201,7 +239,6 @@ function update(){
 		t_lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 		t_p_offs =  pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 		t_divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
-
 		var d=0;
 		if(t_start!=start[c]){
 			start[c] = t_start;
@@ -317,12 +354,10 @@ function drawcell(c,r){
 				}else{
 					te = sx+(cc+ww+xoffs)*cw+x_pos;// sx+(c+(3*(UNIVERSAL_COLUMNS-1) + 4)/(2+3*(UNIVERSAL_COLUMNS-1))+xoffs)*cw+x_pos;
 				} //te = (sel_ex2+1)/(UNIVERSAL_COLUMNS);
-				post("\nC",c,cc,"TS",ts,te);
 				rc2 += 0.2;
 				outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
 				outlet(1,"paintrect",ts,sy+rh*r+y_pos,te,sy+rh*(r+1)+y_pos,bc[0]*rc2,bc[1]*rc2*lp,bc[2]*rc2);
 			}else{// all not
-				if(rr==sel_sy) post("\nugh",sel_sx,sel_ex,cc);
 				outlet(1,"paintrect",sx+(c+inset+xoffs)*cw+x_pos,sy+rh*r+y_pos,sx+(c+ww+xoffs)*cw+x_pos,sy+rh*(r+1)+y_pos,bc[0]*rc,bc[1]*rc*lp,bc[2]*rc);
 			}
 			outlet(1,"frgb",fc);
@@ -751,15 +786,16 @@ function keydown(key){
 				sel_sy=cursory;
 			}
 			var cx2o=cursorx2;
+			var cxo=cursorx;
 			cursorx2++;
 			if(cursorx2>UNIVERSAL_COLUMNS-2){
 				cursorx2=0;
 				cursorx=(cursorx+1)%v_list.length;
 			}
-			if((sel_ex==cursorx)&&(sel_ex2==cx2o)){
+			if((sel_ex==cxo)&&(sel_ex2==cx2o)){
 				sel_ex2 = cursorx2;
 				sel_ex = cursorx;
-			}else if(sel_sx==cursorx){
+			}else if(sel_sx==cxo){
 				sel_sx2 = cursorx2;
 				sel_sx = cursorx;
 			}
@@ -775,15 +811,16 @@ function keydown(key){
 				sel_sy=cursory;
 			}
 			var cx2o=cursorx2;
+			var cxo=cursorx;
 			cursorx2--;
 			if(cursorx2<0){
 				cursorx2=UNIVERSAL_COLUMNS-2;
 				cursorx=(cursorx+v_list.length-1)%v_list.length;
 			}
-			if(sel_sx==cursorx){
+			if(sel_sx==cxo){
 				sel_sx2 = cursorx2;
 				sel_sx = cursorx;
-			}else if((sel_ex==cursorx)&&(sel_ex2==cx2o)){
+			}else if((sel_ex==cxo)&&(sel_ex2==cx2o)){
 				sel_ex2 = cursorx2;
 				sel_ex = cursorx;
 			}
@@ -1049,7 +1086,6 @@ function voice_is(v){
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
 	}
-//	post("seq.grid.ui loaded, block is",block);
 }
 function voice_offset(){}
 function loadbang(){
@@ -1092,7 +1128,12 @@ function reset_round_robins(){
 function generate_extended_v_list() {
 	v_list = voicemap.get(block);
 	if (!Array.isArray(v_list)) v_list = [v_list];
-	for (var i = 0; i < v_list.length; i++) b_list[i] = block;
+	var xl = v_list.length;
+	for (var i = 0; i < v_list.length; i++){
+		b_list[i] = block;
+		bl_list[i] = xl;
+		timegrid[i] = voice_parameter_buffer.peek(1,v_list[i]*MAX_PARAMETERS+5,1);
+	}
 	if(!mini){
 		for (var i = blocks.getsize("blocks") + 1; i > 0; i--) {
 			if (i != block) {
@@ -1100,9 +1141,11 @@ function generate_extended_v_list() {
 					if (blocks.get("blocks[" + i + "]::patcher") == "universal.step.sequence") {
 						var xlist = voicemap.get(i);
 						if (!Array.isArray(xlist)) xlist = [xlist];
+						xl = xlist.length;
 						while (xlist.length) {
 							v_list.push(xlist.shift());
 							b_list.push(i);
+							bl_list.push(xl);
 						}
 					}
 				}
