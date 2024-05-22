@@ -776,7 +776,7 @@ function custom_direct_mouse_passthrough(parameter,value){
 	}
 }
 function custom_direct_mouse_button(parameter,value){
-	post("\n\ncustom mouse button",parameter,"----",value);
+	//post("\n\ncustom mouse button",parameter,"----",value);
 	if(value[0] == "output"){
 		//post("output block button",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
 		output_blocks_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
