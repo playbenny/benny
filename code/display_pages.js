@@ -3629,7 +3629,7 @@ function draw_sidebar(){
 				var colt = (1+Math.floor((MAX_STATES-sc) / sidebar.width_in_units));
 				var roww = -Math.floor(-(MAX_STATES-sc)/colt);
 				var x_inc= (sidebar.width_in_units + 0.1)/roww;
-				post("\nmaxs",MAX_STATES,sidebar.width_in_units,"colt,",colt,"roww",roww,"x_inc",x_inc);
+				//post("\nmaxs",MAX_STATES,sidebar.width_in_units,"colt,",colt,"roww",roww,"x_inc",x_inc);
 		
 				// draw a button for each possible state
 				for(;sc<MAX_STATES;sc++){
