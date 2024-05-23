@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3797876396,
+	"modificationdate" : 3799349350,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1117,6 +1117,16 @@
 				"toplevel" : 1
 			}
 ,
+			"core.input.control.auto.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"pepper_parachute.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"core.input.control.auto.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
@@ -1127,22 +1137,7 @@
 
 			}
 ,
-			"core.input.control.auto.ui.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-					"projectrelativepath" : "./note_blocks"
-				}
-
-			}
-,
 			"mix.channel.ui.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1
-			}
-,
-			"pepper_parachute.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -1245,6 +1240,26 @@
 				}
 
 			}
+,
+			"fx.filter.vactrol.lpg.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"fx.filter.vactrol.lpg.inner.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -1297,7 +1312,7 @@
 				"local" : 1
 			}
 ,
-			"core.input.control.ui.js" : 			{
+			"controllermanager.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
@@ -1512,6 +1527,11 @@
 				"local" : 1
 			}
 ,
+			"core.input.control.auto.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -1524,16 +1544,6 @@
 ,
 			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"controllermanager.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"core.input.control.auto.ui.js" : 			{
-				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -1550,6 +1560,16 @@
 			"utility.xfade.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
+			}
+,
+			"core.input.control.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"source.basic.gendsp" : 			{
@@ -1658,6 +1678,16 @@
 			}
 ,
 			"utility.eq.peak.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"fx.filter.vactrol.lpg.LPG_nonlin.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
@@ -2821,6 +2851,16 @@
 			}
 ,
 			"fx.filter.reson.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"fx.filter.vactrol.lpg.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
