@@ -1,0 +1,51 @@
+{
+	"fx.filter.vactrol.lpg" : {
+		"patcher" : "fx.filter.vactrol.lpg",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "modelled vactrol lpg, based on the paper and example patches by Julian Parker and Stefano D’Angelo. ££http://www.acoustics.hut.fi/publications/papers/dafx13-lpg/",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "cv in" ],
+				"midi" : [ "ping" ]
+			},
+			"out" : {
+				"audio" : [ "audio out" ]
+			}
+		},
+		"groups" : [
+			{ 
+                "height" : 2,
+				"contains" : [0,1,2,3]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp10"],
+				"wrap" : 0,
+				"default" : 0
+			},{
+				"name" : "resonance",
+				"type" : "float",
+				"values" : ["uni", 0, 1.8, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},{
+				"name" : "vca-ness",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp.001"],
+				"wrap" : 0,
+				"default" : 0.8
+			},{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : [ "gate", "low pass" ],
+				"default" : 0.8
+			}
+		]
+	}
+}
