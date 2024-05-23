@@ -131,8 +131,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		usermouse.ctrl = ctrl;
 		if((ctrl==0)&&usermouse.ctrl_voice_select){//reverts to just block selected
 			sidebar.selected_voice = -1;
-			redraw_flag.flag |= 8;
-			post("\nthis works but its not redrawing");
+			redraw_flag.flag |= 4;
 		}	
 		if(sidebar.mode == "file_menu") redraw_flag.flag |= 2;
 	}
@@ -870,8 +869,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var p = blocks.get("blocks["+mouse_click_parameters[usermouse.got_i][1]+"]::poly::voices");
 						var vh = Math.floor(p*(usermouse.x - x1)/(x2 - x1));
 						if(sidebar.selected_voice != vh){
-							sidebar.selected_voice = vh;
 							if((CTRL_VOICE_SEL_MOMENTARY)&&(sidebar.selected_voice==-1)) usermouse.ctrl_voice_select = 1;
+							sidebar.selected_voice = vh;
 							redraw_flag.flag |= 10;
 						}
 					}
