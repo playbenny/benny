@@ -3,7 +3,7 @@
 		"patcher" : "fx.filter.fixed.bank",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "fixed filter bank with split outputs and airwindows api emulation",
+		"help_text" : "fixed filter bank based on the moog 914 with an option to split odd and even bands to different outputs. ££uses airwindows style non-linear summing to recombine the bands, so clips internally if driven too hard. ££if you want to modulate frequency the fx.filter.reson is a single band, designed for modulation, and you can use it polyphonically to approximate a moveable version of the fixed filter bank.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -17,6 +17,10 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,2,3,4,5,6,7,8,9,10,11]
+			},
+			{
+				"contains" : [12],
+				"height" : 0
 			}
 		],
 		"panel" : {
@@ -106,6 +110,12 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 1
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : ["odds/evens split","all bands to output 1"],
+				"default" : 0.2
 			}
 
 		]
