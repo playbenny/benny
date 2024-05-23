@@ -45,6 +45,7 @@ var MODULATION_IN_PARAMETERS_VIEW = 1;
 var AUTOZOOM_ON_SELECT = 1;
 var BLOCKS_GRID = [100, 0.01];
 var BLOCK_MENU_CLICK_ACTION = "click";
+var CTRL_VOICE_SEL_MOMENTARY = 1;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
@@ -367,6 +368,7 @@ var usermouse = {
 	shift : 0,
 	alt : 0,
 	ctrl : 0,
+	ctrl_voice_select : 0, //turned on when ctrl has selected a voice in sidebar
 	caps : 0,
 	x : 0,
 	y : 0,

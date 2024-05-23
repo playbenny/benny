@@ -165,6 +165,7 @@ function initialise_dictionaries(hardware_file){
 	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
 	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
 	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
+	CTRL_VOICE_SEL_MOMENTARY = config.get("CTRL_VOICE_SEL_MOMENTARY");
 	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
 	ANIM_TIME = config.get("ANIM_TIME");

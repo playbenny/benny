@@ -129,6 +129,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.shift = shift;
 	if(usermouse.ctrl != ctrl){
 		usermouse.ctrl = ctrl;
+		if((ctrl==0)&&usermouse.ctrl_voice_select){//reverts to just block selected
+			sidebar.selected_voice = -1;
+			redraw_flag.flag |= 8;
+			post("\nthis works but its not redrawing");
+		}	
 		if(sidebar.mode == "file_menu") redraw_flag.flag |= 2;
 	}
 	usermouse.alt = alt;
@@ -866,6 +871,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var vh = Math.floor(p*(usermouse.x - x1)/(x2 - x1));
 						if(sidebar.selected_voice != vh){
 							sidebar.selected_voice = vh;
+							if((CTRL_VOICE_SEL_MOMENTARY)&&(sidebar.selected_voice==-1)) usermouse.ctrl_voice_select = 1;
 							redraw_flag.flag |= 10;
 						}
 					}
