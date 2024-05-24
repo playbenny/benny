@@ -1623,6 +1623,25 @@ function sidebar_parameter_knob(parameter, value){
 				usermouse.drag.release_on_exit = 1;
 			}
 		}
+		if((usermouse.ctrl)&&(usermouse.got_t == 2)){ // this bit is for touch - if you hold ctrl and touch a different bit of fader it won't have changed selection yet
+			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
+			if(current_p>1){
+				var sl_no = mouse_click_parameters[usermouse.got_i][0];
+				var x1 = paramslider_details[sl_no][0];
+				var x2 = paramslider_details[sl_no][2];
+				var p = blocks.get("blocks["+mouse_click_parameters[usermouse.got_i][1]+"]::poly::voices");
+				var vh = Math.floor(p*(usermouse.x - x1)/(x2 - x1));
+				if(sidebar.selected_voice != vh){
+					if((CTRL_VOICE_SEL_MOMENTARY)&&(sidebar.selected_voice==-1)) usermouse.ctrl_voice_select = 1;
+					sidebar.selected_voice = vh;
+					redraw_flag.flag |= 10;
+					usermouse.left_button = 0;
+					//mouse_click_actions[usermouse.last.got_i] = static_mod_adjust;
+					//mouse_click_parameters[usermouse.last.got_i][2] = vh;//[paramno, blockno, vlist[i]];
+					//return static_mod_adjust(parameter,value);
+				}
+			}
+		}
 		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
 			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
 		}else{
