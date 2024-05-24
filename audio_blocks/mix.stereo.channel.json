@@ -6,7 +6,7 @@
 		"ui_in_sidebar_height" : 1,
 		"no_ui_in_panel" : 1,
 		"no_edit" : 1,
-		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK",
+		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7cascade for nice summing and drive. MUST BE ALL ROUTED FROM THIS BLOCK, AT UNITY GAIN, INTO A utility.mixer.buss BLOCK.££IMPORTANT this block will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"subvoices" : 2,
