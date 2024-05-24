@@ -978,7 +978,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				var yy = (2 * y / mainwindow_height) - 1;
 				
 				camera_position[2] = camera_position[2]-20*scroll;
-				if(camera_position[2]<0.1)camera_position[2]+=8*scroll;
+				if(camera_position[2]<1.5)camera_position[2]=1.6;
 				camera_position[0] += xx*scroll*7;
 				camera_position[1] -= yy*scroll*7;//*0.5;
 			}else if(usermouse.shift){
