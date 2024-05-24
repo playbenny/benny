@@ -759,6 +759,7 @@ function load_process_block_voices_and_data(block){
 		if(loading.wait>1) post("\n- restoring data, voicelist",v_list,"so vlist lenght is",v_list.length,"and t is",t);
 		for(i=0;i<t;i++){
 			var vdata= blocks.get("blocks["+block+"]::voice_data::"+i);
+			if(vdata == null) vdata=[];
 			for(var pad=vdata.length;pad<MAX_DATA;pad++) vdata.push(0);
 			//voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
 			voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
