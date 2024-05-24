@@ -1635,10 +1635,7 @@ function sidebar_parameter_knob(parameter, value){
 					if((CTRL_VOICE_SEL_MOMENTARY)&&(sidebar.selected_voice==-1)) usermouse.ctrl_voice_select = 1;
 					sidebar.selected_voice = vh;
 					redraw_flag.flag |= 10;
-					usermouse.left_button = 0;
-					//mouse_click_actions[usermouse.last.got_i] = static_mod_adjust;
-					//mouse_click_parameters[usermouse.last.got_i][2] = vh;//[paramno, blockno, vlist[i]];
-					//return static_mod_adjust(parameter,value);
+					usermouse.left_button = 0; // this makes it start a new drag next frame
 				}
 			}
 		}
