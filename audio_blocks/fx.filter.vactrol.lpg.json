@@ -9,7 +9,7 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "cv in" ],
-				"midi" : [ "ping" ]
+				"midi" : [ "ping", "gate" ]
 			},
 			"out" : {
 				"audio" : [ "audio out" ]
