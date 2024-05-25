@@ -119,7 +119,7 @@
 			},
 			{
 				"name" : "type",
-				"nomod" : 1,
+				"nomap" : 1,
 				"type" : "menu_b",
 				"values" : ["channel","cascade","crunch"],
 				"wrap" : 1,
