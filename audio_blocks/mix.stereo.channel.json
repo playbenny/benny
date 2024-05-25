@@ -50,7 +50,12 @@
 				"contains" : [4], 
 				"onepervoice" : 1,
 				"height" : 0
-			}				
+			},
+			{ 
+				"contains" : [7], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			}			
 		],
 		"panel" : {
 			"parameters" : [0]
@@ -106,6 +111,15 @@
 				"colours" : [[128,20,20], [255,20,20]],
 				"wrap" : 1,
 				"default" : 0
+			},
+			{
+				"name" : "type",
+				"nomod" : 1,
+				"type" : "menu_b",
+				"values" : ["channel","cascade","crunch"],
+				"wrap" : 1,
+				"default" : 0.1,
+				"colours" : [0, 20, 40]
 			}
 		]
 	}

@@ -50,6 +50,12 @@
 	"CTRL_VOICE_SEL_MOMENTARY" : 1,
 	"sidebar_scrollbar_width" : 18,
 	"sidebar_width_in_units" : 10,
+	"consolevsts" : {
+		"bus" : "console7buss64",
+		"channel" : "console7channel64",
+		"cascade" : "console7cascade64",
+		"crunch" : "console7crunch64"
+	},
 	"maxmsp" : {
 		"preempt" : 1,
 		"seteventinterval" : 2,
