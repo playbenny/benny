@@ -396,6 +396,8 @@ function import_song(){
 		/*if(songs.contains(loading.songname+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
 			post("\n\n\nSONG NOTES\n\n"+songs.get(loading.songname+"::notepad"));
 		}*/
+		loading.conncount = songs.getsize(loading.songname+"::connections");
+		if(loading.conncount>0)	MAX_BEZIER_SEGMENTS = config.get("MIN_BEZIER_SEGMENTS");
 		loading.progress++;
 		loading.ready_for_next_action=loading.wait;//loading.bundling;
 	}else if(loading.progress<MAX_BLOCKS){
@@ -544,8 +546,8 @@ function import_song(){
 			center_view(1);
 			post("\ndone loading blocks, voices and data");
 		} 
-	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections")){
-		t=MAX_BLOCKS+loading.mapping.length+songs.getsize(loading.songname+"::connections");
+	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length+loading.conncount){
+		t=MAX_BLOCKS+loading.mapping.length+loading.conncount;
 		i=loading.bundling;
 		do{ 
 			b=loading.progress-MAX_BLOCKS-loading.mapping.length;
@@ -668,6 +670,11 @@ function import_song(){
 		loading.mapping = [];
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
+		var mt = config.get("MAX_BEZIER_SEGMENTS");
+		if(mt!=MAX_BEZIER_SEGMENTS){
+			upgrade_wires = 1;
+			MAX_BEZIER_SEGMENTS=mt;
+		}
 //		lcd_main.message("paintrect",9,9,mainwindow_width,fontheight,backgroundcolour_blocks);
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}

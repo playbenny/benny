@@ -18,7 +18,7 @@ var MAX_AUDIO_OUTPUTS = 16;
 var MAX_USED_AUDIO_INPUTS = 0;
 var MAX_USED_AUDIO_OUTPUTS = 0;
 var NO_IO_PER_BLOCK = 2;
-var MAX_BEZIER_SEGMENTS = 12;//24; //must be a multiple of 4
+var MAX_BEZIER_SEGMENTS = 16;//24; //must be a multiple of 4
 var MAX_PARAMETERS = 256;
 var MAX_DATA = 16384;
 var MAX_MOD_IDS = 1024;
@@ -577,6 +577,7 @@ var param_error_lockup = new Array(MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_HARDWARE
 //both indexed by voice / param num. populated when you make a new block or voice?
 
 var still_checking_polys = 0;
+var upgrade_wires = 0;
 var globals_requested = 0;
 
 var deferred_diag = [];
@@ -601,6 +602,7 @@ var loading = {
 	bundling : 1, //set to 1 for a slow load with a rest between each thing loaded, higher loads things in chunks, loads faster overall.
 	wait : 1, //how many frame to wait between stages of loading
 	mapping : [],
+	conncount : 0, //how many connections
 	merge : 0,
 	mutelist : [], //each entry is [blockno,mute], you resend the message once everything should've loaded
 	purgelist : [], //list of blocks to be deleted, and everything solely connected to them too. (for merge purge)

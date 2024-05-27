@@ -1568,8 +1568,10 @@ function draw_wire(connection_number){
 					}
 				}
 			}
+			return 1;
 		}
 	}
+	return 0;
 }
 
 function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, visible){
@@ -1581,8 +1583,9 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, 
 		draw_cylinder(connection_number,segment,bez_prep[0],bez_prep[3],cmute,bez_prep[4],visible);
 		segment++;
 	}else{
+		var iseg = 1 / num_segments;
 		for(t=0;t<=num_segments;t++){
-			tt=t/num_segments;
+			tt=t*iseg;
 			ott=1- tt;
 			p[t] = [];
 			for(i=0;i<3;i++){
@@ -1590,7 +1593,7 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, 
 			}
 		}
 		var col = [bez_prep[4][0], bez_prep[4][1], bez_prep[4][2]];
-		var cold = [(bez_prep[5][0]-bez_prep[4][0])/num_segments, (bez_prep[5][1]-bez_prep[4][1])/num_segments, (bez_prep[5][2]-bez_prep[4][2])/num_segments];
+		var cold = [(bez_prep[5][0]-bez_prep[4][0])*iseg, (bez_prep[5][1]-bez_prep[4][1])*iseg, (bez_prep[5][2]-bez_prep[4][2])*iseg];
 		for(t=0;t<num_segments;t++){
 			draw_cylinder(connection_number,segment, p[t], p[t+1], cmute, col, visible);
 			col[0]+=cold[0];

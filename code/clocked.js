@@ -11,7 +11,17 @@ function slowclock(){
 	do_drift();
 	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();
-
+	if(!still_checking_polys&&(upgrade_wires>0)){
+		if(upgrade_wires>connections.getsize("connections")){
+			upgrade_wires=0;
+		}else{
+			for(var i=0;i<4;i++){
+				wire_ends[upgrade_wires-1]=[];
+				draw_wire(upgrade_wires-1); //>0) post("\nupgraded connection",upgrade_wires-1);
+				upgrade_wires++;
+			}
+		}
+	}
 	recursions=0;
 	if((deferred_diag.length>0)&&(usermouse.qlb==0)){
 		if(usermouse.ctrl){
