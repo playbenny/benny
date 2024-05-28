@@ -80,8 +80,8 @@ function camera(){
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
 		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);		
 	}else if(displaymode == "flocks"){
-		messnamed("camera_control", "anim", "moveto", [flock_cube_size*2.5,2.5*flock_cube_size,5+2.5*flock_cube_size], ANIM_TIME);
-		messnamed("camera_control", "direction", -0.572078, -0.667424, -0.476731);
+		messnamed("camera_control", "anim", "moveto", [flock_cube_size*2.5,1.5*flock_cube_size,5+2.5*flock_cube_size], ANIM_TIME);
+		messnamed("camera_control", "direction", -0.59, -0.48, -0.64);
 	}
 }
 
