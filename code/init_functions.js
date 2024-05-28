@@ -75,6 +75,15 @@ function loadbang(){
 	initialise_dictionaries("init");
 }
 
+function systemtypeis(type){
+	if(type!="windows"){
+		post("\ndetected macos, noting small differences")
+		config.replace("consolevsts::bus", "Console7Buss");
+		config.replace("consolevsts::channel", "Console7Channel");
+		config.replace("consolevsts::cascade", "Console7Cascade");
+		config.replace("consolevsts::crunch", "Console7Crunch");
+	}
+}
 
 function initialise_reset(hardware_file){
 	post("\n\nreset stage 1 : resets\n------------------");

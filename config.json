@@ -63,7 +63,8 @@
 		"setpollthrottle" : 100,
 		"setqueuethrottle" : 10,
 		"setslop" : 100,
-		"setsysqelemthrottle" : 100
+		"setsysqelemthrottle" : 100,
+		"getsystem" : "systemtype"
 	},
 	"palette" : 	{
 		"menu" : [ 255, 200, 25 ],
