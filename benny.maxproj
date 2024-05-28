@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3799349350,
+	"modificationdate" : 3799749007,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1253,12 +1253,7 @@
 ,
 			"fx.filter.vactrol.lpg.inner.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
+				"local" : 1
 			}
 
 		}
@@ -1562,6 +1557,11 @@
 				"local" : 1
 			}
 ,
+			"fx.filter.vactrol.lpg.LPG_nonlin.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"core.input.control.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
@@ -1678,16 +1678,6 @@
 			}
 ,
 			"utility.eq.peak.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
-			}
-,
-			"fx.filter.vactrol.lpg.LPG_nonlin.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1,
 				"singleton" : 				{
@@ -2917,7 +2907,7 @@
 
 	}
 ,
-	"detailsvisible" : 0,
+	"detailsvisible" : 1,
 	"amxdtype" : 0,
 	"readonly" : 0,
 	"devpathtype" : 0,
