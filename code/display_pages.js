@@ -1907,17 +1907,50 @@ function draw_topbar(){
 			mouse_click_parameters[mouse_index] = "none";
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight,192,192,192 );
 			lcd_main.message("frgb", 0,0,0);
+/*			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
+			lcd_main.message("write", "load");*/
+			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
+			lcd_main.message("write", "files");
 		}else{
-			mouse_click_parameters[mouse_index] = "file_menu";	
-			var	darkgrey = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
-			if(usermouse.clicked2d == mouse_index) darkgrey = 255;
-			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight, darkgrey,darkgrey,darkgrey);
-			lcd_main.message("frgb", 192,192,192);
+			if(usermouse.ctrl){
+				if((loading.songname != "")&&(loading.songname!="autoload")){
+					mouse_click_actions[mouse_index] = load_elsewhere_choose;
+					mouse_click_parameters[mouse_index] = "";
+					mouse_index++;
+					click_rectangle( 9 + fontheight*x_o, 9+0.5*fontheight, 9+fontheight*(x_o+1.1), 9+fontheight,mouse_index,1 );
+					mouse_click_actions[mouse_index] = save_song;
+					mouse_click_parameters[mouse_index] = 0;
+					var	darkgrey = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
+					if(usermouse.clicked2d == mouse_index) darkgrey = 255;
+					lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+0.45*fontheight, darkgrey,darkgrey,darkgrey);
+					lcd_main.message("paintrect", 9 + fontheight*x_o, 9+0.55*fontheight, 9+fontheight*(x_o+1.1), 9+fontheight, darkgrey,darkgrey,darkgrey);
+					lcd_main.message("frgb", 192,192,192);
+					lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.35);
+					lcd_main.message("write", "load");
+					lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.85);
+					lcd_main.message("write", "save");
+				}else{
+					mouse_click_actions[mouse_index] = load_elsewhere_choose;
+					mouse_click_parameters[mouse_index] = "";
+					var	darkgrey = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
+					if(usermouse.clicked2d == mouse_index) darkgrey = 255;
+					lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight, darkgrey,darkgrey,darkgrey);
+					lcd_main.message("frgb", 192,192,192);
+					lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
+					lcd_main.message("write", "load");
+				}
+			}else{
+				mouse_click_parameters[mouse_index] = "file_menu";	
+				var	darkgrey = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
+				if(usermouse.clicked2d == mouse_index) darkgrey = 255;
+				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight, darkgrey,darkgrey,darkgrey);
+				lcd_main.message("frgb", 192,192,192);
+				/*lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
+				lcd_main.message("write", "load");*/
+				lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
+				lcd_main.message("write", "files");
+			}
 		}
-		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
-		lcd_main.message("write", "load");
-		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-		lcd_main.message("write", "save");
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 		x_o+=1.3;
@@ -1943,9 +1976,16 @@ function draw_topbar(){
 					}else{
 						c=[255,255,255];
 					}
-					lcd_main.message("framerect", 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), fontheight + 9,c );		
-					lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
-					lcd_main.message("write", "init");					
+					lcd_main.message("framerect", 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), fontheight + 9,c );
+					if(usermouse.alt){
+						lcd_main.message("moveto",9 + fontheight*(x_o+0.25), 9+fontheight*0.45);
+						lcd_main.message("write", "init+");
+						lcd_main.message("moveto",9 + fontheight*(x_o+0.25), 9+fontheight*0.75);
+						lcd_main.message("write", "data");
+					}else{
+						lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
+						lcd_main.message("write", "init");
+					}	
 				}else{
 					if(usermouse.clicked2d!=mouse_index){
 						c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");

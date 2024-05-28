@@ -55,8 +55,8 @@ function loadbang(){
 	var messes = maxmsp.getkeys();
 	for(i=0;i<messes.length;i++){
 		var m = maxmsp.get(messes[i]);
-		messnamed("max",messes[i],m);
 		post("\nmessage to max: ",messes[i],m);
+		messnamed("max",messes[i],m);
 	}
 	populate_lookup_tables();
 	post("\nreticulating splines");

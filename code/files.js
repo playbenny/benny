@@ -750,6 +750,24 @@ function request_waves_remapping(type, voice){
 	}
 }
 
+function reload_voicedata(){
+	post("\nreload voice data");
+	for(var block=0;block<MAX_BLOCKS;block++){
+		if(songs.contains(loading.songname+"::blocks["+block+"]::voice_data") && voicemap.contains(block)){
+			var v_list = voicemap.get(block);
+			if(!Array.isArray(v_list)) v_list = [v_list];
+			t = v_list.length;
+			for(i=0;i<t;i++){
+				var vdata= songs.get(loading.songname+"::blocks["+block+"]::voice_data::"+i);
+				if(vdata == null) vdata=[];
+				for(var pad=vdata.length;pad<MAX_DATA;pad++) vdata.push(0);
+				//voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[i], vdata);
+			} //this takes 1ms per voice, in case you ever think of trying to optimise it..
+		}
+	}
+}
+
 function load_process_block_voices_and_data(block){
 	var drawn=1;
 	t = blocks.get("blocks["+block +"]::poly::voices");

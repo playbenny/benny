@@ -1173,6 +1173,8 @@ function fire_whole_state_btn(state,value){
 			post("\nselected these blocks",sc_list);
 			block_and_wire_colours();
 		}
+	}else if(usermouse.alt){
+		reload_voicedata();
 	}else{
 		fire_whole_state(state);
 	}
