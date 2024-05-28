@@ -1,5 +1,6 @@
 benny
 -----
+
 - is a modular software playground for making live music
 - integrates hardware and software, midi and audio, lets you connect anything to anything
 - extends nearly everything into polyphony elegantly and flexibly
@@ -12,6 +13,7 @@ https://www.youtube.com/watch?v=Hs_4T_gjoWw
 
 concepts
 --------
+
 - the cubes in benny are called 'blocks'. they all make or process sound or musical data. the first page you land on is the blocks page. hit enter, double click or start typing to find blocks to add.
 - the sidebar is where you can see more detailed audio scopes / midi visualisers, parameters, settings and states of a block.
 - connections in benny can go from anything to anything. an audio output can be connected to an audio input, or to a parameter value, or to the midi note input of a synth. every wire has gain and mute controls and wires that translate from one kind of value to another let you choose how that happens
@@ -29,22 +31,34 @@ concepts
 
 installation
 ------------
+
 - install max (cycling74.com) but no need to buy it, just ignore all those messages, don't start the free trial, don't subscribe, nothing. you'll be able to use all the features of benny. BUT if you decide you want to learn to build your own blocks you'll need to buy max.
+- a few blocks require airwindows console 7 vsts. they're included in the download, look in the vst dependencies folder and install the ones you need for your system. windows users should install vsts to C:\Program Files\VSTPlugins otherwise max/msp can't see them.
 - in max / options / preferences / jitter preferences / make sure 'graphics engine' is set to glcore.
-- open 'benny.maxproj'
+- open 'benny.maxproj'. the benny launcher window will appear, along with the max console window.
 - open the audio settings and choose which audio driver/interface to use
 - choose the 'no hardware' configuration to try benny out using just the default io on your computer. to set benny up for seamless integration with your modular synth, keyboards, drum machines, synths, microphones, pedals, effects and midi input devices you'll need to make your own hardware configuration file.
 
-configuration
--------------
-- open the hardware editor, choose a configuration to start from. some example files are included.
-- the recommended method with any outboard hardware is to define your blocks as things like 'x filter' or 'mono voice' rather than just abstracting your computer audio/midi io as a block. although this is a bit more effort in the setup it pays off in a more fluid experience patching, and enables things like swapping and substituting for no-longer available pieces of hardware.
-- the vst plugin editor is rudimentary for now.. the idea is to pick a plugin, choose which parameters you want in the sidebar ui, assign them to up to 4 rows, press add..
-    - KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. manually edit the .json files the vst editor spits out into the audio_blocks folder, look for the junk at the end of the 'groups' section and delete it.
-    - KNOWN ISSUE if you change your mind how you want the parameters organised you can't load a vst's config and edit it, you just have to do it again 
-    - KNOWN ISSUE on windows max sometimes can't find your plugins. the simplest solution is put them all in C:\Program Files\VSTPlugins
-- all the visual/ui preferences are in config.json. if you want to change a setting copy the relevant entry you want to change the value of over to userconfig.json, anything it finds in userconfig overrides the defaults in config.json
-- the default numbers of note and audio voice slots can be changed, but baseline cpu usage of the system's matrix mixer grows fast with audio voice count.
+hardware configuration
+----------------------
+
+to use your hardware fluidly within benny you need to build a configuration file. in it you tell benny about each piece of hardware that's connected to your computer, then they appear as blocks. if you change your hardware setup benny can help you migrate songs from the old to the new, letting you choose substitutes for missing or replaced items. in my usage i have a configuration file for each iteration of my live touring setup and a different one for a setup i have at home and a setup for the studio with my synths and outboard compressors available as individual blocks.
+
+the hardware configuration file also includes information about the midi controllers you have connected - how many controls, how they're arranged, the midi channels and protocols etc that they use, and which other controllers work as a substitute.
+there are example files included that might help. 
+
+i do recommend the midi fighter twister controller for use with this as the led feedback and per knob rgb leds make it work well with the automapping features.
+
+other configuration
+-------------------
+
+to use a vst plugin in benny you need to set it up in the vst manager. pick a plugin from the list the scanner finds (on windows if it doesn't find your vsts, put them in C:\Program Files\VSTPlugins), then pick the parameters you want to see (and store in savefiles) in benny, and the order they should appear - at the moment it lets you assign them to 4 groups (1 group = 1 row of sliders in the benny interface).
+- KNOWN ISSUE if you only have 1 group a bug slightly corrupts the file. have 2 groups or more until this is fixed!
+- KNOWN ISSUE if you change your mind how you want the parameters organised you can't yet load a vst's config and edit it, you just have to do it again 
+
+all the visual/ui preferences - colour palette, wire curve detail, various other behaviours with self explanatory names, are in config.json. if you want to change a setting copy the relevant entry you want to change the value of over to userconfig.json and change it there, as config.json will be overwritten with defaults next time you update benny but userconfig will not.
+
+the default numbers of note and audio voice slots can be changed this way, but baseline cpu usage of the system's matrix mixer grows fast with audio voice count.
 
 contributing
 ------------
@@ -60,6 +74,7 @@ benny is currently in private beta but will be released as open source under the
 
 developing blocks
 -----------------
+
 have a look in docs / block development / example patchers
 
 every block needs, at minimum:
