@@ -310,6 +310,24 @@ function blocks_paste(outside_connections,target){
 
 function copy_block(block,target){
 	if(target==null)target=copy;
+	//first send the block the store message:
+	if(blocks.contains("blocks["+block+"]::name")){
+		if((ui_patcherlist[block]!='blank.ui')&&(ui_patcherlist[block]!='self')) ui_poly.setvalue( block+1, "store");//query any ui blocks if they have data to store in data
+		var ty=blocks.get("blocks["+block+"]::type");
+		if(ty == "note"){
+			var vl = voicemap.get(block);
+			if(!Array.isArray(vl)) vl = [vl];
+			for(v=0;v<vl.length;v++){
+				note_poly.setvalue(vl[v]+1,"store");
+			}
+		}else if(ty == "audio"){
+			var vl = voicemap.get(block);
+			if(!Array.isArray(vl)) vl = [vl];
+			for(v=0;v<vl.length;v++){			
+				audio_poly.setvalue(vl[v]+1-MAX_NOTE_VOICES,"store");
+			}
+		}
+	}
 	//block itself 
 	pasteoffset = [2,-0.25];
 	var tb = blocks.get("blocks["+block+"]");
