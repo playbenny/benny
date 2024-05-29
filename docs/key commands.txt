@@ -25,6 +25,7 @@ BLOCKS PAGE
 shift drag - selection rectangle
 shift click blocks or wires to multi-select
 ctrl-click blocks or wires to mute
+alt-click blocks to bypass
 drag blocks to connect
 
 home - center view
