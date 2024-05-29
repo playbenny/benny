@@ -325,7 +325,7 @@ function merge_song(){
 		loading.mute_new=0;
 		loading.bundling=4;
 	}
-	df = (sidebar.files_page == "templates");
+	df = (sidebar.files_page == "templates")|0;
 	loading.songname = songlist[df][currentsong];
 	song_select.previous_name = song_select.current_name;
 	song_select.previous_blocks = song_select.current_blocks.slice();
