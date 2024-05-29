@@ -4777,18 +4777,17 @@ function draw_sidebar(){
 			var param_count = null;
 			var button_count = null;
 			f_n_a = f_n_a.split(".");
-			if((f_n_a[0]=="core")&&(f_n_a[1]=="input")&&(f_n_a[2]=="control")){
-				is_core_control = 1; //it's either core.input.control.auto or .basic so
-				// check if we need to trim the list of midi outs / param outs / available colours
-				var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
-				
-				param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
-				button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
-				
-				//i think we should adjust the list of displayed params, colours, if it's changed.
-
-				//and support for removing the globals from the buttons list?
-
+			if((f_n_a[0]=="core")&&(f_n_a[1]=="input")){
+				is_core_control = 1; 
+				if(f_n_a[2]=="control"){
+					//it's either core.input.control.auto or .basic so
+					// check if we need to trim the list of midi outs / param outs / available colours
+					var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
+					
+					param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+					button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+				}
+				// turn a knob to map it functionality here - also applies to core.input.keyboard (and core.input.arc when it's done)
 				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
 				// auto is always visible as a button, auto-enables if it's turned on in config and the list is open. disabling it if list is open disables it in config?
 				var firv = voicemap.get(f_number);
