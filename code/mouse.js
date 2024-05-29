@@ -913,6 +913,12 @@ function mouse_released_on_a_thing_no_drag(){
 			}else{
 				mute_particular_block(usermouse.ids[1],-1);											
 			}
+		}else if(usermouse.alt){
+			if(selected.block[usermouse.ids[1]]){
+				bypass_selected_block(-1);
+			}else{
+				bypass_particular_block(usermouse.ids[1],-1);											
+			}
 		}else if(usermouse.shift == 0){
 			var ti=0;
 			var current_p = blocks.get("blocks["+usermouse.ids[1]+"]::poly::voices");
