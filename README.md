@@ -8,11 +8,12 @@ benny
 - aims for a low-density, glance-able interface that works for touch and mouse/keyboard use
 - is an extendible and hackable place to host your own max patches
 
-30 minute intro to benny video:
-https://www.youtube.com/watch?v=Hs_4T_gjoWw
+**30 minute intro to benny video** https://www.youtube.com/watch?v=Hs_4T_gjoWw
 
 **installation and hardware setup** https://playbenny.com/mediawiki/index.php?title=Installation
+
 **developing your own blocks** https://playbenny.com/mediawiki/index.php/Developers
+
 **shortcut keys** https://playbenny.com/mediawiki/index.php/Shortcuts
 
 concepts
@@ -43,4 +44,4 @@ benny is currently in private beta but will be released as open source under the
   - create a new branch of the repository
   - fix the bug in your branch
   - submit a pull request to have your fix merged back into the main repo
-- any questions, ask!
+- any questions, ask in the discussion page here on github https://github.com/jamesholdenmusic/benny/discussions
