@@ -138,7 +138,7 @@ function checkparam(){
     if(blockno>-1){
         var gotparam = Math.floor(parameter_value_buffer.peek(1,blockno*MAX_PARAMETERS+parameternumber)*controllercount);
         if(gotparam != lastparam){
-            post("\nparam read",gotparam);
+            //post("\nparam read",gotparam);
             lastparam = gotparam;
             param(lastparam);
         }
