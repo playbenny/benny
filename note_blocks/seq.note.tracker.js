@@ -737,6 +737,10 @@ function keydown(key){
 			sel_ey=-1;
 			drawflag=1;
 			break;
+		case -5:
+			cursorx2=0;
+			cursorx=(cursorx+1)%v_list.length;
+			break;
 		case -4://enter homes cursor and moves down
 			cursorx2=0;
 		case -10://arrow just moves down

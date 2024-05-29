@@ -26,7 +26,7 @@
         "254" : ["ctrl-space","load_next_song", 0],
         "371" : ["ctrl-S","save_hotkey"],
         "-2" : ["space", "play_button"],
-        "-494" : ["??" , "set_display_mode","flocks"],
+        "-494" : ["ctrl-F2?" , "set_display_mode","flocks"],
         "-17" : ["F1" , "set_display_mode","panels"],
         "-18" : ["F2" , "blocks_and", "block" ],
         "-19" : ["F3" , "set_display_mode","waves"],
