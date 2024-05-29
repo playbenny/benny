@@ -7,6 +7,7 @@ var UNIVERSAL_PATTERNS = 16;
 var max_rows = 10;
 var pattsize = 1;
 var step_time = 125; //ms per step, measured by voice 0 and reported back
+var step_time_conv = 0.01; //7.9285714/step_time
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var parameter_value_buffer = new Buffer("parameter_value_buffer");
@@ -312,7 +313,7 @@ function drawcell(cc,rr){
 			if(voice_data_buffer.peek(1,MAX_DATA*v_list[cc]+2+UNIVERSAL_COLUMNS*t+pattern_offs[cc])>0){
 				var td = voice_data_buffer.peek(1,MAX_DATA*v_list[cc]+4+UNIVERSAL_COLUMNS*t+pattern_offs[cc])
 				if(td>0){
-					td = td*7.9285714/step_time;
+					td = td*step_time_conv;
 					nx=Math.min(nx,t+td);
 				}else{
 					nx=Math.min(nx,t);//-rr;
@@ -322,7 +323,7 @@ function drawcell(cc,rr){
 		}
 		var d = values[3];
 		if(d>0){
-			d = d*7.9285714/step_time;
+			d = d*step_time_conv;
 			if(cc==selected_voice){// a little indicator line for when a note starts
 				outlet(1,"frgb",blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
 				outlet(1,"moveto",sx+ux*(rr-view_x),sy+(view_y2-y-0.5)*uy);
@@ -336,8 +337,7 @@ function drawcell(cc,rr){
 			}else if(w==1){ //instantaneous
 				w = 0.2;
 			}else{//length in ms so
-				w = (w-2)*7.9285714;
-				w /= step_time;
+				w = (w-2)*step_time_conv;
 				w = Math.min(Math.max(w,0.2),nx-rr-d);
 			}
 			//post("\n",drawtype,sx+ux*(rr-view_x+d),sy+(view_y2-y-1)*uy,sx+ux*(rr+w+d-view_x),sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*loop*shade,blockcolour[2]*shade);
@@ -926,7 +926,7 @@ function check_defaults(){
 	if(defaultlength<1){
 		defaultlength = 0;
 	}else if(defaultlength<2){
-		defaultlength = step_time*0.126126+2;
+		defaultlength = step_time*8*0.126126+2;
 	}else{
 		defaultlength = 1;
 	}
@@ -939,6 +939,7 @@ function voice_is(v){
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
 	}
+	outlet(2,v);
 //	post("seq.grid.ui loaded, block is",block);
 }
 function voice_offset(){}
@@ -1003,11 +1004,14 @@ function generate_extended_v_list() {
 }
 
 function steptime_is(time){
-	if(abs(step_time-time)>5){
+	if(Math.abs(step_time-time)>5){
 		step_time = time;
+		step_time_conv = 0.125*7.9285714/step_time;
 		check_defaults();		
 	}else{
 		step_time = time;
+		step_time_conv = 0.125*7.9285714/step_time;
 	}
+	post("\nstep time",time);
 }
 function enabled(){}
