@@ -2332,10 +2332,22 @@ function automap_default(a,b){
 	}
 }
 
+function file_menu_enter(){
+	if(sidebar.files_page == "templates"){
+		merge_song();
+	}else{
+		load_song();
+	}
+}
+
 function select_song(song){
 	if((usermouse.timer>0)&&(song==currentsong)&&(!playing)){
 		usermouse.timer=0;
-		load_song();
+		if(sidebar.files_page == "templates"){
+			merge_song();
+		}else{
+			load_song();
+		}
 	}else{
 		currentsong = song;
 		usermouse.timer = DOUBLE_CLICK_TIME;

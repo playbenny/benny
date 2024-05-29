@@ -292,26 +292,22 @@ function load_next_song(slow){
 function load_song(){
 	if(currentsong<0) return -1;
 	var df = (sidebar.files_page == "templates")|0;
-	if(df){
-		merge_song();
-	}else{
-		if(playing) play_button();
-		meters_enable = 0;
-		clear_everything();
-		loading.merge = 0;
-		loading.progress=-1;
-		loading.mute_new=0;
-		loading.bundling=16;
-		loading.wait=1;
-		loading.songname = songlist[df][currentsong];
-		if(usermouse.ctrl){
-			loading.bundling=1;
-			loading.wait=20;
-			if(usermouse.shift)loading.wait=2;
-			post("\n\nTROUBLESHOOTING SLOW LOAD MODE\n\n");
-		}
-		import_song();
+	if(playing) play_button();
+	meters_enable = 0;
+	clear_everything();
+	loading.merge = 0;
+	loading.progress=-1;
+	loading.mute_new=0;
+	loading.bundling=16;
+	loading.wait=1;
+	loading.songname = songlist[df][currentsong];
+	if(usermouse.ctrl){
+		loading.bundling=1;
+		loading.wait=20;
+		if(usermouse.shift)loading.wait=2;
+		post("\n\nTROUBLESHOOTING SLOW LOAD MODE\n\n");
 	}
+	import_song();
 }
 
 function merge_song(){
@@ -325,7 +321,7 @@ function merge_song(){
 		loading.mute_new=0;
 		loading.bundling=4;
 	}
-	df = (sidebar.files_page == "templates")|0;
+	var df = (sidebar.files_page == "templates")|0;
 	loading.songname = songlist[df][currentsong];
 	song_select.previous_name = song_select.current_name;
 	song_select.previous_blocks = song_select.current_blocks.slice();

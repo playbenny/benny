@@ -107,7 +107,7 @@
     },
     "sidebar" : {
         "file_menu" : {
-            "-4" : ["enter", "load_song"],
+            "-4" : ["enter", "file_menu_enter"],
             "-9" : ["up","file_menu_arrows", -1],
             "-10" : ["down","file_menu_arrows", 1]
         },
