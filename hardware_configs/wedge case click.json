@@ -153,8 +153,6 @@
 		"hardware.out.1+2" : 		{
 			"type" : "hardware",
 			"help_text" : "main stereo outs",
-			"output_block" : "pepper_parachute",
-			"pepper_midi_port" : "MIDI function",
 			"max_polyphony" : 2,
 			"exclusive" : 1,
 			"connections" : 			{

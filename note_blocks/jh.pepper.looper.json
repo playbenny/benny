@@ -1,0 +1,37 @@
+{
+	"jh.pepper.looper" : {
+		"patcher" : "jh.pepper.looper",
+		"block_ui_patcher" : "blank.ui",
+		"type" : "note",
+		"help_text" : "integration with my emergency looper / output section fx patch that runs on bela pepper. no ins or outs, just sends global clock and selected loop size info to the hardware.",
+		"max_polyphony" : 1,
+		"exclusive" : 1,
+		"groups" : [
+			{ 
+				"contains" : [0, 1],
+				"header" : "emergency looper controls"
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "initial loop length_(in beats)",
+				"type" : "int",
+				"nomap" : 1,
+				"values" : ["uni", 1, 64, "lin"],
+				"wrap" : 0,
+				"default" : 0.06
+			},
+			{
+				"name" : "beat subdivisions",
+				"type" : "menu_l",
+				"values" : ["1","2","3","4"],
+				"wrap" : 0,
+				"nomap" : 1,
+				"default" : 0.95
+			}
+		]
+	}
+}
