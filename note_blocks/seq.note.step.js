@@ -1012,6 +1012,5 @@ function steptime_is(time){
 		step_time = time;
 		step_time_conv = 0.125*7.9285714/step_time;
 	}
-	post("\nstep time",time);
 }
 function enabled(){}
