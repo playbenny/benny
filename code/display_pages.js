@@ -1308,19 +1308,19 @@ function draw_wire(connection_number){
 			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			if((from_type=="audio")){// || (from_type=="hardware") || (from_type=="matrix")){
 				fconx = ((from_number+0.5)/(NO_IO_PER_BLOCK)) ;
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.25 ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
 			}else{
 				fconx = ((from_number+0.5)/(num_outs));
-				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2]-0.25 ];
+				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
 				if(from_type == "midi") from_pos[2]-=0.25;
 				if(from_type == "parameters") from_pos[2]-=0.125;
 			}
 			if((to_type=="audio")){//} || (to_type=="hardware") || (to_type=="matrix")){
 				tconx = ((to_number+0.5)/(NO_IO_PER_BLOCK));
-				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2]-0.25 ];
+				to_pos = [ (blocks_cube[cto][0].position[0]), blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
 			}else{
 				tconx =  ((to_number+0.5)/(num_ins));
-				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] -0.25 ];
+				to_pos = [ blocks_cube[cto][0].position[0], blocks_cube[cto][0].position[1]+0.44, blocks_cube[cto][0].position[2] ];
 				if(to_type == "midi") to_pos[2] -= 0.1875;
 				if(to_type == "parameters") to_pos[2] -= 0.125;
 				if(to_type == "block"){
@@ -1401,6 +1401,11 @@ function draw_wire(connection_number){
 			to_anglevector = [0, -0.4, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
+			if((loading.progress>0)&&(wires[connection_number].length<segments_to_use)){
+				segments_to_use = Math.max(wires[connection_number].length,MIN_BEZIER_SEGMENTS);
+				upgrade_wires = 1;
+			}
+
 			if((cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
 				if(dist<4.5){
 					segments_to_use /= 4; //flag for short wires - use less segments.
@@ -1563,8 +1568,8 @@ function draw_wire(connection_number){
 				if(segments_to_use<wires[connection_number].length){
 					//remove wires
 					for(var sr = wires[connection_number].length-1;sr>=segment;sr--){
-						wires[connection_number][sr].freepeer();
-						wires[connection_number].pop();
+						wires[connection_number][sr].enable = 0; //freepeer();
+						//wires[connection_number].pop();
 					}
 				}
 			}

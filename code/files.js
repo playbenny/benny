@@ -393,7 +393,6 @@ function import_song(){
 			post("\n\n\nSONG NOTES\n\n"+songs.get(loading.songname+"::notepad"));
 		}*/
 		loading.conncount = songs.getsize(loading.songname+"::connections");
-		if(loading.conncount>0)	MAX_BEZIER_SEGMENTS = config.get("MIN_BEZIER_SEGMENTS");
 		loading.progress++;
 		loading.ready_for_next_action=loading.wait;//loading.bundling;
 	}else if(loading.progress<MAX_BLOCKS){
@@ -666,11 +665,6 @@ function import_song(){
 		//loading.mapping = [];
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
-		var mt = config.get("MAX_BEZIER_SEGMENTS");
-		if(mt!=MAX_BEZIER_SEGMENTS){
-			upgrade_wires = 1;
-			MAX_BEZIER_SEGMENTS=mt;
-		}
 //		lcd_main.message("paintrect",9,9,mainwindow_width,fontheight,backgroundcolour_blocks);
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}
@@ -1392,9 +1386,10 @@ function clear_everything(){
 	}
 	for(b in wires){
 		for(bl in wires[b]){
-			wires[b][bl].freepeer();
+			wires[b][bl].enable = 0; 
+			wires[b][bl].scale = [0,0,0];//freepeer();
 		}
-		wires[b] = [];
+		//wires[b] = [];
 		wires_colours[b] = [];
 	}
 	wire_ends = [];

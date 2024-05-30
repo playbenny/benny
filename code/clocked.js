@@ -11,7 +11,7 @@ function slowclock(){
 	do_drift();
 	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();
-	if(!still_checking_polys&&(upgrade_wires>0)){
+	if(!still_checking_polys&&(upgrade_wires>0)&&(displaymode=="blocks")){
 		if(upgrade_wires>connections.getsize("connections")){
 			upgrade_wires=0;
 		}else{

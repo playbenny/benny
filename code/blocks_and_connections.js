@@ -950,9 +950,9 @@ function turn_off_audio_to_data_if_unused(voice){
 function remove_connection(connection_number){	
 
 	for(i=0;i<wires[connection_number].length;i++){ // disable the wires
-		wires[connection_number][i].freepeer(); //enable=0;
+		wires[connection_number][i].enable=0; //freepeer(); 
 	}
-	wires[connection_number]=[];
+	//wires[connection_number]=[];
 	wire_ends[connection_number][0] = -1.057;
 	selected.wire[connection_number] = 0;
 
@@ -1418,8 +1418,8 @@ function remove_potential_wire(gl_objects_only){
 	if(wires_potential_connection != -1){
 		if(Array.isArray(wires[wires_potential_connection])){
 			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
-				wires[wires_potential_connection][t].freepeer();
-				wires[wires_potential_connection].pop();
+				wires[wires_potential_connection][t].enable = 0; //freepeer();
+				//wires[wires_potential_connection].pop();
 			}
 		}
 		if(gl_objects_only!=1){
