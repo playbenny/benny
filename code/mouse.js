@@ -184,6 +184,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				id = glpicker.touch(x,y);
 			}
 			picker_hover_and_special(id);
+		}else if(displaymode=="flocks"){
+			id = glpicker.touch(x,y);
+			//picker_hover_and_special(id);
+			usermouse.oid=id;
+			var thov =id.split('£'); // store hover - any picker id received when not waiting for click
+			usermouse.hover = thov.concat();
 		}
 	}
 	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
@@ -191,7 +197,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		// ##################################################
 		if(usermouse.left_button){	// CLICK
 			if((usermouse.got_i==0) && (usermouse.got_t==0)){	//nothing on the 2d layer, open it up for 3d clicks
-				if((displaymode=="blocks")||(displaymode=="block_menu")){
+				if((displaymode=="blocks")||(displaymode=="block_menu")||(displaymode=="flocks")){
 					usermouse.clicked3d = usermouse.hover[1];
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;		
@@ -591,6 +597,16 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 						usermouse.ids[0]="done";
+					}else if(displaymode=="flocks"){
+						if(usermouse.ids[0] == "block" ){
+							for(ti=selected.block.length-1;ti>=0;ti--){
+								selected.block[ti]=0;
+							}
+							selected.block[usermouse.ids[1]]=1;
+							sidebar.selected_voice = -1;
+							set_sidebar_mode("settings");
+							redraw_flag.flag|=10;
+						}
 					}
 				}
 			}
