@@ -1,0 +1,46 @@
+{
+	"output_reverb" : {
+		"patcher" : "output_reverb",
+		"type" : "output",
+		"help_text" : "basic output reverb - a fader for 'throw' - which turns up the send into the reverb but keeps the dry, and a fader for xfade, which turns up the send into the reverb and xfades into it.",
+		"max_polyphony" : 0,
+		"groups" : [
+			{ 
+				"contains" : [0, 1,2,3]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1,2,3]
+		},
+		"parameters" : [
+			{
+				"name" : "throw",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "xfade",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "length",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 0.8 	
+			},
+			{
+				"name" : "character",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

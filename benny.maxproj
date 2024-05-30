@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3799921919,
+	"modificationdate" : 3799931309,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1254,6 +1254,10 @@
 			"fx.filter.vactrol.lpg.inner.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
+			}
+,
+			"output_reverb.maxpat" : 			{
+				"kind" : "patcher"
 			}
 
 		}
@@ -2861,6 +2865,15 @@
 			}
 ,
 			"core.pepper.looper.json" : 			{
+				"kind" : "json",
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"output_reverb.json" : 			{
 				"kind" : "json"
 			}
 

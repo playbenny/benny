@@ -171,68 +171,10 @@ function new_block(block_name,x,y){
 				spr=sprd*details.get("parameters["+i+"]::error_scale");
 			}else{
 				spr = sprd;
-			}
-			
+			}			
 			param_error_drift[voiceoffset][i]=0.01*drft*spr;
-			//var p_type = details.get("parameters["+i+"]::type");
-			var p_pol = p_values[0]; //details.get("parameters["+i+"]::values[0]");
-			var p_min = p_values[1]; //details.get("parameters["+i+"]::values[1]");
-			var p_max = p_values[2]; //details.get("parameters["+i+"]::values[2]");
-			var p_curve = p_values[3]; //details.get("parameters["+i+"]::values[3]");
-			var p_steps = 0;
-			if((p_type=="menu_i")||(p_type=="menu_b")||(p_type=="menu_l")){
-				p_min = 0;
-				p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
-				p_max = p_steps-1;
-				p_curve = 0;
-			}else if(p_type=="menu_f"){
-				p_min=0;
-				p_max = p_values.length;//details.getsize("parameters["+i+"]::values");
-				p_steps = 0;
-				p_curve = 0;
-			}else if(p_type=="int"){
-				p_steps=p_max - p_min + 1;
-			}else if(p_type=="button"){
-				p_min = 0;
-				p_max = (p_values.length - 1 ) / 2;
-				p_steps = p_max+1;
-				p_curve = 0;
-			}else if(p_type=="wave"){
-				p_min = 0;
-				p_steps = MAX_WAVES;
-				p_max = p_steps - 1;
-				p_curve = 0;
-			}
-			if(p_curve == "lin"){
-				p_curve = 0;
-			}else {
-				if(p_curve =="exp"){
-					p_curve = 2;
-				}else if(p_curve =="exp10"){
-					p_curve = 10;
-				}else if(p_curve =="exp100"){
-					p_curve = 100;
-				}else if(p_curve =="exp1000"){
-					p_curve = 1000;
-				}else if(p_curve =="exp.1"){
-					p_curve = 0.1;
-				}else if(p_curve =="exp.01"){
-					p_curve = 0.01;
-				}else if(p_curve =="exp.001"){
-					p_curve = 0.001;
-				}else if(p_curve =="s"){
-					p_curve = 1;
-				}
-				if(p_pol!="uni"){
-					p_curve = -p_curve;
-				}
-			}
-			// parameter info poked out here for paramwatcher
-			//if((p_type=="int")&&(p_min<0)) post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
-			parameter_info_buffer.poke(1,MAX_PARAMETERS*new_block_index+i,p_min);
-			parameter_info_buffer.poke(2,MAX_PARAMETERS*new_block_index+i,p_max);
-			parameter_info_buffer.poke(3,MAX_PARAMETERS*new_block_index+i,p_steps);
-			parameter_info_buffer.poke(4,MAX_PARAMETERS*new_block_index+i,p_curve);
+			
+			write_parameter_info_buffer(p_values, p_type, MAX_PARAMETERS * new_block_index + i);
 		}		
 	}
 	// tell the polyalloc voice about its new job
@@ -336,6 +278,67 @@ function new_block(block_name,x,y){
 	//	send_ui_patcherlist();
 	rebuild_action_list = 1;
 	return new_block_index;
+}
+
+function write_parameter_info_buffer(p_values, p_type, index) {
+	var p_pol = p_values[0];
+	var p_min = p_values[1];
+	var p_max = p_values[2];
+	var p_curve = p_values[3];
+	var p_steps = 0;
+	if ((p_type == "menu_i") || (p_type == "menu_b") || (p_type == "menu_l")) {
+		p_min = 0;
+		p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
+		p_max = p_steps - 1;
+		p_curve = 0;
+	} else if (p_type == "menu_f") {
+		p_min = 0;
+		p_max = p_values.length; //details.getsize("parameters["+i+"]::values");
+		p_steps = 0;
+		p_curve = 0;
+	} else if (p_type == "int") {
+		p_steps = p_max - p_min + 1;
+	} else if (p_type == "button") {
+		p_min = 0;
+		p_max = (p_values.length - 1) / 2;
+		p_steps = p_max + 1;
+		p_curve = 0;
+	} else if (p_type == "wave") {
+		p_min = 0;
+		p_steps = MAX_WAVES;
+		p_max = p_steps - 1;
+		p_curve = 0;
+	}
+	if (p_curve == "lin") {
+		p_curve = 0;
+	} else {
+		if (p_curve == "exp") {
+			p_curve = 2;
+		} else if (p_curve == "exp10") {
+			p_curve = 10;
+		} else if (p_curve == "exp100") {
+			p_curve = 100;
+		} else if (p_curve == "exp1000") {
+			p_curve = 1000;
+		} else if (p_curve == "exp.1") {
+			p_curve = 0.1;
+		} else if (p_curve == "exp.01") {
+			p_curve = 0.01;
+		} else if (p_curve == "exp.001") {
+			p_curve = 0.001;
+		} else if (p_curve == "s") {
+			p_curve = 1;
+		}
+		if (p_pol != "uni") {
+			p_curve = -p_curve;
+		}
+	}
+	// parameter info poked out here for paramwatcher
+	//if((p_type=="int")&&(p_min<0)) post("\nnew block",new_block_index,"writing to p_i_b",MAX_PARAMETERS*new_block_index+i,p_min,p_max,p_steps,p_curve);
+	parameter_info_buffer.poke(1, index, p_min);
+	parameter_info_buffer.poke(2, index, p_max);
+	parameter_info_buffer.poke(3, index, p_steps);
+	parameter_info_buffer.poke(4, index, p_curve);
 }
 
 function send_note_patcherlist(do_all){ //loads a single voice and returns, only unflags still_checking_polys when all loaded.
@@ -632,6 +635,7 @@ function next_free_block(block_name){
 function get_voice_details(voiceis){
 	//post("\nblock requested voice details",voiceis);
 	var vlk = voicemap.getkeys();
+	if(vlk===null) return -1;
 	var block = -1;
 	var nth = -1;
 	var of = -1;

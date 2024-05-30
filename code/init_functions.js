@@ -447,11 +447,15 @@ function import_hardware(v){
 				blocktypes.set(keys[i]+"::parameters");
 				blocktypes.append(keys[i]+"::parameters");
 				var plist= d3.getsize(ob+"::parameters");
-				//post("- found ",plist,"parameters. adding: ");
+				post("- found ",plist,"parameters. adding: ");
 				for(t=0;t<plist;t++){
+					var d4 = d3.get(ob+"::parameters["+t+"]");
+					p_type = d4.get("type");
+					p_values = d4.get("values");
+					write_parameter_info_buffer(p_values,p_type,MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
+					post("\nopb,",MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
 					blocktypes.setparse(keys[i]+"::parameters["+t+"]","{}");
-					blocktypes.set(keys[i]+"::parameters["+t+"]",d3.get(ob+"::parameters["+t+"]"));
-					//post(d3.get(ob+"::parameters["+t+"]::name")+" ");
+					blocktypes.set(keys[i]+"::parameters["+t+"]",d4);
 					if(t+1<plist)blocktypes.append(keys[i]+"::parameters","*");
 				}
 			}
