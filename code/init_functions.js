@@ -291,7 +291,7 @@ function initialise_dictionaries(hardware_file){
 
 	var preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
-
+	
 	if(hardware_file!="init"){
 		import_hardware(hardware_file);
 	}else{

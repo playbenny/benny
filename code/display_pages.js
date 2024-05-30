@@ -1401,9 +1401,10 @@ function draw_wire(connection_number){
 			to_anglevector = [0, -0.4, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
-			if((loading.progress>0)&&(wires[connection_number].length<segments_to_use)){
-				segments_to_use = Math.max(wires[connection_number].length,MIN_BEZIER_SEGMENTS);
+			if((loading.progress>0)){//&&(wires[connection_number].length<segments_to_use)){
+				segments_to_use = /*Math.max(wires[connection_number].length,*/MIN_BEZIER_SEGMENTS;//);
 				upgrade_wires = 1;
+				still_checking_polys|=8;
 			}
 
 			if((cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){

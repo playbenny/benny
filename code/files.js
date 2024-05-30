@@ -137,6 +137,35 @@ function preload_all_waves(){
 		post("\nPreload waves complete. Number of items in the waves polybuffer:", waves_polybuffer.count); 
 		post("Memory used in the waves polybuffer:", waves_polybuffer.size/1048576, "MB\n"); 
 		preload_task.freepeer();
+		if(config.contains("PRELOAD_WIRES")&&config.get("PRELOAD_WIRES")==1){
+			preload_list=[];
+			for(var i=0;i<MAX_BLOCKS;i++) preload_list.push(i);
+			var preload_task2 = new Task(preload_some_wires, this);
+			preload_task2.schedule(100);
+		}
+	}
+}
+
+
+function preload_some_wires(){
+	if(preload_list.length>0){
+		var c = preload_list.pop();
+		if(!Array.isArray(wires[c]))wires[c] = [];
+		var segment = wires[c].length;
+		for(;segment<MAX_BEZIER_SEGMENTS;segment++){
+			if(typeof wires[c][segment] === 'undefined') {
+				wires[c][segment] = new JitterObject("jit.gl.gridshape","benny");
+				wires[c][segment].shape = "plane";
+				wires[c][segment].name = "wires£"+c+"£"+segment;
+				wires[c][segment].dim = [2,2];
+				wires[c][segment].enable = 0;
+				wires[c][segment].scale = [0,0,0];
+			}else{post("\nsurprise in wire pre-instantiate task");}
+		}
+		preload_task2.schedule(100);
+	}else{
+		post("\ncompleted pre-instantiating wire polygons")
+		preload_task2.freepeer();
 	}
 }
 
@@ -647,7 +676,7 @@ function import_song(){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
 		messnamed("update_wave_colls","bang");
-		if(still_checking_polys==0){
+		if((still_checking_polys&7)==0){
 			update_all_voices_mutestatus();
 		}
 		if(deferred_matrix.length) process_deferred_matrix();
@@ -655,17 +684,11 @@ function import_song(){
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
 		redraw_flag.flag|=12;
-		//set_display_mode("blocks");
-		//set_sidebar_mode("none");
-		//build_mod_sum_action_list();
 		rebuild_action_list=1;
 
-		//draw_blocks();
-		//prep_meter_updatelist();
-		//loading.mapping = [];
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
-//		lcd_main.message("paintrect",9,9,mainwindow_width,fontheight,backgroundcolour_blocks);
+		
 		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
 	}
 }

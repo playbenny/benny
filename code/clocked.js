@@ -1,27 +1,32 @@
 function polycheck(){
-	var t = still_checking_polys>0;
+	var t = (still_checking_polys&7)>0;
 	if(still_checking_polys&4){ send_ui_patcherlist(); }
 	if(still_checking_polys&2){ send_audio_patcherlist(); }
     if(still_checking_polys&1){ send_note_patcherlist(); }
-	if(t&&(!still_checking_polys)) update_all_voices_mutestatus();
+	if(t&&(!(still_checking_polys&7))) update_all_voices_mutestatus();
+	if(still_checking_polys&8){ upgrade_a_wire(); }
 }
 
+function upgrade_a_wire(){
+	if(displaymode=="blocks"){
+		if(upgrade_wires>connections.getsize("connections")){
+			upgrade_wires=0;
+			still_checking_polys|=56;
+		}else{
+			//for(var i=0;i<4;i++){
+				wire_ends[upgrade_wires-1]=[];
+				draw_wire(upgrade_wires-1); //>0) post("\nupgraded connection",upgrade_wires-1);
+				upgrade_wires++;
+			//}
+		}
+	}
+}
 function slowclock(){
 	//here: check things that need to be copied into buffers have been, check up on things like deferred load happening
 	do_drift();
 	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();
-	if(!still_checking_polys&&(upgrade_wires>0)&&(displaymode=="blocks")){
-		if(upgrade_wires>connections.getsize("connections")){
-			upgrade_wires=0;
-		}else{
-			for(var i=0;i<4;i++){
-				wire_ends[upgrade_wires-1]=[];
-				draw_wire(upgrade_wires-1); //>0) post("\nupgraded connection",upgrade_wires-1);
-				upgrade_wires++;
-			}
-		}
-	}
+
 	recursions=0;
 	if((deferred_diag.length>0)&&(usermouse.qlb==0)){
 		if(usermouse.ctrl){

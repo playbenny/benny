@@ -19,6 +19,7 @@ var MAX_USED_AUDIO_INPUTS = 0;
 var MAX_USED_AUDIO_OUTPUTS = 0;
 var NO_IO_PER_BLOCK = 2;
 var MAX_BEZIER_SEGMENTS = 16;//24; //must be a multiple of 4
+var MIN_BEZIER_SEGMENTS = 4;
 var MAX_PARAMETERS = 256;
 var MAX_DATA = 16384;
 var MAX_MOD_IDS = 1024;
@@ -148,6 +149,7 @@ var polybuffer_channels = [];
 var polybuffer_lengths = [];
 
 var preload_task = new Task(preload_all_waves, this);
+var preload_task2 = new Task(preload_some_wires, this);
 var waves_buffer = [];
 
 var draw_wave = [];

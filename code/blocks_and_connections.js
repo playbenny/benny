@@ -371,7 +371,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 			}
 		}		
 	}
-	still_checking_polys &= 6;
+	still_checking_polys &= 14;
 	post("\nall note blocks loaded");
 	redraw_flag.flag |= 4;
 }
@@ -409,7 +409,7 @@ function send_audio_patcherlist(do_all){
 			}
 		}
 	}
-	still_checking_polys &= 5;
+	still_checking_polys &= 13;
 	post("\nall audio blocks loaded");
 	if(deferred_matrix.length) process_deferred_matrix();
 	redraw_flag.flag |= 4;
@@ -452,7 +452,7 @@ function send_ui_patcherlist(do_all){
 			}
 		}		
 	}
-	still_checking_polys &= 3;
+	still_checking_polys &= 11;
 	post("\nall ui blocks loaded");
 //	blocks_tex_sent = [];
 	redraw_flag.flag |= 4;
