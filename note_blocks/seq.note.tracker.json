@@ -3,7 +3,7 @@
 		"patcher" : "universal.step.sequence",
 		"type" : "note",
 		"block_ui_patcher" : "seq.note.tracker.ui",
-		"help_text" : "note tracker. each voice is monophonic channel of midi notes, add more voices for more polyphony.££on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points. ££notes with no length are only cut off by the next note or entering an 'off' with the 1 key. ££editor keys:£-----------£notes start at z for the bottom octave and q for the top octave and a half£1 enters an 'off' in the notes column£L and , switch octave£.or backspace clears a cell (or row if you're in the note column)£del deletes a row, insert inserts one£hold shift and use arrows or click to select an area£ctl-c,ctl-x,ctl-v,ctl-a, ctl-l copy cut paste select all select a whole column£ctl-i interpolates values from one end of a selection to the other.£# toggles 'grouping' for a row. grouped rows (indicated by a small indent) work as a single step, every time the playhead lands on this step it plays the next one of the grouped notes, round-robin-ing. so if you have a sequence CCCDEF and the last 4 are grouped it'll play CCCCCCCDCCCECCCF",
+		"help_text" : "note tracker. each voice is monophonic channel of midi notes, add more voices for more polyphony.££on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points. ££notes with no length are only cut off by the next note or entering an 'off' with the 1 key. ££editor keys:£-----------£notes start at z for the bottom octave and q for the top octave and a half£1 enters an 'off' in the notes column£L and , switch octave£.or backspace clears a cell (or row if you're in the note column)£del deletes a row, insert inserts one£hold shift and use arrows or click to select an area£ctl-c,ctl-x,ctl-v,ctl-a, ctl-l copy cut paste select all select a whole column£ctl-i interpolates values from one end of a selection to the other.£# toggles 'grouping' for a row. grouped rows (indicated by a small indent) work as a single step, every time the playhead lands on this step it plays the next one of the grouped notes, round-robin-ing. so if you have a sequence CCCDEF and the last 4 are grouped it'll play CCCCCCCDCCCECCCF. the loop follow mode determines how it behaves if you move the loop position or length sliders while it's playing - in soft mode if you move the loop later it will just gradually play through into the new loop, in hard mode it will jump into the new loop",
 		"max_polyphony" : 0,
 		"default_polymode" : 	{
 				"stack_mode" : "1x",
@@ -27,7 +27,7 @@
 				"colour" : 0
 			},
 			{
-				"contains" : [9,9,3,5],
+				"contains" : [9,9,3,5,12],
 				"height" : 0,
 				"colour" : -10
 			},
@@ -112,6 +112,32 @@
 				"values" : ["uni", 0, 15, "lin"],
 				"wrap" : 1,
 				"default" : 0
+			},
+			{
+				"name" : "default_length",
+				"type" : "menu_l",
+				"values" : ["until next note in voice", "1 cell long", "instantaneous trigger"],
+				"wrap" : 1,
+				"default" : 0.5,
+				"nopervoice" : 1,
+				"nomap" : 1
+			},
+			{
+				"name" : "velocity",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.782,
+				"nopervoice" : 1,
+				"nomap" : 1
+			},
+			{
+				"name" : "loop follow mode",
+				"type" : "menu_l",
+				"values" : ["hard follow", "soft follow"],
+				"wrap" : 0,
+				"default" : 0,
+				"nopervoice" : 1
 			}
 		]
 	}

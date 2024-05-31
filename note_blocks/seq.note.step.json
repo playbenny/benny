@@ -3,7 +3,7 @@
 		"patcher" : "universal.step.sequence",
 		"type" : "note",
 		"block_ui_patcher" : "seq.note.step.ui",
-		"help_text" : "note step sequencer. add more voices for more polyphony. on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points.",
+		"help_text" : "note step sequencer. add more voices for more polyphony. on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points. the loop follow mode determines how it behaves if you move the loop position or length sliders while it's playing - in soft mode if you move the loop later it will just gradually play through into the new loop, in hard mode it will jump into the new loop.",
 		"max_polyphony" : 0,
 		"default_polymode" : 	{
 				"stack_mode" : "1x",
@@ -27,7 +27,7 @@
 				"colour" : 0
 			},
 			{
-				"contains" : [9,9,3,5],
+				"contains" : [9,9,3,5,12],
 				"height" : 0,
 				"colour" : -10
 			},
@@ -129,7 +129,8 @@
 				"values" : ["until next note in voice", "1 cell long", "instantaneous trigger"],
 				"wrap" : 1,
 				"default" : 0.5,
-				"nopervoice" : 1
+				"nopervoice" : 1,
+				"nomap" : 1
 			},
 			{
 				"name" : "velocity",
@@ -137,7 +138,17 @@
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
 				"default" : 0.782,
-				"nopervoice" : 1
+				"nopervoice" : 1,
+				"nomap" : 1
+			},
+			{
+				"name" : "loop follow mode",
+				"type" : "menu_l",
+				"values" : ["hard follow", "soft follow"],
+				"wrap" : 0,
+				"default" : 0,
+				"nopervoice" : 1,
+				"forcelabel" : 1
 			}
 		]
 	}
