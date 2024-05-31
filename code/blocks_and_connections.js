@@ -954,6 +954,7 @@ function remove_connection(connection_number){
 
 	for(i=0;i<wires[connection_number].length;i++){ // disable the wires
 		wires[connection_number][i].enable=0; //freepeer(); 
+		wires[connection_number][i].scale = [0,0,0]; 
 	}
 	//wires[connection_number]=[];
 	wire_ends[connection_number][0] = -1.057;
@@ -1422,6 +1423,7 @@ function remove_potential_wire(gl_objects_only){
 		if(Array.isArray(wires[wires_potential_connection])){
 			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
 				wires[wires_potential_connection][t].enable = 0; //freepeer();
+				wires[wires_potential_connection][t].scale = [0,0,0];
 				//wires[wires_potential_connection].pop();
 			}
 		}

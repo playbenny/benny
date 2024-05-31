@@ -1570,6 +1570,7 @@ function draw_wire(connection_number){
 					//remove wires
 					for(var sr = wires[connection_number].length-1;sr>=segment;sr--){
 						wires[connection_number][sr].enable = 0; //freepeer();
+						wires[connection_number][sr].scale = [0,0,0];
 						//wires[connection_number].pop();
 					}
 				}
