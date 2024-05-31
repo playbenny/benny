@@ -373,6 +373,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 	}
 	still_checking_polys &= 14;
 	post("\nall note blocks loaded");
+	if(still_checking_polys&7 == 0) update_all_voices_mutestatus();
 	redraw_flag.flag |= 4;
 }
 
@@ -410,7 +411,7 @@ function send_audio_patcherlist(do_all){
 		}
 	}
 	still_checking_polys &= 13;
-	post("\nall audio blocks loaded");
+	if((still_checking_polys&7) == 0) update_all_voices_mutestatus();
 	if(deferred_matrix.length) process_deferred_matrix();
 	redraw_flag.flag |= 4;
 }
@@ -454,11 +455,13 @@ function send_ui_patcherlist(do_all){
 	}
 	still_checking_polys &= 11;
 	post("\nall ui blocks loaded");
+	if((still_checking_polys&7) == 0) update_all_voices_mutestatus();
 //	blocks_tex_sent = [];
 	redraw_flag.flag |= 4;
 }
 
 function update_all_voices_mutestatus(){
+	post("\nupdating all voices mute status");
 	var k = voicemap.getkeys();
 	if(k!=null){
 		for(var i = 0; i<k.length;i++){

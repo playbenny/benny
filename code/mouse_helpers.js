@@ -465,7 +465,7 @@ function hard_reload_block(b){
 		}
 		post("\nreloading voice patcher "+vl[i]);
 	}
-	still_checking_polys = 3;
+	still_checking_polys |= 3;
 }
 
 function open_patcher(block,voice){
