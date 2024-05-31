@@ -4,16 +4,17 @@ function polycheck(){
 	if(still_checking_polys&2){ send_audio_patcherlist(); }
     if(still_checking_polys&1){ send_note_patcherlist(); }
 	if(t&&(!(still_checking_polys&7))) update_all_voices_mutestatus();
-	if(still_checking_polys&8){ upgrade_a_wire(); }
+	if((still_checking_polys&8)&&!(still_checking_polys&7)){ upgrade_a_wire(); }
 }
 
 function upgrade_a_wire(){
 	if(displaymode=="blocks"){
 		if(upgrade_wires>connections.getsize("connections")){
 			upgrade_wires=0;
-			still_checking_polys|=56;
+			still_checking_polys&=55;
 		}else{
 			//for(var i=0;i<4;i++){
+				post("\nupgrade",upgrade_wires);
 				wire_ends[upgrade_wires-1]=[];
 				draw_wire(upgrade_wires-1); //>0) post("\nupgraded connection",upgrade_wires-1);
 				upgrade_wires++;

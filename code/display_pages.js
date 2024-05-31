@@ -1403,7 +1403,8 @@ function draw_wire(connection_number){
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
 			if((loading.progress>0)){//&&(wires[connection_number].length<segments_to_use)){
 				segments_to_use = /*Math.max(wires[connection_number].length,*/MIN_BEZIER_SEGMENTS;//);
-				upgrade_wires = 1;
+				if(upgrade_wires==0) upgrade_wires = 1;
+				post("\nflagged because loading progress is ",loading.progress);
 				still_checking_polys|=8;
 			}
 
