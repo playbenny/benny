@@ -3,7 +3,7 @@ function polycheck(){
 	if(still_checking_polys&4){ send_ui_patcherlist(); }
 	if(still_checking_polys&2){ send_audio_patcherlist(); }
     if(still_checking_polys&1){ send_note_patcherlist(); }
-	if(t&&(!(still_checking_polys&7))) update_all_voices_mutestatus();
+	if(t!=((still_checking_polys&7)>0)) update_all_voices_mutestatus();
 	if((still_checking_polys&8)&&!(still_checking_polys&7)){ upgrade_a_wire(); }
 }
 
