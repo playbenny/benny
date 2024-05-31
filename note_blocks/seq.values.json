@@ -17,7 +17,8 @@
 				"midi" : [ "trigger", "note->position", "reset" ]
 			},
 			"out" : {
-				"parameters" : [ "out", "playhead_position" ]
+				"parameters" : [ "out", "playhead_position" ],
+				"dontdefaultall" : 1
 			}
 		},
 		"groups" : [
