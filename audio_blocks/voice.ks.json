@@ -28,7 +28,7 @@
 				"height" : 0
 			},
 			{
-				"contains" : [8,9,10],
+				"contains" : [9,8,11,10,10],
 				"height" : 0
 			}
 		],
@@ -115,6 +115,13 @@
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				
+			},
+			{
+				"name" : "saw_pluck_detune",
+				"type" : "float",
+				"values" : ["bi", -12, 12, "lin"],
+				"default" : 0.5,
+				"wrap" : 0
 			}			
 		]
 	}
