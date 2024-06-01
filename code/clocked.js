@@ -109,7 +109,7 @@ function frameclock(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
-		if(displaymode=="panels"){ draw_panels();}
+		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		bangflag=1;
 	}else{

@@ -131,7 +131,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		usermouse.ctrl = ctrl;
 		if((ctrl==0)&&usermouse.ctrl_voice_select){//reverts to just block selected
 			sidebar.selected_voice = -1;
-			redraw_flag.flag |= 4;
+			if(displaymode=="blocks")redraw_flag.flag |= 4;
 		}	
 		/*if(sidebar.mode == "file_menu")*/ redraw_flag.flag |= 2;
 	}
