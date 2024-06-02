@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 1,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -128,7 +128,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 746.0, 184.0, 110.0, 22.0 ],
+					"patching_rect" : [ 746.0, 174.0, 110.0, 22.0 ],
 					"text" : "s to_blockmanager"
 				}
 

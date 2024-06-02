@@ -1433,6 +1433,7 @@ function clear_everything(){
 	for(;i-->=0;){
 		is_flocked.push(0);
 	}
+	flocklist = [];
 	//messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 

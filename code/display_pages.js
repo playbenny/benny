@@ -29,7 +29,6 @@ function set_display_mode(mode,t){
 			if(displaymode == "panels") block_and_wire_colours();
 			if(displaymode == "flocks"){
 				draw_blocks();
-
 			}
 		}
 		displaymode=mode;
