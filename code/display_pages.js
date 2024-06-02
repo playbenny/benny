@@ -966,32 +966,34 @@ function block_and_wire_colours(){ //for selection and mute etc
 				anymuted=1;
 			}
 			for(t=0;t<=block_v*subvoices;t++){
-				var p = blocks_cube[i][t].position;
-				if(selected.anysel){
-					if(selected.block[i]){ //
-						if((sidebar.selected_voice==-1)){
-							blocks_cube[i][t].color = block_c; 
-						}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
-							blocks_cube[i][t].color = block_c; 
+				if(typeof blocks_cube[i][t]!= undefined){
+					var p = blocks_cube[i][t].position;
+					if(selected.anysel){
+						if(selected.block[i]){ //
+							if((sidebar.selected_voice==-1)){
+								blocks_cube[i][t].color = block_c; 
+							}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
+								blocks_cube[i][t].color = block_c; 
+							}else{
+								blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
+							}
+							blocks_cube[i][t].position = [p[0],p[1],1];
 						}else{
-							blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
+							if(block_mute||search){
+								blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
+							}else{
+								blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+							}
+							blocks_cube[i][t].position = [p[0],p[1],0];
 						}
-						blocks_cube[i][t].position = [p[0],p[1],1];
 					}else{
-						if(block_mute||search){
-							blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
+						if(block_mute){
+							blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];	
 						}else{
-							blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+							blocks_cube[i][t].color = block_c;
 						}
 						blocks_cube[i][t].position = [p[0],p[1],0];
 					}
-				}else{
-					if(block_mute){
-						blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];	
-					}else{
-						blocks_cube[i][t].color = block_c;
-					}
-					blocks_cube[i][t].position = [p[0],p[1],0];
 				}
 				
 				if(t==0){
