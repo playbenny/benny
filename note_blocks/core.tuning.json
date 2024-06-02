@@ -58,84 +58,84 @@
 			{
 				"name" : "c",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "c#",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "d",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "d#",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "e",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "f",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "f#",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "g",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "g#",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "a",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "a#",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "b",
 				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
+				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			}
