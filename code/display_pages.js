@@ -1874,18 +1874,19 @@ function draw_topbar(){
 		if(view_changed===true) click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = set_display_mode;
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.18), 9+fontheight*0.75);
+		mouse_click_parameters[mouse_index] = "blocks";
 		if((displaymode == "blocks")||(usermouse.clicked2d==mouse_index)){
-			mouse_click_parameters[mouse_index] = "flocks";
+			if(displaymode=="blocks"){
+				mouse_click_parameters[mouse_index] = "flocks";
+			}
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,menucolour );
 			lcd_main.message("frgb", 0,0,0);
 			lcd_main.message("write", "blocks");
 		}else if(displaymode == "flocks"){
-			mouse_click_parameters[mouse_index] = "blocks";
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,255,50,200 );
 			lcd_main.message("frgb", 0,0,0);
 			lcd_main.message("write", "flocks");
 		}else{
-			mouse_click_parameters[mouse_index] = "blocks";		
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,menudarkest );
 			lcd_main.message("frgb", menucolour);
 			lcd_main.message("write", "blocks");
