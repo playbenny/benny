@@ -137,12 +137,6 @@ function preload_all_waves(){
 		post("\nPreload waves complete. Number of items in the waves polybuffer:", waves_polybuffer.count); 
 		post("Memory used in the waves polybuffer:", waves_polybuffer.size/1048576, "MB\n"); 
 		preload_task.freepeer();
-		if(config.contains("PRELOAD_WIRES")&&config.get("PRELOAD_WIRES")==1){
-			preload_list=[];
-			for(var i=0;i<MAX_BLOCKS;i++) preload_list.push(i);
-			var preload_task2 = new Task(preload_some_wires, this);
-			preload_task2.schedule(100);
-		}
 	}
 }
 

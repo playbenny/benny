@@ -621,6 +621,13 @@ function import_hardware(v){
 	}
 	startup_loadfile = "";
 
+	if(config.contains("PRELOAD_WIRES")&&config.get("PRELOAD_WIRES")==1){
+		preload_list=[];
+		for(var i=0;i<MAX_BLOCKS;i++) preload_list.push(i);
+		preload_task2 = new Task(preload_some_wires, this);
+		preload_task2.schedule(1100);
+	}
+
 	slowclock_task = new Task(slowclock, this);
 	slowclock_task.interval = 900;
 	slowclock_task.repeat();
