@@ -1034,8 +1034,12 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			//that last bit - maybe a temp fix. look at this once you've got mixer bus ui working 100%
 			var scalar = ((shift)?0.1:1);
 			if((f!=static_mod_adjust)&&(shift)) scalar = (((alt))?0.01:0.1);
-			var t=paramslider_details[p[0]][13];
-			var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
+			if(typeof paramslider_details[p[0]] == "undefined"){
+				t="default";
+			}else{
+				var t=paramslider_details[p[0]][13];
+				var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
+			}
 			if(t=="int"){
 				if(p_values.length==5) scalar *= p_values[4];
 				usermouse.scroll_accumulator += scroll*scalar;
