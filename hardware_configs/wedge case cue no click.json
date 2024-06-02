@@ -89,7 +89,8 @@
 				"buttons" : 				{
 					"type" : "note",
 					"channel" : 1,
-					"first" : 36
+					"first" : 36,
+					"count" : 8
 				}
 
 			}
@@ -107,7 +108,8 @@
 				"buttons" : 				{
 					"type" : "note",
 					"channel" : 1,
-					"first" : 36
+					"first" : 36,
+					"count" : 8
 				}
 
 			}
