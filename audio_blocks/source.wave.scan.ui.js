@@ -71,6 +71,7 @@ function mouse(x,y,l,s,a,c,scr){
 			var rx = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[0]+7)-parameter_value_buffer.peek(1, MAX_PARAMETERS*block+7);
 			if(rx!=0) post("\ncurrent diff is:",rx,"you want",tx,"so i'll set it to",tx-rx);
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+7,Math.min(1,Math.max(0,tx-rx)));
+			voice_parameter_buffer.poke(1, MAX_PARAMETERS*v_list[0]+7,tx);
 		}
 	}
 }
