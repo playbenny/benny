@@ -142,8 +142,8 @@ function preload_all_waves(){
 
 
 function preload_some_wires(){
-	if(preload_list.length>0){
-		var c = preload_list.pop();
+	if(preload_wires_counter < MAX_BLOCKS){
+		var c = preload_wires_counter++;
 		if(!Array.isArray(wires[c]))wires[c] = [];
 		var segment = wires[c].length;
 		for(;segment<MAX_BEZIER_SEGMENTS;segment++){

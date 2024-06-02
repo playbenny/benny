@@ -1954,7 +1954,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 	}
 	if(av==1) anymuted =1;
 	blocks.replace("blocks["+block+"]::mute",av);
-	if(still_checking_polys) return 0;
+	if(still_checking_polys&7) return 0;
 	if(type=="audio"){
 		list = voicemap.get(block);
 		if(typeof list === 'number'){

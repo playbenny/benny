@@ -150,6 +150,7 @@ var polybuffer_lengths = [];
 
 var preload_task = new Task(preload_all_waves, this);
 var preload_task2 = new Task(preload_some_wires, this);
+var preload_wires_counter = 0;
 var waves_buffer = [];
 
 var draw_wave = [];
