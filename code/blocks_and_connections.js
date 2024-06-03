@@ -3004,6 +3004,7 @@ function swap_block(block_name){
 	var y = blocks.get("blocks["+menu.swap_block_target+"]::space::y");
 	var v = blocks.get("blocks["+menu.swap_block_target+"]::poly::voices");
 	remove_block(menu.swap_block_target);
+	var otarg = menu.swap_block_target;
 	menu.swap_block_target = new_block(block_name,x,y);
 	post("\nreplacement block",menu.swap_block_target);
 	draw_block(menu.swap_block_target);
@@ -3013,7 +3014,7 @@ function swap_block(block_name){
 	// put all the connections back
 	if(h>0){
 		for(i=0;i<h;i++){
-			if(+handful[i].get("from::number")==menu.swap_block_target){
+			if(+handful[i].get("from::number")==otarg){
 				//check we have that type of output
 				post("\noutput check",i);
 				var oty = handful[i].get("from::output::type");
@@ -3028,6 +3029,10 @@ function swap_block(block_name){
 					}
 					post(" - replaced");
 				}
+				if(otarg!=menu.swap_block_target){
+					handful[i].replace("from::number",menu.swap_block_target);
+					post(" - noted new block number");
+				}
 				var nn = details.getsize("connections::out::"+handful[i].get("from::output::type"));
 				if(onu>=nn){
 					handful[i].replace("from::output::number",nn-1);
@@ -3035,7 +3040,7 @@ function swap_block(block_name){
 				}
 			}else{
 				//check we have that type of input
-				post("\ninput check");
+				post("\ninput check",i);
 				var oty = handful[i].get("to::input::type");
 				var onu = handful[i].get("to::input::number");
 				if(!details.contains("connections::in::"+oty)){
@@ -3046,7 +3051,11 @@ function swap_block(block_name){
 					}else{
 						handful[i].replace("to::input::type","potential");
 					}
-					post(" - replaced");
+					post(" - replaced",handful[i].get("to::input::type"));
+				}
+				if(otarg!=menu.swap_block_target){
+					handful[i].replace("to::number",menu.swap_block_target);
+					post(" - noted new block number");
 				}
 				var nn = details.getsize("connections::in::"+handful[i].get("to::input::type"));
 				if(onu>=nn){
@@ -3056,6 +3065,7 @@ function swap_block(block_name){
 
 			}
 			connections.replace("connections["+handful_n[i]+"]",handful[i]);
+			post("\nmaking:",handful_n[i]);
 			make_connection(handful_n[i],0);	
 		}
 	}
