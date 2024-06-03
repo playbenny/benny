@@ -18,12 +18,22 @@ paramnames.name = "parameter_names";
 var paramdefaults = new Dict;
 paramdefaults.name = "parameter_values";
 
+var pbendr = 2;
+var ups = 1;
+
 function grp_colour(group,r,g,b){
 	group_colours[group]=[r,g,b];
 }
 
 function grp_height(group,h){
 	group_height[group]=h;
+}
+
+function pbendrange(r){
+	pbendr = r;
+}
+function oversample(r){
+	ups = Math.pow(2,r);
 }
 
 function group_contents(g){
@@ -116,6 +126,8 @@ function transfer_params_and_defaults(){
 	new_blockfile.replace(block_name + "::max_polyphony", orthogonal ); //if this is 0 then 
 	new_blockfile.replace(block_name + "::plugin_name",plugin_name);
 	new_blockfile.replace(block_name + "::plugin_type",plugin_type);
+	new_blockfile.replace(block_name + "::pitchbend_range",pbendr);
+	new_blockfile.replace(block_name + "::upsample", ups);
 	var conns = new Dict;
 	if(orthogonal==0){
 		conns.parse('{ "in" : { "audio" : [ "L", "R" ] , "midi" : [ "midi in" ] } , "out" : { "audio" : [ "L", "R" ] }  }');
@@ -152,6 +164,8 @@ function transfer_params_and_defaults(){
 				if(group_colours[i][0]!=-1) new_blockfile.replace(block_name + "::groups["+t+"]::colour",group_colours[i]);
 				if(group_height[i]!=-1) new_blockfile.replace(block_name + "::groups["+t+"]::contains",groups[i]);
 				t++;
+			}else{
+				new_blockfile.remove(blockname+"::groups["+t+"]");
 			}
 		}
 	}

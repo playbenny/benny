@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 5,
-			"revision" : 4,
+			"minor" : 6,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 85.0, 1533.0, 743.0 ],
+		"rect" : [ 158.0, 82.0, 754.0, 588.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -40,13 +40,738 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-305",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 1570.0, 625.0, 29.5, 22.0 ],
+					"text" : "t l 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-304",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 1365.0, 625.0, 29.5, 22.0 ],
+					"text" : "t l 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-303",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 1175.0, 625.0, 29.5, 22.0 ],
+					"text" : "t l 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-302",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 967.0, 625.0, 29.5, 22.0 ],
+					"text" : "t l 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-298",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -391.397866725921631, 753.247342228889465, 29.5, 22.0 ],
+					"text" : "$1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-296",
+					"maxclass" : "newobj",
+					"numinlets" : 5,
+					"numoutlets" : 1,
+					"outlettype" : [ "list" ],
+					"patching_rect" : [ -391.397866725921631, 721.247342228889465, 61.0, 22.0 ],
+					"text" : "funnel 5 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-295",
+					"maxclass" : "newobj",
+					"numinlets" : 6,
+					"numoutlets" : 6,
+					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "" ],
+					"patching_rect" : [ -391.397866725921631, 689.247342228889465, 81.0, 22.0 ],
+					"text" : "sel 1 2 4 8 16"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-292",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -351.360225677490234, 895.698964238166809, 49.0, 22.0 ],
+					"text" : "$2 $1 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-290",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -351.360225677490234, 863.440898299217224, 54.0, 22.0 ],
+					"text" : "pack 0 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-289",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -351.360225677490234, 831.182832360267639, 25.0, 22.0 ],
+					"text" : "iter"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-288",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ 1117.204350352287292, 852.688209652900696, 52.0, 22.0 ],
+					"text" : "gate 4 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-287",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ 967.0, 589.247337818145752, 52.0, 22.0 ],
+					"text" : "gate 4 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-286",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ -190.322589039802551, 609.677446246147156, 29.5, 22.0 ],
+					"text" : "+ 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-281",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -407.526899695396423, 830.0, 50.0, 36.0 ],
+					"text" : "4 7 18 19"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-279",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ -351.360225677490234, 784.946271181106567, 259.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"legacy" : 1
+					}
+,
+					"text" : "dict.unpack contains: height: colour: @legacy 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-278",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ -211.860225677490234, 737.125, 55.0, 22.0 ],
+					"text" : "zl slice 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-277",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ -240.860225677490234, 607.52690851688385, 38.0, 22.0 ],
+					"text" : "zl reg"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-276",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "int", "int" ],
+					"patching_rect" : [ -240.860225677490234, 566.666691660881042, 40.0, 22.0 ],
+					"text" : "t b i i"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-273",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -240.860225677490234, 648.387125372886658, 149.0, 22.0 ],
+					"text" : "sprintf get %s::groups[%d]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-272",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ -240.860225677490234, 694.0, 121.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict existing_blockfile"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-271",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "int", "clear" ],
+					"patching_rect" : [ -251.612914323806763, 473.118300437927246, 57.0, 22.0 ],
+					"text" : "t b i clear"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-270",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "bang", "int" ],
+					"patching_rect" : [ -267.741947293281555, 503.225828647613525, 46.0, 22.0 ],
+					"text" : "Uzi 1 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-267",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ -262.365602970123291, 441.935503363609314, 41.0, 22.0 ],
+					"text" : "unjoin"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-266",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -367.741951704025269, 413.97851288318634, 146.0, 22.0 ],
+					"text" : "sprintf getsize %s::groups"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-265",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -105.376348733901978, 549.0, 50.0, 22.0 ],
+					"text" : "getkeys"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-250",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -319.897866725921631, 583.870993494987488, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-248",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -418.279588341712952, 578.494649171829224, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-246",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ -391.397866725921631, 536.559163451194763, 224.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"legacy" : 0
+					}
+,
+					"text" : "dict.unpack pitchbend_range: upsample:"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-245",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "" ],
+					"patching_rect" : [ -105.376348733901978, 513.978517293930054, 34.0, 22.0 ],
+					"text" : "sel 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-244",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ -116.129037380218506, 481.720451354980469, 41.0, 22.0 ],
+					"text" : "unjoin"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-243",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ -116.129037380218506, 450.537654280662537, 63.0, 22.0 ],
+					"text" : "route read"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-240",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ -218.279579520225525, 413.97851288318634, 121.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict existing_blockfile"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-239",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -218.279579520225525, 381.720446944236755, 80.0, 22.0 ],
+					"text" : "prepend read"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-238",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ -216.129041790962219, 326.5, 120.0, 22.0 ],
+					"text" : "sprintf symout %s%s"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-237",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 275.268829345703125, 468.0, 94.0, 22.0 ],
+					"text" : "prepend symbol"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-236",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "" ],
+					"patching_rect" : [ -127.956994891166687, 293.166665196418762, 31.0, 22.0 ],
+					"text" : "t b s"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-235",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ -216.129041790962219, 256.607523798942566, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-231",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ -216.129041790962219, 291.016127467155457, 38.0, 22.0 ],
+					"text" : "zl reg"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-230",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ -127.956994891166687, 260.908599257469177, 84.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"precision" : 6
+					}
+,
+					"text" : "coll alreadylist"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-224",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "store", "" ],
+					"patching_rect" : [ 246.0, 135.0, 48.0, 22.0 ],
+					"text" : "t store l"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-223",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 5,
+					"outlettype" : [ "", "", "", "", "" ],
+					"patching_rect" : [ 260.0, 179.0, 92.0, 22.0 ],
+					"text" : "regexp (.+).json"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-217",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1313.0, 954.0, 70.0, 22.0 ],
+					"text" : "loadmess 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-218",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1313.0, 1020.0, 118.0, 22.0 ],
+					"text" : "prepend oversample"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontsize" : 13.9,
+					"id" : "obj-219",
+					"items" : [ "1x", ",", "2x", ",", "4x", ",", "8x", ",", "16x" ],
+					"maxclass" : "umenu",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "int", "", "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 1313.0, 986.0, 100.0, 24.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 635.0, 215.0, 57.0, 24.0 ],
+					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontsize" : 13.9,
+					"id" : "obj-221",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1313.0, 1045.0, 174.0, 118.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 5,
+					"presentation_rect" : [ 390.0, 215.0, 245.0, 86.0 ],
+					"text" : "upsampling amount (benny will run the vst at a multiple of the main audio sample rate, reducing some digital artefacts in some plugins that feature nonlinearity)",
+					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-215",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ 246.0, 261.0, 84.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"precision" : 6
+					}
+,
+					"text" : "coll alreadylist"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-214",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 246.0, 225.0, 83.0, 22.0 ],
+					"text" : "pack store s s"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-203",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1149.0, 954.0, 70.0, 22.0 ],
+					"text" : "loadmess 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-202",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1149.0, 1020.0, 120.0, 22.0 ],
+					"text" : "prepend pbendrange"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontsize" : 13.9,
+					"htricolor" : [ 1.0, 0.537254901960784, 0.0, 1.0 ],
+					"id" : "obj-201",
+					"maxclass" : "number",
+					"maximum" : 24,
+					"minimum" : 1,
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 1149.0, 986.0, 54.0, 24.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 631.0, 313.0, 61.0, 24.0 ],
+					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontsize" : 13.9,
+					"id" : "obj-126",
+					"linecount" : 6,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1149.0, 1045.0, 173.0, 102.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 390.0, 313.0, 245.0, 54.0 ],
+					"text" : "vsti pitchbend range in semitones:\n(used to make vsti instruments work with custom scales and tunings)",
+					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-198",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 70.0, 773.0, 150.0, 20.0 ],
+					"text" : "default"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-195",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 43.0, 823.0, 64.0, 22.0 ],
+					"text" : "pack 0 0 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-188",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 43.0, 791.0, 87.0, 22.0 ],
+					"text" : "expr ($i1/3)%4"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-185",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "bang", "int" ],
+					"patching_rect" : [ 16.0, 758.0, 46.0, 22.0 ],
+					"text" : "Uzi 1 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-51",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 4,
+					"outlettype" : [ "bang", "int", "int", "clear" ],
+					"patching_rect" : [ 127.0, 727.0, 63.0, 22.0 ],
+					"text" : "t b i i clear"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-60",
 					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1061.0, 22.0, 150.0, 62.0 ],
-					"text" : "TODO\nbug in output files\nadd oversampling\nenable load existing"
+					"patching_rect" : [ 1061.0, 22.0, 150.0, 75.0 ],
+					"text" : "TODO\ndoes import existing work ok?\ncan it tell if vsti?\n"
 				}
 
 			}
@@ -92,7 +817,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "clear" ],
-					"patching_rect" : [ 16.0, 790.0, 51.0, 22.0 ],
+					"patching_rect" : [ -59.0, 790.0, 51.0, 22.0 ],
 					"text" : "t 1 clear"
 				}
 
@@ -104,7 +829,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 16.0, 758.0, 61.0, 22.0 ],
+					"patching_rect" : [ -59.0, 758.0, 61.0, 22.0 ],
 					"text" : "savebang"
 				}
 
@@ -124,15 +849,17 @@
 					"fontsize" : 13.9,
 					"gradient" : 1,
 					"id" : "obj-182",
+					"linecount" : 3,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 26.0, 230.0, 107.0, 24.0 ],
+					"patching_rect" : [ -19.0, 191.0, 107.0, 56.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 604.0, 241.0, 24.0 ],
-					"text" : "add this plugin",
-					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+					"presentation_rect" : [ 390.0, 167.0, 302.0, 24.0 ],
+					"text" : "click to add this plugin to benny",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"textjustification" : 1
 				}
 
 			}
@@ -143,7 +870,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 26.0, 294.0, 55.0, 22.0 ],
+					"patching_rect" : [ -19.0, 293.0, 55.0, 22.0 ],
 					"text" : "pipe 500"
 				}
 
@@ -155,7 +882,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "bang" ],
-					"patching_rect" : [ 26.0, 262.0, 32.0, 22.0 ],
+					"patching_rect" : [ -19.0, 261.0, 32.0, 22.0 ],
 					"text" : "t b b"
 				}
 
@@ -168,9 +895,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 14.5, 46.0, 173.0, 38.0 ],
+					"patching_rect" : [ -40.5, 8.0, 173.0, 38.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 44.0, 241.0, 22.0 ],
+					"presentation_rect" : [ 13.0, 14.0, 241.0, 22.0 ],
 					"text" : "rescan max's plugin db (optional)",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
@@ -303,7 +1030,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 290.0, 643.0, 143.0, 22.0 ],
+					"patching_rect" : [ 290.0, 659.0, 143.0, 22.0 ],
 					"text" : "regexp -|_ @substitute \\\\."
 				}
 
@@ -327,7 +1054,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 16.0, 689.0, 81.0, 22.0 ],
+					"patching_rect" : [ 86.0, 657.0, 81.0, 22.0 ],
 					"text" : "prepend write"
 				}
 
@@ -338,7 +1065,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 16.0, 727.0, 32.0, 22.0 ],
+					"patching_rect" : [ 86.0, 695.0, 32.0, 22.0 ],
 					"text" : "print"
 				}
 
@@ -374,7 +1101,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 16.0, 657.0, 145.0, 22.0 ],
+					"patching_rect" : [ 86.0, 625.0, 145.0, 22.0 ],
 					"text" : "sprintf symout %s%s.json"
 				}
 
@@ -434,11 +1161,12 @@
 					"id" : "obj-166",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 1325.0, 1305.0, 103.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -523,11 +1251,12 @@
 					"id" : "obj-141",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 1546.0, 1073.0, 103.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -578,11 +1307,12 @@
 					"id" : "obj-122",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 1490.0, 991.0, 103.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -670,7 +1400,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 148.0, 752.75, 29.5, 22.0 ],
+					"patching_rect" : [ 234.0, 694.0, 29.5, 22.0 ],
 					"text" : "+ 1"
 				}
 
@@ -708,7 +1438,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1221.5, 881.75, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 566.0, 99.0, 22.0 ],
+					"presentation_rect" : [ 450.537654280662537, 632.258092403411865, 99.0, 22.0 ],
 					"text" : "row height",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
@@ -728,7 +1458,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1221.5, 903.356079000000022, 54.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 95.25, 565.0, 84.25, 24.0 ],
+					"presentation_rect" : [ 532.258087992668152, 631.182823538780212, 84.25, 24.0 ],
 					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
 				}
 
@@ -742,7 +1472,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1149.0, 881.75, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 473.0, 99.0, 22.0 ],
+					"presentation_rect" : [ 450.537654280662537, 568.817229390144348, 99.0, 22.0 ],
 					"text" : "row height",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
@@ -762,7 +1492,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1149.0, 903.356079000000022, 54.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 95.25, 472.0, 84.25, 24.0 ],
+					"presentation_rect" : [ 532.258087992668152, 567.741960525512695, 84.25, 24.0 ],
 					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
 				}
 
@@ -776,7 +1506,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1073.5, 881.75, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 379.0, 99.0, 22.0 ],
+					"presentation_rect" : [ 450.537654280662537, 505.376366376876831, 99.0, 22.0 ],
 					"text" : "row height",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
@@ -796,7 +1526,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1073.5, 903.356079000000022, 54.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 95.25, 378.0, 84.25, 24.0 ],
+					"presentation_rect" : [ 532.258087992668152, 504.301097512245178, 84.25, 24.0 ],
 					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
 				}
 
@@ -812,8 +1542,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 4,
+							"minor" : 6,
+							"revision" : 2,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1162,13 +1892,14 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-30",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1607.5, 667.0, 173.0, 22.0 ],
+					"patching_rect" : [ 1607.5, 667.0, 182.0, 38.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 38.5, 540.0, 141.0, 22.0 ],
-					"text" : "enable custom colour",
+					"presentation_rect" : [ 476.344107031822205, 605.376370787620544, 226.0, 22.0 ],
+					"text" : "enable custom colour     R   G   B ",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -1184,7 +1915,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1580.5, 667.0, 24.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 539.0, 24.0, 24.0 ]
+					"presentation_rect" : [ 450.537654280662537, 605.376370787620544, 24.0, 24.0 ]
 				}
 
 			}
@@ -1199,7 +1930,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1585.0, 703.0, 141.0, 76.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 185.5, 540.0, 68.0, 48.0 ],
+					"presentation_rect" : [ 623.655941486358643, 605.376370787620544, 68.0, 48.0 ],
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
@@ -1218,8 +1949,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 4,
+							"minor" : 6,
+							"revision" : 2,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1568,13 +2299,14 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-25",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1408.5, 666.0, 173.0, 22.0 ],
+					"patching_rect" : [ 1408.5, 666.0, 182.0, 38.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 38.5, 447.0, 141.0, 22.0 ],
-					"text" : "enable custom colour",
+					"presentation_rect" : [ 476.344107031822205, 543.01077663898468, 226.0, 22.0 ],
+					"text" : "enable custom colour     R   G   B ",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -1590,7 +2322,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1381.5, 666.0, 24.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 446.0, 24.0, 24.0 ]
+					"presentation_rect" : [ 450.537654280662537, 541.935507774353027, 24.0, 24.0 ]
 				}
 
 			}
@@ -1605,7 +2337,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1386.0, 702.0, 141.0, 76.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 185.5, 447.0, 68.0, 48.0 ],
+					"presentation_rect" : [ 623.655941486358643, 543.01077663898468, 68.0, 48.0 ],
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
@@ -1624,8 +2356,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 4,
+							"minor" : 6,
+							"revision" : 2,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1974,13 +2706,14 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-20",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1212.5, 665.0, 173.0, 22.0 ],
+					"patching_rect" : [ 1212.5, 665.0, 182.0, 38.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 38.5, 354.0, 141.0, 22.0 ],
-					"text" : "enable custom colour",
+					"presentation_rect" : [ 476.344107031822205, 480.645182490348816, 226.0, 22.0 ],
+					"text" : "enable custom colour     R   G   B ",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -1996,7 +2729,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1185.5, 665.0, 24.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 353.0, 24.0, 24.0 ]
+					"presentation_rect" : [ 450.537654280662537, 479.569913625717163, 24.0, 24.0 ]
 				}
 
 			}
@@ -2011,7 +2744,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1190.0, 701.0, 141.0, 76.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 185.5, 354.0, 68.0, 48.0 ],
+					"presentation_rect" : [ 623.655941486358643, 480.645182490348816, 68.0, 48.0 ],
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
@@ -2024,11 +2757,12 @@
 					"id" : "obj-258",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 763.0, 777.5, 128.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -2066,11 +2800,12 @@
 					"id" : "obj-229",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 763.0, 710.5, 127.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -2126,8 +2861,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 5,
-							"revision" : 4,
+							"minor" : 6,
+							"revision" : 2,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -2168,7 +2903,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "bang" ],
-									"patching_rect" : [ 88.0, 140.6439208984375, 22.0, 22.0 ],
+									"patching_rect" : [ 161.5, 257.0, 22.0, 22.0 ],
 									"text" : "t b"
 								}
 
@@ -2180,7 +2915,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 2,
 									"outlettype" : [ "", "" ],
-									"patching_rect" : [ 118.5, 108.6439208984375, 38.0, 22.0 ],
+									"patching_rect" : [ 165.0, 303.3939208984375, 38.0, 22.0 ],
 									"text" : "zl reg"
 								}
 
@@ -2216,7 +2951,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "int" ],
-									"patching_rect" : [ 146.25, 140.6439208984375, 29.5, 22.0 ],
+									"patching_rect" : [ 219.5, 226.0, 29.5, 22.0 ],
 									"text" : "+ 1"
 								}
 
@@ -2252,7 +2987,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 73.0, 140.6439208984375, 65.0, 22.0 ],
+									"patching_rect" : [ 146.5, 226.0, 65.0, 22.0 ],
 									"text" : "0.2 0.2 0.2"
 								}
 
@@ -2264,7 +2999,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 2,
 									"outlettype" : [ "bang", "" ],
-									"patching_rect" : [ 73.0, 108.6439208984375, 34.0, 22.0 ],
+									"patching_rect" : [ 146.5, 194.0, 34.0, 22.0 ],
 									"text" : "sel 0"
 								}
 
@@ -2276,7 +3011,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 73.0, 267.6439208984375, 113.0, 22.0 ],
+									"patching_rect" : [ 31.5, 230.0, 113.0, 22.0 ],
 									"text" : "slidercolor $1 $2 $3"
 								}
 
@@ -2290,7 +3025,7 @@
 									"numinlets" : 0,
 									"numoutlets" : 1,
 									"outlettype" : [ "int" ],
-									"patching_rect" : [ 103.625, 39.999999898437522, 30.0, 30.0 ]
+									"patching_rect" : [ 177.5, 125.0, 30.0, 30.0 ]
 								}
 
 							}
@@ -2303,7 +3038,7 @@
 									"numinlets" : 0,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 55.5, 39.999999898437522, 30.0, 30.0 ]
+									"patching_rect" : [ 3.0, 176.0, 30.0, 30.0 ]
 								}
 
 							}
@@ -2315,7 +3050,7 @@
 									"maxclass" : "outlet",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 55.5, 491.6439208984375, 30.0, 30.0 ]
+									"patching_rect" : [ 90.0, 468.0, 30.0, 30.0 ]
 								}
 
 							}
@@ -2327,7 +3062,7 @@
 									"maxclass" : "outlet",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 90.5, 491.6439208984375, 30.0, 30.0 ]
+									"patching_rect" : [ 146.5, 397.1439208984375, 30.0, 30.0 ]
 								}
 
 							}
@@ -2510,7 +3245,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1004.5, 881.75, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 286.0, 99.0, 22.0 ],
+					"presentation_rect" : [ 450.537654280662537, 441.935503363609314, 99.0, 22.0 ],
 					"text" : "row height",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
@@ -2520,13 +3255,14 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-207",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1004.5, 665.0, 173.0, 22.0 ],
+					"patching_rect" : [ 1004.5, 665.0, 182.0, 38.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 38.5, 261.0, 141.0, 22.0 ],
-					"text" : "enable custom colour",
+					"presentation_rect" : [ 476.344107031822205, 417.204319477081299, 217.0, 22.0 ],
+					"text" : "enable custom colour     R   G   B ",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -2545,7 +3281,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1004.5, 903.356079000000022, 54.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 95.25, 285.0, 84.25, 24.0 ],
+					"presentation_rect" : [ 532.258087992668152, 440.860234498977661, 84.25, 24.0 ],
 					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
 				}
 
@@ -2561,7 +3297,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 977.5, 665.0, 24.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 260.0, 24.0, 24.0 ]
+					"presentation_rect" : [ 450.537654280662537, 416.129050612449646, 24.0, 24.0 ]
 				}
 
 			}
@@ -2576,11 +3312,11 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 982.0, 701.0, 141.0, 76.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 185.5, 261.0, 68.0, 48.0 ],
+					"presentation_rect" : [ 623.655941486358643, 417.204319477081299, 68.0, 48.0 ],
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
+					"slidercolor" : [ 0.545923322439194, 0.233423322439194, 0.71258998910586, 1.0 ]
 				}
 
 			}
@@ -2604,18 +3340,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 224.0, 549.0, 71.0, 22.0 ],
 					"text" : "prepend vst"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-181",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ -16.0, 607.0, 227.0, 22.0 ],
-					"text" : "vst.ToTape664"
 				}
 
 			}
@@ -2648,11 +3372,12 @@
 					"id" : "obj-176",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 4,
-					"outlettype" : [ "dictionary", "", "", "" ],
-					"patching_rect" : [ 5.0, 573.0, 103.0, 22.0 ],
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ -35.0, 695.0, 103.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
+						"legacy" : 1,
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0
 					}
@@ -2759,8 +3484,8 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1046.0, 1475.5, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 512.0, 71.0, 22.0 ],
-					"text" : "group 4",
+					"presentation_rect" : [ 390.322597861289978, 605.376370787620544, 71.0, 22.0 ],
+					"text" : "row 4",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -2774,8 +3499,8 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1046.0, 1444.5, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 418.0, 71.0, 22.0 ],
-					"text" : "group 3",
+					"presentation_rect" : [ 390.322597861289978, 540.860238909721375, 71.0, 22.0 ],
+					"text" : "row 3",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -2789,8 +3514,8 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1046.0, 1406.5, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 325.0, 71.0, 22.0 ],
-					"text" : "group 2",
+					"presentation_rect" : [ 390.322597861289978, 477.419375896453857, 71.0, 22.0 ],
+					"text" : "row 2",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -2804,8 +3529,8 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1046.0, 1377.5, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 234.0, 71.0, 22.0 ],
-					"text" : "group 1",
+					"presentation_rect" : [ 390.322597861289978, 417.204319477081299, 71.0, 22.0 ],
+					"text" : "row 1",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -2842,7 +3567,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 898.5, 1406.5, 105.0, 22.0 ],
-					"text" : "1 2 3"
+					"text" : "4 7 18 19"
 				}
 
 			}
@@ -2854,7 +3579,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 888.0, 1377.5, 105.0, 22.0 ],
-					"text" : "0 4 5"
+					"text" : "0 16 17 22 23"
 				}
 
 			}
@@ -2914,7 +3639,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 600.5, 1406.5, 280.0, 22.0 ],
-					"text" : "Soften \"Head B\" Flutter"
+					"text" : "DelayL_Ms DelayR_Ms DriveIn Age"
 				}
 
 			}
@@ -3063,7 +3788,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 592.0, 1377.5, 278.0, 22.0 ],
-					"text" : "Input Output Dry/Wet"
+					"text" : "Mix Feedback Width LowCut HighCut"
 				}
 
 			}
@@ -3071,15 +3796,15 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-121",
-					"linecount" : 9,
+					"linecount" : 10,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ -27.0, 825.75, 175.0, 150.0 ],
+					"patching_rect" : [ -27.0, 825.75, 175.0, 166.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 5,
-					"presentation_rect" : [ 266.5, 9.0, 303.0, 86.0 ],
-					"text" : "this plugin's parameters are listed here, assign them to groups 1-4 with the button matrix. all parameters are stored automatically, so you only need add the ones you want to adjust or modulate live",
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 13.0, 94.0, 679.0, 54.0 ],
+					"text" : "this plugin's parameters are listed here, assign them to rows 1-4 with the button matrix to the left. \n\nall parameters are stored automatically, so you only need add the ones you want to adjust or modulate live",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -3088,46 +3813,13 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-120",
-					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 373.0, 376.0, 173.0, 38.0 ],
+					"patching_rect" : [ 373.0, 376.0, 173.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 167.0, 241.0, 22.0 ],
-					"text" : "or pick a vst/au/vst3 to add",
-					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontface" : 1,
-					"fontsize" : 13.9,
-					"id" : "obj-117",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 292.0, 12.0, 177.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 9.0, 177.0, 22.0 ],
-					"text" : "VST PLUGIN MANAGER",
-					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontsize" : 13.9,
-					"id" : "obj-115",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 245.5, 208.0, 173.0, 38.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 98.0, 241.0, 22.0 ],
-					"text" : "already added plugins (select to edit)",
+					"presentation_rect" : [ 13.0, 44.0, 241.0, 22.0 ],
+					"text" : "pick a vst/au/vst3 to add",
 					"textcolor" : [ 1.0, 0.752941176470588, 0.0, 1.0 ]
 				}
 
@@ -3324,7 +4016,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 214.0, 870.0, 263.0, 4312.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 332.5, 117.0, 237.0, 2509.0 ],
+					"presentation_rect" : [ 79.0, 167.0, 237.0, 2509.0 ],
 					"readonly" : 1,
 					"tabmode" : 0,
 					"textcolor" : [ 1.0, 0.576470588235294, 0.0, 1.0 ]
@@ -3338,7 +4030,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 148.0, 784.5, 51.0, 22.0 ],
+					"patching_rect" : [ 148.0, 799.0, 51.0, 22.0 ],
 					"text" : "rows $1"
 				}
 
@@ -3357,7 +4049,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 148.0, 839.0, 66.0, 18.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 266.5, 119.0, 66.0, 18.0 ],
+					"presentation_rect" : [ 13.0, 169.0, 66.0, 18.0 ],
 					"rows" : 1,
 					"scale" : 0
 				}
@@ -3480,7 +4172,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 552.0, 48.0, 175.5, 16.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 7.0, 68.0, 257.5, 22.0 ],
+					"presentation_rect" : [ 235.0, 13.0, 257.5, 22.0 ],
 					"size" : 1.0
 				}
 
@@ -3512,19 +4204,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-72",
-					"linecount" : 4,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 140.5, 296.0, 150.0, 62.0 ],
-					"text" : "output from this one: load the json, find the type and the plugname and the config etc",
-					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"autosave" : 1,
 					"bgmode" : 0,
 					"border" : 0,
@@ -3541,6 +4220,7 @@
 						"valueof" : 						{
 							"parameter_invisible" : 1,
 							"parameter_longname" : "vst~",
+							"parameter_modmode" : 0,
 							"parameter_shortname" : "vst~",
 							"parameter_type" : 3
 						}
@@ -3562,14 +4242,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "ToTape664.vstinfo",
-							"plugindisplayname" : "airwindows ToTape6",
-							"pluginsavedname" : "C74_VST:/ToTape664",
-							"pluginsaveduniqueid" : 1953461365,
+							"pluginname" : "ValhallaDelay.vst3info",
+							"plugindisplayname" : "ValhallaDelay",
+							"pluginsavedname" : "C74_VST3:/ValhallaDelay",
+							"pluginsaveduniqueid" : 616697448,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................F....+....7C...vO....+....7C...3O"
+							"blob" : "1567.VMjLgXgA...O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9DCL4.iKV0zQicUPt3hKl4hKt3BTt3hKt3hKLoGVzMGQt3BTlojQIoGTtEjKt3BRtjESEYEYtfDTAIjKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKtLDRuU0PIMERM0jKt3hc48zLvXTXlg0UYgWSWoUczX0SnQTZKYGRBgzZzDCV0EkUZQ2XV8DZTUTUFAiPNg1Mo8jY1kVUmcmQZc1cFE1YQQUVxUjUjYlKGEFLiYkVzkUUYgWSWoUczX0SngTZKAyLnwDZtHjX3UULhsVTsM0YvXUV3fjPQsVVVgEL2YzXn4hTS81YW8DZtj1RvfjPHQTUFE1YqICU5s1QgsFLogjcyHDSn4hPQs1cVgEM2oGUzPSLXgCRBwDcHMUSn4hPQs1cVgEM2o1T0E0UYgCRBwDcHMDS14xPLYmKCwDdpMjS1gTdLgGRogjYPQUVxUjUjwDNUMUdvjFR1MCdLYmKCwjctLDS2QzTNgmKS4DdpkFRlAEUYIWQVQlTMUEYz0jUOglKosDdTkFRlAEUYIWQVQlTznWX5UkUOglKosDdtLDS14xPLYmKowDMlMDS3wTZLgGRBgDQUYTXmsVaTUFL5IFNHIDSzwzPLYmKCwjctLES2oVZLYmZowDMHIDRDUkQgc1ZxPkcIcUVmEkUOglKosDLHIDRDUkQgc1ZxPkcEECVuQSLYgCRBwDcTkFRlAEUYIWQVQlTEYzXugiUOglKosTLDMTS2A0TLomKC0TLHMjSxPUdLICRBgjTUYjXqUjQiM0XWkkb2Y0SnQTZKYGRBgDUEYjXAASZHc2LBwDZtHTUmETaPgCRRwDctjFRlAUUXYWST8DZDk1R1gjPHQUQFIFQvjFR2MiPLglKnE0ZUYTVnUTLXEGLogjcyfGS5o1TNQiZS4DMPMDS4o1TMkGUS0DZtfWUuEkQi4FLogzcyHDSn4hPQg2ZrM1ZqoVX3fjPLQmKogjYDoWVqASZHY2LR0DZtHTTukEaYASSWoUczX0Sn4RZKYGRBgDQqwVVr0TUZUSUV8DZDk1R1gjPHwDNwL1PUczX3fjPLQmKogjYlQkVscVLPASTW8DZDk1R1gjPH0DNFkkTEYzXqASZHY2LnwjLLMjS4A0TLYmZ4wjcXkGS4Q0PMglKRMUcQYTTqEzQi4FLogjcyHUSn4BdUU2XW8DZtj1RvfjPHYzcVMldQcUV3ASZHY2LR0DZtfVT3UkUhM0YVoEaQc0Sn4RZKACRBgjQIcUV2EEUYoWUsE1ZvjFR1MiTMIiZS4DMpMkSyvTdLcmKo0DMpMUSn4hPT8VTxfkaMUjVukkQigCRBwDcTkFRl4RUZoWSFoEQUYzXvPiUYgCRBwDcTkFRlomdgoVUV8DZtj1R1A0TLECVo0TLXkWSz3xPNoGSCwzcHIDREkzUXgCRBwDcLkGS4wTdLkGSC0TdHkVSx.0PMYmYogjYPQ0XoMmUZQ2XV8DZtj1R1gjPHIUUwH1ZI01XqEEaLgCRBwDctjFRlgTUYkWUrIVLUYTV4oWZHY2LBwDZtfFUq0zUYgWVWkkZQM0Sn4RZKYGRBgzbqYDYLgSLXEGLogjcHIDRvrVLU8VTFMlavjFRz.0TMglKRM1amQUVuMlQZoGLogjdLMUSncCZO4hKt3hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEVtPDTtHzZGI1YMIiXtPDTtLjKPcjKt3hKt3hKt3haTU0PUQDU3sFaicVTWkEQEYzXmEDOujzPu0Fbu4VYtQmO77hUSQ0LPwVcmklaSQWXzUlO.."
 						}
 ,
 						"snapshotlist" : 						{
@@ -3579,19 +4259,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "Dexed",
-									"origin" : "ToTape664.vstinfo",
-									"type" : "VST",
+									"origin" : "ValhallaDelay.vst3info",
+									"type" : "VST3",
 									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "ToTape664.vstinfo",
-										"plugindisplayname" : "airwindows ToTape6",
-										"pluginsavedname" : "C74_VST:/ToTape664",
-										"pluginsaveduniqueid" : 1953461365,
+										"pluginname" : "ValhallaDelay.vst3info",
+										"plugindisplayname" : "ValhallaDelay",
+										"pluginsavedname" : "C74_VST3:/ValhallaDelay",
+										"pluginsaveduniqueid" : 616697448,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................F....+....7C...vO....+....7C...3O"
+										"blob" : "1567.VMjLgXgA...O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9DCL4.iKV0zQicUPt3hKl4hKt3BTt3hKt3hKLoGVzMGQt3BTlojQIoGTtEjKt3BRtjESEYEYtfDTAIjKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKtLDRuU0PIMERM0jKt3hc48zLvXTXlg0UYgWSWoUczX0SnQTZKYGRBgzZzDCV0EkUZQ2XV8DZTUTUFAiPNg1Mo8jY1kVUmcmQZc1cFE1YQQUVxUjUjYlKGEFLiYkVzkUUYgWSWoUczX0SngTZKAyLnwDZtHjX3UULhsVTsM0YvXUV3fjPQsVVVgEL2YzXn4hTS81YW8DZtj1RvfjPHQTUFE1YqICU5s1QgsFLogjcyHDSn4hPQs1cVgEM2oGUzPSLXgCRBwDcHMUSn4hPQs1cVgEM2o1T0E0UYgCRBwDcHMDS14xPLYmKCwDdpMjS1gTdLgGRogjYPQUVxUjUjwDNUMUdvjFR1MCdLYmKCwjctLDS2QzTNgmKS4DdpkFRlAEUYIWQVQlTMUEYz0jUOglKosDdTkFRlAEUYIWQVQlTznWX5UkUOglKosDdtLDS14xPLYmKowDMlMDS3wTZLgGRBgDQUYTXmsVaTUFL5IFNHIDSzwzPLYmKCwjctLES2oVZLYmZowDMHIDRDUkQgc1ZxPkcIcUVmEkUOglKosDLHIDRDUkQgc1ZxPkcEECVuQSLYgCRBwDcTkFRlAEUYIWQVQlTEYzXugiUOglKosTLDMTS2A0TLomKC0TLHMjSxPUdLICRBgjTUYjXqUjQiM0XWkkb2Y0SnQTZKYGRBgDUEYjXAASZHc2LBwDZtHTUmETaPgCRRwDctjFRlAUUXYWST8DZDk1R1gjPHQUQFIFQvjFR2MiPLglKnE0ZUYTVnUTLXEGLogjcyfGS5o1TNQiZS4DMPMDS4o1TMkGUS0DZtfWUuEkQi4FLogzcyHDSn4hPQg2ZrM1ZqoVX3fjPLQmKogjYDoWVqASZHY2LR0DZtHTTukEaYASSWoUczX0Sn4RZKYGRBgDQqwVVr0TUZUSUV8DZDk1R1gjPHwDNwL1PUczX3fjPLQmKogjYlQkVscVLPASTW8DZDk1R1gjPH0DNFkkTEYzXqASZHY2LnwjLLMjS4A0TLYmZ4wjcXkGS4Q0PMglKRMUcQYTTqEzQi4FLogjcyHUSn4BdUU2XW8DZtj1RvfjPHYzcVMldQcUV3ASZHY2LR0DZtfVT3UkUhM0YVoEaQc0Sn4RZKACRBgjQIcUV2EEUYoWUsE1ZvjFR1MiTMIiZS4DMpMkSyvTdLcmKo0DMpMUSn4hPT8VTxfkaMUjVukkQigCRBwDcTkFRl4RUZoWSFoEQUYzXvPiUYgCRBwDcTkFRlomdgoVUV8DZtj1R1A0TLECVo0TLXkWSz3xPNoGSCwzcHIDREkzUXgCRBwDcLkGS4wTdLkGSC0TdHkVSx.0PMYmYogjYPQ0XoMmUZQ2XV8DZtj1R1gjPHIUUwH1ZI01XqEEaLgCRBwDctjFRlgTUYkWUrIVLUYTV4oWZHY2LBwDZtfFUq0zUYgWVWkkZQM0Sn4RZKYGRBgzbqYDYLgSLXEGLogjcHIDRvrVLU8VTFMlavjFRz.0TMglKRM1amQUVuMlQZoGLogjdLMUSncCZO4hKt3hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEVtPDTtHzZGI1YMIiXtPDTtLjKPcjKt3hKt3hKt3haTU0PUQDU3sFaicVTWkEQEYzXmEDOujzPu0Fbu4VYtQmO77hUSQ0LPwVcmklaSQWXzUlO.."
 									}
 ,
 									"fileref" : 									{
@@ -3599,7 +4279,7 @@
 										"filename" : "Dexed.maxsnap",
 										"filepath" : "~/Documents/james music/rhizome 5/data",
 										"filepos" : -1,
-										"snapshotfileid" : "3c1b2f117389f711be057841cf30c749"
+										"snapshotfileid" : "5cfb5b8294781cae18fb68fd0ab44bad"
 									}
 
 								}
@@ -3701,16 +4381,17 @@
 , 			{
 				"box" : 				{
 					"fontsize" : 13.9,
+					"hidden" : 1,
 					"id" : "obj-59",
-					"items" : [ "vst.TAL-Chorus-LX-64.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ValhallaDelay_x64.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ValhallaDelay_x64.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ValhallaDelay_x64.json", ",", "vst.Crystal64.json", ",", "vst.CStrip64.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ValhallaDelay_x64.json", ",", "vst.CStrip64.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ValhallaDelay.json", ",", "vst.ValhallaRoom.json", ",", "vst.ValhallaUberMod.json", ",", "vst.Capacitor264.json", ",", "vst.CStrip64.json", ",", "vst.DeRez264.json", ",", "vst.Distortion64.json", ",", "vst.Elation64.json", ",", "vst.Focus64.json", ",", "vst.GSnap.json", ",", "vst.MackEQ64.json", ",", "vst.Mojo64.json", ",", "vst.PitchNasty64.json", ",", "vst.Pockey264.json", ",", "vst.Pressure464.json", ",", "vst.Pro-C.2.json", ",", "vst.RatshackReverb2.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ToTape664.json", ",", "vst.ValhallaDelay.json", ",", "vst.ValhallaFreqEcho_x64.json", ",", "vst.ValhallaRoom.json", ",", "vst.ValhallaSpaceModulator.json", ",", "vst.ValhallaSupermassive_x64.json", ",", "vst.ValhallaUberMod.json", ",", "vst.ZBandpass264.json", ",", "vst.ZHighpass264.json", ",", "vst.ZLowpass264.json", ",", "vst.ZNotch264.json", ",", "vst.ZRegion264.json" ],
+					"items" : [ "vst.Capacitor264.json", ",", "vst.DPiano-E.json", ",", "vst.Elation64.json", ",", "vst.Mojo64.json", ",", "vst.Pressure464.json", ",", "vst.Pro-C.2.json", ",", "vst.RatshackReverb2.json", ",", "vst.TAL-Chorus-LX-64.json", ",", "vst.ToTape664.json", ",", "vst.ValhallaDelay.json", ",", "vst.ValhallaFreqEcho_x64.json", ",", "vst.ValhallaRoom.json", ",", "vst.ValhallaSpaceModulator.json", ",", "vst.ValhallaSupermassive_x64.json", ",", "vst.ValhallaUberMod.json", ",", "vst.ZBandpass264.json", ",", "vst.ZHighpass264.json", ",", "vst.ZLowpass264.json", ",", "vst.ZNotch264.json", ",", "vst.ZRegion264.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 138.5, 259.75, 202.0, 24.0 ],
+					"patching_rect" : [ 139.0, 293.0, 202.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 122.0, 241.0, 24.0 ]
+					"presentation_rect" : [ 500.0, 43.0, 192.0, 24.0 ]
 				}
 
 			}
@@ -3721,7 +4402,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 138.5, 227.75, 96.0, 22.0 ],
+					"patching_rect" : [ 139.0, 258.0, 96.0, 22.0 ],
 					"text" : "prepend append"
 				}
 
@@ -3733,7 +4414,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 103.0, 195.0, 90.0, 22.0 ],
+					"patching_rect" : [ 103.0, 225.0, 90.0, 22.0 ],
 					"text" : "regexp vst\\\\.(.*)"
 				}
 
@@ -3745,7 +4426,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 103.0, 163.0, 79.0, 22.0 ],
+					"patching_rect" : [ 103.0, 193.0, 79.0, 22.0 ],
 					"text" : "route append"
 				}
 
@@ -3791,7 +4472,7 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-54",
-					"items" : [ "vst", "Acceleration264", ",", "vst", "Acceleration64", ",", "vst", "ADClip764", ",", "vst", "ADT64", ",", "vst", "Air264", ",", "vst", "Air64", ",", "vst", "Apicolypse64", ",", "vst", "AQuickVoiceClip64", ",", "vst", "AtmosphereBuss64", ",", "vst", "AtmosphereChannel64", ",", "vst", "Aura64", ",", "vst", "AutoPan64", ",", "vst", "Average64", ",", "vst", "AverMatrix64", ",", "vst", "Balanced64", ",", "vst", "BassAmp64", ",", "vst", "BassDrive64", ",", "vst", "BassKit64", ",", "vst", "Baxandall264", ",", "vst", "Baxandall64", ",", "vst", "Beam64", ",", "vst", "BigAmp64", ",", "vst", "Biquad264", ",", "vst", "Biquad64", ",", "vst", "BiquadDouble64", ",", "vst", "BiquadOneHalf64", ",", "vst", "BiquadPlus64", ",", "vst", "BiquadTriple64", ",", "vst", "Bite64", ",", "vst", "BitGlitter64", ",", "vst", "BitShiftGain64", ",", "vst", "BlockParty64", ",", "vst", "BrassRider64", ",", "vst", "BrightAmbience264", ",", "vst", "BrightAmbience364", ",", "vst", "BrightAmbience64", ",", "vst", "BuildATPDF64", ",", "vst", "BussColors464", ",", "vst", "ButterComp264", ",", "vst", "ButterComp64", ",", "vst", "C5RawBuss64", ",", "vst", "C5RawChannel64", ",", "vst", "Cabs64", ",", "vst", "Calibre64", ",", "vst", "Capacitor264", ",", "vst", "Capacitor64", ",", "vst", "Chamber264", ",", "vst", "Chamber64", ",", "vst", "Channel464", ",", "vst", "Channel564", ",", "vst", "Channel664", ",", "vst", "Channel764", ",", "vst", "Channel864", ",", "vst", "Channel964", ",", "vst", "Chorus64", ",", "vst", "ChorusEnsemble64", ",", "vst", "ChromeOxide64", ",", "vst", "Cider64", ",", "vst", "ClipOnly264", ",", "vst", "ClipOnly64", ",", "vst", "ClipSoftly64", ",", "vst", "Coils264", ",", "vst", "Coils64", ",", "vst", "Cojones64", ",", "vst", "Compresaturator64", ",", "vst", "Console4Buss64", ",", "vst", "Console4Channel64", ",", "vst", "Console5Buss64", ",", "vst", "Console5Channel64", ",", "vst", "Console5DarkCh64", ",", "vst", "Console6Buss64", ",", "vst", "Console6Channel64", ",", "vst", "Console7Buss64", ",", "vst", "Console7Cascade64", ",", "vst", "Console7Channel64", ",", "vst", "Console7Crunch64", ",", "vst", "Console8BussHype64", ",", "vst", "Console8BussIn64", ",", "vst", "Console8BussOut64", ",", "vst", "Console8ChannelHype64", ",", "vst", "Console8ChannelIn64", ",", "vst", "Console8ChannelOut64", ",", "vst", "Console8LiteBuss64", ",", "vst", "Console8LiteChannel64", ",", "vst", "Console8SubHype64", ",", "vst", "Console8SubIn64", ",", "vst", "Console8SubOut64", ",", "vst", "CrunchyGrooveWear64", ",", "vst", "Crystal64", ",", "vst", "CStrip64", ",", "vst", "curve64", ",", "vst", "Dark64", ",", "vst", "DarkNoise64", ",", "vst", "DCVoltage64", ",", "vst", "DeBess64", ",", "vst", "Deckwrecka64", ",", "vst", "DeEss64", ",", "vst", "DeHiss64", ",", "vst", "Density264", ",", "vst", "Density64", ",", "vst", "DeRez264", ",", "vst", "DeRez64", ",", "vst", "Desk464", ",", "vst", "Desk64", ",", "vst", "DigitalBlack64", ",", "vst", "Dirt64", ",", "vst", "Distance264", ",", "vst", "Distance64", ",", "vst", "Distortion64", ",", "vst", "Ditherbox64", ",", "vst", "DitherFloat64", ",", "vst", "DitherMeDiskers64", ",", "vst", "DitherMeTimbers64", ",", "vst", "Doublelay64", ",", "vst", "DoublePaul64", ",", "vst", "Drive64", ",", "vst", "DrumSlam64", ",", "vst", "DubCenter64", ",", "vst", "Dubly64", ",", "vst", "DubSub64", ",", "vst", "DustBunny64", ",", "vst", "Dynamics64", ",", "vst", "Dyno64", ",", "vst", "Edge64", ",", "vst", "EdIsDim64", ",", "vst", "Elation64", ",", "vst", "ElectroHat64", ",", "vst", "Energy264", ",", "vst", "Energy64", ",", "vst", "Ensemble64", ",", "vst", "EQ64", ",", "vst", "EveryTrim64", ",", "vst", "Exciter64", ",", "vst", "Facet64", ",", "vst", "FathomFive64", ",", "vst", "FireAmp64", ",", "vst", "Flipity64", ",", "vst", "Floor64", ",", "vst", "Flutter64", ",", "vst", "Focus64", ",", "vst", "Fracture64", ",", "vst", "FromTape64", ",", "vst", "Galactic64", ",", "vst", "Gatelope64", ",", "vst", "GlitchShifter64", ",", "vst", "Golem64", ",", "vst", "GrindAmp64", ",", "vst", "Gringer64", ",", "vst", "GrooveWear64", ",", "vst", "GSnap", ",", "vst", "GuitarConditioner64", ",", "vst", "HardVacuum64", ",", "vst", "Hermepass64", ",", "vst", "HermeTrim64", ",", "vst", "HighGlossDither64", ",", "vst", "HighImpact64", ",", "vst", "Highpass264", ",", "vst", "Highpass64", ",", "vst", "Holt264", ",", "vst", "Holt64", ",", "vst", "Hombre64", ",", "vst", "Hull64", ",", "vst", "Hype64", ",", "vst", "Hypersonic64", ",", "vst", "HypersonX64", ",", "vst", "Infinity264", ",", "vst", "Infinity64", ",", "vst", "Infrasonic64", ",", "vst", "Interstage64", ",", "vst", "IronOxide564", ",", "vst", "IronOxideClassic264", ",", "vst", "IronOxideClassic64", ",", "vst", "Isolator264", ",", "vst", "Isolator64", ",", "vst", "LeadAmp64", ",", "vst", "LeftoMono64", ",", "vst", "LilAmp64", ",", "vst", "Logical464", ",", "vst", "Loud64", ",", "vst", "Lowpass264", ",", "vst", "Lowpass64", ",", "vst", "LRFlipTimer64", ",", "vst", "Luxor64", ",", "vst", "MackEQ64", ",", "vst", "Mackity64", ",", "vst", "MatrixVerb64", ",", "vst", "Melt64", ",", "vst", "MidAmp64", ",", "vst", "MidSide64", ",", "vst", "Mojo64", ",", "vst", "Monitoring264", ",", "vst", "Monitoring364", ",", "vst", "Monitoring64", ",", "vst", "MoNoam64", ",", "vst", "MultiBandDistortion64", ",", "vst", "MV64", ",", "vst", "NaturalizeDither64", ",", "vst", "NC-1764", ",", "vst", "Neverland64", ",", "vst", "Nikola64", ",", "vst", "NodeDither64", ",", "vst", "Noise64", ",", "vst", "NonlinearSpace64", ",", "vst", "NotJustAnotherCD64", ",", "vst", "NotJustAnotherDither64", ",", "vst", "OneCornerClip64", ",", "vst", "Pafnuty64", ",", "vst", "PaulDither64", ",", "vst", "PaulWide64", ",", "vst", "PDBuss64", ",", "vst", "PDChannel64", ",", "vst", "PeaksOnly64", ",", "vst", "PhaseNudge64", ",", "vst", "PitchDelay64", ",", "vst", "PitchNasty64", ",", "vst", "PocketVerbs64", ",", "vst", "Pockey264", ",", "vst", "Pockey64", ",", "vst", "Podcast64", ",", "vst", "PodcastDeluxe64", ",", "vst", "Point64", ",", "vst", "Pop264", ",", "vst", "Pop64", ",", "vst", "PowerSag264", ",", "vst", "PowerSag64", ",", "vst", "Precious64", ",", "vst", "Preponderant64", ",", "vst", "Pressure464", ",", "vst", "Pressure564", ",", "vst", "PurestAir64", ",", "vst", "PurestConsole2Buss64", ",", "vst", "PurestConsole2Channel64", ",", "vst", "PurestConsoleBuss64", ",", "vst", "PurestConsoleChannel64", ",", "vst", "PurestDrive64", ",", "vst", "PurestEcho64", ",", "vst", "PurestFade64", ",", "vst", "PurestGain64", ",", "vst", "PurestSquish64", ",", "vst", "PurestWarm264", ",", "vst", "PurestWarm64", ",", "vst", "Pyewacket64", ",", "vst", "RatshackReverb2", ",", "vst", "RawGlitters64", ",", "vst", "RawTimbers64", ",", "vst", "Recurve64", ",", "vst", "Remap64", ",", "vst", "ResEQ64", ",", "vst", "Reverb64", ",", "vst", "Righteous464", ",", "vst", "RightoMono64", ",", "vst", "Shape64", ",", "vst", "SideDull64", ",", "vst", "Sidepass64", ",", "vst", "Silhouette64", ",", "vst", "SingleEndedTriode64", ",", "vst", "Slew264", ",", "vst", "Slew364", ",", "vst", "Slew64", ",", "vst", "SlewOnly64", ",", "vst", "SlewSonic64", ",", "vst", "Smooth64", ",", "vst", "SoftGate64", ",", "vst", "SpatializeDither64", ",", "vst", "Spiral264", ",", "vst", "Spiral64", ",", "vst", "Srsly264", ",", "vst", "Srsly64", ",", "vst", "StarChild64", ",", "vst", "StereoChorus64", ",", "vst", "StereoDoubler64", ",", "vst", "StereoEnsemble64", ",", "vst", "StereoFX64", ",", "vst", "StudioTan64", ",", "vst", "SubsOnly64", ",", "vst", "Surge64", ",", "vst", "SurgeTide64", ",", "vst", "Swell64", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "Tape64", ",", "vst", "TapeDelay264", ",", "vst", "TapeDelay64", ",", "vst", "TapeDither64", ",", "vst", "TapeDust64", ",", "vst", "TapeFat64", ",", "vst", "TB_Barricade_v3", ",", "vst", "TB_Broadcast_v3", ",", "vst", "TB_BusCompressor_v3", ",", "vst", "TB_Compressor_v3", ",", "vst", "TB_DeEsser_v3", ",", "vst", "TB_Dither_v3", ",", "vst", "TB_EBUCompact_v3(2014)", ",", "vst", "TB_EBULoudness_v3(2014)", ",", "vst", "TB_Equalizer_v3", ",", "vst", "TB_Evoke_v3", ",", "vst", "TB_EZQ_v3", ",", "vst", "TB_Ferox_v3", ",", "vst", "TB_FlX4_v3", ",", "vst", "TB_FlX_v3", ",", "vst", "TB_Gate_v3", ",", "vst", "TB_Isone_v3", ",", "vst", "TB_MidSideTransformer_v3", ",", "vst", "TB_Module_v3", ",", "vst", "TB_ReelBus_v3", ",", "vst", "TB_Reverb_v3", ",", "vst", "TB_Sibalance_v3", ",", "vst", "TB_TimeMachine_v3", ",", "vst", "TB_VoicePitcher_v3", ",", "vst", "Texturize64", ",", "vst", "TexturizeMS64", ",", "vst", "Thunder64", ",", "vst", "ToneSlant64", ",", "vst", "ToTape564", ",", "vst", "ToTape664", ",", "vst", "ToVinyl464", ",", "vst", "TPDFDither64", ",", "vst", "TPDFWide64", ",", "vst", "TransDesk64", ",", "vst", "Tremolo64", ",", "vst", "TremoSquare64", ",", "vst", "TripleSpread64", ",", "vst", "Tube264", ",", "vst", "Tube64", ",", "vst", "TubeDesk64", ",", "vst", "uLawDecode64", ",", "vst", "uLawEncode64", ",", "vst", "Ultrasonic64", ",", "vst", "UltrasonicLite64", ",", "vst", "UltrasonicMed64", ",", "vst", "UltrasonX64", ",", "vst", "UnBox64", ",", "vst", "ValhallaDelay_x64", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ValhallaRoom_x64", ",", "vst", "ValhallaShimmer_x64", ",", "vst", "ValhallaSpaceModulator_x64", ",", "vst", "ValhallaSupermassive_x64", ",", "vst", "ValhallaUberMod_x64", ",", "vst", "ValhallaVintageVerb_x64", ",", "vst", "VariMu64", ",", "vst", "Verbity264", ",", "vst", "Verbity64", ",", "vst", "Vibrato64", ",", "vst", "VinylDither64", ",", "vst", "VoiceOfTheStarship64", ",", "vst", "VoiceTrick64", ",", "vst", "Weight64", ",", "vst", "Wider64", ",", "vst", "XBandpass64", ",", "vst", "XHighpass64", ",", "vst", "XLowpass64", ",", "vst", "XNotch64", ",", "vst", "XRegion64", ",", "vst", "YBandpass64", ",", "vst", "YHighpass64", ",", "vst", "YLowpass64", ",", "vst", "YNotch64", ",", "vst", "ZBandpass264", ",", "vst", "ZBandpass64", ",", "vst", "ZHighpass264", ",", "vst", "ZHighpass64", ",", "vst", "ZLowpass264", ",", "vst", "ZLowpass64", ",", "vst", "ZNotch264", ",", "vst", "ZNotch64", ",", "vst", "ZRegion264", ",", "vst", "ZRegion64", ",", "vst3", "Pro-C 2", ",", "vst3", "Pro-Q 3", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaFreqEcho", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaShimmer", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaSupermassive", ",", "vst3", "ValhallaUberMod", ",", "vst3", "ValhallaVintageVerb" ],
+					"items" : [ "vst", "Acceleration264", ",", "vst", "Acceleration64", ",", "vst", "ADClip764", ",", "vst", "ADT64", ",", "vst", "Air264", ",", "vst", "Air64", ",", "vst", "Apicolypse64", ",", "vst", "AQuickVoiceClip64", ",", "vst", "AtmosphereBuss64", ",", "vst", "AtmosphereChannel64", ",", "vst", "Aura64", ",", "vst", "AutoPan64", ",", "vst", "Average64", ",", "vst", "AverMatrix64", ",", "vst", "Balanced64", ",", "vst", "BassAmp64", ",", "vst", "BassDrive64", ",", "vst", "BassKit64", ",", "vst", "Baxandall264", ",", "vst", "Baxandall64", ",", "vst", "Beam64", ",", "vst", "BigAmp64", ",", "vst", "Biquad264", ",", "vst", "Biquad64", ",", "vst", "BiquadDouble64", ",", "vst", "BiquadOneHalf64", ",", "vst", "BiquadPlus64", ",", "vst", "BiquadTriple64", ",", "vst", "Bite64", ",", "vst", "BitGlitter64", ",", "vst", "BitShiftGain64", ",", "vst", "BitShiftPan64", ",", "vst", "BlockParty64", ",", "vst", "BrassRider64", ",", "vst", "BrightAmbience264", ",", "vst", "BrightAmbience364", ",", "vst", "BrightAmbience64", ",", "vst", "BuildATPDF64", ",", "vst", "BussColors464", ",", "vst", "ButterComp264", ",", "vst", "ButterComp64", ",", "vst", "C5RawBuss64", ",", "vst", "C5RawChannel64", ",", "vst", "Cabs64", ",", "vst", "Calibre64", ",", "vst", "Capacitor264", ",", "vst", "Capacitor64", ",", "vst", "Chamber264", ",", "vst", "Chamber64", ",", "vst", "Channel464", ",", "vst", "Channel564", ",", "vst", "Channel664", ",", "vst", "Channel764", ",", "vst", "Channel864", ",", "vst", "Channel964", ",", "vst", "Chorus64", ",", "vst", "ChorusEnsemble64", ",", "vst", "ChromeOxide64", ",", "vst", "Cider64", ",", "vst", "ClipOnly264", ",", "vst", "ClipOnly64", ",", "vst", "ClipSoftly64", ",", "vst", "Coils264", ",", "vst", "Coils64", ",", "vst", "Cojones64", ",", "vst", "Compresaturator64", ",", "vst", "Console0Buss64", ",", "vst", "Console0Channel64", ",", "vst", "Console4Buss64", ",", "vst", "Console4Channel64", ",", "vst", "Console5Buss64", ",", "vst", "Console5Channel64", ",", "vst", "Console5DarkCh64", ",", "vst", "Console6Buss64", ",", "vst", "Console6Channel64", ",", "vst", "Console7Buss64", ",", "vst", "Console7Cascade64", ",", "vst", "Console7Channel64", ",", "vst", "Console7Crunch64", ",", "vst", "Console8BussHype64", ",", "vst", "Console8BussIn64", ",", "vst", "Console8BussOut64", ",", "vst", "Console8ChannelHype64", ",", "vst", "Console8ChannelIn64", ",", "vst", "Console8ChannelOut64", ",", "vst", "Console8LiteBuss64", ",", "vst", "Console8LiteChannel64", ",", "vst", "Console8SubHype64", ",", "vst", "Console8SubIn64", ",", "vst", "Console8SubOut64", ",", "vst", "Creature64", ",", "vst", "CrunchyGrooveWear64", ",", "vst", "Crystal64", ",", "vst", "CStrip264", ",", "vst", "CStrip64", ",", "vst", "curve64", ",", "vst", "Dark64", ",", "vst", "DarkNoise64", ",", "vst", "DCVoltage64", ",", "vst", "DeBess64", ",", "vst", "Deckwrecka64", ",", "vst", "DeEss64", ",", "vst", "DeHiss64", ",", "vst", "Density264", ",", "vst", "Density64", ",", "vst", "DeRez264", ",", "vst", "DeRez64", ",", "vst", "Desk464", ",", "vst", "Desk64", ",", "vst", "DigitalBlack64", ",", "vst", "Dirt64", ",", "vst", "Distance264", ",", "vst", "Distance64", ",", "vst", "Distortion64", ",", "vst", "Ditherbox64", ",", "vst", "DitherFloat64", ",", "vst", "DitherMeDiskers64", ",", "vst", "DitherMeTimbers64", ",", "vst", "Doublelay64", ",", "vst", "DoublePaul64", ",", "vst", "Drive64", ",", "vst", "DrumSlam64", ",", "vst", "DubCenter64", ",", "vst", "Dubly64", ",", "vst", "DubSub64", ",", "vst", "DustBunny64", ",", "vst", "Dynamics64", ",", "vst", "Dyno64", ",", "vst", "Edge64", ",", "vst", "EdIsDim64", ",", "vst", "Elation64", ",", "vst", "ElectroHat64", ",", "vst", "Energy264", ",", "vst", "Energy64", ",", "vst", "Ensemble64", ",", "vst", "EQ64", ",", "vst", "EveryConsole64", ",", "vst", "EverySlew64", ",", "vst", "EveryTrim64", ",", "vst", "Exciter64", ",", "vst", "Facet64", ",", "vst", "FathomFive64", ",", "vst", "FireAmp64", ",", "vst", "Flipity64", ",", "vst", "Floor64", ",", "vst", "Flutter64", ",", "vst", "Focus64", ",", "vst", "Fracture264", ",", "vst", "Fracture64", ",", "vst", "FromTape64", ",", "vst", "Galactic264", ",", "vst", "Galactic64", ",", "vst", "GalacticVibe64", ",", "vst", "Gatelope64", ",", "vst", "GlitchShifter64", ",", "vst", "GoldenSlew64", ",", "vst", "Golem64", ",", "vst", "GrindAmp64", ",", "vst", "Gringer64", ",", "vst", "GrooveWear64", ",", "vst", "GuitarConditioner64", ",", "vst", "HardVacuum64", ",", "vst", "Hermepass64", ",", "vst", "HermeTrim64", ",", "vst", "HighGlossDither64", ",", "vst", "HighImpact64", ",", "vst", "Highpass264", ",", "vst", "Highpass64", ",", "vst", "Holt264", ",", "vst", "Holt64", ",", "vst", "Hombre64", ",", "vst", "Huge64", ",", "vst", "Hull64", ",", "vst", "Hype64", ",", "vst", "Hypersonic64", ",", "vst", "HypersonX64", ",", "vst", "Infinity264", ",", "vst", "Infinity64", ",", "vst", "Inflamer64", ",", "vst", "Infrasonic64", ",", "vst", "Interstage64", ",", "vst", "IronOxide564", ",", "vst", "IronOxideClassic264", ",", "vst", "IronOxideClassic64", ",", "vst", "Isolator264", ",", "vst", "Isolator64", ",", "vst", "kChamberAR64", ",", "vst", "kPlateA64", ",", "vst", "kPlateB64", ",", "vst", "kPlateC64", ",", "vst", "kPlateD64", ",", "vst", "LeadAmp64", ",", "vst", "LeftoMono64", ",", "vst", "LilAmp64", ",", "vst", "Logical464", ",", "vst", "Loud64", ",", "vst", "Lowpass264", ",", "vst", "Lowpass64", ",", "vst", "LRFlipTimer64", ",", "vst", "Luxor64", ",", "vst", "MackEQ64", ",", "vst", "Mackity64", ",", "vst", "MatrixVerb64", ",", "vst", "Melt64", ",", "vst", "MidAmp64", ",", "vst", "MidSide64", ",", "vst", "Mojo64", ",", "vst", "Monitoring264", ",", "vst", "Monitoring364", ",", "vst", "Monitoring64", ",", "vst", "MoNoam64", ",", "vst", "MultiBandDistortion64", ",", "vst", "MV264", ",", "vst", "MV64", ",", "vst", "NaturalizeDither64", ",", "vst", "NC-1764", ",", "vst", "Neverland64", ",", "vst", "Nikola64", ",", "vst", "NodeDither64", ",", "vst", "Noise64", ",", "vst", "NonlinearSpace64", ",", "vst", "NotJustAnotherCD64", ",", "vst", "NotJustAnotherDither64", ",", "vst", "OneCornerClip64", ",", "vst", "OrbitKick64", ",", "vst", "Pafnuty264", ",", "vst", "Pafnuty64", ",", "vst", "PaulDither64", ",", "vst", "PaulWide64", ",", "vst", "PDBuss64", ",", "vst", "PDChannel64", ",", "vst", "PeaksOnly64", ",", "vst", "Pear64", ",", "vst", "PhaseNudge64", ",", "vst", "PitchDelay64", ",", "vst", "PitchNasty64", ",", "vst", "PlatinumSlew64", ",", "vst", "PocketVerbs64", ",", "vst", "Pockey264", ",", "vst", "Pockey64", ",", "vst", "Podcast64", ",", "vst", "PodcastDeluxe64", ",", "vst", "Point64", ",", "vst", "Pop264", ",", "vst", "Pop64", ",", "vst", "PowerSag264", ",", "vst", "PowerSag64", ",", "vst", "Precious64", ",", "vst", "Preponderant64", ",", "vst", "Pressure464", ",", "vst", "Pressure564", ",", "vst", "PurestAir64", ",", "vst", "PurestConsole2Buss64", ",", "vst", "PurestConsole2Channel64", ",", "vst", "PurestConsole3Buss64", ",", "vst", "PurestConsole3Channel64", ",", "vst", "PurestConsoleBuss64", ",", "vst", "PurestConsoleChannel64", ",", "vst", "PurestDrive64", ",", "vst", "PurestEcho64", ",", "vst", "PurestFade64", ",", "vst", "PurestGain64", ",", "vst", "PurestSquish64", ",", "vst", "PurestWarm264", ",", "vst", "PurestWarm64", ",", "vst", "Pyewacket64", ",", "vst", "RawGlitters64", ",", "vst", "RawTimbers64", ",", "vst", "Recurve64", ",", "vst", "Remap64", ",", "vst", "ResEQ64", ",", "vst", "Reverb64", ",", "vst", "Righteous464", ",", "vst", "RightoMono64", ",", "vst", "SampleDelay64", ",", "vst", "Shape64", ",", "vst", "SideDull64", ",", "vst", "Sidepass64", ",", "vst", "Silhouette64", ",", "vst", "SingleEndedTriode64", ",", "vst", "Slew264", ",", "vst", "Slew364", ",", "vst", "Slew64", ",", "vst", "SlewOnly64", ",", "vst", "SlewSonic64", ",", "vst", "Smooth64", ",", "vst", "SoftGate64", ",", "vst", "SpatializeDither64", ",", "vst", "Spiral264", ",", "vst", "Spiral64", ",", "vst", "Srsly264", ",", "vst", "Srsly64", ",", "vst", "StarChild264", ",", "vst", "StarChild64", ",", "vst", "StereoChorus64", ",", "vst", "StereoDoubler64", ",", "vst", "StereoEnsemble64", ",", "vst", "StereoFX64", ",", "vst", "StudioTan64", ",", "vst", "SubsOnly64", ",", "vst", "Surge64", ",", "vst", "SurgeTide64", ",", "vst", "Sweeten64", ",", "vst", "Swell64", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "Tape64", ",", "vst", "TapeDelay264", ",", "vst", "TapeDelay64", ",", "vst", "TapeDither64", ",", "vst", "TapeDust64", ",", "vst", "TapeFat64", ",", "vst", "Texturize64", ",", "vst", "TexturizeMS64", ",", "vst", "Thunder64", ",", "vst", "ToneSlant64", ",", "vst", "ToTape564", ",", "vst", "ToTape664", ",", "vst", "ToVinyl464", ",", "vst", "TPDFDither64", ",", "vst", "TPDFWide64", ",", "vst", "TransDesk64", ",", "vst", "Tremolo64", ",", "vst", "TremoSquare64", ",", "vst", "TripleSpread64", ",", "vst", "Tube264", ",", "vst", "Tube64", ",", "vst", "TubeDesk64", ",", "vst", "uLawDecode64", ",", "vst", "uLawEncode64", ",", "vst", "Ultrasonic64", ",", "vst", "UltrasonicLite64", ",", "vst", "UltrasonicMed64", ",", "vst", "UltrasonX64", ",", "vst", "UnBox64", ",", "vst", "ValhallaDelay_x64", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ValhallaPlate_x64", ",", "vst", "ValhallaRoom_x64", ",", "vst", "ValhallaShimmer_x64", ",", "vst", "ValhallaSpaceModulator_x64", ",", "vst", "ValhallaUberMod_x64", ",", "vst", "ValhallaVintageVerb_x64", ",", "vst", "VariMu64", ",", "vst", "Verbity264", ",", "vst", "Verbity64", ",", "vst", "Vibrato64", ",", "vst", "VinylDither64", ",", "vst", "VoiceOfTheStarship64", ",", "vst", "VoiceTrick64", ",", "vst", "Weight64", ",", "vst", "Wider64", ",", "vst", "XBandpass64", ",", "vst", "XHighpass64", ",", "vst", "XLowpass64", ",", "vst", "XNotch64", ",", "vst", "XRegion64", ",", "vst", "YBandpass64", ",", "vst", "YHighpass64", ",", "vst", "YLowpass64", ",", "vst", "YNotch64", ",", "vst", "ZBandpass264", ",", "vst", "ZBandpass64", ",", "vst", "ZHighpass264", ",", "vst", "ZHighpass64", ",", "vst", "ZLowpass264", ",", "vst", "ZLowpass64", ",", "vst", "ZNotch264", ",", "vst", "ZNotch64", ",", "vst", "ZRegion264", ",", "vst", "ZRegion64", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaFreqEcho", ",", "vst3", "ValhallaPlate", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaShimmer", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaUberMod", ",", "vst3", "ValhallaVintageVerb" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -3799,7 +4480,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 373.0, 475.0, 192.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 12.5, 193.0, 241.0, 24.0 ]
+					"presentation_rect" : [ 241.0, 43.0, 241.0, 24.0 ]
 				}
 
 			}
@@ -3851,7 +4532,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 552.0, 67.0, 175.5, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 13.0, 68.0, 240.5, 24.0 ]
+					"presentation_rect" : [ 241.0, 13.0, 240.5, 24.0 ]
 				}
 
 			}
@@ -3909,7 +4590,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-34",
-					"items" : [ "Pro-C 2", ",", "Pro-Q 3", ",", "ValhallaDelay", ",", "ValhallaFreqEcho", ",", "ValhallaRoom", ",", "ValhallaShimmer", ",", "ValhallaSpaceModulator", ",", "ValhallaSupermassive", ",", "ValhallaUberMod", ",", "ValhallaVintageVerb" ],
+					"items" : [ "ValhallaDelay", ",", "ValhallaFreqEcho", ",", "ValhallaPlate", ",", "ValhallaRoom", ",", "ValhallaShimmer", ",", "ValhallaSpaceModulator", ",", "ValhallaUberMod", ",", "ValhallaVintageVerb" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -3959,7 +4640,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-9",
-					"items" : [ "Acceleration264", ",", "Acceleration64", ",", "ADClip764", ",", "ADT64", ",", "Air264", ",", "Air64", ",", "Apicolypse64", ",", "AQuickVoiceClip64", ",", "AtmosphereBuss64", ",", "AtmosphereChannel64", ",", "Aura64", ",", "AutoPan64", ",", "Average64", ",", "AverMatrix64", ",", "Balanced64", ",", "BassAmp64", ",", "BassDrive64", ",", "BassKit64", ",", "Baxandall264", ",", "Baxandall64", ",", "Beam64", ",", "BigAmp64", ",", "Biquad264", ",", "Biquad64", ",", "BiquadDouble64", ",", "BiquadOneHalf64", ",", "BiquadPlus64", ",", "BiquadTriple64", ",", "Bite64", ",", "BitGlitter64", ",", "BitShiftGain64", ",", "BlockParty64", ",", "BrassRider64", ",", "BrightAmbience264", ",", "BrightAmbience364", ",", "BrightAmbience64", ",", "BuildATPDF64", ",", "BussColors464", ",", "ButterComp264", ",", "ButterComp64", ",", "C5RawBuss64", ",", "C5RawChannel64", ",", "Cabs64", ",", "Calibre64", ",", "Capacitor264", ",", "Capacitor64", ",", "Chamber264", ",", "Chamber64", ",", "Channel464", ",", "Channel564", ",", "Channel664", ",", "Channel764", ",", "Channel864", ",", "Channel964", ",", "Chorus64", ",", "ChorusEnsemble64", ",", "ChromeOxide64", ",", "Cider64", ",", "ClipOnly264", ",", "ClipOnly64", ",", "ClipSoftly64", ",", "Coils264", ",", "Coils64", ",", "Cojones64", ",", "Compresaturator64", ",", "Console4Buss64", ",", "Console4Channel64", ",", "Console5Buss64", ",", "Console5Channel64", ",", "Console5DarkCh64", ",", "Console6Buss64", ",", "Console6Channel64", ",", "Console7Buss64", ",", "Console7Cascade64", ",", "Console7Channel64", ",", "Console7Crunch64", ",", "Console8BussHype64", ",", "Console8BussIn64", ",", "Console8BussOut64", ",", "Console8ChannelHype64", ",", "Console8ChannelIn64", ",", "Console8ChannelOut64", ",", "Console8LiteBuss64", ",", "Console8LiteChannel64", ",", "Console8SubHype64", ",", "Console8SubIn64", ",", "Console8SubOut64", ",", "CrunchyGrooveWear64", ",", "Crystal64", ",", "CStrip64", ",", "curve64", ",", "Dark64", ",", "DarkNoise64", ",", "DCVoltage64", ",", "DeBess64", ",", "Deckwrecka64", ",", "DeEss64", ",", "DeHiss64", ",", "Density264", ",", "Density64", ",", "DeRez264", ",", "DeRez64", ",", "Desk464", ",", "Desk64", ",", "DigitalBlack64", ",", "Dirt64", ",", "Distance264", ",", "Distance64", ",", "Distortion64", ",", "Ditherbox64", ",", "DitherFloat64", ",", "DitherMeDiskers64", ",", "DitherMeTimbers64", ",", "Doublelay64", ",", "DoublePaul64", ",", "Drive64", ",", "DrumSlam64", ",", "DubCenter64", ",", "Dubly64", ",", "DubSub64", ",", "DustBunny64", ",", "Dynamics64", ",", "Dyno64", ",", "Edge64", ",", "EdIsDim64", ",", "Elation64", ",", "ElectroHat64", ",", "Energy264", ",", "Energy64", ",", "Ensemble64", ",", "EQ64", ",", "EveryTrim64", ",", "Exciter64", ",", "Facet64", ",", "FathomFive64", ",", "FireAmp64", ",", "Flipity64", ",", "Floor64", ",", "Flutter64", ",", "Focus64", ",", "Fracture64", ",", "FromTape64", ",", "Galactic64", ",", "Gatelope64", ",", "GlitchShifter64", ",", "Golem64", ",", "GrindAmp64", ",", "Gringer64", ",", "GrooveWear64", ",", "GSnap", ",", "GuitarConditioner64", ",", "HardVacuum64", ",", "Hermepass64", ",", "HermeTrim64", ",", "HighGlossDither64", ",", "HighImpact64", ",", "Highpass264", ",", "Highpass64", ",", "Holt264", ",", "Holt64", ",", "Hombre64", ",", "Hull64", ",", "Hype64", ",", "Hypersonic64", ",", "HypersonX64", ",", "Infinity264", ",", "Infinity64", ",", "Infrasonic64", ",", "Interstage64", ",", "IronOxide564", ",", "IronOxideClassic264", ",", "IronOxideClassic64", ",", "Isolator264", ",", "Isolator64", ",", "LeadAmp64", ",", "LeftoMono64", ",", "LilAmp64", ",", "Logical464", ",", "Loud64", ",", "Lowpass264", ",", "Lowpass64", ",", "LRFlipTimer64", ",", "Luxor64", ",", "MackEQ64", ",", "Mackity64", ",", "MatrixVerb64", ",", "Melt64", ",", "MidAmp64", ",", "MidSide64", ",", "Mojo64", ",", "Monitoring264", ",", "Monitoring364", ",", "Monitoring64", ",", "MoNoam64", ",", "MultiBandDistortion64", ",", "MV64", ",", "NaturalizeDither64", ",", "NC-1764", ",", "Neverland64", ",", "Nikola64", ",", "NodeDither64", ",", "Noise64", ",", "NonlinearSpace64", ",", "NotJustAnotherCD64", ",", "NotJustAnotherDither64", ",", "OneCornerClip64", ",", "Pafnuty64", ",", "PaulDither64", ",", "PaulWide64", ",", "PDBuss64", ",", "PDChannel64", ",", "PeaksOnly64", ",", "PhaseNudge64", ",", "PitchDelay64", ",", "PitchNasty64", ",", "PocketVerbs64", ",", "Pockey264", ",", "Pockey64", ",", "Podcast64", ",", "PodcastDeluxe64", ",", "Point64", ",", "Pop264", ",", "Pop64", ",", "PowerSag264", ",", "PowerSag64", ",", "Precious64", ",", "Preponderant64", ",", "Pressure464", ",", "Pressure564", ",", "PurestAir64", ",", "PurestConsole2Buss64", ",", "PurestConsole2Channel64", ",", "PurestConsoleBuss64", ",", "PurestConsoleChannel64", ",", "PurestDrive64", ",", "PurestEcho64", ",", "PurestFade64", ",", "PurestGain64", ",", "PurestSquish64", ",", "PurestWarm264", ",", "PurestWarm64", ",", "Pyewacket64", ",", "RatshackReverb2", ",", "RawGlitters64", ",", "RawTimbers64", ",", "Recurve64", ",", "Remap64", ",", "ResEQ64", ",", "Reverb64", ",", "Righteous464", ",", "RightoMono64", ",", "Shape64", ",", "SideDull64", ",", "Sidepass64", ",", "Silhouette64", ",", "SingleEndedTriode64", ",", "Slew264", ",", "Slew364", ",", "Slew64", ",", "SlewOnly64", ",", "SlewSonic64", ",", "Smooth64", ",", "SoftGate64", ",", "SpatializeDither64", ",", "Spiral264", ",", "Spiral64", ",", "Srsly264", ",", "Srsly64", ",", "StarChild64", ",", "StereoChorus64", ",", "StereoDoubler64", ",", "StereoEnsemble64", ",", "StereoFX64", ",", "StudioTan64", ",", "SubsOnly64", ",", "Surge64", ",", "SurgeTide64", ",", "Swell64", ",", "TAL-Chorus-LX-64", ",", "Tape64", ",", "TapeDelay264", ",", "TapeDelay64", ",", "TapeDither64", ",", "TapeDust64", ",", "TapeFat64", ",", "TB_Barricade_v3", ",", "TB_Broadcast_v3", ",", "TB_BusCompressor_v3", ",", "TB_Compressor_v3", ",", "TB_DeEsser_v3", ",", "TB_Dither_v3", ",", "TB_EBUCompact_v3(2014)", ",", "TB_EBULoudness_v3(2014)", ",", "TB_Equalizer_v3", ",", "TB_Evoke_v3", ",", "TB_EZQ_v3", ",", "TB_Ferox_v3", ",", "TB_FlX4_v3", ",", "TB_FlX_v3", ",", "TB_Gate_v3", ",", "TB_Isone_v3", ",", "TB_MidSideTransformer_v3", ",", "TB_Module_v3", ",", "TB_ReelBus_v3", ",", "TB_Reverb_v3", ",", "TB_Sibalance_v3", ",", "TB_TimeMachine_v3", ",", "TB_VoicePitcher_v3", ",", "Texturize64", ",", "TexturizeMS64", ",", "Thunder64", ",", "ToneSlant64", ",", "ToTape564", ",", "ToTape664", ",", "ToVinyl464", ",", "TPDFDither64", ",", "TPDFWide64", ",", "TransDesk64", ",", "Tremolo64", ",", "TremoSquare64", ",", "TripleSpread64", ",", "Tube264", ",", "Tube64", ",", "TubeDesk64", ",", "uLawDecode64", ",", "uLawEncode64", ",", "Ultrasonic64", ",", "UltrasonicLite64", ",", "UltrasonicMed64", ",", "UltrasonX64", ",", "UnBox64", ",", "ValhallaDelay_x64", ",", "ValhallaFreqEcho_x64", ",", "ValhallaRoom_x64", ",", "ValhallaShimmer_x64", ",", "ValhallaSpaceModulator_x64", ",", "ValhallaSupermassive_x64", ",", "ValhallaUberMod_x64", ",", "ValhallaVintageVerb_x64", ",", "VariMu64", ",", "Verbity264", ",", "Verbity64", ",", "Vibrato64", ",", "VinylDither64", ",", "VoiceOfTheStarship64", ",", "VoiceTrick64", ",", "Weight64", ",", "Wider64", ",", "XBandpass64", ",", "XHighpass64", ",", "XLowpass64", ",", "XNotch64", ",", "XRegion64", ",", "YBandpass64", ",", "YHighpass64", ",", "YLowpass64", ",", "YNotch64", ",", "ZBandpass264", ",", "ZBandpass64", ",", "ZHighpass264", ",", "ZHighpass64", ",", "ZLowpass264", ",", "ZLowpass64", ",", "ZNotch264", ",", "ZNotch64", ",", "ZRegion264", ",", "ZRegion64" ],
+					"items" : [ "Acceleration264", ",", "Acceleration64", ",", "ADClip764", ",", "ADT64", ",", "Air264", ",", "Air64", ",", "Apicolypse64", ",", "AQuickVoiceClip64", ",", "AtmosphereBuss64", ",", "AtmosphereChannel64", ",", "Aura64", ",", "AutoPan64", ",", "Average64", ",", "AverMatrix64", ",", "Balanced64", ",", "BassAmp64", ",", "BassDrive64", ",", "BassKit64", ",", "Baxandall264", ",", "Baxandall64", ",", "Beam64", ",", "BigAmp64", ",", "Biquad264", ",", "Biquad64", ",", "BiquadDouble64", ",", "BiquadOneHalf64", ",", "BiquadPlus64", ",", "BiquadTriple64", ",", "Bite64", ",", "BitGlitter64", ",", "BitShiftGain64", ",", "BitShiftPan64", ",", "BlockParty64", ",", "BrassRider64", ",", "BrightAmbience264", ",", "BrightAmbience364", ",", "BrightAmbience64", ",", "BuildATPDF64", ",", "BussColors464", ",", "ButterComp264", ",", "ButterComp64", ",", "C5RawBuss64", ",", "C5RawChannel64", ",", "Cabs64", ",", "Calibre64", ",", "Capacitor264", ",", "Capacitor64", ",", "Chamber264", ",", "Chamber64", ",", "Channel464", ",", "Channel564", ",", "Channel664", ",", "Channel764", ",", "Channel864", ",", "Channel964", ",", "Chorus64", ",", "ChorusEnsemble64", ",", "ChromeOxide64", ",", "Cider64", ",", "ClipOnly264", ",", "ClipOnly64", ",", "ClipSoftly64", ",", "Coils264", ",", "Coils64", ",", "Cojones64", ",", "Compresaturator64", ",", "Console0Buss64", ",", "Console0Channel64", ",", "Console4Buss64", ",", "Console4Channel64", ",", "Console5Buss64", ",", "Console5Channel64", ",", "Console5DarkCh64", ",", "Console6Buss64", ",", "Console6Channel64", ",", "Console7Buss64", ",", "Console7Cascade64", ",", "Console7Channel64", ",", "Console7Crunch64", ",", "Console8BussHype64", ",", "Console8BussIn64", ",", "Console8BussOut64", ",", "Console8ChannelHype64", ",", "Console8ChannelIn64", ",", "Console8ChannelOut64", ",", "Console8LiteBuss64", ",", "Console8LiteChannel64", ",", "Console8SubHype64", ",", "Console8SubIn64", ",", "Console8SubOut64", ",", "Creature64", ",", "CrunchyGrooveWear64", ",", "Crystal64", ",", "CStrip264", ",", "CStrip64", ",", "curve64", ",", "Dark64", ",", "DarkNoise64", ",", "DCVoltage64", ",", "DeBess64", ",", "Deckwrecka64", ",", "DeEss64", ",", "DeHiss64", ",", "Density264", ",", "Density64", ",", "DeRez264", ",", "DeRez64", ",", "Desk464", ",", "Desk64", ",", "DigitalBlack64", ",", "Dirt64", ",", "Distance264", ",", "Distance64", ",", "Distortion64", ",", "Ditherbox64", ",", "DitherFloat64", ",", "DitherMeDiskers64", ",", "DitherMeTimbers64", ",", "Doublelay64", ",", "DoublePaul64", ",", "Drive64", ",", "DrumSlam64", ",", "DubCenter64", ",", "Dubly64", ",", "DubSub64", ",", "DustBunny64", ",", "Dynamics64", ",", "Dyno64", ",", "Edge64", ",", "EdIsDim64", ",", "Elation64", ",", "ElectroHat64", ",", "Energy264", ",", "Energy64", ",", "Ensemble64", ",", "EQ64", ",", "EveryConsole64", ",", "EverySlew64", ",", "EveryTrim64", ",", "Exciter64", ",", "Facet64", ",", "FathomFive64", ",", "FireAmp64", ",", "Flipity64", ",", "Floor64", ",", "Flutter64", ",", "Focus64", ",", "Fracture264", ",", "Fracture64", ",", "FromTape64", ",", "Galactic264", ",", "Galactic64", ",", "GalacticVibe64", ",", "Gatelope64", ",", "GlitchShifter64", ",", "GoldenSlew64", ",", "Golem64", ",", "GrindAmp64", ",", "Gringer64", ",", "GrooveWear64", ",", "GuitarConditioner64", ",", "HardVacuum64", ",", "Hermepass64", ",", "HermeTrim64", ",", "HighGlossDither64", ",", "HighImpact64", ",", "Highpass264", ",", "Highpass64", ",", "Holt264", ",", "Holt64", ",", "Hombre64", ",", "Huge64", ",", "Hull64", ",", "Hype64", ",", "Hypersonic64", ",", "HypersonX64", ",", "Infinity264", ",", "Infinity64", ",", "Inflamer64", ",", "Infrasonic64", ",", "Interstage64", ",", "IronOxide564", ",", "IronOxideClassic264", ",", "IronOxideClassic64", ",", "Isolator264", ",", "Isolator64", ",", "kChamberAR64", ",", "kPlateA64", ",", "kPlateB64", ",", "kPlateC64", ",", "kPlateD64", ",", "LeadAmp64", ",", "LeftoMono64", ",", "LilAmp64", ",", "Logical464", ",", "Loud64", ",", "Lowpass264", ",", "Lowpass64", ",", "LRFlipTimer64", ",", "Luxor64", ",", "MackEQ64", ",", "Mackity64", ",", "MatrixVerb64", ",", "Melt64", ",", "MidAmp64", ",", "MidSide64", ",", "Mojo64", ",", "Monitoring264", ",", "Monitoring364", ",", "Monitoring64", ",", "MoNoam64", ",", "MultiBandDistortion64", ",", "MV264", ",", "MV64", ",", "NaturalizeDither64", ",", "NC-1764", ",", "Neverland64", ",", "Nikola64", ",", "NodeDither64", ",", "Noise64", ",", "NonlinearSpace64", ",", "NotJustAnotherCD64", ",", "NotJustAnotherDither64", ",", "OneCornerClip64", ",", "OrbitKick64", ",", "Pafnuty264", ",", "Pafnuty64", ",", "PaulDither64", ",", "PaulWide64", ",", "PDBuss64", ",", "PDChannel64", ",", "PeaksOnly64", ",", "Pear64", ",", "PhaseNudge64", ",", "PitchDelay64", ",", "PitchNasty64", ",", "PlatinumSlew64", ",", "PocketVerbs64", ",", "Pockey264", ",", "Pockey64", ",", "Podcast64", ",", "PodcastDeluxe64", ",", "Point64", ",", "Pop264", ",", "Pop64", ",", "PowerSag264", ",", "PowerSag64", ",", "Precious64", ",", "Preponderant64", ",", "Pressure464", ",", "Pressure564", ",", "PurestAir64", ",", "PurestConsole2Buss64", ",", "PurestConsole2Channel64", ",", "PurestConsole3Buss64", ",", "PurestConsole3Channel64", ",", "PurestConsoleBuss64", ",", "PurestConsoleChannel64", ",", "PurestDrive64", ",", "PurestEcho64", ",", "PurestFade64", ",", "PurestGain64", ",", "PurestSquish64", ",", "PurestWarm264", ",", "PurestWarm64", ",", "Pyewacket64", ",", "RawGlitters64", ",", "RawTimbers64", ",", "Recurve64", ",", "Remap64", ",", "ResEQ64", ",", "Reverb64", ",", "Righteous464", ",", "RightoMono64", ",", "SampleDelay64", ",", "Shape64", ",", "SideDull64", ",", "Sidepass64", ",", "Silhouette64", ",", "SingleEndedTriode64", ",", "Slew264", ",", "Slew364", ",", "Slew64", ",", "SlewOnly64", ",", "SlewSonic64", ",", "Smooth64", ",", "SoftGate64", ",", "SpatializeDither64", ",", "Spiral264", ",", "Spiral64", ",", "Srsly264", ",", "Srsly64", ",", "StarChild264", ",", "StarChild64", ",", "StereoChorus64", ",", "StereoDoubler64", ",", "StereoEnsemble64", ",", "StereoFX64", ",", "StudioTan64", ",", "SubsOnly64", ",", "Surge64", ",", "SurgeTide64", ",", "Sweeten64", ",", "Swell64", ",", "TAL-Chorus-LX-64", ",", "Tape64", ",", "TapeDelay264", ",", "TapeDelay64", ",", "TapeDither64", ",", "TapeDust64", ",", "TapeFat64", ",", "Texturize64", ",", "TexturizeMS64", ",", "Thunder64", ",", "ToneSlant64", ",", "ToTape564", ",", "ToTape664", ",", "ToVinyl464", ",", "TPDFDither64", ",", "TPDFWide64", ",", "TransDesk64", ",", "Tremolo64", ",", "TremoSquare64", ",", "TripleSpread64", ",", "Tube264", ",", "Tube64", ",", "TubeDesk64", ",", "uLawDecode64", ",", "uLawEncode64", ",", "Ultrasonic64", ",", "UltrasonicLite64", ",", "UltrasonicMed64", ",", "UltrasonX64", ",", "UnBox64", ",", "ValhallaDelay_x64", ",", "ValhallaFreqEcho_x64", ",", "ValhallaPlate_x64", ",", "ValhallaRoom_x64", ",", "ValhallaShimmer_x64", ",", "ValhallaSpaceModulator_x64", ",", "ValhallaUberMod_x64", ",", "ValhallaVintageVerb_x64", ",", "VariMu64", ",", "Verbity264", ",", "Verbity64", ",", "Vibrato64", ",", "VinylDither64", ",", "VoiceOfTheStarship64", ",", "VoiceTrick64", ",", "Weight64", ",", "Wider64", ",", "XBandpass64", ",", "XHighpass64", ",", "XLowpass64", ",", "XNotch64", ",", "XRegion64", ",", "YBandpass64", ",", "YHighpass64", ",", "YLowpass64", ",", "YNotch64", ",", "ZBandpass264", ",", "ZBandpass64", ",", "ZHighpass264", ",", "ZHighpass64", ",", "ZLowpass264", ",", "ZLowpass64", ",", "ZNotch264", ",", "ZNotch64", ",", "ZRegion264", ",", "ZRegion64" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -4034,10 +4715,10 @@
 					"id" : "obj-6",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "bang", "bang" ],
-					"patching_rect" : [ 30.0, 61.0, 32.0, 22.0 ],
-					"text" : "t b b"
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "bang", "clear" ],
+					"patching_rect" : [ 30.0, 61.0, 61.0, 22.0 ],
+					"text" : "t b b clear"
 				}
 
 			}
@@ -4134,18 +4815,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 937.0, 972.75, 58.0, 22.0 ],
 					"text" : "loadbang"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-119",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 5.0, 514.0, 29.5, 22.0 ],
-					"text" : "edit"
 				}
 
 			}
@@ -4336,13 +5005,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-211", 0 ],
 					"source" : [ "obj-118", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-176", 0 ],
-					"source" : [ "obj-119", 0 ]
 				}
 
 			}
@@ -4811,7 +5473,23 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-214", 2 ],
+					"order" : 0,
+					"source" : [ "obj-17", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-223", 0 ],
+					"source" : [ "obj-17", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-57", 0 ],
+					"order" : 1,
 					"source" : [ "obj-17", 2 ]
 				}
 
@@ -4877,16 +5555,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-181", 1 ],
-					"order" : 1,
-					"source" : [ "obj-178", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-183", 1 ],
-					"order" : 2,
+					"order" : 1,
 					"source" : [ "obj-178", 0 ]
 				}
 
@@ -4998,13 +5668,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-183", 1 ],
-					"source" : [ "obj-181", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-160", 0 ],
 					"source" : [ "obj-182", 0 ]
 				}
@@ -5026,8 +5689,31 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-188", 0 ],
+					"order" : 1,
+					"source" : [ "obj-185", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-195", 1 ],
+					"order" : 0,
+					"source" : [ "obj-185", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-184", 0 ],
 					"source" : [ "obj-186", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-195", 0 ],
+					"source" : [ "obj-188", 0 ]
 				}
 
 			}
@@ -5063,6 +5749,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-88", 0 ],
+					"source" : [ "obj-195", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-225", 1 ],
 					"source" : [ "obj-197", 0 ]
 				}
@@ -5077,8 +5770,57 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-202", 0 ],
+					"source" : [ "obj-201", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-211", 0 ],
+					"source" : [ "obj-202", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-201", 0 ],
+					"source" : [ "obj-203", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-228", 0 ],
 					"source" : [ "obj-206", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-215", 0 ],
+					"source" : [ "obj-214", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-219", 0 ],
+					"source" : [ "obj-217", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-211", 0 ],
+					"source" : [ "obj-218", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-218", 0 ],
+					"source" : [ "obj-219", 0 ]
 				}
 
 			}
@@ -5093,6 +5835,27 @@
 				"patchline" : 				{
 					"destination" : [ "obj-226", 0 ],
 					"source" : [ "obj-220", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-214", 1 ],
+					"source" : [ "obj-223", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-16", 0 ],
+					"source" : [ "obj-224", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-214", 0 ],
+					"source" : [ "obj-224", 0 ]
 				}
 
 			}
@@ -5140,6 +5903,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-236", 0 ],
+					"source" : [ "obj-230", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-238", 0 ],
+					"source" : [ "obj-231", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-229", 0 ],
 					"source" : [ "obj-232", 0 ]
 				}
@@ -5149,6 +5926,48 @@
 				"patchline" : 				{
 					"destination" : [ "obj-85", 0 ],
 					"source" : [ "obj-234", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-231", 0 ],
+					"source" : [ "obj-235", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-231", 0 ],
+					"source" : [ "obj-236", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-238", 1 ],
+					"source" : [ "obj-236", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-230", 0 ],
+					"source" : [ "obj-237", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-239", 0 ],
+					"source" : [ "obj-238", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-240", 0 ],
+					"source" : [ "obj-239", 0 ]
 				}
 
 			}
@@ -5168,6 +5987,105 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-243", 0 ],
+					"source" : [ "obj-240", 4 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-246", 0 ],
+					"source" : [ "obj-240", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-266", 0 ],
+					"order" : 1,
+					"source" : [ "obj-240", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-267", 0 ],
+					"source" : [ "obj-240", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-277", 1 ],
+					"order" : 0,
+					"source" : [ "obj-240", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-244", 0 ],
+					"source" : [ "obj-243", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-245", 0 ],
+					"source" : [ "obj-244", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-240", 0 ],
+					"order" : 1,
+					"source" : [ "obj-245", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-265", 0 ],
+					"order" : 0,
+					"source" : [ "obj-245", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-201", 0 ],
+					"order" : 0,
+					"source" : [ "obj-246", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-248", 1 ],
+					"order" : 1,
+					"source" : [ "obj-246", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-250", 1 ],
+					"order" : 0,
+					"source" : [ "obj-246", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-295", 0 ],
+					"order" : 1,
+					"source" : [ "obj-246", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-258", 0 ],
 					"source" : [ "obj-259", 0 ]
 				}
@@ -5182,8 +6100,145 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-240", 0 ],
+					"source" : [ "obj-265", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-240", 0 ],
+					"source" : [ "obj-266", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-271", 0 ],
+					"source" : [ "obj-267", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-24", 0 ],
 					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-276", 0 ],
+					"source" : [ "obj-270", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-270", 1 ],
+					"source" : [ "obj-271", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-270", 0 ],
+					"source" : [ "obj-271", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-88", 0 ],
+					"source" : [ "obj-271", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-278", 0 ],
+					"source" : [ "obj-272", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-272", 0 ],
+					"source" : [ "obj-273", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-273", 1 ],
+					"source" : [ "obj-276", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-277", 0 ],
+					"source" : [ "obj-276", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-286", 0 ],
+					"order" : 0,
+					"source" : [ "obj-276", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-290", 1 ],
+					"order" : 1,
+					"source" : [ "obj-276", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-273", 0 ],
+					"source" : [ "obj-277", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-279", 0 ],
+					"source" : [ "obj-278", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-281", 1 ],
+					"order" : 1,
+					"source" : [ "obj-279", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-287", 1 ],
+					"source" : [ "obj-279", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-288", 1 ],
+					"source" : [ "obj-279", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-289", 0 ],
+					"order" : 0,
+					"source" : [ "obj-279", 0 ]
 				}
 
 			}
@@ -5198,6 +6253,204 @@
 				"patchline" : 				{
 					"destination" : [ "obj-33", 0 ],
 					"source" : [ "obj-28", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-287", 0 ],
+					"order" : 1,
+					"source" : [ "obj-286", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-288", 0 ],
+					"order" : 0,
+					"source" : [ "obj-286", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-302", 0 ],
+					"source" : [ "obj-287", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-303", 0 ],
+					"source" : [ "obj-287", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-304", 0 ],
+					"source" : [ "obj-287", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-305", 0 ],
+					"source" : [ "obj-287", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-206", 0 ],
+					"source" : [ "obj-288", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-37", 0 ],
+					"source" : [ "obj-288", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-39", 0 ],
+					"source" : [ "obj-288", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-41", 0 ],
+					"source" : [ "obj-288", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-290", 0 ],
+					"source" : [ "obj-289", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-292", 0 ],
+					"source" : [ "obj-290", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-88", 0 ],
+					"source" : [ "obj-292", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-296", 4 ],
+					"source" : [ "obj-295", 4 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-296", 3 ],
+					"source" : [ "obj-295", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-296", 2 ],
+					"source" : [ "obj-295", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-296", 1 ],
+					"source" : [ "obj-295", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-296", 0 ],
+					"source" : [ "obj-295", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-298", 0 ],
+					"source" : [ "obj-296", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-219", 0 ],
+					"source" : [ "obj-298", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-193", 0 ],
+					"source" : [ "obj-302", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-197", 0 ],
+					"source" : [ "obj-302", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-22", 0 ],
+					"source" : [ "obj-303", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"source" : [ "obj-303", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-26", 0 ],
+					"source" : [ "obj-304", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-27", 0 ],
+					"source" : [ "obj-304", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-32", 0 ],
+					"source" : [ "obj-305", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 0 ],
+					"source" : [ "obj-305", 0 ]
 				}
 
 			}
@@ -5358,16 +6611,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-91", 0 ],
-					"order" : 0,
+					"destination" : [ "obj-51", 0 ],
+					"order" : 1,
 					"source" : [ "obj-48", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-92", 0 ],
-					"order" : 1,
+					"destination" : [ "obj-91", 0 ],
+					"order" : 0,
 					"source" : [ "obj-48", 0 ]
 				}
 
@@ -5383,6 +6636,34 @@
 				"patchline" : 				{
 					"destination" : [ "obj-44", 0 ],
 					"source" : [ "obj-50", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-185", 1 ],
+					"source" : [ "obj-51", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-185", 0 ],
+					"source" : [ "obj-51", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-88", 0 ],
+					"source" : [ "obj-51", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-92", 0 ],
+					"source" : [ "obj-51", 2 ]
 				}
 
 			}
@@ -5480,6 +6761,14 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-231", 1 ],
+					"order" : 2,
+					"source" : [ "obj-56", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"order" : 1,
 					"source" : [ "obj-56", 1 ]
@@ -5502,8 +6791,24 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-215", 0 ],
+					"order" : 0,
+					"source" : [ "obj-6", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-53", 0 ],
 					"source" : [ "obj-6", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-59", 0 ],
+					"order" : 1,
+					"source" : [ "obj-6", 2 ]
 				}
 
 			}
@@ -5586,7 +6891,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-16", 0 ],
+					"destination" : [ "obj-224", 0 ],
 					"source" : [ "obj-7", 0 ]
 				}
 
@@ -5656,7 +6961,32 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-237", 0 ],
+					"order" : 1,
+					"source" : [ "obj-79", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-237", 0 ],
+					"order" : 1,
+					"source" : [ "obj-79", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-237", 0 ],
+					"order" : 1,
+					"source" : [ "obj-79", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-76", 0 ],
+					"order" : 0,
 					"source" : [ "obj-79", 0 ]
 				}
 
@@ -5664,6 +6994,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-77", 0 ],
+					"order" : 0,
 					"source" : [ "obj-79", 1 ]
 				}
 
@@ -5671,6 +7002,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-78", 0 ],
+					"order" : 0,
 					"source" : [ "obj-79", 2 ]
 				}
 
@@ -5963,7 +7295,7 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "VST.manager.js",
-				"bootpath" : "~/Documents/GitHub/Multitudes/audio_blocks",
+				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
