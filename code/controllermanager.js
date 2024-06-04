@@ -113,12 +113,12 @@ function block(bn){
 function param(value){
     if(blockno>-1){
         if(firstbootwait&&(value==0)){
-            post("\nignoring the zero value received on block load");
+            //post("\nignoring the zero value received on block load");
         }else{
             firstbootwait = false;
-            post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
+            //post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
             if(controllerslist[value]==selected_in_dict){
-                post("\nslider is same as value already stored in the dictionary");
+                //post("\nslider is same as value already stored in the dictionary");
             }else if((selection_type=="notfound")&&(selected=="none")){
                 post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
             }else{
