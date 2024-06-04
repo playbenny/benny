@@ -34,7 +34,7 @@ var block_enable = 0;
 
 function loadbang(){
     MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-    post("\ncontroller manager loaded");
+    //post("\ncontroller manager loaded");
 }
 
 function block(bn){
@@ -43,6 +43,7 @@ function block(bn){
         wait_task.schedule(2000);    
     }
     blockno = bn;
+    lastparam = -1;
     if(bn>-1) prev_blockno = bn;
     //the block message is what causes it to do the lookups
     if(blocks.contains("blocks["+blockno+"]::name")){
@@ -65,7 +66,7 @@ function block(bn){
         selected = null; 
         selection_type = null;
         selected_in_dict = null;
-        if(blocks.contains("blocks["+blockno+"]::selected_controller")){
+        if(blocks.contains("blocks["+blockno+"]::selected_controller")&&(blocks.get("blocks["+blockno+"]::selected_controller")!="none")){
             selected_in_dict = blocks.get("blocks["+blockno+"]::selected_controller");
             post("\ncontroller selection from savefile:",selected_in_dict);
             set_param(selected_in_dict);
@@ -112,12 +113,12 @@ function block(bn){
 function param(value){
     if(blockno>-1){
         if(firstbootwait&&(value==0)){
-            //post("\nignoring the zero value received on block load");
+            post("\nignoring the zero value received on block load");
         }else{
             firstbootwait = false;
-            //post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
+            post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
             if(controllerslist[value]==selected_in_dict){
-                //post("\nslider is same as value already stored in the dictionary");
+                post("\nslider is same as value already stored in the dictionary");
             }else if((selection_type=="notfound")&&(selected=="none")){
                 post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
             }else{
