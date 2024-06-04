@@ -120,13 +120,13 @@ function param(value){
             if(controllerslist[value]==selected_in_dict){
                 //post("\nslider is same as value already stored in the dictionary");
             }else if((selection_type=="notfound")&&(selected=="none")){
-                post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
+                //post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
             }else{
                 blocks.replace("blocks["+blockno+"]::selected_controller",controllerslist[value]);
                 selected_in_dict = controllerslist[value];
                 selected = selected_in_dict;
                 selection_type = "dict";
-                post("\nslider selection:",controllerslist[value],"storing to dictionary");
+                //post("\nslider selection:",controllerslist[value],"storing to dictionary");
                 outlet(3, blockname);
                 outlet(2, selected);
                 outlet(1, selection_type);   
