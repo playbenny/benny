@@ -2524,15 +2524,15 @@ function voicecount(block, voices){     // changes the number of voices assigned
 						remove_connection(i);
 						hp++;
 					}else{
-						var vv;
-						var vc;
+						var vc=0;
 						var f_v2=[];
-						for(vv=0;vv<f_voice.length;vv++){
+						for(var vv=0;vv<f_voice.length;vv++){
 							if(f_voice[vv]<=voices*sv){
 								f_v2[vc] = f_voice[vv];
 								vc++;
 							}
 						}
+						post("\nf_v2 size",f_v2.length,"content",f_v2,"vc",vc);
 						if(vc==0){
 							removedtotally=1;
 							remove_connection(i);
@@ -2562,10 +2562,9 @@ function voicecount(block, voices){     // changes the number of voices assigned
 							remove_connection(i);
 							hp++;
 						}else{
-							var vv;
 							var vc=0;
 							var t_v2=[];
-							for(vv=0;vv<t_voice.length;vv++){
+							for(var vv=0;vv<t_voice.length;vv++){
 								if(t_voice[vv]<=voices*sv){
 									t_v2[vc] = t_voice[vv];
 									vc++;
