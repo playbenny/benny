@@ -38,14 +38,17 @@ function loadbang(){
 		newuserconfig.replace("glow", 0.2);
 		newuserconfig.export_json(projectpath+"userconfig.json");
 		try{
-			newuserconfig.close();
-		}catch(error){ post("\nclose failed",error); }
-		try{
 			newuserconfig.freepeer();
-		}catch(error){ post("\nclose failed",error); }
-		userconfig.import_json(projectpath+"userconfig.json");
-		post("OK");
-		//FIRSTRUN = 1;
+		}catch(error){ 
+			post("\nfreepeer failed",error); 
+			try{
+				newuserconfig.close();
+			}catch(error){ post("\nclose failed",error); }
+		}
+		var pause_and_reinit = new Task(loadbang, this);
+		pause_and_reinit.schedule(500);
+		post("\nstarting again now first run tasks are completed");
+		return -2;
 	}
 	if(userconfig.contains("last_hardware_config")){
 		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
