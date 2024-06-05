@@ -20,10 +20,12 @@ function loadbang(){
 	var userconfigfile = new File(projectpath+"userconfig.json");
 	if(userconfigfile.isopen){
 		userconfigfile.close();
+		userconfigfile.freepeer();
 		userconfig.import_json(projectpath+"userconfig.json");
 		post("OK");
 	}else{
 		userconfigfile.close();
+		userconfigfile.freepeer();
 		post("\n-------------\nfirst run. hello!\nsetting songs folder and templates folder, you can change these in the file menu.");
 		var newuserconfig = new Dict;
 		newuserconfig.parse("{}");
@@ -46,15 +48,15 @@ function loadbang(){
 		return -2;
 	}
 	post("\n\nwelcome to benny\n\n\ninit stage 1 : initial-only actions\n------------------------------------");
-	if(userconfig.contains("last_hardware_config")){
-		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
-	}
 	var dropdown = this.patcher.getnamed("hw_dropdown");
 	dropdown.message("prefix", projectpath+"hardware_configs");
 	config.parse('{ }');
 	config.import_json(projectpath+"config.json");
 	keymap.parse('{}');
 	keymap.import_json(projectpath+"data/keymap.json");
+	if(userconfig.contains("last_hardware_config")){
+		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
+	}
 	process_userconfig();
 	var maxmsp = config.get("maxmsp");
 	var messes = maxmsp.getkeys();
@@ -611,8 +613,9 @@ function import_hardware(v){
 	
 	//	turn on audio engine
 	new_dac.message('int',1);
+
 	if(startup_loadfile=="autoload"){
-		if(songs.contains(startup_loadfile/*"autoload"*/)){
+		if(songs.contains(startup_loadfile)){
 			loading.merge = 0;
 			loading.progress=-1;
 			loading.mute_new=0;
@@ -631,7 +634,6 @@ function import_hardware(v){
 		preload_task2 = new Task(preload_some_wires, this);
 		preload_task2.schedule(1100);
 	}
-
 	slowclock_task = new Task(slowclock, this);
 	slowclock_task.interval = 900;
 	slowclock_task.repeat();
