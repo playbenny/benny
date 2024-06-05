@@ -1010,10 +1010,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				messnamed("camera_control","position",  camera_position);
 				messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 			}else if(usermouse.ctrl){
-				if(bulgingwire>-1){
+				if(bulgingwire>-1){ //ctrl-scroll a wire to adjust level
 					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
 					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
-				}
+				} //todo? ctrl-scroll a block
 			}	
 		}else if(displaymode=="block_menu"){
 			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));
