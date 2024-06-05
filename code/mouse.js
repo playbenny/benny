@@ -459,6 +459,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								center_view(1);
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
+								usermouse.clicked3d = -1;
 								//redraw_flag.flag=8;
 								if(BLOCK_MENU_CLICK_ACTION=="long_click"){
 									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
@@ -1006,13 +1007,14 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				if(camera_position[2]<1.5)camera_position[2]=1.6;
 				camera_position[0] += xx*scroll*7;
 				camera_position[1] -= yy*scroll*7;//*0.5;
-			}else if(usermouse.shift){
-				camera_position[0] += scroll;
-			}else{
-				camera_position[1] += scroll;				
+				messnamed("camera_control","position",  camera_position);
+				messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+			}else if(usermouse.ctrl){
+				if(bulgingwire>-1){ //ctrl-scroll a wire to adjust level
+					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
+					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
+				} //todo? ctrl-scroll a block
 			}	
-			messnamed("camera_control","position",  camera_position);
-			messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 		}else if(displaymode=="block_menu"){
 			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));
 			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
