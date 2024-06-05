@@ -37,10 +37,12 @@ function loadbang(){
 		newuserconfig.replace("SONGS_FOLDER", projectpath+"demosongs");
 		newuserconfig.replace("glow", 0.2);
 		newuserconfig.export_json(projectpath+"userconfig.json");
-		post("\ntry close");
-		newuserconfig.close();
-		post("\ntry freepeer");
-		newuserconfig.freepeer();
+		try{
+			newuserconfig.close();
+		}catch(error){ post("\nclose failed",error); }
+		try{
+			newuserconfig.freepeer();
+		}catch(error){ post("\nclose failed",error); }
 		userconfig.import_json(projectpath+"userconfig.json");
 		post("OK");
 		//FIRSTRUN = 1;
