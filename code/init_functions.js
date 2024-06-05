@@ -45,9 +45,9 @@ function loadbang(){
 				newuserconfig.close();
 			}catch(error){ post("\nclose failed",error); }
 		}
-		var pause_and_reinit = new Task(loadbang, this);
-		pause_and_reinit.schedule(500);
 		post("\nstarting again now first run tasks are completed");
+		var pause_and_reinit = new Task(loadbang, this);
+		pause_and_reinit.schedule(2500);
 		return -2;
 	}
 	if(userconfig.contains("last_hardware_config")){
