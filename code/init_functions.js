@@ -11,15 +11,10 @@
 // restart calls reset,init dicts, import hardware 
 
 function loadbang(){
-	post("\n\nwelcome to benny\n\n\ninit stage 1 : initial-only actions\n------------------------------------");
 	var path = this.patcher.filepath;
 	projectpath = path.split("patchers/");
 	projectpath = projectpath[0];
 	post("\npath is",projectpath);
-	var dropdown = this.patcher.getnamed("hw_dropdown");
-	dropdown.message("prefix", projectpath+"hardware_configs");
-	config.parse('{ }');
-	config.import_json("config.json");
 	userconfig.parse('{ }');
 	post("\nlooking for userconfig:",projectpath+"userconfig.json");
 	var userconfigfile = new File(projectpath+"userconfig.json");
@@ -47,14 +42,19 @@ function loadbang(){
 		}
 		post("\nstarting again now first run tasks are completed");
 		var pause_and_reinit = new Task(loadbang, this);
-		pause_and_reinit.schedule(2500);
+		pause_and_reinit.schedule(500);
 		return -2;
 	}
+	post("\n\nwelcome to benny\n\n\ninit stage 1 : initial-only actions\n------------------------------------");
 	if(userconfig.contains("last_hardware_config")){
 		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
 	}
+	var dropdown = this.patcher.getnamed("hw_dropdown");
+	dropdown.message("prefix", projectpath+"hardware_configs");
+	config.parse('{ }');
+	config.import_json(projectpath+"config.json");
 	keymap.parse('{}');
-	keymap.import_json("keymap.json");
+	keymap.import_json(projectpath+"data/keymap.json");
 	process_userconfig();
 	var maxmsp = config.get("maxmsp");
 	var messes = maxmsp.getkeys();
@@ -765,14 +765,14 @@ function assign_block_colours(){
 
 function import_blocktypes(v)
 {
-	var f = new Folder(v);
+	var f = new Folder(projectpath+v);
 	var d = new Dict;
 		
 	f.reset();
 	while (!f.end) {
 		if(f.extension == ".json"){
 			post("\n  "+f.filename);
-			d.import_json(f.filename);
+			d.import_json(projectpath+v+"/"+f.filename);
 			var keys = d.getkeys();
 			if(keys==null){
 				post("ERROR reading block definition json file");
