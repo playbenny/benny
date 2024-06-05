@@ -1531,10 +1531,12 @@ function data_edit(parameter,value){
 }
 
 function request_set_block_parameter(block, parameter, value){
+	post("\n rsbp",block,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	parameter_value_buffer.poke(1,MAX_PARAMETERS*block+parameter,v);
 }
 function request_set_voice_parameter(block,voice,parameter,value){
+	post("\nrsvp",block,voice,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
 	parameter_static_mod.poke(1,MAX_PARAMETERS*voice+parameter,v-bv);
@@ -2672,6 +2674,7 @@ function conn_set_from_output(c,value){
 	make_connection(c,0);
 	selected.wire[c]=1;
 	wire_ends[c][0]=-0.96969696;
+	sidebar.scroll.position = 0;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
 }
@@ -2693,6 +2696,7 @@ function conn_set_to_input(c,value){
 	selected.wire[c]=1;
 	wire_ends[c][0]=-0.96969696;
 	sidebar.connection.default_in_applied = 0;
+	sidebar.scroll.position = 0;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
 }
@@ -2708,6 +2712,7 @@ function fold_menus(){
 		sidebar.connection.default_in_applied = 0;
 	}
 	wire_ends[selected.wire.indexOf(1)][0]=-0.96969696; //forces it to redraw it
+	sidebar.scroll.position = 0;
 	redraw_flag.flag |= 10;
 }
 
