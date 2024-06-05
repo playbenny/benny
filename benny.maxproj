@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3799931309,
+	"modificationdate" : 3800452788,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1119,12 +1119,22 @@
 ,
 			"core.input.control.auto.ui.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"pepper_parachute.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"core.input.control.auto.maxpat" : 			{
@@ -1526,11 +1536,6 @@
 				"local" : 1
 			}
 ,
-			"core.input.control.auto.ui.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -1543,6 +1548,11 @@
 ,
 			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"core.input.control.auto.ui.js" : 			{
+				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -2826,7 +2836,12 @@
 ,
 			"pepper_parachute.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/hardware_configs",
+					"projectrelativepath" : "./hardware_configs"
+				}
+
 			}
 ,
 			"utility.xfade.json" : 			{
@@ -2874,6 +2889,10 @@
 			}
 ,
 			"output_reverb.json" : 			{
+				"kind" : "json"
+			}
+,
+			"keymap.json" : 			{
 				"kind" : "json"
 			}
 
