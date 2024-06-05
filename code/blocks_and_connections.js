@@ -2532,7 +2532,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 								vc++;
 							}
 						}
-						post("\nf_v2 size",f_v2.length,"content",f_v2,"vc",vc);
 						if(vc==0){
 							removedtotally=1;
 							remove_connection(i);
