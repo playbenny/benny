@@ -780,8 +780,8 @@ function reinitialise_block_menu(){
 	blocks_menu=[];
 }
 
-function initialise_block_menu(visible){		
-	//post("\nshowing block menu",visible);
+function initialise_block_menu(visible){	
+	visible |= 0;	
 	var i; // draw cubes distributed on the xz plane, rotated 90 degrees about the x axis, y = -110
 	var t;
 	var z = -5;
@@ -793,6 +793,7 @@ function initialise_block_menu(visible){
 	var col;
 	var vis=0;
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
+		//post("\nA showing block menu",visible); return 0;
 		if(menu.mode == 1){
 			swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
 			if(swpt=="hardware") swpt = "audio";
@@ -800,7 +801,7 @@ function initialise_block_menu(visible){
 		for(i=0;i<menu.cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 				//skip this one
-//				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
+				//				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 			}else{
 				if(visible==1){
 					vis=1;	
@@ -861,13 +862,13 @@ function initialise_block_menu(visible){
 							}
 						}
 						lcd_block_textures.message("bang");
-	
+						
 						if(x>w){
 							z++;
 							x=-w;
 						}
 						//col = config.get("palette::"+ts[0]);
-//						post("drawing menu block",ts);
+						//						post("drawing menu block",ts);
 						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_block£"+types[i]+"£"+i;
 						blocks_menu[i].shape = "cube";
