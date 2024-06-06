@@ -15,14 +15,11 @@ function loadbang(){
 	projectpath = path.split("patchers/");
 	projectpath = projectpath[0];
 	post("\npath is",projectpath);
-	userconfig.parse('{ }');
 	post("\nlooking for userconfig:",projectpath+"userconfig.json");
 	var userconfigfile = new File(projectpath+"userconfig.json");
 	if(userconfigfile.isopen){
 		userconfigfile.close();
 		userconfigfile.freepeer();
-		userconfig.import_json(projectpath+"userconfig.json");
-		post("OK");
 	}else{
 		userconfigfile.close();
 		userconfigfile.freepeer();
@@ -38,18 +35,19 @@ function loadbang(){
 			newuserconfig.freepeer();
 		}catch(error){ 
 			post("\nfreepeer failed",error); 
-			try{
-				newuserconfig.close();
-			}catch(error){ post("\nclose failed",error); }
 		}
 		post("\nstarting again now first run tasks are completed");
 		var pause_and_reinit = new Task(loadbang, this);
 		pause_and_reinit.schedule(500);
+		//messnamed("firstrun","bang");
 		return -2;
 	}
+
 	post("\n\nwelcome to benny\n\n\ninit stage 1 : initial-only actions\n------------------------------------");
 	var dropdown = this.patcher.getnamed("hw_dropdown");
 	dropdown.message("prefix", projectpath+"hardware_configs");
+	userconfig.parse('{ }');
+	userconfig.import_json(projectpath+"userconfig.json");
 	config.parse('{ }');
 	config.import_json(projectpath+"config.json");
 	keymap.parse('{}');
@@ -98,9 +96,9 @@ function initialise_reset(hardware_file){
 	config.parse('{ }');
 	config.import_json("config.json");
 	userconfig.parse('{ }');
-	userconfig.import_json("userconfig.json");
+	userconfig.import_json(projectpath+"userconfig.json");
 	keymap.parse('{}');
-	keymap.import_json("keymap.json");
+	keymap.import_json(projectpath+"keymap.json");
 	process_userconfig();
 
 	matrix.message("clear"); //clears the audio matrix
@@ -434,7 +432,7 @@ function import_hardware(v){
 			ob = new Dict;
 			ob = d.get(keys[i]+"::output_block");
 			d3.setparse('{}');
-			d3.import_json(ob+".json");
+			d3.import_json(projectpath+"output_blocks/"+ob+".json");
 			
 			if(d3.contains(ob+"::parameters")){
 				if(d3.contains(ob+"::groups")){
@@ -693,6 +691,7 @@ function check_for_new_prefixes(){
 			post("\nnew block name prefix "+ty[0]+" discovered. added to the type_order key in userconfig.json. you can reorder the block menu by editing this.");
 			type_order.push(ty[0]);
 			userconfig.replace("type_order",type_order);
+			config.replace("type_order",type_order);
 			found=1;
 		}
 	}
