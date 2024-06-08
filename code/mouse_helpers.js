@@ -1531,12 +1531,12 @@ function data_edit(parameter,value){
 }
 
 function request_set_block_parameter(block, parameter, value){
-	post("\n rsbp",block,parameter,value);
+	//post("\n rsbp",block,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	parameter_value_buffer.poke(1,MAX_PARAMETERS*block+parameter,v);
 }
 function request_set_voice_parameter(block,voice,parameter,value){
-	post("\nrsvp",block,voice,parameter,value);
+	//post("\nrsvp",block,voice,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
 	parameter_static_mod.poke(1,MAX_PARAMETERS*voice+parameter,v-bv);
