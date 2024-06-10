@@ -1533,11 +1533,13 @@ function data_edit(parameter,value){
 function request_set_block_parameter(block, parameter, value){
 	//post("\n rsbp",block,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
+	if(v == null) return -1;
 	parameter_value_buffer.poke(1,MAX_PARAMETERS*block+parameter,v);
 }
 function request_set_voice_parameter(block,voice,parameter,value){
 	//post("\nrsvp",block,voice,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
+	if(v == null) return -1;
 	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
 	parameter_static_mod.poke(1,MAX_PARAMETERS*voice+parameter,v-bv);
 }
@@ -1546,6 +1548,7 @@ function unscale_parameter(block, parameter, value){
 	var blockname = blocks.get("blocks["+block+"]::name");
 	var p_type = blocktypes.get(blockname+"::parameters["+parameter+"]::type");
 	var p_values = blocktypes.get(blockname+"::parameters["+parameter+"]::values");
+	if(!Array.isArray(p_values)) return null;
 	//post("\n\n\n\n",blockname,p_type,p_values,"value requested",value);
 	if((p_type == "int")||(p_type == "float")||(p_type == "float4")||(p_type == "note")){ //anything but menus
 		var pv = (value - p_values[1])/(p_values[2]-p_values[1]);
