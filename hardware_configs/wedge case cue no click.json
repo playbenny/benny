@@ -116,7 +116,7 @@
 ,
 			"Launch Control XL" : 			{
 				"name" : [ "Launch Control XL" ],
-				"substitute" : [ "LPD8 mk2", "LPD8" ],
+				"substitute" : [ ],
 				"outputs" : 32,
 				"type" : "potentiometer",
 				"channel" : 1,
