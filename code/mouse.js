@@ -1053,8 +1053,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					tv -= scalar / (p_values[2] - p_values[1] + 1);
 				}
 			}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")){
-				usermouse.scroll_accumulator += scroll*scalar;
-				scalar = (f==static_mod_adjust)?0.5:1; //this isn't right, i don't understand what's going on here, p_values.length is right, so static_mod_adjust must mangle it but it doesn't? 
+				usermouse.scroll_accumulator += scroll;
+				scalar *= (f==static_mod_adjust)?0.5:1; //this isn't right, i don't understand what's going on here, p_values.length is right, so static_mod_adjust must mangle it but it doesn't? 
 				if(usermouse.scroll_accumulator > 0.22 ){
 					usermouse.scroll_accumulator = 0;
 					tv += scalar / (p_values.length);
@@ -1080,14 +1080,15 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					}
 				}
 			}else if((t=="wave")){
-				usermouse.scroll_accumulator += scroll*scalar;
+				usermouse.scroll_accumulator += scroll;//*scalar;
 				if(usermouse.scroll_accumulator > 0.22 ){
 					usermouse.scroll_accumulator = 0;
-					tv += 1 / MAX_WAVES;
+					tv += 1.01 * scalar / MAX_WAVES;
 				}else if(usermouse.scroll_accumulator < -0.22){
 					usermouse.scroll_accumulator = 0;
-					tv -= 1 / MAX_WAVES;
+					tv -= 1.01 * scalar / MAX_WAVES;
 				}
+				redraw_flag.flag |= 2;
 			}else if((t=="float")&&(p_values[3]=="lin")){
 				if(p_values.length==5){
 					scalar *= p_values[4];
