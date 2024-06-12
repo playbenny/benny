@@ -1444,4 +1444,12 @@ function clear_everything(){
 	song_select.current_blocks=[];
 	song_select.current_name="";
 	song_select.show=0;
+
+	automap.lock_q = 0;
+	automap.lock_c = 0;
+	automap_lock_k = 0;
+	automap.mapped_c = -1;
+	automap.mapped_k = -1;
+	automap.mapped_k_v = -1;
+	automap.mapped_q = -1;
 }
