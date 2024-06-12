@@ -298,6 +298,7 @@ function buffer_loaded(number,path,name,buffername){
 	store_wave_slices(tn);
 	waves.age[number]=++waves.seq_no;
 	messnamed("update_wave_colls","bang");
+	messnamed("wave_updated",number+1);
 }
 
 function load_next_song(slow){
