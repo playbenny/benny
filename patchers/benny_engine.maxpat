@@ -15239,19 +15239,6 @@
 			}
 , 			{
 				"box" : 				{
-					"attr" : "fps",
-					"id" : "obj-20",
-					"maxclass" : "attrui",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 1067.0, 197.0, 150.0, 22.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-81",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -15695,13 +15682,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-32", 0 ],
 					"source" : [ "obj-193", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-48", 0 ],
-					"source" : [ "obj-20", 0 ]
 				}
 
 			}
