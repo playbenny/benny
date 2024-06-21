@@ -949,12 +949,13 @@ function mouse_released_on_a_thing_no_drag(){
 			selected.block_count=1;
 			selected.wire_count=0;
 			usermouse.timer = DOUBLE_CLICK_TIME;
-			var subvoices = 1;
-			if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices"))subvoices = blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
+			//var subvoices = 1;
+			//if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices"))subvoices = blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
 			if((usermouse.ids[2] == 0)||(current_p==1)){
 				sidebar.selected_voice = -1;
 			}else{
-				sidebar.selected_voice = ((usermouse.ids[2]-1)/subvoices)|0;
+				//post("\nsubv",subvoices,"ids",usermouse.ids[2]-1,"selected", ((usermouse.ids[2]-1)/subvoices)|0);
+				sidebar.selected_voice = ((usermouse.ids[2]-1)/*/subvoices*/)|0;
 			}
 			if(sidebar.mode=="edit_label") set_sidebar_mode("block");
 		}else{
