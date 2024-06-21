@@ -1,3 +1,5 @@
+IMPORTANT: max 8.6.3 has a bug that breaks benny. stick to 8.6.2 for now. https://cycling74.com/downloads/older
+
 benny
 -----
 
