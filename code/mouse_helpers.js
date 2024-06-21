@@ -457,13 +457,22 @@ function multiselect_polychange(dir){
 function hard_reload_block(b){
 	var vl = voicemap.get(b);
 	if(!Array.isArray(vl)) vl = [vl];
-	for(var i in vl){
-		if(vl[i]>=MAX_NOTE_VOICES){
-			loaded_audio_patcherlist[vl[i]-MAX_NOTE_VOICES] = "reload";
-		}else{
-			loaded_note_patcherlist[vl[i]] = "reload";
+	if(sidebar.selected_voice == -1){
+		for(var i in vl){
+			if(vl[i]>=MAX_NOTE_VOICES){
+				loaded_audio_patcherlist[vl[i]-MAX_NOTE_VOICES] = "reload";
+			}else{
+				loaded_note_patcherlist[vl[i]] = "reload";
+			}
+			post("\nreloading voice patcher "+vl[i]);
 		}
-		post("\nreloading voice patcher "+vl[i]);
+	}else{
+		if(vl[sidebar.selected_voice]>=MAX_NOTE_VOICES){
+			loaded_audio_patcherlist[vl[sidebar.selected_voice]-MAX_NOTE_VOICES] = "reload";
+		}else{
+			loaded_note_patcherlist[vl[sidebar.selected_voice]] = "reload";
+		}
+		post("\nreloading voice patcher "+vl[sidebar.selected_voice]);
 	}
 	still_checking_polys |= 3;
 }
