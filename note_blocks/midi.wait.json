@@ -1,0 +1,17 @@
+{
+	"midi.wait" : {
+		"patcher" : "midi.wait",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Collects up notes that come in until a trigger is received in the second input, at which point it dumps them all out in the order they were received. The clear input wipes the stored notes.",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in", "trigger in", "clear in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		}
+	}
+}
