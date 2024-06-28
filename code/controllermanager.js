@@ -15,6 +15,7 @@ var config = new Dict();
 config.name = "config";
 
 var MAX_PARAMETERS = 256;
+var MAX_BLOCKS = 128;
 
 var controllerslist = [];
 var controllersavailablelist = [];
@@ -34,6 +35,7 @@ var block_enable = 0;
 
 function loadbang(){
     MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+    MAX_BLOCKS = config.get("MAX_BLOCKS");
     //post("\ncontroller manager loaded");
 }
 
@@ -81,9 +83,23 @@ function block(bn){
                     for(var i = 0;i<subs.length;i++){
                         is = ispresent(subs[i]);
                         if(is>-1){
-                            post("\nfound substitute:",subs[i]);
-                            selected = subs[i];
-                            selection_type = "substitute";
+                            //this substitute is present, however first we need to check it's not in use already elsewhere
+                            for(var ib=0;ib<MAX_BLOCKS;ib++){
+                                if(blocks.contains("blocks["+ib+"]::selected_controller")){
+                                    var sc = blocks.get("blocks["+ib+"]::selected_controller");
+                                    if(sc == subs[i]){
+                                        post("\na potential substitute ("+subs[i]+") is present but is already in use by block "+ib+" ("+blocks.get("blocks["+ib+"]::name")+")");
+                                        ib = MAX_BLOCKS;
+                                        is = -1;
+                                    }
+                                }
+                            }
+                            if(is>-1){
+                                post("\na substitute is present:",subs[i]);
+                                selected = subs[i];
+                                selection_type = "substitute";
+                                i = subs.length;
+                            }
                         }else{
                             post("\n ",subs[i],"also not available");
                         }
