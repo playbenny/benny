@@ -1,9 +1,9 @@
 {
-	"abb.wizard.saturation" : {
+	"fx.wizard.saturation" : {
 		"patcher" : "abb.wizard.saturation",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "W I Z A R D S A T U R A T I O N",
+		"help_text" : "W I Z A R D S A T U R A T I O N##By Luke Abbott",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"connections" : {
@@ -16,7 +16,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2, 3, 4],
+				"contains" : [0, 1, 2, 3, 4, 5],
 				"height" : 2
 			}
 		],
@@ -58,6 +58,13 @@
 				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
 				"default" : 1
+			},
+			{
+				"name" : "Dry_Amount",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
 			}	
 		]
 	}
