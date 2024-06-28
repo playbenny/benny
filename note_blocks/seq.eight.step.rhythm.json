@@ -1,11 +1,11 @@
 {
-	"abb.eight.step" : {
+	"seq.eight.step.rhythm" : {
 		"patcher" : "abb.eight.step",
 		"type" : "note",
 		"block_ui_patcher" : "abb.eight.step.ui",
 		"ui_in_sidebar_height" : 1,		
 		"no_edit" : 1,
-		"help_text" : "new note",
+		"help_text" : "Parametric rhythm pattern generator by Luke Abbott",
 		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {

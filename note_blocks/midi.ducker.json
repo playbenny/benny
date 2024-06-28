@@ -1,14 +1,14 @@
 {
-	"abb.midi.gate" : {
+	"midi.ducker" : {
 		"patcher" : "abb.midi.gate",
 		"type" : "note",
 		"ui_in_sidebar_height" : 1,		
 		"no_edit" : 1,
-		"help_text" : "new note",
+		"help_text" : "Sidechain midi ducker by Luke Abbott",
 		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in", "gate trigger in" ]
+				"midi" : [ "notes in", "duck trigger in" ]
 			},
 			"out" : {
 				"midi" : [ "notes out", "trigger midi out" ]
