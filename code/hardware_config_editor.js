@@ -217,7 +217,9 @@ function render_controls(){
 		//y_pos+=unit.row;
 		ii++;
 		d = cd.get(cdk[p]+"::substitute");
+		if(d==null) d = [];
 		if(!Array.isArray(d)) d = [d];
+		post("\n---",cdk[p],"d is",d,"MII",midi_interfaces.in);
 		for(var i=0;i<midi_interfaces.in.length;i++){
 			if(midi_interfaces.in[i]!=cdk[p]){
 				var enab = d.indexOf(midi_interfaces.in[i]);
@@ -229,15 +231,16 @@ function render_controls(){
 					enab = "enabled";
 					c = [1.000, 0.792, 0.000, 1.000];
 				}
+				post("\nAAA",ii,midi_interfaces.in[i],"-",enab,"-ypos",y_pos);
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.in[i], "@textoncolor", c, "@varname", "substitute."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-				values[ii] = [midi_interfaces.in[i],enab,cdk[i]];
-				add_midimonitors(midi_interfaces.in[i]);
-
-				y_pos+=unit.row;
+				values[ii] = [midi_interfaces.in[i],enab,cdk[p]];
+				
 				ii++;
+				add_midimonitors(midi_interfaces.in[i]);
+				y_pos+=unit.row;
 			}
 		}
 		for(var i=0;i<midi_interfaces.not_present_in.length;i++){
@@ -251,6 +254,7 @@ function render_controls(){
 					enab = "enabled";
 					c = [1.000, 0.792, 0.000, 1.000];
 				}
+				post("\nBBB",ii,midi_interfaces.not_present_in[i],"-",enab,"-ypos",y_pos);
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  midi_interfaces.not_present_in[i], "@textoncolor", c, "@varname", "substitute."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -1432,11 +1436,13 @@ function keybcallback(data){
 	}else if(id[0]=="substitute"){
 		var v = values[id[1]];
 		var d = configfile.get("io::controllers::"+v[2]+"::substitute");
+		if(!Array.isArray(d)) d = [d];
+		post("\n\nsubsbutton id",id,"v",v,"d",d);
 		if(v[1]=="enabled"){ 
 			p = d.indexOf(v[0]);
 			if(p != -1){
 				d.splice(p,1);
-				configfile.replace("io::keyboards",d);
+				configfile.replace("io::controllers::"+v[2]+"::substitute",d);
 			}
 		}else if(v[1]=="disabled"){//so enable it
 			configfile.append("io::controllers::"+v[2]+"::substitute",v[0]);
@@ -1680,13 +1686,14 @@ function keybcallback(data){
 		var mport = configfile.get("hardware::"+values[id[1]][0]+"::midi_in");
 		this.patcher.messnamed("miditester",range[0],range[1]-range[0],ch,mport);
 	}
-	deleteall();
+	//deleteall();
 	render_controls();
 }
 
 function deleteall(){
-	for(var i=0;i<controls.length;i++){
-		this.patcher.remove(controls[i]);
+	post("\n\n\n\n\nREMOVING ",ii," CONTROLS");
+	for(;ii>=0;ii--){
+		this.patcher.remove(controls[ii]);
 	}
 	controls=[];
 	values=[];

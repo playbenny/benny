@@ -11,7 +11,7 @@
 		"controllers" : 		{
 			"JAMES_16e" : 			{
 				"name" : "JAMES_16e",
-				"substitute" : "Midi Fighter Twister",
+				"substitute" : [ "Midi Fighter Twister", "LPD8 mk2", "LPD8 mk2", "LPD8 mk2" ],
 				"outputs" : 16,
 				"type" : "encoder",
 				"channel" : 1,
@@ -116,7 +116,7 @@
 ,
 			"Launch Control XL" : 			{
 				"name" : [ "Launch Control XL" ],
-				"substitute" : [ ],
+				"substitute" : [ "LPD8", "LPD8 mk2" ],
 				"outputs" : 32,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -135,8 +135,9 @@
 						"lock_automap_control" : 16,
 						"lock_automap_keyboard" : 17,
 						"lock_automap_cue" : 18
-					},
-					"values" : {
+					}
+,
+					"values" : 					{
 						"type" : "note",
 						"channel" : 1,
 						"first" : 0
