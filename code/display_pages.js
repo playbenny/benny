@@ -5357,8 +5357,8 @@ function draw_sidebar(){
 					lcd_main.message("frgb",type_colour_dark);
 					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
 					lcd_main.message("write","projection angle",vector.toPrecision(2));
-					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*19);
-					lcd_main.message("write","offset",(2*offset-1).toPrecision(2));
+					//lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*19);
+					//lcd_main.message("write","offset",(2*offset-1).toPrecision(2));
 					y_offset+=22*fo1;					
 				}/* midi-> audio has no conversion? 
 				    else if((t_type=="audio")||(t_type=="hardware")){
