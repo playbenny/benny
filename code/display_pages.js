@@ -5347,7 +5347,7 @@ function draw_sidebar(){
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
-					/*
+					/* //not sure if this should be put back in for audio/hardware destinations? not needed for params obvs. downside is that it will jump if muted
 					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*22, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
@@ -5360,20 +5360,7 @@ function draw_sidebar(){
 					//lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*19);
 					//lcd_main.message("write","offset",(2*offset-1).toPrecision(2));
 					y_offset+=22*fo1;					
-				}/* midi-> audio has no conversion? 
-				    else if((t_type=="audio")||(t_type=="hardware")){
-					draw_vector(sidebar.x, y_offset, sidebar.x2-fontheight*5.4, fontheight*2.6+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
-					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					draw_h_slider(sidebar.x2-fontheight*5.3, y_offset, sidebar.x2-fontheight*2.7, fontheight*2.6+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1,offset2);
-					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;	
-					y_offset +=27*fo1;		
-				}*/
+				}
 			}else if(f_type=="parameters"){
 				if((t_type=="midi")||(t_type=="block")){
 					sidebar.connection.defaults.vector = Math.round(vector*4)/4;
