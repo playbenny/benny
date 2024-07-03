@@ -255,8 +255,12 @@ function draw_panel_edit(x,y,h,b){
 	block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
 //	var block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 	var block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
-	var column_width = mainwindow_width/MAX_PANEL_COLUMNS;
-	if(sidebar.mode != "none") column_width = sidebar.x / MAX_PANEL_COLUMNS;
+	var column_width;
+	if(sidebar.mode != "none"){
+		column_width = (sidebar.x - 9) / MAX_PANEL_COLUMNS;
+	}else{
+		column_width = (mainwindow_width-9)/MAX_PANEL_COLUMNS;
+	}
 	var x1 = 9 + x * column_width;
 	column_width -= 9;
 	var x2 = x1 + column_width;
@@ -306,8 +310,12 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	var block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 	var block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
 	if(sidebar.selected==b) block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
-	var column_width = mainwindow_width/MAX_PANEL_COLUMNS;
-	if(sidebar.mode != "none") column_width = (sidebar.x - 9) / MAX_PANEL_COLUMNS;
+	var column_width;
+	if(sidebar.mode != "none"){
+		column_width = sidebar.x / MAX_PANEL_COLUMNS;
+	}else{
+		column_width = (mainwindow_width-9)/MAX_PANEL_COLUMNS;
+	}
 	var x1 = 9 + x * column_width;
 	column_width -= 9;
 	var x2 = x1+column_width;
