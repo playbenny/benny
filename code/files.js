@@ -666,6 +666,9 @@ function import_song(){
 			for(i=0;i<po.length;i++){
 				panels_order[panels_order.length]=loading.mapping[po[i]];
 			}
+			if(songs.contains(loading.songname+"::MAX_PANEL_COLUMNS")){
+				MAX_PANEL_COLUMNS = 0 | songs.get(loading.songname+"::MAX_PANEL_COLUMNS");
+			}
 		}
 		for(i=0;i<loading.mutelist.length;i++){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
@@ -680,7 +683,6 @@ function import_song(){
 		loading.progress = 0;
 		redraw_flag.flag|=12;
 		rebuild_action_list=1;
-
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		
@@ -1100,6 +1102,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	post("current state stored");
 	if(panels_order.length){
 		blocks.replace("panels_order",panels_order);
+		blocks.replace("MAX_PANEL_COLUMNS",MAX_PANEL_COLUMNS);
 	}
 	if(fullscreen){
 		fullscreen=0;
