@@ -2006,7 +2006,7 @@ function draw_topbar(){
 						sn = sn.split(".");
 						if(!Array.isArray(sn)) sn = [sn];
 						for(var si=0;si<sn.length;si++){
-							lcd_main.message("moveto",9 + fontheight*(x_o+1.15-0.2*sn[si].length), 9+fontheight*(1-0.25*(sn.length-si)));
+							lcd_main.message("moveto",9 + fontheight*(x_o+0.2), 9+fontheight*(1-0.25*(sn.length-si)));
 							lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
 							lcd_main.message("write",sn[si]);
 						}
