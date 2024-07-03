@@ -386,7 +386,6 @@ function draw_panel(x,y,h,b,statecount,has_params,has_ui){
 		var statecontents = "states::current::"+b;
 		for(state=0;state<=MAX_STATES;state++){
 			if(states.contains(statecontents)){
-				post("-->",state);
 				if(state==0){
 					c = [0,0,0];
 				}else{
