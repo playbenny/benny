@@ -103,12 +103,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-79",
-					"linecount" : 7,
+					"linecount" : 11,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 38.0, 905.0, 384.0, 103.0 ],
-					"text" : "this is an example of saving something in the blocks dictionary and retrieving it later. any keys you add to the blocks dictionary get saved in the songfile, it doesn't have to be called saved_data.\n\nthe key 'voice_data' is reserved, if blocks do have this key then on load its contents (an array of floats) is copied into voice_data_buffer for you."
+					"patching_rect" : [ 38.0, 905.0, 384.0, 158.0 ],
+					"text" : "this is an example of saving something in the blocks dictionary and retrieving it later. any keys you add to the blocks dictionary get saved in the songfile, it doesn't have to be called saved_data.\n\nif you want to wait to store the data until the point the user hits save you can, the rightmost outlet of voiceheader will output 'store' when they press the button. \n\nthe key 'voice_data' is reserved, if blocks do have this key then on load its contents (an array of floats) is copied into voice_data_buffer for you."
 				}
 
 			}
@@ -1283,10 +1283,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 243.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1311,6 +1307,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 160.0, 69.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
