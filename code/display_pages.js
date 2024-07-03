@@ -155,7 +155,6 @@ function draw_panels(){
 	panels_custom = [];
 	var i,b,x=0,y=0,h;
 	var statecount;
-	var statelist = states.getkeys();
 	var block_name;
 	var block_is_in_custom_order=[];
 	view_changed=true;
@@ -189,17 +188,9 @@ function draw_panels(){
 		//work out height first
 		h=1; //title, floating blocks?, mute
 		statecount=0;
-		for(var state in statelist){
-			if(state!="current"){
-				var statecontents = states.get("states::"+state);
-				if(!is_empty(statecontents)){
-					if(statecontents.contains(b)){
-						statecount++;
-					}
-				}
-			}
+		for(var state=0;state<MAX_STATES;state++){
+			if(states.contains("states::"+state+"::"+b)) statecount++;
 		}
-		
 		if(statecount>0) h+=1; //if it has states
 		block_name = blocks.get("blocks["+b+"]::name");
 //			block_type = blocks.get("blocks["+b+"]::type");
@@ -236,7 +227,7 @@ function draw_panels(){
 		if(displaymode=="panels_edit"){
 			draw_panel_edit(x,y,h,b);
 		}else{
-			draw_panel(x,y,h,b,statecount>0,has_params,has_ui);
+			draw_panel(x,y,h,b,statecount,has_params,has_ui);
 		}
 	
 		y+=h+0.1;
@@ -302,7 +293,8 @@ function draw_panel_edit(x,y,h,b){
 	}
 }
 
-function draw_panel(x,y,h,b,has_states,has_params,has_ui){
+function draw_panel(x,y,h,b,statecount,has_params,has_ui){
+	var has_states = statecount > 0;
 	var i;
 	var block_name=blocks.get("blocks["+b+"]::name");
 	var block_colour = blocks.get("blocks["+b+"]::space::colour");
@@ -312,7 +304,7 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	if(sidebar.selected==b) block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
 	var column_width;
 	if(sidebar.mode != "none"){
-		column_width = sidebar.x / MAX_PANEL_COLUMNS;
+		column_width = (sidebar.x-9) / MAX_PANEL_COLUMNS;
 	}else{
 		column_width = (mainwindow_width-9)/MAX_PANEL_COLUMNS;
 	}
@@ -389,34 +381,30 @@ function draw_panel(x,y,h,b,has_states,has_params,has_ui){
 	
 	if(has_states){
 		var cll = config.getsize("palette::gamut")/MAX_STATES;
-		var c = new Array(3);		
-		
+		var c = new Array(3);	
+		var st=0;	
+		var statecontents = "states::current::"+b;
 		for(state=0;state<=MAX_STATES;state++){
-			var statecontents;
-			if(state==0){
-				statecontents = states.get("states::current");
-			}else{
-				statecontents = states.get("states::"+(state-1));
-			} 
-			if(!is_empty(statecontents)){
-				if(statecontents.contains(b)){
-					if(state==0){
-						c = [0,0,0];
-					}else{
-						c = config.get("palette::gamut["+Math.floor((state-1)*cll)+"]::colour");
-					}
-					lcd_main.message("paintrect",x1+(state/(MAX_STATES+1))*column_width,18+(y+2)*fontheight,x1+((state+1)/(MAX_STATES+1))*column_width,18+(y+2.9)*fontheight,c[0],c[1],c[2]);
-					click_rectangle(x1+(state/MAX_STATES)*column_width,18+(y+2)*fontheight,x1+((state+1)/MAX_STATES)*column_width,18+(y+2.9)*fontheight,mouse_index,1);
-					mouse_click_actions[mouse_index] = fire_block_state;
-					if(state==0){
-						mouse_click_parameters[mouse_index] = "current";
-					}else{
-						mouse_click_parameters[mouse_index] = state-1;
-					}
-					mouse_click_values[mouse_index] = b;
-					mouse_index++;
+			if(states.contains(statecontents)){
+				post("-->",state);
+				if(state==0){
+					c = [0,0,0];
+				}else{
+					c = config.get("palette::gamut["+Math.floor((state-1)*cll)+"]::colour");
 				}
+				lcd_main.message("paintrect",x1+(st/(statecount+1))*column_width,18+(y+2)*fontheight,x1+((st+1)/(statecount+1))*column_width,18+(y+2.9)*fontheight,c[0],c[1],c[2]);
+				click_rectangle(x1+(st/(statecount+1))*column_width,18+(y+2)*fontheight,x1+((st+1)/(statecount+1))*column_width,18+(y+2.9)*fontheight,mouse_index,1);
+				mouse_click_actions[mouse_index] = fire_block_state;
+				if(state==0){
+					mouse_click_parameters[mouse_index] = "current";
+				}else{
+					mouse_click_parameters[mouse_index] = state-1;
+				}
+				mouse_click_values[mouse_index] = b;
+				mouse_index++;
+				st++;
 			}
+			statecontents = "states::"+state+"::"+b;
 		}
 	}
 	if(has_params){ //has panelparams
