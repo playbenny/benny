@@ -3,7 +3,7 @@
 		"patcher" : "voice.ks",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Basic KS string model with selfmodulation and a -x^3 saturator in the feedback loop. ",
+		"help_text" : "Basic KS string model with selfmodulation and a -x^3 saturator in the feedback loop. ##positive values of 'highpass' are a onepole in the loop, negative values are a 2 pole highpass post-filter. in both cases pitch is relative to the string's current note pitch. ##selfmod is self-fm simulating a tanpura's curved bridge. negative values have a half-wave rectifier on this modulation.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"latching_enable" : 1,
@@ -28,7 +28,7 @@
 				"height" : 0
 			},
 			{
-				"contains" : [9,8,11,10,10],
+				"contains" : [9,8,11,12,10,10],
 				"height" : 0
 			}
 		],
@@ -120,6 +120,13 @@
 				"name" : "saw_pluck_detune",
 				"type" : "float",
 				"values" : ["bi", -12, 12, "lin"],
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "highpass",
+				"type" : "float",
+				"values" : ["bi", -4,4, "exp"],
 				"default" : 0.5,
 				"wrap" : 0
 			}			
