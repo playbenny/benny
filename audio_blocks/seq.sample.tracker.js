@@ -978,3 +978,6 @@ function finalise_remapping(){
 		}
 	}
 }
+
+function enabled(v){
+}
