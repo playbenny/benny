@@ -939,6 +939,7 @@ function mouse_released_on_a_thing_no_drag(){
 		}else if(usermouse.shift == 0){
 			var ti=0;
 			var current_p = blocks.get("blocks["+usermouse.ids[1]+"]::poly::voices");
+			if(selected.block[usermouse.ids[1]]==0) sidebar.scroll.position = 0;
 			for(ti=0;ti<selected.wire.length;ti++){
 				selected.wire[ti]=0;
 			}
