@@ -659,10 +659,10 @@ function get_voice_details(voiceis){
 	if(blocks.contains("blocks["+block+"]::poly::latching_mode")) latching = blocks.get("blocks["+block+"]::poly::latching_mode");
 	var rate = 0;
 
-	if(voiceis<MAX_NOTE_VOICES){
-		note_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+	if(voiceis<MAX_NOTE_VOICES){ // the last value, '1', goes to enabled, so you could use this when loading pre-recycled voices perhaps to not initialise them yet?
+		note_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
 	}else if(voiceis<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-		audio_poly.setvalue(voiceis+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+		audio_poly.setvalue(voiceis+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
 	}
 }
 
@@ -685,9 +685,9 @@ function send_all_voice_details(){
 		var rate = 0;
 		for(var nth=0;nth<of;nth++){
 			if(vl[nth]<MAX_NOTE_VOICES){
-				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
 			}else if(vl[nth]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-				audio_poly.setvalue(vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate);
+				audio_poly.setvalue(vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
 			}
 		}
 	} 
