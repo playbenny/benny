@@ -570,7 +570,7 @@ function connection_select(parameter,value){
 	for(i=0;i<MAX_BLOCKS;i++){
 		selected.block[i]=0;
 	}
-	for(i=0;i<connections.getsize();i++){
+	for(i=0;i<selected.wire.length;i++){
 		selected.wire[i]=0;
 	}
 	selected.wire[value] = 1;
@@ -642,7 +642,7 @@ function select_block(parameter,value){
 		for(i=0;i<MAX_BLOCKS;i++){
 			selected.block[i]=0;
 		}
-		for(i=0;i<connections.getsize();i++){
+		for(i=0;i<selected.wire.length;i++){
 			selected.wire[i]=0;
 		}
 		selected.block[value] = 1;
@@ -753,7 +753,7 @@ function jump_to_block_at_connection_end(which){
 	}
 	if(target!=-1){
 		post(target);
-		for(i=0;i<connections.getsize();i++) selected.wire[i]=0;
+		for(i=0;i<selected.wire.length;i++) selected.wire[i]=0;
 		selected.wire_count = 0;
 		//selected.block[target] = 1;
 		select_block(0,target);
