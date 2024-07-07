@@ -744,7 +744,7 @@ function remove_connection_btn(cno,value){
 
 function jump_to_block_at_connection_end(which){
 	var i=selected.wire.indexOf(1);
-	post("\njump",which,i);
+	//post("\njump",which,i);
 	var target = -1;
 	if(which==0){
 		target = connections.get("connections["+i+"]::from::number");
