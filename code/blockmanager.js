@@ -37,6 +37,7 @@ var DOUBLE_CLICK_TIME = 8;
 var LONG_PRESS_TIME = 800;
 var SLIDER_CLICK_SET = 0;
 var SCOPE_DEFAULT_ZOOM = 0.65;
+var SHOW_STATES_ON_PANELS = 1;
 var BLOCK_TEXTURE_SIZE = 128;
 var ANIM_TIME = 0.25;
 var UPSAMPLING = 1;
@@ -82,7 +83,7 @@ var input_used = new Array(MAX_AUDIO_INPUTS+2);
 
 var state_fade = {
 	start : [],
-	x : 0,
+	y : 0,
 	index : 0,
 	end : [],
 	static_start : [],
@@ -588,7 +589,7 @@ var debugmode = 0;
 
 var glow_amount=0.15;
 var monofont = "Consolas";
-var mainfont = "Consolas";
+var mainfont = "Arial";
 
 var projectpath="";
 

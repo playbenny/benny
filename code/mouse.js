@@ -264,8 +264,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					f(p,v);
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
-					usermouse.drag.starting_value_x = 1;
-					usermouse.drag.starting_value_y = -1;
+					usermouse.drag.starting_value_x = -1;
+					usermouse.drag.starting_value_y = 0;//-1;
 					usermouse.clicked2d = usermouse.got_i;
 					usermouse.clicked3d = -1;
 					usermouse.drag.distance = 0;
