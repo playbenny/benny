@@ -188,6 +188,7 @@ function initialise_dictionaries(hardware_file){
 	wires_show_all = config.get("WIRES_SHOW_ALL");
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
+	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
