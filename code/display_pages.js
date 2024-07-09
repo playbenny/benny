@@ -1996,7 +1996,7 @@ function draw_topbar(){
 			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
 			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
-		}else{ //draw states / init / unmute all
+		}else if((displaymode == "blocks")||(displaymode == "panels")){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 9 - fontheight;
 			var cll = config.getsize("palette::gamut");
 			var c = new Array(3);
