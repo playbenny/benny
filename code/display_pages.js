@@ -379,7 +379,7 @@ function draw_panel(x,y,h,b,statecount,has_params,has_ui){
 	}
 
 	
-	if(has_states){
+	if(has_states && SHOW_STATES_ON_PANELS){
 		var cll = config.getsize("palette::gamut")/MAX_STATES;
 		var c = new Array(3);	
 		var st=0;	
