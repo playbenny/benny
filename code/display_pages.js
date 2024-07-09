@@ -182,7 +182,12 @@ function draw_panels(){
 			}
 		}
 	}
-
+	var column_width;
+	if(sidebar.mode != "none"){
+		column_width = (sidebar.x-18 - fontheight*1.1) / MAX_PANEL_COLUMNS;
+	}else{
+		column_width = (mainwindow_width-18 - fontheight*1.1)/MAX_PANEL_COLUMNS;
+	}
 	for(i=0;i<panels_order.length;i++){
 		b = panels_order[i];
 		//work out height first
@@ -215,7 +220,7 @@ function draw_panels(){
 			panels_custom.push(b);
 		}
 
-		if(18+(y+h)*fontheight>mainwindow_height){
+		if(18+(y+h+0.9)*fontheight>mainwindow_height){
 			x++;
 			y=0;
 			if(x>=MAX_PANEL_COLUMNS){
@@ -225,11 +230,11 @@ function draw_panels(){
 				return(1);
 			}
 		}
-
+		var x1 = 18 + fontheight*1.1 + x * column_width;
 		if(displaymode=="panels_edit"){
-			draw_panel_edit(x,y,h,b);
+			draw_panel_edit(x1,y,h,b,column_width-9);
 		}else{
-			draw_panel(x,y,h,b,statecount,has_params,has_ui);
+			draw_panel(x1,y,h,b,column_width-9,statecount,has_params,has_ui);
 		}
 	
 		y+=h+0.1;
@@ -241,21 +246,13 @@ function draw_panels(){
 	}
 }
 
-function draw_panel_edit(x,y,h,b){
+function draw_panel_edit(x1,y,h,b,column_width){
 	var i,cx,cy,r;
 //	var block_name=blocks.get("blocks["+b+"]::name");
 	var block_colour = blocks.get("blocks["+b+"]::space::colour");
 	block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
 //	var block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 	var block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
-	var column_width;
-	if(sidebar.mode != "none"){
-		column_width = (sidebar.x - 9 - fontheight*1.1) / MAX_PANEL_COLUMNS;
-	}else{
-		column_width = (mainwindow_width-9 - fontheight*1.1)/MAX_PANEL_COLUMNS;
-	}
-	var x1 = 9 + fontheight*1.1 + x * column_width;
-	column_width -= 9;
 	var x2 = x1 + column_width;
 	setfontsize(fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
@@ -295,7 +292,7 @@ function draw_panel_edit(x,y,h,b){
 	}
 }
 
-function draw_panel(x,y,h,b,statecount,has_params,has_ui){
+function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 	var has_states = (statecount > 0);
 	var i;
 	var block_name=blocks.get("blocks["+b+"]::name");
@@ -304,15 +301,7 @@ function draw_panel(x,y,h,b,statecount,has_params,has_ui){
 	var block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 	var block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
 	if(sidebar.selected==b) block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
-	var column_width;
-	if(sidebar.mode != "none"){
-		column_width = (sidebar.x-9 - fontheight*1.1) / MAX_PANEL_COLUMNS;
-	}else{
-		column_width = (mainwindow_width-9 - fontheight*1.1)/MAX_PANEL_COLUMNS;
-	}
-	var x1 = 9 + fontheight*1.1 + x * column_width;
-	column_width -= 9;
-	var x2 = x1+column_width;
+	var x2 = x1 + column_width;
 	cur_font_size=0;
 	setfontsize(fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
