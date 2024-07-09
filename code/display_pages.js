@@ -188,10 +188,12 @@ function draw_panels(){
 		//work out height first
 		h=1; //title, floating blocks?, mute
 		statecount=0;
-		for(var state=0;state<MAX_STATES;state++){
-			if(states.contains("states::"+state+"::"+b)) statecount++;
+		if(SHOW_STATES_ON_PANELS){
+			for(var state=0;state<MAX_STATES;state++){
+				if(states.contains("states::"+state+"::"+b)) statecount++;
+			}
+			if(statecount>0) h+=1; //if it has states
 		}
-		if(statecount>0) h+=1; //if it has states
 		block_name = blocks.get("blocks["+b+"]::name");
 //			block_type = blocks.get("blocks["+b+"]::type");
 		var has_params = 0;
@@ -294,7 +296,7 @@ function draw_panel_edit(x,y,h,b){
 }
 
 function draw_panel(x,y,h,b,statecount,has_params,has_ui){
-	var has_states = statecount > 0;
+	var has_states = (statecount > 0);
 	var i;
 	var block_name=blocks.get("blocks["+b+"]::name");
 	var block_colour = blocks.get("blocks["+b+"]::space::colour");
@@ -379,7 +381,7 @@ function draw_panel(x,y,h,b,statecount,has_params,has_ui){
 	}
 
 	
-	if(has_states && SHOW_STATES_ON_PANELS){
+	if(has_states){
 		var cll = config.getsize("palette::gamut")/MAX_STATES;
 		var c = new Array(3);	
 		var st=0;	
