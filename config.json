@@ -50,7 +50,7 @@
 	"AUTOZOOM_ON_SELECT" : 1,
 	"AUTO_INCREMENT_SAVE_KEY" : 0,
 	"CTRL_VOICE_SEL_MOMENTARY" : 1,
-	"SHOW_STATES_ON_PANELS" : 0,
+	"SHOW_STATES_ON_PANELS" : 1,
 	"sidebar_scrollbar_width" : 18,
 	"sidebar_width_in_units" : 10,
 	"consolevsts" : {
