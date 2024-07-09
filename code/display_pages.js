@@ -1961,76 +1961,7 @@ function draw_topbar(){
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 		x_o+=1.3;
-	
-		var cll = config.getsize("palette::gamut");
-		var c = new Array(3);
-		// draw a button for each possible state
-		for(i=-1;i<MAX_STATES;i++){
-			var statecontents;
-			if(i == -1){
-				statecontents = states.contains("states::current");
-			}else{
-				statecontents = states.contains("states::"+i);
-			}
-			if(statecontents){
-				if((state_fade.position>-1) && (state_fade.selected ==i)){
-					state_fade.x = x_o;
-					state_fade.index = mouse_index;
-				} 
-				if(i < 0){
-					if(usermouse.clicked2d!=mouse_index){
-						c = menucolour;
-					}else{
-						c=[255,255,255];
-					}
-					lcd_main.message("framerect", 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), fontheight + 9,c );
-					if(usermouse.alt){
-						lcd_main.message("moveto",9 + fontheight*(x_o+0.25), 9+fontheight*0.45);
-						lcd_main.message("write", "init+");
-						lcd_main.message("moveto",9 + fontheight*(x_o+0.25), 9+fontheight*0.75);
-						lcd_main.message("write", "data");
-					}else{
-						lcd_main.message("moveto",9 + fontheight*(x_o+0.3), 9+fontheight*0.75);
-						lcd_main.message("write", "init");
-					}	
-				}else{
-					if(usermouse.clicked2d!=mouse_index){
-						c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
-					}else{
-						c=[255,255,255];
-					} 
-					lcd_main.message("paintrect", 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.1), fontheight + 9,c );		
-					if(states.contains("names::"+i)){
-						var sn=states.get("names::"+i);
-						sn = sn.split(".");
-						if(!Array.isArray(sn)) sn = [sn];
-						for(var si=0;si<sn.length;si++){
-							lcd_main.message("moveto",9 + fontheight*(x_o+0.2), 9+fontheight*(1-0.25*(sn.length-si)));
-							lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
-							lcd_main.message("write",sn[si]);
-						}
-					}					
-				}
-				click_zone( [fire_whole_state_btn_click,fire_whole_state_btn_release], i, 0, 9+fontheight*x_o, 9, 9+fontheight*(x_o+1.2), fontheight + 9,mouse_index,6 );							
-				x_o+=1.2;
-			}
-		}
-		if(anymuted || mix_block_has_mutes){
-			x_o+=0.2;
-			if(usermouse.clicked2d == mouse_index){
-				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,0,0,0 );
-				lcd_main.message("frgb", menucolour);		
-			}else{
-				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,menudarkest );
-				lcd_main.message("frgb", menucolour);		
-			}
-			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
-			lcd_main.message("write", "unmute");
-			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-			lcd_main.message("write", "all");			
-			click_zone(mute_all_blocks, "unmute", 0, 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.6), 9+fontheight,mouse_index,1 );
-			x_o+=1.7;
-		}
+
 		if(song_select.show){
 			click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.6), 9+fontheight,mouse_index,1 );
 			mouse_click_actions[mouse_index] = song_select_button;
@@ -2057,6 +1988,7 @@ function draw_topbar(){
 			lcd_main.message("write", "merged");
 			x_o+=1.6;
 		}
+
 		if(displaymode == "custom_fullscreen"){
 			lcd_main.message("paintrect", mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
 			lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
@@ -2064,6 +1996,76 @@ function draw_topbar(){
 			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
 			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
+		}else{ //draw states / init / unmute all
+			var y_o = mainwindow_height - 9 - fontheight;
+			var cll = config.getsize("palette::gamut");
+			var c = new Array(3);
+			// draw a button for each possible state
+			for(i=MAX_STATES-1;i>=-1;i--){
+				var statecontents;
+				if(i == -1){
+					statecontents = states.contains("states::current");
+				}else{
+					statecontents = states.contains("states::"+i);
+				}
+				if(statecontents){
+					if((state_fade.position>-1) && (state_fade.selected ==i)){
+						state_fade.y = y_o;
+						state_fade.index = mouse_index;
+					} 
+					if(i < 0){
+						if(usermouse.clicked2d!=mouse_index){
+							c = menucolour;
+						}else{
+							c=[255,255,255];
+						}
+						lcd_main.message("framerect", 5, y_o, 9+fontheight, fontheight + y_o,c );
+						if(usermouse.alt){
+							lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.45);
+							lcd_main.message("write", "init+");
+							lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.75);
+							lcd_main.message("write", "data");
+						}else{
+							lcd_main.message("moveto",5 + fontheight*0.25, y_o+fontheight*0.75);
+							lcd_main.message("write", "init");
+						}	
+					}else{
+						if(usermouse.clicked2d!=mouse_index){
+							c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
+						}else{
+							c=[255,255,255];
+						} 
+						lcd_main.message("paintrect", 5, y_o, 9+fontheight, fontheight + y_o,c );		
+						if(states.contains("names::"+i)){
+							var sn=states.get("names::"+i);
+							sn = sn.split(".");
+							if(!Array.isArray(sn)) sn = [sn];
+							for(var si=0;si<sn.length;si++){
+								lcd_main.message("moveto",5 + fontheight*0.1, y_o+fontheight*(1-0.25*(sn.length-si)));
+								lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
+								lcd_main.message("write",sn[si]);
+							}
+						}					
+					}
+					click_zone( [fire_whole_state_btn_click,fire_whole_state_btn_release], i, 0, 0, y_o, 9+fontheight*1.2, fontheight + y_o,mouse_index,6 );							
+					y_o -= 1.1*fontheight;
+				}
+			}
+			if(anymuted || mix_block_has_mutes){
+				if(usermouse.clicked2d == mouse_index){
+					lcd_main.message("paintrect", 5, y_o - fontheight, 9+fontheight, y_o,0,0,0 );
+					lcd_main.message("frgb", menucolour);		
+				}else{
+					lcd_main.message("paintrect", 5, y_o - fontheight, 9+fontheight, y_o,menudarkest );
+					lcd_main.message("frgb", menucolour);		
+				}
+				lcd_main.message("moveto", 5 + fontheight*0.1, y_o-fontheight*0.5);
+				lcd_main.message("write", "unmute");
+				lcd_main.message("moveto", 5 + fontheight*0.1, y_o-fontheight*0.25);
+				lcd_main.message("write", "all");			
+				click_zone(mute_all_blocks, "unmute", 0, 0, y_o - fontheight, 9+fontheight*1.5, y_o,mouse_index,1 );
+				y_o-=1.1*fontheight;
+			}
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
