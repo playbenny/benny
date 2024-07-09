@@ -1115,7 +1115,7 @@ function fire_whole_state_btn_click(state,value){ //start timer, after a moment 
 }
 
 function create_whole_state_xfade_slider(state,value){
-	state_fade.position=1;
+	state_fade.position=0;//1;
 	redraw_flag.flag |= 2;
 	usermouse.last.got_t = 2;
 	//here: fill the starting/ending arrays - these are structured like the store[b][xxxx] arrays used to save states
@@ -1173,6 +1173,7 @@ function fire_whole_state_btn_release(state,value){//if a slider didn't appear y
 	redraw_flag.flag |= 2;
 	fire_whole_state_btn(state,value);
 }
+
 function whole_state_xfade(parameter,value){ //called by the slider
 	if(value == "get"){
 		return state_fade.position*2 - 1;
@@ -1184,7 +1185,7 @@ function whole_state_xfade(parameter,value){ //called by the slider
 	}
 }
 function fire_whole_state_btn(state,value){
-	post("\nwhole state btn",state,value);
+	//post("\nwhole state btn",state,value);
 	if(usermouse.ctrl){
 		if(state==-1){
 			select_all();
@@ -1256,13 +1257,15 @@ function fade_state(){
 			//var om=0;
 			//if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
 			//if(m!=pv[0])mf=1;
-			//fade starts at 1 (top) and ends at 0 (bottom) - 1 is the 'current state', 0 is the selected state.
+			//fade started at 1 (top) and ends at 0 (bottom) - 1 is the 'current state', 0 is the selected state.
+			//this is now reversed back to a more logical start at 0 end at 1
+			
 			if((state_fade.position < 1) && (state_fade.end[b][0] == 1)) m = 1;
-			if((state_fade.position == 0) && (state_fade.end[b][0] == 0)) m = 0;
-			if((state_fade.position == 1)) m = state_fade.start[b][0];
+			if((state_fade.position == 1) && (state_fade.end[b][0] == 0)) m = 0;
+			if((state_fade.position == 0)) m = state_fade.start[b][0];
 			if(m>-1) mute_particular_block(b,m);
 			for(var t=1;t<pv.length;t++){
-				parameter_value_buffer.poke( 1, MAX_PARAMETERS*b+t-1, (1-state_fade.position)*state_fade.end[b][t] + (state_fade.position)*state_fade.start[b][t]);
+				parameter_value_buffer.poke( 1, MAX_PARAMETERS*b+t-1, (state_fade.position)*state_fade.end[b][t] + (1-state_fade.position)*state_fade.start[b][t]);
 			}
 			if(state_fade.static_start[b]!=null){
 				if(Array.isArray(state_fade.static_start[b])){
@@ -1271,7 +1274,7 @@ function fade_state(){
 						if(Array.isArray(state_fade.static_start[b][t])){
 							for(var x=0;x<pv.length;x++){
 								if(state_fade.static_start[b][t][x]!=state_fade.static_end[b][t][x]){
-									var y = (1-state_fade.position)*state_fade.static_end[b][t][x] + state_fade.position*state_fade.static_start[b][t][x];
+									var y = (state_fade.position)*state_fade.static_end[b][t][x] + (1-state_fade.position)*state_fade.static_start[b][t][x];
 									parameter_static_mod.poke( 1, MAX_PARAMETERS*vl[t]+x, y);
 								}
 							}
