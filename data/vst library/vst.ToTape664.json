@@ -1,0 +1,76 @@
+{
+	"vst.ToTape6" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "ToTape664",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "ToTape664",
+		"plugin_type" : "vst",
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "Input",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Soften",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Head B",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Flutter",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Output",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Dry/Wet",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [ 			{
+				"height" : 1,
+				"contains" : [ 0, 4, 5 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 1, 2, 3 ]
+			}
+ ]
+	}
+
+}

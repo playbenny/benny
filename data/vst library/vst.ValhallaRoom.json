@@ -1,0 +1,181 @@
+{
+	"vst.Valhalla.Room" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "ValhallaRoom",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "ValhallaRoom",
+		"plugin_type" : "vst3",
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "mix",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "predelay",
+				"default" : 0.019999999552965,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "decay",
+				"default" : 0.019019018858671,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "HighCut",
+				"default" : 0.530201315879822,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "earlyLateMix",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "lateSize",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "lateCross",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "lateModRate",
+				"default" : 0.090909093618393,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "lateModDepth",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "RTBassMultiply",
+				"default" : 0.333333343267441,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "RTXover",
+				"default" : 0.090909093618393,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "RTHighMultiply",
+				"default" : 0.444444477558136,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "RTHighXover",
+				"default" : 0.530201315879822,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "earlySize",
+				"default" : 0.029029028490186,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "earlyCross",
+				"default" : 0.100000001490116,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "earlyModRate",
+				"default" : 0.090909093618393,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "earlyModDepth",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "earlySend",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "diffusion",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "type",
+				"default" : 0.08333333581686,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Bypass",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [ 			{
+				"height" : 2,
+				"contains" : [ 0, 1, 2 ]
+			}
+, 			{
+				"height" : 2,
+				"contains" : [ 3, 4, 5, 13, 18 ]
+			}
+ ]
+	}
+
+}

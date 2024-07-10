@@ -1,0 +1,77 @@
+{
+	"vst.Ratshack.Reverb2" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "RatshackReverb2",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "RatshackReverb2",
+		"plugin_type" : "vst",
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "Mic Lvl",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Delay",
+				"default" : 0.504999995231628,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Repeat",
+				"default" : 0.620000004768372,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Depth",
+				"default" : 0.494999974966049,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Input",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Power",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [
+ 			{
+				"height" : 1,
+				"contains" : [ 1, 2, 3 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 0, 4, 5 ]
+			}	
+		]
+	}
+
+}

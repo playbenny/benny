@@ -1,0 +1,36 @@
+{
+	"vst.Mojo" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "Mojo64",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "Mojo64",
+		"plugin_type" : "vst",
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ]
+			}
+
+		}
+,
+		"parameters" : 		{
+			"name" : "Input",
+			"default" : 0.5,
+			"type" : "float",
+			"wrap" : 0,
+			"values" : [ "uni", 0, 1, "lin" ]
+		}
+,
+		"groups" : [ 			{
+				"height" : 1,
+				"contains" : [ 0, 0 ]
+			} ]
+	}
+
+}

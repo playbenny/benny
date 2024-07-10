@@ -1,0 +1,65 @@
+{
+	"vst.Focus" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "Focus64",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "Focus64",
+		"plugin_type" : "vst",
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "Boost",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Focus",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Mode",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Output",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Dry/Wet",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [ 			{
+				"height" : 1,
+				"contains" : [ 0, 1, 2, 3, 4 ]
+			}
+ ]
+	}
+
+}

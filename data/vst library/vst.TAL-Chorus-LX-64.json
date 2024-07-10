@@ -1,0 +1,69 @@
+{
+	"vst.TAL.Chorus.LX" : 	{
+		"patcher" : "vst.loader",
+		"help_text": "TAL chorus vst",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "TAL-Chorus-LX-64",
+		"plugin_type" : "vst",
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "in" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "CHORUS1ENABLED",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "CHORUS2ENABLED",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "VOLUME",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "DRYWET",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "STEREOWIDTH",
+				"default" : 1,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [ 			{
+				"height" : 3,
+				"contains" : [ 2, 3, 4 ]
+			}
+, 			{
+				"height" : 0,
+				"contains" : [ 0, 1 ]
+			}
+ ]
+	}
+
+}

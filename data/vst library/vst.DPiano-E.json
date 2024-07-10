@@ -1,0 +1,135 @@
+{
+	"vst.DPiano.E" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "DPiano-E",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 2,
+		"plugin_name" : "DPiano-E",
+		"plugin_type" : "vst",
+		"pitchbend_range" : 2,
+		"upsample" : 1,
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "midi in" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "Hardness",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Treble",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Decay",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Release",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "ModRate",
+				"default" : [ 0.649999976158142 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "ModAmt",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Overdrv",
+				"default" : [ 0.0 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "VelSens",
+				"default" : [ 0.25 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Tuning",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Random",
+				"default" : [ 0.145999997854233 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "MaxPoly",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Stereo",
+				"default" : [ 0.5 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Volume",
+				"default" : [ 1.0 ],
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [ 			{
+				"height" : 1,
+				"contains" : [ 0, 1, 6 ]
+			}
+, 			{
+				"height" : 2,
+				"contains" : [ 2, 3, 7 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 4, 5, 8, 9 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 10, 11, 12 ]
+			}
+ ]
+	}
+
+}
