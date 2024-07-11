@@ -1,5 +1,6 @@
 outlets = 1;
 setoutletassist(0,"output");
+var projectpath;
 
 var MAX_GROUPS=4;
 
@@ -111,6 +112,56 @@ function num_params(num){
 	paramcount = num;
 }
 
+function scan_check(type, name){
+	var r = check_exists(name);
+	if(r == 0){
+		r = check_library(name);
+		if(r == 1){
+			copy_from_library(name);
+		}
+	}
+	outlet(0, "exists", r, type, name); //1 if it exists or was copied from lib
+}
+
+function copy_from_library(name){
+	post(" copied from library");
+	var bucket = new Dict;
+	bucket.import_json(projectpath+"/data/vst_library/vst."+name+".json");
+	bucket.export_json(projectpath+"/audio_blocks/vst."+name+".json");
+}
+
+function check_exists(name){
+	//post("\nlooking for:",projectpath+"audio_blocks/vst."+name+".json ");
+	var testfile = new File(projectpath+"audio_blocks/vst."+name+".json");
+	if(testfile.isopen){
+		post("\n",name," configured OK");
+		testfile.close();
+		testfile.freepeer();
+		return 1;
+	}else{
+		//post("NO");
+		testfile.close();
+		testfile.freepeer();
+		return 0;
+	}
+}
+
+function check_library(name){
+	//post("\nlooking for:",projectpath+"data/vst_library/vst."+name+".json ");
+	var testfile = new File(projectpath+"data/vst_library/vst."+name+".json");
+	if(testfile.isopen){
+		post("\n",name," found in library");
+		testfile.close();
+		testfile.freepeer();
+		return 1;
+	}else{
+		post("\n",name," not yet configured");
+		testfile.close();
+		testfile.freepeer();
+		return 0;
+	}
+}
+
 function transfer_params_and_defaults(){
 	var i,name,def;
 	var paramdetails = new Array();
@@ -177,5 +228,9 @@ function loadbang(){
 		groups[i] = new Array();
 		group_height[i] = 1;
 		group_colours[i] = [-1,-1,-1];
-	} 
+	}
+	var path = this.patcher.filepath;
+	projectpath = path.split("audio_blocks/");
+	projectpath = projectpath[0];
+	post("\npath is",projectpath);
 }
