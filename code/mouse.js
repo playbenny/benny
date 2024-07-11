@@ -287,7 +287,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				
 				if((displaymode=="blocks")||(displaymode=="custom")||(displaymode=="panels")) redraw_flag.flag|=2;
 			} else if(usermouse.clicked2d != -1){
-				if(usermouse.last.got_i == usermouse.got_i){
+				if(mouse_click_actions[usermouse.last.got_i]==whole_state_xfade){ //end of state xfade
+					state_fade.lastcolour = [state_fade.colour[0], state_fade.colour[1], state_fade.colour[2]];
+					state_fade.last = state_fade.selected;
+					state_fade.selected = -2;
+					state_fade.position = -2;
+					redraw_flag.flag |= 2;									
+				}else if(usermouse.last.got_i == usermouse.got_i){
 					//post("2d release",usermouse.last.got_i,usermouse.last.got_t);
 					if((usermouse.last.got_t == 1)||(usermouse.last.got_t == 7)||(usermouse.last.got_t == 6)){ // it's a button (1) or passthrough(7)
 						var f = mouse_click_actions[usermouse.last.got_i];
@@ -377,12 +383,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 					}
-				}else if(mouse_click_actions[usermouse.last.got_i]==whole_state_xfade){ //end of state xfade
-					state_fade.lastcolour = [state_fade.colour[0], state_fade.colour[1], state_fade.colour[2]];
-					state_fade.last = state_fade.selected;
-					state_fade.selected = -2;
-					state_fade.position = -2;
-					redraw_flag.flag |= 2;									
 				}else if(usermouse.last.got_t == 1) redraw_flag.flag |= 2;
 				usermouse.clicked2d = -1;
 			}else if(usermouse.clicked3d != -1){ //####################### 3d release #####################
