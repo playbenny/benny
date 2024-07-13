@@ -500,6 +500,10 @@ function import_song(){
 						thisblock.replace("type",ty);
 						swap_block_check_connections(b,oname,oty,block_name,ty);
 					}
+					if(thisblock.contains("panel::parameters")){
+						post("\nclearing panel parameter selection because of substitution");
+						thisblock.remove("panel::parameters");
+					}
 				}
 				t=0;
 				var excl = blocktypes.contains(block_name+"::exclusive");
