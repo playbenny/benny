@@ -164,7 +164,7 @@ function check_library(name){
 
 function transfer_params_and_defaults(){
 	var i,name,def;
-	var paramdetails = new Array();
+	//var paramdetails = new Array();
 	var orthogonal = 2; //if >0 then like hardware blocks this has 2 voices, 
 				// one for left one for right inputs/outputs, so it works with the
 				// spread fn etc. if = 0 then behaves as before and lets you stack
@@ -174,7 +174,7 @@ function transfer_params_and_defaults(){
 	new_blockfile.replace(block_name + "::type","audio");
 	new_blockfile.replace(block_name + "::help_text", plugin_name);
 	new_blockfile.replace(block_name + "::block_ui_patcher","blank.ui");
-	new_blockfile.replace(block_name + "::max_polyphony", orthogonal ); //if this is 0 then 
+	new_blockfile.replace(block_name + "::max_polyphony", 0 /*orthogonal*/); //if this is 0 then 
 	new_blockfile.replace(block_name + "::plugin_name",plugin_name);
 	new_blockfile.replace(block_name + "::plugin_type",plugin_type);
 	new_blockfile.replace(block_name + "::pitchbend_range",pbendr);
@@ -182,7 +182,9 @@ function transfer_params_and_defaults(){
 	var conns = new Dict;
 	if(orthogonal==0){
 		conns.parse('{ "in" : { "audio" : [ "L", "R" ] , "midi" : [ "midi in" ] } , "out" : { "audio" : [ "L", "R" ] }  }');
+		new_blockfile.replace(block_name + "::subvoices",1);
 	}else{
+		new_blockfile.replace(block_name + "::subvoices",2);
 		conns.parse('{ "in" : { "audio" : [ "audio in" ] , "midi" : [ "midi in" ] } , "out" : { "audio" : [ "audio out" ] }  }');		
 	}
 	new_blockfile.replace(block_name + "::connections",conns);

@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1000.0, 558.0, 172.0, 22.0 ],
+					"text" : "vexpr $f1/256. @scalarmode 1"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-6",
 					"maxclass" : "newobj",
@@ -903,12 +915,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-281",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ -407.526899695396423, 830.0, 50.0, 22.0 ],
-					"text" : "0 0"
+					"patching_rect" : [ -407.526899695396423, 830.0, 50.0, 36.0 ],
+					"text" : "10 11 12"
 				}
 
 			}
@@ -2522,7 +2535,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
+					"slidercolor" : [ 0.541666666666667, 0.2, 0.708333333333333, 1.0 ]
 				}
 
 			}
@@ -2929,7 +2942,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
+					"slidercolor" : [ 0.1953125, 0.1953125, 0.88671875, 1.0 ]
 				}
 
 			}
@@ -3336,7 +3349,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
+					"slidercolor" : [ 0.1953125, 0.69921875, 0.1953125, 1.0 ]
 				}
 
 			}
@@ -3904,7 +3917,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
+					"slidercolor" : [ 0.96484375, 0.19140625, 0.19140625, 1.0 ]
 				}
 
 			}
@@ -4131,7 +4144,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 919.5, 1475.5, 105.0, 22.0 ],
-					"text" : "-1"
+					"text" : "10 11 12"
 				}
 
 			}
@@ -4143,7 +4156,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 909.0, 1444.5, 105.0, 22.0 ],
-					"text" : "-1"
+					"text" : "4 5 8 9"
 				}
 
 			}
@@ -4155,7 +4168,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 898.5, 1406.5, 105.0, 22.0 ],
-					"text" : "-1"
+					"text" : "2 3 7"
 				}
 
 			}
@@ -4167,7 +4180,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 888.0, 1377.5, 105.0, 22.0 ],
-					"text" : "0"
+					"text" : "0 1 6"
 				}
 
 			}
@@ -4203,7 +4216,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 621.5, 1475.5, 280.0, 22.0 ],
-					"text" : "-"
+					"text" : "MaxPoly Stereo Volume"
 				}
 
 			}
@@ -4215,7 +4228,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 611.0, 1444.5, 280.0, 22.0 ],
-					"text" : "-"
+					"text" : "ModRate ModAmt Tuning Random"
 				}
 
 			}
@@ -4227,7 +4240,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 600.5, 1406.5, 280.0, 22.0 ],
-					"text" : "-"
+					"text" : "Decay Release VelSens"
 				}
 
 			}
@@ -4376,7 +4389,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 592.0, 1377.5, 278.0, 22.0 ],
-					"text" : "Input"
+					"text" : "Hardness Treble Overdrv"
 				}
 
 			}
@@ -4830,14 +4843,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "Mojo64.vstinfo",
-							"plugindisplayname" : "airwindows Mojo",
-							"pluginsavedname" : "C74_VST:/Mojo64",
-							"pluginsaveduniqueid" : 1836018287,
+							"pluginname" : "DPiano-E.vstinfo",
+							"plugindisplayname" : "DPiano-E",
+							"pluginsavedname" : "C74_VST:/DPiano-E",
+							"pluginsaveduniqueid" : 760438323,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....Az1ap8F...P......PTYlEVcrQG................................A....+."
+							"blob" : "108.CMlaKA....fQ3MzZ....AzxTdMC...P.....MzFYgARYPkVXt8F.......................vO....+....7C...vO....+XhYl8C.........9.H..7C...fOUDnA+....7C...vO.B.."
 						}
 ,
 						"snapshotlist" : 						{
@@ -4847,19 +4860,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "Dexed",
-									"origin" : "Mojo64.vstinfo",
+									"origin" : "DPiano-E.vstinfo",
 									"type" : "VST",
-									"subtype" : "AudioEffect",
+									"subtype" : "Instrument",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "Mojo64.vstinfo",
-										"plugindisplayname" : "airwindows Mojo",
-										"pluginsavedname" : "C74_VST:/Mojo64",
-										"pluginsaveduniqueid" : 1836018287,
+										"pluginname" : "DPiano-E.vstinfo",
+										"plugindisplayname" : "DPiano-E",
+										"pluginsavedname" : "C74_VST:/DPiano-E",
+										"pluginsaveduniqueid" : 760438323,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....Az1ap8F...P......PTYlEVcrQG................................A....+."
+										"blob" : "108.CMlaKA....fQ3MzZ....AzxTdMC...P.....MzFYgARYPkVXt8F.......................vO....+....7C...vO....+XhYl8C.........9.H..7C...fOUDnA+....7C...vO.B.."
 									}
 ,
 									"fileref" : 									{
@@ -4867,7 +4880,7 @@
 										"filename" : "Dexed.maxsnap",
 										"filepath" : "~/Documents/james music/rhizome 5/data",
 										"filepos" : -1,
-										"snapshotfileid" : "9eab99b6a05749f3d9d40ceb87cb2826"
+										"snapshotfileid" : "e6b244b310826da59c90ed4ef8bd0356"
 									}
 
 								}
@@ -6534,13 +6547,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-287", 1 ],
-					"source" : [ "obj-279", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-288", 1 ],
 					"source" : [ "obj-279", 1 ]
 				}
@@ -6551,6 +6557,13 @@
 					"destination" : [ "obj-289", 0 ],
 					"order" : 0,
 					"source" : [ "obj-279", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-279", 2 ]
 				}
 
 			}
@@ -7049,6 +7062,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-67", 0 ],
 					"source" : [ "obj-69", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-287", 1 ],
+					"source" : [ "obj-7", 0 ]
 				}
 
 			}

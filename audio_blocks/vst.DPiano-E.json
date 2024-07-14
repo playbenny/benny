@@ -4,9 +4,10 @@
 		"type" : "audio",
 		"help_text" : "DPiano-E",
 		"block_ui_patcher" : "blank.ui",
-		"max_polyphony" : 2,
+		"max_polyphony" : 0,
 		"plugin_name" : "DPiano-E",
 		"plugin_type" : "vst",
+		"subvoices" : 2,
 		"pitchbend_range" : 2,
 		"upsample" : 1,
 		"connections" : 		{
@@ -115,14 +116,17 @@
  ],
 		"groups" : [ 			{
 				"height" : 1,
+				"colour" : [ 247, 49, 49 ],
 				"contains" : [ 0, 1, 6 ]
 			}
 , 			{
 				"height" : 2,
+				"colour" : [ 50, 179, 50 ],
 				"contains" : [ 2, 3, 7 ]
 			}
 , 			{
 				"height" : 1,
+				"colour" : [ 50, 50, 227 ],
 				"contains" : [ 4, 5, 8, 9 ]
 			}
 , 			{
