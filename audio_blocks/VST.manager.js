@@ -181,11 +181,11 @@ function transfer_params_and_defaults(){
 	new_blockfile.replace(block_name + "::upsample", ups);
 	var conns = new Dict;
 	if(orthogonal==0){
-		conns.parse('{ "in" : { "audio" : [ "L", "R" ] , "midi" : [ "midi in" ] } , "out" : { "audio" : [ "L", "R" ] }  }');
+		conns.parse('{ "in" : { "audio" : [ "L", "R" ] , "midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ] } , "out" : { "audio" : [ "L", "R" ] }  }');
 		new_blockfile.replace(block_name + "::subvoices",1);
 	}else{
 		new_blockfile.replace(block_name + "::subvoices",2);
-		conns.parse('{ "in" : { "audio" : [ "audio in" ] , "midi" : [ "midi in" ] } , "out" : { "audio" : [ "audio out" ] }  }');		
+		conns.parse('{ "in" : { "audio" : [ "audio in" ] , "midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain"  ] } , "out" : { "audio" : [ "audio out" ], "midi" : [ "notes out" ], "parameters" : [ "pitchbend", "modulation", "aftertouch", "sustain" ] }  }');		
 	}
 	new_blockfile.replace(block_name + "::connections",conns);
 	new_blockfile.replace(block_name + "::parameters", "A");
