@@ -272,12 +272,17 @@ function initialise_dictionaries(hardware_file){
 //	emptys="{}";
 //	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 //	waves_dict.parse('{ "waves" : ['+emptys+'] }');
-		
+	
+	post("\nbuilding blocktypes database");
+	import_blocktypes("note_blocks");
+	import_blocktypes("audio_blocks");
+
+	check_for_new_prefixes();
+
 	send_note_patcherlist();
 	send_audio_patcherlist();
 
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
-
 
 	SONGS_FOLDER = config.get("SONGS_FOLDER");
 	read_songs_folder("songs");
@@ -289,12 +294,6 @@ function initialise_dictionaries(hardware_file){
 	}
 	read_songs_folder("templates");	
 			
-	post("\nbuilding blocktypes database");
-	import_blocktypes("note_blocks");
-	import_blocktypes("audio_blocks");
-
-	check_for_new_prefixes();
-
 	var preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 

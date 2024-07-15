@@ -224,7 +224,11 @@ var bulgeamount;
 
 var recursions = 0; // just because i had an anxiety dream about getting stuck in an infinite loop
 
-var preload_list=[];
+var preload_list=[]; // this is for waves
+
+var preload_note_voice_list = [];
+var preload_audio_voice_list = [];
+
 
 var connection_blobs = []; // connection handles. maybe not even blobs one day.
 var background_cube;

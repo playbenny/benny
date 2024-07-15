@@ -44,8 +44,12 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 		f.next();
 	}
 	f.close();
+
+
 	if((preload_list.length == 0) && (df<2)){
+		var blocktypes_count_cumulative = new Dict;
 		for(var i=0;i<songlist[df].length;i++){
+			var blocktypes_count_this = new Dict;
 			if(songs.contains(songlist[df][i]+"::waves")){
 				var ws=songs.getsize(songlist[df][i]+"::waves");
 				for(var t=0;t<ws;t++){
@@ -69,10 +73,22 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 							var sb=songs.get(songlist[df][i]+"::blocks["+t+"]::subvoices");
 							if(sb>1) vc/=sb;
 						}
+						var nam = songs.get(songlist[df][i]+"::blocks["+t+"]::name");
 						if(ty=="note"){
 							vc_n += vc;
+							if(blocktypes_count_this.contains("note::"+nam)){
+								var tn = blocktypes_count_this.get("note::" + nam);
+								blocktypes_count_this.replace("note::" + nam, vc+tn);
+							}else{
+								blocktypes_count_this.replace("note::" + nam, vc);
+							}
 						}else if(ty=="audio"){
 							vc_a += vc;
+							if(blocktypes_count_this.contains("audio::"+nam)){
+								var tn = blocktypes_count_this.get("audio::" + nam);
+							}else{
+								blocktypes_count_this.replace("audio::" + nam, vc);
+							}
 						}else if(ty="hardware"){
 							vc_h += vc;
 						}
@@ -80,7 +96,33 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				}
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
-		}	
+			var td = blocktypes_count_this.get("note");
+			var tdk = td.getkeys();
+			for(var t=0;t<tdk.length;t++){
+				var c = td.get(tdk[t]);
+				var e = 0;
+				if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
+				if(c>e){
+					blocktypes_count_cumulative.replace("note::"+tdk[t],c);
+					for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+				}
+			}
+			var td = blocktypes_count_this.get("audio");
+			var tdk = td.getkeys();
+			for(var t=0;t<tdk.length;t++){
+				var c = td.get(tdk[t]);
+				var e = 0;
+				if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
+				if(c>e){
+					blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
+					for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+				}
+			}
+		}
+		post("\npreload lists prepared: ",preload_note_voice_list.length,"note blocks and",preload_audio_voice_list.length,"audio blocks.");
+		//note_patcherlist = preload_note_voice_list.slice(0,MAX_NOTE_VOICES);
+		//audio_patcherlist = preload_audio_voice_list.slice(0,MAX_AUDIO_VOICES);
+		//still_checking_polys |= 3;
 	}
 }
 
@@ -207,6 +249,22 @@ function polybuffer_create_blank(length,channels){
 	get_polybuffer_info();
 }
 
+
+function check_exists(filepath){
+	var testfile = new File(filepath);
+	if(testfile.isopen){
+		//post("\n",filepath," found OK");
+		testfile.close();
+		testfile.freepeer();
+		return 1;
+	}else{
+		//post("NO");
+		testfile.close();
+		testfile.freepeer();
+		return 0;
+	}
+}
+
 function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer if not already loaded.
 	if(wavename.split("$")[0] == "unsaved.looper"){ //creates a blank buffer if a looper block needs one
 		var length = wavename.split("$")[1];
@@ -224,10 +282,14 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 			}
 		}
 		if(exists==-1){
-			waves_polybuffer.append(wavepath);
-			//post("\n(loading)")
-			get_polybuffer_info();
-			return -1;
+			if(check_exists(wavepath)){
+				waves_polybuffer.append(wavepath);
+				//post("\n(loading)")
+				get_polybuffer_info();
+				return -1;
+			}else{
+				post("\nCOULD NOT FIND WAVE:",wavepath,wavename);
+			}
 		}else{
 			post("[cache hit",exists,"]");
 			return exists;
