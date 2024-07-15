@@ -253,7 +253,7 @@ function polybuffer_create_blank(length,channels){
 function check_exists(filepath){
 	var testfile = new File(filepath);
 	if(testfile.isopen){
-		//post("\n",filepath," found OK");
+		post("\n",filepath," found OK");
 		testfile.close();
 		testfile.freepeer();
 		return 1;
