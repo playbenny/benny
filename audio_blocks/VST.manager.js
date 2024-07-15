@@ -19,6 +19,9 @@ paramnames.name = "parameter_names";
 var paramdefaults = new Dict;
 paramdefaults.name = "parameter_values";
 
+var blocktypes = new Dict;
+blocktypes.name = "blocktypes";
+
 var pbendr = 2;
 var ups = 1;
 
@@ -67,7 +70,6 @@ function blck_name(name){
 	var last="";
 	var nxt="";
 	var segl=0;
-	var nxl=0;
 	var result="";
 	for(var i=0; i<s1.length; i++){
  		if((s1[i]!==s2[i])&&(last!=".")&&(segl>3)){
@@ -131,7 +133,7 @@ function copy_from_library(name){
 }
 
 function check_exists(name){
-	//post("\nlooking for:",projectpath+"audio_blocks/vst."+name+".json ");
+	/*post("\nlooking for:",projectpath+"audio_blocks/vst."+name+".json ");
 	var testfile = new File(projectpath+"audio_blocks/vst."+name+".json");
 	if(testfile.isopen){
 		post("\n",name," configured OK");
@@ -142,6 +144,22 @@ function check_exists(name){
 		//post("NO");
 		testfile.close();
 		testfile.freepeer();
+		return 0;
+	}*/
+	var k = blocktypes.getkeys();
+	var f = 0;
+	for(var i=0;i<k.length;i++){
+		if(blocktypes.contains(k[i]+"::plugin_name")){
+			if(blocktypes.get(k[i]+"::plugin_name")==name){
+				f=1;i=999999;
+			}
+		}
+	}
+	if(f==1){
+		post("\n",name," configured OK");
+		return 1;
+	}else{
+		post("\n",name," NOT FOUND");
 		return 0;
 	}
 }

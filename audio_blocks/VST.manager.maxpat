@@ -309,7 +309,7 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-216",
-					"items" : [ "vst", "Capacitor264", ",", "vst", "DeRez264", ",", "vst", "DPiano-E", ",", "vst", "Elation64", ",", "vst", "Focus64", ",", "vst", "Mojo64", ",", "vst", "Pressure464", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "ToTape664", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ZBandpass264", ",", "vst", "ZHighpass264", ",", "vst", "ZLowpass264", ",", "vst", "ZNotch264", ",", "vst", "ZRegion264", ",", "vst3", "TAL-NoiseMaker", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaUberMod" ],
+					"items" : [ "vst", "Capacitor264", ",", "vst", "DeRez264", ",", "vst", "DPiano-E", ",", "vst", "Elation64", ",", "vst", "Focus64", ",", "vst", "Mojo64", ",", "vst", "Pressure464", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "ToTape664", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ZBandpass264", ",", "vst", "ZHighpass264", ",", "vst", "ZLowpass264", ",", "vst", "ZNotch264", ",", "vst", "ZRegion264", ",", "vst3", "TAL-NoiseMaker", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaFreqEcho", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaUberMod" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -602,7 +602,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 0.0, 640.0, 480.0 ],
+						"rect" : [ 84.0, 132.0, 640.0, 480.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -921,7 +921,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ -407.526899695396423, 830.0, 50.0, 36.0 ],
-					"text" : "10 11 12"
+					"text" : "4 7 18 19"
 				}
 
 			}
@@ -1408,18 +1408,6 @@
 					"outlettype" : [ "bang", "int", "int", "clear" ],
 					"patching_rect" : [ 127.0, 727.0, 63.0, 22.0 ],
 					"text" : "t b i i clear"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-60",
-					"linecount" : 4,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 1061.0, 22.0, 150.0, 75.0 ],
-					"text" : "TODO\ndoes import existing work ok?\ncan it tell if vsti?\n"
 				}
 
 			}
@@ -2535,7 +2523,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.541666666666667, 0.2, 0.708333333333333, 1.0 ]
+					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
 				}
 
 			}
@@ -2942,7 +2930,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.1953125, 0.1953125, 0.88671875, 1.0 ]
+					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
 				}
 
 			}
@@ -3349,7 +3337,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.1953125, 0.69921875, 0.1953125, 1.0 ]
+					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
 				}
 
 			}
@@ -3917,7 +3905,7 @@
 					"setminmax" : [ 0.0, 1.0 ],
 					"setstyle" : 1,
 					"size" : 3,
-					"slidercolor" : [ 0.96484375, 0.19140625, 0.19140625, 1.0 ]
+					"slidercolor" : [ 0.2, 0.2, 0.2, 1.0 ]
 				}
 
 			}
@@ -4144,7 +4132,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 919.5, 1475.5, 105.0, 22.0 ],
-					"text" : "10 11 12"
+					"text" : "-1"
 				}
 
 			}
@@ -4156,7 +4144,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 909.0, 1444.5, 105.0, 22.0 ],
-					"text" : "4 5 8 9"
+					"text" : "-1"
 				}
 
 			}
@@ -4168,7 +4156,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 898.5, 1406.5, 105.0, 22.0 ],
-					"text" : "2 3 7"
+					"text" : "4 7 18 19"
 				}
 
 			}
@@ -4180,7 +4168,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 888.0, 1377.5, 105.0, 22.0 ],
-					"text" : "0 1 6"
+					"text" : "0 16 17 22 23"
 				}
 
 			}
@@ -4216,7 +4204,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 621.5, 1475.5, 280.0, 22.0 ],
-					"text" : "MaxPoly Stereo Volume"
+					"text" : "-"
 				}
 
 			}
@@ -4228,7 +4216,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 611.0, 1444.5, 280.0, 22.0 ],
-					"text" : "ModRate ModAmt Tuning Random"
+					"text" : "-"
 				}
 
 			}
@@ -4240,7 +4228,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 600.5, 1406.5, 280.0, 22.0 ],
-					"text" : "Decay Release VelSens"
+					"text" : "DelayL_Ms DelayR_Ms DriveIn Age"
 				}
 
 			}
@@ -4389,7 +4377,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 592.0, 1377.5, 278.0, 22.0 ],
-					"text" : "Hardness Treble Overdrv"
+					"text" : "Mix Feedback Width LowCut HighCut"
 				}
 
 			}
@@ -4843,14 +4831,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "DPiano-E.vstinfo",
-							"plugindisplayname" : "DPiano-E",
-							"pluginsavedname" : "C74_VST:/DPiano-E",
-							"pluginsaveduniqueid" : 760438323,
+							"pluginname" : "ValhallaDelay.vst3info",
+							"plugindisplayname" : "ValhallaDelay",
+							"pluginsavedname" : "C74_VST3:/ValhallaDelay",
+							"pluginsaveduniqueid" : 616697448,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "108.CMlaKA....fQ3MzZ....AzxTdMC...P.....MzFYgARYPkVXt8F.......................vO....+....7C...vO....+XhYl8C.........9.H..7C...fOUDnA+....7C...vO.B.."
+							"blob" : "1567.VMjLgXgA...O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9DCL4.iKV0zQicUPt3hKl4hKt3BTt3hKt3hKLoGVzMGQt3BTlojQIoGTtEjKt3BRtjESEYEYtfDTAIjKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKtLDRuU0PIMERM0jKt3hc48zLvXTXlg0UYgWSWoUczX0SnQTZKYGRBgzZzDCV0EkUZQ2XV8DZTUTUFAiPNg1Mo8jY1kVUmcmQZc1cFE1YQQUVxUjUjYlKGEFLiYkVzkUUYgWSWoUczX0SngTZKAyLnwDZtHjX3UULhsVTsM0YvXUV3fjPQsVVVgEL2YzXn4hTS81YW8DZtj1RvfjPHQTUFE1YqICU5s1QgsFLogjcyHDSn4hPQs1cVgEM2oGUzPSLXgCRBwDcHMUSn4hPQs1cVgEM2o1T0E0UYgCRBwDcHMDS14xPLYmKCwDdpMjS1gTdLgGRogjYPQUVxUjUjwDNUMUdvjFR1MCdLYmKCwjctLDS2QzTNgmKS4DdpkFRlAEUYIWQVQlTMUEYz0jUOglKosDdTkFRlAEUYIWQVQlTznWX5UkUOglKosDdtLDS14xPLYmKowDMlMDS3wTZLgGRBgDQUYTXmsVaTUFL5IFNHIDSzwzPLYmKCwjctLES2oVZLYmZowDMHIDRDUkQgc1ZxPkcIcUVmEkUOglKosDLHIDRDUkQgc1ZxPkcEECVuQSLYgCRBwDcTkFRlAEUYIWQVQlTEYzXugiUOglKosTLDMTS2A0TLomKC0TLHMjSxPUdLICRBgjTUYjXqUjQiM0XWkkb2Y0SnQTZKYGRBgDUEYjXAASZHc2LBwDZtHTUmETaPgCRRwDctjFRlAUUXYWST8DZDk1R1gjPHQUQFIFQvjFR2MiPLglKnE0ZUYTVnUTLXEGLogjcyfGS5o1TNQiZS4DMPMDS4o1TMkGUS0DZtfWUuEkQi4FLogzcyHDSn4hPQg2ZrM1ZqoVX3fjPLQmKogjYDoWVqASZHY2LR0DZtHTTukEaYASSWoUczX0Sn4RZKYGRBgDQqwVVr0TUZUSUV8DZDk1R1gjPHwDNwL1PUczX3fjPLQmKogjYlQkVscVLPASTW8DZDk1R1gjPH0DNFkkTEYzXqASZHY2LnwjLLMjS4A0TLYmZ4wjcXkGS4Q0PMglKRMUcQYTTqEzQi4FLogjcyHUSn4BdUU2XW8DZtj1RvfjPHYzcVMldQcUV3ASZHY2LR0DZtfVT3UkUhM0YVoEaQc0Sn4RZKACRBgjQIcUV2EEUYoWUsE1ZvjFR1MiTMIiZS4DMpMkSyvTdLcmKo0DMpMUSn4hPT8VTxfkaMUjVukkQigCRBwDcTkFRl4RUZoWSFoEQUYzXvPiUYgCRBwDcTkFRlomdgoVUV8DZtj1R1A0TLECVo0TLXkWSz3xPNoGSCwzcHIDREkzUXgCRBwDcLkGS4wTdLkGSC0TdHkVSx.0PMYmYogjYPQ0XoMmUZQ2XV8DZtj1R1gjPHIUUwH1ZI01XqEEaLgCRBwDctjFRlgTUYkWUrIVLUYTV4oWZHY2LBwDZtfFUq0zUYgWVWkkZQM0Sn4RZKYGRBgzbqYDYLgSLXEGLogjcHIDRvrVLU8VTFMlavjFRz.0TMglKRM1amQUVuMlQZoGLogjdLMUSncCZO4hKt3hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEVtPDTtHzZGI1YMIiXtPDTtLjKPcjKt3hKt3hKt3haTU0PUQDU3sFaicVTWkEQEYzXmEDOujzPu0Fbu4VYtQmO77hUSQ0LPwVcmklaSQWXzUlO.."
 						}
 ,
 						"snapshotlist" : 						{
@@ -4860,19 +4848,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "Dexed",
-									"origin" : "DPiano-E.vstinfo",
-									"type" : "VST",
-									"subtype" : "Instrument",
+									"origin" : "ValhallaDelay.vst3info",
+									"type" : "VST3",
+									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "DPiano-E.vstinfo",
-										"plugindisplayname" : "DPiano-E",
-										"pluginsavedname" : "C74_VST:/DPiano-E",
-										"pluginsaveduniqueid" : 760438323,
+										"pluginname" : "ValhallaDelay.vst3info",
+										"plugindisplayname" : "ValhallaDelay",
+										"pluginsavedname" : "C74_VST3:/ValhallaDelay",
+										"pluginsaveduniqueid" : 616697448,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "108.CMlaKA....fQ3MzZ....AzxTdMC...P.....MzFYgARYPkVXt8F.......................vO....+....7C...vO....+XhYl8C.........9.H..7C...fOUDnA+....7C...vO.B.."
+										"blob" : "1567.VMjLgXgA...O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9DCL4.iKV0zQicUPt3hKl4hKt3BTt3hKt3hKLoGVzMGQt3BTlojQIoGTtEjKt3BRtjESEYEYtfDTAIjKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKtLDRuU0PIMERM0jKt3hc48zLvXTXlg0UYgWSWoUczX0SnQTZKYGRBgzZzDCV0EkUZQ2XV8DZTUTUFAiPNg1Mo8jY1kVUmcmQZc1cFE1YQQUVxUjUjYlKGEFLiYkVzkUUYgWSWoUczX0SngTZKAyLnwDZtHjX3UULhsVTsM0YvXUV3fjPQsVVVgEL2YzXn4hTS81YW8DZtj1RvfjPHQTUFE1YqICU5s1QgsFLogjcyHDSn4hPQs1cVgEM2oGUzPSLXgCRBwDcHMUSn4hPQs1cVgEM2o1T0E0UYgCRBwDcHMDS14xPLYmKCwDdpMjS1gTdLgGRogjYPQUVxUjUjwDNUMUdvjFR1MCdLYmKCwjctLDS2QzTNgmKS4DdpkFRlAEUYIWQVQlTMUEYz0jUOglKosDdTkFRlAEUYIWQVQlTznWX5UkUOglKosDdtLDS14xPLYmKowDMlMDS3wTZLgGRBgDQUYTXmsVaTUFL5IFNHIDSzwzPLYmKCwjctLES2oVZLYmZowDMHIDRDUkQgc1ZxPkcIcUVmEkUOglKosDLHIDRDUkQgc1ZxPkcEECVuQSLYgCRBwDcTkFRlAEUYIWQVQlTEYzXugiUOglKosTLDMTS2A0TLomKC0TLHMjSxPUdLICRBgjTUYjXqUjQiM0XWkkb2Y0SnQTZKYGRBgDUEYjXAASZHc2LBwDZtHTUmETaPgCRRwDctjFRlAUUXYWST8DZDk1R1gjPHQUQFIFQvjFR2MiPLglKnE0ZUYTVnUTLXEGLogjcyfGS5o1TNQiZS4DMPMDS4o1TMkGUS0DZtfWUuEkQi4FLogzcyHDSn4hPQg2ZrM1ZqoVX3fjPLQmKogjYDoWVqASZHY2LR0DZtHTTukEaYASSWoUczX0Sn4RZKYGRBgDQqwVVr0TUZUSUV8DZDk1R1gjPHwDNwL1PUczX3fjPLQmKogjYlQkVscVLPASTW8DZDk1R1gjPH0DNFkkTEYzXqASZHY2LnwjLLMjS4A0TLYmZ4wjcXkGS4Q0PMglKRMUcQYTTqEzQi4FLogjcyHUSn4BdUU2XW8DZtj1RvfjPHYzcVMldQcUV3ASZHY2LR0DZtfVT3UkUhM0YVoEaQc0Sn4RZKACRBgjQIcUV2EEUYoWUsE1ZvjFR1MiTMIiZS4DMpMkSyvTdLcmKo0DMpMUSn4hPT8VTxfkaMUjVukkQigCRBwDcTkFRl4RUZoWSFoEQUYzXvPiUYgCRBwDcTkFRlomdgoVUV8DZtj1R1A0TLECVo0TLXkWSz3xPNoGSCwzcHIDREkzUXgCRBwDcLkGS4wTdLkGSC0TdHkVSx.0PMYmYogjYPQ0XoMmUZQ2XV8DZtj1R1gjPHIUUwH1ZI01XqEEaLgCRBwDctjFRlgTUYkWUrIVLUYTV4oWZHY2LBwDZtfFUq0zUYgWVWkkZQM0Sn4RZKYGRBgzbqYDYLgSLXEGLogjcHIDRvrVLU8VTFMlavjFRz.0TMglKRM1amQUVuMlQZoGLogjdLMUSncCZO4hKt3hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEVtPDTtHzZGI1YMIiXtPDTtLjKPcjKt3hKt3hKt3haTU0PUQDU3sFaicVTWkEQEYzXmEDOujzPu0Fbu4VYtQmO77hUSQ0LPwVcmklaSQWXzUlO.."
 									}
 ,
 									"fileref" : 									{
@@ -4880,7 +4868,7 @@
 										"filename" : "Dexed.maxsnap",
 										"filepath" : "~/Documents/james music/rhizome 5/data",
 										"filepos" : -1,
-										"snapshotfileid" : "e6b244b310826da59c90ed4ef8bd0356"
+										"snapshotfileid" : "5cfb5b8294781cae18fb68fd0ab44bad"
 									}
 
 								}
@@ -4948,7 +4936,7 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-54",
-					"items" : [ "vst", "Acceleration264", ",", "vst", "Acceleration64", ",", "vst", "ADClip764", ",", "vst", "ADT64", ",", "vst", "Air264", ",", "vst", "Air64", ",", "vst", "Apicolypse64", ",", "vst", "AQuickVoiceClip64", ",", "vst", "AtmosphereBuss64", ",", "vst", "AtmosphereChannel64", ",", "vst", "Aura64", ",", "vst", "AutoPan64", ",", "vst", "Average64", ",", "vst", "AverMatrix64", ",", "vst", "Balanced64", ",", "vst", "BassAmp64", ",", "vst", "BassDrive64", ",", "vst", "BassKit64", ",", "vst", "Baxandall264", ",", "vst", "Baxandall64", ",", "vst", "Beam64", ",", "vst", "BigAmp64", ",", "vst", "Biquad264", ",", "vst", "Biquad64", ",", "vst", "BiquadDouble64", ",", "vst", "BiquadOneHalf64", ",", "vst", "BiquadPlus64", ",", "vst", "BiquadTriple64", ",", "vst", "Bite64", ",", "vst", "BitGlitter64", ",", "vst", "BitShiftGain64", ",", "vst", "BitShiftPan64", ",", "vst", "BlockParty64", ",", "vst", "BrassRider64", ",", "vst", "BrightAmbience264", ",", "vst", "BrightAmbience364", ",", "vst", "BrightAmbience64", ",", "vst", "BuildATPDF64", ",", "vst", "BussColors464", ",", "vst", "ButterComp264", ",", "vst", "ButterComp64", ",", "vst", "C5RawBuss64", ",", "vst", "C5RawChannel64", ",", "vst", "Cabs64", ",", "vst", "Calibre64", ",", "vst", "Capacitor64", ",", "vst", "Chamber264", ",", "vst", "Chamber64", ",", "vst", "Channel464", ",", "vst", "Channel564", ",", "vst", "Channel664", ",", "vst", "Channel764", ",", "vst", "Channel864", ",", "vst", "Channel964", ",", "vst", "Chorus64", ",", "vst", "ChorusEnsemble64", ",", "vst", "ChromeOxide64", ",", "vst", "Cider64", ",", "vst", "ClipOnly264", ",", "vst", "ClipOnly64", ",", "vst", "ClipSoftly64", ",", "vst", "Coils264", ",", "vst", "Coils64", ",", "vst", "Cojones64", ",", "vst", "Compresaturator64", ",", "vst", "Console0Buss64", ",", "vst", "Console0Channel64", ",", "vst", "Console4Buss64", ",", "vst", "Console4Channel64", ",", "vst", "Console5Buss64", ",", "vst", "Console5Channel64", ",", "vst", "Console5DarkCh64", ",", "vst", "Console6Buss64", ",", "vst", "Console6Channel64", ",", "vst", "Console7Buss64", ",", "vst", "Console7Cascade64", ",", "vst", "Console7Channel64", ",", "vst", "Console7Crunch64", ",", "vst", "Console8BussHype64", ",", "vst", "Console8BussIn64", ",", "vst", "Console8BussOut64", ",", "vst", "Console8ChannelHype64", ",", "vst", "Console8ChannelIn64", ",", "vst", "Console8ChannelOut64", ",", "vst", "Console8LiteBuss64", ",", "vst", "Console8LiteChannel64", ",", "vst", "Console8SubHype64", ",", "vst", "Console8SubIn64", ",", "vst", "Console8SubOut64", ",", "vst", "Creature64", ",", "vst", "CrunchyGrooveWear64", ",", "vst", "Crystal64", ",", "vst", "CStrip264", ",", "vst", "CStrip64", ",", "vst", "curve64", ",", "vst", "Dark64", ",", "vst", "DarkNoise64", ",", "vst", "DCVoltage64", ",", "vst", "DeBess64", ",", "vst", "Deckwrecka64", ",", "vst", "DeEss64", ",", "vst", "DeHiss64", ",", "vst", "Density264", ",", "vst", "Density64", ",", "vst", "DeRez64", ",", "vst", "Desk464", ",", "vst", "Desk64", ",", "vst", "DigitalBlack64", ",", "vst", "Dirt64", ",", "vst", "Distance264", ",", "vst", "Distance64", ",", "vst", "Distortion64", ",", "vst", "Ditherbox64", ",", "vst", "DitherFloat64", ",", "vst", "DitherMeDiskers64", ",", "vst", "DitherMeTimbers64", ",", "vst", "Doublelay64", ",", "vst", "DoublePaul64", ",", "vst", "Drive64", ",", "vst", "DrumSlam64", ",", "vst", "DubCenter64", ",", "vst", "Dubly64", ",", "vst", "DubSub64", ",", "vst", "DustBunny64", ",", "vst", "Dynamics64", ",", "vst", "Dyno64", ",", "vst", "Edge64", ",", "vst", "EdIsDim64", ",", "vst", "ElectroHat64", ",", "vst", "Energy264", ",", "vst", "Energy64", ",", "vst", "Ensemble64", ",", "vst", "EQ64", ",", "vst", "EveryConsole64", ",", "vst", "EverySlew64", ",", "vst", "EveryTrim64", ",", "vst", "Exciter64", ",", "vst", "Facet64", ",", "vst", "FathomFive64", ",", "vst", "FireAmp64", ",", "vst", "Flipity64", ",", "vst", "Floor64", ",", "vst", "Flutter64", ",", "vst", "Fracture264", ",", "vst", "Fracture64", ",", "vst", "FromTape64", ",", "vst", "Galactic264", ",", "vst", "Galactic64", ",", "vst", "GalacticVibe64", ",", "vst", "Gatelope64", ",", "vst", "GlitchShifter64", ",", "vst", "GoldenSlew64", ",", "vst", "Golem64", ",", "vst", "GrindAmp64", ",", "vst", "Gringer64", ",", "vst", "GrooveWear64", ",", "vst", "GuitarConditioner64", ",", "vst", "HardVacuum64", ",", "vst", "Hermepass64", ",", "vst", "HermeTrim64", ",", "vst", "HighGlossDither64", ",", "vst", "HighImpact64", ",", "vst", "Highpass264", ",", "vst", "Highpass64", ",", "vst", "Holt264", ",", "vst", "Holt64", ",", "vst", "Hombre64", ",", "vst", "Huge64", ",", "vst", "Hull64", ",", "vst", "Hype64", ",", "vst", "Hypersonic64", ",", "vst", "HypersonX64", ",", "vst", "Infinity264", ",", "vst", "Infinity64", ",", "vst", "Inflamer64", ",", "vst", "Infrasonic64", ",", "vst", "Interstage64", ",", "vst", "IronOxide564", ",", "vst", "IronOxideClassic264", ",", "vst", "IronOxideClassic64", ",", "vst", "Isolator264", ",", "vst", "Isolator64", ",", "vst", "kChamberAR64", ",", "vst", "kPlateA64", ",", "vst", "kPlateB64", ",", "vst", "kPlateC64", ",", "vst", "kPlateD64", ",", "vst", "LeadAmp64", ",", "vst", "LeftoMono64", ",", "vst", "LilAmp64", ",", "vst", "Logical464", ",", "vst", "Loud64", ",", "vst", "Lowpass264", ",", "vst", "Lowpass64", ",", "vst", "LRFlipTimer64", ",", "vst", "Luxor64", ",", "vst", "MackEQ64", ",", "vst", "Mackity64", ",", "vst", "MatrixVerb64", ",", "vst", "Melt64", ",", "vst", "MidAmp64", ",", "vst", "MidSide64", ",", "vst", "Monitoring264", ",", "vst", "Monitoring364", ",", "vst", "Monitoring64", ",", "vst", "MoNoam64", ",", "vst", "MultiBandDistortion64", ",", "vst", "MV264", ",", "vst", "MV64", ",", "vst", "NaturalizeDither64", ",", "vst", "NC-1764", ",", "vst", "Neverland64", ",", "vst", "Nikola64", ",", "vst", "NodeDither64", ",", "vst", "Noise64", ",", "vst", "NonlinearSpace64", ",", "vst", "NotJustAnotherCD64", ",", "vst", "NotJustAnotherDither64", ",", "vst", "OneCornerClip64", ",", "vst", "OrbitKick64", ",", "vst", "Pafnuty264", ",", "vst", "Pafnuty64", ",", "vst", "PaulDither64", ",", "vst", "PaulWide64", ",", "vst", "PDBuss64", ",", "vst", "PDChannel64", ",", "vst", "PeaksOnly64", ",", "vst", "Pear64", ",", "vst", "PhaseNudge64", ",", "vst", "PitchDelay64", ",", "vst", "PitchNasty64", ",", "vst", "PlatinumSlew64", ",", "vst", "PocketVerbs64", ",", "vst", "Pockey264", ",", "vst", "Pockey64", ",", "vst", "Podcast64", ",", "vst", "PodcastDeluxe64", ",", "vst", "Point64", ",", "vst", "Pop264", ",", "vst", "Pop64", ",", "vst", "PowerSag264", ",", "vst", "PowerSag64", ",", "vst", "Precious64", ",", "vst", "Preponderant64", ",", "vst", "Pressure564", ",", "vst", "PurestAir64", ",", "vst", "PurestConsole2Buss64", ",", "vst", "PurestConsole2Channel64", ",", "vst", "PurestConsole3Buss64", ",", "vst", "PurestConsole3Channel64", ",", "vst", "PurestConsoleBuss64", ",", "vst", "PurestConsoleChannel64", ",", "vst", "PurestDrive64", ",", "vst", "PurestEcho64", ",", "vst", "PurestFade64", ",", "vst", "PurestGain64", ",", "vst", "PurestSquish64", ",", "vst", "PurestWarm264", ",", "vst", "PurestWarm64", ",", "vst", "Pyewacket64", ",", "vst", "RawGlitters64", ",", "vst", "RawTimbers64", ",", "vst", "Recurve64", ",", "vst", "Remap64", ",", "vst", "ResEQ64", ",", "vst", "Reverb64", ",", "vst", "Righteous464", ",", "vst", "RightoMono64", ",", "vst", "SampleDelay64", ",", "vst", "Shape64", ",", "vst", "SideDull64", ",", "vst", "Sidepass64", ",", "vst", "Silhouette64", ",", "vst", "SingleEndedTriode64", ",", "vst", "Slew264", ",", "vst", "Slew364", ",", "vst", "Slew64", ",", "vst", "SlewOnly64", ",", "vst", "SlewSonic64", ",", "vst", "Smooth64", ",", "vst", "SoftGate64", ",", "vst", "SpatializeDither64", ",", "vst", "Spiral264", ",", "vst", "Spiral64", ",", "vst", "Srsly264", ",", "vst", "Srsly64", ",", "vst", "StarChild264", ",", "vst", "StarChild64", ",", "vst", "StereoChorus64", ",", "vst", "StereoDoubler64", ",", "vst", "StereoEnsemble64", ",", "vst", "StereoFX64", ",", "vst", "StudioTan64", ",", "vst", "SubsOnly64", ",", "vst", "Surge64", ",", "vst", "SurgeTide64", ",", "vst", "Sweeten64", ",", "vst", "Swell64", ",", "vst", "Tape64", ",", "vst", "TapeDelay264", ",", "vst", "TapeDelay64", ",", "vst", "TapeDither64", ",", "vst", "TapeDust64", ",", "vst", "TapeFat64", ",", "vst", "Texturize64", ",", "vst", "TexturizeMS64", ",", "vst", "Thunder64", ",", "vst", "ToneSlant64", ",", "vst", "ToTape564", ",", "vst", "ToVinyl464", ",", "vst", "TPDFDither64", ",", "vst", "TPDFWide64", ",", "vst", "TransDesk64", ",", "vst", "Tremolo64", ",", "vst", "TremoSquare64", ",", "vst", "TripleSpread64", ",", "vst", "Tube264", ",", "vst", "Tube64", ",", "vst", "TubeDesk64", ",", "vst", "uLawDecode64", ",", "vst", "uLawEncode64", ",", "vst", "Ultrasonic64", ",", "vst", "UltrasonicLite64", ",", "vst", "UltrasonicMed64", ",", "vst", "UltrasonX64", ",", "vst", "UnBox64", ",", "vst", "ValhallaDelay_x64", ",", "vst", "ValhallaPlate_x64", ",", "vst", "ValhallaRoom_x64", ",", "vst", "ValhallaShimmer_x64", ",", "vst", "ValhallaSpaceModulator_x64", ",", "vst", "ValhallaUberMod_x64", ",", "vst", "ValhallaVintageVerb_x64", ",", "vst", "VariMu64", ",", "vst", "Verbity264", ",", "vst", "Verbity64", ",", "vst", "Vibrato64", ",", "vst", "VinylDither64", ",", "vst", "VoiceOfTheStarship64", ",", "vst", "VoiceTrick64", ",", "vst", "Weight64", ",", "vst", "Wider64", ",", "vst", "XBandpass64", ",", "vst", "XHighpass64", ",", "vst", "XLowpass64", ",", "vst", "XNotch64", ",", "vst", "XRegion64", ",", "vst", "YBandpass64", ",", "vst", "YHighpass64", ",", "vst", "YLowpass64", ",", "vst", "YNotch64", ",", "vst", "ZBandpass64", ",", "vst", "ZHighpass64", ",", "vst", "ZLowpass64", ",", "vst", "ZNotch64", ",", "vst", "ZRegion64", ",", "vst3", "ValhallaFreqEcho", ",", "vst3", "ValhallaPlate", ",", "vst3", "ValhallaShimmer", ",", "vst3", "ValhallaVintageVerb" ],
+					"items" : [ "vst", "Acceleration264", ",", "vst", "Acceleration64", ",", "vst", "ADClip764", ",", "vst", "ADT64", ",", "vst", "Air264", ",", "vst", "Air64", ",", "vst", "Apicolypse64", ",", "vst", "AQuickVoiceClip64", ",", "vst", "AtmosphereBuss64", ",", "vst", "AtmosphereChannel64", ",", "vst", "Aura64", ",", "vst", "AutoPan64", ",", "vst", "Average64", ",", "vst", "AverMatrix64", ",", "vst", "Balanced64", ",", "vst", "BassAmp64", ",", "vst", "BassDrive64", ",", "vst", "BassKit64", ",", "vst", "Baxandall264", ",", "vst", "Baxandall64", ",", "vst", "Beam64", ",", "vst", "BigAmp64", ",", "vst", "Biquad264", ",", "vst", "Biquad64", ",", "vst", "BiquadDouble64", ",", "vst", "BiquadOneHalf64", ",", "vst", "BiquadPlus64", ",", "vst", "BiquadTriple64", ",", "vst", "Bite64", ",", "vst", "BitGlitter64", ",", "vst", "BitShiftGain64", ",", "vst", "BitShiftPan64", ",", "vst", "BlockParty64", ",", "vst", "BrassRider64", ",", "vst", "BrightAmbience264", ",", "vst", "BrightAmbience364", ",", "vst", "BrightAmbience64", ",", "vst", "BuildATPDF64", ",", "vst", "BussColors464", ",", "vst", "ButterComp264", ",", "vst", "ButterComp64", ",", "vst", "C5RawBuss64", ",", "vst", "C5RawChannel64", ",", "vst", "Cabs64", ",", "vst", "Calibre64", ",", "vst", "Capacitor64", ",", "vst", "Chamber264", ",", "vst", "Chamber64", ",", "vst", "Channel464", ",", "vst", "Channel564", ",", "vst", "Channel664", ",", "vst", "Channel764", ",", "vst", "Channel864", ",", "vst", "Channel964", ",", "vst", "Chorus64", ",", "vst", "ChorusEnsemble64", ",", "vst", "ChromeOxide64", ",", "vst", "Cider64", ",", "vst", "ClipOnly264", ",", "vst", "ClipOnly64", ",", "vst", "ClipSoftly64", ",", "vst", "Coils264", ",", "vst", "Coils64", ",", "vst", "Cojones64", ",", "vst", "Compresaturator64", ",", "vst", "Console0Buss64", ",", "vst", "Console0Channel64", ",", "vst", "Console4Buss64", ",", "vst", "Console4Channel64", ",", "vst", "Console5Buss64", ",", "vst", "Console5Channel64", ",", "vst", "Console5DarkCh64", ",", "vst", "Console6Buss64", ",", "vst", "Console6Channel64", ",", "vst", "Console7Buss64", ",", "vst", "Console7Cascade64", ",", "vst", "Console7Channel64", ",", "vst", "Console7Crunch64", ",", "vst", "Console8BussHype64", ",", "vst", "Console8BussIn64", ",", "vst", "Console8BussOut64", ",", "vst", "Console8ChannelHype64", ",", "vst", "Console8ChannelIn64", ",", "vst", "Console8ChannelOut64", ",", "vst", "Console8LiteBuss64", ",", "vst", "Console8LiteChannel64", ",", "vst", "Console8SubHype64", ",", "vst", "Console8SubIn64", ",", "vst", "Console8SubOut64", ",", "vst", "Creature64", ",", "vst", "CrunchyGrooveWear64", ",", "vst", "Crystal64", ",", "vst", "CStrip264", ",", "vst", "CStrip64", ",", "vst", "curve64", ",", "vst", "Dark64", ",", "vst", "DarkNoise64", ",", "vst", "DCVoltage64", ",", "vst", "DeBess64", ",", "vst", "Deckwrecka64", ",", "vst", "DeEss64", ",", "vst", "DeHiss64", ",", "vst", "Density264", ",", "vst", "Density64", ",", "vst", "DeRez64", ",", "vst", "Desk464", ",", "vst", "Desk64", ",", "vst", "DigitalBlack64", ",", "vst", "Dirt64", ",", "vst", "Distance264", ",", "vst", "Distance64", ",", "vst", "Distortion64", ",", "vst", "Ditherbox64", ",", "vst", "DitherFloat64", ",", "vst", "DitherMeDiskers64", ",", "vst", "DitherMeTimbers64", ",", "vst", "Doublelay64", ",", "vst", "DoublePaul64", ",", "vst", "Drive64", ",", "vst", "DrumSlam64", ",", "vst", "DubCenter64", ",", "vst", "Dubly64", ",", "vst", "DubSub64", ",", "vst", "DustBunny64", ",", "vst", "Dynamics64", ",", "vst", "Dyno64", ",", "vst", "Edge64", ",", "vst", "EdIsDim64", ",", "vst", "ElectroHat64", ",", "vst", "Energy264", ",", "vst", "Energy64", ",", "vst", "Ensemble64", ",", "vst", "EQ64", ",", "vst", "EveryConsole64", ",", "vst", "EverySlew64", ",", "vst", "EveryTrim64", ",", "vst", "Exciter64", ",", "vst", "Facet64", ",", "vst", "FathomFive64", ",", "vst", "FireAmp64", ",", "vst", "Flipity64", ",", "vst", "Floor64", ",", "vst", "Flutter64", ",", "vst", "Fracture264", ",", "vst", "Fracture64", ",", "vst", "FromTape64", ",", "vst", "Galactic264", ",", "vst", "Galactic64", ",", "vst", "GalacticVibe64", ",", "vst", "Gatelope64", ",", "vst", "GlitchShifter64", ",", "vst", "GoldenSlew64", ",", "vst", "Golem64", ",", "vst", "GrindAmp64", ",", "vst", "Gringer64", ",", "vst", "GrooveWear64", ",", "vst", "GuitarConditioner64", ",", "vst", "HardVacuum64", ",", "vst", "Hermepass64", ",", "vst", "HermeTrim64", ",", "vst", "HighGlossDither64", ",", "vst", "HighImpact64", ",", "vst", "Highpass264", ",", "vst", "Highpass64", ",", "vst", "Holt264", ",", "vst", "Holt64", ",", "vst", "Hombre64", ",", "vst", "Huge64", ",", "vst", "Hull64", ",", "vst", "Hype64", ",", "vst", "Hypersonic64", ",", "vst", "HypersonX64", ",", "vst", "Infinity264", ",", "vst", "Infinity64", ",", "vst", "Inflamer64", ",", "vst", "Infrasonic64", ",", "vst", "Interstage64", ",", "vst", "IronOxide564", ",", "vst", "IronOxideClassic264", ",", "vst", "IronOxideClassic64", ",", "vst", "Isolator264", ",", "vst", "Isolator64", ",", "vst", "kChamberAR64", ",", "vst", "kPlateA64", ",", "vst", "kPlateB64", ",", "vst", "kPlateC64", ",", "vst", "kPlateD64", ",", "vst", "LeadAmp64", ",", "vst", "LeftoMono64", ",", "vst", "LilAmp64", ",", "vst", "Logical464", ",", "vst", "Loud64", ",", "vst", "Lowpass264", ",", "vst", "Lowpass64", ",", "vst", "LRFlipTimer64", ",", "vst", "Luxor64", ",", "vst", "MackEQ64", ",", "vst", "Mackity64", ",", "vst", "MatrixVerb64", ",", "vst", "Melt64", ",", "vst", "MidAmp64", ",", "vst", "MidSide64", ",", "vst", "Monitoring264", ",", "vst", "Monitoring364", ",", "vst", "Monitoring64", ",", "vst", "MoNoam64", ",", "vst", "MultiBandDistortion64", ",", "vst", "MV264", ",", "vst", "MV64", ",", "vst", "NaturalizeDither64", ",", "vst", "NC-1764", ",", "vst", "Neverland64", ",", "vst", "Nikola64", ",", "vst", "NodeDither64", ",", "vst", "Noise64", ",", "vst", "NonlinearSpace64", ",", "vst", "NotJustAnotherCD64", ",", "vst", "NotJustAnotherDither64", ",", "vst", "OneCornerClip64", ",", "vst", "OrbitKick64", ",", "vst", "Pafnuty264", ",", "vst", "Pafnuty64", ",", "vst", "PaulDither64", ",", "vst", "PaulWide64", ",", "vst", "PDBuss64", ",", "vst", "PDChannel64", ",", "vst", "PeaksOnly64", ",", "vst", "Pear64", ",", "vst", "PhaseNudge64", ",", "vst", "PitchDelay64", ",", "vst", "PitchNasty64", ",", "vst", "PlatinumSlew64", ",", "vst", "PocketVerbs64", ",", "vst", "Pockey264", ",", "vst", "Pockey64", ",", "vst", "Podcast64", ",", "vst", "PodcastDeluxe64", ",", "vst", "Point64", ",", "vst", "Pop264", ",", "vst", "Pop64", ",", "vst", "PowerSag264", ",", "vst", "PowerSag64", ",", "vst", "Precious64", ",", "vst", "Preponderant64", ",", "vst", "Pressure564", ",", "vst", "PurestAir64", ",", "vst", "PurestConsole2Buss64", ",", "vst", "PurestConsole2Channel64", ",", "vst", "PurestConsole3Buss64", ",", "vst", "PurestConsole3Channel64", ",", "vst", "PurestConsoleBuss64", ",", "vst", "PurestConsoleChannel64", ",", "vst", "PurestDrive64", ",", "vst", "PurestEcho64", ",", "vst", "PurestFade64", ",", "vst", "PurestGain64", ",", "vst", "PurestSquish64", ",", "vst", "PurestWarm264", ",", "vst", "PurestWarm64", ",", "vst", "Pyewacket64", ",", "vst", "RawGlitters64", ",", "vst", "RawTimbers64", ",", "vst", "Recurve64", ",", "vst", "Remap64", ",", "vst", "ResEQ64", ",", "vst", "Reverb64", ",", "vst", "Righteous464", ",", "vst", "RightoMono64", ",", "vst", "SampleDelay64", ",", "vst", "Shape64", ",", "vst", "SideDull64", ",", "vst", "Sidepass64", ",", "vst", "Silhouette64", ",", "vst", "SingleEndedTriode64", ",", "vst", "Slew264", ",", "vst", "Slew364", ",", "vst", "Slew64", ",", "vst", "SlewOnly64", ",", "vst", "SlewSonic64", ",", "vst", "Smooth64", ",", "vst", "SoftGate64", ",", "vst", "SpatializeDither64", ",", "vst", "Spiral264", ",", "vst", "Spiral64", ",", "vst", "Srsly264", ",", "vst", "Srsly64", ",", "vst", "StarChild264", ",", "vst", "StarChild64", ",", "vst", "StereoChorus64", ",", "vst", "StereoDoubler64", ",", "vst", "StereoEnsemble64", ",", "vst", "StereoFX64", ",", "vst", "StudioTan64", ",", "vst", "SubsOnly64", ",", "vst", "Surge64", ",", "vst", "SurgeTide64", ",", "vst", "Sweeten64", ",", "vst", "Swell64", ",", "vst", "Tape64", ",", "vst", "TapeDelay264", ",", "vst", "TapeDelay64", ",", "vst", "TapeDither64", ",", "vst", "TapeDust64", ",", "vst", "TapeFat64", ",", "vst", "Texturize64", ",", "vst", "TexturizeMS64", ",", "vst", "Thunder64", ",", "vst", "ToneSlant64", ",", "vst", "ToTape564", ",", "vst", "ToVinyl464", ",", "vst", "TPDFDither64", ",", "vst", "TPDFWide64", ",", "vst", "TransDesk64", ",", "vst", "Tremolo64", ",", "vst", "TremoSquare64", ",", "vst", "TripleSpread64", ",", "vst", "Tube264", ",", "vst", "Tube64", ",", "vst", "TubeDesk64", ",", "vst", "uLawDecode64", ",", "vst", "uLawEncode64", ",", "vst", "Ultrasonic64", ",", "vst", "UltrasonicLite64", ",", "vst", "UltrasonicMed64", ",", "vst", "UltrasonX64", ",", "vst", "UnBox64", ",", "vst", "ValhallaDelay_x64", ",", "vst", "ValhallaPlate_x64", ",", "vst", "ValhallaRoom_x64", ",", "vst", "ValhallaShimmer_x64", ",", "vst", "ValhallaSpaceModulator_x64", ",", "vst", "ValhallaUberMod_x64", ",", "vst", "ValhallaVintageVerb_x64", ",", "vst", "VariMu64", ",", "vst", "Verbity264", ",", "vst", "Verbity64", ",", "vst", "Vibrato64", ",", "vst", "VinylDither64", ",", "vst", "VoiceOfTheStarship64", ",", "vst", "VoiceTrick64", ",", "vst", "Weight64", ",", "vst", "Wider64", ",", "vst", "XBandpass64", ",", "vst", "XHighpass64", ",", "vst", "XLowpass64", ",", "vst", "XNotch64", ",", "vst", "XRegion64", ",", "vst", "YBandpass64", ",", "vst", "YHighpass64", ",", "vst", "YLowpass64", ",", "vst", "YNotch64", ",", "vst", "ZBandpass64", ",", "vst", "ZHighpass64", ",", "vst", "ZLowpass64", ",", "vst", "ZNotch64", ",", "vst", "ZRegion64", ",", "vst3", "ValhallaPlate", ",", "vst3", "ValhallaShimmer", ",", "vst3", "ValhallaVintageVerb" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
