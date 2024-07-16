@@ -56,7 +56,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 					var pat = songs.get(songlist[df][i]+"::waves["+t+"]::path");
 					var nam = songs.get(songlist[df][i]+"::waves["+t+"]::name");
 					if(pat!=null){
-						preload_list.push([pat,nam]);
+						preload_list.push([pat,nam,songlist[df][i]+"::waves["+t+"]::"]);
 						//polybuffer_load_wave(pat,nam);
 					}
 				}
@@ -170,7 +170,7 @@ function preload_all_waves(){
 	if(preload_list.length>0){
 		var t = preload_list.pop();
 		post("\n preloading wave",t[1]);
-		if(polybuffer_load_wave(t[0],t[1])==-1){
+		if(polybuffer_load_wave(t[0],t[1],t[2])==-1){
 			preload_task.schedule(100);
 		}else{
 			preload_task.schedule(10);
@@ -265,7 +265,7 @@ function check_exists(filepath){
 	}
 }
 
-function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer if not already loaded.
+function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into polybuffer if not already loaded.
 	if(wavename.split("$")[0] == "unsaved.looper"){ //creates a blank buffer if a looper block needs one
 		var length = wavename.split("$")[1];
 		var channels = wavename.split("$")[2];
@@ -309,13 +309,13 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 						//prompt the user to find this file
 						post("\n\n\n\nCOULD NOT FIND WAVE:",wavepath,wavename);
 						post("\nPLEASE FIND IT (or a replacement!) IN THE FILE DIALOG BOX THAT HAS POPPED UP");
-						if(preload_list.length>0){
-							preload_list.push([wavepath,wavename]); //put this one back on the preload list
+						//if(preload_list.length>0){
+							preload_list.push([wavepath,wavename,dictpath]); //put this one back on the preload list
 							preload_task.freepeer(); //pause preloading
-						}
+						//}
 						messnamed("open_wave_dialog",wavename);
 					}
-					r = search_for_waves(waves_search_paths[s],wavename);
+					r = search_for_waves(waves_search_paths[s],wavename,dictpath);
 					if(r!=-1){
 						//post("\nfound something!",r);
 						s=99999;
@@ -338,11 +338,15 @@ function open_wave_dialog(wavepath){
 	post("\n path", addpath);
 	waves_search_paths = [addpath];
 	//polybuffer_load_wave(wavepath,wavename);
+	var pll = preload_list.length-1;
+	songs.replace(preload_list[pll][2]+"path",wavepath+wavename);
+	songs.replace(preload_list[pll][2]+"name",wavename);
+	post("\nreplaced dict entry"+preload_list[pll][2]+"path with ",wavepath);
 	preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 }
 
-function search_for_waves(path,wavename){
+function search_for_waves(path,wavename,dictpath){
 	var ext = "."+wavename.split(".").pop();
 	//post("\nsearching:",path,"for",wavename,"type",ext);
 	var f = new Folder(path);
@@ -354,6 +358,11 @@ function search_for_waves(path,wavename){
 			if(f.filename==wavename){
 				post("found it! in ",path);
 				f.close();
+				if((dictpath!=null)&&(path!=songs.get(dictpath+"path"))){
+					songs.replace(dictpath+"path",path+wavename);
+					songs.replace(dictpath+"name",wavename);
+					post("\nreplaced dict entry"+dictpath+"path with ",path);	
+				}
 				return path;
 			}
 		}else if(f.filetype == "fold"){
@@ -855,13 +864,12 @@ function swap_block_check_connections(b,oldname,oldtype,newname,newtype){
 
 function build_wave_remapping_list(){
 	if(songs.contains(loading.songname+"::waves")){
-		var i,a,ii;
+		var i,a;
 		var freelist = []
 		post("\nchecking if any waves need remapping");
 		for(i=0;i<MAX_WAVES;i++){
 			freelist[i]=1;
-			ii=i+1;
-			if(waves_dict.contains("waves[" +ii+"]::name")) {
+			if(waves_dict.contains("waves[" +i+1+"]::name")) {
 				freelist[i]=0;
 				post("found an existing wave",i);
 			}
