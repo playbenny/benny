@@ -303,7 +303,7 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 				post("\nnot found in the same location as the save file, searching");
 				//post(", trying search paths:",waves_search_paths);
 				var r = -1;
-				for(var s=0;s<waves_search_paths.length;s++){
+				for(var s=0;s<=waves_search_paths.length;s++){
 					post(".");
 					if(s==waves_search_paths.length){
 						//prompt the user to find this file
@@ -328,6 +328,18 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 			return exists;
 		}
 	}
+}
+
+function open_wave_dialog(wavepath){
+	post("\nyou chose",wavepath);
+	var wavename = wavepath.split("/").pop();
+	post("\n name", wavename);
+	var addpath = wavepath.split(wavename)[0];
+	post("\n path", addpath);
+	waves_search_paths = [addpath];
+	//polybuffer_load_wave(wavepath,wavename);
+	preload_task = new Task(preload_all_waves, this);
+	preload_task.schedule(100);
 }
 
 function search_for_waves(path,wavename){
