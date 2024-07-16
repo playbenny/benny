@@ -169,8 +169,8 @@ function preload_all_waves(){
 	if(!waves_preloading) preload_list = [];
 	if(preload_list.length>0){
 		var t = preload_list.pop();
+		post("\n preloading wave",t[1]);
 		if(polybuffer_load_wave(t[0],t[1])==-1){
-			post("\n preloaded wave",t[1]);
 			preload_task.schedule(100);
 		}else{
 			preload_task.schedule(10);
@@ -288,13 +288,77 @@ function polybuffer_load_wave(wavepath,wavename){ //loads wave into polybuffer i
 				get_polybuffer_info();
 				return -1;
 			}else{
-				post("\nCOULD NOT FIND WAVE:",wavepath,wavename);
+				var pathonly = wavepath.split(wavename)[0];
+				var last_slash = pathonly.split("/");
+				var last_folder = last_slash.pop();
+				last_folder = last_slash.pop();
+				var up_one = pathonly.split(last_folder)[0];
+				for(var s=0;s<waves_search_paths.length;s++){
+					if(waves_search_paths[s]==up_one){
+						up_one = null;
+						s=999;
+					}
+				}
+				if(up_one != null) waves_search_paths.push(up_one);
+				post("\nnot found in the same location as the save file, searching");
+				//post(", trying search paths:",waves_search_paths);
+				var r = -1;
+				for(var s=0;s<waves_search_paths.length;s++){
+					post(".");
+					if(s==waves_search_paths.length){
+						//prompt the user to find this file
+						post("\n\n\n\nCOULD NOT FIND WAVE:",wavepath,wavename);
+						post("\nPLEASE FIND IT (or a replacement!) IN THE FILE DIALOG BOX THAT HAS POPPED UP");
+						if(preload_list.length>0){
+							preload_list.push([wavepath,wavename]); //put this one back on the preload list
+							preload_task.freepeer(); //pause preloading
+						}
+						messnamed("open_wave_dialog",wavename);
+					}
+					r = search_for_waves(waves_search_paths[s],wavename);
+					if(r!=-1){
+						//post("\nfound something!",r);
+						s=99999;
+					}
+				}
+				if(r==-1)post("\nCOULD NOT FIND WAVE:",wavepath,wavename);
 			}
 		}else{
 			post("[cache hit",exists,"]");
 			return exists;
 		}
 	}
+}
+
+function search_for_waves(path,wavename){
+	var ext = "."+wavename.split(".").pop();
+	//post("\nsearching:",path,"for",wavename,"type",ext);
+	var f = new Folder(path);
+		
+	f.reset();
+	while (!f.end) {
+		if(f.extension == ext){
+			//post("\n  "+f.filename);
+			if(f.filename==wavename){
+				post("found it! in ",path);
+				f.close();
+				return path;
+			}
+		}else if(f.filetype == "fold"){
+			var addf=path+f.filename;
+			for(var i=0;i<waves_search_paths.length;i++) if(waves_search_paths[i]==addf){ addf=null; i=9999; }
+			if(addf!=null){
+				waves_search_paths.push(path+f.filename);
+				//post("\nadded folder"+addf+"to search path");
+			}
+		}/*else{
+			post("\n--",f.filename,"--",f.filetype,"---",f.extension);
+		}*/
+		f.next();
+	}
+	f.close();
+
+	return -1;
 }
 
 function get_polybuffer_info(){
