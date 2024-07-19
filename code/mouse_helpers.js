@@ -1390,7 +1390,7 @@ function toggle_show_timer(parameter,value){
 	redraw_flag.flag |= 2;
 }
 
-function reset_show_timer(){
+function reset_set_timer(){
 	set_timer_start = null;
 	redraw_flag.flag |= 2;
 }
