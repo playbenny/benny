@@ -34,3 +34,5 @@ data/airwindows Console7Buss.maxsnap
 data/airwindows Console7Channel.maxsnap
 data/airwindows Console7Channel_20240602.maxsnap
 audio_blocks/vst.TAL-NoiseMaker.json
+note_blocks/abb.music.calculator.json
+note_blocks/abb.music.calculator.maxpat
