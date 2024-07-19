@@ -862,7 +862,6 @@ function play(state){
 		if(playing&&(set_timer_start==null)){
 			var da = new Date;
 			set_timer_start = da.getTime();
-			post("\nset timer start",set_timer_start);
 		} 
 	}
 }
