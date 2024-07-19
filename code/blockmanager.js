@@ -597,6 +597,9 @@ var glow_amount=0.15;
 var monofont = "Consolas";
 var mainfont = "Arial";
 
+var set_timer_start = null;
+var set_timer_show = 0;
+
 var projectpath="";
 
 var ext_matrix = {
