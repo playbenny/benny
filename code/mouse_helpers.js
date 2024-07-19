@@ -1381,6 +1381,20 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 	}
 }
 
+function toggle_show_timer(parameter,value){
+	if(value==null){
+		set_timer_show = 1 - set_timer_show;
+	}else{
+		set_timer_show = value;
+	}
+	redraw_flag.flag |= 2;
+}
+
+function reset_show_timer(){
+	set_timer_start = null;
+	redraw_flag.flag |= 2;
+}
+
 function show_vst_editor(parameter,value){
 	var vlist = /*audio_*/voicemap.get(value);
 	if(typeof vlist == "number") vlist = [vlist];

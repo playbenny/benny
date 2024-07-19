@@ -35,6 +35,7 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
+	if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")) && (sidebar.mode=="none")) draw_clock();
 }
 
 function frameclock(){
