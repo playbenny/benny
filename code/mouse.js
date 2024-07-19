@@ -303,7 +303,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 						var p = mouse_click_parameters[usermouse.last.got_i];
 						var v = mouse_click_values[usermouse.last.got_i];
-						post("\n\n\nff",f.name);
 						if(usermouse.last.got_i != danger_button){
 							danger_button = -1;
 						} 

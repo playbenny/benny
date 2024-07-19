@@ -1274,7 +1274,7 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 }
 
 function draw_clock(){
-	lcd_main.message("paintrect", mainwindow_width-9-fontheight*1.2,9,mainwindow_width,9+fontheight,0,0,0);
+	lcd_main.message("paintrect", mainwindow_width-9-fontheight*0.6,9,mainwindow_width,9+fontheight,0,0,0);
 	var currentdate = new Date;
 	if(set_timer_show){
 		lcd_main.message("moveto",mainwindow_width-9-fontheight*0.6, 9+fontheight*0.25);
@@ -1293,13 +1293,18 @@ function draw_clock(){
 		}
 		//click_zone(toggle_show_timer,0,0,mainwindow_width-9-fontheight*1.4,0,mainwindow_width,9+fontheight,mouse_index,1);
 	}else{
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*1.3, 9+fontheight*0.25);
-		lcd_main.message("frgb", menudarkest);
-		var s = currentdate.getSeconds();
-		if(s<10) s= "0"+s;
+		lcd_main.message("moveto",mainwindow_width-9-fontheight*0.6, 9+fontheight*0.25);
+		//var s = currentdate.getSeconds();
+		//if(s<10) s= "0"+s;
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
-		lcd_main.message("write", currentdate.getHours() + ":" +m  + ":" + s);			
+		var h = (currentdate.getHours())%12;
+		if((m==20)&&(h==4)){
+			lcd_main.message("frgb", menucolour);
+		}else{
+			lcd_main.message("frgb", menudarkest);
+		}
+		lcd_main.message("write", h + ":" +m);			
 		//click_zone(toggle_show_timer,1,1,mainwindow_width-9-fontheight*1.4,0,mainwindow_width,9+fontheight,mouse_index,1);
 	}
 }

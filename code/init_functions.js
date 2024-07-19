@@ -183,7 +183,6 @@ function initialise_dictionaries(hardware_file){
 	CTRL_VOICE_SEL_MOMENTARY = config.get("CTRL_VOICE_SEL_MOMENTARY");
 	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
-	ANIM_TIME = config.get("ANIM_TIME");
 	waves_preloading = config.get("waves_preloading");
 	wires_show_all = config.get("WIRES_SHOW_ALL");
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
@@ -853,17 +852,6 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 	var l = Math.max(1 - r2 * d * max_chans,0) / tl;
 	//post("\ntl",tl,"l",l);
 	return l;
-}
-
-function play(state){
-	if(state!=playing){
-		playing=state;
-		redraw_flag.flag=2;
-		if(playing&&(set_timer_start==null)){
-			var da = new Date;
-			set_timer_start = da.getTime();
-		} 
-	}
 }
 
 function populate_lookup_tables(){

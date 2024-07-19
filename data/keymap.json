@@ -51,6 +51,8 @@
     "blocks" : {
         "-20" : ["F4", "selected_block_custom_mode", "custom" ],
         "-15" : ["home" , "center_view", 1],
+        "-13" : ["PGUP", "blocks_zoom_key", 0.25],
+        "-14" : ["PGDN", "blocks_zoom_key", -0.25],
         "45" : ["-", "poly_key" , -1],
         "43" : ["+", "poly_key" , 1],
         "61" : ["+ (mac)", "poly_key", 1],

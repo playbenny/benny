@@ -7,6 +7,17 @@ function config_toggle_gain_display_format(ta,tb){
 	redraw_flag.flag=4;
 }
 
+function play(state){
+	if(state!=playing){
+		playing=state;
+		redraw_flag.flag=2;
+		if(playing&&(set_timer_start==null)){
+			var da = new Date;
+			set_timer_start = da.getTime();
+		} 
+	}
+}
+
 function play_button(){
 	messnamed("play",1-playing);
 }
@@ -1391,8 +1402,25 @@ function toggle_show_timer(parameter,value){
 }
 
 function reset_set_timer(){
-	set_timer_start = null;
+	if(playing){
+		var t = new Date();
+		set_timer_start = t.getTime();
+	}else{
+		set_timer_start = null;
+	}
 	redraw_flag.flag |= 2;
+}
+
+function blocks_zoom_key(scroll){
+	var xx = (2 * usermouse.x / mainwindow_width) - 1;
+	var yy = (2 * usermouse.y / mainwindow_height) - 1;
+	
+	camera_position[2] = camera_position[2]-20*scroll;
+	if(camera_position[2]<1.5)camera_position[2]=1.6;
+	camera_position[0] += xx*scroll*7;
+	camera_position[1] -= yy*scroll*7;//*0.5;
+	messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+	messnamed("camera_control","position",  camera_position);
 }
 
 function show_vst_editor(parameter,value){

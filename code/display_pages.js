@@ -58,7 +58,7 @@ function set_display_mode(mode,t){
 
 function camera(){
 	if(displaymode == "custom"){
-		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
+		messnamed("camera_control", "position", [0,-95,0]);
 	}else if(displaymode == "block_menu"){
 		messnamed("camera_control", "position", [2,-93,menu.camera_scroll]); //"anim", "moveto", [0,-95,0], 0.2);
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
@@ -66,20 +66,14 @@ function camera(){
 	}else if(displaymode == "blocks"){ //this could be animated too?
 		messnamed("camera_control", "rotatexyz" , 0, 0, 0);
 		messnamed("camera_control", "direction", 0, 0, -1);
-		messnamed("camera_control", "position",  camera_position, ANIM_TIME); //"anim", "moveto"
+		messnamed("camera_control", "position",  camera_position); //"anim", "moveto"
 //		messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
-		//if(sidebar.mode=="file_menu"){
-			//center_view(1);
-			//camera_position[2] += 50;
-			//camera_position[0] = 8+Math.max(camera_position[0], blocks_page.rightmost);
-			//messnamed("camera_control", "anim", "moveto", camera_position, ANIM_TIME);
-		//}
 	}else if(displaymode == "waves"){
-		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);
+		messnamed("camera_control", "position", [0,-95,0]);
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
-		messnamed("camera_control", "position", [0,-95,0], ANIM_TIME);		
+		messnamed("camera_control", "position", [0,-95,0]);		
 	}else if(displaymode == "flocks"){
-		messnamed("camera_control", "anim", "moveto", [flock_cube_size*2.5,1.5*flock_cube_size,5+2.5*flock_cube_size], ANIM_TIME);
+		messnamed("camera_control", "position", [flock_cube_size*2.5,1.5*flock_cube_size,5+2.5*flock_cube_size]);
 		messnamed("camera_control", "direction", -0.59, -0.48, -0.64);
 	}
 }
