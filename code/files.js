@@ -16,7 +16,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	if(df==0) songlist[0] = [];
 	if(df==1) songlist[1] = [];
 	var fpath = f.pathname;
-	var i=0, ts, tss;
+	var i=0, tss;
 	if(!Array.isArray(songs_moddate[df])) songs_moddate[df] = [];
 	if(fpath[fpath.length-1] !== "/" ) fpath = fpath+"/";
 	while(!f.end){
@@ -97,25 +97,29 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
 			var td = blocktypes_count_this.get("note");
-			var tdk = td.getkeys();
-			for(var t=0;t<tdk.length;t++){
-				var c = td.get(tdk[t]);
-				var e = 0;
-				if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
-				if(c>e){
-					blocktypes_count_cumulative.replace("note::"+tdk[t],c);
-					for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+			if(td!=null){
+				var tdk = td.getkeys();
+				for(var t=0;t<tdk.length;t++){
+					var c = td.get(tdk[t]);
+					var e = 0;
+					if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
+					if(c>e){
+						blocktypes_count_cumulative.replace("note::"+tdk[t],c);
+						for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+					}
 				}
 			}
 			var td = blocktypes_count_this.get("audio");
-			var tdk = td.getkeys();
-			for(var t=0;t<tdk.length;t++){
-				var c = td.get(tdk[t]);
-				var e = 0;
-				if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
-				if(c>e){
-					blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
-					for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+			if(td!=null){
+				var tdk = td.getkeys();
+				for(var t=0;t<tdk.length;t++){
+					var c = td.get(tdk[t]);
+					var e = 0;
+					if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
+					if(c>e){
+						blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
+						for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+					}
 				}
 			}
 		}
