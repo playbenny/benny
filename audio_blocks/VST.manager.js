@@ -22,6 +22,9 @@ paramdefaults.name = "parameter_values";
 var blocktypes = new Dict;
 blocktypes.name = "blocktypes";
 
+var maxmin = new Dict;
+maxmin.name = "parameter_maxmin";
+
 var pbendr = 2;
 var ups = 1;
 
@@ -188,7 +191,11 @@ function transfer_params_and_defaults(){
 				// spread fn etc. if = 0 then behaves as before and lets you stack
 				// voices of a vst.
 	new_blockfile.parse('{}');
-	new_blockfile.parse(block_name +': { "patcher" : "vst.loader" }'); 
+	if(plugin_type == "amxd"){
+		new_blockfile.parse(block_name +': { "patcher" : "amxd.loader" }'); 
+	}else{
+		new_blockfile.parse(block_name +': { "patcher" : "vst.loader" }'); 
+	}
 	new_blockfile.replace(block_name + "::type","audio");
 	new_blockfile.replace(block_name + "::help_text", plugin_name);
 	new_blockfile.replace(block_name + "::block_ui_patcher","blank.ui");
@@ -210,12 +217,20 @@ function transfer_params_and_defaults(){
 	for(i=0;i<paramcount;i++){
 		name = paramnames.get(i);
 		def = paramdefaults.get(i+1);
+		if(Array.isArray(def)) def = def[0];
 		if(i>0) new_blockfile.append(block_name+"::parameters", "B");
 		new_blockfile.setparse(block_name+'::parameters['+i+']', ' { "name" : "'+name+'"}');//' , "default" : '+def+' , "type" : "float", "values" : ["uni",0,1,"lin"]');
 		new_blockfile.replace(block_name + "::parameters["+i+"]::default",def);
 		new_blockfile.replace(block_name + "::parameters["+i+"]::type","float");
 		new_blockfile.replace(block_name + "::parameters["+i+"]::wrap",0);
-		new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", 0,1, "lin");
+		if(plugin_type == "amxd"){
+			var mm = maxmin.get(i+1);
+			var pol = "uni";
+			if(mm[1]==-mm[0]) pol = "bi";
+			new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", mm[1],mm[0], "lin");
+		}else{
+			new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", 0,1, "lin");
+		}
 	}
 	new_blockfile.replace(block_name + "::groups",'A');
 	if(groups[0].length == 0){
@@ -236,7 +251,7 @@ function transfer_params_and_defaults(){
 				if(group_height[i]!=-1) new_blockfile.replace(block_name + "::groups["+t+"]::contains",groups[i]);
 				t++;
 			}else{
-				new_blockfile.remove(blockname+"::groups["+t+"]");
+				new_blockfile.remove(block_name+"::groups["+t+"]");
 			}
 		}
 	}

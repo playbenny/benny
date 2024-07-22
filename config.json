@@ -2,7 +2,7 @@
 	"SONGS_FOLDER" : "",
 	"RECORD_FOLDER" : "",
 	"TEMPLATES_FOLDER" : "templates",
-	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mix", "vst" ],
+	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mix", "vst", "amxd" ],
 	"gain_display_format" : "x",
 	"click_buffer_scaledown" : 2,
 	"UPSAMPLING" : 1,
