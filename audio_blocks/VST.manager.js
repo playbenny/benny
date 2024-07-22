@@ -183,6 +183,28 @@ function check_library(name){
 	}
 }
 
+function scan_for_amxd_configs(){
+	var f = new Folder(projectpath+"audio_blocks");
+	
+	f.reset();
+	while (!f.end) {
+		if(f.extension == ".json"){
+			var t = f.filename;
+			t = t.split('.')[0];
+			if(t=="amxd"){
+				post("\n  existing amxd config: "+f.filename);
+				outlet(0, "exists", 1, "amxd", f.filename); //1 if it exists or was copied from lib
+			}
+		}
+		f.next();
+	}
+	f.close();
+}
+
+function scan_for_amxds(path){
+
+}
+
 function transfer_params_and_defaults(){
 	var i,name,def;
 	//var paramdetails = new Array();
@@ -268,4 +290,5 @@ function loadbang(){
 	projectpath = path.split("audio_blocks/");
 	projectpath = projectpath[0];
 	post("\npath is",projectpath);
+	scan_for_amxd_configs();
 }
