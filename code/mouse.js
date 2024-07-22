@@ -183,7 +183,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			if(id==null){
 				id = glpicker.touch(x,y);
 			}
-			picker_hover_and_special(id);
+			if(id!=null)picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
 			id = glpicker.touch(x,y);
 			//picker_hover_and_special(id);
@@ -995,7 +995,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
 		var id = glpicker.touch(x,y);
-		picker_hover_and_special(id);
+		if(id!=null) picker_hover_and_special(id);
 	}	
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead

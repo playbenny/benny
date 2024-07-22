@@ -2631,7 +2631,6 @@ function blocks_and(side){
 function toggle_show_all_wires(){
 	keyrepeat_task.cancel();
 	wires_show_all = 1 - wires_show_all;
-	post("\nWSA:",wires_show_all);
 	redraw_flag.flag |= 4; //8;
 }
 function toggle_show_sidebar_para_mod(){
