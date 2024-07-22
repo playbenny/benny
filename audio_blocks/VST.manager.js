@@ -226,8 +226,8 @@ function transfer_params_and_defaults(){
 		if(plugin_type == "amxd"){
 			var mm = maxmin.get(i+1);
 			var pol = "uni";
-			if(mm[1]==-mm[0]) pol = "bi";
-			new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", mm[1],mm[0], "lin");
+			if(+mm[1]==-mm[0]) pol = "bi";
+			new_blockfile.replace(block_name + "::parameters["+i+"]::values", pol, mm[1],mm[0], "lin");
 		}else{
 			new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", 0,1, "lin");
 		}
