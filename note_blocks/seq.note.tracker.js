@@ -429,15 +429,15 @@ function mouse(x,y,lb,sh,al,ct,scr){
 	var oy = cursory;
 	var barpos = -1;
 	if(x>=discont_x){
-		//post("\nx was",x);
+		post("\nx was",x,"discont",discont_x,"end",discont_x2);
 		if(x>=discont_x2){
 			x = x - 0.5*cw;
 		}else{
 			barpos = 2*(x - discont_x)/cw;
-			x = discont_x-5;
+			x = discont_x-20;
 		}
-		//post(" is now ",x);
-	}//else{post("\nx",x,"discont",discont_x);}
+		post(" is now ",x);
+	}else{post("\nx",x,"discont",discont_x);}
 	var xx = x-x_pos;
 	var yy = y-y_pos;
 	var clickx = (xx-sx)/cw;
