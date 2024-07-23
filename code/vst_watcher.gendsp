@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 2,
+			"revision" : 4,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -98,7 +98,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "// in 1 is the source: params 1 vst 2 vstinit 3\r\n// and on the outs 3 is the destination - params 1 vst 2\r\nData vstvalues(257);//the last number you sent to the vst, -1 if you got it back. index starts at 0\r\n\r\noo1 = -1;\r\noo2 = -1;\r\noo3 = -1;\r\n\r\nif(in1 == 1){ //from benny, starts at 0\r\n\too1 = in2+1;\r\n\too2 = in3;\r\n\too3 = 2;\r\n\tpoke(vstvalues,in3,in2,0);\r\n}else if(in1 == 2){ //from vst, starts at 1\r\n\tovv = peek(vstvalues, in2-1, 0);\r\n\tif(ovv == -1){ // we're not waiting, so this should go to benny. //abs(in3-ovv)>0.001){ //if the value from the vst is not what we are waiting for:\r\n\t\too1 = in2-1; // send it to benny\r\n\t\too2 = in3;\r\n\t\too3 = 1;\r\n\t}else if(abs(in3-ovv)<0.001){ // it's what you were waiting for\r\n\t\too1 = in3;\r\n\t\too2 = ovv;\r\n\t\too3 = 0;\r\n\t\tpoke(vstvalues,-1,in2-1,0); //it was what we were waiting for\r\n\t}\r\n}else if(in1 == -1){\r\n\tfor(i=0;i<257;i+=1){\r\n\t\tpoke(vstvalues,-1,i,0);\r\n\t}\r\n}\r\n\r\nout1 = oo1;\r\nout2 = oo2;\r\nout3 = oo3;",
+					"code" : "// in 1 is the source: params 1 vst 2 vstinit 3\r\n// and on the outs 3 is the destination - params 1 vst 2\r\nData vstvalues(257);//the last number you sent to the vst, -1 if you got it back. index starts at 0\r\n\r\noo1 = -1;\r\noo2 = -1;\r\noo3 = -1;\r\n\r\nif(in1 == 1){ //from benny, starts at 0\r\n\too1 = in2+1;\r\n\too2 = in3;\r\n\too3 = 2;\r\n\tpoke(vstvalues,in3,in2,0);\r\n}else if(in1 == 2){ //from vst, starts at 1\r\n\tovv = peek(vstvalues, in2-1, 0);\r\n\tif(ovv == -1){ // we're not waiting, so this should go to benny. //abs(in3-ovv)>0.001){ //if the value from the vst is not what we are waiting for:\r\n\t\too1 = in2-1; // send it to benny\r\n\t\too2 = in3;\r\n\t\too3 = 1;\r\n\t}else if(abs(in3-ovv)<0.01){ // it's what you were waiting for\r\n\t\too1 = in3;\r\n\t\too2 = ovv;\r\n\t\too3 = 0;\r\n\t\tpoke(vstvalues,-1,in2-1,0); //it was what we were waiting for\r\n\t}else{\r\n\t\too2 = abs(in3-ovv);\r\n\t\too3 = 999;\r\n\t}\r\n}else if(in1 == -1){\r\n\tfor(i=0;i<257;i+=1){\r\n\t\tpoke(vstvalues,-1,i,0);\r\n\t}\r\n}\r\n\r\nout1 = oo1;\r\nout2 = oo2;\r\nout3 = oo3;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,

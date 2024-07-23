@@ -2916,7 +2916,11 @@ function draw_sidebar(){
 				mouse_index++;
 				lcd_main.message("frgb" , fc);
 				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
-				lcd_main.message("write", "open vst");
+				if(blocktypes.get(block_name+"::plugin_type")=="amxd"){
+					lcd_main.message("write", "open max for live device window");
+				}else{
+					lcd_main.message("write", "open vst");
+				}
 				y_offset += 0.6*fontheight;
 			}
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")){
