@@ -86,7 +86,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 856.0, 475.0, 57.0, 22.0 ],
+					"patching_rect" : [ 773.0, 383.0, 57.0, 22.0 ],
 					"text" : "pack 0 0."
 				}
 
@@ -98,7 +98,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "float" ],
-					"patching_rect" : [ 856.0, 416.0, 70.0, 22.0 ],
+					"patching_rect" : [ 773.0, 324.0, 70.0, 22.0 ],
 					"text" : "unpack s 0."
 				}
 
@@ -110,7 +110,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 856.0, 388.0, 68.0, 22.0 ],
+					"patching_rect" : [ 773.0, 296.0, 68.0, 22.0 ],
 					"text" : "route value"
 				}
 
@@ -158,7 +158,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 856.0, 452.0, 127.0, 22.0 ],
+					"patching_rect" : [ 773.0, 360.0, 127.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"precision" : 6
@@ -212,7 +212,7 @@
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_invisible" : 1,
-							"parameter_longname" : "amxd~[1]",
+							"parameter_longname" : "amxd~",
 							"parameter_modmode" : 0,
 							"parameter_shortname" : "amxd~",
 							"parameter_type" : 3
@@ -241,12 +241,12 @@
 							"origname" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
 							"valuedictionary" : 							{
 								"parameter_values" : 								{
-									"Cutoff" : 1.5748031437397,
-									"Decay" : 40.000000596046448,
+									"Cutoff" : 51.5625,
+									"Decay" : 0.0,
 									"Depth" : 0.0,
 									"Detune" : 0.0,
 									"Res" : 0.0,
-									"Shape" : -30.314962565898895,
+									"Shape" : 0.0,
 									"Sub" : 0.0,
 									"Sweep" : 0.0
 								}
@@ -272,12 +272,12 @@
 										"origname" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
 										"valuedictionary" : 										{
 											"parameter_values" : 											{
-												"Cutoff" : 1.5748031437397,
-												"Decay" : 40.000000596046448,
+												"Cutoff" : 51.5625,
+												"Decay" : 0.0,
 												"Depth" : 0.0,
 												"Detune" : 0.0,
 												"Res" : 0.0,
-												"Shape" : -30.314962565898895,
+												"Shape" : 0.0,
 												"Sub" : 0.0,
 												"Sweep" : 0.0
 											}
@@ -638,7 +638,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 878.0, 143.0, 155.0, 144.0 ],
+					"patching_rect" : [ 852.0, 214.0, 155.0, 144.0 ],
 					"text" : "literally the only time it needs to let values from the vst set the benny param is if the editor is opened. once it's opened you don't know, so hopefully this then works fine and efficiently, but until that point it's not even needed"
 				}
 
@@ -650,7 +650,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 819.0, 469.0, 29.5, 22.0 ],
+					"patching_rect" : [ 736.0, 377.0, 29.5, 22.0 ],
 					"text" : "0"
 				}
 
@@ -662,7 +662,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 779.0, 469.0, 29.5, 22.0 ],
+					"patching_rect" : [ 696.0, 377.0, 29.5, 22.0 ],
 					"text" : "1"
 				}
 
@@ -782,7 +782,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 823.0, 504.0, 52.0, 22.0 ],
+					"patching_rect" : [ 740.0, 412.0, 52.0, 22.0 ],
 					"text" : "gate 1 0"
 				}
 
@@ -914,6 +914,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 400.0, 544.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -1937,10 +1941,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 368.0, 7.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1952,6 +1952,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 344.0, 544.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1975,10 +1979,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 626.0, 416.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -1991,10 +1991,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 626.0, 343.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -2006,10 +2002,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 580.0, 416.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -2022,10 +2014,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 588.0, 343.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
