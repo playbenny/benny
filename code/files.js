@@ -869,34 +869,38 @@ function swap_block_check_connections(b,oldname,oldtype,newname,newtype){
 function build_wave_remapping_list(){
 	if(songs.contains(loading.songname+"::waves")){
 		var i,a;
-		var freelist = []
+		var freelist = [];
 		post("\nchecking if any waves need remapping");
 		for(i=0;i<MAX_WAVES;i++){
 			freelist[i]=1;
-			if(waves_dict.contains("waves[" +i+1+"]::name")) {
+			if(waves_dict.contains("waves["+ (1+i)+"]::name")) {
 				freelist[i]=0;
-				post("found an existing wave",i);
-			}
+				//post("\nfound an existing wave",i," : ",waves_dict.get("waves[" +(1+i)+"]::name"));
+			}/*else{
+				post("\ndidn't find in "+i);
+			}*/
 		}
-//		post("\nfreelist = ",freelist," agelist = ",waves.age);
-		for(i=1;i<MAX_WAVES;i++){
-			if(songs.contains(loading.songname+"::waves["+i+"]::name")){
-				a=0;//-1;
+		//post("\nfreelist = ",freelist," agelist = ",waves.age);
+		for(i=0;i<MAX_WAVES;i++){
+			if(songs.contains(loading.songname+"::waves["+(1+i)+"]::name")){
+				a=-1;
 				var lowest = waves.seq_no;
 				var lowp=-1;
 				do {
 					a++;
+					//post("\nchecking ",a,"free is",freelist[a]);
 					if(waves.age[a]<lowest){
 						lowest=waves.age[a];
 						lowp=a;
 					}
 					if(a==MAX_WAVES){
+						//post("\nreached max, stealing slot",lopw+1);
 						a=lowp;
 						freelist[a]=1;
 						waves.age[a]=waves.seq_no++;
 					}
 				} while (freelist[a]==0);
-				//post("\nmapping new wave "+i+songs.get(loading.songname+"::waves["+i+"]::name")+" to slot "+a);
+				//post("\nmapping new wave "+i+" : "+songs.get(loading.songname+"::waves["+(1+i)+"]::name")+" to slot "+(1+a));
 				waves.remapping[i]=a;
 				freelist[a]=0;
 			}//else{post("\nskipped blank slot ",i);}
