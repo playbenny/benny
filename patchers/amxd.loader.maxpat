@@ -212,9 +212,9 @@
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_invisible" : 1,
-							"parameter_longname" : "amxd~",
+							"parameter_longname" : "amxd~[1]",
 							"parameter_modmode" : 0,
-							"parameter_shortname" : "amxd~",
+							"parameter_shortname" : "amxd~[1]",
 							"parameter_type" : 3
 						}
 
@@ -222,83 +222,8 @@
 ,
 					"saved_object_attributes" : 					{
 						"parameter_enable" : 1,
-						"patchername" : "Lode.amxd",
-						"patchername_fallback" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
-						"realtime_params" : 1
-					}
-,
-					"snapshot" : 					{
-						"filetype" : "C74Snapshot",
-						"version" : 2,
-						"minorversion" : 0,
-						"name" : "snapshotlist",
-						"origin" : "max~",
-						"type" : "list",
-						"subtype" : "Undefined",
-						"embed" : 1,
-						"snapshot" : 						{
-							"name" : "Lode.amxd",
-							"origname" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
-							"valuedictionary" : 							{
-								"parameter_values" : 								{
-									"Cutoff" : 51.5625,
-									"Decay" : 0.0,
-									"Depth" : 0.0,
-									"Detune" : 0.0,
-									"Res" : 0.0,
-									"Shape" : 0.0,
-									"Sub" : 0.0,
-									"Sweep" : 0.0
-								}
-
-							}
-,
-							"active" : 1
-						}
-,
-						"snapshotlist" : 						{
-							"current_snapshot" : 0,
-							"entries" : [ 								{
-									"filetype" : "C74Snapshot",
-									"version" : 2,
-									"minorversion" : 0,
-									"name" : "Lode.amxd",
-									"origin" : "Lode.amxd",
-									"type" : "amxd",
-									"subtype" : "Undefined",
-									"embed" : 0,
-									"snapshot" : 									{
-										"name" : "Lode.amxd",
-										"origname" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
-										"valuedictionary" : 										{
-											"parameter_values" : 											{
-												"Cutoff" : 51.5625,
-												"Decay" : 0.0,
-												"Depth" : 0.0,
-												"Detune" : 0.0,
-												"Res" : 0.0,
-												"Shape" : 0.0,
-												"Sub" : 0.0,
-												"Sweep" : 0.0
-											}
-
-										}
-,
-										"active" : 1
-									}
-,
-									"fileref" : 									{
-										"name" : "Lode.amxd",
-										"filename" : "Lode.amxd.maxsnap",
-										"filepath" : "~/Documents/GitHub/benny/data",
-										"filepos" : -1,
-										"snapshotfileid" : "a6226e898171b5832e8b6c9067675363"
-									}
-
-								}
- ]
-						}
-
+						"patchername" : "",
+						"patchername_fallback" : "<none>:/"
 					}
 ,
 					"text" : "amxd~",
@@ -914,10 +839,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 400.0, 544.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -1941,6 +1862,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 368.0, 7.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -1952,10 +1877,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 344.0, 544.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1979,6 +1900,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 626.0, 416.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -1991,6 +1916,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 626.0, 343.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -2002,6 +1931,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 580.0, 416.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -2014,6 +1947,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 588.0, 343.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -2917,7 +2854,44 @@
 				}
 
 			}
- ]
+ ],
+		"parameters" : 		{
+			"obj-50" : [ "amxd~[1]", "amxd~[1]", 0 ],
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
+		"dependency_cache" : [ 			{
+				"name" : "mutecontrol.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "parameterwatcher.gendsp",
+				"bootpath" : "~/Documents/GitHub/benny/code",
+				"patcherrelativepath" : "../code",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voiceheader.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }
