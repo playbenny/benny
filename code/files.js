@@ -496,6 +496,7 @@ function merge_song(){
 		loading.mute_new=0;
 		loading.bundling=4;
 	}
+	//loading.wait=2;
 	var df = (sidebar.files_page == "templates")|0;
 	loading.songname = songlist[df][currentsong];
 	song_select.previous_name = song_select.current_name;
@@ -802,12 +803,6 @@ function import_song(){
 							if(!states.contains("states::current::static_mod::"+loading.mapping[b]+"::"+i))states.setparse("states::current::static_mod::"+loading.mapping[b]+"::"+i,"[]");
 							states.replace("states::current::static_mod::"+loading.mapping[b]+"::"+i,stpv);
 						}
-					}
-					// LEGACY CODE: READS OLD STYLE SAVES, replace me once you've fixed all songfiles
-					stpv = songs.get(loading.songname+"::states::current::static_mod::"+b);
-					for(i=0;i<stpv.length;i+=3){
-						post("\nlegacy init static_mod",stpv[i],stpv[i+1],stpv[i+2]);
-						parameter_static_mod.poke(1,vl[stpv[i]]*MAX_PARAMETERS+stpv[i+1],stpv[i+2]);
 					}
 				}
 			}
