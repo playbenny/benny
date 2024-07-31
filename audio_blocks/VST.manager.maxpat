@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 764.0, 840.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -620,9 +620,9 @@
 									"saved_attribute_attributes" : 									{
 										"valueof" : 										{
 											"parameter_invisible" : 1,
-											"parameter_longname" : "amxd~",
+											"parameter_longname" : "amxd~[1]",
 											"parameter_modmode" : 0,
-											"parameter_shortname" : "amxd~",
+											"parameter_shortname" : "amxd~[1]",
 											"parameter_type" : 3
 										}
 
@@ -630,82 +630,8 @@
 ,
 									"saved_object_attributes" : 									{
 										"parameter_enable" : 1,
-										"patchername" : "Lode.amxd",
-										"patchername_fallback" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd"
-									}
-,
-									"snapshot" : 									{
-										"filetype" : "C74Snapshot",
-										"version" : 2,
-										"minorversion" : 0,
-										"name" : "snapshotlist",
-										"origin" : "max~",
-										"type" : "list",
-										"subtype" : "Undefined",
-										"embed" : 1,
-										"snapshot" : 										{
-											"name" : "Lode.amxd",
-											"origname" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
-											"valuedictionary" : 											{
-												"parameter_values" : 												{
-													"Cutoff" : 0.0,
-													"Decay" : 0.0,
-													"Depth" : 0.0,
-													"Detune" : 0.0,
-													"Res" : 0.0,
-													"Shape" : 0.0,
-													"Sub" : 0.0,
-													"Sweep" : 0.0
-												}
-
-											}
-,
-											"active" : 1
-										}
-,
-										"snapshotlist" : 										{
-											"current_snapshot" : 0,
-											"entries" : [ 												{
-													"filetype" : "C74Snapshot",
-													"version" : 2,
-													"minorversion" : 0,
-													"name" : "Lode.amxd",
-													"origin" : "Lode.amxd",
-													"type" : "amxd",
-													"subtype" : "Undefined",
-													"embed" : 0,
-													"snapshot" : 													{
-														"name" : "Lode.amxd",
-														"origname" : "~/Documents/james music/m4l devices/lode-device-only/Lode.amxd",
-														"valuedictionary" : 														{
-															"parameter_values" : 															{
-																"Cutoff" : 0.0,
-																"Decay" : 0.0,
-																"Depth" : 0.0,
-																"Detune" : 0.0,
-																"Res" : 0.0,
-																"Shape" : 0.0,
-																"Sub" : 0.0,
-																"Sweep" : 0.0
-															}
-
-														}
-,
-														"active" : 1
-													}
-,
-													"fileref" : 													{
-														"name" : "Lode.amxd",
-														"filename" : "Lode.amxd.maxsnap",
-														"filepath" : "~/Documents/GitHub/benny/data",
-														"filepos" : -1,
-														"snapshotfileid" : "a6226e898171b5832e8b6c9067675363"
-													}
-
-												}
- ]
-										}
-
+										"patchername" : "",
+										"patchername_fallback" : "<none>:/"
 									}
 ,
 									"text" : "amxd~",
@@ -1539,7 +1465,7 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-216",
-					"items" : [ "vst", "DeRez264", ",", "vst", "DPiano-E", ",", "vst", "Elation64", ",", "vst", "Focus64", ",", "vst", "Mojo64", ",", "vst", "Pressure464", ",", "vst", "RatshackReverb2", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "ToTape664", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ValhallaSupermassive_x64", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaUberMod", ",", "amxd", "Lode", ",", "amxd", "Lode", ",", "amxd", "Lode" ],
+					"items" : [ "vst", "DeRez264", ",", "vst", "DPiano-E", ",", "vst", "Elation64", ",", "vst", "Focus64", ",", "vst", "Mojo64", ",", "vst", "Pressure464", ",", "vst", "RatshackReverb2", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "ToTape664", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ValhallaSupermassive_x64", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaUberMod", ",", "amxd", "Lode" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -9009,7 +8935,7 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-264::obj-10" : [ "amxd~", "amxd~", 0 ],
+			"obj-264::obj-10" : [ "amxd~[1]", "amxd~[1]", 0 ],
 			"obj-70" : [ "vst~", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
@@ -9024,43 +8950,9 @@
 		}
 ,
 		"dependency_cache" : [ 			{
-				"name" : "Lode.amxd",
-				"bootpath" : "~/Documents/james music/m4l devices/lode-device-only",
-				"patcherrelativepath" : "../../../james music/m4l devices/lode-device-only",
-				"type" : "amxd",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "Lode.amxd.maxsnap",
-				"bootpath" : "~/Documents/GitHub/benny/data",
-				"patcherrelativepath" : "../data",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "VST.manager.js",
 				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
 				"patcherrelativepath" : ".",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "fade-in.js",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "hueshift.js",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "jsui-dial.js",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "set-name.js",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
