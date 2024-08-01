@@ -2876,7 +2876,7 @@ function insert_block_in_connection(newblockname,newblock){
 	oldconn = connections.get("connections["+menu.connection_number+"]");
 
 	// remove the connection
-	remove_connection(menu.connection_number);
+	//remove_connection(menu.connection_number); //no, do this when you make the new one.
 	// make a new connection:
 	var f_type = oldconn.get("from::output::type");
 	var t_type = oldconn.get("to::input::type");
@@ -2951,6 +2951,7 @@ function insert_block_in_connection(newblockname,newblock){
 	//click_clear(0,0);
 	//outlet(8,"bang");
 	set_display_mode("blocks");
+	remove_connection(menu.connection_number);
 	redraw_flag.flag |= 4;	
 }
 
