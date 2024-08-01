@@ -13873,18 +13873,6 @@
 										"assistshowspatchername" : 0,
 										"boxes" : [ 											{
 												"box" : 												{
-													"id" : "obj-15",
-													"maxclass" : "message",
-													"numinlets" : 2,
-													"numoutlets" : 1,
-													"outlettype" : [ "" ],
-													"patching_rect" : [ 332.0, 118.0, 35.0, 22.0 ],
-													"text" : "2145"
-												}
-
-											}
-, 											{
-												"box" : 												{
 													"id" : "obj-13",
 													"linecount" : 2,
 													"maxclass" : "message",
@@ -14032,13 +14020,6 @@
 												"patchline" : 												{
 													"destination" : [ "obj-9", 0 ],
 													"source" : [ "obj-13", 0 ]
-												}
-
-											}
-, 											{
-												"patchline" : 												{
-													"destination" : [ "obj-2", 0 ],
-													"source" : [ "obj-15", 0 ]
 												}
 
 											}
