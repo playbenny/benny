@@ -2634,16 +2634,14 @@ function select_tree(){
 				}
 				if((to_sel_conns>0) && (to_unsel_conns==0)){
 					added++;
-					post("ADDED",b);
 					selected.block[b]=1;
 					recurse++;
-					if(recurse<1000) b=-1;
+					if(recurse<300) b=-1;
 				}else if((from_sel_conns>0)&& (from_unsel_conns==0)){
 					added++;
-					post("ADDED",b);
 					selected.block[b]=1;
 					recurse++;
-					if(recurse<1000) b=-1;
+					if(recurse<300) b=-1;
 				}
 			}
 		}
