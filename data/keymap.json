@@ -18,6 +18,12 @@
             "-4" : ["enter", "set_sidebar_mode", "none"],
             "-3" : ["ESC", "set_sidebar_mode", "none"],
             "all" : ["all", "block_search_typing"]
+        },
+        "block_menu" : {
+            "-3" : ["ESC", "key_escape"],
+            "-4" : ["enter", "blocks_menu_enter"],
+            "96" : ["`", "messnamed","panic","bang" ],
+            "all" : ["all","type_to_search"]
         }
     },
     "global" : {
@@ -105,10 +111,6 @@
     },
     "waves" : {
 
-    },
-    "block_menu" : {
-        "-4" : ["enter", "blocks_menu_enter"],
-        "all" : ["all","type_to_search"]
     },
     "sidebar" : {
         "file_menu" : {

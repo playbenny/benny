@@ -1147,6 +1147,23 @@ function keydown(key){
 			return 1;		
 		}
 	}
+	if(keymap.contains("modal::"+displaymode)){
+		if(keymap.contains("modal::"+displaymode+"::"+key)){
+			var action = keymap.get("modal::"+displaymode+"::"+key);
+			var paras = action.slice(2,99);
+			//post("\nfound in keymap modal", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}else if(keymap.contains("modal::"+displaymode+"::all")){
+			var action = keymap.get("modal::"+displaymode+"::all");
+			var paras = action.slice(2,99);
+			if(!Array.isArray(paras)) paras=[paras];
+			paras.push(key);
+			//post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}
+	}
 	if(usermouse.caps && keymap.contains("qwertymidi::"+key)){
 		var action = keymap.get("qwertymidi::"+key);
 		var paras = action.slice(2,99);

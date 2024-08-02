@@ -2874,13 +2874,16 @@ function type_to_search(key){
 		menu.search = menu.search.slice(0, -1);
 	}else if(key==-6){
 		menu.search = "";
+	}else if(key==-2){
 	}else{
 		if(menu.search == ""){
 			menu.camera_scroll=0;
 			camera();
 		}
-		menu.search = menu.search + String.fromCharCode(key);
-		menu.search = menu.search.replace(".","");
+		var k = String.fromCharCode(key);
+		if((k!=".")) menu.search = menu.search + k;
+		//menu.search = menu.search.replace(".","");
+		//menu.search = menu.search.replace(" ","");
 	}
 	if(menu.search!=""){
 		var type_order = config.get("type_order");
