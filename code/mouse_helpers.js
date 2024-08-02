@@ -529,6 +529,7 @@ function swap_block_button(block){
 }
 
 function insert_menu_button(cno){
+	if(cno==-1) cno = selected.wire.indexOf(1);
 	menu.mode = 2;
 	menu.connection_number = cno;
 	//needs to set blocks_page.new_block_click_pos to the average of the 2 block's [x,y,z] TODO
