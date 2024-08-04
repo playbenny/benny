@@ -2163,6 +2163,7 @@ function draw_sidebar(){
 	}else if(sidebar.mode == "block_search"){
 		// type to search for blocks in your patch ##############################################################################################################
 		if(sidebar.mode != sidebar.lastmode){
+			if(displaymode == "blocks") center_view(1);
 			clear_sidebar_paramslider_details();
 			sidebar.lastmode = sidebar.mode;
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -2186,7 +2187,19 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x+fontheight*7, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 255,255,255);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*7, fontheight*0.75+y_offset);
-		lcd_main.message("write", "cancel");		
+		lcd_main.message("write", "cancel");
+		y_offset += fontheight;
+		for(i=0;i<MAX_BLOCKS;i++){
+			if(selected.block[i]){
+				block_label = blocks.get("blocks["+i+"]::label");
+				block_colour = blocks.get("blocks["+i+"]::space::colour");
+				lcd_main.message("frgb" , block_colour);				
+				lcd_main.message("moveto", sidebar.x + fo1, fontheight*(0.4)+y_offset);
+				lcd_main.message("write", block_label);
+				click_zone(individual_multiselected_block,i,null, sidebar.x, y_offset, sidebar.x2, y_offset+0.5*fontheight,mouse_index,1);
+				y_offset+=0.5*fontheight;
+			}
+		}
 	}else if(sidebar.mode == "edit_state"){
 		// EDIT STATE  ##############################################################################################################
 		var cll = config.getsize("palette::gamut");
