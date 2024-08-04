@@ -335,6 +335,10 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 }
 
 function open_wave_dialog(wavepath){
+	if(wavepath == "cancel"){
+		preload_task.freepeer();
+		return 0;
+	}
 	post("\nyou chose",wavepath);
 	var wavename = wavepath.split("/").pop();
 	post("\n name", wavename);
