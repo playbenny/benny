@@ -337,6 +337,7 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 function open_wave_dialog(wavepath){
 	if(wavepath == "cancel"){
 		preload_task.freepeer();
+		post("\nUSER CANCELLED WAVES PRELOAD TASK");
 		return 0;
 	}
 	post("\nyou chose",wavepath);
