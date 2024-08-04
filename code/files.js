@@ -475,6 +475,7 @@ function load_song(){
 	loading.mute_new=0;
 	loading.bundling=16;
 	loading.wait=1;
+	loading.hardware_substitutions_occured = 0;
 	loading.songname = songlist[df][currentsong];
 	if(usermouse.ctrl){
 		loading.bundling=1;
@@ -621,8 +622,10 @@ function import_song(){
 						var ty = blocktypes.get(block_name+"::type");
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",ty);
+						loading.hardware_substitutions_occured = 1;
 						swap_block_check_connections(b,oname,oty,block_name,ty);
 					}else if(loading.recent_substitutions.contains(block_name)){
+						loading.hardware_substitutions_occured = 1;
 						block_name = loading.recent_substitutions.get(block_name);
 						post("\n",oname," is not available in this hardware configuration but you already picked ",block_name," as a replacement");
 						var oty = thisblock.get("type");
@@ -632,6 +635,7 @@ function import_song(){
 						swap_block_check_connections(b,oname,oty,block_name,ty);
 					}else if(menu.swap_block_target == -1){
 						post("\n",block_name,"was not found and no automatic substitution is known. please choose a substitue");
+						loading.hardware_substitutions_occured = 1;
 						menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
 						loading.progress = b;
 						menu.camera_scroll=0;
@@ -644,6 +648,7 @@ function import_song(){
 						return -1;
 					}else{
 						post("loading selected susbstitute",menu.swap_block_target);
+						loading.hardware_substitutions_occured = 1;
 						block_name = menu.swap_block_target;
 						menu.swap_block_target = -1;
 						var oty = thisblock.get("type");

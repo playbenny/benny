@@ -2342,9 +2342,10 @@ function draw_sidebar(){
 			sidebar.selected = -1;
 			read_songs_folder(sidebar.files_page);
 		}
+		
+		y_offset += (0.4+0.6*loading.hardware_substitutions_occured)*fontheight;
+		
 		setfontsize(fontsmall*2);
-
-		y_offset += 0.4*fontheight;
 
 		for(i=0;i<songlist[fpage].length;i++){
 			y_offset += 1.1*fontheight;
@@ -2363,7 +2364,7 @@ function draw_sidebar(){
 		}
 		y_offset += 1.5*fontheight;
 
-		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight,0,0,0 );
+		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight*(1+0.6*loading.hardware_substitutions_occured),0,0,0 );
 		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
 		if(!playing){
 			lcd_main.message("frgb" , greycolour);
@@ -2421,6 +2422,16 @@ function draw_sidebar(){
 			lcd_main.message("moveto", file_menu_x + fontheight*5.7, 9+fontheight*0.75);
 			lcd_main.message("write", sidebar.files_page);
 		}
+
+				
+		if(loading.hardware_substitutions_occured==1){
+			setfontsize(fontsmall);
+			lcd_main.message("paintrect", file_menu_x , 9 + 1.1*fontheight, sidebar.x2, 9+1.6*fontheight,50,0,0 );	
+			lcd_main.message("frgb" , 255,50,50);
+			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*1.45);
+			lcd_main.message("write" , "when this song was loaded, substitutions were made. if you save it, these become permanent.");
+		}
+
 		setfontsize(fontsmall*2);
 	
 		
@@ -2439,7 +2450,11 @@ function draw_sidebar(){
 
 		if((loading.songname != "")&&(loading.songname!="autoload")){
 			lcd_main.message("paintrect", sidebar.x2 - fontheight * 4.6, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,greydarkest );
-			lcd_main.message("frgb" , greycolour);
+			if(loading.hardware_substitutions_occured==1){
+				lcd_main.message("frgb", 255, 50, 50);
+			}else{
+				lcd_main.message("frgb" , greycolour);
+			}
 			click_zone(save_song, 0, 0, sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
 			lcd_main.message("moveto", sidebar.x2 - fontheight * 4.4, 9+fontheight*0.75);
 			lcd_main.message("write", "save");				
