@@ -475,11 +475,11 @@ function update_all_voices_mutestatus(){
 						//post("\nthist mutes: note block",k[i],"voice",v[ii],"mute",m);
 						note_poly.setvalue(v[ii]+1, "muteouts", m);
 					}else if(v[ii]<MAX_AUDIO_VOICES+MAX_NOTE_VOICES){
-						if(audio_patcherlist[v[ii]] == "recycling"){
+						if(audio_patcherlist[v[ii]-MAX_NOTE_VOICES] == "recycling"){
 							m = 1;
-							post("recycling");
+							//post("recycling");
 						}
-						//post("\nthist mutes: audio block",k[i],"voice",v[ii],"mute",m);
+						//post("\nthis mutes: audio block",k[i],"voice",v[ii],"mute",m,"patcherlist",audio_patcherlist[v[ii]-MAX_NOTE_VOICES]);
 						audio_poly.setvalue(v[ii]+1-MAX_NOTE_VOICES, "muteouts", m);
 					}else{
 	
@@ -670,7 +670,7 @@ function send_all_voice_details(){
 	post("\nsend all voice details");
 	var vlk = voicemap.getkeys();
 	if(!Array.isArray(vlk)){
-		post("\nno voices to send to!");
+		post(" - no voices to send to!");
 		return -1;
 	}
 	for(var v=0;v<vlk.length;v++){
@@ -685,13 +685,12 @@ function send_all_voice_details(){
 		var rate = 0;
 		for(var nth=0;nth<of;nth++){
 			if(vl[nth]<MAX_NOTE_VOICES){
-				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
+				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,-1);
 			}else if(vl[nth]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-				audio_poly.setvalue(vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
+				audio_poly.setvalue(vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,-1);
 			}
 		}
-	} 
-
+	}
 }
 
 function add_to_midi_routemap(m_index,targetvalue){ 
