@@ -1516,8 +1516,8 @@ function clear_everything(){
 	sidebar.selected_voice = -1;
 //	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
-	note_poly.setvalue(0,"enabled",0);
-	audio_poly.setvalue(0,"enabled",0);
+	note_poly.setvalue(0,"muteouts",1);
+	audio_poly.setvalue(0,"muteouts",1);
 
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
