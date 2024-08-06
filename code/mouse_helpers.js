@@ -508,7 +508,7 @@ function open_patcher(block,voice){
 		}else{
 			note_poly.setvalue( voice+1, "open");
 		}
-		clear_blocks_selection();
+		//clear_blocks_selection();
 	}else{
 		voice = voice  - MAX_NOTE_VOICES;	
 		if(usermouse.ctrl){
@@ -516,7 +516,7 @@ function open_patcher(block,voice){
 		}else{
 			audio_poly.setvalue( voice+1, "open");
 		}
-		clear_blocks_selection();
+		//clear_blocks_selection();
 	}
 }
 

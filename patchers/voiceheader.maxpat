@@ -58,14 +58,13 @@
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "int" ],
 					"patching_rect" : [ 976.0, 22.0, 30.0, 30.0 ]
 				}
 
 			}
 , 			{
 				"box" : 				{
-
 					"id" : "obj-57",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -920,13 +919,13 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "connect me to your voice patcher's 1st message inlet",
+					"comment" : "connect me to your voice patcher's 1st message inlet. bang reports all parameters.",
 					"id" : "obj-1",
 					"index" : 1,
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 34.0, 16.0, 30.0, 30.0 ]
 				}
 

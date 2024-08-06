@@ -118,6 +118,7 @@ function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
+	am_foreground |= leftbutton; // you got a mouse event, so you should make sure you're foreground? but only after a click
 	//post("processing mouse event",x,y,leftbutton,ctrl,shift,caps,alt,e);
 	//if(id!='background') post("touch",id);
 	//	opicker(id,leftbutton);
@@ -149,7 +150,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
-
 	var id = null;
 	//post(usermouse.got_i,usermouse.got_t);
 	if(usermouse.got_t==0){
