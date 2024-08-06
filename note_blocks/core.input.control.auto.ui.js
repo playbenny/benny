@@ -17,7 +17,8 @@ var io = new Dict;
 io.name = "io";
 var gamutl;
 var v_list = [];
-
+var fullscreen = 0;
+var endreturns_enabled = 0;
 
 function setup(x1,y1,x2,y2,sw){ 
 	// not done - needs to work out which controller it is, get row and column count from config
@@ -32,6 +33,7 @@ function setup(x1,y1,x2,y2,sw){
 	w4=width/cols;
 	h4=height/rows;
 	//post(block);
+	fullscreen = width > sw * 0.5;
 	draw();
 }
 function draw(){
@@ -42,7 +44,7 @@ function draw(){
 
 function update(force){
 	var r,b,y,x,c;
-
+	var w = 0.9 - 0.3 * (endreturns_enabled&&fullscreen);
 	if(force || voice_data_buffer.peek(1,MAX_DATA*v_list)){
 		for(y=0;y<rows;y++){
 			for(x=0;x<cols;x++){
@@ -61,7 +63,22 @@ function update(force){
 					c[2] = (c[2] * b) | 0;
 				}
 				outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,c[0],c[1],c[2]);
-				outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+0.9)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);	
+				outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
+				if(endreturns_enabled){
+					if(fullscreen){
+						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.1)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+2*rows*cols);
+						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.2)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.2)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+3*rows*cols);
+						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.3)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.3)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+4*rows*cols);	
+					} 
+					outlet(1,"frgb", 255,255,255);
+					var ty = h4*(y+0.1+0.8*voice_data_buffer.peek(1,readindex+2*rows*cols))+y_pos;
+					outlet(1,"moveto",w4*(x+0.1)+x_pos,ty);
+					outlet(1,"lineto",w4*(x+w + 0.1*fullscreen)+x_pos,ty);
+					var ty = h4*(y+0.1+0.8*voice_data_buffer.peek(1,readindex+2*rows*cols))+y_pos;
+					outlet(1,"moveto",w4*(x+0.1)+x_pos,ty);
+					outlet(1,"lineto",w4*(x+w + 0.2*fullscreen)+x_pos,ty);
+					// if end returns enabled, also draw horizontal lines indicating their meaning.TODO
+				}
 			}
 		}
 		voice_data_buffer.poke(1,MAX_DATA*v_list,0);
