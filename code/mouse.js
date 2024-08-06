@@ -1130,6 +1130,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 
 
 function keydown(key){
+	if(!am_foreground) return 0;
 	if(keymap.contains("modal::"+sidebar.mode)){
 		if(keymap.contains("modal::"+sidebar.mode+"::"+key)){
 			var action = keymap.get("modal::"+sidebar.mode+"::"+key);
