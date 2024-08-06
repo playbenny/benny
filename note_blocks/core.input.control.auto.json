@@ -23,6 +23,9 @@
 				"height" : 0
 			}			
 		],
+		"panel" : {
+			"enable" : 1
+		},
 		"parameters" : [
 			{
 				"name" : "controller",
