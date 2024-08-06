@@ -47,6 +47,7 @@ var BLOCKS_GRID = [100, 0.01];
 var BLOCK_MENU_CLICK_ACTION = "click";
 var CTRL_VOICE_SEL_MOMENTARY = 1;
 var SHOW_STATES_ON_PANELS = 1;
+var TARGET_FPS = [30, 5];
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
@@ -687,10 +688,10 @@ function cpu(avg,peak,fps){
 function other_window_active(a){
 	if(a == 1){
 		am_foreground = 0;
-		world.message("fps", 10);
+		world.message("fps", TARGET_FPS[1]);
 	}else{
 		am_foreground = 1;
-		world.message("fps", 30);
+		world.message("fps", TARGET_FPS[0]);
 	}
 }
 

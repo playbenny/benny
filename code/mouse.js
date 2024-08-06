@@ -118,7 +118,8 @@ function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
-	am_foreground |= leftbutton; // you got a mouse event, so you should make sure you're foreground? but only after a click
+	if(!am_foreground&&leftbutton) other_window_active(0); // you got a mouse event, so you should make sure you're foreground? but only after a click
+
 	//post("processing mouse event",x,y,leftbutton,ctrl,shift,caps,alt,e);
 	//if(id!='background') post("touch",id);
 	//	opicker(id,leftbutton);

@@ -188,6 +188,7 @@ function initialise_dictionaries(hardware_file){
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
+	TARGET_FPS = config.get("TARGET_FPS");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
@@ -313,7 +314,7 @@ function initialise_graphics() {
 	world.message("esc_fullscreen", 0);
 	world.message("fsmenubar", 0);
 	world.message("fsaa", 1);
-	world.message("fps", 30);
+	world.message("fps", TARGET_FPS[0]);
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 
 	background_cube = new JitterObject("jit.gl.gridshape", "benny");

@@ -51,6 +51,7 @@
 	"CTRL_VOICE_SEL_MOMENTARY" : 1,
 	"SHOW_STATES_ON_PANELS" : 1,
 	"TREE_SELECT_IGNORES_CONTROL_BLOCKS" : 1,
+	"TARGET_FPS" : [30, 5],
 	"sidebar_scrollbar_width" : 18,
 	"sidebar_width_in_units" : 10,
 	"consolevsts" : {
