@@ -468,7 +468,6 @@ var sidebar = {
 var y_offset;
 
 var mutemap = new Buffer("mutemap");
-
 var mix_block_has_mutes = 0; //if a mixer channel is muted the unmute all button lights in the topbar
 
 var redraw_flag = {
@@ -479,6 +478,9 @@ var redraw_flag = {
 	targetcount: 0,
 	selective : 0
 }
+
+var am_foreground = 1; //other windows will message to say they want keyboard not to go to benny, this flags that.
+
 var paramslider_details = []; //indexed by param number
 //x1,y1,x2,y2,r,g,b,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,gets-overwritten-with-y-coord-returned(bottom),click_to_set
 var camera_position = [-2, 0, 23];
@@ -680,6 +682,16 @@ function cpu(avg,peak,fps){
 			cpu_meter.lastdrawn++; 
 		}
 	} 
+}
+
+function other_window_active(a){
+	if(a == 1){
+		am_foreground = 0;
+		world.message("fps", 10);
+	}else{
+		am_foreground = 1;
+		world.message("fps", 30);
+	}
 }
 
 function outputfx(type, number, value){
