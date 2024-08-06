@@ -12,7 +12,9 @@ var block=-1;
 var map = new Dict;
 map.name = "voicemap";
 var blocks = new Dict;
-blocks.name = "blocks"
+blocks.name = "blocks";
+var io = new Dict;
+io.name = "io";
 var gamutl;
 var v_list = [];
 
@@ -52,7 +54,7 @@ function update(force){
 				c=config.get("palette::gamut["+r+"]::colour"); 
 				b=voice_data_buffer.peek(1,readindex + rows*cols);
 				//post("\n",i,t,readindex,b,c[0]);	
-				if(b==0){
+				if(b!=0){
 					b=0.2;
 					c[0] = (c[0] * b) | 0;
 					c[1] = (c[1] * b) | 0;
@@ -71,6 +73,12 @@ function voice_is(v){
 	if(block>=0){
 		v_list = map.get(block);
 		if(typeof v_list!="number") v_list = v_list[0];
+		var controllername = blocks.get("blocks["+block+"]::selected_controller");
+		if(io.contains("controllers::"+controllername)){
+			post("\ngetting controller info for ui");
+			rows = io.get("controllers::"+controllername+"::rows");
+			cols = io.get("controllers::"+controllername+"::columns");
+		}
 	}
 }
 

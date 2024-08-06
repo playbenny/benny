@@ -124,6 +124,7 @@ function block(bn){
     outlet(3, blockname);
     outlet(2, selected);
     outlet(1, selection_type);
+	outlet(0, selected_in_dict);
 }
 
 function param(value){
@@ -145,7 +146,8 @@ function param(value){
                 //post("\nslider selection:",controllerslist[value],"storing to dictionary");
                 outlet(3, blockname);
                 outlet(2, selected);
-                outlet(1, selection_type);   
+                outlet(1, selection_type);
+				outlet(0, selected_in_dict);
             }
         } 
     }
