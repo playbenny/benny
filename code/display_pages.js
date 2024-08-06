@@ -1754,6 +1754,7 @@ function draw_topbar(){
 	
 		for(i=0;i<meter_positions[0][2].length;i++){
 			click_rectangle( meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
+			//post("\nmeter click_rectangle",meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
 			mouse_click_actions[mouse_index] = hw_meter_click;
 			mouse_click_parameters[mouse_index] = i;
 			mouse_click_values[mouse_index] = "in";
@@ -1761,6 +1762,7 @@ function draw_topbar(){
 		}
 		for(i=0;i<meter_positions[1][2].length;i++){
 			click_rectangle( meter_positions[1][2][i][0], meter_positions[1][2][i][1], meter_positions[1][2][i][0]+3, meter_positions[1][2][i][2], mouse_index, 1);
+			//post("\nmeter click_rectangle",meter_positions[1][2][i][0], meter_positions[1][2][i][1], meter_positions[1][2][i][0]+3, meter_positions[1][2][i][2], mouse_index, 1);
 			mouse_click_actions[mouse_index] = hw_meter_click;
 			mouse_click_parameters[mouse_index] = i;
 			mouse_click_values[mouse_index] = "out";
@@ -1771,8 +1773,7 @@ function draw_topbar(){
 	}
 	draw_cpu_meter();
 
-
-	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;//4.8;
+	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;
 
 	if(recording_flag==3){
 		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );

@@ -124,7 +124,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	//if(id!='background') post("touch",id);
 	//	opicker(id,leftbutton);
 	usermouse.last.left_button = usermouse.left_button;
-	//if(usermouse.clicked2d == -2) usermouse.last.left_button = -1;//<-- hack for touchscreens
 	usermouse.left_button = leftbutton;
 	usermouse.last.shift = usermouse.shift;
 	usermouse.last.alt = usermouse.alt;
