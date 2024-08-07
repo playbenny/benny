@@ -686,6 +686,10 @@ function cpu(avg,peak,fps){
 }
 
 function other_window_active(a){
+	if(!Array.isArray(TARGET_FPS)){
+		am_foreground = 1;
+		return 0;
+	}
 	if(a == 1){
 		am_foreground = 0;
 		world.message("fps", TARGET_FPS[1]);
