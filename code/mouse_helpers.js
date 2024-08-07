@@ -1601,6 +1601,7 @@ function request_set_voice_parameter(block,voice,parameter,value){
 
 function unscale_parameter(block, parameter, value){
 	var blockname = blocks.get("blocks["+block+"]::name");
+	if(blockname == null) return 0;
 	var p_type = blocktypes.get(blockname+"::parameters["+parameter+"]::type");
 	var p_values = blocktypes.get(blockname+"::parameters["+parameter+"]::values");
 	if(!Array.isArray(p_values)) return null;
@@ -2313,7 +2314,7 @@ function show_cpu_meter(){
 }
 
 function hw_meter_click(number,type){
-//	post("\n you clicked a meter, type:",type,"number",number);
+	//post("\n you clicked a meter, type:",type,"number",number);
 	clear_blocks_selection();
 	if(type == "in"){
 		set_sidebar_mode("input_scope");
