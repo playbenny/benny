@@ -6081,7 +6081,7 @@ function draw_sidebar(){
 		}
 	}
 	if((sidebar.scroll.max>0)){
-		var sbx = mainwindow_width-sidebar.scrollbar_width*0.5;
+		var sbx = mainwindow_width-(sidebar.scrollbar_width-8)*0.5;
 		var l = (mainwindow_height-18) / (mainwindow_height + sidebar.scroll.max - 18);
 		var l2 = (mainwindow_height-18) * l;
 		var p = sidebar.scroll.position * l + 9;
