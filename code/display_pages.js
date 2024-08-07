@@ -123,20 +123,26 @@ function get_hw_meter_positions(){
 	var inlist = []; var outlist = [];
 	meter_positions = [];
 	var positions = []; //hw input meter positions
+	var c=0;
 	for(i=0;i<MAX_USED_AUDIO_INPUTS;i++){
 		if(input_used[i]) {
 			inlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
+			post("\ninput meter",i,"position",positions[positions.length-1]);
 			x++;
+			c++;
 		}
 	}
 	meter_positions[0] = [menucolour,menudarkest,positions];
 	x++;
+	//c = 0;
 	positions = []; //hw output meter positions
 	for(i=0;i<MAX_USED_AUDIO_OUTPUTS;i++){
 		if(output_used[i]){
 			outlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i+MAX_USED_AUDIO_INPUTS)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
+			post("\noutput meter",i,"position",positions[positions.length-1]);
+			c++;
 			x++;
 		} 
 	}
