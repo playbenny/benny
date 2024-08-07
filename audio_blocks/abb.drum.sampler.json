@@ -1,0 +1,90 @@
+{
+	"abb.drum.sampler" : {
+		"patcher" : "abb.drum.sampler",
+		"type" : "audio",
+		"block_ui_patcher" : "self",
+		"help_text" : "drum sampler, drag and drop sample folder to load, all in starts at note 60",
+		"max_polyphony" : 1,
+		
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in"],
+				"midi"	: ["all in", "kick", "snare", "hat", "open hat", "clap", "tom", "rim", "wood" ]
+
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3, 4, 5, 6, 7],
+				"height" : 2,
+				"header" : "PITCH"
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 6, 7]
+			
+		},
+		"parameters" : [
+			{
+				"name" : "kick",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "snare",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "hat",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "O hat",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "clap",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "tom",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "rim",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "wood",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

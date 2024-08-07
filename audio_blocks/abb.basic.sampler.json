@@ -1,0 +1,139 @@
+{
+	"abb.basic.sampler" : {
+		"patcher" : "abb.basic.sampler",
+		"type" : "audio",
+		"block_ui_patcher" : "self",
+		"help_text" : "sampler with envelope follower and filter, drag and drop sample on patch",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"midi"	: ["midi in"]
+			},
+			"out" : {
+				"audio" : [ "out", "env" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1, 2, 3],
+				"height" : 2
+			},
+			{ 
+				"contains" : [4, 5, 6],
+				"height" : 2
+			},
+			{ 
+				"contains" : [7, 8, 9],
+				"height" : 2
+			},
+			{ 
+				"contains" : [10, 11, 12, 13],
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 6, 7]
+		},
+		"parameters" : [
+			{
+				"name" : "Tune",
+				"type" : "int",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Fine",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Drive",
+				"type" : "float",
+				"values" : ["bi", 1, 10, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Reshape",
+				"type" : "float",
+				"values" : ["bi", 0, 10, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Type",
+				"type" : "menu_i",
+				"values" : ["LP", "HP", "BP", "UBP", "N", "P", "AP"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Cutoff",
+				"type" : "float",
+				"values" : ["bi", 0, 14000, "log10"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "Q",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Fade",
+				"type" : "float",
+				"values" : ["bi", 0, 800, "log10"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Attack",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "exp10"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Release",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "exp10"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Filt Env",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Res Env",
+				"type" : "float",
+				"values" : ["bi", -10, 10, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Pitch Env",
+				"type" : "float",
+				"values" : ["bi", -100, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Boost Env",
+				"type" : "float",
+				"values" :["uni", 1, 10, "lin"],
+				"wrap"	: 	0,
+				"default"	: 0
+			}
+		]
+	}
+}
