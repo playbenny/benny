@@ -34,10 +34,10 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
+	fullscreen = (width > sw * 0.34) + ((sw - x2) < (x2-x1)* 0.3);
 	w4=width/cols;
-	h4=height/(rows+btnhgt);
+	h4=height/(rows+fullscreen*btnhgt);
 	//post(block);
-	fullscreen = width > sw * 0.5;
 	draw();
 }
 function draw(){
@@ -48,6 +48,7 @@ function draw(){
 }
 
 function drawbuttons() {
+	if(fullscreen == 0) return 0;
 	outlet(0, "custom_ui_element", "mouse_passthrough", x_pos, h4 * rows + y_pos, w4 * 0.5 * cols + x_pos, height + y_pos, 0, 0, 0, block, 0);
 	var colour = (clicked == 1) ? menucolour : menudark;
 	outlet(1, "framerect", w4 * 0.05 + x_pos, h4 * (rows + 0.05) + y_pos, w4 * (cols / 2 - 0.05) + x_pos, height + y_pos - h4 * 0.05, colour);
@@ -85,7 +86,7 @@ function update(force){
 				outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,c[0],c[1],c[2]);
 				outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
 				if(endreturns_enabled){
-					if(fullscreen){
+					if(fullscreen == 2){
 						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.1)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+2*rows*cols);
 						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.2)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.2)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+3*rows*cols);
 						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.3)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.3)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+4*rows*cols);	

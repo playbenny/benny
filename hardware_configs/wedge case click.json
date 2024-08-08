@@ -359,8 +359,6 @@
 		"hardware.filter.mmm.ladder" : 		{
 			"type" : "hardware",
 			"help_text" : "stereo ladder highpass (into music thing saturator)",
-			"midi_handler" : "generic.hardware.midi.handler",
-			"midi_in" : "MIDI function",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
@@ -381,8 +379,6 @@
 			}
 
 		}
-
-	}
 ,
 		"hardware.in.ext" : 		{
 			"type" : "hardware",
@@ -414,6 +410,7 @@
 			}
 
 		}
+	}
 ,
 	"measured_latency" : 590
 }
