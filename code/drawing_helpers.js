@@ -966,9 +966,10 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_index++;
 	}else if(type=="param_toggle"){//0=block,1=paramno
 		var v = parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex);
-		var c=1;
+		v = 0.1 + 0.5*(v>0.5);
+		var c = 1;
 		if(v<=0.5) c=0.2;
-		post("\ndrawbutton",paramindex,v,c);
+		//post("\ndrawbutton",paramindex,v);
 		//draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,v>0.5);
 		lcd_main.message("paintrect",x1,y1,x2,y2,r*c,g*c,b*c);
 		click_rectangle(x1,y1,x2,y2,mouse_index,1);

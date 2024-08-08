@@ -1588,14 +1588,14 @@ function data_edit(parameter,value){
 function do_parameter_toggle(parameter,value){
 	value = 0.1 + 0.5*(value>0.5);
 	// parameter_value_buffer.poke(1,parameter,value);
-	request_set_block_parameter(parameter[1],parameter[0],value);
+	request_set_block_parameter(parameter[1],parameter[0],2*value);
 	var vc = voicemap.get(parameter[1]);
 	if(!Array.isArray(vc)) vc=[vc];
 	for(var i = 0;i<vc.length;i++){
-		request_set_voice_parameter(parameter[1],vc[i],parameter[0],value);
+		request_set_voice_parameter(parameter[1],vc[i],parameter[0],2*value);
 	}
 	redraw_flag.flag |= 2;
-	post("\ntoggled param",parameter[1],parameter[0],value,"voices",vc);
+	//post("\ntoggled param",parameter[1],parameter[0],value,"voices",vc);
 }
 
 function request_set_block_parameter(block, parameter, value){
