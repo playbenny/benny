@@ -373,6 +373,9 @@ function initialise_graphics() {
 }
 
 function stop_graphics(){
+	lcd_main.message("brgb",0,0,0);
+	lcd_main.message("clear");
+	lcd_main.message("bang");
 	post("\nstopping graphics");
 	background_cube.freepeer();
 	selection_cube.freepeer();
@@ -380,6 +383,11 @@ function stop_graphics(){
 	flock_cubexy.freepeer();
 	flock_cubeyz.freepeer();
 	flock_cubexz.freepeer();
+	//world.message("enable",0);
+	var stop_task = new Task(stop_world, this);
+	stop_task.schedule(34);
+}
+function stop_world(){
 	world.message("enable",0);
 }
 

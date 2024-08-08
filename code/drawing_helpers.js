@@ -965,10 +965,17 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 	}else if(type=="param_toggle"){//0=block,1=paramno
-		draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex)>0.5);
-		mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+		var v = parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex);
+		var c=1;
+		if(v<=0.5) c=0.2;
+		post("\ndrawbutton",paramindex,v,c);
+		//draw_v_slider(x1,y1,x2,y2,r,g,b,mouse_index,v>0.5);
+		lcd_main.message("paintrect",x1,y1,x2,y2,r*c,g*c,b*c);
+		click_rectangle(x1,y1,x2,y2,mouse_index,1);
+		//draw_button(x1,y1,x2,y2,r,g,b,mouse_index,"",parameter_value_buffer.peek(1,MAX_PARAMETERS*dataindex+paramindex));
+		mouse_click_actions[mouse_index] = do_parameter_toggle;
 		mouse_click_parameters[mouse_index] = [paramindex, dataindex];
-		mouse_click_values[mouse_index] = "";
+		mouse_click_values[mouse_index] = (v+0.5001) % 1;
 		mouse_index++;
 	}else if(type=="mouse_passthrough"){ //this one just sends mouse x/y,mouse values
 		click_rectangle( x1,y1,x2,y2, mouse_index, 7);

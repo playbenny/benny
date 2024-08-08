@@ -1585,6 +1585,14 @@ function data_edit(parameter,value){
 	}
 }
 
+function do_parameter_toggle(parameter,value){
+	// parameter_value_buffer.poke(1,parameter,value);
+	request_set_block_parameter(parameter[1],parameter[0],value);
+
+	redraw_flag.flag |= 2;
+	post("\ntoggled param",parameter[1],parameter[0],value);
+}
+
 function request_set_block_parameter(block, parameter, value){
 	//post("\n rsbp",block,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
