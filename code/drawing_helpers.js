@@ -1067,8 +1067,14 @@ function center_view(resetz){
 }
 
 function request_redraw(n){
-	if(displaymode!="blocks") n &= 19; //removes 4, block redraw and 8, block colours
-	redraw_flag.flag |= n;
+	if(n<0){
+		n = -n;
+		if(displaymode!="blocks") n &= 19; //removes 4, block redraw and 8, block colours
+		redraw_flag.deferred |= n;
+	}else{
+		if(displaymode!="blocks") n &= 19; //removes 4, block redraw and 8, block colours
+		redraw_flag.flag |= n;
+	}
 }
 
 function draw_menu_hint(){

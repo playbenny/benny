@@ -20,6 +20,8 @@ var v_list = [];
 var fullscreen = 0;
 var endreturns_enabled = 0;
 var menucolour,menudark;
+var btnhgt = 0.5;
+var clicked = 0;
 
 function setup(x1,y1,x2,y2,sw){ 
 	// not done - needs to work out which controller it is, get row and column count from config
@@ -33,7 +35,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	w4=width/cols;
-	h4=(height-40)/rows;
+	h4=height/(rows+btnhgt);
 	//post(block);
 	fullscreen = width > sw * 0.5;
 	draw();
@@ -41,19 +43,23 @@ function setup(x1,y1,x2,y2,sw){
 function draw(){
 	if(block>=0){
 		update(1);
-		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,h4*rows+y_pos,w4*0.5*cols+x_pos,height+y_pos,0,0,0,block,0);
-		outlet(1,"paintrect",w4*0.05+x_pos,h4*(rows+0.05)+y_pos,w4*(cols/2-0.05)+x_pos,height+y_pos-h4*0.05,menudark);
-		outlet(1,"frgb",menucolour);
-		//outlet(0,"setfontsize", 30);
-		outlet(1,"moveto",x_pos+w4*0.1,y_pos+height+30);
-		outlet(1,"write","zero all");
-		outlet(0,"custom_ui_element","mouse_passthrough",w4*0.5*cols+x_pos,h4*rows+y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
-		outlet(1,"paintrect",w4*(cols/2+0.05)+x_pos,h4*(rows+0.05)+y_pos,w4*(cols-0.05)+x_pos,height+y_pos-h4*0.05,menudark);
-		outlet(1,"frgb",menucolour);
-		//outlet(0,"setfontsize", 30);
-		outlet(1,"moveto",x_pos+w4*(cols/2+0.1),y_pos+height+30);
-		outlet(1,"write","store starting positions");
+		drawbuttons();
 	}
+}
+
+function drawbuttons() {
+	outlet(0, "custom_ui_element", "mouse_passthrough", x_pos, h4 * rows + y_pos, w4 * 0.5 * cols + x_pos, height + y_pos, 0, 0, 0, block, 0);
+	var colour = (clicked == 1) ? menucolour : menudark;
+	outlet(1, "framerect", w4 * 0.05 + x_pos, h4 * (rows + 0.05) + y_pos, w4 * (cols / 2 - 0.05) + x_pos, height + y_pos - h4 * 0.05, colour);
+	//outlet(0,"setfontsize", 30);
+	outlet(1, "moveto", x_pos + w4 * 0.1, y_pos + h4 * (rows + btnhgt - 0.2));
+	outlet(1, "write", "zero all");
+	outlet(0, "custom_ui_element", "mouse_passthrough", w4 * 0.5 * cols + x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0, block, 0);
+	var colour = (clicked == 2) ? menucolour : menudark;
+	outlet(1, "framerect", w4 * (cols / 2 + 0.05) + x_pos, h4 * (rows + 0.05) + y_pos, w4 * (cols - 0.05) + x_pos, height + y_pos - h4 * 0.05, colour);
+	//outlet(0,"setfontsize", 30);
+	outlet(1, "moveto", x_pos + w4 * (cols / 2 + 0.1), y_pos + h4 * (rows + btnhgt - 0.2));
+	outlet(1, "write", "store starting positions");
 }
 
 function update(force){
@@ -119,28 +125,37 @@ function loadbang(){
 }
 
 function mouse(x,y,l,s,a,c,scr){
-	//post("\n\n\n\n\nMOUSE");
 	if(x<x_pos+0.5*width){
-		//zero all
-		//post(" zero");
-		for(var i=0;i<rows*cols;i++){
-			voice_data_buffer.poke(1,MAX_DATA*v_list+i+1,0);
-		}
-		voice_data_buffer.poke(1,MAX_DATA*v_list,1);
-	}else{
-		//store to dict
-		//post(" store");
-		var transf_arr = []; 
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list, 1+ rows*cols);
-		transf_arr[0] = 1;
-		if(blocks.contains("blocks["+block+"]::voice_data::0")){
-			var tra2 = [];
-			tra2=blocks.get("blocks["+block+"]::voice_data::0");
-			if(tra2.length>transf_arr.length){
-				for(var i=transf_arr.length;i<tra2.length;i++) transf_arr[i] = tra2[i];
+		if(l==1){
+			clicked = 1;
+		}else{
+			clicked = 0;
+			//zero all
+			//post(" zero");
+			for(var i=0;i<rows*cols;i++){
+				voice_data_buffer.poke(1,MAX_DATA*v_list+i+1,0);
 			}
+			voice_data_buffer.poke(1,MAX_DATA*v_list,1);
 		}
-		blocks.replace("blocks["+block+"]::voice_data::0", transf_arr);
+	}else{
+		if(l==1){
+			clicked = 2;
+		}else{
+			clicked = 0;
+			//store to dict
+			//post(" store");
+			var transf_arr = []; 
+			transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list, 1+ rows*cols);
+			transf_arr[0] = 1;
+			if(blocks.contains("blocks["+block+"]::voice_data::0")){
+				var tra2 = [];
+				tra2=blocks.get("blocks["+block+"]::voice_data::0");
+				if(tra2.length>transf_arr.length){
+					for(var i=transf_arr.length;i<tra2.length;i++) transf_arr[i] = tra2[i];
+				}
+			}
+			blocks.replace("blocks["+block+"]::voice_data::0", transf_arr);
+		}
 	}
 }
 	
