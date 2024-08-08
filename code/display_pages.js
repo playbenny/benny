@@ -1745,7 +1745,7 @@ function draw_topbar(){
 		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, 64,64,64);
 	}
 	if(!playing){
-		lcd_main.message("frgb" , menudark);
+		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("paintpoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
 	}else{
 		lcd_main.message("frgb" , menucolour);			
