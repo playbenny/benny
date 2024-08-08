@@ -47,6 +47,7 @@ var BLOCKS_GRID = [100, 0.01];
 var BLOCK_MENU_CLICK_ACTION = "click";
 var CTRL_VOICE_SEL_MOMENTARY = 1;
 var SHOW_STATES_ON_PANELS = 1;
+var TARGET_FPS = [30, 5];
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
@@ -468,7 +469,6 @@ var sidebar = {
 var y_offset;
 
 var mutemap = new Buffer("mutemap");
-
 var mix_block_has_mutes = 0; //if a mixer channel is muted the unmute all button lights in the topbar
 
 var redraw_flag = {
@@ -479,6 +479,9 @@ var redraw_flag = {
 	targetcount: 0,
 	selective : 0
 }
+
+var am_foreground = 1; //other windows will message to say they want keyboard not to go to benny, this flags that.
+
 var paramslider_details = []; //indexed by param number
 //x1,y1,x2,y2,r,g,b,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,gets-overwritten-with-y-coord-returned(bottom),click_to_set
 var camera_position = [-2, 0, 23];
@@ -620,7 +623,8 @@ var loading = {
 	purgelist : [], //list of blocks to be deleted, and everything solely connected to them too. (for merge purge)
 	wave_paramlist : [], //list of [blockno,paramno] that are wave parameters that have been remapped - it uses this list to apply the remapping to preset states too
 	recent_substitutions : 0, //this is made into a dict where we keep a record of user substitutions during load, so we don't have to ask twice.
-	lockout : 0 //to prevent hotkey triggering save twice
+	lockout : 0, //to prevent hotkey triggering save twice
+	hardware_substitutions_occured : 0 //this is set to 1 to put the warning on the save page
 }
 
 var cpu_meter = {
@@ -679,6 +683,20 @@ function cpu(avg,peak,fps){
 			cpu_meter.lastdrawn++; 
 		}
 	} 
+}
+
+function other_window_active(a){
+	if(!Array.isArray(TARGET_FPS)){
+		am_foreground = 1;
+		return 0;
+	}
+	if(a == 1){
+		am_foreground = 0;
+		world.message("fps", TARGET_FPS[1]);
+	}else{
+		am_foreground = 1;
+		world.message("fps", TARGET_FPS[0]);
+	}
 }
 
 function outputfx(type, number, value){

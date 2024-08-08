@@ -118,11 +118,12 @@ function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
+	if(!am_foreground&&leftbutton) other_window_active(0); // you got a mouse event, so you should make sure you're foreground? but only after a click
+
 	//post("processing mouse event",x,y,leftbutton,ctrl,shift,caps,alt,e);
 	//if(id!='background') post("touch",id);
 	//	opicker(id,leftbutton);
 	usermouse.last.left_button = usermouse.left_button;
-	//if(usermouse.clicked2d == -2) usermouse.last.left_button = -1;//<-- hack for touchscreens
 	usermouse.left_button = leftbutton;
 	usermouse.last.shift = usermouse.shift;
 	usermouse.last.alt = usermouse.alt;
@@ -149,7 +150,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	var tcell = click_i[(x>>click_b_s)+((y>>click_b_s)<<click_b_w)];
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
-
 	var id = null;
 	//post(usermouse.got_i,usermouse.got_t);
 	if(usermouse.got_t==0){
@@ -1130,6 +1130,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 
 
 function keydown(key){
+	if(!am_foreground) return 0;
 	if(keymap.contains("modal::"+sidebar.mode)){
 		if(keymap.contains("modal::"+sidebar.mode+"::"+key)){
 			var action = keymap.get("modal::"+sidebar.mode+"::"+key);
@@ -1139,6 +1140,23 @@ function keydown(key){
 			return 1;		
 		}else if(keymap.contains("modal::"+sidebar.mode+"::all")){
 			var action = keymap.get("modal::"+sidebar.mode+"::all");
+			var paras = action.slice(2,99);
+			if(!Array.isArray(paras)) paras=[paras];
+			paras.push(key);
+			//post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}
+	}
+	if(keymap.contains("modal::"+displaymode)){
+		if(keymap.contains("modal::"+displaymode+"::"+key)){
+			var action = keymap.get("modal::"+displaymode+"::"+key);
+			var paras = action.slice(2,99);
+			//post("\nfound in keymap modal", action[0],action[1], "paras",paras);
+			(eval(action[1])).apply(this,paras);
+			return 1;		
+		}else if(keymap.contains("modal::"+displaymode+"::all")){
+			var action = keymap.get("modal::"+displaymode+"::all");
 			var paras = action.slice(2,99);
 			if(!Array.isArray(paras)) paras=[paras];
 			paras.push(key);

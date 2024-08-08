@@ -123,20 +123,26 @@ function get_hw_meter_positions(){
 	var inlist = []; var outlist = [];
 	meter_positions = [];
 	var positions = []; //hw input meter positions
+	var c=0;
 	for(i=0;i<MAX_USED_AUDIO_INPUTS;i++){
 		if(input_used[i]) {
 			inlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
+			//post("\ninput meter",i,"position",positions[positions.length-1]);
 			x++;
+			c++;
 		}
 	}
 	meter_positions[0] = [menucolour,menudarkest,positions];
 	x++;
+	//c = 0;
 	positions = []; //hw output meter positions
 	for(i=0;i<MAX_USED_AUDIO_OUTPUTS;i++){
 		if(output_used[i]){
 			outlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + i+MAX_USED_AUDIO_INPUTS)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
+			//post("\noutput meter",i,"position",positions[positions.length-1]);
+			c++;
 			x++;
 		} 
 	}
@@ -1754,6 +1760,7 @@ function draw_topbar(){
 	
 		for(i=0;i<meter_positions[0][2].length;i++){
 			click_rectangle( meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
+			//post("\nmeter click_rectangle",meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
 			mouse_click_actions[mouse_index] = hw_meter_click;
 			mouse_click_parameters[mouse_index] = i;
 			mouse_click_values[mouse_index] = "in";
@@ -1761,6 +1768,7 @@ function draw_topbar(){
 		}
 		for(i=0;i<meter_positions[1][2].length;i++){
 			click_rectangle( meter_positions[1][2][i][0], meter_positions[1][2][i][1], meter_positions[1][2][i][0]+3, meter_positions[1][2][i][2], mouse_index, 1);
+			//post("\nmeter click_rectangle",meter_positions[1][2][i][0], meter_positions[1][2][i][1], meter_positions[1][2][i][0]+3, meter_positions[1][2][i][2], mouse_index, 1);
 			mouse_click_actions[mouse_index] = hw_meter_click;
 			mouse_click_parameters[mouse_index] = i;
 			mouse_click_values[mouse_index] = "out";
@@ -1771,8 +1779,7 @@ function draw_topbar(){
 	}
 	draw_cpu_meter();
 
-
-	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;//4.8;
+	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;
 
 	if(recording_flag==3){
 		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );
@@ -2163,6 +2170,7 @@ function draw_sidebar(){
 	}else if(sidebar.mode == "block_search"){
 		// type to search for blocks in your patch ##############################################################################################################
 		if(sidebar.mode != sidebar.lastmode){
+			if(displaymode == "blocks") center_view(1);
 			clear_sidebar_paramslider_details();
 			sidebar.lastmode = sidebar.mode;
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
@@ -2186,7 +2194,19 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x+fontheight*7, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 255,255,255);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*7, fontheight*0.75+y_offset);
-		lcd_main.message("write", "cancel");		
+		lcd_main.message("write", "cancel");
+		y_offset += fontheight;
+		for(i=0;i<MAX_BLOCKS;i++){
+			if(selected.block[i]){
+				block_label = blocks.get("blocks["+i+"]::label");
+				block_colour = blocks.get("blocks["+i+"]::space::colour");
+				lcd_main.message("frgb" , block_colour);				
+				lcd_main.message("moveto", sidebar.x + fo1, fontheight*(0.4)+y_offset);
+				lcd_main.message("write", block_label);
+				click_zone(individual_multiselected_block,i,null, sidebar.x, y_offset, sidebar.x2, y_offset+0.5*fontheight,mouse_index,1);
+				y_offset+=0.5*fontheight;
+			}
+		}
 	}else if(sidebar.mode == "edit_state"){
 		// EDIT STATE  ##############################################################################################################
 		var cll = config.getsize("palette::gamut");
@@ -2342,9 +2362,10 @@ function draw_sidebar(){
 			sidebar.selected = -1;
 			read_songs_folder(sidebar.files_page);
 		}
+		
+		y_offset += (0.4+0.6*loading.hardware_substitutions_occured)*fontheight;
+		
 		setfontsize(fontsmall*2);
-
-		y_offset += 0.4*fontheight;
 
 		for(i=0;i<songlist[fpage].length;i++){
 			y_offset += 1.1*fontheight;
@@ -2363,7 +2384,7 @@ function draw_sidebar(){
 		}
 		y_offset += 1.5*fontheight;
 
-		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight,0,0,0 );
+		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight*(1+0.6*loading.hardware_substitutions_occured),0,0,0 );
 		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
 		if(!playing){
 			lcd_main.message("frgb" , greycolour);
@@ -2421,6 +2442,16 @@ function draw_sidebar(){
 			lcd_main.message("moveto", file_menu_x + fontheight*5.7, 9+fontheight*0.75);
 			lcd_main.message("write", sidebar.files_page);
 		}
+
+				
+		if(loading.hardware_substitutions_occured==1){
+			setfontsize(fontsmall);
+			lcd_main.message("paintrect", file_menu_x , 9 + 1.1*fontheight, sidebar.x2, 9+1.6*fontheight,50,0,0 );	
+			lcd_main.message("frgb" , 255,50,50);
+			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*1.45);
+			lcd_main.message("write" , "when this song was loaded, substitutions were made. if you save it, these become permanent.");
+		}
+
 		setfontsize(fontsmall*2);
 	
 		
@@ -2439,7 +2470,11 @@ function draw_sidebar(){
 
 		if((loading.songname != "")&&(loading.songname!="autoload")){
 			lcd_main.message("paintrect", sidebar.x2 - fontheight * 4.6, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,greydarkest );
-			lcd_main.message("frgb" , greycolour);
+			if(loading.hardware_substitutions_occured==1){
+				lcd_main.message("frgb", 255, 50, 50);
+			}else{
+				lcd_main.message("frgb" , greycolour);
+			}
 			click_zone(save_song, 0, 0, sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
 			lcd_main.message("moveto", sidebar.x2 - fontheight * 4.4, 9+fontheight*0.75);
 			lcd_main.message("write", "save");				
@@ -6046,7 +6081,7 @@ function draw_sidebar(){
 		}
 	}
 	if((sidebar.scroll.max>0)){
-		var sbx = mainwindow_width-sidebar.scrollbar_width*0.5;
+		var sbx = mainwindow_width-(sidebar.scrollbar_width-8)*0.5;
 		var l = (mainwindow_height-18) / (mainwindow_height + sidebar.scroll.max - 18);
 		var l2 = (mainwindow_height-18) * l;
 		var p = sidebar.scroll.position * l + 9;

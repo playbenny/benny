@@ -157,8 +157,6 @@ function initialise_dictionaries(hardware_file){
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
 	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
 	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
-	//MAX_USED_AUDIO_INPUTS = config.get("MAX_USED_AUDIO_INPUTS");
-	//MAX_USED_AUDIO_OUTPUTS = config.get("MAX_USED_AUDIO_OUTPUTS");
 	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
 	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
 	MIN_BEZIER_SEGMENTS = config.get("MIN_BEZIER_SEGMENTS");//24; //must be a multiple of 4
@@ -188,6 +186,7 @@ function initialise_dictionaries(hardware_file){
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
+	TARGET_FPS = config.get("TARGET_FPS");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
@@ -313,7 +312,7 @@ function initialise_graphics() {
 	world.message("esc_fullscreen", 0);
 	world.message("fsmenubar", 0);
 	world.message("fsaa", 1);
-	world.message("fps", 30);
+	world.message("fps", TARGET_FPS[0]);
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 
 	background_cube = new JitterObject("jit.gl.gridshape", "benny");
@@ -502,10 +501,10 @@ function import_hardware(v){
 		}
 	}
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
-	if(output_blocks.length<MAX_USED_AUDIO_OUTPUTS/2){
-		for(i=output_blocks.length;i<MAX_USED_AUDIO_OUTPUTS/2;i++) output_blocks.push("clip_dither");
+	if(output_blocks.length<MAX_AUDIO_OUTPUTS/2){
+		for(i=output_blocks.length;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks.push("clip_dither");
 	}else{
-		output_blocks.splice(MAX_USED_AUDIO_OUTPUTS);
+		output_blocks.splice(MAX_AUDIO_OUTPUTS);
 	}
 	post("\nreading midi io config");
 	d = d2.get("io");
@@ -580,12 +579,12 @@ function import_hardware(v){
 	sidebar.scopes.midi_routing.voice = MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_AUDIO_VOICES * NO_IO_PER_BLOCK + MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS;
 	//var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS;
 	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_OUTPUTS;
-	//post("\n i think matrix should be ",MAX_AUDIO_VOICES," * ",NO_IO_PER_BLOCK," + either",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixins,"or",matrixouts);
+	//post("\n MAX_ ",MAX_AUDIO_INPUTS," or ",MAX_AUDIO_OUTPUTS," vs USED ",MAX_USED_AUDIO_INPUTS," or ",MAX_USED_AUDIO_OUTPUTS," = ",matrixouts);
 	sigouts.chans(matrixouts);
 	this.patcher.getnamed("mc_separate").chans(MAX_AUDIO_VOICES,MAX_AUDIO_VOICES);
 	matrix.numouts(matrixouts);
-	output_blocks_poly.voices(MAX_USED_AUDIO_OUTPUTS/2);
-	audio_to_data_poly.voices(MAX_USED_AUDIO_INPUTS + MAX_USED_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
+	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
+	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
 
 	messnamed("config_loaded","bang");
 	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it

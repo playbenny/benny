@@ -18,6 +18,12 @@
             "-4" : ["enter", "set_sidebar_mode", "none"],
             "-3" : ["ESC", "set_sidebar_mode", "none"],
             "all" : ["all", "block_search_typing"]
+        },
+        "block_menu" : {
+            "-3" : ["ESC", "key_escape"],
+            "-4" : ["enter", "blocks_menu_enter"],
+            "96" : ["`", "messnamed","panic","bang" ],
+            "all" : ["all","type_to_search"]
         }
     },
     "global" : {
@@ -59,6 +65,7 @@
         "573" : ["+", "poly_key" , 1],
         "353" : ["ctrl-A", "select_all"],
         "-6" : ["del","delete_selection"],
+        "506" : ["shift-del", "delete_tree"],
         "-7" : ["delete","delete_selection"],
         "370" : ["ctrl-R", "arm_selected_blocks"],
         "372" : ["ctrl-T", "toggle_show_timer"],
@@ -67,6 +74,7 @@
         "376" : ["ctrl-X", "cut_selection"],
         "374" : ["ctrl-V", "blocks_paste", 0],
         "378" : ["ctrl-Z", "undo_button"],
+        "628" : ["shift-T", "select_tree_key"],
         "2420" : ["ctrl-alt-T", "reset_set_timer"],
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
         "2037" : ["alt-left arrow", "back_button"],
@@ -94,6 +102,7 @@
         "353" : ["ctrl-A", "select_all"],
         "-5" : ["tab" , "set_display_mode", "blocks"],
         "109" : ["M", "mute_selected_block", -1],
+        "47" : ["/" , "set_sidebar_mode", "block_search"],
         "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "flocks" : {
@@ -104,10 +113,6 @@
     "waves" : {
 
     },
-    "block_menu" : {
-        "-4" : ["enter", "blocks_menu_enter"],
-        "all" : ["all","type_to_search"]
-    },
     "sidebar" : {
         "file_menu" : {
             "-4" : ["enter", "file_menu_enter"],
@@ -117,6 +122,7 @@
         "wire" : {
             "-4" : ["enter", "fold_menus"],
             "-3" : ["ESC", "clear_or_close"],
+            "-8" : ["INS", "insert_menu_button", -1],
             "2039" : ["alt+up" , "jump_to_block_at_connection_end" , 0],
             "2038" : ["alt+down" , "jump_to_block_at_connection_end", 1],
             "559" : ["?", "toggle_connection_help"]

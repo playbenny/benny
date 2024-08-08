@@ -508,7 +508,7 @@ function open_patcher(block,voice){
 		}else{
 			note_poly.setvalue( voice+1, "open");
 		}
-		clear_blocks_selection();
+		//clear_blocks_selection();
 	}else{
 		voice = voice  - MAX_NOTE_VOICES;	
 		if(usermouse.ctrl){
@@ -516,7 +516,7 @@ function open_patcher(block,voice){
 		}else{
 			audio_poly.setvalue( voice+1, "open");
 		}
-		clear_blocks_selection();
+		//clear_blocks_selection();
 	}
 }
 
@@ -529,6 +529,7 @@ function swap_block_button(block){
 }
 
 function insert_menu_button(cno){
+	if(cno==-1) cno = selected.wire.indexOf(1);
 	menu.mode = 2;
 	menu.connection_number = cno;
 	//needs to set blocks_page.new_block_click_pos to the average of the 2 block's [x,y,z] TODO
@@ -1600,6 +1601,7 @@ function request_set_voice_parameter(block,voice,parameter,value){
 
 function unscale_parameter(block, parameter, value){
 	var blockname = blocks.get("blocks["+block+"]::name");
+	if(blockname == null) return 0;
 	var p_type = blocktypes.get(blockname+"::parameters["+parameter+"]::type");
 	var p_values = blocktypes.get(blockname+"::parameters["+parameter+"]::values");
 	if(!Array.isArray(p_values)) return null;
@@ -1938,7 +1940,7 @@ function individual_multiselected_block(b){
 	//shift click - unselect
 	if(usermouse.shift){
 		selected.block[b] = 0;
-		redraw_flag.flag |= 4;
+		redraw_flag.flag |= 10;
 	}
 	//ctrl click - mute
 	if(usermouse.ctrl){
@@ -2312,7 +2314,7 @@ function show_cpu_meter(){
 }
 
 function hw_meter_click(number,type){
-//	post("\n you clicked a meter, type:",type,"number",number);
+	//post("\n you clicked a meter, type:",type,"number",number);
 	clear_blocks_selection();
 	if(type == "in"){
 		set_sidebar_mode("input_scope");
@@ -2570,6 +2572,84 @@ function delete_selection(){
 	redraw_flag.flag |= 12;
 }
 
+function delete_tree(){
+	// need to select everything that's going to be deleted, so that undo can work
+	select_tree();
+	delete_selection();
+}
+
+function select_tree_key(){
+	select_tree();
+	redraw_flag.flag = 10;	
+}
+
+function select_tree(){
+	var added=0;
+	var recurse=0;
+	var ignore= config.get("TREE_SELECT_IGNORES_CONTROL_BLOCKS");
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if((selected.block[b]==0) && (blocks.contains("blocks["+b+"]::name"))){
+			//this block exists, isn't selected. lets see if it has a connection TO any selected blocks. and any other connections TO unselected blocks
+			var to_sel_conns = 0;
+			var to_unsel_conns = 0;
+			var from_sel_conns = 0; 
+			var from_unsel_conns = 0;
+			var igg=0;
+			if(ignore){
+				var n = blocks.get("blocks["+b+"]::name");
+				n = n.split(".")[2];
+				if(n=="control") igg = 1;
+			}
+			if(igg == 0){
+				for(var c=connections.getsize("connections")-1;c>=0;c--){
+					if((connections.contains("connections["+c+"]::from")) && (connections.get("connections["+c+"]::from::number") == b)){
+						var t = connections.get("connections["+c+"]::to::number");
+						var ig = 0;
+						if(ignore){
+							var n = blocks.get("blocks["+t+"]::name");
+							n = n.split(".")[2];
+							if(n == "control") ig = 1;
+						}
+						if(ig==1){
+							//ignore control blocks
+						}else if(selected.block[t]==1){
+							to_sel_conns++;
+						}else{
+							to_unsel_conns++;
+						}
+					}else if((connections.contains("connections["+c+"]::to")) && (connections.get("connections["+c+"]::to::number") == b)){
+						var t = connections.get("connections["+c+"]::from::number");
+						var ig = 0;
+						if(ignore){
+							var n = blocks.get("blocks["+t+"]::name");
+							n = n.split(".")[2];
+							if(n == "control") ig = 1;
+						}
+						if(ig==1){
+							//ignore control blocks
+						}else if(selected.block[t]==1){
+							from_sel_conns++;
+						}else{
+							from_unsel_conns++;
+						}
+					}
+				}
+				if((to_sel_conns>0) && (to_unsel_conns==0)){
+					added++;
+					selected.block[b]=1;
+					recurse++;
+					if(recurse<300) b=-1;
+				}else if((from_sel_conns>0)&& (from_unsel_conns==0)){
+					added++;
+					selected.block[b]=1;
+					recurse++;
+					if(recurse<300) b=-1;
+				}
+			}
+		}
+	}
+}
+
 function toggle_fullscreen(){
 	fullscreen = 1 - fullscreen;
 	keyrepeat_task.cancel();
@@ -2796,13 +2876,16 @@ function type_to_search(key){
 		menu.search = menu.search.slice(0, -1);
 	}else if(key==-6){
 		menu.search = "";
+	}else if(key==-2){
 	}else{
 		if(menu.search == ""){
 			menu.camera_scroll=0;
 			camera();
 		}
-		menu.search = menu.search + String.fromCharCode(key);
-		menu.search = menu.search.replace(".","");
+		var k = String.fromCharCode(key);
+		if((k!=".")) menu.search = menu.search + k;
+		//menu.search = menu.search.replace(".","");
+		//menu.search = menu.search.replace(" ","");
 	}
 	if(menu.search!=""){
 		var type_order = config.get("type_order");
