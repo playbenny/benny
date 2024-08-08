@@ -376,6 +376,7 @@ function stop_graphics(){
 	lcd_main.message("brgb",0,0,0);
 	lcd_main.message("clear");
 	lcd_main.message("bang");
+	meters_enable = 0;
 	post("\nstopping graphics");
 	background_cube.freepeer();
 	selection_cube.freepeer();
