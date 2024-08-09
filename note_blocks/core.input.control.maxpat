@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -235,7 +235,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 547.0, 50.0, 150.0, 89.0 ],
+									"patching_rect" : [ 547.0, 50.0, 157.0, 89.0 ],
 									"text" : "the ui is only for non automapped control - basic mode, as it makes no sense to uses the ui for something that's on screen anyway"
 								}
 
@@ -2013,7 +2013,7 @@
 					"patching_rect" : [ 1383.416666666666515, 474.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3321mapwrap",
+						"name" : "3513mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -2038,7 +2038,7 @@
 					"patching_rect" : [ 691.0, 1086.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3321mapwrap",
+						"name" : "3513mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -5588,7 +5588,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1100.0, 227.0, 304.0, 22.0 ],
-					"text" : "5 param  1285 nan 5 param  1286 nan"
+					"text" : "5 param 1285 nan 5 param 1286 nan"
 				}
 
 			}
@@ -5754,7 +5754,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 0.0, 640.0, 480.0 ],
+						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -6393,7 +6393,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 750.0, 2005.0, 253.0, 22.0 ],
-					"text" : "- 9"
+					"text" : "- 5 9 13 13 15 12 10 14"
 				}
 
 			}
@@ -7529,12 +7529,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-13",
-					"linecount" : 9,
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1096.0, 688.0, 63.0, 133.0 ],
+					"patching_rect" : [ 965.875, 688.0, 193.125, 36.0 ],
 					"text" : "1280 1281 1284 -1 1282 1283 1287 1285 1286 1288 -1 -1"
 				}
 
@@ -10827,6 +10827,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-122", 0 ],
+					"order" : 0,
+					"source" : [ "obj-90", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-99", 0 ],
+					"order" : 1,
 					"source" : [ "obj-90", 0 ]
 				}
 
