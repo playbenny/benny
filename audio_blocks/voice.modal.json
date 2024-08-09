@@ -1,0 +1,116 @@
+{
+	"voice.modal" : {
+		"patcher" : "voice.modal",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Simple voice made around a bank of resonators and a selection of model algorithms for setting the frequencies, amplitudes and bandwidths of those resonators. Models come from an article by Nathan Ho.££-Elements string££-Piano stiff string££-Free Beam (eg xylophone)££-Cantilever Beam (eg mbira)££-Rectangular Membrane££-Rectangular clamped plate££-Tubular bell££-Free Plate",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "feed in", "fm" ],
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"audio" : [ "osc" ],
+				"midi" : [ "through"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,1,2,3],
+				"colour" : -3
+			},
+			{
+				"contains" : [4,5,10],
+				"height" : 0
+			},
+			{
+				"contains" : [6, 7,8,9],
+				"colour" : 3,
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "frequency_distribution_model",
+				"type" : "menu_i",
+				"values" : ["elements", "stiff string", "free beam", "cantilevered beam", "rectangular membrane", "rectangular clamped plate", "tubular bell", "clamped tube", "free plate"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "inharmonicity",
+				"type" : "float",
+				"values" : ["uni", -0.06, 2, "exp100"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "pitch_env_amount",
+				"type" : "float",
+				"values" : ["uni", 0, 16, "exp"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "pitch_env_time",
+				"type" : "float",
+				"values" : ["uni", 0, 500, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "strike_position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.37
+			},
+			{
+				"name" : "position_variation",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2 
+			},
+			{
+				"name" : "bandwidth",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp10"],
+				"wrap" : 0,
+				"default" : 0.2 
+			},
+			{
+				"name" : "harmonic_rolloff",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "tone_key_follow",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"error_scale" : 0,
+				"values" : ["uni", 0, 1, "exp100"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin" ],
+				"wrap" : 0,
+				"default" : 0.75,	
+				"error_scale" : 0.3
+			}
+		]
+	}
+}

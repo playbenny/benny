@@ -1,0 +1,134 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 6,
+			"revision" : 4,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 134.0, 134.0, 1061.0, 814.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 715.0, 683.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 769.0, 5.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "//based on resonator bank code by Graham Wakefield on the c74 forums\r\n\r\nBuffer mtof_lookup(\"mtof_lookup\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\nBuffer detuning(\"detuning\");\r\n\r\nHistory upda(0);\r\nHistory op(0), ov(0);\r\nHistory model(-1), harm(-1), penv_a(0), penv_t(0);\r\nHistory pos(0.36), vari(0.1), bandwa(0.00065), bandw(0.1), roll(0),key(0), feed(0), gain(1);\r\nHistory posx(0.36), posy(0.29);\r\n\r\nHistory fo(440); //root\r\n\r\nHistory sum(0);\r\n\r\nParam voice_is(0, min=0,default=0,max=4096);\r\nParam voice_offset(0);\r\nParam p(0,min=0,default=64,max=128);\r\nParam v(0,min=0,default=0,max=1000);\r\n\r\nData freqs(100);\r\nData amps(100);\r\nData bw(100);\r\n\r\nData hy1(100);\r\nData hy2(100);\r\n\r\n\r\n//so - frequencies are dependent on the model only\r\n//amplitudes are dependent on the strikepoint only\r\n//resonances are dependent on the frequency\r\n\r\n//so -> model and param >> freq ratios\r\n//new note, or new model params >> resonances\r\n//new note, amplitudes\r\n\r\npartialsqrt = 8;\r\npartialcount = 64;\r\nmaxp = 32;\r\n\r\nrecalc = 0;\r\n\r\nupda += 1;\r\nif(upda>vectorsize){\r\n\tupda = -voice_is;\r\n\tm = peek(prm,voice_offset, 0,channels=1);\r\n\th = peek(prm,voice_offset+1, 0,channels=1);\r\n\trecalc = (m!=model) || (h!=harm);\r\n\tmodel = m;\r\n\tharm = h;\r\n\tpenv_a = peek(prm,voice_offset+2, 0,channels=1);\r\n\tpenv_t = peek(prm,voice_offset+3, 0,channels=1);\r\n\t\r\n\tpos = peek(prm,voice_offset+4, 0,channels=1);\r\n\t\r\n\tposx = 0.5 * (1 + sin(pos*15)*pos);\r\n\tposy = 0.5 * (1 + cos(pos*15)*pos);\r\n\t\r\n\tvari = peek(prm,voice_offset+5, 0,channels=1);\r\n\t\r\n\tb = peek(prm,voice_offset+6, 0,channels=1);\r\n\tbandw = 100*(pow(10, b) - 1)*0.11111111111111111111111111111111;\r\n\t\r\n\troll = 0.001* peek(prm,voice_offset+7, 0,channels=1);\r\n\tkey = 0.001* peek(prm,voice_offset+8, 0,channels=1);\r\n\t\r\n\tfeed = peek(prm,voice_offset+9, 0,channels=1);\r\n\tfeed = (pow(100, feed) - 1)*0.01010101010101010101010101010101;\r\n\t\r\n\tgain = 4*peek(prm,voice_offset+10, 0,channels=1) - 2;\r\n}\r\n\r\nif(recalc){\r\n\t//work out freqs\r\n\tm = model*9;\r\n\th = -0.06+ 2.06*(pow(100, harm) - 1)*0.01010101010101010101010101010101;\r\n\r\n\t\r\n\tif(m<1){//elements string\r\n\t\tfor(i=0;i<64;i += 1){\r\n\t\t\tpoke(freqs, (1+i)*(1 + (i)*h)  * twopi/samplerate ,i);\r\n\t\t}\r\n\t}else if(m<2){//stiff string (piano)\r\n\t\tfor(i=0;i<64;i += 1){\r\n\t\t\tpoke(freqs, (1+i)*sqrt(1 + (i+1)*(i+1)*h)  * twopi/samplerate ,i);\r\n\t\t}\t\t\r\n\t}else if(m<3){//free beam (xylo)\r\n\t\tpoke(freqs, 1.50561873 * twopi/samplerate ,0);\r\n\t\tpoke(freqs, 2.49975267 * (1 + h)  * twopi/samplerate ,1);\t\t\r\n\t\tfor(i=2;i<64;i += 1){\r\n\t\t\tpoke(freqs, (1.5+i)*(1 + (i)*h)  * twopi/samplerate ,i);\r\n\t\t}\t\t\r\n\t}else if(m<4){//cantilevered beam (mbira)\r\n\t\tpoke(freqs, 0.59686416 * twopi/samplerate ,0);\r\n\t\tpoke(freqs, 1.49417561 * (1 + h) * twopi/samplerate ,1);\r\n\t\tpoke(freqs, 2.50024695 * (1 + 2*h) * twopi/samplerate ,2);\r\n\t\tfor(i=3;i<64;i += 1){\r\n\t\t\tpoke(freqs, (1.5+i)*(1 + (i)*h)  * twopi/samplerate ,i);\r\n\t\t}\t\t\t\r\n\t}\r\n}\r\nif((op != p)||(recalc)){\r\n\t//work out resonances\r\n\ttk = key*(fo*fo);\r\n\tfor(i=0;i<maxp;i += 1){\r\n\t\tf= peek(freqs, i);\r\n\t\t\r\n\t\tr = 1;// 0.5 + roll*f*f + tk;\r\n\t\t\r\n\t\tpoke(bw, twopi / (r * samplerate),i);\r\n\t}\r\n}\r\n\r\nx = in1 + sin(clip(sum,-1.56,1.56))*feed;\r\n\r\nif((ov!=v)&&(v!=0)){\r\n\t// TODO: a blue curve, 3db highpass\r\n\tx += v;\r\n\t//work out position:\r\n\tif(model*9 >= 4){ //2D!\r\n\t\tpx = posx + vari*(noise()+noise()+noise()+noise()+noise())*0.2;\r\n\t\tpy = posy + vari*(noise()+noise()+noise()+noise()+noise())*0.2;\r\n\t\t//work out amplitudes\r\n\t\ti=0;\r\n\t\tfor(m=0;m< partialsqrt;m += 1){\r\n\t\t\tfor(n=0;n< partialsqrt;n += 1){\r\n\t\t\t\tpoke(amps, 0.25 * sin(3.1415*m*px)*sin(3.1415*n*py), i);\r\n\t\t\t\ti += 1;\r\n\t\t\t}\r\n\t\t}\r\n\t}else{ //1D\r\n\t\tpx = pos + vari*(noise()+noise()+noise()+noise()+noise())*0.2;\r\n\t\t//work out amplitudes\r\n\t\tfor(i=0;i<maxp;i += 1){\r\n\t\t\tpoke(amps, 0.125 * sin(3.1415*i*px), i);\r\n\t\t}\r\n\t}\r\n\tov = v;\r\n}\r\nif(op != p){\r\n\tfo = peek(mtof_lookup, p, (voice_is % 8), channels=1);\r\n\top = p;\r\n}\r\n\r\nsum = 0;\r\nfor (i=0; i< partialcount; i+= 1) {\r\n\t// read this resonator's data:\r\n\ty2 = peek(hy2, i);\r\n\ty1 = peek(hy1, i);\r\n\t\r\n\t// this could be better optimized \r\n\t// to calculate coefficients less frequently\r\n\t// if it is known that they cannot change at any time\r\n\tfreq_rps = (1+in2) * fo * peek(freqs, i);\r\n\tif(freq_rps<3){\r\n\t\tamp = peek(amps, i);\r\n\t\tbw_rps = bandw * peek(bw, i);\r\n\t\r\n\t\t// calculate coefficients:\n\t\tb = 2 * cos(freq_rps) * exp(bw_rps * -0.5);\n\t\tc = -exp(-bw_rps);\n\t\ta = 1 - ((c + b));\r\n\t\r\n\t\t// compute next y:\r\n\t\ty = clip(a*x + b*y1 + c*y2,-1,1);\r\n\t\t// update this resonator's history:\r\n\t\tpoke(hy2, y1, i);\r\n\t\tpoke(hy1, y, i);\r\n\r\n\t\t// mix into output:\r\n\t\tsum += y * amp;\r\n\t}\r\n}\r\n\r\nout1 = sum * gain;\r\nout2 = harm; //recalc;\r\n\r\n\r\n/*\r\ncursor_p += 0.000001*cr;\r\ncursor_s += sr;\r\ncursor_p=wrap(cursor_p);\r\ncursor_s=wrap(cursor_s);\r\n\r\npink_s = sample(detuning,cursor_s,0);\r\npink_p = sample(detuning,cursor_p,0);\r\n\r\n//sh = slide(ws,100,100);\r\n//sh += in2;\r\n//sh += (slide(s_unstab,100,100)*pink_s);\r\nsh = ws + s_unstab*pink_s;\r\n//sh += in2;\r\nsdif = sh+sha_off - sha;\r\nif(sdif>0.5) sha_off-=1;\r\nif(sdif<-0.5) sha_off+=1;\r\nsha = in2 + slide(sh + sha_off,5000,5000);\r\nsin_l, tri_l, rec_l, pw = sample(shape, wrap(sha) , 0, channels=4);\r\n\r\n//pitch = peek(mtof_lookup,slide(p,porta,porta), (voice_is % 8), channels=1);\r\n\r\n//pit = pitch * pow(2, (slide(p_unstab,100,100)*pink_p*0.5)+(slide(detune*4,100,100))+range);\r\n//pit = clip(abs(pit),0,samplerate/3);\r\npitch = slide(p,porta,porta) + (slide(p_unstab,100,100)*pink_p)+range+(slide(detune,100,100));\r\n\r\ntra=1;\r\nif(pitch<0){\r\n\ttra = floor(-pitch/12)+1;\r\n\tpitch += 12*tra;\r\n\ttra = pow(2, -tra);\r\n}else{\r\n\tif(pitch>128) pitch=128;\r\n}\r\npit = tra*peek(mtof_lookup,pitch, (voice_is % 8), channels=1, interp = \"linear\");\r\n\r\nrec=0; sinph=0;\r\ndelt = 0;\r\nif(fmmode<0.33){\r\n\tdelt = (delta(in3!=0)>0);\r\n\trec =  eptr_rect2(pit,in1,pw, delt);\r\n\tsinph = phasor(pit*(1+in1),delt);\r\n}else if(fmmode<0.66){\r\n\tdelt = (delta(in1!=0)>0) || (delta(in3!=0)>0);\r\n\trec =  eptr_rect(pit,delt,pw, sync=1);\r\n\tsinph = phasor(pit,delt);\r\n}else { \r\n\tdelt = (delta(in1!=0)>0) || (delta(in3!=0)>0);\r\n\trec =  eptr_rect(pit,in1,pw, sync=2);\r\n\tsinph = phasor(pit*(1+in1),delt);\r\n}\r\nsaw =  integrator_saw(rec, pit*(1+in1), pw, delt);\r\nosc =  sin_l * cycle(sinph+0.75,index = \"phase\");\r\nosc += tri_l * saw + rec_l * rec;\r\n\r\nout1 = osc * slide(mgain,1000,1000);\r\n\r\nif(ou2<0.25){\r\n\tif(fmmode<0.33){\r\n\t\tsinph = phasor(pit*(1+in1)*0.5,delt);\r\n\t}else if(fmmode<0.66){\r\n\t\tsinph = phasor(pit*0.5,delt);\r\n\t}else { \r\n\t\tsinph = phasor(pit*(1+in1)*0.5,delt);\r\n\t}\r\n\tout2 = cycle(sinph,index = \"phase\");\r\n}else if(ou2<0.5){\r\n\tout2 = rec;\r\n}else if(ou2<0.75){\r\n\tout2 = saw;\r\n}else{\r\n\tout2 = 4*(pink_p+pink_s);\r\n}*/",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 44.0, 738.0, 598.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 662.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+ ]
+	}
+
+}
