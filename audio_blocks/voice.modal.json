@@ -42,7 +42,7 @@
 			{
 				"name" : "inharmonicity",
 				"type" : "float",
-				"values" : ["uni", -0.06, 2, "exp100"],
+				"values" : ["uni", 0, 2, "exp100"],
 				"wrap" : 0,
 				"default" : 0.02 
 			},
