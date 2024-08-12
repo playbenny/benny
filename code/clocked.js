@@ -13,7 +13,7 @@ function upgrade_a_wire(){
 			upgrade_wires--;
 		}else{
 			//upgrade_wires=0;
-			still_checking_polys&=55;
+			still_checking_polys &= 55;
 		}
 	}
 }

@@ -347,8 +347,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 		if((note_patcherlist[i] != loaded_note_patcherlist[i]) && (note_patcherlist[i] != "recycling")){
 			if(RECYCLING && (note_patcherlist[i] == "blank.note")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				note_patcherlist[i] = "recycling";
-				note_poly.setvalue(i+1, "muteouts", 1);
-				note_poly.setvalue(i+1, "enabled", 0);
+				note_poly.setvalue(i+1, "muteouts", 1); //this automatically sends enabled 0 too
 				if(!do_all){
 					still_checking_polys |= 1;
 					return 1;
@@ -373,7 +372,9 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 	}
 	still_checking_polys &= 14;
 	post("\nall note blocks loaded");
-	if(still_checking_polys&7 == 0) update_all_voices_mutestatus();
+	if((still_checking_polys & 7) == 0){
+		update_all_voices_mutestatus();
+	}
 	redraw_flag.flag |= 4;
 }
 
@@ -411,7 +412,7 @@ function send_audio_patcherlist(do_all){
 		}
 	}
 	still_checking_polys &= 13;
-	if((still_checking_polys&7) == 0) update_all_voices_mutestatus();
+	if((still_checking_polys & 7) == 0) update_all_voices_mutestatus();
 	if(deferred_matrix.length) process_deferred_matrix();
 	redraw_flag.flag |= 4;
 }
@@ -455,7 +456,7 @@ function send_ui_patcherlist(do_all){
 	}
 	still_checking_polys &= 11;
 	post("\nall ui blocks loaded");
-	if((still_checking_polys&7) == 0) update_all_voices_mutestatus();
+	if((still_checking_polys & 7) == 0) update_all_voices_mutestatus();
 //	blocks_tex_sent = [];
 	redraw_flag.flag |= 4;
 }
