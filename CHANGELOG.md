@@ -2,12 +2,14 @@
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
 
-08/08/24:
-- (improvements to rene block ui and functionality)
+09/08/24:
+- improvements to rene block ui and functionality
     - quantise, root pitch, movement modes, the bug that made my song 'renata' work
-- (improvements to core.input.control ui)
+- improvements to core.input.control ui
     - ui adapts to rows and cols of controller
     - sliders on the ui now work as well. it works if the physical controller isn't present when loading songs.
+    - starting states can be set for controllers per-song. (still in testing)
+06/08/24:
 - added AMXD (max for live device) support
 - added insert key shortcut on the connection edit sidebar view
 - warnings when saving a patch where substitution have occured
