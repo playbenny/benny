@@ -90,11 +90,11 @@
 				"box" : 				{
 					"id" : "obj-47",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
+					"numinlets" : 2,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 782.0, 397.0, 112.0, 22.0 ],
-					"text" : "expr ($f1*2.) + 0.01"
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 782.0, 397.0, 42.0, 22.0 ],
+					"text" : "+ 1.01"
 				}
 
 			}
@@ -417,10 +417,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 813.5, 797.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -445,6 +441,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 541.0, 57.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
