@@ -1,0 +1,105 @@
+{
+	"abb.simple.sampler" : {
+		"patcher" : "abb.simple.sampler",
+		"type" : "audio",
+		"block_ui_patcher" : "self",
+		"help_text" : "sample player with ADSR env and Drive",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"midi"	: ["midi in"]
+			},
+			"out" : {
+				"audio" : [ "out", "env" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"header" : "ADSR",
+				"contains" : [0, 1, 2, 3],
+				"height" : 2
+			},
+			{ 
+				"header" : "Drive + Start",
+				"contains" : [4, 5, 6],
+				"height" : 2
+			},
+			{ 
+				"header" : "Tune",
+				"contains" : [7, 8],
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 5, 6]
+		},
+		"parameters" : [
+			{
+				"name" : "Attack",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp0.2"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Decay",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp0.2"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Sustain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "Release",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "Drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Start",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Fine",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Semi",
+				"type" : "int",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Cent",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+			
+			
+		]
+	}
+}

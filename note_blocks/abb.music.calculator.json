@@ -10,7 +10,7 @@
 				
 			},
 			"out" : { 
-				"midi" : [ "player 1", "player 2", "player 3", "player 4", "all notes", "K", "S", "H", "O", "C", "T", "R", "W","all drum" ]
+				"midi" : [ "player 1", "player 2", "player 3", "player 4", "all notes", "K", "S", "H", "O", "C", "T", "R", "W","all drum", "p1 no shift", "p2 no shift", "p3 no shift", "p4 no shift" ]
 			}
 		},
 		"groups" : [

@@ -1,30 +1,15 @@
 {
 	"abb.lcxl.out" : {
 		"patcher" : "abb.lcxl.out",
-		"type" : "note",
-		"ui_in_sidebar_height" : 1,		
+		"type" : "note",	
 		"no_edit" : 1,
 		"help_text" : "Launch Control XL controller output",
 		"max_polyphony" : 1,
 		"connections" : {
-			"in" : {
-				"midi" : [ "no input" ]
-			},
-			"out" : {
-				"midi" : [ "out 1", "out2", "out3", "out4", "out5", "out6", "out7", "out8",] 
-			}
-		},
-		"groups" : [
 
-			{ 
-				"contains" : []
+			"out" : {
+				"midi" : [ "out 1", "out2", "out3", "out4", "out5", "out6", "out7", "out8"] 
 			}
-		],
-		"panel" : {
-			"parameters" : []
-		},
-		"parameters" : [
-			{}
-		]
+		}
 	}
 }
