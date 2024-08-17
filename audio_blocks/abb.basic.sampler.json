@@ -133,6 +133,11 @@
 				"values" :["uni", 1, 10, "lin"],
 				"wrap"	: 	0,
 				"default"	: 0
+			},
+			{
+				"name" : "Off Notes",
+				"type" : "button",
+				"values" : ["pass", "kill"]
 			}
 		]
 	}

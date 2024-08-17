@@ -27,12 +27,12 @@
 			},
 			{ 
 				"header" : "Tune",
-				"contains" : [7, 8],
+				"contains" : [7, 8, 9],
 				"height" : 2
 			}
 		],
 		"panel" : {
-			"parameters" : [0, 1, 2, 3, 4, 5, 6]
+			"parameters" : [0, 1, 2, 3, 4, 5, 6, 7]
 		},
 		"parameters" : [
 			{
@@ -97,9 +97,14 @@
 				"values" : ["bi", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "Off notes",
+				"type" : "menu_b",
+				"values" : ["thru", "stop"],
+				"wrap" : 1,
+				"default" : 0
 			}
-			
-			
 		]
 	}
 }
