@@ -48,6 +48,8 @@ var BLOCK_MENU_CLICK_ACTION = "click";
 var CTRL_VOICE_SEL_MOMENTARY = 1;
 var SHOW_STATES_ON_PANELS = 1;
 var TARGET_FPS = [30, 5];
+var SELECTED_BLOCK_Z_MOVE = 2;
+var SELECTED_BLOCK_DEPENDENTS_Z_MOVE = 0.5;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
@@ -117,6 +119,7 @@ var lcd_main = this.patcher.getnamed("lcd_main");
 
 var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 var textureset_blocks = this.patcher.getnamed("textureset_blocks");
+
 
 var glpicker = new JitterObject("jit.gl.picker","benny");
 

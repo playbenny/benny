@@ -240,7 +240,7 @@ function draw_panels(){
 		y+=h+0.1;
 
 	}
-	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>3)){
+	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>2)){
 		MAX_PANEL_COLUMNS--;
 		redraw.redraw_flag=4;
 	}
@@ -965,7 +965,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 								}else{
 									blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 								}
-								blocks_cube[i][t].position = [p[0],p[1],1];
+								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_Z_MOVE];
 							}else{
 								if(block_mute||search){
 									blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
@@ -1065,7 +1065,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
-	block_z = selected.block[i];
+	block_z = SELECTED_BLOCK_Z_MOVE * (selected.block[i] - 1.5 * blocks_pushback.include[i]);
 	block_c = blocks.get("blocks["+i+"]::space::colour");
 	block_mute = blocks.get("blocks["+i+"]::mute");
 	if(block_mute){
@@ -1097,7 +1097,6 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			blocks_cube[i][t].dim = [12, 12];
 			blocks_cube[i][t].name = "block£"+i+"£"+t;
 			blocks_cube[i][t].shape = "cube";
-			//blocks_cube[i][t].filterclass = "block";
 			if(selected.anysel){
 				if(selected.block[i]){
 					blocks_cube[i][t].color = [1,1,1,1];//[block_c[0]/256,block_c[1]/256,block_c[2]/256,1];
@@ -1429,7 +1428,7 @@ function draw_wire(connection_number){
 			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
 			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -0.25 -0.3*Math.max(0,mvl-2);
+			blob_position[2] =  -2.5 -0.75*Math.max(0,mvl-2); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			
 			mv3 = mv3 * mv3 * mv3 * 20;

@@ -331,7 +331,7 @@ function hardware_meters(){
 			var tv=[];
 			tv = blocks_meter[block][voice].position;
 			tv[1] = meters_updatelist.hardware[i][3] + (mmax+mmin) * 0.225;
-			tv[2] = 0.5+selected.block[block];
+			//tv[2] = 0.5+tv[2]; //selected.block[block]*SELECTED_BLOCK_Z_MOVE;
 			blocks_meter[block][voice].position = tv;
 			tv = blocks_meter[block][voice].scale;
 			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
@@ -372,7 +372,7 @@ function midi_meters(){
 					tv = blocks_cube[block][voice+1].position;
 					tv[0] = tv[0] - 0.185 + (p_max+p_min)*0.185;
 					tv[1] = tv[1] - 0.41 + (v_max+v_min)*0.41;
-					tv[2] = 0.5 + selected.block[block];
+					tv[2] = 0.5 + tv[2]; //selected.block[block];
 					blocks_meter[block][voice].position = tv;
 					tv[0] = Math.max(0.185*(p_max-p_min),0.02);
 					tv[1] = Math.max(0.45*(v_max-v_min),0.02);
