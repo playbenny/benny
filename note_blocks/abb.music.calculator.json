@@ -10,7 +10,7 @@
 				
 			},
 			"out" : { 
-				"midi" : [ "player 1", "player 2", "player 3", "player 4", "all notes", "K", "S", "H", "O", "C", "T", "R", "W","all drum", "p1 no shift", "p2 no shift", "p3 no shift", "p4 no shift" ]
+				"midi" : [ "player 1", "player 2", "player 3", "player 4","chord", "all notes", "K", "S", "H", "O", "C", "T", "R", "W","all drum", "p1 no shift", "p2 no shift", "p3 no shift", "p4 no shift" ]
 			}
 		},
 		"groups" : [
@@ -25,7 +25,7 @@
 
 		],
 		"panel" : {
-			"parameters" : [0, 1, 2, 3, 4, 5, 6]
+			"parameters" : [0, 1, 2, 3, 4]
 		},
 		"parameters" : [
 			{
@@ -62,20 +62,6 @@
 				"values" : ["bi", -14, 14, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
-			},
-			{
-				"name" : "Local",
-				"type" : "int",
-				"values" : ["uni", 1, 8, "lin"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "Global",
-				"type" : "int",
-				"values" : ["uni", 1, 8, "lin"],
-				"wrap" : 0,
-				"default" : 0
 			}
 			
 		]

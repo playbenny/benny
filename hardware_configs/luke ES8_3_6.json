@@ -87,7 +87,7 @@
 	"hardware" : 	{
 		"hardware.out.1+2" : 			{
 			"type" : "hardware",
-			"help_text": "all outs",
+			"help_text": "Main Out L/R",
 			"max_polyphony" : 2,
 			"exclusive" : 1,
 			"connections" : {
@@ -97,56 +97,42 @@
 				}
 			}
 		},
-		"hardware.io.3" : 			{
+		"hardware.maths.function" : 			{
 			"type" : "hardware",
-			"help_text": "3 i/o",
+			"help_text": "make noise maths",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
+			"substitute" : "utility.env.asr",
 			"connections" : {
 				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 3 ]
+					"hardware" : [ "Maths 1", "Maths 2" ],
+					"hardware_channels" : [ 3, 4 ]
 				},
 				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [3 ]
+					"hardware" : [ "Maths 2 output" ],
+					"hardware_channels" : [2 ]
 				}
 			}
 		},
-		"hardware.io.4" : 			{
+		"hardware.Sarajewo.BBD" : 			{
 			"type" : "hardware",
-			"help_text": "4 i/o",
+			"help_text": "Sarajewo BBD delay",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
+			"substitute" : "fx.delay.buckets",
 			"connections" : {
 				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 4 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [4 ]
-				}
-			}
-		},		"hardware.io.5" : 			{
-			"type" : "hardware",
-			"help_text": "5 i/o",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
+					"hardware" : [ "In" ],
 					"hardware_channels" : [ 5 ]
 				},
 				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [5 ]
+					"hardware" : [ "out" ],
+					"hardware_channels" : [9 ]
 				}
 			}
-		},
-		"hardware.io.6" : 			{
+		},		"hardware.quaterinch.multiple" : 			{
 			"type" : "hardware",
-			"help_text": "6 i/o",
+			"help_text": "1/4 inch multiple / sem in 2",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : {
@@ -156,159 +142,107 @@
 				},
 				"out" : {
 					"hardware" : [ "in" ],
+					"hardware_channels" : [1 ]
+				}
+			}
+		},
+		"hardware.QPAS.filter" : 			{
+			"type" : "hardware",
+			"help_text": "QPAS Filter",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"substitute" : "fx.filter.2pole",
+			"connections" : {
+				"in" : {
+					"hardware" : [ "Left", "Right" ],
+					"hardware_channels" : [ 7, 8 ]
+				},
+				"out" : {
+					"hardware" : [ "in" ],
 					"hardware_channels" : [6 ]
 				}
 			}
 		},
-		"hardware.io.7" : 			{
+		"hardware.ARP.vcf" : 			{
 			"type" : "hardware",
-			"help_text": "7 i/o",
+			"help_text": "ARP 4023 vcf",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
+			"substitute" : "fx.filter.2pole",
 			"connections" : {
 				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 7 ]
+					"hardware" : [ "ARP in", "cutoff" ],
+					"hardware_channels" : [ 9, 13 ]
 				},
 				"out" : {
-					"hardware" : [ "in" ],
+					"hardware" : [ "ARP out" ],
+					"hardware_channels" : [5 ]
+				}
+			}
+		},
+		"hardware.101.vcf" : 			{
+			"type" : "hardware",
+			"help_text": "101 filter",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"substitute" : "fx.filter.2pole",
+			"connections" : {
+				"in" : {
+					"hardware" : [ "101 in", "cutoff" ],
+					"hardware_channels" : [ 10, 14 ]
+				},
+				"out" : {
+					"hardware" : [ "101 out" ],
+					"hardware_channels" : [6 ]
+				}
+			}
+		},
+		"hardware.SEM.vcf" : 			{
+			"type" : "hardware",
+			"help_text": "SEM state variable filter vcf",
+			"max_polyphony" : 1,
+			"exclusive" : 1,
+			"substitute" : "fx.filter.2pole",
+			"connections" : {
+				"in" : {
+					"hardware" : [ "SEM in", "cutoff" ],
+					"hardware_channels" : [ 11, 15 ]
+				},
+				"out" : {
+					"hardware" : [ "SEM out" ],
 					"hardware_channels" : [7 ]
 				}
 			}
 		},
-		"hardware.io.8" : 			{
+		"hardware.Prophet.vcf" : 			{
 			"type" : "hardware",
-			"help_text": "8 i/o",
+			"help_text": "Prophet 24db lp filter",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
+			"substitute" : "fx.filter.2pole",
 			"connections" : {
 				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 8 ]
+					"hardware" : [ "Pro in", "cutoff" ],
+					"hardware_channels" : [ 12, 16 ]
 				},
 				"out" : {
-					"hardware" : [ "in" ],
+					"hardware" : [ "Pro out" ],
 					"hardware_channels" : [8 ]
 				}
 			}
 		},
-		"hardware.io.9" : 			{
+		"hardware.Modulation.CV" : 			{
 			"type" : "hardware",
-			"help_text": "9 i/o",
+			"help_text": "Modulation CV es6 input 6",
 			"max_polyphony" : 1,
 			"exclusive" : 1,
 			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 9 ]
-				},
 				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [9 ]
-				}
-			}
-		},
-		"hardware.io.10" : 			{
-			"type" : "hardware",
-			"help_text": "10 i/o",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
+					"hardware" : [ "Mod CV" ],
 					"hardware_channels" : [ 10 ]
-				},
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [10 ]
-				}
-			}
-		},
-		"hardware.out.11" : 			{
-			"type" : "hardware",
-			"help_text": "out 11",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 11 ]
-				}
-			}
-		},
-		"hardware.out.12" : 			{
-			"type" : "hardware",
-			"help_text": "out 12",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 12 ]
-				}
-			}
-		},
-		"hardware.out.13" : 			{
-			"type" : "hardware",
-			"help_text": "out 13",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 13 ]
-				}
-			}
-		},
-		"hardware.out.14" : 			{
-			"type" : "hardware",
-			"help_text": "out 14",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 14 ]
-				}
-			}
-		},
-		"hardware.out.15" : 			{
-			"type" : "hardware",
-			"help_text": "out 15",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 15 ]
-				}
-			}
-		},
-		"hardware.out.16" : 			{
-			"type" : "hardware",
-			"help_text": "out 16",
-			"max_polyphony" : 1,
-			"exclusive" : 1,
-			"connections" : {
-				"in" : {
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 16 ]
-				}
-			}
-		},
-
-		"hardware.in.1+2" : 			{
-			"type" : "hardware",
-			"help_text": "in 1/2",
-			"exclusive" : 1,
-			"max_polyphony" : 4,
-			"substitute" : "fx.filter.2pole",
-			"connections" : {
-				"out" : {
-					"hardware" : [ "in" ],
-					"hardware_channels" : [1,2 ]
 				}
 			}
 		}
+		
 	}
 }
