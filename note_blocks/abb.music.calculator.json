@@ -17,12 +17,7 @@
 			{ 
 				"contains" : [0, 1, 2, 3, 4],
 				"header"	: "Shift Notes"
-			},
-			{ 
-				"contains" : [5, 6],
-				"header"	: "Memory"
 			}
-
 		],
 		"panel" : {
 			"parameters" : [0, 1, 2, 3, 4]
