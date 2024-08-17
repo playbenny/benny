@@ -1065,7 +1065,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
-	block_z = SELECTED_BLOCK_Z_MOVE * (selected.block[i] - 1.5 * blocks_pushback.include[i]);
+	block_z = SELECTED_BLOCK_Z_MOVE * selected.block[i];
 	block_c = blocks.get("blocks["+i+"]::space::colour");
 	block_mute = blocks.get("blocks["+i+"]::mute");
 	if(block_mute){
