@@ -3,7 +3,7 @@
 		"patcher" : "seq.rene",
 		"type" : "note",
 		"block_ui_patcher" : "seq.rene.ui",
-		"help_text" : "a circle on a cartesian plane step sequencer",
+		"help_text" : "a circle on a cartesian plane step sequencer, obviously inspired by the module of the same name",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"connections" : {
@@ -17,21 +17,27 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [1,2,3,4],
-				"colour" : [255,255,255]
+				"contains" : [1,2,3,4,56],
+				"height" : 3
+			},
+			{
+				"contains" : [0,53,54,55],
+				"height" : 0,
+				"colour" : -4
 			},
 			{ 
 				"contains" : [5, 6,7,8,9, 10,11,12,13, 14,15,16,17, 18,19,20],
-				"colour" : [90,255,0]
+				"colour" : 4,
+				"height" : 0
 			},
 			{ 
 				"contains" : [21, 22,23,24,25, 26,27,28,29, 30,31,32,33, 34,35,36],
-				"colour" : [180,200,0],
-				"height" : 2
+				"colour" : 8,
+				"height" : 0
 			},
 			{ 
 				"contains" : [37,38,39,40,41, 42,43,44,45, 46,47,48,49, 50,51,52],
-				"colour" : [180,200,0],
+				"colour" : 12,
 				"height" : 0				
 			}		
 		],
@@ -40,17 +46,17 @@
 		},
 		"parameters" : [
 			{
-				"name" : "pointer",
-				"type" : "int",
-				"values" : ["uni", 0,16, "lin"],
+				"name" : "base note",
+				"type" : "note",
+				"values": ["uni", 0, 100, "lin"],
 				"error_scale" : 0,
-				"default" : 0,
-				"nomap" : 1
+				"wrap" : 0,
+				"default" : 0.49
 			},
 			{
 				"name" : "step",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "exp"],
+				"values" : ["bi", -1, 1, "exp10"],
 				"wrap" : 0,
 				"default" : 0.55
 			},
@@ -317,131 +323,161 @@
 			},
 			{
 				"name" : "on",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"wrap" : 0,
 				"error_scale" : 0,
-				"default" : 1
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"wrap" : 0,
 				"error_scale" : 0,
-				"default" : 1
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["0", "1"],
 				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 1
+				"wrap" : 1,
+				"default" : 0.75
+			},
+			{
+				"name" : "quantise_scale",
+				"type" : "menu_i",
+				"values" : ["chromatic","1","2","3","4","5","6","7","8"],
+				"wrap" : 1,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : ["quantise", "index"],
+				"wrap" : 1,
+				"error_scale" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
+			},
+			{
+				"name" : "movement_mode",
+				"type" : "menu_l",
+				"values" : ["circular", "square", "renata bug"],
+				"default" : 0,
+				"wrap" : 1,
+				"error_scale" : 0
 			}
 		]
 	}

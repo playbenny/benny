@@ -187,6 +187,8 @@ function initialise_dictionaries(hardware_file){
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
 	TARGET_FPS = config.get("TARGET_FPS");
+	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
+	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
@@ -373,6 +375,11 @@ function initialise_graphics() {
 }
 
 function stop_graphics(){
+	lcd_main.message("brgb",0,0,0);
+	lcd_main.message("clear");
+	lcd_main.message("bang");
+	meters_enable = 0;
+	redraw_flag,flag = 0;
 	post("\nstopping graphics");
 	background_cube.freepeer();
 	selection_cube.freepeer();
@@ -380,6 +387,11 @@ function stop_graphics(){
 	flock_cubexy.freepeer();
 	flock_cubeyz.freepeer();
 	flock_cubexz.freepeer();
+	//world.message("enable",0);
+	var stop_task = new Task(stop_world, this);
+	stop_task.schedule(34);
+}
+function stop_world(){
 	world.message("enable",0);
 }
 

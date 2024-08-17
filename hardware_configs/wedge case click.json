@@ -218,7 +218,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff" ],
-					"hardware_channels" : [ 13, 18 ]
+					"hardware_channels" : [ 13, 20 ]
 				}
 ,
 				"out" : 				{
@@ -348,60 +348,32 @@
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "out", "out + drive" ],
-					"hardware_channels" : [ 3, 8 ]
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 3 ]
 				}
 
 			}
 
 		}
-,
-		"hardware.filter.chloe.1" : 		{
+		,
+		"hardware.filter.mmm.ladder" : 		{
 			"type" : "hardware",
-			"help_text" : "this is the left side of the chloe filter",
-			"midi_handler" : "generic.hardware.midi.handler",
-			"midi_in" : "MIDI function",
+			"help_text" : "stereo ladder highpass (into music thing saturator)",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
 			"substitute" : "fx.filter.2pole",
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "cutoff", "lpg" ],
-					"hardware_channels" : [ 9, 19, 23 ],
+					"hardware" : [ "in L", "in R", "cutoff" ],
+					"hardware_channels" : [ 9, 10, 19 ],
 					"midi" : [ "lpg" ],
 					"midi_channels" : [ 2 ],
-					"midi_ranges" : [ [ 0, 0 ] ]
+					"midi_ranges" : [ [ "jsobject", -1266636810283968 ] ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 9 ]
-				}
-
-			}
-
-		}
-,
-		"hardware.filter.chloe.2" : 		{
-			"type" : "hardware",
-			"help_text" : "this is the right side of the chloe filter",
-			"midi_handler" : "generic.hardware.midi.handler",
-			"midi_in" : "MIDI function",
-			"exclusive" : 1,
-			"max_polyphony" : 1,
-			"substitute" : "fx.filter.2pole",
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "in", "cutoff", "lpg" ],
-					"hardware_channels" : [ 10, 20, 24 ],
-					"midi" : [ "lpg" ],
-					"midi_channels" : [ 2 ],
-					"midi_ranges" : [ [ 1, 1 ] ]
-				}
-,
-				"out" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 10 ]
+					"hardware" : [ "out L", "out R" ],
+					"hardware_channels" : [ 9, 10 ]
 				}
 
 			}
@@ -438,7 +410,6 @@
 			}
 
 		}
-
 	}
 ,
 	"measured_latency" : 590

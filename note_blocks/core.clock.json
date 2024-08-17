@@ -39,13 +39,13 @@
 				"onepervoice" : 1
 			},
 			{ 
-				"contains" : [1,2,3,11],
-				"colour" : 15,
+				"contains" : [7,4,5],
+				"colour" : 10,
 				"height" : 0
 			},
 			{ 
-				"contains" : [7,4,5],
-				"colour" : 10,
+				"contains" : [1,2,3,11],
+				"colour" : 15,
 				"height" : 0
 			}
 		],
