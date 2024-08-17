@@ -1428,7 +1428,7 @@ function draw_wire(connection_number){
 			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
 			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -2.5 -0.75*Math.max(0,mvl-2); //was -0.25 -0.3
+			blob_position[2] =  -0.5 -1.5*Math.max(0,mvl-3); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			
 			mv3 = mv3 * mv3 * mv3 * 20;
