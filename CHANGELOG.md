@@ -1,7 +1,12 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
-
+18/08/24:
+- **breaking changes** the mix curve on buckets and tape and stretch delays has been changed. at the midpoint both wet and dry signals are at 100% - ie the mix fader *brings in* the wet signal, which doesn't create the impression of the music getting quieter. (previously all 3 had different behaviour, the best of which was wasting cpu on a sqrt curve..)
+- fixes to core.input.control
+- modal synthesis voice added
+- wave.scan now supports free play (ie playing even when transport stopped) 
+- fix to panel slider behaviours
 09/08/24:
 - improvements to rene block ui and functionality
     - quantise, root pitch, movement modes, the bug that made my song 'renata' work
