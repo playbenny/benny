@@ -1734,10 +1734,11 @@ function sidebar_parameter_knob(parameter, value){
 					redraw_flag.flag |= 10;
 					usermouse.left_button = 0; // this makes it start a new drag next frame
 				}
+				post("\ntouch safety code activated(?)");
 			}
 		}
 		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
-			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
+			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+paramslider_details[parameter[0]][9]);
 		}else{
 			//TODO if paramslider_details[][18] == 2 then use x instead
 			var newval;
@@ -1747,7 +1748,7 @@ function sidebar_parameter_knob(parameter, value){
 				newval = (usermouse.y - paramslider_details[parameter[0]][3])/(paramslider_details[parameter[0]][1]-paramslider_details[parameter[0]][3]);
 			}
 			//post("\nsetting the slider to",newval);
-			if(typeof newval == "number") parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],newval);
+			if(typeof newval == "number") parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+paramslider_details[parameter[0]][9],newval);
 			redraw_flag.deferred|=1;
 			return newval;
 		}
@@ -1758,14 +1759,14 @@ function sidebar_parameter_knob(parameter, value){
 		}else{
 			value = Math.max(0,Math.min(0.9999999,value));
 		}
-		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],value);
+		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+paramslider_details[parameter[0]][9],value);
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
 		}
-		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][parameter[0]])){
+		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]])){
 			redraw_flag.deferred|=16;
-			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
+			redraw_flag.paneltargets[panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]]-MAX_PARAMETERS]=1;
 		}
 		//if(displaymode=="custom") redraw_flag.flag=4;
 		if(sidebar.selected==automap.mapped_c) note_poly.setvalue(automap.available_c,"refresh");
