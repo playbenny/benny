@@ -621,7 +621,6 @@ function import_song(){
 			if(songs.contains(loading.songname+"::notepools")){
 				post("\nloading notepools");
 				notepools_dict.replace("notepools", songs.get(loading.songname+"::notepools"));
-				//messnamed("LOAD_NOTEPOOLS","bang");
 			}
 		}
 		for(b=loading.progress;b<MAX_BLOCKS;b++){
@@ -1569,6 +1568,9 @@ function clear_everything(){
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
 
 	connections.parse('{ "connections" : [ {} ] }');
+	notepools_dict.parse("notepools","{}");
+	messnamed("LOAD_NOTEPOOLS","bang");
+	
 	var b,bl;
 	for(b in blocks_cube){
 		for(bl in blocks_cube[b]){

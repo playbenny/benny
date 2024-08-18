@@ -260,6 +260,8 @@ function initialise_dictionaries(hardware_file){
 	audio_to_data_poly.setvalue(0, "out_value", 0);
 	audio_to_data_poly.setvalue(0, "out_trigger", 0);
 
+	notepools_dict.parse("notepools","{}");
+	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.setvalue(i, "vis_meter", 1);
 	}
