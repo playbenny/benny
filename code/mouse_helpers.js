@@ -1562,10 +1562,8 @@ function data_edit(parameter,value){
 	//post("\nDATA EDIT!!",parameter,"or",parameter[0],parameter[1],value);
 	if(value=="get"){
 		var clickset=0;
-		if(parameter[1]){
-			clickset = 1;
-			usermouse.drag.release_on_exit = 1;
-		}
+		if(parameter[1]) clickset = 1;
+		usermouse.drag.release_on_exit = clickset;
 		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
 			return voice_data_buffer.peek(1,parameter[0]);
 		}else{
@@ -1715,10 +1713,8 @@ function sidebar_parameter_knob(parameter, value){
 		//also: look up if this slider is set to clickset mode
 		var clickset=0;
 		if((Array.isArray(parameter))&&(Array.isArray(paramslider_details[parameter[0]]))){
-			if(paramslider_details[parameter[0]][18]){
-				clickset = 1;
-				usermouse.drag.release_on_exit = 1;
-			}
+			if(paramslider_details[parameter[0]][18]) clickset = 1;
+			usermouse.drag.release_on_exit = clickset;
 		}
 		if((usermouse.ctrl)&&(usermouse.got_t == 2)){ // this bit is for touch - if you hold ctrl and touch a different bit of fader it won't have changed selection yet
 			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
