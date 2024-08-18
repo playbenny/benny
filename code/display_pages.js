@@ -4622,7 +4622,7 @@ function draw_sidebar(){
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
 					var hintrows = 0.4+ hint.length / 45+hint.split("£").length-1;
 					var rowstart=0;
-					var rowend=8*sidebar.width_in_units;
+					var rowend=7*sidebar.width_in_units;
 					hint = hint+"                       ";
 					var bold=0;
 					var sameline=0;
@@ -4658,7 +4658,7 @@ function draw_sidebar(){
 						lcd_main.message("write",sliced);
 						if(!sameline){
 							rowstart=rowend+1;
-							rowend+=46;
+							rowend+=7*sidebar.width_in_units;
 						}else{
 							var t = rowstart+46;
 							rowstart=rowend+1
