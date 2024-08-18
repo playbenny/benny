@@ -716,7 +716,10 @@ function load_elsewhere(fname){
 			tss = tss + ts[t];
 			if(t>0) tss = tss + ".";
 		}
+		post("\nfilename",tss);
 		song.import_json(fname);
+		loading.songpath = fname.split(tss)[0];
+		post("\npath", loading.songpath);
 		copy_song_to_songs_dict(tss);
 		if(playing) play_button();
 		meters_enable = 0;

@@ -614,6 +614,7 @@ var ext_matrix = {
 var loading = {
 	progress : 0,
 	songname : "",
+	songpath : "",
 	mute_loaded : 0,
 	xoffset : 0,
 	ready_for_next_action : 0,
