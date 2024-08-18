@@ -6,7 +6,7 @@
 - fixes to core.input.control
 - modal synthesis voice added
 - wave.scan now supports free play (ie playing even when transport stopped) 
-- fix to panel slider behaviours
+- fix to panel slider behaviours, fix behaviour when dragging along a row of sliders with the 'click to set' property enabled
 09/08/24:
 - improvements to rene block ui and functionality
     - quantise, root pitch, movement modes, the bug that made my song 'renata' work
