@@ -934,9 +934,37 @@ function block_and_wire_colours(){ //for selection and mute etc
 	var i, t, cmute,tmc,segment,cs;
 	var block_c=[];
 	var block_v, subvoices, block_mute;
+	var tree_highlight = [];
 	selected.anysel = 0;
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
-		selected.anysel = 1; 
+		selected.anysel = 1;
+		var count=0;
+		for(i=0;i<MAX_BLOCKS;i++){
+			count+=selected.block[i];
+		}
+		for(i=0;i<MAX_BLOCKS;i++) tree_highlight[i]=0;
+		if(count==1){
+			tree_highlight[selected.block.indexOf(1)]=1;
+			var gsc=connections.getsize("connections");
+			for(var pass=0;pass<1;pass++){
+				for(i=gsc;i>=0;i--){
+					if(connections.contains("connections["+i+"]::from")){
+						if(connections.get("connections["+i+"]::conversion::mute")==0){
+							var f = connections.get("connections["+i+"]::from::number");
+							if(tree_highlight[f]==1){
+								var t = connections.get("connections["+i+"]::to::number");
+								if(tree_highlight[t]==0){
+									if(blocks.get("blocks["+t+"]::mute")==0){
+										tree_highlight[t] = 1;
+										pass=-1;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	var search=(sidebar.mode=="edit_state"); //if search==1 this is about highlighting blocks to the user, so dark ones are darker, mute doesn't darken so much, wires don't get the highlight
 	anymuted=0;
@@ -959,20 +987,20 @@ function block_and_wire_colours(){ //for selection and mute etc
 						if(selected.anysel){
 							if(selected.block[i]){ //
 								if((sidebar.selected_voice==-1)){
-									blocks_cube[i][t].color = block_c; 
+									blocks_cube[i][t].color = [1.1*block_c[0],1.1*block_c[1],1.1*block_c[2],1]; //block_c; 
 								}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
-									blocks_cube[i][t].color = block_c; 
+									blocks_cube[i][t].color = [1.1*block_c[0],1.1*block_c[1],1.1*block_c[2],1]; //block_c;
 								}else{
 									blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 								}
 								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_Z_MOVE];
 							}else{
+								var csc = 0.3 + 0.4*tree_highlight[i];
 								if(block_mute||search){
-									blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
-								}else{
-									blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+									csc = 0.2;
 								}
-								blocks_cube[i][t].position = [p[0],p[1],0];
+								blocks_cube[i][t].color = [csc*block_c[0],csc*block_c[1],csc*block_c[2],1];
+								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_DEPENDENTS_Z_MOVE*(2*tree_highlight[i]-1)];
 							}
 						}else{
 							if(block_mute){
