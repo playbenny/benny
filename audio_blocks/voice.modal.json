@@ -86,14 +86,14 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.02 
+				"default" : 0.4 
 			},
 			{
 				"name" : "tone_key_follow",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.05
 			},
 			{
 				"name" : "feedback",
