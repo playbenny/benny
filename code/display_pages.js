@@ -935,25 +935,28 @@ function block_and_wire_colours(){ //for selection and mute etc
 	var block_c=[];
 	var block_v, subvoices, block_mute;
 	var tree_highlight = [];
+	var tree_highlight_c = [];
 	selected.anysel = 0;
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
 		selected.anysel = 1;
 		var count=0;
 		for(i=0;i<MAX_BLOCKS;i++){
 			count+=selected.block[i];
+			tree_highlight[i]=0;
 		}
-		for(i=0;i<MAX_BLOCKS;i++) tree_highlight[i]=0;
 		if(count==1){
 			tree_highlight[selected.block.indexOf(1)]=1;
 			var gsc=connections.getsize("connections");
+			for(i=gsc;i>=0;i--) tree_highlight_c[i]=0;
 			for(var pass=0;pass<1;pass++){
 				for(i=gsc;i>=0;i--){
-					if(connections.contains("connections["+i+"]::from")){
+					if((tree_highlight_c[i]==0)&&(connections.contains("connections["+i+"]::from"))){
 						if(connections.get("connections["+i+"]::conversion::mute")==0){
 							var f = connections.get("connections["+i+"]::from::number");
 							if(tree_highlight[f]==1){
 								var t = connections.get("connections["+i+"]::to::number");
 								if(tree_highlight[t]==0){
+									tree_highlight_c[i] = 1;
 									if(blocks.get("blocks["+t+"]::mute")==0){
 										tree_highlight[t] = 1;
 										pass=-1;

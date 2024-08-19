@@ -1392,7 +1392,7 @@ function file_written(fname){//called when max reports successfully saving the c
 }
 
 function folder_select(folderstr){
-//	post("new songs folder selected",folderstr);
+	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
 		if(folder_target == "song"){
 			SONGS_FOLDER = folderstr;
@@ -1570,7 +1570,7 @@ function clear_everything(){
 	connections.parse('{ "connections" : [ {} ] }');
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");
-	
+
 	var b,bl;
 	for(b in blocks_cube){
 		for(bl in blocks_cube[b]){
