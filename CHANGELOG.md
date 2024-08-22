@@ -2,8 +2,10 @@
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
 18/08/24:
-- **breaking changes** the mix curve on buckets and tape and stretch delays has been changed. at the midpoint both wet and dry signals are at 100% - ie the mix fader *brings in* the wet signal, which doesn't create the impression of the music getting quieter. (previously all 3 had different behaviour, none of which was quite right)
+- **breaking change** the mix curve on buckets and tape and stretch delays has been changed. at the midpoint both wet and dry signals are at 100% - ie the mix fader *brings in* the wet signal, which doesn't create the impression of the music getting quieter. (previously all 3 had different behaviour, none of which was quite right)
+- **breaking change** rene no longer supports per-voice values for the contents of the cells. but now cell enable buttons work in the ui
 - fixes to core.input.control
+- vst parameter sync between plugin window ui and benny fixed
 - modal synthesis voice added
 - wave.scan now supports free play (ie playing even when transport stopped) 
 - fix to panel slider behaviours, fix behaviour when dragging along a row of sliders with the 'click to set' property enabled
