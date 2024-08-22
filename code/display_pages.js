@@ -3121,7 +3121,6 @@ function draw_sidebar(){
 										flags &= 61;
 										flags |= 4; //removes 2 flag, adds 4 flag
 									} 
-
 									if((/*(p_type=="menu_b")||*/(p_type=="menu_l")) && (vl.length != 1)&&!params[curp].contains("nopervoice")) p_type = "menu_i";
 									if(p_type=="button"){
 										paramslider_details[curp]=[x1,y1,x2,y2/*maxnamelabely*/,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
@@ -3187,11 +3186,7 @@ function draw_sidebar(){
 										//ideally i'd like to be able to draw menu_b for polyphonic blocks
 										//this means it needs to stash the params[]-colours in paramslider_details?
 										var w = x2-x1; //-2;
-										var ww = (w + 2*(opvf))/vl.length;
-										var ww2 = ww - 2*(opvf);
-
-										for(var v=0;v<vl.length;v++){
-											pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[v]+curp);
+										if(flags&4){ //no pervoice
 											var pv2 = Math.floor(pv * statecount * 0.99999);
 											var valcol;
 											var pv3 = pv2/statecount;
@@ -3206,23 +3201,59 @@ function draw_sidebar(){
 												}
 												valcol = [pv4*colour[0], pv4*colour[1], pv4*colour[2]];
 											}
-											paramslider_details[curp]=[x1+v*ww,y1,x1+v*ww+ww2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[v],namelabely,p_type,wrap,block_name,h_slider,p_values];
+											paramslider_details[curp]=[x1,y1,x1+w,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,null,namelabely,p_type,wrap,block_name,h_slider,p_values];
 											parameter_menu_b(curp);
-											/*if(vl.length==1){
-												mouse_click_actions[mouse_index] = send_button_message;
-												mouse_click_parameters[mouse_index] = block;
-												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
-											}else{*/
-												mouse_click_actions[mouse_index] = static_mod_adjust;
+											mouse_click_actions[mouse_index] = send_button_message;
+											mouse_click_parameters[mouse_index] = block;
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+											/*	mouse_click_actions[mouse_index] = static_mod_adjust;
 												mouse_click_parameters[mouse_index] = [curp, block, vl[v]];
 												//post("\npv,sc",pv,statecount);
 												mouse_click_values[mouse_index] = ((1.01+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
 												
-											//}
+											}*/
 											mouse_index++;
 											if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 												//but it's so much easier just to call this fn
 												buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+											}
+										}else{
+											var ww = (w + 2*(opvf))/vl.length;
+											var ww2 = ww - 2*(opvf);
+											for(var v=0;v<vl.length;v++){
+												pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[v]+curp);
+												var pv2 = Math.floor(pv * statecount * 0.99999);
+												var valcol;
+												var pv3 = pv2/statecount;
+												if(params[curp].contains("colours")){
+													valcol = params[curp].get("colours["+pv2+"]");
+												}else{
+													var pv4;
+													if(statecount==2){
+														pv4 = pv3*0.9 + 0.3;
+													}else{
+														pv4 = pv3*0.6 + 0.7;
+													}
+													valcol = [pv4*colour[0], pv4*colour[1], pv4*colour[2]];
+												}
+												paramslider_details[curp]=[x1+v*ww,y1,x1+v*ww+ww2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[v],namelabely,p_type,wrap,block_name,h_slider,p_values];
+												parameter_menu_b(curp);
+												/*if(vl.length==1){
+													mouse_click_actions[mouse_index] = send_button_message;
+													mouse_click_parameters[mouse_index] = block;
+													mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+												}else{*/
+													mouse_click_actions[mouse_index] = static_mod_adjust;
+													mouse_click_parameters[mouse_index] = [curp, block, vl[v]];
+													//post("\npv,sc",pv,statecount);
+													mouse_click_values[mouse_index] = ((1.01+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+													
+												//}
+												mouse_index++;
+												if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+													//but it's so much easier just to call this fn
+													buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+												}
 											}
 										}
 									}else{
