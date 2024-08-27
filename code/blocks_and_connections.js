@@ -692,6 +692,7 @@ function send_all_voice_details(){
 			}
 		}
 	}
+	if(songs.contains(loading.songname+"::notepools")) messnamed("LOAD_NOTEPOOLS","bang");
 }
 
 function add_to_midi_routemap(m_index,targetvalue){ 

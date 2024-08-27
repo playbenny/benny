@@ -497,7 +497,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 				//paramslider_details is used for quick redraw of a single slider. index is curp
 				//ie is mouse_click_parameters[index][0]
 				mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-				mouse_click_parameters[mouse_index] = [curp, b,wrap];
+				mouse_click_parameters[mouse_index] = [panelslider_index, b,wrap];
 				if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="wave")){
 					//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 					mouse_click_values[mouse_index] = curp+1;
@@ -934,9 +934,40 @@ function block_and_wire_colours(){ //for selection and mute etc
 	var i, t, cmute,tmc,segment,cs;
 	var block_c=[];
 	var block_v, subvoices, block_mute;
+	var tree_highlight = [];
+	var tree_highlight_c = [];
 	selected.anysel = 0;
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
-		selected.anysel = 1; 
+		selected.anysel = 1;
+		var count=0;
+		for(i=0;i<MAX_BLOCKS;i++){
+			count+=selected.block[i];
+			tree_highlight[i]=0;
+		}
+		if(count==1){
+			tree_highlight[selected.block.indexOf(1)]=1;
+			var gsc=connections.getsize("connections");
+			for(i=gsc;i>=0;i--) tree_highlight_c[i]=0;
+			for(var pass=0;pass<1;pass++){
+				for(i=gsc;i>=0;i--){
+					if((tree_highlight_c[i]==0)&&(connections.contains("connections["+i+"]::from"))){
+						if(connections.get("connections["+i+"]::conversion::mute")==0){
+							var f = connections.get("connections["+i+"]::from::number");
+							if(tree_highlight[f]==1){
+								var t = connections.get("connections["+i+"]::to::number");
+								if(tree_highlight[t]==0){
+									tree_highlight_c[i] = 1;
+									if(blocks.get("blocks["+t+"]::mute")==0){
+										tree_highlight[t] = 1;
+										pass=-1;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	var search=(sidebar.mode=="edit_state"); //if search==1 this is about highlighting blocks to the user, so dark ones are darker, mute doesn't darken so much, wires don't get the highlight
 	anymuted=0;
@@ -959,20 +990,20 @@ function block_and_wire_colours(){ //for selection and mute etc
 						if(selected.anysel){
 							if(selected.block[i]){ //
 								if((sidebar.selected_voice==-1)){
-									blocks_cube[i][t].color = block_c; 
+									blocks_cube[i][t].color = [1.1*block_c[0],1.1*block_c[1],1.1*block_c[2],1]; //block_c; 
 								}else if((t>0)&&((sidebar.selected_voice) == (((t-1)/subvoices)|0))){
-									blocks_cube[i][t].color = block_c; 
+									blocks_cube[i][t].color = [1.1*block_c[0],1.1*block_c[1],1.1*block_c[2],1]; //block_c;
 								}else{
 									blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 								}
 								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_Z_MOVE];
 							}else{
+								var csc = 0.3 + 0.4*tree_highlight[i];
 								if(block_mute||search){
-									blocks_cube[i][t].color = [0.2*block_c[0],0.2*block_c[1],0.2*block_c[2],1];	
-								}else{
-									blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];
+									csc = 0.2;
 								}
-								blocks_cube[i][t].position = [p[0],p[1],0];
+								blocks_cube[i][t].color = [csc*block_c[0],csc*block_c[1],csc*block_c[2],1];
+								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_DEPENDENTS_Z_MOVE*(2*tree_highlight[i]-1)];
 							}
 						}else{
 							if(block_mute){
@@ -1428,7 +1459,7 @@ function draw_wire(connection_number){
 			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
 			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -2.5 -0.75*Math.max(0,mvl-2); //was -0.25 -0.3
+			blob_position[2] =  -0.5 -0.5*Math.max(0,mvl-3); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			
 			mv3 = mv3 * mv3 * mv3 * 20;
@@ -3090,7 +3121,6 @@ function draw_sidebar(){
 										flags &= 61;
 										flags |= 4; //removes 2 flag, adds 4 flag
 									} 
-
 									if((/*(p_type=="menu_b")||*/(p_type=="menu_l")) && (vl.length != 1)&&!params[curp].contains("nopervoice")) p_type = "menu_i";
 									if(p_type=="button"){
 										paramslider_details[curp]=[x1,y1,x2,y2/*maxnamelabely*/,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
@@ -3156,11 +3186,7 @@ function draw_sidebar(){
 										//ideally i'd like to be able to draw menu_b for polyphonic blocks
 										//this means it needs to stash the params[]-colours in paramslider_details?
 										var w = x2-x1; //-2;
-										var ww = (w + 2*(opvf))/vl.length;
-										var ww2 = ww - 2*(opvf);
-
-										for(var v=0;v<vl.length;v++){
-											pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[v]+curp);
+										if(flags&4){ //no pervoice
 											var pv2 = Math.floor(pv * statecount * 0.99999);
 											var valcol;
 											var pv3 = pv2/statecount;
@@ -3175,23 +3201,59 @@ function draw_sidebar(){
 												}
 												valcol = [pv4*colour[0], pv4*colour[1], pv4*colour[2]];
 											}
-											paramslider_details[curp]=[x1+v*ww,y1,x1+v*ww+ww2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[v],namelabely,p_type,wrap,block_name,h_slider,p_values];
+											paramslider_details[curp]=[x1,y1,x1+w,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,null,namelabely,p_type,wrap,block_name,h_slider,p_values];
 											parameter_menu_b(curp);
-											/*if(vl.length==1){
-												mouse_click_actions[mouse_index] = send_button_message;
-												mouse_click_parameters[mouse_index] = block;
-												mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
-											}else{*/
-												mouse_click_actions[mouse_index] = static_mod_adjust;
+											mouse_click_actions[mouse_index] = send_button_message;
+											mouse_click_parameters[mouse_index] = block;
+											mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+											/*	mouse_click_actions[mouse_index] = static_mod_adjust;
 												mouse_click_parameters[mouse_index] = [curp, block, vl[v]];
 												//post("\npv,sc",pv,statecount);
 												mouse_click_values[mouse_index] = ((1.01+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
 												
-											//}
+											}*/
 											mouse_index++;
 											if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 												//but it's so much easier just to call this fn
 												buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+											}
+										}else{
+											var ww = (w + 2*(opvf))/vl.length;
+											var ww2 = ww - 2*(opvf);
+											for(var v=0;v<vl.length;v++){
+												pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*vl[v]+curp);
+												var pv2 = Math.floor(pv * statecount * 0.99999);
+												var valcol;
+												var pv3 = pv2/statecount;
+												if(params[curp].contains("colours")){
+													valcol = params[curp].get("colours["+pv2+"]");
+												}else{
+													var pv4;
+													if(statecount==2){
+														pv4 = pv3*0.9 + 0.3;
+													}else{
+														pv4 = pv3*0.6 + 0.7;
+													}
+													valcol = [pv4*colour[0], pv4*colour[1], pv4*colour[2]];
+												}
+												paramslider_details[curp]=[x1+v*ww,y1,x1+v*ww+ww2,y2,valcol[0],valcol[1],valcol[2],mouse_index,block,curp,flags,vl[v],namelabely,p_type,wrap,block_name,h_slider,p_values];
+												parameter_menu_b(curp);
+												/*if(vl.length==1){
+													mouse_click_actions[mouse_index] = send_button_message;
+													mouse_click_parameters[mouse_index] = block;
+													mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+												}else{*/
+													mouse_click_actions[mouse_index] = static_mod_adjust;
+													mouse_click_parameters[mouse_index] = [curp, block, vl[v]];
+													//post("\npv,sc",pv,statecount);
+													mouse_click_values[mouse_index] = ((1.01+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
+													
+												//}
+												mouse_index++;
+												if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+													//but it's so much easier just to call this fn
+													buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+												}
 											}
 										}
 									}else{
@@ -4622,7 +4684,7 @@ function draw_sidebar(){
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
 					var hintrows = 0.4+ hint.length / 45+hint.split("£").length-1;
 					var rowstart=0;
-					var rowend=8*sidebar.width_in_units;
+					var rowend=7*sidebar.width_in_units;
 					hint = hint+"                       ";
 					var bold=0;
 					var sameline=0;
@@ -4658,7 +4720,7 @@ function draw_sidebar(){
 						lcd_main.message("write",sliced);
 						if(!sameline){
 							rowstart=rowend+1;
-							rowend+=46;
+							rowend+=7*sidebar.width_in_units;
 						}else{
 							var t = rowstart+46;
 							rowstart=rowend+1

@@ -4378,6 +4378,25 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-7",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 5,
+									"outlettype" : [ "dictionary", "", "", "", "" ],
+									"patching_rect" : [ 165.0, 227.0, 83.0, 22.0 ],
+									"saved_object_attributes" : 									{
+										"embed" : 0,
+										"legacy" : 0,
+										"parameter_enable" : 0,
+										"parameter_mappable" : 0
+									}
+,
+									"text" : "dict notepools"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-6",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
@@ -15440,7 +15459,7 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-89",
+					"id" : "obj-101",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
@@ -15453,7 +15472,7 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-90",
+					"id" : "obj-103",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -15505,6 +15524,13 @@
 					"destination" : [ "obj-43", 0 ],
 					"order" : 0,
 					"source" : [ "obj-100", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-31", 1 ],
+					"source" : [ "obj-101", 0 ]
 				}
 
 			}
@@ -16000,7 +16026,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-90", 0 ],
+					"destination" : [ "obj-103", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -16301,16 +16327,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-13", 1 ],
-					"order" : 0,
+					"destination" : [ "obj-103", 0 ],
+					"order" : 1,
 					"source" : [ "obj-70", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-90", 0 ],
-					"order" : 1,
+					"destination" : [ "obj-13", 1 ],
+					"order" : 0,
 					"source" : [ "obj-70", 0 ]
 				}
 
@@ -16415,13 +16441,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-31", 1 ],
-					"source" : [ "obj-89", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-227", 1 ],
 					"source" : [ "obj-9", 1 ]
 				}
@@ -16491,6 +16510,19 @@
 
 			}
  ],
+		"parameters" : 		{
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -16627,6 +16659,27 @@
 			}
 , 			{
 				"name" : "core.input.keyboard.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.scales.shapes.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.scales.shapes.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.scales.shapes.ui.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
 				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",

@@ -27,8 +27,8 @@ function loadbang(){
 		var newuserconfig = new Dict;
 		newuserconfig.parse("{}");
 		newuserconfig.replace("last_hardware_config","no_hardware.json");
-		newuserconfig.replace("TEMPLATES_FOLDER", projectpath+"templates");
-		newuserconfig.replace("SONGS_FOLDER", projectpath+"demosongs");
+		newuserconfig.replace("TEMPLATES_FOLDER", "templates");
+		newuserconfig.replace("SONGS_FOLDER", "demosongs");
 		newuserconfig.replace("glow", 0.2);
 		newuserconfig.export_json(projectpath+"userconfig.json");
 		try{
@@ -260,6 +260,8 @@ function initialise_dictionaries(hardware_file){
 	audio_to_data_poly.setvalue(0, "out_value", 0);
 	audio_to_data_poly.setvalue(0, "out_trigger", 0);
 
+	notepools_dict.parse("notepools","{}");
+	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.setvalue(i, "vis_meter", 1);
 	}
@@ -285,6 +287,10 @@ function initialise_dictionaries(hardware_file){
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
 
 	SONGS_FOLDER = config.get("SONGS_FOLDER");
+	if((projectpath!="")&&(SONGS_FOLDER.indexOf("/")==-1)){
+		SONGS_FOLDER = projectpath + SONGS_FOLDER;
+		post("\songs folder is ",SONGS_FOLDER);
+	}	
 	read_songs_folder("songs");
 	
 	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");

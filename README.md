@@ -4,4 +4,4 @@ it seamlessly integrates hardware and software, midi and audio, lets you connect
 
 benny is a good place to host your own max/msp patches, but you don't have to know max to get started.
 
-[manual](https://jamesholdenmusic.github.io/BennyDocs/)
+[manual](https://playbenny.github.io/benny_manual/)

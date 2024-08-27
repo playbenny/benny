@@ -716,7 +716,10 @@ function load_elsewhere(fname){
 			tss = tss + ts[t];
 			if(t>0) tss = tss + ".";
 		}
+		post("\nfilename",tss);
 		song.import_json(fname);
+		loading.songpath = fname.split(tss)[0];
+		post("\npath", loading.songpath);
 		copy_song_to_songs_dict(tss);
 		if(playing) play_button();
 		meters_enable = 0;
@@ -1559,10 +1562,8 @@ function data_edit(parameter,value){
 	//post("\nDATA EDIT!!",parameter,"or",parameter[0],parameter[1],value);
 	if(value=="get"){
 		var clickset=0;
-		if(parameter[1]){
-			clickset = 1;
-			usermouse.drag.release_on_exit = 1;
-		}
+		if(parameter[1]) clickset = 1;
+		usermouse.drag.release_on_exit = clickset;
 		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
 			return voice_data_buffer.peek(1,parameter[0]);
 		}else{
@@ -1712,10 +1713,8 @@ function sidebar_parameter_knob(parameter, value){
 		//also: look up if this slider is set to clickset mode
 		var clickset=0;
 		if((Array.isArray(parameter))&&(Array.isArray(paramslider_details[parameter[0]]))){
-			if(paramslider_details[parameter[0]][18]){
-				clickset = 1;
-				usermouse.drag.release_on_exit = 1;
-			}
+			if(paramslider_details[parameter[0]][18]) clickset = 1;
+			usermouse.drag.release_on_exit = clickset;
 		}
 		if((usermouse.ctrl)&&(usermouse.got_t == 2)){ // this bit is for touch - if you hold ctrl and touch a different bit of fader it won't have changed selection yet
 			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
@@ -1731,10 +1730,11 @@ function sidebar_parameter_knob(parameter, value){
 					redraw_flag.flag |= 10;
 					usermouse.left_button = 0; // this makes it start a new drag next frame
 				}
+				post("\ntouch safety code activated(?)");
 			}
 		}
 		if(((SLIDER_CLICK_SET==0)&&(clickset==0))||(usermouse.shift==1)||(usermouse.alt==1)){
-			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+parameter[0]);
+			return parameter_value_buffer.peek(1, MAX_PARAMETERS*parameter[1]+paramslider_details[parameter[0]][9]);
 		}else{
 			//TODO if paramslider_details[][18] == 2 then use x instead
 			var newval;
@@ -1744,7 +1744,7 @@ function sidebar_parameter_knob(parameter, value){
 				newval = (usermouse.y - paramslider_details[parameter[0]][3])/(paramslider_details[parameter[0]][1]-paramslider_details[parameter[0]][3]);
 			}
 			//post("\nsetting the slider to",newval);
-			if(typeof newval == "number") parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],newval);
+			if(typeof newval == "number") parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+paramslider_details[parameter[0]][9],newval);
 			redraw_flag.deferred|=1;
 			return newval;
 		}
@@ -1755,14 +1755,14 @@ function sidebar_parameter_knob(parameter, value){
 		}else{
 			value = Math.max(0,Math.min(0.9999999,value));
 		}
-		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+parameter[0],value);
+		parameter_value_buffer.poke(1, MAX_PARAMETERS*parameter[1]+paramslider_details[parameter[0]][9],value);
 		if(((sidebar.mode=="block")||(sidebar.mode=="add_state")||(sidebar.mode=="settings")) && (parameter[1]==sidebar.selected)){
 			redraw_flag.deferred|=1;
 			redraw_flag.targets[parameter[0]]=2;
 		}
-		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][parameter[0]])){
+		if((displaymode=="panels")&&(panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]])){
 			redraw_flag.deferred|=16;
-			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
+			redraw_flag.paneltargets[panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]]-MAX_PARAMETERS]=1;
 		}
 		//if(displaymode=="custom") redraw_flag.flag=4;
 		if(sidebar.selected==automap.mapped_c) note_poly.setvalue(automap.available_c,"refresh");

@@ -302,19 +302,19 @@ function meters(){
 			for(tt=0;tt<NO_IO_PER_BLOCK;tt++){ // need to get from buffer
 				mmin = scope_buffer.peek(1,1+(polyvoice+MAX_AUDIO_VOICES*tt));
 				mmax = scope_buffer.peek(2,1+(polyvoice+MAX_AUDIO_VOICES*tt));
-				if(blocks_meter[block][voice*NO_IO_PER_BLOCK+tt] === undefined ){
-					deferred_diag.push("meter problem: block"+block+"voice"+voice+"tt"+tt);//,"loadingstatus",loading.progress);
-				}else{
+				//if(blocks_meter[block][voice*NO_IO_PER_BLOCK+tt] === undefined ){
+				//	deferred_diag.push("meter problem: block"+block+"voice"+voice+"tt"+tt);//,"loadingstatus",loading.progress);
+				//}else{
 					//post("\nmeter OK     : block",block,"voice",voice,"tt",tt);
 					tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position;
 					//tv[0] = blocks_cube[block][voice].position[0] + 0.4+tt*0.4/NO_IO_PER_BLOCK + 0.25*(voice==0);
 					tv[1] = blocks_cube[block][voice].position[1] + (mmax+mmin)*0.225;
-					tv[2] = 0.5+selected.block[block];
+					tv[2] = 0.5+blocks_cube[block][voice].position[2];
 					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position = tv;
 					tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale;
 					tv[1] = Math.max(0.225*(mmax-mmin),0.005);
 					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale = tv;
-				}
+				//}
 			}
 		}catch(err){post("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
 	}

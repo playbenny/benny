@@ -471,7 +471,14 @@ function load_next_song(slow){
 
 function load_song(){
 	if(currentsong<0) return -1;
-	var df = (sidebar.files_page == "templates")|0;
+	var df; 
+	if(sidebar.files_page == "templates"){
+		df=1;
+		loading.songpath = TEMPLATES_FOLDER;
+	}else{
+		df=0;
+		loading.songpath = SONGS_FOLDER;
+	}
 	if(playing) play_button();
 	meters_enable = 0;
 	clear_everything();
@@ -503,7 +510,14 @@ function merge_song(){
 		loading.bundling=4;
 	}
 	//loading.wait=2;
-	var df = (sidebar.files_page == "templates")|0;
+	var df; 
+	if(sidebar.files_page == "templates"){
+		df=1;
+		loading.songpath = TEMPLATES_FOLDER;
+	}else{
+		df=0;
+		loading.songpath = SONGS_FOLDER;
+	}
 	loading.songname = songlist[df][currentsong];
 	song_select.previous_name = song_select.current_name;
 	song_select.previous_blocks = song_select.current_blocks.slice();
@@ -607,7 +621,6 @@ function import_song(){
 			if(songs.contains(loading.songname+"::notepools")){
 				post("\nloading notepools");
 				notepools_dict.replace("notepools", songs.get(loading.songname+"::notepools"));
-				//messnamed("LOAD_NOTEPOOLS","bang");
 			}
 		}
 		for(b=loading.progress;b<MAX_BLOCKS;b++){
@@ -1204,7 +1217,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 }
 
 function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
-	post("\ncollecting data to save\nselo=",selectedonly,"saveas=",saveas);
+	post("\ncollecting data to save\nselected only =",selectedonly," saveas =",saveas);
 	//copy current param values into states[0]
 	var b,p,psize;
 	var store = [];
@@ -1280,7 +1293,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		messnamed("trigger_save_as","bang");
 	}else{
 		post("\nsave",loading.songname);
-		messnamed("save_named",SONGS_FOLDER+loading.songname);
+		messnamed("save_named",loading.songpath+loading.songname);
 		//messnamed("trigger_save","bang");
 	}
 	set_sidebar_mode("none");
@@ -1357,7 +1370,7 @@ function save_hotkey(){
 		var nas = na.slice(0,npos);
 		num++;
 		loading.songname = nas+num+".json";
-		post("\nincrementing filename, saving as:",SONGS_FOLDER+loading.songname);
+		post("\nincrementing filename, saving as:",loading.songpath+loading.songname);
 		save_song(0,0); //save
 		//messnamed("save_named",SONGS_FOLDER+loading.songname);
 	}else{
@@ -1379,7 +1392,7 @@ function file_written(fname){//called when max reports successfully saving the c
 }
 
 function folder_select(folderstr){
-//	post("new songs folder selected",folderstr);
+	post("new songs folder selected",folderstr);
 	if(folderstr!="cancel"){
 		if(folder_target == "song"){
 			SONGS_FOLDER = folderstr;
@@ -1555,6 +1568,9 @@ function clear_everything(){
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
 
 	connections.parse('{ "connections" : [ {} ] }');
+	notepools_dict.parse("notepools","{}");
+	messnamed("LOAD_NOTEPOOLS","bang");
+
 	var b,bl;
 	for(b in blocks_cube){
 		for(bl in blocks_cube[b]){

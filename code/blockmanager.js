@@ -614,6 +614,7 @@ var ext_matrix = {
 var loading = {
 	progress : 0,
 	songname : "",
+	songpath : "",
 	mute_loaded : 0,
 	xoffset : 0,
 	ready_for_next_action : 0,
@@ -693,6 +694,7 @@ function other_window_active(a){
 		am_foreground = 1;
 		return 0;
 	}
+	if(world == null) return 0;
 	if(a == 1){
 		am_foreground = 0;
 		world.message("fps", TARGET_FPS[1]);

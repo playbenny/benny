@@ -18,7 +18,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,1,2,3],
+				"contains" : [0,0,0,1,2,3,11,12],
 				"colour" : -3
 			},
 			{
@@ -86,14 +86,14 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.02 
+				"default" : 0.4 
 			},
 			{
 				"name" : "tone_key_follow",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.05
 			},
 			{
 				"name" : "feedback",
@@ -110,6 +110,22 @@
 				"wrap" : 0,
 				"default" : 0.75,	
 				"error_scale" : 0.3
+			},
+			{
+				"name" : "octave",
+				"type" : "int",
+				"values" : ["bi", -8, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,
+				"error_scale" : 0.3
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,
+				"error_scale" : 0.1
 			}
 		]
 	}
