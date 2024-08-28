@@ -1,6 +1,6 @@
 {
-	"midi.calculus" : {
-		"patcher" : "midi.calculus",
+	"utility.midi.calculus" : {
+		"patcher" : "utility.midi.calculus",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Differentials and integrals of midi value streams.££This block can output a value representing the speed and direction of movement of a value, or output a value only when it changes, or sum a value over time.",
