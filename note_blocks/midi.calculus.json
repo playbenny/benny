@@ -35,35 +35,35 @@
 				"wrap" : 0
 			},
 			{
-				"name" : "rate scale",
+				"name" : "rate_scale",
 				"type" : "float",
 				"values" : ["uni", 0, 1000, "exp1000"],
 				"wrap" : 0,
 				"default" : 1
 			},
 			{
-				"name" : "rate smooth",
+				"name" : "rate_smoothing_filter",
 				"type" : "float",
 				"values" : ["uni", 0, 10, "exp10"],
 				"wrap" : 0,
 				"default" : 0.6
 			},
 			{
-				"name" : "integral scale",
+				"name" : "integral_scale",
 				"type" : "float",
 				"values" : ["uni", 0, 128, "exp100"],
 				"wrap" : 0,
 				"default" : 0.1
 			},
 			{
-				"name" : "integral decay",
+				"name" : "integral_decay_rate",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "exp1000"],
 				"wrap" : 0,
 				"default" : 0.6 
 			},
 			{
-				"name" : "integral limit",
+				"name" : "integral_limiting",
 				"type" : "menu_l",
 				"values" : ["none", "clip", "wrap"],
 				"default" : 0.5,
