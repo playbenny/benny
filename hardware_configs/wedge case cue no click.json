@@ -148,6 +148,10 @@
 			}
 
 		}
+,
+		"matrix" : 		{
+			"soundcard" : "/Users/James/Documents/GitHub/benny/hardware_configs/drivers/soundcard_mixer/rme_totalmix.maxpat"
+		}
 
 	}
 ,

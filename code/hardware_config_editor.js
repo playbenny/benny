@@ -1020,7 +1020,7 @@ function render_controls(){
 	var matrix_ext = "none", matrix_soundcard = "none";
 	if(configfile.contains("io::matrix::external")) matrix_ext = configfile.get("io::matrix::external");
 	if(configfile.contains("io::matrix::soundcard")) matrix_soundcard = configfile.get("io::matrix::soundcard");
-
+	post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
 	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 	controls[ii].message("set", "external matrix driver");
 	controls[ii].presentation(1);
@@ -1031,9 +1031,9 @@ function render_controls(){
 	controls[ii].message("prefix", filepath+"/hardware_configs/drivers/external_matrix");
 	controls[ii].message("populate");
 	controls[ii].message("append", "none");
-	controls[ii].message("set", matrix_ext);
 	controls[ii].presentation(1);
 	controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+	controls[ii].message("setsymbol", matrix_ext);
 	ii++;
 	controls[ii] = this.patcher.newdefault(10, 100, "send", "matrix_ext");
 	this.patcher.connect(controls[ii-1],1,controls[ii],0);
@@ -1050,9 +1050,9 @@ function render_controls(){
 	controls[ii].message("prefix", filepath+"/hardware_configs/drivers/soundcard_mixer");
 	controls[ii].message("populate");
 	controls[ii].message("append", "none");
-	controls[ii].message("set", matrix_soundcard);
 	controls[ii].presentation(1);
 	controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+	controls[ii].message("setsymbol", matrix_soundcard);
 	ii++;
 	controls[ii] = this.patcher.newdefault(10, 100, "send", "matrix_soundcard");
 	this.patcher.connect(controls[ii-1],1,controls[ii],0);
@@ -1768,11 +1768,15 @@ function add_midimonitors(interface){
 }
 
 function matrix_ext(path){
+	if(path.indexOf(":")!=-1) path = path.split(":")[1];
+	if(path.indexOf("none")!=-1) path = "none";
 	post("\ndriver",path);
-	configfile.setparse("io::matrix::external",path);
+	configfile.replace("io::matrix::external",path);
 }
 
 function matrix_soundcard(path){
+	if(path.indexOf(":")!=-1) path = path.split(":")[1];
+	if(path.indexOf("none")!=-1) path = "none";
 	post("\ndriver",path);
-	configfile.setparse("io::matrix::soundcard",path);
+	configfile.replace("io::matrix::soundcard",path);
 }

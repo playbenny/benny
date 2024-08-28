@@ -85,6 +85,42 @@
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-6",
+									"maxclass" : "message",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 96.0, 55.0, 45.0, 22.0 ],
+									"text" : "open 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-5",
+									"maxclass" : "message",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 96.0, 15.0, 45.0, 22.0 ],
+									"text" : "open 0"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-2",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 10.0, 9.0, 81.0, 22.0 ],
+									"text" : "r drivers_poly"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-3",
 									"linecount" : 3,
 									"maxclass" : "comment",
@@ -100,16 +136,35 @@
 									"id" : "obj-1",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
-									"numoutlets" : 2,
-									"outlettype" : [ "", "" ],
-									"patching_rect" : [ 15.0, 41.0, 106.0, 22.0 ],
-									"text" : "poly~ blank.note 2",
-									"varname" : "drivers_poly"
+									"numoutlets" : 0,
+									"patching_rect" : [ 10.0, 91.0, 114.0, 22.0 ],
+									"text" : "poly~ driver_wrap 2"
 								}
 
 							}
  ],
-						"lines" : [  ]
+						"lines" : [ 							{
+								"patchline" : 								{
+									"destination" : [ "obj-1", 0 ],
+									"source" : [ "obj-2", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-1", 0 ],
+									"source" : [ "obj-5", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-1", 0 ],
+									"source" : [ "obj-6", 0 ]
+								}
+
+							}
+ ]
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -14516,7 +14571,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager",
+						"filename" : "blockmanager.js",
 						"parameter_enable" : 0
 					}
 ,
@@ -14749,25 +14804,26 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-81",
+					"id" : "obj-55",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 654.0, 497.0, 100.0, 22.0 ],
-					"text" : "mc.adc~ 1 2",
+					"patching_rect" : [ 654.0, 497.0, 217.0, 22.0 ],
+					"text" : "mc.adc~ 1 2 3 4 5 6 7 9 10 11 12 13 14",
 					"varname" : "audio_inputs"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-89",
+					"id" : "obj-58",
+					"linecount" : 5,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 667.0, 882.0, 100.0, 22.0 ],
-					"text" : "mc.dac~ 1 2",
+					"patching_rect" : [ 667.0, 882.0, 100.0, 77.0 ],
+					"text" : "mc.dac~ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26",
 					"varname" : "audio_outputs"
 				}
 
@@ -15301,7 +15357,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-89", 0 ],
+					"destination" : [ "obj-58", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -15495,6 +15551,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-31", 1 ],
+					"source" : [ "obj-55", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-21", 0 ],
 					"source" : [ "obj-56", 0 ]
 				}
@@ -15608,7 +15671,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-89", 0 ],
+					"destination" : [ "obj-58", 0 ],
 					"order" : 1,
 					"source" : [ "obj-70", 0 ]
 				}
@@ -15681,13 +15744,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-86", 0 ],
 					"source" : [ "obj-8", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-31", 1 ],
-					"source" : [ "obj-81", 0 ]
 				}
 
 			}
@@ -15834,6 +15890,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "blank.driver.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "blank.note.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
@@ -15932,13 +15995,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "cytomic_smoother_param.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "display_pages.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
@@ -15950,6 +16006,13 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "driver_wrap.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -16035,16 +16098,16 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "ui_wrap.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : ".",
+				"name" : "rme_totalmix.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/soundcard_mixer",
+				"patcherrelativepath" : "../hardware_configs/drivers/soundcard_mixer",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
-				"name" : "utility.midi.smooth.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
+				"name" : "ui_wrap.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
