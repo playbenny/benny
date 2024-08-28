@@ -65,7 +65,7 @@
 	"maxmsp" : {
 		"preempt" : 1,
 		"seteventinterval" : 2,
-		"setpollthrottle" : 100,
+		"setpollthrottle" : 200,
 		"setqueuethrottle" : 10,
 		"setslop" : 100,
 		"setsysqelemthrottle" : 100,
