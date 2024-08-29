@@ -40,6 +40,42 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-54",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "int", "int" ],
+					"patching_rect" : [ 587.5, 46.0, 51.0, 22.0 ],
+					"text" : "unpack"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-53",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 587.5, 14.0, 79.0, 22.0 ],
+					"text" : "r #0notein"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-51",
+					"maxclass" : "newobj",
+					"numinlets" : 4,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 588.0, 83.0, 78.0, 22.0 ],
+					"text" : "mutecontrol"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-25",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -95,7 +131,7 @@
 					"patching_rect" : [ 521.0, 457.0, 212.0, 40.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 4.6875, 1.5625, 724.3125, 19.0 ],
-					"text" : "\"C:/Users/Luke/Dropbox/          Multitudes/Luke Blocks/Luke Samples/Drum hits/Korg KR-55/Bassdrum.wav\""
+					"text" : "\"C:/Users/Luke/Dropbox/          Multitudes/Luke Blocks/Luke Samples/Note Samples in C/Moog granny/moog gran  (4).wav\""
 				}
 
 			}
@@ -613,7 +649,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 237.0, 403.125, 44.0, 22.0 ]
+					"patching_rect" : [ 210.0, 374.0, 44.0, 22.0 ]
 				}
 
 			}
@@ -1036,6 +1072,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 140.625, 587.5, 44.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -1708,7 +1748,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 338.125, 564.0625, 99.0, 22.0 ],
-					"text" : "set sample-11"
+					"text" : "set sample-10"
 				}
 
 			}
@@ -2800,6 +2840,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 75.75, 587.5, 44.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -2834,7 +2878,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 76.0, 1095.0, 595.0 ],
+						"rect" : [ -26.0, 149.0, 1095.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -2862,7 +2906,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-1",
@@ -2870,7 +2913,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "signal" ],
-									"patching_rect" : [ 1068.0, 787.0, 31.0, 22.0 ],
+									"patching_rect" : [ 1068.0, 745.5, 31.0, 22.0 ],
 									"text" : "sig~"
 								}
 
@@ -3413,8 +3456,8 @@
 									"numinlets" : 6,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 1064.0, 347.0, 103.0, 22.0 ],
-									"text" : "scale 0 127 0.1 1."
+									"patching_rect" : [ 1068.0, 373.0, 175.0, 22.0 ],
+									"text" : "scale 0. 127. 0. 1. 2 @classic 0"
 								}
 
 							}
@@ -4243,7 +4286,7 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-11", 0 ],
+									"destination" : [ "obj-10", 0 ],
 									"source" : [ "obj-23", 0 ]
 								}
 
@@ -4257,7 +4300,7 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-11", 0 ],
+									"destination" : [ "obj-10", 0 ],
 									"source" : [ "obj-25", 0 ]
 								}
 
@@ -4885,10 +4928,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 737.5, 206.25, 37.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -4936,10 +4975,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 670.3125, 164.0625, 37.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -4964,6 +4999,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 689.0625, 84.375, 29.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -5064,7 +5103,7 @@
 , 			{
 				"box" : 				{
 					"bgcolor" : [ 0.301961, 0.301961, 0.301961, 0.0 ],
-					"buffername" : "sample-11",
+					"buffername" : "sample-10",
 					"gridcolor" : [ 0.301961, 0.301961, 0.301961, 0.0 ],
 					"id" : "obj-151",
 					"ignoreclick" : 1,
@@ -5157,6 +5196,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-32", 0 ],
+					"order" : 0,
+					"source" : [ "obj-103", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-51", 3 ],
+					"order" : 1,
 					"source" : [ "obj-103", 1 ]
 				}
 
@@ -5270,7 +5318,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-51", 0 ],
+					"order" : 0,
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-92", 0 ],
+					"order" : 1,
 					"source" : [ "obj-12", 0 ]
 				}
 
@@ -5582,8 +5639,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-32", 0 ],
+					"source" : [ "obj-51", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-105", 0 ],
 					"source" : [ "obj-52", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-54", 0 ],
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-51", 1 ],
+					"source" : [ "obj-54", 1 ]
 				}
 
 			}

@@ -1,0 +1,57 @@
+{
+	"abb.midi.looper" : {
+		"patcher" : "abb.midi.looper",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "looper out", "midi thru" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0,1,2,3]
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1,2,3]
+		},
+		"parameters" : [
+			{
+				"name" : "reset",
+				"type" : "button",
+				"values" : ["firstvoice", "reset", "loopreset"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "bar length",
+				"type" : "int",
+				"values" : ["uni", 0, 12, "lin"],
+				"wrap" : 0,
+				"default" : 0.42
+			},
+            {
+				"name" : "input on/off",
+				"type" : "menu_b",
+				"values" : ["input_off", "input_active"],
+				"wrap" : 1,
+				"default" : 0.75
+			},
+			{
+				"name" : "thru on/off",
+				"type" : "menu_b",
+				"values" : ["0", "1"],
+				"wrap" : 1,
+				"default" : 0.75
+			}
+		]
+	}
+}
