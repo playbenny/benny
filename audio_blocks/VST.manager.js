@@ -44,21 +44,21 @@ function oversample(r){
 }
 
 function group_contents(g){
-//	post("g",g,"args",arguments.length,"length");
 	var a = arrayfromargs(messagename, arguments);
 	var cont = new Array();
 	var i;
 	if(block_name != "none"){
 		if(a.length>2){
 			for(i=0;i<a.length-2;i++) cont[i]=a[i+2];		
-//			new_blockfile.replace(block_name+"::groups["+g+"]::contents",cont);
+			//			new_blockfile.replace(block_name+"::groups["+g+"]::contents",cont);
 			//post(cont.length,cont);
-			if(cont.length>1){
+			//if(cont.length>1){
 				groups[g] = cont;
-			}else{
-				groups[g] = [cont[0],cont[0]];
+				post("\ngroup",g,"contents",cont);
+			//}else{
+			//	groups[g] = [cont[0],cont[0]];
 				//post(groups[g]);
-			}
+			//}
 		}
 	}	
 }
@@ -254,11 +254,11 @@ function transfer_params_and_defaults(){
 			new_blockfile.replace(block_name + "::parameters["+i+"]::values", "uni", 0,1, "lin");
 		}
 	}
-	new_blockfile.replace(block_name + "::groups",'A');
 	if(groups[0].length == 0){
 		post("cannot save file with empty first group\n");
 		return -1;
 	}
+	new_blockfile.replace(block_name + "::groups",'A');
 	for(i=1;i<MAX_GROUPS;i++){
 		if(groups[i].length!=0){
 			new_blockfile.append(block_name + "::groups",'B');
