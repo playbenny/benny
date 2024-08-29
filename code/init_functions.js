@@ -195,7 +195,7 @@ function initialise_dictionaries(hardware_file){
 	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
 	sidebar.x = sidebar.x2 -sidebar.width;
 
-
+	SOUNDCARD_HAS_MATRIX = 0;
 
 	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
@@ -427,11 +427,6 @@ function import_hardware(v){
 	d2.import_json(v);
 	
 	d = d2.get("hardware");
-	var keys = d.getkeys();
-	if(d2.contains("measured_latency")){
-		post("\nlatency measurement found, copied to config for blocks to access if they want");
-		config.replace("measured_latency",d2.get("measured_latency"));
-	}
 	if(d2.contains("io::matrix::external")){
 		var drv = d2.get("io::matrix::external");
 		if(drv != "none"){
@@ -443,10 +438,15 @@ function import_hardware(v){
 		var drv = d2.get("io::matrix::soundcard");
 		if(drv != "none"){
 			post("\nfound soundcard matrix, loading driver",drv);
-			messnamed("drivers_poly","setvalue",1,"patchername",drv);
+			messnamed("drivers_poly","setvalue",2,"patchername",drv);
+			SOUNDCARD_HAS_MATRIX = 1;
 		}
 	}
-
+	var keys = d.getkeys();
+	if(d2.contains("measured_latency")){
+		post("\nlatency measurement found, copied to config for blocks to access if they want");
+		config.replace("measured_latency",d2.get("measured_latency"));
+	}
 	for(i=0;i<MAX_AUDIO_INPUTS+2;i++) input_used[i]=0;
 	for(i=0;i<MAX_AUDIO_OUTPUTS+2;i++) output_used[i]=0;
 	var output_blocks=[]; //output blocks are in pairs, eg #1 is ch's 1+2. so, for every output channel you find ("in" to a block, mind), 
@@ -628,11 +628,12 @@ function import_hardware(v){
 	messnamed("NO_IO_PER_BLOCK", NO_IO_PER_BLOCK);
 	messnamed("MAX_DATA", MAX_DATA);
 
-
-
-
-
 	assign_block_colours();
+	if(SOUNDCARD_HAS_MATRIX){ //tell the driver the size of the matrix. wipe it.
+		messnamed("drivers_poly","setvalue",2,"num_inputs",MAX_USED_AUDIO_INPUTS);
+		messnamed("drivers_poly","setvalue",2,"num_outputs",MAX_USED_AUDIO_OUTPUTS);
+		messnamed("drivers_poly","setvalue",2,"initialise");
+	}
 	
 	usermouse.queue = [];
 	world.message( "enable", 1);
