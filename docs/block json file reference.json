@@ -158,7 +158,7 @@ and the json file has to be saved as the same name too. eg this example is based
 				"name" : "repeat",
 				"type" : "menu_b", 
 				"values" : ["on", "off"],
-                "colours" : [ [255,0,0], [0,255,0]],
+                "colours" : [ [255,0,0], [0,255,0]], //optional: per-state colours for the buttons
 				"wrap" : 1, //<<WRAP MUST BE ON FOR menu_b buttons to work right
 				"default" : 0.25 // << this is important, set the default in the middle of the range for the value you want. 
                 //so if it has 2 values 0 to 0.5 is the first one, so default to 0.25. this is due to a bug i can't quite work out in benny, sorry.
