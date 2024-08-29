@@ -2443,6 +2443,21 @@ function remove_block(block){
 		song_select.current_blocks.splice(i,1);
 		if(song_select.current_blocks.length==0) song_select.show=0;
 	}
+	if(automap.mapped_k == block){
+		automap.lock_k = 0;
+		automap.mapped_k = -1;
+		note_poly.setvalue(automap.available_k, "automapped", 0);
+	}
+	if(automap.mapped_c == block){
+		automap.lock_c = 0;
+		automap.mapped_c = -1;
+		note_poly.setvalue(automap.available_c, "automapped", 0);
+	}
+	if(automap.mapped_q == block){
+		automap.lock_q = 0;
+		automap.mapped_q = -1;
+		set_automap_q(0);
+	}
 	i = song_select.previous_blocks.indexOf(block);
 	if(i> -1){
 		song_select.previous_blocks.splice(i,1);

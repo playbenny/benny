@@ -432,7 +432,21 @@ function import_hardware(v){
 		post("\nlatency measurement found, copied to config for blocks to access if they want");
 		config.replace("measured_latency",d2.get("measured_latency"));
 	}
-	
+	if(d2.contains("io::matrix::external")){
+		var drv = d2.get("io::matrix::external");
+		if(drv != "none"){
+			post("\nfound external matrix, loading driver",drv);
+			messnamed("drivers_poly","setvalue",1,"patchername",drv);
+		}
+	}
+	if(d2.contains("io::matrix::soundcard")){
+		var drv = d2.get("io::matrix::soundcard");
+		if(drv != "none"){
+			post("\nfound soundcard matrix, loading driver",drv);
+			messnamed("drivers_poly","setvalue",1,"patchername",drv);
+		}
+	}
+
 	for(i=0;i<MAX_AUDIO_INPUTS+2;i++) input_used[i]=0;
 	for(i=0;i<MAX_AUDIO_OUTPUTS+2;i++) output_used[i]=0;
 	var output_blocks=[]; //output blocks are in pairs, eg #1 is ch's 1+2. so, for every output channel you find ("in" to a block, mind), 

@@ -1,0 +1,74 @@
+{
+	"utility.midi.calculus" : {
+		"patcher" : "utility.midi.calculus",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Differentials and integrals of midi value streams.££This block can output a value representing the speed and direction of movement of a value, or output a value only when it changes, or sum a value over time.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "vel sets value" ]
+			},
+			"out" : {
+				"parameters" : [ "change", "difference", "difference+", "difference-", "rate of change", "rate+", "rate-","integral" ],
+				"midi" : [ "changed", "0->nonzero", "nonzero->0"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0, 1, 2]
+			},
+			{
+				"contains" : [3,4,5],
+				"colour" : 5
+			}		
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "value",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"default" : 0,
+				"wrap" : 0
+			},
+			{
+				"name" : "rate_scale",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp1000"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "rate_smoothing_filter",
+				"type" : "float",
+				"values" : ["uni", 0, 10, "exp10"],
+				"wrap" : 0,
+				"default" : 0.6
+			},
+			{
+				"name" : "integral_scale",
+				"type" : "float",
+				"values" : ["uni", 0, 128, "exp100"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "integral_decay_rate",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.6 
+			},
+			{
+				"name" : "integral_limiting",
+				"type" : "menu_l",
+				"values" : ["none", "clip", "wrap"],
+				"default" : 0.5,
+				"wrap" : 1
+			}
+		]
+	}
+}

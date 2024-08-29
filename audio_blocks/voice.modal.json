@@ -18,25 +18,32 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,1,2,3,11,12],
+				"contains" : [0,0,0],
+				"height" : 2,
 				"colour" : -3
 			},
 			{
-				"contains" : [4,5,10],
+				"contains" : [1,2,3],
 				"height" : 0
 			},
 			{
-				"contains" : [6, 7,8,9],
+				"contains" : [6, 7,8,4,5],
 				"colour" : 3,
+				"height" : 0
+			},
+			{
+				"contains" : [11,12,9,10],
+				"colour" : 6,
 				"height" : 0
 			}
 		],
 		"parameters" : [
 			{
 				"name" : "frequency_distribution_model",
-				"type" : "menu_i",
-				"values" : ["elements", "stiff string", "free beam", "cantilevered beam", "rectangular membrane", "rectangular clamped plate", "tubular bell", "clamped tube", "free plate"],
+				"type" : "menu_l",
+				"values" : ["elements", "stiff_string", "free_beam", "cantilevered_beam", "rectangular_membrane", "rectangular_clamped plate", "tubular_bell", "clamped_tube", "free_plate"],
 				"wrap" : 1,
+				"columns" : 3,
 				"default" : 0
 			},
 			{
@@ -75,11 +82,11 @@
 				"default" : 0.2 
 			},
 			{
-				"name" : "bandwidth",
+				"name" : "resonator_bandwidth",
 				"type" : "float",
-				"values" : ["uni", 0, 100, "exp10"],
+				"values" : ["uni", 0, 10, "exp1000"],
 				"wrap" : 0,
-				"default" : 0.2 
+				"default" : 0.1 
 			},
 			{
 				"name" : "harmonic_rolloff",

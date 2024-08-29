@@ -123,6 +123,7 @@ function configloaded(path){
 			if(midi_interfaces.not_present_out.indexOf(out_list[i])==-1) midi_interfaces.not_present_out.push(out_list[i]);
 		}
 	}
+	if(!configfile.contains("io::matrix")) configfile.setparse("io::matrix", "{}");
 	render_controls();
 }
 
@@ -138,6 +139,7 @@ function render_controls(){
 	deleteall();
 	y_pos = 50;
 	ii=0;
+
 	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 	controls[ii].message("set", "keyboards");
 	controls[ii].presentation(1);
@@ -1014,6 +1016,49 @@ function render_controls(){
 	y_pos+=unit.row+2;
 
 	y_pos+=unit.header;
+	
+	var matrix_ext = "none", matrix_soundcard = "none";
+	if(configfile.contains("io::matrix::external")) matrix_ext = configfile.get("io::matrix::external");
+	if(configfile.contains("io::matrix::soundcard")) matrix_soundcard = configfile.get("io::matrix::soundcard");
+	post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
+	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+	controls[ii].message("set", "external matrix driver");
+	controls[ii].presentation(1);
+	controls[ii].presentation_rect(10,y_pos,unit.col+10,20);
+	ii++;
+
+	controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "drivers.1."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+	controls[ii].message("prefix", filepath+"/hardware_configs/drivers/external_matrix");
+	controls[ii].message("populate");
+	controls[ii].message("append", "none");
+	controls[ii].presentation(1);
+	controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+	controls[ii].message("setsymbol", matrix_ext);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 100, "send", "matrix_ext");
+	this.patcher.connect(controls[ii-1],1,controls[ii],0);
+	ii++;
+	y_pos+=unit.row+2;
+
+	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+	controls[ii].message("set", "soundcard mixer driver");
+	controls[ii].presentation(1);
+	controls[ii].presentation_rect(10,y_pos,unit.col+10,20);
+	ii++;
+
+	controls[ii]= this.patcher.newdefault(10, 100, "umenu", "@varname", "drivers.2."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+	controls[ii].message("prefix", filepath+"/hardware_configs/drivers/soundcard_mixer");
+	controls[ii].message("populate");
+	controls[ii].message("append", "none");
+	controls[ii].presentation(1);
+	controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+	controls[ii].message("setsymbol", matrix_soundcard);
+	ii++;
+	controls[ii] = this.patcher.newdefault(10, 100, "send", "matrix_soundcard");
+	this.patcher.connect(controls[ii-1],1,controls[ii],0);
+	ii++;
+
+	y_pos+=unit.header;
 	controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 	controls[ii].message("set", "hardware");
 	controls[ii].presentation(1);
@@ -1392,13 +1437,6 @@ function render_controls(){
 		values[ii] = [cdk[p]];
 		ii++;			
 		y_pos+=2*unit.row;
-		//	"connections" : {
-		//		"in" : {
-		//			"hardware" : [ "in", "cutoff" ],
-		//			"hardware_channels" : [ 5,6 ]
-		//		"out" : {
-		//			"hardware" : [ "out" ],
-		//			"hardware_channels" : [ 2 ]
 	}
 	y_pos+=unit.row;
 
@@ -1727,4 +1765,18 @@ function add_midimonitors(interface){
 	this.patcher.connect(controls[ii],1,controls[ii-2],1);
 	this.patcher.connect(controls[ii],2,controls[ii-2],2);
 	ii++;
+}
+
+function matrix_ext(path){
+	if(path.indexOf(":")!=-1) path = path.split(":")[1];
+	if(path.indexOf("none")!=-1) path = "none";
+	post("\ndriver",path);
+	configfile.replace("io::matrix::external",path);
+}
+
+function matrix_soundcard(path){
+	if(path.indexOf(":")!=-1) path = path.split(":")[1];
+	if(path.indexOf("none")!=-1) path = "none";
+	post("\ndriver",path);
+	configfile.replace("io::matrix::soundcard",path);
 }
