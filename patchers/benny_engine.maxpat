@@ -83,6 +83,7 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-6",
@@ -90,8 +91,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 96.0, 55.0, 45.0, 22.0 ],
-									"text" : "open 1"
+									"patching_rect" : [ 96.0, 55.0, 103.0, 22.0 ],
+									"text" : "setvalue 2 open 0"
 								}
 
 							}
@@ -102,8 +103,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 96.0, 15.0, 45.0, 22.0 ],
-									"text" : "open 0"
+									"patching_rect" : [ 96.0, 15.0, 103.0, 22.0 ],
+									"text" : "setvalue 1 open 0"
 								}
 
 							}
@@ -14495,7 +14496,7 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 18.0,
 					"id" : "obj-52",
-					"items" : [ "live_rig.json", ",", "live_rig_no_cue.json", ",", "live_rig_no_cue_novation.json", ",", "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json", ",", "wedge case.json" ],
+					"items" : [ "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
