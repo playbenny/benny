@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-24",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 229.0, 78.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-13",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -2621,6 +2633,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 769.0, 96.0, 26.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out"
 				}
 
@@ -2657,10 +2673,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 769.0, 18.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -2708,7 +2720,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 108.507462739944458, 166.0, 58.0, 22.0 ],
+					"patching_rect" : [ 108.996266841888428, 154.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -2721,8 +2733,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 108.507462739944458, 353.731330633163452, 123.0, 36.0 ],
-					"text" : "\"4- Launch Control XL\""
+					"patching_rect" : [ 108.996266841888428, 338.0, 123.0, 36.0 ],
+					"text" : "\"6- Launch Control XL\""
 				}
 
 			}
@@ -2732,7 +2744,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-28",
-					"items" : [ "Xkey25", ",", "LoopBe Internal MIDI", ",", "4- Launch Control XL", ",", "MIDIIN2 (4- Launch Control XL)", ",", "USB MS1x1 MIDI Interface" ],
+					"items" : [ "LoopBe Internal MIDI", ",", "Xkey25", ",", "USB MS1x1 MIDI Interface", ",", "6- Launch Control XL", ",", "MIDIIN2 (6- Launch Control XL)" ],
 					"labelclick" : 1,
 					"maxclass" : "umenu",
 					"numinlets" : 1,
@@ -2872,10 +2884,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 170.0, 765.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -3282,6 +3290,13 @@
 					"destination" : [ "obj-88", 0 ],
 					"order" : 4,
 					"source" : [ "obj-22", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-19", 0 ],
+					"source" : [ "obj-24", 0 ]
 				}
 
 			}
