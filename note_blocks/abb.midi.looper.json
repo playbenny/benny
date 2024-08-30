@@ -34,10 +34,10 @@
 			},
 			{
 				"name" : "bar length",
-				"type" : "int",
-				"values" : ["uni", 0, 12, "lin"],
+				"type" : "menu_l",
+				"values" : ["1 bar", "2 bars", "4 bars", "8 bars", "16 bars"],
 				"wrap" : 0,
-				"default" : 0.42
+				"default" : 0
 			},
             {
 				"name" : "input on/off",
