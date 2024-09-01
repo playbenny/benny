@@ -1,11 +1,11 @@
 {
-	"vst.Seventh.Heaven" : 	{
+	"vst.Valhalla.Plate" : 	{
 		"patcher" : "vst.loader",
 		"type" : "audio",
-		"help_text" : "Seventh Heaven",
+		"help_text" : "ValhallaPlate",
 		"block_ui_patcher" : "blank.ui",
 		"max_polyphony" : 0,
-		"plugin_name" : "Seventh Heaven",
+		"plugin_name" : "ValhallaPlate",
 		"plugin_type" : "vst3",
 		"pitchbend_range" : 2,
 		"upsample" : 1,
@@ -25,120 +25,85 @@
 		}
 ,
 		"parameters" : [ 			{
-				"name" : "Master Gain",
-				"default" : 0.5,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Dry/Wet Mix",
+				"name" : "Mix",
 				"default" : 1.0,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "Decay Time",
-				"default" : 0.205882355570793,
+				"name" : "PreDelay",
+				"default" : 0.0,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "Early / Late Level",
+				"name" : "Decay",
 				"default" : 0.5,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "VLF Reverb Level",
-				"default" : 0.502487599849701,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Pre-delay",
-				"default" : 0.0,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Pre-delay Sync",
-				"default" : 0.0,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Pre-delay Tempo",
-				"default" : 0.28571429848671,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Delay (Echo) Time",
-				"default" : 0.0,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Delay Sync",
-				"default" : 0.0,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
-, 			{
-				"name" : "Delay Tempo",
+				"name" : "Size",
 				"default" : 0.5,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "Low Pass Freq",
-				"default" : 0.658512830734253,
+				"name" : "Width",
+				"default" : 0.5,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "High Pass Freq",
-				"default" : 0.40317291021347,
+				"name" : "ModRate",
+				"default" : 0.365344554185867,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "Low Pass Enable",
+				"name" : "ModDepth",
 				"default" : 0.0,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "High Pass Enable",
-				"default" : 0.0,
+				"name" : "LowEQFreq",
+				"default" : 0.348773926496506,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "Content Bank",
-				"default" : 0.03999999910593,
+				"name" : "LowEQGain",
+				"default" : 0.5,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
 , 			{
-				"name" : "Content Preset",
-				"default" : 0.029999999329448,
+				"name" : "HighEQFreq",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "HighEQGain",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Type",
+				"default" : 0.04166666790843,
 				"type" : "float",
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
@@ -153,7 +118,7 @@
  ],
 		"groups" : [ 			{
 				"height" : 1,
-				"contains" : [ 0, 1, 2, 3, 16, 17 ]
+				"contains" : [ 0, 1, 2, 3 ]
 			}
 , 			{
 				"height" : 1,
@@ -165,7 +130,7 @@
 			}
 , 			{
 				"height" : 1,
-				"contains" : [ 12, 13, 14, 15 ]
+				"contains" : [ 12 ]
 			}
  ]
 	}

@@ -6,7 +6,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"max_polyphony" : 0,
 		"plugin_name" : "TDR Kotelnikov",
-		"plugin_type" : "vst3",
+		"plugin_type" : "vst",
 		"pitchbend_range" : 2,
 		"upsample" : 1,
 		"subvoices" : 2,
@@ -171,15 +171,24 @@
 				"wrap" : 0,
 				"values" : [ "uni", 0, 1, "lin" ]
 			}
-, 			{
-				"name" : "Program",
-				"default" : 0.0,
-				"type" : "float",
-				"wrap" : 0,
-				"values" : [ "uni", 0, 1, "lin" ]
-			}
  ],
-		"groups" : "A"
+		"groups" : [ 			{
+				"height" : 1,
+				"contains" : [ 0, 1, 2, 3, 16, 17, 18, 19 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 4, 5, 6, 7, 20 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 8, 9, 10, 11 ]
+			}
+, 			{
+				"height" : 1,
+				"contains" : [ 12, 13, 14, 15 ]
+			}
+ ]
 	}
 
 }
