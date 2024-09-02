@@ -18,11 +18,11 @@
 		"groups" : [
 
 			{ 
-				"contains" : [0,1,2,3]
+				"contains" : [0,1,2,3,4,5]
 			}
 		],
 		"panel" : {
-			"parameters" : [0,1,2,3]
+			"parameters" : [0,1,2,3,4,5]
 		},
 		"parameters" : [
 			{
@@ -49,9 +49,23 @@
 			{
 				"name" : "thru on/off",
 				"type" : "menu_b",
-				"values" : ["0", "1"],
+				"values" : ["no thru", "thru"],
 				"wrap" : 1,
 				"default" : 0.75
+			},
+			{
+			"name" : "phase",
+			"type" : "float",
+			"values":["uni", 0, 1, "lin"],
+			"wrap":0,
+			"default": 0
+			},
+			{
+			"name" : "quantise",
+			"type" : "menu_b",
+			"values" : ["unquantised", "16th notes"],
+			"wrap" : 1,
+			"default" : 0.25
 			}
 		]
 	}
