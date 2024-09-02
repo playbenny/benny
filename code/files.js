@@ -1529,6 +1529,7 @@ function clear_everything(){
 	sidebar.selected_voice = -1;
 //	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
+	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly","setvalue",2,"clear");
 	note_poly.setvalue(0,"muteouts",1);
 	audio_poly.setvalue(0,"muteouts",1);
 
