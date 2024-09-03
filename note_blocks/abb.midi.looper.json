@@ -18,11 +18,14 @@
 		"groups" : [
 
 			{ 
-				"contains" : [0,1,2,3,4,5,6]
+				"contains" : [0,1,2,3]
+			},
+			{
+				"contains": [4,5,6,7]
 			}
 		],
 		"panel" : {
-			"parameters" : [0,1,2,3,4,5,6]
+			"parameters" : [6,7]
 		},
 		"parameters" : [
 			{
@@ -42,7 +45,7 @@
             {
 				"name" : "input on/off",
 				"type" : "menu_b",
-				"values" : ["input_off", "input_active"],
+				"values" : ["loop_input_off", "loop_input_on"],
 				"wrap" : 1,
 				"default" : 0.75
 			},
@@ -73,6 +76,13 @@
 			"values" : ["uni", -1, 1, "lin"],
 			"wrap" : 0,
 			"default" : 0.5
+			},
+			{
+			"name" : "friend",
+			"type" : "float",
+			"values" : ["uni", 0, 1, "lin"],
+			"wrap" : 0,
+			"default" : 0
 			}
 		]
 	}
