@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 274.0, 124.0, 853.0, 616.0 ],
+		"rect" : [ 274.0, 48.0, 609.0, 616.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -170,11 +170,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 606.0, 42.0, 175.0, 407.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 23,
-					"presentation_rect" : [ 604.0, 130.0, 220.0, 324.0 ],
-					"text" : "in order to use the self-tuner midi to cv block we need to measure the LOOPBACK LATENCY - the time for a signal to go out and back in to the computer. this is rarely accurately reported by sound drivers so we measure it instead. once your setup is complete, from the list above choose a piece of hardware that can be set to pass audio as close to unmodified as possible - a wide open filter, or a delay set to dry only, or if you have nothing suitable, a wire from your soundcard's output to its input.\n\nthen just click the round button until the time value measured stabilises. as an example, my RME digiface/expert sleepers modules measure 590 here.\n\nfinally click save or save as at the top and this value will be stored in the json file along with your hardware setup."
+					"patching_rect" : [ 606.0, 42.0, 183.0, 407.0 ],
+					"text" : "in order to use the self-tuner midi to cv block we need to measure the LOOPBACK LATENCY - the time for a signal to go out and back in to the computer. this is rarely accurately reported by sound drivers so we measure it instead. once your setup is complete, from the list above choose a piece of hardware that can be set to pass audio as close to unmodified as possible - a wide open filter, or a delay set to dry only, or if you have nothing suitable, a wire from your soundcard's output to its input.\n\nthen just click the round button until the time value measured stabilises. as an example, my RME digiface/expert sleepers modules measure 590 here.\n\nfinally click save or save as at the top and this value will be stored in the json file along with your hardware setup.",
+					"varname" : "latency_test_text"
 				}
 
 			}
@@ -681,8 +679,7 @@
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 509.0, 19.0, 24.0, 24.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 604.0, 104.0, 24.0, 24.0 ]
+					"varname" : "latency_test_button"
 				}
 
 			}
@@ -714,9 +711,8 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "float" ],
 					"patching_rect" : [ 737.0, 96.0, 56.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 760.5, 105.0, 56.0, 22.0 ],
-					"sig" : 0.0
+					"sig" : 0.0,
+					"varname" : "latency_test_time"
 				}
 
 			}
@@ -1094,9 +1090,7 @@
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 573.5, 77.0, 100.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 604.0, 81.0, 212.0, 22.0 ],
-					"varname" : "testlist"
+					"varname" : "latency_test_list"
 				}
 
 			}
@@ -2098,7 +2092,7 @@
 					"fontname" : "Consolas Bold",
 					"fontsize" : 12.0,
 					"id" : "obj-52",
-					"items" : [ "live_rig.json", ",", "live_rig_no_cue.json", ",", "live_rig_no_cue_novation.json", ",", "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "mini_synth.json", ",", "mini_synth_unlabelled.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json", ",", "wedge case.json" ],
+					"items" : [ "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -2139,6 +2133,28 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 302.0, 729.0, 32.0, 22.0 ],
 					"text" : "start"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-123",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 10.0, 100.0, 100.0, 22.0 ],
+					"text" : "send matrix_ext"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-128",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 10.0, 100.0, 133.0, 22.0 ],
+					"text" : "send matrix_soundcard"
 				}
 
 			}
