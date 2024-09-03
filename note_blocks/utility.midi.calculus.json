@@ -10,7 +10,7 @@
 				"midi" : [ "vel sets value" ]
 			},
 			"out" : {
-				"parameters" : [ "change", "difference", "difference+", "difference-", "rate of change", "rate+", "rate-","integral" ],
+				"parameters" : [ "change", "difference", "difference+", "difference-", "rate of change", "rate+", "rate-","abs(rate)","integral" ],
 				"midi" : [ "changed", "0->nonzero", "nonzero->0"]
 			}
 		},
