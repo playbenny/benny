@@ -1,0 +1,38 @@
+{
+	"abb.scale.seq" : {
+		"patcher" : "abb.scale.seq",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "sequence sacles or chords",
+		"max_polyphony" : 1,
+        "block_ui_patcher"	:	"self",
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ],
+				"automap_poly":0
+			},
+			"out" : {
+				"midi" : [ "held notes"]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0]
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "stop notes",
+				"type" : "button",
+				"values" : ["firstvoice", "reset", "off"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}
