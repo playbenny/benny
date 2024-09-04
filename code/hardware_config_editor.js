@@ -1,3 +1,6 @@
+MATRIX_OUT_CHANNELS = 16;
+MATRIX_IN_CHANNELS = 16; //make these configurable if you ever discover a matrix with >16!
+
 outlets = 1;
 inlets = 1;
 var unit = {
@@ -355,7 +358,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(30,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.outputs."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.outputs."+ii, "@minimum", 0, "@maximum", 256);
 				controls[ii].message("set", cd.get(cdk[p]+"::outputs"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -387,7 +390,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(30,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.channel."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.channel."+ii, "@minimum", 1, "@maximum", 16);
 				controls[ii].message("set", cd.get(cdk[p]+"::channel"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -402,7 +405,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(30,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.first."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.first."+ii, "@minimum", 0, "@maximum", 127);
 				controls[ii].message("set", cd.get(cdk[p]+"::first"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -418,7 +421,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(30,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "flonum" , "@varname", "controller.scaling."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "flonum" , "@varname", "controller.scaling."+ii, "@minimum", -1, "@maximum", 1);
 					controls[ii].message("set", cd.get(cdk[p]+"::scaling"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
@@ -434,7 +437,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(30,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.columns."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.columns."+ii, "@minimum", 1, "@maximum", 64);
 				controls[ii].message("set", cd.get(cdk[p]+"::columns"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -450,21 +453,21 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(30,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.rows."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controller.rows."+ii, "@minimum", 1, "@maximum", 64);
 				controls[ii].message("set", cd.get(cdk[p]+"::rows"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p]];
-				y_pos+=unit.row;
+				y_pos+=unit.row+unit.header;
 				ii++;
 	
 				//"colour" :
 				if(cd.contains(cdk[p]+"::colour")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "led colour cc");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.colour."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -495,7 +498,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.colour.channel."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.colour.channel."+ii, "@minimum", 1, "@maximum", 16);
 					controls[ii].message("set", cd.get(cdk[p]+"::colour::channel"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
@@ -510,21 +513,21 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.colour.first."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.colour.first."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::colour::first"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;
 	
 				}else{
 					//add key button
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "led colour cc");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.colour."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -536,10 +539,10 @@ function render_controls(){
 				}
 				//"brightness" : {
 				if(cd.contains(cdk[p]+"::brightness")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "led brightness cc");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.brightness."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -570,7 +573,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.channel."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.channel."+ii, "@minimum", 1, "@maximum", 16);
 					controls[ii].message("set", cd.get(cdk[p]+"::brightness::channel"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
@@ -585,7 +588,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.first."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.first."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::brightness::first"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
@@ -599,7 +602,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.dim."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.dim."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::brightness::dim"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
@@ -613,20 +616,20 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.bright."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.brightness.bright."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::brightness::bright"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;
 				}else{
 					//add key button
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "led brightness cc");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.brightness."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -638,10 +641,10 @@ function render_controls(){
 				}
 				//"value" : {
 				if(cd.contains(cdk[p]+"::value")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "value feedback messages");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.value."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -672,7 +675,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.value.channel."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.value.channel."+ii, "@minimum", 1, "@maximum", 16);
 					controls[ii].message("set", cd.get(cdk[p]+"::value::channel"));
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
@@ -687,21 +690,21 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.value.first."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.value.first."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::value::first"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;
 	
 				}else{
 					//add key button
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "led value cc");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller.value."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -713,10 +716,10 @@ function render_controls(){
 				}	
 				//"resets" : {
 				if(cd.contains(cdk[p]+"::resets")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "reset buttons");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.resets."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -747,7 +750,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.resets.channel."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.resets.channel."+ii, "@minimum", 1, "@maximum", 16);
 					controls[ii].message("set", cd.get(cdk[p]+"::resets::channel"));
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
@@ -762,21 +765,21 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.resets.first."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.resets.first."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::resets::first"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;
 	
 				}else{
 					//add key button
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "reset buttons");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1.0, 0, 1.0], "@varname", "add.controller.resets."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -788,10 +791,10 @@ function render_controls(){
 				}	
 				//"buttons" : {
 				if(cd.contains(cdk[p]+"::buttons")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "controller buttons");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.buttons."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -822,7 +825,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.channel."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.channel."+ii, "@minimum", 1, "@maximum", 16);
 					controls[ii].message("set", cd.get(cdk[p]+"::buttons::channel"));
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
@@ -837,7 +840,7 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.first."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.first."+ii, "@minimum", 0, "@maximum", 127);
 					controls[ii].message("set", cd.get(cdk[p]+"::buttons::first"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
@@ -852,22 +855,22 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.count."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey.buttons.count."+ii, "@minimum", 0, "@maximum", 256);
 					controls[ii].message("set", cd.get(cdk[p]+"::buttons::count"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-20,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;
 	
 					if(cd.contains(cdk[p]+"::buttons::globals")){
 						//	"globals" : {
 						var tv;
-						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 						controls[ii].message("set", "button map to global functions");
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(40,y_pos,2*unit.col,20);
+						controls[ii].presentation_rect(40,y_pos,unit.col+80,20);
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove section", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller.buttons.globals."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -882,7 +885,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_toggle."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::automap_toggle");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -898,7 +901,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.automap_page."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::automap_page");
 						if(tv==null) tv=-1;
 						controls[ii].message("set", tv);
@@ -914,7 +917,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_control."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_control."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::lock_automap_control");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -930,7 +933,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_keyboard."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_keyboard."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::lock_automap_keyboard");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -946,7 +949,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_cue."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.lock_automap_cue."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::lock_automap_cue");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -962,7 +965,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.toggle_display_mode."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.toggle_display_mode."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::toggle_display_mode");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -978,7 +981,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.play."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.play."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::play");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -994,7 +997,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.resync."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.resync."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::resync");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -1010,7 +1013,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.panic."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.panic."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::panic");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -1026,7 +1029,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(50,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.mute_selected."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.mute_selected."+ii, "@minimum", -1, "@maximum", 127);
 						tv = cd.get(cdk[p]+"::buttons::globals::mute_selected");
 						if(tv==null)tv=-1;
 						controls[ii].message("set", tv);
@@ -1034,14 +1037,14 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
 						values[ii] = [cdk[p]];
-						y_pos+=unit.row;
+						y_pos+=unit.row+unit.header;
 						ii++;
 					}else{
 						//add key button
-						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 						controls[ii].message("set", "button map to global functions");
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(40,y_pos,2*unit.col,20);
+						controls[ii].presentation_rect(40,y_pos,80+unit.col,20);
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1,0, 1], "@varname", "add.controller.buttons.globals."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -1053,10 +1056,10 @@ function render_controls(){
 					}
 				}else{
 					//add key button
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "controller buttons");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_rect(30,y_pos,unit.col+90,20);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add section", "@textoncolor", [0, 1,0, 1], "@varname", "add.controller.buttons."+ii);
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -1088,7 +1091,7 @@ function render_controls(){
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add controller: "+midi_interfaces.not_used_in[i], "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(20,y_pos,2*unit.col-20,20);
+				controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
 				values[ii] = [midi_interfaces.not_used_in[i]];
 				ii++;			
 				y_pos+=unit.row;
@@ -1208,7 +1211,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_position(30,y_pos);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.max_polyphony."+ii);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.max_polyphony."+ii, "@minimum", 0, "@maximum", 128);
 				controls[ii].message("set", cd.get(cdk[p]+"::max_polyphony"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -1338,7 +1341,7 @@ function render_controls(){
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
 
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii, "@minimum", 0, "@maximum", 256);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1356,7 +1359,7 @@ function render_controls(){
 							controls[ii].presentation_rect(40,y_pos,unit.col,20);
 							ii++;
 	
-							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.matrixchannel."+ii);
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.matrixchannel."+ii, "@minimum", -1, "@maximum", MATRIX_IN_CHANNELS-1);
 							controls[ii].message("set", mc[i]);
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
@@ -1457,7 +1460,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.channel."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.channel."+ii, "@minimum", 1, "@maximum", 16);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1471,7 +1474,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;						
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii, "@minimum", 0, "@maximum", 127);
 						controls[ii].message("set", hwr[i][0]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1484,7 +1487,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii, "@minimum", 0, "@maximum", 127);
 						controls[ii].message("set", hwr[i][1]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1556,7 +1559,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii, "@minimum", 0, "@maximum", 256);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1573,7 +1576,7 @@ function render_controls(){
 							controls[ii].presentation(1);
 							controls[ii].presentation_rect(40,y_pos,unit.col,20);
 							ii++;
-							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.matrixchannel."+ii);
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.matrixchannel."+ii, "@minimum", -1, "@maximum", MATRIX_OUT_CHANNELS-1);
 							controls[ii].message("set", mc[i]);
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
@@ -1664,7 +1667,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.channel."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.channel."+ii, "@minimum", 1, "@maximum", 16);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1818,7 +1821,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(20,y_pos,unit.col,20);
 			ii++;
-			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.midi_channel."+ii);
+			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.midi_channel."+ii, "@minimum", 1, "@maximum", 16);
 			controls[ii].message("set", configfile.get("io::matrix_switch::midi_channel"));
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
@@ -1831,7 +1834,7 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(20,y_pos,unit.col,20);
 			ii++;
-			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.midi_cc."+ii);
+			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.midi_cc."+ii, "@minimum", 0, "@maximum", 127);
 			controls[ii].message("set", configfile.get("io::matrix_switch::midi_cc"));
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
@@ -1880,6 +1883,9 @@ function keybcallback(data){
 	post("\nvalue",data.value);
 	post(" - object",data.maxobject.varname);
 	var id = data.maxobject.varname.split('.');
+
+	var dontredraw=0;
+
 	if(id[0]=="show"){
 		if(id.length<3) id[2] = -1;
 		selected.section = id[1];
@@ -1913,20 +1919,25 @@ function keybcallback(data){
 		}
 	}else if(id[0]=="controller"){
 		var v = values[id[2]];
+		dontredraw = 1;
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1],data.value);
 	}else if(id[0]=="controllersubkey"){
 		var v = values[id[3]];
+		dontredraw = 1;
 		//post("\nid4 = ",id[3],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2],data.value);
 	}else if(id[0]=="controllersubkey2"){
 		var v = values[id[4]];
+		dontredraw = 1;
 		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 	}else if(id[0]=="matrix"){
 		var v = values[id[2]];
+		dontredraw = 1;
 		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::matrix_switch::"+id[1],data.value);
 	}else if(id[0]=="hardware"){
+		dontredraw = 1;
 		if(id[1]=="in"){
 			if(id[2]=="channel"){
 				var t=+id[3];
@@ -1963,6 +1974,7 @@ function keybcallback(data){
 			configfile.replace("hardware::"+v[0]+"::"+id[1],data.value);
 		}
 	}else if(id[0]=="hardwaretestsignal"){
+		dontredraw = 1;
 		//post("\nsetting matrix",values[id[1]][1],"for row",data.value - 1);
 		for(var oo=0;oo<3;oo++) testmatrix.message(0,values[id[1]][1],0);
 		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]);
@@ -2168,12 +2180,11 @@ function keybcallback(data){
 		var mport = configfile.get("hardware::"+values[id[1]][0]+"::midi_in");
 		this.patcher.messnamed("miditester",range[0],range[1]-range[0],ch,mport);
 	}
-	//deleteall();
-	render_controls();
+	if(dontredraw != 1) render_controls();
 }
 
 function deleteall(){
-	post("\n\n\n\n\nREMOVING ",ii," CONTROLS");
+	post("\nremoving ",ii," controls");
 	for(;ii>=0;ii--){
 		this.patcher.remove(controls[ii]);
 	}
