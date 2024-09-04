@@ -562,7 +562,7 @@ function import_hardware(v){
 
 	post("\nbuilding new audio graph");
 	messnamed("click_enabled",click_enabled);
-	var audioiolists = get_hw_meter_positions();
+	audioiolists = get_hw_meter_positions();
 	var old_dac = this.patcher.getnamed("audio_outputs");
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);

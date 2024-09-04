@@ -85,6 +85,8 @@ var debug = 0;
 var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
 var input_used = new Array(MAX_AUDIO_INPUTS+2);
 
+var audioiolists;
+
 var state_fade = {
 	start : [],
 	y : 0,
