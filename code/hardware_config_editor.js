@@ -149,6 +149,12 @@ function render_controls(){
 	y_pos = 50;
 	ii=0;
 
+	var matrix_ext = "none", matrix_soundcard = "none";
+	if(configfile.contains("io::matrix::external")) matrix_ext = configfile.get("io::matrix::external");
+	if(configfile.contains("io::matrix::soundcard")) matrix_soundcard = configfile.get("io::matrix::soundcard");
+	post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
+
+
 	if(selected.section != "keyboards"){
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", "keyboards");
@@ -1082,7 +1088,7 @@ function render_controls(){
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add controller: "+midi_interfaces.not_used_in[i], "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.controller."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(20,y_pos,2*unit.col-40,20);
+				controls[ii].presentation_rect(20,y_pos,2*unit.col-20,20);
 				values[ii] = [midi_interfaces.not_used_in[i]];
 				ii++;			
 				y_pos+=unit.row;
@@ -1158,10 +1164,10 @@ function render_controls(){
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove block", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.block."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(120+unit.col,y_pos,unit.col-100,20);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p],"block"];
 				ii++;
-				y_pos+=unit.row;
+				y_pos+=unit.row+unit.header;
 				//now all the general hardware block settings:
 				//			"help_text": "arp filter module",
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -1287,12 +1293,14 @@ function render_controls(){
 					ii++;
 				}
 				y_pos+=unit.header;
+
 				controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 				controls[ii].message("set", "connections");
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(30,y_pos,2*unit.col - 10,20);
 				y_pos+=unit.row+unit.header;
 				ii++;
+				
 				if(cd.contains(cdk[p]+"::connections::in::hardware")){
 					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "in (to hardware, from benny)");
@@ -1303,27 +1311,41 @@ function render_controls(){
 					hwl = cd.get(cdk[p]+"::connections::in::hardware");
 					hwc = cd.get(cdk[p]+"::connections::in::hardware_channels");
 					for(var i = 0; i< hwc.length;i++){
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "input name");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+
 						controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.in.name."+ii);
 						if(i<hwl.length){
 							controls[ii].message("set",hwl[i].split(" "));
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
-							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col-60,22);
+							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
 							values[ii] = [cdk[p],i];
 							ii++;
 						}
+						y_pos+=unit.row;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "audio channel");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						controls[ii].presentation_rect(unit.col+20,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
 						y_pos += unit.row;
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
 						controls[ii].message("set", "send test signal");
 						controls[ii].presentation(1);
-						controls[ii].presentation_position(20+unit.col,y_pos);
+						controls[ii].presentation_position(40,y_pos);
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardwaretestsignal."+ii);
 						controls[ii].message("append","none");
@@ -1332,9 +1354,9 @@ function render_controls(){
 						controls[ii].message("append","lfo");
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col,20);
+						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 						values[ii] = [cdk[p],hwc[i]];
-						y_pos+=unit.row;
+						y_pos+=unit.row+unit.header;
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.in.channel."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -1381,54 +1403,79 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;			
 		
 					hwl = cd.get(cdk[p]+"::connections::in::midi");
 					hwc = cd.get(cdk[p]+"::connections::in::midi_channels");
 					hwr = cd.get(cdk[p]+"::connections::in::midi_ranges");
 					for(var i = 0; i< hwc.length;i++){
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "input name");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+
 						controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.midi.in.name."+ii);
 						if(i<hwl.length){
 							controls[ii].message("set",hwl[i].split(" "));
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
-							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col-60,22);
+							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
 							values[ii] = [cdk[p],i];
 							ii++;
 						}
+						y_pos+=unit.row;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "midi channel");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.channel."+ii);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
-						y_pos+=22;
+						y_pos+=unit.row;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "note range minimum");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;						
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii);
 						controls[ii].message("set", hwr[i][0]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(2*unit.col-100,y_pos,60,20);
+						controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
+						y_pos+=unit.row;
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "note range maximum");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii);
 						controls[ii].message("set", hwr[i][1]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
 						y_pos+=22;
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
 						controls[ii].message("set", "send midi test");
 						controls[ii].presentation(1);
-						controls[ii].presentation_position(20+unit.col,y_pos);
+						controls[ii].presentation_position(40,y_pos);
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardwaremiditestsignal."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(20+1.5*unit.col,y_pos,20,20);
+						controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
 						values[ii] = [cdk[p],i];
 						y_pos+=unit.row;
 						ii++;
@@ -1447,7 +1494,7 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p],"connections::in::hardware"];
 				ii++;			
-				y_pos+=unit.row;
+				y_pos+=unit.row+unit.header;
 		
 				if(cd.contains(cdk[p]+"::connections::out::hardware")){
 					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
@@ -1459,23 +1506,35 @@ function render_controls(){
 					hwl = cd.get(cdk[p]+"::connections::out::hardware");
 					hwc = cd.get(cdk[p]+"::connections::out::hardware_channels");
 					for(var i = 0; i< hwc.length;i++){
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "output name");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.out.name."+ii);
 						if(i<hwl.length){
 							controls[ii].message("set",hwl[i].split(" "));
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
-							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col-60,22);
+							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
 							values[ii] = [cdk[p],i];
 							ii++;
 						}
+						y_pos+=unit.row;
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "audio channel");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
 						y_pos+=unit.row;
+
 						controls[ii] = this.patcher.newdefault(10, 100, "meter~");
 						controls[ii].presentation(1);
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
@@ -1484,7 +1543,7 @@ function render_controls(){
 						controls[ii].message("list", hwc[i]);
 						this.patcher.connect(controls[ii],0,controls[ii-1],0);
 						ii++;
-						y_pos+=22;
+						y_pos+=22+unit.header;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.out.channel."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1507,7 +1566,7 @@ function render_controls(){
 					controls[ii].message("set", "midi out (from hardware, to benny)");
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(40,y_pos,unit.col*2-20,20);
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;
 		
 					controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -1530,13 +1589,18 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 					values[ii] = [cdk[p]];
-					y_pos+=unit.row;
+					y_pos+=unit.row+unit.header;
 					ii++;			
 		
 					hwl = cd.get(cdk[p]+"::connections::out::midi");
 					hwc = cd.get(cdk[p]+"::connections::out::midi_channels");
 					hwr = cd.get(cdk[p]+"::connections::out::midi_ranges");
 					for(var i = 0; i< hwc.length;i++){
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "output name");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.midi.out.name."+ii);
 						if(i<hwl.length){
 							controls[ii].message("set",hwl[i].split(" "));
@@ -1546,14 +1610,30 @@ function render_controls(){
 							values[ii] = [cdk[p],i];
 							ii++;
 						}
+						y_pos+=unit.row;
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "midi channel");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.channel."+ii);
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
-						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						controls[ii].presentation_rect(unit.col+20,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
+
+						add_midimonitors(cdk[p]);
+
 						y_pos+=22;
+
+/*						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "note range minimum");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+
 						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.range1."+ii);
 						controls[ii].message("set", hwr[i][0]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -1580,7 +1660,7 @@ function render_controls(){
 						controls[ii].presentation_rect(20+1.5*unit.col,y_pos,20,20);
 						values[ii] = [cdk[p],i];
 						y_pos+=unit.row;
-						ii++;
+						ii++;*/
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove midi output", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.midi.out.channel."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1596,7 +1676,7 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p],"connections::out::hardware"];
 				ii++;			
-				y_pos+=unit.row;
+				y_pos+=unit.row+unit.header;
 			}
 		}
 		y_pos+=unit.header;
@@ -1640,10 +1720,6 @@ function render_controls(){
 		ii++;
 		y_pos+=unit.row + unit.header;
 
-		var matrix_ext = "none", matrix_soundcard = "none";
-		if(configfile.contains("io::matrix::external")) matrix_ext = configfile.get("io::matrix::external");
-		if(configfile.contains("io::matrix::soundcard")) matrix_soundcard = configfile.get("io::matrix::soundcard");
-		post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", "external matrix driver");
 		controls[ii].presentation(1);
