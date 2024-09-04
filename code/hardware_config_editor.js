@@ -1308,8 +1308,12 @@ function render_controls(){
 					controls[ii].presentation_rect(40,y_pos,2*unit.col-20,20);
 					y_pos+=unit.row+unit.header;
 					ii++;
+					var hwl,hwc,mc;
 					hwl = cd.get(cdk[p]+"::connections::in::hardware");
 					hwc = cd.get(cdk[p]+"::connections::in::hardware_channels");
+					if(matrix_ext!="none"){
+						mc = cd.get(cdk[p]+"::connections::in::matrix_channels");
+					}
 					for(var i = 0; i< hwc.length;i++){
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
 						controls[ii].message("set", "input name");
@@ -1342,6 +1346,26 @@ function render_controls(){
 						values[ii] = [cdk[p],i];
 						ii++;	
 						y_pos += unit.row;
+
+						if(matrix_ext!="none"){
+							if(mc[i]==null)mc[i] = -1;
+							controls[ii] = this.patcher.newdefault(10, 100, "comment");
+							controls[ii].message("set", "matrix channel");
+							controls[ii].presentation(1);
+							controls[ii].presentation_position(40,y_pos);
+							ii++;
+	
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.in.channel."+ii);
+							controls[ii].message("set", mc[i]);
+							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+							controls[ii].presentation(1);
+							controls[ii].presentation_rect(unit.col+20,y_pos,60,20);
+							values[ii] = [cdk[p],i];
+							ii++;	
+							y_pos += unit.row;
+	
+						}
+
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
 						controls[ii].message("set", "send test signal");
 						controls[ii].presentation(1);
@@ -1503,8 +1527,12 @@ function render_controls(){
 					controls[ii].presentation_rect(40,y_pos,unit.col*2-20,20);
 					y_pos+=unit.row+unit.header;
 					ii++;
+					var hwl,hwc,mc;
 					hwl = cd.get(cdk[p]+"::connections::out::hardware");
 					hwc = cd.get(cdk[p]+"::connections::out::hardware_channels");
+					if(matrix_ext!="none"){
+						mc = cd.get(cdk[p]+"::connections::out::matrix_channels");
+					}
 					for(var i = 0; i< hwc.length;i++){
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
 						controls[ii].message("set", "output name");
@@ -1521,6 +1549,7 @@ function render_controls(){
 							ii++;
 						}
 						y_pos+=unit.row;
+
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
 						controls[ii].message("set", "audio channel");
 						controls[ii].presentation(1);
@@ -1534,6 +1563,23 @@ function render_controls(){
 						values[ii] = [cdk[p],i];
 						ii++;	
 						y_pos+=unit.row;
+
+						if(matrix_ext!="none"){
+							if(mc[i]==null)mc[i] = -1;
+							controls[ii] = this.patcher.newdefault(10, 100, "comment");
+							controls[ii].message("set", "audio channel");
+							controls[ii].presentation(1);
+							controls[ii].presentation_position(40,y_pos);
+							ii++;
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii);
+							controls[ii].message("set", mc[i]);
+							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+							controls[ii].presentation(1);
+							controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
+							values[ii] = [cdk[p],i];
+							ii++;	
+							y_pos+=unit.row;
+						}
 
 						controls[ii] = this.patcher.newdefault(10, 100, "meter~");
 						controls[ii].presentation(1);
