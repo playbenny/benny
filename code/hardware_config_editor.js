@@ -1286,18 +1286,19 @@ function render_controls(){
 					y_pos+=unit.row;
 					ii++;
 				}
-				controls[ii] = this.patcher.newdefault(10, 100, "comment");
+				y_pos+=unit.header;
+				controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 				controls[ii].message("set", "connections");
 				controls[ii].presentation(1);
-				controls[ii].presentation_position(30,y_pos);
-				y_pos+=unit.row;
+				controls[ii].presentation_rect(30,y_pos,2*unit.col - 10,20);
+				y_pos+=unit.row+unit.header;
 				ii++;
 				if(cd.contains(cdk[p]+"::connections::in::hardware")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "in (to hardware, from benny)");
 					controls[ii].presentation(1);
-					controls[ii].presentation_rect(40,y_pos,unit.col,40);
-					y_pos+=unit.row;
+					controls[ii].presentation_rect(40,y_pos,2*unit.col-20,20);
+					y_pos+=unit.row+unit.header;
 					ii++;
 					hwl = cd.get(cdk[p]+"::connections::in::hardware");
 					hwc = cd.get(cdk[p]+"::connections::in::hardware_channels");
@@ -1341,7 +1342,7 @@ function render_controls(){
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 						values[ii] = [cdk[p],i];
 						ii++;			
-						y_pos+=2*unit.row;
+						y_pos+=unit.row+unit.header;
 					}
 				}
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.in.channel."+ii);
@@ -1350,37 +1351,20 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p],"connections::in::hardware"];
 				ii++;			
-				y_pos+=unit.row;
-		
-				/* MIDI CONNECTIONS :
-								"in" : {
-									"midi" : ["notes in"],
-									"midi_channels" : [10],
-									"midi_ranges" : [[35,51]]
-								}
-					and main keys:
-								"midi_handler" : "generic.hardware.midi.handler",
-							"midi_in" : "mio",
-				also groups, parameters (-> cc mapping) eg
-									"name" : "cctest1",
-									"type" : "float",
-									"values" : ["uni", 0, 1, "lin" ],
-									"cc_channel" : 10,
-									"cc_number" : 2,
-		
-				*/	
+				y_pos+=unit.row+unit.header;
+
 				if(cd.contains(cdk[p]+"::connections::in::midi")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "midi in (to hardware, from benny)");
 					controls[ii].presentation(1);
-					controls[ii].presentation_rect(40,y_pos,unit.col,40);
-					y_pos+=unit.row;
+					controls[ii].presentation_rect(40,y_pos,unit.col*2-20,20);
+					y_pos+=unit.row+unit.header;
 					ii++;
 		
 					controls[ii] = this.patcher.newdefault(10, 100, "comment");
 					controls[ii].message("set", "choose midi port");
 					controls[ii].presentation(1);
-					controls[ii].presentation_position(30,y_pos);
+					controls[ii].presentation_position(40,y_pos);
 					ii++;
 					controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardware.midi.port."+ii);
 					controls[ii].message("append","none");
@@ -1454,7 +1438,7 @@ function render_controls(){
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 						values[ii] = [cdk[p],i];
 						ii++;			
-						y_pos+=2*unit.row;
+						y_pos+=unit.row+unit.header;
 					}
 				}
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a midi input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.midi.in.channel."+ii);
@@ -1466,11 +1450,11 @@ function render_controls(){
 				y_pos+=unit.row;
 		
 				if(cd.contains(cdk[p]+"::connections::out::hardware")){
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "out (from hardware, to benny)");
 					controls[ii].presentation(1);
-					controls[ii].presentation_rect(40,y_pos,unit.col,40);
-					y_pos+=unit.row;
+					controls[ii].presentation_rect(40,y_pos,unit.col*2-20,20);
+					y_pos+=unit.row+unit.header;
 					ii++;
 					hwl = cd.get(cdk[p]+"::connections::out::hardware");
 					hwc = cd.get(cdk[p]+"::connections::out::hardware_channels");
@@ -1507,7 +1491,7 @@ function render_controls(){
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 						values[ii] = [cdk[p],i];
 						ii++;			
-						y_pos+=2*unit.row;
+						y_pos+=unit.row+unit.header;
 					}
 				}
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a hardware output channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.out.channel."+ii);
@@ -1516,7 +1500,103 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p]];
 				ii++;			
-				y_pos+=2*unit.row;
+				y_pos+=unit.row+unit.header;
+
+				if(cd.contains(cdk[p]+"::connections::out::midi")){
+					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+					controls[ii].message("set", "midi out (from hardware, to benny)");
+					controls[ii].presentation(1);
+					controls[ii].presentation_rect(40,y_pos,unit.col*2-20,20);
+					y_pos+=unit.row;
+					ii++;
+		
+					controls[ii] = this.patcher.newdefault(10, 100, "comment");
+					controls[ii].message("set", "choose midi port");
+					controls[ii].presentation(1);
+					controls[ii].presentation_position(40,y_pos);
+					ii++;
+					controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardware.midi.port."+ii);
+					controls[ii].message("append","none");
+					var subs=midi_interfaces.out;
+					for(var s=0;s<subs.length;s++){
+						controls[ii].message("append",subs[s]);
+					}
+					var subs=midi_interfaces.not_present_out;
+					for(var s=0;s<subs.length;s++){
+						controls[ii].message("append",subs[s]);
+					}
+					controls[ii].message("set", cd.get(cdk[p]+"::midi_out"));
+					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+					controls[ii].presentation(1);
+					controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+					values[ii] = [cdk[p]];
+					y_pos+=unit.row;
+					ii++;			
+		
+					hwl = cd.get(cdk[p]+"::connections::out::midi");
+					hwc = cd.get(cdk[p]+"::connections::out::midi_channels");
+					hwr = cd.get(cdk[p]+"::connections::out::midi_ranges");
+					for(var i = 0; i< hwc.length;i++){
+						controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.midi.out.name."+ii);
+						if(i<hwl.length){
+							controls[ii].message("set",hwl[i].split(" "));
+							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+							controls[ii].presentation(1);
+							controls[ii].presentation_rect(20+unit.col,y_pos,unit.col-60,22);
+							values[ii] = [cdk[p],i];
+							ii++;
+						}
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.channel."+ii);
+						controls[ii].message("set", hwc[i]);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						values[ii] = [cdk[p],i];
+						ii++;	
+						y_pos+=22;
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.range1."+ii);
+						controls[ii].message("set", hwr[i][0]);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(2*unit.col-100,y_pos,60,20);
+						values[ii] = [cdk[p],i];
+						ii++;	
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.range1."+ii);
+						controls[ii].message("set", hwr[i][1]);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(2*unit.col-40,y_pos,60,20);
+						values[ii] = [cdk[p],i];
+						ii++;	
+						y_pos+=22;
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "send midi test");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(20+unit.col,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardwaremiditestsignal."+ii);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+1.5*unit.col,y_pos,20,20);
+						values[ii] = [cdk[p],i];
+						y_pos+=unit.row;
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove midi output", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.midi.out.channel."+ii);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+						values[ii] = [cdk[p],i];
+						ii++;			
+						y_pos+=2*unit.row;
+					}
+				}
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a midi output channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.midi.out.channel."+ii);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+				values[ii] = [cdk[p],"connections::out::hardware"];
+				ii++;			
+				y_pos+=unit.row;
 			}
 		}
 		y_pos+=unit.header;
@@ -1791,7 +1871,8 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",tn);
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",tc);
 				}else{
-					configfile.setparse("hardware::"+values[id[4]][0]+"::connections::in" , "{ }");
+					if(!configfile.contains("hardware::"+values[id[4]][0]+"::connections::in")) configfile.setparse("hardware::"+values[id[4]][0]+"::connections::in" , "{ }");
+					configfile.setparse("hardware::"+values[id[4]][0]+"::connections::in::hardware" , "{ }");
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",["new"]);
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",[0]);
 				}
@@ -1804,28 +1885,31 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",tn);
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
 				}else{
-					configfile.setparse("hardware::"+values[id[4]][0]+"::connections::out" , "{ }");
+					if(!configfile.contains("hardware::"+values[id[4]][0]+"::connections::out")) configfile.setparse("hardware::"+values[id[4]][0]+"::connections::out" , "{ }");
+					configfile.setparse("hardware::"+values[id[4]][0]+"::connections::out::hardware" , "{ }");
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",["new"]);
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",[0]);
 				}
 			}else if(id[2]=="midi"){
 				post("\nadd midi",id,values[id[5]]);
-				if(configfile.contains("hardware::"+values[id[5]][0]+"::connections::in::midi")){
-					var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::in::midi");
-					var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::in::midi_channels");
-					var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges");
+				var d = id[3];
+				if(configfile.contains("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi")){
+					var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi");
+					var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels");
+					var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges");
 					tn.push("new");
 					tc.push(0);
 					tr.push([0,127]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi",tn);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_channels",tc);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges",tr);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",tn);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",tc);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",tr);
 				}else{
-					configfile.setparse("hardware::"+values[id[5]][0]+"::connections::in" , "{ }");
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi",["new"]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_channels",[0]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges",["*"]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::in::midi_ranges[0]",[0,127]);
+					if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections::"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
+					configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi" , "{ }");
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",["new"]);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",[0]);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",["*"]);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges[0]",[0,127]);
 				}
 				if(!configfile.contains("hardware::"+values[id[5]][0]+"::midi_handler")){
 					configfile.replace("hardware::"+values[id[5]][0]+"::midi_handler","generic.hardware.midi.handler");
