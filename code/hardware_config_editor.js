@@ -1348,11 +1348,12 @@ function render_controls(){
 						y_pos += unit.row;
 
 						if(matrix_ext!="none"){
-							if(mc[i]==null)mc[i] = -1;
+							if(!Array.isArray(mc)) mc=[];
+							if(mc[i]==null) mc[i] = -1;
 							controls[ii] = this.patcher.newdefault(10, 100, "comment");
-							controls[ii].message("set", "matrix channel");
+							controls[ii].message("set", "matrix channel (-1 if none)");
 							controls[ii].presentation(1);
-							controls[ii].presentation_position(40,y_pos);
+							controls[ii].presentation_rect(40,y_pos,unit.col,20);
 							ii++;
 	
 							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.matrixchannel."+ii);
@@ -1376,10 +1377,10 @@ function render_controls(){
 						controls[ii].message("append","tones");
 						controls[ii].message("append","pink noise");
 						controls[ii].message("append","lfo");
-						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						//controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-						values[ii] = [cdk[p],hwc[i]];
+						//values[ii] = [cdk[p],hwc[i]];
 						y_pos+=unit.row+unit.header;
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.in.channel."+ii);
@@ -1565,11 +1566,12 @@ function render_controls(){
 						y_pos+=unit.row;
 
 						if(matrix_ext!="none"){
-							if(mc[i]==null)mc[i] = -1;
+							if(!Array.isArray(mc)) mc=[];
+							if(mc[i]==null) mc[i] = -1;
 							controls[ii] = this.patcher.newdefault(10, 100, "comment");
-							controls[ii].message("set", "audio channel");
+							controls[ii].message("set", "matrix channel (-1 if none)");
 							controls[ii].presentation(1);
-							controls[ii].presentation_position(40,y_pos);
+							controls[ii].presentation_rect(40,y_pos,unit.col,20);
 							ii++;
 							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.matrixchannel."+ii);
 							controls[ii].message("set", mc[i]);
@@ -1779,11 +1781,65 @@ function render_controls(){
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 		controls[ii].message("setsymbol", matrix_ext);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		ii++;
 		controls[ii] = this.patcher.newdefault(10, 100, "send", "matrix_ext");
 		this.patcher.connect(controls[ii-1],1,controls[ii],0);
 		ii++;
 		y_pos+=unit.row+unit.header;
+
+		if(matrix_ext!="none"){
+			//io::matrix_switch:: midi_out midi_control_channel midi_control_cc
+			controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+			controls[ii].message("set", "matrix control midi interface");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20,y_pos,unit.col,20);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "matrix.midi_out."+ii);
+			controls[ii].message("append","none");
+			var subs=midi_interfaces.out;
+			for(var s=0;s<subs.length;s++){
+				controls[ii].message("append",subs[s]);
+			}
+			var subs=midi_interfaces.not_present_out;
+			for(var s=0;s<subs.length;s++){
+				controls[ii].message("append",subs[s]);
+			}
+			controls[ii].message("set", configfile.get("io::matrix_switch::midi_out"));
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+			values[ii] = [cdk[p]];
+			y_pos+=unit.row;
+			ii++;			
+			
+			controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+			controls[ii].message("set", "matrix control midi channel");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20,y_pos,unit.col,20);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.midi_channel."+ii);
+			controls[ii].message("set", configfile.get("io::matrix_switch::midi_channel"));
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(unit.col+20,y_pos,60,20);
+			values[ii] = [cdk[p],i];
+			ii++;	
+			y_pos+=unit.row;
+			controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+			controls[ii].message("set", "matrix control midi cc");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20,y_pos,unit.col,20);
+			ii++;
+			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.midi_cc."+ii);
+			controls[ii].message("set", configfile.get("io::matrix_switch::midi_cc"));
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(unit.col+20,y_pos,60,20);
+			values[ii] = [cdk[p],i];
+			ii++;	
+			y_pos+=unit.row+unit.header;			
+		}
 	
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", "soundcard mixer driver");
@@ -1798,6 +1854,7 @@ function render_controls(){
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 		controls[ii].message("setsymbol", matrix_soundcard);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		ii++;
 		controls[ii] = this.patcher.newdefault(10, 100, "send", "matrix_soundcard");
 		this.patcher.connect(controls[ii-1],1,controls[ii],0);
@@ -1865,6 +1922,10 @@ function keybcallback(data){
 		var v = values[id[4]];
 		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
+	}else if(id[0]=="matrix"){
+		var v = values[id[2]];
+		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
+		configfile.replace("io::matrix_switch::"+id[1],data.value);
 	}else if(id[0]=="hardware"){
 		if(id[1]=="in"){
 			if(id[2]=="channel"){

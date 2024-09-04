@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 274.0, 48.0, 609.0, 616.0 ],
+		"rect" : [ 100.0, 100.0, 609.0, 616.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -166,11 +166,11 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-101",
-					"linecount" : 29,
+					"linecount" : 27,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 606.0, 42.0, 183.0, 407.0 ],
+					"patching_rect" : [ 606.0, 42.0, 189.0, 379.0 ],
 					"text" : "in order to use the self-tuner midi to cv block we need to measure the LOOPBACK LATENCY - the time for a signal to go out and back in to the computer. this is rarely accurately reported by sound drivers so we measure it instead. once your setup is complete, from the list above choose a piece of hardware that can be set to pass audio as close to unmodified as possible - a wide open filter, or a delay set to dry only, or if you have nothing suitable, a wire from your soundcard's output to its input.\n\nthen just click the round button until the time value measured stabilises. as an example, my RME digiface/expert sleepers modules measure 590 here.\n\nfinally click save or save as at the top and this value will be stored in the json file along with your hardware setup.",
 					"varname" : "latency_test_text"
 				}
@@ -1788,7 +1788,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 370.200000000000045, 37.0, 53.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 313.0, 11.0, 53.0, 22.0 ],
+					"presentation_rect" : [ 407.0, 11.0, 53.0, 22.0 ],
 					"text" : "save_as"
 				}
 
@@ -1862,7 +1862,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 328.0, 37.0, 34.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 271.0, 11.0, 34.0, 22.0 ],
+					"presentation_rect" : [ 367.0, 11.0, 34.0, 22.0 ],
 					"text" : "save"
 				}
 
@@ -1876,7 +1876,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 283.0, 37.0, 35.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 226.0, 11.0, 35.0, 22.0 ],
+					"presentation_rect" : [ 326.0, 11.0, 35.0, 22.0 ],
 					"text" : "open"
 				}
 
@@ -2101,7 +2101,7 @@
 					"patching_rect" : [ 20.5, 106.0, 330.0, 23.0 ],
 					"prefix" : "~/Documents/GitHub/benny/hardware_configs/",
 					"presentation" : 1,
-					"presentation_rect" : [ 10.0, 10.5, 213.0, 23.0 ],
+					"presentation_rect" : [ 10.0, 10.5, 310.0, 23.0 ],
 					"types" : ".json",
 					"varname" : "hw_list"
 				}
