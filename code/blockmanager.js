@@ -55,6 +55,8 @@ var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from c
 var waves_preloading = 1;
 var TEMPLATES_FOLDER = "templates";
 
+var SOUNDCARD_HAS_MATRIX = 0;
+
 var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);
 
@@ -82,6 +84,8 @@ var debug = 0;
 
 var output_used = new Array(MAX_AUDIO_OUTPUTS+2);
 var input_used = new Array(MAX_AUDIO_INPUTS+2);
+
+var audioiolists;
 
 var state_fade = {
 	start : [],

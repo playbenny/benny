@@ -1,7 +1,11 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+04/08/24:
+- hardware editor layout improvements (collapsing tree), support for selecting soundcard and external matrix drivers, improved labelling, selecting matrix channels
 28/08/24:
+- fixes to vst manager
+- support for drivers for external matrixes (eg alysseum, erica in hardware, or soundcard driver matrix mixers too, eg RME totalmix) (this is in a branch)
 - utility.midi.calculus block added - given a stream of midi values it outputs rate of change (with a nice smoothing algo) and integral as well as difference to last value and noteouts for change, 'becomes nonzero' and 'becomes zero'.
 - utility.midi.smooth block - uses the cytomic smoothing algorithm used in the calculus block to provide simple effective value-stream smoothing.
 18/08/24:
