@@ -1355,7 +1355,7 @@ function render_controls(){
 							controls[ii].presentation_position(40,y_pos);
 							ii++;
 	
-							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "matrix.in.channel."+ii);
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.matrixchannel."+ii);
 							controls[ii].message("set", mc[i]);
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
@@ -1571,7 +1571,7 @@ function render_controls(){
 							controls[ii].presentation(1);
 							controls[ii].presentation_position(40,y_pos);
 							ii++;
-							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii);
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.matrixchannel."+ii);
 							controls[ii].message("set", mc[i]);
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
@@ -1875,6 +1875,11 @@ function keybcallback(data){
 			}else if(id[2]=="name"){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::hardware["+values[id[3]][1]+"]",data.value);
 				post("\nname",data.value,"info",values[id[3]]);
+			}else if(id[2]=="matrixchannel"){
+				var t=+id[3];
+				post("\nset in matrix channel object",t+2,"to ",data.value);
+				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
+				controls[t+2].message("list", data.value);
 			}
 		}else if(id[1]=="out"){
 			if(id[2]=="channel"){
@@ -1885,6 +1890,11 @@ function keybcallback(data){
 			}else if(id[2]=="name"){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::hardware["+values[id[3]][1]+"]",data.value);
 				post("\nname",data.value,"info",values[id[3]]);
+			}else if(id[2]=="matrixchannel"){
+				var t=+id[3];
+				post("\nset out matrix channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
+				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
+				controls[t+2].message("list", data.value);
 			}
 		}else{
 			var v = values[id[2]];
