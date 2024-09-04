@@ -1176,24 +1176,32 @@ function remove_connection(connection_number){
 				if(f_type == "audio" || f_type == "hardware"){
 					if(t_type == "audio" || t_type == "hardware"){
 						var outmsg = new Array(3);
-						if(f_type == "audio"){
-							outmsg[0] = f_voice - MAX_NOTE_VOICES + f_o_no * MAX_AUDIO_VOICES;
-						}else{
-							outmsg[0] = f_voice - 1;
+						var use_max_matrix = 1;
+						if((SOUNDCARD_HAS_MATRIX == 1) && (f_type=="hardware")&&(t_type=="hardware")){
+							//use soundcard 
+							post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
+							outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
+							outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
+							outmsg[2] = 0;
+							post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+							messnamed("drivers_poly","setvalue",2,"set",outmsg);
+							use_max_matrix = 0;
 						}
-						if(t_type == "audio"){
-							outmsg[1] = t_voice + t_i_no * MAX_AUDIO_VOICES- MAX_NOTE_VOICES;
-/*							if(f_type == "audio"){
-								if(connections.contains("connections["+connection_number+"]::conversion::force_unity")){
-									force_unity = 1;
-								}
-							}*/
-						}else{
-							outmsg[1] = t_voice - 1;
+						if(use_max_matrix){
+							if(f_type == "audio"){
+								outmsg[0] = f_voice - MAX_NOTE_VOICES + f_o_no * MAX_AUDIO_VOICES;
+							}else{
+								outmsg[0] = f_voice - 1;
+							}
+							if(t_type == "audio"){
+								outmsg[1] = t_voice + t_i_no * MAX_AUDIO_VOICES- MAX_NOTE_VOICES;
+							}else{
+								outmsg[1] = t_voice - 1;
+							}
+							outmsg[2] = 0;
+							//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
+							matrix.message(outmsg);
 						}
-						outmsg[2] = 0;
-						//post("matrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]+"\n");
-						matrix.message(outmsg);
 					}else if((t_type == "midi") || (t_type == "block")){
 						if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 						remove_routing(connection_number);
@@ -1697,38 +1705,51 @@ function make_connection(cno,existing){
 					// find the route, then enable / set parameters of this connection
 					if(f_type == "audio" || f_type == "hardware"){
 						if(t_type == "audio" || t_type == "hardware"){
-							var outmsg = new Array(3);
-							var force_unity = 0;
-							if(f_type == "audio"){
-								outmsg[0] = f_voice - MAX_NOTE_VOICES + f_o_no * MAX_AUDIO_VOICES;
-							}else{
-								outmsg[0] = f_voice - 1;
-							}
-							if(t_type == "audio"){
-								outmsg[1] = t_voice - MAX_NOTE_VOICES + t_i_no * MAX_AUDIO_VOICES;
-								if(f_type == "audio"){
-									if(conversion.contains("force_unity")){
-										force_unity = 1;
-									}
-								}
-							}else{
-								outmsg[1] = t_voice - 1; 
-							}
-							if(force_unity){
-								//if f_u=1 then you just connect like pairs - L out to L in, R out to R in, x all voices.
-								var a = (outmsg[0]>=MAX_AUDIO_VOICES) == (outmsg[1]>=MAX_AUDIO_VOICES);
-								outmsg[2] = a * (1-(hw_mute || conversion.get("mute")));
-								//if(a==0) post("\nskipped a connection in force unity:",outmsg);
-								//if(a!=0) post("\noutmsg was,",outmsg);
-							}else{
+							var use_max_matrix = 1;
+							var outmsg=[];
+							if((SOUNDCARD_HAS_MATRIX == 1) && (f_type=="hardware")&&(t_type=="hardware")){
+								//use soundcard 
+								post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
+								outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
+								outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
+								post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+								messnamed("drivers_poly","setvalue",2,"set",outmsg);
+								use_max_matrix = 0;
 							}
-							//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
-							if(loading.progress!=0){
-								deferred_matrix.push(outmsg);
-							}else{
-								matrix.message(outmsg);
+							if(use_max_matrix){
+								var force_unity = 0;
+								if(f_type == "audio"){
+									outmsg[0] = f_voice - MAX_NOTE_VOICES + f_o_no * MAX_AUDIO_VOICES;
+								}else{
+									outmsg[0] = f_voice - 1;
+								}
+								if(t_type == "audio"){
+									outmsg[1] = t_voice - MAX_NOTE_VOICES + t_i_no * MAX_AUDIO_VOICES;
+									if(f_type == "audio"){
+										if(conversion.contains("force_unity")){
+											force_unity = 1;
+										}
+									}
+								}else{
+									outmsg[1] = t_voice - 1; 
+								}
+								if(force_unity){ //if f_u=1 then you just connect like pairs - L out to L in, R out to R in, x all voices.
+									var a = (outmsg[0]>=MAX_AUDIO_VOICES) == (outmsg[1]>=MAX_AUDIO_VOICES);
+									outmsg[2] = a * (1-(hw_mute || conversion.get("mute")));
+									//if(a==0) post("\nskipped a connection in force unity:",outmsg);
+									//if(a!=0) post("\noutmsg was,",outmsg);
+								}else{
+									var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
+									outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
+								}
+								//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+								if(loading.progress!=0){
+									deferred_matrix.push(outmsg);
+								}else{
+									matrix.message(outmsg);
+								}
 							}
 						}else if(t_type == "midi"){
 							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	

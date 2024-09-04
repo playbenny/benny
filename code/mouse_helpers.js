@@ -694,6 +694,7 @@ function panel_edit_button(parameter,value){
 	}else if(value=="hide"){
 		blocks.replace("blocks["+parameter+"]::panel::enable",0);
 		panels_order.splice(panels_order.indexOf(parameter),1);
+		redraw_flag.paneltargets[parameter] = 0;
 		//post("panels order is now",panels_order);
 	}
 	redraw_flag.flag=4;

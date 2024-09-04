@@ -332,6 +332,7 @@ function hardware_meters(){
 			tv = blocks_meter[block][voice].position;
 			tv[1] = meters_updatelist.hardware[i][3] + (mmax+mmin) * 0.225;
 			//tv[2] = 0.5+tv[2]; //selected.block[block]*SELECTED_BLOCK_Z_MOVE;
+			tv[2] = 0.5+blocks_cube[block][0].position[2];
 			blocks_meter[block][voice].position = tv;
 			tv = blocks_meter[block][voice].scale;
 			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
