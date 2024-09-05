@@ -437,7 +437,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-86",
-					"items" : [ "Bassdrum.wav", ",", "Clap.wav", ",", "Crash.wav", ",", "Hat Closed.wav", ",", "Hat Open.wav", ",", "Ride.wav", ",", "Snaredrum.wav" ],
+					"items" : [ "M1 (1).wav", ",", "M1 (10).wav", ",", "M1 (11).wav", ",", "M1 (12).wav", ",", "M1 (13).wav", ",", "M1 (14).wav", ",", "M1 (2).wav", ",", "M1 (3).wav", ",", "M1 (4).wav", ",", "M1 (5).wav", ",", "M1 (6).wav", ",", "M1 (7).wav", ",", "M1 (8).wav", ",", "M1 (9).wav" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -491,7 +491,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-65",
-					"items" : [ "Boss DR-110", ",", "Korg KPR-77", ",", "Korg KR-55", ",", "Korg Minipops", ",", "LinnDrum", ",", "Moog Sub37", ",", "Simmons SDS-5", ",", "Tape Hits", ",", "The Soft Thudding of and Empty Box" ],
+					"items" : [ "Arp Oddy", ",", "M1", ",", "Moog granny", ",", "Pianos", ",", "String pads", ",", "Supersaw" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -600,13 +600,15 @@
 					"fontsize" : 9.0,
 					"gradient" : 1,
 					"id" : "obj-10",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 521.0, 457.0, 212.0, 19.0 ],
+					"patching_rect" : [ 521.0, 457.0, 212.0, 29.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 4.6875, 1.5625, 724.3125, 19.0 ]
+					"presentation_rect" : [ 4.6875, 1.5625, 724.3125, 19.0 ],
+					"text" : "\"C:/Users/Luke/Abb Simple Samples/Note Samples in C/M1/M1 (6).wav\""
 				}
 
 			}
@@ -1547,6 +1549,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 140.625, 587.5, 44.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -2219,7 +2225,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 338.125, 564.0625, 99.0, 22.0 ],
-					"text" : "set sample-3"
+					"text" : "set sample-5"
 				}
 
 			}
@@ -3311,6 +3317,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 75.75, 587.5, 44.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -3345,7 +3355,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 249.0, 113.0, 1639.0, 871.0 ],
+						"rect" : [ 167.0, 135.0, 1639.0, 871.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -3373,7 +3383,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-21",
@@ -4791,10 +4800,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 737.5, 206.25, 37.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -4842,10 +4847,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 670.3125, 164.0625, 37.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -4870,6 +4871,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 689.0625, 77.0, 29.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -4953,7 +4958,7 @@
 , 			{
 				"box" : 				{
 					"bgcolor" : [ 0.301961, 0.301961, 0.301961, 0.0 ],
-					"buffername" : "sample-3",
+					"buffername" : "sample-5",
 					"gridcolor" : [ 0.301961, 0.301961, 0.301961, 0.0 ],
 					"id" : "obj-151",
 					"ignoreclick" : 1,
