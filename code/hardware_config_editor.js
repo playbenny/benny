@@ -155,8 +155,7 @@ function render_controls(){
 	var matrix_ext = "none", matrix_soundcard = "none";
 	if(configfile.contains("io::matrix::external")) matrix_ext = configfile.get("io::matrix::external");
 	if(configfile.contains("io::matrix::soundcard")) matrix_soundcard = configfile.get("io::matrix::soundcard");
-	post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
-
+	//post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
 
 	if(selected.section != "keyboards"){
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
@@ -2149,7 +2148,6 @@ function keybcallback(data){
 					configfile.remove("io::controllers::"+values[id[3]]);
 				}
 			}else{
-				//post("\nid2 is",id[2]);
 				configfile.remove("io::controllers::"+values[id[2]]);
 			}
 		}else if(id[1] == "hardware"){
@@ -2168,7 +2166,18 @@ function keybcallback(data){
 				configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",tn);
 				configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
 			}else if(id[2]=="midi"){
-				post("\nremove midi",id,values[id[5]]);
+				var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
+				var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
+				var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi");
+				tc.splice(values[id[5]][1],1);
+				tn.splice(values[id[5]][1],1);
+				tr.splice(values[id[5]][1],1);
+				configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi",tn);
+				configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels",tc);
+				configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges",tr);
+			}else if(id[2]=="block"){
+				configfile.remove("hardware::"+values[id[3]][0]);
+				selected.item = -1;
 			}else{
 				post("\nhw id2 =",id[2]);
 			}
