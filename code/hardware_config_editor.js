@@ -187,7 +187,8 @@ function render_controls(){
 		var d = configfile.get("io::keyboards");
 		//y_pos+=unit.header;
 		for(var i=0;i<midi_interfaces.in.length;i++){
-			var enab = d.indexOf(midi_interfaces.in[i]);
+			var enab = -1;
+			if(d!=null) enab = d.indexOf(midi_interfaces.in[i]);
 			var c;
 			if(enab==-1){
 				enab = "disabled";
@@ -227,8 +228,9 @@ function render_controls(){
 	y_pos+=unit.header;
 
 	var cd = configfile.get("io::controllers");
-	var cdk = cd.getkeys();
-	if(cdk==null)cdk=[];
+	var cdk;
+	if(cd!=null) cdk = cd.getkeys();
+	if(cdk==null) cdk=[];
 
 	if(selected.section != "controllers"){
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
