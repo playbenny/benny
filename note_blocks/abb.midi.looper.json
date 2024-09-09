@@ -12,7 +12,7 @@
 				"automap_poly":0
 			},
 			"out" : {
-				"midi" : [ "looper out", "midi thru" ]
+				"midi" : [ "looper", "looper + friend", "friend", "midi thru" ]
 			}
 		},
 		"groups" : [
