@@ -1107,8 +1107,9 @@ function render_controls(){
 	y_pos+=unit.header;
 	
 	var cd = configfile.get("hardware");
-	var cdk = cd.getkeys();
-	if(cdk==null)cdk=[];
+	var cdk = null;
+	if(cd!=null) cdk = cd.getkeys();
+	if(cdk==null) cdk=[];
 
 	if(selected.section!="hardware"){
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
@@ -1153,10 +1154,13 @@ function render_controls(){
 				ii++;
 				y_pos+=unit.row;
 			}else{
-				controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+				controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+				//controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 				controls[ii].message("set", cdk[p]);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20,y_pos,1.7*unit.col,20);
+				values[ii] = [cdk[p]];
 				ii++;
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "hide", "@textoncolor", [1.000, 0.792, 0.000, 1.000], "@varname", "show.hardware.-1");
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -1882,6 +1886,7 @@ function render_controls(){
 
 function keybcallback(data){
 	post("\nvalue",data.value);
+	if(data.maxobject==null){post("\nnull object",data); return -1;}
 	post(" - object",data.maxobject.varname);
 	var id = data.maxobject.varname.split('.');
 
@@ -1944,7 +1949,7 @@ function keybcallback(data){
 				var t=+id[3];
 				post("\nset in channel object",t+2,"to ",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::hardware_channels["+values[id[3]][1]+"]",data.value);
-				controls[t+2].message("list", data.value);
+				controls[t+2].message("bang");//"list", data.value);
 			}else if(id[2]=="name"){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::hardware["+values[id[3]][1]+"]",data.value);
 				post("\nname",data.value,"info",values[id[3]]);
@@ -1952,7 +1957,7 @@ function keybcallback(data){
 				var t=+id[3];
 				post("\nset in matrix channel object",t+2,"to ",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
-				controls[t+2].message("list", data.value);
+				//controls[t+2].message("list", data.value);
 			}
 		}else if(id[1]=="out"){
 			if(id[2]=="channel"){
@@ -1981,7 +1986,9 @@ function keybcallback(data){
 		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]);
 	}else if(id[0]=="hardwarename"){
 		var newname = data.value.toString();
+		post("\nrename?");
 		if(newname!=values[id[1]]){
+			post("\nrenaming ",values[id[1]]," to ",newname);
 			configfile.setparse("hardware::"+newname,"{}");
 			var cd = configfile.get("hardware::"+values[id[1]]);
 			if(cd!==null){
@@ -2131,6 +2138,7 @@ function keybcallback(data){
 				configfile.replace("hardware::"+values[id[3]]+"::cue_out", 0);
 				configfile.replace("hardware::"+values[id[3]]+"::talk_in", 0);
 				configfile.replace("hardware::"+values[id[3]]+"::connections", "{}");
+				selected.item=configfile.getsize("hardware");
 			}
 		}
 	}else if(id[0]=="remove"){
