@@ -1341,12 +1341,20 @@ function render_controls(){
 						y_pos+=unit.row;
 
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
-						controls[ii].message("set", "audio channel");
+						if(matrix_ext!="none"){
+							controls[ii].message("set", "audio channel (0 = none)");
+						}else{
+							controls[ii].message("set", "audio channel");
+						}
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
 
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii, "@minimum", 0, "@maximum", 256);
+						if(matrix_ext!="none"){
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii, "@minimum", 0, "@maximum", 256);
+						}else{
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.channel."+ii, "@minimum", 1, "@maximum", 256);
+						}
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1357,14 +1365,15 @@ function render_controls(){
 
 						if(matrix_ext!="none"){
 							if(!Array.isArray(mc)) mc=[];
-							if(mc[i]==null) mc[i] = -1;
+							if(mc[i]==null) mc[i] = 0;
+							post("\nMCi is ",mc[i]);
 							controls[ii] = this.patcher.newdefault(10, 100, "comment");
-							controls[ii].message("set", "matrix channel (-1 if none)");
+							controls[ii].message("set", "matrix channel (0 = none)");
 							controls[ii].presentation(1);
 							controls[ii].presentation_rect(40,y_pos,unit.col,20);
 							ii++;
 	
-							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.matrixchannel."+ii, "@minimum", -1, "@maximum", MATRIX_IN_CHANNELS-1);
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.in.matrixchannel."+ii, "@minimum", 0, "@maximum", MATRIX_IN_CHANNELS);
 							controls[ii].message("set", mc[i]);
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
@@ -1372,7 +1381,6 @@ function render_controls(){
 							values[ii] = [cdk[p],i];
 							ii++;	
 							y_pos += unit.row;
-	
 						}
 
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -1560,11 +1568,19 @@ function render_controls(){
 						y_pos+=unit.row;
 
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
-						controls[ii].message("set", "audio channel");
+						if(matrix_ext!="none"){
+							controls[ii].message("set", "audio channel (0 = none)");
+						}else{
+							controls[ii].message("set", "audio channel");
+						}
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii, "@minimum", 0, "@maximum", 256);
+						if(matrix_ext!="none"){
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii, "@minimum", 0, "@maximum", 256);
+						}else{
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.channel."+ii, "@minimum", 1, "@maximum", 256);
+						}
 						controls[ii].message("set", hwc[i]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1577,11 +1593,11 @@ function render_controls(){
 							if(!Array.isArray(mc)) mc=[];
 							if(mc[i]==null) mc[i] = -1;
 							controls[ii] = this.patcher.newdefault(10, 100, "comment");
-							controls[ii].message("set", "matrix channel (-1 if none)");
+							controls[ii].message("set", "matrix channel (0 = none)");
 							controls[ii].presentation(1);
 							controls[ii].presentation_rect(40,y_pos,unit.col,20);
 							ii++;
-							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.matrixchannel."+ii, "@minimum", -1, "@maximum", MATRIX_OUT_CHANNELS-1);
+							controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.out.matrixchannel."+ii, "@minimum", 0, "@maximum", MATRIX_OUT_CHANNELS-1);
 							controls[ii].message("set", mc[i]);
 							controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 							controls[ii].presentation(1);
@@ -1956,7 +1972,14 @@ function keybcallback(data){
 				post("\nname",data.value,"info",values[id[3]]);
 			}else if(id[2]=="matrixchannel"){
 				var t=+id[3];
-				post("\nset in matrix channel object",t+2,"to ",data.value);
+				post("\nset in matrix channel object hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
+				if(!configfile.contains("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels")){
+					post("\ncreatekey");
+					configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels","*");
+					var tarr = [];
+					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::in::hardware");tt>0;tt--) tarr.push(0);
+					configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels",tarr);
+				}
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
 				//controls[t+2].message("list", data.value);
 			}
@@ -1973,6 +1996,13 @@ function keybcallback(data){
 			}else if(id[2]=="matrixchannel"){
 				var t=+id[3];
 				post("\nset out matrix channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
+				if(!configfile.contains("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels")){
+					configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels","*");
+					var tarr = [];
+					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::out::hardware");tt>0;tt--) tarr.push(0);
+					configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels",tarr);
+
+				}
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
 				//controls[t+2].message("list", data.value);
 			}
