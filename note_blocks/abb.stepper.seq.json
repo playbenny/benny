@@ -1,0 +1,34 @@
+{
+	"abb.stepper.seq" : {
+		"patcher" : "abb.stepper.seq",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "sequence sacles or chords",
+		"max_polyphony" : 1,
+        "block_ui_patcher"	:	"self",
+		"connections" : {
+			"out" : {
+				"midi" : [ "Lane 1", "Lane 2", "Lane 3", "Lane 4", "All"]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0]
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "stop notes",
+				"type" : "button",
+				"values" : ["firstvoice", "reset", "off"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}
