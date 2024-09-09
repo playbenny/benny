@@ -1385,10 +1385,10 @@ function render_controls(){
 						controls[ii].message("append","tones");
 						controls[ii].message("append","pink noise");
 						controls[ii].message("append","lfo");
-						//controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-						//values[ii] = [cdk[p],hwc[i]];
+						values[ii] = [cdk[p],hwc[i]];
 						y_pos+=unit.row+unit.header;
 						ii++;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.in.channel."+ii);
@@ -1741,7 +1741,7 @@ function render_controls(){
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20,y_pos,unit.col*2,20);
-		values[ii] = ["hardware.newblock"];
+		values[ii] = ["hardware.newblock", cdk.length];
 		ii++;			
 		y_pos+=unit.row + unit.header;
 	
@@ -1885,11 +1885,10 @@ function render_controls(){
 }
 
 function keybcallback(data){
-	post("\nvalue",data.value);
-	if(data.maxobject==null){post("\nnull object",data); return -1;}
-	post(" - object",data.maxobject.varname);
+	//post("\nvalue",data.value);
+	if(data.maxobject==null){post("\nnot a max object", data.value, data); return -1;}
+	//post(" - object",data.maxobject.varname);
 	var id = data.maxobject.varname.split('.');
-
 	var dontredraw=0;
 
 	if(id[0]=="show"){
@@ -1946,10 +1945,12 @@ function keybcallback(data){
 		dontredraw = 1;
 		if(id[1]=="in"){
 			if(id[2]=="channel"){
-				var t=+id[3];
-				post("\nset in channel object",t+2,"to ",data.value);
+				post("\nset in channel object",+id[3]+2,"to ",data.value);
+				var oc = configfile.get("hardware::"+values[id[3]][0]+"::connections::in::hardware_channels["+values[id[3]][1]+"]");
+				if(oc>0) for(var oo=0;oo<3;oo++) testmatrix.message(oo,oc-1,0);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::hardware_channels["+values[id[3]][1]+"]",data.value);
-				controls[t+2].message("bang");//"list", data.value);
+				dontredraw = 0;
+				//controls[t+2].message("bang");//"list", data.value);
 			}else if(id[2]=="name"){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::hardware["+values[id[3]][1]+"]",data.value);
 				post("\nname",data.value,"info",values[id[3]]);
@@ -1964,7 +1965,8 @@ function keybcallback(data){
 				var t=+id[3];
 				post("\nset out channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
-				controls[t+2].message("list", data.value);
+				//controls[t+2].message("list", data.value);
+				dontredraw = 0;
 			}else if(id[2]=="name"){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::hardware["+values[id[3]][1]+"]",data.value);
 				post("\nname",data.value,"info",values[id[3]]);
@@ -1972,7 +1974,7 @@ function keybcallback(data){
 				var t=+id[3];
 				post("\nset out matrix channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
-				controls[t+2].message("list", data.value);
+				//controls[t+2].message("list", data.value);
 			}
 		}else{
 			var v = values[id[2]];
@@ -1981,9 +1983,9 @@ function keybcallback(data){
 		}
 	}else if(id[0]=="hardwaretestsignal"){
 		dontredraw = 1;
-		//post("\nsetting matrix",values[id[1]][1],"for row",data.value - 1);
-		for(var oo=0;oo<3;oo++) testmatrix.message(0,values[id[1]][1],0);
-		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]);
+		post("\nsetting matrix",values[id[1]][1]-1,"for row",data.value - 1);
+		for(var oo=0;oo<3;oo++) testmatrix.message(oo,values[id[1]][1]-1,0);
+		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]-1);
 	}else if(id[0]=="hardwarename"){
 		var newname = data.value.toString();
 		post("\nrename?");
@@ -2000,6 +2002,7 @@ function keybcallback(data){
 					}
 				}
 				configfile.setparse("hardware::"+newname+"::connections","{}");
+				configfile.replace("hardware::"+newname+"::name",newname);
 				if(configfile.contains("hardware::"+values[id[1]]+"::connections::in")){
 					configfile.setparse("hardware::"+newname+"::connections::in","{}");
 					var cd = configfile.get("hardware::"+values[id[1]]+"::connections::in");
@@ -2128,17 +2131,17 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[5]][0]+"::midi_handler","generic.hardware.midi.handler");
 				}
 			}else{
-				configfile.setparse("hardware::"+values[id[3]],"{}");
-				configfile.replace("hardware::"+values[id[3]]+"::name", values[id[3]]);
-				configfile.replace("hardware::"+values[id[3]]+"::substitute" , []);
-				configfile.replace("hardware::"+values[id[3]]+"::max_polyphony" , 1);
-				configfile.replace("hardware::"+values[id[3]]+"::help_text" , "about your block");
-				configfile.replace("hardware::"+values[id[3]]+"::exclusive", 0);
-				configfile.replace("hardware::"+values[id[3]]+"::click_out",  0);
-				configfile.replace("hardware::"+values[id[3]]+"::cue_out", 0);
-				configfile.replace("hardware::"+values[id[3]]+"::talk_in", 0);
-				configfile.replace("hardware::"+values[id[3]]+"::connections", "{}");
-				selected.item=configfile.getsize("hardware");
+				configfile.setparse("hardware::"+values[id[3]][0],"{}");
+				configfile.replace("hardware::"+values[id[3]][0]+"::name", values[id[3]][0]);
+				configfile.replace("hardware::"+values[id[3]][0]+"::substitute" , []);
+				configfile.replace("hardware::"+values[id[3]][0]+"::max_polyphony" , 1);
+				configfile.replace("hardware::"+values[id[3]][0]+"::help_text" , "about your block");
+				configfile.replace("hardware::"+values[id[3]][0]+"::exclusive", 0);
+				configfile.replace("hardware::"+values[id[3]][0]+"::click_out",  0);
+				configfile.replace("hardware::"+values[id[3]][0]+"::cue_out", 0);
+				configfile.replace("hardware::"+values[id[3]][0]+"::talk_in", 0);
+				configfile.replace("hardware::"+values[id[3]][0]+"::connections", "{}");
+				selected.item=values[id[3]][1];
 			}
 		}
 	}else if(id[0]=="remove"){
