@@ -2032,7 +2032,6 @@ function keybcallback(data){
 					}
 				}
 				configfile.setparse("hardware::"+newname+"::connections","{}");
-				configfile.replace("hardware::"+newname+"::name",newname);
 				if(configfile.contains("hardware::"+values[id[1]]+"::connections::in")){
 					configfile.setparse("hardware::"+newname+"::connections::in","{}");
 					var cd = configfile.get("hardware::"+values[id[1]]+"::connections::in");
@@ -2162,7 +2161,7 @@ function keybcallback(data){
 				}
 			}else{
 				configfile.setparse("hardware::"+values[id[3]][0],"{}");
-				configfile.replace("hardware::"+values[id[3]][0]+"::name", values[id[3]][0]);
+				configfile.replace("hardware::"+values[id[3]][0]+"::type", "hardware");
 				configfile.replace("hardware::"+values[id[3]][0]+"::substitute" , []);
 				configfile.replace("hardware::"+values[id[3]][0]+"::max_polyphony" , 1);
 				configfile.replace("hardware::"+values[id[3]][0]+"::help_text" , "about your block");
