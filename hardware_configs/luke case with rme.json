@@ -1,7 +1,11 @@
 {
 	"io" : 	{
 		"keyboards" : [ "Xkey37", "Xkey25", "MIDIIN2 (MIDIMATE II)", "Arturia KeyStep 32" ],
-		"matrix" : "MIDIOUT2 (MIDIMATE II)",
+		"matrix" : 		{
+			"soundcard" : "/Users/Luke/Dropbox/          Multitudes/Multitudes/benny/hardware_configs/drivers/soundcard_mixer/rme_totalmix.maxpat",
+			"external" : "none"
+		}
+,
 		"matrix_switch" : 		{
 			"midi_out" : "MIDIMATE II",
 			"matrix_out" : 12,
@@ -74,21 +78,25 @@
 			}
 
 		}
+
 	}
 ,
 	"hardware" : 	{
 		"hardware.out.1+2" : 		{
-			"type" : "ES8 outs 1+2 via rme ch 17+18",
-			"help_text" : "main outs",
+			"type" : "hardware",
+			"help_text" : "ES8 outs 1+2 via rme ch 17+18",
 			"max_polyphony" : 2,
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 17,18 ]
+					"hardware_channels" : [ 17, 18 ]
 				}
+
 			}
-		},
+
+		}
+,
 		"hardware.MATHS.L_trigger" : 		{
 			"type" : "hardware",
 			"help_text" : "maths trigger left",
@@ -96,12 +104,14 @@
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "triger"],
+					"hardware" : [ "triger" ],
 					"hardware_channels" : [ 19 ]
 				}
 
 			}
-		},
+
+		}
+,
 		"hardware.MATHS.R_trigger" : 		{
 			"type" : "hardware",
 			"help_text" : "maths trigger right",
@@ -109,7 +119,7 @@
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "triger"],
+					"hardware" : [ "triger" ],
 					"hardware_channels" : [ 20 ]
 				}
 ,
@@ -119,8 +129,9 @@
 				}
 
 			}
+
 		}
-		,
+,
 		"hardware.Sarajewo.BBD" : 		{
 			"type" : "hardware",
 			"help_text" : "Es-8 out 5, ES-6 in 5",
@@ -131,15 +142,16 @@
 					"hardware" : [ "in" ],
 					"hardware_channels" : [ 21 ]
 				}
-		,
+,
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 29 ]
 				}
-		
+
 			}
-		
-		},
+
+		}
+,
 		"hardware.quaterinch.mult" : 		{
 			"type" : "hardware",
 			"help_text" : "1/4 inch mult out, normaled to sem audio in 2",
@@ -150,14 +162,16 @@
 					"hardware" : [ "in" ],
 					"hardware_channels" : [ 22 ]
 				}
-		,
+,
 				"out" : 				{
 					"hardware" : [ "from jack 2" ],
 					"hardware_channels" : [ 17 ]
 				}
+
 			}
+
 		}
-		,		
+,
 		"hardware.QPAS.VCF" : 		{
 			"type" : "hardware",
 			"help_text" : "QPAS Filter, env from Maths",
@@ -165,19 +179,19 @@
 			"exclusive" : 1,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "out"],
-					"hardware_channels" : [ 23, 24]
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 23, 24 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "in L", "in R" ],
-					"hardware_channels" : [19, 20 ]
+					"hardware_channels" : [ 19, 20 ]
 				}
 
 			}
 
 		}
-		,
+,
 		"hardware.ARP4023.VCF" : 		{
 			"type" : "hardware",
 			"help_text" : "ARP 4023 filter",
@@ -186,7 +200,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff" ],
-					"hardware_channels" : [ 25,29 ]
+					"hardware_channels" : [ 25, 29 ]
 				}
 ,
 				"out" : 				{
@@ -197,7 +211,7 @@
 			}
 
 		}
-		,
+,
 		"hardware.101.VCF" : 		{
 			"type" : "hardware",
 			"help_text" : "101 Filter",
@@ -206,7 +220,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff" ],
-					"hardware_channels" : [ 26,30 ]
+					"hardware_channels" : [ 26, 30 ]
 				}
 ,
 				"out" : 				{
@@ -217,7 +231,7 @@
 			}
 
 		}
-		,
+,
 		"hardware.SEMSVF.VCF" : 		{
 			"type" : "hardware",
 			"help_text" : "SEM filter",
@@ -226,7 +240,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cutoff" ],
-					"hardware_channels" : [ 27, 31]
+					"hardware_channels" : [ 27, 31 ]
 				}
 ,
 				"out" : 				{
@@ -257,9 +271,6 @@
 			}
 
 		}
-
-
-
 ,
 		"hardware.Mod.CV" : 		{
 			"type" : "hardware",
@@ -273,6 +284,7 @@
 				}
 
 			}
+
 		}
 
 	}
