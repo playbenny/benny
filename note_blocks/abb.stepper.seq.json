@@ -23,9 +23,9 @@
 		},
 		"parameters" : [
 			{
-				"name" : "stop notes",
-				"type" : "button",
-				"values" : ["firstvoice", "reset", "off"],
+				"name" : "pattern",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			}
