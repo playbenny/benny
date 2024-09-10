@@ -521,7 +521,7 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if(audio_patcherlist[i]=="recycling") return [i,0];
 	}
-	post("\nERROR : can't find a free voice or one to recycle\n");
+	post("\nERROR : can't find a free voice or one to recycle.",pa,"\n");
 	return -1;
 }
 
@@ -539,7 +539,7 @@ function find_note_voice_to_recycle(pa){ //ideally needs to match up upsampling 
 	for(i=0;i<MAX_NOTE_VOICES;i++){
 		if(note_patcherlist[i]=="recycling") return [i,0];
 	}
-	post("\nERROR : can't find a free voice or one to recycle\n");
+	post("\nERROR : can't find a free voice or one to recycle.",pa,"\n");
 	return -1;
 }
 
@@ -581,8 +581,10 @@ function next_free_voice(t,n){
 			post("\nerror? hardware has no input or output channels")
 			return -1;
 		}
+	}else{
+		post("\nUNKNOWN BLOCK TYPE. EITHER HW CONFIG OR BLOCK JSON FILE ARE CORRUPT.")
 	}
-	post("\ncan't find a free voice, this block will not load\n");
+	post("\ncan't find a free voice, this block will not load. type:",t,"name",n,"\n");
 	return -1;
 }
 
