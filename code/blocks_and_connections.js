@@ -521,7 +521,7 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if(audio_patcherlist[i]=="recycling") return [i,0];
 	}
-	post("\nERROR : can't find a free voice or one to recycle\n");
+	post("\nERROR : can't find a free voice or one to recycle.",pa,"\n");
 	return -1;
 }
 
@@ -539,7 +539,7 @@ function find_note_voice_to_recycle(pa){ //ideally needs to match up upsampling 
 	for(i=0;i<MAX_NOTE_VOICES;i++){
 		if(note_patcherlist[i]=="recycling") return [i,0];
 	}
-	post("\nERROR : can't find a free voice or one to recycle\n");
+	post("\nERROR : can't find a free voice or one to recycle.",pa,"\n");
 	return -1;
 }
 
@@ -581,8 +581,10 @@ function next_free_voice(t,n){
 			post("\nerror? hardware has no input or output channels")
 			return -1;
 		}
+	}else{
+		post("\nUNKNOWN BLOCK TYPE. EITHER HW CONFIG OR BLOCK JSON FILE ARE CORRUPT.")
 	}
-	post("\ncan't find a free voice, this block will not load\n");
+	post("\ncan't find a free voice, this block will not load. type:",t,"name",n,"\n");
 	return -1;
 }
 
@@ -1180,8 +1182,8 @@ function remove_connection(connection_number){
 						if((SOUNDCARD_HAS_MATRIX == 1) && (f_type=="hardware")&&(t_type=="hardware")){
 							//use soundcard 
 							post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
-							outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
-							outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
+							outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
+							outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 							outmsg[2] = 0;
 							post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							messnamed("drivers_poly","setvalue",2,"set",outmsg);
@@ -1710,8 +1712,8 @@ function make_connection(cno,existing){
 							if((SOUNDCARD_HAS_MATRIX == 1) && (f_type=="hardware")&&(t_type=="hardware")){
 								//use soundcard 
 								post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
-								outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
-								outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK];
+								outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
+								outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 								post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
