@@ -4837,6 +4837,8 @@ function draw_sidebar(){
 			}else if(f_type=="potential"){
 				f_o_name = "?";
 				sidebar.connection.show_from_outputs = 1;
+			}else if(f_type=="matrix"){
+				f_o_name = blocktypes.get(f_name+"::connections::out::hardware["+f_o_no+"]");
 			}else{
 				f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
 			}
@@ -4853,6 +4855,8 @@ function draw_sidebar(){
 				}else if(t_i_no == 1){
 					t_i_name = "mute";
 				}
+			}else if(t_type=="matrix"){
+				var t_i_name = blocktypes.get(t_name+"::connections::in::hardware["+t_i_no+"]");
 			}else{
 				var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
 			}
@@ -4938,6 +4942,7 @@ function draw_sidebar(){
 					lcd_main.message("write", "hide");
 				}
 				y_offset+=1.4*fontheight;
+				if(EXTERNAL_MATRIX_PRESENT) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
 				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
@@ -5555,11 +5560,15 @@ function draw_sidebar(){
 					lcd_main.message("write", "hide");
 				}
 				y_offset+=1.4*fontheight;
-				y_offset = conn_draw_to_inputs_list(i, t_name, "hardware", y_offset);
-				y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset);
-				y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset);
-				y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset);
-				if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
+				if(f_type == "matrix"){
+					y_offset = conn_draw_to_inputs_list(i, t_name, "matrix", y_offset);
+				}else{
+					y_offset = conn_draw_to_inputs_list(i, t_name, "hardware", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset);
+					if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
+				}
 			}
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, 6*fo1+y_offset,section_colour_darkest );
 			

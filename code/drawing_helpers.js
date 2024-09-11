@@ -1213,8 +1213,13 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 	}
 	var desc = 0; // this enable displaying descriptions here, but it always feels like redundant text..
 	if(sidebar.connection.help && (blocktypes.contains(f_name + "::connections::out::descriptions::" + ty))) desc = 1;
-	if(blocktypes.contains(f_name + "::connections::out::" + ty)){
-		var l = blocktypes.get(f_name + "::connections::out::" + ty);
+	if(blocktypes.contains(f_name + "::connections::out::" + ty+"_channels")){
+		var l;
+		if(ty!="matrix"){
+			l = blocktypes.get(f_name + "::connections::out::" + ty);
+		}else{
+			l = blocktypes.get(f_name + "::connections::out::hardware");
+		}
 		if (!Array.isArray(l)) l = [l];
 		var c = config.get("palette::connections::" + ty);
 		var len = l.length;
@@ -1264,8 +1269,12 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 				l.push(blocktypes.get(t_name+"::parameters["+p+"]::name"));
 			}
 		}
-	}else if(blocktypes.contains(t_name + "::connections::in::" + ty)){
-		l = blocktypes.get(t_name + "::connections::in::" + ty);
+	}else if(blocktypes.contains(t_name + "::connections::in::" + ty+"_channels")){
+		if(ty!="matrix"){
+			l = blocktypes.get(t_name + "::connections::in::" + ty);
+		}else{
+			l = blocktypes.get(t_name + "::connections::in::hardware");
+		}
 		if (!Array.isArray(l)) l = [l];
 	}
 	if(l.length>0){

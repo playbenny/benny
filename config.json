@@ -82,6 +82,7 @@
 		"background_sidebar" : [0,0,0],
 		"connections" : 		{
 			"block" : [ 55, 255, 255 ],
+			"matrix" : [ 205, 25, 255 ],
 			"hardware" : [ 255, 50, 25 ],
 			"audio" : [ 225, 120, 25 ],
 			"midi" : [ 205, 200, 25 ],

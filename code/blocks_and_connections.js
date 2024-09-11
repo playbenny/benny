@@ -1836,32 +1836,22 @@ function make_connection(cno,existing){
 							if(f_voices.length>1) post("\nWARNING multiple from voices? matrix can't work as a mixer");
 							var mi,tf,sw=0;
 							var mu=conversion.get("mute");
-							if(io_dict.contains("matrix_switch::matrix_out")) sw=1;
+							//if(io_dict.contains("matrix_switch::matrix_out")) sw=1;
 							for(mi=0;mi<t_voices.length;mi++){
 								if((ext_matrix.connections[t_voices[mi]]!=16)&&(ext_matrix.connections[t_voices[mi]]!=f_voices[0])){
 									post("WARNING i think this matrix destination is in use, connected to:",ext_matrix.connections[t_voices[mi]]);
 								}
-								if(sw){
-									if(Math.floor(t_voices[mi]) == io_dict.get("matrix_switch::matrix_out")){
-										tf=t_voices[mi];
-										t_voices[mi]=Math.floor(t_voices[mi]);
-										tf=10*(tf-t_voices[mi]);
-										messnamed("to_ext_matrix","switch",tf);
-										ext_matrix.switch = tf;
-										post("setting switch to",tf);
-									}
-								}
 								ext_matrix.connections[t_voices[mi]]=f_voices[0];
 								if(mu==0){
 									messnamed("to_ext_matrix",t_voices[mi],f_voices[0]);
-									post("setting external matrix connection from",f_voices[0],"to",t_voices[mi]);
+									post("\nsetting external matrix connection from",f_voices[0],"to",t_voices[mi]);
 								}else{
 									messnamed("to_ext_matrix",t_voices[mi],16);
-									post("muting external matrix connection from",f_voices[0],"to",t_voices[mi]);
+									post("\nmuting external matrix connection from",f_voices[0],"to",t_voices[mi]);
 								}
 							}
 						}else{
-							post("ERROR : ext matrix connections can only go to the ext matrix");
+							post("\nERROR : ext matrix connections can only go to the ext matrix");
 						}
 					}else if(f_type == "midi"){
 						if((t_type == "audio") || (t_type == "hardware")){

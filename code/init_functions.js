@@ -432,6 +432,7 @@ function import_hardware(v){
 		if(drv != "none"){
 			post("\nfound external matrix, loading driver",drv);
 			messnamed("drivers_poly","setvalue",1,"patchername",drv);
+			EXTERNAL_MATRIX_PRESENT = 1; 
 		}
 	}
 	if(d2.contains("io::matrix::soundcard")){

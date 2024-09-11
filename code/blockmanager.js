@@ -56,6 +56,7 @@ var waves_preloading = 1;
 var TEMPLATES_FOLDER = "templates";
 
 var SOUNDCARD_HAS_MATRIX = 0;
+var EXTERNAL_MATRIX_PRESENT = 0;
 
 var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);

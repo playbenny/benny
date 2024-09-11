@@ -56,7 +56,7 @@
 		"matrix" : 		{
 			"external" : "/Users/James/Documents/GitHub/benny/hardware_configs/drivers/external_matrix/alyseum_matrix.maxpat",
 			"soundcard" : "/Users/James/Documents/GitHub/benny/hardware_configs/drivers/soundcard_mixer/rme_totalmix.maxpat",
-			"external_midi_out" : "MIDIOUT2 (MIDIMATE II)"
+			"external_midi_out" : "USB MS1x1 MIDI Interface"
 		}
 
 	}
