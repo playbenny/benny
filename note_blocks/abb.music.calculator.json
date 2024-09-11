@@ -18,6 +18,10 @@
 			{ 
 				"contains" : [0, 1, 2, 3, 4],
 				"header"	: "Shift Notes"
+			},
+			{
+				"contains":[5],
+				"header": "pattern"
 			}
 		],
 		"panel" : {
@@ -58,6 +62,13 @@
 				"values" : ["bi", -14, 14, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "pattern",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0
 			}
 			
 		]

@@ -83,6 +83,13 @@
 			"values" : ["uni", 0, 1, "lin"],
 			"wrap" : 0,
 			"default" : 0
+			},
+			{
+				"name" : "pattern",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0
 			}
 		]
 	}
