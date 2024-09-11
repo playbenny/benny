@@ -1432,21 +1432,23 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardware.midi.port."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardware.midi.inport."+ii);
 					controls[ii].message("append","none");
 					var subs=midi_interfaces.out;
+					values[ii] = [cdk[p],["none"]];
 					for(var s=0;s<subs.length;s++){
 						controls[ii].message("append",subs[s]);
+						values[ii][1].push(subs[s]);
 					}
 					var subs=midi_interfaces.not_present_out;
 					for(var s=0;s<subs.length;s++){
 						controls[ii].message("append",subs[s]);
+						values[ii][1].push(subs[s]);
 					}
-					controls[ii].message("set", cd.get(cdk[p]+"::midi_in"));
+					controls[ii].message("setsymbol", cd.get(cdk[p]+"::midi_in"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-					values[ii] = [cdk[p]];
 					y_pos+=unit.row+unit.header;
 					ii++;			
 		
@@ -1503,7 +1505,7 @@ function render_controls(){
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range1."+ii, "@minimum", 0, "@maximum", 127);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.in.range2."+ii, "@minimum", 0, "@maximum", 127);
 						controls[ii].message("set", hwr[i][1]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1649,21 +1651,23 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
-					controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardware.midi.port."+ii);
+					controls[ii] = this.patcher.newdefault(10, 100, "umenu" , "@varname", "hardware.midi.outport."+ii);
 					controls[ii].message("append","none");
-					var subs=midi_interfaces.out;
+					var subs=midi_interfaces.in;
+					values[ii]=[cdk[p],["none"]];
 					for(var s=0;s<subs.length;s++){
 						controls[ii].message("append",subs[s]);
+						values[ii][1].push(subs[s]);
 					}
-					var subs=midi_interfaces.not_present_out;
+					var subs=midi_interfaces.not_present_in;
 					for(var s=0;s<subs.length;s++){
 						controls[ii].message("append",subs[s]);
+						values[ii][1].push(subs[s]);
 					}
-					controls[ii].message("set", cd.get(cdk[p]+"::midi_out"));
+					controls[ii].message("setsymbol", cd.get(cdk[p]+"::midi_out"));
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-					values[ii] = [cdk[p]];
 					y_pos+=unit.row+unit.header;
 					ii++;			
 		
@@ -1716,7 +1720,7 @@ function render_controls(){
 						controls[ii].presentation_rect(2*unit.col-100,y_pos,60,20);
 						values[ii] = [cdk[p],i];
 						ii++;	
-						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.range1."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.out.range2."+ii);
 						controls[ii].message("set", hwr[i][1]);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
@@ -1966,7 +1970,6 @@ function keybcallback(data){
 				var t=+id[3];
 				post("\nset out channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
-				//controls[t+2].message("list", data.value);
 				dontredraw = 0;
 			}else if(id[2]=="name"){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::hardware["+values[id[3]][1]+"]",data.value);
@@ -1984,7 +1987,37 @@ function keybcallback(data){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
 				//controls[t+2].message("list", data.value);
 			}
+		}else if(id[1]=="midi"){
+			if(id[2]=="inport"){
+				post("\nwrite inport",values[id[3]][0],values[id[3]][1][data.value]);
+				configfile.replace("hardware::"+values[id[3]][0]+"::midi_in",values[id[3]][1][data.value]);
+			}else if(id[2]=="outport"){
+				post("\nwrite outport",values[id[3]][0],values[id[3]][1][data.value]);
+				configfile.replace("hardware::"+values[id[3]][0]+"::midi_out",values[id[3]][1][data.value]);
+			}else{
+				if(id[3]=="channel"){
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi_channels["+values[id[4]][1]+"]",data.value);
+				}else if(id[3]=="name"){
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi["+values[id[4]][1]+"]",data.value);
+				}else if(id[3]=="range1"){
+					var r=configfile.get("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi_ranges["+values[id[4]][1]+"]");
+					r[0] = data.value;
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi_ranges["+values[id[4]][1]+"]",r);
+				}else if(id[3]=="range2"){
+					var r=configfile.get("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi_ranges["+values[id[4]][1]+"]");
+					r[1] = data.value;
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi_ranges["+values[id[4]][1]+"]",r);
+				}else{
+					post("\n????\nhw midi:",d,"::",id," -- ",values[id[4]]);	
+					var v = values[id[4]];
+					post("\nwrote: ","hardware::"+v[0]+"::connections::midi::"+id[2]+"::"+id[3],data.value);
+					configfile.replace("hardware::"+v[0]+"::connections::midi::"+id[2]+"::"+id[3],data.value);
+
+				}
+
+			}
 		}else{
+			post("\n-- id is ",id," -- values[id[2]] is",values[id[2]]);
 			var v = values[id[2]];
 			post("\nwrote: ","hardware::"+v[0]+"::"+id[1],data.value);
 			configfile.replace("hardware::"+v[0]+"::"+id[1],data.value);
@@ -2114,8 +2147,10 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",[0]);
 				}
 			}else if(id[2]=="midi"){
-				post("\nadd midi",id,values[id[5]]);
+				post("\nadd midi",id); 
+				post(values[id[5]]);
 				var d = id[3];
+				if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections")) configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d,"{ }");
 				if(configfile.contains("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi")){
 					var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi");
 					var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels");
@@ -2127,7 +2162,7 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",tc);
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",tr);
 				}else{
-					if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections::"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
+					if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
 					configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi" , "{ }");
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",["new"]);
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",[0]);
@@ -2176,15 +2211,25 @@ function keybcallback(data){
 				var tc = configfile.get("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels");
 				tn.splice(values[id[4]][1],1);
 				tc.splice(values[id[4]][1],1);
-				configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",tn);
-				configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",tc);
+				if(tn.length==0){
+					configfile.remove("hardware::"+values[id[4]][0]+"::connections::in::hardware");
+					configfile.remove("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels");
+				}else{
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware",tn);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::in::hardware_channels",tc);
+				}
 			}else if(id[2]=="out"){
 				var tc = configfile.get("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels");
 				var tn = configfile.get("hardware::"+values[id[4]][0]+"::connections::out::hardware");
 				tn.splice(values[id[4]][1],1);
 				tc.splice(values[id[4]][1],1);
-				configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",tn);
-				configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
+				if(tn.length==0){
+					configfile.remove("hardware::"+values[id[4]][0]+"::connections::out::hardware");
+					configfile.remove("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels");
+				}else{
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware",tn);
+					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
+				}
 			}else if(id[2]=="midi"){
 				var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
 				var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
@@ -2192,9 +2237,15 @@ function keybcallback(data){
 				tc.splice(values[id[5]][1],1);
 				tn.splice(values[id[5]][1],1);
 				tr.splice(values[id[5]][1],1);
-				configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi",tn);
-				configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels",tc);
-				configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges",tr);
+				if(tc.length==0){
+					configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi");
+					configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
+					configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
+				}else{
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi",tn);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels",tc);
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges",tr);
+				}
 			}else if(id[2]=="block"){
 				configfile.remove("hardware::"+values[id[3]][0]);
 				selected.item = -1;
