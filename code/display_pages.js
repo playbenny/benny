@@ -1174,7 +1174,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					}						
 					noio /= max_poly;
 					if(noio==0){
-						post("this hardware block seems to have no io?");
+						post("\nthis hardware block seems to have no audio io?");
 					}else{
 						for(tt=0;tt<noio;tt++){
 							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","benny");
@@ -1227,7 +1227,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				}						
 				noio /= max_poly;
 				if(noio==0){
-					//post("this hardware block seems to have no io?");
+					//post("this hardware block seems to have no audio io?");
 				}else{
 					for(tt=0;tt<noio;tt++){
 						blocks_meter[i][(t-1)*noio+tt].color = [1, 1, 1, 1];

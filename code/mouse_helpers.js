@@ -2058,6 +2058,17 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 				}
 			}
 		}
+		//and also if the block has a generic midi handler (or whatever) loaded in a note slot, send that a mute message
+		list = voicemap.get(block);
+		if(list === null){
+			//hw block has no midi handler
+		}else if(typeof list === 'number'){
+			note_poly.setvalue( list+1, "muteouts",av);
+		}else{
+			for(var t=0;t<list.length;t++){
+				note_poly.setvalue( list[t]+1, "muteouts",av);
+			}					
+		}
 	}
 	if(usermouse.shift && (av==0)){ //this could lose the av term, but big auto mute chains seems a bad idea.
 		//recursion time! if shift is down scan through everything connected after the block and apply the same mute status
