@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"openrect" : [ 541.0, 113.0, 769.0, 655.0 ],
+		"openrect" : [ 541.0, 113.0, 769.0, 374.393958628177643 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-40",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 15.0, 141.190462350845337, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-98",
 					"maxclass" : "newobj",
@@ -1910,7 +1922,7 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "float" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 374.0, 664.0, 100.0, 15.0 ],
+					"patching_rect" : [ 370.0, 701.0, 100.0, 15.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 628.947376251220703, 28.0, 101.298700332641602, 15.0 ],
 					"saved_attribute_attributes" : 					{
@@ -2755,7 +2767,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 374.0, 718.0, 99.0, 22.0 ],
+					"patching_rect" : [ 370.0, 755.0, 99.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -2774,7 +2786,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 374.0, 752.0, 129.0, 22.0 ],
+					"patching_rect" : [ 370.0, 789.0, 129.0, 22.0 ],
 					"text" : "phasor~ 1920 @lock 1"
 				}
 
@@ -12316,7 +12328,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 374.0, 633.0, 69.0, 22.0 ],
+					"patching_rect" : [ 370.0, 670.0, 69.0, 22.0 ],
 					"text" : "r #0barin"
 				}
 
@@ -12327,7 +12339,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 392.0, 690.425526976585388, 79.0, 22.0 ],
+					"patching_rect" : [ 388.0, 727.0, 79.0, 22.0 ],
 					"text" : "s #0barout"
 				}
 
@@ -12494,7 +12506,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 545.0, 706.0, 50.0, 64.0 ],
-									"text" : "dictionary u213001465"
+									"text" : "dictionary u293015016"
 								}
 
 							}
