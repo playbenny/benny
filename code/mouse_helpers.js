@@ -700,8 +700,33 @@ function panel_edit_button(parameter,value){
 	redraw_flag.flag=4;
 }
 
+function file_drop(fname){
+	var ts = fname.split(".").pop();
+	if(ts=="json"){
+		load_elsewhere(fname);
+	}else if((ts=="wav")||(ts=="aiff")){
+		post("\n\nloading audio file from drag and drop,");
+		if(waves.selected == -1) waves.selected = 0;
+		inuse=1;
+		while(inuse){
+			if(!waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
+				inuse = 0;
+			}else{
+				waves.selected++;
+				if(waves.selected>100) inuse = 0;
+			}
+		}
+		var ffn = fname.split("/").pop();
+		post(ffn, ", into slot ",waves.selected);
+		waves_dict.replace("waves["+(waves.selected+1)+"]::name","loading");
+		waves_dict.replace("waves["+(waves.selected+1)+"]::path","loading");
+		wave_chosen(waves.selected, ffn,fname);
+	}else{
+		post("\ndrag and drop, unknown file type?",ts);
+	}
+}
+
 function load_elsewhere_choose(){
-	//post("\nL E C");
 	messnamed("open_elsewhere","bang");
 }
 

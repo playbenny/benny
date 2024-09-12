@@ -55,7 +55,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 787.0, 322.0, 640.0, 480.0 ],
+						"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -86,12 +86,12 @@
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-6",
-									"maxclass" : "message",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 96.0, 55.0, 103.0, 22.0 ],
-									"text" : "setvalue 2 open 0"
+									"maxclass" : "number",
+									"numinlets" : 1,
+									"numoutlets" : 2,
+									"outlettype" : [ "", "bang" ],
+									"parameter_enable" : 0,
+									"patching_rect" : [ 99.0, 23.0, 50.0, 22.0 ]
 								}
 
 							}
@@ -102,8 +102,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 96.0, 15.0, 103.0, 22.0 ],
-									"text" : "setvalue 1 open 0"
+									"patching_rect" : [ 99.0, 55.0, 110.0, 22.0 ],
+									"text" : "setvalue $1 open 0"
 								}
 
 							}
@@ -126,7 +126,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 148.0, 15.0, 415.0, 48.0 ],
+									"patching_rect" : [ 313.0, 42.0, 415.0, 48.0 ],
 									"text" : "this poly holds 'drivers' - max patches that need no local io, provide functionality to benny and need to stay resident always. eg alysseum matrix driver, soundcard mix matrix driver etc"
 								}
 
@@ -138,7 +138,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 10.0, 91.0, 114.0, 22.0 ],
-									"text" : "poly~ driver_wrap 2"
+									"text" : "poly~ driver_wrap 3"
 								}
 
 							}
@@ -159,7 +159,7 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-1", 0 ],
+									"destination" : [ "obj-5", 0 ],
 									"source" : [ "obj-6", 0 ]
 								}
 
@@ -328,8 +328,8 @@
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 138.0, 196.0, 140.0, 22.0 ],
-									"text" : "prepend load_elsewhere"
+									"patching_rect" : [ 138.0, 196.0, 102.0, 22.0 ],
+									"text" : "prepend file_drop"
 								}
 
 							}
@@ -14495,7 +14495,7 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 18.0,
 					"id" : "obj-52",
-					"items" : [ "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
+					"items" : [ "jh alyseum matrix case.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -14568,7 +14568,8 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -14781,8 +14782,7 @@
 					"patching_rect" : [ 314.5, 193.25, 33.0, 42.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 3.0, 1.0, 314.0, 442.0 ],
-					"rounded" : 0.0,
-					"types" : "JSON"
+					"rounded" : 0.0
 				}
 
 			}
@@ -14795,35 +14795,34 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "jit_matrix" ],
-					"patching_rect" : [ 23.5, 8.25, 100.0, 81.84615384615384 ],
+					"patching_rect" : [ 23.5, 8.25, 100.0, 81.75 ],
 					"pic" : "C:/Users/jhold/Documents/james music/benny misc/benny logo 1.png",
 					"presentation" : 1,
-					"presentation_rect" : [ 34.5, 4.0, 254.0, 207.889230769230778 ]
+					"presentation_rect" : [ 34.5, 4.0, 254.0, 207.64500000000001 ]
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-117",
+					"id" : "obj-20",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 654.0, 497.0, 161.0, 22.0 ],
-					"text" : "mc.adc~ 1 2 3 4 5 6 7 8 9 10",
+					"patching_rect" : [ 654.0, 497.0, 100.0, 22.0 ],
+					"text" : "mc.adc~ 1 2",
 					"varname" : "audio_inputs"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-119",
-					"linecount" : 3,
+					"id" : "obj-30",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 667.0, 882.0, 100.0, 50.0 ],
-					"text" : "mc.dac~ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16",
+					"patching_rect" : [ 667.0, 882.0, 100.0, 22.0 ],
+					"text" : "mc.dac~ 1 2",
 					"varname" : "audio_outputs"
 				}
 
@@ -14956,13 +14955,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-32", 0 ],
 					"source" : [ "obj-116", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-31", 1 ],
-					"source" : [ "obj-117", 0 ]
 				}
 
 			}
@@ -15252,6 +15244,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-31", 1 ],
+					"source" : [ "obj-20", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-21", 0 ]
 				}
@@ -15364,7 +15363,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-119", 0 ],
+					"destination" : [ "obj-30", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -15665,16 +15664,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-119", 0 ],
-					"order" : 1,
+					"destination" : [ "obj-13", 1 ],
+					"order" : 0,
 					"source" : [ "obj-70", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-13", 1 ],
-					"order" : 0,
+					"destination" : [ "obj-30", 0 ],
+					"order" : 1,
 					"source" : [ "obj-70", 0 ]
 				}
 
@@ -15879,8 +15878,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "~/Documents/GitHub/benny/media",
-				"patcherrelativepath" : "../media",
+				"bootpath" : "~/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}
@@ -16025,20 +16024,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "fx.delay.buckets.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "fx.delay.buckets.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "init_functions.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
@@ -16086,13 +16071,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "mutecontrol_fx.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "note_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
@@ -16118,13 +16096,6 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "rme_totalmix.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/soundcard_mixer",
-				"patcherrelativepath" : "../hardware_configs/drivers/soundcard_mixer",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
