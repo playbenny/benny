@@ -229,6 +229,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				} 
 			}else if(usermouse.got_t==7){//passthrough
+				usermouse.last.x = x;
+				usermouse.last.y = y;
 				var f = mouse_click_actions[usermouse.got_i];
 				var p = mouse_click_parameters[usermouse.got_i];
 				var v = mouse_click_values[usermouse.got_i];
@@ -238,6 +240,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			}else{
 				usermouse.clicked2d = usermouse.got_i;
 				usermouse.clicked3d = -1;
+				usermouse.last.x = x;
+				usermouse.last.y = y;
 				usermouse.last.got_i = usermouse.got_i;
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
@@ -971,6 +975,9 @@ function mouse_released_on_a_thing_no_drag(){
 	}
 }
 
+function ext_jogwheel(value){
+	mousewheel(usermouse.last.x,usermouse.last.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,value);
+}
 
 function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.shift = shift;
@@ -978,11 +985,12 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.alt = alt;
 	usermouse.x = x;
 	usermouse.y = y;
-
+	usermouse.last.x = x;
+	usermouse.last.y = y;
 
 	var tcell;
 	
-	if(usermouse.sidebar_scrolling!=null){
+	if(usermouse.sidebar_scrolling != null){
 		usermouse.sidebar_scrolling = null;
 		d = 999;
 	}else{

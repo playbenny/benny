@@ -370,7 +370,9 @@ var usermouse = {
 		shift: 0,
 		alt: 0,
 		got_i : 0,
-		got_t : 0
+		got_t : 0,
+		x : 0,
+		y : 0
 	},
 	queue : [],
 	qlb : 0,

@@ -1322,13 +1322,11 @@ function draw_clock(){
 		if(view_changed) click_zone(toggle_show_timer,0,0,mainwindow_width-9-fontheight*1.6,0,mainwindow_width,9+fontheight,mouse_index,1);
 	}else{
 		lcd_main.message("moveto",mainwindow_width-9-fontheight*1.6, 9+fontheight*0.8);
-		//var s = currentdate.getSeconds();
-		//if(s<10) s= "0"+s;
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
 		var h = (currentdate.getHours())%12;
 		if((m==20)&&(h==4)){
-			lcd_main.message("frgb", menucolour);
+			lcd_main.message("frgb", 44,220,50); //i'm sorry
 		}else{
 			lcd_main.message("frgb", menudarkest);
 		}
