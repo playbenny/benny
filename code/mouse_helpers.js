@@ -1398,10 +1398,16 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 }
 
 function toggle_show_timer(parameter,value){
-	if(value==null){
-		set_timer_show = 1 - set_timer_show;
+	if(usermouse.ctrl){
+		set_timer_start = null;
+		post("\nreset set timer");
 	}else{
-		set_timer_show = value;
+		if(value==null){
+			set_timer_show = 1 - set_timer_show;
+		}else{
+			set_timer_show = value;
+		}
+		post("\nset show timer display mode:",set_timer_show);
 	}
 	redraw_flag.flag |= 2;
 }

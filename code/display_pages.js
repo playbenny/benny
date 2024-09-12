@@ -2091,6 +2091,7 @@ function draw_topbar(){
 				lcd_main.message("write", "all");			
 				click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
 			}
+			if(fullscreen && (sidebar.mode=="none")) draw_clock();
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
