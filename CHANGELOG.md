@@ -1,6 +1,11 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+11/09/24:
+- preliminary alysseum matrix support works - in hw editor you can define what matrix io a hardware block is connected to then in the new connection view a new type of wire is available - matrix - which is purple.
+- drag and drop audio files onto the launcher benny logo loads them into the next free slots
+- fixes to setting up midi only hardware blocks
+- fixes to muting hardware blocks' midi handler
 04/08/24:
 - hardware editor layout improvements (collapsing tree), support for selecting soundcard and external matrix drivers, improved labelling, selecting matrix channels
 - experimental support for nearly-direct routing of hardware-hardware connections through RME totalmix (instead of bringing audio into max, through the internal matrix and back out, this drastically reduces the latency of these connections). needs to be enabled under advanced in hardware manager. known issue: these connections don't show up on benny's audio meters.

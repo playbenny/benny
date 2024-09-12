@@ -702,11 +702,12 @@ function panel_edit_button(parameter,value){
 
 function file_drop(fname){
 	var ts = fname.split(".").pop();
+	ts = ts.toLowerCase();
 	if(ts=="json"){
 		load_elsewhere(fname);
-	}else if((ts=="wav")||(ts=="aiff")){
+	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")){
 		post("\n\nloading audio file from drag and drop,");
-		if(waves.selected == -1) waves.selected = 0;
+		/*if(waves.selected == -1)*/ waves.selected = 0;
 		inuse=1;
 		while(inuse){
 			if(!waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
