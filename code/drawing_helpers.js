@@ -1213,7 +1213,9 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 	}
 	var desc = 0; // this enable displaying descriptions here, but it always feels like redundant text..
 	if(sidebar.connection.help && (blocktypes.contains(f_name + "::connections::out::descriptions::" + ty))) desc = 1;
-	if(blocktypes.contains(f_name + "::connections::out::" + ty+"_channels")){
+	var tty = ty;
+	if(ty=="matrix") tty="matrix_channels";
+	if(blocktypes.contains(f_name + "::connections::out::" + tty)){
 		var l;
 		if(ty!="matrix"){
 			l = blocktypes.get(f_name + "::connections::out::" + ty);
@@ -1257,6 +1259,8 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 		curr = (connections.get("connections["+i+"]::to::input::number"))
 	}
 	var l = [];
+	var tty = ty;
+	if(ty=="matrix") tty="matrix_channels";
 	if(ty=="block"){
 		l = ["mute toggle", "mute"];
 	}else if(ty=="parameters"){
@@ -1269,7 +1273,7 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 				l.push(blocktypes.get(t_name+"::parameters["+p+"]::name"));
 			}
 		}
-	}else if(blocktypes.contains(t_name + "::connections::in::" + ty+"_channels")){
+	}else if(blocktypes.contains(t_name + "::connections::in::" + tty)){
 		if(ty!="matrix"){
 			l = blocktypes.get(t_name + "::connections::in::" + ty);
 		}else{
