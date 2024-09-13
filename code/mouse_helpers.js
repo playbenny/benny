@@ -2493,9 +2493,9 @@ function load_wave(parameter,value){
 
 function setup_waves(parameter,value){
 	if(value=="get"){
-		return waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
+		return 10*waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
 	}else{
-		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,value)));
+		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,0.1*value)));
 		store_wave_slices(parameter[0]);
 		messnamed("wave_updated",parameter[0]);
 		redraw_flag.flag = 4;
