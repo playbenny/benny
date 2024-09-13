@@ -2152,7 +2152,7 @@ function draw_sidebar(){
 	y_offset = 9 - sidebar.scroll.position;
 
 	// MODAL SIDEBAR MODES FIRST - EDIT LABEL, EDIT STATE, FILE, CPU
-
+	setfontsize(fontsmall);
 	if(sidebar.mode == "edit_label"){
 		// EDIT BLOCK LABEL ##############################################################################################################
 		block = sidebar.selected;
