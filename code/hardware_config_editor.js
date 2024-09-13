@@ -152,9 +152,10 @@ function render_controls(){
 	y_pos = 50;
 	ii=0;
 
-	var matrix_ext = "none", matrix_soundcard = "none";
+	var matrix_ext = "none", matrix_soundcard = "none", special_controller = "none";
 	if(configfile.contains("io::matrix::external")) matrix_ext = configfile.get("io::matrix::external");
 	if(configfile.contains("io::matrix::soundcard")) matrix_soundcard = configfile.get("io::matrix::soundcard");
+	if(configfile.contains("io::special_controller")) special_controller = configfile.get("io::special_controller");
 	//post("\nstored values - ext driver:",matrix_ext," soundcard driver:",matrix_soundcard);
 
 	if(selected.section != "keyboards"){
@@ -1880,7 +1881,7 @@ function render_controls(){
 		controls[ii].message("append", "none");
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
-		controls[ii].message("setsymbol", matrix_ext);
+		controls[ii].message("setsymbol", special_controller);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		ii++;
 		controls[ii] = this.patcher.newdefault(10, 100, "send", "special_controller");
