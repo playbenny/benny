@@ -127,6 +127,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.left_button = leftbutton;
 	usermouse.last.shift = usermouse.shift;
 	usermouse.last.alt = usermouse.alt;
+	usermouse.last.x = x;
+	usermouse.last.y = y; //these two aren't like the others, just used for special input - jogwheel
 	usermouse.shift = shift;
 	if(usermouse.ctrl != ctrl){
 		usermouse.ctrl = ctrl;
