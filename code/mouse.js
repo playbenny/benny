@@ -231,8 +231,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				} 
 			}else if(usermouse.got_t==7){//passthrough
-				usermouse.last.x = x;
-				usermouse.last.y = y;
 				var f = mouse_click_actions[usermouse.got_i];
 				var p = mouse_click_parameters[usermouse.got_i];
 				var v = mouse_click_values[usermouse.got_i];
@@ -242,8 +240,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			}else{
 				usermouse.clicked2d = usermouse.got_i;
 				usermouse.clicked3d = -1;
-				usermouse.last.x = x;
-				usermouse.last.y = y;
 				usermouse.last.got_i = usermouse.got_i;
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
