@@ -4531,7 +4531,11 @@ function draw_sidebar(){
 										}else{
 											lcd_main.message("moveto", sidebar.x+fo1*2, y_offset+fontheight*1.6);
 											lcd_main.message("frgb" , menucolour);
-											lcd_main.message("write","connection gain locked to unity");
+											if(connections.get("connections["+i+"]::from::output::type")=="matrix"){
+												lcd_main.message("write","matrix connections have no gain control");
+											}else{
+												lcd_main.message("write","connection gain locked to unity");
+											}
 										}
 										if(connections.get("connections["+i+"]::from::output::type")=="hardware"){
 											if((connections.get("connections["+i+"]::to::input::type")=="audio")||(connections.get("connections["+i+"]::to::input::type")=="hardware")){
@@ -4844,6 +4848,8 @@ function draw_sidebar(){
 				f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
 			}
 			//post("\nfoname",f_o_name,f_type,f_o_no);
+			var to_has_matrix = 0;
+			if(blocktypes.contains(t_name+"::connections::in::matrix_channels")) to_has_matrix = 1;
 			if(t_type=="parameters"){
 				t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
 			}else if(t_type=="potential"){
@@ -4943,7 +4949,8 @@ function draw_sidebar(){
 					lcd_main.message("write", "hide");
 				}
 				y_offset+=1.4*fontheight;
-				if(EXTERNAL_MATRIX_PRESENT) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
+				if(EXTERNAL_MATRIX_PRESENT && to_has_matrix) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
+				post("\nTHM",to_has_matrix);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
 				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
@@ -5201,7 +5208,11 @@ function draw_sidebar(){
 			}else{
 				lcd_main.message("frgb" , type_colour);
 				lcd_main.message("moveto", sidebar.x+fo1*2, y_offset+fontheight*0.7);
-				lcd_main.message("write", "connection gain locked to unity");
+				if(f_type=="matrix"){
+					lcd_main.message("write", "matrix connections have no gain control");
+				}else{
+					lcd_main.message("write", "connection gain locked to unity");
+				}
 			}
 			y_offset+=11*fo1;
 			if(f_type=="hardware"){

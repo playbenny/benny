@@ -115,12 +115,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cv", "lpg" ],
-					"hardware_channels" : [ 5, 6, 20 ]
+					"hardware_channels" : [ 5, 6, 20 ],
+					"matrix_channels" : [ 3, 4, 0 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 2 ]
+					"hardware_channels" : [ 2 ],
+					"matrix_channels" : [ 2 ]
 				}
 
 			}
@@ -139,12 +141,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cv" ],
-					"hardware_channels" : [ 7, 8 ]
+					"hardware_channels" : [ 7, 8 ],
+					"matrix_channels" : [ 5, 6 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "hp out", "bp out", "lp out" ],
-					"hardware_channels" : [ 3, 4, 5 ]
+					"hardware_channels" : [ 3, 4, 5 ],
+					"matrix_channels" : [ 3, 4, 5 ]
 				}
 
 			}
@@ -163,12 +167,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in" ],
-					"hardware_channels" : [ 9 ]
+					"hardware_channels" : [ 9 ],
+					"matrix_channels" : [ 7 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 6 ]
+					"hardware_channels" : [ 6 ],
+					"matrix_channels" : [ 6 ]
 				}
 
 			}
@@ -187,12 +193,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in" ],
-					"hardware_channels" : [ 10 ]
+					"hardware_channels" : [ 10 ],
+					"matrix_channels" : [ 8 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 7 ]
+					"hardware_channels" : [ 7 ],
+					"matrix_channels" : [ 7 ]
 				}
 
 			}
@@ -211,12 +219,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in X", "in Y" ],
-					"hardware_channels" : [ 11, 12 ]
+					"hardware_channels" : [ 11, 12 ],
+					"matrix_channels" : [ 9, 10 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out A", "out B" ],
-					"hardware_channels" : [ 8, 9 ]
+					"hardware_channels" : [ 8, 9 ],
+					"matrix_channels" : [ 8, 9 ]
 				}
 
 			}
@@ -235,12 +245,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cv" ],
-					"hardware_channels" : [ 13, 14 ]
+					"hardware_channels" : [ 13, 14 ],
+					"matrix_channels" : [ 11, 12 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 10 ]
+					"hardware_channels" : [ 10 ],
+					"matrix_channels" : [ 10 ]
 				}
 
 			}
@@ -259,12 +271,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in", "cv" ],
-					"hardware_channels" : [ 15, 16 ]
+					"hardware_channels" : [ 15, 16 ],
+					"matrix_channels" : [ 13, 14 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "lp/hp out", "bp out" ],
-					"hardware_channels" : [ 11, 12 ]
+					"hardware_channels" : [ 11, 12 ],
+					"matrix_channels" : [ 11, 12 ]
 				}
 
 			}
@@ -283,12 +297,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in" ],
-					"hardware_channels" : [ 17 ]
+					"hardware_channels" : [ 17 ],
+					"matrix_channels" : [ 15 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 13 ]
+					"hardware_channels" : [ 13 ],
+					"matrix_channels" : [ 13 ]
 				}
 
 			}
@@ -307,12 +323,14 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "in" ],
-					"hardware_channels" : [ 18 ]
+					"hardware_channels" : [ 18 ],
+					"matrix_channels" : [ 16 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out L", "out R" ],
-					"hardware_channels" : [ 14, 15 ]
+					"hardware_channels" : [ 14, 15 ],
+					"matrix_channels" : [ 15, 15 ]
 				}
 
 			}
