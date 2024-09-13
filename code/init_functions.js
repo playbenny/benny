@@ -443,6 +443,14 @@ function import_hardware(v){
 			SOUNDCARD_HAS_MATRIX = 1;
 		}
 	}
+	if(d2.contains("io::special_controller")){
+		var drv = d2.get("io::special_controller");
+		if(drv != "none"){
+			post("\nfound special controller, loading driver",drv);
+			messnamed("drivers_poly","setvalue",3,"patchername",drv);
+		}
+	}
+	
 	var keys = d.getkeys();
 	if(d2.contains("measured_latency")){
 		post("\nlatency measurement found, copied to config for blocks to access if they want");

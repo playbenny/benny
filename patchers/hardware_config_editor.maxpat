@@ -40,6 +40,30 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-108",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 269.0, 529.0, 149.0, 22.0 ],
+					"text" : "prepend special_controller"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-105",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 269.0, 497.0, 109.0, 22.0 ],
+					"text" : "r special_controller"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-104",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -2104,7 +2128,7 @@
 					"fontname" : "Consolas Bold",
 					"fontsize" : 12.0,
 					"id" : "obj-52",
-					"items" : [ "jh alyseum matrix case.json", ",", "luke ES8_3_6.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "miditest.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
+					"items" : [ "jh alyseum matrix case.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -2200,6 +2224,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-108", 0 ],
+					"source" : [ "obj-105", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-107", 1 ],
 					"source" : [ "obj-106", 0 ]
 				}
@@ -2209,6 +2240,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-31", 0 ],
 					"source" : [ "obj-107", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-108", 0 ]
 				}
 
 			}

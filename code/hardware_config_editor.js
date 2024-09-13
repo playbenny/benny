@@ -1868,6 +1868,26 @@ function render_controls(){
 	
 		y_pos+=unit.row + unit.header;
 
+		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii].message("set", "special controller driver");
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20,y_pos,unit.col,20);
+		ii++;
+	
+		controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "drivers.1."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii].message("prefix", filepath+"/hardware_configs/drivers/special_controller");
+		controls[ii].message("populate");
+		controls[ii].message("append", "none");
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+		controls[ii].message("setsymbol", matrix_ext);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "send", "special_controller");
+		this.patcher.connect(controls[ii-1],1,controls[ii],0);
+		ii++;
+		y_pos+=unit.row+unit.header;
+
 		latency_test_list.presentation(1);
 		latency_test_button.presentation(1);
 		latency_test_time.presentation(1); 
@@ -2311,13 +2331,20 @@ function add_midimonitors(interface){
 function matrix_ext(path){
 	if(path.indexOf(":")!=-1) path = path.split(":")[1];
 	if(path.indexOf("none")!=-1) path = "none";
-	post("\ndriver",path);
+	post("\next matrix driver",path);
 	configfile.replace("io::matrix::external",path);
 }
 
 function matrix_soundcard(path){
 	if(path.indexOf(":")!=-1) path = path.split(":")[1];
 	if(path.indexOf("none")!=-1) path = "none";
-	post("\ndriver",path);
+	post("\nsoundcard matrix driver",path);
 	configfile.replace("io::matrix::soundcard",path);
+}
+
+function special_controller(path){
+	if(path.indexOf(":")!=-1) path = path.split(":")[1];
+	if(path.indexOf("none")!=-1) path = "none";
+	post("\nspecial controller driver",path);
+	configfile.replace("io::special_controller",path);
 }
