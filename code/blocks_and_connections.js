@@ -1270,7 +1270,8 @@ function remove_connection(connection_number){
 							}
 						}
 					}else{
-						post("ERROR : ext matrix connections can only go to the ext matrix. wtf did you just try to remove?");
+						//because matrix conn sense checking happens in draw sidebar it does encounter this state but it's nbd
+						//post("ERROR : ext matrix connections can only go to the ext matrix. wtf did you just try to remove?");
 					}
 				}else if(f_type == "midi"){
 					if((t_type == "audio") || (t_type == "hardware")){
@@ -1317,8 +1318,8 @@ function remove_connection(connection_number){
 						var tvv = t_voice;
 						var tmod_id;
 						var idslist = mod_routemap.get(tvv);
+						if(idslist == null) idslist = [];
 						if(!Array.isArray(idslist)) idslist =[idslist];
-						if(idslist == "null") idslist = [];
 						var tidslist = midi_routemap.get(m_index);
 						if(!Array.isArray(tidslist)) tidslist=[tidslist];
 						var found = -1;
@@ -1390,8 +1391,8 @@ function remove_connection(connection_number){
 						var tvv = t_voice;
 						var tmod_id;
 						var idslist = mod_routemap.get(tvv);
+						if(idslist == null) idslist = [];
 						if(!Array.isArray(idslist)) idslist =[idslist];
-						if(idslist == "null") idslist = [];
 						var tidslist = midi_routemap.get(m_index);
 						if(!Array.isArray(tidslist)) tidslist=[tidslist];
 						var found = -1;
@@ -1851,7 +1852,8 @@ function make_connection(cno,existing){
 								}
 							}
 						}else{
-							post("\nERROR : ext matrix connections can only go to the ext matrix");
+							//because matrix conn sense checking happens in draw sidebar it does encounter this state but it's nbd
+							//post("\nERROR : ext matrix connections can only go to the ext matrix");
 						}
 					}else if(f_type == "midi"){
 						if((t_type == "audio") || (t_type == "hardware")){

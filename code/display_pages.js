@@ -1304,12 +1304,16 @@ function draw_wire(connection_number){
 			var from_type = connections.get("connections["+connection_number+"]::from::output::type");
 			var to_type = connections.get("connections["+connection_number+"]::to::input::type");
 			var from_name = blocks.get("blocks["+cfrom+"]::name");
-			var num_outs = Math.max(1,blocktypes.getsize(from_name+"::connections::out::"+from_type));
+			var ftt = from_type;
+			if(ftt=="matrix") ftt="matrix_channels";
+			var num_outs = Math.max(1,blocktypes.getsize(from_name+"::connections::out::"+ftt));
 			var num_ins;
 			if(to_type=="parameters"){
 				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::parameters");
 			}else if (to_type != "potential"){
-				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::connections::in::"+to_type);
+				var ttt = to_type;
+				if(ttt=="matrix")ttt="matrix_channels";
+				num_ins = blocktypes.getsize(blocks.get("blocks["+cto+"]::name")+"::connections::in::"+ttt);
 				num_ins++; //add the block input (mute, mute toggle)
 			}else{
 				num_ins = 1;//potential wires, special case
@@ -4464,13 +4468,17 @@ function draw_sidebar(){
 										}
 										var f_o_no = connections.get("connections["+i+"]::from::output::number");
 										var f_type = connections.get("connections["+i+"]::from::output::type");
+										var ftt=f_type;
+										if(ftt=="matrix")ftt="hardware";
 										var t_i_no = connections.get("connections["+i+"]::to::input::number");
 										var t_type = connections.get("connections["+i+"]::to::input::type");
-										var f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
+										var ttt=t_type;
+										if(ttt=="matrix")ttt="hardware";
+										var f_o_name = blocktypes.get(f_name+"::connections::out::"+ftt+"["+f_o_no+"]");
 										if(t_type=="parameters"){
 											var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
 										}else{
-											var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
+											var t_i_name = blocktypes.get(t_name+"::connections::in::"+ttt+"["+t_i_no+"]");
 										}
 										var f_o_v = ""; var t_i_v="";
 										if(blocks.get("blocks["+f_number+"]::poly::voices")>1) f_o_v = connections.get("connections["+i+"]::from::voice");
@@ -4529,12 +4537,17 @@ function draw_sidebar(){
 											mouse_index++;
 												//	lcd_main.message("frgb", menucolour);
 										}else{
-											lcd_main.message("moveto", sidebar.x+fo1*2, y_offset+fontheight*1.6);
 											lcd_main.message("frgb" , menucolour);
 											if(connections.get("connections["+i+"]::from::output::type")=="matrix"){
-												lcd_main.message("write","matrix connections have no gain control");
+												lcd_main.message("moveto", sidebar.x2-fontheight*3.1, y_offset+fontheight*1.3);
+												lcd_main.message("write","(matrix connections");
+												lcd_main.message("moveto", sidebar.x2-fontheight*3.1, y_offset+fontheight*1.55);
+												lcd_main.message("write","have no gain control)");
 											}else{
-												lcd_main.message("write","connection gain locked to unity");
+												lcd_main.message("moveto", sidebar.x2-fontheight*3.1, y_offset+fontheight*1.3);
+												lcd_main.message("write","connection gain");
+												lcd_main.message("moveto", sidebar.x2-fontheight*3.1, y_offset+fontheight*1.55);
+												lcd_main.message("write","locked to unity");
 											}
 										}
 										if(connections.get("connections["+i+"]::from::output::type")=="hardware"){
@@ -4774,10 +4787,14 @@ function draw_sidebar(){
 			}
 			var f_o_v = connections.get("connections["+i+"]::from::voice");
 			var t_i_v = connections.get("connections["+i+"]::to::voice");
-			if(!Array.isArray(f_o_v)) f_o_v=[f_o_v];
-			if(!Array.isArray(t_i_v)) t_i_v = [t_i_v];
-			f_o_v.sort();
-			t_i_v.sort();
+			if(t_i_v!="all"){
+				if(!Array.isArray(t_i_v)) t_i_v = [t_i_v];
+				t_i_v.sort();
+			}
+			if(f_o_v != "all"){
+				if(!Array.isArray(f_o_v)) f_o_v = [f_o_v];
+				f_o_v.sort();
+			}
 			var f_v_no = blocks.get("blocks["+f_number+"]::poly::voices");
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
 			var from_subvoices = 1;
@@ -4805,6 +4822,8 @@ function draw_sidebar(){
 			var section_colour,section_colour_dark,section_colour_darkest;
 			var type_colour,type_colour_dark,type_colour_darkest;
 
+			var force_draw_wire = 0;
+			
 			if((f_type=="potential")||(t_type=="potential")){
 				type_colour=[192,192,192];
 			}else{
@@ -4847,6 +4866,27 @@ function draw_sidebar(){
 			}else{
 				f_o_name = blocktypes.get(f_name+"::connections::out::"+f_type+"["+f_o_no+"]");
 			}
+			if(f_type=="matrix"){
+				if((t_type!="matrix")&&(t_type!="potential")){
+					t_type = "potential";
+					t_i_no = 0;
+					t_i_v = "all"
+					connections.replace("connections["+i+"]::to::input::number",t_i_no);
+					connections.replace("connections["+i+"]::to::input::type",t_type);
+					connections.replace("connections["+i+"]::to::voice","all");
+					post("\nreset the other end of the connection because matrix can only go to matrix")
+					block_and_wire_colours();
+				}
+			}else if((t_type=="matrix")){
+				t_type = "potential";
+				t_i_no = 0;
+				t_i_v = "all"
+				connections.replace("connections["+i+"]::to::input::number",t_i_no);
+				connections.replace("connections["+i+"]::to::input::type",t_type);
+				connections.replace("connections["+i+"]::to::voice","all");
+				post("\nreset the other end of the connection because matrix can only go to matrix")
+				block_and_wire_colours();
+			}
 			//post("\nfoname",f_o_name,f_type,f_o_no);
 			var to_has_matrix = 0;
 			if(blocktypes.contains(t_name+"::connections::in::matrix_channels")) to_has_matrix = 1;
@@ -4867,6 +4907,8 @@ function draw_sidebar(){
 			}else{
 				var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
 			}
+
+	
 			sidebar.mode = "wire";
 			
 			// FROM BLOCK, OUTPUT, VOICE labels/menus
@@ -4950,7 +4992,6 @@ function draw_sidebar(){
 				}
 				y_offset+=1.4*fontheight;
 				if(EXTERNAL_MATRIX_PRESENT && to_has_matrix) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
-				post("\nTHM",to_has_matrix);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
 				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
 				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
@@ -5583,7 +5624,6 @@ function draw_sidebar(){
 				}
 			}
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, 6*fo1+y_offset,section_colour_darkest );
-			
 
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fo1*4+y_offset);
 			lcd_main.message("frgb", section_colour_dark);
