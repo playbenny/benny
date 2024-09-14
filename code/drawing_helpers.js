@@ -1300,10 +1300,10 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 				}else{
 					//lets check for conflicts. each matrix out (ie hw block input) can only have one connection
 					for(var tc=connections.getsize("connections");tc>=0;tc--){
-						if(connections.contains("connections["+tc+"]::to")){
+						if((tc!=i) && (connections.contains("connections["+tc+"]::to"))){
 							if(connections.get("connections["+tc+"]::to::input::type")=="matrix"){
 								if(connections.get("connections["+tc+"]::to::input::number") == o){
-									used_already = 1; //l[o]=null;
+									used_already = tc; //l[o]=null;
 									c=[60,60,60];
 									tc=-1;
 								}
@@ -1324,11 +1324,12 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
 				lcd_main.message("write", l[o]);
 				lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
-				if(!used_already){
+				if(used_already==0){
 					lcd_main.message("write", ty);
 					click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
 				}else{
 					lcd_main.message("write", "matrix (input already in use)");
+					click_zone(sidebar_select_connection, used_already, 0, sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
 				}
 				y_offset+=7*fo1;
 			}
