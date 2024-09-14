@@ -15,7 +15,7 @@ var v_list = [];
 var values=[0,0,0];
 var ov=[0,0,0];
 
-var /*note=[],*/vel=[],yv=[],mode=[];
+var /*note=[],*/vel=[-1,-1,-1],yv=[],mode=[-1,-1,-1];
 
 function setup(x1,y1,x2,y2,sw){
 	menucolour = config.get("palette::menu");
@@ -79,6 +79,7 @@ function voice_is(v){
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
 	}
+	values = [0,0,0];
 }
 
 function voice_offset(){}
@@ -100,6 +101,7 @@ var wipetask;
 var buttonstowipe = [];
 
 function dobutton(xx,yy,l){
+	if(mode[xx]==-1)getparams();
 	if(mode[xx]==0){
 		if(l==0){
 			values[xx] = 0;
