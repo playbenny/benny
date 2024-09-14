@@ -2932,8 +2932,8 @@ function insert_block_in_connection(newblockname,newblock){
 	//post("\n\n\ninsert, ",i_no,o_no,f_type,t_type,"intypes",intypes,"outtypes",outtypes);
 	//one conversion is 'default' and the other is the one from the old conn. usually first one is default
 	var defaultpos=0;
-	var ftt = (f_type == "hardware") ? "audio" : f_type;
-	var ttt = (t_type == "hardware") ? "audio" : t_type;
+	var ftt = ((f_type == "hardware") || (f_type == "matrix")) ? "audio" : f_type;
+	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
 	if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
 	if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
 	new_connection.parse('{}');

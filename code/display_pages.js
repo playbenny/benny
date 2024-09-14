@@ -4821,8 +4821,6 @@ function draw_sidebar(){
 
 			var section_colour,section_colour_dark,section_colour_darkest;
 			var type_colour,type_colour_dark,type_colour_darkest;
-
-			var force_draw_wire = 0;
 			
 			if((f_type=="potential")||(t_type=="potential")){
 				type_colour=[192,192,192];
@@ -5771,6 +5769,36 @@ function draw_sidebar(){
 				}
 			}
 
+			if((blocktypes.contains(f_name+"::connections::out::matrix_channels")) && (to_has_matrix = 1)){
+				if((f_type=="matrix")&&(t_type=="matrix")){
+					var fhc = blocktypes.get(f_name+"::connections::out::hardware_channels["+f_o_no+"]");
+					var thc = blocktypes.get(t_name+"::connections::in::hardware_channels["+t_i_no+"]");
+					if((fhc != 0) && (thc != 0)){
+						//offer to convert it to hardware connection instead of matrix
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
+						click_zone(convert_matrix_to_regular, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+						lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
+						lcd_main.message("frgb",config.get("palette::connections::hardware"));
+						lcd_main.message("write", "convert from matrix to regular connection");
+			
+						y_offset += 1.1* fontheight;						
+					}
+				}else if((f_type=="hardware")&&(t_type=="hardware")){
+					var fhc = blocktypes.get(f_name+"::connections::out::matrix_channels["+f_o_no+"]");
+					var thc = blocktypes.get(t_name+"::connections::in::matrix_channels["+t_i_no+"]");
+					if((fhc != 0) && (thc != 0)){
+						//offer to convert it to hardware connection instead of matrix
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
+						click_zone(convert_regular_to_matrix, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+						lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
+						lcd_main.message("frgb", config.get("palette::connections::matrix"));
+						lcd_main.message("write", "convert from matrix to regular connection");
+			
+						y_offset += 1.1* fontheight;						
+					}
+				}
+			}
+			
 
 			//i = selected.wire.indexOf(1);
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );

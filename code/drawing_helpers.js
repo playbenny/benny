@@ -1293,8 +1293,8 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 		var c = cc;
 
 		for (var o = 0; o < l.length; o++) {
+			var used_already = 0;
 			if(ty=="matrix"){
-				var used_already = 0;
 				if(blocktypes.get(t_name + "::connections::in::matrix_channels["+o+"]")==0){
 					l[o]=null;
 				}else{

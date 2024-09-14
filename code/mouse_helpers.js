@@ -2897,6 +2897,28 @@ function conn_set_to_input(c,value){
 	redraw_flag.flag |= 4;
 }
 
+function convert_matrix_to_regular(cno, channels){
+	new_connection = connections.get("connections["+cno+"]");
+	new_connection.replace("from::output::type","hardware");
+	new_connection.replace("to::input::type","hardware");
+	remove_connection(cno);
+	connections.replace("connections["+cno+"]",new_connection);
+	make_connection(cno,0);
+	block_and_wire_colours();
+	sidebar_select_connection(cno);
+}
+
+function convert_regular_to_matrix(cno, channels){
+	new_connection = connections.get("connections["+cno+"]");
+	new_connection.replace("from::output::type","matrix");
+	new_connection.replace("to::input::type","matrix");
+	remove_connection(cno);
+	connections.replace("connections["+cno+"]",new_connection);
+	make_connection(cno,0);
+	block_and_wire_colours();
+	sidebar_select_connection(cno);
+}
+
 function fold_menus(){
 	post("\nfold",sidebar.connection.default_out_applied);
 	if(sidebar.connection.default_out_applied>0){
