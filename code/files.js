@@ -304,7 +304,8 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 					}
 				}
 				if(up_one != null) waves_search_paths.push(up_one);
-				post("\nnot found in the same location as the save file, searching");
+				waves_search_paths.push(SONGS_FOLDER);
+				post("\nnot found in the location stored in the save file, searching");
 				//post(", trying search paths:",waves_search_paths);
 				var r = -1;
 				for(var s=0;s<=waves_search_paths.length;s++){
@@ -350,7 +351,7 @@ function open_wave_dialog(wavepath){
 	var pll = preload_list.length-1;
 	songs.replace(preload_list[pll][2]+"path",wavepath+wavename);
 	songs.replace(preload_list[pll][2]+"name",wavename);
-	post("\nreplaced dict entry"+preload_list[pll][2]+"path with ",wavepath);
+	//post("\nreplaced dict entry"+preload_list[pll][2]+"path with ",wavepath);
 	preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 }
