@@ -4751,6 +4751,7 @@ function draw_sidebar(){
 						}	
 					}
 					if(!bold) lcd_main.message("textface", "bold");
+					y_offset = y_offset+fontheight*(0.75+0.4*ri);
 				}else{
 					click_zone(set_sidebar_mode,"help",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_darkest );
