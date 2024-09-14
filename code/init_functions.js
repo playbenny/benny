@@ -1046,3 +1046,8 @@ function songs_audit_process(hunting,replacing,replace_con_type_with){
 		}*/
 	}
 }
+
+function soundcard_matrix_connection_fail(){
+	post("\n\n\n\nSoundcard matrix mixer disabled for this session. Restart benny once you've fixed the problem.");
+	SOUNDCARD_HAS_MATRIX = 0;
+}
