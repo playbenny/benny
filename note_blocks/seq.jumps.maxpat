@@ -394,8 +394,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 546.0, 579.0, 32.0, 22.0 ],
-					"text" : "> 64"
+					"patching_rect" : [ 546.0, 579.0, 39.0, 22.0 ],
+					"text" : ">= 64"
 				}
 
 			}
@@ -562,10 +562,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 191.0, 788.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -590,6 +586,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 618.0, 136.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 

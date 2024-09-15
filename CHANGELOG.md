@@ -1,6 +1,14 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+15/09/24:
+- **breaking change** midi.scale.quantise is renamed to utility.cv.scale.quantise. if you have problems loading old songs you can open the json and run a find replace to swap all instances of the old name to the new name.
+- new midi.scale.quantise (does midi-only quantising)
+- fixes and improvements to sample tracker - slice drawing, patterns
+- fullscreen clock / click to toggle to timer / ctrl click resets timer
+- support for 'special controllers' (eg my new live pc has a high res encoder to adjust last param)
+- waves page param value step fixed so it's useable now
+- midi pitch range block
 11/09/24:
 - preliminary alysseum matrix support works - in hw editor you can define what matrix io a hardware block is connected to then in the new connection view a new type of wire is available - matrix - which is purple.
 - drag and drop audio files onto the launcher benny logo loads them into the next free slots
