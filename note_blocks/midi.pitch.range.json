@@ -1,6 +1,6 @@
 {
-	"midi.pitch" : {
-		"patcher" : "midi.pitch",
+	"midi.pitch.range" : {
+		"patcher" : "midi.pitch.range",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "gate (or split) notes based on pitch",
@@ -21,14 +21,14 @@
 		"parameters" : [
 			{
 				"name" : "gate below",
-				"type" : "int",
+				"type" : "note",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "gate above",
-				"type" : "int",
+				"type" : "note",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
 				"default" : 1
