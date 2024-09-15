@@ -46,21 +46,21 @@
 			{
 				"name" : "start",
 				"type" : "int",
-				"values" : ["uni", 0, 512, "lin"],
+				"values" : ["uni", 0, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "loop_start",
 				"type" : "int",
-				"values" : ["uni", 0, 512, "lin"],
+				"values" : ["uni", 0, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "loop_length",
 				"type" : "int",
-				"values" : ["uni", 0, 512, "lin"],
+				"values" : ["uni", 0, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0.03125
 			},
@@ -75,7 +75,7 @@
 			{
 				"name" : "offset",
 				"type" : "int",
-				"values" : ["bi", -512, 512, "lin"],
+				"values" : ["bi", -128, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
@@ -145,7 +145,8 @@
 				"values" : ["bi", -512, 512, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
-			},{
+			},
+			{
 				"name" : "micro offset",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
