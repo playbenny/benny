@@ -77,9 +77,8 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	post("\nsetup , w",width,"sw,",sw);
 	showcols=Math.floor(2*width/height);
-	if(width<sw*0.54){ 
+	if(width<sw*0.5){ 
 		mini=1;
 		showcols = v_list.length;		
 	}else{
