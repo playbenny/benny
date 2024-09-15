@@ -2151,6 +2151,10 @@ function draw_sidebar(){
 	if(/*(sidebar.mode!="none")||*/((selected.block_count+selected.wire_count)>0)){
 		click_zone(do_nothing, null, null, sidebar.x,0,sidebar.x2,mainwindow_height,0,1); //was 0);
 		mouse_index--; //because this is using an already assigned index no, but click_zone increments mouse_index
+		if((sidebar.mode=="none") && fullscreen){
+			//wipe clock space
+			lcd_main.message("paintrect", mainwindow_width-2.1*fontheight, 9, mainwindow_width,fontheight+9,0,0,0);
+		}
 	}
 	
 	y_offset = 9 - sidebar.scroll.position;
