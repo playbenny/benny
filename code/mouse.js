@@ -790,6 +790,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											drawwire = 0;	
 										}
 									}
+									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									if(!blocktypes.contains(fname +"::connections::out")) drawwire=0; //no outputs!
 									if(drawwire == 1){
 										potential_connection.replace("from::number",usermouse.ids[1]);
 										potential_connection.replace("to::number",usermouse.hover[1]);
