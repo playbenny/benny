@@ -42,9 +42,9 @@ var keymap = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 var fx_names = ["Arpeggio", "B", "Cut", "Delay", "E", "Fade", "retriGger", "Hold", "I", "Jump", "K", "L", "harMonic", "N", "Offset", "Pitchslide UP", "Qitchslide down", "Ramp", "Sometimes", "porTamento", "hUrry", "reVerse", "daWdle", "X", "Y", "Z"];
 var fx_descs = ["chiptune style arpeggio, the values are [note1][note2][rate] or [note1][rate]",
 ".",
-"stops the sample playback partway through the row","actions the row slightly late",
+"stops the sample playback partway through the row, value is % of a row","actions the row slightly late, value is % of a row ",
 ".",
-"fades the volume down linearly (see also: Ramp)",
+"fades the volume down linearly (see also: Ramp), value is how far it goes down in 1 row.",
 "does a roll, [rate][volume incdec] or [rate][volume incdec][pitch incdec] incdec values 5 = static, 0 = decreases fast 9 = increases fast",
 "holds playback at a point using the timestretch",
 ".",
@@ -52,7 +52,7 @@ var fx_descs = ["chiptune style arpeggio, the values are [note1][note2][rate] or
 ".",".",
 "multiplies the playback rate by this integer. numbers >100 are treated as negative",
 ".",
-"starts playback after the slice marker by this offset",
+"starts playback after the slice marker by this offset (in % of a slice)",
 "slides pitch up (see also Qitchslide down)",
 "slides pitch down",
 "ramps the volume up linearly (see also: Fade)",
@@ -120,7 +120,7 @@ function draw(){
 		maxl = Math.floor((height-sy)/rh);
 		if(!mini){
 			outlet(1,"paintrect",x_pos+sx,y_pos,x_pos+width,sy+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-			outlet(0,"setfontsize",rh*0.8);
+			//outlet(0,"setfontsize",-0.5);
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",3+sx+x_pos,rh*0.75+y_pos);
 			outlet(1,"write","octave");
@@ -148,7 +148,7 @@ function draw(){
 			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*0.75+y_pos);
 			outlet(1,"write","slice");
 			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",currentslice+1);
+			outlet(1,"write",currentslice);
 			if(cursorx2<4) draw_wave_hint(currentwave,currentslice);
 			for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
 				cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
@@ -408,6 +408,18 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
+			if(sel_ex==-1){
+				var v = voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+cursorx2+1+6*((cursory+MAX_PATTERN_LENGTH*pattern[cursorx])));
+				if(v>0){
+					if(scr>0){
+						v++;
+					}else{
+						v--;
+						if(v<1)v=1;
+					}
+					voice_data_buffer.poke(1,MAX_DATA*v_list[cursorx]+cursorx2+1+6*((cursory+MAX_PATTERN_LENGTH*pattern[cursorx])),v);
+				}
+			}
 			if((cursorx>=sel_sx)&&(cursorx2>=sel_sx2)&&(cursorx<=sel_ex)&&(cursorx2<=sel_ex2)&&(cursory>=sel_sy)&&(cursory<=sel_ey)){
 				//youve scrolled on a value in a selected area, change them all
 				for(var tx=sel_sx;tx<=sel_ex;tx++){
@@ -746,40 +758,44 @@ function keydown(key){
 			baseoct--;
 			if(baseoct<0)baseoct=0;
 			break;
-		case 59:
+		case 620:
 			currentwave++;
 			if(currentwave>128)currentwave=128;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+2,currentwave+1);
 			drawflag=1;
 			break;
-		case 46:
+		case 556:
 			currentwave--;
 			if(currentwave<0)currentwave=0;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+2,currentwave+1);
 			drawflag=1;
 			break;
-		case 39:
+		case 4716:
 			currentslice++;
 			if(currentslice>MAX_WAVES_SLICES)currentslice=MAX_WAVES_SLICES;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+3,currentslice+1);
 			drawflag=1;
 			break;
-		case 47:
+		case 4652:
 			currentslice--;
 			if(currentslice<0)currentslice=0;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+3,currentslice+1);
 			drawflag=1;
 			break;	
-		case 61:
+		case 6764:
 			currentvel++;
 			if(currentvel>128)currentvel=128;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1,currentvel+1);
 			drawflag=1;
 			break;
-		case 45:
+		case 6700:
 			currentvel--;
 			if(currentvel<0)currentvel=0;
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1,currentvel+1);
+			drawflag=1;
+			break;
+		case 46: // . is clear
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+cursorx2+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1,0);
 			drawflag=1;
 			break;
 		case 355:
@@ -865,7 +881,7 @@ function keydown(key){
 					}
 				}
 				cursory=(cursory+1) & 127;
-			}else if((cursorx2==1)||(cursorx2==3)){
+			}else if((cursorx2==1)||(cursorx2==3)||(cursorx2==5)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
 					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2)-1;
@@ -879,7 +895,7 @@ function keydown(key){
 					if(cursorx2==3) currentslice = (o-1) |0;
 					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2,o+1);
 				}
-			}else if((cursorx2==2)||(cursorx2==5)){
+			}else if((cursorx2==2)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
 					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2)-1;
@@ -894,7 +910,7 @@ function keydown(key){
 				}
 			}else if((cursorx2==4)){
 				var t=key-96;
-				post("fx",t);
+				//post("fx",t);
 				if((t>=0)&&(t<=26)){					
 					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2,t+1);
 				}
