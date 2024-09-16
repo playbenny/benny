@@ -342,7 +342,7 @@ function hardware_meters(){
 }
 
 function midi_meters(){
-	var minsize = Math.max(1,0.3*(camera_position[2]-20));
+	var minsize = Math.max(1,1+0.1*(camera_position[2]-10));
 	minsize *= minsize;
 	for(i = meters_updatelist.midi.length-1; i>=0; i--){
 		var block=meters_updatelist.midi[i][0];
@@ -366,8 +366,8 @@ function midi_meters(){
 					}else{		
 						p_min = (mvals[3])/(128 + minsize);
 						p_max = (minsize + mvals[4])/(128 + minsize);
-						v_min = (mvals[5])/(128 + minsize);
-						v_max = (minsize + mvals[6])/(128 + minsize);
+						v_min = (mvals[5])/(128 + 0.5*minsize);
+						v_max = (0.5*minsize + mvals[6])/(128 + 0.5*minsize);
 					}
 					var tv=[];
 					tv = blocks_cube[block][voice+1].position;
