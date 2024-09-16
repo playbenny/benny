@@ -1362,7 +1362,9 @@ function draw_clock(){
 		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
-		var h = (currentdate.getHours())%12;
+		var hh = (currentdate.getHours());
+		var h = hh % 12;
+		h += (hh==12)*12;
 		if((m==20)&&(h==4)){
 			lcd_main.message("frgb", 44,220,50); //i'm sorry
 		}else{
