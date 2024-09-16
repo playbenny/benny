@@ -1,0 +1,54 @@
+{
+	"midi.scale.quantise" : {
+		"patcher" : "midi.scale.quantise",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Quantises notes to the scales defined in the core.scales.shapes module. ££This block works efficiently for fast note streams (including if you patch an audio signal to the note in) but there is also a utility.audio.scale.quantise which works all the way up to audio rate.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 0, 3, 1,2]
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "scale",
+				"type" : "menu_i",
+				"values" : ["chromatic","1","2","3","4","5","6","7","8"],
+				"wrap" : 1,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : ["quantise", "index"],
+				"wrap" : 1,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "pre shift",
+				"type" : "int",
+				"values" : ["bi", -48, 48, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
+			}
+		]
+	}
+}

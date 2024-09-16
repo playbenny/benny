@@ -1,9 +1,9 @@
 {
-	"midi.scale.quantise" : {
-		"patcher" : "midi.scale.quantise",
+	"utility.cv.scale.quantise" : {
+		"patcher" : "utility.cv.scale.quantise",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Quantises notes to the scales defined in the core.scales.shapes module. ££Also supports CV input for audio-rate quantising of control signals.",
+		"help_text" : "Quantises notes to the scales defined in the core.scales.shapes module. ££This version is optimised around supporting CV input for audio-rate quantising of control signals. There is a midi-only scale quantise block that uses slightly less resources.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -23,7 +23,7 @@
 		],
 		"parameters" : [
 			{
-				"name" : "pool",
+				"name" : "scale",
 				"type" : "menu_i",
 				"values" : ["chromatic","1","2","3","4","5","6","7","8"],
 				"wrap" : 1,

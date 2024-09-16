@@ -56,6 +56,7 @@ var waves_preloading = 1;
 var TEMPLATES_FOLDER = "templates";
 
 var SOUNDCARD_HAS_MATRIX = 0;
+var EXTERNAL_MATRIX_PRESENT = 0;
 
 var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);
@@ -369,7 +370,9 @@ var usermouse = {
 		shift: 0,
 		alt: 0,
 		got_i : 0,
-		got_t : 0
+		got_t : 0,
+		x : 0,
+		y : 0
 	},
 	queue : [],
 	qlb : 0,

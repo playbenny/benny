@@ -127,6 +127,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.left_button = leftbutton;
 	usermouse.last.shift = usermouse.shift;
 	usermouse.last.alt = usermouse.alt;
+	usermouse.last.x = x;
+	usermouse.last.y = y; //these two aren't like the others, just used for special input - jogwheel
 	usermouse.shift = shift;
 	if(usermouse.ctrl != ctrl){
 		usermouse.ctrl = ctrl;
@@ -788,6 +790,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											drawwire = 0;	
 										}
 									}
+									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									if(!blocktypes.contains(fname +"::connections::out")) drawwire=0; //no outputs!
 									if(drawwire == 1){
 										potential_connection.replace("from::number",usermouse.ids[1]);
 										potential_connection.replace("to::number",usermouse.hover[1]);
@@ -971,6 +975,9 @@ function mouse_released_on_a_thing_no_drag(){
 	}
 }
 
+function ext_jogwheel(value){
+	mousewheel(usermouse.last.x,usermouse.last.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,value);
+}
 
 function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.shift = shift;
@@ -978,11 +985,12 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.alt = alt;
 	usermouse.x = x;
 	usermouse.y = y;
-
+	usermouse.last.x = x;
+	usermouse.last.y = y;
 
 	var tcell;
 	
-	if(usermouse.sidebar_scrolling!=null){
+	if(usermouse.sidebar_scrolling != null){
 		usermouse.sidebar_scrolling = null;
 		d = 999;
 	}else{

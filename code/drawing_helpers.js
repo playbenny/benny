@@ -1213,64 +1213,25 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 	}
 	var desc = 0; // this enable displaying descriptions here, but it always feels like redundant text..
 	if(sidebar.connection.help && (blocktypes.contains(f_name + "::connections::out::descriptions::" + ty))) desc = 1;
-	if(blocktypes.contains(f_name + "::connections::out::" + ty)){
-		var l = blocktypes.get(f_name + "::connections::out::" + ty);
+	var tty = ty;
+	if(ty=="matrix") tty="matrix_channels";
+	if(blocktypes.contains(f_name + "::connections::out::" + tty)){
+		var l;
+		if(ty!="matrix"){
+			l = blocktypes.get(f_name + "::connections::out::" + ty);
+		}else{
+			l = blocktypes.get(f_name + "::connections::out::hardware");
+		}
 		if (!Array.isArray(l)) l = [l];
 		var c = config.get("palette::connections::" + ty);
 		var len = l.length;
 		if(truncate!=null) len = Math.min(len,truncate);
 		for (var o = 0; o < len; o++) {
-			if(curr==o){
-				lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
-				lcd_main.message("frgb", 0,0,0);
-			}else{
-				lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c[0] * bg_dark_ratio, c[1] * bg_dark_ratio, c[2] * bg_dark_ratio);
-				lcd_main.message("frgb", c);
+			if(ty=="matrix"){
+				if(blocktypes.get(f_name + "::connections::out::matrix_channels["+o+"]")==0){
+					l[o]=null;
+				}
 			}
-			lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
-			lcd_main.message("write", l[o]);
-			lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
-			lcd_main.message("write", ty);
-			if(desc && (blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]")!="")){
-				lcd_main.message("moveto", sidebar.x + fo1 * 15, y_offset + 11 * fo1);
-				//lcd_main.message("frgb", c);
-				lcd_main.message("write", blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]"));
-				click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 13 * fo1, mouse_index, 1);
-				y_offset+=7*fo1;
-			}else{
-				click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
-			}
-			y_offset+=7*fo1;
-		}
-	}
-	return y_offset;
-}
-
-function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
-	var curr=-1;
-	if(connections.get("connections["+i+"]::to::input::type")==ty){
-		curr = (connections.get("connections["+i+"]::to::input::number"))
-	}
-	var l = [];
-	if(ty=="block"){
-		l = ["mute toggle", "mute"];
-	}else if(ty=="parameters"){
-		var t = blocktypes.getsize(t_name+"::parameters");
-		for(var p=0;p<t;p++){
-			if(blocktypes.contains(t_name+"::parameters["+p+"]::nomap") && (blocktypes.get(t_name+"::parameters["+p+"]::nomap")==1)){
-				//skip
-				l.push(null);
-			}else{
-				l.push(blocktypes.get(t_name+"::parameters["+p+"]::name"));
-			}
-		}
-	}else if(blocktypes.contains(t_name + "::connections::in::" + ty)){
-		l = blocktypes.get(t_name + "::connections::in::" + ty);
-		if (!Array.isArray(l)) l = [l];
-	}
-	if(l.length>0){
-		var c = config.get("palette::connections::" + ty);
-		for (var o = 0; o < l.length; o++) {
 			if(l[o]!=null){
 				if(curr==o){
 					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
@@ -1283,7 +1244,93 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 				lcd_main.message("write", l[o]);
 				lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
 				lcd_main.message("write", ty);
-				click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+				if(desc && (blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]")!="")){
+					lcd_main.message("moveto", sidebar.x + fo1 * 15, y_offset + 11 * fo1);
+					//lcd_main.message("frgb", c);
+					lcd_main.message("write", blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]"));
+					click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 13 * fo1, mouse_index, 1);
+					y_offset+=7*fo1;
+				}else{
+					click_zone(conn_set_from_output, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+				}
+				y_offset+=7*fo1;
+			}
+		}
+	}
+	return y_offset;
+}
+
+function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
+	var curr=-1;
+	if(connections.get("connections["+i+"]::to::input::type")==ty){
+		curr = (connections.get("connections["+i+"]::to::input::number"))
+	}
+	var l = [];
+	var tty = ty;
+	if(ty=="matrix") tty="matrix_channels";
+	if(ty=="block"){
+		l = ["mute toggle", "mute"];
+	}else if(ty=="parameters"){
+		var t = blocktypes.getsize(t_name+"::parameters");
+		for(var p=0;p<t;p++){
+			if(blocktypes.contains(t_name+"::parameters["+p+"]::nomap") && (blocktypes.get(t_name+"::parameters["+p+"]::nomap")==1)){
+				//skip
+				l.push(null);
+			}else{
+				l.push(blocktypes.get(t_name+"::parameters["+p+"]::name"));
+			}
+		}
+	}else if(blocktypes.contains(t_name + "::connections::in::" + tty)){
+		if(ty!="matrix"){
+			l = blocktypes.get(t_name + "::connections::in::" + ty);
+		}else{
+			l = blocktypes.get(t_name + "::connections::in::hardware");
+		}
+		if (!Array.isArray(l)) l = [l];
+	}
+	if(l.length>0){
+		var cc = config.get("palette::connections::" + ty);
+		var c = cc;
+
+		for (var o = 0; o < l.length; o++) {
+			var used_already = 0;
+			if(ty=="matrix"){
+				if(blocktypes.get(t_name + "::connections::in::matrix_channels["+o+"]")==0){
+					l[o]=null;
+				}else{
+					//lets check for conflicts. each matrix out (ie hw block input) can only have one connection
+					for(var tc=connections.getsize("connections");tc>=0;tc--){
+						if((tc!=i) && (connections.contains("connections["+tc+"]::to"))){
+							if(connections.get("connections["+tc+"]::to::input::type")=="matrix"){
+								if(connections.get("connections["+tc+"]::to::input::number") == o){
+									used_already = tc; //l[o]=null;
+									c=[60,60,60];
+									tc=-1;
+								}
+							}
+						}
+					}
+					if(used_already==0)c=cc;
+				}
+			}
+			if(l[o]!=null){
+				if(curr==o){
+					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
+					lcd_main.message("frgb", 0,0,0);
+				}else{
+					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c[0] * bg_dark_ratio, c[1] * bg_dark_ratio, c[2] * bg_dark_ratio);
+					lcd_main.message("frgb", c);
+				}
+				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
+				lcd_main.message("write", l[o]);
+				lcd_main.message("frgb", c[0] * 0.5, c[1] * 0.5, c[2] * 0.5);
+				if(used_already==0){
+					lcd_main.message("write", ty);
+					click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+				}else{
+					lcd_main.message("write", "matrix (input already in use)");
+					click_zone(sidebar_select_connection, used_already, 0, sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+				}
 				y_offset+=7*fo1;
 			}
 		}
@@ -1292,10 +1339,11 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 }
 
 function draw_clock(){
-	lcd_main.message("paintrect", mainwindow_width-9-fontheight*0.6,9,mainwindow_width,9+fontheight,0,0,0);
+	lcd_main.message("paintrect", mainwindow_width-9-fontheight*2.1,9,mainwindow_width,9+fontheight,0,0,0);
+	setfontsize(fontheight*0.8);
 	var currentdate = new Date;
 	if(set_timer_show){
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*0.6, 9+fontheight*0.25);
+		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
 		lcd_main.message("frgb", menudark);
 		if(set_timer_start == null){
 			lcd_main.message("write", "0:00");			
@@ -1309,20 +1357,18 @@ function draw_clock(){
 			if(t<10) t = "0"+t;
 			lcd_main.message("write", t2+":"+t);			
 		}
-		//click_zone(toggle_show_timer,0,0,mainwindow_width-9-fontheight*1.4,0,mainwindow_width,9+fontheight,mouse_index,1);
+		if(view_changed) click_zone(toggle_show_timer,0,0,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
 	}else{
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*0.6, 9+fontheight*0.25);
-		//var s = currentdate.getSeconds();
-		//if(s<10) s= "0"+s;
+		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
 		var h = (currentdate.getHours())%12;
 		if((m==20)&&(h==4)){
-			lcd_main.message("frgb", menucolour);
+			lcd_main.message("frgb", 44,220,50); //i'm sorry
 		}else{
 			lcd_main.message("frgb", menudarkest);
 		}
 		lcd_main.message("write", h + ":" +m);			
-		//click_zone(toggle_show_timer,1,1,mainwindow_width-9-fontheight*1.4,0,mainwindow_width,9+fontheight,mouse_index,1);
+		if(view_changed)click_zone(toggle_show_timer,1,1,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
 	}
 }

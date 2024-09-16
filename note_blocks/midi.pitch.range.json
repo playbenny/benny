@@ -1,0 +1,38 @@
+{
+	"midi.pitch.range" : {
+		"patcher" : "midi.pitch.range",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "gate (or split) notes based on pitch",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "passed", "discarded" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "gate below",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "gate above",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}

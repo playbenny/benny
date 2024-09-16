@@ -3,14 +3,14 @@
 		"patcher" : "midi.note.select",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "filters notes based on whether they are in the selected note pool. ££also splits to one output per note",
+		"help_text" : "filters notes based on whether they are in the selected scale. ££also splits to one output per note",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
 				"midi" : [ "notes in" ]
 			},
 			"out" : {
-				"midi" : [ "in pool","not in pool", "C", "C#", "D", "D#" , "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+				"midi" : [ "in scale","not in scale", "C", "C#", "D", "D#" , "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 			}
 		},
 		"groups" : [
@@ -20,7 +20,7 @@
 		],
 		"parameters" : [
 			{
-				"name" : "pool",
+				"name" : "scale",
 				"type" : "int",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,

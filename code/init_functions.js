@@ -432,6 +432,7 @@ function import_hardware(v){
 		if(drv != "none"){
 			post("\nfound external matrix, loading driver",drv);
 			messnamed("drivers_poly","setvalue",1,"patchername",drv);
+			EXTERNAL_MATRIX_PRESENT = 1; 
 		}
 	}
 	if(d2.contains("io::matrix::soundcard")){
@@ -442,6 +443,14 @@ function import_hardware(v){
 			SOUNDCARD_HAS_MATRIX = 1;
 		}
 	}
+	if(d2.contains("io::special_controller")){
+		var drv = d2.get("io::special_controller");
+		if(drv != "none"){
+			post("\nfound special controller, loading driver",drv);
+			messnamed("drivers_poly","setvalue",3,"patchername",drv);
+		}
+	}
+	
 	var keys = d.getkeys();
 	if(d2.contains("measured_latency")){
 		post("\nlatency measurement found, copied to config for blocks to access if they want");
@@ -1036,4 +1045,9 @@ function songs_audit_process(hunting,replacing,replace_con_type_with){
 			post("\n  DIDNT FIND IT IN THIS SONG");
 		}*/
 	}
+}
+
+function soundcard_matrix_connection_fail(){
+	post("\n\n\n\nSoundcard matrix mixer disabled for this session. Restart benny once you've fixed the problem.");
+	SOUNDCARD_HAS_MATRIX = 0;
 }

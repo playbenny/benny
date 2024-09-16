@@ -3,7 +3,7 @@
 		"patcher" : "seq.jumps",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "takes the incoming note, if it's above C3 it steps up the notepool, if it's below C3 it steps down. the further from C3, the bigger the step. notes in the reset input reset the position in the scale to the one nearest the reset note. ",
+		"help_text" : "takes the incoming note, if it's above C3 it steps up the scale, if it's below C3 it steps down. the further from C3, the bigger the step. notes in the reset input reset the position in the scale to the one nearest the reset note. ",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -20,7 +20,7 @@
 		],
 		"parameters" : [
 			{
-				"name" : "pool",
+				"name" : "scale",
 				"type" : "int",
 				"values" : ["uni", 1, 8, "lin"],
 				"wrap" : 0,

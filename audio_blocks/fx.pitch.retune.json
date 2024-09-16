@@ -3,7 +3,7 @@
 		"patcher" : "fx.pitch.retune",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "automatic retuner, autotune-like, tries to force incoming (monophonic) audio to fit the scale (or list of allowed notes) it's been given. you can set scales using the notepools defined in the core.scales.shapes block or with midi in. ££also outputs detected pitch (though a limitation of the max object it uses means this is just note, not octave).",
+		"help_text" : "automatic retuner, autotune-like, tries to force incoming (monophonic) audio to fit the scale (or list of allowed notes) it's been given. you can set scales using the core.scales.shapes block or with midi in. ££also outputs detected pitch (though a limitation of the max object it uses means this is just note, not octave).",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -25,7 +25,7 @@
 		],
 		"parameters" : [
 			{
-				"name" : "pool",
+				"name" : "scale",
 				"type" : "menu_i",
 				"values" : ["chromatic", "1", "2", "3", "4", "5" ,"6" , "7" ,"8"],
 				"error_scale" : 0,

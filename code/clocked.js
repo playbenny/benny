@@ -230,8 +230,8 @@ function prep_meter_updatelist(){
 		var ty = blocks.get("blocks["+k[i]+"]::type");
 		if(ty == "hardware"){//hardware_metermap.contains(k[i])){
 			vmap = hardware_metermap.get(k[i]);
-			if(!Array.isArray(vmap)) vmap = [vmap];
-			if(vmap !== 'null'){
+			if(vmap !== null){
+				if(!Array.isArray(vmap)) vmap = [vmap];
 				for(index =0;index<vmap.length;index++){
 					//post("\nadded to hw meters:",k[i],index,vmap[index],blocks.get("blocks["+k[i]+"]::space::y"));
 					meters_updatelist.hardware.push([k[i],index,vmap[index],blocks.get("blocks["+k[i]+"]::space::y")]);
@@ -239,8 +239,8 @@ function prep_meter_updatelist(){
 			}
 		}else{
 			vmap = voicemap.get(k[i]);
-			if(!Array.isArray(vmap)) vmap = [vmap];
-			if(vmap !== 'null'){
+			if(vmap !== null){
+				if(!Array.isArray(vmap)) vmap = [vmap];
 				if(vmap[0]>=MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
 				}else if(vmap[0]>=MAX_NOTE_VOICES){
 					for(index =0;index<vmap.length;index++){
@@ -294,7 +294,7 @@ function check_changed_queue(){
 function meters(){
 	for(i = meters_updatelist.meters.length-1; i>=0; i--){
 		var voice = meters_updatelist.meters[i][1];
-		try{//if(voice !== 'undefined'){
+		//try{//if(voice !== 'undefined'){
 			var block = meters_updatelist.meters[i][0];
 			var polyvoice = meters_updatelist.meters[i][2];
 			var tv=[];
@@ -316,7 +316,7 @@ function meters(){
 					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale = tv;
 				//}
 			}
-		}catch(err){post("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
+		//}catch(err){post("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
 	}
 }
 
@@ -324,7 +324,7 @@ function hardware_meters(){
 	for(i = meters_updatelist.hardware.length-1; i>=0; i--){
 		var block=meters_updatelist.hardware[i][0];
 		var voice=meters_updatelist.hardware[i][1];
-		try/*if(typeof blocks_meter[block][voice] !== 'undefined')*/{
+		//try/*if(typeof blocks_meter[block][voice] !== 'undefined')*/{
 			var polyvoice = meters_updatelist.hardware[i][2];
 			var mmin = scope_buffer.peek(1,1+(polyvoice));
 			var mmax = scope_buffer.peek(2,1+(polyvoice));
@@ -337,7 +337,7 @@ function hardware_meters(){
 			tv = blocks_meter[block][voice].scale;
 			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
 			blocks_meter[block][voice].scale = tv;
-		}catch(err){post("\nhw meter error block,voice,err",block,voice,typeof blocks_meter[block][voice],err.name,err.message);}
+		//}catch(err){post("\nhw meter error block,voice,err",block,voice,typeof blocks_meter[block][voice],err.name,err.message);}
 	}
 }
 

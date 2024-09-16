@@ -700,8 +700,34 @@ function panel_edit_button(parameter,value){
 	redraw_flag.flag=4;
 }
 
+function file_drop(fname){
+	var ts = fname.split(".").pop();
+	ts = ts.toLowerCase();
+	if(ts=="json"){
+		load_elsewhere(fname);
+	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")){
+		post("\n\nloading audio file from drag and drop,");
+		/*if(waves.selected == -1)*/ waves.selected = 0;
+		inuse=1;
+		while(inuse){
+			if(!waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
+				inuse = 0;
+			}else{
+				waves.selected++;
+				if(waves.selected>100) inuse = 0;
+			}
+		}
+		var ffn = fname.split("/").pop();
+		post(ffn, ", into slot ",waves.selected);
+		waves_dict.replace("waves["+(waves.selected+1)+"]::name","loading");
+		waves_dict.replace("waves["+(waves.selected+1)+"]::path","loading");
+		wave_chosen(waves.selected, ffn,fname);
+	}else{
+		post("\ndrag and drop, unknown file type?",ts);
+	}
+}
+
 function load_elsewhere_choose(){
-	//post("\nL E C");
 	messnamed("open_elsewhere","bang");
 }
 
@@ -1398,10 +1424,16 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 }
 
 function toggle_show_timer(parameter,value){
-	if(value==null){
-		set_timer_show = 1 - set_timer_show;
+	if(usermouse.ctrl){
+		set_timer_start = null;
+		post("\nreset set timer");
 	}else{
-		set_timer_show = value;
+		if(value==null){
+			set_timer_show = 1 - set_timer_show;
+		}else{
+			set_timer_show = value;
+		}
+		post("\nset show timer display mode:",set_timer_show);
 	}
 	redraw_flag.flag |= 2;
 }
@@ -2058,6 +2090,17 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 				}
 			}
 		}
+		//and also if the block has a generic midi handler (or whatever) loaded in a note slot, send that a mute message
+		list = voicemap.get(block);
+		if(list === null){
+			//hw block has no midi handler
+		}else if(typeof list === 'number'){
+			note_poly.setvalue( list+1, "muteouts",av);
+		}else{
+			for(var t=0;t<list.length;t++){
+				note_poly.setvalue( list[t]+1, "muteouts",av);
+			}					
+		}
 	}
 	if(usermouse.shift && (av==0)){ //this could lose the av term, but big auto mute chains seems a bad idea.
 		//recursion time! if shift is down scan through everything connected after the block and apply the same mute status
@@ -2450,9 +2493,9 @@ function load_wave(parameter,value){
 
 function setup_waves(parameter,value){
 	if(value=="get"){
-		return waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
+		return 10*waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
 	}else{
-		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,value)));
+		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,0.1*value)));
 		store_wave_slices(parameter[0]);
 		messnamed("wave_updated",parameter[0]);
 		redraw_flag.flag = 4;
@@ -2852,6 +2895,28 @@ function conn_set_to_input(c,value){
 	sidebar.scroll.position = 0;
 	sidebar.lastmode="recalculate";
 	redraw_flag.flag |= 4;
+}
+
+function convert_matrix_to_regular(cno, channels){
+	new_connection = connections.get("connections["+cno+"]");
+	new_connection.replace("from::output::type","hardware");
+	new_connection.replace("to::input::type","hardware");
+	remove_connection(cno);
+	connections.replace("connections["+cno+"]",new_connection);
+	make_connection(cno,0);
+	block_and_wire_colours();
+	sidebar_select_connection(cno);
+}
+
+function convert_regular_to_matrix(cno, channels){
+	new_connection = connections.get("connections["+cno+"]");
+	new_connection.replace("from::output::type","matrix");
+	new_connection.replace("to::input::type","matrix");
+	remove_connection(cno);
+	connections.replace("connections["+cno+"]",new_connection);
+	make_connection(cno,0);
+	block_and_wire_colours();
+	sidebar_select_connection(cno);
 }
 
 function fold_menus(){
