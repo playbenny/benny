@@ -50,6 +50,7 @@ var SHOW_STATES_ON_PANELS = 1;
 var TARGET_FPS = [30, 5];
 var SELECTED_BLOCK_Z_MOVE = 2;
 var SELECTED_BLOCK_DEPENDENTS_Z_MOVE = 0.5;
+var METER_TINT = 0.3;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;

@@ -985,6 +985,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 			if(typeof blocks_cube[i] !== "undefined"){
 				for(t=0;t<=block_v*subvoices;t++){
+					var csc=1;
 					if(typeof blocks_cube[i][t] !== "undefined"){
 						var p = blocks_cube[i][t].position;
 						if(selected.anysel){
@@ -998,20 +999,34 @@ function block_and_wire_colours(){ //for selection and mute etc
 								}
 								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_Z_MOVE];
 							}else{
-								var csc = 0.3 + 0.4*tree_highlight[i];
-								if(block_mute||search){
-									csc = 0.2;
-								}
+								csc = 0.3 + 0.4*tree_highlight[i];
+								if(block_mute||search) csc = 0.2;
 								blocks_cube[i][t].color = [csc*block_c[0],csc*block_c[1],csc*block_c[2],1];
 								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_DEPENDENTS_Z_MOVE*(2*tree_highlight[i]-1)];
+								if((t>0) && (blocks_meter[i][t*2-1] != null)){
+									blocks_meter[i][t-1].color = [csc*(METER_TINT+mt*block_c[0]),csc*(METER_TINT+mt*block_c[1]),csc*(METER_TINT+mt*block_c[2]),1];
+								}
 							}
 						}else{
 							if(block_mute){
 								blocks_cube[i][t].color = [0.3*block_c[0],0.3*block_c[1],0.3*block_c[2],1];	
+								csc = 0.3;
 							}else{
 								blocks_cube[i][t].color = block_c;
 							}
 							blocks_cube[i][t].position = [p[0],p[1],0];
+						}
+						if(t==1){
+							var mt=Math.sqrt(1-METER_TINT);
+							var mco;
+							if(selected.block[i]){
+								mco = [1,1,1,1];
+							}else{
+								mco = [csc*(METER_TINT+mt*block_c[0]),csc*(METER_TINT+mt*block_c[1]),csc*(METER_TINT+mt*block_c[2]),1];
+							} 
+							for(var m = blocks_meter[i].length-1;m>=0;m--){
+								blocks_meter[i][m].color = mco;
+							}
 						}
 					}
 					
@@ -1122,6 +1137,15 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	}
 
 	var tt=0;
+	var noio=0, max_poly=1;
+	if(blocktypes.contains(block_name+"::max_polyphony")) max_poly = blocktypes.get(block_name+"::max_polyphony");
+	if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
+		noio += blocktypes.getsize(block_name+"::connections::in::hardware_channels");
+	}
+	if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
+		noio += blocktypes.getsize(block_name+"::connections::out::hardware_channels");
+	}						
+	noio /= max_poly;
 	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
 			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
@@ -1147,8 +1171,8 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][0].position = [block_x, block_y, block_z];
 				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
 			}else{
-				var tc = blocks_cube[i][t].color;
-				blocks_cube[i][t].color = [block_c[0]*tc[0]/256,block_c[1]*tc[1]/256,block_c[2]*tc[2]/256,1];
+				var tc = blocks_cube[i][t].color[0]/256;
+				blocks_cube[i][t].color = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
 				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				if(block_type=="audio"){
@@ -1164,15 +1188,6 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 						//post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
 					}						
 				}else if(block_type == "hardware"){
-					var noio=0, max_poly=1;
-					if(blocktypes.contains(block_name+"::max_polyphony")) max_poly = blocktypes.get(block_name+"::max_polyphony");
-					if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
-						noio += blocktypes.getsize(block_name+"::connections::in::hardware_channels");
-					}
-					if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
-						noio += blocktypes.getsize(block_name+"::connections::out::hardware_channels");
-					}						
-					noio /= max_poly;
 					if(noio==0){
 						post("\nthis hardware block seems to have no audio io?");
 					}else{
@@ -1201,36 +1216,36 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			if(t>0){
 				var ios=NO_IO_PER_BLOCK/subvoices;
 				var tv = (t-1)*ios;
+				var mt=Math.sqrt(1-METER_TINT);
+				var mco = blocks_cube[i][t].color; 
+				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 				for(tt=0;tt<ios;tt++){
-					blocks_meter[i][tv+tt].color = [1, 1, 1, 1];
+					blocks_meter[i][tv+tt].color = mco;
 					blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5+block_z];
 					blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
 					blocks_meter[i][tv+tt].enable = 1;
 				}				
 			}
 		}else if(block_type == "note"){
+			var mt=Math.sqrt(1-METER_TINT);
+			var mco = blocks_cube[i][t].color; 
+			mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 			if(t>0){
-				blocks_meter[i][t-1].color = [1, 1, 1, 1];
+				blocks_meter[i][t-1].color = mco;
 				blocks_meter[i][t-1].position = [blocks_cube[i][t].position[0], block_y, 0.5+block_z];
 				blocks_meter[i][t-1].scale = [0, 0, 0.05];
 				blocks_meter[i][t-1].enable = 0;
 			}			
 		}else if(block_type == "hardware"){
 			if(t>0){
-				var noio=0, max_poly=1;
-				if(blocktypes.contains(block_name+"::max_polyphony")) max_poly = blocktypes.get(block_name+"::max_polyphony");
-				if(blocktypes.contains(block_name+"::connections::in::hardware_channels")){
-					noio += blocktypes.getsize(block_name+"::connections::in::hardware_channels");
-				}
-				if(blocktypes.contains(block_name+"::connections::out::hardware_channels")){
-					noio += blocktypes.getsize(block_name+"::connections::out::hardware_channels");
-				}						
-				noio /= max_poly;
 				if(noio==0){
 					//post("this hardware block seems to have no audio io?");
 				}else{
+					var mt=Math.sqrt(1-METER_TINT);
+					var mco = blocks_cube[i][t].color; 
+					mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 					for(tt=0;tt<noio;tt++){
-						blocks_meter[i][(t-1)*noio+tt].color = [1, 1, 1, 1];
+						blocks_meter[i][(t-1)*noio+tt].color = mco;
 						blocks_meter[i][(t-1)*noio+tt].position = [blocks_cube[i][t].position[0] - 0.2 + (tt+0.5)*0.4/noio, block_y, 0.5+block_z];
 						blocks_meter[i][(t-1)*noio+tt].scale = [0.2/noio, 0.025, 0.05];
 						blocks_meter[i][(t-1)*noio+tt].enable = 1;
