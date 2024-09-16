@@ -24,16 +24,20 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3,4,5],
-				"colour" : 10
+				"contains" : [0,1,2,4],
+				"colour" : 0
 			},
 			{
-				"contains" : [6,7],
-				"height" : 0
+				"contains" : [11,11,3,5,12],
+				"height" : 0,
+				"colour" : -10
+			},
+			{
+				"contains" : [6,7,13,14]
 			},
 			{
 				"contains" : [8,9,10],
-				"colour" : -10,
+				"colour" : -20,
 				"height" : 1
 			}
 		],
@@ -42,7 +46,6 @@
 			{
 				"name" : "start",
 				"type" : "int",
-				"width" : 3,
 				"values" : ["uni", 0, 128, "lin"],
 				"wrap" : 0,
 				"default" : 0
@@ -65,6 +68,7 @@
 				"name" : "loop_enable",
 				"type" : "menu_l",
 				"values" : ["oneshot", "loop"],
+				"colours" : [-40, 20],
 				"wrap" : 0,
 				"default" : 0.6
 			},
@@ -119,6 +123,35 @@
 				"error_scale" : 0,
 				"wrap" : 0,
 				"values" : ["voices",">_fwd", 1]
+			},
+			{
+				"name" : "pattern",
+				"type" : "int",
+				"values" : ["uni", 0, 15, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "loop follow mode",
+				"type" : "menu_l",
+				"values" : ["hard follow", "soft follow"],
+				"wrap" : 0,
+				"default" : 0,
+				"nopervoice" : 1
+			},
+			{
+				"name" : "slice offset",
+				"type" : "int",
+				"values" : ["bi", -512, 512, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "micro offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}
