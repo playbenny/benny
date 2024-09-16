@@ -312,7 +312,7 @@ function drawcell(c,r){
 					}else{
 						ss = (values[i]-1);
 						if(i==2) ss++;
-						if(i==3) ss++;
+						//if(i==3) ss++;
 					}
 				}
 			}
@@ -414,7 +414,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 					var tx2 = clickx2;
 					if(((tx==sel_sx)&&(tx2>=sel_sx2))||(tx>sel_sx)){
 						if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
-							for(var ty=sel_sy;ty<sel_ey;ty++){
+							for(var ty=sel_sy;ty<=sel_ey;ty++){
 								var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tx2+1+6*((ty+MAX_PATTERN_LENGTH*pattern[tx])));
 								if(v>0){
 									if(scr>0){
@@ -572,11 +572,11 @@ function delete_selection(){
 		for(i=cursory;i<127;i++){
 			var rowvalues;
 			if(i<126){
-				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1+MAX_PATTERN_LENGTH*pattern[tx]),6);
+				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1+MAX_PATTERN_LENGTH*pattern[cursorx]),6);
 			}else{
 				rowvalues = [0,0,0,0,0,0];
 			}
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[tx]),rowvalues);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 		}
 	}else{
 		for(i=sel_sy;i<=sel_ey;i++){
@@ -800,7 +800,7 @@ function keydown(key){
 			break;
 		case -8:
 			//insert
-			for(i=128;i>cursory;i--){
+			for(i=MAX_PATTERN_LENGTH;i>cursory;i--){
 				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i-1+MAX_PATTERN_LENGTH*pattern[cursorx]),6);
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 			}
@@ -947,7 +947,7 @@ function quer(){
 
 function store(){
 	var r;
-	var transf_arr = new Array(USED_DATA);
+	var transf_arr = new Array(MAX_DATA);
 	for(r=0;r<v_list.length;r++){
 		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], 16*MAX_PATTERN_LENGTH*6+10);
 		var d = 0;
