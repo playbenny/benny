@@ -3,7 +3,7 @@
 		"patcher" : "seq.sample.tracker",
 		"type" : "audio",
 		"block_ui_patcher" : "seq.sample.tracker.ui",
-		"help_text" : "UNFINISHED££buzz-style sample tracker.££works but lacks multiple pattern support and none of the fx commands are implemented yet",
+		"help_text" : "UNFINISHED££buzz-style sample tracker.££works but none of the fx commands are implemented yet",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,

@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+16/09/24:
+- meter_tint in the config sets the colour of block meters (0 = the block colour, 1 = white)
+- vca.env made more useful
 15/09/24:
 - **breaking change** midi.scale.quantise is renamed to utility.cv.scale.quantise. if you have problems loading old songs you can open the json and run a find replace to swap all instances of the old name to the new name.
 - new midi.scale.quantise (does midi-only quantising)
