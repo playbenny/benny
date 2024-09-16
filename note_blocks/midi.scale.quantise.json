@@ -16,7 +16,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 3, 1,2]
+				"contains" : [0, 0, 3, 1,2, 4]
 			}		
 		],
 		"parameters" : [
@@ -48,6 +48,14 @@
 				"type" : "button",
 				"values" : ["core","edit_scales","jump_to_scales_shapes"],
 				"default" : 0
+			},
+			{
+				"name" : "output",
+				"type" : "menu_l",
+				"values" : [ "on every note in", "only on change" ],
+				"wrap" : 1,
+				"error_scale" : 0,
+				"default" : 0.1
 			}
 		]
 	}
