@@ -157,6 +157,7 @@ function loadbang(){
 }
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
@@ -175,6 +176,7 @@ function store(){
 	}else{
 		post("error storing seq.values - unknown block",block,v_list);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function keydown(key){

@@ -421,11 +421,13 @@ function loadbang(){
 
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	var r;
 	var transf_arr = new Array(MAX_DATA); //this isn't the shortest it possibly could be but i think we can handle it.
 	for(r=0;r<v_list.length;r++){
 		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], MAX_DATA);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 function enabled(){}

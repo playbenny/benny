@@ -636,7 +636,9 @@ var loading = {
 	wave_paramlist : [], //list of [blockno,paramno] that are wave parameters that have been remapped - it uses this list to apply the remapping to preset states too
 	recent_substitutions : 0, //this is made into a dict where we keep a record of user substitutions during load, so we don't have to ask twice.
 	lockout : 0, //to prevent hotkey triggering save twice
-	hardware_substitutions_occured : 0 //this is set to 1 to put the warning on the save page
+	hardware_substitutions_occured : 0, //this is set to 1 to put the warning on the save page
+	save_waitlist : [], //blocks we are waiting for them to say they've completed a 'store' command.
+	save_wait_count : 0
 }
 
 var cpu_meter = {
