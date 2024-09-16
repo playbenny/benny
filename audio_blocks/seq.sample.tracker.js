@@ -120,7 +120,6 @@ function draw(){
 		maxl = Math.floor((height-sy)/rh);
 		if(!mini){
 			outlet(1,"paintrect",x_pos+sx,y_pos,x_pos+width,sy+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-			//outlet(0,"setfontsize",-0.5);
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",3+sx+x_pos,rh*0.75+y_pos);
 			outlet(1,"write","octave");
