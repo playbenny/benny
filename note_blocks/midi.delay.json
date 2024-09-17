@@ -20,7 +20,7 @@
 				"height" : 4
 			},
 			{
-				"contains" : [6],
+				"contains" : [6,7,8],
 				"height" : 0
 			},
 			{ 
@@ -78,9 +78,23 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "per-note random range (ms)",
+				"name" : "per-note random_range (ms)",
 				"type" : "float",
-				"values" : ["uni",0,20,"lin"],
+				"values" : ["uni",0,50,"lin"],
+				"default" : 0,
+				"error_scale" : 0
+			},
+			{
+				"name" : "note offs offset_(ms)",
+				"type" : "float",
+				"values" : ["bi",-50,50,"lin"],
+				"default" : 0.5,
+				"error_scale" : 0
+			},
+			{
+				"name" : "note offs additional_random range (ms)",
+				"type" : "float",
+				"values" : ["uni",0,50,"lin"],
 				"default" : 0,
 				"error_scale" : 0
 			}
