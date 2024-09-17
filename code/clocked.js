@@ -342,7 +342,7 @@ function hardware_meters(){
 }
 
 function midi_meters(){
-	var minsize = Math.max(1,1+0.1*(camera_position[2]-10));
+	var minsize = Math.max(1,1+0.1*(camera_position[2]-5));
 	minsize *= minsize;
 	for(i = meters_updatelist.midi.length-1; i>=0; i--){
 		var block=meters_updatelist.midi[i][0];
