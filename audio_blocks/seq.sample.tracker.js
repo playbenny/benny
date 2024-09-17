@@ -961,6 +961,7 @@ function quer(){
 }
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	var r;
 	var transf_arr = new Array(MAX_DATA);
 	for(r=0;r<v_list.length;r++){
@@ -973,6 +974,7 @@ function store(){
 		//post("\nsaving, voice",v_list[r]," data has a length of ",transf_arr.length);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function remapping(froom,too){

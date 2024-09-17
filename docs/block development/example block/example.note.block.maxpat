@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
+		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,33 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-59",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 668.0, 616.0, 219.0, 36.0 ],
+					"presentation_linecount" : 2,
+					"text" : ";\r\nto_blockmanager store_ok_done $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-38",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 668.0, 571.0, 219.0, 36.0 ],
+					"text" : ";\r\nto_blockmanager store_wait_for_me $1"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-31",
 					"linecount" : 3,
@@ -475,12 +502,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-45",
-					"linecount" : 17,
+					"linecount" : 16,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 482.0, 400.0, 188.0, 241.0 ],
-					"text" : "every voice has 16384 bytes of data storage preallocated to it. use to communicate between voices, to hold patterns, to communicate with a ui patcher.\n\nblocks with a ui patcher - the ui patcher is sent a 'store' message when a song is saved, which is a good time to write the data you want saving into the blocks dictionary (see below). if your block has no ui patcher you can also manage reading and writing from your own keys in the blocks dictionary yourself. see below left."
+					"patching_rect" : [ 482.0, 400.0, 188.0, 227.0 ],
+					"text" : "every voice has 16384 bytes of data storage preallocated to it. use to communicate between voices, to hold patterns, to communicate with a ui patcher.\n\nall patchers are sent a 'store' message when a song is saved, which is a good time to write the data you want saving into the blocks dictionary (see below).\n\nuse the following two messages to make benny wait for your store routine to complete: (the number is the block number)"
 				}
 
 			}
@@ -774,7 +801,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 4,
 					"numoutlets" : 11,
-					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "" ],
 					"patching_rect" : [ 119.0, 110.0, 125.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -1308,6 +1335,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 30.0, 243.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1332,10 +1363,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 119.0, 69.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1724,21 +1751,7 @@
 
 			}
  ],
-		"dependency_cache" : [ 			{
-				"name" : "parameterwatcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../../../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : "../../../patchers",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
+		"dependency_cache" : [  ],
 		"autosave" : 0
 	}
 
