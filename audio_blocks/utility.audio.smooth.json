@@ -1,0 +1,41 @@
+{
+	"utility.audio.smooth" : {
+		"patcher" : "utility.audio.smooth",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Uses a 2 pole low pass filter modulated by a bandpass out of the same filter to smooth values in a way which responds well to fast changes. Algorithm by Andrew Simper of Cytomic from here: https://cytomic.com/files/dsp/DynamicSmoothing.pdf. The 'sensitivity' control governs how much the bandpass modulates the lowpass.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"audio" : [ "signal in" ]
+			},
+			"out" : {
+				"audio" : [ "smoothed" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,  1]
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "smoothing_filter_cutoff",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "sensitivity",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.15
+			}
+		]
+	}
+}
