@@ -1,0 +1,24 @@
+{
+	"author" : "vboehm",
+	"description" : "A 64-bit version of the popular bonk~ object by Miller Puckette",
+	"homepatcher" : "",
+	"max_version_min" : "8.1",
+	"name" : "bonk_64bit-version",
+	"os" : {
+		"macintosh" : {
+			"platform" : [ "x64", "arm64" ],
+			"min_version" : "none"
+		},
+		"windows" : {
+			"platform" : [ "x64" ],
+			"min_version" : "none"
+		}
+	},
+	"package_extra" : { 
+		"reverse_domain" : "vboehm.net",
+		"copyright" : "Copyright (c) 2021 vboehm"
+	},
+	"tags" : [ ],
+	"version" : "1.5.2",
+	"website" : "http://www.github.com/v7b1"
+}
