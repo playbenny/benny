@@ -1,6 +1,11 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+20/09/24:
+- random per-note delay options added to the midi delay block, useful for making the notes of a chord not all arrive simultaneously
+- audio rate smoothing block added (useful after an env used as an envelope follower)
+- env and vca.env updated to make audio rate trigger/follow inputs actually work **breaking change** the options for in2 on the env.asr have changed
+- bonk block added. detects drum transients, can be trained to identify a number of different drums. currently saving the training data isn't implemented.
 16/09/24:
 - meter_tint in the config sets the colour of block meters (0 = the block colour, 1 = white)
 - vca.env made more useful
