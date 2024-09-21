@@ -3,7 +3,7 @@
 		"patcher" : "utility.bonk",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "wrapper for Volker Böhm's 64bit port of Miller Puckette's bonk~ object for max/msp. detects drum hits and outputs midi. ££*at the moment learn mode works but the save/recall of learned drum templates isn't implemented.",
+		"help_text" : "wrapper for Volker Böhm's 64bit port of Miller Puckette's bonk~ object for max/msp. detects drum hits and outputs midi. to train it so it can identify which drum is which it needs to hear at least 10 of each with learn mode on, then turn learn off.££*at the moment learn mode works but the save/recall of learned drum templates isn't implemented.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
