@@ -57,7 +57,7 @@ var fx_descs = ["chiptune style arpeggio, the values are [note1][note2][rate] or
 "slides pitch down",
 "ramps the volume up linearly (see also: Fade)",
 "not probability based - uses a counter instead, you set the increment amount and when it wraps (at 128) the note plays. increment amount = 128 means play every time, = 1 means play every 128 times. the counter is per-column of the tracker.",
-".",
+"slides the existing sample to the note rather than retriggering",
 "use timestretch to play the sample faster",
 "1 = reverse playback, 0=forward",
 "use timestretch to play the sample slower (see also hurry)",
@@ -417,6 +417,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 						if(v<1)v=1;
 					}
 					voice_data_buffer.poke(1,MAX_DATA*v_list[cursorx]+cursorx2+1+6*((cursory+MAX_PATTERN_LENGTH*pattern[cursorx])),v);
+					drawflag=1;
 				}
 			}
 			if((cursorx>=sel_sx)&&(cursorx2>=sel_sx2)&&(cursorx<=sel_ex)&&(cursorx2<=sel_ex2)&&(cursory>=sel_sy)&&(cursory<=sel_ey)){
@@ -440,6 +441,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 						}
 					}
 				}
+				drawflag=1;
 			}else{
 				var v = voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+clickx2+1+6*(clicky+display_row_offset+MAX_PATTERN_LENGTH*pattern[tx]));
 				if(v>0){
@@ -450,6 +452,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 						if(v<0)v=0;
 					}
 					voice_data_buffer.poke(1,MAX_DATA*v_list[cursorx]+clickx2+1+6*(clicky+display_row_offset+MAX_PATTERN_LENGTH*pattern[tx]),v);
+					drawflag=1;
 				}
 			}
 		}
