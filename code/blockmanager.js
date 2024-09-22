@@ -38,6 +38,7 @@ var LONG_PRESS_TIME = 800;
 var SLIDER_CLICK_SET = 0;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var SHOW_STATES_ON_PANELS = 1;
+var WIRES_REDUCE = 1; //if on then to 'all' or from 'all' connections always go to/from the block as a single wire rather than loads of wires
 var BLOCK_TEXTURE_SIZE = 128;
 var UPSAMPLING = 1;
 var RECYCLING = 1;

@@ -1390,10 +1390,14 @@ function draw_wire(connection_number){
 				if(blocks.contains("blocks["+cto+"]::to_subvoices")) to_subvoices = blocks.get("blocks["+cto+"]::to_subvoices");
 			}
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
-				fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
-				if(fv>1) from_multi = 1;
-				for(t=0;t<fv;t++){
-					from_list[t] = t+1;
+				if(WIRES_REDUCE){
+					from_multi = -1;
+				}else{
+					fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
+					if(fv>1) from_multi = 1;
+					for(t=0;t<fv;t++){
+						from_list[t] = t+1;
+					}
 				}
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
@@ -1412,7 +1416,7 @@ function draw_wire(connection_number){
 			var to_multi=0;
 			if(connections.get("connections["+connection_number+"]::to::voice")=="all"){
 				tv = blocks.get("blocks["+cto+"]::poly::voices") * to_subvoices;
-				if(((to_type == "midi")||(to_type == "parameters")||(to_type == "block"))/*&&(tv>1)*/){
+				if((WIRES_REDUCE||(to_type == "midi")||(to_type == "parameters")||(to_type == "block"))/*&&(tv>1)*/){
 					to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
 				}else{
 					if(tv>1)to_multi = 1;
@@ -1447,7 +1451,7 @@ function draw_wire(connection_number){
 				still_checking_polys|=8;
 			}
 
-			if((cfrom!=cto)&&(from_pos[1]<to_pos[1]-1)){
+			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
 				if(dist<4.5){
 					segments_to_use /= 4; //flag for short wires - use less segments.
 				}else if(dist<9){
@@ -1490,7 +1494,7 @@ function draw_wire(connection_number){
 			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
 			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
 			//if(connection_number == wires_potential_connection) post("\nstarting",from_pos,"to",to_pos,"conx",fconx,tconx,"from_list",from_list);
-			if((to_multi>0) || from_multi){
+			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var minz=99999;
 				var mtot=0;
@@ -1509,7 +1513,7 @@ function draw_wire(connection_number){
 				minz = 0.5*mtot/(from_list.length+to_list.length);
 				blob_position[0] += minz;
 
-				if((from_multi)&&(to_multi>0)){ 
+				if((from_multi>0)&&(to_multi>0)){ 
 					for(i=0;i<from_list.length;i++){
 						from_pos[0] = fp + 0.5*(from_list[i]-1)/from_subvoices + 0.4*fconx + 0.55;
 						for(t=0;t<3;t++){
@@ -1535,7 +1539,7 @@ function draw_wire(connection_number){
 						}
 						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
 					}
-				}else if(from_multi){  //only from is multi, so many-blob-corner-one, this is the same whether its got a corner[0] or not as the blob is the corner
+				}else if(from_multi>0){  //only from is multi, so many-blob-corner-one, this is the same whether its got a corner[0] or not as the blob is the corner
 					for(i=0;i<from_list.length;i++){
 						from_pos[0] = fp + 0.5 * (from_list[i]-1)/from_subvoices + 0.4 * fconx + 0.55;
 						for(t=0;t<3;t++){
@@ -1564,7 +1568,11 @@ function draw_wire(connection_number){
 					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);		
 				}else{ // one-corner-blob-many //ie to_multi==1
 					to_pos[0] += 0.55 + 0.4 * tconx;
-					from_pos[0] += 0.55 + 0.4 * fconx;
+					if(from_multi<0){
+						from_pos[0] += -0.4 + 0.8 * fconx;
+					}else{
+						from_pos[0] += 0.55 + 0.4 * fconx;
+					}
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
 						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
@@ -1594,7 +1602,11 @@ function draw_wire(connection_number){
 				}else{
 					to_pos[0] += 0.55 + 0.4 * tconx;
 				}
-				from_pos[0] += 0.4 * fconx + 0.55;
+				if(from_multi<0){
+					from_pos[0] += -0.4 + 0.8 * fconx;
+				}else{
+					from_pos[0] += 0.55 + 0.4 * fconx;
+				}
 				for(t=0;t<3;t++){
 					bez_prep[0][t] = from_pos[t];
 					bez_prep[1][t] = from_pos[t]+from_anglevector[t];
