@@ -439,8 +439,10 @@ function buffer_loaded(number,path,name,buffername){
 		waves_dict.replace("waves["+tn+"]",d);
 		tn++;
 	}
-	draw_wave[number] = new Array(2*waves_buffer[number].channelcount());
-	for(var i=0;i<waves_buffer[number].channelcount();i++){
+	var tc = (waves_buffer[number].channelcount() | 0);
+	if(tc == 0) tc = 2;
+	draw_wave[number] = new Array(2 * tc);
+	for(var i=0;i<tc;i++){
 		var t=0;
 		var ii=2*i;
 		draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
