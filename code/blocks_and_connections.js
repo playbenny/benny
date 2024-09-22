@@ -979,12 +979,13 @@ function remove_connection(connection_number){
 	var f_o_no = connections.get("connections["+connection_number+"]::from::output::number");
 	var t_i_no = connections.get("connections["+connection_number+"]::to::input::number");
 	var f_subvoices = 1;
+	var f_name = blocks.get("blocks["+f_block+"]::name");
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
-		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
+		if((f_subvoices==1)&&(blocktypes.contains(f_name+"::from_subvoices")))f_subvoices=blocktypes.get(f_name+"::from_subvoices");
 	}else if(f_type=="parameters"){
-		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
-			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
+		if(blocktypes.contains(f_name+"::connections::out::midi")){
+			f_o_no += blocktypes.getsize(f_name+"::connections::out::midi");
 			
 		}
 	}
@@ -1006,8 +1007,8 @@ function remove_connection(connection_number){
 	
 	// work out which polyvoices/matrix slots correspond
 	if(f_type == "matrix"){
-		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
-		varr = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::connections::out::matrix_channels");
+		max_poly = blocktypes.get(f_name+"::max_polyphony");
+		varr = blocktypes.get(f_name+"::connections::out::matrix_channels");
 		if(typeof varr == "number") varr = [varr];
 		if(max_poly>1){
 			if(f_voice_list == "all"){
@@ -1027,8 +1028,8 @@ function remove_connection(connection_number){
 			f_voices[0] = varr[f_o_no];
 		}
 	}else if(f_type == "hardware"){
-		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
-		varr = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::connections::out::hardware_channels");
+		max_poly = blocktypes.get(f_name+"::max_polyphony");
+		varr = blocktypes.get(f_name+"::connections::out::hardware_channels");
 		if(!Array.isArray(varr)) varr = [varr];
 		if(max_poly>1){
 			if(f_voice_list == "all"){
@@ -1274,6 +1275,32 @@ function remove_connection(connection_number){
 						//post("ERROR : ext matrix connections can only go to the ext matrix. wtf did you just try to remove?");
 					}
 				}else if(f_type == "midi"){
+					if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
+						var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+						if(wl[f_o_no]==1){
+							//this is more complicated than make conn - we need to check if
+							//any other connections are using this output?
+							var cused = 0;
+							for(var testc=connections.getsize("connections");testc>=0;testc--){
+								if((testc!=connection_number) && (connections.contains("connections["+testc+"]::from"))){
+									if(connections.get("connections["+testc+"]::from::number")==f_block){
+										if((connections.get("connections["+testc+"]::from::output::type")=="midi")&& (connections.get("connections["+testc+"]::from::output::number")==f_o_no)){
+											cused = 1;
+										}
+									}
+								}
+							}
+							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
+							//tell the voice that this output is in use
+							if(blocks.get("blocks["+f_block+"]::type")=="audio"){
+								audio_poly.setvalue(f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
+							}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
+								note_poly.setvalue(f_voice + 1, "enable_output",f_o_no,cused);
+							}
+						}
+					}
+
+
 					if((t_type == "audio") || (t_type == "hardware")){
 						m_index = (f_voice)*128+f_o_no;
 						var tvv = t_voice - MAX_NOTE_VOICES+MAX_AUDIO_VOICES*(t_i_no);
@@ -1480,12 +1507,13 @@ function make_connection(cno,existing){
 	var t_block = 1* connections.get("connections["+cno+"]::to::number");
 	var f_subvoices = 1;
 	var t_subvoices = 1;
+	var f_name = blocks.get("blocks["+f_block+"]::name");
 	if(f_type=="audio"){
 		f_subvoices = Math.max(1,blocks.get("blocks["+f_block+"]::subvoices"));
-		if((f_subvoices==1)&&(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices")))f_subvoices=blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::from_subvoices");
+		if((f_subvoices==1)&&(blocktypes.contains(f_name+"::from_subvoices")))f_subvoices=blocktypes.get(f_name+"::from_subvoices");
 	}else if(f_type=="parameters"){
-		if(blocktypes.contains(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi")){
-			f_o_no += blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
+		if(blocktypes.contains(f_name+"::connections::out::midi")){
+			f_o_no += blocktypes.getsize(f_name+"::connections::out::midi");
 		}
 	}
 	var t_subvoices = 1;
@@ -1504,8 +1532,8 @@ function make_connection(cno,existing){
 	var hw_mute=0; //if from block is hardware, and is muted, this gets set to 1, and the connection is set to silent
 	// work out which polyvoices/matrix slots correspond
 	if(f_type == "matrix"){
-		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
-		varr = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::connections::out::matrix_channels");
+		max_poly = blocktypes.get(f_name+"::max_polyphony");
+		varr = blocktypes.get(f_name+"::connections::out::matrix_channels");
 		if(!Array.isArray(varr)) varr = [varr];
 		if(max_poly>1){
 			if(f_voice_list == "all"){
@@ -1522,8 +1550,8 @@ function make_connection(cno,existing){
 			f_voices[0] = varr[f_o_no];
 		}
 	}else if(f_type == "hardware"){
-		max_poly = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::max_polyphony");
-		varr = blocktypes.get(blocks.get("blocks["+f_block+"]::name")+"::connections::out::hardware_channels");
+		max_poly = blocktypes.get(f_name+"::max_polyphony");
+		varr = blocktypes.get(f_name+"::connections::out::hardware_channels");
 		//post("\navailable hw voice out channels:", varr, "max poly", max_poly, "f_voice_list",f_voice_list);
 		hw_mute = blocks.get("blocks["+f_block+"]::mute");
 		if(!Array.isArray(varr)) varr = [varr];
@@ -1856,6 +1884,17 @@ function make_connection(cno,existing){
 							//post("\nERROR : ext matrix connections can only go to the ext matrix");
 						}
 					}else if(f_type == "midi"){
+						if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
+							var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+							if(wl[f_o_no]==1){
+								//tell the voice that this output is in use
+								if(blocks.get("blocks["+f_block+"]::type")=="audio"){
+									audio_poly.setvalue(f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
+								}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
+									note_poly.setvalue(f_voice + 1, "enable_output",f_o_no,1);
+								}
+							}
+						}
 						if((t_type == "audio") || (t_type == "hardware")){
 							//this is a midi-audio connection for a single voice - works like parammod but eventually sends a number to the sig~ instead of to a buffer
 							m_index = (f_voice)*128+f_o_no;
