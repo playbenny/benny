@@ -440,7 +440,7 @@ function buffer_loaded(number,path,name,buffername){
 		tn++;
 	}
 	var tc = (waves_buffer[number].channelcount() | 0);
-	if(tc == 0) tc = 2;
+	if(tc <= 0) tc = 2;
 	draw_wave[number] = new Array(2 * tc);
 	for(var i=0;i<tc;i++){
 		var t=0;
