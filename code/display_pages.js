@@ -1693,7 +1693,10 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
 //	post("\nsetting W_C",connection_number,segment);
 //	post("col",col);
-	wires_colours[connection_number][segment] = [col[0],col[1],col[2]];
+	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
+	zs = 1 / (1 + 0.5 * zs);
+	tmc *= zs;
+	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]];
 	wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
 	wires[connection_number][segment].enable = visible;
 }
