@@ -13,6 +13,7 @@
 			},
 			"out" : {
 				"midi" : [ "likewise", "as many", "midi outs" ],
+				"midi_watched" : [0,1,1, "OPTIONAL a list, as long as the list of midi outs. a 1 means that when this output is connected or disconnected a message is sent to the voice to tell it to enable or disable the out. useful for outputs that put out a lot of midi data. see utility.env.asr for usage."],
 				"parameters" : [ "but", "1 dimensional" , "'parameter' out", "like a midi cc", "is often more useful"]
 			}
 		},

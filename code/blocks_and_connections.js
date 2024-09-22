@@ -986,7 +986,6 @@ function remove_connection(connection_number){
 	}else if(f_type=="parameters"){
 		if(blocktypes.contains(f_name+"::connections::out::midi")){
 			f_o_no += blocktypes.getsize(f_name+"::connections::out::midi");
-			
 		}
 	}
 	var t_subvoices = 1;
@@ -1275,32 +1274,6 @@ function remove_connection(connection_number){
 						//post("ERROR : ext matrix connections can only go to the ext matrix. wtf did you just try to remove?");
 					}
 				}else if(f_type == "midi"){
-					if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
-						var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
-						if(wl[f_o_no]==1){
-							//this is more complicated than make conn - we need to check if
-							//any other connections are using this output?
-							var cused = 0;
-							for(var testc=connections.getsize("connections");testc>=0;testc--){
-								if((testc!=connection_number) && (connections.contains("connections["+testc+"]::from"))){
-									if(connections.get("connections["+testc+"]::from::number")==f_block){
-										if((connections.get("connections["+testc+"]::from::output::type")=="midi")&& (connections.get("connections["+testc+"]::from::output::number")==f_o_no)){
-											cused = 1;
-										}
-									}
-								}
-							}
-							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
-							//tell the voice that this output is in use
-							if(blocks.get("blocks["+f_block+"]::type")=="audio"){
-								audio_poly.setvalue(f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
-							}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
-								note_poly.setvalue(f_voice + 1, "enable_output",f_o_no,cused);
-							}
-						}
-					}
-
-
 					if((t_type == "audio") || (t_type == "hardware")){
 						m_index = (f_voice)*128+f_o_no;
 						var tvv = t_voice - MAX_NOTE_VOICES+MAX_AUDIO_VOICES*(t_i_no);
@@ -1372,6 +1345,15 @@ function remove_connection(connection_number){
 						remove_from_midi_routemap(m_index,vvv);
 						remove_routing(connection_number);
 						mod_buffer.poke(1, tmod_id, 0)
+					}
+					if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
+						var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+						if(wl[f_o_no]==1){
+							//this is more complicated than make conn - we need to check if
+							//any other connections are using this output?
+							var cused = is_output_used(f_o_no,i,f_block,"midi");
+							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
+						}
 					}		
 				}else if(f_type == "parameters"){
 					if((t_type == "audio") || (t_type == "hardware")){
@@ -1455,6 +1437,42 @@ function remove_connection(connection_number){
 	var empt=new Dict;  // wipe this one from the dictionary
 	connections.set("connections["+connection_number+"]", empt);
 	rebuild_action_list = 1;
+}
+
+function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
+	var cused = 0;
+	for (var testc = connections.getsize("connections"); testc >= 0; testc--) {
+		if((connections.contains("connections[" + testc + "]::from"))) {
+			if (connections.get("connections[" + testc + "]::from::number") == f_block) {
+				if ((connections.get("connections[" + testc + "]::from::output::type") == f_type) && (connections.get("connections[" + testc + "]::from::output::number") == f_o_no)) {
+					var fv = connections.get("connections[" + testc + "]::from::voice");
+					//post("\ntesting fv", fv, f_voice_no);
+					if (fv == "all") {
+						cused = 1;
+					} else if (fv == f_voice_no) {
+						cused = 1;
+					} else if (Array.isArray(fv) && (fv.indexOf(f_voice_no) > -1)) {
+						cused = 1;
+					}
+					if(cused==1){
+						//post("\nis output used returning 1");
+						testc = -1;
+					}
+				}
+			}
+		}
+	}
+	//tell the voice that this output is in use
+	var vl=voicemap.get(f_block);
+	if(!Array.isArray(vl))vl=[vl];
+	var f_voice = vl[f_voice_no];
+	if(blocks.get("blocks["+f_block+"]::type")=="audio"){
+		audio_poly.setvalue(f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
+	}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
+		note_poly.setvalue(f_voice + 1, "enable_output",f_o_no,cused);
+	}
+	
+	return cused;
 }
 
 function remove_potential_wire(gl_objects_only){
