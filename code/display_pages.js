@@ -1521,13 +1521,13 @@ function draw_wire(connection_number){
 			}else{
 				yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
 			}
-			var bp2 = -Math.min(-0.5,blob_position[2] * 0.2);
-			from_anglevector = [from_anglevector[0]*(0.5+bp2),from_anglevector[1]*3+Math.min(3,Math.max(0,meanvector[1]-1)),from_anglevector[2] - bp2];
-			to_anglevector = [to_anglevector[0]*(0.5+bp2),to_anglevector[1]*3+Math.min(3,Math.max(0,meanvector[1]-1)),to_anglevector[2] + bp2];
+			//var bp2 = -Math.min(-0.5,blob_position[2] * 0.2);
+			from_anglevector = [from_anglevector[0]/*(0.5+bp2)*/,from_anglevector[1]*2+Math.min(2,Math.max(0,meanvector[1]-2)),from_anglevector[2]/* - bp2*/];
+			to_anglevector = [to_anglevector[0]/*(0.5+bp2)*/,to_anglevector[1]*2+Math.min(2,Math.max(0,meanvector[1]-2)),to_anglevector[2]/* + bp2*/];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
-			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
-			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
+			meanvector[0] = /*(1-blob_position[2]) **/ meanvector[0] * -0.33/mvl;
+			meanvector[1] = /*(1-blob_position[2]) **/ meanvector[1] * -0.33/mvl;				
 			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var mtot=0;
@@ -1643,15 +1643,36 @@ function draw_wire(connection_number){
 				}else{
 					from_pos[0] += 0.55 + 0.4 * fconx;
 				}
-				for(t=0;t<3;t++){
-					bez_prep[0][t] = from_pos[t];
-					bez_prep[1][t] = from_pos[t]+from_anglevector[t];
-					bez_prep[2][t] = to_pos[t]-to_anglevector[t];
-					bez_prep[3][t] = to_pos[t];
-					bez_prep[4][t] = from_colour[t];
-					bez_prep[5][t] = to_colour[t];
+				if(dist<6){
+					for(t=0;t<3;t++){
+						bez_prep[0][t] = from_pos[t];
+						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
+						bez_prep[2][t] = to_pos[t]-to_anglevector[t];
+						bez_prep[3][t] = to_pos[t];
+						bez_prep[4][t] = from_colour[t];
+						bez_prep[5][t] = to_colour[t];
+					}
+					segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute, visible);	
+				}else{
+					for(t=0;t<3;t++){
+						bez_prep[0][t] = from_pos[t];
+						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
+						bez_prep[2][t] = blob_position[t]-meanvector[t];
+						bez_prep[3][t] = blob_position[t];
+						bez_prep[4][t] = from_colour[t];
+						bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
+					}
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
+					for(t=0;t<3;t++){
+						bez_prep[0][t] = blob_position[t];
+						bez_prep[1][t] = blob_position[t]+meanvector[t];
+						bez_prep[2][t] = to_pos[t]-to_anglevector[t];
+						bez_prep[3][t] = to_pos[t];
+						bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
+						bez_prep[5][t] = to_colour[t];
+					}
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
 				}
-				segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute, visible);	
 			}
 			if(Array.isArray(wires[connection_number])){
 				if(segments_to_use<wires[connection_number].length){
