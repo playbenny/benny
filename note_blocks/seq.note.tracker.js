@@ -1098,6 +1098,7 @@ function loadbang(){
 
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	var r;
 	var transf_arr = []; //this isn't the shortest it possibly could be but i think we can handle it.
 	for(r=0;r<v_list.length;r++){
@@ -1109,6 +1110,7 @@ function store(){
 		transf_arr.push(d);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function reset_round_robins(){

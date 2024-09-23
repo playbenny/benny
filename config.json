@@ -19,6 +19,7 @@
 	"PRELOAD_WIRES" : 1,
 	"BLOCKS_GRID" : 5,
 	"WIRES_SHOW_ALL" : 1,
+	"WIRES_REDUCE" : 1,
 	"MAX_BLOCKS" : 128,
 	"MAX_NOTE_VOICES" : 64,
 	"MAX_AUDIO_VOICES" : 64,
@@ -54,6 +55,7 @@
 	"TARGET_FPS" : [30, 5],
 	"SELECTED_BLOCK_Z_MOVE" : 1,
 	"SELECTED_BLOCK_DEPENDENTS_Z_MOVE" : 0.5,
+	"METER_TINT" : 0.3,
 	"sidebar_scrollbar_width" : 27,
 	"sidebar_width_in_units" : 10,
 	"consolevsts" : {

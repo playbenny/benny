@@ -602,6 +602,10 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
 	dl = waves_dict.get("waves["+buffer+"]::end") - waves_dict.get("waves["+buffer+"]::start");
 	dl /= d;
+	if(highlight<0){ //if highlight is >0 it's taken as a proportion through the wave, 0-1, as used by wavescan
+		//if it's <0 then it's slice number
+		highlight=-highlight/d;
+	}
 	hls = w*(highlight);
 	hle = w*(highlight+dl);
 	var chunk = length/w;
@@ -1362,7 +1366,9 @@ function draw_clock(){
 		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
-		var h = (currentdate.getHours())%12;
+		var hh = (currentdate.getHours());
+		var h = hh % 12;
+		h += (hh==12)*12;
 		if((m==20)&&(h==4)){
 			lcd_main.message("frgb", 44,220,50); //i'm sorry
 		}else{

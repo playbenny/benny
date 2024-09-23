@@ -741,7 +741,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									camera_position[1] = usermouse.drag.starting_value_y - ydist*0.001*camera_position[2];
 									messnamed("camera_control", "rotatexyz" , 0, 0, 0);
 									messnamed("camera_control","position",  camera_position);
-									messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+									//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
 							}else if((usermouse.ids[0] == "block")||(usermouse.ids[0] == "meter")){
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
@@ -1016,7 +1016,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				camera_position[0] += xx*scroll*7;
 				camera_position[1] -= yy*scroll*7;//*0.5;
 				messnamed("camera_control","position",  camera_position);
-				messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
+				//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 			}else if(usermouse.ctrl){
 				if(bulgingwire>-1){ //ctrl-scroll a wire to adjust level
 					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");

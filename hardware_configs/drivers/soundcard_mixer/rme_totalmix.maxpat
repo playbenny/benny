@@ -1492,10 +1492,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 24.0, 82.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1542,7 +1538,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 59.0, 107.0, 1023.0, 695.0 ],
+						"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -1570,7 +1566,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-13",
@@ -1603,8 +1598,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 650.0, 553.0, 283.0, 36.0 ],
-									"text" : ";\r\nto_blockmanager soundcard_mixer_connection_fail"
+									"patching_rect" : [ 650.0, 553.0, 286.0, 36.0 ],
+									"text" : ";\r\nto_blockmanager soundcard_matrix_connection_fail"
 								}
 
 							}

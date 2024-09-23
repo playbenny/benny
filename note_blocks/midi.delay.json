@@ -3,7 +3,7 @@
 		"patcher" : "midi.delay",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Delays midi events, with optional filtering so that midi delay feedback doesn't go on forever.",
+		"help_text" : "Delays midi events, with optional filtering so that if you patch feedback into this block it won't go on forever.££The per-note random delays are useful for eg randomly varying the order and spacing of the notes of chords.",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
@@ -18,6 +18,10 @@
 				"contains" : [0, 0, 0, 0, 1,5,5],
 				"header" : "time",
 				"height" : 4
+			},
+			{
+				"contains" : [6,7,8],
+				"height" : 0
 			},
 			{ 
 				"contains" : [2,3,4],
@@ -55,7 +59,7 @@
 			{
 				"name" : "highest note",
 				"type" : "notes",
-				"values" : ["uni", 1, 24, "lin"],
+				"values" : ["uni", 1, 128, "lin"],
 				"wrap" : 0,
 				"default" : 1 
 			},
@@ -72,6 +76,27 @@
 				"values" : ["bi", -50, 50, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "per-note random_range (ms)",
+				"type" : "float",
+				"values" : ["uni",0,50,"lin"],
+				"default" : 0,
+				"error_scale" : 0
+			},
+			{
+				"name" : "note offs offset_(ms)",
+				"type" : "float",
+				"values" : ["bi",-50,50,"lin"],
+				"default" : 0.5,
+				"error_scale" : 0
+			},
+			{
+				"name" : "note offs additional_random range (ms)",
+				"type" : "float",
+				"values" : ["uni",0,50,"lin"],
+				"default" : 0,
+				"error_scale" : 0
 			}
 		]
 	}

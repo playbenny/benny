@@ -161,6 +161,7 @@ function mouse(x,y,l,s,a,c,scr){
 }
 	
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	//store needs to store some of the data, but not all!
 	if(endreturns_enabled){
 		// just the end return parameters (3x for each knob)
@@ -176,6 +177,7 @@ function store(){
 		transf_arr[0] = 1;
 		blocks.replace("blocks["+block+"]::voice_data::0", transf_arr);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 

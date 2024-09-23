@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3807726933,
+	"modificationdate" : 3809850336,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1117,9 +1117,24 @@
 				"toplevel" : 1
 			}
 ,
-			"core.input.control.auto.ui.maxpat" : 			{
+			"blank.driver.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
+			}
+,
+			"driver_wrap.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"core.input.control.auto.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
+				}
+
 			}
 ,
 			"pepper_parachute.maxpat" : 			{
@@ -1267,7 +1282,8 @@
 			}
 ,
 			"rme_totalmix.maxpat" : 			{
-				"kind" : "patcher"
+				"kind" : "patcher",
+				"local" : 1
 			}
 ,
 			"alyseum_matrix.maxpat" : 			{
@@ -1275,17 +1291,7 @@
 				"local" : 1
 			}
 ,
-			"blank.driver.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/patchers",
-					"projectrelativepath" : "./patchers"
-				}
-
-			}
-,
-			"driver_wrap.maxpat" : 			{
+			"voiceheader_noparams.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
@@ -1546,11 +1552,6 @@
 				"local" : 1
 			}
 ,
-			"core.input.control.auto.ui.js" : 			{
-				"kind" : "javascript",
-				"local" : 1
-			}
-,
 			"midirouter.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -1563,6 +1564,11 @@
 ,
 			"whitegaussnoise.gendsp" : 			{
 				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"core.input.control.auto.ui.js" : 			{
+				"kind" : "javascript",
 				"local" : 1
 			}
 ,
@@ -2506,7 +2512,12 @@
 ,
 			"vst.DeRez264.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Distortion64.json" : 			{
@@ -2526,12 +2537,22 @@
 ,
 			"vst.Elation64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Focus64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.MackEQ64.json" : 			{
@@ -2546,7 +2567,12 @@
 ,
 			"vst.Mojo64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.PitchNasty64.json" : 			{
@@ -2571,7 +2597,12 @@
 ,
 			"vst.Pressure464.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Pro-C.2.json" : 			{
@@ -2586,47 +2617,92 @@
 ,
 			"vst.RatshackReverb2.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.TAL-Chorus-LX-64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ToTape664.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaDelay.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaFreqEcho_x64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaRoom.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaSpaceModulator.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaSupermassive_x64.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ValhallaUberMod.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.ZBandpass264.json" : 			{

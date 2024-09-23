@@ -113,6 +113,7 @@ function loadbang(){
 }
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	if(block>=0){
 		var i,s,r;
 		v_list = voicemap.get(block);
@@ -131,6 +132,7 @@ function store(){
 			}
 		}
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function keydown(key){

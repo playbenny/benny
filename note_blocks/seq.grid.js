@@ -157,6 +157,7 @@ function loadbang(){
 }
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	var r;
 	if(block>=0){
 		if(maxl<1){
@@ -184,6 +185,7 @@ function store(){
 		transf_arr.push(d);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function keydown(key){

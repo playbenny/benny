@@ -1,10 +1,9 @@
 var MAX_DATA = 16384;
-var USED_DATA = 1024; //to save a bit of time loading and saving because this is a legacy block,
- //remove this when i upgrade this to multi pattern
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;
 var MAX_WAVES_SLICES = 1024;
+var MAX_PATTERN_LENGTH = 128;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 outlets = 3;
@@ -24,6 +23,7 @@ var cursory=0;
 var s=[];
 var l=[];
 var l_on=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var pattern=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var baseoct=4;
 var mini=0;
 var drawflag=0;
@@ -42,9 +42,9 @@ var keymap = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 var fx_names = ["Arpeggio", "B", "Cut", "Delay", "E", "Fade", "retriGger", "Hold", "I", "Jump", "K", "L", "harMonic", "N", "Offset", "Pitchslide UP", "Qitchslide down", "Ramp", "Sometimes", "porTamento", "hUrry", "reVerse", "daWdle", "X", "Y", "Z"];
 var fx_descs = ["chiptune style arpeggio, the values are [note1][note2][rate] or [note1][rate]",
 ".",
-"stops the sample playback partway through the row","actions the row slightly late",
+"stops the sample playback partway through the row, value is % of a row","actions the row slightly late, value is % of a row ",
 ".",
-"fades the volume down linearly (see also: Ramp)",
+"fades the volume down linearly (see also: Ramp), value is how far it goes down in 1 row.",
 "does a roll, [rate][volume incdec] or [rate][volume incdec][pitch incdec] incdec values 5 = static, 0 = decreases fast 9 = increases fast",
 "holds playback at a point using the timestretch",
 ".",
@@ -52,12 +52,12 @@ var fx_descs = ["chiptune style arpeggio, the values are [note1][note2][rate] or
 ".",".",
 "multiplies the playback rate by this integer. numbers >100 are treated as negative",
 ".",
-"starts playback after the slice marker by this offset",
+"starts playback after the slice marker by this offset (in % of a slice)",
 "slides pitch up (see also Qitchslide down)",
 "slides pitch down",
 "ramps the volume up linearly (see also: Fade)",
 "not probability based - uses a counter instead, you set the increment amount and when it wraps (at 128) the note plays. increment amount = 128 means play every time, = 1 means play every 128 times. the counter is per-column of the tracker.",
-".",
+"slides the existing sample to the note rather than retriggering",
 "use timestretch to play the sample faster",
 "1 = reverse playback, 0=forward",
 "use timestretch to play the sample slower (see also hurry)",
@@ -70,9 +70,7 @@ var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 // 1 - length (*128+1)
 // 2 - playhead position (updated by player voice)
 // 3-131? data values
-function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little fx/waveform hint window bottom right
-//	post("drawing sequencers");
-	//blockcolour = config.get("palette::menu");
+function setup(x1,y1,x2,y2,sw){ 
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
@@ -80,9 +78,11 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	x_pos = x1;
 	y_pos = y1;
 	showcols=Math.floor(2*width/height);
-	if(width<sw*0.54){ 
+	if(width<sw*0.5){ 
 		mini=1;
 		showcols = v_list.length;		
+	}else{
+		mini=0;
 	}
 	unit = height / 18;
 	display_row_offset = 0;
@@ -120,7 +120,6 @@ function draw(){
 		maxl = Math.floor((height-sy)/rh);
 		if(!mini){
 			outlet(1,"paintrect",x_pos+sx,y_pos,x_pos+width,sy+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-			outlet(0,"setfontsize",rh*0.8);
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",3+sx+x_pos,rh*0.75+y_pos);
 			outlet(1,"write","octave");
@@ -134,16 +133,28 @@ function draw(){
 			outlet(1,"write","wave");
 			outlet(1,"moveto",3+sx+0.4*cw+x_pos,rh*1.45+y_pos);
 			outlet(1,"write",(1+currentwave));
+			if(waves_dict.contains("waves["+(1+currentwave)+"]::name")){
+				var wnam = waves_dict.get("waves["+(1+currentwave)+"]::name");
+				outlet(1,"moveto",3+sx+0.4*cw+x_pos,rh*2.15+y_pos);
+				var wns = wnam.split(".");
+				wns.length -= 1;
+				var wn = wns[0];
+				for(i=1;i<wns.length;i++){
+					wn=wn+"."+wns[i];
+				}
+				outlet(1,"write",wn);
+			}
 			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*0.75+y_pos);
 			outlet(1,"write","slice");
 			outlet(1,"moveto",3+sx+0.55*cw+x_pos,rh*1.45+y_pos);
-			outlet(1,"write",currentslice+1);
+			outlet(1,"write",currentslice);
 			if(cursorx2<4) draw_wave_hint(currentwave,currentslice);
 			for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
 				cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 				l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
 				s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
 				l_on[c] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3)
+				pattern[c] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+11)*15.999);
 				outlet(1,"moveto", 3+sx+cw*(c-display_col_offset)+x_pos, rh*2.15+y_pos);
 				if(cursorx == c){
 					outlet(1,"frgb",blockcolour);
@@ -184,6 +195,7 @@ function update(){
 		var tl  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
 		var ts  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
 		var to = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3);
+		var tp = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+11)*15.999);
 		var d=0;
 		if(tl!=l[c]){
 			l[c]=tl;
@@ -195,6 +207,10 @@ function update(){
 		}
 		if(to!=l_on[c]){
 			l_on[c]=tl;
+			d=1;
+		}
+		if(tp!=pattern[c]){
+			pattern[c]=tp;
 			d=1;
 		}
 		if(d){
@@ -262,7 +278,7 @@ function drawcell(c,r){
 		}
 
 		outlet(1,"frgb",fc);
-		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+6*rr,6);
+		values = voice_data_buffer.peek(1,MAX_DATA*v_list[(cc)]+1+6*(rr+MAX_PATTERN_LENGTH*pattern[cc]),6);
 	//	post(values,"\n");
 		var incell = ((cursorx==(cc))&&(cursory==rr));
 		var x=0;
@@ -328,7 +344,7 @@ function draw_fx_hint(fx){
 	outlet(1,"moveto",3+sx+0.75*cw+x_pos,rh*0.75+y_pos);
 	outlet(1,"textface","bold");
 	outlet(1,"write",fx_names[fx]);
-	var x=3+sx+1.1*cw+x_pos;
+	var x=3+sx+1*cw+x_pos;
 	var str=fx_descs[fx].split(" ");
 	var ws = "";
 	var y=rh*0.75+y_pos;
@@ -349,17 +365,7 @@ function draw_fx_hint(fx){
 
 function draw_wave_hint(wave,slice){
 	if(waves_dict.contains("waves["+(1+wave)+"]::name")){
-		wnam = waves_dict.get("waves["+(1+wave)+"]::name");
-		outlet(0, "custom_ui_element","waveform_slice_highlight",3+sx+0.75*cw+x_pos, y_pos, -9+width+x_pos, sy+y_pos,blockcolour[0]*1.1,blockcolour[1]*1.1,blockcolour[2]*1.1,block,wave+1,slice/MAX_WAVES_SLICES); 
-		outlet(1,"moveto",3+sx+0.75*cw+x_pos,rh*0.75+y_pos);
-		var wnam;
-		var wns = wnam.split(".");
-		wns.length -= 1;
-		var wn = wns[0];
-		for(i=1;i<wns.length;i++){
-			wn=wn+"."+wns[i];
-		}
-		outlet(1,"write",wn);
+		outlet(0, "custom_ui_element","waveform_slice_highlight",3+sx+0.75*cw+x_pos, y_pos, -9+width+x_pos, sy+y_pos,blockcolour[0]*1.1,blockcolour[1]*1.1,blockcolour[2]*1.1,block,wave+1,-slice); 
 	} 
 }
 
@@ -401,14 +407,27 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
+			if(sel_ex==-1){
+				var v = voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+cursorx2+1+6*((cursory+MAX_PATTERN_LENGTH*pattern[cursorx])));
+				if(v>0){
+					if(scr>0){
+						v++;
+					}else{
+						v--;
+						if(v<1)v=1;
+					}
+					voice_data_buffer.poke(1,MAX_DATA*v_list[cursorx]+cursorx2+1+6*((cursory+MAX_PATTERN_LENGTH*pattern[cursorx])),v);
+					drawflag=1;
+				}
+			}
 			if((cursorx>=sel_sx)&&(cursorx2>=sel_sx2)&&(cursorx<=sel_ex)&&(cursorx2<=sel_ex2)&&(cursory>=sel_sy)&&(cursory<=sel_ey)){
 				//youve scrolled on a value in a selected area, change them all
 				for(var tx=sel_sx;tx<=sel_ex;tx++){
 					var tx2 = clickx2;
 					if(((tx==sel_sx)&&(tx2>=sel_sx2))||(tx>sel_sx)){
 						if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
-							for(var ty=sel_sy;ty<sel_ey;ty++){
-								var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tx2+1+6*(ty));
+							for(var ty=sel_sy;ty<=sel_ey;ty++){
+								var v = voice_data_buffer.peek(1,MAX_DATA*v_list[tx]+tx2+1+6*((ty+MAX_PATTERN_LENGTH*pattern[tx])));
 								if(v>0){
 									if(scr>0){
 										v++;
@@ -416,14 +435,15 @@ function mouse(x,y,lb,sh,al,ct,scr){
 										v--;
 										if(v<1)v=1;
 									}
-									voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tx2+1+6*(ty),v);
+									voice_data_buffer.poke(1,MAX_DATA*v_list[tx]+tx2+1+6*((ty+MAX_PATTERN_LENGTH*pattern[tx])),v);
 								}
 							}
 						}
 					}
 				}
+				drawflag=1;
 			}else{
-				var v = voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+clickx2+1+6*(clicky+display_row_offset));
+				var v = voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+clickx2+1+6*(clicky+display_row_offset+MAX_PATTERN_LENGTH*pattern[tx]));
 				if(v>0){
 					if(scr>0){
 						v++;
@@ -431,7 +451,8 @@ function mouse(x,y,lb,sh,al,ct,scr){
 						v--;
 						if(v<0)v=0;
 					}
-					voice_data_buffer.poke(1,MAX_DATA*v_list[cursorx]+clickx2+1+6*(clicky+display_row_offset),v);
+					voice_data_buffer.poke(1,MAX_DATA*v_list[cursorx]+clickx2+1+6*(clicky+display_row_offset+MAX_PATTERN_LENGTH*pattern[tx]),v);
+					drawflag=1;
 				}
 			}
 		}
@@ -515,7 +536,7 @@ function copy_selection(){
 					if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
 						column_contents[col] = [];
 						for(var i=sel_sy;i<=sel_ey;i++){
-							column_contents[col][i-sel_sy] = voice_data_buffer.peek(1, MAX_DATA*v_list[tx]+1+6*i+tx2);
+							column_contents[col][i-sel_sy] = voice_data_buffer.peek(1, MAX_DATA*v_list[tx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[tx])+tx2);
 						}
 						col++;
 					}
@@ -546,7 +567,7 @@ function paste_columns(){
 			var ty=cursory;
 			var col = td.get(cols[i]);
 			for(y=0;y<col.length;y++){
-				voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*ty+tx2,col[y]);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*(ty+MAX_PATTERN_LENGTH*pattern[tx])+tx2,col[y]);
 				ty++;
 			}
 			tx2++;
@@ -565,11 +586,11 @@ function delete_selection(){
 		for(i=cursory;i<127;i++){
 			var rowvalues;
 			if(i<126){
-				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1),6);
+				rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i+1+MAX_PATTERN_LENGTH*pattern[cursorx]),6);
 			}else{
 				rowvalues = [0,0,0,0,0,0];
 			}
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*i,rowvalues);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 		}
 	}else{
 		for(i=sel_sy;i<=sel_ey;i++){
@@ -577,7 +598,7 @@ function delete_selection(){
 				for(var tx2=0;tx2<6;tx2++){
 					if(((tx==sel_sx)&&(tx2>=sel_sx2)||(tx>sel_sx))){
 						if(((tx==sel_ex)&&(tx2<=sel_ex2))||(tx<sel_ex)){
-							voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*i+tx2,0);
+							voice_data_buffer.poke(1, MAX_DATA*v_list[tx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[tx])+tx2,0);
 						}
 					}
 				}
@@ -739,40 +760,44 @@ function keydown(key){
 			baseoct--;
 			if(baseoct<0)baseoct=0;
 			break;
-		case 59:
+		case 620:
 			currentwave++;
 			if(currentwave>128)currentwave=128;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+2,currentwave+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+2,currentwave+1);
 			drawflag=1;
 			break;
-		case 46:
+		case 556:
 			currentwave--;
 			if(currentwave<0)currentwave=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+2,currentwave+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+2,currentwave+1);
 			drawflag=1;
 			break;
-		case 39:
+		case 4716:
 			currentslice++;
 			if(currentslice>MAX_WAVES_SLICES)currentslice=MAX_WAVES_SLICES;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+3,currentslice+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+3,currentslice+1);
 			drawflag=1;
 			break;
-		case 47:
+		case 4652:
 			currentslice--;
 			if(currentslice<0)currentslice=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+3,currentslice+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+3,currentslice+1);
 			drawflag=1;
 			break;	
-		case 61:
+		case 6764:
 			currentvel++;
 			if(currentvel>128)currentvel=128;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+1,currentvel+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1,currentvel+1);
 			drawflag=1;
 			break;
-		case 45:
+		case 6700:
 			currentvel--;
 			if(currentvel<0)currentvel=0;
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+1,currentvel+1);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1,currentvel+1);
+			drawflag=1;
+			break;
+		case 46: // . is clear
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+cursorx2+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1,0);
 			drawflag=1;
 			break;
 		case 355:
@@ -793,20 +818,20 @@ function keydown(key){
 			break;
 		case -8:
 			//insert
-			for(i=128;i>cursory;i--){
-				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i-1),6);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*i,rowvalues);
+			for(i=MAX_PATTERN_LENGTH;i>cursory;i--){
+				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i-1+MAX_PATTERN_LENGTH*pattern[cursorx]),6);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 			}
 			var rowvalues=[0,0,0,0,0,0];
-			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 			drawflag=1;
 			break;
 		case -7:
 			if(cursorx2==0){
 				var rowvalues=[0,0,0,0,0,0];
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 			}else{
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,0);
+				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2,0);
 			}
 			drawflag=1;
 			break;
@@ -821,11 +846,11 @@ function keydown(key){
 			break;
 		case 361: //ctl-I (interpolate)
 			if((sel_sy!=sel_ey)&&(sel_ey>-1)){
-				var v1 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_sx]+1+6*(sel_sy)+sel_sx2);
-				var v2 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_ex]+1+6*(sel_ey)+sel_ex2);
+				var v1 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_sx]+1+6*(sel_sy+MAX_PATTERN_LENGTH*pattern[cursorx])+sel_sx2);
+				var v2 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_ex]+1+6*(sel_ey+MAX_PATTERN_LENGTH*pattern[cursorx])+sel_ex2);
 				if((v1>0)&&(v2>0)){
 					for(i=sel_sy;i<=sel_ey;i++){
-						voice_data_buffer.poke(1, MAX_DATA*v_list[sel_sx]+1+6*i+sel_sx2,Math.floor((v2*i+v1*(sel_ey-i))/(sel_ey-sel_sy)));
+						voice_data_buffer.poke(1, MAX_DATA*v_list[sel_sx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx])+sel_sx2,Math.floor((v2*i+v1*(sel_ey-i))/(sel_ey-sel_sy)));
 					}
 				}
 			}
@@ -844,24 +869,24 @@ function keydown(key){
 				if(key==49){
 					var rowvalues=[-1,0,0,0];
 					//post("off");
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 				}else if(key>0){
 					if(keymap[key]>-1){
 						var rowvalues = [baseoct*12+keymap[key],currentvel+1,currentwave+1,currentslice+1];
-						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*cursory+1);
+						var t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+1);
 						if(t>0) rowvalues[1]=t;
-						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*cursory+2);
+						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+2);
 						if(t>0) rowvalues[2]=t;
-						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*cursory+3);
+						t=voice_data_buffer.peek(1,MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+3);
 						if(t>0) rowvalues[3]=t;
-						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory,rowvalues);
+						voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 					}
 				}
 				cursory=(cursory+1) & 127;
-			}else if((cursorx2==1)||(cursorx2==3)){
+			}else if((cursorx2==1)||(cursorx2==3)||(cursorx2==5)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
-					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2)-1;
+					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2)-1;
 					if((o>0)&&(o<100)){
 						o*=10;
 						o+=t;
@@ -870,12 +895,12 @@ function keydown(key){
 					}
 					if(cursorx2==1) currentvel = o |0;
 					if(cursorx2==3) currentslice = (o-1) |0;
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,o+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2,o+1);
 				}
-			}else if((cursorx2==2)||(cursorx2==5)){
+			}else if((cursorx2==2)){
 				var t=key-48;
 				if((t>=0)&&(t<10)){
-					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2)-1;
+					var o=voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2)-1;
 					if((o>0)&&(o<10)){
 						o*=10;
 						o+=t;
@@ -883,13 +908,13 @@ function keydown(key){
 						o=t;
 					}
 					if(cursorx2==2) currentwave = --o |0;
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,o+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2,o+1);
 				}
 			}else if((cursorx2==4)){
 				var t=key-96;
-				post("fx",t);
+				//post("fx",t);
 				if((t>=0)&&(t<=26)){					
-					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*cursory+cursorx2,t+1);
+					voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx])+cursorx2,t+1);
 				}
 			}
 			
@@ -939,10 +964,11 @@ function quer(){
 }
 
 function store(){
+	messnamed("to_blockmanager","store_wait_for_me",block);
 	var r;
-	var transf_arr = new Array(USED_DATA);
+	var transf_arr = new Array(MAX_DATA);
 	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], USED_DATA);
+		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], 16*MAX_PATTERN_LENGTH*6+10);
 		var d = 0;
 		while(d==0){
 			d = transf_arr.pop();
@@ -951,13 +977,14 @@ function store(){
 		//post("\nsaving, voice",v_list[r]," data has a length of ",transf_arr.length);
 		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function remapping(froom,too){
 	post("\nremapping_list "+froom +" -> "+too+" .. ");
 	var cx,cy,cv,ct=0;
 	for(cx=0;cx<v_list.length;cx++){
-		for(cy=0;cy<128;cy++){
+		for(cy=0;cy<128*16;cy++){
 			cv = voice_data_buffer.peek(1, MAX_DATA*v_list[cx]+1+6*cy+2);
 			if(cv==froom+1){
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cx]+1+6*cy+2,-(too+1));
@@ -970,7 +997,7 @@ function remapping(froom,too){
 function finalise_remapping(){
 	var cx,cy,cv;
 	for(cx=0;cx<v_list.length;cx++){
-		for(cy=0;cy<128;cy++){
+		for(cy=0;cy<128*16;cy++){
 			cv = voice_data_buffer.peek(1, MAX_DATA*v_list[cx]+1+6*cy+2);
 			if(cv<0){
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cx]+1+6*cy+2,-cv);

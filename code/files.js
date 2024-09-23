@@ -439,8 +439,10 @@ function buffer_loaded(number,path,name,buffername){
 		waves_dict.replace("waves["+tn+"]",d);
 		tn++;
 	}
-	draw_wave[number] = new Array(2*waves_buffer[number].channelcount());
-	for(var i=0;i<waves_buffer[number].channelcount();i++){
+	var tc = (waves_buffer[number].channelcount() | 0);
+	if(tc <= 0) tc = 2;
+	draw_wave[number] = new Array(2 * tc);
+	for(var i=0;i<tc;i++){
 		var t=0;
 		var ii=2*i;
 		draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
@@ -1281,23 +1283,69 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		blocks.replace("panels_order",panels_order);
 		blocks.replace("MAX_PANEL_COLUMNS",MAX_PANEL_COLUMNS);
 	}
-	if(fullscreen){
+	if(fullscreen && saveas){
 		fullscreen=0;
 		world.message("fullscreen",0);
 	}
 //copy blocks and connections and states and properties into one dict
+	loading.save_wait_count = 0;
 	if(selectedonly){
 		//post("\nsaving selection only");
-		messnamed("trigger_save_selected", "bang");
+		var savetask = new Task(check_its_safe_to_save_selected,this);
+		savetask.schedule(1000);
+		//messnamed("trigger_save_selected", "bang");
 	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
 		//post("\nsave as");
 		messnamed("trigger_save_as","bang");
 	}else{
-		post("\nsave",loading.songname);
-		messnamed("save_named",loading.songpath+loading.songname);
-		//messnamed("trigger_save","bang");
+		var savetask = new Task(check_its_safe_to_save_named,this);
+		savetask.schedule(1000);
+		//messnamed("save_named",loading.songpath+loading.songname);
 	}
 	set_sidebar_mode("none");
+}
+
+function check_its_safe_to_save_selected(){
+	loading.save_wait_count++;
+	if(loading.save_wait_count>15){
+		post("\nTIMEOUT: I waited 15 seconds for these blocks to tell me they'd finished storing data and they never did: ",loading.save_waitlist);
+		loading.save_waitlist=[];
+	}
+	if(loading.save_waitlist.length == 0){
+		post("\nall store routines complete, finalising save");
+		messnamed("trigger_save_selected", "bang");
+	}else{
+		post("\nnot ready to save yet, waiting..");
+		savetask.schedule(1000);
+	}
+}
+
+
+function check_its_safe_to_save_named(){
+	loading.save_wait_count++;
+	if(loading.save_wait_count>15){
+		post("\nTIMEOUT: I waited 15 seconds for these blocks to tell me they'd finished storing data and they never did: ",loading.save_waitlist);
+		loading.save_waitlist=[];
+	}
+	if(loading.save_waitlist.length == 0){
+		post("\nall store routines complete, finalising save");
+		messnamed("save_named",loading.songpath+loading.songname);
+	}else{
+		post("\nnot ready to save yet, waiting..");
+		savetask.schedule(1000);
+	}
+}
+
+function store_wait_for_me(blockno){
+	loading.save_waitlist.push(blockno);
+	post("\n",blocks.get("blocks["+blockno+"]::name"),"requests we wait for it to store data before completing save");
+}
+function store_ok_done(blockno){
+	var a = loading.save_waitlist.indexOf(blockno);
+	if(a>-1){
+		loading.save_waitlist.splice(a,1);
+		post("\n",blocks.get("blocks["+blockno+"]::name"),"has finished storing data");
+	}
 }
 
 function save_selected_pruning(){

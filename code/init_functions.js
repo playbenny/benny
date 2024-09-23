@@ -186,7 +186,9 @@ function initialise_dictionaries(hardware_file){
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
+	WIRES_REDUCE = config.get("WIRES_REDUCE");
 	TARGET_FPS = config.get("TARGET_FPS");
+	METER_TINT = config.get("METER_TINT");
 	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
 	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");

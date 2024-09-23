@@ -38,6 +38,7 @@ var LONG_PRESS_TIME = 800;
 var SLIDER_CLICK_SET = 0;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var SHOW_STATES_ON_PANELS = 1;
+var WIRES_REDUCE = 1; //if on then to 'all' or from 'all' connections always go to/from the block as a single wire rather than loads of wires
 var BLOCK_TEXTURE_SIZE = 128;
 var UPSAMPLING = 1;
 var RECYCLING = 1;
@@ -50,6 +51,7 @@ var SHOW_STATES_ON_PANELS = 1;
 var TARGET_FPS = [30, 5];
 var SELECTED_BLOCK_Z_MOVE = 2;
 var SELECTED_BLOCK_DEPENDENTS_Z_MOVE = 0.5;
+var METER_TINT = 0.3;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
@@ -635,7 +637,9 @@ var loading = {
 	wave_paramlist : [], //list of [blockno,paramno] that are wave parameters that have been remapped - it uses this list to apply the remapping to preset states too
 	recent_substitutions : 0, //this is made into a dict where we keep a record of user substitutions during load, so we don't have to ask twice.
 	lockout : 0, //to prevent hotkey triggering save twice
-	hardware_substitutions_occured : 0 //this is set to 1 to put the warning on the save page
+	hardware_substitutions_occured : 0, //this is set to 1 to put the warning on the save page
+	save_waitlist : [], //blocks we are waiting for them to say they've completed a 'store' command.
+	save_wait_count : 0
 }
 
 var cpu_meter = {

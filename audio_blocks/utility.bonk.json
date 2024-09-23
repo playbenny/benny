@@ -1,0 +1,54 @@
+{
+	"utility.bonk" : {
+		"patcher" : "utility.bonk",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for Volker Böhm's 64bit port of Miller Puckette's bonk~ object for max/msp. detects drum hits and outputs midi. to train it so it can identify which drum is which it needs to hear at least 10 of each with learn mode on, then turn learn off.££*at the moment learn mode works but the save/recall of learned drum templates isn't implemented.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in"]
+			},
+			"out" : {
+				"midi" : [ "detected hits" ]
+			}
+		},
+		"groups" : [
+			{ 
+                "height" : 4,
+				"contains" : [0,1,2,3,3]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "mask time",
+				"type" : "int",
+				"values" : ["uni", 1, 10, "lin"],
+				"wrap" : 0,
+				"default" : 0.4
+			},
+			{
+				"name" : "mask decay",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "min vel",
+				"type" : "int",
+				"values" : ["uni", 1, 100, "lin"],
+				"wrap" : 0,
+				"default" : 0.07
+			},
+			{
+				"name" : "learn mode",
+				"type" : "menu_b",
+				"values" : ["learn off", "learn on"],
+				"wrap" : 1,
+				"default" : 0.1
+			}
+		]
+	}
+}
