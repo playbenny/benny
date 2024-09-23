@@ -9,7 +9,7 @@
         "block_ui_patcher"	:	"self",
 		"connections" : {
 			"out" : {
-				"midi" : [ "Lane 1", "Lane 2", "Lane 3", "Lane 4", "All"]
+				"midi" : [ "Lane 1", "Lane 2", "Lane 3", "Lane 4", "All", "32 step 1+2", "32 step 3+4", "64 step"]
 			}
 		},
 		"groups" : [
