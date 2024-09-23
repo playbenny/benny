@@ -1308,7 +1308,6 @@ function draw_wire(connection_number){
 			}
 		}
 		if(drawme){
-			
 			var cmute = connections.get("connections["+connection_number+"]::conversion::mute");
 			var from_number = connections.get("connections["+connection_number+"]::from::output::number");
 			var to_number = connections.get("connections["+connection_number+"]::to::input::number");
@@ -1454,19 +1453,17 @@ function draw_wire(connection_number){
 			}
 
 			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
-				if(dist<4.5){
-					segments_to_use /= 4; //flag for short wires - use less segments.
+				if((dist<3.5)&&(Math.abs(from_pos[0]-to_pos[0])<0.5)){
+					segments_to_use /= 16; //flag for short wires - use less segments.
 					//post("\nV SHORT");
-				}else if(dist<9){
+				}else if(dist<6){
 					segments_to_use /= 2;
 					//post("\nSHORT");
 				}
 			}
 			segments_to_use = 4*(Math.max(1,Math.round(segments_to_use/4)));
 			var bez_prep=[];
-			for(t=0;t<6;t++){
-				bez_prep[t] = new Array(3);
-			}
+			for(t=0;t<6;t++) bez_prep[t] = new Array(3);
 			segment=0;
 			// old code was: if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
@@ -1474,11 +1471,11 @@ function draw_wire(connection_number){
 			var blob_position = [];
 			var meanvector = [0,0,0];
 			if(cfrom == cto){
-				from_anglevector[0] += 0.5*from_anglevector[1];
-				from_anglevector[1] *= 2;
+				from_anglevector[0] += from_anglevector[1];
+				//from_anglevector[1] *= 2;
 				from_anglevector[2] -= 1;
-				to_anglevector[0] -= 0.5 * to_anglevector[1];
-				to_anglevector[1] *= 2;
+				to_anglevector[0] -= to_anglevector[1];
+				//to_anglevector[1] *= 2;
 				to_anglevector[2] -= 1;
 			}
 			var fx = from_pos[0];
@@ -1513,19 +1510,24 @@ function draw_wire(connection_number){
 			meanvector[0] = fx - tx;
 			meanvector[1] = from_pos[1] + 0.5*from_anglevector[1] - to_pos[1] + 0.5*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.max(-10,-0.5 -0.5*(Math.max(0,mvl-3)) - (meanvector[1]<0)); //was -0.25 -0.3
+			blob_position[2] =  Math.max(-5,-0.5 -0.5*(Math.max(0,mvl-3)) - (meanvector[1]<0)); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
 			mvl = mvl - mv3;
-			var yclip = Math.abs(0.4 * (from_pos[1]-to_pos[1]));
-			from_anglevector = [from_anglevector[0]*(0.2+mvl*0.02),from_anglevector[1]*(1.3+mvl*0.5+(meanvector[1]<0)),from_anglevector[2]];// + Math.max(-0.5,blob_position[2] * 0.01)];
-			to_anglevector = [to_anglevector[0]*(0.2+mvl*0.02),to_anglevector[1]*(1.3+mvl*0.5+(meanvector[1]<0)),to_anglevector[2]];// - Math.max(-0.5,blob_position[2]*0.01)];
+			var yclip = from_pos[1]-to_pos[1];
+			if((yclip<=0)||(cfrom==cto)){
+				yclip=1000;
+			}else{
+				yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
+			}
+			var bp2 = -Math.min(-0.5,blob_position[2] * 0.2);
+			from_anglevector = [from_anglevector[0]*(0.5+bp2),from_anglevector[1]*3+Math.min(3,Math.max(0,meanvector[1]-1)),from_anglevector[2] - bp2];
+			to_anglevector = [to_anglevector[0]*(0.5+bp2),to_anglevector[1]*3+Math.min(3,Math.max(0,meanvector[1]-1)),to_anglevector[2] + bp2];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
 			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
 			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
-			//if(connection_number == wires_potential_connection) post("\nstarting",from_pos,"to",to_pos,"conx",fconx,tconx,"from_list",from_list);
 			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var mtot=0;
@@ -1672,7 +1674,7 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, 
 	var t, tt, i, ott;
 	var p = [];
 	num_segments = Math.max(1,Math.floor(num_segments));
-	if(num_segments == 1){
+	if(num_segments <= 1){
 		draw_cylinder(connection_number,segment,bez_prep[0],bez_prep[3],cmute,bez_prep[4],visible);
 		segment++;
 	}else{
@@ -1740,7 +1742,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 //	post("\nsetting W_C",connection_number,segment);
 //	post("col",col);
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
-	zs = 1 / (1 + 0.5 * zs);
+	zs = 1 / (1 + zs);
 	tmc *= zs;
 	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]];
 	wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
