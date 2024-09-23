@@ -1409,6 +1409,7 @@ function draw_wire(connection_number){
 					}
 				}else{
 					fv=1;
+					from_list = [fv];
 					from_pos[0] += 0.5*(tl-1)/from_subvoices;
 				}
 			}
@@ -1434,6 +1435,7 @@ function draw_wire(connection_number){
 					}
 				}else {
 					tv=1;
+					to_list = [tv];
 					to_pos[0] += 0.5*(tl-1)/to_subvoices;
 				}
 			}
@@ -1441,8 +1443,8 @@ function draw_wire(connection_number){
 			if(is_empty(wires[connection_number])) wires[connection_number] = [];
 			if(is_empty(wires_colours[connection_number])) wires_colours[connection_number] = [];
 			
-			from_anglevector = [0, -0.4, 0];
-			to_anglevector = [0, -0.4, 0];
+			from_anglevector = [0, -0.5, 0];
+			to_anglevector = [0, -0.5, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
 			if((loading.progress>0)){//&&(wires[connection_number].length<segments_to_use)){
@@ -1454,8 +1456,10 @@ function draw_wire(connection_number){
 			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
 				if(dist<4.5){
 					segments_to_use /= 4; //flag for short wires - use less segments.
+					//post("\nV SHORT");
 				}else if(dist<9){
 					segments_to_use /= 2;
+					//post("\nSHORT");
 				}
 			}
 			segments_to_use = 4*(Math.max(1,Math.round(segments_to_use/4)));
@@ -1477,26 +1481,53 @@ function draw_wire(connection_number){
 				to_anglevector[1] *= 2;
 				to_anglevector[2] -= 1;
 			}
-			blob_position[0] = ((from_pos[0] + to_pos[0])*0.5);
+			var fx = from_pos[0];
+			var tx = to_pos[0];
+			if(from_multi>0){
+				var i = 0;
+				if(tx>fx) i = from_list.length-1;
+				fx += 0.5*(from_list[i]-1)/from_subvoices + 0.4*fconx + 0.55;
+			}else{
+				if(from_multi==-1){
+					fx += -0.4 + 0.8 * fconx;
+				}else{
+					if(!Array.isArray(from_list))from_list = [fv];
+					fx += 0.5*(from_list[0]-1)/from_subvoices + 0.4*fconx + 0.55;
+				}
+
+			}
+			if(to_multi>0){
+				var i = 0;
+				if(tx>fx) i = to_list.length-1;
+				tx += 0.5*(to_list[i]-1)/to_subvoices + 0.4*tconx + 0.55;
+			}else{
+				if(to_multi==-1){
+					tx += -0.4 + 0.8 * tconx;
+				}else{
+					if(!Array.isArray(to_list))to_list = [tv];
+					tx += 0.5*(to_list[0]-1)/to_subvoices + 0.4*tconx + 0.55;
+				}
+			}
+			blob_position[0] = ((fx + tx)*0.5);
 			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
-			meanvector[0] = from_pos[0] + 0.4 * fconx - to_pos[0] - 0.4 * tconx;
-			meanvector[1] = from_pos[1] + from_anglevector[1] - to_pos[1] + to_anglevector[1];
+			meanvector[0] = fx - tx;
+			meanvector[1] = from_pos[1] + 0.5*from_anglevector[1] - to_pos[1] + 0.5*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  -0.5 -0.5*Math.max(0,mvl-3); //was -0.25 -0.3
+			blob_position[2] =  Math.max(-10,-0.5 -0.5*(Math.max(0,mvl-3)) - (meanvector[1]<0)); //was -0.25 -0.3
 			var mv3=mvl*0.05;
-			
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
 			mvl = mvl - mv3;
-			from_anglevector = [from_anglevector[0]*mvl,from_anglevector[1]*mvl,from_anglevector[2] + blob_position[2] * 0.5];
-			to_anglevector = [to_anglevector[0]*mvl,to_anglevector[1]*mvl,to_anglevector[2] - blob_position[2] * 0.5];
-
+			var yclip = Math.abs(0.4 * (from_pos[1]-to_pos[1]));
+			from_anglevector = [from_anglevector[0]*(0.2+mvl*0.02),from_anglevector[1]*(1.3+mvl*0.5+(meanvector[1]<0)),from_anglevector[2]];// + Math.max(-0.5,blob_position[2] * 0.01)];
+			to_anglevector = [to_anglevector[0]*(0.2+mvl*0.02),to_anglevector[1]*(1.3+mvl*0.5+(meanvector[1]<0)),to_anglevector[2]];// - Math.max(-0.5,blob_position[2]*0.01)];
+			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
+			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
 			meanvector[0] = (1-blob_position[2]) * meanvector[0] * -0.33/mvl;
 			meanvector[1] = (1-blob_position[2]) * meanvector[1] * -0.33/mvl;				
 			//if(connection_number == wires_potential_connection) post("\nstarting",from_pos,"to",to_pos,"conx",fconx,tconx,"from_list",from_list);
 			if((to_multi>0) || (from_multi>0)){
 				var i;
-				var minz=99999;
 				var mtot=0;
 				var fp = from_pos[0];
 				var tp = to_pos[0];
@@ -1510,8 +1541,8 @@ function draw_wire(connection_number){
 					mtot+=i;
 				}
 				
-				minz = 0.5*mtot/(from_list.length+to_list.length);
-				blob_position[0] += minz;
+				//var minz = 0.5*mtot/(from_list.length+to_list.length);
+				//blob_position[0] += minz;
 
 				if((from_multi>0)&&(to_multi>0)){ 
 					for(i=0;i<from_list.length;i++){
@@ -1573,6 +1604,9 @@ function draw_wire(connection_number){
 					}else{
 						from_pos[0] += 0.55 + 0.4 * fconx;
 					}
+					blob_position[0] = ((from_pos[0] + to_pos[0])*0.5);
+					blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
+
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
 						bez_prep[1][t] = from_pos[t]+from_anglevector[t];
