@@ -3352,6 +3352,19 @@ function draw_sidebar(){
 												}
 											}
 										}
+										if(params[curp].contains("force_label")){
+											if(maxnamelabely<0){
+												maxnamelabely = y1+fontheight*(h_s-0.6);
+												lcd_main.message("moveto",x1+4,maxnamelabely);
+												maxnamelabely=-9999;
+												h_s-=0.4;
+											}else{
+												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
+											}
+											h_s-=0.6;
+											lcd_main.message("frgb",colour);
+											lcd_main.message("write",params[curp].get("name"));
+										}
 									}else{
 										namearr = params[curp].get("name");
 										namearr = namearr.split("_");
