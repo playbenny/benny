@@ -1088,9 +1088,12 @@ function block_and_wire_colours(){ //for selection and mute etc
 				if(wires_colours[i].length>=wires[i].length){
 					for(segment=0;segment<wires[i].length;segment++){
 						tmc=0.3;
-						if(cmute) tmc -= 0.15 + 0.1435*(segment*0.5==Math.floor(segment*0.5)); // stripey wires if muted
 						tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
-						wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
+						if(cmute){
+							wires[i][segment].color = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
+						}else{
+							wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
+						}
 						wires[i][segment].enable = 1;
 					}		
 				}
@@ -1767,15 +1770,18 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 	wires[connection_number][segment].scale = [seglength*0.52, wire_dia,1];
 	wires[connection_number][segment].rotatexyz = [0, rotY, rotZ];
 	var tmc=0.4;
-	if(cmute) tmc -= 0.35*(segment*0.5==Math.floor(segment*0.5)); // stripey wires if muted
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
 //	post("\nsetting W_C",connection_number,segment);
 //	post("col",col);
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
 	zs = 1 / (1 + zs);
 	tmc *= zs;
+	if(cmute){
+		wires[connection_number][segment].color = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
+	}else{
+		wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
+	}
 	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]];
-	wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
 	wires[connection_number][segment].enable = visible;
 }
 

@@ -693,6 +693,8 @@ function load_config_colours(){
 	backgroundcolour_waves = config.get("palette::background_waves");
 	backgroundcolour_sidebar = config.get("palette::background_sidebar");
 	redraw_flag.flag |= 4;
+	var c = config.get("palette::muted");
+	MUTEDWIRE = [c[0]/128,c[1]/128,c[2]/128,1];
 }
 
 function process_userconfig(){
