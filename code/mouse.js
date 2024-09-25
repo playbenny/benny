@@ -414,7 +414,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.clicked3d = -1;
 					}else if(menu.mode == 1){ //post("SWAP MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
-							set_display_mode("blocks");
+							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								swap_block(usermouse.ids[1]);
@@ -423,7 +423,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}else if(menu.mode == 2){ //post("insert MENU",usermouse.clicked3d,usermouse.ids);
 						if(usermouse.ids[0]=="block_menu_background"){
-							set_display_mode("blocks");
+							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								var f_no= connections.get("connections["+menu.connection_number+"]::from::number");

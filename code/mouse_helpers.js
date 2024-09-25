@@ -1399,6 +1399,10 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			if(pv.length) states.replace("states::"+parameter+"::"+block,pv);
 			blocks.replace("blocks["+block+"]::panel::enable",1);
 			var vl = voicemap.get(block);
+			if(vl==null){
+				post("\nblock has no voices? failed to add to state");
+				return -1;
+			}
 			for(var i=0;i<vl.length;i++){
 				//var voiceoffset = vl[i] + MAX_NOTE_VOICES*(type == "audio") + (MAX_NOTE_VOICES+MAX_AUDIO_VOICES)*(type == "hardware");
 				var psm = parameter_static_mod.peek(1,MAX_PARAMETERS*vl[i],params.length);
