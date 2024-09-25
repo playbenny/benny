@@ -80,7 +80,7 @@
 			{
 				"name" : "per-note random_range (ms)",
 				"type" : "float",
-				"values" : ["uni",0,50,"lin"],
+				"values" : ["uni",0,250,"lin"],
 				"default" : 0,
 				"error_scale" : 0
 			},
@@ -94,7 +94,7 @@
 			{
 				"name" : "note offs additional_random range (ms)",
 				"type" : "float",
-				"values" : ["uni",0,50,"lin"],
+				"values" : ["uni",0,250,"lin"],
 				"default" : 0,
 				"error_scale" : 0
 			}

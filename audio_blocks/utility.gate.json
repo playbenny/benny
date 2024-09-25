@@ -46,7 +46,7 @@
 				"default" : 0.1
 			},
 			{
-				"name" : "stereo_link",
+				"name" : "stereo link",
 				"type" : "menu_b",
 				"force_label" : 1,
 				"values" : ["off","on"],

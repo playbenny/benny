@@ -6,6 +6,7 @@
 - WIRES_REDUCE key in userconfig simplifies wire drawing for connections to/from all voices
 - distance-fog effect on further wires, cleans up display
 - mechanism to take a load off max scheduler by only enabling midi outputs if they're connected (currently only used on utility.env.asr's EOA/EOR outs)
+- when connecting a paramater (1d) output to a midi input labelled as 'notes' or 'notes in' or 'pitch' benny automatically sets the conversion settings to turn the values into different notes (as opposed to different velocities, the default)
 20/09/24:
 - random per-note delay options added to the midi delay block, useful for making the notes of a chord not all arrive simultaneously
 - audio rate smoothing block added (useful after an env used as an envelope follower)
