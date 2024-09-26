@@ -1,0 +1,19 @@
+{
+	" utility.basic.file.player" : {
+		"patcher" : "utility.basic.file.player",
+		"type" : "audio",
+		"block_ui_patcher" : "self",
+		"help_text" : "lets you open a file and play it. autostarts on record. handy for rendering a stem through a benny fx chain, for example.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		}
+	}
+}
