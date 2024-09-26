@@ -1,0 +1,52 @@
+{
+	"utility.fidget" : {
+		"patcher" : "utility.fidget",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "ADHD for a controller. refuses to sit on one value for too long, once it gets bored takes a brownian hop to a nearby value. for example, put it between a midi controller and the parameter you want to control.",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "vel to value", "force fidget", "force return" ]
+			},
+			"out" : {
+				"parameters" : [ "value" ]
+			}
+		}
+		,
+		"groups" : [ 			{
+				"contains" : [ 0, 1, 2, 3 ]
+			}
+		]
+		,
+		"parameters" : [ 			{
+				"name" : "value",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			},
+			{
+				"name" : "wait time_(average, ms)",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0.2,
+				"values" : [ "uni", 0, 10000, "lin" ]
+			},
+			{
+				"name" : "wait time_(variance)",
+				"default" : 0,
+				"type" : "float",
+				"wrap" : 0.5,
+				"values" : [ "uni", 0, 1, "lin" ]
+			},
+			{
+				"name" : "max hop",
+				"default" : 0.05,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+		]
+	}
+}
