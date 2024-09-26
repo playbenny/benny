@@ -3,7 +3,7 @@
 		"patcher" : "utility.basic.file.player",
 		"type" : "audio",
 		"block_ui_patcher" : "self",
-		"help_text" : "lets you open a file and play it. autostarts on record. handy for rendering a stem through a benny fx chain, for example.",
+		"help_text" : "lets you open a file and play it. autostarts on record. handy for rendering a stem through a benny fx chain, for example.££for playing waves with more control try wave scan (lets you skip eg stem recordings maintaining phase with the loop in the recording) or the sample player or sample tracker blocks.££you can drag and drop waves onto the benny logo on the launcher and they'll be loaded into the waves page for you.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
