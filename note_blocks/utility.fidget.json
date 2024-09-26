@@ -31,7 +31,7 @@
 				"default" : 0,
 				"type" : "float",
 				"wrap" : 0.2,
-				"values" : [ "uni", 0, 10000, "lin" ]
+				"values" : [ "uni", 100, 10000, "lin" ]
 			},
 			{
 				"name" : "wait time_(variance)",
