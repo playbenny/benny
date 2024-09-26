@@ -1165,6 +1165,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
 		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
+		if(blocks.contains("blocks["+block_index+"]::record_arm")){
+			record_arm[block_index] = blocks.get("blocks["+block_index+"]::record_arm");
+			if(record_arm[block_index]==1) set_block_record_arm(block_index,1);
+		}
+
 	}else if(type=="hardware"){
 		var split=0;//=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 		var ts, tii;
@@ -1582,6 +1587,7 @@ function clear_everything(){
 	if(EXTERNAL_MATRIX_PRESENT) messnamed("drivers_poly", "setvalue",1,"clear");
 	note_poly.setvalue(0,"muteouts",1);
 	audio_poly.setvalue(0,"muteouts",1);
+	audio_poly.setvalue(0,"filename","off");
 
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
@@ -1595,6 +1601,7 @@ function clear_everything(){
 		ui_patcherlist[i]='blank.ui';
 		selected.block[i]=0;
 		selected.wire[i]=0;
+		record_arm[i]=0;
 	}
 	selected.anysel = 0;
 	still_checking_polys = 0;//7;

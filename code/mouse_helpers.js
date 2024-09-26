@@ -1857,6 +1857,13 @@ function set_block_record_arm(block,x){
 		}else{
 			record_arm[block] = 1 - record_arm[block];
 		}
+		if(record_arm[block]==0){
+			if(blocks.contains("blocks["+block+"]::record_arm")){
+				blocks.remove("blocks["+block+"]::record_arm");
+			}
+		}else{
+			blocks.replace("blocks["+block+"]::record_arm", 1);
+		}
 		redraw_flag.flag |= 10;
 		send_record_arm_messages(block);
 	}
@@ -1877,7 +1884,7 @@ function send_record_arm_messages(block){
 		}else{
 			path = path +songlist[0][currentsong];
 		}
-		path = path + "-" + (da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
+		path = path + "-" + blocks.get("blocks["+block+"]::label") + "-" +(da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
 		//post("\npath is ",path);
 		if(record_arm[block]){
 			audio_poly.setvalue(vl[i]+1-64,"filename",path);
