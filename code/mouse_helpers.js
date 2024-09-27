@@ -3242,7 +3242,9 @@ function conn_assign_controller_moved(type,number){
 		post("\nyou pressed controller button number",number);
 	}
 	i = selected.wire.indexOf(1);
-	conn_set_from_output(i, [type, number]);
+	if(i>-1){
+		conn_set_from_output(i, [type, number]);
+	}
 }
 
 function conn_toggle_control_auto_assign(){
