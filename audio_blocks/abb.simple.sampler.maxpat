@@ -29,8 +29,8 @@
 		"toolbars_unpinned_last_save" : 0,
 		"tallnewobj" : 0,
 		"boxanimatetime" : 200,
-		"enablehscroll" : 0,
-		"enablevscroll" : 0,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
 		"devicewidth" : 755.0,
 		"description" : "",
 		"digest" : "",
@@ -57,7 +57,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 853.0, 479.0, 62.0, 22.0 ],
+					"patching_rect" : [ 848.0, 466.0, 62.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -142,7 +142,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 853.0, 511.0, 125.0, 36.0 ],
+					"patching_rect" : [ 853.0, 504.878060817718506, 125.0, 36.0 ],
 					"text" : "\"C:/Users/Luke/Abb Simple Samples/\""
 				}
 
@@ -153,7 +153,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-56",
-					"items" : [ "Drum hits", ",", "Note Samples in C" ],
+					"items" : [ "Drum hits", ",", "Long Wavs", ",", "Note Samples in C" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -426,7 +426,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-86",
-					"items" : [ "M1 (1).wav", ",", "M1 (10).wav", ",", "M1 (11).wav", ",", "M1 (12).wav", ",", "M1 (13).wav", ",", "M1 (14).wav", ",", "M1 (2).wav", ",", "M1 (3).wav", ",", "M1 (4).wav", ",", "M1 (5).wav", ",", "M1 (6).wav", ",", "M1 (7).wav", ",", "M1 (8).wav", ",", "M1 (9).wav" ],
+					"items" : [ "Arp Oddy (1).wav", ",", "Arp Oddy (10).wav", ",", "Arp Oddy (11).wav", ",", "Arp Oddy (12).wav", ",", "Arp Oddy (13).wav", ",", "Arp Oddy (2).wav", ",", "Arp Oddy (3).wav", ",", "Arp Oddy (4).wav", ",", "Arp Oddy (5).wav", ",", "Arp Oddy (6).wav", ",", "Arp Oddy (7).wav", ",", "Arp Oddy (8).wav", ",", "Arp Oddy (9).wav" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -597,7 +597,7 @@
 					"patching_rect" : [ 521.0, 457.0, 212.0, 29.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 4.6875, 1.5625, 724.3125, 19.0 ],
-					"text" : "\"C:/Users/Luke/Abb Simple Samples/Note Samples in C/M1/M1 (6).wav\""
+					"text" : "\"C:/Users/Luke/Abb Simple Samples/Note Samples in C/Arp Oddy/Arp Oddy (1).wav\""
 				}
 
 			}
@@ -2210,7 +2210,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 338.125, 564.0625, 99.0, 22.0 ],
-					"text" : "set sample-5"
+					"text" : "set sample-13"
 				}
 
 			}
@@ -4943,7 +4943,7 @@
 , 			{
 				"box" : 				{
 					"bgcolor" : [ 0.301961, 0.301961, 0.301961, 0.0 ],
-					"buffername" : "sample-5",
+					"buffername" : "sample-13",
 					"gridcolor" : [ 0.301961, 0.301961, 0.301961, 0.0 ],
 					"id" : "obj-151",
 					"ignoreclick" : 1,

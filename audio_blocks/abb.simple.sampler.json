@@ -6,6 +6,8 @@
 		"help_text" : "sample player with ADSR env and Drive",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"choose_mode" : "cycle free",
+		"steal_mode" : "oldest",
 		"connections" : {
 			"in" : { 
 				"midi"	: ["midi in"]
