@@ -1,8 +1,10 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+26/09/24:
+- utility.fidget block - adhd for parameter values
 23/09/24:
-- seq values supports patterns
+- seq.values supports patterns
 - WIRES_REDUCE key in userconfig simplifies wire drawing for connections to/from all voices
 - distance-fog effect on further wires, cleans up display
 - mechanism to take a load off max scheduler by only enabling midi outputs if they're connected (currently only used on utility.env.asr's EOA/EOR outs)
