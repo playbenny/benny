@@ -47,9 +47,9 @@
 			},
 			{
 				"name" : "stereo link",
-				"type" : "menu_b",
+				"type" : "menu_l",
 				"force_label" : 1,
-				"values" : ["off","on"],
+				"values" : ["off","on","right is_sidechain"],
 				"wrap" : 1,
 				"default" : 0.1
 
