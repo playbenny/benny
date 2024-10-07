@@ -1342,6 +1342,11 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 	return y_offset;
 }
 
+function midi_indicator(number){
+	if(midi_indicators.status[number]==0) midi_indicators.flag = 1;
+	midi_indicators.status[number] = 1;
+}
+
 function draw_clock(){
 	lcd_main.message("paintrect", mainwindow_width-9-fontheight*2.1,9,mainwindow_width,9+fontheight,0,0,0);
 	setfontsize(fontheight*0.8);

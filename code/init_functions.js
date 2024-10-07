@@ -573,6 +573,7 @@ function import_hardware(v){
 
 	post("\nbuilding new audio graph");
 	messnamed("click_enabled",click_enabled);
+	prep_midi_indicators();
 	audioiolists = get_hw_meter_positions();
 	var old_dac = this.patcher.getnamed("audio_outputs");
 	var old_adc = this.patcher.getnamed("audio_inputs");
@@ -1092,4 +1093,48 @@ function songs_audit_process(hunting,replacing,replace_con_type_with){
 function soundcard_matrix_connection_fail(){
 	post("\n\n\n\nSoundcard matrix mixer disabled for this session. Restart benny once you've fixed the problem.");
 	SOUNDCARD_HAS_MATRIX = 0;
+}
+
+function prep_midi_indicators(){
+	var oor = this.patcher.firstobject;
+	while(oor !== null){
+		var n = oor.varname;
+		var ooor = oor.nextobject;
+		if(n.indexOf("midi_indicator_")!=-1){
+			this.patcher.remove(oor);
+		}
+		oor = ooor;
+	}
+	midi_indicators.list = [];
+	var tl = []
+	if(io_dict.contains("keyboards")) tl = io_dict.get("keyboards");
+	if(io_dict.contains("controllers")){
+		var cd = io_dict.get("controllers");
+		var ck = cd.getkeys();
+		if(!Array.isArray(ck)) ck = [ck];
+		for(var i=0;i<ck.length;i++){
+			tl.push(ck[i]);
+		}
+	}
+	var al = io_dict.get("midi_available");
+	if(!Array.isArray(al)) al = [al];
+	for(var i =0;i<tl.length;i++){
+		for(var t =0;t<al.length;t++){
+			if(al[t]==tl[i]){
+				midi_indicators.list.push(tl[i]);
+				t = 9999;
+			}
+		}
+	}
+	for(var i = 0;i<midi_indicators.list.length;i++){
+		var m_in = this.patcher.newdefault(950+i*50,620, "midiin", midi_indicators.list[i]);
+		m_in.message("sendbox","varname","midi_indicator_in_"+i);
+		var m_lim = this.patcher.newdefault(950+i*50,650, "speedlim", 33,"@defer",1);
+		m_lim.message("sendbox","varname","midi_indicator_lim_"+i);
+		var m_m = this.patcher.newdefault(950+i*50,680, "message","@varname","midi_indicator_m_"+i);
+		m_m.set(";","to_blockmanager", "midi_indicator",i);
+		this.patcher.connect(m_in,0,m_lim,0);
+		this.patcher.connect(m_lim,0,m_m,0);
+		midi_indicators.status[i]=0;
+	}
 }

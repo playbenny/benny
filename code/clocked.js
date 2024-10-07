@@ -341,6 +341,32 @@ function hardware_meters(){
 	}
 }
 
+function draw_midi_indicators(){
+	var l = midi_indicators.list.length;
+	var yi = (fontheight-2) / Math.max(1, l - 1);
+	var y = 9;
+	midi_indicators.flag = 0;
+	for(var i = 0; i<l; i++){
+		if(midi_indicators.status[i]>0){
+			if(midi_indicators.status[i]==1){
+				lcd_main.message("frgb", menucolour);
+				lcd_main.message("moveto", sidebar.meters.startx, y);
+				lcd_main.message("lineto", sidebar.meters.startx, y+1);
+				if(sidebar.mode == "midi_indicators") redraw_flag.deferred |= 2;
+			}
+			midi_indicators.status[i] -= 0.3;
+			midi_indicators.flag = 1;
+		}else{	
+			lcd_main.message("frgb",menudarkest);
+			lcd_main.message("moveto", sidebar.meters.startx, y);
+			lcd_main.message("lineto", sidebar.meters.startx, y+1);
+			midi_indicators.status[i] = 0;
+			if(sidebar.mode == "midi_indicators") redraw_flag.deferred |= 2;
+		}
+		y += yi;
+	}
+}
+
 function midi_meters(){
 	var minsize = Math.max(1,1+0.1*(camera_position[2]-5));
 	minsize *= minsize;
@@ -393,6 +419,8 @@ function move_flock_blocks(){
 	}	
 }
 
+
+
 function sidebar_meters(){
 	var i, ii, peakflag =0,mmin,mmax;
 	var peaklist = [];
@@ -430,7 +458,7 @@ function sidebar_meters(){
 			lcd_main.message("lineto",peaklist[i][0],peaklist[i][2]);
 		}
 	}
-
+	if(midi_indicators.flag>0) draw_midi_indicators();
 	if(sidebar.scopes.voice>-1) sidebar_scopes();
 	if((sidebar.scopes.midi>-1)||(sidebar.scopes.midi_routing.number>-1)) sidebar_midi_scope();
 }

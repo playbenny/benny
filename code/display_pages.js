@@ -120,6 +120,7 @@ function redraw(){
 
 function get_hw_meter_positions(){
 	var x=0;
+	if(midi_indicators.list.length>0) x = 1;
 	var inlist = []; var outlist = [];
 	meter_positions = [];
 	var positions = []; //hw input meter positions
@@ -146,6 +147,7 @@ function get_hw_meter_positions(){
 			x++;
 		} 
 	}
+	sidebar.meters.endx = sidebar.meters.startx + x * sidebar.meters.spread;
 	meter_positions[1] = [menucolour,menudarkest,positions];
 	return [inlist,outlist];
 }
@@ -1871,7 +1873,7 @@ function draw_topbar(){
 	var x_o=0, i;
 	
 	click_zone(show_cpu_meter, null, null, 0,0,9,fontheight+9, mouse_index, 1);
-
+	
 	//play
 	if(usermouse.clicked2d == mouse_index){
 		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menucolour);
@@ -1893,7 +1895,8 @@ function draw_topbar(){
 		mouse_click_parameters[mouse_index] = "";
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
-	
+		
+		click_zone(hw_meter_click, 0, "midi", 10+fontheight,0,10+fontheight+sidebar.meters.spread,fontheight+9, mouse_index, 1);
 		for(i=0;i<meter_positions[0][2].length;i++){
 			click_rectangle( meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
 			//post("\nmeter click_rectangle",meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
@@ -1913,9 +1916,10 @@ function draw_topbar(){
 	}else{
 		mouse_index += meter_positions[0][2].length + 1 + meter_positions[1][2].length;
 	}
+	draw_midi_indicators();
 	draw_cpu_meter();
 
-	x_o = 1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;
+	x_o = (sidebar.meters.endx-9) / fontheight; //1.3 + 4*(MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS)/fontheight;
 
 	if(recording_flag==3){
 		lcd_main.message("paintoval", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1), 9+fontheight,255,58,50 );
@@ -6323,6 +6327,30 @@ function draw_sidebar(){
 			sidebar.scopes.voicelist = [sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS];
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS,"vis_scope",1);
 			messnamed("scope_size",(sidebar.scopes.width)/2);
+		}else if(sidebar.mode == "midi_indicators"){
+			sidebar.scroll.position = 0;
+			if(sidebar.mode != sidebar.lastmode){
+				clear_sidebar_paramslider_details();
+				sidebar.lastmode = sidebar.mode;
+			}
+	
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
+			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+			lcd_main.message("frgb", menucolour);
+			setfontsize(fontsmall*2);
+			lcd_main.message("write", "midi input indicators");
+			y_offset += fontheight*1.1;
+			
+			for(var i=0;i<midi_indicators.list.length;i++){
+				if(midi_indicators.status[i]>0){
+					lcd_main.message("frgb",menucolour);
+				}else{
+					lcd_main.message("frgb",menudarkest);
+				}
+				y_offset += fontheight*1.1;
+				lcd_main.message("moveto",sidebar.x+fontheight*0.2,y_offset);
+				lcd_main.message("write",midi_indicators.list[i]);
+			}	
 		}else{
 			sidebar.mode = "none";
 			//center_view(1);
