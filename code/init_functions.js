@@ -589,9 +589,30 @@ function import_hardware(v){
 	this.patcher.connect(new_adc,0,ipcombine,1);
 	this.patcher.connect(openbut,0,new_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
+	if(config.get("ENABLE_RECORD_HARDWARE")==1){
+		//if hw rec enabled, look for the temp objects created to do that last run
+		var orecr = this.patcher.getnamed("recr");
+		if(orecr==null){
+		}else{
+			post("\nremoving old record objects");
+			this.patcher.remove(orecr);
+			var oor = this.patcher.firstobject;
+			while(oor !== null){
+				var n = oor.varname;
+				var ooor = oor.nextobject;
+				if(n.indexOf("hw_rec_")!=-1){
+					this.patcher.remove(oor);
+				}
+				oor = ooor;
+			}
+		}
+	}
 	keys = blocktypes.getkeys();
+	var reccount=0;
+	var recr;
 	for(i=0;i<keys.length;i++){
 		if(keys[i].split(".")[0] == "hardware"){
+			var reclist=[];
 			if(blocktypes.contains(keys[i]+"::connections::in::hardware_channels")){
 				var ch = blocktypes.get(keys[i]+"::connections::in::hardware_channels");
 				if(!Array.isArray(ch)) ch=[ch];
@@ -604,11 +625,28 @@ function import_hardware(v){
 				var ch = blocktypes.get(keys[i]+"::connections::out::hardware_channels");
 				if(!Array.isArray(ch)) ch=[ch];
 				for(var ci=0;ci<ch.length;ci++){
+					reclist.push(ch[ci]);
 					//post("\nwas",ch[ci]);
 					ch[ci] = audioiolists[0].indexOf(ch[ci])+1;
 					//post(" is ",ch[ci]);
 				}
 				blocktypes.replace(keys[i]+"::connections::out::hardware_channels",ch);
+			}
+			if((config.get("ENABLE_RECORD_HARDWARE")==1)&& (reclist.length>0)){
+				if(reccount==0){
+					recr =  this.patcher.newdefault(930,440, "r", "record");
+					recr.message("sendbox", "varname" , "recr");
+				}
+				var recadc = this.patcher.newdefault(950+reccount,520, "mc.adc~", reclist);
+				recadc.message("sendbox", "varname", "hw_rec_adc_"+keys[i]);
+				var recsf = this.patcher.newdefault(950+reccount,580, "mc.sfrecord~", reclist.length, "@dither", 0, "@bitdepth", 32);
+				recsf.message("sendbox", "varname", "hw_rec_"+keys[i]);
+				this.patcher.connect(recadc, 0, recsf, 0);
+				var recgate =  this.patcher.newdefault(950+reccount,550, "gate");
+				recgate.message("sendbox", "varname", "hw_rec_gate_"+keys[i]);
+				this.patcher.connect(recgate, 0, recsf, 0);
+				this.patcher.connect(recr, 0, recgate, 1);
+				reccount+=40;
 			}
 		}
 	} //this section ^^ eg ifyou have eg 2xES6 with an adat soundcard you'll have in channels 1 2 3 4 5 6 9 10 11 12 13 14. 
