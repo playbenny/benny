@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 40.0, 82.0, 1061.0, 595.0 ],
+		"rect" : [ 40.0, 82.0, 643.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -332,7 +332,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 612.0, 412.0, 32.0, 22.0 ],
+					"patching_rect" : [ 530.5, 452.0, 32.0, 22.0 ],
 					"text" : "print"
 				}
 
@@ -346,7 +346,7 @@
 					"outlettype" : [ "signal", "signal", "" ],
 					"patching_rect" : [ 457.0, 383.0, 92.5, 22.0 ],
 					"saved_object_attributes" : 					{
-						"engine" : 4
+						"engine" : 15
 					}
 ,
 					"text" : "vb.mi.plts~"
@@ -835,7 +835,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 536.0, 452.0, 42.0, 22.0 ],
+					"patching_rect" : [ 493.75, 423.0, 42.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"attr_comment" : ""
 					}
