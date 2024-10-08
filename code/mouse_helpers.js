@@ -1847,6 +1847,10 @@ function set_record_arm(block,x){
 	set_block_record_arm(block,x);
 }
 
+function new_block_via_button(block){
+	new_block(block, blocks_page.rightmost+1, blocks_page.highest);
+}
+
 function set_block_record_arm(block,x){
 	var tt = blocks.get("blocks["+block+"]::type");
 	if(((config.get("ENABLE_RECORD_HARDWARE")==1) && (tt=="hardware"))){

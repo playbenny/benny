@@ -6214,7 +6214,7 @@ function draw_sidebar(){
 			lcd_main.message("write", "input",sidebar.scopes.voice+1);
 			
 			y_offset += fontheight*1.1;
-			
+						
 			//need to get the name of this input, and the block it's on.
 			var bk = blocktypes.getkeys();
 			var t;
@@ -6235,37 +6235,48 @@ function draw_sidebar(){
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
 							setfontsize(fontsmall*1.5);
-							lcd_main.message("write", bk[b],cnam);							
+							lcd_main.message("write", bk[b],cnam);
+
+							sidebar.scopes.starty = y_offset + fontheight*1.1;
+							sidebar.scopes.endy = y_offset+5*fontheight;
+							sidebar.scopes.bg = menudarkest;
+							sidebar.scopes.fg = menucolour;
+							sidebar.scopes.width = (sidebar.width + fo1);		
+							lcd_main.message("paintrect", sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+							click_zone(scope_zoom,null,null, sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);				
+
+							y_offset = sidebar.scopes.endy+fo1;						
 							for(var bb=0;bb<MAX_BLOCKS;bb++){
 								if(blocks.contains("blocks["+bb+"]::name")&&(blocks.get("blocks["+bb+"]::name")==bk[b])){
-									//post("\nthe link is to block",bb,bk[b]);
+									var blockcol = blocks.get("blocks["+bb+"]::space::colour");
+									lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,blockcol );
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+									lcd_main.message("frgb", 255,255,255);
+									lcd_main.message("write", "click to jump to the "+bk[b]+" block");
 									click_zone(select_block,bb,bb, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
 									bb=999999999;
 								}
 							}
-							y_offset += fontheight*1.1;
+							if(bb<=MAX_BLOCKS){
+								//it's not here, button to add it?
+								var blockcol = blocktypes.get(bk[b]+"::colour");
+								lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,blockcol );
+								lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+								lcd_main.message("frgb", 255,255,255);
+								lcd_main.message("write", "click to add a "+bk[b]+" block");
+								click_zone(new_block_via_button,bk[b],null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+							}
 							b=99999;ti=999999;
 						}
 					}
 				}
 			}
-			
-			sidebar.scopes.starty = y_offset;
-			sidebar.scopes.endy = y_offset+4*fontheight;
-			sidebar.scopes.bg = menudarkest;
-			sidebar.scopes.fg = menucolour;
-			sidebar.scopes.width = (sidebar.width + fo1);
-			
-			lcd_main.message("paintrect", sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
-			
-			click_zone(scope_zoom,null,null, sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
-			
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
 			sidebar.scopes.midi = -1;
 			audio_to_data_poly.setvalue(1+sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK,"vis_scope",1);
 			sidebar.scopes.voicelist = [sidebar.scopes.voice+MAX_AUDIO_VOICES*NO_IO_PER_BLOCK];			
 			messnamed("scope_size",(sidebar.scopes.width)/2);
-			
+			y_offset += fontheight*1.1;
 		}else if(sidebar.mode == "output_scope"){
 			sidebar.scroll.position = 0;
 			if(sidebar.mode != sidebar.lastmode){
@@ -6300,28 +6311,43 @@ function draw_sidebar(){
 							lcd_main.message("frgb", menucolour);
 							setfontsize(fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
+							y_offset += fontheight*1.1;
+							sidebar.scopes.starty = y_offset;
+							sidebar.scopes.endy = y_offset+4*fontheight;
+							sidebar.scopes.bg = menudarkest;
+							sidebar.scopes.fg = menucolour;
+							sidebar.scopes.width = (sidebar.width + fo1);
+							lcd_main.message("paintrect", sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+							click_zone(scope_zoom,null,null, sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+							y_offset = sidebar.scopes.endy + fo1;
 							for(var bb=0;bb<MAX_BLOCKS;bb++){
 								if(blocks.contains("blocks["+bb+"]::name")&&(blocks.get("blocks["+bb+"]::name")==bk[b])){
 									//post("\nthe link is to block",bb,bk[b]);
+									var blockcol = blocks.get("blocks["+bb+"]::space::colour");
+									lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,blockcol );
+									lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+									lcd_main.message("frgb", 255,255,255);
+									lcd_main.message("write", "click to jump to the "+bk[b]+" block");
 									click_zone(select_block,bb,bb, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
 									bb=999999999;
 								}
 							}
-							y_offset += fontheight*1.1;
+							if(bb<=MAX_BLOCKS){
+								//it's not here, button to add it?
+								var blockcol = blocktypes.get(bk[b]+"::colour");
+								lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,blockcol );
+								lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+								lcd_main.message("frgb", 255,255,255);
+								lcd_main.message("write", "click to add a "+bk[b]+" block");
+								click_zone(new_block_via_button,bk[b],null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+							}
 							b= 9999999; ti=999999;
 						}
 					}
 				}
 			}
+			y_offset += fontheight*1.1;
 
-			sidebar.scopes.starty = y_offset;
-			sidebar.scopes.endy = y_offset+4*fontheight;
-			sidebar.scopes.bg = menudarkest;
-			sidebar.scopes.fg = menucolour;
-			sidebar.scopes.width = (sidebar.width + fo1);
-
-			lcd_main.message("paintrect", sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
-			click_zone(scope_zoom,null,null, sidebar.x,sidebar.scopes.starty,sidebar.x+sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
 						
 			audio_to_data_poly.setvalue(0,"vis_scope", 0);
 			sidebar.scopes.midi = -1;
