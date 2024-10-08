@@ -25,6 +25,9 @@
 			},
 			{
 				"contains": [8,9,10,11]
+			},
+			{
+				"contains": [12,13,14]
 			}
 		],
 		"panel" : {
@@ -53,9 +56,9 @@
 				"default" : 0.25
             },
             {
-				"name" : "free time",
+				"name" : "free clock",
 				"type" : "float",
-			    "values":["uni", -1, 1, "lin"],
+			    "values":["bi", -1, 1, "lin"],
 			    "wrap":0,
 		    	"default": 0.5
 			},
@@ -90,14 +93,14 @@
             {
 				"name" : "swing",
 				"type" : "float",
-			    "values":["uni", -1, 1, "lin"],
+			    "values":["bi", -1, 1, "lin"],
 			    "wrap":0,
 		    	"default": 0.5
 			},
 			{
 				"name" : "nudge",
 				"type" : "float",
-			    "values":["uni", -1, 1, "lin"],
+			    "values":["bi", -1, 1, "lin"],
 			    "wrap":0,
 		    	"default": 0.5
 			},
@@ -114,6 +117,27 @@
 			    "values":["uni", 0, 1, "lin"],
 			    "wrap":0,
 		    	"default": 1
+			},
+            {
+				"name" : "density",
+                "type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+            {
+				"name" : "phase",
+                "type"	: "int",
+				"values" : ["uni", 0, 7, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "bunch",
+				"type" : "float",
+			    "values":["uni", 0, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0
 			}
 		]
 	}
