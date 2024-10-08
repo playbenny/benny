@@ -44,7 +44,7 @@
 			}
 		],
 		"panel" : {
-			"parameters" : [1, 2,3]
+			"parameters" : [1, 2, 3]
 		},
 		"parameters" : [
 			{
@@ -76,11 +76,11 @@
 				"default" : 0
 			},
 			{
-				"name" : "fm attenunverter",
+				"name" : "fm attenuator",
 				"type" : "float",
-				"values" : ["bi", 0, 1, "lin"],
+				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.3
+				"default" : 0
 			},
 			{
 				"name" : "timbre attenuverter",
