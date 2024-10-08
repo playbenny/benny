@@ -1,0 +1,8 @@
+{
+    "utility.buttons" : "midi.utility.buttons",
+    "utility.values" : "midi.utility.values",
+    "utility.midi.calculus" : "midi.calculus",
+    "utility.midi.fidget" : "midi.fidget",
+    "utility.midi.delay" : "midi.utility.delay",
+    "utility.midi.smooth" : "midi.smooth"
+}

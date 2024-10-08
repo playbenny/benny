@@ -635,7 +635,12 @@ function import_song(){
 				var oname = block_name;
 				if(loading.wait>1) post("\nloading block "+b+" : "+block_name);
 				if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
-					if(thisblock.contains("substitute")){
+					if(aliases.contains(block_name)){
+						block_name = aliases.get(block_name);
+						var ty = blocktypes.get(block_name+"::type");
+						thisblock.replace("name",block_name);
+						thisblock.replace("type",ty);
+					}else if(thisblock.contains("substitute")){
 						//use that then
 						block_name = thisblock.get("substitute");
 						post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
@@ -678,7 +683,7 @@ function import_song(){
 						thisblock.replace("type",ty);
 						swap_block_check_connections(b,oname,oty,block_name,ty);
 					}
-					if(thisblock.contains("panel::parameters")){
+					if((loading.hardware_substitutions_occured)&&(thisblock.contains("panel::parameters"))){
 						post("\nclearing panel parameter selection because of substitution");
 						thisblock.remove("panel::parameters");
 					}
@@ -1335,6 +1340,8 @@ function check_its_safe_to_save_named(){
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
 		messnamed("save_named",loading.songpath+loading.songname);
+		for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
+		read_songs_folder(sidebar.files_page); //update internal songslist
 	}else{
 		post("\nnot ready to save yet, waiting..");
 		savetask.schedule(1000);

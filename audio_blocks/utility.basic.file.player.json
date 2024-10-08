@@ -1,5 +1,5 @@
 {
-	" utility.basic.file.player" : {
+	"utility.basic.file.player" : {
 		"patcher" : "utility.basic.file.player",
 		"type" : "audio",
 		"block_ui_patcher" : "self",

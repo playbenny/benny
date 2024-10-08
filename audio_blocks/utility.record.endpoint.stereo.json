@@ -1,5 +1,5 @@
 {
-	" utility.record.endpoint.stereo" : {
+	"utility.record.endpoint.stereo" : {
 		"patcher" : "utility.record.endpoint.stereo",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",

@@ -1,6 +1,6 @@
 {
-	"utility.midi.smooth" : {
-		"patcher" : "utility.midi.smooth",
+	"midi.smooth" : {
+		"patcher" : "midi.smooth",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Uses a 2 pole low pass filter modulated by a bandpass out of the same filter to smooth values in a way which responds well to fast changes. Algorithm by Andrew Simper of Cytomic from here: https://cytomic.com/files/dsp/DynamicSmoothing.pdf. The 'sensitivity' control governs how much the bandpass modulates the lowpass.",

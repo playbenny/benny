@@ -1,6 +1,6 @@
 {
-	"utility.fidget" : {
-		"patcher" : "utility.fidget",
+	"midi.fidget" : {
+		"patcher" : "midi.fidget",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "ADHD for a controller. refuses to sit on one value for too long, once it gets bored takes a brownian hop to a nearby value. for example, put it between a midi controller and the parameter you want to control.",

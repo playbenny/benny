@@ -147,6 +147,7 @@ function get_hw_meter_positions(){
 			x++;
 		} 
 	}
+	x++;
 	sidebar.meters.endx = sidebar.meters.startx + x * sidebar.meters.spread;
 	meter_positions[1] = [menucolour,menudarkest,positions];
 	return [inlist,outlist];

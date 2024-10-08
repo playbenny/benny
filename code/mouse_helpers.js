@@ -1883,7 +1883,7 @@ function send_record_arm_messages(block){
 	if((loading.songname == "autoload")||(loading.songname=="")){
 		path = path + "untitled";
 	}else{
-		path = path +songlist[0][currentsong];
+		path = path + loading.songname; //songlist[0][currentsong];
 	}
 	path = path + "-" + blocks.get("blocks["+block+"]::label") + "-" +(da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
 	//post("\npath is ",path);
