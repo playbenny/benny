@@ -529,6 +529,9 @@ flock_presets.name = "flock_presets";
 var blocktypes = new Dict;
 blocktypes.name = "blocktypes";
 
+var aliases = new Dict;
+aliases.name = "aliases";
+
 var blocks = new Dict;
 blocks.name = "blocks";
 

@@ -8,8 +8,13 @@ function new_block(block_name,x,y){
 	if(blocktypes.contains(block_name)){
 		details = blocktypes.get(block_name);
 	}else{
-		post("error: "+block_name+" not found in blocktypes dict");
-		return -1;
+		if(aliases.contains(block_name)){
+			post("\nfound in aliases list");
+			block_name = aliases.get(block_name);
+		}else{
+			post("error: "+block_name+" not found in blocktypes dict");
+			return -1;
+		}
 	}
 	var type = details.get("type");
 	var hwmidi = "";

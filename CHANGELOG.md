@@ -3,8 +3,7 @@
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
 
 8/10/24:
-- **breaking change** renamed some blocks for clarity. if this breaks your song file: load the .json in an editor and do a find replace from the old name to the new name
-    utility.buttons -> midi.utility.buttons, utility.values -> midi.utility.values, utility.midi.calculus -> midi.calculus, utility.midi.fidget -> midi.fidget, utility.midi.delay -> midi.utility.delay, utility.midi.smooth -> midi.smooth. sorry for any trouble.
+- renamed some blocks for clarity. introduced aliases list so that this doesn't break anyone's old savefiles.
 - recording from hardware blocks is possible now
 - there is a midi in indicator - a dot for each available input device - to help you check midi inputs are working properly etc. next to the play button.
 26/09/24:

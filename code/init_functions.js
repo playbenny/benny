@@ -52,6 +52,8 @@ function loadbang(){
 	config.import_json(projectpath+"config.json");
 	keymap.parse('{}');
 	keymap.import_json(projectpath+"data/keymap.json");
+	aliases.parse('{}');
+	aliases.import_json(projectpath+"data/aliases.json");
 	if(userconfig.contains("last_hardware_config")){
 		messnamed("set_hw_config",userconfig.get("last_hardware_config"));
 	}
