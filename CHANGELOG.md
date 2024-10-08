@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+8/10/24:
+- recording from hardware blocks is possible now
+- there is a midi in indicator - a dot for each available input device - to help you check midi inputs are working properly etc. next to the play button.
 26/09/24:
 - utility.fidget block - adhd for parameter values
 23/09/24:

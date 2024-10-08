@@ -1849,7 +1849,11 @@ function set_record_arm(block,x){
 
 function set_block_record_arm(block,x){
 	var tt = blocks.get("blocks["+block+"]::type");
-	if((tt=="audio")){//||(tt=="hardware")){
+	if(((config.get("ENABLE_RECORD_HARDWARE")==1) && (tt=="hardware"))){
+		var n = blocks.get("blocks["+block+"]::name");
+		if(blocktypes.contains(n+"::connections::out::hardware")) tt="audio";
+	}
+	if(tt=="audio"){
 		if(x==0){
 			record_arm[block] = 0;
 		}else if(x==1){
@@ -1873,26 +1877,37 @@ function set_block_record_arm(block,x){
 
 function send_record_arm_messages(block){
 	//makes up filenames for all armed blocks, sends them out.
-	var vl = voicemap.get(block);
-	if(!Array.isArray(vl)) vl = [vl];
 	var da = new Date();
-	for(var i =0; i<vl.length;i++){
-		//post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
-		var path = config.get("RECORD_FOLDER");
-		if((loading.songname == "autoload")||(loading.songname=="")){
-			path = path + "untitled";
-		}else{
-			path = path +songlist[0][currentsong];
+	var tt = blocks.get("blocks["+block+"]::type");
+	var path = config.get("RECORD_FOLDER");
+	if((loading.songname == "autoload")||(loading.songname=="")){
+		path = path + "untitled";
+	}else{
+		path = path +songlist[0][currentsong];
+	}
+	path = path + "-" + blocks.get("blocks["+block+"]::label") + "-" +(da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
+	//post("\npath is ",path);
+	if(tt=="audio"){
+		var vl = voicemap.get(block);
+		if(!Array.isArray(vl)) vl = [vl];
+		for(var i =0; i<vl.length;i++){
+			//post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
+			if(record_arm[block]){
+				audio_poly.setvalue(vl[i]+1-64,"filename",path);
+			}else{
+				audio_poly.setvalue(vl[i]+1-64,"filename","off");
+			}
 		}
-		path = path + "-" + blocks.get("blocks["+block+"]::label") + "-" +(da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
-		//post("\npath is ",path);
+	}else if(tt == "hardware"){
+		var gate = this.patcher.getnamed("hw_rec_gate_"+blocks.get("blocks["+block+"]::name"));
+		gate.message("int", record_arm[block]);
 		if(record_arm[block]){
-			audio_poly.setvalue(vl[i]+1-64,"filename",path);
-		}else{
-			audio_poly.setvalue(vl[i]+1-64,"filename","off");
+			var rec = this.patcher.getnamed("hw_rec_"+blocks.get("blocks["+block+"]::name"));
+			rec.message("open","wave",path+".wav");
 		}
 	}
 }
+
 function cycle_block_mode(block,setting){
 	var target = "blocks["+block+"]::";
 	var p;
@@ -2388,6 +2403,9 @@ function hw_meter_click(number,type){
 		set_sidebar_mode("input_scope");
 	}else if(type == "out"){
 		set_sidebar_mode("output_scope");
+	}else if(type == "midi"){
+		set_sidebar_mode("midi_indicators");
+		number = -1;
 	}
 	sidebar.scopes.voice = number;
 }

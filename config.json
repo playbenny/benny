@@ -56,6 +56,7 @@
 	"SELECTED_BLOCK_Z_MOVE" : 1,
 	"SELECTED_BLOCK_DEPENDENTS_Z_MOVE" : 0.5,
 	"METER_TINT" : 0.3,
+	"ENABLE_RECORD_HARDWARE" : 1,
 	"sidebar_scrollbar_width" : 27,
 	"sidebar_width_in_units" : 10,
 	"consolevsts" : {

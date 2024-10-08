@@ -167,6 +167,12 @@ var preload_task2 = new Task(preload_some_wires, this);
 var preload_wires_counter = 0;
 var waves_buffer = [];
 
+var midi_indicators = {
+	list : [],
+	status : [],
+	flag : 0
+}
+
 var draw_wave = [];
 var waves_slices_buffer = new Buffer("waves_slices");
 var waves = {
@@ -426,7 +432,8 @@ var sidebar = {
 	scrollbar_width : 9,
 	meters : {
 		startx : 490,
-		spread : 2
+		spread : 2,
+		endx : 999
 	},
 	scroll : {
 		position : 0,

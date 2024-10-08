@@ -573,6 +573,7 @@ function import_hardware(v){
 
 	post("\nbuilding new audio graph");
 	messnamed("click_enabled",click_enabled);
+	prep_midi_indicators();
 	audioiolists = get_hw_meter_positions();
 	var old_dac = this.patcher.getnamed("audio_outputs");
 	var old_adc = this.patcher.getnamed("audio_inputs");
@@ -589,9 +590,30 @@ function import_hardware(v){
 	this.patcher.connect(new_adc,0,ipcombine,1);
 	this.patcher.connect(openbut,0,new_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
+	if(config.get("ENABLE_RECORD_HARDWARE")==1){
+		//if hw rec enabled, look for the temp objects created to do that last run
+		var orecr = this.patcher.getnamed("recr");
+		if(orecr==null){
+		}else{
+			post("\nremoving old record objects");
+			this.patcher.remove(orecr);
+			var oor = this.patcher.firstobject;
+			while(oor !== null){
+				var n = oor.varname;
+				var ooor = oor.nextobject;
+				if(n.indexOf("hw_rec_")!=-1){
+					this.patcher.remove(oor);
+				}
+				oor = ooor;
+			}
+		}
+	}
 	keys = blocktypes.getkeys();
+	var reccount=0;
+	var recr;
 	for(i=0;i<keys.length;i++){
 		if(keys[i].split(".")[0] == "hardware"){
+			var reclist=[];
 			if(blocktypes.contains(keys[i]+"::connections::in::hardware_channels")){
 				var ch = blocktypes.get(keys[i]+"::connections::in::hardware_channels");
 				if(!Array.isArray(ch)) ch=[ch];
@@ -604,11 +626,28 @@ function import_hardware(v){
 				var ch = blocktypes.get(keys[i]+"::connections::out::hardware_channels");
 				if(!Array.isArray(ch)) ch=[ch];
 				for(var ci=0;ci<ch.length;ci++){
+					reclist.push(ch[ci]);
 					//post("\nwas",ch[ci]);
 					ch[ci] = audioiolists[0].indexOf(ch[ci])+1;
 					//post(" is ",ch[ci]);
 				}
 				blocktypes.replace(keys[i]+"::connections::out::hardware_channels",ch);
+			}
+			if((config.get("ENABLE_RECORD_HARDWARE")==1)&& (reclist.length>0)){
+				if(reccount==0){
+					recr =  this.patcher.newdefault(930,440, "r", "record");
+					recr.message("sendbox", "varname" , "recr");
+				}
+				var recadc = this.patcher.newdefault(950+reccount,520, "mc.adc~", reclist);
+				recadc.message("sendbox", "varname", "hw_rec_adc_"+keys[i]);
+				var recsf = this.patcher.newdefault(950+reccount,580, "mc.sfrecord~", reclist.length, "@dither", 0, "@bitdepth", 32);
+				recsf.message("sendbox", "varname", "hw_rec_"+keys[i]);
+				this.patcher.connect(recadc, 0, recsf, 0);
+				var recgate =  this.patcher.newdefault(950+reccount,550, "gate");
+				recgate.message("sendbox", "varname", "hw_rec_gate_"+keys[i]);
+				this.patcher.connect(recgate, 0, recsf, 0);
+				this.patcher.connect(recr, 0, recgate, 1);
+				reccount+=40;
 			}
 		}
 	} //this section ^^ eg ifyou have eg 2xES6 with an adat soundcard you'll have in channels 1 2 3 4 5 6 9 10 11 12 13 14. 
@@ -1054,4 +1093,48 @@ function songs_audit_process(hunting,replacing,replace_con_type_with){
 function soundcard_matrix_connection_fail(){
 	post("\n\n\n\nSoundcard matrix mixer disabled for this session. Restart benny once you've fixed the problem.");
 	SOUNDCARD_HAS_MATRIX = 0;
+}
+
+function prep_midi_indicators(){
+	var oor = this.patcher.firstobject;
+	while(oor !== null){
+		var n = oor.varname;
+		var ooor = oor.nextobject;
+		if(n.indexOf("midi_indicator_")!=-1){
+			this.patcher.remove(oor);
+		}
+		oor = ooor;
+	}
+	midi_indicators.list = [];
+	var tl = []
+	if(io_dict.contains("keyboards")) tl = io_dict.get("keyboards");
+	if(io_dict.contains("controllers")){
+		var cd = io_dict.get("controllers");
+		var ck = cd.getkeys();
+		if(!Array.isArray(ck)) ck = [ck];
+		for(var i=0;i<ck.length;i++){
+			tl.push(ck[i]);
+		}
+	}
+	var al = io_dict.get("midi_available");
+	if(!Array.isArray(al)) al = [al];
+	for(var i =0;i<tl.length;i++){
+		for(var t =0;t<al.length;t++){
+			if(al[t]==tl[i]){
+				midi_indicators.list.push(tl[i]);
+				t = 9999;
+			}
+		}
+	}
+	for(var i = 0;i<midi_indicators.list.length;i++){
+		var m_in = this.patcher.newdefault(950+i*50,620, "midiin", midi_indicators.list[i]);
+		m_in.message("sendbox","varname","midi_indicator_in_"+i);
+		var m_lim = this.patcher.newdefault(950+i*50,650, "speedlim", 33,"@defer",1);
+		m_lim.message("sendbox","varname","midi_indicator_lim_"+i);
+		var m_m = this.patcher.newdefault(950+i*50,680, "message","@varname","midi_indicator_m_"+i);
+		m_m.set(";","to_blockmanager", "midi_indicator",i);
+		this.patcher.connect(m_in,0,m_lim,0);
+		this.patcher.connect(m_lim,0,m_m,0);
+		midi_indicators.status[i]=0;
+	}
 }
