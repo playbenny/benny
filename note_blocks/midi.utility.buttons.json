@@ -1,5 +1,5 @@
 {
-	"utility.buttons" : {
+	"midi.utility.buttons" : {
 		"patcher" : "utility.buttons",
 		"type" : "note",
 		"block_ui_patcher" : "utility.buttons.ui",

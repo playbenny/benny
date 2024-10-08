@@ -1,6 +1,6 @@
 {
-	"utility.values" : {
-		"patcher" : "utility.values",
+	"midi.utility.values" : {
+		"patcher" : "midi.utility.values",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "3 sliders 3 values, useful for offsetting params of individual voices, summing modulations, flocking variables from different blocks, etc",

@@ -1,5 +1,5 @@
 {
-	"utility.midi.delay" : {
+	"midi.utility.delay" : {
 		"patcher" : "utility.midi.delay",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
