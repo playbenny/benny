@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="vb.mi.brds~" module="vb.mi" category="MSP Operators, MSP Synthesis">
+	<digest>
+		A macro oscillator
+	</digest>
+	<description>
+        <o>vb.mi.brds~</o> is a macro oscillator, offering an atlas of waveform generation techniques. 
+		It's a clone of the 'Braids' Eurorack module made by Mutable Instruments. (Original author: Émilie Gillet).<br />
+		Uses 'libsamplerate' © 2012-2016, Erik de Castro Lopo, for resampling.
+	</description>
+	
+	
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">
+			Volker Böhm
+		</metadata>
+		<metadata name="tag">
+			MSP
+		</metadata>
+		<metadata name="tag">
+			MSP Operators
+		</metadata>
+		<metadata name="tag">
+			MSP Synthesis
+		</metadata>
+	</metadatalist>
+	
+	
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="2" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="3" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="4" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+	</inletlist>
+	
+	
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>
+				(signal) Oscillator Output
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+	</outletlist>
+	
+	
+	<!--ARGUMENTS-->
+	<!--<objarglist>
+		<objarg id="0" name="OBJARG_NAME" type="OBJARG_TYPE" optional="0">
+			<digest>
+				TEXT_HERE
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</objarg>
+	</objarglist>-->
+	
+	
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="signal">
+			<arglist />
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+				In first inlet: 'volt per octave' (V/OCT) pitch modulation input. 
+				This is added to the MIDI pitch set by the <at>float</at> message.
+				<br />
+				<br />
+				In second inlet: Modulate 'timbre' parameter. 
+				Input range +/- 1.0, summed with corresponding float message and internally clipped between 0. and 1.
+				<br />
+				<br />
+				In third inlet: Modulate 'color' parameter. 
+				Input range +/- 1.0, summed with corresponding float message and internally clipped between 0. and 1.
+				<br />
+				<br />
+				In forth inlet: Modulate 'model' parameter. Range: -1...+1.
+				The signal is summed internally with the corresponding <at>float</at> message and internally clipped between 0. and 1.
+				<br />
+				<br />
+				In fifth inlet: Trigger inlet.
+				
+			</description>
+		</method>
+		<method name="float">
+			<arglist>
+				<arg name="input" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+				In first inlet: pitch, as MIDI note.
+				<br />
+				<br />
+				In second inlet: set 'timbre' amount. Range: 0...1.
+				<br />
+				<br />
+				In third inlet: set 'color'. Range: 0...1.
+			</description>
+		</method>
+		<method name="note">
+			<arglist>
+				<arg name="MIDI note" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Set pitch as MIDI note.
+			</digest>
+			<description>
+				Set the base pitch of the oscillator as a MIDI note.
+			</description>
+		</method>
+		<method name="coarse">
+			<arglist>
+				<arg name="coarse pitch" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Set coarse pitch.
+			</digest>
+			<description>
+				Set coarse pitch. Range: -1...+1.
+			</description>
+		</method>
+		<method name="timbre">
+			<arglist>
+				<arg name="amount" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Set timbre amount
+			</digest>
+			<description>
+				Set timbre amount. Range: 0...1. Same as sending a float message to second inlet.<br />
+				Controls the main evolution and motion of the timbre.
+			</description>
+		</method>
+		<method name="color">
+			<arglist>
+				<arg name="amount" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Set color parameter. 
+			</digest>
+			<description>
+				Set color parameter. Range: 0...1. Same as sending a float message to third inlet.<br />
+				Controls a second dimension of sound, for example the symmetry 
+				of an oscillator or the modulation frequency for a FM model.
+			</description>
+		</method>
+		<method name="bang">
+			<arglist />
+			<digest>
+				Trigger
+			</digest>
+			<description>
+				For some models this serves as a reset signal, for others this excites the physical model.
+			</description>
+		</method>
+	</methodlist>
+
+	<attributelist>
+	<attribute name='model' get='0' set='1' type='int' size='1' >
+            <digest>Synthesis model</digest>
+            <description>
+                Choose from a list of synthesis models
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                0 = 'CSAW' --
+				inspired by a quirk/defect of the Yamaha CS80 sawtooth wave shape.<br />
+                1 = 'MORPH' --
+				produces the classic waveform trajectory from triangle to sawtooth to square to pulse found in synthesizers such as the RSF Kobol or the Moog Voyager.<br />
+				2 = 'SAW_SQUARE' --
+				blends a sawtooth wave with dephasing control, with a square wave with PWM.<br />
+				3 = 'SINE_TRIANGLE' --
+				sine and triangle oscillators sent into a wavefolder.<br />
+				4 = 'BUZZ' -- 
+				generates a smooth sequence of waveforms, transitioning from a sine wave to a Dirac comb.<br />
+				5 = 'SQUARE_SUB' -- <br />
+				6 = 'SAW_SUB' --
+				....<br />
+                7 = 'SQUARE_SYNC' -- 
+				classic 2-oscillator hardsync patch, with both oscillators emitting square waves.<br />
+				8 = 'SAW_SYNC' -- 
+				classic 2-oscillator hardsync patch, with both oscillators emitting saw waves.<br />
+				9 = 'TRIPLE_SAW' -- 
+				three saw oscillators which can be individually tuned.<br />
+				<br />
+				10 = 'TRIPLE_SQUARE' -- 
+				three square oscillators which can be individually tuned.<br />
+				11 = 'TRIPLE_TRIANGLE' -- 
+				three triangle oscillators which can be individually tuned.<br />
+				12 = 'TRIPLE_SINE' -- 
+				three sine oscillators which can be individually tuned.<br />
+				13 = 'TRIPLE_RING_MOD' -- 
+				three sine wave oscillators are ring-modulated together, and colored by a waveshaper.<br />
+				14 = 'SAW_SWARM' -- 
+				simulates a swarm of 7 sawtooth waves.<br />
+				15 = 'SAW_COMB' -- 
+				generates a sawtooth waveform, and sends it into a comb filter (tuned delay line).
+				16 = 'TOY' -- traverses a space of timbres typical of (circuit-bent) electronic musical toys.<br />
+				17 = 'DIGITAL_FILTER_LP' -- 
+				directly synthesizes the response of a low-pass filter excited by classic analog waveforms in the time-domain.<br />
+				18 = 'DIGITAL_FILTER_PK' -- 
+				directly synthesizes the response of a peaking filter excited by classic analog waveforms in the time-domain.<br />
+				19 = 'DIGITAL_FILTER_BP' -- 
+				directly synthesizes the response of a band-pass filter excited by classic analog waveforms in the time-domain.<br />
+                20 = 'DIGITAL_FILTER_HP' -- 
+				directly synthesizes the response of a high-pass filter excited by classic analog waveforms in the time-domain.<br />
+				21 = 'VOSIM' -- uses a combination of 3 oscillators arranged in a clever ring-modulation/hardsync patch to 
+				emulate formant synthesis - a technique named VOSIM and described by Kaegi and Tempelaars.<br />
+				22 = 'VOWEL' -- synthesize vowel sounds.<br />
+				23 = 'VOWEL_FOF' -- simplified version of Rodet’s FOF synthesis technique.<br />
+				24 = 'HARMONICS' -- additive synthesis, by summing 12 sine harmonics.<br /> 
+				25 = 'FM' -- 2-operator phase-modulation synthesis.<br /> 
+				26 = 'FEEDBACK_FM' -- phase-modulation using feedback from the carrier to itself to produce harsher tones.<br />
+				27 = 'CHAOTIC_FEEDBACK_FM' -- phase-modulation using two feedback paths, from carrier to modulator and carrier 
+				to itself to achieve droning, unstable tones.<br />
+				28 = 'PLUCKED' -- raw plucked string synthesis.<br />
+				29 = 'BOWED' -- bowed string modelling.<br />
+				30 = 'BLOWN' -- reed instrument model.<br />
+				31 = 'FLUTED' -- flute instrument model.<br /> 
+				32 = 'STRUCK_BELL' -- this model established by Risset uses additive synthesis to recreate the tone of a bell<br />
+				33 = 'STRUCK_DRUM' -- this variant of the BELL model uses different parameters (partials frequencies and amplitudes) to generate a sound reminiscent of a metallic drum.<br />
+				34 = 'KICK' -- simulation of the TR-808 bass drum circuit.<br />
+				35 = 'CYMBAL' -- raw material for cymbal sound synthesis, as inspired by the TR-808 circuits.<br /> 
+				36 = 'SNARE' -- simulation of the TR-808 snare drum circuit. <br />
+				37 = 'WAVETABLES'  -- classic implementation of wavetable synthesis.<br />
+				38 = 'WAVE_MAP'  -- two-dimensional implementation of wavetable synthesis.<br />
+				39 = 'WAVE_LINE' -- allows one dimensional scanning through the entirety of Braids’ wavetables.<br /> 
+				40 = 'WAVE_PARAPHONIC' -- a 4-voice variant of WAVE_LINE.<br />
+				41 = 'FILTERED_NOISE' -- filters white noise with a state-variable filter.<br />
+				42 = 'TWIN_PEAKS_NOISE' -- this “Twin Peaks” model generates white noise and process it with two band-pass filters (resonators).<br /> 
+				43 = 'CLOCKED_NOISE' -- generates random samples at a given rate, determined by the main pitch control.<br />
+				44 = 'GRANULAR_CLOUD' -- creates natural textures by mixing short grains of windowed sine waves.<br /> 
+				45 = 'PARTICLE_NOISE' -- creates natural textures by mixing short decaying "pings".<br />
+				46 = 'DIGITAL_MODULATION' -- generates the kind of modulated signals used in digital telecommunication systems.<br />
+				47 = 'QUESTION_MARK' -- ???<br />
+				<br />
+                
+            </description>
+        </attribute>
+
+        <attribute name='scale' get='0' set='1' type='int' size='1' >
+            <digest>Scale for quantizing pitch</digest>
+            <description>
+                Choose from a list of scales to quantize incoming pitch
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                0 = 'OFF ' -- <br />
+                1 = 'SEMI' -- Semitones <br />
+				2 = 'IONI' -- Ionian<br />
+				3 = 'DORI' -- Dorian<br />
+				4 = 'PHRY' -- Phrygian<br />
+				5 = 'LYDI' -- Lydian<br />
+				6 = 'MIXO' -- Mixolydian<br />
+                7 = 'AEOL' -- Aeolean<br />
+				8 = 'LOCR' -- Locrian<br />
+				9 = 'BLU+' -- Blues major<br />
+				10 = 'BLU-' -- Blues minor<br />
+				11 = 'PEN+' -- Pentatonic major<br />
+				12 = 'PEN-' -- Pentatonic minor<br />
+				13 = 'FOLK' -- Folk<br />
+				14 = 'JAPA' -- Japanese<br />
+				15 = 'GAME' -- Gamelan<br />
+				16 = 'GYPS' -- Gypsy<br />
+				17 = 'ARAB' -- Arabian<br />
+				18 = 'FLAM' -- Arabian<br />
+				19 = 'WHOL' -- Whole tone<br />
+				20 = 'PYTH' -- pythagorean<br />
+				21 = 'EB/4' -- 1_4_eb<br />
+    			22 = 'E /4' -- 1_4_e<br />
+    			23 = 'EA/4' -- 1_4_ea<br />
+    			24 = 'BHAI' -- bhairav<br />
+    			25 = 'GUNA' -- gunakri<br />
+    			26 = 'MARW' -- marwa<br />
+    			27 = 'SHRI' -- shree<br />
+    			28 = 'PURV' -- purvi<br />
+    			29 = 'BILA' -- bilawal<br />
+    			30 = 'YAMA' -- yaman<br />
+    			31 = 'KAFI' -- kafi<br />
+    			32 = 'BHIM' -- bhimpalasree<br />
+    			33 = 'DARB' -- darbari<br />
+    			34 = 'RAGE' -- rageshree<br />
+    			35 = 'KHAM' -- khamaj<br />
+    			36 = 'MIMA' -- mimal<br />
+    			37 = 'PARA' -- parameshwari<br />
+     			38 = 'RANG' -- rangeshwari<br />
+    			39 = 'GANG' -- gangeshwari<br />
+    			40 = 'KAME' -- kameshwari<br />
+    			41 = 'PAKA' -- pa__kafi<br />
+    			42 = 'NATB' -- natbhairav<br />
+    			43 = 'KAUN' -- m_kauns<br />
+    			44 = 'BAIR' -- bairagi<br />
+    			45 = 'BTOD' -- b_todi<br />
+    			46 = 'CHAN' -- chandradeep<br />
+    			47 = 'KTOD' -- kaushik_todi<br />
+    			48 = 'JOGE' -- jogeshwari
+            </description>
+        </attribute>
+		<attribute name='root' get='0' set='1' type='int' size='1' >
+            <digest>Root note</digest>
+            <description>
+				Choose a root note for the selected scale.
+            </description>
+        </attribute>
+		<attribute name='auto_trig' get='1' set='1' type='int' size='1' >
+            <digest>Automatic trigger</digest>
+            <description>
+				Automatically trigger 'reset' when a new note is played. 
+				The effect depends on the selected synthesis model.
+            </description>
+        </attribute>
+		<attribute name='resamp' get='1' set='1' type='int' size='1' >
+            <digest>Resampling on/off</digest>
+            <description>
+				Turn resampling (from 96kHz to actual system sampling rate) on or off.<br />
+				Changes only take effect after switch the DAC.
+            </description>
+        </attribute>
+		<attribute name='drift' get='1' set='1' type='int' size='1' >
+            <digest>Simulate drift of an analog oscillator</digest>
+            <description>
+				Simulate the pitch drift found in analog oscillators.
+            </description>
+        </attribute>
+		
+	</attributelist>
+		
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="vb.mi.plts~" />
+		<seealso name="vb.mi.mu~" />
+		<seealso name="vb.mi.elmnts~" />
+		<seealso name="vb.mi.clds~" />
+	</seealsolist>
+	
+	
+	<misc name="Output">
+		<entry name="signal">
+			<description>
+				Left outlet: The main output of the oscillator. 
+				<br />
+				<br />
+				Right outlet: AUX output, carries a variant, sidekick, 
+				or by-product of the main signal produced on the left outlet.
+			</description>
+		</entry>
+	</misc>
+</c74object>
