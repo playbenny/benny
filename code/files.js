@@ -1341,6 +1341,7 @@ function check_its_safe_to_save_named(){
 		post("\nall store routines complete, finalising save");
 		messnamed("save_named",loading.songpath+loading.songname);
 		for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
+		read_songs_folder(sidebar.files_page); //update internal songslist
 	}else{
 		post("\nnot ready to save yet, waiting..");
 		savetask.schedule(1000);
