@@ -68,7 +68,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 305.195128202438354, 467.0, 63.0, 36.0 ],
+					"patching_rect" : [ 305.195128202438354, 467.0, 63.0, 35.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 1.785714268684387, 176.0, 110.0, 22.0 ],
 					"text" : "6 bars long",
@@ -1965,6 +1965,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 32.926830053329468, 575.609769821166992, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -2292,6 +2296,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 32.926830053329468, 386.585375070571899, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -2303,7 +2311,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 161.904760360717773, 186.0, 76.0, 34.0 ],
+					"patching_rect" : [ 161.904760360717773, 186.0, 76.0, 33.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 161.630950033664703, 177.0, 154.0, 20.0 ],
 					"text" : "3. ▼ CLICK TO LOAD ▼"
@@ -2317,7 +2325,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 161.904760360717773, 35.90476131439209, 75.0, 75.0 ],
+					"patching_rect" : [ 161.904760360717773, 35.90476131439209, 75.0, 74.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 12.0, 59.642856478691101, 264.0, 20.0 ],
 					"text" : "1. ► DROP FOLDER OF MIDI FILES HERE ◄"
@@ -2633,7 +2641,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 161.904760360717773, 123.5, 73.809523105621338, 48.0 ],
+					"patching_rect" : [ 161.904760360717773, 123.5, 73.809523105621338, 47.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 171.904760122299194, 145.047617673873901, 133.452379822731018, 20.0 ],
 					"text" : "2. ◄ SELECT FILE ◄"
@@ -3248,17 +3256,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-6",
-					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 0,
-					"patching_rect" : [ 813.10977578163147, 1000.00002384185791, 49.0, 22.0 ],
-					"text" : "noteout"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-235",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -3336,10 +3333,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 697.256114482879639, 1059.756122827529907, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -6158,11 +6151,11 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 353.658545017242432, 98.780490159988403, 270.0, 64.0 ],
+					"patching_rect" : [ 353.658545017242432, 98.780490159988403, 271.0, 62.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 4,
-					"presentation_rect" : [ 3.273809492588043, 199.0, 300.595235228538513, 64.0 ],
-					"text" : "\"C:/Users/Luke/Dropbox/          Multitudes/Multitudes/Luke Ableton chord demos/dorian d mega feels Project/Midi files/pad again.mid\"",
+					"presentation_rect" : [ 3.273809492588043, 199.0, 300.595235228538513, 62.0 ],
+					"text" : "\"Macintosh HD:/Users/lukeabbott/Dropbox/          Multitudes/Multitudes/Luke Ableton chord demos/dorian d mega feels Project/Midi files/Pad chords.mid\"",
 					"textcolor" : [ 0.149019607843137, 0.149019607843137, 0.149019607843137, 1.0 ]
 				}
 
@@ -6171,7 +6164,6 @@
 		"lines" : [ 			{
 				"patchline" : 				{
 					"destination" : [ "obj-3", 1 ],
-					"order" : 1,
 					"source" : [ "obj-1", 1 ]
 				}
 
@@ -6179,23 +6171,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
-					"order" : 1,
-					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-6", 1 ],
-					"order" : 0,
-					"source" : [ "obj-1", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-6", 0 ],
-					"order" : 0,
 					"source" : [ "obj-1", 0 ]
 				}
 
