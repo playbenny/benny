@@ -1,0 +1,91 @@
+{
+	"source.braids" : {
+		"patcher" : "source.braids",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Braids module. 48 different oscillator models! ££todo: i haven't implemented support for the module's scale quantise because i want to make it work with benny's tuning system support but i haven't yet.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in1", "in2" ],
+				"midi" : [ "notes", "strum" ]
+			},
+			"out" : {
+				"audio" : [ "out" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"colour" : 0,
+				"height" : 0
+			},
+			{
+				"contains" : [1,2],
+				"colour" : -10,
+				"height" : 2
+			},
+			{
+				"contains" : [3,3,4,4,5,6],
+				"colour" : -5,
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [1, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "model",
+				"type" : "menu_i",
+				"values" : [ "csaw", "morph", "saw_square", "sine_triangle", "buzz", "square_sub", "saw_sub", "square_sync", "saw_sync", "triple_saw", "triple_square", "triple_triangle", "triple_sine", "triple_ring_mod", "saw_swarm", "saw_comb", "toy", "digi_filter_lp", "digi_filter_peak", "digi_filter_band", "digi_filter_hp", "vosim", "vowel", "vowel_fof", "harmonics", "fm", "feedback_fm", "chaotic_feedback_fm", "plucked", "bowed", "blown", "fluted", "struck_bell", "struck_drum", "kick", "cymbal", "snare", "wavetables", "wavemap", "waveline", "wave_paraphonic", "filtered_noise", "twin_peaks_noise", "clocked_noise", "granular_cloud", "particle_noise", "digital_modulation", "question_mark"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "timbre",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "colour",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "in1 target",
+				"type" : "menu_i",
+				"values" : ["frequency", "colour", "timbre", "model", "trigger" ],
+				"wrap" : 1,
+				"default" : 0.15
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_i",
+				"values" : ["frequency", "colour", "timbre", "model", "trigger" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "notes -> trigger",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.75
+			},
+			{
+				"name" : "drift",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

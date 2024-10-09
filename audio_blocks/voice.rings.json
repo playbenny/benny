@@ -1,0 +1,114 @@
+{
+	"voice.rings" : {
+		"patcher" : "voice.rings",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Rings module.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"from_subvoices": 2,
+        "to_subvoices" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in1", "in2" ],
+				"midi" : [ "notes", "strum" ]
+			},
+			"out" : {
+				"audio" : [ "out" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"colour" : 0,
+				"height" : 0
+			},
+			{
+				"contains" : [1,2,3,4,5],
+				"colour" : -10,
+				"height" : 2
+			},
+			{
+				"contains" : [6,7,8,9],
+				"colour" : -5,
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [1, 2, 3]
+		},
+		"parameters" : [
+			{
+				"name" : "model",
+				"type" : "menu_i",
+				"values" : ["modal", "sympathetic string", "string", "fm voice", "sympathetic string quantised", "string & reverb" ],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "frequency",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "structure",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "brightness",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "damping",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "in1 target",
+				"type" : "menu_i",
+				"values" : ["in", "frequency", "structure", "brightness", "damping", "position", "v/oct", "strum" ],
+				"wrap" : 1,
+				"default" : 0.15
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_i",
+				"values" : ["in", "frequency", "structure", "brightness", "damping", "position", "v/oct", "strum" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "notes -> trigger",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.75
+			},
+			{
+				"name" : "easter",
+				"type" : "menu_b",
+				"values" : ["normal", "easter_egg"],
+				"wrap" : 1,
+				"default" : 0.25
+			}	
+		]
+	}
+}
