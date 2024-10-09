@@ -130,6 +130,13 @@
 				"values" : ["fm", "timbre", "morph", "harmo", "trig" ],
 				"wrap" : 1,
 				"default" : 0.15
+			},
+			{
+				"name" : "notes -> trigger",
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.75
 			}	
 		]
 	}
