@@ -1,0 +1,135 @@
+{
+	"fx.clouds" : {
+		"patcher" : "fx.clouds",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Clouds module.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ],
+				"midi" : [ "trigger" ]
+			},
+			"out" : {
+				"audio" : [ "out" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			
+			{
+				"contains" : [1,2,3,4,5, 10],
+				"colour" : -10,
+				"height" : 3
+			},
+			{
+				"contains" : [6,7,8,9],
+				"colour" : -5,
+				"height" : 2
+			},
+			{ 
+				"contains" : [0,11,12],
+				"colour" : 0,
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [1, 2, 3]
+		},
+		"parameters" : [
+			{
+				"name" : "mode",
+				"type" : "menu_i",
+				"values" : ["granular", "stretch", "looping delay", "spectral"],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "pitch",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "size",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "density",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "texture",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "wet/dry",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "spread",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "reverb",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "freeze",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_i",
+				"values" : ["in R", "pitch", "position", "size", "density", "texture", "wet/dry", "trigger" ],
+				"wrap" : 1,
+				"default" : 0.15
+			},
+			{
+				"name" : "lofi",
+				"type" : "menu_i",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			}
+		]
+	}
+}
