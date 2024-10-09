@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="vb.mi.plts~" module="vb.mi" category="MSP Operators, MSP Synthesis">
+	<digest>
+		A macro oscillator
+	</digest>
+	<description>
+        <o>vb.mi.plts~</o> is a macro oscillator, offering a plethora of high quality synthesis techniques. 
+		It's a clone of the 'Plaits' Eurorack module made by Mutable Instruments. (Original author: Émilie Gillet).
+	</description>
+	
+	
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">
+			Volker Böhm
+		</metadata>
+		<metadata name="tag">
+			MSP
+		</metadata>
+		<metadata name="tag">
+			MSP Operators
+		</metadata>
+		<metadata name="tag">
+			MSP Synthesis
+		</metadata>
+	</metadatalist>
+	
+	
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="2" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="3" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="4" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="5" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="6" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="7" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+	</inletlist>
+	
+	
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>
+				(signal) Main Output
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="1" type="signal">
+			<digest>
+				(signal) AUX Output
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="2" type="anything">
+			<digest>
+				(list) Info outlet
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+	</outletlist>
+	
+	
+	<!--ARGUMENTS-->
+	<!--<objarglist>
+		<objarg id="0" name="OBJARG_NAME" type="OBJARG_TYPE" optional="0">
+			<digest>
+				TEXT_HERE
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</objarg>
+	</objarglist>-->
+	
+	
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="signal">
+			<arglist />
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+				In first inlet: Choose from a list of synthesis models/engines 
+				(input range from 0 to 1) - no interplation performed. 
+				See attribute <at>engine</at> for a detailed list of engines.
+				<br />
+				<br />
+				In second inlet: Modulate pitch of the oscillator. 
+				A value of +/- 1 corresponds to +/- a semitone.
+				<br />
+				<br />
+				In third inlet: Modulate frequency of the oscillator 
+				(the 'patched' method must be active, see <at>integer message</at>). Range: -1...+1.
+				The incoming signal is internally scaled by the corresponding <at>freq_mod</at> attenuverter.
+				<br />
+				<br />
+				In forth inlet: Modulate 'harmonics' meta parameter. Range: -1...+1.
+				The signal is summed internally with the corresponding float message (harmonics)
+				<br />
+				<br />
+				In fifth inlet: Modulate 'timbre' meta parameter. Range: -1...+1.
+				The signal is summed internally with the corresponding float message (timbre).
+				<br />
+				<br />
+				In sixth inlet: Modulate 'morph' meta parameter. Range: -1...+1.
+				The signal is summed internally with the corresponding float message (morph).
+				<br />
+				<br />
+				In seventh inlet: Trigger inlet.
+				Fires the internal modulation envelope and the LPG.
+				<br />
+				<br />
+				In eighth inlet: Modulate the level parameter of the module. Range: 0...1.
+				Opens the internal low-pass gate, to simultaneously control the amplitude 
+				and brightness of the output signal.
+				<br />
+				<br />
+
+			</description>
+		</method>
+		<method name="int">
+			<arglist>
+				<arg name="input" optional="0" type="int" />
+			</arglist>
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+				In third inlet: patch/unpatch 'FM' signal modulation (0/1).
+				<br />
+				<br />
+				In fifth inlet: patch/unpatch 'timbre' signal modulation (0/1).
+				<br />
+				<br />
+				In sixth inlet: patch/unpatch 'morph' signal modulation (0/1).
+				<br />
+				<br />
+				In seventh inlet: patch/unpatch trigger signal input (0/1).
+				<br />
+				<br />
+				In eighth inlet: patch/unpatch level signal input (0/1).
+			</description>
+		</method>
+		<method name="float">
+			<arglist>
+				<arg name="input" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+				In second inlet: 'volt per octave' input (V/OCT). Range: 0...1.
+				<br />
+				<br />
+				In forth inlet: harmonicity amount. Range: 0...1.
+				<br />
+				<br />
+				In fifth inlet: timbre amount. Range: 0...1.
+				<br />
+				<br />
+				In sixth inlet: morph amount. Range: 0...1.
+			</description>
+		</method>
+		<method name="note">
+			<arglist>
+				<arg name="MIDI note" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Set pitch as MIDI note.
+			</digest>
+			<description>
+				Set the base pitch of the oscillator as a MIDI note.
+			</description>
+		</method>
+		<method name="freq_mod">
+			<arglist>
+				<arg name="amount" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Attenuverter for frequency modulation
+			</digest>
+			<description>
+				Attenuverter for frequency modulation. Range: -1...+1.
+			</description>
+		</method>
+		<method name="timbre_mod">
+			<arglist>
+				<arg name="amount" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Attenuverter for timbre modulation
+			</digest>
+			<description>
+				Attenuverter for timbre modulation. Range: -1...+1.
+			</description>
+		</method>
+		<method name="morph_mod">
+			<arglist>
+				<arg name="amount" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Attenuverter for morph modulation
+			</digest>
+			<description>
+				Attenuverter for morph modulation. Range: -1...+1.
+			</description>
+		</method>
+		<method name="decay">
+			<arglist>
+				<arg name="decay time" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Envelope/LPG decay time
+			</digest>
+			<description>
+				Adjust the internal envelope/LPG decay time. Range: 0...1.
+			</description>
+		</method>
+		<method name="lpg_colour">
+			<arglist>
+				<arg name="lpg response" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Response of the LPG (VCFA to VCA).
+			</digest>
+			<description>
+				Adjust the response of the LPG from VCFA to VCA. Range: 0...1.
+			</description>
+		</method>
+		<method name="octave">
+			<arglist>
+				<arg name="octave" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Change pitch octave offset.
+			</digest>
+			<description>
+				Change pitch octave offset. Range: 0...1.
+			</description>
+		</method>
+	</methodlist>
+
+	<attributelist>
+        <attribute name='engine' get='0' set='1' type='int' size='1' >
+            <digest>Synthesis engine</digest>
+            <description>
+                Choose from a list of synthesis models/engines
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                0 = 'virtual_analog_synthesis' --
+				Virtual-analog synthesis of classic waveforms.<br />
+                1 = 'waveshaping_oscillator' --
+				An asymmetric triangle processed by a waveshaper and a wavefolder.<br />
+				2 = '2-op_FM' --
+				Two sine-wave oscillators modulating each other’s phase.<br />
+				3 = 'granular_formant_oscillator' --
+				Simulation of formants and filtered waveforms through the multiplication, addition and synchronization of segments of sine waves.<br />
+				4 = 'harmonic_oscillator' -- 
+				An additive mixture of harmonically-related sine waves.<br />
+				5 = 'wavetable_oscillator' -- 
+				Four banks of 8x8 waveforms, accessed by row and column, with or without interpolation.<br />
+                6 = 'chord_engine' -- 
+				Four-note chords, played by virtual analogue or wavetable oscillators.<br />
+				7 = 'speech_synthesis' -- A collection of speech synthesis algorithms.<br />
+                <br />
+				<br />
+				8 = 'swarm_engine' -- 
+				A swarm of 8 enveloped sawtooth waves.<br />
+				9 = 'filtered_noise' -- 
+				Variable-clock white noise processed by a resonant filter.<br />
+				10 = 'particle_noise' -- 
+				Dust noise processed by networks of all-pass or band-pass filters.<br />
+				11 = 'inharmonic_string' -- 
+				Modulated/inharmonic string synthesis (from 'Rings')<br />
+				12 = 'modal_resonator' A modal resonator (from 'Rings')<br />
+				13 = 'bass_drum_model' -- 
+				Behavioral simulation of circuits from classic drum machines<br />
+				14 = 'snare_drum_model' -- A snare drum model<br />
+				15 = 'hi_hat_model' -- 
+				A bunch of square oscillators generate a harsh, metallic tone.
+                <br />
+                <br />
+                
+            </description>
+        </attribute>
+	</attributelist>
+		
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="vb.mi.mrbls~" />
+		<seealso name="vb.mi.mu~" />
+		<seealso name="vb.mi.elmnts~" />
+		<seealso name="vb.mi.clds~" />
+	</seealsolist>
+	
+	
+	<misc name="Output">
+		<entry name="signal">
+			<description>
+				Left outlet: The main output of the oscillator. 
+				<br />
+				<br />
+				Right outlet: AUX output, carries a variant, sidekick, 
+				or by-product of the main signal produced on the left outlet.
+			</description>
+		</entry>
+	</misc>
+</c74object>

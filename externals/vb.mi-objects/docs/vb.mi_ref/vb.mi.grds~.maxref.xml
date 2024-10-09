@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="vb.mi.grds~" module="vb.mi" category="MSP Operators">
+	<digest>
+		A topographic drum sequencer
+	</digest>
+	<description>
+        <o>vb.mi.grds~</o> is a 3-channel trigger generator specialized in the creation and sculpting of rhythmic patterns. 
+		It's a clone of the 'Grids' Eurorack module made by Mutable Instruments. (Original author: Émilie Gillet).
+	</description>
+	
+	
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">
+			Volker Böhm
+		</metadata>
+		<metadata name="tag">
+			MSP
+		</metadata>
+		<metadata name="tag">
+			MSP Operators
+		</metadata>
+		<metadata name="tag">
+			MSP Sequencer
+		</metadata>
+	</metadatalist>
+	
+	
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="signal/int/float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="2" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="3" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="4" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="5" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="6" type="float">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="7" type="signal">
+			<digest>
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+	</inletlist>
+	
+	
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>
+				(signal) BD trig
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="1" type="signal">
+			<digest>
+				(signal) SD trig
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="2" type="signal">
+			<digest>
+				(signal) HH trig
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="3" type="signal">
+			<digest>
+				(signal) BD accent
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="4" type="signal">
+			<digest>
+				(signal) SD accent
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="5" type="signal">
+			<digest>
+				(signal) HH accent
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="6" type="signal">
+			<digest>
+				(signal) 16th pulse
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+		<outlet id="7" type="signal">
+			<digest>
+				(signal) random step 32nd pulse
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+	</outletlist>
+	
+	
+	<!--ARGUMENTS-->
+	<!--<objarglist>
+		<objarg id="0" name="OBJARG_NAME" type="OBJARG_TYPE" optional="0">
+			<digest>
+				TEXT_HERE
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</objarg>
+	</objarglist>-->
+	
+	
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="signal">
+			<arglist />
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+				In left inlet: External clock input 
+				<br />
+				<br />
+				In rightmost inlet: reset signal. 
+				<br />
+				<br />
+
+			</description>
+		</method>
+		<method name="int">
+			<arglist>
+				<arg name="input" optional="0" type="int" />
+			</arglist>
+			<digest>
+				Start/stop internal clock
+			</digest>
+			<description>
+				Start/stop (0/1) internal clock.
+			</description>
+		</method>
+		<method name="float">
+			<arglist>
+				<arg name="bpm" optional="0" type="float" />
+			</arglist>
+			<digest>
+				Beats per minute (bpm) for internal clock.
+			</digest>
+			<description>
+				Sets beats per minute (bpm) for internal clock.
+			</description>
+		</method>
+		<method name="bang">
+			
+			<digest>
+				Reset
+			</digest>
+			<description>
+				Reset.
+			</description>
+		</method>
+		<method name="euclid">
+			<arglist>
+				<arg name="euclidean params" optional="0" type="list" />
+			</arglist>
+			<digest>
+				Set euclidean parameter
+			</digest>
+			<description>
+				Set euclidean paramter. The word 'euclid' followed by three ints to set 
+				target (0, 1 or 2), number of steps (1..32) and number of notes (1..32).
+			</description>
+		</method>
+	</methodlist>
+
+	<attributelist>
+        <attribute name='mode' get='0' set='1' type='int' size='1' >
+            <digest>mode of operation</digest>
+            <description>
+                Mode of operation: 
+				<br />
+				<br />
+				0 = 'Normal'
+				<br />
+				<br />
+				1 = 'Euclid'
+                
+            </description>
+        </attribute>
+		<attribute name='resolution' get='0' set='1' type='int' size='1' >
+            <digest>clock resolution</digest>
+            <description>
+                Clock resolution in PPQN 
+				<br />
+				<br />
+				0 = '4_PPQN' -- 4 pulses per quater note.
+				<br />
+				<br />
+				1 = '8_PPQN' -- 8 pulses per quater note.
+				<br />
+				<br />
+				2 = '24_PPQN' -- 24 pulses per quater note (default.)
+                
+            </description>
+        </attribute>
+		<attribute name='config' get='0' set='1' type='int' size='1' >
+            <digest>Configuration of outlets 4 to 6</digest>
+            <description>
+                Mode of operation: configuration of outlets 4 to 6
+				<br />
+				<br />
+				0 = 'Accents'<br />
+				outlet 4: BD accents, outlet 5: SD accents, outlet 6: HH accents
+				<br />
+				<br />
+				1 = 'Clock_info'<br />
+				outlet 4: all accents, outlet 5: clock output, 6: reset signal
+                
+            </description>
+        </attribute>
+		<attribute name='ext_clock' get='0' set='1' type='int' size='1' >
+            <digest>External clock on/off</digest>
+            <description>
+                Switch from internal to external clock. <br />
+				0: use internal clock <br />
+				1: switch internal clock off and lock for clock triggers/gates on rightmost inlet.
+            </description>
+        </attribute>
+		<attribute name='gate_mode' get='0' set='1' type='int' size='1' >
+            <digest>Switch gate mode off/on</digest>
+            <description>
+                Switch gate mode off/on (0/1).
+            </description>
+        </attribute>
+	</attributelist>
+		
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="vb.mi.mrbls~" />
+		<seealso name="vb.mi.mu~" />
+		<seealso name="vb.mi.plts~" />
+		<seealso name="vb.mi.clds~" />
+	</seealsolist>
+	
+	
+	<misc name="Output">
+		<entry name="signal">
+			<description>
+				First outlet: BD triggers 
+				<br />
+				<br />
+				Second outlet: SD triggers
+				<br />
+				<br />
+				Third outlet: HH triggers
+				<br />
+				<br />
+				Fourth outlet: BD accents
+				<br />
+				<br />
+				Fifth outlet: SD accents
+				<br />
+				<br />
+				Sixth outlet: HH accents
+				<br />
+				<br />
+				Seventh outlet: 16th pulses
+				<br />
+				<br />
+				Eighth outlet: random step 32nd pulses
+			</description>
+		</entry>
+	</misc>
+</c74object>

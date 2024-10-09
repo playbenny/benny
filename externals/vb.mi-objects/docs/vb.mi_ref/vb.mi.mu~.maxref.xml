@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+
+<c74object name="vb.mi.mu~.xml~" module="vb.mi" category="MSP Modifiers">
+	<digest>
+		µ-law companding for degrading audio signals
+	</digest>
+	<description>
+        <o>vb.mi.mu~</o> takes any given signal and reduces its quality by applying µ-law companding. The techique is taken from the 'Clouds' Eurorack module by Mutable Instruments.
+        <br />
+        (Original author: Émilie Gillet).
+	</description>
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">
+            Volker Böhm
+		</metadata>
+		<metadata name="tag">
+			MSP
+		</metadata>
+		<metadata name="tag">
+			MSP Modifiers
+		</metadata>
+	</metadatalist>
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="signal">
+			<digest>
+				(signal) Input
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+	</inletlist>
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>
+				(signal) Output
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+	</outletlist>
+	<!--ARGUMENTS-->
+	<objarglist>
+		<objarg name="gain" optional="1" type="float">
+			<digest>
+				Pre-processing gain
+			</digest>
+			<description>
+				Amplify the input signal by this amount. Values bigger than 1.0 add soft distortion. (default: 1.0)
+			</description>
+		</objarg>
+	</objarglist>
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="bypass">
+			<arglist>
+				<arg name="bypass" type="int" optional="0" />
+			</arglist>
+			<digest>
+				Pass input to the output unchanged
+			</digest>
+			<description>
+				Bypass the soft distortion and µ-law companding, and simply copy input to output.
+			</description>
+		</method>
+		<method name="float">
+			<arglist>
+				<arg name="pre-processing gain" type="float" optional="0" />
+			</arglist>
+			<digest>
+				Set the pre-processing gain.
+			</digest>
+			<description>
+				Sets the pre-processing to amplify the input signal by this amount. Values bigger than 1.0 add soft distortion.
+			</description>
+		</method>
+		<method name="signal">
+			<arglist />
+			<digest>
+				The signal to be companded.
+			</digest>
+			<description>
+				The signal to be µ-law companded.
+			</description>
+		</method>
+	</methodlist>
+	<!--ATTRIBUTES-->
+    <!--<attributelist>
+        <attribute name="gain" get="0" set="1" type="float" size="1">
+            <digest>
+                pre-processing gain
+            </digest>
+            <description>
+                raise the input gain by this amount. Values bigger than 1.0 add soft distortion.
+            </description>
+        </attribute>
+    </attributelist>-->
+            
+	<!--EXAMPLE-->
+	<!--<examplelist>
+		<example img="degrade~.png" caption="Change a signal's effective sampling rate and bit depth" />
+	</examplelist>-->
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="downsamp~" />
+		<seealso name="degrade~" />
+		<seealso name="vb.mi.plts~" />
+		<seealso name="vb.mi.mrbls~" />
+	</seealsolist>
+	<misc name="Output">
+		<entry name="signal">
+			<description>
+				The output signal is the input signal after being µ-law companded to deliberately reduce its quality and dynamic range. It is intended for creating &quot;low-fi&quot; effects.
+			</description>
+		</entry>
+	</misc>
+</c74object>
