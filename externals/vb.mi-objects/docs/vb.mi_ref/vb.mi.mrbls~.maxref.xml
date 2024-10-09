@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="vb.mi.mrbls~" module="msp" category="MSP Operators, MSP Functions">
+	<digest>
+		A source of random gates and sequences
+	</digest>
+	<description>
+        You can use <o>vb.mi.mrbls~</o> to create repeatable and/or slowly changing sequences from random data and alter these sequences in many ways...
+        <br /> <br />
+        <o>vb.mi.mrbls~</o> is a clone of the 'Marbles' Eurorack module made by Mutable Instruments (Original author: Émilie Gillet).
+	</description>
+	
+	
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">
+			Volker Böhm
+		</metadata>
+		<metadata name="tag">
+			MSP
+		</metadata>
+		<metadata name="tag">
+			MSP Operators
+		</metadata>
+		<metadata name="tag">
+			MSP Functions
+		</metadata>
+	</metadatalist>
+	
+	
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="signal">
+			<digest>
+				(signal) external clock (1)
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+		<inlet id="1" type="signal/float">
+			<digest>
+                T_RATE
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</inlet>
+        <inlet id="2" type="signal/float">
+            <digest>
+                T_BIAS
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="3" type="signal/float">
+            <digest>
+                T_JITTER
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="4" type="signal/float">
+            <digest>
+                DEJA_VU_AMOUNT
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="5" type="signal/int">
+            <digest>
+                external sampling source / deja_vu_length (1-16)
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="6" type="signal/float">
+            <digest>
+                X_SPREAD
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="7" type="signal/float">
+            <digest>
+                X_BIAS
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="8" type="signal/float">
+            <digest>
+                X_STEPS
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+        <inlet id="9" type="signal">
+            <digest>
+                external clock (2) - for XY outputs
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </inlet>
+	</inletlist>
+	
+	
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>
+				(signal) Gate out (t1)
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</outlet>
+        <outlet id="1" type="signal">
+            <digest>
+                (signal) Gate out (t2)
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+        <outlet id="2" type="signal">
+            <digest>
+                (signal) Gate out (t3)
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+        <outlet id="3" type="signal">
+            <digest>
+                (signal) y outlet
+            </digest>
+            <description>
+                smoothed random values
+            </description>
+        </outlet>
+        <outlet id="4" type="signal">
+            <digest>
+                (signal) voltage out (x1)
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+        <outlet id="5" type="signal">
+            <digest>
+                (signal) voltage out (x2)
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+        <outlet id="6" type="signal">
+            <digest>
+                (signal) voltage out (x3)
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+        <outlet id="7" type="list">
+            <digest>
+                (list) info outlet
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+	</outletlist>
+	
+	
+	<!--ARGUMENTS-->
+	<!--<objarglist>
+		<objarg id="0" name="OBJARG_NAME" type="OBJARG_TYPE" optional="0">
+			<digest>
+				TEXT_HERE
+			</digest>
+			<description>
+				TEXT_HERE
+			</description>
+		</objarg>
+	</objarglist> -->
+	
+	
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="signal">
+			<arglist />
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+                In first inlet: trigger or gate signal is used as external clock source.
+                <br />
+                <br />
+                In second inlet: sets/modulates internal clock rate (t_rate)
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In third inlet: sets/modulates bias (t_bias) for trigger/gate outputs t1 and t3.
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In fourth inlet: sets/modulates clock jitter (t_jitter).
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In fifth inlet: sets/modulates deja_vu amount.
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In sixth inlet: external sampling signal. If <at>x_ext</at> message is set, this signal replaces the internal random generator.
+                Values are internally clipped between -1.0 and +1.0
+                <br />
+                <br />
+                In seventh inlet: sets/modulates the spread of the X (voltages) outputs.
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In eighth inlet: sets/modulates the bias of the X (voltages) outputs.
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In nineth inlet: sets/modulates the 'steps' of the X (voltages) outputs.
+                Value is summed with float input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In tenth inlet: trigger or gate signal is used as external clock source for the X section.
+                
+			</description>
+		</method>
+        <method name="float">
+			<arglist>
+				<arg name="input" optional="0" type="float" />
+            </arglist>
+			<digest>
+				Function depends on inlet
+			</digest>
+			<description>
+                In second inlet: sets internal clock rate (t_rate)
+                Value is summed with signal input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In third inlet: sets bias (<at>t_bias</at>) for trigger/gate outputs t1 and t3.
+                Value is summed with signal input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In fourth inlet: sets clock jitter (<at>t_jitter</at>).
+                Value is summed with signal input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In fifth inlet: sets deja_vu amount.
+                Value is summed with signal input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+
+                In seventh inlet: sets the spread of the X (voltages) outputs.
+                Value is summed with signal input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In eighth inlet: sets the bias of the X (voltages) outputs.
+                Value is summed with signal input and clipped between 0.0 and 1.0
+                <br />
+                <br />
+                In nineth inlet: sets the 'steps' of the X (voltages) outputs.
+                Value is summed with signal input and clipped between 0.0 and 1.0
+			</description>
+		</method>
+        <method name="int">
+			<arglist>
+				<arg name="input" optional="0" type="int" />
+            </arglist>
+			<digest>
+				Function depends on inlett
+			</digest>
+			<description>
+                In leftmost inlet: choose between internal and external clock source.<br />
+                0: internal clock <br />
+                1: external clock
+                <br />
+                <br />
+                In sixth inlet: set deja_vu length. Values are clipped between 1 and 16.
+                <br />
+                <br />
+                In rightmost inlet: choose between internal and external clock source for the X section.<br />
+                0: internal clock <br />
+                1: external clock
+                
+			</description>
+		</method>
+        <method name="bpm">
+            <arglist>
+                <arg name="beats per minute" optional="0" type="float" />
+            </arglist>
+            <digest>
+                Set bpm for internal clock.
+            </digest>
+            <description>
+                Set beats per minute (bpm) value for internal clock. This is an alternative way of setting the clock rate.
+            </description>
+        </method>
+        <method name="t">
+            <arglist>
+                <arg name="lock/superlock the t generator" optional="0" type="int" />
+            </arglist>
+            <digest>
+                Locks or superlocks the t generator.
+            </digest>
+            <description>
+                Possible values:
+                <br />
+                <br />
+                0: the t generator is unlocked. Every pulse of the clock feeds a new random value.
+                <br />
+                <br />
+                1: the t generator is locked and the random sequence inside the t generator repeats. 
+                The <m>deja_vu amount</m> controls the probability of new random values coming in.
+                <br />
+                <br />
+                2: the t generator is super-locked and the random sequence inside the t generator repeats.
+                It ignores the settings of the <m>deja_vu amount</m>.
+
+            </description>
+        </method>
+        <method name="x">
+            <arglist>
+                <arg name="lock/superlock the X generator" optional="0" type="int" />
+            </arglist>
+            <digest>
+                Locks or superlocks the X generator.
+            </digest>
+            <description>
+                Possible values:
+                <br />
+                <br />
+                0: the X generator is unlocked. Every pulse of the clock feeds a new random value.
+                <br />
+                <br />
+                1: the X generator is locked and the random sequence inside the X generator repeats. 
+                The <m>deja_vu amount</m> controls the probability of new random values coming in.
+                <br />
+                <br />
+                2: the X generator is super-locked and the random sequence inside the X generator repeats.
+                It ignores the settings of the <m>deja_vu amount</m>.
+
+            </description>
+        </method>
+	</methodlist>
+
+    <attributelist>
+        <attribute name='t_model' get='0' set='1' type='int' size='1' >
+            <digest>Randomness model</digest>
+            <description>
+                Set the randomness model used for the trigger/gate outlets t1 and t3. 
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                'coin' A coin is tossed at every pulse of t2, to decide whether the pulse is passed to t1 or t3. 
+                <at>t_bias</at> controls the fairness of the coin toss.
+                <br />
+                <br />
+                'divide' t1 and t3 are generated by respectively multiplying and dividing t2 by a random ratio. 
+                <br />
+                <br />
+                'pattern' the triggers alternate between t1 and t3, following some predefined patterns.
+            </description>
+        </attribute>
+        <attribute name='t_range' get='0' set='1' type='int' size='1' >
+            <digest>Clock divider/multiplier setting</digest>
+            <description>
+                Divides or multiplies the clock rate by 4 
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                '/4' divide clock rate by 4
+                <br />
+                <br />
+                'x1' original clock rate 
+                <br />
+                <br />
+                'x4' multiply clock rate by 4
+            </description>
+        </attribute>
+        <attribute name='x_mode' get='0' set='1' type='int' size='1' >
+            <digest>X control mode</digest>
+            <description>
+                 Defines how the X outputs react to the X parameter settings
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                'identical' all X outputs follow the X parameter settings
+                <br />
+                <br />
+                'bump' X2 follows the settings, while X1 and X3 take opposite values.
+                <br />
+                <br />
+                'tilt' X3 follows the settings, X1 reacts in the opposite direction, and X2 always stays in the middle.
+            </description>
+        </attribute>
+        <attribute name='x_range' get='0' set='1' type='int' size='1' >
+            <digest>Set range of X outputs</digest>
+            <description>
+                Set the voltage range of the X outputs.
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                '+2' 0 to 2 volts (equals 0.0 to 0.2).
+                <br />
+                <br />
+                '+5' 0 to 5 volts (equals 0.0 to 0.5).
+                <br />
+                <br />
+                '±5' -5 to 5 volts (equals -0.5 to 0.5).
+            </description>
+        </attribute>
+        <attribute name='x_scale' get='0' set='1' type='int' size='1' >
+            <digest>Select a scale from internal memory</digest>
+            <description>
+                <o>vb.mi.mrbls~</o> includes 6 predefined muscial scales you can choose from.
+                <br />
+                <br />
+                Possible values:
+                <br />
+                <br />
+                'major' major scale.
+                <br />
+                <br />
+                'minor' minor scale.
+                <br />
+                <br />
+                'penta' pentatonic scale.
+                <br />
+                <br />
+                'gamelan' Gamelan (Pelog).
+                <br />
+                <br />
+                'bhairav' Raag Bhairav.
+                <br />
+                <br />
+                'shree' Raag Shree.
+            </description>
+        </attribute>
+        <attribute name='y_bias' get='0' set='1' type='float' size='1' >
+            <digest>Bias for Y generator</digest>
+            <description>
+                Bias for Y generator (0..1)
+            </description>
+        </attribute>
+        <attribute name='y_div' get='0' set='1' type='float' size='1' >
+            <digest>Clock divider setting for Y outlet</digest>
+            <description>
+                Set clock division factor relative to x2 clock for Y outlet.
+                <br />
+                Values between 0. and 1. are mapped to 1/64 to 1 division factors.
+            </description>
+        </attribute>
+        <attribute name='y_spread' get='0' set='1' type='float' size='1' >
+            <digest>Spread for Y generator</digest>
+            <description>
+                Spread for Y generator (0..1)
+            </description>
+        </attribute>
+        <attribute name='y_steps' get='0' set='1' type='float' size='1' >
+            <digest>Steps for Y generator</digest>
+            <description>
+                Steps for Y generator (0..1)
+            </description>
+        </attribute>
+
+    </attributelist>
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="vb.mi.plts~" />
+		<seealso name="vb.mi.mu~" />
+	</seealsolist>
+	
+	
+	<misc name="Output">
+		<entry name="signal">
+			<description>
+                Out first outlet: trigger/gate signal from t1 clock
+                <br />
+                <br />
+                Out second outlet: trigger/gate signal from t2 clock
+                <br />
+                <br />
+                Out third outlet: trigger/gate signal from t3 clock
+                <br />
+                <br />
+                Out fourth outlet: smoothed random signal from Y generator
+                <br />
+                <br />
+                Out fifth outlet: stepped/smoothed 'voltage' output from X1 generator
+                <br />
+                <br />
+                Out sixth outlet: stepped/smoothed 'voltage' output from X2 generator
+                <br />
+                <br />
+                Out seventh outlet: stepped/smoothed 'voltage' output from X3 generator
+                
+			</description>
+		</entry>
+        <entry name="list">
+			<description>
+                Rightmost outlet: info outlet
+			</description>
+		</entry>
+	</misc>
+</c74object>

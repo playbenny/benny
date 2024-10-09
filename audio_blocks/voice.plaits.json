@@ -1,0 +1,143 @@
+{
+	"voice.plaits" : {
+		"patcher" : "voice.plaits",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Boehm's port of Emilie Gillet's Plaits module.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in1", "in2" ],
+				"midi" : [ "notes", "trigger" ]
+			},
+			"out" : {
+				"audio" : [ "osc", "alt" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"colour" : 0,
+				"height" : 0
+			},
+			{
+				"contains" : [1,2,3],
+				"colour" : -10,
+				"height" : 2
+			},
+			{
+				"contains" : [4,5,6],
+				"colour" : -14,
+				"height" : 0
+			},
+			{
+				"contains" : [7,8,9],
+				"colour" : -5,
+				"height" : 0
+			},
+			{
+				"contains" : [10,11],
+				"colour" : 10,
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [1, 2, 3]
+		},
+		"parameters" : [
+			{
+				"name" : "engine",
+				"type" : "menu_i",
+				"values" : ["virtual analog", "waveshaping oscillator", "2-op FM", "granular formant oscillator", "harmonic oscillator", "wavetable oscillator", "chord engine", "speech synthesis", "swarm engine", "filtered noise", "particle noise", "inharmonic string", "modal resonator", "bass drum model", "snare drum model", "hihat model"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "harmonic",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "timbre",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "morph",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "fm attenuator",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "timbre attenuverter",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "morph attenuverter",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "octave",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "decay",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "lpg",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "in1 target",
+				"type" : "menu_i",
+				"values" : ["fm", "timbre", "morph", "harmo", "trig" ],
+				"wrap" : 1,
+				"default" : 0.15
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_i",
+				"values" : ["fm", "timbre", "morph", "harmo", "trig" ],
+				"wrap" : 1,
+				"default" : 0.15
+			},
+			{
+				"name" : "notes -> trigger",
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.75
+			}	
+		]
+	}
+}
