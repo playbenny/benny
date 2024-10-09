@@ -1,6 +1,6 @@
 {
-	"voice.braids" : {
-		"patcher" : "voice.braids",
+	"source.braids" : {
+		"patcher" : "source.braids",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Braids module. 48 different oscillator models! ££todo: i haven't implemented support for the module's scale quantise because i want to make it work with benny's tuning system support but i haven't yet.",
