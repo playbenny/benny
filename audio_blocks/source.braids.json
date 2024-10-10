@@ -3,7 +3,7 @@
 		"patcher" : "source.braids",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Braids module. 48 different oscillator models! ££todo: i haven't implemented support for the module's scale quantise because i want to make it work with benny's tuning system support but i haven't yet.",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Braids module. 48 different oscillator models! ££I've adapted it to work with benny's global tuning system. I've also added velocity mod controls, if the vel->vca != 0 it introduces a tiny 3ms delay on notes and triggers to avoid clicks. The scale quantise in the module isn't implemented as it wouldn't work with benny's global tuning, and we have scale quantisers already in benny.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -30,6 +30,11 @@
 			{
 				"contains" : [3,3,4,4,5,6],
 				"colour" : -5,
+				"height" : 0
+			},
+			{
+				"contains" : [7,8,9],
+				"colour" : 0,
 				"height" : 0
 			}
 		],
@@ -61,14 +66,14 @@
 			{
 				"name" : "in1 target",
 				"type" : "menu_i",
-				"values" : ["frequency", "colour", "timbre", "model", "trigger" ],
+				"values" : ["frequency", "timbre", "colour", "model", "trigger" ],
 				"wrap" : 1,
 				"default" : 0.1
 			},
 			{
 				"name" : "in2 target",
 				"type" : "menu_i",
-				"values" : ["frequency", "colour", "timbre", "model", "trigger" ],
+				"values" : ["frequency", "timbre", "colour", "model", "trigger" ],
 				"wrap" : 1,
 				"default" : 0.1
 			},
@@ -85,6 +90,26 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
+			},{
+				"name" : "velocity -> vca",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5			
+			},
+			{
+				"name" : "velocity -> timbre",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "velocity -> colour",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}
