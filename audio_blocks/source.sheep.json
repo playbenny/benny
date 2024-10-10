@@ -1,0 +1,115 @@
+{
+	"source.sheep" : {
+		"patcher" : "source.sheep",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Tides module running the unofficial 'Sheep' firmware, which is a XY wavetable synth oscillator.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in 1", "in 2" ],
+				"midi" : [ "internal osc pitch" ]
+			},
+			"out" : {
+				"audio" : [ "out", "alt" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			
+			{
+				"contains" : [0,0,1,1,2 ],
+				"colour" : 0,
+				"height" : 3
+			},
+			{
+				"contains" : [3,3,4,4,5],
+				"colour" : -5,
+				"height" : 2
+			},
+			{
+				"contains" : [6, 7, 7, 8,8, 9],
+				"colour" : -10,
+				"height" : 0
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "X",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "Y",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "smooth",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "bank",
+				"type" : "menu_i",
+				"values" : ["PWMish", "harmonics", "Braids_WMAP"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "range",
+				"type" : "menu_i",
+				"values" : ["high", "medium", "low"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "freeze",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "use clock",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "in1 target",
+				"type" : "menu_i",
+				"values" : ["fm", "X", "Y", "trig", "clock" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_i",
+				"values" : ["fm", "X", "Y", "trig", "clock" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "alt out",
+				"type" : "menu_i",
+				"values" : ["uni", "sub", "1-bit" ],
+				"wrap" : 1,
+				"default" : 0.1
+			}
+		]
+	}
+}
