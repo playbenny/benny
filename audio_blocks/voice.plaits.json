@@ -83,18 +83,18 @@
 				"default" : 0
 			},
 			{
-				"name" : "timbre attenuverter",
-				"type" : "float",
-				"values" : ["bi", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5 
-			},
-			{
-				"name" : "morph attenuverter",
+				"name" : "timbre attenuator",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0 
+			},
+			{
+				"name" : "morph attenuator",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
 			},
 			{
 				"name" : "octave",
