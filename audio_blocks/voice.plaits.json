@@ -38,7 +38,7 @@
 				"height" : 0
 			},
 			{
-				"contains" : [10,10,11,11,12],
+				"contains" : [10,11,12],
 				"colour" : 10,
 				"height" : 0
 			}
