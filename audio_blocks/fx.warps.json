@@ -1,0 +1,82 @@
+{
+	"fx.warps" : {
+		"patcher" : "fx.warps",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Warps module, which lets you smoothly fade between several different algorithms for combining two signals.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "carrier", "modulator" ],
+				"midi" : [ "internal osc pitch" ]
+			},
+			"out" : {
+				"audio" : [ "out", "alt" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			
+			{
+				"contains" : [0,0,1 ],
+				"colour" : 0,
+				"height" : 3
+			},
+			{
+				"contains" : [2,2,3,4,5],
+				"colour" : -5,
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "algo",
+				"type" : "menu_f",
+				"values" : ["xfade", "fold", "analog_rm", "digital_rm", "xor", "comparator", "vocoder"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "timbre",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "carrier osc shape",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["external", "sine", "triangle", "saw"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "level 1",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "level 2",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "easter",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			}
+		]
+	}
+}
