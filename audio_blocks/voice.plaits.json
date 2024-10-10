@@ -122,14 +122,14 @@
 				"type" : "menu_i",
 				"values" : ["fm", "timbre", "morph", "harmo", "trig" ],
 				"wrap" : 1,
-				"default" : 0.15
+				"default" : 0.1
 			},
 			{
 				"name" : "in2 target",
 				"type" : "menu_i",
 				"values" : ["fm", "timbre", "morph", "harmo", "trig" ],
 				"wrap" : 1,
-				"default" : 0.15
+				"default" : 0.1
 			},
 			{
 				"name" : "notes -> trigger",

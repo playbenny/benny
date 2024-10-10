@@ -63,7 +63,7 @@
 				"type" : "menu_i",
 				"values" : ["frequency", "colour", "timbre", "model", "trigger" ],
 				"wrap" : 1,
-				"default" : 0.15
+				"default" : 0.1
 			},
 			{
 				"name" : "in2 target",

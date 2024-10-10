@@ -121,7 +121,7 @@
 				"type" : "menu_i",
 				"values" : ["in R", "pitch", "position", "size", "density", "texture", "wet/dry", "trigger" ],
 				"wrap" : 1,
-				"default" : 0.15
+				"default" : 0.1
 			},
 			{
 				"name" : "lofi",
