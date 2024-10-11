@@ -7,7 +7,7 @@
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "clock in" ]
+				"midi" : [ "clock in","reset in" ]
 			},
 			"out" : {
 				"midi" : [ "values", "clock" ]
