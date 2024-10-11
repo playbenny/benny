@@ -18,11 +18,6 @@
 			}
 		},
 		"groups" : [
-			{ 
-				"contains" : [0],
-				"colour" : 0,
-				"height" : 0
-			},
 			{
 				"contains" : [1,2,3],
 				"colour" : [255,255,255],
@@ -44,9 +39,9 @@
 				"height" : 0
 			},
 			{
-				"contains" : [15,16,17],
-				"colour" : -5,
-				"height" : 0
+				"contains" : [0,15,16,17],
+				"colour" : [160,160,160],
+				"height" : 2
 			}
 		],
 		"panel" : {
@@ -56,7 +51,6 @@
 			{
 				"name" : "model",
 				"type" : "menu_l",
-				"columns" : 3,
 				"values" : ["modal", "string", "strings"],
 				"wrap" : 1,
 				"default" : 0
@@ -161,21 +155,24 @@
 			},
 			{
 				"name" : "in1 target",
-				"type" : "menu_i",
+				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["blow", "strike", "fm", "strength", "gate"],
 				"wrap" : 1,
 				"default" : 0.1
 			},
 			{
 				"name" : "in2 target",
-				"type" : "menu_i",
+				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["blow", "strike", "fm", "strength", "gate"],
 				"wrap" : 1,
 				"default" : 0.1
 			},
 			{
 				"name" : "notes -> gate",
-				"type" : "menu_i",
+				"type" : "menu_b",
+				"force_label" : 1,
 				"values" : ["off", "on"],
 				"wrap" : 1,
 				"default" : 0.75

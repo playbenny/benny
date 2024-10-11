@@ -35,6 +35,7 @@
 				"name" : "t1",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -42,6 +43,7 @@
 				"name" : "t2",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -49,6 +51,7 @@
 				"name" : "t3",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -56,6 +59,7 @@
 				"name" : "t4",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -63,6 +67,7 @@
 				"name" : "t5",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -70,6 +75,7 @@
 				"name" : "t6",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -77,6 +83,7 @@
 				"name" : "t7",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},
@@ -84,6 +91,7 @@
 				"name" : "t8",
 				"type" : "float",
 				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
 				"default" : 0.5,
 				"wrap" : 0
 			},			
@@ -92,6 +100,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
@@ -99,6 +108,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
@@ -106,6 +116,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
@@ -113,6 +124,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},			
 			{
@@ -120,6 +132,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
@@ -127,6 +140,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
@@ -134,6 +148,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
@@ -141,6 +156,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
+				"click_set" : 1,
 				"default" : 0
 			},
 			{
