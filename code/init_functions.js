@@ -727,6 +727,12 @@ function load_config_colours(){
 	state_fade.lastcolour = menudark;
 	dimm=bg_dark_ratio;
 	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	var avg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
+	greycolour = [avg,avg,avg];
+	avg *= 0.5;
+	greydark = [avg,avg,avg];
+	avg *= 2*bg_dark_ratio;
+	greydarkest = [avg,avg,avg];
 	backgroundcolour = config.get("palette::background");
 	backgroundcolour_blocks = config.get("palette::background_blocks");
 	backgroundcolour_block_menu = config.get("palette::background_block_menu");

@@ -2487,16 +2487,14 @@ function draw_sidebar(){
 				free_a--;
 			}
 		}
-		var cavg = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
-		
-		var	greydarkest = [cavg,cavg,cavg];
-		cavg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
-		var greycolour = [cavg,cavg,cavg];
+
 		var fpage = 0;
+		var gdarkest = [greydarkest[0],greydarkest[1],greydarkest[2]];
+		var gcolour = [greycolour[0],greycolour[1],greycolour[2]];
 		if(sidebar.files_page == "templates"){
 			fpage = 1;
-			greydarkest = [greydarkest[0]*0.8,greydarkest[1]*0.8,greydarkest[2]*1.2];
-			greycolour = [greycolour[0]*0.8,greycolour[1]*0.8,greycolour[2]*1.2];
+			gdarkest = [greydarkest[0]*0.8,greydarkest[1]*0.8,greydarkest[2]*1.2];
+			gcolour = [greycolour[0]*0.8,greycolour[1]*0.8,greycolour[2]*1.2];
 		}	 
 		var file_menu_x = sidebar.x2 - fontheight * 15;
 		if(sidebar.mode != sidebar.lastmode){
@@ -2511,85 +2509,7 @@ function draw_sidebar(){
 		
 		y_offset += (0.4+0.6*loading.hardware_substitutions_occured)*fontheight;
 		
-		setfontsize(fontsmall*2);
-
-		for(i=0;i<songlist[fpage].length;i++){
-			y_offset += 1.1*fontheight;
-			if(i==currentsong){
-				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,greycolour );
-				lcd_main.message("frgb", 0, 0, 0 );
-				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
-				lcd_main.message("write" , songlist[fpage][i]);
-			}else{
-				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,greydarkest );	
-				lcd_main.message("frgb" , greycolour);
-				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
-				lcd_main.message("write" , songlist[fpage][i]);
-			}
-			click_zone(select_song,i,i, file_menu_x , y_offset, sidebar.x2, y_offset+1.1*fontheight,mouse_index,1 );
-		}
-		y_offset += 1.5*fontheight;
-
 		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight*(1+0.6*loading.hardware_substitutions_occured),0,0,0 );
-		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*2.1, 9+fontheight,greydarkest );
-		if(!playing){
-			lcd_main.message("frgb" , greycolour);
-		}else{
-			if(danger_button == mouse_index){
-				lcd_main.message("frgb" , 255,50,50);
-			}else{
-				lcd_main.message("frgb" , greycolour[0], greycolour[1]*0.3, greycolour[2]*0.2);
-			}
-		}
-		if(usermouse.ctrl){
-			click_zone(load_elsewhere_choose, "","", file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
-			setfontsize(fontsmall);
-			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.45);
-			lcd_main.message("write", "load from");
-			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75);
-			lcd_main.message("write", "elsewhere");
-			setfontsize(fontsmall*2);
-		}else{
-			click_zone(load_song, "","", file_menu_x, 9, file_menu_x+fontheight*2.2, 9+fontheight,mouse_index,1 );
-			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75);
-			lcd_main.message("write", "load");
-		}
-
-		//only show merge if resources are available
-		var merge=0;
-		if(currentsong==-1){
-			merge = 1;
-		}else if((free_b>=songs_info[currentsong][0])&&(free_n>=songs_info[currentsong][1])&&(free_a>=songs_info[currentsong][2])){
-			merge = 1;
-		}
-		if(merge){
-			lcd_main.message("paintrect", file_menu_x + fontheight*2.2, 9, file_menu_x+fontheight*4.3, 9+fontheight,greydarkest );
-			click_zone( merge_song, null, null, file_menu_x + fontheight*2.2, 9, file_menu_x+fontheight*4.4, 9+fontheight,mouse_index,1 );
-			lcd_main.message("frgb" , greycolour);
-			lcd_main.message("moveto", file_menu_x + fontheight*2.4, 9+fontheight*0.75);
-			lcd_main.message("write", "merge");
-		}else{
-			//post("Not enough free resources to offer merge-load,\nfree_b:",free_b," free_n:",free_n," free_a:",free_a,"\nand the song requires",songs_info[currentsong]);
-		}
-	
-		lcd_main.message("paintrect", file_menu_x + fontheight*5.5, 9, file_menu_x+fontheight*7.6, 9+fontheight,greydarkest );
-		lcd_main.message("frgb" , greycolour);
-		setfontsize(fontsmall);
-		if(usermouse.ctrl){
-			click_zone(select_folder, "song", null, file_menu_x + fontheight*5.5, 9, file_menu_x+fontheight*7.7, 9+fontheight,mouse_index,1 );
-			lcd_main.message("moveto", file_menu_x + fontheight*5.7, 9+fontheight*0.45);
-			lcd_main.message("write", "change");
-			lcd_main.message("moveto", file_menu_x + fontheight*5.7, 9+fontheight*0.75);
-			lcd_main.message("write", "folder");
-		}else{
-			click_zone(files_switch_folder, 1, "", file_menu_x + fontheight*5.5, 9, file_menu_x+fontheight*7.7, 9+fontheight,mouse_index,1 );
-			lcd_main.message("moveto", file_menu_x + fontheight*5.7, 9+fontheight*0.45);
-			lcd_main.message("write", "folder:");
-			lcd_main.message("moveto", file_menu_x + fontheight*5.7, 9+fontheight*0.75);
-			lcd_main.message("write", sidebar.files_page);
-		}
-
-				
 		if(loading.hardware_substitutions_occured==1){
 			setfontsize(fontsmall);
 			lcd_main.message("paintrect", file_menu_x , 9 + 1.1*fontheight, sidebar.x2, 9+1.6*fontheight,50,0,0 );	
@@ -2599,43 +2519,181 @@ function draw_sidebar(){
 		}
 
 		setfontsize(fontsmall*2);
-	
+		for(i=0;i<songlist[fpage].length;i++){
+			y_offset += 1.1*fontheight;
+			if(i==currentsong){
+				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,gcolour );
+				lcd_main.message("frgb", 0, 0, 0 );
+				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
+				lcd_main.message("write" , songlist[fpage][i]);
+			}else{
+				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,gdarkest );	
+				lcd_main.message("frgb" , gcolour);
+				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
+				lcd_main.message("write" , songlist[fpage][i]);
+			}
+			click_zone(select_song,i,i, file_menu_x , y_offset, sidebar.x2, y_offset+1.1*fontheight,mouse_index,1 );
+		}
+		y_offset += 1.5*fontheight;
 		
+		
+		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*1.7, 9+fontheight,gdarkest );
+		setfontsize(fontsmall*2);
+		if(!playing){
+			lcd_main.message("frgb" , gcolour);
+		}else{
+			if(danger_button == mouse_index){
+				lcd_main.message("frgb" , 255,50,50);
+			}else{
+				lcd_main.message("frgb" , gcolour[0], gcolour[1]*0.3, gcolour[2]*0.2);
+			}
+		}
+		click_zone(load_song, "","", file_menu_x, 9, file_menu_x+fontheight*1.8, 9+fontheight,mouse_index,1 );
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75);
+		lcd_main.message("write", "load");
 
+		lcd_main.message("paintrect", file_menu_x + fontheight*1.8, 9, file_menu_x+fontheight*4, 9+fontheight,gdarkest );
+		lcd_main.message("moveto", file_menu_x + fontheight*2, 9+fontheight*0.75);
+		//grey out merge if unavail
+		var merge=0;
+		if(currentsong==-1){
+			merge = 1;
+		}else if((free_b>=songs_info[currentsong][0])&&(free_n>=songs_info[currentsong][1])&&(free_a>=songs_info[currentsong][2])){
+			merge = 1;
+		}
+		if(merge){
+			click_zone( merge_song, null, null, file_menu_x + fontheight*1.8, 9, file_menu_x+fontheight*4.1, 9+fontheight,mouse_index,1 );
+			lcd_main.message("frgb" , gcolour);
+		}else{
+			lcd_main.message("frgb" , greydark);
+			//post("Not enough free resources to offer merge-load,\nfree_b:",free_b," free_n:",free_n," free_a:",free_a,"\nand the song requires",songs_info[currentsong]);
+		}
+		lcd_main.message("write", "merge");
+	
 		if(selected.block.indexOf(1)!=-1){
-			lcd_main.message("paintrect", sidebar.x2 - fontheight * 6.8, 9, sidebar.x2 - fontheight * 4.7, 9+fontheight,greydarkest );
-			lcd_main.message("frgb" , greycolour);
-			click_zone(save_song, 1, "", sidebar.x2 - fontheight * 6.9, 9, sidebar.x2 - fontheight * 4.7, 9+fontheight,mouse_index,1 );
+			lcd_main.message("paintrect", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.5, 9+fontheight,gdarkest );
+			lcd_main.message("frgb" , gcolour);
+			click_zone(save_song, 1, "", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.6, 9+fontheight,mouse_index,1 );
 			setfontsize(fontsmall);
-			lcd_main.message("moveto", sidebar.x2 - fontheight * 6.6, 9+fontheight*0.45);
+			lcd_main.message("moveto", sfile_menu_x + fontheight*6.2, 9+fontheight*0.45);
 			lcd_main.message("write", "save");
-			lcd_main.message("moveto", sidebar.x2 - fontheight * 6.6, 9+fontheight*0.75);
+			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.75);
 			lcd_main.message("write", "selected");
 			setfontsize(fontsmall*2);
-		}
-
-		if((loading.songname != "")&&(loading.songname!="autoload")){
-			lcd_main.message("paintrect", sidebar.x2 - fontheight * 4.6, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,greydarkest );
-			if(loading.hardware_substitutions_occured==1){
-				lcd_main.message("frgb", 255, 50, 50);
-			}else{
-				lcd_main.message("frgb" , greycolour);
-			}
-			click_zone(save_song, 0, 0, sidebar.x2 - fontheight * 4.7, 9, sidebar.x2 - fontheight * 2.5, 9+fontheight,mouse_index,1 );
-			lcd_main.message("moveto", sidebar.x2 - fontheight * 4.4, 9+fontheight*0.75);
-			lcd_main.message("write", "save");				
-		}
-
-		lcd_main.message("paintrect", sidebar.x2 - fontheight * 2.4, 9, sidebar.x2, 9+fontheight,greydarkest );
-		if(danger_button == mouse_index){
-			lcd_main.message("frgb" , 255,50,50);
 		}else{
-			lcd_main.message("frgb", greycolour);
+			lcd_main.message("paintrect", file_menu_x + fontheight*4.1, 9, file_menu_x + fontheight*5.9, 9+fontheight,gdarkest );
+			if((loading.songname != "")&&(loading.songname!="autoload")){
+				if(loading.hardware_substitutions_occured==1){
+					lcd_main.message("frgb", 255, 50, 50);
+				}else{
+					lcd_main.message("frgb" , gcolour);
+				}
+				click_zone(save_song, 0, 0, file_menu_x + fontheight*4.1, 9, file_menu_x + fontheight*6, 9+fontheight,mouse_index,1 );
+			}else{
+				lcd_main.message("frgb", greydark);
+			}
+			lcd_main.message("moveto", file_menu_x + fontheight*4.3, 9+fontheight*0.75);
+			lcd_main.message("write", "save");				
+	
+			lcd_main.message("paintrect", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.7, 9+fontheight,gdarkest );
+			if(danger_button == mouse_index){
+				lcd_main.message("frgb" , 255,50,50);
+			}else{
+				lcd_main.message("frgb", gcolour);
+			}
+			click_zone( save_song, 0, 1, file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.8, 9+fontheight,mouse_index,1 );
+			//setfontsize(fontsmall);
+			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.75);
+			lcd_main.message("write", "save as");
 		}
-		click_zone( save_song, 0, 1, sidebar.x2 - fontheight * 2.5, 9, sidebar.x2, 9+fontheight,mouse_index,1 );
-		//setfontsize(fontsmall);
-		lcd_main.message("moveto", sidebar.x2 - fontheight*2.2, 9+fontheight*0.75);
-		lcd_main.message("write", "save as");
+
+		lcd_main.message("paintrect", sidebar.x2 - fontheight * 3.4, 9,  sidebar.x2 - fontheight * 1.2, 9+fontheight,gdarkest);
+		click_zone(files_switch_folder, 1, "", sidebar.x2 - fontheight * 3.4, 9, sidebar.x2 - fontheight * 1.1, 9+fontheight,mouse_index,1 );
+		setfontsize(fontsmall);
+		lcd_main.message("frgb",gcolour);
+		lcd_main.message("moveto", sidebar.x2 - fontheight * 3.2, 9+fontheight*0.5);
+		lcd_main.message("write", "folder:");
+		lcd_main.message("moveto", sidebar.x2 - fontheight * 3.2, 9+fontheight*0.75);
+		lcd_main.message("write", sidebar.files_page);
+						
+		click_zone(set_sidebar_mode,"file_more", "file_more",sidebar.x2-1.1*fontheight,0,sidebar.x2,fontheight+9,mouse_index,1 );
+		lcd_main.message("paintrect", sidebar.x2-fontheight,9,sidebar.x2,fontheight+9,gdarkest);
+		lcd_main.message("moveto", sidebar.x2-fontheight*0.8, 9+fontheight*0.75);
+		lcd_main.message("frgb",gcolour);
+		setfontsize(fontsmall*2);
+		lcd_main.message("write", "...");
+
+	}else if(sidebar.mode == "file_more"){
+		//browse, and list of folders (songs, templates, record), and a collect all button
+		if(sidebar.mode != sidebar.lastmode){
+			clear_sidebar_paramslider_details();
+			sidebar.lastmode = sidebar.mode;
+			audio_to_data_poly.setvalue(0,"vis_scope", 0);
+			remove_midi_scope();
+			redraw_flag.targets=[];
+			sidebar.selected = -1;
+			read_songs_folder(sidebar.files_page);
+		}
+		var file_menu_x = sidebar.x2 - fontheight * 15;
+		setfontsize(fontsmall*2);
+		click_zone(set_sidebar_mode,"file_menu", "file_menu",sidebar.x2-1.1*fontheight,0,sidebar.x2,fontheight+9,mouse_index,1 );
+		lcd_main.message("paintrect", sidebar.x2-fontheight,9,sidebar.x2,fontheight+9,greydarkest);
+		lcd_main.message("moveto", sidebar.x2-fontheight*0.8, 9+fontheight*0.75);
+		lcd_main.message("frgb",greycolour);
+		lcd_main.message("write", "<<");
+		y_offset+=1.1*fontheight;
+		//browse for file:
+		click_zone(load_elsewhere_choose, "","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
+		lcd_main.message("frgb",greycolour);
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", "browse for songfile");
+		y_offset+=1.6*fontheight;
+		//collect all and save:
+		if(0){
+			//click_zone(collect_all_and_save, "","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
+			lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
+			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+			lcd_main.message("frgb",greycolour);
+			lcd_main.message("write", "collect all and save");
+			y_offset+=1.1*fontheight;
+		}
+		
+		y_offset+=1.1*fontheight;
+
+		//songs folder
+		setfontsize(fontsmall);
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset+fontheight*0.25, sidebar.x2, 9+fontheight+y_offset,greydarkest);
+		lcd_main.message("frgb",greycolour);
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+y_offset);
+		lcd_main.message("write", "songfiles folder");
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", SONGS_FOLDER);
+		click_zone(select_folder, "song", null, file_menu_x, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,mouse_index,1 );
+		y_offset+=2.2*fontheight;
+
+		//templates folder
+		gdarkest = [greydarkest[0]*0.8,greydarkest[1]*0.8,greydarkest[2]*1.2];
+		gcolour = [greycolour[0]*0.8,greycolour[1]*0.8,greycolour[2]*1.2];
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset+fontheight*0.25, sidebar.x2, 9+fontheight+y_offset,gdarkest);
+		lcd_main.message("frgb",gcolour);
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+y_offset);
+		lcd_main.message("write", "templates folder");
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", TEMPLATES_FOLDER);
+		click_zone(select_folder, "template", null, file_menu_x, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,mouse_index,1 );
+		y_offset+=2.2*fontheight;
+		
+		//record folder
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset+fontheight*0.25, sidebar.x2, 9+fontheight+y_offset,68,10,10);
+		lcd_main.message("frgb",255,50,50);
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+y_offset);
+		lcd_main.message("write", "record folder");
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", config.get("RECORD_FOLDER"));
+		click_zone(select_folder, "record", null, file_menu_x, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,mouse_index,1 );
+		y_offset+=2.2*fontheight;
+
 
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		draw_resource_monitor_page();
@@ -5971,11 +6029,6 @@ function draw_sidebar(){
 				lcd_main.message("write", "multiple blocks selected");
 				y_offset += 1.1*fontheight;
 				
-
-				var cavg = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
-				var	greydarkest = [cavg,cavg,cavg];
-				cavg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
-				var greycolour = [cavg,cavg,cavg];
 				lcd_main.message("paintrect", sidebar.x2- fontheight*6.3, y_offset, sidebar.x2- fontheight*4.4, fontheight+y_offset,greydarkest );
 				lcd_main.message("frgb" ,greycolour);
 				click_zone(save_song,1,1, sidebar.x2 - fontheight*6.3, y_offset, sidebar.x2 - fontheight*4.4, fontheight+y_offset,mouse_index,1 );
@@ -5984,7 +6037,6 @@ function draw_sidebar(){
 				lcd_main.message("moveto" ,sidebar.x2 - fontheight*6.2, fontheight*0.75+y_offset);
 				lcd_main.message("write", "selected");
 			
-
 				var recarmflag=0;
 				for(var tb=0;tb<MAX_BLOCKS;tb++){
 					if(selected.block[tb]){
