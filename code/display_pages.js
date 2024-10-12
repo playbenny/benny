@@ -2575,7 +2575,7 @@ function draw_sidebar(){
 			lcd_main.message("frgb" , gcolour);
 			click_zone(save_song, 1, "", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.6, 9+fontheight,mouse_index,1 );
 			setfontsize(fontsmall);
-			lcd_main.message("moveto", sfile_menu_x + fontheight*6.2, 9+fontheight*0.45);
+			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.45);
 			lcd_main.message("write", "save");
 			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.75);
 			lcd_main.message("write", "selected");

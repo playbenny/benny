@@ -10,7 +10,8 @@
 				"midi" : [ "clock in","reset in" ]
 			},
 			"out" : {
-				"midi" : [ "values", "clock" ]
+				"parameters" : [ "values" ],
+				"midi" : [ "clock" ]
 			}
 		},
 		"groups" : [

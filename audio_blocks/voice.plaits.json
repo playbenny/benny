@@ -19,27 +19,27 @@
 		"groups" : [
 			{ 
 				"contains" : [0],
-				"colour" : 0,
+				"colour" : [22,156,144],
 				"height" : 0
 			},
 			{
 				"contains" : [1,2,3],
-				"colour" : -10,
+				"colour" : [161,28,114],
 				"height" : 3
 			},
 			{
 				"contains" : [4,5,6],
-				"colour" : -14,
+				"colour" : [190,190,190],
 				"height" : 0
 			},
 			{
 				"contains" : [7,8,9],
-				"colour" : -5,
+				"colour" : [255,255,255],
 				"height" : 0
 			},
 			{
 				"contains" : [10,11,12],
-				"colour" : 10,
+				"colour" : [190,190,190],
 				"height" : 0
 			}
 		],

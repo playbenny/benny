@@ -19,22 +19,23 @@
 		"groups" : [
 			{ 
 				"contains" : [0],
-				"colour" : 0,
+				"colour" : [22,156,144],
 				"height" : 0
 			},
 			{
 				"contains" : [1,2],
-				"colour" : -10,
+				"colour" : [161,28,114],
 				"height" : 3
 			},
 			{
 				"contains" : [3,3,4,4,5,6],
-				"colour" : -5,
+				"colour" : [255,255,255],
 				"height" : 0
 			},
 			{
 				"contains" : [7,8,9],
-				"colour" : 0,
+				"header" : "velocity modulation",
+				"colour" : [190,190,190],
 				"height" : 0
 			}
 		],
@@ -78,7 +79,7 @@
 				"default" : 0.1
 			},
 			{
-				"name" : "notes -> trigger",
+				"name" : "notes ->_trigger",
 				"type" : "menu_i",
 				"values" : ["off", "on"],
 				"wrap" : 1,
@@ -91,21 +92,21 @@
 				"wrap" : 0,
 				"default" : 0
 			},{
-				"name" : "velocity -> vca",
+				"name" : "-> vca",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5			
 			},
 			{
-				"name" : "velocity -> timbre",
+				"name" : "-> timbre",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "velocity -> colour",
+				"name" : "-> colour",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
