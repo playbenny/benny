@@ -1,7 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
-
+12/10/24:
+- rings, clouds, warps, sheep and braids all added too. the MI blocks with pitch inputs have been adjusted to work with benny's global tuning table system. also added the MI verb and phase vocoder
+- voice.basic now has a row of velocity modulation controls, which makes that more conventient.
 9/10/24:
 - voice.plaits is a wrapper for v boehm's port of MI plaits. works really nicely with benny's workflow i think, and is fun in polyphony. the audio input destination selectors work with the module's different behaviour for when things are plugged in or not, when things aren't connected to the mod inputs there's an internal decay envelope. grateful for Emilie's generosity.
 8/10/24:
