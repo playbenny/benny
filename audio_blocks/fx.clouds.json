@@ -33,6 +33,11 @@
 				"contains" : [0,11,12],
 				"colour" : 0,
 				"height" : 0
+			},
+			{
+				"contains" : [13,14,15],
+				"colour" : 0,
+				"height" : 0
 			}
 		],
 		"panel" : {
@@ -129,7 +134,27 @@
 				"values" : ["off", "on"],
 				"wrap" : 1,
 				"default" : 0.25
-			}
+			},
+			{
+				"name" : "wave",
+				"type" : "wave",
+				"values" : ["wave",0,256],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "load_from_wave",
+				"type" : "button",
+				"values" : ["voices","copy_from_wave","copy_from_wave"],
+				"default" : 0
+			},
+			{
+				"name" : "save_to_wave",
+				"type" : "button",
+				"values" : ["voices","copy_to_wave","copy_to_wave"],
+				"default" : 0
+			}	
 		]
 	}
 }
