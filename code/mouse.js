@@ -1007,7 +1007,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
 		if(displaymode=="blocks"){
-			if((!usermouse.ctrl)&&(!usermouse.shift)){
+			if((!usermouse.ctrl)&&(!usermouse.shift)&&(!usermouse.alt)){
 				var xx = (2 * x / mainwindow_width) - 1;
 				var yy = (2 * y / mainwindow_height) - 1;
 				
@@ -1022,7 +1022,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
 					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
 				} //todo? ctrl-scroll a block
-			}	
+			}else if((usermouse.shift)&&(usermouse.alt)){
+				var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+				make_space(stw[0],stw[1],-4*scroll);
+			}
 		}else if(displaymode=="block_menu"){
 			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));
 			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);

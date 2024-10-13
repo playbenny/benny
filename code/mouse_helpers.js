@@ -3276,3 +3276,23 @@ function turn_off_controller_assign_mode(){
 	note_poly.setvalue(0,"connection_assign_mode",0);
 	automap.assignmode = 0;
 }
+
+function make_space(x,y,r){
+	//move all blocks a distance r along a line from their x,y to the specified x,y.
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::space")){
+			var bx = blocks.get("blocks["+b+"]::space::x");
+			var by = blocks.get("blocks["+b+"]::space::y");
+			var dx = bx-x;
+			var dy = by-y;
+			var dd = r/Math.sqrt(dx*dx+dy*dy);
+			dx *= dd;
+			dy *= dd; //now normalised to a r-long vector.
+			bx += dx; 
+			by += dy;
+			blocks.replace("blocks["+b+"]::space::x",bx);
+			blocks.replace("blocks["+b+"]::space::y",by);
+		}
+	}
+	redraw_flag.flag |= 4;
+}
