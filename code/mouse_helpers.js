@@ -554,7 +554,7 @@ function clear_blocks_selection(){
 	redraw_flag.targetcount = 0;
 	sidebar.scopes.midi = -1;
 	sidebar.scopes.voice = -1;
-	if(sidebar.mode!="none") set_sidebar_mode("none");
+	if((sidebar.mode!="none")&&(sidebar.mode!="file_menu")) set_sidebar_mode("none");
 }
 
 function select_all(){

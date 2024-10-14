@@ -461,7 +461,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
 								usermouse.clicked3d = -1;
-								//redraw_flag.flag=8;
 								if(BLOCK_MENU_CLICK_ACTION=="long_click"){
 									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
 									usermouse.timer = 0;
