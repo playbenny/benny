@@ -19,7 +19,12 @@
 			},{
 				"contains" : [2,4],
 				"height" : 0
-			}			
+			},{
+				"header" : "history / looper",
+				"contains" : [5,6,7,8],
+				"height" : 0,
+				"colour" : -20
+			}		
 		],
 		"parameters" : [
 			{
@@ -57,6 +62,34 @@
 				"error_scale" : 0,
 				"wrap" : 1,
 				"default" : 0.75
+			},{
+				"name" : "mode",
+				"type" : "menu_b",
+				"values" : ["thru", "looping"],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "loop_length_(beats)",
+				"type" : "int",
+				"values" : ["uni", 1,256,"lin"],
+				"wrap" : 0,
+				"default" : 0.124,
+				"error_scale" :0
+			},
+			{
+				"name" : "age_(beats)",
+				"type" : "float",
+				"values" : ["uni", 0,255,"lin"],
+				"wrap" : 0,
+				"default" : 0.005,
+				"error_scale" :0
+			},{
+				"name" : "spawn_player",
+				"type" : "button",
+				"values" : ["firstvoice","spawn","spawn"],
+				"default" : 0
 			}
 		]
 	}
