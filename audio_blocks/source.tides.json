@@ -3,7 +3,7 @@
 		"patcher" : "source.tides",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Tides module.",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Tides module. The frequency slider is overridden by note inputs.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -18,7 +18,7 @@
 		},
 		"groups" : [			
 			{
-				"contains" : [0,0,1,1,2 ],
+				"contains" : [10, 0, 0,0,1,1,1,2,2 ],
 				"colour" : [255,255,255],
 				"height" : 3
 			},
@@ -111,6 +111,13 @@
 				"values" : ["uni", "hi", "low" ],
 				"wrap" : 1,
 				"default" : 0.1
+			},
+			{
+				"name" : "freq",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5			
 			}
 		]
 	}
