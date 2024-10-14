@@ -3,7 +3,7 @@
 		"patcher" : "fx.clouds",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Clouds module.",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Clouds module. The module's internal buffer is 4 seconds long, you can save it to a wave slot and you're also able to load waves into it.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
