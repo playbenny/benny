@@ -2,7 +2,9 @@
 	"seq.wonky" : {
 		"patcher" : "seq.wonky",
 		"type" : "note",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "example.mini.ui",
+		"ui_in_sidebar_height" : 1,
+		"no_edit" : 1,
 		"help_text" : "The step time sliders control the length of each step, the block pro-ratas these lengths to make them fit into the time period you've set below. You can use this as a clock or there are also value sliders so you can use it as a stand alone sequencer.",
 		"max_polyphony" : 0,
 		"connections" : {
