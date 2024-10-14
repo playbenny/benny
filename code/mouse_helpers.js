@@ -3285,13 +3285,16 @@ function make_space(x,y,r){
 			var by = blocks.get("blocks["+b+"]::space::y");
 			var dx = bx-x;
 			var dy = by-y;
-			var dd = r/Math.sqrt(dx*dx+dy*dy);
-			dx *= dd;
-			dy *= dd; //now normalised to a r-long vector.
-			bx += dx; 
-			by += dy;
-			blocks.replace("blocks["+b+"]::space::x",bx);
-			blocks.replace("blocks["+b+"]::space::y",by);
+			var dd = Math.sqrt(dx*dx+dy*dy);
+			if((dd>1.4)||(r>0)){
+				dd = r/dd;
+				dx *= dd;
+				dy *= dd; //now normalised to a r-long vector.
+				bx += dx; 
+				by += dy;
+				blocks.replace("blocks["+b+"]::space::x",bx);
+				blocks.replace("blocks["+b+"]::space::y",by);
+			}
 		}
 	}
 	redraw_flag.flag |= 4;

@@ -219,7 +219,7 @@ function create_blank_wave_buffer(number,length, channels,name){
 	d.name = "temp";
 	//if(number>waves_dict.getsize("waves")) 
 	//	waves_dict.append("waves","*");
-	d.replace("name",name+"$"+length+"$"+channels);
+	d.replace("name",name+"-"+number+"-"+length+"-"+channels);
 	d.replace("path","");
 	d.replace("length",waves_buffer[number].framecount());
 	d.replace("size",waves_buffer[number].length());

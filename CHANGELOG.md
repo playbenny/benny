@@ -4,6 +4,7 @@
 13/10/24:
 - tides (version 1) added
 - 'make space' fn : shift+alt+scroll on the blocks page to push all blocks away from the mouse cursor (or pull towards)
+- clouds now supports saving the contents of its internal buffer to a wave slot (and to disk so it's recalled when you load the song next time)
 12/10/24:
 - rings, clouds, warps, sheep and braids all added too. the MI blocks with pitch inputs have been adjusted to work with benny's global tuning table system. also added the MI verb and phase vocoder
 - voice.basic now has a row of velocity modulation controls, which makes that more conventient.
