@@ -31,7 +31,7 @@
 			{
 				"contains" : [6, 7, 7, 8,8, 9],
 				"colour" : -10,
-				"height" : 1
+				"height" : 3
 			}
 		],
 		"panel" : {
@@ -92,6 +92,7 @@
 			{
 				"name" : "in1 target",
 				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["fm", "X", "Y", "trig", "clock" ],
 				"wrap" : 1,
 				"default" : 0.1
@@ -99,6 +100,7 @@
 			{
 				"name" : "in2 target",
 				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["fm", "X", "Y", "trig", "clock" ],
 				"wrap" : 1,
 				"default" : 0.1
@@ -106,6 +108,7 @@
 			{
 				"name" : "alt out",
 				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["uni", "sub", "1-bit" ],
 				"wrap" : 1,
 				"default" : 0.1
