@@ -54,7 +54,7 @@
 			{
 				"name" : "smoothness",
 				"type" : "float",
-				"values" : ["uni", -1, 1, "lin"],
+				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
@@ -107,6 +107,7 @@
 			{
 				"name" : "alt out",
 				"type" : "menu_l",
+				"force_label" : 1,
 				"values" : ["uni", "hi", "low" ],
 				"wrap" : 1,
 				"default" : 0.1
