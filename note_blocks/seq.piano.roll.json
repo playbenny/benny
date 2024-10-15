@@ -1,0 +1,118 @@
+{
+	"seq.piano.roll" : {
+		"patcher" : "seq.piano.roll",
+		"type" : "note",
+		"block_ui_patcher" : "seq.piano.roll.ui",
+		"help_text" : "Classic piano roll sequencer. £Unlike other benny sequencers this one has an internal clock linked to the global clock and doesn't need a clock in, but can follow one if you want.",
+		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 4,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "trigger", "note->position", "reset" ]
+			},
+			"out" : {
+				"parameters" : [ "out", "playhead_position" ],
+				"dontdefaultall" : 1
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [2],
+				"onepervoice" : 1,
+				"height":1
+			},
+			{ 
+				"contains" : [3],
+				"colour" : 10,
+				"onepervoice" : 1,
+				"height":1
+			},
+			{ 
+				"contains" : [7],
+				"colour" : -10,
+				"onepervoice" :1,
+				"height" : 0 
+			},
+			{ 
+				"contains" : [1],
+				"colour" : 20,
+				"onepervoice" :1,
+				"height" : 0 
+			},
+			{
+				"contains" : [4,4,4,5,6],
+				"height" : 0,
+				"colour" : 25
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "clock",
+				"type" : "menu_i",
+				"width" : 3,
+				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "64nt", "128n"],
+				"error_scale" : 0,
+				"nomap" : 1,
+				"default" : 0.56
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["bi", -128, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "start",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "length",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.125
+			},
+			{
+				"name" : "trig velocity sense",
+				"type" : "menu_l",
+				"values" : [ "trigger only", "trig vel -> output value" ],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "<_back",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","<_back",-1]
+			},
+			{
+				"name" : ">_fwd",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices",">_fwd", 1]
+			},
+			{
+				"name" : "pattern",
+				"type" : "int",
+				"values" : ["uni", 0, 15, "lin"],
+				"error_scale" : 0,
+				"default" : 0,
+				"wrap" : 1
+			}
+		]
+	}
+}
