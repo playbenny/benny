@@ -432,7 +432,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var avx = blocks.get("blocks["+f_no+"]::space::x");
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
 								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
-								post("\ndy is",dy);
 								if(dy<1.2) make_space(avx,avy,0.65);
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 								var r = new_block(usermouse.ids[1], avx,avy);

@@ -3038,7 +3038,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion", oldconn.get("conversion"));
 		if(defaultpos==0) new_connection.replace("conversion::scale", 1);
 	}
-	post("\ndefaultpos was ",defaultpos);
+	//post("\ndefaultpos was ",defaultpos);
 	new_connection.replace("from::number",newblock);
 	new_connection.replace("from::voice","all");
 	new_connection.replace("from::output::number",0/*o_no*/);
