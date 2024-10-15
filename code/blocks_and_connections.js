@@ -2964,7 +2964,6 @@ function connection_edit_voices(connection, voice){
 }
 
 function insert_block_in_connection(newblockname,newblock){
-//	post("insert conn no", menu.connection_number);
 	// get the details of the inserted block
 	var details = new Dict;
 	details = blocktypes.get(newblockname);
@@ -2977,8 +2976,6 @@ function insert_block_in_connection(newblockname,newblock){
 	var oldconn = new Dict;
 	oldconn = connections.get("connections["+menu.connection_number+"]");
 
-	// remove the connection
-	//remove_connection(menu.connection_number); //no, do this when you make the new one.
 	// make a new connection:
 	var f_type = oldconn.get("from::output::type");
 	var t_type = oldconn.get("to::input::type");
@@ -3041,7 +3038,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion", oldconn.get("conversion"));
 		if(defaultpos==0) new_connection.replace("conversion::scale", 1);
 	}
-	post("\ndefaultpos was ",defaultpos);
+	//post("\ndefaultpos was ",defaultpos);
 	new_connection.replace("from::number",newblock);
 	new_connection.replace("from::voice","all");
 	new_connection.replace("from::output::number",0/*o_no*/);
