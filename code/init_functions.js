@@ -34,7 +34,7 @@ function loadbang(){
 		try{
 			newuserconfig.freepeer();
 		}catch(error){ 
-			post("\nfreepeer failed",error); 
+			error("\nfreepeer failed",error); 
 		}
 		post("\nstarting again now first run tasks are completed");
 		var pause_and_reinit = new Task(loadbang, this);
@@ -829,7 +829,7 @@ function assign_block_colours(){
 							}
 						}
 					}catch(err){
-						post("\n\n>> ERROR >> the block:",types[i],"has corrupt groups in the json file.(",err.name,err.message,")");
+						error("\n\n>> ERROR >> the block:",types[i],"has corrupt groups in the json file.(",err.name,err.message,")");
 						blocktypes.remove(types[i]+"::groups["+gp+"]");
 						post("\ni have tried to remove the bad group but you should fix the file.\n");
 					}
