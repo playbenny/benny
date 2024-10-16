@@ -17,8 +17,7 @@
 			},
 			"out" : {
 				"audio" : [ "out to bus" ],
-				"force_unity" : 1,
-				"only" : [ "mix.bus" ]
+				"force_unity" : 1
 			}
 		},
 		"groups" : [
