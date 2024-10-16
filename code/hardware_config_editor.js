@@ -2181,7 +2181,10 @@ function keybcallback(data){
 					tr.push([0,127]);
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",tn);
 					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",tc);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",tr);
+					var tra=[];
+					for(var trt=0;trt<tr.length;trt++) tra.push("*");
+					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",tra);
+					for(var trt=0;trt<tr.length;trt++) configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges["+trt+"]",tr[trt]);
 				}else{
 					if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
 					configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi" , "{ }");
