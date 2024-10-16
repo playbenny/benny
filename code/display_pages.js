@@ -2388,6 +2388,22 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 255,60,60);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*5.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "delete state");
+	}else if(sidebar.mode == "notification"){
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menucolour);
+		lcd_main.message("frgb", 0,0,0 );
+		setfontsize(fontsmall*2);
+		lcd_main.message("textface", "bold");
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		lcd_main.message("write", "notification");
+		y_offset += 1.1* fontheight;
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,menudarkest);
+		lcd_main.message("frgb", menucolour);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		setfontsize(fontsmall);
+		lcd_main.message("textface", "normal");
+		post("\nsidebar notification is:\n",sidebar.notification);
+		long_sidebar_text(sidebar.notification);
+		
 	}else if(sidebar.mode == "file_menu"){
 		// FILE MENU ##############################################################################################################
 		//also: calculate resource usage so you can decide if you've got space to merge the currently selected song
@@ -4805,58 +4821,7 @@ function draw_sidebar(){
 					setfontsize(fontsmall);
 					lcd_main.message("textface", "normal");
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
-					var hintrows = 0.4+ hint.length / 45+hint.split("£").length-1;
-					var rowstart=0;
-					var rowend=7*sidebar.width_in_units;
-					hint = hint+"                       ";
-					var bold=0;
-					var sameline=0;
-					for(var ri=0;ri<hintrows;ri++){
-						while((hint[rowend]!=' ') && (rowend>1+rowstart)){ rowend--; }
-						var sliced = hint.slice(rowstart,rowend);
-						if(!sameline) {
-							lcd_main.message("moveto",sidebar.x+fontheight*0.2,y_offset+fontheight*(0.75+0.4*ri));
-						}else{
-							ri--;
-						}
-						sameline=0;
-						var newlineind = sliced.indexOf("£");
-						var boldind = sliced.indexOf("*");		
-						if((boldind>-1)&&(newlineind>-1)){
-							if(boldind<newlineind){
-								newlineind=-1;
-							}else{
-								boldind=-1;
-							}
-						}		
-						if(newlineind>-1){
-							rowend = rowstart+ sliced.indexOf("£");
-							sliced = hint.slice(rowstart,rowend);
-							sameline=0;
-						}
-						if(boldind>-1){
-							sameline=1;
-							bold=1-bold;
-							rowend = rowstart+ sliced.indexOf("*");
-							sliced = hint.slice(rowstart,rowend);
-						}
-						lcd_main.message("write",sliced);
-						if(!sameline){
-							rowstart=rowend+1;
-							rowend+=7*sidebar.width_in_units;
-						}else{
-							var t = rowstart+46;
-							rowstart=rowend+1
-							rowend=t;
-						}
-						if(bold){
-							lcd_main.message("textface", "bold");
-						}else{
-							lcd_main.message("textface", "normal");
-						}	
-					}
-					if(!bold) lcd_main.message("textface", "bold");
-					y_offset = y_offset+fontheight*(0.75+0.4*ri);
+					long_sidebar_text(hint);
 				}else{
 					click_zone(set_sidebar_mode,"help",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_darkest );
@@ -6400,6 +6365,7 @@ function draw_sidebar(){
 	}
 	view_changed = false;
 }
+
 
 function draw_resource_monitor_page() {
 	y_offset = 9 - sidebar.scroll.position;

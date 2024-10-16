@@ -481,7 +481,8 @@ var sidebar = {
 	scrollbar_index : 2,
 	back : [],
 	fwd : [],
-	files_page : "songs"
+	files_page : "songs",
+	notification : ""
 }
 
 var y_offset;
