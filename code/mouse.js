@@ -533,8 +533,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
-									//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
-									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									var makewire=1;
+									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
+									if(blocktypes.contains(fname+"::connections::out::force_unity")){
+										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+											makewire=0;
+											sidebar_notification("This block can only be connected to a mix.bus block");
+										}
+									}
+									if(makewire){
+										//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+										build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									}
 									usermouse.clicked3d=-1;
 								}
 							}else{ // ############## END OF DRAG MOVE BLOCKS ################
@@ -559,8 +570,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
-									post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
-									build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									var makewire=1;
+									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
+									if(blocktypes.contains(fname+"::connections::out::force_unity")){
+										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+											makewire=0;
+											sidebar_notification("This block can only be connected to a mix.bus block");
+										}
+									}
+									if(makewire){
+										post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
+										build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									}
 								}else{ // ################### A BUNCH OF MUNDANE TOGGLING SELECtiON - you released on a thing, no drag:
 									mouse_released_on_a_thing_no_drag();
 									usermouse.ids=['done',-1,-1];
@@ -782,6 +804,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
 											}
 										}
+										if(sidebar.mode=="notification") set_sidebar_mode("none");
 									}
 								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
 									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
@@ -795,6 +818,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									}
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
 									if(!blocktypes.contains(fname +"::connections::out")) drawwire=0; //no outputs!
+									if(blocktypes.contains(fname+"::connections::out::force_unity")){
+										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+											drawwire=0;
+											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mix.bus block");
+										}else{
+											if(sidebar.mode=="notification") set_sidebar_mode("none");
+										}
+									}
 									if(drawwire == 1){
 										potential_connection.replace("from::number",usermouse.ids[1]);
 										potential_connection.replace("to::number",usermouse.hover[1]);
