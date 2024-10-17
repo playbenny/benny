@@ -29,21 +29,21 @@ function convert_to_lengths(){
 	lowestnote = 128; highestnote = 0;
 	for(var i=0;i<k.length;i++){
 		if(k[i]!="looppoints"){
-			var event = seqdict.get(k[i]); //[time,note,vel]
-			if(event == null){
-			}else if(event[2]>0){ //noteon, find its length
-				if(event[1]<lowestnote) lowestnote = event[1];
-				if(event[1]>highestnote) highestnote = event[1];
+			var event = seqdict.get(k[i]); //[time,type,note,vel]
+			if((event == null)||(event[1]>1)){
+			}else if(event[3]>0){ //noteon, find its length
+				if(event[2]<lowestnote) lowestnote = event[2];
+				if(event[2]>highestnote) highestnote = event[2];
 				for(var ii=1;ii<k.length;ii++){
 					var ti = (i+ii) % k.length;
 					if(k[ti]!="looppoints"){
 						var tev = seqdict.get(k[ti]);
 						if(tev == null){
-						}else if(event[1]==tev[1]){ //note match
+						}else if(event[2]==tev[2]){ //note match
 							var tt = tev[0]-event[0];
 							tt = (tt + 1) % 1;
 							event.push(tt); //store length
-							if(tev[2]==0){
+							if(tev[3]==0){
 								seqdict.remove(k[ti]); //used up noteoff, remove it.
 							}
 							ii = 99999;
@@ -55,9 +55,9 @@ function convert_to_lengths(){
 					event.push(0);
 				}
 				seqdict.replace(k[i],event);
-			}else if(event[2]<0){
-				if(event[1]<lowestnote) lowestnote = event[1];
-				if(event[1]>highestnote) highestnote = event[1];
+			}else if(event[3]<0){
+				if(event[2]<lowestnote) lowestnote = event[2];
+				if(event[2]>highestnote) highestnote = event[2];
 				event.push(0);
 				seqdict.replace(k[i],event);
 			}
@@ -67,7 +67,7 @@ function convert_to_lengths(){
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(k[i]); //[time,note,vel]
 			if(event==null){
-			}else if(event[2]==0) seqdict.remove(k[i]);
+			}else if(event[3]==0) seqdict.remove(k[i]);
 		}
 	}
 	drawflag = 1;
@@ -94,15 +94,18 @@ function draw(){
 	if(block>=0){
 		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		/*outlet(1,"frgb",blockcolour);
+		outlet(1,"moveto", x_pos+4, y_pos + height*0.2);
+		outlet(1,"write", "note history");*/
 		var k = seqdict.getkeys();
 		if(k==null)return 0;
 		for(var i=0;i<k.length;i++){
 			if(k[i]!="looppoints"){
 				var event = seqdict.get(k[i]);
-				var ey = y_pos + height - 2 - (event[1]-lowestnote)*(height-3)/(highestnote-lowestnote);
+				var ey = y_pos + height - 2 - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote);
 				var ex1 = x_pos + event[0]*(width-1);
-				var ex2 = Math.min(ex1+Math.max(1,event[3]*(width-1)),x_pos+width-1);
-				var c = 0.2+0.8* Math.abs(event[2])/128;
+				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-1)),x_pos+width-1);
+				var c = 0.2+0.8* Math.abs(event[3])/128;
 				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
