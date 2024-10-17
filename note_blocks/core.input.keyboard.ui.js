@@ -22,6 +22,10 @@ var lowestnote,highestnote;
 
 function convert_to_lengths(){
 	var k = seqdict.getkeys();
+	if(k==null){
+		drawflag = 1;
+		return -1;
+	}
 	lowestnote = 128; highestnote = 0;
 	for(var i=0;i<k.length;i++){
 		if(k[i]!="looppoints"){
@@ -48,6 +52,7 @@ function convert_to_lengths(){
 				}
 				if(ii<9999){
 					post("\nFAILED TO FIND LENGTH FOR THIS NOTE",event);
+					event.push(0);
 				}
 				seqdict.replace(k[i],event);
 			}else if(event[2]<0){
@@ -90,12 +95,13 @@ function draw(){
 		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		var k = seqdict.getkeys();
+		if(k==null)return 0;
 		for(var i=0;i<k.length;i++){
 			if(k[i]!="looppoints"){
 				var event = seqdict.get(k[i]);
 				var ey = y_pos + height - 2 - (event[1]-lowestnote)*(height-3)/(highestnote-lowestnote);
 				var ex1 = x_pos + event[0]*(width-1);
-				var ex2 = Math.min(ex1+Math.max(1,event[3]*(width-1)),x_pos+width);
+				var ex2 = Math.min(ex1+Math.max(1,event[3]*(width-1)),x_pos+width-1);
 				var c = 0.2+0.8* Math.abs(event[2])/128;
 				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 				outlet(1,"frgb",col);

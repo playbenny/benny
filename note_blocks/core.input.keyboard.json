@@ -83,7 +83,7 @@
 			{
 				"name" : "age_(beats)",
 				"type" : "float",
-				"values" : ["uni", 0,255,"lin"],
+				"values" : ["uni", 0,255,"exp10"],
 				"wrap" : 0,
 				"default" : 0.005,
 				"error_scale" :0
