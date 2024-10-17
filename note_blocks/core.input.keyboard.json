@@ -3,7 +3,7 @@
 		"patcher" : "core.input.keyboard",
 		"type" : "note",
 		"block_ui_patcher" : "core.input.keyboard.ui",
-		"ui_in_sidebar_height" : 2,
+		"ui_in_sidebar_height" : 3,
 		"no_edit" : 1,
 		"help_text" : "Midi keyboard input. Outputs notes played and the usual keyboard controllers. ££If auto assign is turned on then when a block is selected the keyboard notes are sent to that block instead, until the block is deselected. ",
 		"//exclusive" : 1,

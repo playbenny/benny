@@ -27,7 +27,6 @@ function convert_to_lengths(){
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(k[i]); //[time,note,vel]
 			if(event == null){
-
 			}else if(event[2]>0){ //noteon, find its length
 				if(event[1]<lowestnote) lowestnote = event[1];
 				if(event[1]>highestnote) highestnote = event[1];
@@ -36,7 +35,6 @@ function convert_to_lengths(){
 					if(k[ti]!="looppoints"){
 						var tev = seqdict.get(k[ti]);
 						if(tev == null){
-
 						}else if(event[1]==tev[1]){ //note match
 							var tt = tev[0]-event[0];
 							tt = (tt + 1) % 1;
@@ -67,11 +65,11 @@ function convert_to_lengths(){
 			}else if(event[2]==0) seqdict.remove(k[i]);
 		}
 	}
+	drawflag = 1;
 }
 
 function setup(x1,y1,x2,y2,sw){ 
-	MAX_DATA = config.get("MAX_DATA");
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	//MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	mini=0;
 	width = x2-x1;
 	height = y2-y1;
@@ -84,19 +82,20 @@ function setup(x1,y1,x2,y2,sw){
 	draw();
 }
 
+function flag(){
+	drawflag = 1;
+}
 function draw(){
 	if(block>=0){
 		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		if(!mini){
-		}
 		var k = seqdict.getkeys();
 		for(var i=0;i<k.length;i++){
 			if(k[i]!="looppoints"){
 				var event = seqdict.get(k[i]);
-				var ey = y_pos + height - (event[1]-lowestnote)*height/(highestnote-lowestnote);
-				var ex1 = x_pos + event[0]*width;
-				var ex2 = Math.min(ex1+Math.max(1,event[3]*width),x_pos+width);
+				var ey = y_pos + height - 2 - (event[1]-lowestnote)*(height-3)/(highestnote-lowestnote);
+				var ex1 = x_pos + event[0]*(width-1);
+				var ex2 = Math.min(ex1+Math.max(1,event[3]*(width-1)),x_pos+width);
 				var c = 0.2+0.8* Math.abs(event[2])/128;
 				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 				outlet(1,"frgb",col);
