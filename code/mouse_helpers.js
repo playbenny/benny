@@ -1641,6 +1641,7 @@ function request_set_block_parameter(block, parameter, value){
 	var v = unscale_parameter(block,parameter,value);
 	if(v == null) return -1;
 	parameter_value_buffer.poke(1,MAX_PARAMETERS*block+parameter,v);
+	if(block == sidebar.selected) redraw_flag.flag |= 2;
 }
 function request_set_voice_parameter(block,voice,parameter,value){
 	//post("\nrsvp",block,voice,parameter,value);
@@ -1648,6 +1649,7 @@ function request_set_voice_parameter(block,voice,parameter,value){
 	if(v == null) return -1;
 	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
 	parameter_static_mod.poke(1,MAX_PARAMETERS*voice+parameter,v-bv);
+	if(block == sidebar.selected) redraw_flag.flag |= 2;
 }
 
 function unscale_parameter(block, parameter, value){
