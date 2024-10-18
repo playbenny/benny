@@ -18,7 +18,7 @@ blocks.name = "blocks";
 var seqdict = new Dict;
 seqdict.name = "core-keyb-loop-xfer";
 
-var lowestnote,highestnote;
+var lowestnote,highestnote,ccpresent;
 
 function convert_to_lengths(){
 	var k = seqdict.getkeys();
@@ -26,11 +26,13 @@ function convert_to_lengths(){
 		drawflag = 1;
 		return -1;
 	}
-	lowestnote = 128; highestnote = 0;
+	lowestnote = 128; highestnote = 0; ccpresent = 0;
 	for(var i=0;i<k.length;i++){
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(k[i]); //[time,type,note,vel]
-			if((event == null)||(event[1]>1)){
+			if(event == null){
+			}else if(event[1]>1){
+				ccpresent = 1;
 			}else if(event[3]>0){ //noteon, find its length
 				if(event[2]<lowestnote) lowestnote = event[2];
 				if(event[2]>highestnote) highestnote = event[2];
@@ -51,7 +53,7 @@ function convert_to_lengths(){
 					}
 				}
 				if(ii<9999){
-					post("\nFAILED TO FIND LENGTH FOR THIS NOTE",event);
+					//post("\nFAILED TO FIND LENGTH FOR THIS NOTE",event);
 					event.push(0);
 				}
 				seqdict.replace(k[i],event);
@@ -99,10 +101,26 @@ function draw(){
 		outlet(1,"write", "note history");*/
 		var k = seqdict.getkeys();
 		if(k==null)return 0;
+		var by = y_pos+height - 2;
+		if(ccpresent){
+			for(var i=0;i<k.length;i++){
+				if(k[i]!="looppoints"){
+					var event = seqdict.get(k[i]);
+					if(event[1]>1){
+						var ey = by - (event[3]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+						var ex1 = x_pos + event[0]*(width-1);
+						var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",ex1,ey);
+						outlet(1,"lineto",ex1,by);
+					}
+				}
+			}			
+		}
 		for(var i=0;i<k.length;i++){
 			if(k[i]!="looppoints"){
 				var event = seqdict.get(k[i]);
-				var ey = y_pos + height - 2 - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+				var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
 				var ex1 = x_pos + event[0]*(width-1);
 				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-1)),x_pos+width-1);
 				var c = 0.2+0.8* Math.abs(event[3])/128;

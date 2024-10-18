@@ -67,13 +67,13 @@
 			},{
 				"name" : "mode",
 				"type" : "menu_l",
-				"values" : ["listening", "looping","loop+overdub"],
+				"values" : ["listening", "looping","loop + overdub"],
 				"error_scale" : 0,
 				"wrap" : 1,
 				"default" : 0.25
 			},
 			{
-				"name" : "loop length_(beats)",
+				"name" : "loop length (beats)",
 				"type" : "int",
 				"values" : ["uni", 1,256,"lin"],
 				"wrap" : 0,
@@ -82,7 +82,7 @@
 			},
 			{
 				"name" : "age_(beats)",
-				"type" : "float",
+				"type" : "int",
 				"values" : ["uni", 0,255,"exp10"],
 				"wrap" : 0,
 				"default" : 0.005,
