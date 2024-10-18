@@ -29,7 +29,6 @@ function convert_to_lengths(){
 	}
 	lowestnote = 128; highestnote = 0; ccpresent = 0;
 	for(var i=0;i<k.length;i++){
-		post("convert",i);
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(block+"::"+k[i]); //[time,type,note,vel]
 			if(event == null){
@@ -68,7 +67,6 @@ function convert_to_lengths(){
 		}
 	}
 	for(var i=0;i<k.length;i++){
-		post("\nclean",i);
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(block+"::"+k[i]); //[time,note,vel]
 			if(event==null){
