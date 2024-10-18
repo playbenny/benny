@@ -21,32 +21,34 @@ seqdict.name = "core-keyb-loop-xfer";
 var lowestnote,highestnote,ccpresent;
 
 function convert_to_lengths(){
-	var k = seqdict.getkeys();
+	var sd = seqdict.get(block);
+	var k = sd.getkeys();
 	if(k==null){
 		drawflag = 1;
 		return -1;
 	}
 	lowestnote = 128; highestnote = 0; ccpresent = 0;
 	for(var i=0;i<k.length;i++){
+		post("convert",i);
 		if(k[i]!="looppoints"){
-			var event = seqdict.get(k[i]); //[time,type,note,vel]
+			var event = seqdict.get(block+"::"+k[i]); //[time,type,note,vel]
 			if(event == null){
 			}else if(event[1]>1){
 				ccpresent = 1;
 			}else if(event[3]>0){ //noteon, find its length
 				if(event[2]<lowestnote) lowestnote = event[2];
 				if(event[2]>highestnote) highestnote = event[2];
-				for(var ii=1;ii<k.length;ii++){
+				for(var ii=1;ii<=k.length;ii++){
 					var ti = (i+ii) % k.length;
 					if(k[ti]!="looppoints"){
-						var tev = seqdict.get(k[ti]);
+						var tev = seqdict.get(block+"::"+k[ti]);
 						if(tev == null){
 						}else if(event[2]==tev[2]){ //note match
 							var tt = tev[0]-event[0];
 							tt = (tt + 1) % 1;
 							event.push(tt); //store length
 							if(tev[3]==0){
-								seqdict.remove(k[ti]); //used up noteoff, remove it.
+								seqdict.remove(block+"::"+k[ti]); //used up noteoff, remove it.
 							}
 							ii = 99999;
 						}
@@ -56,20 +58,21 @@ function convert_to_lengths(){
 					//post("\nFAILED TO FIND LENGTH FOR THIS NOTE",event);
 					event.push(0);
 				}
-				seqdict.replace(k[i],event);
+				seqdict.replace(block+"::"+k[i],event);
 			}else if(event[3]<0){
 				if(event[2]<lowestnote) lowestnote = event[2];
 				if(event[2]>highestnote) highestnote = event[2];
 				event.push(0);
-				seqdict.replace(k[i],event);
+				seqdict.replace(block+"::"+k[i],event);
 			}
 		}
 	}
 	for(var i=0;i<k.length;i++){
+		post("\nclean",i);
 		if(k[i]!="looppoints"){
-			var event = seqdict.get(k[i]); //[time,note,vel]
+			var event = seqdict.get(block+"::"+k[i]); //[time,note,vel]
 			if(event==null){
-			}else if(event[3]==0) seqdict.remove(k[i]);
+			}else if(event[3]==0) seqdict.remove(block+"::"+k[i]);
 		}
 	}
 	drawflag = 1;
@@ -96,39 +99,34 @@ function draw(){
 	if(block>=0){
 		drawflag=0;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		/*outlet(1,"frgb",blockcolour);
-		outlet(1,"moveto", x_pos+4, y_pos + height*0.2);
-		outlet(1,"write", "note history");*/
-		var k = seqdict.getkeys();
-		if(k==null)return 0;
-		var by = y_pos+height - 2;
-		var sy = (height-3)/(129);
-		if(ccpresent){
-			for(var i=0;i<k.length;i++){
-				if(k[i]!="looppoints"){
-					var event = seqdict.get(k[i]);
-					if(event[1]>1){
-						var ey = by - Math.abs(event[3])*sy;
-						var ex1 = x_pos + event[0]*(width-1);
-						var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
-						outlet(1,"frgb",col);
-						outlet(1,"moveto",ex1,ey);
-						outlet(1,"lineto",ex1,by);
-					}
-				}
-			}			
+		var sd = seqdict.get(block);
+		var k = sd.getkeys();
+		if(k==null){
+			return 0;
 		}
+		var by = y_pos+height - 2;
+		var sy = (height-3)/129;
 		for(var i=0;i<k.length;i++){
 			if(k[i]!="looppoints"){
-				var event = seqdict.get(k[i]);
-				var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
-				var ex1 = x_pos + event[0]*(width-1);
-				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-1)),x_pos+width-1);
-				var c = 0.2+0.8* Math.abs(event[3])/128;
-				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
-				outlet(1,"frgb",col);
-				outlet(1,"moveto",ex1,ey);
-				outlet(1,"lineto",ex2,ey);
+				var event = seqdict.get(block+"::"+k[i]);
+				if(event == null){
+				}else if(event[1]>1){
+					var ey = by - Math.abs(event[3])*sy;
+					var ex1 = x_pos + event[0]*(width-1);
+					var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
+					outlet(1,"frgb",col);
+					outlet(1,"moveto",ex1,ey);
+					outlet(1,"lineto",ex1,by);
+				}else{
+					var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+					var ex1 = x_pos + event[0]*(width-1);
+					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-1)),x_pos+width-1);
+					var c = 0.2+0.8* Math.abs(event[3])/128;
+					var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+					outlet(1,"frgb",col);
+					outlet(1,"moveto",ex1,ey);
+					outlet(1,"lineto",ex2,ey);
+				}
 			}
 		}
 	}

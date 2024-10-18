@@ -81,8 +81,8 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 105.0, 82.0, 121.0, 22.0 ],
-					"text" : "r core.input.keyboard"
+					"patching_rect" : [ 105.0, 82.0, 134.0, 22.0 ],
+					"text" : "r core.input.keyboard.ui"
 				}
 
 			}
@@ -105,6 +105,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 359.0, 306.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 3"
 				}
 
@@ -116,6 +120,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 315.0, 306.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -129,7 +137,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 269.0, 217.0, 139.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "core.input.keyboard.ui.js",
+						"filename" : "core.input.keyboard.ui",
 						"parameter_enable" : 0
 					}
 ,
@@ -144,10 +152,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 269.0, 306.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -160,10 +164,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 269.0, 77.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
