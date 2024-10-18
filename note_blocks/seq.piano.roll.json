@@ -25,7 +25,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [ 0, 1, 2,3, 4],
+				"contains" : [ 0, 1, 2, 3, 4],
 				"colour" : 0
 			},
 			{
