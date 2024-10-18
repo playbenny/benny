@@ -102,12 +102,13 @@ function draw(){
 		var k = seqdict.getkeys();
 		if(k==null)return 0;
 		var by = y_pos+height - 2;
+		var sy = (height-3)/(129);
 		if(ccpresent){
 			for(var i=0;i<k.length;i++){
 				if(k[i]!="looppoints"){
 					var event = seqdict.get(k[i]);
 					if(event[1]>1){
-						var ey = by - (event[3]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+						var ey = by - Math.abs(event[3])*sy;
 						var ex1 = x_pos + event[0]*(width-1);
 						var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
 						outlet(1,"frgb",col);
