@@ -2236,8 +2236,8 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
 	new_connection.parse('{ }');
- 	new_connection.replace("from::number",from);
-	new_connection.replace("to::number", to);
+ 	new_connection.replace("from::number", +from);
+	new_connection.replace("to::number", +to);
 	new_connection.replace("from::output::type", "potential");
 	new_connection.replace("to::input::type","potential");
 
@@ -3128,7 +3128,7 @@ function swap_block(block_name){
 					post(" - replaced");
 				}
 				if(otarg!=menu.swap_block_target){
-					handful[i].replace("from::number",menu.swap_block_target);
+					handful[i].replace("from::number", +menu.swap_block_target);
 					post(" - noted new block number");
 				}
 				var nn = details.getsize("connections::out::"+handful[i].get("from::output::type"));
@@ -3409,6 +3409,11 @@ function spawn_player(keyblock){
 		//copy the keyb's seq to the right dict slot for the new block
 		//connect the new player block
 	//stop the seq and wipe it
+	// BUT if the thing was automapped instead, it's a slightly different plan:
+	//   work out where it was connected
+	//   work out which lanes relevant
+	//   copy over to new block
+	//stop n wipe
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
 	var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -3431,10 +3436,31 @@ function spawn_player(keyblock){
 	for(var o=0;o<12;o++){
 		if(usedouts[o]){
 			//now, look through connections, find the first connection from this output
-			//insert a player block in it
-			//then go through the other connections, if there are more connect them to the same player block instead
-			post("\nspawning a player for output ",o);
-			//var playerblock = new_block("seq.piano.roll",0,0);
+			var conn_count = 0;
+			var playerblock = -1;
+			post("\nlooking for connections on lane ",o);
+			for(var c = 0;c<connections.getsize("connections");c++){
+				if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))){
+					if(conn_count==0){
+						//insert a player block in it
+						post("\nspawning a player for output ",o,"connection",c);
+						menu.connection_number = c; 
+						var to = (connections.get("connections["+c+"]::to::number"));
+						var tx = blocks.get("blocks["+to+"]::space::x");
+						var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+						make_space(tx,ty,1.2);
+						var playerblock = new_block("seq.piano.roll",tx,ty);
+						draw_block(playerblock);
+						insert_block_in_connection("seq.piano.roll",playerblock);
+						//copy the relevant bit of sequence into the new block
+						conn_count++;
+					}else{
+						//then go through the other connections, if there are more connect them to the same player block instead
+						post("\nconnecting",c,"to existing player", playerblock);
+					}
+				}
+			}
+			
 		}
 	}
 }

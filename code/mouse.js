@@ -827,8 +827,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 									if(drawwire == 1){
-										potential_connection.replace("from::number",usermouse.ids[1]);
-										potential_connection.replace("to::number",usermouse.hover[1]);
+										potential_connection.replace("from::number",+usermouse.ids[1]);
+										potential_connection.replace("to::number",+usermouse.hover[1]);
 										potential_connection.replace("to::input::type","potential");
 										potential_connection.replace("from::output::type","potential");
 										var temptovoice = usermouse.hover[2];

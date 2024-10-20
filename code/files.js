@@ -760,8 +760,8 @@ function import_song(){
 			if(loading.wait>1) post("\nloading connection number",b);
 			if(songs.contains(loading.songname+"::connections["+b+"]::from")){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
-				new_connection.replace("from::number",loading.mapping[new_connection.get("from::number")]);
-				new_connection.replace("to::number",loading.mapping[new_connection.get("to::number")]);
+				new_connection.replace("from::number", loading.mapping[new_connection.get("from::number")]);
+				new_connection.replace("to::number", loading.mapping[new_connection.get("to::number")]);
 				connections.append("connections",new_connection);
 				var co = connections.getsize("connections")-1;
 				make_connection(co,0);

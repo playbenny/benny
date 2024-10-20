@@ -19,10 +19,14 @@ var seqdict = new Dict;
 seqdict.name = "core-keyb-loop-xfer";
 
 var lowestnote,highestnote,ccpresent;
-var playheadpos=0;
+var playheadpos = 0;
+var playstate = 0;
 
 function playhead(p){
 	playheadpos = p;
+}
+function playing(p){
+	playstate = p;
 }
 function convert_to_lengths(){
 	var sd = seqdict.get(block);
@@ -109,7 +113,9 @@ function draw(){
 		}else{
 			outlet(1,"frgb", blockcolour);
 			outlet(1,"moveto",x_pos+9, y_pos +height /4);
-			outlet(1,"write", "history")
+			if(playstate){
+				outlet(1,"write", "history")
+			}
 		}
 		var sd = seqdict.get(block);
 		var k = sd.getkeys();
