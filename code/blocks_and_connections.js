@@ -3417,9 +3417,10 @@ function spawn_player(keyblock,auto){
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
 	var proll = new Dict;
-	proll.name = "seq.piano.roll";
-	post("\nwas"+((auto==0)? "n't":"")+" spawning a player block");
+	proll.name = "seq-piano-roll";
+	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block.");
 	if(auto==0){
+		clear_blocks_selection();
 		var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
 		var uoc = 0;
 		if(xfer.contains(keyblock)){
@@ -3453,16 +3454,18 @@ function spawn_player(keyblock,auto){
 								make_space(tx,ty,1.2);
 								var playerblock = new_block("seq.piano.roll",tx,ty);
 								//copy the relevant bit of sequence into the new block
-								if(!proll.contains(playerblock)) proll.setparse(playerblock, "*");
-								if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "*");
+								if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
+								if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
+								post("\ncopying to piano roll dictionary ",playerblock);
 								for(var i=0;i<k.length;i++){
 									var event = seqdict.get(k[i]);
 									if(event != null){
 										if(k[i]=="looppoints"){
 											proll.replace(playerblock+"::0::looppoints",event);
 										}else if(event[1] == o){//OR it's 1 and o==0?
-											proll.replace(playerblock+"::0::"+k[i]);
+											proll.replace(playerblock+"::0::"+k[i],event);
 										}
+										post(".."+k[i]);
 									}
 								}							
 								draw_block(playerblock);
@@ -3471,20 +3474,25 @@ function spawn_player(keyblock,auto){
 							}else{
 								//then go through the other connections, if there are more connect them to the same player block instead
 								post("\nconnecting",c,"to existing player", playerblock);
+								post("\nSORRY not done yet");
 							}
 						}
 					}
 					if(playerblock!=-1){
 						v = voicemap.get(playerblock);
 						if(Array.isArray(v)) v = v[0];
+						post("prompting the new block in voice ",v);
 						note_poly.setvalue(v+1,"copyfromdict");
+						selected.block[playerblock] = 1;
 					}
 				}
 			}
+			//now delete the sequence from the keyboard block
+			request_set_block_parameter(keyblock,5,0);
 		}
 	}else{
 		//it was automapped: look up where the automap went and make a new connection
 		post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
-
+		post("\nTODO sorry this isn't done yet");
 	}
 }
