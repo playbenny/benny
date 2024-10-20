@@ -106,6 +106,10 @@ function draw(){
 			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
 			outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
 			outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 1);
+		}else{
+			outlet(1,"frgb", blockcolour);
+			outlet(1,"moveto",x_pos+9, y_pos +height /4);
+			outlet(1,"write", "history")
 		}
 		var sd = seqdict.get(block);
 		var k = sd.getkeys();
