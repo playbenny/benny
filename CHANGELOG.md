@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+20/10/24:
+- dragging blocks off the edges of the page / into the sidebar area now scrolls the blocks page
+- (in a branch) core.input.keyboard now has history recording, can loop bits of the recording and can spawn an already-connected piano roll block playing back that loop too.
 13/10/24:
 - tides (version 1) added
 - 'make space' fn : shift+alt+scroll on the blocks page to push all blocks away from the mouse cursor (or pull towards)
