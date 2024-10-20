@@ -347,6 +347,8 @@ var blocks_page = {
 	lowest: 0
 }	
 
+
+
 var touch_click=0;
 var stored_click = [];
 
@@ -577,6 +579,10 @@ mod_param.name = "mod_param";
 
 var waves_dict = new Dict;
 waves_dict.name = "waves";
+
+var proll = new Dict;
+proll.name = "seq-piano-roll";
+
 
 var audio_patcherlist = new Array(MAX_AUDIO_VOICES);
 var audio_upsamplelist = new Array(MAX_AUDIO_VOICES);

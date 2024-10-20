@@ -267,19 +267,18 @@ function loadbang(){
 
 
 function store(){
-/*	messnamed("to_blockmanager","store_wait_for_me",block);
-	var r;
-	var transf_arr = []; //this isn't the shortest it possibly could be but i think we can handle it.
-	for(r=0;r<v_list.length;r++){
-		transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list[r], MAX_DATA);
-		var d = 0;
-		while(d==0){
-			d = transf_arr.pop();
+	messnamed("to_blockmanager","store_wait_for_me",block);
+	var sk = seqdict.get(block);
+	var k = sk.getkeys();
+	if(k!=null){
+		blocks.setparse("blocks["+block+"]::stored_piano_roll","{}");
+		for(var i=0;i<k.length;i++){
+			var d = seqdict.get(block+"::"+k[i]);
+			blocks.setparse("blocks["+block+"]::stored_piano_roll::"+k[i], "{}");
+			blocks.replace("blocks["+block+"]::stored_piano_roll::"+k[i], d);			
 		}
-		transf_arr.push(d);
-		blocks.replace("blocks["+block+"]::voice_data::"+r, transf_arr);
 	}
-	messnamed("to_blockmanager","store_ok_done",block);*/
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function enabled(){}

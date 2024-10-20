@@ -3416,8 +3416,6 @@ function spawn_player(keyblock,auto){
 	//stop n wipe
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
-	var proll = new Dict;
-	proll.name = "seq-piano-roll";
 	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block.");
 	if(auto==0){
 		clear_blocks_selection();
@@ -3443,7 +3441,7 @@ function spawn_player(keyblock,auto){
 					var playerblock = -1;
 					post("\nlooking for connections on lane ",o);
 					for(var c = connections.getsize("connections")-1;c>=0;c--){
-						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))){
+						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
 							if(conn_count==0){
 								//insert a player block in it
 								post("\nspawning a player for output ",o,"connection",c);
