@@ -3470,6 +3470,11 @@ function spawn_player(keyblock,auto){
 								}							
 								draw_block(playerblock);
 								insert_block_in_connection("seq.piano.roll",playerblock);
+								v = voicemap.get(playerblock);
+								if(Array.isArray(v)) v = v[0];
+								post("prompting the new block in voice ",v);
+								note_poly.setvalue(v+1,"copyfromdict");
+								selected.block[playerblock] = 1;		
 								conn_count++;
 							}else{
 								//then go through the other connections, if there are more connect them to the same player block instead
@@ -3481,13 +3486,6 @@ function spawn_player(keyblock,auto){
 								make_connection(c);
 							}
 						}
-					}
-					if(playerblock!=-1){
-						v = voicemap.get(playerblock);
-						if(Array.isArray(v)) v = v[0];
-						post("prompting the new block in voice ",v);
-						note_poly.setvalue(v+1,"copyfromdict");
-						selected.block[playerblock] = 1;
 					}
 				}
 			}

@@ -27,6 +27,7 @@ var pattern = 0;
 
 function playhead(p){
 	playheadpos = p;
+	drawflag = 1;
 }
 function playing(p){
 	playstate = p;
@@ -105,8 +106,8 @@ function flag(){
 	drawflag = 1;
 }
 function draw(){
-	if(block>=0){
-		drawflag=0;
+	if(block >= 0){
+		drawflag = 0;
 		//var mode = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 5, 1)*3);
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
@@ -115,7 +116,7 @@ function draw(){
 		var sd = seqdict.get(block+"::"+pattern);
 		if(sd == null) return 0;
 		var k = sd.getkeys();
-		if(k==null) return 0;
+		if(k == null) return 0;
 		var by = y_pos+height - 2;
 		var sy = (height-3)/129;
 		for(var i=0;i<k.length;i++){
@@ -237,7 +238,6 @@ function draw(){
 
 
 function update(){
-	messnamed("core.input.keyboard",block,"redraw");
 	if(drawflag){
 		draw();
 		return 0;
