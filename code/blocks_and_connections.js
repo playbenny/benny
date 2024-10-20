@@ -3401,7 +3401,7 @@ connection_edit("connections["+last_connection_made+"]::conversion::mute",1);
 post("\n\nFEEDBACK PANIC! there were so many midi messages i muted the last new connection to try to prevent a meltdown");
 }
 
-function spawn_player(keyblock){
+function spawn_player(keyblock,auto){
 	//this is called when this keyboard block is ready to be spawned.
 	//if there are multiple outlet numbers in the data, separate them into multiples of the 
 	//following:
@@ -3416,51 +3416,75 @@ function spawn_player(keyblock){
 	//stop n wipe
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
-	var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
-	var uoc = 0;
-	if(xfer.contains(keyblock)){
-		var seqdict = xfer.get(keyblock);
-		var k = seqdict.getkeys();
-		for(var i=0;i<k.length;i++){
-			if(k[i]!="looppoints"){
-				var event = seqdict.get(k[i]);
-				if(event != null){
-					uoc += (usedouts[event[1]] == 0);
-					usedouts[event[1]] = 1;
-				}
-			}
-		}
-	}
-	post("\nspawning a player block");
-	post("\nrecorded data is in ",uoc," lanes");
-	for(var o=0;o<12;o++){
-		if(usedouts[o]){
-			//now, look through connections, find the first connection from this output
-			var conn_count = 0;
-			var playerblock = -1;
-			post("\nlooking for connections on lane ",o);
-			for(var c = 0;c<connections.getsize("connections");c++){
-				if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))){
-					if(conn_count==0){
-						//insert a player block in it
-						post("\nspawning a player for output ",o,"connection",c);
-						menu.connection_number = c; 
-						var to = (connections.get("connections["+c+"]::to::number"));
-						var tx = blocks.get("blocks["+to+"]::space::x");
-						var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
-						make_space(tx,ty,1.2);
-						var playerblock = new_block("seq.piano.roll",tx,ty);
-						draw_block(playerblock);
-						insert_block_in_connection("seq.piano.roll",playerblock);
-						//copy the relevant bit of sequence into the new block
-						conn_count++;
-					}else{
-						//then go through the other connections, if there are more connect them to the same player block instead
-						post("\nconnecting",c,"to existing player", playerblock);
+	var proll = new Dict;
+	proll.name = "seq.piano.roll";
+	post("\nwas"+((auto==0)? "n't":"")+" spawning a player block");
+	if(auto==0){
+		var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
+		var uoc = 0;
+		if(xfer.contains(keyblock)){
+			var seqdict = xfer.get(keyblock);
+			var k = seqdict.getkeys();
+			for(var i=0;i<k.length;i++){
+				if(k[i]!="looppoints"){
+					var event = seqdict.get(k[i]);
+					if(event != null){
+						uoc += (usedouts[event[1]] == 0);
+						usedouts[event[1]] = 1;
 					}
 				}
 			}
-			
+			post("\nrecorded data is in ",uoc," lanes");
+			for(var o=0;o<12;o++){
+				if(usedouts[o]){
+					//now, look through connections, find the first connection from this output
+					var conn_count = 0;
+					var playerblock = -1;
+					post("\nlooking for connections on lane ",o);
+					for(var c = connections.getsize("connections")-1;c>=0;c--){
+						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))){
+							if(conn_count==0){
+								//insert a player block in it
+								post("\nspawning a player for output ",o,"connection",c);
+								menu.connection_number = c; 
+								var to = (connections.get("connections["+c+"]::to::number"));
+								var tx = blocks.get("blocks["+to+"]::space::x");
+								var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+								make_space(tx,ty,1.2);
+								var playerblock = new_block("seq.piano.roll",tx,ty);
+								//copy the relevant bit of sequence into the new block
+								if(!proll.contains(playerblock)) proll.setparse(playerblock, "*");
+								if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "*");
+								for(var i=0;i<k.length;i++){
+									var event = seqdict.get(k[i]);
+									if(event != null){
+										if(k[i]=="looppoints"){
+											proll.replace(playerblock+"::0::looppoints",event);
+										}else if(event[1] == o){//OR it's 1 and o==0?
+											proll.replace(playerblock+"::0::"+k[i]);
+										}
+									}
+								}							
+								draw_block(playerblock);
+								insert_block_in_connection("seq.piano.roll",playerblock);
+								conn_count++;
+							}else{
+								//then go through the other connections, if there are more connect them to the same player block instead
+								post("\nconnecting",c,"to existing player", playerblock);
+							}
+						}
+					}
+					if(playerblock!=-1){
+						v = voicemap.get(playerblock);
+						if(Array.isArray(v)) v = v[0];
+						note_poly.setvalue(v+1,"copyfromdict");
+					}
+				}
+			}
 		}
+	}else{
+		//it was automapped: look up where the automap went and make a new connection
+		post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
+
 	}
 }
