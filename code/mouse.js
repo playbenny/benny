@@ -769,6 +769,21 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
 							}else if((usermouse.ids[0] == "block")||(usermouse.ids[0] == "meter")){
+								var tsx = (sidebar.mode == "none") ? (mainwindow_width-20) : (sidebar.x - 20);
+								if(usermouse.x<20){
+									camera_position[0] -= 0.0003*camera_position[2]*Math.max(20,20 - usermouse.x);
+									messnamed("camera_control","position",  camera_position);
+								}else if(usermouse.x>tsx){
+									camera_position[0] += 0.0003*camera_position[2]*Math.max(20,usermouse.x - tsx);
+									messnamed("camera_control","position",  camera_position);
+								}
+								if(usermouse.y<20){
+									camera_position[1] += 0.0003*camera_position[2]*Math.max(20,20 - usermouse.y);
+									messnamed("camera_control","position",  camera_position);
+								}else if(usermouse.y>(mainwindow_height-20)){
+									camera_position[1] -= 0.0003*camera_position[2]*Math.max(20,usermouse.x-mainwindow_height+20);
+									messnamed("camera_control","position",  camera_position);
+								}
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
 								var t = 0;
 								var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
