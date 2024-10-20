@@ -3474,7 +3474,11 @@ function spawn_player(keyblock,auto){
 							}else{
 								//then go through the other connections, if there are more connect them to the same player block instead
 								post("\nconnecting",c,"to existing player", playerblock);
-								post("\nSORRY not done yet");
+								new_connection = connections.get("connections["+c+"]");
+								new_connection.replace("from::number",playerblock);
+								remove_connection(c);
+								connections.replace("connections["+c+"]",new_connection);
+								make_connection(c);
 							}
 						}
 					}

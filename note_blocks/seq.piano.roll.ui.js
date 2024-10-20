@@ -113,10 +113,9 @@ function draw(){
 		outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
 		outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
 		var sd = seqdict.get(block+"::"+pattern);
+		if(sd == null) return 0;
 		var k = sd.getkeys();
-		if(k==null){
-			return 0;
-		}
+		if(k==null) return 0;
 		var by = y_pos+height - 2;
 		var sy = (height-3)/129;
 		for(var i=0;i<k.length;i++){
@@ -124,7 +123,6 @@ function draw(){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 				if(event == null){
 				}else if(event[1]>1){
-					if(mode==0) event[0] = (1 + event[0] - playheadpos) % 1;
 					var ey = by - Math.abs(event[3])*sy;
 					var ex1 = x_pos + event[0]*(width-1);
 					var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
@@ -132,7 +130,6 @@ function draw(){
 					outlet(1,"moveto",ex1,ey);
 					outlet(1,"lineto",ex1,by);
 				}else{
-					if(mode==0) event[0] = (1 + event[0] - playheadpos) % 1;
 					var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
 					var ex1 = x_pos + event[0]*(width-2);
 					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
