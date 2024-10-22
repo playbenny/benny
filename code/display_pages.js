@@ -120,7 +120,7 @@ function redraw(){
 
 function get_hw_meter_positions(){
 	var x=0;
-	if(midi_indicators.list.length>0) x = 1;
+	if(midi_indicators.list.length>0) x = 2;
 	var inlist = []; var outlist = [];
 	meter_positions = [];
 	var positions = []; //hw input meter positions
@@ -6570,15 +6570,25 @@ function draw_automap_headers(sx, block) {
 				lcd_main.message("write", labl);
 				click_zone(select_block, null, automap.mapped_k, sidebar.x + 24, y_offset, sx - 2, y_offset + fontheight * 0.5, mouse_index, 1);
 			} else {
-				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.4 * fontheight);
+				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.3 * fontheight);
 				lcd_main.message("write", ">");
-				sx = sidebar.x + 26 + 0.3 * fontheight;
+				sx = sidebar.x + 26 + 0.4 * fontheight;
 			}
 		}
-
+		var linewrap=0;
 		for (var ti = 0; ti < midiins.length; ti++) {
 			var bw2 = fontheight * (0.3 + midiins[ti].length / 6);
 			var ex = sx + bw2 - fo1;
+			if(ex>sidebar.x2){
+				if(usermouse.caps){
+					sx = sidebar.x + fo1*15;
+				}else{
+					sx = sidebar.x + fo1*8;
+				}
+				var ex = sx + bw2 - fo1;
+				y_offset+=fontheight*0.6;
+				linewrap = 1;
+			}
 			if (ti == automap.inputno_k) {
 				lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
 				lcd_main.message("frgb", automap.colours_k.colour);
@@ -6594,6 +6604,10 @@ function draw_automap_headers(sx, block) {
 		if(usermouse.caps){
 			var bw2 = fo1 * 14;
 			var ex = sx + bw2 - fo1;
+			if(linewrap){
+				sx = sidebar.x; 
+				ex = sidebar.x+bw2;
+			}			
 			lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
 			click_zone(qwertymidi_octave, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
 			lcd_main.message("frgb", automap.colours_k.darkest);
@@ -6605,7 +6619,7 @@ function draw_automap_headers(sx, block) {
 			sx += bw2;
 		
 		}
-
+		if(linewrap) sx = sidebar.x2;
 		if ((sx < sidebar.x + (sidebar.width) / automap.count)) {
 			var osx = sx;
 			sx = sidebar.x + fo1 + sidebar.width / automap.count;
