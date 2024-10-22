@@ -3460,7 +3460,7 @@ function spawn_player(keyblock,auto){
 									if(event != null){
 										if(k[i]=="looppoints"){
 											proll.replace(playerblock+"::0::looppoints",event);
-										}else if(event[1] == o){//OR it's 1 and o==0?
+										}else if((event[1] == o)||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
 											proll.replace(playerblock+"::0::"+k[i],event);
 										}
 										post(".."+k[i]);
@@ -3493,6 +3493,52 @@ function spawn_player(keyblock,auto){
 	}else{
 		//it was automapped: look up where the automap went and make a new connection
 		post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
-		post("\nTODO sorry this isn't done yet");
+		var to = automap.mapped_k;
+		
+		new_connection.parse('{}');
+		new_connection.replace("to::number", +to);
+		new_connection.replace("from::output::number",0);
+		new_connection.replace("from::output::type","midi");
+		new_connection.replace("to::input::number",automap.inputno_k);
+		new_connection.replace("to::input::type","midi");
+		
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::offset", 0);	
+		
+		var tx = blocks.get("blocks["+to+"]::space::x");
+		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+		make_space(tx,ty,1.2);
+		clear_blocks_selection();
+		var playerblock = new_block("seq.piano.roll",tx,ty);
+		new_connection.replace("from::number", +playerblock);
+		//copy the relevant bit of sequence into the new block
+		if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
+		if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
+		if(xfer.contains(keyblock)){
+			post("\ncopying to piano roll dictionary ",playerblock);
+			var seqdict = xfer.get(keyblock);
+			var k = seqdict.getkeys();
+			for(var i=0;i<k.length;i++){
+				var event = seqdict.get(k[i]);
+				if(event != null){
+					if(k[i]=="looppoints"){
+						proll.replace(playerblock+"::0::looppoints",event);
+					}else if(event[1] <= 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
+						proll.replace(playerblock+"::0::"+k[i],event);
+					}
+					post(".."+k[i]);
+				}
+			}							
+		}
+		draw_block(playerblock);
+		connections.append("connections", new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+		v = voicemap.get(playerblock);
+		if(Array.isArray(v)) v = v[0];
+		post("prompting the new block in voice ",v);
+		note_poly.setvalue(v+1,"copyfromdict");
+		selected.block[playerblock] = 1;		
 	}
 }
