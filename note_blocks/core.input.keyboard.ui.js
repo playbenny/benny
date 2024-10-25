@@ -267,7 +267,7 @@ function loadbang(){
 
 
 function store(){
-	messnamed("to_blockmanager","store_wait_for_me",block);
+/*	messnamed("to_blockmanager","store_wait_for_me",block);
 	var sk = seqdict.get(block);
 	var k = sk.getkeys();
 	if(k!=null){
@@ -279,6 +279,6 @@ function store(){
 		}
 	}
 	messnamed("to_blockmanager","store_ok_done",block);
-}
+*/}
 
 function enabled(){}

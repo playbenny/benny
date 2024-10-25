@@ -3205,6 +3205,17 @@ function toggle_automap_lock(type){
 	redraw_flag.flag |= 4;
 }
 
+function set_automap_lock(type,value){
+	if(type=="control"){
+		automap.lock_c = value;
+	}else if(type == "keyboard"){
+		automap.lock_k = value;
+	}else if(type == "cue"){
+		automap.lock_q = value;
+	}
+	redraw_flag.flag |= 4;
+}
+
 function tab_between_display_modes(){
 	if(displaymode == "blocks"){
 		set_display_mode("panels");
