@@ -6581,7 +6581,7 @@ function draw_automap_headers(sx, block) {
 			var ex = sx + bw2 - fo1;
 			if(ex>sidebar.x2){
 				if(usermouse.caps){
-					sx = sidebar.x + fo1*15;
+					sx = sidebar.x + fo1*22;
 				}else{
 					sx = sidebar.x + fo1*8;
 				}
@@ -6602,7 +6602,7 @@ function draw_automap_headers(sx, block) {
 			sx += bw2;
 		}
 		if(usermouse.caps){
-			var bw2 = fo1 * 14;
+			var bw2 = fo1 * 12;
 			var ex = sx + bw2 - fo1;
 			if(linewrap){
 				sx = sidebar.x; 
