@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -849,7 +849,6 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-87",
@@ -858,7 +857,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 570.0, 180.0, 108.0, 64.0 ],
+									"patching_rect" : [ 570.0, 180.0, 109.0, 64.0 ],
 									"text" : ";\r\nto_blockmanager set_automap_lock keyboard 1"
 								}
 
@@ -2490,10 +2489,10 @@
 									"id" : "obj-72",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
-									"numoutlets" : 6,
-									"outlettype" : [ "erase", "reset", "int", "float", "float", "int" ],
-									"patching_rect" : [ 366.0, 224.0, 135.0, 22.0 ],
-									"text" : "t erase reset 0 0. 1. 256"
+									"numoutlets" : 5,
+									"outlettype" : [ "erase", "reset", "int", "float", "float" ],
+									"patching_rect" : [ 366.0, 224.0, 112.0, 22.0 ],
+									"text" : "t erase reset 0 0. 1."
 								}
 
 							}
@@ -3694,13 +3693,6 @@
 									"destination" : [ "obj-10", 0 ],
 									"order" : 0,
 									"source" : [ "obj-72", 4 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-162", 2 ],
-									"source" : [ "obj-72", 5 ]
 								}
 
 							}
@@ -5642,6 +5634,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 156.0, 654.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -5666,10 +5662,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 339.0, 26.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 

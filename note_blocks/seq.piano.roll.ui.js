@@ -134,6 +134,7 @@ function draw(){
 					var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
 					var ex1 = x_pos + event[0]*(width-2);
 					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
+					if((ex1<100)||(ex2<100)) post("\nEMERGENCY",ex1,ex2,width,event[4]);
 					var c = 0.2+0.8* Math.abs(event[3])/128;
 					var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 					outlet(1,"frgb",col);
@@ -250,7 +251,7 @@ function voice_is(v){
 	if(block>=0){
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
-		if(blocks.contains("blocks["+v+"]::pianoroll")){ //look for saved seq data
+		if(blocks.contains("blocks["+v+"]::stored_piano_roll")){ //look for saved seq data
 			var sk = blocks.get("blocks["+v+"]::stored_piano_roll");
 			var k = sk.getkeys();
 			if(k!=null){

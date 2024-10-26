@@ -1631,7 +1631,7 @@ function clear_everything(){
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
-
+	proll.parse("{}");
 	connections.parse('{ "connections" : [ {} ] }');
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");

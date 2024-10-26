@@ -1186,7 +1186,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 }
 
 function draw_blocks(){
-	post("draw blocks");
+	//post("draw blocks");
 	var i;
 	blocks_page.leftmost=0;
 	blocks_page.rightmost=0;

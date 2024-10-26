@@ -3543,5 +3543,7 @@ function spawn_player(keyblock,auto){
 		post("prompting the new block in voice ",v);
 		note_poly.setvalue(v+1,"copyfromdict");
 		selected.block[playerblock] = 1;		
+		//now delete the sequence from the keyboard block
+		request_set_block_parameter(keyblock,5,0);
 	}
 }
