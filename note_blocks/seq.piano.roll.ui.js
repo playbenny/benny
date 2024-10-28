@@ -2,8 +2,8 @@ outlets = 3;
 var MAX_DATA = 16384;
 var MAX_NOTE_VOICES = 64;
 var MAX_PARAMETERS = 256;
-//var voice_data_buffer = new Buffer("voice_data_buffer"); 
-//var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
+var voice_data_buffer = new Buffer("voice_data_buffer"); 
+var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var parameter_value_buffer = new Buffer("parameter_value_buffer");
 var config = new Dict;
 config.name = "config";
@@ -20,10 +20,17 @@ seqdict.name = "seq-piano-roll";
 
 var lowestnote = 0;
 var highestnote = 128;
-var ccpresent = 0;
+var laneslist = [0,0,0,0,0,0,0,0,0,0,0];
+var maximisedlist = [0,0,0,0,0,0,0,0,0,0,0];
+var laney = [];
 var playheadpos = 0;
 var playstate = 0;
 var pattern = 0;
+
+var start = 0;
+var loopstart = 0;
+var looplength = 0;
+
 
 function playhead(p){
 	playheadpos = p;
@@ -39,13 +46,13 @@ function convert_to_lengths(){
 		drawflag = 1;
 		return -1;
 	}
-	lowestnote = 128; highestnote = 0; ccpresent = 0;
+	lowestnote = 128; highestnote = 0;
 	for(var i=0;i<k.length;i++){
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]); //[time,type,note,vel]
 			if(event == null){
 			}else if(event[1]>1){
-				ccpresent = 1;
+				laneslist[event[1]] = 1;
 			}else if(event[3]>0){ //noteon, find its length
 				if(event[2]<lowestnote) lowestnote = event[2];
 				if(event[2]>highestnote) highestnote = event[2];
@@ -108,40 +115,114 @@ function flag(){
 function draw(){
 	if(block >= 0){
 		drawflag = 0;
-		//var mode = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 5, 1)*3);
-		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-		outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-		outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
-		outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
-		var sd = seqdict.get(block+"::"+pattern);
-		if(sd == null) return 0;
-		var k = sd.getkeys();
-		if(k == null) return 0;
-		var by = y_pos+height - 2;
-		var sy = (height-3)/129;
-		for(var i=0;i<k.length;i++){
-			if(k[i]!="looppoints"){
-				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				if(event == null){
-				}else if(event[1]>1){
-					var ey = by - Math.abs(event[3])*sy;
-					var ex1 = x_pos + event[0]*(width-1);
-					var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
-					outlet(1,"frgb",col);
-					outlet(1,"moveto",ex1,ey);
-					outlet(1,"lineto",ex1,by);
-				}else{
-					var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
-					var ex1 = x_pos + event[0]*(width-2);
-					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
-					if((ex1<100)||(ex2<100)) post("\nEMERGENCY",ex1,ex2,width,event[4]);
-					var c = 0.2+0.8* Math.abs(event[3])/128;
-					var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
-					outlet(1,"frgb",col);
-					outlet(1,"moveto",ex1,ey);
-					outlet(1,"lineto",ex2,ey);
+		pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
+		seql = seqdict.get(block+"::"+pattern+"::looppoints[0]");
+		start = seqdict.get(block+"::"+pattern+"::looppoints[1]");
+		loopstart = seqdict.get(block+"::"+pattern+"::looppoints[2]");
+		looplength = seqdict.get(block+"::"+pattern+"::looppoints[3]");
+		start += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 1,1)-0.5)*512);
+		loopstart += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 2,1)-0.5)*512);
+		looplength += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 3,1)-0.5)*512);
+		var st = (width-2)*(start/seql);
+		var ls = (width-2)*(loopstart/seql);
+		var le = ls + (width-2)*(looplength/seql);
+		if(mini){
+			if(le<(width-2)){
+				outlet(1,"paintrect",x_pos+le,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+			}
+			if(ls==0){
+				outlet(1,"paintrect",x_pos,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+			}else{
+				outlet(1,"paintrect",x_pos,y_pos,ls+x_pos,height+y_pos,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+				outlet(1,"paintrect",x_pos+ls,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+			}
+			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
+			outlet(1,"moveto", x_pos + st , y_pos);
+			outlet(1,"lineto", x_pos + st , y_pos+height - 2);
+			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+			outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
+			outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
+			var sd = seqdict.get(block+"::"+pattern);
+			if(sd == null) return 0;
+			var k = sd.getkeys();
+			if(k == null) return 0;
+			var by = y_pos+height - 2;
+			var sy = (height-3)/129;
+			for(var i=0;i<k.length;i++){
+				if(k[i]!="looppoints"){
+					var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+					if(event == null){
+					}else if(event[1]>1){
+						var ey = by - Math.abs(event[3])*sy;
+						var ex1 = x_pos + event[0]*(width-1);
+						var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",ex1,ey);
+						outlet(1,"lineto",ex1,by);
+					}else{
+						var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+						var ex1 = x_pos + event[0]*(width-2);
+						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
+						var c = 0.2+0.8* Math.abs(event[3])/128;
+						var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",ex1,ey);
+						outlet(1,"lineto",ex2,ey);
+					}
 				}
 			}
+		}else{
+			//starting from the mini code but the following changes:
+			//lanes (with maximising)
+			//  store lane y positions
+			//scroll and zoom (on x axis for all, on y axis for note lanes)
+			//notes as rectangles
+
+			if(le<(width-2)){
+				outlet(1,"paintrect",x_pos+le,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+			}
+			if(ls==0){
+				outlet(1,"paintrect",x_pos,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+			}else{
+				outlet(1,"paintrect",x_pos,y_pos,ls+x_pos,height+y_pos,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+				outlet(1,"paintrect",x_pos+ls,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+			}
+			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
+			outlet(1,"moveto", x_pos + st , y_pos);
+			outlet(1,"lineto", x_pos + st , y_pos+height - 2);
+			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+			outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
+			outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
+			var sd = seqdict.get(block+"::"+pattern);
+			if(sd == null) return 0;
+			var k = sd.getkeys();
+			if(k == null) return 0;
+			var by = y_pos+height - 2;
+			var sy = (height-3)/129;
+			for(var i=0;i<k.length;i++){
+				if(k[i]!="looppoints"){
+					var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+					if(event == null){
+					}else if(event[1]>1){
+						var ey = by - Math.abs(event[3])*sy;
+						var ex1 = x_pos + event[0]*(width-1);
+						var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",ex1,ey);
+						outlet(1,"lineto",ex1,by);
+					}else{
+						var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+						var ex1 = x_pos + event[0]*(width-2);
+						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
+						if((ex1<100)||(ex2<100)) post("\nEMERGENCY",ex1,ex2,width,event[4]);
+						var c = 0.2+0.8* Math.abs(event[3])/128;
+						var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",ex1,ey);
+						outlet(1,"lineto",ex2,ey);
+					}
+				}
+			}			
 		}
 	}
 }
@@ -259,12 +340,37 @@ function voice_is(v){
 				for(var i=0;i<k.length;i++){
 					var d = blocks.get("blocks["+block+"]::stored_piano_roll::"+k[i]);
 					seqdict.setparse(block+"::"+k[i], "{}");
-					seqdict.replace(block+"::"+k[i], d);			
+					seqdict.replace(block+"::"+k[i], d);
+					var dk = d.getkeys();
+					for(var ii=0;ii<dk.length;ii++){
+						if(dk[ii]!="looppoints"){
+							var event = d.get(dk[ii]);
+							laneslist[event[1]] = 1;
+							maximisedlist[event[1]] = 0;
+							if(event[1]<=1){
+								if(event[2]>highestnote) highestnote = event[2];
+								if(event[2]<lowestnote) lowestnote = event[2];
+							}
+						}
+						
+					}		
 				}
 			}
 		}
 	}
 }
+
+function laneheights(){
+	var used = 0; maximised = 0;
+	for(var i=0; i<laneslist.length; i++) used += laneslist[i];
+	if(used==0) return -1;
+	for(var i=0; i<laneslist.length; i++) maximised += maximisedlist[i];
+	maximised = 4 * maximised + used;
+	maximised = height * 0.9/maximised;
+	laney[0] = y_pos + height * 0.1;
+	for(var i=1; i<laneslist.length; i++) laney[i] = laney[i-1] + (4*maximisedlist[i-1]+used)*maximised;
+}
+
 function voice_offset(){}
 function loadbang(){
 	outlet(0,"getvoice");
