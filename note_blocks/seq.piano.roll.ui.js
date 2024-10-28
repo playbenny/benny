@@ -116,6 +116,7 @@ function draw(){
 	if(block >= 0){
 		drawflag = 0;
 		pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
+		if(!seqdict.contains(block+"::"+pattern)) return -1;
 		seql = seqdict.get(block+"::"+pattern+"::looppoints[0]");
 		start = seqdict.get(block+"::"+pattern+"::looppoints[1]");
 		loopstart = seqdict.get(block+"::"+pattern+"::looppoints[2]");
