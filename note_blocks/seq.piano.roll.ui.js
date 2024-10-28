@@ -369,6 +369,7 @@ function laneheights(){
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<laneslist.length; i++) laney[i] = laney[i-1] + (4*maximisedlist[i-1]+used)*maximised;
+	post("\nlane heights:",laney);
 }
 
 function voice_offset(){}

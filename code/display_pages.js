@@ -1976,17 +1976,15 @@ function draw_topbar(){
 			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
 			lcd_main.message("write", "files");
 		}else{
-			if(usermouse.ctrl){
-				mouse_click_parameters[mouse_index] = "file_menu";	
-				var	darkgrey = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
-				if(usermouse.clicked2d == mouse_index) darkgrey = 255;
-				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight, darkgrey,darkgrey,darkgrey);
-				lcd_main.message("frgb", 192,192,192);
-				/*lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
-				lcd_main.message("write", "load");*/
-				lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
-				lcd_main.message("write", "files");
-			}
+			mouse_click_parameters[mouse_index] = "file_menu";	
+			var	darkgrey = (menudarkest[0]+menudarkest[1]+menudarkest[2])/3;
+			if(usermouse.clicked2d == mouse_index) darkgrey = 255;
+			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight, darkgrey,darkgrey,darkgrey);
+			lcd_main.message("frgb", 192,192,192);
+			/*lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
+			lcd_main.message("write", "load");*/
+			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
+			lcd_main.message("write", "files");
 		}
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
