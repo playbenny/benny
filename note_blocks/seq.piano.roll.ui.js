@@ -117,10 +117,11 @@ function draw(){
 		drawflag = 0;
 		pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
 		if(!seqdict.contains(block+"::"+pattern)) return -1;
-		seql = seqdict.get(block+"::"+pattern+"::looppoints[0]");
-		start = seqdict.get(block+"::"+pattern+"::looppoints[1]");
-		loopstart = seqdict.get(block+"::"+pattern+"::looppoints[2]");
-		looplength = seqdict.get(block+"::"+pattern+"::looppoints[3]");
+		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+		seql = loopnts[0];
+		start = loopnts[1];
+		loopstart = loopnts[2];
+		looplength = loopnts[3];
 		start += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 1,1)-0.5)*512);
 		loopstart += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 2,1)-0.5)*512);
 		looplength += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 3,1)-0.5)*512);
@@ -178,33 +179,51 @@ function draw(){
 			//  store lane y positions
 			//scroll and zoom (on x axis for all, on y axis for note lanes)
 			//notes as rectangles
-
+			if(laney.length==0)laneheights();
+			outlet(1,"frgb",blockcolour);
+			outlet(1,"moveto",x_pos+9,laney[0]+9);
+			outlet(1,"write","start:"+start+" loopstart:"+loopstart+" length:"+looplength);
 			if(le<(width-2)){
-				outlet(1,"paintrect",x_pos+le,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+				for(var l=0; l<laney.length-1; l++){
+					outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+				}
 			}
 			if(ls==0){
-				outlet(1,"paintrect",x_pos,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+				for(var l=0; l<laney.length-1; l++){
+					outlet(1,"paintrect",x_pos,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+				}
 			}else{
-				outlet(1,"paintrect",x_pos,y_pos,ls+x_pos,height+y_pos,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
-				outlet(1,"paintrect",x_pos+ls,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+				for(var l=0; l<laney.length-1; l++){
+					outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+					outlet(1,"paintrect",x_pos+ls,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+				}
 			}
 			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
-			outlet(1,"moveto", x_pos + st , y_pos);
-			outlet(1,"lineto", x_pos + st , y_pos+height - 2);
+			for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + st , laney[l]);
+				outlet(1,"lineto", x_pos + st , laney[l+1]-4);
+			}
 			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-			outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
-			outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
+			for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (width - 2) * playheadpos , laney[l]);
+				outlet(1,"lineto", x_pos + (width - 2) * playheadpos , laney[l+1]-4);
+			}
 			var sd = seqdict.get(block+"::"+pattern);
 			if(sd == null) return 0;
 			var k = sd.getkeys();
 			if(k == null) return 0;
-			var by = y_pos+height - 2;
-			var sy = (height-3)/129;
+			var ll = -99;
+			var by = -1; var sy = -1;
 			for(var i=0;i<k.length;i++){
 				if(k[i]!="looppoints"){
 					var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 					if(event == null){
 					}else if(event[1]>1){
+						if(event[1]!=ll){
+							ll = event[1];
+							var by = laney[1+ll] - 4;
+							var sy = (laney[1+ll] - laney[ll] - 3)/129;			
+						}
 						var ey = by - Math.abs(event[3])*sy;
 						var ex1 = x_pos + event[0]*(width-1);
 						var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
@@ -212,10 +231,14 @@ function draw(){
 						outlet(1,"moveto",ex1,ey);
 						outlet(1,"lineto",ex1,by);
 					}else{
-						var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+						if(event[1]!=ll){
+							ll = event[1];
+							var by = laney[1+ll] - 4;
+							var sy = (laney[1+ll] - laney[ll] - 3)/(highestnote-lowestnote+1);			
+						}
+						var ey = by - (event[2]-lowestnote)*sy;
 						var ex1 = x_pos + event[0]*(width-2);
 						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
-						if((ex1<100)||(ex2<100)) post("\nEMERGENCY",ex1,ex2,width,event[4]);
 						var c = 0.2+0.8* Math.abs(event[3])/128;
 						var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 						outlet(1,"frgb",col);
@@ -366,11 +389,11 @@ function laneheights(){
 	for(var i=0; i<laneslist.length; i++) used += laneslist[i];
 	if(used==0) return -1;
 	for(var i=0; i<laneslist.length; i++) maximised += maximisedlist[i];
-	maximised = 4 * maximised + used;
+	maximised = 4 * maximised + used + 1;
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
-	for(var i=1; i<laneslist.length; i++) laney[i] = laney[i-1] + (4*maximisedlist[i-1]+used)*maximised;
-	post("\nlane heights:",laney);
+	for(var i=1; i<=laneslist.length; i++) laney[i] = laney[i-1] + (4 * maximisedlist[i-1] + used) * maximised;
+	//post("\nlane heights:",laney);
 }
 
 function voice_offset(){}
