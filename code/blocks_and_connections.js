@@ -3482,6 +3482,13 @@ function spawn_player(keyblock,auto){
 								post("\nconnecting",c,"to existing player", playerblock);
 								new_connection = connections.get("connections["+c+"]");
 								new_connection.replace("from::number",playerblock);
+								new_connection.replace("from::voice","all");
+								new_connection.replace("to::voice","all");
+								new_connection.replace("conversion::mute" , 0);
+								new_connection.replace("conversion::scale", 1);
+								new_connection.replace("conversion::vector", 0);	
+								new_connection.replace("conversion::offset", 0.5);	
+								new_connection.replace("conversion::offset2", 0.5);	
 								remove_connection(c);
 								connections.replace("connections["+c+"]",new_connection);
 								make_connection(c);
@@ -3501,6 +3508,8 @@ function spawn_player(keyblock,auto){
 		new_connection.parse('{}');
 		new_connection.replace("to::number", +to);
 		new_connection.replace("from::output::number",0);
+		new_connection.replace("from::voice","all");
+		new_connection.replace("to::voice","all");
 		new_connection.replace("from::output::type","midi");
 		new_connection.replace("to::input::number",automap.inputno_k);
 		new_connection.replace("to::input::type","midi");
@@ -3508,7 +3517,8 @@ function spawn_player(keyblock,auto){
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
-		new_connection.replace("conversion::offset", 0);	
+		new_connection.replace("conversion::offset", 0.5);	
+		new_connection.replace("conversion::offset2", 0.5);	
 		
 		var tx = blocks.get("blocks["+to+"]::space::x");
 		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
