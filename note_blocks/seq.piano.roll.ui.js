@@ -181,7 +181,7 @@ function draw(){
 			//notes as rectangles
 			if(laney.length==0)laneheights();
 			outlet(1,"frgb",blockcolour);
-			outlet(1,"moveto",x_pos+9,laney[0]+9);
+			outlet(1,"moveto",x_pos+9,y_pos+height*0.04);
 			outlet(1,"write","start:"+start+" loopstart:"+loopstart+" length:"+looplength);
 			if(le<(width-2)){
 				for(var l=0; l<laney.length-1; l++){
@@ -201,12 +201,12 @@ function draw(){
 			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
 			for(var l=0; l<laney.length-1; l++){
 				outlet(1,"moveto", x_pos + st , laney[l]);
-				outlet(1,"lineto", x_pos + st , laney[l+1]-4);
+				outlet(1,"lineto", x_pos + st , laney[l+1]-6);
 			}
 			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
 			for(var l=0; l<laney.length-1; l++){
 				outlet(1,"moveto", x_pos + (width - 2) * playheadpos , laney[l]);
-				outlet(1,"lineto", x_pos + (width - 2) * playheadpos , laney[l+1]-4);
+				outlet(1,"lineto", x_pos + (width - 2) * playheadpos , laney[l+1]-6);
 			}
 			var sd = seqdict.get(block+"::"+pattern);
 			if(sd == null) return 0;
