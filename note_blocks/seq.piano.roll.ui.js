@@ -354,6 +354,10 @@ function update(){
 function voice_is(v){
 	block = v;
 	if(block>=0){
+		var voicemap = new Dict;
+		voicemap.name = "voicemap";
+		var voice = voicemap.get(block);
+		if(Array.isArray(voice))voice = voice[0];
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
 		if(blocks.contains("blocks["+v+"]::stored_piano_roll")){ //look for saved seq data
@@ -381,6 +385,7 @@ function voice_is(v){
 				}
 			}
 		}
+		messnamed("note_poly","setvalue",1+voice,"copyfromdict");
 	}
 }
 
