@@ -43,7 +43,7 @@ function resync_button(){
 function panic_button(){
 	messnamed("panic","bang");
 	build_mod_sum_action_list();
-	sigouts.setvalue(0,0); //clears midi-audio sig~
+	sigouts.message("setvalue", 0,0); //clears midi-audio sig~
 	//for(var i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
 function count_selected_blocks_and_wires(){
@@ -323,19 +323,19 @@ function copy_block(block,target){
 	if(target==null)target=copy;
 	//first send the block the store message:
 	if(blocks.contains("blocks["+block+"]::name")){
-		if((ui_patcherlist[block]!='blank.ui')&&(ui_patcherlist[block]!='self')) ui_poly.setvalue( block+1, "store");//query any ui blocks if they have data to store in data
+		if((ui_patcherlist[block]!='blank.ui')&&(ui_patcherlist[block]!='self')) ui_poly.message("setvalue",  block+1, "store");//query any ui blocks if they have data to store in data
 		var ty=blocks.get("blocks["+block+"]::type");
 		if(ty == "note"){
 			var vl = voicemap.get(block);
 			if(!Array.isArray(vl)) vl = [vl];
 			for(v=0;v<vl.length;v++){
-				note_poly.setvalue(vl[v]+1,"store");
+				note_poly.message("setvalue", vl[v]+1,"store");
 			}
 		}else if(ty == "audio"){
 			var vl = voicemap.get(block);
 			if(!Array.isArray(vl)) vl = [vl];
 			for(v=0;v<vl.length;v++){			
-				audio_poly.setvalue(vl[v]+1-MAX_NOTE_VOICES,"store");
+				audio_poly.message("setvalue", vl[v]+1-MAX_NOTE_VOICES,"store");
 			}
 		}
 	}
@@ -506,7 +506,7 @@ function open_patcher(block,voice){
 		if(usermouse.ctrl){
 			note_poly.message( "open" , voice+1);
 		}else{
-			note_poly.setvalue( voice+1, "open");
+			note_poly.message("setvalue",  voice+1, "open");
 		}
 		//clear_blocks_selection();
 	}else{
@@ -514,7 +514,7 @@ function open_patcher(block,voice){
 		if(usermouse.ctrl){
 			audio_poly.message( "open" , voice+1);
 		}else{
-			audio_poly.setvalue( voice+1, "open");
+			audio_poly.message("setvalue",  voice+1, "open");
 		}
 		//clear_blocks_selection();
 	}
@@ -598,7 +598,7 @@ function cpu_select_block(parameter,value){
 	sidebar.selected_voice = parameter;
 	if(usermouse.alt){
 		if(parameter==-1){
-			if(loaded_ui_patcherlist[value]!='blank.ui') ui_poly.setvalue(value+1,"open");
+			if(loaded_ui_patcherlist[value]!='blank.ui') ui_poly.message("setvalue", value+1,"open");
 		}else{
 			open_patcher(value,parameter);
 		}
@@ -831,28 +831,28 @@ function files_switch_folder(){
 
 function custom_mouse_passthrough(parameter,value){
 	//post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
-	ui_poly.setvalue(parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
+	ui_poly.message("setvalue", parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
 }
 function custom_direct_mouse_passthrough(parameter,value){
 	//post("\n\nCDIRECT MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	if(value[0] == "output"){
 		//post("passthrough",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
-		output_blocks_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
+		output_blocks_poly.message("setvalue", parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
 	}else if(value[0] == "note"){
-		note_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
+		note_poly.message("setvalue", parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
 	}else if(value[0] == "audio"){
-		audio_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
+		audio_poly.message("setvalue", parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,(usermouse.x-value[5])/(value[7]-value[5]),(usermouse.y-value[6])/(value[8]-value[6]),value[3],value[4]);
 	}
 }
 function custom_direct_mouse_button(parameter,value){
 	//post("\n\ncustom mouse button",parameter,"----",value);
 	if(value[0] == "output"){
 		//post("output block button",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
-		output_blocks_poly.setvalue(parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
+		output_blocks_poly.message("setvalue", parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "note"){
-		note_poly.setvalue(parameter,value[2],usermouse.left_button,value[3],value[4]);
+		note_poly.message("setvalue", parameter,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "audio"){
-		audio_poly.setvalue(parameter,value[2],usermouse.left_button,value[3],value[4]);
+		audio_poly.message("setvalue", parameter,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "core"){
 		messnamed("to_blockmanager",value[1],value[2],value[3],value[4],parameter);
 	}
@@ -886,27 +886,27 @@ function scope_midinames(parameter,value){
 function send_button_message(parameter, value){
 	parameter_value_buffer.poke(1,value[2],value[3]);
 	if(value[0] == "block"){
-		ui_poly.setvalue(parameter+1,value[1]);
+		ui_poly.message("setvalue", parameter+1,value[1]);
 	}else if(value[0] == "firstvoice"){
 		var vl = voicemap.get(parameter);
 		if(!Array.isArray(vl)) vl=[vl];
 		if(vl[0]<MAX_NOTE_VOICES){
-			note_poly.setvalue(vl[0]+1,value[1]);
+			note_poly.message("setvalue", vl[0]+1,value[1]);
 		}else if(vl[0]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-			audio_poly.setvalue(vl[0]+1-MAX_NOTE_VOICES,value[1]);
+			audio_poly.message("setvalue", vl[0]+1-MAX_NOTE_VOICES,value[1]);
 		}else{
-			output_blocks_poly.setvalue(vl[0]+1-MAX_NOTE_VOICES-MAX_AUDIO_VOICES,value[1]);
+			output_blocks_poly.message("setvalue", vl[0]+1-MAX_NOTE_VOICES-MAX_AUDIO_VOICES,value[1]);
 		}
 	}else if(value[0] == "voices"){
 		var vl=voicemap.get(parameter);
 		if(!Array.isArray(vl)) vl=[vl];
 		for(var t=vl.length;t--;){
 			if(vl[t]<MAX_NOTE_VOICES){
-				note_poly.setvalue(vl[t]+1,value[1]);
+				note_poly.message("setvalue", vl[t]+1,value[1]);
 			}else if(vl[t]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-				audio_poly.setvalue(vl[t]+1-MAX_NOTE_VOICES,value[1]);
+				audio_poly.message("setvalue", vl[t]+1-MAX_NOTE_VOICES,value[1]);
 			}else{
-				output_blocks_poly.setvalue(vl[t]+1-MAX_NOTE_VOICES-MAX_AUDIO_VOICES,value[1]);
+				output_blocks_poly.message("setvalue", vl[t]+1-MAX_NOTE_VOICES-MAX_AUDIO_VOICES,value[1]);
 			}
 		}
 	}else if(value[0] == "core"){
@@ -1468,7 +1468,7 @@ function show_vst_editor(parameter,value){
 	var vlist = /*audio_*/voicemap.get(value);
 	if(typeof vlist == "number") vlist = [vlist];
 	for(i=0;i<vlist.length;i++){
-		audio_poly.setvalue( vlist[i]+1-MAX_NOTE_VOICES, "show_editor");
+		audio_poly.message("setvalue",  vlist[i]+1-MAX_NOTE_VOICES, "show_editor");
 	}	
 }
 function toggle_panel(parameter,value){
@@ -1591,7 +1591,7 @@ function static_mod_adjust(parameter,value){
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
 		}
 		//if(displaymode=="custom") redraw_flag.flag=4;
-		if(sidebar.selected==automap.mapped_c) note_poly.setvalue(automap.available_c,"refresh");
+		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }
 
@@ -1804,7 +1804,7 @@ function sidebar_parameter_knob(parameter, value){
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]]-MAX_PARAMETERS]=1;
 		}
 		//if(displaymode=="custom") redraw_flag.flag=4;
-		if(sidebar.selected==automap.mapped_c) note_poly.setvalue(automap.available_c,"refresh");
+		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }
 
@@ -1899,9 +1899,9 @@ function send_record_arm_messages(block){
 		for(var i =0; i<vl.length;i++){
 			//post("\ntell voice",vl[i],"that record is set to",record_arm[block]);
 			if(record_arm[block]){
-				audio_poly.setvalue(vl[i]+1-64,"filename",path);
+				audio_poly.message("setvalue", vl[i]+1-64,"filename",path);
 			}else{
-				audio_poly.setvalue(vl[i]+1-64,"filename","off");
+				audio_poly.message("setvalue", vl[i]+1-64,"filename","off");
 			}
 		}
 	}else if(tt == "hardware"){
@@ -1922,25 +1922,25 @@ function cycle_block_mode(block,setting){
 		p = poly_alloc.stack_modes.indexOf(blocks.get(target));
 		p = (p+1) % poly_alloc.stack_modes.length;
 		blocks.replace(target,poly_alloc.stack_modes[p]);
-		voicealloc_poly.setvalue((block+1),"stack_mode",p);  //1x
+		voicealloc_poly.message("setvalue", (block+1),"stack_mode",p);  //1x
 	}else if(setting=="choose"){
 		target = target+"poly::choose_mode";
 		p = poly_alloc.choose_modes.indexOf(blocks.get(target));
 		p = (p+1) % poly_alloc.choose_modes.length;
 		blocks.replace(target,poly_alloc.choose_modes[p]);
-		voicealloc_poly.setvalue((block+1),"choose_mode",p); //cycle free
+		voicealloc_poly.message("setvalue", (block+1),"choose_mode",p); //cycle free
 	}else if(setting=="steal"){
 		target = target+"poly::steal_mode";
 		p = poly_alloc.steal_modes.indexOf(blocks.get(target));
 		p = (p+1) % poly_alloc.steal_modes.length;
 		blocks.replace(target,poly_alloc.steal_modes[p]);
-		voicealloc_poly.setvalue((block+1),"steal_mode",p);  //oldest
+		voicealloc_poly.message("setvalue", (block+1),"steal_mode",p);  //oldest
 	}else if(setting=="return"){
 		target = target+"poly::return_mode";
 		p = blocks.get(target);
 		p = 1 - p;
 		blocks.replace(target,p);
-		voicealloc_poly.setvalue((block+1),"return_mode",p);  //oldest
+		voicealloc_poly.message("setvalue", (block+1),"return_mode",p);  //oldest
 	}else if(setting=="flock"){
 		target = target+"flock::mode";
 		p = flock_modes.indexOf(blocks.get(target));
@@ -1956,12 +1956,12 @@ function cycle_block_mode(block,setting){
 		if(!Array.isArray(vl))vl=[vl];
 		if((vl[0])<MAX_NOTE_VOICES){
 			for(var v=0;v<vl.length;v++){
-				note_poly.setvalue(1+vl[v],"voice_is",vl[v]);
+				note_poly.message("setvalue", 1+vl[v],"voice_is",vl[v]);
 				get_voice_details(vl[v]);
 			}
 		}else if((vl[0])<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
 			for(var v=0;v<vl.length;v++){
-				audio_poly.setvalue(1+vl[v],"voice_is",vl[v]-MAX_NOTE_VOICES);
+				audio_poly.message("setvalue", 1+vl[v],"voice_is",vl[v]-MAX_NOTE_VOICES);
 				get_voice_details(vl[v]);
 			}
 		}
@@ -2059,10 +2059,10 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 	if(blocks.get("blocks["+block+"]::type")=="audio"){
 		list = voicemap.get(block);
 		if(typeof list === 'number'){
-			audio_poly.setvalue( list+1-MAX_NOTE_VOICES, "bypass",av);
+			audio_poly.message("setvalue",  list+1-MAX_NOTE_VOICES, "bypass",av);
 		}else{
 			for(var t=0;t<list.length;t++){
-				audio_poly.setvalue( list[t]+1-MAX_NOTE_VOICES, "bypass",av);
+				audio_poly.message("setvalue",  list[t]+1-MAX_NOTE_VOICES, "bypass",av);
 			}					
 		}
 	}else{
@@ -2070,10 +2070,10 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 		if(list === null){
 			post("\n\nERROR: couldn't find block "+block+" in the voicemap list\n\n");
 		}else if(typeof list === 'number'){
-			note_poly.setvalue( list+1, "bypass",av);
+			note_poly.message("setvalue",  list+1, "bypass",av);
 		}else{
 			for(var t=0;t<list.length;t++){
-				note_poly.setvalue( list[t]+1, "bypass",av);
+				note_poly.message("setvalue",  list[t]+1, "bypass",av);
 			}					
 		}
 	}
@@ -2095,10 +2095,10 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 	if(type=="audio"){
 		list = voicemap.get(block);
 		if(typeof list === 'number'){
-			audio_poly.setvalue( list+1-MAX_NOTE_VOICES, "muteouts",av);
+			audio_poly.message("setvalue",  list+1-MAX_NOTE_VOICES, "muteouts",av);
 		}else{
 			for(var t=0;t<list.length;t++){
-				audio_poly.setvalue( list[t]+1-MAX_NOTE_VOICES, "muteouts",av);
+				audio_poly.message("setvalue",  list[t]+1-MAX_NOTE_VOICES, "muteouts",av);
 			}					
 		}
 	}else if(type == "note"){
@@ -2106,10 +2106,10 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 		if(list === null){
 			post("\n\nERROR: couldn't find block "+block+" in the voicemap list\n\n");
 		}else if(typeof list === 'number'){
-			note_poly.setvalue( list+1, "muteouts",av);
+			note_poly.message("setvalue",  list+1, "muteouts",av);
 		}else{
 			for(var t=0;t<list.length;t++){
-				note_poly.setvalue( list[t]+1, "muteouts",av);
+				note_poly.message("setvalue",  list[t]+1, "muteouts",av);
 			}					
 		}
 	}else if(type == "hardware"){
@@ -2127,10 +2127,10 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 		if(list === null){
 			//hw block has no midi handler
 		}else if(typeof list === 'number'){
-			note_poly.setvalue( list+1, "muteouts",av);
+			note_poly.message("setvalue",  list+1, "muteouts",av);
 		}else{
 			for(var t=0;t<list.length;t++){
-				note_poly.setvalue( list[t]+1, "muteouts",av);
+				note_poly.message("setvalue",  list[t]+1, "muteouts",av);
 			}					
 		}
 	}
@@ -2284,7 +2284,7 @@ function cycle_automap_offset(p,v){
 			automap.offset_c=0;
 			automap.mapped_c=-1;
 		}
-		note_poly.setvalue(automap.available_c, "automap_offset", automap.offset_c * automap.c_cols );
+		note_poly.message("setvalue", automap.available_c, "automap_offset", automap.offset_c * automap.c_cols );
 		//automap.offset_range_c = -automap.offset_range_c; //this flags a remapping
 		redraw_flag.flag |= 2;
 	}
@@ -2292,7 +2292,7 @@ function cycle_automap_offset(p,v){
 
 function set_automap_k_input(parameter,value){
 	automap.inputno_k = parameter;
-	note_poly.setvalue( automap.available_k, "maptargetinput", automap.inputno_k);
+	note_poly.message("setvalue",  automap.available_k, "maptargetinput", automap.inputno_k);
 }
 
 function select_block_by_name(parameter,value){
@@ -2475,12 +2475,12 @@ function automap_default(a,b){
 		if(a<0){
 			//post("\nI THINK THIS IS STATIC MOD RESET",a,b);
 			parameter_static_mod.poke(1,-a,0);
-			note_poly.setvalue(b+1, "refresh");
-			//note_poly.setvalue(automap.available_c,"refresh");
+			note_poly.message("setvalue", b+1, "refresh");
+			//note_poly.message("setvalue", automap.available_c,"refresh");
 		}else{
 			parameter_value_buffer.poke(1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
-			note_poly.setvalue(b+1,"refresh");
-			//note_poly.setvalue(automap.available_c,"refresh");
+			note_poly.message("setvalue", b+1,"refresh");
+			//note_poly.message("setvalue", automap.available_c,"refresh");
 		}
 	}
 }
@@ -2829,7 +2829,7 @@ function selected_block_custom_mode(mode){
 }
 
 function custom_key_passthrough(key){
-	ui_poly.setvalue( custom_block+1, "keydown", key);
+	ui_poly.message("setvalue",  custom_block+1, "keydown", key);
 }
 
 function qwertymidi(key,vel){
@@ -3291,7 +3291,7 @@ function conn_toggle_control_auto_assign(){
 }
 
 function turn_off_controller_assign_mode(){
-	note_poly.setvalue(0,"connection_assign_mode",0);
+	note_poly.message("setvalue", 0,"connection_assign_mode",0);
 	automap.assignmode = 0;
 }
 
@@ -3338,6 +3338,8 @@ function reify_automap_k(){
 	connections.append("connections", new_connection);
 	make_connection(connections.getsize("connections")-1,0);
 	set_automap_lock("keyboard",0);
+	automap.mapped_k = -1;
+	note_poly.message("setvalue", automap.available_k, "automapped", 0);
 	draw_blocks();
 }
 
