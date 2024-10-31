@@ -1304,14 +1304,13 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 				}else{
 					//lets check for conflicts. each matrix out (ie hw block input) can only have one connection
 					for(var tc=connections.getsize("connections");tc>=0;tc--){
-						if((tc!=i) && (connections.contains("connections["+tc+"]::to"))){
-							if(connections.get("connections["+tc+"]::to::input::type")=="matrix"){
-								if(connections.get("connections["+tc+"]::to::input::number") == o){
-									used_already = tc; //l[o]=null;
-									c=[60,60,60];
-									tc=-1;
-								}
-							}
+						if((tc!=i) && (connections.contains("connections["+tc+"]::to")) 
+							&& (connections.get("connections["+tc+"]::to::number") == (connections.get("connections["+i+"]::to::number")))
+							&& (connections.get("connections["+tc+"]::to::input::type")=="matrix")
+							&& (connections.get("connections["+tc+"]::to::input::number") == o)){
+							used_already = tc; //l[o]=null;
+							c=[60,60,60];
+							tc=-1;
 						}
 					}
 					if(used_already==0)c=cc;
