@@ -5834,7 +5834,7 @@ function draw_sidebar(){
 						click_zone(convert_regular_to_matrix, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 						lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
 						lcd_main.message("frgb", config.get("palette::connections::matrix"));
-						lcd_main.message("write", "convert from matrix to regular connection");
+						lcd_main.message("write", "convert from regular connection to matrix one");
 			
 						y_offset += 1.1* fontheight;						
 					}
