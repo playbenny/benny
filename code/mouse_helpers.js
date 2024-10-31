@@ -3317,3 +3317,37 @@ function make_space(x,y,r){
 	}
 	redraw_flag.flag |= 4;
 }
+
+function reify_automap_k(){
+	// makes new connection out of automap k connection, turns off automap_k
+	new_connection.parse('{}');
+	new_connection.replace("to::number", +automap.mapped_k);
+	new_connection.replace("from::number", +automap.available_k_block);
+	new_connection.replace("from::output::number",0);
+	new_connection.replace("from::voice","all");
+	new_connection.replace("to::voice","all");
+	new_connection.replace("from::output::type","midi");
+	new_connection.replace("to::input::number",automap.inputno_k);
+	new_connection.replace("to::input::type","midi");
+	
+	new_connection.replace("conversion::mute" , 0);
+	new_connection.replace("conversion::scale", 1);
+	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::offset", 0.5);	
+	new_connection.replace("conversion::offset2", 0.5);	
+	connections.append("connections", new_connection);
+	make_connection(connections.getsize("connections")-1,0);
+	set_automap_lock("keyboard",0);
+	draw_blocks();
+}
+
+function start_keyboard_looper(){
+	messnamed("core.input.keyboard","toggle_loop", 1);
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if((blocks.contains("blocks["+i+"]::name")) && (blocks.get("blocks["+i+"]::name") == "core.input.keyboard")){
+			clear_blocks_selection();
+			selected.block[i]=1;
+			i=Infinity;
+		}
+	}
+}
