@@ -3463,7 +3463,7 @@ function spawn_player(keyblock,auto){
 									if(event != null){
 										if(k[i]=="looppoints"){
 											proll.replace(playerblock+"::0::looppoints",event);
-										}else if((event[1] == o)||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
+										}else if((event[1] == o)){//||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
 											proll.replace(playerblock+"::0::"+k[i],event);
 										}
 										post(".."+k[i]);
@@ -3538,7 +3538,7 @@ function spawn_player(keyblock,auto){
 				if(event != null){
 					if(k[i]=="looppoints"){
 						proll.replace(playerblock+"::0::looppoints",[event[2], 0,0, event[2]]);
-					}else if(event[1] <= 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
+					}else if(event[1] == 0){//OR it's 1 and o==0? it's automapk so you know o =0,1
 						proll.replace(playerblock+"::0::"+k[i],event);
 					}
 					post(".."+k[i]);
