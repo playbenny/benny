@@ -554,7 +554,7 @@ function clear_blocks_selection(){
 	redraw_flag.targetcount = 0;
 	sidebar.scopes.midi = -1;
 	sidebar.scopes.voice = -1;
-	if(sidebar.mode!="none") set_sidebar_mode("none");
+	if((sidebar.mode!="none")&&(sidebar.mode!="file_menu")) set_sidebar_mode("none");
 }
 
 function select_all(){
@@ -3169,13 +3169,17 @@ function blocks_menu_enter(){
 		}else if(menu.mode == 2){
 			var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
 			var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
-			var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
-			var avy = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::y") + blocks.get("blocks["+t_no+"]::space::y")));
+			//var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
+			var avx = blocks.get("blocks["+f_no+"]::space::x");
+			var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
+			var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
+			if(dy<1.2) make_space(avx,avy,0.65);
+			var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 			var r = new_block(types[sel], avx,avy);
-			if(blocktypes.get(newblockname+"::type")=="audio") send_audio_patcherlist(1);
+			if(blocktypes.get(types[sel]+"::type")=="audio") send_audio_patcherlist(1);
+			draw_block(r);
 			insert_block_in_connection(types[sel],r);							
-			//draw_block(r);
-
+			redraw_flag.flag |= 4;
 		}else if(menu.mode == 3){
 			post("substitution found!!"+types[sel]);
 			loading.recent_substitutions.replace(menu.swap_block_target, types[sel]);
@@ -3276,4 +3280,27 @@ function conn_toggle_control_auto_assign(){
 function turn_off_controller_assign_mode(){
 	note_poly.setvalue(0,"connection_assign_mode",0);
 	automap.assignmode = 0;
+}
+
+function make_space(x,y,r){
+	//move all blocks a distance r along a line from their x,y to the specified x,y.
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::space")){
+			var bx = blocks.get("blocks["+b+"]::space::x");
+			var by = blocks.get("blocks["+b+"]::space::y");
+			var dx = bx-x;
+			var dy = by-y;
+			var dd = Math.sqrt(dx*dx+dy*dy);
+			if((dd>1.4)||(r>0)){
+				dd = r/dd;
+				dx *= dd;
+				dy *= dd; //now normalised to a r-long vector.
+				bx += dx; 
+				by += dy;
+				blocks.replace("blocks["+b+"]::space::x",bx);
+				blocks.replace("blocks["+b+"]::space::y",by);
+			}
+		}
+	}
+	redraw_flag.flag |= 4;
 }

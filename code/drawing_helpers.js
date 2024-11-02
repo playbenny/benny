@@ -1383,3 +1383,64 @@ function draw_clock(){
 		if(view_changed)click_zone(toggle_show_timer,1,1,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
 	}
 }
+
+function long_sidebar_text(textcontent) {
+	var t;
+	var textcontentrows = 0.4 + textcontent.length / 45 + textcontent.split("£").length - 1;
+	var rowstart = 0;
+	var rowend = 7 * sidebar.width_in_units;
+	textcontent = textcontent + "                       ";
+	var bold = 0;
+	var sameline = 0;
+	for (var ri = 0; ri < textcontentrows; ri++) {
+		while ((textcontent[rowend] != ' ') && (rowend > 1 + rowstart)) { rowend--; }
+		var sliced = textcontent.slice(rowstart, rowend);
+		if (!sameline) {
+			lcd_main.message("moveto", sidebar.x + fontheight * 0.2, y_offset + fontheight * (0.75 + 0.4 * ri));
+		} else {
+			ri--;
+		}
+		sameline = 0;
+		var newlineind = sliced.indexOf("£");
+		var boldind = sliced.indexOf("*");
+		if ((boldind > -1) && (newlineind > -1)) {
+			if (boldind < newlineind) {
+				newlineind = -1;
+			} else {
+				boldind = -1;
+			}
+		}
+		if (newlineind > -1) {
+			rowend = rowstart + sliced.indexOf("£");
+			sliced = textcontent.slice(rowstart, rowend);
+			sameline = 0;
+		}
+		if (boldind > -1) {
+			sameline = 1;
+			bold = 1 - bold;
+			rowend = rowstart + sliced.indexOf("*");
+			sliced = textcontent.slice(rowstart, rowend);
+		}
+		lcd_main.message("write", sliced);
+		if (!sameline) {
+			rowstart = rowend + 1;
+			rowend += 7 * sidebar.width_in_units;
+		} else {
+			var t = rowstart + 46;
+			rowstart = rowend + 1;
+			rowend = t;
+		}
+		if (bold) {
+			lcd_main.message("textface", "bold");
+		} else {
+			lcd_main.message("textface", "normal");
+		}
+	}
+	if (!bold) lcd_main.message("textface", "bold");
+	y_offset = y_offset + fontheight * (0.75 + 0.4 * ri);
+}
+
+function sidebar_notification(message){
+	sidebar.notification = message;
+	set_sidebar_mode("notification");
+}

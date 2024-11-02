@@ -1,0 +1,182 @@
+{
+	"voice.elements" : {
+		"patcher" : "voice.elements",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Elements module.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"from_subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in1", "in2" ],
+				"midi" : [ "notes", "trigger" ]
+			},
+			"out" : {
+				"audio" : [ "out" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [
+			{
+				"contains" : [1, 1, 2 ,3],
+				"colour" : [255,255,255],
+				"height" : 0
+			},
+			{
+				"contains" : [4,5,6],
+				"colour" : [161,28,114],
+				"height" : 0
+			},
+			{
+				"contains" : [7,8,9],
+				"colour" : [22,156,144],
+				"height" : 0
+			},
+			{
+				"contains" : [10,11,12,13,14],
+				"colour" : [190,190,190],
+				"height" : 0
+			},
+			{
+				"contains" : [0,15,16,17],
+				"colour" : [160,160,160],
+				"height" : 3
+			}
+		],
+		"panel" : {
+			"parameters" : [10,11,12,13,14]
+		},
+		"parameters" : [
+			{
+				"name" : "model",
+				"type" : "menu_l",
+				"values" : ["modal", "string", "strings"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "contour",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "bow",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "timbre",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "blow",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1 
+			},
+			{
+				"name" : "flow",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "blow_timbre",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "strike",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "mallet",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "strike_timbre",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "damping",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "geometry",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "brightness",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "space",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "in1 target",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["blow", "strike", "fm", "strength", "gate"],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["blow", "strike", "fm", "strength", "gate"],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "notes -> gate",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.75
+			}	
+		]
+	}
+}

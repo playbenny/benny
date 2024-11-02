@@ -1,0 +1,94 @@
+{
+	"fx.clouds.pvoc" : {
+		"patcher" : "fx.clouds.pvoc",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of just the phase vocoder from Émilie Gillet's Clouds module.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [		
+			{
+				"contains" : [0,1,2],
+				"colour" : 0,
+				"height" : 2
+			},
+			{
+				"contains" : [3,4,5,6,7],
+				"colour" : -5,
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "warp",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "pitch",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "refresh",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "quant",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "freeze",
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"force_label" : 1,
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "glitch",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			}
+		]
+	}
+}

@@ -316,7 +316,7 @@ function meters(){
 					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale = tv;
 				//}
 			}
-		//}catch(err){post("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
+		//}catch(err){error("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
 	}
 }
 
@@ -337,7 +337,7 @@ function hardware_meters(){
 			tv = blocks_meter[block][voice].scale;
 			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
 			blocks_meter[block][voice].scale = tv;
-		//}catch(err){post("\nhw meter error block,voice,err",block,voice,typeof blocks_meter[block][voice],err.name,err.message);}
+		//}catch(err){error("\nhw meter error block,voice,err",block,voice,typeof blocks_meter[block][voice],err.name,err.message);}
 	}
 }
 
@@ -407,7 +407,7 @@ function midi_meters(){
 					blocks_meter[block][voice].scale = tv;
 				}
 			}
-		}catch(err){post("\nmidi meter err ",block,voice, err.name,err.message);}
+		}catch(err){error("\nmidi meter err ",block,voice, err.name,err.message);}
 	}
 }
 

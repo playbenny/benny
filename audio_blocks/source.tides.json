@@ -1,0 +1,124 @@
+{
+	"source.tides" : {
+		"patcher" : "source.tides",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Tides module. The frequency slider is overridden by note inputs.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in 1", "in 2" ],
+				"midi" : [ "pitch&level", "trigger", "clock" ]
+			},
+			"out" : {
+				"audio" : [ "out", "alt" ],
+				"midi" : [ "through" ]
+			}
+		},
+		"groups" : [			
+			{
+				"contains" : [10, 0, 0,0,1,1,1,2,2 ],
+				"colour" : [255,255,255],
+				"height" : 3
+			},
+			{
+				"contains" : [3,3,4,4,5],
+				"colour" : [161,28,114],
+				"height" : 2
+			},
+			{
+				"contains" : [6, 7, 7, 8,8, 9],
+				"colour" : [22,156,144],
+				"height" : 3
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "slope",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "smoothness",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : ["single", "looping", "sustain"],
+				"wrap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "range",
+				"type" : "menu_l",
+				"values" : ["high", "medium", "low"],
+				"wrap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "freeze",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "use clock",
+				"type" : "menu_b",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "in1 target",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["fm", "shape", "slope", "smooth", "trig", "clock" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "in2 target",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["fm", "shape", "slope", "smooth", "trig", "clock" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "alt out",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["uni", "hi", "low" ],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "freq",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5			
+			}
+		]
+	}
+}

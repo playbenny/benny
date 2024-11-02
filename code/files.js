@@ -219,7 +219,7 @@ function create_blank_wave_buffer(number,length, channels,name){
 	d.name = "temp";
 	//if(number>waves_dict.getsize("waves")) 
 	//	waves_dict.append("waves","*");
-	d.replace("name",name+"$"+length+"$"+channels);
+	d.replace("name",name+"-"+number+"-"+length+"-"+channels);
 	d.replace("path","");
 	d.replace("length",waves_buffer[number].framecount());
 	d.replace("size",waves_buffer[number].length());
@@ -1700,4 +1700,51 @@ function clear_everything(){
 	automap.mapped_k = -1;
 	automap.mapped_k_v = -1;
 	automap.mapped_q = -1;
+}
+
+function write_blockipedia(){
+	var k = blocktypes.getkeys();
+	var type_order = config.get("type_order");
+	var blocki = new File("C:/Users/jhold/Documents/GitHub/BennyDocs/docs/blockipedia.md", "write"); 
+	blocki.open();
+	blocki.writeline("# Blockipedia");
+	blocki.writeline("");
+	blocki.writeline("Every block has a help/description text you can view in the sidebar. This automatically generated page collates them all.");
+	blocki.writeline("");
+
+	post("\n----------------\nwriting blockipedia, "+k.length+" blocks in "+type_order.length+" types");
+	for(var t=0;t<type_order.length;t++){
+		post("\n---------------\ntype "+type_order[t]);
+		if((type_order[t]=="vst")||(type_order[t]=="amxd")||(type_order[t]=="hardware")||(type_order[t]=="jh")||(type_order[t]=="abb")){
+			//skip
+		}else{
+			blocki.writeline("## "+type_order[t]);
+			blocki.writeline("");
+			for(var i=0;i<k.length;i++){
+				var tk = k[i].split(".")[0];
+				if(tk==type_order[t]){
+					if(blocktypes.contains(k[i]+"::help_text")){
+						if((blocktypes.contains(k[i]+"::deprecated") && blocktypes.get(k[i]+"::deprecated")==1)){
+							//skip this one
+						}else{
+							var help=blocktypes.get(k[i]+"::help_text");
+							post(k[i]+" : \n");
+							blocki.writeline("### "+ k[i]);
+							var h = help.split("£");
+							for(hh=0;hh<h.length;hh++){
+								if(h[hh].length>0){
+									blocki.writeline("- "+h[hh]);
+									post(h[hh]+"\n");
+								}else{
+									blocki.writeline("");
+								}
+							}
+							blocki.writeline("");
+						}
+					}
+				}
+			}
+		}
+	}
+	blocki.close();
 }

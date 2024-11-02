@@ -1,0 +1,196 @@
+{
+	"seq.wonky" : {
+		"patcher" : "seq.wonky",
+		"type" : "note",
+		"block_ui_patcher" : "example.mini.ui",
+		"ui_in_sidebar_height" : 1,
+		"no_edit" : 1,
+		"help_text" : "The step time sliders control the length of each step, the block pro-ratas these lengths to make them fit into the time period you've set below. You can use this as a clock or there are also value sliders so you can use it as a stand alone sequencer - it outputs both the raw slider values and quantised pitches (with vel following incoming clocks).",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "clock in","reset in" ]
+			},
+			"out" : {
+				"parameters" : [ "values" ],
+				"midi" : [ "pitches", "clock" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1, 2,3,4,5,6,7],
+				"height" : 2,
+				"colour" : 10
+			},			
+			{ 
+				"contains" : [8,9,10,11,12,13,14,15],
+				"height" : 2,
+				"colour" : -35
+			},
+			{
+				"contains" : [16,17,18,19],
+				"colour" : -45,
+				"height" : 0
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "t1",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t2",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t3",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t4",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t5",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t6",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t7",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "t8",
+				"type" : "float",
+				"values" : ["uni", 0,1,"lin"],
+				"click_set" : 1,
+				"default" : 0.5,
+				"wrap" : 0
+			},			
+			{
+				"name" : "v1",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "v2",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "v3",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "v4",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},			
+			{
+				"name" : "v5",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "v6",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "v7",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "v8",
+				"type" : "float",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"click_set" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "how many t-steps to use",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "how many v-steps to use",
+				"type" : "int",
+				"values" : ["uni", 1, 8, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "loop length_(how many incoming pulses)",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0.12
+			},
+			{
+				"name" : "scale",
+				"type" : "menu_i",
+				"values" : ["chromatic","1","2","3","4","5","6","7","8"],
+				"wrap" : 1,
+				"error_scale" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

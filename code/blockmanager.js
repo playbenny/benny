@@ -350,9 +350,8 @@ var blocks_page = {
 var touch_click=0;
 var stored_click = [];
 
-var menucolour;
-var menudark;
-var menudarkest;
+var menucolour, menudark, menudarkest;
+var greycolour, greydark, greydarkest;
 var bg_dark_ratio = 0.2;
 var fontheight,fontsmall;
 var fo1;
@@ -482,7 +481,8 @@ var sidebar = {
 	scrollbar_index : 2,
 	back : [],
 	fwd : [],
-	files_page : "songs"
+	files_page : "songs",
+	notification : ""
 }
 
 var y_offset;

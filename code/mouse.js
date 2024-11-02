@@ -428,13 +428,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged"){
 								var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
 								var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
-								var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
-								var avy = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::y") + blocks.get("blocks["+t_no+"]::space::y")));
+		
+								var avx = blocks.get("blocks["+f_no+"]::space::x");
+								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
+								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
+								if(dy<1.2) make_space(avx,avy,0.65);
+								var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 								var r = new_block(usermouse.ids[1], avx,avy);
-								
+								if(blocktypes.get(usermouse.ids[1]+"::type")=="audio") send_audio_patcherlist(1);
 								draw_block(r);
-								//set_display_mode("blocks");
 								insert_block_in_connection(usermouse.ids[1],r);							
+								redraw_flag.flag |= 4;						
 							}
 						}
 					}else if(menu.mode == 3){ //post("SUBSTITUTION MENU",usermouse.clicked3d,usermouse.ids);
@@ -461,7 +465,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
 								usermouse.clicked3d = -1;
-								//redraw_flag.flag=8;
 								if(BLOCK_MENU_CLICK_ACTION=="long_click"){
 									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
 									usermouse.timer = 0;
@@ -530,8 +533,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
-									//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
-									build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									var makewire=1;
+									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
+									if(blocktypes.contains(fname+"::connections::out::force_unity")){
+										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+											makewire=0;
+											sidebar_notification("This block can only be connected to a mix.bus block");
+										}
+									}
+									if(makewire){
+										//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+										build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									}
 									usermouse.clicked3d=-1;
 								}
 							}else{ // ############## END OF DRAG MOVE BLOCKS ################
@@ -556,8 +570,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
-									post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
-									build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									var makewire=1;
+									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
+									if(blocktypes.contains(fname+"::connections::out::force_unity")){
+										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+											makewire=0;
+											sidebar_notification("This block can only be connected to a mix.bus block");
+										}
+									}
+									if(makewire){
+										post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
+										build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
+									}
 								}else{ // ################### A BUNCH OF MUNDANE TOGGLING SELECtiON - you released on a thing, no drag:
 									mouse_released_on_a_thing_no_drag();
 									usermouse.ids=['done',-1,-1];
@@ -744,6 +769,21 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
 							}else if((usermouse.ids[0] == "block")||(usermouse.ids[0] == "meter")){
+								var tsx = (sidebar.mode == "none") ? (mainwindow_width-20) : (sidebar.x - 20);
+								if(usermouse.x<20){
+									camera_position[0] -= 0.0003*camera_position[2]*Math.max(20,20 - usermouse.x);
+									messnamed("camera_control","position",  camera_position);
+								}else if(usermouse.x>tsx){
+									camera_position[0] += 0.0003*camera_position[2]*Math.max(20,usermouse.x - tsx);
+									messnamed("camera_control","position",  camera_position);
+								}
+								if(usermouse.y<20){
+									camera_position[1] += 0.0003*camera_position[2]*Math.max(20,20 - usermouse.y);
+									messnamed("camera_control","position",  camera_position);
+								}else if(usermouse.y>(mainwindow_height-20)){
+									camera_position[1] -= 0.0003*camera_position[2]*Math.max(20,usermouse.x-mainwindow_height+20);
+									messnamed("camera_control","position",  camera_position);
+								}
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
 								var t = 0;
 								var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
@@ -779,6 +819,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
 											}
 										}
+										if(sidebar.mode=="notification") set_sidebar_mode("none");
 									}
 								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
 									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
@@ -792,6 +833,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									}
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
 									if(!blocktypes.contains(fname +"::connections::out")) drawwire=0; //no outputs!
+									if(blocktypes.contains(fname+"::connections::out::force_unity")){
+										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+											drawwire=0;
+											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mix.bus block");
+										}else{
+											if(sidebar.mode=="notification") set_sidebar_mode("none");
+										}
+									}
 									if(drawwire == 1){
 										potential_connection.replace("from::number",usermouse.ids[1]);
 										potential_connection.replace("to::number",usermouse.hover[1]);
@@ -1007,7 +1056,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
 		if(displaymode=="blocks"){
-			if((!usermouse.ctrl)&&(!usermouse.shift)){
+			if((!usermouse.ctrl)&&(!usermouse.shift)&&(!usermouse.alt)){
 				var xx = (2 * x / mainwindow_width) - 1;
 				var yy = (2 * y / mainwindow_height) - 1;
 				
@@ -1022,7 +1071,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
 					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
 				} //todo? ctrl-scroll a block
-			}	
+			}else if((usermouse.shift)&&(usermouse.alt)){
+				var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+				make_space(stw[0],stw[1],-4*scroll);
+			}
 		}else if(displaymode=="block_menu"){
 			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));
 			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);

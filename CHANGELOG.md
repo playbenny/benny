@@ -1,7 +1,18 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
-
+20/10/24:
+- dragging blocks off the edges of the page / into the sidebar area now scrolls the blocks page
+- (in a branch) core.input.keyboard now has history recording, can loop bits of the recording and can spawn an already-connected piano roll block playing back that loop too.
+13/10/24:
+- tides (version 1) added
+- 'make space' fn : shift+alt+scroll on the blocks page to push all blocks away from the mouse cursor (or pull towards)
+- clouds now supports saving the contents of its internal buffer to a wave slot (and to disk so it's recalled when you load the song next time)
+12/10/24:
+- rings, clouds, warps, sheep and braids all added too. the MI blocks with pitch inputs have been adjusted to work with benny's global tuning table system. also added the MI verb and phase vocoder
+- voice.basic now has a row of velocity modulation controls, which makes that more conventient.
+- file menu laid out in a hopefully more intuitive way
+- seq.wonky - set step lengths with sliders, it fits the steps into the desired loop length and follows an incoming clock
 9/10/24:
 - voice.plaits is a wrapper for v boehm's port of MI plaits. works really nicely with benny's workflow i think, and is fun in polyphony. the audio input destination selectors work with the module's different behaviour for when things are plugged in or not, when things aren't connected to the mod inputs there's an internal decay envelope. grateful for Emilie's generosity.
 8/10/24:

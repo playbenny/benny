@@ -20,20 +20,27 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,4],
+				"colour" : 0
+			},
+			{
+				"contains" : [2,3,13,5],
+				"height" : 0,
 				"colour" : 10
 			},
 			{ 
 				"header" : "envelope",
 				"contains" : [6,7,8],
-				"colour" : 5
+				"colour" : -3
 			},
 			{
-				"contains" : [2,3,13,5],
-				"height" : 0
+				"contains" : [9,10,12,14],
+				"height" : 0,
+				"colour" : -6
 			},
 			{
-				"contains" : [9,10,11,12,14],
-				"height" : 0
+				"contains" : [11, 15,16,17,18,19,20],
+				"height" : 0,
+				"colour" : -9
 			}
 		],
 		"panel" : {
@@ -119,7 +126,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "vel->level",
+				"name" : "vel ->_level",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
@@ -145,7 +152,49 @@
 				"values" : ["bi", -2, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0.75				
-			}			
+			},
+			{
+				"name" : "vel ->_shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vel ->_range",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},	
+			{
+				"name" : "vel ->_attack",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vel ->_release",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "env ->_shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			},	
+			{
+				"name" : "env ->_pitch",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5
+			}
 		]
 	}
 }

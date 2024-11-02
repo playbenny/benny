@@ -9,7 +9,7 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "record", "mod" ],
-				"midi" : [ "trigger from start", "jump to position" ]
+				"midi" : [ "trigger from start", "jump to position","set start", "set end" ]
 			},
 			"out" : {
 				"audio" : [ "play", "out2" ]
