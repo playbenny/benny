@@ -947,7 +947,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-
+		}else if(usermouse.got_t == 7){
+			if((mouse_click_actions[usermouse.got_i]==custom_mouse_passthrough)&&(mouse_click_values[usermouse.got_i]==1)){
+				custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
+			}
 		}
 	}
 }

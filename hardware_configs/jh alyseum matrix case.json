@@ -272,13 +272,13 @@
 				"in" : 				{
 					"hardware" : [ "audio 3", "audio 4", "cv" ],
 					"hardware_channels" : [ 24, 18, 12 ],
-					"matrix_channels" : [ 0, 16, 10, 0 ]
+					"matrix_channels" : [ 0, 16, 10 ]
 				}
 ,
 				"out" : 				{
 					"hardware" : [ "out 3", "out 4" ],
 					"hardware_channels" : [ 15, 14 ],
-					"matrix_channels" : [ 15 ]
+					"matrix_channels" : [ 15, 14 ]
 				}
 
 			}
@@ -302,9 +302,9 @@
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "out", "new" ],
+					"hardware" : [ "out1", "out2" ],
 					"hardware_channels" : [ 13, 8 ],
-					"matrix_channels" : [ "<undefined>", 8 ]
+					"matrix_channels" : [ 0, 8 ]
 				}
 
 			}
