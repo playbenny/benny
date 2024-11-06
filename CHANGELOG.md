@@ -3,6 +3,8 @@
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
 06/11/24:
 - env.asr's EOA/EOR outputs now output notes who's velocity matches the peak level of the envelope in that cycle. makes it more useful for looped envelope bouncing ball stuff. possibly a **breaking change** if you used this output on something velocity-sensitive.
+- request_set_voice_param - the way a block asks to set its own parameters, now sets the block param instead if there's only one voice. testing to see if any issues with existing blocks.
+- **breaking change** source.random - value out is now bipolar, which makes it more useful
 20/10/24:
 - dragging blocks off the edges of the page / into the sidebar area now scrolls the blocks page
 - (in a branch) core.input.keyboard now has history recording, can loop bits of the recording and can spawn an already-connected piano roll block playing back that loop too.
