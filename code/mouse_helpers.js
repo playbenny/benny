@@ -1644,6 +1644,10 @@ function request_set_block_parameter(block, parameter, value){
 	if(block == sidebar.selected) redraw_flag.flag |= 2;
 }
 function request_set_voice_parameter(block,voice,parameter,value){
+	var vcl = voicemap.get(block);
+	if((!Array.isArray(vcl))||(vcl.length<=1)){ //if a block currently has just one voice then it sets the block param rather than the per voice offset
+		request_set_block_parameter(block,parameter,value);
+	}
 	//post("\nrsvp",block,voice,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	if(v == null) return -1;
