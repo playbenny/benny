@@ -3,12 +3,12 @@
 		"patcher" : "midi.fold",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Transposes, folding notes that lie outside the set range. ££The last control, 'glissando', determines whether the output notes change when you adjust the controls as opposed to just when new notes come in.",
+		"help_text" : "Transposes, folding notes that lie outside the set range. ££The last control, 'glissando', determines whether the output notes change when you adjust the controls as opposed to just when new notes come in. You can send midi to the second input to set the transpose value.",
 		"max_polyphony" : 0,
 		"synonyms" : "transpose",
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in" ]
+				"midi" : [ "notes in","set transpose" ]
 			},
 			"out" : {
 				"midi" : [ "notes out" ]
