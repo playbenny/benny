@@ -640,7 +640,7 @@ function import_song(){
 						var ty = blocktypes.get(block_name+"::type");
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",ty);
-					}else if(thisblock.contains("substitute")){
+					}else if(thisblock.contains("substitute")&&blocktypes.contains(thisblock.get("substitute"))){
 						//use that then
 						block_name = thisblock.get("substitute");
 						post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
