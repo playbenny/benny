@@ -226,7 +226,7 @@ function draw(){
 					var rr = laney[l];
 					for(var yy = highestnote - lowestnote; yy >= 0; yy--){
 						var nr = rr + r;
-						var s = noteshade[(yy - 1 + lowestnote) % 12];
+						var s = noteshade[(yy  + lowestnote) % 12];
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
 						outlet(1,"paintrect",x_pos+ls,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
@@ -310,6 +310,12 @@ function draw(){
 						outlet(1,"moveto",ex1,ey);
 						outlet(1,"lineto",ex1,by);
 					}else{
+						if((event[2]<lowestnote)||(event[2]>highestnote)){
+							drawflag = 1;
+							post("\naborting draw to recalibrate and redo");
+							voice_is(block);
+							return -1;
+						}
 						if(event[1]!=ll){
 							ll = event[1];
 							by = laney[1+ll] - 4;
@@ -569,8 +575,21 @@ function mouse(x,y,l,s,a,c,scr){
 			event[3] = v;
 			seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 		}
-	}else if(l){
-
+	}else if(l==1){
+		post("\nclick");
+	}else{
+		if(moved){
+			for(var i=0;i<laney.length-1;i++){
+				if((y>laney[i])&&(y<laney[i+1])&&(maximisedlist[i]==0)){
+					for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
+					maximisedlist[i]=1;
+					post("\n",i);
+					laneheights();
+					drawflag=1;
+					post("calced new heights",laney,"maxl",maximisedlist);
+				}
+			}
+		}
 	}
 }
 
