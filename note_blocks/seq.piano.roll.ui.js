@@ -576,7 +576,17 @@ function mouse(x,y,l,s,a,c,scr){
 			seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 		}
 	}else if(l==1){
-		post("\nclick");
+		if(y<y_pos+0.1*height){
+			if(y<y_pos+0.05*height){
+				
+			}else{
+				if(a==1){
+					zoom_start=0; zoom_end=1; zoom_scale=1;
+				}else{
+
+				}
+			}
+		}
 	}else{
 		if(moved){
 			for(var i=0;i<laney.length-1;i++){
@@ -593,6 +603,12 @@ function mouse(x,y,l,s,a,c,scr){
 	}
 }
 
-function keydown(){}
+function keydown(key){
+	if(key == -15){
+		zoom_start = 0; zoom_end = 1; zoom_scale = 1;
+		for(var i=0;i<maximisedlist.length;i++)maximisedlist[i]=0;
+		drawflag=1;
+	}
+}
 
 function enabled(){}
