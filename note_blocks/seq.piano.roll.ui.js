@@ -36,7 +36,7 @@ var zoom_start = 0;
 var zoom_end = 1;
 var zoom_scale = 1;
 
-var mouse_x, mouse_y, mouse_lane;
+var mouse_x, mouse_y, mouse_lane, scroll_accumulator = 0;
 var hovered_event = -1;
 var selected_events = [];
 
@@ -139,10 +139,10 @@ function draw(){
 		start += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 1,1)-0.5)*512);
 		loopstart += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 2,1)-0.5)*512);
 		looplength += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 3,1)-0.5)*512);
-		var st = (width-2)*(start/seql);
-		var ls = (width-2)*(loopstart/seql);
-		var le = ls + (width-2)*(looplength/seql);
 		if(mini){
+			var st = (width-2)*(start/seql);
+			var ls = (width-2)*(loopstart/seql);
+			var le = ls + (width-2)*(looplength/seql);
 			if(le<(width-2)){
 				outlet(1,"paintrect",x_pos+le,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
 			}
@@ -202,19 +202,18 @@ function draw(){
 			outlet(1,"write","loopstart:"+loopstart);
 			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 			outlet(1,"write"," length:"+looplength);
-
-			if(hovered_event>-1){
-				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
-				outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.02);
-				outlet(1,"write","selected event:",event[2],event[3],event[4]*seql);
-			}
+			
 			//if(draw_mouselayer_flag){
 				outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
 			//	draw_mouselayer_flag = 0;
 			//}
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 			//for();
+			var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
+			var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
+			var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
 			mouse_lane = -1;
+			hovered_event = -1;
 			for(var l=0; l<laney.length-1; l++){
 				if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
 				var r = 18;
@@ -234,10 +233,8 @@ function draw(){
 						rr=nr;
 					}
 				}
-				outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-				outlet(1,"moveto", x_pos+9,laney[l]+Math.max(18,r*0.8));
-				outlet(1,"write", "lane "+laneslist[l]);
 			}
+
 			if((st>=zoom_start)&&(st<=zoom_end)){
 				outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
 				for(var l=0; l<laney.length-1; l++){
@@ -252,6 +249,39 @@ function draw(){
 					outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l+1]-6);
 				}
 			}
+			var shown_range_in_beats = seql / zoom_scale;
+			var firstbeat = Math.ceil(zoom_start*seql);
+			var bw = (width-2)/shown_range_in_beats;
+			var step = 24 / bw;
+			if(step<1){
+				step = 1 / Math.ceil(1 / step);
+			}else{
+				step = Math.ceil(step);
+			}
+			outlet(1,"frgb",0,0,0);
+			for(var b = -1;b<shown_range_in_beats;b+=Math.min(step,1)){
+				var bx = x_pos + (width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+				if((bx>=x_pos)&&(bx<(x_pos+width-2))){
+					outlet(1,"moveto",bx,y_pos+height*0.08);
+					outlet(1,"lineto",bx,y_pos+height);
+				}
+			}
+			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+			for(var b = 0;b<shown_range_in_beats;b+=step){
+				var bx = x_pos + (width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+				if((Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
+					outlet(1,"moveto",bx,y_pos+height*0.07);
+					outlet(1,"write",Math.floor(firstbeat+b));
+				}	
+			}
+
+			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+			for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos+9,laney[l]+Math.max(18,r*0.8));
+				outlet(1,"write", "lane "+laneslist[l]);
+			}
+
+
 			var sd = seqdict.get(block+"::"+pattern);
 			if(sd == null) return 0;
 			var k = sd.getkeys();
@@ -299,7 +329,14 @@ function draw(){
 						outlet(1,"paintrect",ex1,ey-sy,ex2,ey,col);
 					}
 				}
-			}			
+			}	
+			if(hovered_event>-1){
+				outlet(1,"frgb",blockcolour);
+				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
+				outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.02);
+				outlet(1,"write","selected event:",event[2],event[3],event[4]*seql);
+			}
+		
 		}
 	}
 }
@@ -492,26 +529,33 @@ function mouse(x,y,l,s,a,c,scr){
 	if(scr){
 		if(y<y_pos+0.1*height){
 			if(y<y_pos+0.05*height){
-				var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
-				if(x<x_pos+0.2*width){
-					loopnts[1] += scr;
-				}else if(x<x_pos+0.4*width){
-					loopnts[2] += scr;
-				}else if(x<x_pos+0.6*width){
-					loopnts[3] += scr;
+				scroll_accumulator += scr;
+				if(Math.abs(scroll_accumulator)>1){
+					scr = 2*(scroll_accumulator>0)-1;
+					scroll_accumulator = 0;
+					var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+					if(x<x_pos+0.2*width){
+						loopnts[1] += scr;
+					}else if(x<x_pos+0.4*width){
+						loopnts[2] += scr;
+					}else if(x<x_pos+0.6*width){
+						loopnts[3] += scr;
+					}
+					seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
 				}
-				seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
 			}else{
 				if(s){
 					zoom_start = Math.max(0,zoom_start+scr);
 					zoom_end = Math.min(1,zoom_end+scr);
 					zoom_scale = 1 / (zoom_end-zoom_start);
 				}else{
-					var xx = (x-x_pos)/width;
-					zoom_start = Math.max(0,zoom_start + scr*xx);
-					zoom_end = Math.min(1, zoom_end - (1-xx)*scr);
-					zoom_scale = 1 / (zoom_end-zoom_start);
-					//post("\nzoom",zoom_start,zoom_end,zoom_scale);
+					if(zoom_end-zoom_start>scr){
+						var xx = (x-x_pos)/width;
+						zoom_start = Math.max(0,zoom_start + scr*xx);
+						zoom_end = Math.min(1, zoom_end - (1-xx)*scr);
+						zoom_scale = 1 / (zoom_end-zoom_start);
+						//post("\nzoom",zoom_start,zoom_end,zoom_scale);
+					}
 				}
 			}
 		}else if(hovered_event>-1){
