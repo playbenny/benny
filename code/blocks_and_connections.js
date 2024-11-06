@@ -1356,7 +1356,7 @@ function remove_connection(connection_number){
 						if(wl[f_o_no]==1){
 							//this is more complicated than make conn - we need to check if
 							//any other connections are using this output?
-							var cused = is_output_used(f_o_no,i,f_block,"midi");
+							var cused = is_output_used(f_o_no,i,f_block,"midi"); //this fn turns it on or off as well as answering the question
 							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
 						}
 					}		
@@ -1909,12 +1909,16 @@ function make_connection(cno,existing){
 					}else if(f_type == "midi"){
 						if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
 							var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+							post("\nchecking midi watched");
 							if(wl[f_o_no]==1){
+								post(" ... ");
 								//tell the voice that this output is in use
 								if(blocks.get("blocks["+f_block+"]::type")=="audio"){
 									audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
+									post("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
 								}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
 									note_poly.message("setvalue", f_voice + 1, "enable_output",f_o_no,1);
+									post("setvalue", f_voice + 1, "enable_output",f_o_no,1);
 								}
 							}
 						}
