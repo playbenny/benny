@@ -202,7 +202,7 @@ var click_i = new Int16Array(9900000); //more than 4k.
 var click_b_s = 2; //click buffer is scaled, >> click_b_s, so 
 var click_b_w = 11 >> click_b_s; //width of the screen log2 (ie so 2^this > actual width)
 
-var connections_sketch = new JitterObject("jit.gl.sketch","benny");
+//var connections_sketch = new JitterObject("jit.gl.sketch","benny");
 
 //these hold all the opengl objects (labels, blocks separate for the main one, in one for the menu one.)
 //var blocks_label = []; //called label-blockno-0
