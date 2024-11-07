@@ -105,13 +105,13 @@ function initialise_reset(hardware_file){
 
 	matrix.message("clear"); //clears the audio matrix
 	
-	sigouts.setvalue(0,0); // clear sigs
+	sigouts.message("setvalue", 0,0); // clear sigs
 
 	//wipe all the buffers
 	messnamed("clear_all_buffers","bang");
 	//waves_polybuffer.clear();
-	note_poly.setvalue(0,"enabled",0);
-	audio_poly.setvalue(0,"enabled",0);
+	note_poly.message("setvalue", 0,"enabled",0);
+	audio_poly.message("setvalue", 0,"enabled",0);
 
 	//also empties all the dicts for re-initialisatoin:
 	blocktypes.parse('{ }');
@@ -241,33 +241,33 @@ function initialise_dictionaries(hardware_file){
 	var i;
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		note_patcherlist[i]='blank.note';
-		note_poly.setvalue(i+1,"patchername","blank.note");
+		note_poly.message("setvalue", i+1,"patchername","blank.note");
 		loaded_note_patcherlist[i]='blank.note';
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++) {
 		audio_upsamplelist[i]=1;
 		audio_patcherlist[i]='blank.audio';
-		audio_poly.setvalue(i+1,"patchername","blank.audio");
+		audio_poly.message("setvalue", i+1,"patchername","blank.audio");
 		loaded_audio_patcherlist[i]='blank.audio';
 	}
 	for(i=0;i<MAX_BLOCKS;i++) {
 		ui_patcherlist[i]='blank.ui';
 		loaded_ui_patcherlist[i] = 'blank.ui';
-		ui_poly.setvalue(i+1,"patchername","blank.ui");
+		ui_poly.message("setvalue", i+1,"patchername","blank.ui");
 		selected.block[i]=0;
 		selected.wire[i]=0;
 		record_arm[i]=0;
 	}
 	still_checking_polys = 0;
-	audio_to_data_poly.setvalue(0, "vis_meter", 0);
-	audio_to_data_poly.setvalue(0, "vis_scope", 0);
-	audio_to_data_poly.setvalue(0, "out_value", 0);
-	audio_to_data_poly.setvalue(0, "out_trigger", 0);
+	audio_to_data_poly.message("setvalue", 0, "vis_meter", 0);
+	audio_to_data_poly.message("setvalue", 0, "vis_scope", 0);
+	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
+	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 
 	notepools_dict.parse("notepools","{}");
 	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
-		audio_to_data_poly.setvalue(i, "vis_meter", 1);
+		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
@@ -325,7 +325,7 @@ function initialise_graphics() {
 	world.message("fsmenubar", 0);
 	world.message("fsaa", 1);
 	world.message("fps", TARGET_FPS[0]);
-	world.getsize(); //world.message( "getsize"); //get ui window ready
+	world.message("getsize"); //get ui window ready
 
 	background_cube = new JitterObject("jit.gl.gridshape", "benny");
 	background_cube.shape = "cube";
@@ -568,7 +568,7 @@ function import_hardware(v){
 	//messnamed("to_ext_matrix","read_config");
 	transfer_input_lists();
 	post("\nsetting output blocks to:",output_blocks);
-	output_blocks_poly.patchername(output_blocks); 
+	output_blocks_poly.message("patchername", output_blocks); 
 	post("\n\ninit stage 4 : start graphic and audio engines\n------------------------------------------");
 
 	initialise_graphics();
