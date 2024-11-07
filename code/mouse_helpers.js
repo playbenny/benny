@@ -640,8 +640,8 @@ function show_new_block_menu(){
 
 function screentoworld(x,y){
 	//var real = connections_sketch.screentoworld(x,y);
-	//var camera_stw_scale = 0.53589838486224541294510731698826 * camera_position[2];
 	//post("\nreal stw", real);
+	var camera_stw_scale = 0.53589838486224541294510731698826 * camera_position[2];
 	x/=mainwindow_width;
 	y/=-mainwindow_height;
 	x-=0.5;
