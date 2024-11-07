@@ -630,12 +630,28 @@ function sidebar_select_connection(num,val){
 }
 function show_new_block_menu(){
 	clear_blocks_selection();
-	blocks_page.new_block_click_pos = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
 	usermouse.clicked3d=-1;
 	usermouse.timer = 0;
 	usermouse.long_press_function = null;
 	menu.mode = 0;
 	set_display_mode("block_menu");
+}
+
+function screentoworld(x,y){
+	//var real = connections_sketch.screentoworld(x,y);
+	//post("\nreal stw", real);
+	var camera_stw_scale = 0.53589838486224541294510731698826 * camera_position[2];
+	x/=mainwindow_width;
+	y/=-mainwindow_height;
+	x-=0.5;
+	y+=0.5;
+	x*=camera_stw_scale*mainwindow_width/mainwindow_height;
+	y*=camera_stw_scale;
+	x+=camera_position[0];
+	y+=camera_position[1];
+	//post("calculated one",x,y,"error",real[0]-x,real[1]-y);
+	return [x,y,0];//real;
 }
 
 function select_block(parameter,value){
@@ -2163,8 +2179,8 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 
 
 function process_drag_selection(){
-	var sts = connections_sketch.screentoworld(usermouse.drag.starting_x,usermouse.drag.starting_y);
-	var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+	var sts = screentoworld(usermouse.drag.starting_x,usermouse.drag.starting_y);
+	var stw = screentoworld(usermouse.x,usermouse.y);
 	if(sts[0]>stw[0]){
 		var ttt = sts[0];
 		sts[0] = stw[0];
