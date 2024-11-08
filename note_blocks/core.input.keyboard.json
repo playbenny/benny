@@ -2,8 +2,10 @@
 	"core.input.keyboard" : {
 		"patcher" : "core.input.keyboard",
 		"type" : "note",
-		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Midi keyboard input. Outputs notes played and the usual keyboard controllers. ££If auto assign is turned on then when a block is selected the keyboard notes are sent to that block instead, until the block is deselected. ",
+		"block_ui_patcher" : "core.input.keyboard.ui",
+		"ui_in_sidebar_height" : 3,
+		"no_edit" : 1,
+		"help_text" : "Midi keyboard input. Outputs notes played and the usual keyboard controllers. ££If auto assign is turned on then when a block is selected the keyboard notes are sent to that block instead, until the block is deselected.££The block records the last 64 bars of what you've played, and by switching to loop (or overdub) modes - default shortcut F9 - you can select a section of that history. once you're happy with your selection range pressing the spawn button (default shortcut ctrl-F9) will spawn 1 or more seq.piano.roll objects (depending on what you have connected)",
 		"//exclusive" : 1,
 		"max_polyphony" : 1,
 		"connections" : {
@@ -19,7 +21,12 @@
 			},{
 				"contains" : [2,4],
 				"height" : 0
-			}			
+			},{
+				"header" : "history / looper",
+				"contains" : [5,5,6,6,7,8],
+				"height" : 1.5,
+				"colour" : -20
+			}		
 		],
 		"parameters" : [
 			{
@@ -57,6 +64,34 @@
 				"error_scale" : 0,
 				"wrap" : 1,
 				"default" : 0.75
+			},{
+				"name" : "mode",
+				"type" : "menu_l",
+				"values" : ["listening", "looping","loop + overdub"],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "loop length (beats)",
+				"type" : "int",
+				"values" : ["uni", 1,256,"lin"],
+				"wrap" : 0,
+				"default" : 0.124,
+				"error_scale" :0
+			},
+			{
+				"name" : "age_(beats)",
+				"type" : "int",
+				"values" : ["uni", 0,255,"exp10"],
+				"wrap" : 0,
+				"default" : 0.005,
+				"error_scale" :0
+			},{
+				"name" : "spawn_player",
+				"type" : "button",
+				"values" : ["firstvoice","spawn","spawn"],
+				"default" : 0
 			}
 		]
 	}

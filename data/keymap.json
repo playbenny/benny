@@ -39,6 +39,8 @@
         "-22" : ["F6" , "set_sidebar_mode","settings"],
         "-23" : ["F7" , "blocks_and","connections"],
         "-24" : ["F8" , "blocks_and","file_menu"],
+        "-25" : ["F9" , "messnamed" ,"core.input.keyboard", "toggle_loop"],
+        "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
         "-26" : ["F10", "toggle_show_all_wires"],
         "-27" : ["F11", "toggle_fullscreen"],
         "-28" : ["F12" , "set_sidebar_mode","cpu"]

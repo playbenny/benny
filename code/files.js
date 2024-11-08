@@ -640,7 +640,7 @@ function import_song(){
 						var ty = blocktypes.get(block_name+"::type");
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",ty);
-					}else if(thisblock.contains("substitute")){
+					}else if(thisblock.contains("substitute")&&blocktypes.contains(thisblock.get("substitute"))){
 						//use that then
 						block_name = thisblock.get("substitute");
 						post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
@@ -760,8 +760,8 @@ function import_song(){
 			if(loading.wait>1) post("\nloading connection number",b);
 			if(songs.contains(loading.songname+"::connections["+b+"]::from")){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
-				new_connection.replace("from::number",loading.mapping[new_connection.get("from::number")]);
-				new_connection.replace("to::number",loading.mapping[new_connection.get("to::number")]);
+				new_connection.replace("from::number", loading.mapping[new_connection.get("from::number")]);
+				new_connection.replace("to::number", loading.mapping[new_connection.get("to::number")]);
 				connections.append("connections",new_connection);
 				var co = connections.getsize("connections")-1;
 				make_connection(co,0);
@@ -1631,7 +1631,7 @@ function clear_everything(){
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
-
+	proll.parse("{}");
 	connections.parse('{ "connections" : [ {} ] }');
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");

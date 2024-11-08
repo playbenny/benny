@@ -42,7 +42,7 @@
 				"values" : ["uni", 0, 1.2, "lin"],
 				"wrap" : 0,
 				"error_scale" : 0.2,
-				"default" : 0
+				"default" : 0.82
 			},
 			{
 				"name" : "damping",
@@ -107,7 +107,7 @@
 				"values" : ["rev", "soft", "pluck" ],
 				"wrap" : 0,
 				"error_scale" : 1,
-				"default" : 0.05
+				"default" : 0.99
 			},
 			{
 				"name" : "gain",

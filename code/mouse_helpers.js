@@ -1654,13 +1654,19 @@ function request_set_block_parameter(block, parameter, value){
 	var v = unscale_parameter(block,parameter,value);
 	if(v == null) return -1;
 	parameter_value_buffer.poke(1,MAX_PARAMETERS*block+parameter,v);
+	if(block == sidebar.selected) redraw_flag.flag |= 2;
 }
 function request_set_voice_parameter(block,voice,parameter,value){
+	var vcl = voicemap.get(block);
+	if((!Array.isArray(vcl))||(vcl.length<=1)){ //if a block currently has just one voice then it sets the block param rather than the per voice offset
+		request_set_block_parameter(block,parameter,value);
+	}
 	//post("\nrsvp",block,voice,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	if(v == null) return -1;
 	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
 	parameter_static_mod.poke(1,MAX_PARAMETERS*voice+parameter,v-bv);
+	if(block == sidebar.selected) redraw_flag.flag |= 2;
 }
 
 function unscale_parameter(block, parameter, value){
@@ -3216,6 +3222,17 @@ function toggle_automap_lock(type){
 	redraw_flag.flag |= 4;
 }
 
+function set_automap_lock(type,value){
+	if(type=="control"){
+		automap.lock_c = value;
+	}else if(type == "keyboard"){
+		automap.lock_k = value;
+	}else if(type == "cue"){
+		automap.lock_q = value;
+	}
+	redraw_flag.flag |= 4;
+}
+
 function tab_between_display_modes(){
 	if(displaymode == "blocks"){
 		set_display_mode("panels");
@@ -3316,4 +3333,40 @@ function make_space(x,y,r){
 		}
 	}
 	redraw_flag.flag |= 4;
+}
+
+function reify_automap_k(){
+	// makes new connection out of automap k connection, turns off automap_k
+	new_connection.parse('{}');
+	new_connection.replace("to::number", +automap.mapped_k);
+	new_connection.replace("from::number", +automap.available_k_block);
+	new_connection.replace("from::output::number",0);
+	new_connection.replace("from::voice","all");
+	new_connection.replace("to::voice","all");
+	new_connection.replace("from::output::type","midi");
+	new_connection.replace("to::input::number",automap.inputno_k);
+	new_connection.replace("to::input::type","midi");
+	
+	new_connection.replace("conversion::mute" , 0);
+	new_connection.replace("conversion::scale", 1);
+	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::offset", 0.5);	
+	new_connection.replace("conversion::offset2", 0.5);	
+	connections.append("connections", new_connection);
+	make_connection(connections.getsize("connections")-1,0);
+	set_automap_lock("keyboard",0);
+	automap.mapped_k = -1;
+	note_poly.message("setvalue", automap.available_k, "automapped", 0);
+	draw_blocks();
+}
+
+function start_keyboard_looper(){
+	messnamed("core.input.keyboard","toggle_loop", 1);
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if((blocks.contains("blocks["+i+"]::name")) && (blocks.get("blocks["+i+"]::name") == "core.input.keyboard")){
+			clear_blocks_selection();
+			selected.block[i]=1;
+			i=Infinity;
+		}
+	}
 }

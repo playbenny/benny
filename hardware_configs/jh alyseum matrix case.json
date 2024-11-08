@@ -207,32 +207,6 @@
 
 		}
 ,
-		"hardware.logic" : 		{
-			"type" : "hardware",
-			"substitute" : [  ],
-			"max_polyphony" : 1,
-			"help_text" : "logic",
-			"exclusive" : 0,
-			"click_out" : 0,
-			"cue_out" : 0,
-			"talk_in" : 0,
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "in X", "in Y" ],
-					"hardware_channels" : [ 11, 12 ],
-					"matrix_channels" : [ 9, 10 ]
-				}
-,
-				"out" : 				{
-					"hardware" : [ "out A", "out B" ],
-					"hardware_channels" : [ 8, 9 ],
-					"matrix_channels" : [ 8, 9 ]
-				}
-
-			}
-
-		}
-,
 		"hardware.arp.filter" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
@@ -285,52 +259,52 @@
 
 		}
 ,
-		"hardware.tube" : 		{
+		"hardware.qmmg" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
-			"help_text" : "tube",
+			"help_text" : "channels 3 and 4 of the qmmg",
 			"exclusive" : 0,
 			"click_out" : 0,
 			"cue_out" : 0,
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in" ],
-					"hardware_channels" : [ 17 ],
-					"matrix_channels" : [ 15 ]
+					"hardware" : [ "audio 3", "audio 4", "cv" ],
+					"hardware_channels" : [ 24, 18, 12 ],
+					"matrix_channels" : [ 0, 16, 10 ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 13 ],
-					"matrix_channels" : [ 13 ]
+					"hardware" : [ "out 3", "out 4" ],
+					"hardware_channels" : [ 15, 14 ],
+					"matrix_channels" : [ 15, 14 ]
 				}
 
 			}
 
 		}
 ,
-		"hardware.athra" : 		{
+		"hardware.drive.+qmmg" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
-			"help_text" : "stereo delay",
+			"help_text" : "drive+qmmg",
 			"exclusive" : 0,
 			"click_out" : 0,
 			"cue_out" : 0,
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in" ],
-					"hardware_channels" : [ 18 ],
-					"matrix_channels" : [ 16 ]
+					"hardware" : [ "in1", "in2" ],
+					"hardware_channels" : [ 17, 11 ],
+					"matrix_channels" : [ 15, 9 ]
 				}
 ,
 				"out" : 				{
-					"hardware" : [ "out L", "out R" ],
-					"hardware_channels" : [ 14, 15 ],
-					"matrix_channels" : [ 15, 15 ]
+					"hardware" : [ "out1", "out2" ],
+					"hardware_channels" : [ 13, 8 ],
+					"matrix_channels" : [ 0, 8 ]
 				}
 
 			}

@@ -389,7 +389,10 @@ function stop_graphics(){
 	lcd_main.message("clear");
 	lcd_main.message("bang");
 	meters_enable = 0;
-	redraw_flag,flag = 0;
+	redraw_flag.flag = 0;
+	view_changed = 0;
+	meters_updatelist.hardware = [];
+	meters_updatelist.meters = [];
 	post("\nstopping graphics");
 	background_cube.freepeer();
 	selection_cube.freepeer();
@@ -399,7 +402,7 @@ function stop_graphics(){
 	flock_cubexz.freepeer();
 	//world.message("enable",0);
 	var stop_task = new Task(stop_world, this);
-	stop_task.schedule(34);
+	stop_task.schedule(1);
 }
 function stop_world(){
 	world.message("enable",0);

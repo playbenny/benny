@@ -1977,13 +1977,17 @@ function keybcallback(data){
 			}else if(id[2]=="matrixchannel"){
 				var t=+id[3];
 				//post("\nset in matrix channel object hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
+				var tarr = [];
 				if(!configfile.contains("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels")){
 					configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels","*");
-					var tarr = [];
-					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::in::hardware");tt>0;tt--) tarr.push(0);
-					configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels",tarr);
+					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::in::hardware");tt>=0;tt--) tarr.push(0);
+				}else{
+					tarr = configfile.get("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels");
+					if(!Array.isArray(tarr)) tarr = [tarr];
 				}
-				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
+				tarr[values[id[3]][1]] = data.value;
+				configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels",tarr);
+				//configfile.replace("hardware::"+values[id[3]][0]+"::connections::in::matrix_channels["+values[id[3]][1]+"]",data.value);
 				//controls[t+2].message("list", data.value);
 			}
 		}else if(id[1]=="out"){
@@ -1998,14 +2002,14 @@ function keybcallback(data){
 			}else if(id[2]=="matrixchannel"){
 				var t=+id[3];
 				post("\nset out matrix channel object",t+2,"to ",data.value,"\nie ","hardware::"+values[id[3]][0]+"::connections::out::hardware_channels["+values[id[3]][1]+"]",data.value);
+				var tarr = [];
 				if(!configfile.contains("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels")){
 					configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels","*");
-					var tarr = [];
-					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::out::hardware");tt>0;tt--) tarr.push(0);
-					configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels",tarr);
-
+					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::out::hardware");tt>=0;tt--) tarr.push(0);
 				}
-				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
+				tarr[values[id[3]][1]] = data.value;
+				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels",tarr);
+				//configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
 				//controls[t+2].message("list", data.value);
 			}
 		}else if(id[1]=="midi"){

@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3809850336,
+	"modificationdate" : 3812117238,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -911,6 +911,11 @@
 
 			}
 ,
+			"voiceheader_noparams.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"utility.lowpass.highpass.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
@@ -1291,12 +1296,12 @@
 				"local" : 1
 			}
 ,
-			"voiceheader_noparams.maxpat" : 			{
+			"seq.piano.roll.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/patchers",
-					"projectrelativepath" : "./patchers"
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
 				}
 
 			}
@@ -1743,6 +1748,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"seq.piano.roll.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+					"projectrelativepath" : "./note_blocks"
 				}
 
 			}

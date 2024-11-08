@@ -1356,7 +1356,7 @@ function remove_connection(connection_number){
 						if(wl[f_o_no]==1){
 							//this is more complicated than make conn - we need to check if
 							//any other connections are using this output?
-							var cused = is_output_used(f_o_no,i,f_block,"midi");
+							var cused = is_output_used(f_o_no,i,f_block,"midi"); //this fn turns it on or off as well as answering the question
 							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
 						}
 					}		
@@ -1909,7 +1909,9 @@ function make_connection(cno,existing){
 					}else if(f_type == "midi"){
 						if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
 							var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+							post("\nchecking midi watched");
 							if(wl[f_o_no]==1){
+								post(" ... ");
 								//tell the voice that this output is in use
 								if(blocks.get("blocks["+f_block+"]::type")=="audio"){
 									audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
@@ -2236,8 +2238,8 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
 	new_connection.parse('{ }');
- 	new_connection.replace("from::number",from);
-	new_connection.replace("to::number", to);
+ 	new_connection.replace("from::number", +from);
+	new_connection.replace("to::number", +to);
 	new_connection.replace("from::output::type", "potential");
 	new_connection.replace("to::input::type","potential");
 
@@ -3128,7 +3130,7 @@ function swap_block(block_name){
 					post(" - replaced");
 				}
 				if(otarg!=menu.swap_block_target){
-					handful[i].replace("from::number",menu.swap_block_target);
+					handful[i].replace("from::number", +menu.swap_block_target);
 					post(" - noted new block number");
 				}
 				var nn = details.getsize("connections::out::"+handful[i].get("from::output::type"));
@@ -3399,4 +3401,161 @@ function mute_last_connection(){
 //called by the midi router if it thinks feedback is happening
 connection_edit("connections["+last_connection_made+"]::conversion::mute",1);
 post("\n\nFEEDBACK PANIC! there were so many midi messages i muted the last new connection to try to prevent a meltdown");
+}
+
+function spawn_player(keyblock,auto){
+	//this is called when this keyboard block is ready to be spawned.
+	//if there are multiple outlet numbers in the data, separate them into multiples of the 
+	//following:
+		//make a new player block
+		//copy the keyb's seq to the right dict slot for the new block
+		//connect the new player block
+	//stop the seq and wipe it
+	// BUT if the thing was automapped instead, it's a slightly different plan:
+	//   work out where it was connected
+	//   work out which lanes relevant
+	//   copy over to new block
+	//stop n wipe
+	var xfer = new Dict;
+	xfer.name = "core-keyb-loop-xfer";
+	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block.");
+	if(auto==0){
+		clear_blocks_selection();
+		var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
+		var uoc = 0;
+		if(xfer.contains(keyblock)){
+			var seqdict = xfer.get(keyblock);
+			var k = seqdict.getkeys();
+			for(var i=0;i<k.length;i++){
+				if(k[i]!="looppoints"){
+					var event = seqdict.get(k[i]);
+					if(event != null){
+						uoc += (usedouts[event[1]] == 0);
+						usedouts[event[1]] = 1;
+					}
+				}else{
+					var event = seqdict.get(k[i]);
+					seqdict.replace(k[i], [ event[2], 0, 0, event[2] ]);//original pattern length (beats), start,loopstart,loopend
+				}
+			}
+			post("\nrecorded data is in ",uoc," lanes");
+			for(var o=0;o<12;o++){
+				if(usedouts[o]){
+					//now, look through connections, find the first connection from this output
+					var conn_count = 0;
+					var playerblock = -1;
+					post("\nlooking for connections on lane ",o);
+					for(var c = connections.getsize("connections")-1;c>=0;c--){
+						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
+							if(conn_count==0){
+								//insert a player block in it
+								post("\nspawning a player for output ",o,"connection",c);
+								menu.connection_number = c; 
+								var to = (connections.get("connections["+c+"]::to::number"));
+								var tx = blocks.get("blocks["+to+"]::space::x");
+								var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+								make_space(tx,ty,1.2);
+								var playerblock = new_block("seq.piano.roll",tx,ty);
+								//copy the relevant bit of sequence into the new block
+								if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
+								if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
+								post("\ncopying to piano roll dictionary ",playerblock);
+								for(var i=0;i<k.length;i++){
+									var event = seqdict.get(k[i]);
+									if(event != null){
+										if(k[i]=="looppoints"){
+											proll.replace(playerblock+"::0::looppoints",event);
+										}else if((event[1] == o)){//||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
+											proll.replace(playerblock+"::0::"+k[i],event);
+										}
+										post(".."+k[i]);
+									}
+								}							
+								draw_block(playerblock);
+								insert_block_in_connection("seq.piano.roll",playerblock);
+								v = voicemap.get(playerblock);
+								if(Array.isArray(v)) v = v[0];
+								post("prompting the new block in voice ",v);
+								note_poly.message("setvalue", v+1,"copyfromdict");
+								selected.block[playerblock] = 1;		
+								conn_count++;
+							}else{
+								//then go through the other connections, if there are more connect them to the same player block instead
+								post("\nconnecting",c,"to existing player", playerblock);
+								new_connection = connections.get("connections["+c+"]");
+								new_connection.replace("from::number",playerblock);
+								new_connection.replace("from::voice","all");
+								new_connection.replace("to::voice","all");
+								new_connection.replace("conversion::mute" , 0);
+								new_connection.replace("conversion::scale", 1);
+								new_connection.replace("conversion::vector", 0);	
+								new_connection.replace("conversion::offset", 0.5);	
+								new_connection.replace("conversion::offset2", 0.5);	
+								remove_connection(c);
+								connections.replace("connections["+c+"]",new_connection);
+								make_connection(c);
+							}
+						}
+					}
+				}
+			}
+			//now delete the sequence from the keyboard block
+			request_set_block_parameter(keyblock,5,0);
+		}
+	}else{
+		//it was automapped: look up where the automap went and make a new connection
+		post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
+		var to = automap.mapped_k;
+		
+		new_connection.parse('{}');
+		new_connection.replace("to::number", +to);
+		new_connection.replace("from::output::number",0);
+		new_connection.replace("from::voice","all");
+		new_connection.replace("to::voice","all");
+		new_connection.replace("from::output::type","midi");
+		new_connection.replace("to::input::number",automap.inputno_k);
+		new_connection.replace("to::input::type","midi");
+		
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::offset", 0.5);	
+		new_connection.replace("conversion::offset2", 0.5);	
+		
+		var tx = blocks.get("blocks["+to+"]::space::x");
+		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+		make_space(tx,ty,1.2);
+		clear_blocks_selection();
+		var playerblock = new_block("seq.piano.roll",tx,ty);
+		new_connection.replace("from::number", +playerblock);
+		//copy the relevant bit of sequence into the new block
+		if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
+		if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
+		if(xfer.contains(keyblock)){
+			post("\ncopying to piano roll dictionary ",playerblock);
+			var seqdict = xfer.get(keyblock);
+			var k = seqdict.getkeys();
+			for(var i=0;i<k.length;i++){
+				var event = seqdict.get(k[i]);
+				if(event != null){
+					if(k[i]=="looppoints"){
+						proll.replace(playerblock+"::0::looppoints",[event[2], 0,0, event[2]]);
+					}else if(event[1] == 0){//OR it's 1 and o==0? it's automapk so you know o =0,1
+						proll.replace(playerblock+"::0::"+k[i],event);
+					}
+					post(".."+k[i]);
+				}
+			}							
+		}
+		draw_block(playerblock);
+		connections.append("connections", new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+		v = voicemap.get(playerblock);
+		if(Array.isArray(v)) v = v[0];
+		post("prompting the new block in voice ",v);
+		note_poly.message("setvalue", v+1,"copyfromdict");
+		selected.block[playerblock] = 1;		
+		//now delete the sequence from the keyboard block
+		request_set_block_parameter(keyblock,5,0);
+	}
 }
