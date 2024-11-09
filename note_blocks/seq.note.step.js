@@ -451,6 +451,40 @@ function mouse(x,y,lb,sh,al,ct,scr){
 				}
 			}
 			drawflag = 1;
+		}else if(scr){
+			if(!sh){
+				scr_accum_y+=scr*5;
+				if(Math.abs(scr_accum_y)>1){
+					scr = (scr>0)?1:-1;
+					scr_accum_y=0;
+					if(ct){
+						view_y+=scr;
+						view_y2-=scr;
+						calcscaling();
+					}else{
+						view_y+=scr;
+						view_y2+=scr;
+						calcscaling();
+					}
+					drawflag = 1;
+				}
+			}else{
+				scr_accum_x+=scr*5;
+				if(Math.abs(scr_accum_x)>1){
+					scr = (scr>0)?1:-1;
+					scr_accum_x=0;
+					if(ct){
+						view_x+=scr;
+						view_x2-=scr;
+						calcscaling();
+					}else{
+						view_x+=scr;
+						view_x2+=scr;
+						calcscaling();
+					}
+					drawflag = 1;
+				}
+			}
 		}
 	}else{ //graph bit
 		var clickx = Math.floor(view_x + view_w * (x-sx)/(width-sx));
