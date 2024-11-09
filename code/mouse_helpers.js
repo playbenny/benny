@@ -1145,11 +1145,7 @@ function fire_block_state(state, block){
 		if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
 		mute_particular_block(block,pv[0]);
 		for(var i=1;i<pv.length;i++){
-			if(pv[i] !== null){
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
-			}else{
-				post("\n\n\n\n\n\n\nunsafe poke in fire block state",i,pv[i]);
-			}
+			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
 		}
 		if(states.contains("states::"+state+"::static_mod::"+block)){
 			var td = states.get("states::"+state+"::static_mod::"+block);
@@ -1410,7 +1406,7 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			for(var p=0;p<params.length;p++){
 				pv[p+1] = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+p);
 			}
-			//post("parameter array",pv);
+			post("parameter array",pv);
 			if(states.contains("states::"+parameter+"::"+block)) states.remove("states::"+parameter+"::"+block);
 			if(pv.length) states.replace("states::"+parameter+"::"+block,pv);
 			blocks.replace("blocks["+block+"]::panel::enable",1);
@@ -1419,7 +1415,9 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 				post("\nblock has no voices? failed to add to state");
 				return -1;
 			}
+			if(!Array.isArray(vl)) vl=[vl];
 			for(var i=0;i<vl.length;i++){
+				post("\nsaving voice",vl[i],"state",parameter,"static mod",block,"::",i);
 				//var voiceoffset = vl[i] + MAX_NOTE_VOICES*(type == "audio") + (MAX_NOTE_VOICES+MAX_AUDIO_VOICES)*(type == "hardware");
 				var psm = parameter_static_mod.peek(1,MAX_PARAMETERS*vl[i],params.length);
 				var c=0;
@@ -1429,6 +1427,32 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 					if(!states.contains("states::"+parameter+"::static_mod::"+block))states.setparse("states::"+parameter+"::static_mod::"+block,"{}");
 					if(!states.contains("states::"+parameter+"::static_mod::"+block+"::"+i))states.setparse("states::"+parameter+"::static_mod::"+block+"::"+i,"{}");
 					states.replace("states::"+parameter+"::static_mod::"+block+"::"+i,psm);
+					//ideally, if you are going to write then you need to make sure you write zeroes to all the other ones that dont have an entry
+					for(var s = -1;s<MAX_STATES;s++){
+						var ss=s;
+						if(ss==-1)ss="current";
+						if(ss!=parameter){
+							if((states.contains("states::"+ss))&&(!states.contains("states::"+ss+"::static_mod::"+block+"::"+i))){
+								if(!states.contains("states::"+ss+"::static_mod"))states.setparse("states::"+ss+"::static_mod","{}");
+								if(!states.contains("states::"+ss+"::static_mod::"+block))states.setparse("states::"+ss+"::static_mod::"+block,"{}");
+								if(!states.contains("states::"+ss+"::static_mod::"+block+"::"+i))states.setparse("states::"+ss+"::static_mod::"+block+"::"+i,"{}");
+								var ps2=[];
+								for(var ps=psm.length;ps>=0;ps--)ps2.push(0);
+								states.replace("states::"+ss+"::static_mod::"+block+"::"+i,ps2);
+							}
+						}
+					}
+				}else{
+					//and if you're not, you should check and see if any of the other states have a static mod entry for this voice.
+					for(var s = -1;s<MAX_STATES;s++){
+						var ss=s;
+						if(ss==-1)ss="current";
+						if(ss!=parameter){
+							if(states.contains("states::"+ss+"::static_mod::"+block+"::"+i)){
+								states.replace("states::"+parameter+"::static_mod::"+block+"::"+i,psm);
+							}
+						}
+					}
 				}
 			}
 			if(parameter=="current"){
