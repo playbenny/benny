@@ -6383,6 +6383,11 @@ function draw_resource_monitor_page() {
 	y_offset += 5.1 * fontheight;
 	lcd_main.message("moveto", sidebar.x, y_offset - 0.5 * fontheight);
 	lcd_main.message("frgb", menucolour);
+	if(cpu_meter.midi_message_rate>0){
+		lcd_main.message("write", "message rate: " + cpu_meter.midi_message_rate +" /s" );
+		y_offset += fontheight;
+		lcd_main.message("moveto", sidebar.x, y_offset - 0.5 * fontheight);
+	}
 	lcd_main.message("write", "blocks");
 	var bfree = MAX_BLOCKS;
 	var oy = y_offset - 0.5 * fontheight;

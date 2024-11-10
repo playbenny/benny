@@ -700,6 +700,12 @@ function request_globals(){
 	globals_requested = 1;
 }
 
+function messagerate(rate){
+	cpu_meter.midi_message_rate = rate;
+	if(rate>1200) post("\nMESSAGE RATE WARNING:",rate," messages per second - looks like it might be feedback watch out");
+	if(rate>9000) mute_last_connection();
+}
+
 function cpu(avg,peak,fps){
 	cpu_meter.pointer++;
 	cpu_meter.pointer &= 127;
