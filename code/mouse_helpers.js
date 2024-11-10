@@ -3145,14 +3145,50 @@ function squash_block_menu(){
 }
 
 function show_and_search_new_block_menu(key){
-	/*if(sidebar.mode == "block_search"){
-		block_search_typing(key);
-	}else*/ if(!usermouse.caps && (key>=97)&& (key<=122)){
+	if(!usermouse.caps && (key>=97)&& (key<=122)){
 		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
+	}else if((sidebar.mode == "block")&&(key>=48)&&(key<58)){ //numbers do direct entry on values.
+		if((usermouse.got_t>=2) && (usermouse.got_t<=4) && (usermouse.got_i) && (usermouse.x > sidebar.x)){
+			var pno = mouse_click_parameters[usermouse.got_i][0];
+			//0-3 coords, 456 colour, 8 is the block (we know that already) 9 is the param no
+			sidebar.mode = "param_number_entry";
+			sidebar.param_number_entry = String.fromCharCode(key);
+			sidebar.param_number = pno;
+			draw_number_entry(pno, sidebar.param_number_entry);
+		}
 	}else{post("\nkeycode",key);}
+}
+
+function number_entry(key){
+	if(key == -4){//enter
+		request_set_block_parameter(sidebar.selected,sidebar.param_number,(+sidebar.param_number_entry));
+		sidebar.mode = "block";
+		redraw_flag.flag|=2;
+	}else if(key == -3){//esc
+		sidebar.param_number_entry = "";
+		sidebar.mode = "block";
+		redraw_flag.flag |= 2;
+	}else if(((key>=48)&&(key<58))||(key==46)){
+		sidebar.param_number_entry = sidebar.param_number_entry.concat(String.fromCharCode(key));
+		draw_number_entry(sidebar.param_number,sidebar.param_number_entry);
+	}else if((key==-6)||(key==-7)){
+		sidebar.param_number_entry = sidebar.param_number_entry.slice(0, -1);
+		draw_number_entry(sidebar.param_number,sidebar.param_number_entry);
+	}
+}
+
+function draw_number_entry(pno,number){
+	var y = paramslider_details[pno][3]-paramslider_details[pno][1]-fontheight;
+	y*=0.5;
+	y+=paramslider_details[pno][1];
+
+	lcd_main.message("paintrect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,0,0,0);
+	lcd_main.message("framerect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,paramslider_details[pno][4],paramslider_details[pno][5],paramslider_details[pno][6]);
+	lcd_main.message("moveto",paramslider_details[pno][0]+4,y+fontheight*0.8);
+	lcd_main.message("write",number);
 }
 
 function block_search_typing(key){
@@ -3161,15 +3197,12 @@ function block_search_typing(key){
 	}else if(key==-6){
 		text_being_editted = "";
 	}else{
-		/*if(text_being_editted == ""){
-			post("\nhello whats this");
-		}*/
 		text_being_editted = text_being_editted + String.fromCharCode(key);
 	}	
 	if(text_being_editted!=""){
 		ch=0;
 		for(var i=0;i<blocks.getsize("blocks");i++){
-			var hit = 0;
+			//var hit = 0;
 			var str = "";
 			if(blocks.contains("blocks["+i+"]::name")) str = str + blocks.get("blocks["+i+"]::name");
 			if(blocks.contains("blocks["+i+"]::label")) str = str + blocks.get("blocks["+i+"]::label");

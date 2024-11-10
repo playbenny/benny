@@ -24,6 +24,9 @@
             "-4" : ["enter", "blocks_menu_enter"],
             "96" : ["`", "messnamed","panic","bang" ],
             "all" : ["all","type_to_search"]
+        },
+        "param_number_entry" : {
+            "all" : ["all", "number_entry"]
         }
     },
     "global" : {

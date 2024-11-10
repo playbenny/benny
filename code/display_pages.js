@@ -2115,6 +2115,7 @@ function draw_sidebar(){
 	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
+		if(sidebar.mode == "param_number_entry") return 0; // just bail!
 		clear_sidebar_paramslider_details();
 		if(sidebar.lastmode!="recalculate"){
 			if(automap.assignmode)turn_off_controller_assign_mode();

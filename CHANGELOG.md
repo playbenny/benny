@@ -2,6 +2,7 @@
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
 10/11/24:
+- type numbers while over a slider to enter the value directly
 - midi message rate displayed on resource monitor page.
 - START_FULLSCREEN key in config.
 - **breaking change** seq values has had a few changes. if you were using it and using the note->position or reset inputs you'll need to find those connections and select the right input again. also the undocumented and buggy D=reverse,B=reset 'feature' on the trigger input is removed - all notes trigger it now, and there's a separate 'reverse' input. there's also a note out that uses the velocity of the incoming trigger (the note comes from the sequence value).
