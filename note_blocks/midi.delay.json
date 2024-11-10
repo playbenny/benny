@@ -7,7 +7,7 @@
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in" ]
+				"midi" : [ "notes in", "reset delay line" ]
 			},
 			"out" : {
 				"midi" : [ "notes out" ]
@@ -21,12 +21,14 @@
 			},
 			{
 				"contains" : [6,7,8],
-				"height" : 0
+				"height" : 0,
+				"colour" : -2
 			},
 			{ 
-				"contains" : [2,3,4],
+				"contains" : [2,3,4,9],
 				"height" : 0,
-				"header" : "filtering"
+				"header" : "filtering",
+				"colour" : -4
 			}			
 		],
 		"panel" : {
@@ -97,6 +99,13 @@
 				"values" : ["uni",0,250,"lin"],
 				"default" : 0,
 				"error_scale" : 0
+			},
+			{
+				"name" : "delay gain",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"default" : 1,
+				"error_scale" : 0.1
 			}
 		]
 	}
