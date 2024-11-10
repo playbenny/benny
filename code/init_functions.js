@@ -320,11 +320,15 @@ function initialise_graphics() {
 	world.message("sendwindow", "mousewheel", 1);
 	world.message("sendrender", "rotate_order", "zyx");
 	world.message("sendrender", "smooth_shading", 1);
-	world.message("visible", 1);
 	world.message("esc_fullscreen", 0);
 	world.message("fsmenubar", 0);
 	world.message("fsaa", 1);
 	world.message("fps", TARGET_FPS[0]);
+	world.message("visible", 1);
+	if(config.contains("START_FULLSCREEN")&&(config.get("START_FULLSCREEN")==1)){
+		fullscreen = 1;
+		world.message("fullscreen",1);
+	}
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 
 	background_cube = new JitterObject("jit.gl.gridshape", "benny");
