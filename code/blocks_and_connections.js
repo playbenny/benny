@@ -61,9 +61,9 @@ function new_block(block_name,x,y){
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
 	if(recycled){
 		if(type=="audio"){
-			audio_poly.setvalue(new_voice+1,"reset");
+			audio_poly.message("setvalue", new_voice+1,"reset");
 		}else if(type=="note"){
-			note_poly.setvalue(new_voice+1,"reset");
+			note_poly.message("setvalue", new_voice+1,"reset");
 		}
 	}
 	// now store it in block dict
@@ -184,28 +184,28 @@ function new_block(block_name,x,y){
 	}
 	// tell the polyalloc voice about its new job
 	if(hwmidi!=""){
-		voicealloc_poly.setvalue((new_block_index+1),"type","note");
+		voicealloc_poly.message("setvalue", (new_block_index+1),"type","note");
 	}else{
-		voicealloc_poly.setvalue((new_block_index+1),"type",type);
+		voicealloc_poly.message("setvalue", (new_block_index+1),"type",type);
 	}
-	voicealloc_poly.setvalue((new_block_index+1),"voicelist",(new_voice+1));
+	voicealloc_poly.message("setvalue", (new_block_index+1),"voicelist",(new_voice+1));
 	var stack = poly_alloc.stack_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::stack_mode"));
 	var choose = poly_alloc.choose_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::choose_mode"));
 	var steal = poly_alloc.steal_modes.indexOf(blocks.get("blocks["+new_block_index+"]::poly::steal_mode"));
 	var returnmode = blocks.get("blocks["+new_block_index+"]::poly::return_mode");
-	voicealloc_poly.setvalue((new_block_index+1),"stack_mode",stack);  
-	voicealloc_poly.setvalue((new_block_index+1),"choose_mode",choose); 
-	voicealloc_poly.setvalue((new_block_index+1),"steal_mode",steal);  
-	voicealloc_poly.setvalue((new_block_index+1),"return_mode",returnmode);
+	voicealloc_poly.message("setvalue", (new_block_index+1),"stack_mode",stack);  
+	voicealloc_poly.message("setvalue", (new_block_index+1),"choose_mode",choose); 
+	voicealloc_poly.message("setvalue", (new_block_index+1),"steal_mode",steal);  
+	voicealloc_poly.message("setvalue", (new_block_index+1),"return_mode",returnmode);
 	if(type=="audio"){ 
-		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", 1);
-		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", 0);
-		audio_to_data_poly.setvalue((new_voice+1), "out_value", 0);
-		audio_to_data_poly.setvalue((new_voice+1), "out_trigger", 0);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "out_value", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "out_trigger", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
 			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
 			if(!blocktypes.contains(block_name+"::subvoices")) blocktypes.replace(block_name+"::subvoices",2);//is this the right place to be fixing the blocktypes db?!
@@ -246,20 +246,20 @@ function new_block(block_name,x,y){
 			for(tii=0;tii<split;tii++){
 				//post("\nturning on meter",tii,":",ts[tii],typeof ts[tii]);
 				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES*2 + MAX_AUDIO_INPUTS;
-				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 				//post(ts[tii]);
 			}
 			for(tii=split;tii<ts.length;tii++){
 				//post("\nturning on input meter",tii,":",ts[tii],typeof ts[tii]);
 				ts[tii] = +ts[tii]+MAX_AUDIO_VOICES*2;
-				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 				//post(ts[tii]);
 			}
@@ -352,7 +352,7 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 		if((note_patcherlist[i] != loaded_note_patcherlist[i]) && (note_patcherlist[i] != "recycling")){
 			if(RECYCLING && (note_patcherlist[i] == "blank.note")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				note_patcherlist[i] = "recycling";
-				note_poly.setvalue(i+1, "muteouts", 1); //this automatically sends enabled 0 too
+				note_poly.message("setvalue", i+1, "muteouts", 1); //this automatically sends enabled 0 too
 				if(!do_all){
 					still_checking_polys |= 1;
 					return 1;
@@ -361,12 +361,12 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 				if(loading.wait>1) post("loading",note_patcherlist[i],"into",i+1,"\n");
 				var pn = (note_patcherlist[i]+".maxpat");
 				if(loaded_note_patcherlist[i] == "reload"){
-					note_poly.setvalue(i+1,"patchername","blank.note.maxpat");
+					note_poly.message("setvalue", i+1,"patchername","blank.note.maxpat");
 					loaded_note_patcherlist[i] = "blank.note";
 					still_checking_polys |=1;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
-				note_poly.setvalue(i+1,"patchername",pn);
+				note_poly.message("setvalue", i+1,"patchername",pn);
 				loaded_note_patcherlist[i]=note_patcherlist[i];
 				if(do_all != 1){
 					still_checking_polys |= 1;
@@ -390,7 +390,7 @@ function send_audio_patcherlist(do_all){
 			if(loading.wait>1) post("\n- loading voice "+i+"'s patcher");
 			if(RECYCLING && (audio_patcherlist[i] == "blank.audio")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				audio_patcherlist[i] = "recycling";
-				audio_poly.setvalue(i+1, "muteouts", 1);
+				audio_poly.message("setvalue", i+1, "muteouts", 1);
 				if(!do_all){
 					still_checking_polys |= 2;
 					return 1;
@@ -402,12 +402,12 @@ function send_audio_patcherlist(do_all){
 					pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
 				}
 				if(loaded_audio_patcherlist[i] == "reload"){
-					audio_poly.setvalue(i+1,"patchername","blank.audio.maxpat");
+					audio_poly.message("setvalue", i+1,"patchername","blank.audio.maxpat");
 					loaded_audio_patcherlist[i] = "blank.audio";
 					still_checking_polys |=2;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
-				audio_poly.setvalue(i+1,"patchername",pn);
+				audio_poly.message("setvalue", i+1,"patchername",pn);
 				loaded_audio_patcherlist[i]=audio_patcherlist[i];
 				if(do_all!=1){
 					still_checking_polys |=2;
@@ -435,7 +435,7 @@ function send_ui_patcherlist(do_all){
 		if((loaded_ui_patcherlist[i]!=ui_patcherlist[i])&&(ui_patcherlist[i]!="recycling")){
 			if(RECYCLING && (ui_patcherlist[i] == "blank.ui")){ //instead of wiping poly slots it just puts them to sleep, ready to be reused.
 				ui_patcherlist[i] = "recycling";
-				ui_poly.setvalue(i+1, "muteouts", 1); //doesn't strictly mute the outs but i'm just using the same message for consistency
+				ui_poly.message("setvalue", i+1, "muteouts", 1); //doesn't strictly mute the outs but i'm just using the same message for consistency
 				if(!do_all){
 					still_checking_polys |= 4;
 					return 1;
@@ -444,13 +444,13 @@ function send_ui_patcherlist(do_all){
 				if(loading.wait>1) post("loading",ui_patcherlist[i],"into",i+1,"\n");
 				var pn = (ui_patcherlist[i]+".maxpat");
 				if(loaded_ui_patcherlist[i] == "reload"){
-					ui_poly.setvalue(i+1,"patchername","blank.ui.maxpat");
+					ui_poly.message("setvalue", i+1,"patchername","blank.ui.maxpat");
 					loaded_ui_patcherlist[i] = "blank.ui";
 					still_checking_polys |=4;
 					return 1; //this clears it, come back next time and it'll load what you wanted
 				}
 				//post("\nui patcher load message sent",i+1,pn);
-				ui_poly.setvalue(i+1,"patchername",pn);
+				ui_poly.message("setvalue", i+1,"patchername",pn);
 				loaded_ui_patcherlist[i]=ui_patcherlist[i];
 				if(do_all!=1){
 					still_checking_polys |=4;
@@ -479,14 +479,14 @@ function update_all_voices_mutestatus(){
 				for(var ii=0;ii<v.length;ii++){
 					if(v[ii]<MAX_NOTE_VOICES){
 						//post("\nthist mutes: note block",k[i],"voice",v[ii],"mute",m);
-						note_poly.setvalue(v[ii]+1, "muteouts", m);
+						note_poly.message("setvalue", v[ii]+1, "muteouts", m);
 					}else if(v[ii]<MAX_AUDIO_VOICES+MAX_NOTE_VOICES){
 						if(audio_patcherlist[v[ii]-MAX_NOTE_VOICES] == "recycling"){
 							m = 1;
 							//post("recycling");
 						}
 						//post("\nthis mutes: audio block",k[i],"voice",v[ii],"mute",m,"patcherlist",audio_patcherlist[v[ii]-MAX_NOTE_VOICES]);
-						audio_poly.setvalue(v[ii]+1-MAX_NOTE_VOICES, "muteouts", m);
+						audio_poly.message("setvalue", v[ii]+1-MAX_NOTE_VOICES, "muteouts", m);
 					}else{
 	
 					}
@@ -668,9 +668,9 @@ function get_voice_details(voiceis){
 	var rate = 0;
 
 	if(voiceis<MAX_NOTE_VOICES){ // the last value, '1', goes to enabled, so you could use this when loading pre-recycled voices perhaps to not initialise them yet?
-		note_poly.setvalue(voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
+		note_poly.message("setvalue", voiceis+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
 	}else if(voiceis<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-		audio_poly.setvalue(voiceis+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
+		audio_poly.message("setvalue", voiceis+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,1);
 	}
 }
 
@@ -693,9 +693,9 @@ function send_all_voice_details(){
 		var rate = 0;
 		for(var nth=0;nth<of;nth++){
 			if(vl[nth]<MAX_NOTE_VOICES){
-				note_poly.setvalue(vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,-1);
+				note_poly.message("setvalue", vl[nth]+1,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,-1);
 			}else if(vl[nth]<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
-				audio_poly.setvalue(vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,-1);
+				audio_poly.message("setvalue", vl[nth]+1-MAX_NOTE_VOICES,"voice_details",block,block*MAX_PARAMETERS,nth,of,no_params,latching,rate,-1);
 			}
 		}
 	}
@@ -954,7 +954,7 @@ function turn_off_audio_to_data_if_unused(voice){
 			}
 		}
 	}
-	if(!dont) audio_to_data_poly.setvalue(voice, "out_value", 0);
+	if(!dont) audio_to_data_poly.message("setvalue", voice, "out_value", 0);
 }
 
 // REMOVE CONNECTION ###################################################################################################
@@ -1249,7 +1249,7 @@ function remove_connection(connection_number){
 						remove_from_mod_routemap(t_voice,tmod_id);
 						remove_routing(connection_number);
 						if(tidslist.length<=1){
-							//audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", 0);
+							//audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", 0);
 							turn_off_audio_to_data_if_unused((f_voice)+(f_o_no+1)*MAX_AUDIO_VOICES);
 						}
 					}
@@ -1312,7 +1312,7 @@ function remove_connection(connection_number){
 						mod_buffer.poke(1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
 						remove_routing(connection_number);
-						sigouts.setvalue(tvv+1,0);
+						sigouts.message("setvalue", tvv+1,0);
 					}else if((t_type == "midi") || (t_type == "block")){
 						//this is a midi-midi connection for a single voice
 						remove_routing(connection_number);
@@ -1356,7 +1356,7 @@ function remove_connection(connection_number){
 						if(wl[f_o_no]==1){
 							//this is more complicated than make conn - we need to check if
 							//any other connections are using this output?
-							var cused = is_output_used(f_o_no,i,f_block,"midi");
+							var cused = is_output_used(f_o_no,i,f_block,"midi"); //this fn turns it on or off as well as answering the question
 							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
 						}
 					}		
@@ -1394,7 +1394,7 @@ function remove_connection(connection_number){
 						mod_buffer.poke(1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
 						remove_routing(connection_number);
-						sigouts.setvalue(tvv+1,0);
+						sigouts.message("setvalue", tvv+1,0);
 					}else if((t_type == "midi") || (t_type == "block")){
 						//this is a midi-midi connection for a single voice
 						remove_routing(connection_number);
@@ -1472,9 +1472,9 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 	if(!Array.isArray(vl))vl=[vl];
 	var f_voice = vl[f_voice_no];
 	if(blocks.get("blocks["+f_block+"]::type")=="audio"){
-		audio_poly.setvalue(f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
+		audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
 	}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
-		note_poly.setvalue(f_voice + 1, "enable_output",f_o_no,cused);
+		note_poly.message("setvalue", f_voice + 1, "enable_output",f_o_no,cused);
 	}
 	
 	return cused;
@@ -1724,7 +1724,7 @@ function make_connection(cno,existing){
 						set_routing(f_voices[i],f_o_no, enab,4,1,t_block,-(1+t_i_no),1,scale,offn*256-128,offv*256-128,cno,0);
 					}
 				}else if(f_type == "audio"){//audio to midi (polyrouter)
-					audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
+					audio_to_data_poly.message("setvalue", (f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
@@ -1736,7 +1736,7 @@ function make_connection(cno,existing){
 						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}
 				}else if(f_type == "parameters"){//param to midi (polyrouter)
-					//audio_to_data_poly.setvalue((f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
+					//audio_to_data_poly.message("setvalue", (f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 					var enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
@@ -1809,7 +1809,7 @@ function make_connection(cno,existing){
 							// the audio is already routed to the monitoring objects, you just need to turn them on and route that data to the right place	
 							//post("\nturning on number",(f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
 							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
+							audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
@@ -1824,7 +1824,7 @@ function make_connection(cno,existing){
 							}
 						}else if(t_type == "block"){
 							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
+							audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
@@ -1834,7 +1834,7 @@ function make_connection(cno,existing){
 							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 						}else if(t_type == "parameters"){
 							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
-							audio_to_data_poly.setvalue((f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
+							audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
 							m_index = ((f_voice-MAX_NOTE_VOICES+f_o_no * MAX_AUDIO_VOICES)+(MAX_AUDIO_VOICES+MAX_NOTE_VOICES)*128);
 							t_voice+=2*MAX_AUDIO_VOICES+MAX_AUDIO_OUTPUTS;
 							var tmod_id;
@@ -1909,12 +1909,16 @@ function make_connection(cno,existing){
 					}else if(f_type == "midi"){
 						if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
 							var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+							post("\nchecking midi watched");
 							if(wl[f_o_no]==1){
+								post(" ... ");
 								//tell the voice that this output is in use
 								if(blocks.get("blocks["+f_block+"]::type")=="audio"){
-									audio_poly.setvalue(f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
+									audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
+									post("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
 								}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
-									note_poly.setvalue(f_voice + 1, "enable_output",f_o_no,1);
+									note_poly.message("setvalue", f_voice + 1, "enable_output",f_o_no,1);
+									post("setvalue", f_voice + 1, "enable_output",f_o_no,1);
 								}
 							}
 						}
@@ -2236,8 +2240,8 @@ function build_new_connection_menu(from, to, fromv,tov){
 	var tpoly = t_subvoices*blocks.get("blocks["+to+"]::poly::voices");
 	if(toname == null) return 0;
 	new_connection.parse('{ }');
- 	new_connection.replace("from::number",from);
-	new_connection.replace("to::number", to);
+ 	new_connection.replace("from::number", +from);
+	new_connection.replace("to::number", +to);
 	new_connection.replace("from::output::type", "potential");
 	new_connection.replace("to::input::type","potential");
 
@@ -2522,7 +2526,7 @@ function remove_block(block){
 	
 	var empt=new Dict;  // wipe this block from the dictionary
 	blocks.set("blocks["+block+"]", empt);
-	//voicealloc_poly.setvalue((block+1),"off");	 // turn off the polyrouter for this block
+	//voicealloc_poly.message("setvalue", (block+1),"off");	 // turn off the polyrouter for this block
 	selected.block[block]=0; 
 	i = song_select.current_blocks.indexOf(block);
 	if(i> -1){
@@ -2532,12 +2536,12 @@ function remove_block(block){
 	if(automap.mapped_k == block){
 		automap.lock_k = 0;
 		automap.mapped_k = -1;
-		note_poly.setvalue(automap.available_k, "automapped", 0);
+		note_poly.message("setvalue", automap.available_k, "automapped", 0);
 	}
 	if(automap.mapped_c == block){
 		automap.lock_c = 0;
 		automap.mapped_c = -1;
-		note_poly.setvalue(automap.available_c, "automapped", 0);
+		note_poly.message("setvalue", automap.available_c, "automapped", 0);
 	}
 	if(automap.mapped_q == block){
 		automap.lock_q = 0;
@@ -2744,13 +2748,13 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			if(type=="audio"){  // turn on audio-to-data for the new voice
 				var tout;
 				for(tout=0;tout<NO_IO_PER_BLOCK;tout++){
-					audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_meter", 1);
-					audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
-					audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
-					audio_to_data_poly.setvalue((new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
+					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "vis_meter", 1);
+					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
+					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
+					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 				}
 				if(loading.progress<=0){
-					audio_poly.setvalue(new_voice+1, "muteouts", 0);
+					audio_poly.message("setvalue", new_voice+1, "muteouts", 0);
 				}
 			}
 			if(blocks.contains("blocks["+block+"]::flock::parameters")){
@@ -2780,9 +2784,9 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			} //set param spreads
 			if(recycled){
 				if(type=="audio"){
-					audio_poly.setvalue(new_voice+1,"reset");
+					audio_poly.message("setvalue", new_voice+1,"reset");
 				}else if(type=="note"){
-					note_poly.setvalue(new_voice+1,"reset");
+					note_poly.message("setvalue", new_voice+1,"reset");
 				}
 			}		
 			v++;			
@@ -2800,7 +2804,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					voicemap.remove(block.toString());
 				}
 				note_patcherlist[removeme] = "blank.note";
-				note_poly.setvalue(removeme+1, "enabled",0);
+				note_poly.message("setvalue", removeme+1, "enabled",0);
 			}else if(type == "audio"){
 				voiceoffset = MAX_NOTE_VOICES;
 				var list = voicemap.get(block);
@@ -2830,10 +2834,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			if(type=="audio"){ 
 				var tout;
 				for(tout=0;tout<NO_IO_PER_BLOCK;tout++){
-					audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "vis_meter", 0);
-					audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
-					audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
-					audio_to_data_poly.setvalue((removeme+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
+					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "vis_meter", 0);
+					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
+					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
+					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 				}
 			}
 			v--;
@@ -2861,12 +2865,12 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			//this now happens once all voices are loaded
 		}
 		// tell the polyalloc voice about its new job
-		voicealloc_poly.setvalue(+block + 1,"type",type);
-		voicealloc_poly.setvalue(+block + 1,"voicelist",str_version);
+		voicealloc_poly.message("setvalue", +block + 1,"type",type);
+		voicealloc_poly.message("setvalue", +block + 1,"voicelist",str_version);
 		// and do voicedetails:
 		
 	}else{ // or turn it off if zero
-		voicealloc_poly.setvalue( (block+1), "off");
+		voicealloc_poly.message("setvalue",  (block+1), "off");
 	}
 	if(direction==1){
 		// now for every 'all' connection you need to add the new voice
@@ -3128,7 +3132,7 @@ function swap_block(block_name){
 					post(" - replaced");
 				}
 				if(otarg!=menu.swap_block_target){
-					handful[i].replace("from::number",menu.swap_block_target);
+					handful[i].replace("from::number", +menu.swap_block_target);
 					post(" - noted new block number");
 				}
 				var nn = details.getsize("connections::out::"+handful[i].get("from::output::type"));
@@ -3399,4 +3403,161 @@ function mute_last_connection(){
 //called by the midi router if it thinks feedback is happening
 connection_edit("connections["+last_connection_made+"]::conversion::mute",1);
 post("\n\nFEEDBACK PANIC! there were so many midi messages i muted the last new connection to try to prevent a meltdown");
+}
+
+function spawn_player(keyblock,auto){
+	//this is called when this keyboard block is ready to be spawned.
+	//if there are multiple outlet numbers in the data, separate them into multiples of the 
+	//following:
+		//make a new player block
+		//copy the keyb's seq to the right dict slot for the new block
+		//connect the new player block
+	//stop the seq and wipe it
+	// BUT if the thing was automapped instead, it's a slightly different plan:
+	//   work out where it was connected
+	//   work out which lanes relevant
+	//   copy over to new block
+	//stop n wipe
+	var xfer = new Dict;
+	xfer.name = "core-keyb-loop-xfer";
+	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block.");
+	if(auto==0){
+		clear_blocks_selection();
+		var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
+		var uoc = 0;
+		if(xfer.contains(keyblock)){
+			var seqdict = xfer.get(keyblock);
+			var k = seqdict.getkeys();
+			for(var i=0;i<k.length;i++){
+				if(k[i]!="looppoints"){
+					var event = seqdict.get(k[i]);
+					if(event != null){
+						uoc += (usedouts[event[1]] == 0);
+						usedouts[event[1]] = 1;
+					}
+				}else{
+					var event = seqdict.get(k[i]);
+					seqdict.replace(k[i], [ event[2], 0, 0, event[2] ]);//original pattern length (beats), start,loopstart,loopend
+				}
+			}
+			post("\nrecorded data is in ",uoc," lanes");
+			for(var o=0;o<12;o++){
+				if(usedouts[o]){
+					//now, look through connections, find the first connection from this output
+					var conn_count = 0;
+					var playerblock = -1;
+					post("\nlooking for connections on lane ",o);
+					for(var c = connections.getsize("connections")-1;c>=0;c--){
+						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
+							if(conn_count==0){
+								//insert a player block in it
+								post("\nspawning a player for output ",o,"connection",c);
+								menu.connection_number = c; 
+								var to = (connections.get("connections["+c+"]::to::number"));
+								var tx = blocks.get("blocks["+to+"]::space::x");
+								var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+								make_space(tx,ty,1.2);
+								var playerblock = new_block("seq.piano.roll",tx,ty);
+								//copy the relevant bit of sequence into the new block
+								if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
+								if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
+								post("\ncopying to piano roll dictionary ",playerblock);
+								for(var i=0;i<k.length;i++){
+									var event = seqdict.get(k[i]);
+									if(event != null){
+										if(k[i]=="looppoints"){
+											proll.replace(playerblock+"::0::looppoints",event);
+										}else if((event[1] == o)){//||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
+											proll.replace(playerblock+"::0::"+k[i],event);
+										}
+										post(".."+k[i]);
+									}
+								}							
+								draw_block(playerblock);
+								insert_block_in_connection("seq.piano.roll",playerblock);
+								v = voicemap.get(playerblock);
+								if(Array.isArray(v)) v = v[0];
+								post("prompting the new block in voice ",v);
+								note_poly.message("setvalue", v+1,"copyfromdict");
+								selected.block[playerblock] = 1;		
+								conn_count++;
+							}else{
+								//then go through the other connections, if there are more connect them to the same player block instead
+								post("\nconnecting",c,"to existing player", playerblock);
+								new_connection = connections.get("connections["+c+"]");
+								new_connection.replace("from::number",playerblock);
+								new_connection.replace("from::voice","all");
+								new_connection.replace("to::voice","all");
+								new_connection.replace("conversion::mute" , 0);
+								new_connection.replace("conversion::scale", 1);
+								new_connection.replace("conversion::vector", 0);	
+								new_connection.replace("conversion::offset", 0.5);	
+								new_connection.replace("conversion::offset2", 0.5);	
+								remove_connection(c);
+								connections.replace("connections["+c+"]",new_connection);
+								make_connection(c);
+							}
+						}
+					}
+				}
+			}
+			//now delete the sequence from the keyboard block
+			request_set_block_parameter(keyblock,5,0);
+		}
+	}else{
+		//it was automapped: look up where the automap went and make a new connection
+		post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
+		var to = automap.mapped_k;
+		
+		new_connection.parse('{}');
+		new_connection.replace("to::number", +to);
+		new_connection.replace("from::output::number",0);
+		new_connection.replace("from::voice","all");
+		new_connection.replace("to::voice","all");
+		new_connection.replace("from::output::type","midi");
+		new_connection.replace("to::input::number",automap.inputno_k);
+		new_connection.replace("to::input::type","midi");
+		
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::offset", 0.5);	
+		new_connection.replace("conversion::offset2", 0.5);	
+		
+		var tx = blocks.get("blocks["+to+"]::space::x");
+		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
+		make_space(tx,ty,1.2);
+		clear_blocks_selection();
+		var playerblock = new_block("seq.piano.roll",tx,ty);
+		new_connection.replace("from::number", +playerblock);
+		//copy the relevant bit of sequence into the new block
+		if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
+		if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
+		if(xfer.contains(keyblock)){
+			post("\ncopying to piano roll dictionary ",playerblock);
+			var seqdict = xfer.get(keyblock);
+			var k = seqdict.getkeys();
+			for(var i=0;i<k.length;i++){
+				var event = seqdict.get(k[i]);
+				if(event != null){
+					if(k[i]=="looppoints"){
+						proll.replace(playerblock+"::0::looppoints",[event[2], 0,0, event[2]]);
+					}else if(event[1] == 0){//OR it's 1 and o==0? it's automapk so you know o =0,1
+						proll.replace(playerblock+"::0::"+k[i],event);
+					}
+					post(".."+k[i]);
+				}
+			}							
+		}
+		draw_block(playerblock);
+		connections.append("connections", new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+		v = voicemap.get(playerblock);
+		if(Array.isArray(v)) v = v[0];
+		post("prompting the new block in voice ",v);
+		note_poly.message("setvalue", v+1,"copyfromdict");
+		selected.block[playerblock] = 1;		
+		//now delete the sequence from the keyboard block
+		request_set_block_parameter(keyblock,5,0);
+	}
 }

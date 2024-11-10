@@ -842,8 +842,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 									if(drawwire == 1){
-										potential_connection.replace("from::number",usermouse.ids[1]);
-										potential_connection.replace("to::number",usermouse.hover[1]);
+										potential_connection.replace("from::number",+usermouse.ids[1]);
+										potential_connection.replace("to::number",+usermouse.hover[1]);
 										potential_connection.replace("to::input::type","potential");
 										potential_connection.replace("from::output::type","potential");
 										var temptovoice = usermouse.hover[2];
@@ -947,7 +947,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-
+		}else if(usermouse.got_t == 7){
+			if((mouse_click_actions[usermouse.got_i]==custom_mouse_passthrough)&&(mouse_click_values[usermouse.got_i]==1)){
+				custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
+			}
 		}
 	}
 }

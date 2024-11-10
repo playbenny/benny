@@ -989,7 +989,8 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		click_rectangle( x1,y1,x2,y2, mouse_index, 7);
 		mouse_click_actions[mouse_index] = custom_mouse_passthrough;
 		mouse_click_parameters[mouse_index] = dataindex+1; //custom_block+1;
-		mouse_click_values[mouse_index] = 0;//[x1,y1,x2,y2];
+		mouse_click_values[mouse_index] = paramindex; //0;//[x1,y1,x2,y2]; if 1 it reports mouseidle too
+		//post("\ndrew passthrough mode",x1,y1,x2,y2,paramindex);
 		mouse_index++;
 	}else if(type=="direct_mouse_passthrough"){ // this one is more complicated but sends x y as a proportion of the button
 		click_rectangle( x1,y1,x2,y2, mouse_index, 7);

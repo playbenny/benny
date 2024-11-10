@@ -1,0 +1,103 @@
+{
+	"seq.piano.roll" : {
+		"patcher" : "seq.piano.roll",
+		"type" : "note",
+		"block_ui_patcher" : "seq.piano.roll.ui",
+		"help_text" : "Classic piano roll sequencer. £Unlike other benny sequencers this one has an internal clock linked to the global clock and doesn't need a clock in, but can follow one if you want.",
+		"max_polyphony" : 0,
+		"deprecated" : 1,
+		"ui_in_sidebar_height" : 4,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
+		},
+		"connections" : {
+			"in" : {
+				"midi" : [ "record notes in", "trigger in", "jump forwards", "jump backwards", "reset" ],
+				"parameters" : [ "record cc in 1", "record cc in 2", "record cc in 3", "record cc in 4", "record cc in 5", "record cc in 6", "record cc in 7", "record cc in 8"]
+			},
+			"out" : {
+				"midi" : [ "notes out", "loop reached" ],
+				"parameters" : [ "cc out 1", "cc out 2", "cc out 3", "cc out 4", "cc out 5", "cc out 6", "cc out 7", "cc out 8", "playhead_position" ],
+				"dontdefaultall" : 1
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [ 0, 1, 2, 3, 4],
+				"colour" : 0
+			},
+			{
+				"contains" : [5,6,7],
+				"height" : 0,
+				"colour" : -10
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "pattern",
+				"type" : "int",
+				"values" : ["uni", 0, 15, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "start_offset",
+				"type" : "int",
+				"values" : ["bi", -256, 256, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "loop_start_offset",
+				"type" : "int",
+				"values" : ["bi", -256, 256, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "loop_length_offset",
+				"type" : "int",
+				"values" : ["bi", -256, 256, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "playhead_offset",
+				"type" : "int",
+				"values" : ["bi", -256, 256, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "midi in mode",
+				"type" : "menu_l",
+				"values" : ["through", "record", "overdub" ],
+				"colours" : [ 20, [190,40,40], [40,190,40]],
+				"wrap" : 0,
+				"default" : 0.16,
+				"nopervoice" : 1
+			},
+			{
+				"name" : "<_back",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","<_back",-1],
+				"nopervoice" : 1
+			},
+			{
+				"name" : ">_fwd",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices",">_fwd", 1],
+				"nopervoice" : 1
+			}
+		]
+	}
+}

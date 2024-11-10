@@ -347,6 +347,8 @@ var blocks_page = {
 	lowest: 0
 }	
 
+
+
 var touch_click=0;
 var stored_click = [];
 
@@ -578,6 +580,10 @@ mod_param.name = "mod_param";
 var waves_dict = new Dict;
 waves_dict.name = "waves";
 
+var proll = new Dict;
+proll.name = "seq-piano-roll";
+
+
 var audio_patcherlist = new Array(MAX_AUDIO_VOICES);
 var audio_upsamplelist = new Array(MAX_AUDIO_VOICES);
 var note_patcherlist = new Array(MAX_NOTE_VOICES);
@@ -692,6 +698,12 @@ function diagnostics(){
 
 function request_globals(){
 	globals_requested = 1;
+}
+
+function messagerate(rate){
+	cpu_meter.midi_message_rate = rate;
+	if(rate>1200) post("\nMESSAGE RATE WARNING:",rate," messages per second - looks like it might be feedback watch out");
+	if(rate>9000) mute_last_connection();
 }
 
 function cpu(avg,peak,fps){

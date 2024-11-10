@@ -3,7 +3,7 @@
 		"patcher" : "seq.values",
 		"type" : "note",
 		"block_ui_patcher" : "seq.values.ui",
-		"help_text" : "A step sequencer for values. One voice = one sequencer row.",
+		"help_text" : "A step sequencer for values. One voice = one sequencer row. The 'notes out' uses the value as a note, and the velocity from the incoming trigger.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"default_polymode" : 	{
@@ -14,11 +14,13 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "note->position", "reset" ]
+				"midi" : [ "trigger", "backwards step", "note->position", "reset" ]
 			},
 			"out" : {
-				"parameters" : [ "out", "playhead_position" ],
-				"dontdefaultall" : 1
+				"midi" : [ "notes out" ],
+				"parameters" : [ "value out", "playhead_position" ],
+				"dontdefaultall" : 1,
+				"default" : 2
 			}
 		},
 		"groups" : [

@@ -1,0 +1,174 @@
+{
+	"vst.Valhalla.Vintage.Verb" : 	{
+		"patcher" : "vst.loader",
+		"type" : "audio",
+		"help_text" : "ValhallaVintageVerb",
+		"block_ui_patcher" : "blank.ui",
+		"max_polyphony" : 0,
+		"plugin_name" : "ValhallaVintageVerb",
+		"plugin_type" : "vst3",
+		"pitchbend_range" : 2,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : 		{
+			"in" : 			{
+				"audio" : [ "audio in" ],
+				"midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ]
+			}
+,
+			"out" : 			{
+				"audio" : [ "audio out" ],
+				"midi" : [ "notes out" ],
+				"parameters" : [ "pitchbend", "modulation", "aftertouch", "sustain" ]
+			}
+
+		}
+,
+		"parameters" : [ 			{
+				"name" : "Mix",
+				"default" : 1.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "PreDelay",
+				"default" : 0.25,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Decay",
+				"default" : 0.420480310916901,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Size",
+				"default" : 1.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Attack",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "BassMult",
+				"default" : 0.623038768768311,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "BassXover",
+				"default" : 0.38106495141983,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "HighShelf",
+				"default" : 0.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "HighFreq",
+				"default" : 0.5,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "EarlyDiffusion",
+				"default" : 1.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "LateDiffusion",
+				"default" : 1.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "ModRate",
+				"default" : 0.24545456469059,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "ModDepth",
+				"default" : 0.379999995231628,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "HighCut",
+				"default" : 0.590538859367371,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "LowCut",
+				"default" : 0.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "ColorMode",
+				"default" : 0.333333343267441,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "ReverbMode",
+				"default" : 0.04166666790843,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+, 			{
+				"name" : "Bypass",
+				"default" : 0.0,
+				"type" : "float",
+				"wrap" : 0,
+				"values" : [ "uni", 0, 1, "lin" ]
+			}
+ ],
+		"groups" : [ 			{
+				"height" : 2,
+				"contains" : [ 0, 1, 2, 3, 4 ]
+			}
+, 			{
+				"height" : 0,
+				"contains" : [ 5, 6, 7, 8 ]
+			}
+, 			{
+				"height" : 0,
+				"contains" : [ 9, 10, 11, 12 ]
+			}
+, 			{
+				"height" : 0,
+				"colour" : [ 58, 79, 51 ],
+				"contains" : [ 13, 14, 15, 16, 17 ]
+			}
+ ]
+	}
+
+}
