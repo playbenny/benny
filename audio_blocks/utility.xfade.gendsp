@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 2,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 59.0, 107.0, 600.0, 450.0 ],
+		"rect" : [ 59.0, 85.0, 1080.0, 905.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -44,7 +44,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 405.0, 417.0, 35.0, 22.0 ],
+					"patching_rect" : [ 549.0, 628.0, 35.0, 22.0 ],
 					"text" : "out 2"
 				}
 
@@ -75,7 +75,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Data gai(1024);\r\n\r\nParam mode(0); //0=stereo 1=modulation\r\nParam transition(1);\r\nParam midgain(0); //0=0.5+0.5, 1=1+1\r\nParam voicecount(1);\r\nParam voicenum(0);\r\nParam fade(0);\r\n\r\nHistory otm(-1),offset(0.25);\r\n\r\ntm=transition*voicecount+midgain;\r\nif(otm!=tm){\r\n\totm=tm;\r\n\t//fill a lookup table\r\n\toffset = 1 + ((0.25-voicenum)/voicecount);\r\n\tmg=midgain;//0.5+0.5*midgain;\r\n\tp=floor(255.99*transition);\r\n\tp2=256-p;\r\n\tfor(i=0;i<p2;i+=1) poke(gai,i,0);\r\n\tr = mg/p;\r\n\tv=0;\r\n\tfor(i=p2;i<256;i+=1){\r\n\t\tv+=r;\r\n\t\tpoke(gai,v,i);\r\n\t}\r\n\tr2 = (1-mg)/p;\r\n\tfor(i=256;i<256+p;i+=1){\r\n\t\tv+=r2;\r\n\t\tpoke(gai,v,i);\r\n\t}\r\n\tfor(i=256+p;i<768-p;i+=1){\r\n\t\tpoke(gai,1,i);\r\n\t}\r\n\tfor(i=768-p;i<768;i+=1){\r\n\t\tv-=r2;\r\n\t\tpoke(gai,v,i);\r\n\t}\r\n\tfor(i=768;i<768+p;i+=1){\r\n\t\tv-=r;\r\n\t\tpoke(gai,v,i);\r\n\t}\r\n\tfor(i=768+p;i<1024;i+=1){\r\n\t\tpoke(gai,0,i);\r\n\t}\r\n}\r\nf = fade;\r\nif(mode!=0) f+=in2;\r\nf1 = (f+offset)%1;\r\nf = clip((f1*voicecount)*0.5,0,1);\r\ng = peek(gai,f*1024);\r\no2 = (mode==0)?in2:in1;\r\no2 *= g;\r\nout1 = in1*g;\r\nout2 = o2;",
+					"code" : "Data gai(1024);\r\n\r\nParam mode(0); //0=stereo 1=modulation\r\nParam transition(0.7);\r\nParam midgain(0); //0=0.5+0.5, 1=1+1\r\nParam voicecount(2);\r\nParam voicenum(0);\r\nParam fade(0);\r\n\r\nHistory otm(-1),offset(0.25);\r\n\r\ntm=transition+voicecount+midgain;\r\nif(otm!=tm){\r\n\totm=tm;\r\n\t//fill a lookup table\r\n\toffset = (voicenum/voicecount);\r\n\tmg=midgain;//0.5+0.5*midgain;\r\n\ta = 512 / voicecount;\r\n\tW=floor(1.999*a*transition);\r\n\tW2=a-0.5*W;\r\n\tW3 = W2 + W;\r\n\tr = 2*(1-mg)/W;\r\n\tv = 1;\r\n\tr2 = 2*mg/W;\r\n\tfor(i=0;i<513;i+=1){\r\n\t\tif(i<W2){\r\n\t\t\tv=1;\r\n\t\t}else if(i<a){\r\n\t\t\tv-=r;\r\n\t\t}else if(i<W3){\r\n\t\t\tv-=r2;\r\n\t\t}else{\r\n\t\t\tv=0;\r\n\t\t}\r\n \t\tpoke(gai,v,i,0);\r\n\t\tpoke(gai,v,1024-i,0);\r\n\t}\r\n}\r\n\r\nf = fade;\r\nif(mode!=0) f+=in2;\r\nf1 = (f+offset)%1;\r\ng = peek(gai,f1*1023,0,interp=\"linear\");\r\no2 = (mode==0)?in2:in1;\r\no2 *= g;\r\nout1 = in1*g;\r\nout2 = o2;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -84,7 +84,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 29.0, 38.0, 347.0, 388.0 ]
+					"patching_rect" : [ 29.0, 38.0, 543.0, 548.0 ]
 				}
 
 			}
@@ -94,7 +94,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 29.0, 421.0, 35.0, 22.0 ],
+					"patching_rect" : [ 30.0, 616.0, 35.0, 22.0 ],
 					"text" : "out 1"
 				}
 
