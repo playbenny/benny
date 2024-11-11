@@ -88,7 +88,8 @@
 				"type" : "menu_l",
 				"values" : ["lin fm" , "exp fm", "sync" , "sync&fm"],
 				"error_scale" : 0,
-				"wrap" : 1
+				"wrap" : 1,
+				"default" : 0.3
 			},
 			{
 				"name" : "attack",

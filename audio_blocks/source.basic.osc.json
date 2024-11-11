@@ -71,7 +71,8 @@
 				"error_scale" : 0,
 				"force_label" : 1,
 				"values" : ["lin fm" , "exp fm", "sync" , "sync_&fm"],
-				"wrap" : 1
+				"wrap" : 1,
+				"default" : 0.3
 			},
 			{
 				"name" : "out2",

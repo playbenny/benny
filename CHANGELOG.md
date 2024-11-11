@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+11/11/24:
+- **breaking change** the range for the output of cv scale quantiser has been fixed.
+- source/voice basic and pitch env osc have had exp fm modes added. this is the new default, and work with the audio output of cv scale quantiser.
 10/11/24:
 - type numbers while over a slider to enter the value directly
 - midi message rate displayed on resource monitor page.
