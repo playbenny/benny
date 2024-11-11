@@ -3188,6 +3188,7 @@ function draw_number_entry(pno,number){
 	lcd_main.message("paintrect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,0,0,0);
 	lcd_main.message("framerect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,paramslider_details[pno][4],paramslider_details[pno][5],paramslider_details[pno][6]);
 	lcd_main.message("moveto",paramslider_details[pno][0]+4,y+fontheight*0.8);
+	setfontsize(fontsmall*2);
 	lcd_main.message("write",number);
 }
 
