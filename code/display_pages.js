@@ -4520,6 +4520,10 @@ function draw_sidebar(){
 									if(connections.get("connections["+i+"]::to::input::type")=="audio"){
 										subv=-1;
 									}
+									if(connections.get("connections["+i+"]::from::number")==comp){
+										//feedback, dont show twice.
+										comp = null;
+									}
 								}
 								if((comp == block)){
 									if(subv==-1){
