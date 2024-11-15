@@ -1307,6 +1307,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
 		//post("\nsave as");
 		messnamed("trigger_save_as","bang");
+		timed_sidebar_notification("saved as "+loading.songname,2000);
 	}else{
 		var savetask = new Task(check_its_safe_to_save_named,this);
 		savetask.schedule(1000);
@@ -1324,6 +1325,7 @@ function check_its_safe_to_save_selected(){
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
 		messnamed("trigger_save_selected", "bang");
+		timed_sidebar_notification("saved as "+loading.songname,2000);
 	}else{
 		post("\nnot ready to save yet, waiting..");
 		savetask.schedule(1000);
@@ -1340,6 +1342,7 @@ function check_its_safe_to_save_named(){
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
 		messnamed("save_named",loading.songpath+loading.songname);
+		timed_sidebar_notification("saved as "+loading.songname,2000);
 		for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
 		read_songs_folder(sidebar.files_page); //update internal songslist
 	}else{

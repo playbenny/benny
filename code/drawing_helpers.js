@@ -1444,3 +1444,16 @@ function sidebar_notification(message){
 	sidebar.notification = message;
 	set_sidebar_mode("notification");
 }
+
+function timed_sidebar_notification(message, time){
+	sidebar.notification = message;
+	sidebar.notification_return = sidebar.mode;
+	if(time<=0) time = 1000;
+	set_sidebar_mode("notification");
+	var notify_return_task = new Task(return_from_notify,this);
+	notify_return_task.schedule(time);
+}
+
+function return_from_notify(){
+	if(sidebar.mode == "notification") set_sidebar_mode(sidebar.notification_return);
+}
