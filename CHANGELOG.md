@@ -1,6 +1,8 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+16/11/24:
+- **breaking change** the mode of shape player where the note at the clock input sets offset has been removed, just map input note to the offset slider to do this.
 11/11/24:
 - **breaking change** the range for the output of cv scale quantiser has been fixed.
 - source/voice basic and pitch env osc have had exp fm modes added. this is the new default, works well with the audio output of cv scale quantiser.
