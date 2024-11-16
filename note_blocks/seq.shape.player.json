@@ -42,7 +42,7 @@
 			{
 				"name" : "mode",
 				"type" : "menu_i",
-				"values" : ["trigger->clock", "trigger->start-1", "trigger->start-loop"],
+				"values" : ["trigger->_clock", "trigger->_start-1", "trigger->_start-loop"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0
