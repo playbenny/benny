@@ -69,6 +69,7 @@ function mouse(x,y,l,s,a,c,scr){
 			var tx=x-x_pos;
 			tx/=width; //this next line checks for modulation - any difference between voice value and block value, and inverts that so that you get what you clicked. if possible.
 			var rx = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[0]+7)-parameter_value_buffer.peek(1, MAX_PARAMETERS*block+7);
+			if(rx==NaN) rx = 0;
 			if(rx!=0) post("\ncurrent diff is:",rx,"you want",tx,"so i'll set it to",tx-rx);
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+7,Math.min(1,Math.max(0,tx-rx)));
 			voice_parameter_buffer.poke(1, MAX_PARAMETERS*v_list[0]+7,tx);
