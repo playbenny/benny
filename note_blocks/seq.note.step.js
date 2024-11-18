@@ -125,7 +125,6 @@ function set_zoom_show_all(){
 	view_x =vss;
 	view_y =l;
 	view_y2 =h;
-	post("\nautoscale:",l,h,view_x,view_x2,view_y,view_y2)
 }
 function calcscaling() {
 	if(view_x<0){
