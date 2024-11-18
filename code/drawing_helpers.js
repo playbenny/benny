@@ -1066,6 +1066,7 @@ function center_view(resetz){
 	}
 	var w = maxx-minx;
 	var h = maxy-miny;
+	h *= (mainwindow_width/mainwindow_height);
 	var d = Math.max(w,h);
 	
 	
