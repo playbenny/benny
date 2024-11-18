@@ -42,6 +42,7 @@ var rcol = []; //row colour. calc'd for the selected voice (grouping stretches o
 var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 //var discont_x,discont_x2,bh;
 var view_x=0,view_x2=16,view_w=16,view_y=48,view_y2=72,view_h=24;
+var oldview=[];
 var graph_y,graph_y2,graph_h;
 var colnames=["note","vel","len","del","skip","group"];
 var scr_accum_x=0,scr_accum_y=0;
@@ -71,18 +72,23 @@ function setup(x1,y1,x2,y2,sw){
 	if(width<sw*0.6){ 
 		mini=1;
 		if(block>=0) generate_extended_v_list();
-		var m=1;
-		for(i=0;i<v_list.length;i++){
-			m  = Math.max(m, Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+1,1)) + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2,1)));
-		}
-		view_x2=m;
+		set_zoom_show_all();
 		sx=x_pos; 
 		sy=y_pos;
 	}else{
 		sy = y_pos + 1.7*unit*(mini==0);
 		sx = x_pos + 1.2*unit*(mini==0);
 		if(block>=0) generate_extended_v_list();
-		view_x2=16; view_x=0; view_w=16;
+		if(oldview.length>0){
+			view_x = oldview[0];
+			view_x2 = oldview[1];
+			view_y = oldview[2];
+			view_y2 = oldview[3];
+			view_w = oldview[4];
+			view_h = oldview[5];
+		}else{
+			set_zoom_show_all();
+		}
 	}
 	selected_voice=0;
 	selected_graph=1;
@@ -91,12 +97,36 @@ function setup(x1,y1,x2,y2,sw){
 	graph_y = y2 - graph_h;
 	calcscaling();
 	currentvel=100;
-	for(i=0;i<128;i++){
+	for(var i=0;i<128;i++){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
 	draw();
 }
+function set_zoom_show_all(){
+	oldview=[view_x,view_x2,view_y,view_y2,view_w,view_h];
+	var m=1, l=99,h=0, vss=99;
+	for(var c=0;c<v_list.length;c++){
+		start[c]  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
+		lstart[c] = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
+		end[c]  = lstart[c] + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		pattern_offs[c] = pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 
+		m = Math.max(m, end[c]);
+		vss= Math.min(vss,start[c]);
+		for(var ii=start[c];ii<end[c];ii++){
+			var ty = voice_data_buffer.peek(1, MAX_DATA*v_list[c] + 1 + pattern_offs[c] + UNIVERSAL_COLUMNS*ii);
+			if(ty){
+				h=Math.max(ty+1,h);
+				l=Math.min(ty-1,l);
+			}
+		}
+	}
+	view_x2=m;
+	view_x =vss;
+	view_y =l;
+	view_y2 =h;
+	post("\nautoscale:",l,h,view_x,view_x2,view_y,view_y2)
+}
 function calcscaling() {
 	if(view_x<0){
 		view_x2-=view_x;
