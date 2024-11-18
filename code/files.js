@@ -297,36 +297,38 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 				var last_folder = last_slash.pop();
 				last_folder = last_slash.pop();
 				var up_one = pathonly.split(last_folder)[0];
-				for(var s=0;s<waves_search_paths.length;s++){
-					if(waves_search_paths[s]==up_one){
-						up_one = null;
-						s=999;
-					}
+				if(waves_search_paths.indexOf(up_one)<0){
+					post("\n added ",up_one,"to search path");
+					waves_search_paths.push(up_one);
 				}
-				if(up_one != null) waves_search_paths.push(up_one);
 				waves_search_paths.push(SONGS_FOLDER);
 				post("\nnot found in the location stored in the save file, searching");
-				//post(", trying search paths:",waves_search_paths);
+				post(", trying search paths:",waves_search_paths);
 				var r = -1;
 				for(var s=0;s<=waves_search_paths.length;s++){
 					post(".");
-					if(s==waves_search_paths.length){
-						//prompt the user to find this file
-						post("\n\n\n\nCOULD NOT FIND WAVE:",wavepath,wavename);
-						post("\nPLEASE FIND IT (or a replacement!) IN THE FILE DIALOG BOX THAT HAS POPPED UP");
-						//if(preload_list.length>0){
-							preload_list.push([wavepath,wavename,dictpath]); //put this one back on the preload list
-							preload_task.freepeer(); //pause preloading
-						//}
-						messnamed("open_wave_dialog",wavename);
-					}
 					r = search_for_waves(waves_search_paths[s],wavename,dictpath);
 					if(r!=-1){
 						//post("\nfound something!",r);
 						s=99999;
 					}
 				}
-				if(r==-1)post("\nCOULD NOT FIND WAVE:",wavepath,wavename);
+				if(r==-1){
+					//prompt the user to find this file
+					post("\n\n\n\nCOULD NOT FIND WAVE:",wavepath,wavename);
+					post("\nPLEASE FIND IT (or a replacement!) IN THE FILE DIALOG BOX THAT HAS POPPED UP");
+					//if(preload_list.length>0){
+						preload_list.push([wavepath,wavename,dictpath]); //put this one back on the preload list
+						preload_task.freepeer(); //pause preloading
+					//}
+					//sidebar_notification("Couldn't find wave: "+wavepath+"££Please find it (or a replacement) in the file dialog that has popped up. ££ For reasons beyond our control this dialog may be behind the benny window, sorry.");
+					//redraw_flag.flag=4;
+					if(fullscreen){
+						fullscreen=0;
+						world.message("fullscreen",0);					
+					}
+					messnamed("open_wave_dialog",wavename);
+				}
 			}
 		}else{
 			post("[cache hit",exists,"]");
@@ -343,11 +345,13 @@ function open_wave_dialog(wavepath){
 	}
 	post("\nyou chose",wavepath);
 	var wavename = wavepath.split("/").pop();
-	post("\n name", wavename);
+	//post("\n name", wavename);
 	var addpath = wavepath.split(wavename)[0];
-	post("\n path", addpath);
-	waves_search_paths = [addpath];
-	//polybuffer_load_wave(wavepath,wavename);
+	//post("\n path", addpath);
+	if(waves_search_paths.indexOf(addpath)<0){
+		post("\n added ",addpath,"to search path");
+		waves_search_paths.push(addpath);
+	}
 	var pll = preload_list.length-1;
 	songs.replace(preload_list[pll][2]+"path",wavepath+wavename);
 	songs.replace(preload_list[pll][2]+"name",wavename);
