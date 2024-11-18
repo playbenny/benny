@@ -128,7 +128,7 @@
 				"type" : "menu_l",
 				"values" : ["until next note in voice", "1 cell long", "instantaneous trigger"],
 				"wrap" : 1,
-				"default" : 0.1,
+				"default" : 0.8,
 				"nopervoice" : 1,
 				"nomap" : 1
 			},
