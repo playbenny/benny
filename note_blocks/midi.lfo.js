@@ -140,7 +140,7 @@ function drawcurves(){
 
 function update(){
 	var ocu=cu;
-	if((voice_data_buffer.peek(1, MAX_DATA*v_list[0])-ocu)<5){
+	if((voice_data_buffer.peek(1, MAX_DATA*v_list[0])-ocu)>2){
 		if(textslow++>30){
 			draw();
 			textslow=0;
