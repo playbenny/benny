@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+19/11/24:
+- midi.lfo now lets you modulate the rate without glitching
+- value to value connections now have an offset. likewise audio-value, value-audio, etc (i think this is not a breaking change, still testing with savefiles)
 16/11/24:
 - **breaking change** the mode of shape player where the note at the clock input sets offset has been removed, just map input note to the offset slider to do this.
 11/11/24:

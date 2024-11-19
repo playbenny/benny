@@ -5474,8 +5474,7 @@ function draw_sidebar(){
 					y_offset += fo1*33;
 
 				}else if(t_type=="parameters"){
-					//offset is disabled for audio->parameter connections (just a maddening extra layer of user confusion)
-				/*	sidebar.connection.defaults.offset = 0.5;
+					sidebar.connection.defaults.offset = 0.5;
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
@@ -5484,7 +5483,7 @@ function draw_sidebar(){
 					lcd_main.message("frgb",type_colour_dark);
 					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*9);
 					lcd_main.message("write","offset",(2*offset-1).toPrecision(2));
-					y_offset+=11*fo1;*/
+					y_offset+=11*fo1;
 				}
 			}else if((f_type=="midi")||(f_type=="block")){
 				if(t_type=="midi"){
@@ -5533,13 +5532,13 @@ function draw_sidebar(){
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
-					/* //not sure if this should be put back in for audio/hardware destinations? not needed for params obvs. downside is that it will jump if muted
+					//not sure if this should be put back in for audio/hardware destinations? not needed for params obvs. downside is that it will jump if muted
 					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*22, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;		
-					*/
+					
 					lcd_main.message("frgb",type_colour_dark);
 					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
 					lcd_main.message("write","projection angle",vector.toPrecision(2));
@@ -5590,21 +5589,21 @@ function draw_sidebar(){
 					lcd_main.message("write","velocity offset",Math.floor(256*offset2-128));
 
 					y_offset += fo1*33;
-				}/*else if(t_type=="parameters"){
-					// actually no offset for this one
+				}else if(t_type=="parameters"){
+					// trying putting offsets back in here. do existing patches break?
 					sidebar.connection.defaults.vector = 0.5; //Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
-					draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*vector-1);
+					draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					lcd_main.message("frgb",type_colour_dark);
 					lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
-					lcd_main.message("write","offset",(2*vector-1).toPrecision(2));//offset);
+					lcd_main.message("write","offset",(2*offset-1).toPrecision(2));//offset);
 					y_offset+=11*fo1;
-				}*/			
+				}			
 			}
 
 			section_colour = blocks.get("blocks["+t_number+"]::space::colour");
