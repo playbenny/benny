@@ -121,10 +121,14 @@ function set_zoom_show_all(){
 			}
 		}
 	}
-	view_x2=m;
-	view_x =vss;
-	view_y =l;
-	view_y2 =h;
+	if((h==0)||(m==vss)){
+		view_x=0,view_x2=16,view_w=16,view_y=48,view_y2=72,view_h=24;
+	}else{
+		view_x2 = m;
+		view_x = vss;
+		view_y = l;
+		view_y2 = h;
+	}
 }
 function calcscaling() {
 	if(view_x<0){
@@ -549,6 +553,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 		}
 		
 	}
+	oldview=[view_x,view_x2,view_y,view_y2,view_w,view_h];
 }
 
 function request_sidebar_sel(){
