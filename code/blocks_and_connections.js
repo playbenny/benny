@@ -3234,8 +3234,7 @@ function build_mod_sum_action_list(){
 	
 
 	
-	var lockup,locked,flag,dest_index,extra,has_mod,wrap;
-//	var midiout,voffset=0;
+	var lockup,flag,dest_index,extra,has_mod,wrap;
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(blocks.contains("blocks["+b+"]::name")){
 			var bname = blocks.get("blocks["+b+"]::name");
@@ -3247,11 +3246,6 @@ function build_mod_sum_action_list(){
 				lockup *= lockup * 0.003;
 				voicelist = voicemap.get(b);
 				if(!Array.isArray(voicelist)) voicelist = [voicelist];
-				/*if(btype=="hardware"){
-					if(blocktypes.contains(bname+"::midi_output_number")){
-						midiout = blocktypes.get(bname+"::midi_output_number");
-					}	
-				}*/
 
 				for(i=0;i<voicelist.length;i++){
 					locked = 0;
@@ -3260,7 +3254,6 @@ function build_mod_sum_action_list(){
 					flock_buffer.poke(1,voicelist[i]*3,[0,0,0]);					
 					mv=(voicelist[i]+ALLAUDIO);
 					if(mod_routemap.contains(mv)){ //are there any modulations routed to this voice? if so, add them up, check if this param wraps.
-						// { post("\nblock",b,"mod voice",i,"mv is",mv); }
 						slotlist = mod_routemap.get(mv);
 						paramlist = mod_param.get(mv);
 						if(typeof slotlist == "number") {
@@ -3278,17 +3271,6 @@ function build_mod_sum_action_list(){
 						if(blocktypes.contains(bname+"::parameters["+p+"]::wrap")){
 							wrap = 2 - blocktypes.get(bname+"::parameters["+p+"]::wrap"); 
 						}
-						
-						/*if(midiout>-1){
-							flag = 4;
-							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
-							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");
-							dest_index = ccout + chanout*128+midiout*16384;
-							mod_sum_action_list.poke(1,list_pointer,dest_index);
-							mod_sum_action_list.poke(2,list_pointer,0);
-							mod_sum_action_list.poke(3,list_pointer,flag);
-							mod_sum_action_list.poke(4,list_pointer,wrap);
-						}else */
 						if(is_flocked[MAX_PARAMETERS*(voicelist[i])+p]>0){
 							flag = 2;
 							extra = MAX_PARAMETERS*(voicelist[i])+p;
