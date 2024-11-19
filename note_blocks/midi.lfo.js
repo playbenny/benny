@@ -10,18 +10,19 @@ var connections = new Dict;
 connections.name = "connections";
 var blocks = new Dict;
 blocks.name = "blocks";
-var width, height,x_pos,y_pos,unit;
-var block=-1;
+var width, height, x_pos, y_pos, unit;
+var block = -1;
 var blocks = new Dict;
 blocks.name = "blocks"
 var voicemap = new Dict;
 voicemap.name =  "voicemap";
-var mini=0;
+var mini = 0;
 var v_list = [];
 var cu; //first one's cursor pos, to see if we need to redraw
 var gx,gy,gw,gh; //graph position (it has labels in not-mini mode so the size is not the size of the panel)
-var vcol=[[255,0,0],[0,255,0],[0,0,255],[255,255,0],[0,255,255],[255,0,255]];
-var bright=[];
+var vcol = [[255,0,0],[0,255,0],[0,0,255],[255,255,0],[0,255,255],[255,0,255]];
+var bright = [];
+var offs = [];
 var textslow = 0;
 
 function setup(x1,y1,x2,y2,sw){
@@ -43,7 +44,7 @@ function setup(x1,y1,x2,y2,sw){
 		gh=height-1;
 	}else{
 		gx=x1; gy=y1; gw=width;
-		gh = Math.floor(height * 14 / 18);
+		gh = Math.floor(height * 14 / 18) - 1;
 	}
 	unit = height / 18;
 	draw();
@@ -76,7 +77,7 @@ function draw(){
 
 function drawcurves(){
 	if(block>=0){
-		outlet(1, "paintrect", gx,gy,gx+gw+1,gy+gh+1,0,0.2,0);
+		outlet(1, "paintrect", gx,gy,gx+gw+1,gy+gh+2,0,0.2,0);
 		outlet(1, "moveto", gx+20,gy);
 		outlet(1, "frgb", menucolour);
 		outlet(1, "lineto", gx+20,gy+gh);
@@ -94,9 +95,10 @@ function drawcurves(){
 			}
 			var ph=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+2);
 			cu=voice_data_buffer.peek(1, MAX_DATA*v_list[0]);
+			offs[v] = voice_data_buffer.peek(1, MAX_DATA*v_list[v] + 1);
 			var stx=cu-100; //5 ticks per pixel, 20 pixels gap at the front
 			var x=gx;
-			var p = (cu * ra + ph) % 1;
+			var p = (cu * ra + ph + offs[v]) % 1;
 			bright[v] = shp[0]*(1-Math.cos(p*6.283))*0.5;
 			if(p<shp[3]){
 				bright[v] += shp[1]*(p/shp[3]);
@@ -110,7 +112,7 @@ function drawcurves(){
 			bright[v] = 0.7*bright[v] + 0.3;
 			//post("\n bright ",bright[v], "p",p);
 			for(var i=0;i<gw;i+=2){
-				p = (stx * ra + ph) % 1;
+				p = (stx * ra + ph + offs[v]) % 1;
 				y=shp[0]*(1-Math.cos(p* 6.283))*0.5;
 				if(p<shp[3]){
 					y += shp[1]*(p/shp[3]);
