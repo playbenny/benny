@@ -130,8 +130,13 @@
             "-8" : ["INS", "insert_menu_button", -1],
             "2039" : ["alt+up" , "jump_to_block_at_connection_end" , 0],
             "2038" : ["alt+down" , "jump_to_block_at_connection_end", 1],
-            "559" : ["?", "toggle_connection_help"]
-        }
+            "559" : ["?", "toggle_connection_help"],
+            "45" : ["-", "poly_key" , -1],
+            "43" : ["+", "poly_key" , 1],
+            "61" : ["+ (mac)", "poly_key", 1],
+            "555" : ["+ (mac)", "poly_key", 1],
+            "573" : ["+", "poly_key" , 1]
+           }
     },
     "qwertymidi" : {
         "122" : ["Z" , "qwertymidi", 0],

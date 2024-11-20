@@ -2897,6 +2897,14 @@ function poly_key(dir){
 			}
 		}else if(sidebar.mode == "blocks"){
 			multiselect_polychange(-1);
+		}else if(sidebar.mode == "wire"){
+			var i = selected.wire.indexOf(1);
+			var t_number = connections.get("connections["+i+"]::to::number");
+			var current_p = blocks.get("blocks["+t_number+"]::poly::voices");
+			if((current_p>1)&&(blocks.get("blocks["+t_number+"]::type")!="hardware")){
+				voicecount(t_number, current_p - 1);
+				selected.wire[i] = 1;
+			}
 		}
 	}else{
 		if((sidebar.mode == "block")||(sidebar.mode == "settings")){
@@ -2908,6 +2916,15 @@ function poly_key(dir){
 			}
 		}else if(sidebar.mode == "blocks"){
 			multiselect_polychange(1);
+		}else if(sidebar.mode == "wire"){
+			var i = selected.wire.indexOf(1);
+			var t_number = connections.get("connections["+i+"]::to::number");
+			var max_p = blocktypes.get(blocks.get("blocks["+t_number+"]::name")+"::max_polyphony");
+			if(max_p ==0) max_p=9999999999999;
+			var current_p = blocks.get("blocks["+t_number+"]::poly::voices");
+			if((max_p > current_p)&&(blocks.get("blocks["+t_number+"]::type")!="hardware")){
+				voicecount(t_number, current_p + 1);
+			}
 		}
 	}
 }
