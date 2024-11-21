@@ -2888,7 +2888,7 @@ function qwertymidispecial(command){
 	}
 	redraw_flag.flag |= 2;
 }
-function poly_key(dir){
+function poly_key(dir,end){
 	if(dir<0){
 		if((sidebar.mode == "block")||(sidebar.mode == "settings")){
 			var current_p = blocks.get("blocks["+sidebar.selected+"]::poly::voices");
@@ -2899,7 +2899,11 @@ function poly_key(dir){
 			multiselect_polychange(-1);
 		}else if(sidebar.mode == "wire"){
 			var i = selected.wire.indexOf(1);
-			var t_number = connections.get("connections["+i+"]::to::number");
+			if(end == 0){
+				var t_number = connections.get("connections["+i+"]::from::number");	
+			}else{
+				var t_number = connections.get("connections["+i+"]::to::number");
+			}
 			var current_p = blocks.get("blocks["+t_number+"]::poly::voices");
 			if((current_p>1)&&(blocks.get("blocks["+t_number+"]::type")!="hardware")){
 				voicecount(t_number, current_p - 1);
@@ -2918,7 +2922,11 @@ function poly_key(dir){
 			multiselect_polychange(1);
 		}else if(sidebar.mode == "wire"){
 			var i = selected.wire.indexOf(1);
-			var t_number = connections.get("connections["+i+"]::to::number");
+			if(end == 0){
+				var t_number = connections.get("connections["+i+"]::from::number");	
+			}else{
+				var t_number = connections.get("connections["+i+"]::to::number");
+			}
 			var max_p = blocktypes.get(blocks.get("blocks["+t_number+"]::name")+"::max_polyphony");
 			if(max_p ==0) max_p=9999999999999;
 			var current_p = blocks.get("blocks["+t_number+"]::poly::voices");
