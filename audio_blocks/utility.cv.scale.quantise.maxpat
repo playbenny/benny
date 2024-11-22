@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 4,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -339,8 +339,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 78.0, 421.0, 42.0, 22.0 ],
-					"text" : "/~ 128"
+					"patching_rect" : [ 78.0, 439.0, 46.0, 22.0 ],
+					"text" : "/~ 128."
 				}
 
 			}
@@ -350,7 +350,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 78.0, 471.0, 42.0, 22.0 ],
+					"patching_rect" : [ 78.0, 527.0, 42.0, 22.0 ],
 					"text" : "out~ 1"
 				}
 

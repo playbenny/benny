@@ -1,0 +1,34 @@
+{
+	"jh.clock.out" : {
+		"patcher" : "jh.clock.out",
+		"block_ui_patcher" : "blank.ui",
+		"type" : "note",
+		"help_text" : "a clock out to a fixed destination hardcoded in the max patch.",
+		"max_polyphony" : 1,
+		"exclusive" : 1,
+		"deprecated" : 1,
+		"groups" : [
+			{ 
+				"contains" : [0, 1]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "offset",
+				"type" : "float",
+				"nomap" : 1,
+				"values" : ["bi", -50, 50, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "beat subdivisions",
+				"type" : "menu_l",
+				"values" : ["1","2","3","4"],
+				"wrap" : 0,
+				"nomap" : 1,
+				"default" : 0.95
+			}
+		]
+	}
+}

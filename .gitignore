@@ -44,3 +44,5 @@ data/airwindows Cabs.maxsnap
 audio_blocks/vst.PreBOX.json
 audio_blocks/vst.DC1A2.json
 audio_blocks/vst.FabFilter.Pro-C.2.json
+audio_blocks/vst.ValhallaVintageVerb.json
+audio_blocks/vst.ValhallaPlate.json

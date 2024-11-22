@@ -640,7 +640,7 @@ function import_song(){
 						var ty = blocktypes.get(block_name+"::type");
 						thisblock.replace("name",block_name);
 						thisblock.replace("type",ty);
-					}else if(thisblock.contains("substitute")){
+					}else if(thisblock.contains("substitute")&&blocktypes.contains(thisblock.get("substitute"))){
 						//use that then
 						block_name = thisblock.get("substitute");
 						post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
@@ -748,7 +748,7 @@ function import_song(){
 		} while (loading.progress<t);
 		loading.ready_for_next_action=loading.wait;
 		if(t!=0){
-			output_blocks_poly.setvalue(0,"load_complete");
+			output_blocks_poly.message("setvalue", 0,"load_complete");
 			center_view(1);
 			post("\ndone loading blocks, voices and data");
 		} 
@@ -760,8 +760,8 @@ function import_song(){
 			if(loading.wait>1) post("\nloading connection number",b);
 			if(songs.contains(loading.songname+"::connections["+b+"]::from")){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
-				new_connection.replace("from::number",loading.mapping[new_connection.get("from::number")]);
-				new_connection.replace("to::number",loading.mapping[new_connection.get("to::number")]);
+				new_connection.replace("from::number", loading.mapping[new_connection.get("from::number")]);
+				new_connection.replace("to::number", loading.mapping[new_connection.get("to::number")]);
 				connections.append("connections",new_connection);
 				var co = connections.getsize("connections")-1;
 				make_connection(co,0);
@@ -938,9 +938,9 @@ function build_wave_remapping_list(){
 function request_waves_remapping(type, voice){
 	post("\n remapping request received,",type,voice,"the remapping i sent out is",waves.remapping);
 	if(type=="audio"){
-		audio_poly.setvalue((voice-MAX_NOTE_VOICES)+1,"remapping",waves.remapping);
+		audio_poly.message("setvalue", (voice-MAX_NOTE_VOICES)+1,"remapping",waves.remapping);
 	}else if(type=="ui"){
-		ui_poly.setvalue(voice+1,"remapping",waves.remapping);
+		ui_poly.message("setvalue", voice+1,"remapping",waves.remapping);
 	}
 }
 
@@ -1069,9 +1069,9 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 
 	if(recycled){
 		if(type=="audio"){
-			audio_poly.setvalue(new_voice+1,"reset");
+			audio_poly.message("setvalue", new_voice+1,"reset");
 		}else if(type=="note"){
-			note_poly.setvalue(new_voice+1,"reset");
+			note_poly.message("setvalue", new_voice+1,"reset");
 		}
 	}
 
@@ -1122,12 +1122,12 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	// if the block has per-voice data it gets loaded after voicecount
 	// tell the polyalloc voice about its new job
 	if(hwmidi!=""){
-		voicealloc_poly.setvalue((block_index+1),"type","note");
+		voicealloc_poly.message("setvalue", (block_index+1),"type","note");
 	}else{
-		voicealloc_poly.setvalue((block_index+1),"type",type);
+		voicealloc_poly.message("setvalue", (block_index+1),"type",type);
 	}
-	//voicealloc_poly.setvalue((block_index +1),"type",type);
-	voicealloc_poly.setvalue((block_index +1),"voicelist",(new_voice+1));
+	//voicealloc_poly.message("setvalue", (block_index +1),"type",type);
+	voicealloc_poly.message("setvalue", (block_index +1),"voicelist",(new_voice+1));
 	var stack = poly_alloc.stack_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::stack_mode"));
 	var choose = poly_alloc.choose_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::choose_mode"));
 	var steal = poly_alloc.steal_modes.indexOf(blocks.get("blocks["+block_index+"]::poly::steal_mode"));
@@ -1135,10 +1135,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	if(blocks.contains("blocks["+block_index+"]::poly::return_mode")){
 		returnmode = blocks.get("blocks["+block_index+"]::poly::return_mode");
 	} 
-	voicealloc_poly.setvalue((block_index +1),"stack_mode",stack);  
-	voicealloc_poly.setvalue((block_index +1),"choose_mode",choose);
-	voicealloc_poly.setvalue((block_index +1),"steal_mode",steal);  
-	voicealloc_poly.setvalue((block_index +1),"return_mode",returnmode);
+	voicealloc_poly.message("setvalue", (block_index +1),"stack_mode",stack);  
+	voicealloc_poly.message("setvalue", (block_index +1),"choose_mode",choose);
+	voicealloc_poly.message("setvalue", (block_index +1),"steal_mode",steal);  
+	voicealloc_poly.message("setvalue", (block_index +1),"return_mode",returnmode);
 	panelslider_visible[block_index] = [];
 	if(blocks.contains("blocks["+block_index+"]::panel::parameters")){
 		var ppl = blocks.get("blocks["+block_index+"]::panel::parameters");
@@ -1162,14 +1162,14 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		}
 	}
 	if(type=="audio"){ 
-		audio_to_data_poly.setvalue((new_voice+1), "vis_meter", 1);
-		audio_to_data_poly.setvalue((new_voice+1), "vis_scope", 0);
-		audio_to_data_poly.setvalue((new_voice+1), "out_value", 0);
-		audio_to_data_poly.setvalue((new_voice+1), "out_trigger", 0);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-		audio_to_data_poly.setvalue((new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "out_value", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1), "out_trigger", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
+		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(blocks.contains("blocks["+block_index+"]::record_arm")){
 			record_arm[block_index] = blocks.get("blocks["+block_index+"]::record_arm");
 			if(record_arm[block_index]==1) set_block_record_arm(block_index,1);
@@ -1199,18 +1199,18 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		if(ts!="no"){
 			for(tii=0;tii<split;tii++){
 				ts[tii] = ts[tii]+MAX_AUDIO_VOICES*2 + MAX_AUDIO_INPUTS;
-				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 			}
 			for(tii=split;tii<ts.length;tii++){
 				ts[tii] = ts[tii]+MAX_AUDIO_VOICES*2;
-				audio_to_data_poly.setvalue(ts[tii],"vis_meter", 1);
-				audio_to_data_poly.setvalue(ts[tii],"vis_scope", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_value", 0);
-				audio_to_data_poly.setvalue(ts[tii],"out_trigger", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
+				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
+				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii]-=1;
 			}
 			hardware_metermap.replace(block_index,ts);
@@ -1242,15 +1242,15 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		if(blocks.contains("blocks["+b+"]::name")){
 			var vl = voicemap.get(b);
 			if(!Array.isArray(vl)) vl = [vl];
-			if((ui_patcherlist[b]!='blank.ui')&&(ui_patcherlist[b]!='self')) ui_poly.setvalue( b+1, "store");//query any ui blocks if they have data to store in data
+			if((ui_patcherlist[b]!='blank.ui')&&(ui_patcherlist[b]!='self')) ui_poly.message("setvalue",  b+1, "store");//query any ui blocks if they have data to store in data
 			var ty=blocks.get("blocks["+b+"]::type");
 			if(ty == "note"){
 				for(v=0;v<vl.length;v++){
-					note_poly.setvalue(vl[v]+1,"store");
+					note_poly.message("setvalue", vl[v]+1,"store");
 				}
 			}else if(ty == "audio"){
 				for(v=0;v<vl.length;v++){			
-					audio_poly.setvalue(vl[v]+1-MAX_NOTE_VOICES,"store");
+					audio_poly.message("setvalue", vl[v]+1-MAX_NOTE_VOICES,"store");
 				}
 			}
 			psize = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
@@ -1582,19 +1582,19 @@ function clear_everything(){
 	remove_all_routings();
 
 	//also empties all the dicts for re-initialisatoin:
-	//audio_poly.setvalue( 0, "kill");
-	audio_to_data_poly.setvalue(0, "vis_meter", 0);
-	audio_to_data_poly.setvalue(0, "vis_scope", 0);
-	audio_to_data_poly.setvalue(0, "out_value", 0);
-	audio_to_data_poly.setvalue(0, "out_trigger", 0);
+	//audio_poly.message("setvalue",  0, "kill");
+	audio_to_data_poly.message("setvalue", 0, "vis_meter", 0);
+	audio_to_data_poly.message("setvalue", 0, "vis_scope", 0);
+	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
+	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 	sidebar.selected_voice = -1;
 //	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
 	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly", "setvalue",2,"clear");
 	if(EXTERNAL_MATRIX_PRESENT) messnamed("drivers_poly", "setvalue",1,"clear");
-	note_poly.setvalue(0,"muteouts",1);
-	audio_poly.setvalue(0,"muteouts",1);
-	audio_poly.setvalue(0,"filename","off");
+	note_poly.message("setvalue", 0,"muteouts",1);
+	audio_poly.message("setvalue", 0,"muteouts",1);
+	audio_poly.message("setvalue", 0,"filename","off");
 
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
@@ -1626,12 +1626,12 @@ function clear_everything(){
 	panels_order=[];
 	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
-		audio_to_data_poly.setvalue(i, "vis_meter", 1);
+		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
-
+	proll.parse("{}");
 	connections.parse('{ "connections" : [ {} ] }');
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");
@@ -1686,7 +1686,7 @@ function clear_everything(){
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 
 	post("\nclearing everything");
-	sigouts.setvalue(0,0); // clear sigs
+	sigouts.message("setvalue", 0,0); // clear sigs
 	song_select.previous_name="";
 	song_select.previous_blocks=[];
 	song_select.current_blocks=[];

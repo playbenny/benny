@@ -159,7 +159,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.
 			//instead first do a manual check of blocks and if that doesn't see anything try picker for wires.
 			if(displaymode=="blocks"){
-				var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+				var stw = screentoworld(usermouse.x,usermouse.y);
 				for(var i=0;i<MAX_BLOCKS;i++){
 					if(blocks.contains("blocks["+i+"]::space::x")){
 						var by = Math.abs(blocks.get("blocks["+i+"]::space::y")-stw[1]);
@@ -476,7 +476,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(BLOCK_MENU_CLICK_ACTION=="click"){
 									showmenu = 0;
 								}else if(BLOCK_MENU_CLICK_ACTION=="double_click"){
-									var tp = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+									var tp = screentoworld(usermouse.x,usermouse.y);
 									if(usermouse.timer>0){
 										if((Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1]))<400){
 											showmenu = 1;
@@ -754,8 +754,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									messnamed("camera_control","position",  camera_position);
 									messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}else if(usermouse.shift){
-									var sts = connections_sketch.screentoworld(usermouse.drag.starting_x,usermouse.drag.starting_y);
-									var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+									var sts = screentoworld(usermouse.drag.starting_x,usermouse.drag.starting_y);
+									var stw = screentoworld(usermouse.x,usermouse.y);
 									selection_cube.scale = [0.5*Math.abs(sts[0]-stw[0]), 0.5*Math.abs(sts[1]-stw[1]), 1];
 									selection_cube.position = [0.5*(sts[0]+stw[0]), 0.5*(sts[1]+stw[1]), -1];
 									selection_cube.enable = 1;
@@ -786,7 +786,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
 								var t = 0;
-								var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+								var stw = screentoworld(usermouse.x,usermouse.y);
 								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
 								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
@@ -842,8 +842,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 									if(drawwire == 1){
-										potential_connection.replace("from::number",usermouse.ids[1]);
-										potential_connection.replace("to::number",usermouse.hover[1]);
+										potential_connection.replace("from::number",+usermouse.ids[1]);
+										potential_connection.replace("to::number",+usermouse.hover[1]);
 										potential_connection.replace("to::input::type","potential");
 										potential_connection.replace("from::output::type","potential");
 										var temptovoice = usermouse.hover[2];
@@ -947,7 +947,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-
+		}else if(usermouse.got_t == 7){
+			if((mouse_click_actions[usermouse.got_i]==custom_mouse_passthrough)&&(mouse_click_values[usermouse.got_i]==1)){
+				custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
+			}
 		}
 	}
 }
@@ -1072,7 +1075,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
 				} //todo? ctrl-scroll a block
 			}else if((usermouse.shift)&&(usermouse.alt)){
-				var stw = connections_sketch.screentoworld(usermouse.x,usermouse.y);
+				var stw = screentoworld(usermouse.x,usermouse.y);
 				make_space(stw[0],stw[1],-4*scroll);
 			}
 		}else if(displaymode=="block_menu"){
