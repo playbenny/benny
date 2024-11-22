@@ -2633,6 +2633,7 @@ function draw_sidebar(){
 			var has_midi_in = blocktypes.contains(block_name+"::connections::in::midi");
 
 			var tii,ts;
+			var block_voicecount = 1;
 
 			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")){
 			}else{
@@ -2642,7 +2643,8 @@ function draw_sidebar(){
 			if(sidebar.selected != block) sidebar.lastmode = "retrig";
 			var bvs = voicemap.get(block);
 			if(!Array.isArray(bvs)) bvs = [bvs];
-			if(sidebar.selected_voice >= bvs.length) sidebar.selected_voice = -1;
+			block_voicecount = bvs.length;
+			if(sidebar.selected_voice >= block_voicecount) sidebar.selected_voice = -1;
 			var listvoice=-1;
 			if(sidebar.selected_voice>=0){
 				listvoice  = bvs[sidebar.selected_voice] - MAX_NOTE_VOICES;// voicemap.get(block+"["+sidebar.selected_voice+"]") - MAX_NOTE_VOICES; 
@@ -3974,7 +3976,7 @@ function draw_sidebar(){
 				lcd_main.message("write", "block settings");
 				y_offset += 1.1* fontheight;
 
-				if((block_type == "audio")){//||(block_type == "hardware")){ //TODO build hw recording!
+				if((block_type == "audio")||(block_type == "hardware")){ //TODO build hw recording!
 					if(usermouse.clicked2d == mouse_index){
 						lcd_main.message("paintrect", sidebar.x2-7.6*fontheight, y_offset, sidebar.x2-6.6*fontheight, fontheight+y_offset,255,158,150 );
 						lcd_main.message("frgb" ,255,255,255);
@@ -4083,7 +4085,56 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 				
 				// polyphony
-				draw_sidebar_polyphony_options(block, block_type, block_colour, block_dark, block_darkest, current_p, block_name);
+				var max_p = blocktypes.get(blocks.get("blocks[" + block + "]::name") + "::max_polyphony");
+				max_p = (max_p == 0) * 9999999999999;
+				if((max_p!=1)&&(block_type!="hardware")){
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2 - 3.3 * fontheight, fontheight + y_offset, block_darkest);
+					lcd_main.message("moveto", sidebar.x + fontheight * 0.2, fontheight * 0.75 + y_offset);
+					lcd_main.message("frgb", block_colour);
+					lcd_main.message("write", "polyphony");	
+					
+					//var current_p = blocks.get("blocks["+block+"]::poly::voices");
+					if (current_p > 1) {
+						if (usermouse.clicked2d == mouse_index) {
+							bc = block_colour;
+							fc = block_darkest;
+						} else {
+							bc = block_darkest;
+							fc = block_colour;
+						}
+						lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, bc);
+						click_zone(poly_key, -1, -1, sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, mouse_index, 1);
+						lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.75 + y_offset);
+						lcd_main.message("frgb", fc);
+						lcd_main.message("write", "-");
+					} else {
+						lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, block_darkest);
+					}
+					lcd_main.message("paintrect", sidebar.x2 - 2.1 * fontheight, y_offset, sidebar.x2 - 1.1 * fontheight, fontheight + y_offset, block_darkest);
+					lcd_main.message("moveto", sidebar.x2 - 1.8 * fontheight, fontheight * 0.5 + y_offset);
+					lcd_main.message("write", "voices");
+					lcd_main.message("frgb", block_colour);
+					lcd_main.message("moveto", sidebar.x2 - 1.8 * fontheight, fontheight * 0.75 + y_offset);
+					lcd_main.message("write", current_p);
+					if (current_p < max_p) {
+						if (usermouse.clicked2d == mouse_index) {
+							bc = block_colour;
+							fc = block_darkest;
+						} else {
+							bc = block_darkest;
+							fc = block_colour;
+						}
+						lcd_main.message("paintrect", sidebar.x2 -  fontheight, y_offset, sidebar.x2, fontheight + y_offset, bc);
+						click_zone(poly_key, 1, 1, sidebar.x2 - fontheight, y_offset, sidebar.x2 , fontheight + y_offset, mouse_index, 1);
+						lcd_main.message("moveto", sidebar.x2 - 0.8 * fontheight, fontheight * 0.75 + y_offset);
+						lcd_main.message("frgb", fc);
+						lcd_main.message("write", "+");
+					} else {
+						lcd_main.message("paintrect", sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight + y_offset, block_darkest);
+					}
+					y_offset += 1.1*fontheight;
+					draw_sidebar_polyphony_options(block, block_colour, block_dark, block_darkest, block_name);
+				}
 
 				//oversampling settings
 				if(UPSAMPLING && (block_type == "audio")){
@@ -4303,41 +4354,48 @@ function draw_sidebar(){
 					}
 				}
 
-				// error 
-				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-4.4*fontheight, fontheight+y_offset,block_darkest );
-				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.5+y_offset);
-				lcd_main.message("frgb", block_colour );
-				lcd_main.message("write", "parameter");
-				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-				lcd_main.message("write", "error");
-				draw_h_slider(sidebar.x2-4.3*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::spread"));
+			}
+
+			if((has_params) && ((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")||((sidebar.mode == "block")&&(block_voicecount>1)))){
+				// error section
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+3.4*fontheight, fontheight+y_offset,block_darkest );
+				var ew = sidebar.width - 3.7 * fontheight;
+				ew/=3;
+				ew+=0.1*fontheight;
+				var es = sidebar.x+3.5*fontheight;
+				draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::spread"));
 				mouse_click_actions[mouse_index] = block_edit;
 				mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::spread";
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
-				lcd_main.message("frgb", block_colour );
-				lcd_main.message("moveto" ,sidebar.x2-4.1*fontheight, fontheight*0.5+y_offset);
-				lcd_main.message("write", "spread");
-				y_offset+=fontheight*0.75;
-				draw_h_slider(sidebar.x2-4.3*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::drift"));
+				es+=ew;
+				draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::drift"));
 				mouse_click_actions[mouse_index] = block_edit;
 				mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::drift";
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
-				lcd_main.message("frgb", block_colour );
-				lcd_main.message("moveto" ,sidebar.x2-4.1*fontheight, fontheight*0.5+y_offset);
-				lcd_main.message("write", "drift");
-				y_offset+=fontheight*0.75;
-				draw_h_slider(sidebar.x2-4.3*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::lockup"));
+				es+=ew;
+				draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::lockup"));
 				mouse_click_actions[mouse_index] = block_edit;
 				mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::lockup";
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
 				lcd_main.message("frgb", block_colour );
-				lcd_main.message("moveto" ,sidebar.x2-4.1*fontheight, fontheight*0.5+y_offset);
-				lcd_main.message("write", "panel lockup");
-				y_offset+=fontheight*0.75;		
-			}else{
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+				lcd_main.message("write", "parameter errors");
+				es = sidebar.x+3.7*fontheight;
+				lcd_main.message("moveto" ,es, fontheight*0.75+y_offset);
+				lcd_main.message("write", "spread");
+				es+=ew;
+				lcd_main.message("moveto" ,es, fontheight*0.75+y_offset);
+				lcd_main.message("write", "drift");
+				es+=ew;
+				lcd_main.message("moveto" ,es, fontheight*0.75+y_offset);
+				lcd_main.message("write", "freeze");
+				y_offset+=fontheight*1.1;
+			}
+
+			if((sidebar.mode != "settings")&&(sidebar.mode != "settings_flockpreset")){
 				lcd_main.message("frgb", block_colour);
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_darkest );
 				click_zone(set_sidebar_mode,"settings",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
@@ -4346,7 +4404,8 @@ function draw_sidebar(){
 				lcd_main.message("write", "block settings");
 				y_offset += 1.1* fontheight;
 			}
-			
+
+
 			var conn_count = 0;
 			var cm = connections.getsize("connections");
 			for(i=0;i<cm;i++){
@@ -5636,7 +5695,7 @@ function draw_sidebar(){
 				y_offset+= fo1*7;			
 			}
 			if(show_poly_options){
-				draw_sidebar_polyphony_options(t_number,t_type,section_colour,section_colour_dark,section_colour_darkest,t_v_no,t_name);
+				draw_sidebar_polyphony_options(t_number,section_colour,section_colour_dark,section_colour_darkest,t_name);
 			}
 
 			//output scope here
@@ -5913,8 +5972,6 @@ function draw_sidebar(){
 				lcd_main.message("paintrect", sidebar.x2 - fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,menudarkest );
 				click_zone(multiselect_polychange, -1, null, sidebar.x2 - fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,mouse_index,1 );
 				lcd_main.message("frgb" , menucolour);				
-				//lcd_main.message("moveto", sidebar.x + fontheight*6, fontheight*0.5+y_offset);
-				//lcd_main.message("write", "un");
 				lcd_main.message("moveto", sidebar.x2 - fontheight*2, fontheight*0.75+y_offset);
 				lcd_main.message("write", "-");
 				lcd_main.message("paintrect", sidebar.x2 - fontheight, y_offset, sidebar.x2 , fontheight+y_offset,menudarkest );
@@ -6250,58 +6307,17 @@ function draw_sidebar(){
 }
 
 
-function draw_sidebar_polyphony_options(block, block_type, block_colour, block_dark, block_darkest, current_p, block_name){
+function draw_sidebar_polyphony_options(block, block_colour, block_dark, block_darkest, block_name){
 	var bc,fc;
 	var max_p = blocktypes.get(blocks.get("blocks[" + block + "]::name") + "::max_polyphony");
-	if (max_p == 0) {
-		max_p = 9999999999999;
-	}
-	if ((max_p != 1) && (block_type != "hardware")) {
-		//var current_p = blocks.get("blocks["+block+"]::poly::voices");
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2 - 5.5 * fontheight, fontheight + y_offset, block_darkest);
-		lcd_main.message("moveto", sidebar.x + fontheight * 0.2, fontheight * 0.75 + y_offset);
-		lcd_main.message("frgb", block_colour);
-		lcd_main.message("write", "polyphony");
-		if(sidebar.mode!="wire"){
-			if (current_p > 1) {
-				if (usermouse.clicked2d == mouse_index) {
-					bc = block_colour;
-					fc = block_darkest;
-				} else {
-					bc = block_darkest;
-					fc = block_colour;
-				}
-				lcd_main.message("paintrect", sidebar.x2 - 5.4 * fontheight, y_offset, sidebar.x2 - 4.4 * fontheight, fontheight + y_offset, bc);
-				click_zone(poly_key, -1, -1, sidebar.x2 - 5.4 * fontheight, y_offset, sidebar.x2 - 4.4 * fontheight, fontheight + y_offset, mouse_index, 1);
-				lcd_main.message("moveto", sidebar.x2 - 5.2 * fontheight, fontheight * 0.75 + y_offset);
-				lcd_main.message("frgb", fc);
-				lcd_main.message("write", "-");
-			} else {
-				lcd_main.message("paintrect", sidebar.x2 - 5.4 * fontheight, y_offset, sidebar.x2 - 4.4 * fontheight, fontheight + y_offset, block_darkest);
-			}
-			lcd_main.message("paintrect", sidebar.x2 - 4.3 * fontheight, y_offset, sidebar.x2 - 3.3 * fontheight, fontheight + y_offset, block_darkest);
-			lcd_main.message("moveto", sidebar.x2 - 4.0 * fontheight, fontheight * 0.5 + y_offset);
-			lcd_main.message("write", "voices");
-			lcd_main.message("frgb", block_colour);
-			lcd_main.message("moveto", sidebar.x2 - 4.0 * fontheight, fontheight * 0.75 + y_offset);
-			lcd_main.message("write", current_p);
-			if (current_p < max_p) {
-				if (usermouse.clicked2d == mouse_index) {
-					bc = block_colour;
-					fc = block_darkest;
-				} else {
-					bc = block_darkest;
-					fc = block_colour;
-				}
-				lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, bc);
-				click_zone(poly_key, 1, 1, sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, mouse_index, 1);
-				lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.75 + y_offset);
-				lcd_main.message("frgb", fc);
-				lcd_main.message("write", "+");
-			} else {
-				lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, block_darkest);
-			}
-		}	
+	max_p = (max_p == 0) * 9999999999999;
+
+	lcd_main.message("paintrect", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2 - 3.3 * fontheight, 0.6*fontheight + y_offset, block_darkest);
+	lcd_main.message("moveto", sidebar.x2 - 7.4 * fontheight, fontheight * 0.4 + y_offset);
+	lcd_main.message("frgb", block_dark);
+	lcd_main.message("write", "stack mode");
+	click_zone(open_dropdown, "stack", "stack", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+	if(sidebar.dropdown!="stack"){
 		if (usermouse.clicked2d == mouse_index) {
 			bc = block_colour;
 			fc = block_darkest;
@@ -6309,17 +6325,43 @@ function draw_sidebar_polyphony_options(block, block_type, block_colour, block_d
 			bc = block_darkest;
 			fc = block_colour;
 		}
-		lcd_main.message("paintrect", sidebar.x2 - 2.1 * fontheight, y_offset, sidebar.x2, fontheight + y_offset, bc);
-		click_zone(cycle_block_mode, block, "stack", sidebar.x2 - 2.1 * fontheight, y_offset, sidebar.x2, fontheight + y_offset, mouse_index, 1);
-		lcd_main.message("moveto", sidebar.x2 - 1.9 * fontheight, fontheight * 0.5 + y_offset);
-		lcd_main.message("frgb", block_dark);
-		lcd_main.message("write", "stack mode");
+		click_zone(open_dropdown, "stack", "stack", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+		lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
 		lcd_main.message("frgb", fc);
-		lcd_main.message("moveto", sidebar.x2 - 1.9 * fontheight, fontheight * 0.75 + y_offset);
+		lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
 		lcd_main.message("write", blocks.get("blocks[" + block + "]::poly::stack_mode"));
+		y_offset += 0.7 * fontheight;
+	}else{
+		var sel = blocks.get("blocks[" + block + "]::poly::stack_mode");
+		var sn = poly_alloc.stack_modes.indexOf(sel);
+		for(var dr=0;dr<poly_alloc.stack_modes.length;dr++){
+			if((dr==sn)||(mouse_index==usermouse.clicked2d)){
+				fc = block_darkest;
+				bc = block_colour;
+			}else{
+				bc = block_darkest;
+				fc = block_colour;
+			}
+			if(dr == sn){
+				click_zone(open_dropdown, "stack", "stack", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			}else{
+				click_zone(set_block_mode, "stack", dr, sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			}
+			lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
+			lcd_main.message("frgb", fc);
+			lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
+			lcd_main.message("write", poly_alloc.stack_modes[dr]);	
+			y_offset+=0.7*fontheight;			
+		}
+	}
 
-		y_offset += 1.1 * fontheight;
 
+	lcd_main.message("paintrect", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2 - 3.3 * fontheight, 0.6*fontheight + y_offset, block_darkest);
+	lcd_main.message("moveto", sidebar.x2 - 7.4 * fontheight, fontheight * 0.4 + y_offset);
+	lcd_main.message("frgb", block_dark);
+	lcd_main.message("write", "choose mode");
+	click_zone(open_dropdown, "choose", "choose", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+	if(sidebar.dropdown!="choose"){
 		if (usermouse.clicked2d == mouse_index) {
 			bc = block_colour;
 			fc = block_darkest;
@@ -6327,16 +6369,43 @@ function draw_sidebar_polyphony_options(block, block_type, block_colour, block_d
 			bc = block_darkest;
 			fc = block_colour;
 		}
-		lcd_main.message("paintrect", sidebar.x2 - 6.5 * fontheight, y_offset, sidebar.x2 - 4.4 * fontheight, fontheight + y_offset, bc);
-		click_zone(cycle_block_mode, block, "choose", sidebar.x2 - 6.5 * fontheight, y_offset, sidebar.x2 - 4.4 * fontheight, fontheight + y_offset, mouse_index, 1);
-		lcd_main.message("moveto", sidebar.x2 - 6.3 * fontheight, fontheight * 0.5 + y_offset);
-		lcd_main.message("frgb", block_dark);
-		lcd_main.message("write", "choose mode");
+		click_zone(open_dropdown, "choose", "choose", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+		lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
 		lcd_main.message("frgb", fc);
-		lcd_main.message("moveto", sidebar.x2 - 6.3 * fontheight, fontheight * 0.75 + y_offset);
+		lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
 		lcd_main.message("write", blocks.get("blocks[" + block + "]::poly::choose_mode"));
+		y_offset += 0.7 * fontheight;
+	}else{
+		var sel = blocks.get("blocks[" + block + "]::poly::choose_mode");
+		var sn = poly_alloc.choose_modes.indexOf(sel);
+		for(var dr=0;dr<poly_alloc.choose_modes.length;dr++){
+			if((dr==sn)||(mouse_index==usermouse.clicked2d)){
+				fc = block_darkest;
+				bc = block_colour;
+			}else{
+				bc = block_darkest;
+				fc = block_colour;
+			}
+			if(dr == sn){
+				click_zone(open_dropdown, "choose", "choose", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			}else{
+				click_zone(set_block_mode, "choose", dr, sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			}
+			lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
+			lcd_main.message("frgb", fc);
+			lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
+			lcd_main.message("write", poly_alloc.choose_modes[dr]);	
+			y_offset+=0.7*fontheight;			
+		}
+	}
 
 
+	lcd_main.message("paintrect", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2 - 3.3 * fontheight, 0.6*fontheight + y_offset, block_darkest);
+	lcd_main.message("moveto", sidebar.x2 - 7.4 * fontheight, fontheight * 0.4 + y_offset);
+	lcd_main.message("frgb", block_dark);
+	lcd_main.message("write", "steal mode");
+	click_zone(open_dropdown, "steal", "steal", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, mouse_index, 1);
+	if(sidebar.dropdown!="steal"){
 		if (usermouse.clicked2d == mouse_index) {
 			bc = block_colour;
 			fc = block_darkest;
@@ -6344,33 +6413,61 @@ function draw_sidebar_polyphony_options(block, block_type, block_colour, block_d
 			bc = block_darkest;
 			fc = block_colour;
 		}
-		lcd_main.message("paintrect", sidebar.x2 - 4.3 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, bc);
-		click_zone(cycle_block_mode, block, "steal", sidebar.x2 - 4.3 * fontheight, y_offset, sidebar.x2 - 2.2 * fontheight, fontheight + y_offset, mouse_index, 1);
-		lcd_main.message("moveto", sidebar.x2 - 4.1 * fontheight, fontheight * 0.5 + y_offset);
-		lcd_main.message("frgb", block_dark);
-		lcd_main.message("write", "steal mode");
+		click_zone(open_dropdown, "steal", "steal", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+		lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
 		lcd_main.message("frgb", fc);
-		lcd_main.message("moveto", sidebar.x2 - 4.1 * fontheight, fontheight * 0.75 + y_offset);
+		lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
 		lcd_main.message("write", blocks.get("blocks[" + block + "]::poly::steal_mode"));
-
-		if (usermouse.clicked2d == mouse_index) {
-			bc = block_colour;
-			fc = block_darkest;
-		} else {
-			bc = block_darkest;
-			fc = block_colour;
+		y_offset += 0.7 * fontheight;
+	}else{
+		var sel = blocks.get("blocks[" + block + "]::poly::steal_mode");
+		var sn = poly_alloc.steal_modes.indexOf(sel);
+		for(var dr=0;dr<poly_alloc.steal_modes.length;dr++){
+			if((dr==sn)||(mouse_index==usermouse.clicked2d)){
+				fc = block_darkest;
+				bc = block_colour;
+			}else{
+				bc = block_darkest;
+				fc = block_colour;
+			}
+			if(dr == sn){
+				click_zone(open_dropdown, "steal", "steal", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			}else{
+				click_zone(set_block_mode, "steal", dr, sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			}
+			lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
+			lcd_main.message("frgb", fc);
+			lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
+			lcd_main.message("write", poly_alloc.steal_modes[dr]);	
+			y_offset+=0.7*fontheight;			
 		}
-		lcd_main.message("paintrect", sidebar.x2 - 2.1 * fontheight, y_offset, sidebar.x2, fontheight + y_offset, bc);
-		click_zone(cycle_block_mode, block, "return", sidebar.x2 - 2.1 * fontheight, y_offset, sidebar.x2, fontheight + y_offset, mouse_index, 1);
-		lcd_main.message("moveto", sidebar.x2 - 1.9 * fontheight, fontheight * 0.5 + y_offset);
-		lcd_main.message("frgb", block_dark);
-		lcd_main.message("write", "return stolen");
-		lcd_main.message("frgb", fc);
-		lcd_main.message("moveto", sidebar.x2 - 1.9 * fontheight, fontheight * 0.75 + y_offset);
-		lcd_main.message("write", (blocks.get("blocks[" + block + "]::poly::return_mode") == 1) ? "on" : "off");
-		y_offset += 1.1 * fontheight;
+	}
 
-		if (blocktypes.contains(block_name + "::latching_enable")) {
+	if (usermouse.clicked2d == mouse_index) {
+		bc = block_colour;
+		fc = block_darkest;
+	} else {
+		bc = block_darkest;
+		fc = block_colour;
+	}
+	lcd_main.message("paintrect", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2 - 3.3 * fontheight, 0.6*fontheight + y_offset, block_darkest);
+	lcd_main.message("moveto", sidebar.x2 - 7.4 * fontheight, fontheight * 0.4 + y_offset);
+	lcd_main.message("frgb", block_dark);
+	lcd_main.message("write", "return stolen");
+	lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
+	lcd_main.message("frgb", fc);
+	lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
+	lcd_main.message("write", (blocks.get("blocks[" + block + "]::poly::return_mode") == 1) ? "on" : "off");
+	click_zone(cycle_block_mode, block, "return", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+	y_offset += 0.7 * fontheight;
+
+	if (blocktypes.contains(block_name + "::latching_enable")) {
+		lcd_main.message("paintrect", sidebar.x2 - 7.6 * fontheight, y_offset, sidebar.x2-fontheight*3.3, 0.6*fontheight + y_offset, block_darkest);
+		lcd_main.message("moveto", sidebar.x2 - 7.4 * fontheight, fontheight * 0.4 + y_offset);
+		lcd_main.message("frgb", block_dark);
+		lcd_main.message("write", "parameter latching mode");
+		click_zone(open_dropdown, "latching", "latching", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+		if(sidebar.dropdown!="latching"){
 			if (usermouse.clicked2d == mouse_index) {
 				bc = block_colour;
 				fc = block_darkest;
@@ -6378,15 +6475,34 @@ function draw_sidebar_polyphony_options(block, block_type, block_colour, block_d
 				bc = block_darkest;
 				fc = block_colour;
 			}
-			lcd_main.message("paintrect", sidebar.x2 - 6.5 * fontheight, y_offset, sidebar.x2, fontheight + y_offset, bc);
-			click_zone(cycle_block_mode, block, "latching", sidebar.x2 - 6.5 * fontheight, y_offset, sidebar.x2, fontheight + y_offset, mouse_index, 1);
-			lcd_main.message("moveto", sidebar.x2 - 6.3 * fontheight, fontheight * 0.5 + y_offset);
-			lcd_main.message("frgb", block_dark);
-			lcd_main.message("write", "voice parameter latching mode");
+			click_zone(open_dropdown, "latching", "latching", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+			lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
 			lcd_main.message("frgb", fc);
-			lcd_main.message("moveto", sidebar.x2 - 6.3 * fontheight, fontheight * 0.75 + y_offset);
+			lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
 			lcd_main.message("write", latching_modes[blocks.get("blocks[" + block + "]::poly::latching_mode")]);
-			y_offset += 1.1 * fontheight;
+			y_offset += 0.7 * fontheight;
+		}else{
+			var sn = blocks.get("blocks[" + block + "]::poly::latching_mode");
+			//var sn = poly_alloc.latching_modes.indexOf(sel);
+			for(var dr=0;dr<latching_modes.length;dr++){
+				if((dr==sn)||(mouse_index==usermouse.clicked2d)){
+					fc = block_darkest;
+					bc = block_colour;
+				}else{
+					bc = block_darkest;
+					fc = block_colour;
+				}
+				if(dr == sn){
+					click_zone(open_dropdown, "latching", "latching", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+				}else{
+					click_zone(set_block_mode, "latching", dr, sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.7*fontheight + y_offset, mouse_index, 1);
+				}
+				lcd_main.message("paintrect", sidebar.x2 - 3.2 * fontheight, y_offset, sidebar.x2, 0.6*fontheight + y_offset, bc);
+				lcd_main.message("frgb", fc);
+				lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
+				lcd_main.message("write", latching_modes[dr]);	
+				y_offset+=0.7*fontheight;			
+			}
 		}
 	}
 }

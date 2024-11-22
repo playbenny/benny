@@ -1958,6 +1958,60 @@ function send_record_arm_messages(block){
 	}
 }
 
+function open_dropdown(id){
+	if(sidebar.dropdown != id){
+		sidebar.dropdown = id;
+		redraw_flag.flag |= 2;
+	}else{
+		sidebar.dropdown = null;
+		redraw_flag.flag |= 2;
+	}
+}
+
+function set_block_mode(setting,p){
+	var block;
+	if(sidebar.mode=="wire"){
+		block = selected.wire.indexOf(1);
+		block = connections.get("connections["+block + "]::to::number");
+	}else{
+		block = sidebar.selected;
+	}
+	var target = "blocks["+block+"]::";
+	if(setting=="stack"){
+		target = target+"poly::stack_mode";
+		blocks.replace(target,poly_alloc.stack_modes[p]);
+		voicealloc_poly.message("setvalue", (block+1),"stack_mode",p);  //1x
+	}else if(setting=="choose"){
+		target = target+"poly::choose_mode";
+		blocks.replace(target,poly_alloc.choose_modes[p]);
+		voicealloc_poly.message("setvalue", (block+1),"choose_mode",p); //cycle free
+	}else if(setting=="steal"){
+		target = target+"poly::steal_mode";
+		blocks.replace(target,poly_alloc.steal_modes[p]);
+		voicealloc_poly.message("setvalue", (block+1),"steal_mode",p);  //oldest
+	}else if(setting=="latching"){
+		target = target+"poly::latching_mode";
+		blocks.replace(target,p);
+		//need to tell the voices
+		var vl = voicemap.get(block);
+		if(!Array.isArray(vl))vl=[vl];
+		if((vl[0])<MAX_NOTE_VOICES){
+			for(var v=0;v<vl.length;v++){
+				note_poly.message("setvalue", 1+vl[v],"voice_is",vl[v]);
+				get_voice_details(vl[v]);
+			}
+		}else if((vl[0])<MAX_NOTE_VOICES+MAX_AUDIO_VOICES){
+			for(var v=0;v<vl.length;v++){
+				audio_poly.message("setvalue", 1+vl[v],"voice_is",vl[v]-MAX_NOTE_VOICES);
+				get_voice_details(vl[v]);
+			}
+		}
+	}
+	sidebar.dropdown=null;
+	redraw_flag.flag |= 2;
+
+}
+
 function cycle_block_mode(block,setting){
 	var target = "blocks["+block+"]::";
 	var p;

@@ -484,7 +484,8 @@ var sidebar = {
 	back : [],
 	fwd : [],
 	files_page : "songs",
-	notification : ""
+	notification : "",
+	dropdown : null
 }
 
 var y_offset;
