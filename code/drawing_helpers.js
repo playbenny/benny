@@ -688,16 +688,18 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 	var hle ;
 	var wmin,wmax;
 	var w = Math.floor((x2-x1-1)/2);
-	var samps=5;
+	var samps=2,chngd=0;
 	if(!Array.isArray(draw_wave_z[buffer-1])){
 		draw_wave_z[buffer-1] = [[],[],[],[]];
 		samps = 20;
+		chngd=1;
 	}
 	if(w!=draw_wave_z[buffer-1][0].length) {
 		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
 		draw_wave_z[buffer-1][0].length = w;
 		clear_wave_graphic_z(buffer,w);
 		samps = 20;
+		chngd=1;
 	}
 	var length = waves_dict.get("waves["+buffer+"]::length");
 	st = waves_dict.get("waves["+buffer+"]::start");//*w);
@@ -736,13 +738,11 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 		for(i=0;i<w;i++){
 			wmin = draw_wave_z[buffer-1][ch*2][i];
 			wmax = draw_wave_z[buffer-1][ch*2+1][i];
-			//if(isNaN(wmin))wmin=0;
-			//if(isNaN(wmax)){wmin=1; wmax=-1;
-			if(isNaN(wmin)||isNaN(wmax)){post("nan",i); wmin=1; wmax=-1;}
+			if(isNaN(wmin)||isNaN(wmax)){post("nan",i); wmin=1; wmax=-1; samps=20;}
 			for(t=0;t<samps;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+chunkstart+Math.random())*chunk));
-				if(s>wmax) wmax=s;
-				if(s<wmin) wmin=s;
+				if(s>wmax){ wmax=s; chngd=1; }
+				if(s<wmin){ wmin=s; chngd=1; }
 			}
 			draw_wave_z[buffer-1][ch*2][i] = wmin;
 			draw_wave_z[buffer-1][ch*2+1][i] = wmax;
@@ -757,6 +757,9 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
 			//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
 		}
+	}
+	if(chngd){
+		redraw_flag.deferred = 4;
 	}
 }
 
