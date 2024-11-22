@@ -174,6 +174,7 @@ var midi_indicators = {
 }
 
 var draw_wave = [];
+var draw_wave_z = [];
 var waves_slices_buffer = new Buffer("waves_slices");
 var waves = {
 	selected : -1,

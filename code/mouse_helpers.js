@@ -2657,6 +2657,8 @@ function zoom_waves(parameter,value){
 	}else{
 		var w = Math.max(waves.zoom_end- waves.zoom_start,0.00001);
 		var skew = usermouse.x / mainwindow_width;
+		var wzs = waves.zoom_start;
+		var wze = waves.zoom_end;
 		waves.zoom_start += (skew)* w*value;
 		waves.zoom_end -= (1-skew)*w*value;
 		if(waves.zoom_start>waves.zoom_end){
@@ -2672,6 +2674,9 @@ function zoom_waves(parameter,value){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
 			waves_zoom_end = 1;
+		}
+		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
+			draw_wave_z[waves.selected] = [[],[],[],[]];
 		}
 		redraw_flag.flag |= 4;
 	}
@@ -2689,6 +2694,8 @@ function wave_stripe_click(parameter,value){
 	if(value=="get"){
 		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
+		var wzs = waves.zoom_start;
+		var wze = waves.zoom_end;
 		waves.zoom_start = skew - 0.5*wl;
 		waves.zoom_end = skew + 0.5*wl;
 		if(waves.zoom_start<0){
@@ -2700,10 +2707,15 @@ function wave_stripe_click(parameter,value){
 			if(waves.zoom_start<0)waves.zoom_start=0;
 			waves_zoom_end = 1;
 		}
+		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
+			draw_wave_z[waves.selected] = [[],[],[],[]];
+		}
 		return 0;
 	}else{
 		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
+		var wzs = waves.zoom_start;
+		var wze = waves.zoom_end;
 		waves.zoom_start = skew - 0.5*wl;
 		waves.zoom_end = skew + 0.5*wl;
 
@@ -2724,6 +2736,9 @@ function wave_stripe_click(parameter,value){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
 			waves_zoom_end = 1;
+		}
+		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
+			draw_wave_z[waves.selected] = [[],[],[],[]];
 		}
 	}
 }
