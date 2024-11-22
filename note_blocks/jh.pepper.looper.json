@@ -6,7 +6,6 @@
 		"help_text" : "integration with my emergency looper / output section fx patch that runs on bela pepper. no ins or outs, just sends global clock and selected loop size info to the hardware.",
 		"max_polyphony" : 1,
 		"exclusive" : 1,
-		"deprecated" : 1,
 		"groups" : [
 			{ 
 				"contains" : [0, 1],

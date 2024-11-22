@@ -548,7 +548,6 @@ function clear_blocks_selection(){
 	}
 	selected.block_count = 0;
 	selected.wire_count = 0;
-	sidebar.editbtn=0;
 	redraw_flag.flag=10;
 	redraw_flag.targets = [];
 	redraw_flag.targetcount = 0;
@@ -571,7 +570,6 @@ function select_all(){
 		selected.wire[t]=0;
 	}
 	selected.wire_count = 0;
-	sidebar.editbtn=0;
 	redraw_flag.flag=10;
 	redraw_flag.targets = [];
 	redraw_flag.targetcount = 0;	

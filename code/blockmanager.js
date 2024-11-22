@@ -440,10 +440,6 @@ var sidebar = {
 		position : 0,
 		max : 0
 	},
-	editbtn : 0,
-	editbtn_x: 0,
-	editcolour : [255,255,255],
-	editdark : [64,64,64],
 	scopes : {
 		zoom : 0,
 		voice : -1,    //this is eg voice 34 of the poly

@@ -1349,11 +1349,13 @@ function midi_indicator(number){
 }
 
 function draw_clock(){
-	lcd_main.message("paintrect", mainwindow_width-9-fontheight*2.1,9,mainwindow_width,9+fontheight,0,0,0);
+	var cx2 = (sidebar.mode == "none") ? (mainwindow_width - 9) : (sidebar.x-9);
+	var cx = cx2 - fontheight*2;
+	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);
 	setfontsize(fontheight*0.8);
 	var currentdate = new Date;
 	if(set_timer_show){
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
+		lcd_main.message("moveto",cx, 9+fontheight*0.8);
 		lcd_main.message("frgb", menudark);
 		if(set_timer_start == null){
 			lcd_main.message("write", "0:00");			
@@ -1367,9 +1369,9 @@ function draw_clock(){
 			if(t<10) t = "0"+t;
 			lcd_main.message("write", t2+":"+t);			
 		}
-		if(view_changed) click_zone(toggle_show_timer,0,0,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
+		if(view_changed) click_zone(toggle_show_timer,0,0,cx,0,cx2,9+fontheight,mouse_index,1);
 	}else{
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
+		lcd_main.message("moveto",cx, 9+fontheight*0.8);
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
 		var hh = (currentdate.getHours());
@@ -1377,11 +1379,13 @@ function draw_clock(){
 		h += (hh==12)*12;
 		if((m==20)&&(h==4)){
 			lcd_main.message("frgb", 44,220,50); //i'm sorry
-		}else{
+		}else if(sidebar.mode=="none"){
 			lcd_main.message("frgb", menudarkest);
+		}else{
+			lcd_main.message("frgb", sidebar.scopes.bg);
 		}
 		lcd_main.message("write", h + ":" +m);			
-		if(view_changed)click_zone(toggle_show_timer,1,1,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
+		if(view_changed)click_zone(toggle_show_timer,1,1,cx,0,cx2,9+fontheight,mouse_index,1);
 	}
 }
 

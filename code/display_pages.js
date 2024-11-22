@@ -86,6 +86,7 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
+		if(fullscreen) draw_clock();
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
 	}else if(displaymode == "custom"){
@@ -98,6 +99,7 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
+		if(fullscreen) draw_clock();
 		draw_panels();
 		meters_enable=1;
 	}else if(displaymode == "custom_fullscreen"){
@@ -109,6 +111,7 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
+		if(fullscreen) draw_clock();
 	}else if(displaymode == "waves"){
 		sidebar.mode="none";
 		clear_screens();
@@ -2096,7 +2099,6 @@ function draw_topbar(){
 				lcd_main.message("write", "all");			
 				click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
 			}
-			if(fullscreen && (sidebar.mode=="none")) draw_clock();
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
@@ -2113,6 +2115,7 @@ function draw_topbar(){
 
 function draw_sidebar(){	
 	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
+	post("\nsidebar mi",mouse_index);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		if(sidebar.mode == "param_number_entry") return 0; // just bail!
