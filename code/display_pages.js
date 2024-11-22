@@ -2115,7 +2115,6 @@ function draw_topbar(){
 
 function draw_sidebar(){	
 	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
-	post("\nsidebar mi",mouse_index);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		if(sidebar.mode == "param_number_entry") return 0; // just bail!
@@ -6306,6 +6305,7 @@ function draw_sidebar(){
 		//click zone for the scrollbar
 		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,scrollbar_index,2);
 	}
+	if(fullscreen&&view_changed&&((displaymode=="blocks")||(displaymode=="panels")))draw_clock();
 	view_changed = false;
 }
 

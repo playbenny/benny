@@ -153,7 +153,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
 	var id = null;
-	post("\n",usermouse.got_i,usermouse.got_t);
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.

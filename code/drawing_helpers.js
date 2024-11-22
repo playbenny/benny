@@ -1349,14 +1349,18 @@ function midi_indicator(number){
 }
 
 function draw_clock(){
-	var cx2 = (sidebar.mode == "none") ? (mainwindow_width - 9) : (sidebar.x-9);
-	var cx = cx2 - fontheight*2;
+	var cx2 = (sidebar.mode == "none") ? (mainwindow_width) : (sidebar.x);
+	var cx = cx2 - fontheight*2 - 9;
 	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);
 	setfontsize(fontheight*0.8);
 	var currentdate = new Date;
 	if(set_timer_show){
 		lcd_main.message("moveto",cx, 9+fontheight*0.8);
-		lcd_main.message("frgb", menudark);
+		if(sidebar.mode=="none"){
+			lcd_main.message("frgb", menudark);
+		}else{
+			lcd_main.message("frgb", sidebar.scopes.fg);
+		}
 		if(set_timer_start == null){
 			lcd_main.message("write", "0:00");			
 		}else{
@@ -1369,7 +1373,7 @@ function draw_clock(){
 			if(t<10) t = "0"+t;
 			lcd_main.message("write", t2+":"+t);			
 		}
-		if(view_changed) click_zone(toggle_show_timer,0,0,cx,0,cx2,9+fontheight,mouse_index,1);
+		if(view_changed)click_zone(toggle_show_timer,0,0,cx,0,cx2,9+fontheight,mouse_index,1);
 	}else{
 		lcd_main.message("moveto",cx, 9+fontheight*0.8);
 		var m = currentdate.getMinutes();
