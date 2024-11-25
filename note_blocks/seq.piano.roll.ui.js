@@ -305,7 +305,7 @@ function draw(){
 				outlet(1,"write", "lane "+laneslist[l]);
 				if(lanetype[l]==0){
 					outlet(1,"write", "notes");
-				}else if(laneslist[l]<=0){
+				}else if(laneslist[l]<=1){
 					outlet(1,"write", "velocity");
 				}				
 			}
