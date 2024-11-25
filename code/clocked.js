@@ -489,6 +489,7 @@ function sidebar_midi_scope(){
 	if(cha>0){
 		lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
 		lcd_main.message("frgb",sidebar.scopes.fg);
+		if(sidebar.scopes.midinames == 1) setfontsize(fontsmall);
 		for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
 			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi])*128,128);
 			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
