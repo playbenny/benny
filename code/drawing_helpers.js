@@ -1371,6 +1371,7 @@ function midi_indicator(number){
 
 function draw_clock(){
 	var cx2 = (sidebar.mode == "none") ? (mainwindow_width) : (sidebar.x);
+	if(sidebar.mode == "file_menu") cx2 = sidebar.x2 - fontheight * 15;
 	var cx = cx2 - fontheight*2 - 9;
 	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);
 	setfontsize(fontheight*0.8);
@@ -1379,6 +1380,8 @@ function draw_clock(){
 		lcd_main.message("moveto",cx, 9+fontheight*0.8);
 		if(sidebar.mode=="none"){
 			lcd_main.message("frgb", menudark);
+		}else if(sidebar.mode == "file_menu"){
+			lcd_main.message("frgb", 60,60,60);
 		}else{
 			lcd_main.message("frgb", sidebar.scopes.fg);
 		}
@@ -1406,6 +1409,8 @@ function draw_clock(){
 			lcd_main.message("frgb", 44,220,50); //i'm sorry
 		}else if(sidebar.mode=="none"){
 			lcd_main.message("frgb", menudarkest);
+		}else if(sidebar.mode == "file_menu"){
+			lcd_main.message("frgb", 30,30,30);
 		}else{
 			lcd_main.message("frgb", sidebar.scopes.bg);
 		}
