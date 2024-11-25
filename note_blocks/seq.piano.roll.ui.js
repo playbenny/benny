@@ -528,10 +528,11 @@ function mouse(x,y,l,s,a,c,scr){
 		}else if(hovered_event>-1){
 			var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 			var v=0;
+			if(s) scr *= 0.1;
 			if(event[3]>=0){
-				v = Math.min(127,Math.max(0,event[3] - scr*10));
+				v = Math.min(127,Math.max(0,event[3] + scr*10));
 			}else if(event[3]<0){
-				v = Math.max(-127,Math.min(0,event[3] + scr*10));
+				v = Math.max(-127,Math.min(0,event[3] - scr*10));
 			}
 			event[3] = v;
 			seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
@@ -572,4 +573,8 @@ function keydown(key){
 	}
 }
 
-function enabled(){}
+function enabled(e){
+	if(e==1){
+		outlet(0,"getvoice");
+	}	
+}
