@@ -1227,9 +1227,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	if(type!="hardware"){
 		var m = blocks.get("blocks["+block_index+"]::mute");
 		if(m!=1)m=0;
-		if((loading.mute_new==1)&&(was_exclusive==0)) m=1;
-		loading.mutelist[loading.mutelist.length]=[block_index,m];
-//		mute_particular_block(block_index,m);
+		if((loading.mute_new==1)&&(was_exclusive==0)){
+			m=1;
+			mute_particular_block(block_index,m); //only bother doing it now if it's a merge? (added to the list anyway because some actions to do with muting cant be done until all loaded)
+		}
+		loading.mutelist.push([block_index,m]);
 	}
 }
 
