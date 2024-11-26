@@ -116,12 +116,13 @@ function mouse(x,y,l,s,a,c,scr){
 }
 
 function check_mute_state(){
-	muted=0;
-	if(blocks.contains("blocks["+block+"]::mute")){
-		if(blocks.get("blocks["+block+"]::mute")==1) muted =1;
+	if(block>=0){
+		muted=0;
+		if(blocks.contains("blocks["+block+"]::mute")){
+			if(blocks.get("blocks["+block+"]::mute")==1) muted =1;
+		}
+		outlet(2,1-muted);
 	}
-
-	outlet(2,1-muted);
 }
 
 function voice_is(v){
