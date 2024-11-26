@@ -3412,7 +3412,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+						"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -3441,17 +3441,6 @@
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
-								"box" : 								{
-									"id" : "obj-6",
-									"maxclass" : "newobj",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 208.0, 267.0, 115.0, 22.0 ],
-									"text" : "print tempo_request"
-								}
-
-							}
-, 							{
 								"box" : 								{
 									"id" : "obj-4",
 									"maxclass" : "newobj",
@@ -4134,15 +4123,6 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-127", 0 ],
-									"order" : 1,
-									"source" : [ "obj-118", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-6", 0 ],
-									"order" : 0,
 									"source" : [ "obj-118", 0 ]
 								}
 
@@ -16135,8 +16115,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "~/Documents/james music/benny misc",
-				"patcherrelativepath" : "../../../james music/benny misc",
+				"bootpath" : "C:/Users/jhold/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../../../jhold/Documents/james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}
