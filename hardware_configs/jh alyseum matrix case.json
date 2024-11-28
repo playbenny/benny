@@ -166,8 +166,8 @@
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in" ],
-					"hardware_channels" : [ 9 ],
+					"hardware" : [ "in", "rate" ],
+					"hardware_channels" : [ 9, 21 ],
 					"matrix_channels" : [ 7 ]
 				}
 ,
@@ -192,8 +192,8 @@
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in" ],
-					"hardware_channels" : [ 10 ],
+					"hardware" : [ "in", "rate" ],
+					"hardware_channels" : [ 10, 22 ],
 					"matrix_channels" : [ 8 ]
 				}
 ,
@@ -270,8 +270,8 @@
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "audio 3", "audio 4", "cv" ],
-					"hardware_channels" : [ 24, 18, 12 ],
+					"hardware" : [ "audio 3", "audio 4", "cv 3", "cv 4" ],
+					"hardware_channels" : [ 24, 18, 12, 23 ],
 					"matrix_channels" : [ 0, 16, 10 ]
 				}
 ,
