@@ -3,7 +3,7 @@
 		"patcher" : "source.basic.osc",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Basic single oscillator. Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in *LFO* and *audio* ranges. ££The rectangle portion of this oscillator uses 'EPTR' code from Yofiel.com. ",
+		"help_text" : "Basic single oscillator. Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in *LFO* and *audio* ranges. The 'initial pitch' slider sets the starting pitch, incoming midi overrides this but doesn't reset the slider. ££The rectangle portion of this oscillator uses 'EPTR' code from Yofiel.com. ",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -18,7 +18,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,4],
+				"contains" : [0,0,0,1,1,1,4,4,4,9],
 				"colour" : -3
 			},
 			{
@@ -96,6 +96,14 @@
 				"wrap" : 0,
 				"default" : 0.75,	
 				"error_scale" : 0.3
+			},
+			{
+				"name" : "initial_pitch",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.472440944,
+				"error_scale" : 0
 			}
 		]
 	}
