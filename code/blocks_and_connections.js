@@ -1883,7 +1883,8 @@ function make_connection(cno,existing){
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
-							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale,0,0,cno,v);
+							var offv = conversion.get("offset2");
+							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale,offv*256-128,0,cno,v); //offn*256-128,offv*256-128
 						}
 					}else if(f_type == "matrix"){
 						if(t_type == "matrix") {
