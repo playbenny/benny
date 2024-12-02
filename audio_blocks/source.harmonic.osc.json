@@ -22,7 +22,7 @@
 				"colour" : -10
 			},
 			{
-				"contains" : [8,9,10,12,11],
+				"contains" : [8,9,10,12,11,13],
 				"height" : 0
 			}
 		],
@@ -120,6 +120,14 @@
 				"values" : ["opposite","1","2","3","4","5","6","7","8" ],
 				"wrap" : 0,
 				"default" : 0.15				
+			},
+			{
+				"name" : "initial_pitch",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.472440944,
+				"error_scale" : 0
 			}
 		]
 	}
