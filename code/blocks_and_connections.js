@@ -981,7 +981,7 @@ function remove_connection(connection_number){
 	var f_type = connections.get("connections["+connection_number+"]::from::output::type");
 	var t_type = connections.get("connections["+connection_number+"]::to::input::type");
 	var f_block = connections.get("connections["+connection_number+"]::from::number");
-	var t_block = 1* connections.get("connections["+connection_number+"]::to::number");
+	var t_block = +connections.get("connections["+connection_number+"]::to::number");
 	var f_voice_list = connections.get("connections["+connection_number+"]::from::voice");
 	var t_voice_list = connections.get("connections["+connection_number+"]::to::voice");
 	var f_o_no = connections.get("connections["+connection_number+"]::from::output::number");

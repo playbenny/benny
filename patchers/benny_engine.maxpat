@@ -14865,8 +14865,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "multichannelsignal", "" ],
-					"patching_rect" : [ 561.0, 626.0, 200.0, 22.0 ],
-					"text" : "mcs.matrix~ 146 152 0. @ramp 200",
+					"patching_rect" : [ 561.0, 626.0, 193.0, 22.0 ],
+					"text" : "mcs.matrix~ 146 152 0. @ramp 20",
 					"varname" : "matrix"
 				}
 
