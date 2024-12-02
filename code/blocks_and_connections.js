@@ -18,17 +18,21 @@ function new_block(block_name,x,y){
 	}
 	var type = details.get("type");
 	var hwmidi = "";
+	var up = 0;
 	if((type=="hardware")&&(blocktypes.contains(block_name+"::midi_handler"))){
 		hwmidi = blocktypes.get(block_name+"::midi_handler");
+	}else if(type == "audio"){
+		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
 	}
+	var patcher = details.get("patcher");
 	var vst = 0;
 	var recycled=0;
 	if((type=="audio") && RECYCLING){
-		var tnv = find_audio_voice_to_recycle(block_name);
+		var tnv = find_audio_voice_to_recycle(patcher,up);
 		new_voice = tnv[0];
 		recycled = tnv[1];
 	}else if((type=="note") && RECYCLING){
-		var tnv = find_note_voice_to_recycle(block_name);
+		var tnv = find_note_voice_to_recycle(patcher);
 		new_voice = tnv[0];
 		recycled = tnv[1];
 	}else if((type=="hardware") && (hwmidi!="") && RECYCLING){
@@ -40,10 +44,10 @@ function new_block(block_name,x,y){
 	}
 	var t_offset = 0;
 	if(type == "note"){
-		note_patcherlist[new_voice] = details.get("patcher");
+		note_patcherlist[new_voice] = patcher;
 	}else if(type == "audio"){
 		t_offset=MAX_NOTE_VOICES;
-		audio_patcherlist[new_voice] = details.get("patcher");
+		audio_patcherlist[new_voice] = patcher;
 		if(audio_patcherlist[new_voice]=="vst.loader"){
 			vst_list[new_voice] = block_name;
 			vst = 1;
@@ -135,12 +139,10 @@ function new_block(block_name,x,y){
 	blocks.replace("blocks["+new_block_index+"]::flock::brownian", 0);
 	blocks.replace("blocks["+new_block_index+"]::space::x", x);
 	blocks.replace("blocks["+new_block_index+"]::space::y", y);
-	var up=0;
 	if(type == "audio"){
-		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
 		blocks.replace("blocks["+new_block_index+"]::upsample", up);
 		audio_upsamplelist[new_voice] = up;
-	}
+	}	
 	blocks.replace("blocks["+new_block_index+"]::space::colour", blocktypes.get(block_name+"::colour") );
 	
 	// and set the params to defaults
@@ -513,14 +515,15 @@ function poly_loaded(type,number){
 }
 
 function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
+	up |= 0;
 	//post("\n>>looking for a voice to recycle for",pa,"upsampling is",up);
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
-		if((audio_patcherlist[i] == "recycling") && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] == "vst.loader") && (vst_list[i]==pa)))){
+		if((audio_patcherlist[i] == "recycling") && (audio_upsamplelist[i] == up) && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] == "vst.loader") && (vst_list[i]==pa)))){
 			//post("\nrecycling voice ",i);
 			return [i,1];
 		}
 	}
-	for(i=0;i<MAX_AUDIO_VOICES;i++){//tries to avoid core 1
+	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if(audio_patcherlist[i]=="blank.audio") return [i,0];
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
@@ -530,7 +533,7 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	return -1;
 }
 
-function find_note_voice_to_recycle(pa){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
+function find_note_voice_to_recycle(pa){ 
 	//post("\n>>looking for a voice to recycle for",pa);
 	for(i=0;i<MAX_NOTE_VOICES;i++){
 		if((note_patcherlist[i] == "recycling") && (loaded_note_patcherlist[i] == pa)){
