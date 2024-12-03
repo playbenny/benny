@@ -447,7 +447,6 @@ function voice_is(v){
 }
 
 function laneheights(){
-	post("\ncalculating laneheights for ",laneslist);
 	var used = laneslist.length; 
 	var maximised = 0;
 	if(used==0) return -1;
@@ -460,7 +459,7 @@ function laneheights(){
 	for(var i=1; i<=laneslist.length; i++){
 		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]) + 1) * maximised;
 	}
-	post("\nlaneslist",laneslist," length ",laneslist.length," lane heights:",laney," types ",lanetype);
+	//post("\nlaneslist",laneslist," length ",laneslist.length," lane heights:",laney," types ",lanetype);
 }
 
 function voice_offset(){}
