@@ -398,6 +398,7 @@ function voice_is(v){
 		if(Array.isArray(voice))voice = voice[0];
 		blockcolour = blocks.get("blocks["+block+"]::space::colour");
 		for(var i=0;i<3;i++)blockcolour[i] = Math.min(255,2*blockcolour[i]);
+		if(!blocks.contains("blocks["+v+"]::stored_piano_roll")) store();
 		if(blocks.contains("blocks["+v+"]::stored_piano_roll")){ //look for saved seq data
 			var sk = blocks.get("blocks["+v+"]::stored_piano_roll");
 			var k = sk.getkeys();
@@ -446,6 +447,7 @@ function voice_is(v){
 }
 
 function laneheights(){
+	post("\ncalculating laneheights for ",laneslist);
 	var used = laneslist.length; 
 	var maximised = 0;
 	if(used==0) return -1;
@@ -458,7 +460,7 @@ function laneheights(){
 	for(var i=1; i<=laneslist.length; i++){
 		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]) + 1) * maximised;
 	}
-	//post("\nlaneslist",laneslist," length ",laneslist.length," lane heights:",laney," types ",lanetype);
+	post("\nlaneslist",laneslist," length ",laneslist.length," lane heights:",laney," types ",lanetype);
 }
 
 function voice_offset(){}
