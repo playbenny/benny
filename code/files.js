@@ -1571,6 +1571,7 @@ function process_purgelist(){
 }
 
 function clear_everything(){
+	post("\nclearing everything");
 	messnamed("pause_mod_processing",1);
 	//messnamed("clear_all_buffers","bang"); 
 	//you don't need to do this, everything that gets loaded or created will overwrite these buffers
@@ -1578,14 +1579,21 @@ function clear_everything(){
 	messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
-
 	redraw_flag.paneltargets = [];
 
+	var i;
 	var emptys="{}";
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 
-	var i;
+	var emptys="{}";
+	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
+	blocks.parse('{ "blocks" : ['+emptys+'] }');
+	voicemap.parse('{ }');
+	midi_routemap.parse('{ }');
+	mod_routemap.parse('{ }');
+	mod_param.parse('{ }');
+	states.parse('{ }');
 
 	wipe_midi_meters();
 	remove_all_routings();
@@ -1637,9 +1645,6 @@ function clear_everything(){
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
-	var emptys="{}";
-	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
-	blocks.parse('{ "blocks" : ['+emptys+'] }');
 	proll.parse("{}");
 	connections.parse('{ "connections" : [ {} ] }');
 	notepools_dict.parse("notepools","{}");
@@ -1679,12 +1684,6 @@ function clear_everything(){
 	menu_background_cube.name = "block_menu_background";
 	menu_background_cube.color = [0, 0, 0, 1];
 
-	voicemap.parse('{ }');
-	midi_routemap.parse('{ }');
-	mod_routemap.parse('{ }');
-	mod_param.parse('{ }');
-	states.parse('{ }');
-
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
 	for(;i-->=0;){
@@ -1694,7 +1693,6 @@ function clear_everything(){
 	//messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 
-	post("\nclearing everything");
 	sigouts.message("setvalue", 0,0); // clear sigs
 	song_select.previous_name="";
 	song_select.previous_blocks=[];
