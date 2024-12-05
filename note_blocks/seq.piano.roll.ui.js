@@ -538,13 +538,14 @@ function mouse(x,y,l,s,a,c,scr){
 					messnamed("to_polys","note", "setvalue",1+voice,"updatelengths",1);
 				}
 			}else{
+				scr *= 0.25;
 				if(s){
 					var tl= zoom_end-zoom_start;
 					if(scr<0){
-						zoom_start = Math.max(0,zoom_start+scr);
+						zoom_start = Math.max(0,zoom_start+scr*0.1);
 						zoom_end = zoom_start+tl;
 					}else{
-						zoom_end = Math.min(1,zoom_end+scr);
+						zoom_end = Math.min(1,zoom_end+scr*0.1);
 						zoom_start = zoom_end-tl;
 					}
 				}else{

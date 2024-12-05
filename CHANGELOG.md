@@ -1,6 +1,8 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+05/12/24:
+- four stage env added, lets you do complex envelopes. easily chainable, lots of interesting trigger ins and outs.
 19/11/24:
 - midi.lfo now lets you modulate the rate without glitching
 - value to value connections now have an offset. likewise audio-value, value-audio, etc (i think this is not a breaking change, still testing with savefiles)
