@@ -41,6 +41,18 @@
 		"title" : "benny launcher",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-66",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 146.0, 497.0, 61.0, 22.0 ],
+					"text" : "r to_polys"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-201",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -572,7 +584,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 9.0, 466.0, 215.0, 62.0 ],
+					"patching_rect" : [ 21.0, 523.0, 215.0, 62.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
 					"presentation_rect" : [ 9.0, 436.0, 308.0, 43.0 ],
@@ -4621,7 +4633,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 44.5, 382.0, 144.0, 158.0 ],
+					"patching_rect" : [ 26.0, 537.0, 144.0, 158.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 11,
 					"presentation_rect" : [ 64.0, 535.0, 84.0, 158.0 ],
@@ -15885,6 +15897,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-66", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-39", 0 ],
 					"source" : [ "obj-67", 1 ]
 				}
@@ -16134,8 +16153,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "C:/Users/jhold/Documents/james music/benny misc",
-				"patcherrelativepath" : "../../../../../jhold/Documents/james music/benny misc",
+				"bootpath" : "~/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}
