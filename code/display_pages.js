@@ -3142,6 +3142,8 @@ function draw_sidebar(){
 						if(groups[i].contains("height")){
 							h_slider = groups[i].get("height");
 						}
+						var nolabel = 0;
+						if(groups[i].contains("nolabel"))nolabel = 1;
 						plist = groups[i].get("contains");
 						if(!Array.isArray(plist)) plist = [plist];
 						slidercount=plist.length;
@@ -3304,7 +3306,6 @@ function draw_sidebar(){
 											//but it's so much easier just to call this fn
 											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
 										}
-										post("\nh_ext",h_ext+fl,h_s,"ys",y1,y2);
 										if(h_ext+fl<h_s) h_ext=0;
 									}else if((p_type=="menu_b")){
 										wrap = 1;
@@ -3398,8 +3399,12 @@ function draw_sidebar(){
 											lcd_main.message("write",params[curp].get("name"));
 										}
 									}else{
-										namearr = params[curp].get("name");
-										namearr = namearr.split("_");
+										if(nolabel){
+											namearr="";
+										}else{
+											namearr = params[curp].get("name");
+											namearr = namearr.split("_");
+										}
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
 										if(h_slider<1){
@@ -6846,7 +6851,7 @@ function draw_automap_headers(sx, block) {
 
 	if (automap.mapped_c != -1) {
 		if(sx!=sidebar.x){
-			var chw = 26 + fontheight;// * 1.2;
+			var chw = 26 + fontheight * 0.8;// * 1.2;
 			if(automap.lock_c && block != automap.mapped_c) {
 				var labl = blocks.get("blocks[" + automap.mapped_c + "]::label");
 				chw += (0.1 + labl.length * 0.18) * fontheight;
@@ -6902,7 +6907,7 @@ function draw_automap_headers(sx, block) {
 		lcd_main.message("moveto", sx, y_offset + 0.4 * fontheight);
 		lcd_main.message("write", automap.offset_c + 1, "-", automap.offset_c + automap.c_rows);
 		click_zone(cycle_automap_offset, 1, null, sx - 2, y_offset, sidebar.x2, y_offset + 0.5 * fontheight, mouse_index, 1);
-		sx += fontheight;// * 1.2;
+		sx += fontheight * 0.8;// * 1.2;
 		/*var isnext = (automap.mapped_q != -1);
 		if (isnext && (sx < sidebar.x + 0.5 * sidebar.width)) {
 			var osx = sx;
