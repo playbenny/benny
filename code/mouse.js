@@ -1114,7 +1114,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					usermouse.scroll_accumulator = 0;
 					tv -= scalar / (p_values[2] - p_values[1] + 1);
 				}
-			}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")){
+			}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")||(t=="menu_d")){
 				usermouse.scroll_accumulator += scroll;
 				scalar *= (f==static_mod_adjust)?0.5:1; //this isn't right, i don't understand what's going on here, p_values.length is right, so static_mod_adjust must mangle it but it doesn't? 
 				if(usermouse.scroll_accumulator > 0.22 ){

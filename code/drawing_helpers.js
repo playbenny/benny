@@ -253,11 +253,69 @@ function parameter_menu_l(p){
 	}
 	return mi;
 }
+function parameter_menu_d(p){
+	var mi = paramslider_details[p][7];
+	var statecount = (paramslider_details[p][17].length);// - 1) / 2;
+	var pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*paramslider_details[p][15]+paramslider_details[p][9]); //
+	var pv2 = Math.floor(pv * statecount * 0.99999);
+	//var colmod = -Math.floor(-statecount / paramslider_details[p][11]);
+	var ys = fontheight*0.6;//(fontheight*paramslider_details[p][16] + fo1)/(colmod);
+	var valcol = paramslider_details[p][4];
+	var vc;
+	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
+	if(sidebar.dropdown=="param."+p){
+		for(var bl=statecount-1;bl>=0;bl--){
+			if(valcol.length==1){
+				vc = valcol[0];
+			}else{
+				vc = valcol[bl];
+			}
+			if(bl==pv2){
+			}else{
+				vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
+			}
+			draw_button(paramslider_details[p][0]+bx*bw,paramslider_details[p][1]+by*ys,paramslider_details[p][0]+((bx+1)*bw)-fo1,paramslider_details[p][1]+(by+1)*ys-fo1,vc[0],vc[1],vc[2],mi, paramslider_details[p][17][bl],0);
+			mouse_click_actions[mi] = send_button_message_dropdown;
+			mouse_click_parameters[mi] = paramslider_details[p][8];
+			mouse_click_values[mi] = ["param","",MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (bl+0.2)/statecount];
+			mi++;
+			bx++;
+			if(bx>=paramslider_details[p][11]){
+				by++; bx=0;
+			}
+		}
+	}else{
+		bl = pv2;
+		if(valcol.length==1){
+			vc = valcol[0];
+		}else{
+			vc = valcol[bl];
+		}
+		if(bl==pv2){
+		}else{
+			vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
+		}
+		draw_button(paramslider_details[p][0]+bx*bw,paramslider_details[p][1]+by*ys,paramslider_details[p][0]+((bx+1)*bw)-fo1,paramslider_details[p][1]+(by+1)*ys-fo1,vc[0],vc[1],vc[2],mi, paramslider_details[p][17][bl],0);
+		mouse_click_actions[mi] = open_dropdown;
+		mouse_click_parameters[mi] = "param."+p;
+		mouse_click_values[mi] = "param."+p;
+		mi++;
+		var x2=paramslider_details[p][0]+((bx+1)*bw)-fo1;
+		var yo = paramslider_details[p][1]+by*ys;
+		lcd_main.message("paintpoly", x2 - 4*fo1, yo + 2.5*fo1, x2 - fo1, yo + 2.5*fo1, x2 - 2.5*fo1, yo + 4*fo1, x2 - 4*fo1, yo + 2.5*fo1);
+		by++;
+	}
+	//return mi;
+	mouse_index = mi;
+	return by*ys;
+}
+
+
 function labelled_parameter_v_slider(sl_no){
 	var p_type=paramslider_details[sl_no][13];
 
 	var click_to_step = 0;
-	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
+	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="menu_d")){
 		//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 		click_to_step = sl_no+1;
 	}								
@@ -326,7 +384,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 		}else{
 			pvp = p_values[pv]+ "-"+ p_values[pv2];
 		}	
-	}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
+	}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")||(p_type=="menu_d")){
 		pv *= (p_values.length-0.0001);
 		pv = Math.min(Math.floor(pv),p_values.length-1);
 		pvp = p_values[pv];

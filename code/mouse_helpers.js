@@ -896,6 +896,10 @@ function scope_midinames(parameter,value){
 		redraw_flag.flag |= 2;
 	}
 }
+function send_button_message_dropdown(parameter,value){
+	sidebar.dropdown=null;
+	send_button_message(parameter,value);
+}
 
 function send_button_message(parameter, value){
 	parameter_value_buffer.poke(1,value[2],value[3]);

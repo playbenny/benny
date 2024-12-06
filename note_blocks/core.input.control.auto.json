@@ -29,11 +29,12 @@
 		"parameters" : [
 			{
 				"name" : "controller",
-				"type" : "menu_i",
+				"type" : "menu_d",
 				"values" : ["1","2","3", "4", "5", "6", "7", "8"],
 				"error_scale" : 0,
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0,
+				"force_label" : 1
 			},{
 				"name" : "auto assign",
 				"type" : "menu_l",

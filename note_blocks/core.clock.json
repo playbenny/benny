@@ -25,11 +25,11 @@
 			{ 
 				"contains" : [0, 0, 6, 10],
 				"colour" : 20,
-				"height" : 5
+				"height" : 0
 			},
 			{
 				"contains" : [8],
-				"height" : 2,
+				"height" : 0,
 				"onepervoice" : 1
 			},
 			{
@@ -130,7 +130,7 @@
 			},
 			{
 				"name" : "time sig",
-				"type" : "menu_l",
+				"type" : "menu_d",
 				"values" : ["2/4", "3/4", "4/4", "5/4", "6/4", "7/4", "9/4", "10/4", "11/4"],
 				"wrap" : 0,
 				"error_scale" : 0,
