@@ -62,6 +62,11 @@ function new_block(block_name,x,y){
 		}
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
+	if(loading.progress<=0){
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_block" : '+new_block_index+'} }');
+	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
 	if(recycled){
 		if(type=="audio"){

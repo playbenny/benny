@@ -67,8 +67,9 @@ function blocks_paste(outside_connections,target){
 	if(target==null){
 		target=copy;
 	}
-	if(target.contains("actions")){//this would be undo actions, eg move, create block/connection, etc.
-
+	if(target.contains("actions::create_block")){//this would be undo actions, eg move, create block/connection, etc.
+		var val = target.get("actions::create_block");
+		remove_block(val);
 	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
