@@ -305,6 +305,7 @@ function parameter_menu_d(p){
 		lcd_main.message("paintpoly", x2 - 4*fo1, yo + 2.5*fo1, x2 - fo1, yo + 2.5*fo1, x2 - 2.5*fo1, yo + 4*fo1, x2 - 4*fo1, yo + 2.5*fo1);
 		by++;
 	}
+	by--;
 	//return mi;
 	mouse_index = mi;
 	return by*ys;
