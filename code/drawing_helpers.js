@@ -300,9 +300,11 @@ function parameter_menu_d(p){
 		mouse_click_parameters[mi] = "param."+p;
 		mouse_click_values[mi] = "param."+p;
 		mi++;
-		var x2=paramslider_details[p][0]+((bx+1)*bw)-fo1;
-		var yo = paramslider_details[p][1]+by*ys;
-		lcd_main.message("paintpoly", x2 - 4*fo1, yo + 2.5*fo1, x2 - fo1, yo + 2.5*fo1, x2 - 2.5*fo1, yo + 4*fo1, x2 - 4*fo1, yo + 2.5*fo1);
+		if(statecount>0){			
+			var x2=paramslider_details[p][0]+((bx+1)*bw)-fo1;
+			var yo = paramslider_details[p][1]+by*ys;
+			lcd_main.message("paintpoly", x2 - 4*fo1, yo + 2.5*fo1, x2 - fo1, yo + 2.5*fo1, x2 - 2.5*fo1, yo + 4*fo1, x2 - 4*fo1, yo + 2.5*fo1);
+		}
 		by++;
 	}
 	by--;
