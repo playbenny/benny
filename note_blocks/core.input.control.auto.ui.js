@@ -13,6 +13,10 @@ var map = new Dict;
 map.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
+var blocktypes = new Dict;
+blocktypes.name = "blocktypes";
+var connections = new Dict;
+connections.name = "connections";
 var io = new Dict;
 io.name = "io";
 var gamutl;
@@ -22,6 +26,11 @@ var endreturns_enabled = 0;
 var menucolour,menudark;
 var btnhgt = 0.5;
 var clicked = 0;
+
+var conn_no = [];
+var conn_target = [];
+var conn_inlet = [];
+
 
 function setup(x1,y1,x2,y2,sw){ 
 	// not done - needs to work out which controller it is, get row and column count from config
@@ -34,10 +43,10 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	fullscreen = (width > sw * 0.34) + ((sw - x2) < (x2-x1)* 0.3);
+	fullscreen = (width > sw * 0.34);
 	w4=width/cols;
 	h4=height/(rows+fullscreen*btnhgt);
-	//post(block);
+	if(block>=0)get_connections_list();
 	draw();
 }
 function draw(){
@@ -64,24 +73,26 @@ function drawbuttons() {
 }
 
 function update(force){
-	var r,b,y,x,c;
+	var r,b,y,x,c,cc;
 	var w = 0.9 - 0.3 * (endreturns_enabled&&fullscreen);
 	if(force || voice_data_buffer.peek(1,MAX_DATA*v_list)){
 		for(y=0;y<rows;y++){
 			for(x=0;x<cols;x++){
-				var readindex=(MAX_DATA*v_list+x+y*cols+1)|0;
-				r=voice_parameter_buffer.peek(1,(MAX_PARAMETERS*v_list+x+y*cols+2)|0)*1.05;
+				var knobno = x+y*cols;
+				var readindex=(MAX_DATA*v_list+knobno+1)|0;
+				r=voice_parameter_buffer.peek(1,(MAX_PARAMETERS*v_list+knobno+2)|0)*1.05;
 				r=((12.6 - (r*r*r))%1) * gamutl;
 				r|=0;
 				//post("\nC is",readindex,r,i,t);
-				c=config.get("palette::gamut["+r+"]::colour"); 
+				cc=config.get("palette::gamut["+r+"]::colour"); 
+				c = cc;
 				b=voice_data_buffer.peek(1,readindex + rows*cols);
 				//post("\n",i,t,readindex,b,c[0]);	
 				if(b!=0){
 					b=0.2;
-					c[0] = (c[0] * b) | 0;
-					c[1] = (c[1] * b) | 0;
-					c[2] = (c[2] * b) | 0;
+					c[0] = (cc[0] * b) | 0;
+					c[1] = (cc[1] * b) | 0;
+					c[2] = (cc[2] * b) | 0;
 				}
 				outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,c[0],c[1],c[2]);
 				outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
@@ -100,6 +111,14 @@ function update(force){
 					outlet(1,"lineto",w4*(x+w + 0.2*fullscreen)+x_pos,ty);
 					// if end returns enabled, also draw horizontal lines indicating their meaning.TODO
 				}
+				if(fullscreen && Array.isArray(conn_target[knobno])){
+					outlet(1,"frgb",cc[0]*1.2,cc[1]*1.2,cc[2]*1.2);
+					for(var i=0;i<conn_target[knobno].length;i++){
+						outlet(1,"moveto",w4*(x+0.15)+x_pos,h4*(y+0.2+0.1*i)+y_pos);
+						outlet(1,"write", conn_target[knobno][i] + " | " + conn_inlet[knobno][i]);
+						outlet(0,"custom_ui_element","select_connection",w4*(x+0.15)+x_pos,h4*(y+0.1+0.1*i)+y_pos,w4*(x+0.85)+x_pos,h4*(y+0.2+0.1*i)+y_pos,conn_no[knobno][i])
+					}
+				}
 			}
 		}
 		voice_data_buffer.poke(1,MAX_DATA*v_list,0);
@@ -117,6 +136,7 @@ function voice_is(v){
 			rows = io.get("controllers::"+controllername+"::rows");
 			cols = io.get("controllers::"+controllername+"::columns");
 		}
+		get_connections_list();
 	}
 }
 
@@ -124,6 +144,8 @@ function voice_offset(){}
 function loadbang(){
 	outlet(0,"getvoice");
 }
+
+function keydown(){}
 
 function mouse(x,y,l,s,a,c,scr){
 	if(x<x_pos+0.5*width){
@@ -182,3 +204,41 @@ function store(){
 
 
 function enabled(){}
+
+function get_connections_list(){
+	conn_no = [];
+	conn_target = [];
+	conn_inlet = [];
+	for(var i=0;i<connections.getsize("connections");i++){
+		if(connections.contains("connections["+i+"]::from")){
+			if(connections.get("connections["+i+"]::from::number") == block){
+				var knobno = connections.get("connections["+i+"]::from::output::number");
+				var target = connections.get("connections["+i+"]::to::number");
+				var targetname = blocks.get("blocks["+target+"]::name");
+				var targetlabel = blocks.get("blocks["+target+"]::label");
+				var tl = targetlabel.split('.');
+				if(tl.length > 2){
+					var ta = tl.pop();
+					var tb = tl.pop();
+					targetlabel = tb+"."+ta;
+				}
+				var target_inlet = connections.get("connections["+i+"]::to::input::number");
+				var type = connections.get("connections["+i+"]::to::input::type");
+				if(type != "parameters"){
+					var target_inlet_label = blocktypes.get(targetname+"::connections::in::"+type+"["+target_inlet+"]");
+				}else{
+					var target_inlet_label = blocktypes.get(targetname+"::parameters["+target_inlet+"]::name");
+				}
+				if(!Array.isArray(conn_no[knobno])){
+					conn_no[knobno] = [];
+					conn_target[knobno] = [];
+					conn_inlet[knobno] = [];
+				}
+				conn_no[knobno].push(i);
+				conn_target[knobno].push(targetlabel);
+				conn_inlet[knobno].push(target_inlet_label);
+				//post("\n- found relevant connection:",i,knobno,target,targetname,targetlabel,target_inlet,type,target_inlet_label);
+			}
+		}
+	}
+}

@@ -1114,7 +1114,12 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_values[mouse_index] = null; //0.99* (pv<=0.5);
 		view_changed = vc;
 		mouse_index++;		
-
+	}else if(type=="select_connection"){
+		click_rectangle( x1,y1,x2,y2, mouse_index, 1);
+		mouse_click_actions[mouse_index] = sidebar_select_connection;
+		mouse_click_parameters[mouse_index] = r; //custom_block+1;
+		mouse_click_values[mouse_index] = null;
+		mouse_index++;				
 	}
 }
 
