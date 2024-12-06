@@ -523,6 +523,9 @@ var pasteoffset = [0,0]; //add to this before every paste, reset it on new copy
 var undo = new Dict;
 undo.name = "undo";
 
+var undo_stack = new Dict;
+undo_stack.name = "undo_stack";
+
 var flock_presets = new Dict;
 flock_presets.name = "flock_presets";
 

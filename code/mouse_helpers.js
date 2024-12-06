@@ -67,6 +67,9 @@ function blocks_paste(outside_connections,target){
 	if(target==null){
 		target=copy;
 	}
+	if(target.contains("actions")){//this would be undo actions, eg move, create block/connection, etc.
+
+	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
 		var td = target.get("blocks");
@@ -314,6 +317,16 @@ function blocks_paste(outside_connections,target){
 			if(target!=undo){
 				pasteoffset[0] += 2;
 				pasteoffset[1] -= 0.25;				
+			}
+		}
+	}else{
+		if(target.contains("block_params")){ //undo params
+			var pk = target.getkeys("block_params");
+			if(Array.isArray(pk)){
+				for(var t=0;t<pk.length;t++){
+					var vals = target.get("block_params::"+pk[t]);
+					parameter_value_buffer.poke(1,pk[t]*MAX_PARAMETERS,vals);
+				}
 			}
 		}
 	}
@@ -2759,12 +2772,27 @@ function delete_wave(parameter,value){
 }
 
 function undo_button(){
+	var usz=undo_stack.getsize("history")|0;
+	post("\nundoing, stack size",usz);
+	usz--;
+	if(usz<0) return -1;
+	undo = undo_stack.get("history["+usz+"]");
+	undo_stack.remove("history["+usz+"]");
+
 	blocks_paste(1,undo);
 	undo.parse("{}");
 }
 
 function delete_selection(){
 	copy_selection(undo);
+	var usz=undo_stack.getsize("history")|0;
+	post("\nundo stack size",usz);
+	usz = Math.max(0,usz);
+	undo_stack.append("history","{}");
+	undo_stack.setparse("history["+usz+"]",'{}');
+	undo_stack.replace("history["+usz+"]",undo);
+	undo.parse("{}");
+
 	var i;
 	for(i=0;i<selected.wire.length;i++){
 		if(selected.wire[i]) {
