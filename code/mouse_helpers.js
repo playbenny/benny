@@ -393,7 +393,7 @@ function copy_selection(target){
 		if(connections.contains("connections["+i+"]::from::number")){
 			var cfrom = connections.get("connections["+i+"]::from::number");
 			var cto = connections.get("connections["+i+"]::to::number");
-			if(selected.block[+cfrom] || selected.block[+cto]){
+			if(selected.block[+cfrom] || selected.block[+cto] || ((target==undo)&&(selected.wire[i]))){
 				if(!(selected.block[+cfrom] && selected.block[+cto])) c_ext=1;
 				target.setparse("connections::"+i,"{}");
 				target.replace("connections::"+i,connections.get("connections["+i+"]"));
@@ -2760,6 +2760,7 @@ function delete_wave(parameter,value){
 
 function undo_button(){
 	blocks_paste(1,undo);
+	undo.parse("{}");
 }
 
 function delete_selection(){
