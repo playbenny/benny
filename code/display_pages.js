@@ -3301,12 +3301,13 @@ function draw_sidebar(){
 											valcol = [colour];
 										}
 										paramslider_details[curp]=[x1,y1+fl,x2,y2+fl,valcol,0,0,mouse_index,block,curp,flags,cols,statecount,p_type,wrap,vl[0],h_slider,p_values];
-										h_ext = Math.max(h_ext,parameter_menu_d(curp));
+										var h_e = parameter_menu_d(curp);
+										if(h_e+fl<h_s) h_e=0;
+										h_ext = Math.max(h_ext,h_e);
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
 											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
 										}
-										if(h_ext+fl<h_s) h_ext=0;
 									}else if((p_type=="menu_b")){
 										wrap = 1;
 										var statecount = (p_values.length);
