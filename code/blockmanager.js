@@ -328,7 +328,7 @@ var automap = {
 }
 
 var qwertym = {
-	octave : 4,
+	octave : 5,
 	octf : 4,
 	vel : 100
 }

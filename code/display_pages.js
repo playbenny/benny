@@ -230,7 +230,7 @@ function draw_panels(){
 			x++;
 			y=0;
 			if(x>=MAX_PANEL_COLUMNS){
-				post("\npanels list overflowed, TODO scroll or autosize!");
+				//post("\npanels list overflowed, TODO scroll or autosize!");
 				MAX_PANEL_COLUMNS++;
 				redraw.redraw_flag=4;
 				return(1);
@@ -6674,7 +6674,7 @@ function draw_automap_headers(sx, block) {
 		//DRAW KEYBOARD AUTOMAP HEADER LINE
 		var midiins = blocktypes.get(blocks.get("blocks[" + automap.mapped_k + "]::name") + "::connections::in::midi");
 		if (!Array.isArray(midiins)) midiins = [midiins];
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x + fontheight * 2.1, y_offset + fontheight * 0.5, automap.colours_k.darkest);
+		//lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x + fontheight * 2.1, y_offset + fontheight * 0.5, automap.colours_k.darkest);
 		click_zone(automap_k_click, -1, -1, sidebar.x, y_offset, sidebar.x + 22, y_offset + fontheight * 0.5, mouse_index, 1);
 		if (!usermouse.ctrl && (usermouse.clicked2d == mouse_index - 1)) {
 			//lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
@@ -6684,7 +6684,7 @@ function draw_automap_headers(sx, block) {
 			lcd_main.message("lineto", sidebar.x + 1.5 * fo1, y_offset + fo1 * (1 - 0.5 * automap.lock_k));
 			lcd_main.message("lineto", sidebar.x + 20 - 1.5 * fo1, y_offset + fo1 * (1 - 0.5 * automap.lock_k));
 			lcd_main.message("lineto", sidebar.x + 20 - 1.5 * fo1, y_offset + 2.5 * fo1);
-			sx = sidebar.x + 26 + 0.3 * fontheight;
+			sx = sidebar.x + 26 + 2.4 * fontheight;
 		} else {
 			if (automap.lock_k) {
 				lcd_main.message("frgb", automap.colours_k.colour);
@@ -6708,8 +6708,8 @@ function draw_automap_headers(sx, block) {
 			lcd_main.message("lineto", sidebar.x + 16, tmp);
 			if (automap.lock_k && block != automap.mapped_k) {
 				var labl = blocks.get("blocks[" + automap.mapped_k + "]::label");
-				sx = sidebar.x + 26 + (0.1 + labl.length * 0.18) * fontheight;
-				lcd_main.message("paintrect", sidebar.x + fontheight * 2.1, y_offset, sx - fo1, y_offset + fontheight * 0.5, automap.colours_k.darkest);
+				sx = sidebar.x + 26 + (0.1 + labl.length * 0.16) * fontheight;
+				//lcd_main.message("paintrect", sidebar.x + fontheight * 2.1, y_offset, sx - fo1, y_offset + fontheight * 0.5, automap.colours_k.darkest);
 				lcd_main.message("frgb", automap.colours_k.dark);
 				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.2 * fontheight);
 				lcd_main.message("write", "locked to");
@@ -6718,45 +6718,68 @@ function draw_automap_headers(sx, block) {
 				lcd_main.message("write", labl);
 				click_zone(select_block, null, automap.mapped_k, sidebar.x + 24, y_offset, sx - 2, y_offset + fontheight * 0.5, mouse_index, 1);
 			} else {
-				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.35 * fontheight);
-				lcd_main.message("write", ">");
-				sx = sidebar.x + 26 + 0.4 * fontheight;
+				lcd_main.message("frgb", automap.colours_k.dark);
+				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.4 * fontheight);
+				if(automap.lock_k){
+					lcd_main.message("write", "locked to:");
+					sx = sidebar.x + 26 + 1.8 * fontheight;
+				}else{
+					lcd_main.message("write", "automapped to:");
+					sx = sidebar.x + 26 + 2.4 * fontheight;
+				}	
+				click_zone(disable_automap_k, null, automap.mapped_k, sidebar.x + 24, y_offset, sx - 2, y_offset + fontheight * 0.5, mouse_index, 1);
 			}
 		}
 		var linewrap=0;
-		for (var ti = 0; ti < midiins.length; ti++) {
-			var bw2 = fontheight * (0.3 + midiins[ti].length / 6);
+		if(sidebar.dropdown != "automap_k_input"){
+			var bw2 = fontheight * (0.8 + midiins[automap.inputno_k].length / 7);
 			var ex = sx + bw2 - fo1;
-			if(ex>sidebar.x2){
-				sx = sidebar.x + fo1*(22 + (usermouse.caps) * 14 + (playing) * 14 );
-				var ex = sx + bw2 - fo1;
-				y_offset+=fontheight*0.6;
-				linewrap = 1;
-			}
-			if (ti == automap.inputno_k) {
+			if(midiins.length>1){
 				lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
 				lcd_main.message("frgb", automap.colours_k.colour);
-			} else {
+				lcd_main.message("paintpoly", ex - 4*fo1, y_offset + 2*fo1, ex - fo1, y_offset + 2*fo1, ex - 2.5*fo1, y_offset + 3.5*fo1, ex - 4*fo1, y_offset + 2*fo1);				
+				click_zone(open_dropdown, "automap_k_input", "automap_k_input", sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+			}else{
 				lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
-				click_zone(set_automap_k_input, ti, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
-				lcd_main.message("frgb", automap.colours_k.dark);
+				lcd_main.message("frgb", automap.colours_k.colour);				
 			}
 			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", midiins[ti]);
-			sx += bw2;
+			lcd_main.message("write", midiins[automap.inputno_k]);			
+			sx+=bw2;
+		}else{
+			var ml = 0;
+			for (var ti = 0; ti < midiins.length; ti++) ml = Math.max(ml,midiins[ti].length);
+			var bw2 = fontheight * (0.3 + ml / 7);
+			var ex = sx + bw2 - fo1;
+			linewrap = 1;
+			for (var ti = 0; ti < midiins.length; ti++) {
+				if (ti == automap.inputno_k) {
+					lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+					lcd_main.message("frgb", automap.colours_k.colour);
+					click_zone(open_dropdown, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+				} else {
+					lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
+					click_zone(set_automap_k_input, ti, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					lcd_main.message("frgb", automap.colours_k.dark);
+				}
+				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", midiins[ti]);
+				y_offset+=fontheight*0.6;
+			}
+			sx+=bw2;
 		}
-		if(linewrap) sx = sidebar.x; 
+		if(linewrap) y_offset-=fontheight*0.6;//sx = sidebar.x; 
 		if(usermouse.caps){
 			var bw2 = fo1 * 12;
 			var ex = sx + bw2 - fo1;
-			lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+			lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
 			click_zone(qwertymidi_octave, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-			lcd_main.message("frgb", automap.colours_k.darkest);
+			lcd_main.message("frgb", automap.colours_k.dark);
 			lcd_main.message("moveto", sx + fo1, y_offset + 0.25 * fontheight);
 			lcd_main.message("write", "octave");
 			lcd_main.message("frgb", automap.colours_k.colour);
 			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", qwertym.octave);
+			lcd_main.message("write", qwertym.octave-2);
 			sx += bw2;		
 		}
 		if(playing){

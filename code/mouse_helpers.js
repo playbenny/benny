@@ -2387,6 +2387,8 @@ function cycle_automap_offset(p,v){
 }
 
 function set_automap_k_input(parameter,value){
+	sidebar.dropdown = null;
+	redraw_flag.flag |= 2;
 	automap.inputno_k = parameter;
 	note_poly.message("setvalue",  automap.available_k, "maptargetinput", automap.inputno_k);
 }
@@ -3522,4 +3524,8 @@ function start_keyboard_looper(){
 			i=Infinity;
 		}
 	}
+}
+
+function disable_automap_k(p,v){
+	post("\nthis should turn off automap k but it doesn't yet");
 }
