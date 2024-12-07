@@ -1,0 +1,168 @@
+{
+	"fx.mod.abl.flanger" : {
+		"patcher" : "fx.mod.abl.flanger",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.flanger. stereo in stereo out, but there's no crossfeed so you could use one side as an envelope input. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4],
+				"height" : 2
+			},
+			{ 
+				"contains" : [5,6,7,8,9],
+				"height" : 2
+			},
+			{
+				"contains" : [10,11,12,13],
+				"height" : 0
+			},
+			{
+				"contains" : [14,15,16,17],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "invert",
+				"force_label" : 1,
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "safe_bass_freq",
+				"type" : "float",
+				"values" : ["uni", 5, 3000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "warmth",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "time (ms)",
+				"type" : "float",
+				"values" : ["uni", 0.1, 20, "exp10"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "mod_amount",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "mod_freq",
+				"type" : "float",
+				"values" : ["uni", 0, 5, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "lfo2_amount",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "lfo2_freq",
+				"type" : "float",
+				"values" : ["uni", 0, 5, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "waveform",
+				"type" : "menu_d",
+				"values" : ["sine", "triangle", "tri-analogue", "tri-8", "tri-16", "saw up", "saw down", "square", "random", "random s&h"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "duty",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "stereo_mode",
+				"force_label":1,
+				"type" : "menu_b",
+				"values" : ["phase", "spin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "stereo_amount",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "envelope follower",
+				"force_label" : 1,
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "follow_amount",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "attack",
+				"type" : "float",
+				"values" : ["uni", 0,0.03, "exp10"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "release",
+				"type" : "float",
+				"values" : ["uni", 0,0.4, "exp"],
+				"wrap" : 0,
+				"default" : 0.2
+			}
+		]
+	}
+}

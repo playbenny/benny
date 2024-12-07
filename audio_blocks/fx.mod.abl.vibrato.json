@@ -1,0 +1,102 @@
+{
+	"fx.mod.abl.vibrato" : {
+		"patcher" : "fx.mod.abl.vibrato",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.vibrato. stereo in stereo out. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,9],
+				"height" : 3
+			},
+			{ 
+				"contains" : [4,5,6,7,8],
+				"height" : 2
+			}				
+		],
+		"parameters" : [
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "invert",
+				"force_label" : 1,
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["uni", -70.6, 6, "exp10"],
+				"wrap" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "mod",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "rate",
+				"type" : "float",
+				"values" : ["uni", 0.1, 15, "exp10"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "shaping",
+				"type" : "menu_f",
+				"values" : ["sin", "tri"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "width",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "offset",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "warmth",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			}
+		]
+	}
+}
