@@ -52,9 +52,9 @@
 			{
 				"name" : "gain",
 				"type" : "float",
-				"values" : ["uni", -70.6,6, "exp"],
+				"values" : ["uni", -70.6,6, "exp.01"],
 				"wrap" : 0,
-				"default" : 0.8
+				"default" : 0.5
 			}
 		]
 	}

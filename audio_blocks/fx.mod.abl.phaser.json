@@ -1,9 +1,9 @@
 {
-	"fx.mod.abl.flanger" : {
-		"patcher" : "fx.mod.abl.flanger",
+	"fx.mod.abl.phaser" : {
+		"patcher" : "fx.mod.abl.phaser",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "wrapper for the abl.dsp.flanger. stereo in stereo out, but there's no crossfeed so you could use one side as an envelope input. only available in max 9.",
+		"help_text" : "wrapper for the abl.dsp.phaser. stereo in stereo out, but there's no crossfeed so you could use one side as an envelope input. only available in max 9.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
@@ -17,11 +17,11 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3,4],
+				"contains" : [5,18,19,0,1,2],
 				"height" : 2
 			},
 			{ 
-				"contains" : [5,6,7,8,9],
+				"contains" : [3,4,6,7,8,9],
 				"height" : 2
 			},
 			{

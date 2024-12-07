@@ -57,7 +57,7 @@
 			{
 				"name" : "freeze",
 				"force_label" : 1,
-				"type" : "menu_b",
+				"type" : "menu_l",
 				"values" : ["off", "on"],
 				"wrap" : 0,
 				"default" : 0.25

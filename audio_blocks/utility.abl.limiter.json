@@ -54,7 +54,7 @@
 			{
 				"name" : "lookahead",
 				"force_label" : 1,
-				"type" : "menu_d",
+				"type" : "menu_l",
 				"values" : ["1.5", "3", "6"],
 				"wrap" : 0,
 				"default" : 0

@@ -1,0 +1,118 @@
+{
+	"fx.abl.waveshaper" : {
+		"patcher" : "fx.abl.waveshaper",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.waveshaper. stereo in stereo out. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4,5],
+				"height" : 2
+			},
+			{ 
+				"contains" : [6,7,8,9,10,11],
+				"height" : 2
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "curve",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "depth",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "period",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "damping",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "linearity",
+				"type" : "float",
+				"values" : ["uni", 0,1 , "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -36,36, "lin"],
+				"wrap" : 0,
+				"default" : 0.55
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["uni", -70.6,0, "exp.01"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "dc block",
+				"force_label" : 1,
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "post clip",
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"force_label" : 1,
+				"wrap" : 0,
+				"default" : 0.75
+			},
+			{
+				"name" : "oversample",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.75
+			}
+		]
+	}
+}

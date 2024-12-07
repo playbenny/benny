@@ -1,0 +1,40 @@
+{
+	"utility.abl.transient.design" : {
+		"patcher" : "utility.abl.transient.design",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.transientdesigner. a simple transient design effect with a separate input for the control signal. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in", "control signal" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1],
+				"height" : 3
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "attack",
+				"type" : "float",
+				"values" : ["bi", -10,10, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.83
+			},
+			{
+				"name" : "sustain",
+				"type" : "float",
+				"values" : ["bi", -10, 10, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.60
+			}
+		]
+	}
+}
