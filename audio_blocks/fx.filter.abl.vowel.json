@@ -1,0 +1,59 @@
+{
+	"fx.filter.abl.vowel" : {
+		"patcher" : "fx.filter.abl.vowel",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.vowel filter. second audio input is switchable between cutoff and formant modulation. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in","modulation" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2],
+				"height" : 3
+			},
+			{
+				"contains" : [3],
+				"height" : 0
+			}				
+		],
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "float",
+				"values" : ["uni", 20,20000, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "resonance",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "morph",
+				"type" : "menu_f",
+				"values" : ["A", "E", "I", "O", "U"],
+				"wrap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "audio rate mod target",
+				"force_label" : 1,
+				"type" : "menu_d",
+				"values" : ["cutoff", "morph"],
+				"wrap" : 1,
+				"default" : 0.5
+			}
+		]
+	}
+}
