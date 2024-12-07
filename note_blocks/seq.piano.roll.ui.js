@@ -61,7 +61,7 @@ var mouse_x, mouse_y, mouse_lane, scroll_accumulator = 0;
 var hovered_event = -1;
 var selected_events = [];
 var selected_event_count = 0;
-var old_x,old_y,old_l;
+var old_x,old_y,old_l,old_s;
 var clicked = -1;
 var drag = 0;
 var drag_start_x;
@@ -358,7 +358,6 @@ function draw(){
 						if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
 						if(drag==-2){
 							if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
-								//here you could | for shift and just set for not
 								selected_events[k[i]] |= 2;
 							}else{
 								selected_events[k[i]] &= 1;
@@ -383,7 +382,13 @@ function draw(){
 						var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
 						var c = 0.2+0.8* Math.abs(event[3])/128;
-						if(drag==-2) selected_events[k[i]] |= 2 * ((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2));
+						if(drag==-2){
+							if((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2)){
+								selected_events[k[i]] |= 2;
+							}else{
+								selected_events[k[i]] &= 1;
+							}
+						}
 						if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
 							hovered_event = k[i];
 							if(selected_events[k[i]]){
@@ -688,6 +693,7 @@ function mouse(x,y,l,s,a,c,scr){
 	old_l = l;
 	old_x = x;
 	old_y = y;
+	old_s = s;
 }
 
 function keydown(key){
