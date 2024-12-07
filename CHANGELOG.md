@@ -4,6 +4,7 @@
 05/12/24:
 - four stage env added, lets you do complex envelopes. easily chainable, lots of interesting trigger ins and outs.
 - dropdowns now available as a parameter display type
+- added a bunch of the new max9 abl devices - so far: compressor, limiter, 3band eq, all the reverbs, both filters
 19/11/24:
 - midi.lfo now lets you modulate the rate without glitching
 - value to value connections now have an offset. likewise audio-value, value-audio, etc (i think this is not a breaking change, still testing with savefiles)

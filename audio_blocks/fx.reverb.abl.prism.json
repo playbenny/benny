@@ -1,0 +1,81 @@
+{
+	"fx.reverb.abl.prism" : {
+		"patcher" : "fx.reverb.abl.prism",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.prism reverb. stereo in stereo out. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2],
+				"height" : 2
+			},
+			{ 
+				"contains" : [3,4,5,6],
+				"height" : 2
+			}				
+		],
+		"parameters" : [
+			{
+				"name" : "size",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "decay",
+				"type" : "float",
+				"values" : ["uni", 0.1, 60, "exp10"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "freeze",
+				"force_label" : 1,
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "crossover",
+				"type" : "float",
+				"values" : ["uni", 400, 5500, "exp10"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "low_mult",
+				"type" : "float",
+				"values" : ["uni", 0.1, 5, "exp"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "high_mult",
+				"type" : "float",
+				"values" : ["uni", 0.1, 5, "exp"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}
