@@ -229,11 +229,9 @@ function draw(){
 			outlet(1,"write","loopstart:"+loopstart);
 			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 			outlet(1,"write"," length:"+looplength);
-			
-			//if(draw_mouselayer_flag){
-				outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
-			//	draw_mouselayer_flag = 0;
-			//}
+
+			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
+		
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 			//for();
 			var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
@@ -317,8 +315,25 @@ function draw(){
 					outlet(1,"write", "velocity");
 				}				
 			}
+			var selx1,selx2,sely1,sely2;
 			if(drag!=0){
-				if(drag == -2) outlet(1,"paintrect",drag_start_x,drag_start_y,old_x,old_y,0,0,0);
+				if(drag == -2){
+					if(drag_start_x<old_x){
+						selx1 = drag_start_x;
+						selx2 = old_x;
+					}else{
+						selx1 = old_x;
+						selx2 = drag_start_x;
+					}
+					if(drag_start_y<old_y){
+						sely1 = drag_start_y;
+						sely2 = old_y;
+					}else{
+						sely1 = old_y;
+						sely2 = drag_start_y;
+					}
+					outlet(1,"paintrect",selx1,sely1,selx2,sely2,0,0,0);
+				}
 			}
 
 			var sd = seqdict.get(block+"::"+pattern);
@@ -339,8 +354,16 @@ function draw(){
 					}
 					var vey = by - Math.abs(event[3])*sy;
 					var vex1 = x_pos + (event[0]-zoom_start)*(width-1)*zoom_scale;
-					if((mouse_lane==vallane[ll])&&(Math.abs(mouse_x-vex1)<=4)){
-						hovered_event = k[i];
+					if(mouse_lane==vallane[ll]){
+						if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
+						if(drag==-2){
+							if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
+								//here you could | for shift and just set for not
+								selected_events[k[i]] |= 2;
+							}else{
+								selected_events[k[i]] &= 1;
+							}
+						}
 					}
 					var col; // don't draw values until after the note lane bit in case they're hovered there
 					if(ll<=1){
@@ -360,9 +383,10 @@ function draw(){
 						var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
 						var c = 0.2+0.8* Math.abs(event[3])/128;
+						if(drag==-2) selected_events[k[i]] |= 2 * ((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2));
 						if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
 							hovered_event = k[i];
-							if(selected_events[k[i]]==1){
+							if(selected_events[k[i]]){
 								col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
 							}else{
 								col = [255,255,255];
@@ -378,12 +402,12 @@ function draw(){
 						if(ll>1){
 							col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
 						}else if(hovered_event == k[i]){
-							if(selected_events[k[i]]==1){
+							if(selected_events[k[i]]){
 								col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
 							}else{
 								col = [255,255,255];
 							}
-						}else if(selected_events[k[i]]==1){
+						}else if(selected_events[k[i]]){
 							col = [blockcolour[1],blockcolour[2],blockcolour[0]];
 						}else{
 							col = blockcolour;
@@ -513,7 +537,6 @@ function store(){
 }
 
 function mouse(x,y,l,s,a,c,scr){
-	//post("M",x,y,l);
 	if(scr==1)scr =0;
 	moved = (x!=mouse_x)||(y!=mouse_y)||(scr!=0);
 	mouse_x = x;
@@ -560,7 +583,7 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 		}else if(hovered_event>-1){
 			if(s) scr *= 0.1;
-			if((selected_event_count==0)||(selected_events[hovered_event]!=1)){
+			if((selected_event_count==0)||(selected_events[hovered_event]==0)){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				var v=0;
 				if(event[3]>=0){
@@ -599,12 +622,12 @@ function mouse(x,y,l,s,a,c,scr){
 			if(clicked<0){
 				drag = 3 + clicked;
 			}else{
-				drag = 3 + (selected_events[clicked]==1)|0;
+				drag = 3 + (selected_events[clicked]>0)|0;
 			}
-			post("\nset drag",drag);
+			//post("\nset drag",drag);
 			old_l = 1;
 		}else{//already clicked, so a drag
-			post("\n---");
+			//post("\n---");
 			if(drag>0)drag=-drag;
 			if(drag<0){
 				drawflag=1;
@@ -613,17 +636,15 @@ function mouse(x,y,l,s,a,c,scr){
 				}else{//drag selection/or just the original hovered note
 	
 				}
-				post("\ndragging,",drag);
+				//post("\ndragging,",drag);
 			}
 		}
 	}else{
 		if(old_l==1){// a release
-			post("\nrelease");
 			if(drag<0){
 				drag = 0;
 				drawflag = 1;
-			}
-			if(y<y_pos+0.1*height){
+			}else if(y<y_pos+0.1*height){
 				if(y<y_pos+0.05*height){
 					
 				}else{
@@ -635,7 +656,7 @@ function mouse(x,y,l,s,a,c,scr){
 				}
 			}else if(hovered_event>-1){
 				if(s||c){ //toggle selection
-					selected_events[hovered_event] = 1 - (selected_events[hovered_event]|0);
+					selected_events[hovered_event] = 1 - ((selected_events[hovered_event]>0)|0);
 					drawflag=1;				
 				}else if(selected_events[hovered_event]){
 					//start drag of selected events

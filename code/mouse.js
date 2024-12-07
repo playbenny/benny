@@ -662,7 +662,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else{
 			var xdist=usermouse.x-usermouse.drag.starting_x;
 			var ydist=usermouse.drag.starting_y-usermouse.y;
-			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);			
+			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);	
 			if((usermouse.clicked2d != -1) && (usermouse.last.got_t>=2 && usermouse.last.got_t<=4)){ 
 				// #### 2D DRAG ###########################################################################################################
 				var f = mouse_click_actions[usermouse.last.got_i];
@@ -735,6 +735,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.last_got_t = 1;
 					}*/
 					redraw_flag.flag |= 2;
+				}
+			}else if((usermouse.clicked2d == -1) && (usermouse.got_t == 7)){
+				if((mouse_click_actions[usermouse.got_i]==custom_mouse_passthrough)&&(mouse_click_values[usermouse.got_i]==1)){
+					custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG
 				//	post("3d drag, hover",usermouse.hover,"ids",usermouse.ids,"\n");
