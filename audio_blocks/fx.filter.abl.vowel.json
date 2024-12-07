@@ -30,7 +30,7 @@
 				"type" : "float",
 				"values" : ["uni", 20,20000, "exp1000"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.8
 			},
 			{
 				"name" : "resonance",

@@ -51,9 +51,9 @@
 			{
 				"name" : "gain",
 				"type" : "float",
-				"values" : ["uni", -70.6, 6, "exp10"],
+				"values" : ["uni", -70.6, 6, "exp.01"],
 				"wrap" : 0,
-				"default" : 0.75
+				"default" : 0.5
 			},
 			{
 				"name" : "mod",
@@ -65,7 +65,7 @@
 			{
 				"name" : "rate",
 				"type" : "float",
-				"values" : ["uni", 0.1, 15, "exp10"],
+				"values" : ["uni", 0.1, 15, "exp1000"],
 				"wrap" : 0,
 				"default" : 0.1
 			},
