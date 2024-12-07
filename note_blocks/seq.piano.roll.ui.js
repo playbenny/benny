@@ -61,7 +61,7 @@ var mouse_x, mouse_y, mouse_lane, scroll_accumulator = 0;
 var hovered_event = -1;
 var selected_events = [];
 var selected_event_count = 0;
-var old_x,old_y,old_l,old_s;
+var old_x,old_y,old_l,old_s,old_c;
 var clicked = -1;
 var drag = 0;
 var drag_start_x;
@@ -234,6 +234,17 @@ function draw(){
 		
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 			//for();
+			var sd = seqdict.get(block+"::"+pattern);
+			if(sd == null) return 0;
+			var k = sd.getkeys();
+			if(k == null) return 0;
+			lowestnote=128;
+			highestnote=0;
+			for(var i=1;i<k.length;i++){ //[0] is the looppoints
+				var note = seqdict.get(block+"::"+pattern+"::"+k[i]+"[2]");
+				if(note>highestnote)highestnote=note;
+				if(note<lowestnote)lowestnote=note;
+			}
 			var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
 			var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
 			var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
@@ -336,10 +347,6 @@ function draw(){
 				}
 			}
 
-			var sd = seqdict.get(block+"::"+pattern);
-			if(sd == null) return 0;
-			var k = sd.getkeys();
-			if(k == null) return 0;
 			var ll = -99; var ll2 = -99;
 			var by = -1; var sy = -1; var by2 = -1; var sy2=-1;
 			for(var i=1;i<k.length;i++){ //[0] is the looppoints
@@ -367,12 +374,6 @@ function draw(){
 					var col; // don't draw values until after the note lane bit in case they're hovered there
 					if(ll<=1){
 						// some also have a note lane
-						if((event[2]<lowestnote)||(event[2]>highestnote)){
-							drawflag = 1;
-							post("\naborting draw to recalibrate and redo");
-							voice_is(block);
-							return -1;
-						}
 						if(event[1]!=ll2){
 							ll2 = event[1];
 							by2 = laney[1+notelane[ll2]] - 4;
@@ -384,9 +385,9 @@ function draw(){
 						var c = 0.2+0.8* Math.abs(event[3])/128;
 						if(drag==-2){
 							if((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2)){
-								selected_events[k[i]] |= 2;
+								selected_events[k[i]] |= 4;
 							}else{
-								selected_events[k[i]] &= 1;
+								selected_events[k[i]] &= 3;
 							}
 						}
 						if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
@@ -694,13 +695,71 @@ function mouse(x,y,l,s,a,c,scr){
 	old_x = x;
 	old_y = y;
 	old_s = s;
+	old_c = c;
 }
 
 function keydown(key){
+	var a=0;
+	if(key>2000){
+		key-=2048;
+		a=1;
+	}
+	if(key>480){
+		key-=512;
+		old_s=1;
+	}else{old_s = 0;}
+	if(key>240){
+		key-=256;
+		old_c=1;
+	}else{old_c = 0;}
 	if(key == -15){
 		zoom_start = 0; zoom_end = 1; zoom_scale = 1;
 		for(var i=0;i<maximisedlist.length;i++)maximisedlist[i]=(i==0);
 		drawflag=1;
+	}else if((key == -9)||(key == -10)){//up down
+		var dir = (key == -9) ? 1 : -1;
+		if(old_s) dir *= 12;
+		var sd = seqdict.get(block+"::"+pattern);
+		if(sd == null) return 0;
+		var k = sd.getkeys();
+		if(k == null) return 0;
+		for(i=0;i<k.length;i++){
+			if(selected_events[k[i]]){
+				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+				event[2] += dir;
+				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+			}
+		}
+		drawflag = 1;
+	}else if((key == -11)||(key == -12)){//left right
+		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+		seql = loopnts[0];
+		var ind = (c == 1) ? 4 : 0;
+		var dir = (key == -12) ? 1 : -1;
+		if(old_s) dir *= 16;
+		if(a) dir /= 12;
+		dir /= (16 * seql);
+		var sd = seqdict.get(block+"::"+pattern);
+		if(sd == null) return 0;
+		var k = sd.getkeys();
+		if(k == null) return 0;
+		for(i=0;i<k.length;i++){
+			if(selected_events[k[i]]){
+				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+				event[ind] += dir + 100;
+				event[ind] %= 1;
+				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+			}
+		}
+		drawflag = 1;
+	}else if((key==97)&&(old_c)){
+		var sd = seqdict.get(block+"::"+pattern);
+		if(sd == null) return 0;
+		var k = sd.getkeys();
+		if(k == null) return 0;
+		for(i=0;i<k.length;i++) selected_events[k[i]]=1;
+	}else{
+		post("\nkey",key);
 	}
 }
 
