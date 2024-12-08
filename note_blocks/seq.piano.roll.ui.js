@@ -646,9 +646,29 @@ function mouse(x,y,l,s,a,c,scr){
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//pan view around??
 				}else{//drag selection/or just the original hovered note
-	
+					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
+					drag_start_x = x;
+					var pp = 0;
+					if(lanetype[mouse_lane]==0){
+						pp = Math.round((highestnote-lowestnote+3)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
+						if(pp!=0) drag_start_y = y;
+					}
+					if(selected_event_count>0){
+						for(i=0;i<k.length;i++){
+							if(selected_events[k[i]]>0){
+								var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+								event[2] += pp;
+								event[0] += xx;
+								seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+							}
+						}
+					}else if(hovered_event>-1){
+						var event = seqdict.get(block+"::"+pattern+"::"+k[hovered_event]);
+						event[2] += pp;
+						event[0] += xx;
+						seqdict.replace(block+"::"+pattern+"::"+k[hovered_event],event);
+					}
 				}
-				//post("\ndragging,",drag);
 			}
 		}
 	}else{
@@ -670,8 +690,6 @@ function mouse(x,y,l,s,a,c,scr){
 				if(s||c){ //toggle selection
 					selected_events[hovered_event] = 1 - ((selected_events[hovered_event]>0)|0);
 					drawflag=1;				
-				}else if(selected_events[hovered_event]){
-					//start drag of selected events
 				}else{
 					selected_event_count=1;
 					selected_events=[];
