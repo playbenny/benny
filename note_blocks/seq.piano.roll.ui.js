@@ -22,6 +22,8 @@ seqdict.name = "seq-piano-roll";
 var lowestnote = 0;
 var highestnote = 128;
 
+var sd, k;
+
 // lanes: notes lane (0 or 1, hopefully not both, aim for 1), controllers (2-7), meta (8)
 // notes lane gets both a notes view and (when maximised?) a velocities view
 
@@ -61,6 +63,7 @@ var mouse_x, mouse_y, mouse_lane, scroll_accumulator = 0;
 var hovered_event = -1;
 var selected_events = [];
 var selected_event_count = 0;
+var seql;
 var old_x,old_y,old_l,old_s,old_c;
 var clicked = -1;
 var drag = 0;
@@ -78,8 +81,8 @@ function playing(p){
 	playstate = p;
 }
 function convert_to_lengths(){
-	var sd = seqdict.get(block+"::"+pattern);
-	var k = sd.getkeys();
+	sd = seqdict.get(block+"::"+pattern);
+	k = sd.getkeys();
 	if(k==null){
 		drawflag = 1;
 		return -1;
@@ -166,6 +169,10 @@ function draw(){
 		start += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 1,1)-0.5)*512);
 		loopstart += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 2,1)-0.5)*512);
 		looplength += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 3,1)-0.5)*512);
+		sd = seqdict.get(block+"::"+pattern);
+		if(sd == null) return 0;
+		k = sd.getkeys();
+		if(k == null) return 0;
 		if(mini){
 			var st = (width-2)*(start/seql);
 			var ls = (width-2)*(loopstart/seql);
@@ -185,10 +192,6 @@ function draw(){
 			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
 			outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
 			outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
-			var sd = seqdict.get(block+"::"+pattern);
-			if(sd == null) return 0;
-			var k = sd.getkeys();
-			if(k == null) return 0;
 			var by = y_pos+height - 2;
 			var sy = (height-3)/129;
 			for(var i=1;i<k.length;i++){
@@ -234,10 +237,6 @@ function draw(){
 		
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 			//for();
-			var sd = seqdict.get(block+"::"+pattern);
-			if(sd == null) return 0;
-			var k = sd.getkeys();
-			if(k == null) return 0;
 			lowestnote=128;
 			highestnote=0;
 			for(var i=1;i<k.length;i++){ //[0] is the looppoints
@@ -429,7 +428,18 @@ function draw(){
 				outlet(1,"frgb",blockcolour);
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.02);
-				outlet(1,"write","hovered event:",event[2],event[3],event[4]*seql);
+				outlet(1,"write","hovered event:",(event[0] * seql).toFixed(2), event[2],event[3],(event[4]*seql).toFixed(2));
+			}else{
+				if(selected_event_count==1){
+					for(var se=0;se<selected_events.length;se++){
+						if(selected_events[se]){
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							var event = seqdict.get(block+"::"+pattern+"::"+se);
+							outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.02);
+							outlet(1,"write","selected event:",(event[0] * seql).toFixed(2), event[2],event[3],(event[4]*seql).toFixed(2));
+						}
+					}
+				}
 			}
 			if(selected_event_count>0){
 				outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
@@ -600,10 +610,6 @@ function mouse(x,y,l,s,a,c,scr){
 				event[3] = v;
 				seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 			}else{
-				var sd = seqdict.get(block+"::"+pattern);
-				if(sd == null) return 0;
-				var k = sd.getkeys();
-				if(k == null) return 0;
 				for(i=0;i<k.length;i++){
 					if(selected_events[k[i]]){
 						var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
@@ -672,10 +678,29 @@ function mouse(x,y,l,s,a,c,scr){
 					selected_events[hovered_event]=1;
 					drawflag=1;
 				}
-			}else{
-				selected_event_count=0;
-				selected_events=[];
-				drawflag=1;
+			}else{ //release on background
+				if(c){ //create note
+					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
+					var vv = 100;
+					var pp = 0;
+					if(lanetype[mouse_lane]==0){//note lane
+						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+					}else{
+						vv = 127 *((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]); 
+					}
+					var ind = k[(k.length-1)]|0;
+					ind++;
+					while(k.indexOf(ind.toString())>-1) ind++;
+					ind = ind.toString();
+					var event = [xx,mouse_lane,pp,vv,1/seql];
+					//post("\nadding, index",ind,"event",event,"to block",block,"pattern",pattern);
+					seqdict.replace(block+"::"+pattern+"::"+ind,event);
+					drawflag=1;
+				}else{ //select nothing
+					selected_event_count=0;
+					selected_events=[];
+					drawflag=1;
+				}
 			}
 		}
 		if(moved){
@@ -719,10 +744,6 @@ function keydown(key){
 	}else if((key == -9)||(key == -10)){//up down
 		var dir = (key == -9) ? 1 : -1;
 		if(old_s) dir *= 12;
-		var sd = seqdict.get(block+"::"+pattern);
-		if(sd == null) return 0;
-		var k = sd.getkeys();
-		if(k == null) return 0;
 		for(i=0;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
@@ -734,15 +755,11 @@ function keydown(key){
 	}else if((key == -11)||(key == -12)){//left right
 		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
 		seql = loopnts[0];
-		var ind = (c == 1) ? 4 : 0;
+		var ind = (old_c == 1) ? 4 : 0;
 		var dir = (key == -12) ? 1 : -1;
 		if(old_s) dir *= 16;
 		if(a) dir /= 12;
 		dir /= (16 * seql);
-		var sd = seqdict.get(block+"::"+pattern);
-		if(sd == null) return 0;
-		var k = sd.getkeys();
-		if(k == null) return 0;
 		for(i=0;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
@@ -752,12 +769,19 @@ function keydown(key){
 			}
 		}
 		drawflag = 1;
-	}else if((key==97)&&(old_c)){
-		var sd = seqdict.get(block+"::"+pattern);
-		if(sd == null) return 0;
-		var k = sd.getkeys();
-		if(k == null) return 0;
+	}else if((key==97)&&(old_c)){ //select all
 		for(i=0;i<k.length;i++) selected_events[k[i]]=1;
+		drawflag = 1;
+	}else if((key==-6)||(key==-7)){ //delete
+		if(selected_event_count>0){
+			for(i=0;i<k.length;i++){
+				if(selected_events[k[i]]) seqdict.remove(block+"::"+pattern+"::"+k[i]);
+			}
+			drawflag = 1;
+		}else if(hovered_event>-1){
+			seqdict.remove(block+"::"+pattern+"::"+hovered_event);
+			drawflag = 1;
+		}
 	}else{
 		post("\nkey",key);
 	}
