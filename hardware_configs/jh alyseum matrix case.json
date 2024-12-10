@@ -77,58 +77,6 @@
 
 		}
 ,
-		"hardware.chloe.1" : 		{
-			"type" : "hardware",
-			"substitute" : 47,
-			"max_polyphony" : 1,
-			"help_text" : "bizarre jezebel chloe left side",
-			"exclusive" : 0,
-			"click_out" : 0,
-			"cue_out" : 0,
-			"talk_in" : 0,
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "in", "cv", "lpg" ],
-					"hardware_channels" : [ 3, 4, 19 ],
-					"matrix_channels" : [ 1, 2, 0 ]
-				}
-,
-				"out" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 1 ],
-					"matrix_channels" : [ 1 ]
-				}
-
-			}
-
-		}
-,
-		"hardware.chloe.2" : 		{
-			"type" : "hardware",
-			"substitute" : 47,
-			"max_polyphony" : 1,
-			"help_text" : "bizarre jezebel chloe left side",
-			"exclusive" : 0,
-			"click_out" : 0,
-			"cue_out" : 0,
-			"talk_in" : 0,
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "in", "cv", "lpg" ],
-					"hardware_channels" : [ 5, 6, 20 ],
-					"matrix_channels" : [ 3, 4, 0 ]
-				}
-,
-				"out" : 				{
-					"hardware" : [ "out" ],
-					"hardware_channels" : [ 2 ],
-					"matrix_channels" : [ 2 ]
-				}
-
-			}
-
-		}
-,
 		"hardware.coiler.vcf" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
@@ -305,6 +253,58 @@
 					"hardware" : [ "out1", "out2" ],
 					"hardware_channels" : [ 13, 8 ],
 					"matrix_channels" : [ 0, 8 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.fx.boy" : 		{
+			"type" : "hardware",
+			"substitute" : 47,
+			"max_polyphony" : 1,
+			"help_text" : "fx boy!",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "cvX", "cvY", "mix" ],
+					"hardware_channels" : [ 3, 4, 6, 19 ],
+					"matrix_channels" : [ 1, 2, 4 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 1 ],
+					"matrix_channels" : [ 1 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.lifeforms.delay" : 		{
+			"type" : "hardware",
+			"substitute" : 54,
+			"max_polyphony" : 1,
+			"help_text" : "pittsburgh lifeforms delay",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "time" ],
+					"hardware_channels" : [ 5, 20 ],
+					"matrix_channels" : [ 3, 0, 0 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 2 ],
+					"matrix_channels" : [ 2 ]
 				}
 
 			}
