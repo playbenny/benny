@@ -71,10 +71,12 @@ function draw(){
 					for(var p=(i==0);p<(tf*envtimes[c][i]);p++){ //stage 0 starts from 1 as 0 is the moveto
 						var pos = p* ft;
 						var v;
-						if(envcurve[c][i]<=0.5){
-							v = 2 *(logexp_lookup.peek(1,Math.floor(8192+8192*pos)) * (0.5-envcurve[c][i]) + envcurve[c][i]*pos);
+						var cu = envcurve[c][i];
+						if(envlevels[c][i]>prevlev) cu = 1-cu;
+						if(cu<=0.5){
+							v = 2 *(logexp_lookup.peek(1,Math.floor(8192+8192*pos)) * (0.5-cu) + cu*pos);
 						}else{
-							v = 2 *(logexp_lookup.peek(2,Math.floor(8192+8192*pos)) * (envcurve[c][i]-0.5) + (1-envcurve[c][i])*pos);	
+							v = 2 *(logexp_lookup.peek(2,Math.floor(8192+8192*pos)) * (cu-0.5) + (1-cu)*pos);	
 						}
 						outlet(1,"lineto",x,y_pos+rh*c+(rh-4)*(0.5 - 0.5*(prevlev+ (envlevels[c][i]-prevlev)*v)));
 						x++;
