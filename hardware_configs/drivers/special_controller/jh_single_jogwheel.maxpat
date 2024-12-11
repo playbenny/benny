@@ -57,7 +57,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 612.0, 227.0, 40.0, 22.0 ],
+					"patching_rect" : [ 612.0, 300.0, 40.0, 22.0 ],
 					"text" : "* 0.02"
 				}
 
@@ -104,7 +104,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 616.0, 305.0, 110.0, 22.0 ],
+					"patching_rect" : [ 616.0, 378.0, 110.0, 22.0 ],
 					"text" : "s to_blockmanager"
 				}
 
@@ -116,7 +116,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 616.0, 273.0, 126.0, 22.0 ],
+					"patching_rect" : [ 616.0, 346.0, 126.0, 22.0 ],
 					"text" : "prepend ext_jogwheel"
 				}
 
@@ -128,7 +128,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 612.0, 181.0, 29.5, 22.0 ],
+					"patching_rect" : [ 612.0, 254.0, 29.5, 22.0 ],
 					"text" : "- 64"
 				}
 
@@ -152,8 +152,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "int", "int" ],
-					"patching_rect" : [ 612.0, 148.0, 40.0, 22.0 ],
-					"text" : "ctlin"
+					"patching_rect" : [ 612.0, 148.0, 60.0, 22.0 ],
+					"text" : "ctlin none"
 				}
 
 			}
@@ -176,8 +176,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 3,
 					"numoutlets" : 0,
-					"patching_rect" : [ 488.0, 154.0, 49.0, 22.0 ],
-					"text" : "noteout"
+					"patching_rect" : [ 488.0, 154.0, 79.0, 22.0 ],
+					"text" : "noteout none"
 				}
 
 			}

@@ -1,0 +1,82 @@
+{
+	"fx.abl.fuzz" : {
+		"patcher" : "fx.abl.fuzz",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.fuzz. stereo in stereo out. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4],
+				"height" : 2
+			},
+			{ 
+				"contains" : [5,5,5,6],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "bass",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "mid",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "treble",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "mid freq",
+				"force_label" : 1,
+				"columns" : 3,
+				"type" : "menu_l",
+				"values" : ["low", "mid", "high"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "sub_boost",
+				"type" : "menu_l",
+				"values" : ["sub boost off", "sub boost on"],
+				"wrap" : 0,
+				"default" : 0.75
+			}
+		]
+	}
+}

@@ -1,0 +1,61 @@
+{
+	"utility.abl.compressor" : {
+		"patcher" : "utility.abl.compressor",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.device.compressor. only available in max 9. the second output is the compressor gain reduction amount.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out", "gain reduction" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4],
+				"height" : 3
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "attack",
+				"type" : "float",
+				"values" : ["uni", 0,10, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "release",
+				"type" : "float",
+				"values" : ["uni", 0,10, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "threshold",
+				"type" : "float",
+				"values" : ["uni", -70.6,6, "exp"],
+				"wrap" : 0,
+				"default" : 0.39
+			},
+			{
+				"name" : "ratio",
+				"type" : "float",
+				"values" : ["uni", 1,64, "exp"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["uni", -70.6,6, "exp.01"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

@@ -1,0 +1,74 @@
+{
+	"utility.abl.3band.eq" : {
+		"patcher" : "utility.abl.3band.eq",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.device.channeleq. stereo. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2],
+				"height" : 3
+			},
+			{ 
+				"contains" : [3,4,5],
+				"height" : 2
+			}				
+		],
+		"parameters" : [
+			{
+				"name" : "low gain",
+				"type" : "float",
+				"values" : ["bi", -15,15, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "mid gain",
+				"type" : "float",
+				"values" : ["bi", -12, 12, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "high gain",
+				"type" : "float",
+				"values" : ["bi", -15, 15, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "highpass",
+				"type" : "menu_b",
+				"values" : ["off", "on"],
+				"force_label" : 1,
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "mid freq",
+				"type" : "float",
+				"values" : ["uni", 120, 7500, "exp10"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -12, 12, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

@@ -253,11 +253,72 @@ function parameter_menu_l(p){
 	}
 	return mi;
 }
+function parameter_menu_d(p){
+	var mi = paramslider_details[p][7];
+	var statecount = (paramslider_details[p][17].length);// - 1) / 2;
+	var pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*paramslider_details[p][15]+paramslider_details[p][9]); //
+	var pv2 = Math.floor(pv * statecount * 0.99999);
+	//var colmod = -Math.floor(-statecount / paramslider_details[p][11]);
+	var ys = fontheight*0.6;//(fontheight*paramslider_details[p][16] + fo1)/(colmod);
+	var valcol = paramslider_details[p][4];
+	var vc;
+	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
+	if(sidebar.dropdown=="param."+p){
+		for(var bl=statecount-1;bl>=0;bl--){
+			if(valcol.length==1){
+				vc = valcol[0];
+			}else{
+				vc = valcol[bl];
+			}
+			if(bl==pv2){
+			}else{
+				vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
+			}
+			draw_button(paramslider_details[p][0]+bx*bw,paramslider_details[p][1]+by*ys,paramslider_details[p][0]+((bx+1)*bw)-fo1,paramslider_details[p][1]+(by+1)*ys-fo1,vc[0],vc[1],vc[2],mi, paramslider_details[p][17][bl],0);
+			mouse_click_actions[mi] = send_button_message_dropdown;
+			mouse_click_parameters[mi] = paramslider_details[p][8];
+			mouse_click_values[mi] = ["param","",MAX_PARAMETERS*paramslider_details[p][8]+paramslider_details[p][9], (bl+0.2)/statecount];
+			mi++;
+			bx++;
+			if(bx>=paramslider_details[p][11]){
+				by++; bx=0;
+			}
+		}
+	}else{
+		bl = pv2;
+		if(valcol.length==1){
+			vc = valcol[0];
+		}else{
+			vc = valcol[bl];
+		}
+		if(bl==pv2){
+		}else{
+			vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
+		}
+		draw_button(paramslider_details[p][0]+bx*bw,paramslider_details[p][1]+by*ys,paramslider_details[p][0]+((bx+1)*bw)-fo1,paramslider_details[p][1]+(by+1)*ys-fo1,vc[0],vc[1],vc[2],mi, paramslider_details[p][17][bl],0);
+		mouse_click_actions[mi] = open_dropdown;
+		mouse_click_parameters[mi] = "param."+p;
+		mouse_click_values[mi] = "param."+p;
+		mi++;
+		if(statecount>0){			
+			var x2=paramslider_details[p][0]+((bx+1)*bw)-fo1;
+			var yo = paramslider_details[p][1]+by*ys;
+			lcd_main.message("paintpoly", x2 - 4*fo1, yo + 2.5*fo1, x2 - fo1, yo + 2.5*fo1, x2 - 2.5*fo1, yo + 4*fo1, x2 - 4*fo1, yo + 2.5*fo1);
+		}
+		by++;
+	}
+	by--;
+	//return mi;
+	mouse_index = mi;
+	return by*ys;
+}
+
+
 function labelled_parameter_v_slider(sl_no){
 	var p_type=paramslider_details[sl_no][13];
 
 	var click_to_step = 0;
-	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")){
+	if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="menu_d")){
 		//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 		click_to_step = sl_no+1;
 	}								
@@ -326,7 +387,7 @@ function get_parameter_label(p_type,wrap,pv,p_values){
 		}else{
 			pvp = p_values[pv]+ "-"+ p_values[pv2];
 		}	
-	}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")){
+	}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")||(p_type=="menu_d")){
 		pv *= (p_values.length-0.0001);
 		pv = Math.min(Math.floor(pv),p_values.length-1);
 		pvp = p_values[pv];
@@ -573,6 +634,20 @@ function clear_wave_graphic(n,newl){
 		i++;
 	}
 }
+function clear_wave_graphic_z(n,newl){
+	if(!Array.isArray(draw_wave_z[n-1])) draw_wave_z[n-1]=[[],[],[],[]];
+	if(newl==null) newl = draw_wave_z[n-1][0].length;
+	var i = 0;
+	while(i<4){
+		if(!Array.isArray(draw_wave_z[n-1][i])) draw_wave_z[n-1][i] = [];
+		var t = 0;
+		while(t<newl){
+			draw_wave_z[n-1][i][t]=0;
+			t++;
+		}  
+		i++;
+	}
+}
 
 function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
@@ -674,13 +749,18 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 	var hle ;
 	var wmin,wmax;
 	var w = Math.floor((x2-x1-1)/2);
-	if(!Array.isArray(draw_wave[buffer-1])){
-		draw_wave[buffer-1] = [[],[],[],[]];
+	var samps=2,chngd=0;
+	if(!Array.isArray(draw_wave_z[buffer-1])){
+		draw_wave_z[buffer-1] = [[],[],[],[]];
+		samps = 20;
+		chngd=1;
 	}
-	if(w!=draw_wave[buffer-1][0].length) {
+	if(w!=draw_wave_z[buffer-1][0].length) {
 		//post("\nclearing because W!=",w, draw_wave[buffer-1][0].length);
-		draw_wave[buffer-1][0].length = w;
-		clear_wave_graphic(buffer,w);
+		draw_wave_z[buffer-1][0].length = w;
+		clear_wave_graphic_z(buffer,w);
+		samps = 20;
+		chngd=1;
 	}
 	var length = waves_dict.get("waves["+buffer+"]::length");
 	st = waves_dict.get("waves["+buffer+"]::start");//*w);
@@ -697,15 +777,15 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 		lcd_main.message("frgb",90,90,90);
 		for(t=0;t<=d;t++){
 			i = Math.floor(w*((t*dl+st)-waves.zoom_start)/(waves.zoom_end-waves.zoom_start));
-			if(t==d){
-				lcd_main.message("frgb",90,90,90);
-			}else if(t==1){
-				lcd_main.message("frgb",40,40,40);
-			}
-			//if((i>0)&&(i<w)){
+			if((i>0)&&(i<w)){
+				if(t==d){
+					lcd_main.message("frgb",90,90,90);
+				}else if(t==1){
+					lcd_main.message("frgb",40,40,40);
+				}
 				lcd_main.message("moveto",x1+i+i,y1);
 				lcd_main.message("lineto",x1+i+i,y2-fo1);
-			//}
+			}
 		}
 	}
 	for(ch=0;ch<chans;ch++){
@@ -717,17 +797,16 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 			lcd_main.message("frgb",r,g,b);		
 		}
 		for(i=0;i<w;i++){
-			/*wmin = draw_wave[buffer-1][ch*2][i]|0;
-			wmax = draw_wave[buffer-1][ch*2+1][i]|0;
-			if(isNaN(wmin))wmin=0;
-			if(isNaN(wmax))*/wmin=1; wmax=-1;
-			for(t=0;t<20;t++){
+			wmin = draw_wave_z[buffer-1][ch*2][i];
+			wmax = draw_wave_z[buffer-1][ch*2+1][i];
+			if(isNaN(wmin)||isNaN(wmax)){post("nan",i); wmin=1; wmax=-1; samps=20;}
+			for(t=0;t<samps;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+chunkstart+Math.random())*chunk));
-				if(s>wmax) wmax=s;
-				if(s<wmin) wmin=s;
+				if(s>wmax){ wmax=s; chngd=1; }
+				if(s<wmin){ wmin=s; chngd=1; }
 			}
-			//draw_wave[buffer-1][ch*2][i] = wmin;
-			//draw_wave[buffer-1][ch*2+1][i] = wmax;
+			draw_wave_z[buffer-1][ch*2][i] = wmin;
+			draw_wave_z[buffer-1][ch*2+1][i] = wmax;
 			if((i>=hls)&&(i<=hle)&&(curc==0)){
 				lcd_main.message("frgb",r,g,b);
 				curc=1;
@@ -739,6 +818,9 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
 			//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
 		}
+	}
+	if(chngd){
+		redraw_flag.deferred = 4;
 	}
 }
 
@@ -1034,7 +1116,12 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		mouse_click_values[mouse_index] = null; //0.99* (pv<=0.5);
 		view_changed = vc;
 		mouse_index++;		
-
+	}else if(type=="select_connection"){
+		click_rectangle( x1,y1,x2,y2, mouse_index, 1);
+		mouse_click_actions[mouse_index] = sidebar_select_connection;
+		mouse_click_parameters[mouse_index] = r; //custom_block+1;
+		mouse_click_values[mouse_index] = null;
+		mouse_index++;				
 	}
 }
 
@@ -1066,6 +1153,7 @@ function center_view(resetz){
 	}
 	var w = maxx-minx;
 	var h = maxy-miny;
+	h *= (mainwindow_width/mainwindow_height);
 	var d = Math.max(w,h);
 	
 	
@@ -1348,12 +1436,21 @@ function midi_indicator(number){
 }
 
 function draw_clock(){
-	lcd_main.message("paintrect", mainwindow_width-9-fontheight*2.1,9,mainwindow_width,9+fontheight,0,0,0);
+	var cx2 = (sidebar.mode == "none") ? (mainwindow_width) : (sidebar.x);
+	if(sidebar.mode == "file_menu") cx2 = sidebar.x2 - fontheight * 15;
+	var cx = cx2 - fontheight*2 - 9;
+	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);
 	setfontsize(fontheight*0.8);
 	var currentdate = new Date;
 	if(set_timer_show){
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
-		lcd_main.message("frgb", menudark);
+		lcd_main.message("moveto",cx, 9+fontheight*0.8);
+		if(sidebar.mode=="none"){
+			lcd_main.message("frgb", menudark);
+		}else if(sidebar.mode == "file_menu"){
+			lcd_main.message("frgb", 60,60,60);
+		}else{
+			lcd_main.message("frgb", sidebar.scopes.fg);
+		}
 		if(set_timer_start == null){
 			lcd_main.message("write", "0:00");			
 		}else{
@@ -1366,9 +1463,9 @@ function draw_clock(){
 			if(t<10) t = "0"+t;
 			lcd_main.message("write", t2+":"+t);			
 		}
-		if(view_changed) click_zone(toggle_show_timer,0,0,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
+		if(view_changed)click_zone(toggle_show_timer,0,0,cx,0,cx2,9+fontheight,mouse_index,1);
 	}else{
-		lcd_main.message("moveto",mainwindow_width-9-fontheight*2, 9+fontheight*0.8);
+		lcd_main.message("moveto",cx, 9+fontheight*0.8);
 		var m = currentdate.getMinutes();
 		if(m<10) m = "0"+m;
 		var hh = (currentdate.getHours());
@@ -1376,11 +1473,15 @@ function draw_clock(){
 		h += (hh==12)*12;
 		if((m==20)&&(h==4)){
 			lcd_main.message("frgb", 44,220,50); //i'm sorry
-		}else{
+		}else if(sidebar.mode=="none"){
 			lcd_main.message("frgb", menudarkest);
+		}else if(sidebar.mode == "file_menu"){
+			lcd_main.message("frgb", 30,30,30);
+		}else{
+			lcd_main.message("frgb", sidebar.scopes.bg);
 		}
 		lcd_main.message("write", h + ":" +m);			
-		if(view_changed)click_zone(toggle_show_timer,1,1,mainwindow_width-9-fontheight*2.1,0,mainwindow_width,9+fontheight,mouse_index,1);
+		if(view_changed)click_zone(toggle_show_timer,1,1,cx,0,cx2,9+fontheight,mouse_index,1);
 	}
 }
 
@@ -1443,4 +1544,17 @@ function long_sidebar_text(textcontent) {
 function sidebar_notification(message){
 	sidebar.notification = message;
 	set_sidebar_mode("notification");
+}
+
+function timed_sidebar_notification(message, time){
+	sidebar.notification = message;
+	sidebar.notification_return = sidebar.mode;
+	if(time<=0) time = 1000;
+	set_sidebar_mode("notification");
+	var notify_return_task = new Task(return_from_notify,this);
+	notify_return_task.schedule(time);
+}
+
+function return_from_notify(){
+	if(sidebar.mode == "notification") set_sidebar_mode(sidebar.notification_return);
 }

@@ -297,36 +297,38 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 				var last_folder = last_slash.pop();
 				last_folder = last_slash.pop();
 				var up_one = pathonly.split(last_folder)[0];
-				for(var s=0;s<waves_search_paths.length;s++){
-					if(waves_search_paths[s]==up_one){
-						up_one = null;
-						s=999;
-					}
+				if(waves_search_paths.indexOf(up_one)<0){
+					post("\n added ",up_one,"to search path");
+					waves_search_paths.push(up_one);
 				}
-				if(up_one != null) waves_search_paths.push(up_one);
 				waves_search_paths.push(SONGS_FOLDER);
 				post("\nnot found in the location stored in the save file, searching");
-				//post(", trying search paths:",waves_search_paths);
+				post(", trying search paths:",waves_search_paths);
 				var r = -1;
 				for(var s=0;s<=waves_search_paths.length;s++){
 					post(".");
-					if(s==waves_search_paths.length){
-						//prompt the user to find this file
-						post("\n\n\n\nCOULD NOT FIND WAVE:",wavepath,wavename);
-						post("\nPLEASE FIND IT (or a replacement!) IN THE FILE DIALOG BOX THAT HAS POPPED UP");
-						//if(preload_list.length>0){
-							preload_list.push([wavepath,wavename,dictpath]); //put this one back on the preload list
-							preload_task.freepeer(); //pause preloading
-						//}
-						messnamed("open_wave_dialog",wavename);
-					}
 					r = search_for_waves(waves_search_paths[s],wavename,dictpath);
 					if(r!=-1){
 						//post("\nfound something!",r);
 						s=99999;
 					}
 				}
-				if(r==-1)post("\nCOULD NOT FIND WAVE:",wavepath,wavename);
+				if(r==-1){
+					//prompt the user to find this file
+					post("\n\n\n\nCOULD NOT FIND WAVE:",wavepath,wavename);
+					post("\nPLEASE FIND IT (or a replacement!) IN THE FILE DIALOG BOX THAT HAS POPPED UP");
+					//if(preload_list.length>0){
+						preload_list.push([wavepath,wavename,dictpath]); //put this one back on the preload list
+						preload_task.freepeer(); //pause preloading
+					//}
+					sidebar_notification("Couldn't find wave: "+wavepath+"££Please find it (or a replacement) in the file dialog that has popped up. ££ For reasons beyond our control this dialog may be behind the benny window, sorry.");
+					redraw_flag.flag=4;
+					if(fullscreen){
+						fullscreen=0;
+						world.message("fullscreen",0);					
+					}
+					messnamed("open_wave_dialog",wavename);
+				}
 			}
 		}else{
 			post("[cache hit",exists,"]");
@@ -343,11 +345,13 @@ function open_wave_dialog(wavepath){
 	}
 	post("\nyou chose",wavepath);
 	var wavename = wavepath.split("/").pop();
-	post("\n name", wavename);
+	//post("\n name", wavename);
 	var addpath = wavepath.split(wavename)[0];
-	post("\n path", addpath);
-	waves_search_paths = [addpath];
-	//polybuffer_load_wave(wavepath,wavename);
+	//post("\n path", addpath);
+	if(waves_search_paths.indexOf(addpath)<0){
+		post("\n added ",addpath,"to search path");
+		waves_search_paths.push(addpath);
+	}
 	var pll = preload_list.length-1;
 	songs.replace(preload_list[pll][2]+"path",wavepath+wavename);
 	songs.replace(preload_list[pll][2]+"name",wavename);
@@ -1223,9 +1227,11 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 	if(type!="hardware"){
 		var m = blocks.get("blocks["+block_index+"]::mute");
 		if(m!=1)m=0;
-		if((loading.mute_new==1)&&(was_exclusive==0)) m=1;
-		loading.mutelist[loading.mutelist.length]=[block_index,m];
-//		mute_particular_block(block_index,m);
+		if((loading.mute_new==1)&&(was_exclusive==0)){
+			m=1;
+			mute_particular_block(block_index,m); //only bother doing it now if it's a merge? (added to the list anyway because some actions to do with muting cant be done until all loaded)
+		}
+		loading.mutelist.push([block_index,m]);
 	}
 }
 
@@ -1307,6 +1313,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
 		//post("\nsave as");
 		messnamed("trigger_save_as","bang");
+		timed_sidebar_notification("saved as "+loading.songname,2000);
 	}else{
 		var savetask = new Task(check_its_safe_to_save_named,this);
 		savetask.schedule(1000);
@@ -1324,6 +1331,7 @@ function check_its_safe_to_save_selected(){
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
 		messnamed("trigger_save_selected", "bang");
+		timed_sidebar_notification("saved as "+loading.songname,2000);
 	}else{
 		post("\nnot ready to save yet, waiting..");
 		savetask.schedule(1000);
@@ -1340,6 +1348,7 @@ function check_its_safe_to_save_named(){
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
 		messnamed("save_named",loading.songpath+loading.songname);
+		timed_sidebar_notification("saved as "+loading.songname,2000);
 		for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
 		read_songs_folder(sidebar.files_page); //update internal songslist
 	}else{
@@ -1562,6 +1571,7 @@ function process_purgelist(){
 }
 
 function clear_everything(){
+	post("\nclearing everything");
 	messnamed("pause_mod_processing",1);
 	//messnamed("clear_all_buffers","bang"); 
 	//you don't need to do this, everything that gets loaded or created will overwrite these buffers
@@ -1569,14 +1579,21 @@ function clear_everything(){
 	messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
-
 	redraw_flag.paneltargets = [];
 
+	var i;
 	var emptys="{}";
 	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 
-	var i;
+	var emptys="{}";
+	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
+	blocks.parse('{ "blocks" : ['+emptys+'] }');
+	voicemap.parse('{ }');
+	midi_routemap.parse('{ }');
+	mod_routemap.parse('{ }');
+	mod_param.parse('{ }');
+	states.parse('{ }');
 
 	wipe_midi_meters();
 	remove_all_routings();
@@ -1628,9 +1645,6 @@ function clear_everything(){
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
-	var emptys="{}";
-	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
-	blocks.parse('{ "blocks" : ['+emptys+'] }');
 	proll.parse("{}");
 	connections.parse('{ "connections" : [ {} ] }');
 	notepools_dict.parse("notepools","{}");
@@ -1670,12 +1684,6 @@ function clear_everything(){
 	menu_background_cube.name = "block_menu_background";
 	menu_background_cube.color = [0, 0, 0, 1];
 
-	voicemap.parse('{ }');
-	midi_routemap.parse('{ }');
-	mod_routemap.parse('{ }');
-	mod_param.parse('{ }');
-	states.parse('{ }');
-
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
 	for(;i-->=0;){
@@ -1685,7 +1693,6 @@ function clear_everything(){
 	//messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 
-	post("\nclearing everything");
 	sigouts.message("setvalue", 0,0); // clear sigs
 	song_select.previous_name="";
 	song_select.previous_blocks=[];

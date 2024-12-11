@@ -3,8 +3,7 @@
 		"patcher" : "seq.shape.player",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "The core.scales.shapes block stores the 'shape' of a pattern played into it as well as the scale. This block plays back these shapes. The trigger note input both triggers and sets the in-scale offset (eg midi-note 2 offsets the pattern by 2 notes). In the clocked modes a trigger note starts the whole sequence playing by itself on a regular clock. The ornaments sliders control the chance of various types of ornamentation being applied to the pattern. On the second midi input C = reset, C# on triggers one of the ornament types.",
-		"max_polyphony" : 0,
+		"help_text" : "The core.scales.shapes block stores the 'shape' of a pattern played into it as well as the scale. This block plays back these shapes. In the clocked modes a trigger note starts the whole sequence playing by itself on a regular clock. The ornaments sliders control the chance of various types of ornamentation being applied to the pattern. On the second midi input C = reset, C# on triggers one of the ornament types.",		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
 				"midi" : [ "trigger in", "reset+ornament in" ]
@@ -43,7 +42,7 @@
 			{
 				"name" : "mode",
 				"type" : "menu_i",
-				"values" : ["trigger->clock", "trigger->start-1", "trigger->start-loop"],
+				"values" : ["trigger->_clock", "trigger->_start-1", "trigger->_start-loop"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0

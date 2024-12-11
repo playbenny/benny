@@ -1,0 +1,48 @@
+{
+	"source.abl.crackle" : {
+		"patcher" : "source.abl.crackle",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.crackle oscillator. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"midi" : [ "pitch" ],
+				"audio" : [ "fm in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2],
+				"height" : 3
+			}			
+		],
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "float",
+				"values" : ["uni", 0,20000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "density",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "intensity",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

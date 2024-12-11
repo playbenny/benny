@@ -18,17 +18,21 @@ function new_block(block_name,x,y){
 	}
 	var type = details.get("type");
 	var hwmidi = "";
+	var up = 0;
 	if((type=="hardware")&&(blocktypes.contains(block_name+"::midi_handler"))){
 		hwmidi = blocktypes.get(block_name+"::midi_handler");
+	}else if(type == "audio"){
+		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
 	}
+	var patcher = details.get("patcher");
 	var vst = 0;
 	var recycled=0;
 	if((type=="audio") && RECYCLING){
-		var tnv = find_audio_voice_to_recycle(block_name);
+		var tnv = find_audio_voice_to_recycle(patcher,up);
 		new_voice = tnv[0];
 		recycled = tnv[1];
 	}else if((type=="note") && RECYCLING){
-		var tnv = find_note_voice_to_recycle(block_name);
+		var tnv = find_note_voice_to_recycle(patcher);
 		new_voice = tnv[0];
 		recycled = tnv[1];
 	}else if((type=="hardware") && (hwmidi!="") && RECYCLING){
@@ -40,10 +44,10 @@ function new_block(block_name,x,y){
 	}
 	var t_offset = 0;
 	if(type == "note"){
-		note_patcherlist[new_voice] = details.get("patcher");
+		note_patcherlist[new_voice] = patcher;
 	}else if(type == "audio"){
 		t_offset=MAX_NOTE_VOICES;
-		audio_patcherlist[new_voice] = details.get("patcher");
+		audio_patcherlist[new_voice] = patcher;
 		if(audio_patcherlist[new_voice]=="vst.loader"){
 			vst_list[new_voice] = block_name;
 			vst = 1;
@@ -57,6 +61,11 @@ function new_block(block_name,x,y){
 			t_offset=MAX_NOTE_VOICES+MAX_AUDIO_VOICES;
 		}
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
+	}
+	if(loading.progress<=0){
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_block" : '+new_block_index+'} }');
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
 	if(recycled){
@@ -135,12 +144,10 @@ function new_block(block_name,x,y){
 	blocks.replace("blocks["+new_block_index+"]::flock::brownian", 0);
 	blocks.replace("blocks["+new_block_index+"]::space::x", x);
 	blocks.replace("blocks["+new_block_index+"]::space::y", y);
-	var up=0;
 	if(type == "audio"){
-		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
 		blocks.replace("blocks["+new_block_index+"]::upsample", up);
 		audio_upsamplelist[new_voice] = up;
-	}
+	}	
 	blocks.replace("blocks["+new_block_index+"]::space::colour", blocktypes.get(block_name+"::colour") );
 	
 	// and set the params to defaults
@@ -291,7 +298,7 @@ function write_parameter_info_buffer(p_values, p_type, index) {
 	var p_max = p_values[2];
 	var p_curve = p_values[3];
 	var p_steps = 0;
-	if ((p_type == "menu_i") || (p_type == "menu_b") || (p_type == "menu_l")) {
+	if ((p_type == "menu_i") || (p_type == "menu_b") || (p_type == "menu_l") || (p_type == "menu_d")) {
 		p_min = 0;
 		p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
 		p_max = p_steps - 1;
@@ -513,14 +520,15 @@ function poly_loaded(type,number){
 }
 
 function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
+	up |= 0;
 	//post("\n>>looking for a voice to recycle for",pa,"upsampling is",up);
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
-		if((audio_patcherlist[i] == "recycling") && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] == "vst.loader") && (vst_list[i]==pa)))){
+		if((audio_patcherlist[i] == "recycling") && (audio_upsamplelist[i] == up) && ((loaded_audio_patcherlist[i] == pa)||((loaded_audio_patcherlist[i] == "vst.loader") && (vst_list[i]==pa)))){
 			//post("\nrecycling voice ",i);
 			return [i,1];
 		}
 	}
-	for(i=0;i<MAX_AUDIO_VOICES;i++){//tries to avoid core 1
+	for(i=0;i<MAX_AUDIO_VOICES;i++){
 		if(audio_patcherlist[i]=="blank.audio") return [i,0];
 	}
 	for(i=0;i<MAX_AUDIO_VOICES;i++){
@@ -530,7 +538,7 @@ function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampl
 	return -1;
 }
 
-function find_note_voice_to_recycle(pa){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
+function find_note_voice_to_recycle(pa){ 
 	//post("\n>>looking for a voice to recycle for",pa);
 	for(i=0;i<MAX_NOTE_VOICES;i++){
 		if((note_patcherlist[i] == "recycling") && (loaded_note_patcherlist[i] == pa)){
@@ -978,7 +986,7 @@ function remove_connection(connection_number){
 	var f_type = connections.get("connections["+connection_number+"]::from::output::type");
 	var t_type = connections.get("connections["+connection_number+"]::to::input::type");
 	var f_block = connections.get("connections["+connection_number+"]::from::number");
-	var t_block = 1* connections.get("connections["+connection_number+"]::to::number");
+	var t_block = +connections.get("connections["+connection_number+"]::to::number");
 	var f_voice_list = connections.get("connections["+connection_number+"]::from::voice");
 	var t_voice_list = connections.get("connections["+connection_number+"]::to::voice");
 	var f_o_no = connections.get("connections["+connection_number+"]::from::output::number");
@@ -1880,7 +1888,8 @@ function make_connection(cno,existing){
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
 							var enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
-							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale,0,0,cno,v);
+							var offv = conversion.get("offset2");
+							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale,offv*256-128,0,cno,v); //offn*256-128,offv*256-128
 						}
 					}else if(f_type == "matrix"){
 						if(t_type == "matrix") {
@@ -3234,8 +3243,7 @@ function build_mod_sum_action_list(){
 	
 
 	
-	var lockup,locked,flag,dest_index,extra,has_mod,wrap;
-//	var midiout,voffset=0;
+	var lockup,flag,dest_index,extra,has_mod,wrap;
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(blocks.contains("blocks["+b+"]::name")){
 			var bname = blocks.get("blocks["+b+"]::name");
@@ -3247,11 +3255,6 @@ function build_mod_sum_action_list(){
 				lockup *= lockup * 0.003;
 				voicelist = voicemap.get(b);
 				if(!Array.isArray(voicelist)) voicelist = [voicelist];
-				/*if(btype=="hardware"){
-					if(blocktypes.contains(bname+"::midi_output_number")){
-						midiout = blocktypes.get(bname+"::midi_output_number");
-					}	
-				}*/
 
 				for(i=0;i<voicelist.length;i++){
 					locked = 0;
@@ -3260,7 +3263,6 @@ function build_mod_sum_action_list(){
 					flock_buffer.poke(1,voicelist[i]*3,[0,0,0]);					
 					mv=(voicelist[i]+ALLAUDIO);
 					if(mod_routemap.contains(mv)){ //are there any modulations routed to this voice? if so, add them up, check if this param wraps.
-						// { post("\nblock",b,"mod voice",i,"mv is",mv); }
 						slotlist = mod_routemap.get(mv);
 						paramlist = mod_param.get(mv);
 						if(typeof slotlist == "number") {
@@ -3278,17 +3280,6 @@ function build_mod_sum_action_list(){
 						if(blocktypes.contains(bname+"::parameters["+p+"]::wrap")){
 							wrap = 2 - blocktypes.get(bname+"::parameters["+p+"]::wrap"); 
 						}
-						
-						/*if(midiout>-1){
-							flag = 4;
-							var chanout = blocktypes.get(bname+"::parameters["+p+"]::midi_channel");
-							var ccout = blocktypes.get(bname+"::parameters["+p+"]::midi_cc");
-							dest_index = ccout + chanout*128+midiout*16384;
-							mod_sum_action_list.poke(1,list_pointer,dest_index);
-							mod_sum_action_list.poke(2,list_pointer,0);
-							mod_sum_action_list.poke(3,list_pointer,flag);
-							mod_sum_action_list.poke(4,list_pointer,wrap);
-						}else */
 						if(is_flocked[MAX_PARAMETERS*(voicelist[i])+p]>0){
 							flag = 2;
 							extra = MAX_PARAMETERS*(voicelist[i])+p;

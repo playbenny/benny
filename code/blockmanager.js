@@ -174,6 +174,7 @@ var midi_indicators = {
 }
 
 var draw_wave = [];
+var draw_wave_z = [];
 var waves_slices_buffer = new Buffer("waves_slices");
 var waves = {
 	selected : -1,
@@ -327,7 +328,7 @@ var automap = {
 }
 
 var qwertym = {
-	octave : 4,
+	octave : 5,
 	octf : 4,
 	vel : 100
 }
@@ -440,10 +441,6 @@ var sidebar = {
 		position : 0,
 		max : 0
 	},
-	editbtn : 0,
-	editbtn_x: 0,
-	editcolour : [255,255,255],
-	editdark : [64,64,64],
 	scopes : {
 		zoom : 0,
 		voice : -1,    //this is eg voice 34 of the poly
@@ -484,7 +481,8 @@ var sidebar = {
 	back : [],
 	fwd : [],
 	files_page : "songs",
-	notification : ""
+	notification : "",
+	dropdown : null
 }
 
 var y_offset;
@@ -524,6 +522,9 @@ var pasteoffset = [0,0]; //add to this before every paste, reset it on new copy
 
 var undo = new Dict;
 undo.name = "undo";
+
+var undo_stack = new Dict;
+undo_stack.name = "undo_stack";
 
 var flock_presets = new Dict;
 flock_presets.name = "flock_presets";

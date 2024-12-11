@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3812117238,
+	"modificationdate" : 3816285335,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1305,6 +1305,26 @@
 				}
 
 			}
+,
+			"utility.env.four.stage.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"utility.env.four.stage.ui.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
 
 		}
 ,
@@ -1597,6 +1617,11 @@
 				"local" : 1
 			}
 ,
+			"seq.piano.roll.ui.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
+			}
+,
 			"seq.note.tracker.2.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
@@ -1752,12 +1777,22 @@
 
 			}
 ,
-			"seq.piano.roll.ui.js" : 			{
+			"utility.env.four.stage.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"utility.env.four.stage.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-					"projectrelativepath" : "./note_blocks"
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
 				}
 
 			}
@@ -2547,7 +2582,12 @@
 ,
 			"vst.DPiano-E.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.Elation64.json" : 			{
@@ -2952,6 +2992,16 @@
 			"keymap.json" : 			{
 				"kind" : "json",
 				"local" : 1
+			}
+,
+			"utility.env.four.stage.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 
 		}

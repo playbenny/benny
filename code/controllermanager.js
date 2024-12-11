@@ -1,5 +1,6 @@
 outlets = 4;
 inlets = 1;
+var verbose = false;
 
 var firstbootwait = true;
 
@@ -46,104 +47,107 @@ function block(bn){
     }
     blockno = bn;
     lastparam = -1;
-    if(bn>-1) prev_blockno = bn;
-    //the block message is what causes it to do the lookups
-    if(blocks.contains("blocks["+blockno+"]::name")){
-        blockname = blocks.get("blocks["+blockno+"]::name");
-        post("\ncontroller manager initialising for block",blockno,blockname);
-        var l = blocktypes.getsize(blockname+"::parameters");
-        for(var i = 0;i<l;i++){
-            if(blocktypes.get(blockname+"::parameters["+i+"]::name")=="controller"){
-                parameternumber = i;
-                i = 99999;
+    if(bn>-1){
+        prev_blockno = bn;
+        //the block message is what causes it to do the lookups
+        if(blocks.contains("blocks["+blockno+"]::name")){
+            blockname = blocks.get("blocks["+blockno+"]::name");
+            if(verbose) post("\ncontroller manager initialising for block",blockno,blockname);
+            var l = blocktypes.getsize(blockname+"::parameters");
+            for(var i = 0;i<l;i++){
+                if(blocktypes.get(blockname+"::parameters["+i+"]::name")=="controller"){
+                    parameternumber = i;
+                    i = 99999;
+                }
             }
-        }
-        if(i<99999){
-            post("\nthis block has no controller parameter?");
-            return -1;
-        }
-        controllerslist = blocktypes.get(blockname+"::parameters["+parameternumber+"]::values");
-        controllercount = controllerslist.length;
-        if(firstbootwait) post("there are",controllercount,"controllers available in this hardware configuration");
-        selected = null; 
-        selection_type = null;
-        selected_in_dict = null;
-        if(blocks.contains("blocks["+blockno+"]::selected_controller")&&(blocks.get("blocks["+blockno+"]::selected_controller")!="none")){
-            selected_in_dict = blocks.get("blocks["+blockno+"]::selected_controller");
-            post("\ncontroller selection from savefile:",selected_in_dict);
-            set_param(selected_in_dict);
-            var is = ispresent(selected_in_dict);
-            //post("is present?",is);
-            if(is==-1){
-                post("\nthis controller isn't available now, looking for substitutes:");
-                if(io.contains("controllers::"+selected_in_dict+"::substitute")){
-                //find substitute?
-                    var subs = io.get("controllers::"+selected_in_dict+"::substitute");
-                    if(!Array.isArray(subs)) subs = [subs];
-                    for(var i = 0;i<subs.length;i++){
-                        is = ispresent(subs[i]);
-                        if(is>-1){
-                            //this substitute is present, however first we need to check it's not in use already elsewhere
-                            for(var ib=0;ib<MAX_BLOCKS;ib++){
-                                if(blocks.contains("blocks["+ib+"]::selected_controller")){
-                                    var sc = blocks.get("blocks["+ib+"]::selected_controller");
-                                    if(sc == subs[i]){
-                                        post("\na potential substitute ("+subs[i]+") is present but is already in use by block "+ib+" ("+blocks.get("blocks["+ib+"]::name")+")");
-                                        ib = MAX_BLOCKS;
-                                        is = -1;
+            if(i<99999){
+                post("\nthis block has no controller parameter?");
+                return -1;
+            }
+            controllerslist = blocktypes.get(blockname+"::parameters["+parameternumber+"]::values");
+            controllercount = controllerslist.length;
+            if(firstbootwait&&verbose) post("there are",controllercount,"controllers available in this hardware configuration");
+            selected = null; 
+            selection_type = null;
+            selected_in_dict = null;
+            if(blocks.contains("blocks["+blockno+"]::selected_controller")&&(blocks.get("blocks["+blockno+"]::selected_controller")!="none")){
+                selected_in_dict = blocks.get("blocks["+blockno+"]::selected_controller");
+                if(verbose) post("\ncontroller selection from savefile:",selected_in_dict);
+                set_param(selected_in_dict);
+                var is = ispresent(selected_in_dict);
+                //post("is present?",is);
+                if(is==-1){
+                    if(verbose) post("\nthis controller isn't available now, looking for substitutes:");
+                    if(io.contains("controllers::"+selected_in_dict+"::substitute")){
+                    //find substitute?
+                        var subs = io.get("controllers::"+selected_in_dict+"::substitute");
+                        if(!Array.isArray(subs)) subs = [subs];
+                        for(var i = 0;i<subs.length;i++){
+                            is = ispresent(subs[i]);
+                            if(is>-1){
+                                //this substitute is present, however first we need to check it's not in use already elsewhere
+                                for(var ib=0;ib<MAX_BLOCKS;ib++){
+                                    if(blocks.contains("blocks["+ib+"]::selected_controller")){
+                                        var sc = blocks.get("blocks["+ib+"]::selected_controller");
+                                        if(sc == subs[i]){
+                                            if(verbose) post("\na potential substitute ("+subs[i]+") is present but is already in use by block "+ib+" ("+blocks.get("blocks["+ib+"]::name")+")");
+                                            ib = MAX_BLOCKS;
+                                            is = -1;
+                                        }
                                     }
                                 }
+                                if(is>-1){
+                                    if(verbose) post("\na substitute is present:",subs[i]);
+                                    selected = subs[i];
+                                    selection_type = "substitute";
+                                    i = subs.length;
+                                }
+                            }else{
+                                if(verbose) post("\n ",subs[i],"also not available");
                             }
-                            if(is>-1){
-                                post("\na substitute is present:",subs[i]);
-                                selected = subs[i];
-                                selection_type = "substitute";
-                                i = subs.length;
-                            }
-                        }else{
-                            post("\n ",subs[i],"also not available");
                         }
                     }
-                }
-                if(selected == null){
-                    post("\ndidn't find an available substitute, setting to 'none'");
-                    selected = "none";
-                    selection_type = "notfound";
+                    if(selected == null){
+                        if(verbose) post("\ndidn't find an available substitute, setting to 'none'");
+                        selected = "none";
+                        selection_type = "notfound";
+                    }
+                }else{
+                    selected = selected_in_dict;
+                    selection_type = "dict";
                 }
             }else{
-                selected = selected_in_dict;
-                selection_type = "dict";
+                if(verbose) post("\nno controller selection found in dict");
+                selection_type = "notfoundindict";
+                selected_in_dict = null;
+                selected = "none";
             }
-        }else{
-            post("\nno controller selection found in dict");
-            selection_type = "notfoundindict";
-            selected_in_dict = null;
-            selected = "none";
+            if(verbose) post("\ninitialisation complete:",selected_in_dict,selection_type,selected,blockname);
         }
+        outlet(3, blockname);
+        outlet(2, selected);
+        outlet(1, selection_type);
+        outlet(0, selected_in_dict);
     }
-    outlet(3, blockname);
-    outlet(2, selected);
-    outlet(1, selection_type);
-	outlet(0, selected_in_dict);
 }
 
 function param(value){
     if(blockno>-1){
         if(firstbootwait&&(value==0)){
-            //post("\nignoring the zero value received on block load");
+            if(verbose) post("\nblock",blockno,"ignoring the zero value received on block load");
         }else{
             firstbootwait = false;
-            //post("\nselection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
+            if(verbose) post("\nblock ",blockno," selection from the parameter slider:",value,controllerslist[value],"is present?:",ispresent(controllerslist[value]));
             if(controllerslist[value]==selected_in_dict){
-                //post("\nslider is same as value already stored in the dictionary");
+                if(verbose) post("\nslider is same as value already stored in the dictionary");
             }else if((selection_type=="notfound")&&(selected=="none")){
-                //post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
+                if(verbose) post("\nsaved controller wasn't found, ignoring 'none'.",controllerslist[value]);
             }else{
                 blocks.replace("blocks["+blockno+"]::selected_controller",controllerslist[value]);
                 selected_in_dict = controllerslist[value];
                 selected = selected_in_dict;
                 selection_type = "dict";
-                //post("\nslider selection:",controllerslist[value],"storing to dictionary");
+                if(verbose) post("\nslider selection:",controllerslist[value],"storing to dictionary");
                 outlet(3, blockname);
                 outlet(2, selected);
                 outlet(1, selection_type);
@@ -169,6 +173,7 @@ function append(inputname){
 }
 
 function enabled(enab){
+    if(verbose) post("\nblock:",prev_blockno,"enable",enab);
     if(firstbootwait&&enab){
 
     }else{
@@ -206,7 +211,7 @@ function set_param(value){
             if(value == controllerslist[i]) para = i;
         }
         if(para > -1){
-            //post("\nstoring controller selection to parameter",0.99*(para+0.5)/controllercount);
+            if(verbose) post("\nstoring controller selection to parameter",para,controllercount,0.99*(para+0.5)/controllercount);
             parameter_value_buffer.poke(1,blockno*MAX_PARAMETERS+parameternumber,0.99*(para+0.5)/controllercount);
         }
     }

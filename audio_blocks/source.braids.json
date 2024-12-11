@@ -48,7 +48,8 @@
 				"type" : "menu_i",
 				"values" : [ "csaw", "morph", "saw_square", "sine_triangle", "buzz", "square_sub", "saw_sub", "square_sync", "saw_sync", "triple_saw", "triple_square", "triple_triangle", "triple_sine", "triple_ring_mod", "saw_swarm", "saw_comb", "toy", "digi_filter_lp", "digi_filter_peak", "digi_filter_band", "digi_filter_hp", "vosim", "vowel", "vowel_fof", "harmonics", "fm", "feedback_fm", "chaotic_feedback_fm", "plucked", "bowed", "blown", "fluted", "struck_bell", "struck_drum", "kick", "cymbal", "snare", "wavetables", "wavemap", "waveline", "wave_paraphonic", "filtered_noise", "twin_peaks_noise", "clocked_noise", "granular_cloud", "particle_noise", "digital_modulation", "question_mark"],
 				"wrap" : 1,
-				"default" : 0
+				"default" : 0,
+				"error_scale" : 0
 			},
 			{
 				"name" : "timbre",

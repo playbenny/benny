@@ -153,7 +153,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.got_i = tcell & 4095;
 	usermouse.got_t = tcell >> 12;
 	var id = null;
-	//post(usermouse.got_i,usermouse.got_t);
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.
@@ -663,7 +662,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else{
 			var xdist=usermouse.x-usermouse.drag.starting_x;
 			var ydist=usermouse.drag.starting_y-usermouse.y;
-			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);			
+			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);	
 			if((usermouse.clicked2d != -1) && (usermouse.last.got_t>=2 && usermouse.last.got_t<=4)){ 
 				// #### 2D DRAG ###########################################################################################################
 				var f = mouse_click_actions[usermouse.last.got_i];
@@ -736,6 +735,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.last_got_t = 1;
 					}*/
 					redraw_flag.flag |= 2;
+				}
+			}else if((usermouse.clicked2d == -1) && (usermouse.got_t == 7)){
+				if((mouse_click_actions[usermouse.got_i]==custom_mouse_passthrough)&&(mouse_click_values[usermouse.got_i]==1)){
+					custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG
 				//	post("3d drag, hover",usermouse.hover,"ids",usermouse.ids,"\n");
@@ -1115,7 +1118,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					usermouse.scroll_accumulator = 0;
 					tv -= scalar / (p_values[2] - p_values[1] + 1);
 				}
-			}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")){
+			}else if((t=="menu_i")||(t=="menu_l")||(t=="menu_b")||(t=="menu_d")){
 				usermouse.scroll_accumulator += scroll;
 				scalar *= (f==static_mod_adjust)?0.5:1; //this isn't right, i don't understand what's going on here, p_values.length is right, so static_mod_adjust must mangle it but it doesn't? 
 				if(usermouse.scroll_accumulator > 0.22 ){

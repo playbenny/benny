@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 6,
-			"revision" : 2,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 82.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -285,10 +285,10 @@
 					"id" : "obj-26",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 3,
-					"outlettype" : [ "dump", "dump", "clear" ],
-					"patching_rect" : [ 141.0, 626.5, 108.0, 22.0 ],
-					"text" : "t dump dump clear"
+					"numoutlets" : 2,
+					"outlettype" : [ "dump", "dump" ],
+					"patching_rect" : [ 141.0, 626.5, 79.0, 22.0 ],
+					"text" : "t dump dump"
 				}
 
 			}
@@ -563,7 +563,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 136.0, 269.0, 24.0, 24.0 ]
+					"patching_rect" : [ 106.0, 272.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -594,12 +594,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-20",
-					"maxclass" : "button",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 192.0, 230.0, 24.0, 24.0 ]
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "bang", "bang" ],
+					"patching_rect" : [ 192.0, 223.0, 42.0, 22.0 ],
+					"text" : "t b b b"
 				}
 
 			}
@@ -778,10 +778,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 568.0, 223.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 3"
 				}
 
@@ -793,10 +789,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 509.5, 223.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -810,7 +802,7 @@
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 451.0, 186.0, 136.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "core.scales.shapes.ui.js",
+						"filename" : "core.scales.shapes.ui",
 						"parameter_enable" : 0
 					}
 ,
@@ -825,6 +817,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 451.0, 223.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -837,6 +833,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 451.0, 121.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -968,22 +968,20 @@
 				"patchline" : 				{
 					"destination" : [ "obj-18", 0 ],
 					"order" : 0,
-					"source" : [ "obj-20", 0 ]
+					"source" : [ "obj-20", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
-					"order" : 1,
-					"source" : [ "obj-20", 0 ]
+					"source" : [ "obj-20", 2 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-29", 0 ],
-					"order" : 3,
 					"source" : [ "obj-20", 0 ]
 				}
 
@@ -991,8 +989,8 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
-					"order" : 2,
-					"source" : [ "obj-20", 0 ]
+					"order" : 1,
+					"source" : [ "obj-20", 1 ]
 				}
 
 			}

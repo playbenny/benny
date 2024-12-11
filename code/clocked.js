@@ -35,7 +35,7 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
-	if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")) && (sidebar.mode=="none")) draw_clock();
+	if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 }
 
 function frameclock(){
@@ -110,6 +110,7 @@ function frameclock(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
+		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if(displaymode=="waves") draw_waves();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
@@ -129,6 +130,8 @@ function frameclock(){
 							redraw_flag.deferred|=2;// parameter_menu_b(i);
 						}else if(paramslider_details[i][13] == "button"){
 							parameter_button(i);
+						}else if(paramslider_details[i][13] == "menu_d"){
+							redraw_flag.deferred|=2;//parameter_menu_l(i);
 						}else if((redraw_flag.targets[i]==1)&&((paramslider_details[i][16]|0)!=0)&&(automap.mapped_c!=sidebar.selected)){
 							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
 						}else if((paramslider_details[i][12]|0)!=0){
@@ -488,6 +491,7 @@ function sidebar_midi_scope(){
 	if(cha>0){
 		lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
 		lcd_main.message("frgb",sidebar.scopes.fg);
+		if(sidebar.scopes.midinames == 1) setfontsize(fontsmall);
 		for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
 			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi])*128,128);
 			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);

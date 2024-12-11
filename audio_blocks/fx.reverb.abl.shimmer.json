@@ -1,0 +1,95 @@
+{
+	"fx.reverb.abl.shimmer" : {
+		"patcher" : "fx.reverb.abl.shimmer",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.dsp.quartz reverb. stereo in stereo out. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4],
+				"height" : 3
+			},
+			{ 
+				"contains" : [5,6,7,8],
+				"height" : 2
+			}				
+		],
+		"parameters" : [
+			{
+				"name" : "size",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "decay",
+				"type" : "float",
+				"values" : ["uni", 0.1, 60, "exp10"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "diffusion",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "modulation_amount",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "freeze",
+				"force_label" : 1,
+				"type" : "menu_l",
+				"values" : ["off", "on"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "pitchshift",
+				"type" : "float",
+				"values" : ["bi", -12, 12, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "damping",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "shimmer",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}
