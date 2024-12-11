@@ -3001,6 +3001,7 @@ function draw_sidebar(){
 				}
 				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels")){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
+					if((block_voicecount>1) && (blocktypes.contains(block_name+"::ui_in_sidebar_expands"))) ui_h += (block_voicecount-1) * blocktypes.get(block_name+"::ui_in_sidebar_expands");
 					var miplus16 = mouse_index + 16;
 					//this is a bit hacky, but because sometimes the ui may have fewer or more clickable
 					//elements depending on status, you just make this section take up max(16,actual length)

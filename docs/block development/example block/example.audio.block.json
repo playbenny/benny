@@ -5,6 +5,8 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "example_audio_block ££use currency symbol of defunct imperial hellhole 'britain' for newlines in this help text. note there are a few audio-specific options, like upsampling. if your block functions as a stereo channel in one voice add the tag 'subvoices' : 2",
 		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 4,
+		"ui_in_sidebar_expands" : 1,
 		"upsample" : 1,
 		"connections" : {
 			"in" : {
