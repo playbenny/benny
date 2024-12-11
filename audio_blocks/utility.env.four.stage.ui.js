@@ -13,6 +13,7 @@ config.name = "config";
 var blocks = new Dict;
 blocks.name = "blocks";
 var blockcolour = [128,128,128];
+var vcol = [];
 
 var width, height,x_pos,y_pos,rh;
 var block=-1;
@@ -28,6 +29,8 @@ var envcurve = [];
 var stages=4;
 var envlength = [];
 var longest;
+var lowest = [];
+var px = [], py = [];
 
 function setup(x1,y1,x2,y2,sw){ 
 	MAX_DATA = config.get("MAX_DATA");
@@ -64,11 +67,17 @@ function draw(){
 			for(var c=0;c<v_list.length;c++){
 				var prevlev=0;
 				var x=x_pos+1;
-				outlet(1,"frgb",blockcolour);
-				outlet(1,"moveto",x_pos,y_pos+rh*c+0.5*(rh-4));
+				var rng = 1.01 - lowest[c];
+				var midpt = 1 + (lowest[c]/rng);
+				rng = 1/rng;
+				outlet(1,"frgb",48,48,48);
+				outlet(1,"moveto",x_pos+width-2,y_pos+rh*c+midpt*(rh-4));
+				outlet(1,"lineto",x_pos,y_pos+rh*c+midpt*(rh-4));
+				outlet(1,"frgb",vcol[c]);
+
 				for(var i=0;i<stages;i++){
 					var ft = 1/(tf*envtimes[c][i]);
-					for(var p=(i==0);p<(tf*envtimes[c][i]);p++){ //stage 0 starts from 1 as 0 is the moveto
+					for(var p=(i==0);p<(tf*envtimes[c][i]);p+=2){ //stage 0 starts from 1 as 0 is the moveto
 						var pos = p* ft;
 						var v;
 						var cu = envcurve[c][i];
@@ -78,12 +87,26 @@ function draw(){
 						}else{
 							v = 2 *(logexp_lookup.peek(2,Math.floor(8192+8192*pos)) * (cu-0.5) + (1-cu)*pos);	
 						}
-						outlet(1,"lineto",x,y_pos+rh*c+(rh-4)*(0.5 - 0.5*(prevlev+ (envlevels[c][i]-prevlev)*v)));
-						x++;
+						outlet(1,"lineto",x,y_pos+rh*c+(rh-4)*(midpt - rng*(prevlev+ (envlevels[c][i]-prevlev)*v)));
+						x+=2;
 					}
-					x--;
+					x-=2;
 					prevlev = envlevels[c][i];
 				}
+				py[c] = voice_data_buffer.peek(1,MAX_DATA*v_list[c]);
+				px[c] = voice_data_buffer.peek(1,MAX_DATA*v_list[c]+1);
+				var pxs = Math.floor(px[c]);
+				var pxf = px[c]-pxs;
+				x=0;
+				for(i=0;i<pxs;i++){
+					x+=envtimes[c][i];
+				}
+				x+=envtimes[c][pxs]*pxf;
+				x*=tf;
+				x+=x_pos;
+				var y = y_pos + rh*c + (rh-4)*(midpt-rng*py[c]);
+				//outlet(1,"frgb",vcol[c]);
+				outlet(1,"paintrect",x-2,y-2,x+2,y+2,255,255,255);
 			}
 		}
 		drawflag=0;
@@ -94,10 +117,12 @@ function getparams(){
 	var change = 0;
 	longest = 0;
 	for(var c=0;c<v_list.length;c++){
+		lowest[c]=-0.1;
 		for(var i=0;i<stages;i++){
 			var l = 2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+i)-1;
 			change |= (l != envlevels[c][i]);
 			envlevels[c][i] = l;
+			if(l<lowest[c])lowest[c]=l;
 		}
 		var tt=0;
 		for(var i=0;i<stages;i++){
@@ -114,6 +139,12 @@ function getparams(){
 			change |= (l != envcurve[c][i]);
 			envcurve[c][i] = l;
 		}
+		var r = voice_data_buffer.peek(1,MAX_DATA*v_list[c]);
+		change |= (r != py[c]);
+		py[c] = r;
+		r = voice_data_buffer.peek(1,MAX_DATA*v_list[c]+1);
+		change |= (r != px[c]);
+		px[c] = r;
 	}
 	return change;
 }
@@ -133,6 +164,7 @@ function voice_is(v){
 			envlevels[i]=[];
 			envcurve[i]=[];
 			envtimes[i]=[];
+			vcol[i] = config.get("palette::gamut["+((i*20) % config.getsize("palette::gamut"))+"]::colour");
 		}
 	}
 }
