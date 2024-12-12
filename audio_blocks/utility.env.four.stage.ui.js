@@ -90,7 +90,7 @@ function draw(){
 
 		for(var i=0;i<stages;i++){
 			var ft = 1/(tf*envtimes[c][i]);
-			for(var p=(i==0);p<(tf*envtimes[c][i]);p+=2){ //stage 0 starts from 1 as 0 is the moveto
+			for(var p=(i==0);p<(tf*envtimes[c][i]);p+=1){ //stage 0 starts from 1 as 0 is the moveto
 				var pos = p* ft;
 				var v;
 				var cu = envcurve[c][i];
@@ -101,9 +101,9 @@ function draw(){
 					v = 2 *(logexp_lookup.peek(2,Math.floor(8192+8192*pos)) * (cu-0.5) + (1-cu)*pos);	
 				}
 				outlet(1,"lineto",x,y_pos+rh*c+(rh-4)*(midpt[c] - rng[c]*(prevlev+ (envlevels[c][i]-prevlev)*v)));
-				x+=2;
+				x+=1;
 			}
-			x-=2;
+			x-=1;
 			prevlev = envlevels[c][i];
 		}
 		py[c] = voice_data_buffer.peek(1,MAX_DATA*v_list[c]);
