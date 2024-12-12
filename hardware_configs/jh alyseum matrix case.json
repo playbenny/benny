@@ -252,7 +252,7 @@
 				"out" : 				{
 					"hardware" : [ "out1", "out2" ],
 					"hardware_channels" : [ 13, 8 ],
-					"matrix_channels" : [ 0, 8 ]
+					"matrix_channels" : [ 9, 8 ]
 				}
 
 			}
