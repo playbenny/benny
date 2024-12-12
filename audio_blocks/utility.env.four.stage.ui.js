@@ -60,10 +60,12 @@ function update(){
 		var change = getparams();
 		if((change&1)||drawflag){
 			draw();
-		}else if(change&2){
+		}else if(change>1){
 			var c2=2;
 			for(var c=0;c<v_list.length;c++){
-				if(change&c2) efficientdraw(c);
+				if(change&c2){
+					efficientdraw(c);
+				}
 				c2*=2;
 			}
 		}
@@ -176,6 +178,7 @@ function efficientdraw(c){
 }
 
 function getparams(){
+	var nostring="";
 	var change = 0;
 	longest = 0;
 	var c2=2;
@@ -212,7 +215,9 @@ function getparams(){
 		}*/ //save effort, just check for change of x pos as y wont change unless y does (except rare circumstances we don't care about)
 		py[c] = voice_data_buffer.peek(1,MAX_DATA*v_list[c]);
 		var r = voice_data_buffer.peek(1,MAX_DATA*v_list[c]+1);
-		if(((tf*envtimes[c][Math.floor(r)])*Math.abs(r-px[c])>1)){
+		var rr=Math.floor(r);
+		rr = (rr==-1) ? 1 : rr;
+		if(((tf*envtimes[c][rr])*Math.abs(r-px[c])>1)){
 			change |= c2;
 			px[c] = r;
 		}
@@ -238,6 +243,7 @@ function voice_is(v){
 			envtimes[i]=[];
 			vcol[i] = config.get("palette::gamut["+((i*20) % config.getsize("palette::gamut"))+"]::colour");
 		}
+		tf = width/longest; //length in pixels of 1 ms of envelope
 	}
 }
 
