@@ -84,7 +84,7 @@ function new_block(block_name,x,y){
 		}
 		if(details.contains("block_ui_patcher")){
 			var ui = details.get("block_ui_patcher");
-			if((ui == "") || (ui == 0) || (ui == "self")){
+			if((ui == "") || (ui == null) || (ui == "self")){
 				ui_patcherlist[new_block_index] = "blank.ui";
 			}else{
 				ui_patcherlist[new_block_index] = ui;
@@ -94,7 +94,7 @@ function new_block(block_name,x,y){
 		//block_name = details.get("patcher");
 		blocks.replace("blocks["+new_block_index+"]::patcher",details.get("patcher"));
 		var ui = details.get("block_ui_patcher");
-		if((ui == "") || (ui == 0) || (ui == "self")){
+		if((ui == "") || (ui == null) || (ui == "self")){
 			ui_patcherlist[new_block_index] = "blank.ui";
 		}else{
 			ui_patcherlist[new_block_index] = ui;
@@ -606,7 +606,7 @@ function next_free_block(block_name){
 	if(block_name!==null){
 		var ui = blocktypes.get(block_name+"::block_ui_patcher");
 		//search for a recycling candidate
-		if((ui!="blank.ui")&&(ui!="self")){
+		if((ui!="blank.ui")&&(ui!="self")&&(ui!=null)){
 			for(i=0;i<MAX_BLOCKS;i++){
 				if(((ui_patcherlist[i]=="blank.ui")||(ui_patcherlist[i]=="recycling"))&&(loaded_ui_patcherlist[i]==ui) && !blocks.contains("blocks["+i+"]::name")){
 					//post("\n-found ui patcher recycling candidate..");

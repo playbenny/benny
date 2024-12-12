@@ -215,7 +215,7 @@ function draw_panels(){
 		
 		var has_ui = 0;
 		var ui = blocktypes.get(block_name+"::block_ui_patcher");
-		if((ui!="blank.ui")&&(ui!="self")){
+		if((ui!="blank.ui")&&(ui!="self")&&((ui!=null))){
 			has_ui = 4;
 			if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
 				has_ui = Math.min(4,blocktypes.get(block_name+"::ui_in_sidebar_height"));
@@ -3023,7 +3023,7 @@ function draw_sidebar(){
 				}
 			}
 			//button to open editor. currently a full row, but it may easily fit on with some of the above stuff? but position needs to be consistent
-			if((block_type!="hardware")&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
+			if((block_type!="hardware")&&(blocktypes.contains(block_name+"::block_ui_patcher"))&&(blocktypes.get(block_name+"::block_ui_patcher")!="blank.ui")&&(!blocktypes.contains(block_name+"::no_edit"))){
 				mouse_click_actions[mouse_index] = set_display_mode;
 				mouse_click_values[mouse_index] = block;
 				var ebg=block_darkest;
