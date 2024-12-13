@@ -246,7 +246,7 @@
 
 							}
  ],
-						"originid" : "pat-690"
+						"originid" : "pat-694"
 					}
 ,
 					"patching_rect" : [ 1123.0, 46.0, 112.0, 22.0 ],
@@ -339,7 +339,6 @@
 						"classnamespace" : "box",
 						"rect" : [ 97.0, 362.0, 1061.0, 595.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-6",
@@ -422,7 +421,7 @@
 
 							}
  ],
-						"originid" : "pat-692"
+						"originid" : "pat-696"
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -591,7 +590,7 @@
 
 							}
  ],
-						"originid" : "pat-706"
+						"originid" : "pat-712"
 					}
 ,
 					"patching_rect" : [ 314.5, 242.0, 102.0, 22.0 ],
@@ -830,7 +829,7 @@
 
 							}
  ],
-						"originid" : "pat-708"
+						"originid" : "pat-714"
 					}
 ,
 					"patching_rect" : [ 725.0, 48.25, 117.0, 22.0 ],
@@ -1055,7 +1054,7 @@
 
 							}
  ],
-						"originid" : "pat-710"
+						"originid" : "pat-716"
 					}
 ,
 					"patching_rect" : [ 556.0, 527.0, 69.0, 22.0 ],
@@ -1977,7 +1976,7 @@
 
 							}
  ],
-						"originid" : "pat-712"
+						"originid" : "pat-718"
 					}
 ,
 					"patching_rect" : [ 397.0, 167.25, 100.0, 22.0 ],
@@ -2057,7 +2056,6 @@
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-2",
@@ -2321,7 +2319,7 @@
 
 							}
  ],
-						"originid" : "pat-714"
+						"originid" : "pat-720"
 					}
 ,
 					"patching_rect" : [ 742.0, 660.0, 123.0, 22.0 ],
@@ -3101,7 +3099,7 @@
 
 							}
  ],
-						"originid" : "pat-716"
+						"originid" : "pat-722"
 					}
 ,
 					"patching_rect" : [ 659.0, 132.25, 113.0, 22.0 ],
@@ -4322,7 +4320,7 @@
 
 							}
  ],
-						"originid" : "pat-750"
+						"originid" : "pat-756"
 					}
 ,
 					"patching_rect" : [ 30.0, 174.0, 161.0, 22.0 ],
@@ -5217,7 +5215,7 @@
 
 							}
  ],
-						"originid" : "pat-754"
+						"originid" : "pat-760"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 12.25, 43.0, 22.0 ],
@@ -5802,7 +5800,7 @@
 
 							}
  ],
-						"originid" : "pat-756"
+						"originid" : "pat-762"
 					}
 ,
 					"patching_rect" : [ 781.0, 328.25, 85.0, 22.0 ],
@@ -6238,7 +6236,7 @@
 
 											}
  ],
-										"originid" : "pat-760"
+										"originid" : "pat-766"
 									}
 ,
 									"patching_rect" : [ 305.0, 329.0, 69.0, 22.0 ],
@@ -8172,7 +8170,7 @@
 
 							}
  ],
-						"originid" : "pat-758"
+						"originid" : "pat-764"
 					}
 ,
 					"patching_rect" : [ 110.75, 587.0, 298.0, 22.0 ],
@@ -9174,7 +9172,7 @@
 
 											}
  ],
-										"originid" : "pat-770"
+										"originid" : "pat-776"
 									}
 ,
 									"patching_rect" : [ 30.0, 463.0, 129.0, 22.0 ],
@@ -10053,7 +10051,7 @@
 
 							}
  ],
-						"originid" : "pat-768",
+						"originid" : "pat-774",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -11900,7 +11898,7 @@
 
 							}
  ],
-						"originid" : "pat-774",
+						"originid" : "pat-780",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -12942,7 +12940,7 @@
 
 											}
  ],
-										"originid" : "pat-780"
+										"originid" : "pat-786"
 									}
 ,
 									"patching_rect" : [ 540.0, 18.0, 89.0, 22.0 ],
@@ -14026,7 +14024,7 @@
 
 							}
  ],
-						"originid" : "pat-778"
+						"originid" : "pat-784"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 41.25, 67.0, 22.0 ],
@@ -14163,7 +14161,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 9.0, 254.0, 88.0, 30.0 ],
 					"text" : "start",
-					"textoncolor" : [ 1.0, 0.216, 0.0, 1.0 ],
+					"textoncolor" : [ 1.0, 0.827, 0.0, 1.0 ],
 					"varname" : "startbutton"
 				}
 
@@ -14332,7 +14330,8 @@
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
 					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "blockmanager",
@@ -16310,40 +16309,8 @@
 
 			}
  ],
-		"originid" : "pat-688",
-		"parameters" : 		{
-			"obj-15.1::obj-11.1::obj-10" : [ "live.dial[6]", "sub oct", 0 ],
-			"obj-15.1::obj-11.1::obj-2" : [ "live.dial[7]", "drive", 0 ],
-			"obj-15.1::obj-11.1::obj-21" : [ "live.dial[8]", "fine tune", 0 ],
-			"obj-15.1::obj-11.1::obj-36" : [ "live.dial[11]", "portamento", 0 ],
-			"obj-15.1::obj-11.1::obj-40" : [ "live.dial", "mod ratio", 0 ],
-			"obj-15.1::obj-11.1::obj-45" : [ "live.dial[2]", "mod amount", 0 ],
-			"obj-15.1::obj-11.1::obj-49" : [ "live.dial[5]", "semi", 0 ],
-			"obj-15.1::obj-11.1::obj-52" : [ "live.dial[3]", "mod fine tune", 0 ],
-			"obj-15.1::obj-11.1::obj-6" : [ "live.dial[10]", "sub phase", 0 ],
-			"obj-15.1::obj-11.1::obj-65" : [ "live.dial[4]", "feedback", 0 ],
-			"obj-15.1::obj-11.1::obj-87" : [ "live.dial[12]", "curve", 0 ],
-			"obj-15.1::obj-11.1::obj-9" : [ "live.dial[9]", "harmonic", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
+		"originid" : "pat-692",
 		"dependency_cache" : [ 			{
-				"name" : "alyseum_matrix.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/external_matrix",
-				"patcherrelativepath" : "../hardware_configs/drivers/external_matrix",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
 			}
@@ -16381,6 +16348,13 @@
 			}
 , 			{
 				"name" : "blank.audio.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "blank.driver.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
@@ -16429,76 +16403,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "controllermanager.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.js",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.clock.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.auto.ui.js",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.auto.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.control.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.keyboard.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.keyboard.ui.js",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "core.input.keyboard.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "display_pages.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
@@ -16531,13 +16435,6 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "jh_single_jogwheel.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/special_controller",
-				"patcherrelativepath" : "../hardware_configs/drivers/special_controller",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -16602,72 +16499,9 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "parameterwatcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "rme_totalmix.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/soundcard_mixer",
-				"patcherrelativepath" : "../hardware_configs/drivers/soundcard_mixer",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.step.js",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "seq.note.step.ui.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "source.abb.phase.distortion.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "source.abb.phase.distortion.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "source.basic.osc.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "source.basic.osc.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : "../audio_blocks",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "ui_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "universal.step.sequence.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
-				"patcherrelativepath" : "../note_blocks",
 				"type" : "JSON",
 				"implicit" : 1
 			}
@@ -16680,13 +16514,6 @@
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
