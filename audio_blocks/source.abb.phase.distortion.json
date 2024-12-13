@@ -1,0 +1,111 @@
+{
+	"source.abb.phase.distortion" : {
+		"patcher" : "abb.phasedistortion.osc",
+		"type" : "audio",
+		"help_text" : "crunked up phase distortion oscillator alligator",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"midi"	: ["midi in"]
+			},
+			"out" : {
+				"audio" : [ "out"],
+				"midi" : ["midi through"]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1],
+				"height" : 0
+			},
+            { 
+				"contains" : [2, 3, 4, 5],
+				"height" : 2,
+				"colour" : -10
+			},
+            { 
+				"contains" : [6, 7, 8, 9],
+				"height" : 2,
+				"colour" : -20
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 5, 6, 8, 9]
+		},
+		"parameters" : [
+			{
+				"name" : "fine tune",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "semi",
+				"type" : "int",
+				"values" : ["bi", -12, 12, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["uni", 0, 1.5, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "mod ratio",
+				"type" : "int",
+				"values" : ["uni", 1, 12, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "mod fine tune",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp100"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "mod amount",
+				"type" : "float",
+				"values" : ["uni", 0, 10, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "sub oct",
+				"type" : "float",
+				"values" : ["uni", 0, 10, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "sub phase",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["uni", 0, 4, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "harmonic",
+				"type" : "float",
+				"values" : ["uni", 0, 12, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}
