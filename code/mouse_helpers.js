@@ -808,6 +808,18 @@ function select_folder(parameter,value){
 	messnamed("select_folder","bang");
 }
 
+function open_core_control_auto(){
+	post("\nlooking");
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if((blocks.contains("blocks["+i+"]::name"))&&(blocks.get("blocks["+i+"]::name")=="core.input.control.auto")){
+			for(var t=0;t<MAX_BLOCKS;t++) selected.block[t] = 0;
+			selected.block[i]=1;
+			set_display_mode("custom",i);
+			return 1;
+		}
+	}
+}
+
 function remove_connection_btn(cno,value){
 	if(value == danger_button){
 		remove_connection(cno);
