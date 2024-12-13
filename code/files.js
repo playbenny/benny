@@ -1580,6 +1580,11 @@ function clear_everything(){
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
 	redraw_flag.paneltargets = [];
+	
+	if(EXTERNAL_MATRIX_PRESENT) messnamed("drivers_poly", "setvalue",1,"clear");
+	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly", "setvalue",2,"clear");
+	//	matrix.message("clear"); //clears the audio matrix
+	messnamed("clear_matrix","bang");
 
 	var i;
 	var emptys="{}";
@@ -1605,10 +1610,6 @@ function clear_everything(){
 	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
 	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 	sidebar.selected_voice = -1;
-//	matrix.message("clear"); //clears the audio matrix
-	messnamed("clear_matrix","bang");
-	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly", "setvalue",2,"clear");
-	if(EXTERNAL_MATRIX_PRESENT) messnamed("drivers_poly", "setvalue",1,"clear");
 	note_poly.message("setvalue", 0,"muteouts",1);
 	audio_poly.message("setvalue", 0,"muteouts",1);
 	audio_poly.message("setvalue", 0,"filename","off");

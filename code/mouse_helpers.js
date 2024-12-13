@@ -849,9 +849,12 @@ function remove_block_btn(block,value){
 function clear_everything_btn(parameter,value){
 	if(value == danger_button){
 		clear_everything();
+		set_sidebar_mode("none");
 		danger_button = -1;
 	}else{
 		danger_button = value;
+		redraw_flag.flag |= 2;
+		post("\ndanger",value,"(",parameter,")");
 	}
 }
 function files_switch_folder(){

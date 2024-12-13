@@ -2608,6 +2608,19 @@ function draw_sidebar(){
 		click_zone(select_folder, "record", null, file_menu_x, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,mouse_index,1 );
 		y_offset+=2.2*fontheight;
 
+		//clear all: 
+		post("\ndb",danger_button,"mi",mouse_index);
+		if(danger_button == mouse_index){
+			lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,120,0,0);
+			lcd_main.message("frgb", 255,50,50);
+		}else{
+			lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
+			lcd_main.message("frgb",greycolour);
+		}
+		click_zone(clear_everything_btn, 0,mouse_index, file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", "clear everything");
+		y_offset+=1.6*fontheight;
 
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		draw_resource_monitor_page();
