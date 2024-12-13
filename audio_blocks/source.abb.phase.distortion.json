@@ -1,6 +1,6 @@
 {
 	"source.abb.phase.distortion" : {
-		"patcher" : "abb.phasedistortion.osc",
+		"patcher" : "source.abb.phase.distortion",
 		"type" : "audio",
 		"help_text" : "crunked up phase distortion oscillator alligator",
 		"max_polyphony" : 0,
@@ -28,6 +28,11 @@
 				"contains" : [6, 7, 8, 9],
 				"height" : 2,
 				"colour" : -20
+			},
+			{ 
+				"contains" : [10, 11],
+				"height" : 2,
+				"colour" : -30
 			}
 		],
 		"panel" : {
@@ -105,6 +110,20 @@
 				"values" : ["uni", 0, 12, "lin"],
 				"wrap" : 0,
 				"default" : 0
+			},
+            {
+				"name" : "slide amount",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "slide curve",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}
