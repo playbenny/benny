@@ -2177,6 +2177,7 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 	if(av==-1){
 		av = 1 - blocks.get("blocks["+block+"]::bypass");
 	}
+	if(blocks.get("blocks["+block+"]::type")=="hardware") return -1; //hardware can't be bypassed, too complicated
 //	if(av==1) anymuted=1; //does bypass count as mute? do we want unmute all to unbypass all?
 	blocks.replace("blocks["+block+"]::bypass",av);
 	if(blocks.get("blocks["+block+"]::type")=="audio"){
