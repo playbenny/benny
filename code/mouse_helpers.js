@@ -2918,6 +2918,11 @@ function toggle_fullscreen(){
 }
 
 function key_escape(){
+	if(sidebar.dropdown!=null) {
+		sidebar.dropdown=null;
+		redraw_flag.flag |= 2;
+		return 1;
+	}
 	if(displaymode=="panels"){
 		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
 			set_sidebar_mode("block");
