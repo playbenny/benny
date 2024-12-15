@@ -1,9 +1,11 @@
 function set_display_mode(mode,t){
 	if(mode == "custom"){
 		custom_block = +t;
+		last_displaymode = displaymode;
 		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, sidebar.x-9, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
+		last_displaymode = displaymode;
 		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, sidebar.x2, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){

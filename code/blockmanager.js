@@ -71,6 +71,7 @@ var mainwindow_height = 240;
 var scale_2d = 1;
 
 var displaymode = "loading";
+var last_displaymode = "blocks"; //where you back out to if you hit esc from a ui page.
 var custom_block = -1; //block no for custom screen pages
 var playing = 0;
 var recording = 0;

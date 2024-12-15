@@ -2933,6 +2933,8 @@ function key_escape(){
 	}else if((displaymode=="waves")&&(waves.selected!=-1)){
 		waves.selected=-1;
 		redraw_flag.flag |= 4;
+	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
+		set_display_mode(last_displaymode);
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
 			usermouse.clicked3d=-1;
@@ -2955,7 +2957,7 @@ function key_escape(){
 				if(sidebar.mode == "file_menu"){
 					set_sidebar_mode("none");
 					center_view(1);
-				} 
+				}
 			}else{
 				center_view(1);
 			}
