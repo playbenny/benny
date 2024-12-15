@@ -121,7 +121,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 15, "lin"],
 				"wrap" : 1,
-				"default" : 0
+				"default" : 0.03125
 			},
 			{
 				"name" : "default_length",
