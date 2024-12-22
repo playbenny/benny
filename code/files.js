@@ -539,9 +539,9 @@ function merge_song(){
 // so it'll be called again next frame. this way it doesn't make the music glitch!
 function import_song(){	
 	var b,i,t;
-	preload_task.cancel();
 	//post("\nimport-displaymode is",displaymode);
 	if(loading.progress==-1){
+		try{ preload_task.cancel();	}catch(err){}
 		//set_display_mode("loading");
 		if(output_looper_active){
 			post("\noutput looper is active so i should be setting it to fullscreen but i wont");
@@ -871,7 +871,7 @@ function import_song(){
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		
-		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
+		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){} //if you interupted preloading waves, just restart it in 5secs
 	}
 }
 

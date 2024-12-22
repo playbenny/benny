@@ -306,7 +306,7 @@ function initialise_dictionaries(hardware_file){
 	}
 	read_songs_folder("templates");	
 			
-	var preload_task = new Task(preload_all_waves, this);
+	preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 
 	if(hardware_file!="init"){
