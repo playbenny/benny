@@ -246,7 +246,7 @@
 
 							}
  ],
-						"originid" : "pat-694"
+						"originid" : "pat-690"
 					}
 ,
 					"patching_rect" : [ 1123.0, 46.0, 112.0, 22.0 ],
@@ -421,7 +421,7 @@
 
 							}
  ],
-						"originid" : "pat-696"
+						"originid" : "pat-692"
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -590,7 +590,7 @@
 
 							}
  ],
-						"originid" : "pat-712"
+						"originid" : "pat-706"
 					}
 ,
 					"patching_rect" : [ 314.5, 242.0, 102.0, 22.0 ],
@@ -829,7 +829,7 @@
 
 							}
  ],
-						"originid" : "pat-714"
+						"originid" : "pat-708"
 					}
 ,
 					"patching_rect" : [ 725.0, 48.25, 117.0, 22.0 ],
@@ -1054,7 +1054,7 @@
 
 							}
  ],
-						"originid" : "pat-716"
+						"originid" : "pat-710"
 					}
 ,
 					"patching_rect" : [ 556.0, 527.0, 69.0, 22.0 ],
@@ -1976,7 +1976,7 @@
 
 							}
  ],
-						"originid" : "pat-718"
+						"originid" : "pat-712"
 					}
 ,
 					"patching_rect" : [ 397.0, 167.25, 100.0, 22.0 ],
@@ -2319,7 +2319,7 @@
 
 							}
  ],
-						"originid" : "pat-720"
+						"originid" : "pat-714"
 					}
 ,
 					"patching_rect" : [ 742.0, 660.0, 123.0, 22.0 ],
@@ -3099,7 +3099,7 @@
 
 							}
  ],
-						"originid" : "pat-722"
+						"originid" : "pat-716"
 					}
 ,
 					"patching_rect" : [ 659.0, 132.25, 113.0, 22.0 ],
@@ -4320,7 +4320,7 @@
 
 							}
  ],
-						"originid" : "pat-756"
+						"originid" : "pat-750"
 					}
 ,
 					"patching_rect" : [ 30.0, 174.0, 161.0, 22.0 ],
@@ -5215,7 +5215,7 @@
 
 							}
  ],
-						"originid" : "pat-760"
+						"originid" : "pat-754"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 12.25, 43.0, 22.0 ],
@@ -5800,7 +5800,7 @@
 
 							}
  ],
-						"originid" : "pat-762"
+						"originid" : "pat-756"
 					}
 ,
 					"patching_rect" : [ 781.0, 328.25, 85.0, 22.0 ],
@@ -6236,7 +6236,7 @@
 
 											}
  ],
-										"originid" : "pat-766"
+										"originid" : "pat-760"
 									}
 ,
 									"patching_rect" : [ 305.0, 329.0, 69.0, 22.0 ],
@@ -8170,7 +8170,7 @@
 
 							}
  ],
-						"originid" : "pat-764"
+						"originid" : "pat-758"
 					}
 ,
 					"patching_rect" : [ 110.75, 587.0, 298.0, 22.0 ],
@@ -9172,7 +9172,7 @@
 
 											}
  ],
-										"originid" : "pat-776"
+										"originid" : "pat-770"
 									}
 ,
 									"patching_rect" : [ 30.0, 463.0, 129.0, 22.0 ],
@@ -10051,7 +10051,7 @@
 
 							}
  ],
-						"originid" : "pat-774",
+						"originid" : "pat-768",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -11898,7 +11898,7 @@
 
 							}
  ],
-						"originid" : "pat-780",
+						"originid" : "pat-774",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -12940,7 +12940,7 @@
 
 											}
  ],
-										"originid" : "pat-786"
+										"originid" : "pat-780"
 									}
 ,
 									"patching_rect" : [ 540.0, 18.0, 89.0, 22.0 ],
@@ -14024,7 +14024,7 @@
 
 							}
  ],
-						"originid" : "pat-784"
+						"originid" : "pat-778"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 41.25, 67.0, 22.0 ],
@@ -14327,18 +14327,24 @@
 			}
 , 			{
 				"box" : 				{
+					"filename" : "blockmanager.js",
 					"id" : "obj-32",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 30.0, 345.0, 105.25, 22.0 ],
+					"numoutlets" : 0,
+					"patching_rect" : [ 30.0, 345.0, 100.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "blockmanager",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js blockmanager"
+					"text" : "v8 blockmanager",
+					"textfile" : 					{
+						"filename" : "blockmanager.js",
+						"flags" : 0,
+						"embed" : 0,
+						"autowatch" : 1
+					}
+
 				}
 
 			}
@@ -16309,7 +16315,7 @@
 
 			}
  ],
-		"originid" : "pat-692",
+		"originid" : "pat-688",
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -16341,8 +16347,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "C:/Users/jhold/Documents/james music/benny misc",
-				"patcherrelativepath" : "../../../../../jhold/Documents/james music/benny misc",
+				"bootpath" : "~/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}
@@ -16382,13 +16388,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "blocks_and_connections.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "clip_dither.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/output_blocks",
 				"patcherrelativepath" : "../output_blocks",
@@ -16396,45 +16395,10 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "clocked.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "display_pages.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "drawing_helpers.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "driver_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "files.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "init_functions.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
@@ -16461,20 +16425,6 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "mouse.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "mouse_helpers.js",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
