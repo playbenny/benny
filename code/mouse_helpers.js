@@ -1815,13 +1815,11 @@ function unscale_parameter(block, parameter, value){
 
 function qwertymidi_octave(parameter, value){
 	if(value=="get"){
-		var t = Math.floor(qwertym.octf * 12);
-		if(t!=qwertym.octave) qwertym.octf = qwertym.octave/12;
-		return(qwertym.octf);
+		var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
+		return(oct);
 	}else{
 		value = Math.max(0,Math.min(0.9999999,value));
-		qwertym.octf = value;
-		qwertym.octave = Math.floor(value*12);
+		parameter_value_buffer.poke(1, MAX_PARAMETERS * automap.available_k_block + 9, value);
 		redraw_flag.flag |= 2;
 	}
 }
@@ -3009,17 +3007,20 @@ function custom_key_passthrough(key){
 }
 
 function qwertymidi(key,vel){
-	messnamed("qwertymidi",key + 12*qwertym.octave, vel);
+	messnamed("qwertymidi",key, vel);
 }
 function qwertymidispecial(command){
+	var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
 	if(command=="octavedown"){
-		qwertym.octave -= 1;
-		if(qwertym.octave < 0) qwertym.octave = 0;
+		oct -= 0.1;
 	}else if(command=="octaveup"){
-		if(qwertym.octave < 9) qwertym.octave += 1;
+		oct += 0.1;
 	}
+	oct = Math.max(0, Math.min(1, oct));
+	parameter_value_buffer.poke(1,MAX_PARAMETERS * automap.available_k_block + 9,oct);
 	redraw_flag.flag |= 2;
 }
+
 function poly_key(dir,end){
 	if(dir<0){
 		if((sidebar.mode == "block")||(sidebar.mode == "settings")){

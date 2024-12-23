@@ -6843,7 +6843,9 @@ function draw_automap_headers(sx, block) {
 			lcd_main.message("write", "octave");
 			lcd_main.message("frgb", automap.colours_k.colour);
 			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", qwertym.octave-2);
+			var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
+			oct = Math.floor(oct * 9.99);
+			lcd_main.message("write", oct-2);
 			sx += bw2;		
 		}
 		if(playing){
