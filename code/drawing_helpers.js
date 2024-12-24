@@ -231,7 +231,7 @@ function parameter_menu_l(p){
 	var valcol = paramslider_details[p][4];
 	var vc;
 	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
-	for(var bl=statecount-1;bl>=0;bl--){
+	for(var bl=0; bl<statecount; bl++){ //var bl=statecount-1;bl>=0;bl--){
 		if(valcol.length==1){
 			vc = valcol[0];
 		}else{
@@ -264,7 +264,7 @@ function parameter_menu_d(p){
 	var vc;
 	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
 	if(sidebar.dropdown=="param."+p){
-		for(var bl=statecount-1;bl>=0;bl--){
+		for(var bl=0; bl<statecount; bl++){ //var bl=statecount-1;bl>=0;bl--){
 			if(valcol.length==1){
 				vc = valcol[0];
 			}else{
