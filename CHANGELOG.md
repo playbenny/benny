@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+24/12/24:
+- improved how qwerty input octave control works
+- improved shape player block. removed the two self-playing modes because this is something you can do using one or two other blocks so it doesn't need to be built in.
 05/12/24:
 - four stage env added, lets you do complex envelopes. easily chainable, lots of interesting trigger ins and outs.
 - dropdowns now available as a parameter display type
