@@ -779,6 +779,7 @@ function import_song(){
 		loading.ready_for_next_action=loading.wait;
 		if(t!=0){
 			post("\ndone loading connections");
+			if(config.get("SHOW_CONTROL_AUTO_DURING_SONG_LOAD")==1) open_core_control_auto();
 		}
 	}else{ 
 		var stpv = [];

@@ -13,7 +13,7 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "midi in" ,"trigger", "row select", "reset" ],
+				"midi" : [ "midi in" ,"trigger", "backwards", "row select", "reset" ],
 				"default" : 1,
 				"automap_to" : 0
 			},
@@ -154,8 +154,7 @@
 				"values" : ["hard follow", "soft follow"],
 				"wrap" : 0,
 				"default" : 0,
-				"nopervoice" : 1,
-				"forcelabel" : 1
+				"nopervoice" : 1
 			},
 			{
 				"name" : "pattern change reset mode",

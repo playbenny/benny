@@ -13,18 +13,25 @@
 			}
 		},
 		"groups" : [
-			{ 
-				"contains" : [0, 0,17, 1, 2, 3]
+			{
+				"header" : "scale",
+				"contains" : [0,0,0,0,0,0,0,17],
+				"height" : 0
 			},
 			{ 
-				"contains" : [4, 4, 15,16],
-				"height" : 1,
-				"colour" : [255,255,255]
+				"contains" : [3, 1],
+				"height" : 0,
+				"colour": -5
+			},
+			{ 
+				"contains" : [4,4,4,15,16,2],
+				"height" : 0,
+				"colour" : -10
 			},
 			{ 
 				"contains" : [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
 				"height" : 0,
-				"colour" : [255,255,255]
+				"colour" : -15
 			}						
 		],
 		"panel" : {
@@ -33,22 +40,24 @@
 		"parameters" : [
 			{
 				"name" : "scale",
-				"type" : "int",
-				"values" : ["uni", 1, 8, "lin"],
+				"type" : "menu_l",
+				"values" : ["1", "2", "3", "4", "5", "6", "7", "8"],
 				"wrap" : 0,
+				"columns" : 8,
 				"error_scale" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "mode",
-				"type" : "menu_i",
-				"values" : ["trigger->_clock", "trigger->_start-1", "trigger->_start-loop"],
+				"name" : "shape",
+				"type" : "menu_d",
+				"values" : ["same as scale", "1", "2", "3", "4", "5", "6", "7", "8"],
 				"error_scale" : 0,
+				"force_label" : 1,
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "clock rate",
+				"name" : "arp rate",
 				"type" : "menu_i",
 				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n", "2b", "3b", "4b", "5b", "6b","7b","8b"],
 				"error_scale" : 0,
@@ -56,7 +65,7 @@
 				"default" : 0.46
 			},
 			{
-				"name" : "offset",
+				"name" : "note_offset",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"error_scale" : 0.3,
