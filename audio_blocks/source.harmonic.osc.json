@@ -12,7 +12,7 @@
 				"midi" : [ "pitch_in" ]
 			},
 			"out" : {
-				"audio" : [ "osc out", "harmonic 1 out" ],
+				"audio" : [ "osc out", "out2" ],
 				"midi" : [ "through" ]
 			}
 		},
