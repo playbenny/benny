@@ -300,9 +300,10 @@ var automap = {
 	count : 0,
 	inputno_k : 0,
 	offset_c : 0,
-	offset_range_c : 0,
+	offset_range_c : 0, 
 	c_cols : 4,
 	c_rows : 4,
+	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check
 	q_gain : 0.125, //default gain for cue auto connections
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to

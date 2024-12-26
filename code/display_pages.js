@@ -3511,6 +3511,7 @@ function draw_sidebar(){
 							y_offset=namelabely+fontheight*0.2;
 						}
 						if(getmap==1){
+							automap.sidebar_row_ys[map_y]=y_offset;
 							if(map_x!=0){ //wrap round to the next row, padding maplist with -1s if still inside the row limit
 								if((map_y>=0)){// && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
