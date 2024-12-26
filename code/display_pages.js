@@ -812,11 +812,11 @@ function initialise_block_menu(visible){
 }
 
 
-function blocks_enable(enab){ //shows or hides all the blocks/wires/text
+function blocks_enable(enab){ //shows or hides all the blocks/wires
 	for(var i=0;i<blocks_cube.length;i++){
 		if(typeof blocks_cube[i] !== 'undefined'){
 			for(var t=0;t<blocks_cube[i].length;t++){
-				/*if(typeof blocks_cube[i][t] !== 'undefined') */blocks_cube[i][t].enable = enab;
+				blocks_cube[i][t].enable = enab;
 			}
 		}
 	}
@@ -862,6 +862,7 @@ function block_meters_enable(enab){
 }
 
 function block_and_wire_colours(){ //for selection and mute etc
+	if(displaymode != "blocks") return -1;
 	var i, t, cmute,tmc,segment,cs;
 	var block_c=[];
 	var block_v, subvoices, block_mute;
