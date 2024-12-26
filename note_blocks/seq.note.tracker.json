@@ -13,7 +13,7 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "midi in" ,"trigger", "row select", "reset" ],
+				"midi" : [ "midi in" ,"trigger", "backwards", "row select", "reset" ],
 				"default" : 1,
 				"automap_to" : 0
 			},
@@ -27,7 +27,7 @@
 				"colour" : 0
 			},
 			{
-				"contains" : [9,9,3,5,12],
+				"contains" : [9,9,9,3,3,5,12,12],
 				"height" : 0,
 				"colour" : -10
 			},
@@ -144,6 +144,7 @@
 				"values" : ["hard follow", "soft follow"],
 				"wrap" : 0,
 				"default" : 0,
+				"force_label" : 1,
 				"nopervoice" : 1
 			},
 			{
