@@ -1,0 +1,138 @@
+{
+	"source.quanti.slide.osc" : {
+		"patcher" : "source.quanti.slide.osc",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Quanti-slide oscillator. Quantises pitch to the selected scale - the quantiser is after the midi note in (with portamento), the detune, the range, the fm input and the unstable pitch are summed. The slide width control controls the size of a linear transition region between pitches - on 0 you get sharply quantised notes, on 1 you get no quantisation at all. ££Like the basic osc, shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in *LFO* and *audio* ranges. The 'initial pitch' slider sets the starting pitch, incoming midi overrides this but doesn't reset the slider. ££The rectangle portion of this oscillator uses 'EPTR' code from Yofiel.com. ",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "fm / sync", "shape" ],
+				"midi" : [ "pitch","sync" ]
+			},
+			"out" : {
+				"audio" : [ "osc", "sub" ],
+				"midi" : [ "through"]
+			}
+		},
+		"groups" : [
+			{
+				"contains": [10, 10, 10, 10, 10, 10, 12, 11],
+				"height" : 0,
+				"colour" : -6,
+				"header" : "quantise settings"
+			},
+			{ 
+				"contains" : [0,0,0,1,1,1,4,4,4,9],
+				"colour" : -3
+			},
+			{
+				"contains" : [2,3,7,5,6,8]
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1]
+		},
+		"parameters" : [
+			{
+				"name" : "shape",
+				"type" : "menu_f",
+				"values" : ["sin", "tri", "saw", "pulse", "sqr", "tri"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "range",
+				"type" : "menu_i",
+				"values" : ["-16|lfo","-15|lfo","-14|lfo","-13|lfo","-12|lfo","-11|lfo","-10|lfo","-9|lfo","-8|lfo","-7|lfo","-6|lfo","-5|sub","-4|sub","-3|osc","-2|osc","-1|osc","0|osc","1|osc","2|osc"],
+				"error_scale" : 0.5,
+				"wrap" : 0,
+				"default" : 0.875
+			},
+			{
+				"name" : "unstable_pitch",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "unstable_shape",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.02 
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"error_scale" : 0
+			},
+			{
+				"name" : "fm mode",
+				"type" : "menu_l",
+				"error_scale" : 0,
+				"force_label" : 1,
+				"values" : ["exp fm", "sync"],
+				"wrap" : 1,
+				"default" : 0.3
+			},
+			{
+				"name" : "out2",
+				"type" : "menu_l",
+				"error_scale" : 0,
+				"force_label" : 1,
+				"values" : ["sub" , "rect" , "tri", "noise"],
+				"wrap" : 1
+			},
+			{
+				"name" : "porta",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin" ],
+				"wrap" : 0,
+				"default" : 0.75,	
+				"error_scale" : 0.3
+			},
+			{
+				"name" : "initial_pitch",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.472440944,
+				"error_scale" : 0
+			},
+			{
+				"name" : "scale",
+				"type" : "menu_l",
+				"values" : ["all", "1", "2", "3", "4", "5", "6", "7", "8"],
+				"wrap" : 0,
+				"columns" : 5,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "slide_width",
+				"type" : "float",
+				"values" : ["uni", 0 , 1, "lin"],
+				"default": 0,
+				"wrap": 0
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"default" : 0
+			}
+		]
+	}
+}
