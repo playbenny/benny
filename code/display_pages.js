@@ -5682,6 +5682,7 @@ function draw_sidebar(){
 			var vi;
 			var vx=sidebar.x+fontheight*1.4;
 			var show_poly_options = 0;
+			var show_split = 0;
 			for(vi=0;vi<=t_v_no;vi++){
 				if(vx>sidebar.x2-fontheight*(0.4+0.1*(vi>9))){
 					vx=sidebar.x+fontheight*1.4;
@@ -5711,9 +5712,11 @@ function draw_sidebar(){
 						lcd_main.message("write", "poly");
 						vx+=fontheight*(0.8+w);	
 						show_poly_options = (t_i_v == "all");
+						show_split |= show_poly_options;
 					}else{
 						lcd_main.message("write", "all");
 						vx+=fontheight*0.8;
+						show_split=1;
 					}
 					//var t_i_no = connections.get("connections["+i+"]::to::input::number");
 				}else{
@@ -5722,6 +5725,7 @@ function draw_sidebar(){
 					if(t_i_v.indexOf(vi)!=-1){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(0.4+0.1*(vi>9)), fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
+						show_split += 0.5;
 					}else{
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(0.4+0.1*(vi>9)), fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
@@ -5734,7 +5738,8 @@ function draw_sidebar(){
 				mouse_click_actions[mouse_index] = connection_edit_voices;
 				mouse_click_parameters[mouse_index] = i; 
 				mouse_click_values[mouse_index] = ["to",vi];
-				mouse_index++;					
+				mouse_index++;		
+				show_split = (show_split>=1);			
 			}
 			
 			if((t_v_no>1)||(blocktypes.get(t_name+"::max_polyphony")==0)||(blocktypes.get(t_name+"::max_polyphony")>t_v_no)){
@@ -5885,6 +5890,16 @@ function draw_sidebar(){
 			lcd_main.message("write", "insert block into connection");
 
 			y_offset += 1.1* fontheight;
+
+			if(show_split){
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
+				click_zone(split_wire, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+				lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
+				lcd_main.message("frgb",type_colour);
+				lcd_main.message("write", "split connection into one wire per destination voice");
+
+				y_offset += 1.1* fontheight;
+			}
 
 			if(danger_button == mouse_index){
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,120,0,0 );
