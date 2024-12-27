@@ -3,6 +3,7 @@
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
 27/12/24:
 - quanti.slide osc added (has a scale quantiser built in, after unstable pitch+fm+range+detune+midi note+slide)
+- sidechain compressor now just a simple gen algorithm, no longer requires pro-c2 to work.
 26/12/24:
 - **breaking change** there are now separate forward and backwards trigger inputs to note.step and note.tracker, which means if you were using row-select or reset inputs you'll need to fix those connections because they'll point to the wrong input now.
 - a few js error trapping things to make it work in max 9 v8 engine (it does, but i'm not switching for now because that would prevent max8 users using it and it doesn't bring huge performance gains)
