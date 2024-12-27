@@ -1087,6 +1087,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				if(bulgingwire>-1){ //ctrl-scroll a wire to adjust level
 					if(sidebar.mode=="none"){
 						selected.wire[bulgingwire]=1;
+						block_and_wire_colours();
 						redraw_flag.flag |= 2;
 					}else if(sidebar.mode =="wire"){
 						if(selected.wire[bulgingwire]!=1){
