@@ -6549,6 +6549,7 @@ function draw_sidebar_polyphony_options(block, block_colour, block_dark, block_d
 			lcd_main.message("frgb", fc);
 			lcd_main.message("moveto", sidebar.x2 - 3 * fontheight, fontheight * 0.4 + y_offset);
 			lcd_main.message("write", latching_modes[blocks.get("blocks[" + block + "]::poly::latching_mode")]);
+			lcd_main.message("paintpoly", sidebar.x2 - 4*fo1, y_offset + 2.5*fo1, sidebar.x2 - fo1, y_offset + 2.5*fo1, sidebar.x2 - 2.5*fo1, y_offset + 4*fo1, sidebar.x2 - 4*fo1, y_offset + 2.5*fo1);				
 			y_offset += 0.7 * fontheight;
 		}else{
 			var sn = blocks.get("blocks[" + block + "]::poly::latching_mode");
