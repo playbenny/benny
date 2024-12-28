@@ -3552,3 +3552,62 @@ function spawn_player(keyblock,auto){
 		request_set_block_parameter(keyblock,5,0);
 	}
 }
+
+function is_selection_encapsulatable(){
+	//returns 1 if the selected blocks meet the criteria for being encapsulateable.
+	var paramcount = 0;
+	var audioincount = 0;
+	var audiooutcount = 0;
+	for(var b = 0;b<selected.block.length;b++){
+		if(selected.block[b]){
+			var pc = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
+			paramcount += pc;		
+			//todo, polyphonic blocks, if they have any kind of per-voice differences or 
+			//modulations, need to be counted 1x this number for each voice. if not then they can share efficiently.
+		}
+	}
+	if(paramcount > MAX_PARAMETERS){
+		post("\nthe selected blocks have too many parameters (",paramcount,") to be encapsulated");
+		return 0;
+	}
+	for(var c=0;c<connections.getsize("connections");c++){
+		if(connections.contains("connections["+c+"]::from")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			if((selected.block[fb])&&!selected.block[tb]){
+				if(connections.get("connections["+c+"]::from::output::type")=="audio"){
+					audiooutcount++;
+				}
+			}
+			if(!selected.block[fb] && selected.block[tb]){
+				if(connections.get("connections["+c+"]::to::input::type")=="audio"){
+					audioincount++;
+				}
+			}
+		}
+	}
+	if((audioincount<=NO_IO_PER_BLOCK)&&(audiooutcount<=NO_IO_PER_BLOCK)){
+		return 1;
+	}else{
+		post("\nthe selected blocks have too many audio io to be encapsulated (",audioincount,audiooutcount,")");
+	}
+}
+
+function encapsulate_selection(){
+	post("\nENCAPSULATION COMING SOON");
+	//step 1: build encapsulated file
+	// -like a normal block file, but with an extra key: encapsulation, that contains the 
+	// blocks dict and connections dict, as well as states. in the block dict the index 
+	// offsets per voice are stored then in the main part of the block file the params / sections 
+	// are merged, the defaults are the current values of everything.
+	// the exclusive key is turned on if the encapsulated blocks contain hardware or exclusive blocks
+	// the panel selections are merged
+	// what to do with uis? what about blocks that rely on the ui to work?
+
+	//step 2: build maxpat - in situ in the audio blocks poly, from a template
+	//including detecting feedback loops and inserting delays
+	//
+
+	//step 3: swap in dicts and ext connections
+
+}

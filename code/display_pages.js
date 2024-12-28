@@ -5037,6 +5037,7 @@ function draw_sidebar(){
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
 			lcd_main.message("write", "voices");
 			var vi;
+			var show_split_source = 0;
 			var vx=sidebar.x+fontheight*1.4;
 			for(vi=0;vi<=f_v_no;vi++){
 				if(vx > sidebar.x2 - fontheight*(0.4+0.1*(vi>9))){
@@ -5049,6 +5050,7 @@ function draw_sidebar(){
 					if(f_o_v == "all"){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*0.6, fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
+						show_split_source = 1;
 					}else{
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*0.6, fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
@@ -5061,6 +5063,7 @@ function draw_sidebar(){
 					if(f_o_v.indexOf(vi)!=-1){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(0.4+0.1*(vi>9)), fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
+						show_split_source += 0.5;
 					}else{
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(0.4+0.1*(vi>9)), fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
@@ -5682,7 +5685,7 @@ function draw_sidebar(){
 			var vi;
 			var vx=sidebar.x+fontheight*1.4;
 			var show_poly_options = 0;
-			var show_split = 0;
+			var show_split_destination = 0;
 			for(vi=0;vi<=t_v_no;vi++){
 				if(vx>sidebar.x2-fontheight*(0.4+0.1*(vi>9))){
 					vx=sidebar.x+fontheight*1.4;
@@ -5712,11 +5715,11 @@ function draw_sidebar(){
 						lcd_main.message("write", "poly");
 						vx+=fontheight*(0.8+w);	
 						show_poly_options = (t_i_v == "all");
-						show_split |= show_poly_options;
+						show_split_destination |= show_poly_options;
 					}else{
 						lcd_main.message("write", "all");
 						vx+=fontheight*0.8;
-						show_split=1;
+						show_split_destination=1;
 					}
 					//var t_i_no = connections.get("connections["+i+"]::to::input::number");
 				}else{
@@ -5725,7 +5728,7 @@ function draw_sidebar(){
 					if(t_i_v.indexOf(vi)!=-1){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(0.4+0.1*(vi>9)), fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
-						show_split += 0.5;
+						show_split_destination += 0.5;
 					}else{
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*(0.4+0.1*(vi>9)), fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
@@ -5739,7 +5742,8 @@ function draw_sidebar(){
 				mouse_click_parameters[mouse_index] = i; 
 				mouse_click_values[mouse_index] = ["to",vi];
 				mouse_index++;		
-				show_split = (show_split>=1);			
+				show_split_destination = (show_split_destination>=1);			
+				show_split_source = (show_split_source>=1);			
 			}
 			
 			if((t_v_no>1)||(blocktypes.get(t_name+"::max_polyphony")==0)||(blocktypes.get(t_name+"::max_polyphony")>t_v_no)){
@@ -5891,9 +5895,19 @@ function draw_sidebar(){
 
 			y_offset += 1.1* fontheight;
 
-			if(show_split){
+			if(show_split_source){
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
-				click_zone(split_wire, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+				click_zone(split_wire_source, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+				lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
+				lcd_main.message("frgb",type_colour);
+				lcd_main.message("write", "split connection into one wire per source voice");
+
+				y_offset += 1.1* fontheight;
+			}
+
+			if(show_split_destination){
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
+				click_zone(split_wire_destination, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 				lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
 				lcd_main.message("frgb",type_colour);
 				lcd_main.message("write", "split connection into one wire per destination voice");
@@ -5937,6 +5951,16 @@ function draw_sidebar(){
 				lcd_main.message("frgb" , menucolour);
 				lcd_main.message("write", "multiple blocks selected");
 				y_offset += 1.1*fontheight;
+				
+				if(is_selection_encapsulatable()){
+					lcd_main.message("paintrect", sidebar.x2- fontheight*8.3, y_offset, sidebar.x2- fontheight*6.4, fontheight+y_offset,greydarkest );
+					lcd_main.message("frgb" ,greycolour);
+					click_zone(encapsulate_selection,1,1, sidebar.x2 - fontheight*8.3, y_offset, sidebar.x2 - fontheight*6.4, fontheight+y_offset,mouse_index,1 );
+					lcd_main.message("moveto" ,sidebar.x2 - fontheight*8.2, fontheight*0.5+y_offset);
+					lcd_main.message("write", "encapsulate");
+					lcd_main.message("moveto" ,sidebar.x2 - fontheight*8.2, fontheight*0.75+y_offset);
+					lcd_main.message("write", "selected");
+				}
 				
 				lcd_main.message("paintrect", sidebar.x2- fontheight*6.3, y_offset, sidebar.x2- fontheight*4.4, fontheight+y_offset,greydarkest );
 				lcd_main.message("frgb" ,greycolour);

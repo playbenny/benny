@@ -556,7 +556,7 @@ function insert_menu_button(cno){
 	set_display_mode("block_menu");
 }
 
-function split_wire(cno){
+function split_wire_destination(cno){
 	if(cno==-1) cno = selected.wire.indexOf(1);
 	var vl = connections.get("connections["+cno+"]::to::voice");
 	var tb = connections.get("connections["+cno+"]::to::number");
@@ -572,6 +572,27 @@ function split_wire(cno){
 	remove_connection(cno);
 	for(var i=0;i<vl.length;i++){
 		new_connection.replace("to::voice", vl[i]);
+		connections.append("connections",new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+	}
+}
+
+function split_wire_source(cno){
+	if(cno==-1) cno = selected.wire.indexOf(1);
+	var vl = connections.get("connections["+cno+"]::from::voice");
+	var tb = connections.get("connections["+cno+"]::from::number");
+	if(vl == "all"){
+		vl = [];
+		for(var i=0;i<blocks.get("blocks["+tb+"]::poly::voices");i++){
+			vl.push(i+1);
+		}
+	}else{
+		if(!Array.isArray(vl))vl = [vl];
+	}
+	new_connection = connections.get("connections["+cno+"]");
+	remove_connection(cno);
+	for(var i=0;i<vl.length;i++){
+		new_connection.replace("from::voice", vl[i]);
 		connections.append("connections",new_connection);
 		make_connection(connections.getsize("connections")-1,0);
 	}
