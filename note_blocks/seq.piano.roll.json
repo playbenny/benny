@@ -3,7 +3,7 @@
 		"patcher" : "seq.piano.roll",
 		"type" : "note",
 		"block_ui_patcher" : "seq.piano.roll.ui",
-		"help_text" : "Classic piano roll sequencer. £Unlike other benny sequencers this one has an internal clock linked to the global clock and doesn't need a clock in, but can follow one if you want.",
+		"help_text" : "WORK IN PROGRESS many features missing, currently fine to play back sequences recorded with the keyboard block and make small edits. check back soon.£££Classic piano roll sequencer. £Unlike other benny sequencers this one has an internal clock linked to the global clock and doesn't need a clock in, but can follow one if you want.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"default_polymode" : 	{
