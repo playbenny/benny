@@ -238,12 +238,18 @@ function draw(){
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 			//for();
 			lowestnote=128;
-			highestnote=0;
+			highestnote=-1;
 			for(var i=1;i<k.length;i++){ //[0] is the looppoints
 				var note = seqdict.get(block+"::"+pattern+"::"+k[i]+"[2]");
 				if(note>highestnote)highestnote=note;
 				if(note<lowestnote)lowestnote=note;
 			}
+			if(highestnote==-1){
+				lowestnote = 50; highestnote = 70;
+			}else{
+				lowestnote = Math.max(0,lowestnote-10);
+				highestnote =  Math.min(127, highestnote+10);
+			} 
 			var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
 			var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
 			var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
@@ -459,6 +465,7 @@ function update(){
 
 
 function voice_is(v){
+	post("\nvoiceis",v);
 	block = v;
 	if(block>=0){
 		var voicemap = new Dict;
@@ -476,6 +483,7 @@ function voice_is(v){
 				highestnote = 0;
 				seqdict.setparse(block,"{}");
 				var ll=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+				var lc=0;
 				for(var i=0;i<k.length;i++){
 					var d = blocks.get("blocks["+block+"]::stored_piano_roll::"+k[i]);
 					seqdict.setparse(block+"::"+k[i], "{}");
@@ -485,6 +493,7 @@ function voice_is(v){
 						if(dk[ii]!="looppoints"){
 							var event = d.get(dk[ii]);
 							ll[event[1]] = 1;
+							lc++;
 							maximisedlist[event[1]] = (ii==0);
 							if(event[1]<=1){
 								if(event[2]>highestnote) highestnote = event[2];
@@ -494,6 +503,7 @@ function voice_is(v){
 					}		
 				}
 				laneslist = [];
+				if(lc==0) ll[0]=1;
 				for(var ii=0;ii<ll.length;ii++){
 					if(ll[ii]){
 						if((ii==1)||(ii==0)){
@@ -510,8 +520,14 @@ function voice_is(v){
 				lowestnote = Math.max(0, lowestnote-1);
 				highestnote = Math.min(127, highestnote+1);
 			}
+		}else{
+			seqdict.setparse(block,"{}");
+			seqdict.setparse(block+"::0", "{}");
+			seqdict.setparse(block+"::0::looppoints", "*");//
+			seqdict.replace(block+"::0::looppoints", [256, 0, 0, 256]);
 		}
 		messnamed("note_poly","setvalue",1+voice,"copyfromdict");
+		post("\nnote_poly","setvalue",1+voice,"copyfromdict");
 	}
 }
 
@@ -538,18 +554,22 @@ function loadbang(){
 
 
 function store(){
-	messnamed("to_blockmanager","store_wait_for_me",block);
 	var sk = seqdict.get(block);
-	var k = sk.getkeys();
-	if(k!=null){
-		blocks.setparse("blocks["+block+"]::stored_piano_roll","{}");
-		for(var i=0;i<k.length;i++){
-			var d = seqdict.get(block+"::"+k[i]);
-			blocks.setparse("blocks["+block+"]::stored_piano_roll::"+k[i], "{}");
-			blocks.replace("blocks["+block+"]::stored_piano_roll::"+k[i], d);			
+	if(sk!=null){
+		messnamed("to_blockmanager","store_wait_for_me",block);
+		var k = sk.getkeys();
+		if(k!=null){
+			blocks.setparse("blocks["+block+"]::stored_piano_roll","{}");
+			for(var i=0;i<k.length;i++){
+				blocks.setparse("blocks["+block+"]::stored_piano_roll::"+k[i], "{}");
+				var d = seqdict.get(block+"::"+k[i]);
+				if(d!=null){
+					blocks.replace("blocks["+block+"]::stored_piano_roll::"+k[i], d);			
+				}
+			}
 		}
+		messnamed("to_blockmanager","store_ok_done",block);
 	}
-	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 function mouse(x,y,l,s,a,c,scr){
