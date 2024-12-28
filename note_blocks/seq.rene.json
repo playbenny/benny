@@ -8,7 +8,7 @@
 		"ui_in_sidebar_height" : 4,
 		"connections" : {
 			"in" : {
-				"midi" : [ "advance", "setpos", "resync" ]
+				"midi" : [ "advance", "backwards", "setpos", "resync" ]
 			},
 			"out" : {
 				"midi" : [ "notes", "pointer" ],
@@ -17,13 +17,18 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [1,2,3,4,56],
+				"contains" : [1,2,3,4],
 				"height" : 3
+			},
+			{
+				"contains" : [58,57,59,56],
+				"height" : 0,
+				"colour" : -6
 			},
 			{
 				"contains" : [0,53,54,55],
 				"height" : 0,
-				"colour" : -4
+				"colour" : -8
 			},
 			{ 
 				"contains" : [5, 6,7,8,9, 10,11,12,13, 14,15,16,17, 18,19,20],
@@ -526,6 +531,27 @@
 				"default" : 0,
 				"wrap" : 1,
 				"error_scale" : 0
+			},
+			{
+				"name" : "vel->output vel",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"default" : 1,
+				"wrap" : 0
+			},
+			{
+				"name" : "vel->step size",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "angle_offset",
+				"type" : "float",
+				"values" : ["bi", -3.14159265, 3.14159265, "lin"],
+				"default" : 0.5,
+				"wrap" : 1
 			}
 		]
 	}
