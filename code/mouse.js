@@ -3,6 +3,9 @@ function clicked_block_preparation() {
 		// if the clicked block is selected and multiple blocks are selected, then you drag them all
 		var t = 0;
 		usermouse.drag.dragging.voices = [];
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "move_blocks" : {} } }');
 		for (var b = 0; b < MAX_BLOCKS; b++) {
 			if (selected.block[b]) {
 				var tvc = blocks.get("blocks[" + b + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + b + "]::subvoices"));
@@ -10,16 +13,26 @@ function clicked_block_preparation() {
 					usermouse.drag.dragging.voices[t] = [b, i];
 					t++;
 				}
+				var x = blocks.get("blocks["+b+"]::space::x");
+				var y = blocks.get("blocks["+b+"]::space::y");
+				undo_stack.setparse("history["+usz+"]::actions::move_blocks::"+b, '{ "x" : '+x+', "y" : '+y+'}');
 			}
 		}
 		//for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
 	} else {
 		// if the clicked block is not selected, or is the only one selected, then you drag it				
-		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + usermouse.ids[1] + "]::subvoices"));
+		var b = usermouse.ids[1];
+		var tvc = blocks.get("blocks[" + b + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + b + "]::subvoices"));
 		usermouse.drag.dragging.voices = [];
 		for (var i = 0; i <= tvc; i++) {
-			usermouse.drag.dragging.voices[i] = [usermouse.ids[1], i];
+			usermouse.drag.dragging.voices[i] = [b, i];
 		}
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "move_blocks" : {} } }');
+		var x = blocks.get("blocks["+b+"]::space::x");
+		var y = blocks.get("blocks["+b+"]::space::y");
+		undo_stack.setparse("history["+usz+"]::actions::move_blocks::"+b, '{ "x" : '+x+', "y" : '+y+'}');
 	}
 	usermouse.drag.starting_value_x = blocks_cube[usermouse.clicked3d][0].position[0];
 	usermouse.drag.starting_value_y = blocks_cube[usermouse.clicked3d][0].position[1];

@@ -76,6 +76,30 @@ function blocks_paste(outside_connections,target){
 			var val = target.get("actions::create_wire");
 			remove_connection(val);
 		}
+		if(target.contains("actions::move_blocks")){
+			var listd = target.get("actions::move_blocks");
+			var list = listd.getkeys();
+			if(!Array.isArray(list))list = [list];
+			for(var i=0;i<list.length;i++){
+				var x = target.get("actions::move_blocks::"+list[i]+"::x");
+				var y = target.get("actions::move_blocks::"+list[i]+"::y");
+				blocks.replace("blocks["+list[i]+"]::space::x",x);
+				blocks.replace("blocks["+list[i]+"]::space::y",y);
+			}
+			draw_blocks();
+		}
+		if(target.contains("actions::make_space")){
+			var listd = target.get("actions::make_space");
+			var list = listd.getkeys();
+			if(!Array.isArray(list))list = [list];
+			for(var i=0;i<list.length;i++){
+				var x = target.get("actions::make_space::"+list[i]+"::x");
+				var y = target.get("actions::make_space::"+list[i]+"::y");
+				blocks.replace("blocks["+list[i]+"]::space::x",x);
+				blocks.replace("blocks["+list[i]+"]::space::y",y);
+			}
+			draw_blocks();
+		}
 	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
@@ -2835,27 +2859,29 @@ function delete_wave(parameter,value){
 }
 
 function undo_button(){
+	undoing = 1;
 	var usz=undo_stack.getsize("history")|0;
 	post("\nundoing, stack size",usz);
 	usz--;
 	if(usz<0) return -1;
 	undo = undo_stack.get("history["+usz+"]");
 	undo_stack.remove("history["+usz+"]");
-
 	blocks_paste(1,undo);
 	undo.parse("{}");
+	undoing = 0;
 }
 
 function delete_selection(){
-	copy_selection(undo);
-	var usz=undo_stack.getsize("history")|0;
-	post("\nundo stack size",usz);
-	usz = Math.max(0,usz);
-	undo_stack.append("history","{}");
-	undo_stack.setparse("history["+usz+"]",'{}');
-	undo_stack.replace("history["+usz+"]",undo);
-	undo.parse("{}");
-
+	if(!undoing){
+		copy_selection(undo);
+		var usz=undo_stack.getsize("history")|0;
+		//post("\nundo stack size",usz);
+		usz = Math.max(0,usz);
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]",'{}');
+		undo_stack.replace("history["+usz+"]",undo);
+		undo.parse("{}");
+	}
 	var i;
 	for(i=0;i<selected.wire.length;i++){
 		if(selected.wire[i]) {
@@ -3575,10 +3601,18 @@ function turn_off_controller_assign_mode(){
 
 function make_space(x,y,r){
 	//move all blocks a distance r along a line from their x,y to the specified x,y.
+	var usz=undo_stack.getsize("history")|0;
+	if(undo_stack.contains("history["+(usz-1)+"]::actions::make_space")){
+		usz=-1;
+	}else{
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "make_space" : {} } }');
+	}
 	for(var b=0;b<MAX_BLOCKS;b++){
 		if(blocks.contains("blocks["+b+"]::space")){
 			var bx = blocks.get("blocks["+b+"]::space::x");
 			var by = blocks.get("blocks["+b+"]::space::y");
+			if(usz!=-1) undo_stack.setparse("history["+usz+"]::actions::make_space::"+b, '{ "x" : '+bx+', "y" : '+by+'}');	
 			var dx = bx-x;
 			var dy = by-y;
 			var dd = Math.sqrt(dx*dx+dy*dy);
