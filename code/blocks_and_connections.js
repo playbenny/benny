@@ -3560,14 +3560,18 @@ function is_selection_encapsulatable(){
 	var audiooutcount = 0;
 	for(var b = 0;b<selected.block.length;b++){
 		if(selected.block[b]){
+			if(blocks.get("blocks["+b+"]::type")=="hardware"){
+				//post("\nthe selection includes hardware, so can't be encapsulated");
+				return 0;
+			}		
 			var pc = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
-			paramcount += pc;		
+			paramcount += pc;
 			//todo, polyphonic blocks, if they have any kind of per-voice differences or 
 			//modulations, need to be counted 1x this number for each voice. if not then they can share efficiently.
 		}
 	}
 	if(paramcount > MAX_PARAMETERS){
-		post("\nthe selected blocks have too many parameters (",paramcount,") to be encapsulated");
+		//post("\nthe selected blocks have too many parameters (",paramcount,") to be encapsulated");
 		return 0;
 	}
 	for(var c=0;c<connections.getsize("connections");c++){
@@ -3590,19 +3594,47 @@ function is_selection_encapsulatable(){
 		return 1;
 	}else{
 		post("\nthe selected blocks have too many audio io to be encapsulated (",audioincount,audiooutcount,")");
+		return 0;
 	}
 }
 
-function encapsulate_selection(){
-	post("\nENCAPSULATION COMING SOON");
+function encapsulate_selection(name){
+	if((name=="name")||(name==null))name=text_being_editted;
+
+	post("\nENCAPSULATION COMING SOON",name);
 	//step 1: build encapsulated file
 	// -like a normal block file, but with an extra key: encapsulation, that contains the 
 	// blocks dict and connections dict, as well as states. in the block dict the index 
 	// offsets per voice are stored then in the main part of the block file the params / sections 
 	// are merged, the defaults are the current values of everything.
-	// the exclusive key is turned on if the encapsulated blocks contain hardware or exclusive blocks
 	// the panel selections are merged
-	// what to do with uis? what about blocks that rely on the ui to work?
+
+	var blocklist = [];
+	var inputoffsetlist = [];
+	var paramoffsetlist = [];
+	var outputoffsetlist = [];
+
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(selected.block[b]) blocklist.push(b);
+	}
+
+	var minx=999;
+	var miny=999;
+	var po=0;
+	for(var b=0;b<blocklist.length;b++){
+		var x = blocks.get("blocks["+blocklist[b]+"]::space::x");
+		var y = blocks.get("blocks["+blocklist[b]+"]::space::y");
+		if(x<minx)minx=x;
+		if(y<miny)miny=y;
+		paramoffsetlist[b] = po;
+		po += blocks.getsize("blocks["+blocklist[b]+"]::parameters");
+	}
+
+	var new_encapsulated = new Dict;
+	new_encapsulated.name = "new_encapsulated";
+	new_encapsulated.parse('{}');
+	new_encapsulated.setparse('{ '+name+' { "name" : '+name+', "type" : "audio", "patcher" : "encapsulator" } }');
+	new_encapsulated.setparse("param_offsets",paramoffsetlist);
 
 	//step 2: build maxpat - in situ in the audio blocks poly, from a template
 	//including detecting feedback loops and inserting delays

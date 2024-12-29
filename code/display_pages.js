@@ -2254,6 +2254,42 @@ function draw_sidebar(){
 				y_offset+=0.5*fontheight;
 			}
 		}
+	}else if(sidebar.mode == "name_encapsulation"){
+		// when encapsulating blocks you need to name the encapsulation first ##############################################################################################################
+		if(sidebar.mode != sidebar.lastmode){
+			if(displaymode == "blocks") center_view(1);
+			clear_sidebar_paramslider_details();
+			sidebar.lastmode = sidebar.mode;
+			audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
+			remove_midi_scope();
+			redraw_flag.targets=[];
+			text_being_editted = "";
+		}
+
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menudarkest);
+		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		lcd_main.message("write", "enter a name for the encapsulated block");
+		y_offset+=1.1*fontheight;
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menucolour);
+		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , 0,0,0);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		if(text_being_editted.length<15) setfontsize(fontsmall*2);
+		lcd_main.message("write", text_being_editted);
+		setfontsize(fontsmall*2);
+		y_offset+=1.1*fontheight;
+		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
+		click_zone(encapsulate_selection, text_being_editted, text_being_editted, sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("moveto" ,sidebar.x2-fontheight*6.1, fontheight*0.75+y_offset);
+		lcd_main.message("write", "encapsulate");
+		lcd_main.message("paintrect", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,menudarkest);
+		click_zone(set_sidebar_mode, "none", "", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , menudark);
+		lcd_main.message("moveto" ,sidebar.x2-fontheight*1.9, fontheight*0.75+y_offset);
+		lcd_main.message("write", "cancel");
+		y_offset += fontheight;
 	}else if(sidebar.mode == "edit_state"){
 		// EDIT STATE  ##############################################################################################################
 		var cll = config.getsize("palette::gamut");
@@ -5955,7 +5991,7 @@ function draw_sidebar(){
 				if(is_selection_encapsulatable()){
 					lcd_main.message("paintrect", sidebar.x2- fontheight*8.3, y_offset, sidebar.x2- fontheight*6.4, fontheight+y_offset,greydarkest );
 					lcd_main.message("frgb" ,greycolour);
-					click_zone(encapsulate_selection,1,1, sidebar.x2 - fontheight*8.3, y_offset, sidebar.x2 - fontheight*6.4, fontheight+y_offset,mouse_index,1 );
+					click_zone(set_sidebar_mode,"name_encapsulation",1, sidebar.x2 - fontheight*8.3, y_offset, sidebar.x2 - fontheight*6.4, fontheight+y_offset,mouse_index,1 );
 					lcd_main.message("moveto" ,sidebar.x2 - fontheight*8.2, fontheight*0.5+y_offset);
 					lcd_main.message("write", "encapsulate");
 					lcd_main.message("moveto" ,sidebar.x2 - fontheight*8.2, fontheight*0.75+y_offset);
