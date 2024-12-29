@@ -3781,6 +3781,10 @@ function encapsulate_selection(name){
 	for(var b=0;b<blocklist.length;b++){
 		new_encapsulated.append(name+"::encapsulated::blocks","*");
 		new_encapsulated.replace(name+"::encapsulated::blocks["+b+"]",blocks.get("blocks["+blocklist[b]+"]"));
+		var x = blocks.get("blocks["+blocklist[b]+"]::space::x");
+		var y = blocks.get("blocks["+blocklist[b]+"]::space::y");
+		new_encapsulated.replace(name+"::encapsulated::blocks["+b+"]::space::x",x-minx);
+		new_encapsulated.replace(name+"::encapsulated::blocks["+b+"]::space::y",y-miny);
 	}
 	new_encapsulated.remove(name+"::encapsulated::blocks["+blocklist.length+"]");
 	var cc=0;
@@ -3801,6 +3805,16 @@ function encapsulate_selection(name){
 		}
 	}
 	new_encapsulated.remove(name+"::encapsulated::connections["+cc+"]");
+
+	//now put this json into the blocktypes dict so we can load it
+	new_encapsulated.export_json("audio_blocks/"+name+".json");
+
+
+	blocktypes.append(name, "{}");
+	blocktypes.replace(name,new_encapsulated.get(name));
+	
+	new_block(name,minx-0.5,miny-0.5);
+
 
 	//step 2: build maxpat - in situ in the audio blocks poly, from a template
 	//including detecting feedback loops and inserting delays
