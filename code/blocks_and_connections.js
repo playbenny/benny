@@ -3837,11 +3837,13 @@ function encapsulate_selection(name){
 	new_encapsulated.replace(name+"::colour", config.get("palette::menu"));// [255,190,50]);
 
 	//now put this json into the blocktypes dict so we can load it
-	new_encapsulated.export_json(projectpath+"/audio_blocks/"+name+".json");
-
-
 	blocktypes.append(name, "{}");
 	blocktypes.replace(name,new_encapsulated.get(name));
+	
+	//then replace the patcher name with the right one?? before saving json?
+	//new_encapsulated.replace("patcher",name);
+	//only if it does save one, if it just regenerates in realtime every time you don't need to bother
+	new_encapsulated.export_json(projectpath+"/audio_blocks/"+name+".json");
 	
 	new_block(name,minx-0.5,miny-0.5);
 
