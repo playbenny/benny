@@ -3841,17 +3841,62 @@ function encapsulate_selection(name){
 	blocktypes.replace(name,new_encapsulated.get(name));
 	
 	//then replace the patcher name with the right one?? before saving json?
-	//new_encapsulated.replace("patcher",name);
-	//only if it does save one, if it just regenerates in realtime every time you don't need to bother
+	new_encapsulated.replace(name+"::patcher",name);
 	new_encapsulated.export_json(projectpath+"/audio_blocks/"+name+".json");
 	
-	new_block(name,minx-0.5,miny-0.5);
+	if(displaymode!="blocks")set_display_mode("blocks");
+	var new_encapsulated_blockno = new_block(name,minx-0.5,miny-0.5);
+	draw_block(new_encapsulated_blockno);
 
-
-	//step 2: build maxpat - in situ in the audio blocks poly, from a template
-	//including detecting feedback loops and inserting delays
+	//step 2: build maxpat - this happens in situ in the audio blocks poly, from a template
+	//including detecting feedback loops and inserting 1 vector delays in them
 	//
 
-	//step 3: swap in dicts and ext connections
-
+	//step 3: swap in ext connections
+	for(var c=0;c<connections.getsize("connections");c++){
+		if(connections.contains("connections["+c+"]::from::number")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			var fty = connections.get("connections["+c+"]::from::output::type");
+			var tty = connections.get("connections["+c+"]::to::input::type");
+			if(selected.block[fb]&&!selected.block[tb]){
+				//connection from the encapsulation out to the patch
+				new_connection = connections.get("connections["+c+"]");
+				if((fty == "audio")&&((tty == "audio")||(tty == "hardware"))){
+					new_connection.replace("from::number",new_encapsulated_blockno);
+					new_connection.replace("from::output::number",outwardaudioconnectionslist.indexOf[c]);
+				}else{
+					var oon=new_connection.get("from::output::number");
+					new_connection.replace("from::number",new_encapsulated_blockno);
+					new_connection.replace("from::output::number",oon+outputoffsetlist[blocklist.indexOf[fb]]);
+				}
+				post("\nswapping connection",c);
+				remove_connection(c);
+				connections.replace("connections["+c+"]",new_connection);
+				make_connection(c,0);
+			}else if(selected.block[tb]&&!selected.block[fb]){
+				//connection from the patch into the encapsulation
+				new_connection = connections.get("connections["+c+"]");
+				if((tty == "audio")&&((fty == "audio")||(fty == "hardware"))){
+					new_connection.replace("to::number",new_encapsulated_blockno);
+					new_connection.replace("to::input::number",inwardaudioconnectionslist.indexOf[c]);
+				}else{
+					var oin=new_connection.get("to::input::number");
+					new_connection.replace("to::number",new_encapsulated_blockno);
+					new_connection.replace("to::input::number",oin+inputoffsetlist[blocklist.indexOf[tb]]);
+				}
+				post("\nswapping connection",c);
+				remove_connection(c);
+				connections.replace("connections["+c+"]",new_connection);
+				make_connection(c,0);			
+			}
+		}
+	}
+	//and remove the blocks
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(selected.block[b]){
+			post("\nremoving block",b);
+			remove_block(b);
+		}
+	}
 }
