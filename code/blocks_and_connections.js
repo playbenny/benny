@@ -3792,6 +3792,10 @@ function encapsulate_selection(name){
 		if(connections.contains("connections["+c+"]::from")){
 			var fb = connections.get("connections["+c+"]::from::number");
 			var tb = connections.get("connections["+c+"]::to::number");
+			var fty = connections.get("connections["+c+"]::from::output::type");
+			var tty = connections.get("connections["+c+"]::to::input::type");
+			if(tty=="hardware")tty="audio";
+			if(fty=="hardware")fty="audio";
 			if((selected.block[fb])&&selected.block[tb]){//only internal connections
 				new_encapsulated.append(name+"::encapsulated::connections","*");
 				var con = connections.get("connections["+c+"]");
@@ -3801,13 +3805,39 @@ function encapsulate_selection(name){
 				con.replace("to::number",tb);
 				new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
 				cc++;
+			}else if((fty=="audio")&&(tty=="audio")){
+				if(selected.block[fb]){
+					new_encapsulated.append(name+"::encapsulated::connections","*");
+					var con = connections.get("connections["+c+"]");
+					fb = blocklist.indexOf(fb);
+					tb = -1-outwardaudioconnectionslist.indexOf(c);
+					post("\nspecial tb",tb);
+					con.replace("from::number",fb); //replace block numbers in connecton with internal numbering
+					con.replace("to::number",tb);
+					con.replace("to::input::type","audio");
+					new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
+					cc++;					
+				}else if(selected.block[tb]){
+					new_encapsulated.append(name+"::encapsulated::connections","*");
+					var con = connections.get("connections["+c+"]");
+					fb = -1-inwardaudioconnectionslist.indexOf(c);
+					tb = blocklist.indexOf(tb);
+					post("\nspecial fb",fb);
+					con.replace("from::number",fb); //replace block numbers in connecton with internal numbering
+					con.replace("to::number",tb);
+					con.replace("from::output::type","audio");
+					new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
+					cc++;	
+				}
 			}
 		}
 	}
 	new_encapsulated.remove(name+"::encapsulated::connections["+cc+"]");
+//	new_encapsulated.setparse(name+"::space","{}");
+	new_encapsulated.replace(name+"::colour", config.get("palette::menu"));// [255,190,50]);
 
 	//now put this json into the blocktypes dict so we can load it
-	new_encapsulated.export_json("audio_blocks/"+name+".json");
+	new_encapsulated.export_json(projectpath+"/audio_blocks/"+name+".json");
 
 
 	blocktypes.append(name, "{}");
