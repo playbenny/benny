@@ -3859,18 +3859,19 @@ function encapsulate_selection(name){
 			var tb = connections.get("connections["+c+"]::to::number");
 			var fty = connections.get("connections["+c+"]::from::output::type");
 			var tty = connections.get("connections["+c+"]::to::input::type");
+			post("\nswapping connection",c,"from",fb,fty,"to",tb,tty);
 			if(selected.block[fb]&&!selected.block[tb]){
 				//connection from the encapsulation out to the patch
 				new_connection = connections.get("connections["+c+"]");
 				if((fty == "audio")&&((tty == "audio")||(tty == "hardware"))){
 					new_connection.replace("from::number",new_encapsulated_blockno);
-					new_connection.replace("from::output::number",outwardaudioconnectionslist.indexOf[c]);
+					new_connection.replace("from::output::number",outwardaudioconnectionslist.indexOf(c));
 				}else{
 					var oon=new_connection.get("from::output::number");
 					new_connection.replace("from::number",new_encapsulated_blockno);
-					new_connection.replace("from::output::number",oon+outputoffsetlist[blocklist.indexOf[fb]]);
+					new_connection.replace("from::output::number",oon+outputoffsetlist[blocklist.indexOf(fb)]);
+					post("\nnew out",oin+inputoffsetlist[blocklist.indexOf(tb)]);
 				}
-				post("\nswapping connection",c);
 				remove_connection(c);
 				connections.replace("connections["+c+"]",new_connection);
 				make_connection(c,0);
@@ -3879,24 +3880,35 @@ function encapsulate_selection(name){
 				new_connection = connections.get("connections["+c+"]");
 				if((tty == "audio")&&((fty == "audio")||(fty == "hardware"))){
 					new_connection.replace("to::number",new_encapsulated_blockno);
-					new_connection.replace("to::input::number",inwardaudioconnectionslist.indexOf[c]);
+					new_connection.replace("to::input::number",inwardaudioconnectionslist.indexOf(c));
 				}else{
 					var oin=new_connection.get("to::input::number");
 					new_connection.replace("to::number",new_encapsulated_blockno);
-					new_connection.replace("to::input::number",oin+inputoffsetlist[blocklist.indexOf[tb]]);
+					new_connection.replace("to::input::number",oin+inputoffsetlist[blocklist.indexOf(tb)]);
+					post("\nnew in",oin,inputoffsetlist,blocklist,tb,blocklist.indexOf(tb),oin+inputoffsetlist[blocklist.indexOf(tb)]);
 				}
-				post("\nswapping connection",c);
 				remove_connection(c);
 				connections.replace("connections["+c+"]",new_connection);
-				make_connection(c,0);			
+				make_connection(c,0);
+
 			}
 		}
 	}
-	//and remove the blocks
+	//and remove the blocks, copying over the properties
+	p=0;
+	pars = [];
 	for(var b=0;b<MAX_BLOCKS;b++){
 		if(selected.block[b]){
+			var s = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
+			var thispars = parameter_value_buffer.peek(1,b*MAX_PARAMETERS,s);
+			pars = pars.concat(thispars);
 			post("\nremoving block",b);
 			remove_block(b);
 		}
 	}
+	post("\ncollected together",pars.length,"parameter values");
+	parameter_value_buffer.poke(1,new_encapsulated_blockno*MAX_PARAMETERS,pars);
+	set_sidebar_mode("none");
+	selected.block[new_encapsulated_blockno] = 1;
+	redraw_flag.flag |= 4;
 }
