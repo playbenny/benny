@@ -963,7 +963,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-		}else if((usermouse.x > sidebar.x) && !automap.lock_c && (automap.offset_range_c>0) && (sidebar.mode=="parameters") && (usermouse.got_t == 2) && config.get("AUTOMAP_MOUSE_FOLLOW") && (mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)){
+		}else if((usermouse.x > sidebar.x) && !automap.lock_c && (automap.offset_range_c>0) && (sidebar.mode=="block") && (usermouse.got_t == 2) && config.get("AUTOMAP_MOUSE_FOLLOW") && (mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)){
 			var r = -1;
 			for(var tr=0;tr<automap.sidebar_row_ys.length;tr++){
 				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr;
@@ -972,6 +972,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			r = Math.min(r,automap.offset_range_c);
 			if(automap.offset_c != r){
 				automap.offset_c = r;
+				note_poly.message("setvalue", automap.available_c, "automap_offset", automap.offset_c * automap.c_cols );
 				redraw_flag.flag |= 2;
 			}
 		}else if(usermouse.got_t == 7){
