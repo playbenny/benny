@@ -878,10 +878,19 @@ function open_core_control_auto(){
 	post("\nlooking");
 	for(var i=0;i<MAX_BLOCKS;i++){
 		if((blocks.contains("blocks["+i+"]::name"))&&(blocks.get("blocks["+i+"]::name")=="core.input.control.auto")){
-			for(var t=0;t<MAX_BLOCKS;t++) selected.block[t] = 0;
-			selected.block[i]=1;
-			set_display_mode("custom",i);
-			return 1;
+			var show=0;
+			for(var cc=0;cc<connections.getsize("connections");cc++){
+				if(connections.contains("connections["+cc+"]::from::number")&&(connections.get("connections["+cc+"]::from::number")==i)){
+					show=1;
+					break;
+				}
+			}
+			if(show){
+				for(var t=0;t<MAX_BLOCKS;t++) selected.block[t] = 0;
+				selected.block[i]=1;
+				set_display_mode("custom",i);
+			}
+			return show;
 		}
 	}
 }
