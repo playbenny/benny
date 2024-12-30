@@ -1436,7 +1436,7 @@ function midi_indicator(number){
 }
 
 function draw_clock(){
-	var cx2 = (sidebar.mode == "none") ? (mainwindow_width) : (sidebar.x);
+	var cx2 = ((sidebar.mode == "none")&&!automap.lock_c &&!automap.lock_k &&!automap.lock_q) ? (mainwindow_width) : (sidebar.x);
 	if(sidebar.mode == "file_menu") cx2 = sidebar.x2 - fontheight * 15;
 	var cx = cx2 - fontheight*2 - 9;
 	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);
