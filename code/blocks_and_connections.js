@@ -3829,6 +3829,8 @@ function encapsulate_selection(name){
 					new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
 					cc++;	
 				}
+			}else{
+
 			}
 		}
 	}
