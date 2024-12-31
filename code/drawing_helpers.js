@@ -1227,9 +1227,25 @@ function draw_menu_hint(){
 	
 	
 	if(blocktypes.contains(usermouse.hover[1]+"::help_text")){
-		var hint=blocktypes.get(usermouse.hover[1]+"::help_text")+" ";
+		var block_name = usermouse.hover[1];
+		var hint=blocktypes.get(block_name+"::help_text")+" ";
 		//		post("\n"+usermouse.hover[1]+" : "+hint);
-		
+		function get_io_name_and_description(ty,dir) {
+			if (blocktypes.contains(block_name + "::connections::"+dir+"::" + ty)) {
+				hint = hint + "££*"+dir+"puts: "+ty+"*";
+				var l = blocktypes.get(block_name + "::connections::"+dir+"::" + ty);
+				for (var i = 0; i < l.length; i++) {
+					hint = hint + "£- " + l[i];
+					if (blocktypes.contains(block_name + "::connections::"+dir+"::descriptions::" + ty)) {
+						hint = hint + " - " + blocktypes.get(block_name + "::connections::"+dir+"::descriptions::" + ty+"["+i+"]");
+					}
+				}
+			}
+		}
+		get_io_name_and_description("audio","in");
+		get_io_name_and_description("midi","in");
+		get_io_name_and_description("audio","out");
+		get_io_name_and_description("midi","out");	
 		hint = hint+"                       ";
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
 		lcd_main.message("paintrect", sidebar.x,9+(topspace+1.1)*fontheight,sidebar.x2,9+fontheight*(2.1+topspace),cod);
