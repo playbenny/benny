@@ -164,6 +164,8 @@ function blockno(bb){
 }
 
 function traceaudiotree(examine,avoid){
+    if(avoid < 0) return 0;
+    if(examine < 0) return 0;
     for(var c=0;c<connectionstoadd.length;c++){
         if(connectionswithvectordelay[c] != 1){
             if((connectionstoadd[c].get("from::number")==examine)&&(connectionstoadd[c].get("from::output::type")=="audio")&&(connectionstoadd[c].get("to::input::type")=="audio")){
