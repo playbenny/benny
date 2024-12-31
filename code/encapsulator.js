@@ -19,6 +19,7 @@ var voice=-1;
 
 var connectionstoadd = [];
 var connectionswithvectordelay=[];
+var recursions;
 
 function blockno(bb){
     if(block!=bb){
@@ -111,6 +112,7 @@ function blockno(bb){
                 if((ftyp=="audio")&&(ttyp=="audio")){
                     //check if this connection completes a feedback loop. ie
                     //start at the destination, trace out all possible trees from that block
+                    recursions = 100 * connectionstoadd.length;
                     var feedback = traceaudiotree(tb,fb);
                     if(feedback){
                         post("\nfeedback loop found for connection",c,"tapin/out inserted");
@@ -169,6 +171,11 @@ function traceaudiotree(examine,avoid){
                 if(t==avoid){
                     return 1;
                 }else{
+                    recursions--;
+                    if(recursions<0){
+                        post("\ntoo many recursions probably feedback elsewhere");
+                        return 0;
+                    }
                     var r = traceaudiotree(t,avoid);
                     if(r==1) return 1;
                 }
