@@ -4821,6 +4821,22 @@ function draw_sidebar(){
 					setfontsize(fontsmall);
 					lcd_main.message("textface", "normal");
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
+					function get_io_name_and_description(ty,dir) {
+						if (blocktypes.contains(block_name + "::connections::"+dir+"::" + ty)) {
+							hint = hint + "££*"+dir+"puts: "+ty+"*";
+							var l = blocktypes.get(block_name + "::connections::"+dir+"::" + ty);
+							for (var i = 0; i < l.length; i++) {
+								hint = hint + "£- " + l[i];
+								if (blocktypes.contains(block_name + "::connections::"+dir+"::descriptions::" + ty)) {
+									hint = hint + " - " + blocktypes.get(block_name + "::connections::"+dir+"::descriptions::" + ty+"["+i+"]");
+								}
+							}
+						}
+					}
+					get_io_name_and_description("audio","in");
+					get_io_name_and_description("midi","in");
+					get_io_name_and_description("audio","out");
+					get_io_name_and_description("midi","out");
 					long_sidebar_text(hint);
 				}else{
 					click_zone(set_sidebar_mode,"help",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
