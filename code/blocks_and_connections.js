@@ -982,7 +982,7 @@ function remove_connection(connection_number){
 		return -1;
 		//if it was flagged as overlapping then no connection was made and there's nothing to remove
 	}
-	// post("removing connection",connection_number,"\n");
+	//post("removing connection",connection_number,"\n");
 	var f_type = connections.get("connections["+connection_number+"]::from::output::type");
 	var t_type = connections.get("connections["+connection_number+"]::to::input::type");
 	var f_block = connections.get("connections["+connection_number+"]::from::number");
@@ -1174,7 +1174,7 @@ function remove_connection(connection_number){
 	for(i=0;i<f_voices.length;i++){
 		if(((t_type == "midi") || (t_type == "block")) && (t_voice_list == "all")){
 //midi that goes to a polyalloc - handled here not per-to-voice
-			if(f_type == "midi"){ //midi to midi(polyrouter)
+			if((f_type == "midi")||(f_type == "parameters")){ //midi to midi(polyrouter)
 				remove_routing(connection_number);
 			}else if(f_type == "audio"){//audio to midi (polyrouter)
 				remove_routing(connection_number);
@@ -3024,7 +3024,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::vector", 0);	
 		new_connection.replace("conversion::offset", 0);
 		new_connection.replace("conversion::offset2", 0.5);
-		if((f_type=="midi")&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+		if(((f_type=="midi")||(f_type=="parameters"))&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
 	}else{
 		new_connection.replace("conversion",oldconn.get("conversion"));
 	}
@@ -3046,7 +3046,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::vector", 0);	
 		new_connection.replace("conversion::offset", 0);
 		new_connection.replace("conversion::offset2", 0.5);
-		if((t_type=="midi")&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+		if(((t_type=="midi")||(t_type=="parameters"))&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
 	}else{
 		new_connection.replace("conversion", oldconn.get("conversion"));
 		if(defaultpos==0) new_connection.replace("conversion::scale", 1);
