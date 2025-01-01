@@ -1242,8 +1242,10 @@ function draw_menu_hint(){
 				}
 			}
 		}
+		get_io_name_and_description("hardware","in");
 		get_io_name_and_description("audio","in");
 		get_io_name_and_description("midi","in");
+		get_io_name_and_description("hardware","out");
 		get_io_name_and_description("audio","out");
 		get_io_name_and_description("midi","out");	
 		hint = hint+"                       ";
