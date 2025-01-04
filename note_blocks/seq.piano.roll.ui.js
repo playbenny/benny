@@ -162,6 +162,7 @@ function draw(){
 		pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
 		if(!seqdict.contains(block+"::"+pattern)) return -1;
 		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+		if(!Array.isArray(loopnts))loopnts = [256,0,0,256];
 		seql = loopnts[0];
 		start = loopnts[1];
 		loopstart = loopnts[2];
@@ -252,6 +253,7 @@ function draw(){
 			} 
 			var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
 			var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
+			var ls2 = Math.max(0,ls);
 			var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
 			mouse_lane = -1;
 			hovered_event = -1;
@@ -262,7 +264,7 @@ function draw(){
 				var r = 18;
 				if((lanetype[l]==1)||(maximisedlist[l]==0)){
 					if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
-					outlet(1,"paintrect",x_pos+ls,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+					outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
 				}else{
 					r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
@@ -271,7 +273,7 @@ function draw(){
 						var nr = rr + r;
 						var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
-						outlet(1,"paintrect",x_pos+ls,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
+						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
 						rr=nr;
 					}
@@ -526,11 +528,14 @@ function voice_is(v){
 			seqdict.setparse(block+"::0::looppoints", "*");//
 			seqdict.replace(block+"::0::looppoints", [256, 0, 0, 256]);
 		}
-		messnamed("note_poly","setvalue",1+voice,"copyfromdict");
-		post("\nnote_poly","setvalue",1+voice,"copyfromdict");
+		copytoseq();
+		//post("\nnote_poly","setvalue",1+voice,"copyfromdict");
 	}
 }
 
+function copytoseq(){
+	messnamed("note_poly","setvalue",1+voice,"copyfromdict");
+}
 function laneheights(){
 	var used = laneslist.length; 
 	var maximised = 0;
@@ -629,6 +634,7 @@ function mouse(x,y,l,s,a,c,scr){
 				}
 				event[3] = v;
 				seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
+				copytoseq();
 			}else{
 				for(i=0;i<k.length;i++){
 					if(selected_events[k[i]]){
@@ -641,6 +647,7 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 						event[3] = v;
 						seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+						copytoseq();
 					}
 				}
 			}
@@ -679,14 +686,18 @@ function mouse(x,y,l,s,a,c,scr){
 								var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 								event[2] += pp;
 								event[0] += xx;
+								event[0] = Math.min(1, Math.max(0,event[0]));
 								seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+								copytoseq();
 							}
 						}
 					}else if(hovered_event>-1){
 						var event = seqdict.get(block+"::"+pattern+"::"+k[hovered_event]);
 						event[2] += pp;
 						event[0] += xx;
+						event[0] = Math.min(1, Math.max(0,event[0]));
 						seqdict.replace(block+"::"+pattern+"::"+k[hovered_event],event);
+						copytoseq();
 					}
 				}
 			}
@@ -733,6 +744,7 @@ function mouse(x,y,l,s,a,c,scr){
 					var event = [xx,mouse_lane,pp,vv,1/seql];
 					//post("\nadding, index",ind,"event",event,"to block",block,"pattern",pattern);
 					seqdict.replace(block+"::"+pattern+"::"+ind,event);
+					copytoseq();
 					drawflag=1;
 				}else{ //select nothing
 					selected_event_count=0;
@@ -787,6 +799,7 @@ function keydown(key){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 				event[2] += dir;
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+				copytoseq();
 			}
 		}
 		drawflag = 1;
@@ -804,6 +817,7 @@ function keydown(key){
 				event[ind] += dir + 100;
 				event[ind] %= 1;
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+				copytoseq();
 			}
 		}
 		drawflag = 1;
