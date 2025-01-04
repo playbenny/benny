@@ -2,7 +2,7 @@ function set_display_mode(mode,t){
 	if(mode == "custom"){
 		custom_block = +t;
 		last_displaymode = displaymode;
-		var x1 = ((blocktypes.contains(blocks.get("blocks["+custom_block+"::name")+"::show_states_on_custom_view"))) ? 9 : 18+fontheight;
+		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 		ui_poly.message("setvalue",  custom_block+1, "setup", x1,18+fontheight*1.1, sidebar.x-9, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
@@ -2032,7 +2032,7 @@ function draw_topbar(){
 			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
 			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
-		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+custom_block+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
+		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 9 - fontheight;
 			var cll = config.getsize("palette::gamut");
 			var c = new Array(3);
