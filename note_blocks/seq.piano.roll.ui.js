@@ -158,6 +158,7 @@ function flag(){
 
 function draw(){
 	if(block >= 0){
+		//post("draw");
 		drawflag = 0;
 		pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
 		if(!seqdict.contains(block+"::"+pattern)) return -1;
@@ -237,7 +238,6 @@ function draw(){
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
 		
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-			//for();
 			lowestnote=128;
 			highestnote=-1;
 			for(var i=1;i<k.length;i++){ //[0] is the looppoints
@@ -298,28 +298,31 @@ function draw(){
 			var shown_range_in_beats = seql / zoom_scale;
 			var firstbeat = Math.ceil(zoom_start*seql);
 			var bw = (width-2)/shown_range_in_beats;
-			var step = 24 / bw;
-			if(step<1){
-				step = 1 / Math.ceil(1 / step);
-			}else{
-				step = Math.ceil(step);
-			}
-			step = Math.max(step,0.01);
-			outlet(1,"frgb",0,0,0);
-			for(var b = -1;b<shown_range_in_beats;b+=step){
-				var bx = x_pos + (width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
-				if((bx>=x_pos)&&(bx<(x_pos+width-2))){
+			var firstbeat_f = firstbeat - zoom_start*seql;
+			var step = 1;
+			while(bw*step<12){ step *= 2; }
+			var bw2 = bw;
+			var s2=1;
+			while(bw2>48){ bw2 *= 0.5; s2 *= 0.5; }
+			//outlet(1,"frgb",0,0,0);
+			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+			for(var b = firstbeat;bx<x_pos+width-2;bx+=bw2){
+				if((b/s2) % step == 0){
 					outlet(1,"moveto",bx,y_pos+height*0.08);
 					outlet(1,"lineto",bx,y_pos+height);
 				}
+				b+=s2;
 			}
-			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
-			for(var b = 0;b<shown_range_in_beats;b+=step){
-				var bx = x_pos + (width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
-				if((2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
+			//outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+			while(bw*step<24){ step *= 2; }
+			for(var b = firstbeat;bx<x_pos+width-2;bx+=bw){
+				if((b % step) == 0){//(2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
 					outlet(1,"moveto",bx,y_pos+height*0.07);
-					outlet(1,"write",Math.floor(firstbeat+b));
-				}	
+					outlet(1,"write",Math.floor(b));
+				}
+				b++;
 			}
 
 			var s = ((maximisedlist[l]==1) + 0.25);
@@ -626,13 +629,19 @@ function mouse(x,y,l,s,a,c,scr){
 			if(s) scr *= 0.1;
 			if((selected_event_count==0)||(selected_events[hovered_event]==0)){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
-				var v=0;
-				if(event[3]>=0){
-					v = Math.min(127,Math.max(0,event[3] + scr*10));
-				}else if(event[3]<0){
-					v = Math.max(-127,Math.min(0,event[3] - scr*10));
+				//if ctrl held it adjusts length;
+				if(c){
+					event[4] += scr*0.125/seql;
+					event[4] = Math.max(event[4],0.000000001);
+				}else{
+					var v=0;
+					if(event[3]>=0){
+						v = Math.min(127,Math.max(0,event[3] + scr*10));
+					}else if(event[3]<0){
+						v = Math.max(-127,Math.min(0,event[3] - scr*10));
+					}
+					event[3] = v;
 				}
-				event[3] = v;
 				seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 				copytoseq();
 			}else{
