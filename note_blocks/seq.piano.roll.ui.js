@@ -321,7 +321,7 @@ function draw(){
 			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
 			while(bw*step<24){ step *= 2; }
-			for(var b = firstbeat;bx<x_pos+width-2;bx+=bw){
+			for(var b = firstbeat;bx<x_pos+width-20;bx+=bw){
 				if((b % step) == 0){//(2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
 					outlet(1,"moveto",bx,y_pos+height*0.07);
 					outlet(1,"write",Math.floor(b));
@@ -365,7 +365,7 @@ function draw(){
 			var by = -1; var sy = -1; var by2 = -1; var sy2=-1;
 			for(var i=1;i<k.length;i++){ //[0] is the looppoints
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				if((event == null)||(event[0]<zoom_start)||(event[0]>zoom_end)){
+				if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
 				}else{
 					// all events have a value graph to draw:
 					if(event[1]!=ll){
@@ -394,7 +394,7 @@ function draw(){
 							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
 						}
 						var ey = by2 - (event[2]-lowestnote)*sy2;
-						var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
+						var ex1 = x_pos +Math.max(0, (event[0]-zoom_start))*(width-2)*zoom_scale;
 						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
 						var c = 0.2+0.8* Math.abs(event[3])/128;
 						if(drag==-2){
@@ -621,6 +621,7 @@ function mouse(x,y,l,s,a,c,scr){
 				scr *= 0.25;
 				if(s){
 					var tl= zoom_end-zoom_start;
+					scr /= zoom_scale;
 					if(scr<0){
 						zoom_start = Math.max(0,zoom_start+scr*0.1);
 						zoom_end = zoom_start+tl;
