@@ -309,9 +309,10 @@ function draw(){
 			var bw2 = bw;
 			var s2=1;
 			while(bw2>48){ bw2 *= 0.5; s2 *= 0.5; }
+			var extleft=Math.floor(firstbeat_f/s2);
 			outlet(1,"frgb",0,0,0);
-			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
-			for(var b = firstbeat;bx<x_pos+width-2;bx+=bw2){
+			var bx = x_pos + bw*firstbeat_f - extleft*bw2; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+			for(var b = firstbeat-extleft;bx<x_pos+width-2;bx+=bw2){
 				if((b/s2) % step == 0){
 					outlet(1,"moveto",bx,y_pos+height*0.08);
 					outlet(1,"lineto",bx,y_pos+height);
@@ -330,7 +331,7 @@ function draw(){
 			}
 
 			for(var l=0; l<laney.length-1; l++){
-				var s = ((maximisedlist[laneslist[l]]==1) + 0.45);
+				var s = ((maximisedlist[l]==1) + 0.45);
 				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
 				outlet(1,"moveto", x_pos+9,laney[l]+Math.max(18,r*0.8));
 				outlet(1,"write", "lane "+laneslist[l]);
@@ -394,8 +395,9 @@ function draw(){
 							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
 						}
 						var ey = by2 - (event[2]-lowestnote)*sy2;
-						var ex1 = x_pos +Math.max(0, (event[0]-zoom_start))*(width-2)*zoom_scale;
+						var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
+						ex1 = Math.max(x_pos, ex1);
 						var c = 0.2+0.8* Math.abs(event[3])/128;
 						if(drag==-2){
 							if((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2)){
@@ -418,7 +420,7 @@ function draw(){
 							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 						}
 						outlet(1,"paintrect",ex1,ey-sy2,ex2,ey,col);
-						if(labelled[event[2]]!=1){
+						if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
 							labelled[event[2]] = 1;
 							outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 							outlet(1,"frgb",0,0,0);
@@ -439,10 +441,11 @@ function draw(){
 							col = blockcolour;
 						}
 					}
-					outlet(1,"frgb",col);
-					outlet(1,"moveto",vex1,vey);
-					outlet(1,"lineto",vex1,by);
-
+					if(vex1>=x_pos){
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",vex1,vey);
+						outlet(1,"lineto",vex1,by);
+					}
 				}
 			}	
 			if(hovered_event>-1){
@@ -618,10 +621,9 @@ function mouse(x,y,l,s,a,c,scr){
 					messnamed("to_polys","note", "setvalue",1+voice,"updatelengths",1);
 				}
 			}else{
-				scr *= 0.25;
 				if(s){
 					var tl= zoom_end-zoom_start;
-					scr /= zoom_scale;
+					scr /= -zoom_scale;
 					if(scr<0){
 						zoom_start = Math.max(0,zoom_start+scr*0.1);
 						zoom_end = zoom_start+tl;
@@ -630,6 +632,7 @@ function mouse(x,y,l,s,a,c,scr){
 						zoom_start = zoom_end-tl;
 					}
 				}else{
+					scr *= 0.25;
 					if(zoom_end-zoom_start>scr){
 						var xx = (x-x_pos)/width;
 						zoom_start = Math.max(0,zoom_start + scr*xx);
@@ -846,14 +849,14 @@ function keydown(key){
 		seql = loopnts[0];
 		var ind = (old_c == 1) ? 4 : 0;
 		var dir = (key == -12) ? 1 : -1;
-		if(old_s) dir *= 16;
+		if(old_s) dir /= 16;
 		if(a) dir /= 12;
-		dir /= (16 * seql);
+		dir /= (seql);
 		for(i=0;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				event[ind] += dir + 100;
-				event[ind] %= 1;
+				event[ind] += dir;// + 100;
+				event[ind] = Math.min(1,Math.max(0,event[ind]));
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 				copytoseq();
 			}
