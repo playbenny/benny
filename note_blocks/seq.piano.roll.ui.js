@@ -22,6 +22,8 @@ seqdict.name = "seq-piano-roll";
 var lowestnote = 0;
 var highestnote = 128;
 
+var timesig = 4;
+
 var sd, k;
 
 // lanes: notes lane (0 or 1, hopefully not both, aim for 1), controllers (2-7), meta (8)
@@ -72,6 +74,8 @@ var drag_start_y;
 
 var drawflag = 0;
 var draw_mouselayer_flag = 0;
+var notenames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var nn=[];
 
 function playhead(p){
 	playheadpos = p;
@@ -230,9 +234,9 @@ function draw(){
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",x_pos+9,y_pos+height*0.02);
 			outlet(1,"write","start:"+start);
-			outlet(1,"moveto",x_pos+9+width*0.2,y_pos+height*0.02);
+			outlet(1,"moveto",x_pos+9+width*0.12,y_pos+height*0.02);
 			outlet(1,"write","loopstart:"+loopstart);
-			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
+			outlet(1,"moveto",x_pos+9+width*0.24,y_pos+height*0.02);
 			outlet(1,"write"," length:"+looplength);
 
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
@@ -240,6 +244,7 @@ function draw(){
 			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 			lowestnote=128;
 			highestnote=-1;
+			var labelled=[];
 			for(var i=1;i<k.length;i++){ //[0] is the looppoints
 				var note = seqdict.get(block+"::"+pattern+"::"+k[i]+"[2]");
 				if(note>highestnote)highestnote=note;
@@ -304,8 +309,7 @@ function draw(){
 			var bw2 = bw;
 			var s2=1;
 			while(bw2>48){ bw2 *= 0.5; s2 *= 0.5; }
-			//outlet(1,"frgb",0,0,0);
-			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+			outlet(1,"frgb",0,0,0);
 			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
 			for(var b = firstbeat;bx<x_pos+width-2;bx+=bw2){
 				if((b/s2) % step == 0){
@@ -314,7 +318,7 @@ function draw(){
 				}
 				b+=s2;
 			}
-			//outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
 			while(bw*step<24){ step *= 2; }
 			for(var b = firstbeat;bx<x_pos+width-2;bx+=bw){
@@ -325,9 +329,9 @@ function draw(){
 				b++;
 			}
 
-			var s = ((maximisedlist[l]==1) + 0.25);
-			outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
 			for(var l=0; l<laney.length-1; l++){
+				var s = ((maximisedlist[laneslist[l]]==1) + 0.45);
+				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
 				outlet(1,"moveto", x_pos+9,laney[l]+Math.max(18,r*0.8));
 				outlet(1,"write", "lane "+laneslist[l]);
 				if(lanetype[l]==0){
@@ -414,6 +418,12 @@ function draw(){
 							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 						}
 						outlet(1,"paintrect",ex1,ey-sy2,ex2,ey,col);
+						if(labelled[event[2]]!=1){
+							labelled[event[2]] = 1;
+							outlet(1,"moveto",ex1+4,ey-sy2*0.1);
+							outlet(1,"frgb",0,0,0);
+							outlet(1,"write",nn[event[2]]);
+						}
 					}else{
 						if(ll>1){
 							col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
@@ -438,23 +448,23 @@ function draw(){
 			if(hovered_event>-1){
 				outlet(1,"frgb",blockcolour);
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
-				outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.02);
-				outlet(1,"write","hovered event:",(event[0] * seql).toFixed(2), event[2],event[3],(event[4]*seql).toFixed(2));
+				outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+				outlet(1,"write","hovered event:",nn[event[2]],event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}else{
 				if(selected_event_count==1){
 					for(var se=0;se<selected_events.length;se++){
 						if(selected_events[se]){
 							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
 							var event = seqdict.get(block+"::"+pattern+"::"+se);
-							outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.02);
-							outlet(1,"write","selected event:",(event[0] * seql).toFixed(2), event[2],event[3],(event[4]*seql).toFixed(2));
+							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}
 					}
 				}
 			}
 			if(selected_event_count>0){
 				outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-				outlet(1,"moveto",x_pos+9+width*0.6,y_pos+height*0.04);
+				outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.04);
 				outlet(1,"write",selected_event_count,"events selected");
 			}
 		}
@@ -557,6 +567,9 @@ function laneheights(){
 
 function voice_offset(){}
 function loadbang(){
+	for(var i=0;i<128;i++){
+		nn[i]=notenames[i%12]+(Math.floor(i/12) - 2);
+	}
 	outlet(0,"getvoice");
 }
 
@@ -581,7 +594,7 @@ function store(){
 }
 
 function mouse(x,y,l,s,a,c,scr){
-	if(scr==1)scr =0;
+	if(scr==1) scr =0;
 	moved = (x!=mouse_x)||(y!=mouse_y)||(scr!=0);
 	mouse_x = x;
 	mouse_y = y;
@@ -594,11 +607,11 @@ function mouse(x,y,l,s,a,c,scr){
 					scr = 2*(scroll_accumulator>0)-1;
 					scroll_accumulator = 0;
 					var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
-					if(x<x_pos+0.2*width){
+					if(x<x_pos+0.12*width){
 						loopnts[1] += scr;
-					}else if(x<x_pos+0.4*width){
+					}else if(x<x_pos+0.24*width){
 						loopnts[2] += scr;
-					}else if(x<x_pos+0.6*width){
+					}else if(x<x_pos+0.36*width){
 						loopnts[3] += scr;
 					}
 					seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
@@ -631,7 +644,7 @@ function mouse(x,y,l,s,a,c,scr){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				//if ctrl held it adjusts length;
 				if(c){
-					event[4] += scr*0.125/seql;
+					event[4] -= scr*0.25/seql;
 					event[4] = Math.max(event[4],0.000000001);
 				}else{
 					var v=0;
@@ -648,13 +661,18 @@ function mouse(x,y,l,s,a,c,scr){
 				for(i=0;i<k.length;i++){
 					if(selected_events[k[i]]){
 						var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-						var v=0;
-						if(event[3]>=0){
-							v = Math.min(127,Math.max(0,event[3] + scr*10));
-						}else if(event[3]<0){
-							v = Math.max(-127,Math.min(0,event[3] - scr*10));
+						if(c){
+							event[4] -= scr*0.25/seql;
+							event[4] = Math.max(event[4],0.000000001);
+						}else{
+							var v=0;
+							if(event[3]>=0){
+								v = Math.min(127,Math.max(0,event[3] + scr*10));
+							}else if(event[3]<0){
+								v = Math.max(-127,Math.min(0,event[3] - scr*10));
+							}
+							event[3] = v;
 						}
-						event[3] = v;
 						seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 						copytoseq();
 					}
@@ -693,18 +711,28 @@ function mouse(x,y,l,s,a,c,scr){
 						for(i=0;i<k.length;i++){
 							if(selected_events[k[i]]>0){
 								var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-								event[2] += pp;
-								event[0] += xx;
-								event[0] = Math.min(1, Math.max(0,event[0]));
+								if(c){
+									event[4] += xx;
+									event[4] = Math.max(event[4],0.0000001);
+								}else{
+									event[2] += pp;
+									event[0] += xx;
+									event[0] = Math.min(1, Math.max(0,event[0]));
+								}
 								seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 								copytoseq();
 							}
 						}
 					}else if(hovered_event>-1){
 						var event = seqdict.get(block+"::"+pattern+"::"+k[hovered_event]);
-						event[2] += pp;
-						event[0] += xx;
-						event[0] = Math.min(1, Math.max(0,event[0]));
+						if(c){
+							event[4] += xx;
+							event[4] = Math.max(event[4],0.000000001);
+						}else{
+							event[2] += pp;
+							event[0] += xx;
+							event[0] = Math.min(1, Math.max(0,event[0]));
+						}
 						seqdict.replace(block+"::"+pattern+"::"+k[hovered_event],event);
 						copytoseq();
 					}
@@ -852,4 +880,12 @@ function enabled(e){
 	if(e==1){
 		outlet(0,"getvoice");
 	}	
+}
+
+function time_to_beat_divs(t){
+	var tt = t * seql;
+	var bars = Math.floor(tt / timesig);
+	var beats = Math.floor(tt % timesig);
+	var fract = ((tt % timesig) - beats).toFixed(2);
+	return bars+":"+beats+":"+fract;
 }
