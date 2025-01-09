@@ -5105,7 +5105,7 @@ function draw_sidebar(){
 					if(f_o_v == "all"){
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*0.6, fontheight*0.6+y_offset, section_colour);
 						lcd_main.message("frgb", 0,0,0 );
-						show_split_source = 1;
+						show_split_source = (f_v_no > 1);
 					}else{
 						lcd_main.message("paintrect", vx-fo1, y_offset, vx+fontheight*0.6, fontheight*0.6+y_offset, section_colour_dark);
 						lcd_main.message("frgb", section_colour );
@@ -5774,7 +5774,7 @@ function draw_sidebar(){
 					}else{
 						lcd_main.message("write", "all");
 						vx+=fontheight*0.8;
-						show_split_destination=1;
+						show_split_destination=(t_i_v=="all") && (t_v_no>1);
 					}
 					//var t_i_no = connections.get("connections["+i+"]::to::input::number");
 				}else{
@@ -5796,10 +5796,10 @@ function draw_sidebar(){
 				mouse_click_actions[mouse_index] = connection_edit_voices;
 				mouse_click_parameters[mouse_index] = i; 
 				mouse_click_values[mouse_index] = ["to",vi];
-				mouse_index++;		
-				show_split_destination = (show_split_destination>=1);			
-				show_split_source = (show_split_source>=1);			
+				mouse_index++;
 			}
+			show_split_destination = (show_split_destination>=1);			
+			show_split_source = (show_split_source>=1);			
 			
 			if((t_v_no>1)||(blocktypes.get(t_name+"::max_polyphony")==0)||(blocktypes.get(t_name+"::max_polyphony")>t_v_no)){
 				if(vx>sidebar.x2 - fontheight){
