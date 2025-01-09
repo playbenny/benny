@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+9/1/25:
+- **breaking change** quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
+- fix quantislide osc 
 28/12/24:
 - updated the clock input of rene which is a **breaking change** if you were using the other inputs, just fix those connections and it'll work as before though. rene ui improvements, new features.
 - piano roll is enabled but it's still a work in progress - fine for playing back things you record with the keyboard and making small edits. more coming soon.

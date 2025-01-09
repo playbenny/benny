@@ -108,7 +108,7 @@
 				"type" : "note",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
-				"default" : 0.472440944,
+				"default" : 0.4725,
 				"error_scale" : 0
 			},
 			{
