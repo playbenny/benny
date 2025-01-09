@@ -21,6 +21,8 @@ seqdict.name = "seq-piano-roll";
 
 var lowestnote = 0;
 var highestnote = 128;
+var currentquantise = 1;
+var quantise_enable = 1;
 
 var timesig = 4;
 
@@ -337,6 +339,7 @@ function draw(){
 				}
 				b+=s2;
 			}
+			currentquantise = s2;
 			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
 			while(bw*step<24){ step *= 2; }
@@ -811,6 +814,9 @@ function mouse(x,y,l,s,a,c,scr){
 			}else{ //release on background
 				if(c){ //create note
 					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
+					if((!s)&&quantise_enable){
+						xx = Math.round(xx*seql/currentquantise)/(seql/currentquantise);
+					}
 					var vv = 100;
 					var pp = 0;
 					if(lanetype[mouse_lane]==0){//note lane
@@ -822,7 +828,7 @@ function mouse(x,y,l,s,a,c,scr){
 					ind++;
 					while(k.indexOf(ind.toString())>-1) ind++;
 					ind = ind.toString();
-					var event = [xx,mouse_lane,pp,vv,1/seql];
+					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
 					//post("\nadding, index",ind,"event",event,"to block",block,"pattern",pattern);
 					seqdict.replace(block+"::"+pattern+"::"+ind,event);
 					copytoseq();
@@ -898,9 +904,9 @@ function keydown(key){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 				event[2] += dir;
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
-				copytoseq();
 			}
 		}
+		copytoseq();
 		drawflag = 1;
 	}else if((key == -11)||(key == -12)){//left right
 		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
@@ -916,12 +922,12 @@ function keydown(key){
 				event[ind] += dir;// + 100;
 				event[ind] = Math.min(1,Math.max(0,event[ind]));
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
-				copytoseq();
 			}
 		}
+		copytoseq();
 		drawflag = 1;
 	}else if((key==97)&&(old_c)){ //select all
-		for(i=0;i<k.length;i++) selected_events[k[i]]=1;
+		for(i=1;i<k.length;i++) selected_events[k[i]]=1;
 		drawflag = 1;
 	}else if((key==-6)||(key==-7)){ //delete
 		if(selected_event_count>0){
@@ -929,9 +935,11 @@ function keydown(key){
 				if(selected_events[k[i]]) seqdict.remove(block+"::"+pattern+"::"+k[i]);
 			}
 			drawflag = 1;
+			copytoseq();
 		}else if(hovered_event>-1){
 			seqdict.remove(block+"::"+pattern+"::"+hovered_event);
 			drawflag = 1;
+			copytoseq();
 		}
 	}else{
 		post("\nkey",key);
