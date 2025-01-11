@@ -19,8 +19,8 @@ blocks.name = "blocks";
 var seqdict = new Dict;
 seqdict.name = "seq-piano-roll";
 
-var lowestnote = 0;
-var highestnote = 128;
+var lowestnote = 128;
+var highestnote = 0;
 var currentquantise = 1;
 var quantise_enable = 1;
 
@@ -32,24 +32,19 @@ var sd, k;
 // lanes: notes lane (0 or 1, hopefully not both, aim for 1), controllers (2-7), meta (8)
 // notes lane gets both a notes view and (when maximised?) a velocities view
 
-// need: quick draw - so quick lookup of Y range(s) for a given data no
-// 
-
 // laney is lane y coords, indexed by number not data-no.
 // notelane[x] is the number of the lane that holds notes of data-no x
 // vallane[x] is the number of teh lane that holds values of data-no x
 
 // laneslist holds the lanes present in the data (eg [1,1,3,4] for notes and some ccs )
 // lanetype is the type of that lane (0 notes 1 values 2 meta) (eg [0,1,1,1])
-// listlanes is reverse lookup - data lane X -> actual lane Y eg ([nan,0,nan,3,4])
 
 var notelane=[];
 var vallane=[];
 
 var laneslist = [];
 var lanetype = [];
-var listlanes = [];
-var maximisedlist = [1,0,0,0,0,0,0,0,0,0];
+var maximisedlist = [1,0,0,0,0,0,0,0,0,0,0];
 var noteshade = [1,0.75,1,0.75,1,1,0.75,1,0.75,1,0.75,1];
 var laney = [];
 var playheadpos = 0;
@@ -102,6 +97,7 @@ function convert_to_lengths(){
 			}else if(event[1]>1){
 				laneslist[event[1]] = 1;
 			}else if(event[3]>0){ //noteon, find its length
+				if(event[1]==0)event[1]=1;
 				if(event[2]<lowestnote) lowestnote = event[2];
 				if(event[2]>highestnote) highestnote = event[2];
 				for(var ii=1;ii<=k.length;ii++){
@@ -160,377 +156,415 @@ function setup(x1,y1,x2,y2,sw){
 	draw();
 }
 
-function flag(){
-	drawflag = 1;
+function flag(f){
+	if(f==null){
+		drawflag |= 1;
+	}else{
+		drawflag |= f;
+	}
 }
 
 function draw(){
-	if(block >= 0){
-		//post("draw");
-		drawflag = 0;
-		pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
-		if(!seqdict.contains(block+"::"+pattern)){
-			post("\nno sequence data found, inserted default empty sequence");
-			seqdict.setparse(block+"::"+pattern,"{}"); 
-			seqdict.setparse(block+"::"+pattern+"::looppoints", "*");//
-			seqdict.replace(block+"::"+pattern+"::looppoints", [256, 0, 0, 16]);
-			zoom_to_pattern();
-			drawflag=1;
-			copytoseq();
-			//return -1;
+	if(drawflag&2)get_note_range();
+	if((drawflag&4) && mini)zoom_to_pattern();
+	//post("draw",drawflag);
+	drawflag = 0;
+	pattern = Math.floor(parameter_value_buffer.peek(1, block*MAX_PARAMETERS,1)*16);
+	if(!seqdict.contains(block+"::"+pattern)){
+		post("\nno sequence data found, inserted default empty sequence");
+		seqdict.setparse(block+"::"+pattern,"{}"); 
+		seqdict.setparse(block+"::"+pattern+"::looppoints", "*");//
+		seqdict.replace(block+"::"+pattern+"::looppoints", [256, 0, 0, 16]);
+		zoom_to_pattern();
+		get_note_range();
+		drawflag=1;
+		copytoseq();
+		//return -1;
+	}
+	var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+	if(!Array.isArray(loopnts)){
+		error("loop points not in seq");
+		loopnts = [256,0,16,16];
+		seqdict.setparse(block+"::"+pattern+"::looppoints", "*");//
+		seqdict.replace(block+"::"+pattern+"::looppoints", [256, 0, 16, 16]);
+		post("\ninserted default looppoints");
+		zoom_to_pattern();
+		get_note_range();
+		drawflag = 1;
+		copytoseq();
+	}
+	seql = loopnts[0];
+	start = loopnts[1];
+	loopstart = loopnts[2];
+	looplength = loopnts[3];
+	start += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 1,1)-0.5)*512);
+	loopstart += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 2,1)-0.5)*512);
+	looplength += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 3,1)-0.5)*512);
+	sd = seqdict.get(block+"::"+pattern);
+	if(sd == null) return 0;
+	k = sd.getkeys();
+	if(k == null) return 0;
+	if(mini){
+		//var st = (width-2)*(start/seql);
+		//var ls = (width-2)*(loopstart/seql);
+		//var le = ls + (width-2)*(looplength/seql);
+		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
+		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
+		var ls2 = Math.max(0,ls);
+		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
+
+		if(le<(width-2)){
+			outlet(1,"paintrect",x_pos+le,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
 		}
-		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
-		if(!Array.isArray(loopnts)){
-			error("loop points not in seq");
-			loopnts = [256,0,16,16];
-			seqdict.setparse(block+"::"+pattern+"::looppoints", "*");//
-			seqdict.replace(block+"::"+pattern+"::looppoints", [256, 0, 16, 16]);
-			post("\ninserted default looppoints");
-			zoom_to_pattern();
-			drawflag = 1;
-			copytoseq();
+		if(ls==0){
+			outlet(1,"paintrect",x_pos,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		}else{
+			outlet(1,"paintrect",x_pos,y_pos,ls+x_pos,height+y_pos,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+			outlet(1,"paintrect",x_pos+ls,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		}
-		seql = loopnts[0];
-		start = loopnts[1];
-		loopstart = loopnts[2];
-		looplength = loopnts[3];
-		start += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 1,1)-0.5)*512);
-		loopstart += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 2,1)-0.5)*512);
-		looplength += Math.floor((parameter_value_buffer.peek(1, block*MAX_PARAMETERS + 3,1)-0.5)*512);
-		sd = seqdict.get(block+"::"+pattern);
-		if(sd == null) return 0;
-		k = sd.getkeys();
-		if(k == null) return 0;
-		if(mini){
-			var st = (width-2)*(start/seql);
-			var ls = (width-2)*(loopstart/seql);
-			var le = ls + (width-2)*(looplength/seql);
-			if(le<(width-2)){
-				outlet(1,"paintrect",x_pos+le,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
-			}
-			if(ls==0){
-				outlet(1,"paintrect",x_pos,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
+		outlet(1,"moveto", x_pos + st , y_pos);
+		outlet(1,"lineto", x_pos + st , y_pos+height - 2);
+		outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+		outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
+		outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
+		var by = y_pos+height - 2;
+		var sy = (height-3)/129;
+		for(var i=1;i<k.length;i++){
+			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+			if(event == null){
+			}else if(event[1]>0){
+				var ey = by - Math.abs(event[3])*sy;
+				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
+				//var ex1 = x_pos + event[0]*(width-1);
+				var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
+				outlet(1,"frgb",col);
+				outlet(1,"moveto",ex1,ey);
+				outlet(1,"lineto",ex1,by);
 			}else{
-				outlet(1,"paintrect",x_pos,y_pos,ls+x_pos,height+y_pos,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
-				outlet(1,"paintrect",x_pos+ls,y_pos,le+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+				var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
+				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
+				//var ex1 = x_pos + event[0]*(width-2);
+				//var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
+				var c = 0.2+0.8* Math.abs(event[3])/128;
+				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+				outlet(1,"frgb",col);
+				outlet(1,"moveto",ex1,ey);
+				outlet(1,"lineto",ex2,ey);
 			}
-			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
-			outlet(1,"moveto", x_pos + st , y_pos);
-			outlet(1,"lineto", x_pos + st , y_pos+height - 2);
-			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-			outlet(1,"moveto", x_pos + (width - 2) * playheadpos , y_pos);
-			outlet(1,"lineto", x_pos + (width - 2) * playheadpos , y_pos+height - 2);
-			var by = y_pos+height - 2;
-			var sy = (height-3)/129;
-			for(var i=1;i<k.length;i++){
-//				if(k[i]!="looppoints"){ //if k[0] isn't the looppoints something's gone wrong so lets not waste time worrying about it
-				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				if(event == null){
-				}else if(event[1]>1){
-					var ey = by - Math.abs(event[3])*sy;
-					var ex1 = x_pos + event[0]*(width-1);
-					var col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
-					outlet(1,"frgb",col);
-					outlet(1,"moveto",ex1,ey);
-					outlet(1,"lineto",ex1,by);
-				}else{
-					var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
-					var ex1 = x_pos + event[0]*(width-2);
-					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
-					var c = 0.2+0.8* Math.abs(event[3])/128;
-					var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
-					outlet(1,"frgb",col);
-					outlet(1,"moveto",ex1,ey);
-					outlet(1,"lineto",ex2,ey);
+		}
+	}else{
+		//starting from the mini code but the following changes:
+		//lanes (with maximising)
+		//  store lane y positions
+		//scroll and zoom (on x axis for all, on y axis for note lanes)
+		//notes as rectangles
+		if(laney.length==0) laneheights();
+		outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
+		outlet(1,"frgb",blockcolour);
+		outlet(1,"moveto",x_pos,y_pos+height*0.02);
+		outlet(1,"write","start:"+start);
+		outlet(1,"moveto",x_pos+width*0.1,y_pos+height*0.02);
+		outlet(1,"write","loopstart:"+loopstart);
+		outlet(1,"moveto",x_pos+width*0.2,y_pos+height*0.02);
+		outlet(1,"write","length:"+looplength);
+
+		outlet(0,"custom_ui_element","mouse_passthrough",x_pos - (x_pos==9)*9,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
+	
+		outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+		var labelled=[];
+		//get_note_range(); 
+		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
+		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
+		var ls2 = Math.max(0,ls);
+		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
+		mouse_lane = -1;
+		hovered_event = -1;
+		selected_event_count = 0;
+		for(var l=0; l<laney.length-1; l++){
+			var ll = laneslist[l]; //actual lane
+			if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
+			var r = 18;
+			if((lanetype[l]==1)||(maximisedlist[l]==0)){
+				if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+				outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+				if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+			}else{
+				r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
+				var rr = laney[l];
+				for(var yy = highestnote - lowestnote; yy >= 0; yy--){
+					var nr = rr + r;
+					var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
+					if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
+					outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
+					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
+					rr=nr;
 				}
-//				}
+			}
+			outlet(1,"paintrect",x_pos,laney[l+1]-4,width+x_pos,laney[l+1],0,0,0);
+		}
+
+		if((st>=zoom_start)&&(st<=zoom_end)){
+			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
+			for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (st - zoom_start) * zoom_scale , laney[l]);
+				outlet(1,"lineto", x_pos + (st - zoom_start) * zoom_scale , laney[l+1]-6);
+			}
+		}				
+		if((playheadpos>=zoom_start)&&(playheadpos<=zoom_end)){
+			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+			for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l]);
+				outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l+1]-6);
+			}
+		}
+		var shown_range_in_beats = seql / zoom_scale;
+		var firstbeat = Math.ceil(zoom_start*seql);
+		var bw = (width-2)/shown_range_in_beats;
+		var firstbeat_f = firstbeat - zoom_start*seql;
+		var step = 1;
+		while(bw*step<12){ step *= 2; }
+		var bw2 = bw;
+		var s2=1;
+		if(bw2>48){
+			if(tripletgrid){ bw2 /= 3; s2 *= 3; }
+			while(bw2>48){ bw2 *= 0.5; s2 *= 2; }
+		}
+		var extleft=Math.floor(firstbeat_f*s2);
+		outlet(1,"frgb",0,0,0);
+		var bx = x_pos + bw*firstbeat_f - extleft*bw2; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+		var s3 = 1/s2;
+		for(var b = firstbeat-extleft;bx<x_pos+width-2;bx+=bw2){
+			var test = (b*s2) % step;
+			if((test < 0.00001)||(step-test < 0.00001)){
+				outlet(1,"moveto",bx,y_pos+height*0.08);
+				outlet(1,"lineto",bx,y_pos+height);
+			}
+			b+=s3;
+		}
+		currentquantise = s3;
+		if(quantise_enable && !old_s){
+			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+		}else{
+			outlet(1,"frgb",99,99,99);
+		}
+		outlet(1,"moveto",x_pos+width*0.3,y_pos+height*0.02);
+		if(currentquantise<1){
+			outlet(1,"write","grid: 1/"+Math.round(1/currentquantise));
+		}else{
+			outlet(1,"write","grid:"+currentquantise);
+		}
+		outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+
+		var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
+		while(bw*step<24){ step *= 2; }
+		for(var b = firstbeat;bx<x_pos+width-20;bx+=bw){
+			if(b == start){
+				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				outlet(1,"paintpoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
+				outlet(1,"frgb",blockcolour);
+				outlet(1,"moveto",bx,y_pos+height*0.075);
+				outlet(1,"write",Math.floor(b));
+				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+			}else if(b == loopstart){
+				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
+				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+				outlet(1,"moveto",bx,y_pos+height*0.075);
+				outlet(1,"write",Math.floor(b));
+			}else if(b == loopstart + looplength){
+				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx-height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
+				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+				outlet(1,"moveto",bx,y_pos+height*0.075);
+				outlet(1,"write",Math.floor(b));
+			}else if((b % step) == 0){//(2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
+				outlet(1,"moveto",bx,y_pos+height*0.075);
+				outlet(1,"write",Math.floor(b));
+			}
+			b++;
+		}
+
+		for(var l=0; l<laney.length-1; l++){
+			var s = ((maximisedlist[l]==1) + 0.45);
+			outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
+			outlet(1,"moveto", x_pos+9,laney[l]+Math.max(18,r*0.8));
+			//outlet(1,"write", "lane "+laneslist[l]);
+			if(lanetype[l]==0){
+				outlet(1,"write", "notes "+laneslist[l]);
+			}else if(laneslist[l]==0){
+				outlet(1,"write", "velocity "+laneslist[l]);
+			}else{
+				outlet(1,"write", "cc "+(laneslist[l]));
+			}			
+		}
+		var selx1,selx2,sely1,sely2;
+		if(drag!=0){
+			if(drag == -2){
+				if(drag_start_x<old_x){
+					selx1 = drag_start_x;
+					selx2 = old_x;
+				}else{
+					selx1 = old_x;
+					selx2 = drag_start_x;
+				}
+				if(drag_start_y<old_y){
+					sely1 = drag_start_y;
+					sely2 = old_y;
+				}else{
+					sely1 = old_y;
+					sely2 = drag_start_y;
+				}
+				outlet(1,"paintrect",selx1,sely1,selx2,sely2,0,0,0);
+			}
+		}
+
+		var ll = -99; var ll2 = -99;
+		var by = -1; var sy = -1; var by2 = -1; var sy2=-1;
+		for(var i=1;i<k.length;i++){ //[0] is the looppoints
+			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+			if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
+			}else{
+				// all events have a value graph to draw:
+				if(event[1]!=ll){
+					ll = event[1];
+					by = laney[1+vallane[ll]] - 6;
+					sy = (laney[1+vallane[ll]] - laney[vallane[ll]] - 6)/128;			
+				}
+				var vey = by - Math.abs(event[3])*sy;
+				var vex1 = x_pos + (event[0]-zoom_start)*(width-1)*zoom_scale;
+				if(mouse_lane==vallane[ll]){
+					if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
+					if(drag==-2){
+						if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
+							selected_events[k[i]] |= 2;
+						}else{
+							selected_events[k[i]] &= 1;
+						}
+					}
+				}
+				var col; // don't draw values until after the note lane bit in case they're hovered there
+				if(ll==0){
+					// some also have a note lane
+					if(event[1]!=ll2){
+						ll2 = event[1];
+						by2 = laney[1+notelane[ll2]] - 4;
+						sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
+					}
+					if((event[2]<lowestnote)||(event[2]>highestnote)){
+						drawflag = 2;
+						return 0;
+					}
+					var ey = by2 - (event[2]-lowestnote)*sy2;
+					var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
+					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
+					ex1 = Math.max(x_pos, ex1);
+					var c = 0.2+0.8* Math.abs(event[3])/128;
+					if(drag==-2){
+						if((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2)){
+							selected_events[k[i]] |= 4;
+						}else{
+							selected_events[k[i]] &= 3;
+						}
+					}
+					if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
+						hovered_event = k[i];
+						if(selected_events[k[i]]){
+							col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
+						}else{
+							col = [255,255,255];
+						}
+					}else if(selected_events[k[i]]){
+						selected_event_count++;
+						col = [blockcolour[1]*c,blockcolour[2]*c,blockcolour[0]*c];
+					}else{
+						col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+					}
+					outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
+					if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
+						labelled[event[2]] = 1;
+						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
+						outlet(1,"frgb",0,0,0);
+						outlet(1,"write",nn[event[2]]);
+					}
+				}else{
+					if(ll>1){
+						col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
+					}else if(hovered_event == k[i]){
+						if(selected_events[k[i]]){
+							col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
+						}else{
+							col = [255,255,255];
+						}
+					}else if(selected_events[k[i]]){
+						col = [blockcolour[1],blockcolour[2],blockcolour[0]];
+					}else{
+						col = blockcolour;
+					}
+				}
+				if(vex1>=x_pos){
+					outlet(1,"frgb",col);
+					outlet(1,"moveto",vex1,vey);
+					outlet(1,"lineto",vex1,by);
+				}
+			}
+		}	
+		if(hovered_event>-1){
+			outlet(1,"frgb",blockcolour);
+			var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
+			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+			if(event[1]==0){
+				outlet(1,"write","hovered note:",nn[event[2]],event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+			}else{
+				outlet(1,"write","hovered cc:",event[1]-1,event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}
 		}else{
-			//starting from the mini code but the following changes:
-			//lanes (with maximising)
-			//  store lane y positions
-			//scroll and zoom (on x axis for all, on y axis for note lanes)
-			//notes as rectangles
-			if(laney.length==0) laneheights();
-			outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
-			outlet(1,"frgb",blockcolour);
-			outlet(1,"moveto",x_pos,y_pos+height*0.02);
-			outlet(1,"write","start:"+start);
-			outlet(1,"moveto",x_pos+width*0.12,y_pos+height*0.02);
-			outlet(1,"write","loopstart:"+loopstart);
-			outlet(1,"moveto",x_pos+width*0.24,y_pos+height*0.02);
-			outlet(1,"write"," length:"+looplength);
-
-			outlet(0,"custom_ui_element","mouse_passthrough",x_pos - (x_pos==9)*9,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
-		
-			outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-			lowestnote=128;
-			highestnote=-1;
-			var labelled=[];
-			for(var i=1;i<k.length;i++){ //[0] is the looppoints
-				var note = seqdict.get(block+"::"+pattern+"::"+k[i]+"[2]");
-				if(note>highestnote)highestnote=note;
-				if(note<lowestnote)lowestnote=note;
-			}
-			if(highestnote==-1){
-				lowestnote = 50; highestnote = 70;
-			}else{
-				lowestnote = Math.max(0,lowestnote-10);
-				highestnote =  Math.min(127, highestnote+10);
-			} 
-			var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
-			var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
-			var ls2 = Math.max(0,ls);
-			var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
-			mouse_lane = -1;
-			hovered_event = -1;
-			selected_event_count = 0;
-			for(var l=0; l<laney.length-1; l++){
-				var ll = laneslist[l]; //actual lane
-				if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
-				var r = 18;
-				if((lanetype[l]==1)||(maximisedlist[l]==0)){
-					if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
-					outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
-				}else{
-					r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
-					var rr = laney[l];
-					for(var yy = highestnote - lowestnote; yy >= 0; yy--){
-						var nr = rr + r;
-						var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
-						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
-						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
-						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
-						rr=nr;
-					}
-				}
-				outlet(1,"paintrect",x_pos,laney[l+1]-4,width+x_pos,laney[l+1],0,0,0);
-			}
-
-			if((st>=zoom_start)&&(st<=zoom_end)){
-				outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
-				for(var l=0; l<laney.length-1; l++){
-					outlet(1,"moveto", x_pos + (st - zoom_start) * zoom_scale , laney[l]);
-					outlet(1,"lineto", x_pos + (st - zoom_start) * zoom_scale , laney[l+1]-6);
-				}
-			}				
-			if((playheadpos>=zoom_start)&&(playheadpos<=zoom_end)){
-				outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-				for(var l=0; l<laney.length-1; l++){
-					outlet(1,"moveto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l]);
-					outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l+1]-6);
-				}
-			}
-			var shown_range_in_beats = seql / zoom_scale;
-			var firstbeat = Math.ceil(zoom_start*seql);
-			var bw = (width-2)/shown_range_in_beats;
-			var firstbeat_f = firstbeat - zoom_start*seql;
-			var step = 1;
-			while(bw*step<12){ step *= 2; }
-			var bw2 = bw;
-			var s2=1;
-			if(bw2>48){
-				if(tripletgrid){ bw2 /= 3; s2 *= 3; }
-				while(bw2>48){ bw2 *= 0.5; s2 *= 2; }
-			}
-			var extleft=Math.floor(firstbeat_f*s2);
-			outlet(1,"frgb",0,0,0);
-			var bx = x_pos + bw*firstbeat_f - extleft*bw2; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
-			var s3 = 1/s2;
-			for(var b = firstbeat-extleft;bx<x_pos+width-2;bx+=bw2){
-				var test = (b*s2) % step;
-				if((test < 0.00001)||(step-test < 0.00001)){
-					outlet(1,"moveto",bx,y_pos+height*0.08);
-					outlet(1,"lineto",bx,y_pos+height);
-				}
-				b+=s3;
-			}
-			currentquantise = s3;
-			outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
-			var bx = x_pos + bw*firstbeat_f; //(width-2)*(((firstbeat + b) / seql) - zoom_start) * zoom_scale;
-			while(bw*step<24){ step *= 2; }
-			for(var b = firstbeat;bx<x_pos+width-20;bx+=bw){
-				if(b == start){
-					outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-					outlet(1,"paintpoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
-					outlet(1,"frgb",blockcolour);
-					outlet(1,"moveto",bx,y_pos+height*0.075);
-					outlet(1,"write",Math.floor(b));
-					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
-				}else if(b == loopstart){
-					outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-					outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
-					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
-					outlet(1,"moveto",bx,y_pos+height*0.075);
-					outlet(1,"write",Math.floor(b));
-				}else if(b == loopstart + looplength){
-					outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-					outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx-height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
-					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
-					outlet(1,"moveto",bx,y_pos+height*0.075);
-					outlet(1,"write",Math.floor(b));
-				}else if((b % step) == 0){//(2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
-					outlet(1,"moveto",bx,y_pos+height*0.075);
-					outlet(1,"write",Math.floor(b));
-				}
-				b++;
-			}
-
-			for(var l=0; l<laney.length-1; l++){
-				var s = ((maximisedlist[l]==1) + 0.45);
-				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
-				outlet(1,"moveto", x_pos+9,laney[l]+Math.max(18,r*0.8));
-				//outlet(1,"write", "lane "+laneslist[l]);
-				if(lanetype[l]==0){
-					outlet(1,"write", "notes "+laneslist[l]);
-				}else if(laneslist[l]<=1){
-					outlet(1,"write", "velocity "+laneslist[l]);
-				}else{
-					outlet(1,"write", "cc "+(-2 +laneslist[l]));
-				}			
-			}
-			var selx1,selx2,sely1,sely2;
-			if(drag!=0){
-				if(drag == -2){
-					if(drag_start_x<old_x){
-						selx1 = drag_start_x;
-						selx2 = old_x;
-					}else{
-						selx1 = old_x;
-						selx2 = drag_start_x;
-					}
-					if(drag_start_y<old_y){
-						sely1 = drag_start_y;
-						sely2 = old_y;
-					}else{
-						sely1 = old_y;
-						sely2 = drag_start_y;
-					}
-					outlet(1,"paintrect",selx1,sely1,selx2,sely2,0,0,0);
-				}
-			}
-
-			var ll = -99; var ll2 = -99;
-			var by = -1; var sy = -1; var by2 = -1; var sy2=-1;
-			for(var i=1;i<k.length;i++){ //[0] is the looppoints
-				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
-				}else{
-					// all events have a value graph to draw:
-					if(event[1]!=ll){
-						ll = event[1];
-						by = laney[1+vallane[ll]] - 6;
-						sy = (laney[1+vallane[ll]] - laney[vallane[ll]] - 6)/128;			
-					}
-					var vey = by - Math.abs(event[3])*sy;
-					var vex1 = x_pos + (event[0]-zoom_start)*(width-1)*zoom_scale;
-					if(mouse_lane==vallane[ll]){
-						if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
-						if(drag==-2){
-							if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
-								selected_events[k[i]] |= 2;
-							}else{
-								selected_events[k[i]] &= 1;
-							}
-						}
-					}
-					var col; // don't draw values until after the note lane bit in case they're hovered there
-					if(ll<=1){
-						// some also have a note lane
-						if(event[1]!=ll2){
-							ll2 = event[1];
-							by2 = laney[1+notelane[ll2]] - 4;
-							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
-						}
-						var ey = by2 - (event[2]-lowestnote)*sy2;
-						var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
-						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
-						ex1 = Math.max(x_pos, ex1);
-						var c = 0.2+0.8* Math.abs(event[3])/128;
-						if(drag==-2){
-							if((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2)){
-								selected_events[k[i]] |= 4;
-							}else{
-								selected_events[k[i]] &= 3;
-							}
-						}
-						if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
-							hovered_event = k[i];
-							if(selected_events[k[i]]){
-								col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
-							}else{
-								col = [255,255,255];
-							}
-						}else if(selected_events[k[i]]){
-							selected_event_count++;
-							col = [blockcolour[1]*c,blockcolour[2]*c,blockcolour[0]*c];
-						}else{
-							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
-						}
-						outlet(1,"paintrect",ex1,ey-sy2,ex2,ey,col);
-						if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
-							labelled[event[2]] = 1;
-							outlet(1,"moveto",ex1+4,ey-sy2*0.1);
-							outlet(1,"frgb",0,0,0);
-							outlet(1,"write",nn[event[2]]);
-						}
-					}else{
-						if(ll>1){
-							col = [(event[1] & 1)*255,(event[1] & 2)*255,(event[1] & 4)*255];
-						}else if(hovered_event == k[i]){
-							if(selected_events[k[i]]){
-								col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
-							}else{
-								col = [255,255,255];
-							}
-						}else if(selected_events[k[i]]){
-							col = [blockcolour[1],blockcolour[2],blockcolour[0]];
-						}else{
-							col = blockcolour;
-						}
-					}
-					if(vex1>=x_pos){
-						outlet(1,"frgb",col);
-						outlet(1,"moveto",vex1,vey);
-						outlet(1,"lineto",vex1,by);
-					}
-				}
-			}	
-			if(hovered_event>-1){
-				outlet(1,"frgb",blockcolour);
-				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
-				outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
-				if(event[1]<=1){
-					outlet(1,"write","hovered note:",nn[event[2]],event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
-				}else{
-					outlet(1,"write","hovered cc:",event[1]-1,event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
-				}
-			}else{
-				if(selected_event_count==1){
-					for(var se=0;se<selected_events.length;se++){
-						if(selected_events[se]){
-							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-							var event = seqdict.get(block+"::"+pattern+"::"+se);
-							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
-							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
-						}
+			if(selected_event_count==1){
+				for(var se=0;se<selected_events.length;se++){
+					if(selected_events[se]){
+						outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+						var event = seqdict.get(block+"::"+pattern+"::"+se);
+						outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+						outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 					}
 				}
 			}
-			if(selected_event_count>0){
-				outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-				outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.04);
-				outlet(1,"write",selected_event_count,"events selected");
-			}
+		}
+		if(selected_event_count>0){
+			outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.04);
+			outlet(1,"write",selected_event_count,"events selected");
 		}
 	}
 }
 
+function get_note_range() {
+	var nlowestnote = 128;
+	var nhighestnote = -1;
+	if(Array.isArray(k) && k.length>1){
+		for (var i = 1; i < k.length; i++) { //[0] is the looppoints
+			var event = seqdict.get(block + "::" + pattern + "::" + k[i]);
+			if ((event[1] == 0) && (event[0] > zoom_start) && (event[0] < zoom_end)) {
+				if (event[2] > nhighestnote) nhighestnote = event[2];
+				if (event[2] < nlowestnote) nlowestnote = event[2];
+			}
+		}
+	}
+	if (nhighestnote == -1) {
+		if (lowestnote > highestnote) {
+			lowestnote = 50; 
+			highestnote = 70;
+		}
+	} else {
+		lowestnote = Math.max(0, nlowestnote - 10);
+		highestnote = Math.min(127, nhighestnote + 10);
+	}
+}
+
 function update(){
-	if(drawflag){
+	if((block>=0) && drawflag){
 		draw();
-		return 0;
 	}
 }
 
@@ -554,7 +588,7 @@ function voice_is(v){
 				lowestnote = 128;
 				highestnote = 0;
 				seqdict.setparse(block,"{}");
-				var ll=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //1,1,1,1,1,1,1,
+				var ll=[1,1,1,1,1,1,1,1,1,1];//0,0,0,0,0,0,0,0,0,0]; //1,1,1,1,1,1,1,
 				var lc=0;
 				for(var i=0;i<k.length;i++){
 					var d = blocks.get("blocks["+block+"]::stored_piano_roll::"+k[i]);
@@ -580,7 +614,7 @@ function voice_is(v){
 				if(lc==0) ll[0]=1;
 				for(var ii=0;ii<ll.length;ii++){
 					if(ll[ii]){
-						if((ii==1)||(ii==0)){
+						if(ii==0){
 							laneslist.push(ii);
 							lanetype.push(0);
 							notelane[ii]=laneslist.length-1;							
@@ -590,7 +624,6 @@ function voice_is(v){
 						vallane[ii]=laneslist.length-1;
 					}
 				}
-				for(var i=0; i<laneslist.length; i++) listlanes[laneslist[i]]=i;
 				lowestnote = Math.max(0, lowestnote-1);
 				highestnote = Math.min(127, highestnote+1);
 			}
@@ -602,10 +635,15 @@ function voice_is(v){
 		}
 		copytoseq();
 	}
+	//post("\nlaneslist",laneslist);
+	//post("\nlanetype",lanetype);
+	//post("\nnotelane",notelane);
+	//post("\nval lane",vallane);
+
 }
 
 function copytoseq(){
-	post("\ncopytoseq",1+voice);
+	//post("\ncopytoseq",1+voice);
 	messnamed("to_polys","note", "setvalue",1+voice,"copyfromdict");
 }
 
@@ -614,7 +652,8 @@ function laneheights(){
 	var maximised = 0;
 	if(used==0) return -1;
 	for(var i=0; i<laneslist.length; i++) {
-		maximised += maximisedlist[i];
+		maximised += (maximisedlist[i]==1);
+		post(maximised);
 	}
 	maximised = 8 * maximised + used;
 	maximised = height * 0.9/maximised;
@@ -622,7 +661,6 @@ function laneheights(){
 	for(var i=1; i<=laneslist.length; i++){
 		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]) + 1) * maximised;
 	}
-	//post("\nlaneslist",laneslist," length ",laneslist.length," lane heights:",laney," types ",lanetype);
 }
 
 function voice_offset(){}
@@ -635,21 +673,23 @@ function loadbang(){
 
 
 function store(){
-	var sk = seqdict.get(block);
-	if(sk!=null){
-		messnamed("to_blockmanager","store_wait_for_me",block);
-		var k = sk.getkeys();
-		if(k!=null){
-			blocks.setparse("blocks["+block+"]::stored_piano_roll","{}");
-			for(var i=0;i<k.length;i++){
-				blocks.setparse("blocks["+block+"]::stored_piano_roll::"+k[i], "{}");
-				var d = seqdict.get(block+"::"+k[i]);
-				if(d!=null){
-					blocks.replace("blocks["+block+"]::stored_piano_roll::"+k[i], d);			
+	if(block>=0){
+		var sk = seqdict.get(block);
+		if(sk!=null){
+			messnamed("to_blockmanager","store_wait_for_me",block);
+			var k = sk.getkeys();
+			if(k!=null){
+				blocks.setparse("blocks["+block+"]::stored_piano_roll","{}");
+				for(var i=0;i<k.length;i++){
+					blocks.setparse("blocks["+block+"]::stored_piano_roll::"+k[i], "{}");
+					var d = seqdict.get(block+"::"+k[i]);
+					if(d!=null){
+						blocks.replace("blocks["+block+"]::stored_piano_roll::"+k[i], d);			
+					}
 				}
 			}
+			messnamed("to_blockmanager","store_ok_done",block);
 		}
-		messnamed("to_blockmanager","store_ok_done",block);
 	}
 }
 
@@ -667,15 +707,15 @@ function mouse(x,y,l,s,a,c,scr){
 					scr = 2*(scroll_accumulator>0)-1;
 					scroll_accumulator = 0;
 					var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
-					if(x<x_pos+0.12*width){
+					if(x<x_pos+0.1*width){
 						loopnts[1] += scr;
 						loopnts[1] = Math.max(0,loopnts[1]);
 						loopnts[1] = Math.min(loopnts[0],loopnts[1]);
-					}else if(x<x_pos+0.24*width){
+					}else if(x<x_pos+0.2*width){
 						loopnts[2] += scr;
 						loopnts[2] = Math.max(0,loopnts[2]);
 						loopnts[2] = Math.min(loopnts[0]-loopnts[3],loopnts[2]);
-					}else if(x<x_pos+0.36*width){
+					}else if(x<x_pos+0.3*width){
 						loopnts[3] += scr;
 						loopnts[3] = Math.max(1,loopnts[3]); //? smaller would be fine
 						loopnts[3] = Math.min(loopnts[0]-loopnts[2],loopnts[3]);
@@ -785,7 +825,7 @@ function mouse(x,y,l,s,a,c,scr){
 						selected_events[hovered_event]=1;
 					}
 					if(selected_event_count>0){
-						for(i=0;i<k.length;i++){
+						for(i=1;i<k.length;i++){
 							if(selected_events[k[i]]>0){
 								var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 								if(c){
@@ -812,7 +852,19 @@ function mouse(x,y,l,s,a,c,scr){
 				drawflag = 1;
 			}else if(y<y_pos+0.1*height){
 				if(y<y_pos+0.05*height){
-					
+					if(x<x_pos+0.36*width){
+						if(x>x_pos+0.3*width){
+							if((tripletgrid==1)||((currentquantise>1)&&quantise_enable)){
+								tripletgrid=0;
+								quantise_enable=0;
+							}else if(quantise_enable){
+								tripletgrid=1;
+							}else{
+								quantise_enable=1;
+							}
+							drawflag=1;
+						}
+					}
 				}else{
 					if(a==1){
 						if((zoom_start==0)&&(zoom_end==1)){
@@ -852,9 +904,15 @@ function mouse(x,y,l,s,a,c,scr){
 					ind++;
 					while(k.indexOf(ind.toString())>-1) ind++;
 					ind = ind.toString();
-					if(mouse_lane==1)mouse_lane=0;
+					if(mouse_lane>0)mouse_lane--;
 					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
-					//post("\nadding, index",ind,"event",event,"to block",block,"pattern",pattern);
+					for(var ti=1;ti<k.length;ti++){ //check for duplicate events
+						var ev = sd.get(k[ti]);
+						if((ev[0]==xx)&&(ev[1]==mouse_lane)&&(ev[2]==pp)){
+							ind = k[ti];
+							break; 
+						}
+					}
 					seqdict.replace(block+"::"+pattern+"::"+ind,event);
 					copytoseq();
 					drawflag=1;
@@ -894,6 +952,7 @@ function mouse(x,y,l,s,a,c,scr){
 
 function zoom_to_pattern() {
 	var lp = seqdict.get(block + "::" + pattern + "::looppoints");
+	if(!Array.isArray(lp)) return -1;
 	var ns = Math.max(Math.min(lp[1] - 2, lp[2] - 2), 0);
 	var ne = Math.max(lp[3] + 2, lp[1] + 8);
 	ns /= lp[0];
@@ -901,6 +960,7 @@ function zoom_to_pattern() {
 	zoom_start = ns;
 	zoom_end = ne;
 	zoom_scale = 1 / (ne - ns);
+	get_note_range();
 }
 
 function keydown(key){
@@ -927,7 +987,8 @@ function keydown(key){
 		for(i=0;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				event[2] += dir;
+				var n = event[2] + dir;
+				if((n>=0)&&(n<127)) event[2] = n;
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 			}
 		}
