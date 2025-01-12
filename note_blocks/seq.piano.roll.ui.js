@@ -8,6 +8,11 @@ var parameter_value_buffer = new Buffer("parameter_value_buffer");
 var config = new Dict;
 config.name = "config";
 
+var undo = new Dict;
+undo.name = "undo";
+var undo_stack = new Dict;
+undo_stack.name = "undo_stack";
+
 var width, height,x_pos,y_pos,unit,sx,sy,ux,uy;
 var block=-1;
 var voice;
@@ -70,6 +75,7 @@ var clicked = -1;
 var drag = 0;
 var drag_start_x;
 var drag_start_y;
+var drag_moved;
 
 var drawflag = 0;
 var draw_mouselayer_flag = 0;
@@ -841,12 +847,33 @@ function mouse(x,y,l,s,a,c,scr){
 				drag = 3 + clicked;
 			}else{
 				drag = 3 + (selected_events[clicked]>0)|0;
+				if(selected_events[clicked]){
+					undo.clear();
+					for(i=1;i<k.length;i++){
+						if(selected_events[k[i]]>0){
+							var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+							undo.replace(k[i],event);
+						}
+					}
+				}else{
+					undo.clear();
+					var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
+					undo.replace(hovered_event,event);
+				}
 			}
+			drag_moved = 0;
 			//post("\nset drag",drag);
 			old_l = 1;
 		}else{//already clicked, so a drag
 			//post("\n---");
-			if(drag>0)drag=-drag;
+			if(drag>0){
+				drag=-drag;
+				if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
+					selected_event_count=1;
+					selected_events=[];
+					selected_events[hovered_event]=1;
+				}
+			}
 			if(drag<0){
 				drawflag=1;
 				if(drag == -2){//selection area drag
@@ -858,11 +885,6 @@ function mouse(x,y,l,s,a,c,scr){
 					if(lanetype[mouse_lane]==0){
 						pp = Math.round((highestnote-lowestnote+3)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
 						if(pp!=0) drag_start_y = y;
-					}
-					if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
-						selected_event_count=1;
-						selected_events=[];
-						selected_events[hovered_event]=1;
 					}
 					if(selected_event_count>0){
 						for(i=1;i<k.length;i++){
@@ -878,6 +900,7 @@ function mouse(x,y,l,s,a,c,scr){
 								}
 								seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 								drawflag = 1;
+								drag_moved = 1;
 								copytoseq();
 							}
 						}
@@ -889,6 +912,7 @@ function mouse(x,y,l,s,a,c,scr){
 		if(old_l==1){// a release
 			if(drag<0){
 				drag = 0;
+				if(drag_moved)push_to_undo_stack("move");
 				drawflag = 1;
 			}else if(y<y_pos+0.1*height){
 				if(y<y_pos+0.05*height){
@@ -907,15 +931,11 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 				}else{
 					if(a==1){
-						if((zoom_start==0)&&(zoom_end==1)){
-							zoom_to_pattern();
-						}else{
-							zoom_start=0; zoom_end=1; zoom_scale=1;
-						}
-						drawflag = 1;
-					}else{
-	
+						zoom_to_pattern();
+					}else if(c==1){
+						zoom_start=0; zoom_end=1; zoom_scale=1;						
 					}
+					drawflag = 1;
 				}
 			}else if(hovered_event>-1){
 				if(s||c){ //toggle selection
@@ -954,6 +974,10 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 					}
 					seqdict.replace(block+"::"+pattern+"::"+ind,event);
+					undo.clear();
+					undo.replace(ind,event);
+					post("\npushing",undo.getkeys());
+					push_to_undo_stack("create");
 					copytoseq();
 					drawflag=1;
 				}else{ //select nothing
@@ -1024,16 +1048,23 @@ function keydown(key){
 	}else if((key == -9)||(key == -10)){//up down
 		var dir = (key == -9) ? 1 : -1;
 		if(old_s) dir *= 12;
+		var rem=0;
+		undo.clear();
 		for(i=0;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+				undo.replace(k[i],event);
+				rem=1;
 				var n = event[2] + dir;
 				if((n>=0)&&(n<127)) event[2] = n;
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 			}
 		}
-		copytoseq();
-		drawflag = 1;
+		if(rem){
+			push_to_undo_stack("move");
+			copytoseq();
+			drawflag = 1;
+		}
 	}else if((key == -11)||(key == -12)){//left right
 		var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
 		seql = loopnts[0];
@@ -1042,59 +1073,81 @@ function keydown(key){
 		if(old_s) dir /= 16;
 		if(a) dir /= 12;
 		dir /= (seql);
+		var rem=0;
+		undo.clear();
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
+				rem=1;
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+				undo.replace(k[i],event);
 				event[ind] += dir;// + 100;
 				event[ind] = Math.min(1,Math.max(0,event[ind]));
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 			}
 		}
-		copytoseq();
-		drawflag = 1;
+		if(rem){
+			push_to_undo_stack("move");
+			copytoseq();
+			drawflag = 1;
+		}
 	}else if((key==97)&&(old_c)){ //select all
 		for(i=1;i<k.length;i++) selected_events[k[i]]=1;
 		drawflag = 1;
 	}else if((key==-6)||(key==-7)){ //delete 
+		undo.clear();
+		var rem=0;
 		if(hovered_event>-1){
+			var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
+			undo.replace(hovered_event,event);
 			seqdict.remove(block+"::"+pattern+"::"+hovered_event);
-			drawflag = 1;
-			copytoseq();
+			rem = 1;
 		}else{
-			var rem=0;
 			for(i=1;i<k.length;i++){
 				if(selected_events[k[i]]){
+					var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+					undo.replace(k[i],event);
 					rem=1;
 					seqdict.remove(block+"::"+pattern+"::"+k[i]);
 				}
 			}
-			if(rem){
-				drawflag = 1;
-				copytoseq();
-			}	
 		}
+		if(rem){
+			drawflag = 1;
+			copytoseq();
+			push_to_undo_stack("delete");
+		}	
 	}else if(key==51){//3, toggles triplets
 		tripletgrid = 1 - tripletgrid;
 		drawflag = 1;
 	}else if(key==113){//q, quantises selected notes
+		var rem=0;
+		undo.clear();
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				event[0] = Math.round(event[0] * seql/currentquantise)/(seql/currentquantise);
-				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+				undo.replace(k[i],event);
+				var nt = Math.round(event[0] * seql/currentquantise)/(seql/currentquantise);
+				if(event[0]!=nt){
+					rem=1;
+					event[0]=nt;
+					seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+				}
 			}
 		}
+		if(rem)	push_to_undo_stack("move");
 		copytoseq();
 		drawflag = 1;
 	}else if((key==99)||(key==120)){ //ctrl c, ctrl x
 		var mint=99;
+		undo.clear();
 		clipboard = [];
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+				undo.replace(k[i],event);
 				if(event[0]<mint)mint=event[0];
 				clipboard.push(event);
-				post("\nadded event to clipboard:",event);
+				//post("\nadded event to clipboard:",event);
 			}
 		}
 		for(i=0;i<clipboard.length;i++){
@@ -1109,6 +1162,7 @@ function keydown(key){
 				}
 			}
 			if(rem){
+				push_to_undo_stack("delete");
 				drawflag = 1;
 				copytoseq();
 			}	
@@ -1120,6 +1174,7 @@ function keydown(key){
 		}
 		selected_events=[];
 		selected_event_count=0;
+		undo.clear();
 		var ind = k[(k.length-1)]|0;
 		for(var i=0;i<clipboard.length;i++){
 			var event = clipboard[i].slice();
@@ -1129,11 +1184,50 @@ function keydown(key){
 			selected_events[ind]=1;
 			selected_event_count++;
 			ind = ind.toString();
+			undo.replace(ind,event);
 			seqdict.replace(block+"::"+pattern+"::"+ind,event);
-			post("\npasted event with offset",offs," and index",ind,"  :", event);
+			//post("\npasted event with offset",offs," and index",ind,"  :", event);
 		}
+		push_to_undo_stack("create");
 		copytoseq();
 		drawflag=1;	
+	}else if(key==122){ //undo
+		var usz = undo_stack.getsize("history")|0;
+		usz--;
+		post("\nlooking at history:",usz);
+		while(!undo_stack.contains("history["+usz+"]::seq.piano.roll")){
+			usz--;
+			post(usz);
+			if(usz<0) return 0;
+		}
+		undo = undo_stack.get("history["+usz+"]::seq.piano.roll");
+		var uk = undo.getkeys();
+		if(Array.isArray(uk))uk=uk[0];
+		//post("\nundo keys",uk);
+		undo = undo.get(uk);
+		var events = undo.getkeys();
+		if(uk=="move"){
+			for(var i=0;i<events.length;i++){
+				seqdict.replace(block+"::"+pattern+"::"+events[i],undo.get(events[i]));
+			}
+			undo_stack.remove("history["+usz+"]");
+			copytoseq();
+			drawflag=1;
+		}else if(uk == "create"){
+			for(var i=0;i<events.length;i++){
+				seqdict.remove(block+"::"+pattern+"::"+events[i]);
+			}
+			undo_stack.remove("history["+usz+"]");
+			copytoseq();
+			drawflag=1;
+		}else if(uk == "delete"){
+			for(var i=0;i<events.length;i++){
+				seqdict.replace(block+"::"+pattern+"::"+events[i],undo.get(events[i]));
+			}
+			undo_stack.remove("history["+usz+"]");
+			copytoseq();
+			drawflag=1;
+		}
 	}else{
 		post("\nkey",key);
 	}
@@ -1151,4 +1245,11 @@ function time_to_beat_divs(t){
 	var beats = Math.floor(tt % timesig);
 	var fract = ((tt % timesig) - beats).toFixed(2);
 	return bars+":"+beats+":"+fract;
+}
+
+function push_to_undo_stack(action){
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history","*");
+	undo_stack.setparse("history["+usz+"]", '{ "seq.piano.roll" : { "'+action+'" : "*" } }');
+	undo_stack.replace("history["+usz+"]::seq.piano.roll::"+action, undo);
 }
