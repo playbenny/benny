@@ -51,6 +51,7 @@ var metalane=[];
 
 var laneslist = [];
 var lanetype = [];
+var laneused      = [1,1,0,0,0,0,0,0,0,0,0];
 var maximisedlist = [1,0,0,0,0,0,0,0,0,0,0];
 var noteshade = [1,0.75,1,0.75,1,1,0.75,1,0.75,1,0.75,1];
 var laney = [];
@@ -256,7 +257,7 @@ function draw(){
 		for(var i=1;i<k.length;i++){
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 			if((event == null)||(event[0]<zoom_start)||(event[0]>zoom_end)){
-			}else if(event[1]>0){
+			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 				//var ex1 = x_pos + event[0]*(width-1);
@@ -284,6 +285,7 @@ function draw(){
 		//scroll and zoom (on x axis for all, on y axis for note lanes)
 		//notes as rectangles
 		if(laney.length==0) laneheights();
+		laneused=[1,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
 		outlet(1,"frgb",blockcolour);
 		outlet(1,"moveto",x_pos,y_pos+height*0.02);
@@ -324,7 +326,7 @@ function draw(){
 					rr=nr;
 				}
 			}else{// if(lanetype[l]==2){
-				r = (laney[l+1]-laney[l]-4)/(metatypes.length);
+				r = (laney[l+1]-laney[l]-4)/(metatypes.length+1);
 				var rr = laney[l];
 				for(var yy = metatypes.length; yy > 0; yy--){
 					var nr = rr + r;
@@ -434,7 +436,7 @@ function draw(){
 				outlet(1,"write", "meta");
 				if(maximisedlist[l]==1){
 					outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
-					r = (laney[l+1]-laney[l]-4)/(metatypes.length);
+					r = (laney[l+1]-laney[l]-4)/(metatypes.length+1);
 					rr = laney[l]-0.2*r;
 					for(var yy = 0; yy < metatypes.length; yy++){
 						rr += r;
@@ -473,14 +475,13 @@ function draw(){
 			if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
 			}else{
 				if(event[1]==9){
-					post("\nfound meta event",k[i],"event",event,"lane",lanetype[9],metalane[9]);
+					laneused[9] = 1;
 					if(ll2!=9){
 						ll2 = 9;
 						by2 = laney[1+metalane[ll2]] - 4;
-						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(metatypes.length);
-						post("\nsy is",sy2,metatypes.length,by2);	
+						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(1 + metatypes.length);
 					}
-					var ey = by2 - (event[2])*sy2;
+					var ey = by2 - (metatypes.length - event[2])*sy2;
 					var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
 					ex1 = Math.max(x_pos, ex1);
@@ -507,18 +508,19 @@ function draw(){
 						col = [col[0]*c,col[1]*c,col[2]*c];
 					}
 					outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-					post("\nmeta rectangle",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-					if((maximisedlist[metalane[ll]] == 1)){
-						post("label",metatype_params[event[2]]);
+					//post("\nmeta rectangle",ex1,ey-Math.max(1,sy2),ex2,ey,col);
+					if((maximisedlist[10] == 1)){
+						//post("label",metatype_params[event[2]]);
 						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 						outlet(1,"frgb",0,0,0);
-						outlet(1,"write",metatype_params[event[2]]);
+						outlet(1,"write",metatypes[event[2]]);
 					}
 				}else{
 				//if(event[1]!=9){
 					// all events have a value graph to draw: (apart from meta events)					
 					if(event[1]!=ll){
 						ll = event[1];
+						laneused[event[1]] = 1;
 						by = laney[1+vallane[ll]] - 6;
 						sy = (laney[1+vallane[ll]] - laney[vallane[ll]] - 6)/128;			
 					}
@@ -611,6 +613,28 @@ function draw(){
 			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 			if(event[1]==0){
 				outlet(1,"write","hovered note:",nn[event[2]],event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+			}else if(event[1]==9){
+				var displayedparams = "";
+				var ind = 3;
+				for(var p=0;p<metatype_params[event[2]].length;p++){
+					if(metatype_params[event[2]][p]=="chance/every"){
+						if(event[ind]<0){
+							displayedparams += (128+event[ind]).toFixed(2) + "in every 128";
+						}else{
+							displayedparams += ((event[ind]/1.27).toFixed(2))+"% chance";
+						}
+					}else if(metatype_params[event[2]][p]=="range"){
+						displayedparams += "range:" + (1 + Math.floor(event[ind] / 16));
+					}else if(metatype_params[event[2]][p]=="division"){
+						displayedparams += "division:" + (2 + Math.floor(event[ind] / 8));
+					}
+					if(ind==3){
+						ind=5;
+					}else{
+						ind++;
+					}
+				}
+				outlet(1,"write","hovered meta:",metatypes[event[2]],displayedparams,"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}else{
 				outlet(1,"write","hovered cc:",event[1]-1,event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}
@@ -621,7 +645,13 @@ function draw(){
 						outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
 						var event = seqdict.get(block+"::"+pattern+"::"+se);
 						outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
-						outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+						if(event[1]==0){
+							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+						}else if(event[1]==9){
+							outlet(1,"write","selected meta:",metatypes[event[2]],"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+						}else{
+							outlet(1,"write","selected cc:",event[1], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+						}
 					}
 				}
 			}
@@ -683,8 +713,7 @@ function voice_is(v){
 				lowestnote = 128;
 				highestnote = 0;
 				seqdict.setparse(block,"{}");
-				var ll=[1,1,1,1,1,1,1,1,1,1];//0,0,0,0,0,0,0,0,0,0]; //1,1,1,1,1,1,1,
-				var lc=0;
+				laneused=[1,0,0,0,0,0,0,0,0,0]; //1,1,1,1,1,1,1,
 				for(var i=0;i<k.length;i++){
 					var d = blocks.get("blocks["+block+"]::stored_piano_roll::"+k[i]);
 					seqdict.setparse(block+"::"+k[i], "{}");
@@ -694,10 +723,8 @@ function voice_is(v){
 						for(var ii=0;ii<dk.length;ii++){
 							if(dk[ii]!="looppoints"){
 								var event = d.get(dk[ii]);
-								ll[event[1]] = 1;
-								lc++;
-								maximisedlist[event[1]] = (ii==0);
-								if(event[1]<=1){
+								laneused[event[1]] = 1;
+								if(event[1]==0){
 									if(event[2]>highestnote) highestnote = event[2];
 									if(event[2]<lowestnote) lowestnote = event[2];
 								}
@@ -705,26 +732,25 @@ function voice_is(v){
 						}		
 					}
 				}
-				laneslist = [];
-				if(lc==0) ll[0]=1;
-				for(var ii=0;ii<ll.length;ii++){
-					if(ll[ii]){
-						if(ii==9){
-							laneslist.push(ii);
-							lanetype.push(2);
-							metalane[ii]=laneslist.length-1;							
-						}else if(ii==0){
-							laneslist.push(ii);
-							lanetype.push(0);
-							notelane[ii]=laneslist.length-1;							
-							laneslist.push(ii);
-							lanetype.push(1);
-							vallane[ii]=laneslist.length-1;
-						}else{
-							laneslist.push(ii);
-							lanetype.push(1);
-							vallane[ii]=laneslist.length-1;
-						}
+				laneslist = []; lanetype = [];
+				laneused[0]=1;
+				for(var ii=0;ii<laneused.length;ii++){
+					maximisedlist[ii] = (ii==0);
+					if(ii==9){
+						laneslist.push(ii);
+						lanetype.push(2);
+						metalane[ii]=laneslist.length-1;							
+					}else if(ii==0){
+						laneslist.push(ii);
+						lanetype.push(0);
+						notelane[ii]=laneslist.length-1;							
+						laneslist.push(ii);
+						lanetype.push(1);
+						vallane[ii]=laneslist.length-1;
+					}else{
+						laneslist.push(ii);
+						lanetype.push(1);
+						vallane[ii]=laneslist.length-1;
 					}
 				}
 				lowestnote = Math.max(0, lowestnote-1);
@@ -737,12 +763,13 @@ function voice_is(v){
 			seqdict.replace(block+"::"+pattern+"::looppoints", [256, 0, 0, 16]);
 		}
 		copytoseq();
+		post("\nlaneslist",laneslist);
+		post("\nlanetype",lanetype);
+		post("\nnotelane",notelane);
+		post("\nval lane",vallane);
+		post("\nmeta lane",metalane);
+		post("\nlane used",laneused);
 	}
-	//post("\nlaneslist",laneslist);
-	//post("\nlanetype",lanetype);
-	//post("\nnotelane",notelane);
-	//post("\nval lane",vallane);
-
 }
 
 function copytoseq(){
@@ -751,18 +778,24 @@ function copytoseq(){
 }
 
 function laneheights(){
-	var used = laneslist.length; 
-	var maximised = 0;
+	var used=0;
+	var unused;
+	for(var i=0;i<laneslist.length;i++) used += (laneused[i]|0);
+	unused = laneslist.length - used;
 	if(used==0) return -1;
+	var maximised = 0;
 	for(var i=0; i<laneslist.length; i++) {
 		maximised += (maximisedlist[i]==1);
 	}
-	maximised = 8 * maximised + used;
+	post("\nmaximised",maximised,"used",used,"unused",unused);
+	maximised = 8 * maximised + used + 0.4*unused;
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
-		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]) + 1) * maximised;
+		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]|0) + 0.4 + 0.6 * (laneused[Math.max(0,i-2)]|0)) * maximised;
 	}
+	post("\nlaney",laney);
+	post("\nmaximisedlist",maximisedlist);
 }
 
 function voice_offset(){}
@@ -896,7 +929,7 @@ function mouse(x,y,l,s,a,c,scr){
 	}else if(l==1){
 		if(old_l==0){ //a click happens
 			clicked = hovered_event;
-			if((clicked == -1) && s) clicked = -2;
+			if((clicked == -1) && c) clicked = -2;
 			drag_start_x = x;
 			drag_start_y = y;
 			if(clicked<0){
@@ -932,6 +965,7 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 			if(drag<0){
 				drawflag=1;
+				post("drag",drag);
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//pan view around??
 				}else{//drag selection/or just the original hovered note
@@ -1014,8 +1048,8 @@ function mouse(x,y,l,s,a,c,scr){
 					
 					if(lanetype[mouse_lane]==0){//note lane
 						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
-					}else if(lanetype[mouse_lane]==2){//note lane
-						pp = Math.floor((metatypes.length)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+					}else if(lanetype[mouse_lane]==2){//meta lane
+						pp = Math.floor((metatypes.length+1)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 						vv = metatype_defaults[pp][0];
 					}else{
 						vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])); 
@@ -1200,6 +1234,26 @@ function keydown(key){
 			}
 		}
 		if(rem)	push_to_undo_stack("move");
+		copytoseq();
+		drawflag = 1;
+	}else if(key==108){//l, makes selected notes legato
+		var rem=0;
+		undo.clear();
+		for(i=1;i<k.length;i++){
+			if(selected_events[k[i]]){
+				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+				undo.replace(k[i],event);
+				var noteend = event[0] + event[4];
+				var newend = (loopstart+looplength)/seql;
+				for(var ii=k.length-1;ii>i;ii--){
+					var e2 = seqdict.get(block+"::"+pattern+"::"+k[ii]);
+					if((e2[0]<newend)&&(e2[0]>noteend)) newend=e2[0];
+				}
+				event[4] = newend - event[0];
+				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+			}
+		}
+		push_to_undo_stack("move");
 		copytoseq();
 		drawflag = 1;
 	}else if((key==99)||(key==120)){ //ctrl c, ctrl x
