@@ -18,6 +18,7 @@ var block=-1;
 var voice;
 
 var blockcolour=[128,128,128];
+var pal = [];
 var mini=0;
 var blocks = new Dict;
 blocks.name = "blocks";
@@ -90,14 +91,17 @@ var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note div
 var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"]]
 // more types? trills and arps? splitting - eg if the param is 3 it divides the length by 3 and plays 3 notes?
 // randomise velocity
+var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1],[-127,1], [-127,1] ];
 
 function playhead(p){
 	playheadpos = p;
 	drawflag = 1;
 }
+
 function playing(p){
 	playstate = p;
 }
+
 function convert_to_lengths(){
 	sd = seqdict.get(block+"::"+pattern);
 	k = sd.getkeys();
@@ -157,6 +161,12 @@ function convert_to_lengths(){
 
 function setup(x1,y1,x2,y2,sw){ 
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	var csize = config.getsize("palette::gamut");
+	var cstep = Math.ceil(csize/16);
+	for(var i=0;i<16;i++){
+		pal[i] = config.get("palette::gamut["+((i*cstep) % csize)+"]::colour");
+		for(var ii=0;ii<3;ii++) pal[i][ii] = Math.min(255,2*pal[i][ii]);
+	}
 	mini=0;
 	width = x2-x1;
 	height = y2-y1;
@@ -250,7 +260,7 @@ function draw(){
 				var ey = by - Math.abs(event[3])*sy;
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 				//var ex1 = x_pos + event[0]*(width-1);
-				var col = [((event[1]-1) & 1)*255,((event[1]-1) & 2)*255,((event[1]-1) & 4)*255];
+				var col = pal[(event[1]-1)];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex1,by);
@@ -462,37 +472,15 @@ function draw(){
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 			if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
 			}else{
-				// all events have a value graph to draw:
-				if(event[1]!=ll){
-					ll = event[1];
-					by = laney[1+vallane[ll]] - 6;
-					sy = (laney[1+vallane[ll]] - laney[vallane[ll]] - 6)/128;			
-				}
-				var vey = by - Math.abs(event[3])*sy;
-				var vex1 = x_pos + (event[0]-zoom_start)*(width-1)*zoom_scale;
-				if(mouse_lane==vallane[ll]){
-					if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
-					if(drag==-2){
-						if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
-							selected_events[k[i]] |= 2;
-						}else{
-							selected_events[k[i]] &= 1;
-						}
+				if(event[1]==9){
+					post("\nfound meta event",k[i],"event",event,"lane",lanetype[9],metalane[9]);
+					if(ll2!=9){
+						ll2 = 9;
+						by2 = laney[1+metalane[ll2]] - 4;
+						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(metatypes.length);
+						post("\nsy is",sy2,metatypes.length,by2);	
 					}
-				}
-				var col; // don't draw values until after the note lane bit in case they're hovered there
-				if(ll==0){
-					// some also have a note lane
-					if(event[1]!=ll2){
-						ll2 = event[1];
-						by2 = laney[1+notelane[ll2]] - 4;
-						sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
-					}
-					if((event[2]<lowestnote)||(event[2]>highestnote)){
-						drawflag = 2;
-						return 0;
-					}
-					var ey = by2 - (event[2]-lowestnote)*sy2;
+					var ey = by2 - (event[2])*sy2;
 					var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
 					ex1 = Math.max(x_pos, ex1);
@@ -504,48 +492,116 @@ function draw(){
 							selected_events[k[i]] &= 3;
 						}
 					}
+					col = pal[(8+event[2])% 16];
 					if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
 						hovered_event = k[i];
 						if(selected_events[k[i]]){
-							col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
-						}else{
-							col = [255,255,255];
-						}
-					}else if(selected_events[k[i]]){
-						selected_event_count++;
-						col = [blockcolour[1]*c,blockcolour[2]*c,blockcolour[0]*c];
-					}else{
-						col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
-					}
-					outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-					if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
-						labelled[event[2]] = 1;
-						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
-						outlet(1,"frgb",0,0,0);
-						outlet(1,"write",nn[event[2]]);
-					}
-				}else{
-					if(ll>0){
-						col = [((event[1]-1) & 1)*255,((event[1]-1) & 2)*255,((event[1]-1) & 4)*255];
-					}else{
-						col = blockcolour;
-					}
-					if(hovered_event == k[i]){
-						if(selected_events[k[i]]){
-							selected_event_count++;
 							col = [(col[1]+64)*0.8,(col[2]+64)*0.8,(col[0]+64)*0.8];
 						}else{
 							col = [255,255,255];
 						}
 					}else if(selected_events[k[i]]){
 						selected_event_count++;
-						col = [col[1],col[2],col[0]];
+						col = [col[1]*c,col[2]*c,col[0]*c];
+					}else{
+						col = [col[0]*c,col[1]*c,col[2]*c];
 					}
-				}
-				if(vex1>=x_pos){
-					outlet(1,"frgb",col);
-					outlet(1,"moveto",vex1,vey);
-					outlet(1,"lineto",vex1,by);
+					outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
+					post("\nmeta rectangle",ex1,ey-Math.max(1,sy2),ex2,ey,col);
+					if((maximisedlist[metalane[ll]] == 1)){
+						post("label",metatype_params[event[2]]);
+						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
+						outlet(1,"frgb",0,0,0);
+						outlet(1,"write",metatype_params[event[2]]);
+					}
+				}else{
+				//if(event[1]!=9){
+					// all events have a value graph to draw: (apart from meta events)					
+					if(event[1]!=ll){
+						ll = event[1];
+						by = laney[1+vallane[ll]] - 6;
+						sy = (laney[1+vallane[ll]] - laney[vallane[ll]] - 6)/128;			
+					}
+					var vey = by - Math.abs(event[3])*sy;
+					var vex1 = x_pos + (event[0]-zoom_start)*(width-1)*zoom_scale;
+					if(mouse_lane==vallane[ll]){
+						if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
+						if(drag==-2){
+							if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
+								selected_events[k[i]] |= 2;
+							}else{
+								selected_events[k[i]] &= 1;
+							}
+						}
+					}
+				
+					var col; // don't draw values until after the note lane bit in case they're hovered there
+					if(lanetype[ll]==0){
+						// some also have a note lane
+						if(event[1]!=ll2){
+							ll2 = event[1];
+							by2 = laney[1+notelane[ll2]] - 4;
+							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
+						}
+						if((event[2]<lowestnote)||(event[2]>highestnote)){
+							drawflag = 2;
+							return 0;
+						}
+						var ey = by2 - (event[2]-lowestnote)*sy2;
+						var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
+						var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
+						ex1 = Math.max(x_pos, ex1);
+						var c = 0.2+0.8* Math.abs(event[3])/128;
+						if(drag==-2){
+							if((ex1>selx1)&&(ex2<selx2)&&(ey-sy2>sely1)&&(ey<sely2)){
+								selected_events[k[i]] |= 4;
+							}else{
+								selected_events[k[i]] &= 3;
+							}
+						}
+						if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
+							hovered_event = k[i];
+							if(selected_events[k[i]]){
+								col = [(blockcolour[1]+64)*0.8,(blockcolour[2]+64)*0.8,(blockcolour[0]+64)*0.8];
+							}else{
+								col = [255,255,255];
+							}
+						}else if(selected_events[k[i]]){
+							selected_event_count++;
+							col = [blockcolour[1]*c,blockcolour[2]*c,blockcolour[0]*c];
+						}else{
+							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+						}
+						outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
+						if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
+							labelled[event[2]] = 1;
+							outlet(1,"moveto",ex1+4,ey-sy2*0.1);
+							outlet(1,"frgb",0,0,0);
+							outlet(1,"write",nn[event[2]]);
+						}
+					}else{
+						if(ll>0){
+							col = pal[(event[1]-1)];
+						}else{
+							col = blockcolour;
+						}
+						if(hovered_event == k[i]){
+							if(selected_events[k[i]]){
+								selected_event_count++;
+								col = [(col[1]+64)*0.8,(col[2]+64)*0.8,(col[0]+64)*0.8];
+							}else{
+								col = [255,255,255];
+							}
+						}else if(selected_events[k[i]]){
+							selected_event_count++;
+							col = [col[1],col[2],col[0]];
+						}
+					}
+					if(vex1>=x_pos){
+						outlet(1,"frgb",col);
+						outlet(1,"moveto",vex1,vey);
+						outlet(1,"lineto",vex1,by);
+					}
 				}
 			}
 		}	
@@ -955,8 +1011,12 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					var vv = 100;
 					var pp = 0;
+					
 					if(lanetype[mouse_lane]==0){//note lane
 						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+					}else if(lanetype[mouse_lane]==2){//note lane
+						pp = Math.floor((metatypes.length)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+						vv = metatype_defaults[pp][0];
 					}else{
 						vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])); 
 					}
@@ -966,6 +1026,11 @@ function mouse(x,y,l,s,a,c,scr){
 					ind = ind.toString();
 					if(mouse_lane>0)mouse_lane--;
 					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
+					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
+						for(var i=1;i<metatype_defaults[pp].length;i++){
+							event.push(metatype_defaults[pp][i]);
+						}
+					}
 					for(var ti=1;ti<k.length;ti++){ //check for duplicate events
 						var ev = sd.get(k[ti]);
 						if((ev[0]==xx)&&(ev[1]==mouse_lane)&&(ev[2]==pp)){
