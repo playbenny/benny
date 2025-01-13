@@ -14,6 +14,13 @@
             "-3" : ["ESC", "set_sidebar_mode","block"],
             "all" : ["all","edit_typing"]
         },
+        "name_encapsulation" : {
+            "-6" : ["del","edit_delete"],
+            "-7" : ["delete","edit_delete"],
+            "-4" : ["enter" , "encapsulate_selection", "name"],
+            "-3" : ["ESC", "set_sidebar_mode","block"],
+            "all" : ["all","edit_typing"]
+        },
         "block_search" : {
             "-4" : ["enter", "set_sidebar_mode", "none"],
             "-3" : ["ESC", "set_sidebar_mode", "none"],
@@ -44,7 +51,7 @@
         "-24" : ["F8" , "blocks_and","file_menu"],
         "-25" : ["F9" , "messnamed" ,"core.input.keyboard", "toggle_loop"],
         "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
-        "-26" : ["F10", "toggle_show_all_wires"],
+        "-26" : ["F10", "open_core_control_auto"],
         "-27" : ["F11", "toggle_fullscreen"],
         "-28" : ["F12" , "set_sidebar_mode","cpu"]
     },

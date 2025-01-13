@@ -76,6 +76,30 @@ function blocks_paste(outside_connections,target){
 			var val = target.get("actions::create_wire");
 			remove_connection(val);
 		}
+		if(target.contains("actions::move_blocks")){
+			var listd = target.get("actions::move_blocks");
+			var list = listd.getkeys();
+			if(!Array.isArray(list))list = [list];
+			for(var i=0;i<list.length;i++){
+				var x = target.get("actions::move_blocks::"+list[i]+"::x");
+				var y = target.get("actions::move_blocks::"+list[i]+"::y");
+				blocks.replace("blocks["+list[i]+"]::space::x",x);
+				blocks.replace("blocks["+list[i]+"]::space::y",y);
+			}
+			draw_blocks();
+		}
+		if(target.contains("actions::make_space")){
+			var listd = target.get("actions::make_space");
+			var list = listd.getkeys();
+			if(!Array.isArray(list))list = [list];
+			for(var i=0;i<list.length;i++){
+				var x = target.get("actions::make_space::"+list[i]+"::x");
+				var y = target.get("actions::make_space::"+list[i]+"::y");
+				blocks.replace("blocks["+list[i]+"]::space::x",x);
+				blocks.replace("blocks["+list[i]+"]::space::y",y);
+			}
+			draw_blocks();
+		}
 	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
@@ -556,6 +580,48 @@ function insert_menu_button(cno){
 	set_display_mode("block_menu");
 }
 
+function split_wire_destination(cno){
+	if(cno==-1) cno = selected.wire.indexOf(1);
+	var vl = connections.get("connections["+cno+"]::to::voice");
+	var tb = connections.get("connections["+cno+"]::to::number");
+	if(vl == "all"){
+		vl = [];
+		for(var i=0;i<blocks.get("blocks["+tb+"]::poly::voices");i++){
+			vl.push(i+1);
+		}
+	}else{
+		if(!Array.isArray(vl))vl = [vl];
+	}
+	new_connection = connections.get("connections["+cno+"]");
+	remove_connection(cno);
+	for(var i=0;i<vl.length;i++){
+		new_connection.replace("to::voice", vl[i]);
+		connections.append("connections",new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+	}
+}
+
+function split_wire_source(cno){
+	if(cno==-1) cno = selected.wire.indexOf(1);
+	var vl = connections.get("connections["+cno+"]::from::voice");
+	var tb = connections.get("connections["+cno+"]::from::number");
+	if(vl == "all"){
+		vl = [];
+		for(var i=0;i<blocks.get("blocks["+tb+"]::poly::voices");i++){
+			vl.push(i+1);
+		}
+	}else{
+		if(!Array.isArray(vl))vl = [vl];
+	}
+	new_connection = connections.get("connections["+cno+"]");
+	remove_connection(cno);
+	for(var i=0;i<vl.length;i++){
+		new_connection.replace("from::voice", vl[i]);
+		connections.append("connections",new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+	}
+}
+
 function do_nothing(){}
 
 function clear_blocks_selection(){
@@ -808,6 +874,27 @@ function select_folder(parameter,value){
 	messnamed("select_folder","bang");
 }
 
+function open_core_control_auto(){
+	post("\nlooking");
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if((blocks.contains("blocks["+i+"]::name"))&&(blocks.get("blocks["+i+"]::name")=="core.input.control.auto")){
+			var show=0;
+			for(var cc=0;cc<connections.getsize("connections");cc++){
+				if(connections.contains("connections["+cc+"]::from::number")&&(connections.get("connections["+cc+"]::from::number")==i)){
+					show=1;
+					break;
+				}
+			}
+			if(show){
+				for(var t=0;t<MAX_BLOCKS;t++) selected.block[t] = 0;
+				selected.block[i]=1;
+				set_display_mode("custom",i);
+			}
+			return show;
+		}
+	}
+}
+
 function remove_connection_btn(cno,value){
 	if(value == danger_button){
 		remove_connection(cno);
@@ -849,9 +936,12 @@ function remove_block_btn(block,value){
 function clear_everything_btn(parameter,value){
 	if(value == danger_button){
 		clear_everything();
+		set_sidebar_mode("none");
 		danger_button = -1;
 	}else{
 		danger_button = value;
+		redraw_flag.flag |= 2;
+		post("\ndanger",value,"(",parameter,")");
 	}
 }
 function files_switch_folder(){
@@ -1800,13 +1890,11 @@ function unscale_parameter(block, parameter, value){
 
 function qwertymidi_octave(parameter, value){
 	if(value=="get"){
-		var t = Math.floor(qwertym.octf * 12);
-		if(t!=qwertym.octave) qwertym.octf = qwertym.octave/12;
-		return(qwertym.octf);
+		var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
+		return(oct);
 	}else{
 		value = Math.max(0,Math.min(0.9999999,value));
-		qwertym.octf = value;
-		qwertym.octave = Math.floor(value*12);
+		parameter_value_buffer.poke(1, MAX_PARAMETERS * automap.available_k_block + 9, value);
 		redraw_flag.flag |= 2;
 	}
 }
@@ -2174,6 +2262,7 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 	if(av==-1){
 		av = 1 - blocks.get("blocks["+block+"]::bypass");
 	}
+	if(blocks.get("blocks["+block+"]::type")=="hardware") return -1; //hardware can't be bypassed, too complicated
 //	if(av==1) anymuted=1; //does bypass count as mute? do we want unmute all to unbypass all?
 	blocks.replace("blocks["+block+"]::bypass",av);
 	if(blocks.get("blocks["+block+"]::type")=="audio"){
@@ -2779,27 +2868,29 @@ function delete_wave(parameter,value){
 }
 
 function undo_button(){
+	undoing = 1;
 	var usz=undo_stack.getsize("history")|0;
 	post("\nundoing, stack size",usz);
 	usz--;
 	if(usz<0) return -1;
 	undo = undo_stack.get("history["+usz+"]");
 	undo_stack.remove("history["+usz+"]");
-
 	blocks_paste(1,undo);
 	undo.parse("{}");
+	undoing = 0;
 }
 
 function delete_selection(){
-	copy_selection(undo);
-	var usz=undo_stack.getsize("history")|0;
-	post("\nundo stack size",usz);
-	usz = Math.max(0,usz);
-	undo_stack.append("history","{}");
-	undo_stack.setparse("history["+usz+"]",'{}');
-	undo_stack.replace("history["+usz+"]",undo);
-	undo.parse("{}");
-
+	if(!undoing){
+		copy_selection(undo);
+		var usz=undo_stack.getsize("history")|0;
+		//post("\nundo stack size",usz);
+		usz = Math.max(0,usz);
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]",'{}');
+		undo_stack.replace("history["+usz+"]",undo);
+		undo.parse("{}");
+	}
 	var i;
 	for(i=0;i<selected.wire.length;i++){
 		if(selected.wire[i]) {
@@ -2902,6 +2993,11 @@ function toggle_fullscreen(){
 }
 
 function key_escape(){
+	if(sidebar.dropdown!=null) {
+		sidebar.dropdown=null;
+		redraw_flag.flag |= 2;
+		return 1;
+	}
 	if(displaymode=="panels"){
 		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
 			set_sidebar_mode("block");
@@ -2917,6 +3013,8 @@ function key_escape(){
 	}else if((displaymode=="waves")&&(waves.selected!=-1)){
 		waves.selected=-1;
 		redraw_flag.flag |= 4;
+	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
+		set_display_mode(last_displaymode);
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
 			usermouse.clicked3d=-1;
@@ -2939,7 +3037,7 @@ function key_escape(){
 				if(sidebar.mode == "file_menu"){
 					set_sidebar_mode("none");
 					center_view(1);
-				} 
+				}
 			}else{
 				center_view(1);
 			}
@@ -2986,17 +3084,20 @@ function custom_key_passthrough(key){
 }
 
 function qwertymidi(key,vel){
-	messnamed("qwertymidi",key + 12*qwertym.octave, vel);
+	messnamed("qwertymidi",key, vel);
 }
 function qwertymidispecial(command){
+	var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
 	if(command=="octavedown"){
-		qwertym.octave -= 1;
-		if(qwertym.octave < 0) qwertym.octave = 0;
+		oct -= 0.1;
 	}else if(command=="octaveup"){
-		if(qwertym.octave < 9) qwertym.octave += 1;
+		oct += 0.1;
 	}
+	oct = Math.max(0, Math.min(1, oct));
+	parameter_value_buffer.poke(1,MAX_PARAMETERS * automap.available_k_block + 9,oct);
 	redraw_flag.flag |= 2;
 }
+
 function poly_key(dir,end){
 	if(dir<0){
 		if((sidebar.mode == "block")||(sidebar.mode == "settings")){
@@ -3509,10 +3610,18 @@ function turn_off_controller_assign_mode(){
 
 function make_space(x,y,r){
 	//move all blocks a distance r along a line from their x,y to the specified x,y.
+	var usz=undo_stack.getsize("history")|0;
+	if(undo_stack.contains("history["+(usz-1)+"]::actions::make_space")){
+		usz=-1;
+	}else{
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "make_space" : {} } }');
+	}
 	for(var b=0;b<MAX_BLOCKS;b++){
 		if(blocks.contains("blocks["+b+"]::space")){
 			var bx = blocks.get("blocks["+b+"]::space::x");
 			var by = blocks.get("blocks["+b+"]::space::y");
+			if(usz!=-1) undo_stack.setparse("history["+usz+"]::actions::make_space::"+b, '{ "x" : '+bx+', "y" : '+by+'}');	
 			var dx = bx-x;
 			var dy = by-y;
 			var dd = Math.sqrt(dx*dx+dy*dy);

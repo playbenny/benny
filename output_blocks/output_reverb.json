@@ -4,9 +4,12 @@
 		"type" : "output",
 		"help_text" : "basic output reverb - a fader for 'throw' - which turns up the send into the reverb but keeps the dry, and a fader for xfade, which turns up the send into the reverb and xfades into it.",
 		"max_polyphony" : 0,
+		"subvoices" : 2,
 		"groups" : [
 			{ 
-				"contains" : [0, 1,2,3]
+				"contains" : [0, 1,2,3,4,5],
+				"header" : "output reverb",
+				"colour" : 20
 			}
 		],
 		"panel" : {
@@ -18,28 +21,49 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
+				"nopervoice" : 1,
 				"default" : 0
 			},
 			{
 				"name" : "xfade",
+				"nopervoice" : 1,
 				"type" : "float",
 				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "length",
+				"name" : "decay",
+				"nopervoice" : 1,
 				"type" : "float",
-				"values" : ["uni",0,1,"lin"],
+				"values" : ["uni",0.1,60,"exp100"],
 				"wrap" : 0,
-				"default" : 0.8 	
+				"default" : 0.2 	
 			},
 			{
-				"name" : "character",
+				"name" : "size",
 				"type" : "float",
+				"nopervoice" : 1,
 				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
 				"default" : 0
+			},
+			{
+				"name" : "tone",
+				"nopervoice" : 1,
+				"type" : "float",
+				"values" : ["bi",-1,1,"lin"],
+				"default" : 0.5,
+				"wrap" : 0
+			},
+			{
+				"name" : "freeze",
+				"type" : "menu_b",
+				"values" : ["off","on"],
+				"nopervoice" : 1,
+				"force_label" : 1,
+				"default" : 0.25,
+				"wrap" : 0
 			}
 		]
 	}

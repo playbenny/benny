@@ -20,7 +20,7 @@
 				"height" : 0,
 				"colour" : 10
 			},{
-				"contains" : [2,4],
+				"contains" : [2,2,2,4,4,9],
 				"height" : 0
 			},{
 				"header" : "history / looper",
@@ -89,11 +89,20 @@
 				"wrap" : 0,
 				"default" : 0.005,
 				"error_scale" :0
-			},{
+			},
+			{
 				"name" : "spawn_player",
 				"type" : "button",
 				"values" : ["firstvoice","spawn","spawn"],
 				"default" : 0
+			},
+			{
+				"name" : "qwerty-_octave",
+				"type" : "int",
+				"values" : ["uni", -2, 7, "lin"],
+				"wrap" : 0,
+				"default" : 0.6,
+				"error_scale" : 0
 			}
 		]
 	}

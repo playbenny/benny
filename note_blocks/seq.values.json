@@ -6,6 +6,7 @@
 		"help_text" : "A step sequencer for values. One voice = one sequencer row. The 'notes out' uses the value as a note, and the velocity from the incoming trigger.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
+		"ui_in_sidebar_expands" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
@@ -115,7 +116,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 15, "lin"],
 				"error_scale" : 0,
-				"default" : 0,
+				"default" : 0.03125,
 				"wrap" : 1
 			}
 		]

@@ -71,6 +71,7 @@ var mainwindow_height = 240;
 var scale_2d = 1;
 
 var displaymode = "loading";
+var last_displaymode = "blocks"; //where you back out to if you hit esc from a ui page.
 var custom_block = -1; //block no for custom screen pages
 var playing = 0;
 var recording = 0;
@@ -162,8 +163,8 @@ var polybuffer_samplerates = [];
 var polybuffer_channels = [];
 var polybuffer_lengths = [];
 
-var preload_task = new Task(preload_all_waves, this);
-var preload_task2 = new Task(preload_some_wires, this);
+var preload_task;// = new Task(preload_all_waves, this);
+var preload_task2;// = new Task(preload_some_wires, this);
 var preload_wires_counter = 0;
 var waves_buffer = [];
 
@@ -299,9 +300,10 @@ var automap = {
 	count : 0,
 	inputno_k : 0,
 	offset_c : 0,
-	offset_range_c : 0,
+	offset_range_c : 0, 
 	c_cols : 4,
 	c_rows : 4,
+	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check
 	q_gain : 0.125, //default gain for cue auto connections
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to
@@ -328,8 +330,6 @@ var automap = {
 }
 
 var qwertym = {
-	octave : 5,
-	octf : 4,
 	vel : 100
 }
 
@@ -525,6 +525,9 @@ undo.name = "undo";
 
 var undo_stack = new Dict;
 undo_stack.name = "undo_stack";
+
+var undoing = 0; //flag 1 while you do undo actions to avoid writing those actions 
+				// to the undo stack
 
 var flock_presets = new Dict;
 flock_presets.name = "flock_presets";

@@ -4,6 +4,7 @@
 		"type" : "note",
 		"block_ui_patcher" : "core.input.control.auto.ui",
 		"ui_in_sidebar_height":7,
+		"show_states_on_custom_view":1,
 		"help_text" : "Midi controller input with optional automapping.££The values from your midi controller's knobs and sliders are output by this block so you can use them to modulate parameters etc. ££If auto assign is turned on then when a block is selected the controller will auto assign to this block's parameters. When you deselect the block the midi controller goes back to it's normal mode - outputting values from this block. ££You can only have one of these blocks per song, for other midi controllers use the core.input.control.basic block.",
 		"exclusive" : 1,
 		"max_polyphony" : 1,

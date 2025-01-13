@@ -3,7 +3,7 @@
 		"patcher" : "universal.step.sequence",
 		"type" : "note",
 		"block_ui_patcher" : "seq.note.step.ui",
-		"help_text" : "note step sequencer. add more voices for more polyphony. on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. start point can be before, inside or even after the loop points. the loop follow mode determines how it behaves if you move the loop position or length sliders while it's playing - in soft mode if you move the loop later it will just gradually play through into the new loop, in hard mode it will jump into the new loop.",
+		"help_text" : "note step sequencer. add more voices for more polyphony. the editor shows you patterns on other voices as hollow notes. ££on the trigger input C=clock B=back D=reset, you can also directly access the first 128 rows through the row select input. ££The start point can be before, inside or even after the loop points. the loop follow mode determines how it behaves if you move the loop position or length sliders while it's playing - in soft mode if you move the loop later it will just gradually play through into the new loop, in hard mode it will jump into the new loop. ££You can also choose how it behaves when the pattern slider changes. the default is to keep the playhead where it was and just carry on reading from the new pattern, but you can also have it reset the playhead to the start point in the new pattern, and optionally to quantise that. to make this step sequencer act like a clip in ableton live use the quantise to bar setting.",
 		"max_polyphony" : 0,
 		"default_polymode" : 	{
 				"stack_mode" : "1x",
@@ -13,7 +13,7 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "midi in" ,"trigger", "row select", "reset" ],
+				"midi" : [ "midi in" ,"trigger", "backwards", "row select", "reset" ],
 				"default" : 1,
 				"automap_to" : 0
 			},
@@ -27,9 +27,16 @@
 				"colour" : 0
 			},
 			{
-				"contains" : [9,9,3,5,12],
+				"contains" : [9,9,3,12],
 				"height" : 0,
 				"colour" : -10
+			},
+			{
+				"contains" : [13],
+				"height" : 0.6,
+				"header" : "reset playhead on pattern change",
+				"nolabel" : 1,
+				"colour" : -15
 			},
 			{
 				"contains" : [6,7,8],
@@ -37,7 +44,7 @@
 				"height" : 0
 			},
 			{
-				"contains" : [11,10,10],
+				"contains" : [11,10,10,5],
 				"colour" : -30,
 				"height" : 1,
 				"header" : "note entry defaults"
@@ -121,7 +128,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 15, "lin"],
 				"wrap" : 1,
-				"default" : 0
+				"default" : 0.03125
 			},
 			{
 				"name" : "default_length",
@@ -147,8 +154,15 @@
 				"values" : ["hard follow", "soft follow"],
 				"wrap" : 0,
 				"default" : 0,
-				"nopervoice" : 1,
-				"forcelabel" : 1
+				"nopervoice" : 1
+			},
+			{
+				"name" : "pattern change reset mode",
+				"type" : "menu_d",
+				"values" : ["none", "instant", "beat quantised", "bar quantised", "at pattern end"],
+				"wrap" : 1,
+				"default" : 0,
+				"nopervoice" : 1
 			}
 		]
 	}

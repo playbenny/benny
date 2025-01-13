@@ -3,6 +3,9 @@ function clicked_block_preparation() {
 		// if the clicked block is selected and multiple blocks are selected, then you drag them all
 		var t = 0;
 		usermouse.drag.dragging.voices = [];
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "move_blocks" : {} } }');
 		for (var b = 0; b < MAX_BLOCKS; b++) {
 			if (selected.block[b]) {
 				var tvc = blocks.get("blocks[" + b + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + b + "]::subvoices"));
@@ -10,16 +13,26 @@ function clicked_block_preparation() {
 					usermouse.drag.dragging.voices[t] = [b, i];
 					t++;
 				}
+				var x = blocks.get("blocks["+b+"]::space::x");
+				var y = blocks.get("blocks["+b+"]::space::y");
+				undo_stack.setparse("history["+usz+"]::actions::move_blocks::"+b, '{ "x" : '+x+', "y" : '+y+'}');
 			}
 		}
 		//for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
 	} else {
 		// if the clicked block is not selected, or is the only one selected, then you drag it				
-		var tvc = blocks.get("blocks[" + usermouse.ids[1] + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + usermouse.ids[1] + "]::subvoices"));
+		var b = usermouse.ids[1];
+		var tvc = blocks.get("blocks[" + b + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + b + "]::subvoices"));
 		usermouse.drag.dragging.voices = [];
 		for (var i = 0; i <= tvc; i++) {
-			usermouse.drag.dragging.voices[i] = [usermouse.ids[1], i];
+			usermouse.drag.dragging.voices[i] = [b, i];
 		}
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "move_blocks" : {} } }');
+		var x = blocks.get("blocks["+b+"]::space::x");
+		var y = blocks.get("blocks["+b+"]::space::y");
+		undo_stack.setparse("history["+usz+"]::actions::move_blocks::"+b, '{ "x" : '+x+', "y" : '+y+'}');
 	}
 	usermouse.drag.starting_value_x = blocks_cube[usermouse.clicked3d][0].position[0];
 	usermouse.drag.starting_value_y = blocks_cube[usermouse.clicked3d][0].position[1];
@@ -950,6 +963,18 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
+		}else if((usermouse.x > sidebar.x) && !automap.lock_c && (automap.offset_range_c>0) && (sidebar.mode=="block") && (usermouse.got_t == 2) && config.get("AUTOMAP_MOUSE_FOLLOW") && (mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)){
+			var r = -1;
+			for(var tr=0;tr<automap.sidebar_row_ys.length;tr++){
+				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr;
+			}
+			r++;
+			r = Math.min(r,automap.offset_range_c);
+			if(automap.offset_c != r){
+				automap.offset_c = r;
+				note_poly.message("setvalue", automap.available_c, "automap_offset", automap.offset_c * automap.c_cols );
+				redraw_flag.flag |= 2;
+			}
 		}else if(usermouse.got_t == 7){
 			if((mouse_click_actions[usermouse.got_i]==custom_mouse_passthrough)&&(mouse_click_values[usermouse.got_i]==1)){
 				custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
@@ -1074,6 +1099,18 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 			}else if(usermouse.ctrl){
 				if(bulgingwire>-1){ //ctrl-scroll a wire to adjust level
+					if(sidebar.mode=="none"){
+						selected.wire[bulgingwire]=1;
+						block_and_wire_colours();
+						redraw_flag.flag |= 2;
+					}else if(sidebar.mode =="wire"){
+						if(selected.wire[bulgingwire]!=1){
+							for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
+							selected.wire[bulgingwire]=1;
+							block_and_wire_colours();
+							redraw_flag.flag |= 2;
+						}
+					}
 					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
 					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
 				} //todo? ctrl-scroll a block

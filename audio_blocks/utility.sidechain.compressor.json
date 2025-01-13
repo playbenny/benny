@@ -3,7 +3,7 @@
 		"patcher" : "utility.sidechain.compressor",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "pro-c2 set up to sidechain",
+		"help_text" : "simple sidechain compressor",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -11,7 +11,7 @@
 				"audio" : [ "audio in" , "sidechain in"]
 			},
 			"out" : {
-				"audio" : [ "audio out" ]
+				"audio" : [ "audio out", "gain out" ]
 			}
 		},
 		"groups" : [
@@ -30,21 +30,21 @@
 			{
 				"name" : "ratio",
 				"type" : "float",
-				"values" : ["uni", 1, 100, "exp"],
+				"values" : ["uni", 1, 100, "exp1000"],
 				"wrap" : 0,
 				"default" : 10
 			},
 			{
 				"name" : "attack",
 				"type" : "float",
-				"values" : ["uni", 0.005, 250, "exp"],
+				"values" : ["uni", 0.005, 250, "exp1000"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
 			{
 				"name" : "release",
 				"type" : "float",
-				"values" : ["uni", 10, 2500, "exp"],
+				"values" : ["uni", 5, 2500, "exp1000"],
 				"wrap" : 0,
 				"default" : 0.1
 			}

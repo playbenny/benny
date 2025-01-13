@@ -1,6 +1,21 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+9/1/25:
+- **breaking change** quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
+- fix quantislide osc 
+28/12/24:
+- updated the clock input of rene which is a **breaking change** if you were using the other inputs, just fix those connections and it'll work as before though. rene ui improvements, new features.
+- piano roll is enabled but it's still a work in progress - fine for playing back things you record with the keyboard and making small edits. more coming soon.
+27/12/24:
+- quanti.slide osc added (has a scale quantiser built in, after unstable pitch+fm+range+detune+midi note+slide)
+- sidechain compressor now just a simple gen algorithm, no longer requires pro-c2 to work.
+26/12/24:
+- **breaking change** there are now separate forward and backwards trigger inputs to note.step and note.tracker, which means if you were using row-select or reset inputs you'll need to fix those connections because they'll point to the wrong input now.
+- a few js error trapping things to make it work in max 9 v8 engine (it does, but i'm not switching for now because that would prevent max8 users using it and it doesn't bring huge performance gains)
+24/12/24:
+- improved how qwerty input octave control works
+- improved shape player block. removed the two self-playing modes because this is something you can do using one or two other blocks so it doesn't need to be built in.
 05/12/24:
 - four stage env added, lets you do complex envelopes. easily chainable, lots of interesting trigger ins and outs.
 - dropdowns now available as a parameter display type

@@ -231,7 +231,7 @@ function parameter_menu_l(p){
 	var valcol = paramslider_details[p][4];
 	var vc;
 	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
-	for(var bl=statecount-1;bl>=0;bl--){
+	for(var bl=0; bl<statecount; bl++){ //var bl=statecount-1;bl>=0;bl--){
 		if(valcol.length==1){
 			vc = valcol[0];
 		}else{
@@ -264,7 +264,7 @@ function parameter_menu_d(p){
 	var vc;
 	var bx=0;by=0;bw = (paramslider_details[p][2]-paramslider_details[p][0]+fo1)/paramslider_details[p][11];
 	if(sidebar.dropdown=="param."+p){
-		for(var bl=statecount-1;bl>=0;bl--){
+		for(var bl=0; bl<statecount; bl++){ //var bl=statecount-1;bl>=0;bl--){
 			if(valcol.length==1){
 				vc = valcol[0];
 			}else{
@@ -1227,9 +1227,27 @@ function draw_menu_hint(){
 	
 	
 	if(blocktypes.contains(usermouse.hover[1]+"::help_text")){
-		var hint=blocktypes.get(usermouse.hover[1]+"::help_text")+" ";
+		var block_name = usermouse.hover[1];
+		var hint=blocktypes.get(block_name+"::help_text")+" ";
 		//		post("\n"+usermouse.hover[1]+" : "+hint);
-		
+		function get_io_name_and_description(ty,dir) {
+			if (blocktypes.contains(block_name + "::connections::"+dir+"::" + ty)) {
+				hint = hint + "££*"+dir+"puts: "+ty+"*";
+				var l = blocktypes.get(block_name + "::connections::"+dir+"::" + ty);
+				for (var i = 0; i < l.length; i++) {
+					hint = hint + "£- " + l[i];
+					if (blocktypes.contains(block_name + "::connections::"+dir+"::descriptions::" + ty)) {
+						hint = hint + " - " + blocktypes.get(block_name + "::connections::"+dir+"::descriptions::" + ty+"["+i+"]");
+					}
+				}
+			}
+		}
+		get_io_name_and_description("hardware","in");
+		get_io_name_and_description("audio","in");
+		get_io_name_and_description("midi","in");
+		get_io_name_and_description("hardware","out");
+		get_io_name_and_description("audio","out");
+		get_io_name_and_description("midi","out");	
 		hint = hint+"                       ";
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
 		lcd_main.message("paintrect", sidebar.x,9+(topspace+1.1)*fontheight,sidebar.x2,9+fontheight*(2.1+topspace),cod);
@@ -1436,7 +1454,7 @@ function midi_indicator(number){
 }
 
 function draw_clock(){
-	var cx2 = (sidebar.mode == "none") ? (mainwindow_width) : (sidebar.x);
+	var cx2 = ((sidebar.mode == "none")&&!automap.lock_c &&!automap.lock_k &&!automap.lock_q) ? (mainwindow_width) : (sidebar.x);
 	if(sidebar.mode == "file_menu") cx2 = sidebar.x2 - fontheight * 15;
 	var cx = cx2 - fontheight*2 - 9;
 	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);

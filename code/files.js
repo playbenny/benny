@@ -539,9 +539,9 @@ function merge_song(){
 // so it'll be called again next frame. this way it doesn't make the music glitch!
 function import_song(){	
 	var b,i,t;
-	preload_task.cancel();
 	//post("\nimport-displaymode is",displaymode);
 	if(loading.progress==-1){
+		try{ preload_task.cancel();	}catch(err){}
 		//set_display_mode("loading");
 		if(output_looper_active){
 			post("\noutput looper is active so i should be setting it to fullscreen but i wont");
@@ -779,6 +779,10 @@ function import_song(){
 		loading.ready_for_next_action=loading.wait;
 		if(t!=0){
 			post("\ndone loading connections");
+			if((config.get("SHOW_CONTROL_AUTO_DURING_SONG_LOAD")==1) && (loading.songname != "autoload")){
+				open_core_control_auto();
+				blocks_enable(0);
+			}
 		}
 	}else{ 
 		var stpv = [];
@@ -871,7 +875,7 @@ function import_song(){
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		
-		if(preload_list.length>0) preload_task.schedule(5000); //if you interupted preloading waves, just restart it in 5secs
+		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){} //if you interupted preloading waves, just restart it in 5secs
 	}
 }
 
@@ -1580,6 +1584,11 @@ function clear_everything(){
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
 	redraw_flag.paneltargets = [];
+	
+	if(EXTERNAL_MATRIX_PRESENT) messnamed("drivers_poly", "setvalue",1,"clear");
+	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly", "setvalue",2,"clear");
+	//	matrix.message("clear"); //clears the audio matrix
+	messnamed("clear_matrix","bang");
 
 	var i;
 	var emptys="{}";
@@ -1605,10 +1614,6 @@ function clear_everything(){
 	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
 	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 	sidebar.selected_voice = -1;
-//	matrix.message("clear"); //clears the audio matrix
-	messnamed("clear_matrix","bang");
-	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly", "setvalue",2,"clear");
-	if(EXTERNAL_MATRIX_PRESENT) messnamed("drivers_poly", "setvalue",1,"clear");
 	note_poly.message("setvalue", 0,"muteouts",1);
 	audio_poly.message("setvalue", 0,"muteouts",1);
 	audio_poly.message("setvalue", 0,"filename","off");

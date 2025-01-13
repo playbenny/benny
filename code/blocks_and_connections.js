@@ -62,7 +62,7 @@ function new_block(block_name,x,y){
 		}
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
-	if(loading.progress<=0){
+	if((loading.progress<=0)&&(!undoing)){
 		var usz=undo_stack.getsize("history")|0;
 		undo_stack.append("history","{}");
 		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_block" : '+new_block_index+'} }');
@@ -683,12 +683,12 @@ function get_voice_details(voiceis){
 }
 
 function send_all_voice_details(){
-	post("\nsend all voice details");
 	var vlk = voicemap.getkeys();
 	if(!Array.isArray(vlk)){
-		post(" - no voices to send to!");
+		//post(" - no voices to send to!");
 		return -1;
 	}
+	//post("\nsend all voice details");
 	for(var v=0;v<vlk.length;v++){
 		var vl = voicemap.get(vlk[v]);
 		if(!Array.isArray(vl)) vl = [vl];
@@ -982,7 +982,7 @@ function remove_connection(connection_number){
 		return -1;
 		//if it was flagged as overlapping then no connection was made and there's nothing to remove
 	}
-	// post("removing connection",connection_number,"\n");
+	//post("removing connection",connection_number,"\n");
 	var f_type = connections.get("connections["+connection_number+"]::from::output::type");
 	var t_type = connections.get("connections["+connection_number+"]::to::input::type");
 	var f_block = connections.get("connections["+connection_number+"]::from::number");
@@ -1174,7 +1174,7 @@ function remove_connection(connection_number){
 	for(i=0;i<f_voices.length;i++){
 		if(((t_type == "midi") || (t_type == "block")) && (t_voice_list == "all")){
 //midi that goes to a polyalloc - handled here not per-to-voice
-			if(f_type == "midi"){ //midi to midi(polyrouter)
+			if((f_type == "midi")||(f_type == "parameters")){ //midi to midi(polyrouter)
 				remove_routing(connection_number);
 			}else if(f_type == "audio"){//audio to midi (polyrouter)
 				remove_routing(connection_number);
@@ -3024,7 +3024,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::vector", 0);	
 		new_connection.replace("conversion::offset", 0);
 		new_connection.replace("conversion::offset2", 0.5);
-		if((f_type=="midi")&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+		if(((f_type=="midi")||(f_type=="parameters"))&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
 	}else{
 		new_connection.replace("conversion",oldconn.get("conversion"));
 	}
@@ -3046,7 +3046,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::vector", 0);	
 		new_connection.replace("conversion::offset", 0);
 		new_connection.replace("conversion::offset2", 0.5);
-		if((t_type=="midi")&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+		if(((t_type=="midi")||(t_type=="parameters"))&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
 	}else{
 		new_connection.replace("conversion", oldconn.get("conversion"));
 		if(defaultpos==0) new_connection.replace("conversion::scale", 1);
@@ -3551,4 +3551,366 @@ function spawn_player(keyblock,auto){
 		//now delete the sequence from the keyboard block
 		request_set_block_parameter(keyblock,5,0);
 	}
+}
+
+function is_selection_encapsulatable(){
+	//returns 1 if the selected blocks meet the criteria for being encapsulateable.
+	var paramcount = 0;
+	var audioincount = 0;
+	var audiooutcount = 0;
+	for(var b = 0;b<selected.block.length;b++){
+		if(selected.block[b]){
+			if(blocks.get("blocks["+b+"]::type")=="hardware"){
+				//post("\nthe selection includes hardware, so can't be encapsulated");
+				return 0;
+			}		
+			var pc = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
+			paramcount += pc;
+			//todo, polyphonic blocks, if they have any kind of per-voice differences or 
+			//modulations, need to be counted 1x this number for each voice. if not then they can share efficiently.
+		}
+	}
+	if(paramcount > MAX_PARAMETERS){
+		//post("\nthe selected blocks have too many parameters (",paramcount,") to be encapsulated");
+		return 0;
+	}
+	for(var c=0;c<connections.getsize("connections");c++){
+		if(connections.contains("connections["+c+"]::from")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			if((selected.block[fb])&&!selected.block[tb]){
+				if(connections.get("connections["+c+"]::from::output::type")=="audio"){
+					audiooutcount++;
+				}
+			}else if(!selected.block[fb] && selected.block[tb]){
+				if(connections.get("connections["+c+"]::to::input::type")=="audio"){
+					audioincount++;
+				}
+			}else if(selected.block[fb] && selected.block[tb]){
+				//some internal connections need to be counted, because they actually 
+				// go out and via the modulation processor back to params
+			}
+		}
+	}
+	if((audioincount<=NO_IO_PER_BLOCK)&&(audiooutcount<=NO_IO_PER_BLOCK)){
+		return 1;
+	}else{
+		post("\nthe selected blocks have too many audio io to be encapsulated (",audioincount,audiooutcount,")");
+		return 0;
+	}
+}
+
+function encapsulate_selection(name){
+	if((name=="name")||(name==null))name=text_being_editted;
+
+	post("\nENCAPSULATION COMING SOON",name);
+	//step 1: build encapsulated file
+	// -like a normal block file, but with an extra key: encapsulation, that contains the 
+	// blocks dict and connections dict, as well as states. in the block dict the index 
+	// offsets per voice are stored then in the main part of the block file the params / sections 
+	// are merged, the defaults are the current values of everything.
+	// the panel selections are merged
+
+	var blocklist = [];
+	var inputoffsetlist = [];
+	var paramoffsetlist = [];
+	var outputoffsetlist = [];
+
+	var inwardmidiconnectionslist = [];
+	var inwardaudioconnectionslist = [];
+	var outwardmidiconnectionslist = [];
+	var outwardaudioconnectionslist = [];
+
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(selected.block[b]) blocklist.push(b);
+	}
+
+	var minx=999;
+	var miny=999;
+	var po=0;
+	var mio=0;
+	var moo=0;
+	var namelist="";
+	var midi_inputs=[];
+	var midi_outputs=[];
+	var audio_inputs=[];
+	var audio_outputs=[];
+	for(var b=0;b<blocklist.length;b++){
+		var x = blocks.get("blocks["+blocklist[b]+"]::space::x");
+		var y = blocks.get("blocks["+blocklist[b]+"]::space::y");
+		if(x<minx)minx=x;
+		if(y<miny)miny=y;
+		paramoffsetlist[b] = po;
+		var bnam = blocks.get("blocks["+blocklist[b]+"]::name");
+		po += blocktypes.getsize(bnam+"::parameters");
+		if(blocktypes.contains(bnam+"::connections::in::midi")){
+			var mi = blocktypes.get(bnam+"::connections::in::midi");
+			if(!Array.isArray(mi)) mi = [mi];
+			midi_inputs = midi_inputs.concat(mi);
+			inputoffsetlist[b]=mio;
+			mio+=mi.length;
+		}
+		if(blocktypes.contains(bnam+"::connections::out::midi")){
+			var mi = blocktypes.get(bnam+"::connections::out::midi");
+			if(!Array.isArray(mi)) mi = [mi];
+			midi_outputs = midi_outputs.concat(mi);
+			outputoffsetlist[b]=moo;
+			moo+=mi.length;
+		}
+		if(namelist!="")namelist=namelist+", ";
+		namelist = namelist+blocks.get("blocks["+blocklist[b]+"]::label");
+	}
+	for(var c=0;c<connections.getsize("connections");c++){
+		if(connections.contains("connections["+c+"]::from")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			if((selected.block[fb])&&!selected.block[tb]){
+				if(connections.get("connections["+c+"]::from::output::type")=="audio"){
+					outwardaudioconnectionslist.push(c);
+				}else{
+					outwardmidiconnectionslist.push(c);
+				}
+			}else if(!selected.block[fb] && selected.block[tb]){
+				if(connections.get("connections["+c+"]::to::input::type")=="audio"){
+					inwardaudioconnectionslist.push(c);
+				}else{
+					inwardmidiconnectionslist.push(c);
+				}
+			}if(selected.block[fb]&&selected.block[tb]){
+				//internal connection. some of these need to go out 
+				// and then via the main param mod routing system
+				// these need to be listed so as to make it simple for it.
+				post("\nconnection",c,"is internal to the encapsulation");
+			}
+		}
+	}
+	var audio_inputs = [];
+	var audio_outputs = [];
+	for(var i=0;i<inwardaudioconnectionslist.length;i++){
+		var bn = connections.get("connections["+inwardaudioconnectionslist[i]+"]::to::number");
+		var bi = connections.get("connections["+inwardaudioconnectionslist[i]+"]::to::input::number");
+		var bnam = blocks.get("blocks["+bn+"]::name");
+		var binam = blocktypes.get(bnam+"::connections::in::audio["+bi+"]");
+		audio_inputs.push(binam);//"("+bn+","+bi+")");
+	}
+	for(var i=0;i<outwardaudioconnectionslist.length;i++){
+		var bn = connections.get("connections["+outwardaudioconnectionslist[i]+"]::from::number");
+		var bi = connections.get("connections["+outwardaudioconnectionslist[i]+"]::from::output::number");
+		var bnam = blocks.get("blocks["+bn+"]::name");
+		var binam = blocktypes.get(bnam+"::connections::out::audio["+bi+"]");
+		audio_outputs.push(binam);//"("+bn+","+bi+")");
+	}
+
+	var new_encapsulated = new Dict;
+	new_encapsulated.name = "new_encapsulated";
+	new_encapsulated.parse('{}');
+	new_encapsulated.setparse(name,"{}");
+	new_encapsulated.replace(name+"::name", name);
+	new_encapsulated.replace(name+"::type", "audio");
+	new_encapsulated.replace(name+"::patcher", "encapsulator");
+	new_encapsulated.replace(name+"::block_ui_patcher", "blank.ui");
+	new_encapsulated.replace(name+"::help_text",  "encapsulated block containing:"+namelist);
+	new_encapsulated.replace(name+"::max_polyphony", 0);
+	new_encapsulated.replace(name+"::upsample", 1);
+	new_encapsulated.setparse(name+"::connections","{}");
+	new_encapsulated.setparse(name+"::connections::in","{}");
+	new_encapsulated.setparse(name+"::connections::out","{}");
+	new_encapsulated.replace(name+"::connections::in::midi",midi_inputs);
+	new_encapsulated.replace(name+"::connections::in::audio",audio_inputs);
+	new_encapsulated.replace(name+"::connections::out::midi",midi_outputs);
+	new_encapsulated.replace(name+"::connections::out::audio",audio_outputs);				
+	new_encapsulated.replace(name+"::param_offsets",paramoffsetlist);
+	new_encapsulated.replace(name+"::input_offsets",inputoffsetlist);
+	new_encapsulated.replace(name+"::output_offsets",outputoffsetlist);
+	new_encapsulated.setparse(name+"::groups", "*");
+	new_encapsulated.setparse(name+"::parameters", "*");
+	var grps=[];
+	var prms=[];
+	var panl=[];
+	var iof=0;
+	for(var b=0;b<blocklist.length;b++){
+		var bnam = blocks.get("blocks["+blocklist[b]+"]::name");
+		if(blocktypes.contains(bnam+"::groups")){
+			var g = blocktypes.get(bnam+"::groups");
+			if(blocks.contains("blocks["+blocklist[b]+"]::panel::parameters")){
+				var p = blocks.get("blocks["+blocklist[b]+"]::panel::parameters");
+				if(!Array.isArray(p))p=[p];
+				for(var i=0;i<p.length;i++){
+					p[i]+=paramoffsetlist[b];
+					panl = panl.concat(p[i]);
+				}
+			}
+			if(!Array.isArray(g))g = [g];
+			//need to renumber all the references in the groups:
+			post("\nadjusted group contains to:");
+			for(var i=0;i<g.length;i++){
+				var a = g[i].get("contains");
+				for(var t=0;t<a.length;t++) a[t]+=paramoffsetlist[b];
+				post(a); post("/");
+				g[i].replace("contains",a);
+				grps = grps.concat(g[i]);
+				new_encapsulated.append(name+"::groups","*");
+				new_encapsulated.replace(name+"::groups["+iof+"]",g[i]);
+				iof++;
+			}
+			if(new_encapsulated.get(name+"::groups["+(new_encapsulated.getsize(name+"::groups")-1)+"]")=="*") new_encapsulated.remove(name+"::groups["+(new_encapsulated.getsize(name+"::groups")-1)+"]");
+		}
+		if(blocktypes.contains(bnam+"::parameters")){
+			var g = blocktypes.get(bnam+"::parameters");
+			if(!Array.isArray(g))g = [g];
+			post("\nadding",g.length,"parameters");
+			prms = prms.concat(g);
+		}
+	}
+	for(var i=0;i<prms.length;i++){
+		new_encapsulated.append(name+"::parameters","*");
+		new_encapsulated.replace(name+"::parameters["+i+"]", prms[i]);
+	}
+	//new_encapsulated.remove(name+"::groups["+new_encapsulated.getsize(name+"::groups")-1+"]");
+	new_encapsulated.remove(name+"::parameters["+prms.length+"]");
+	if(panl.length>0){
+		new_encapsulated.setparse(name+"::panel","{}");
+		new_encapsulated.replace(name+"::panel::parameters",panl);
+		new_encapsulated.replace(name+"::panel::enabled",1);
+	}
+
+	//then this section includes the original blocks and connections
+	new_encapsulated.setparse(name+"::encapsulated","{}");
+	new_encapsulated.setparse(name+"::encapsulated::blocks","*");
+	new_encapsulated.setparse(name+"::encapsulated::connections","*");
+	for(var b=0;b<blocklist.length;b++){
+		new_encapsulated.append(name+"::encapsulated::blocks","*");
+		new_encapsulated.replace(name+"::encapsulated::blocks["+b+"]",blocks.get("blocks["+blocklist[b]+"]"));
+		var x = blocks.get("blocks["+blocklist[b]+"]::space::x");
+		var y = blocks.get("blocks["+blocklist[b]+"]::space::y");
+		new_encapsulated.replace(name+"::encapsulated::blocks["+b+"]::space::x",x-minx);
+		new_encapsulated.replace(name+"::encapsulated::blocks["+b+"]::space::y",y-miny);
+	}
+	new_encapsulated.remove(name+"::encapsulated::blocks["+blocklist.length+"]");
+	var cc=0;
+	for(var c=0;c<connections.getsize("connections");c++){
+		if(connections.contains("connections["+c+"]::from")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			var fty = connections.get("connections["+c+"]::from::output::type");
+			var tty = connections.get("connections["+c+"]::to::input::type");
+			if(tty=="hardware")tty="audio";
+			if(fty=="hardware")fty="audio";
+			if((selected.block[fb])&&selected.block[tb]){//only internal connections
+				new_encapsulated.append(name+"::encapsulated::connections","*");
+				var con = connections.get("connections["+c+"]");
+				fb = blocklist.indexOf(fb);
+				tb = blocklist.indexOf(tb);
+				con.replace("from::number",fb); //replace block numbers in connecton with internal numbering
+				con.replace("to::number",tb);
+				new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
+				cc++;
+			}else if((fty=="audio")&&(tty=="audio")){
+				if(selected.block[fb]){
+					new_encapsulated.append(name+"::encapsulated::connections","*");
+					var con = connections.get("connections["+c+"]");
+					fb = blocklist.indexOf(fb);
+					tb = -1-outwardaudioconnectionslist.indexOf(c);
+					post("\nspecial tb",tb);
+					con.replace("from::number",fb); //replace block numbers in connecton with internal numbering
+					con.replace("to::number",tb);
+					con.replace("to::input::type","audio");
+					new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
+					cc++;					
+				}else if(selected.block[tb]){
+					new_encapsulated.append(name+"::encapsulated::connections","*");
+					var con = connections.get("connections["+c+"]");
+					fb = -1-inwardaudioconnectionslist.indexOf(c);
+					tb = blocklist.indexOf(tb);
+					post("\nspecial fb",fb);
+					con.replace("from::number",fb); //replace block numbers in connecton with internal numbering
+					con.replace("to::number",tb);
+					con.replace("from::output::type","audio");
+					new_encapsulated.replace(name+"::encapsulated::connections["+cc+"]",con);
+					cc++;	
+				}
+			}else{
+
+			}
+		}
+	}
+	new_encapsulated.remove(name+"::encapsulated::connections["+cc+"]");
+//	new_encapsulated.setparse(name+"::space","{}");
+	new_encapsulated.replace(name+"::colour", config.get("palette::menu"));// [255,190,50]);
+
+	//now put this json into the blocktypes dict so we can load it
+	blocktypes.append(name, "{}");
+	blocktypes.replace(name,new_encapsulated.get(name));
+	
+	//then replace the patcher name with the right one?? before saving json?
+	new_encapsulated.replace(name+"::patcher",name);
+	new_encapsulated.export_json(projectpath+"/audio_blocks/"+name+".json");
+	
+	if(displaymode!="blocks")set_display_mode("blocks");
+	var new_encapsulated_blockno = new_block(name,minx-0.5,miny-0.5);
+	draw_block(new_encapsulated_blockno);
+
+	//step 2: build maxpat - this happens in situ in the audio blocks poly, from a template
+	//including detecting feedback loops and inserting 1 vector delays in them
+	//
+
+	//step 3: swap in ext connections
+	for(var c=0;c<connections.getsize("connections");c++){
+		if(connections.contains("connections["+c+"]::from::number")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			var fty = connections.get("connections["+c+"]::from::output::type");
+			var tty = connections.get("connections["+c+"]::to::input::type");
+			post("\nswapping connection",c,"from",fb,fty,"to",tb,tty);
+			if(selected.block[fb]&&!selected.block[tb]){
+				//connection from the encapsulation out to the patch
+				new_connection = connections.get("connections["+c+"]");
+				if((fty == "audio")&&((tty == "audio")||(tty == "hardware"))){
+					new_connection.replace("from::number",new_encapsulated_blockno);
+					new_connection.replace("from::output::number",outwardaudioconnectionslist.indexOf(c));
+				}else{
+					var oon=new_connection.get("from::output::number");
+					new_connection.replace("from::number",new_encapsulated_blockno);
+					new_connection.replace("from::output::number",oon+outputoffsetlist[blocklist.indexOf(fb)]);
+					post("\nnew out",oin+inputoffsetlist[blocklist.indexOf(tb)]);
+				}
+				remove_connection(c);
+				connections.replace("connections["+c+"]",new_connection);
+				make_connection(c,0);
+			}else if(selected.block[tb]&&!selected.block[fb]){
+				//connection from the patch into the encapsulation
+				new_connection = connections.get("connections["+c+"]");
+				if((tty == "audio")&&((fty == "audio")||(fty == "hardware"))){
+					new_connection.replace("to::number",new_encapsulated_blockno);
+					new_connection.replace("to::input::number",inwardaudioconnectionslist.indexOf(c));
+				}else{
+					var oin=new_connection.get("to::input::number");
+					new_connection.replace("to::number",new_encapsulated_blockno);
+					new_connection.replace("to::input::number",oin+inputoffsetlist[blocklist.indexOf(tb)]);
+					post("\nnew in",oin,inputoffsetlist,blocklist,tb,blocklist.indexOf(tb),oin+inputoffsetlist[blocklist.indexOf(tb)]);
+				}
+				remove_connection(c);
+				connections.replace("connections["+c+"]",new_connection);
+				make_connection(c,0);
+
+			}
+		}
+	}
+	//and remove the blocks, copying over the properties
+	p=0;
+	pars = [];
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(selected.block[b]){
+			var s = blocktypes.getsize(blocks.get("blocks["+b+"]::name")+"::parameters");
+			var thispars = parameter_value_buffer.peek(1,b*MAX_PARAMETERS,s);
+			pars = pars.concat(thispars);
+			post("\nremoving block",b);
+			remove_block(b);
+		}
+	}
+	post("\ncollected together",pars.length,"parameter values");
+	parameter_value_buffer.poke(1,new_encapsulated_blockno*MAX_PARAMETERS,pars);
+	set_sidebar_mode("none");
+	selected.block[new_encapsulated_blockno] = 1;
+	redraw_flag.flag |= 4;
 }
