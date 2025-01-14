@@ -527,7 +527,7 @@ function draw(){
 					var vey = by - Math.abs(event[3])*sy;
 					var vex1 = x_pos + (event[0]-zoom_start)*(width-1)*zoom_scale;
 					if(mouse_lane==vallane[ll]){
-						if(Math.abs(mouse_x-vex1)<=4) hovered_event = k[i];
+						if(Math.abs(mouse_x - vex1)<=2) hovered_event = k[i];
 						if(drag==-2){
 							if((vex1>selx1)&&(vex1<selx2)&&(by>sely1)&&(vey<sely2)){
 								selected_events[k[i]] |= 2;
@@ -643,7 +643,7 @@ function draw(){
 				for(var se=0;se<selected_events.length;se++){
 					if(selected_events[se]){
 						outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-						var event = seqdict.get(block+"::"+pattern+"::"+se);
+						var event = seqdict.get(block+"::"+pattern+"::"+selected_events[se]);
 						outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 						if(event[1]==0){
 							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
@@ -695,7 +695,7 @@ function update(){
 
 
 function voice_is(v){
-	post("\nvoiceis",v);
+	//post("\nvoiceis",v);
 	block = v;
 	if(block>=0){
 		var voicemap = new Dict;
@@ -763,12 +763,12 @@ function voice_is(v){
 			seqdict.replace(block+"::"+pattern+"::looppoints", [256, 0, 0, 16]);
 		}
 		copytoseq();
-		post("\nlaneslist",laneslist);
-		post("\nlanetype",lanetype);
-		post("\nnotelane",notelane);
-		post("\nval lane",vallane);
-		post("\nmeta lane",metalane);
-		post("\nlane used",laneused);
+		//post("\nlaneslist",laneslist);
+		//post("\nlanetype",lanetype);
+		//post("\nnotelane",notelane);
+		//post("\nval lane",vallane);
+		//post("\nmeta lane",metalane);
+		//post("\nlane used",laneused);
 	}
 }
 
@@ -787,7 +787,7 @@ function laneheights(){
 	for(var i=0; i<laneslist.length; i++) {
 		maximised += ((maximisedlist[i]|0)==1);
 	}
-	post("\nmaximised",maximised,"used",used,"unused",unused);
+	//post("\nmaximised",maximised,"used",used,"unused",unused);
 	maximised = 8 * maximised + used + 0.4*unused;
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
@@ -796,10 +796,10 @@ function laneheights(){
 		if(ii<0)ii=0;
 		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]|0) + 0.4 + 0.6 * (laneused[ii]|0) + 0.6*((i==laneslist.length)&&(maximisedlist[i-1]!=1))) * maximised;
 	}
-	post("\nlaney",laney);
-	post("\nscreen",y_pos+height);
-	post("\nmaximisedlist",maximisedlist);
-	post("\nusedlist",laneused);
+	//post("\nlaney",laney);
+	//post("\nscreen",y_pos+height);
+	//post("\nmaximisedlist",maximisedlist);
+	//post("\nusedlist",laneused);
 }
 
 function voice_offset(){}
@@ -967,10 +967,34 @@ function mouse(x,y,l,s,a,c,scr){
 					selected_events=[];
 					selected_events[hovered_event]=1;
 				}
+				if(a&&(hovered_event>-1)&&(selected_events[hovered_event]==1)){
+					//if ctrl is held it makes an entirely new set of events
+					var newsellist=[];
+					sd = seqdict.get(block+"::"+pattern);
+					k = sd.getkeys();						
+					var newhov;
+					for(var i=0;i<k.length;i++){
+						if(selected_events[k[i]]){
+							var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+							event[0]+=0.0000000001;
+							var ind = create_event(event);
+							post("create event at index",ind,":",event);
+							sd = seqdict.get(block+"::"+pattern);
+							k = sd.getkeys();						
+							newsellist.push(ind);
+							if(k[i]==hovered_event) newhov = ind;
+						}
+					}
+					selected_events = [];
+					for(var i=0;i<newsellist.length;i++){
+						selected_events[newsellist[i]]=1;
+					}
+					hovered_event = newhov;
+				}
 			}
 			if(drag<0){
 				drawflag=1;
-				post("drag",drag);
+				//post("drag",drag);
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//ctrl drag - draw values
 					var dx = drag_start_x - x;
@@ -1176,6 +1200,7 @@ function create_event(event) {
 	push_to_undo_stack("create");
 	copytoseq();
 	drawflag = 1;
+	return ind;
 }
 
 function zoom_to_pattern() {

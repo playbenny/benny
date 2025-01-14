@@ -474,7 +474,7 @@ function send_ui_patcherlist(do_all){
 }
 
 function update_all_voices_mutestatus(){
-	post("\nupdating all voices mute status");
+	//post("\nupdating all voices mute status");
 	var k = voicemap.getkeys();
 	if(k!=null){
 		for(var i = 0; i<k.length;i++){
