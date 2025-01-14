@@ -290,7 +290,7 @@ function draw(){
 		outlet(1,"frgb",blockcolour);
 		outlet(1,"moveto",x_pos,y_pos+height*0.02);
 		outlet(1,"write","start:"+start);
-		outlet(1,"moveto",x_pos+width*0.1,y_pos+height*0.02);
+		outlet(1,"moveto",x_pos+width*0.08,y_pos+height*0.02);
 		outlet(1,"write","loopstart:"+loopstart);
 		outlet(1,"moveto",x_pos+width*0.2,y_pos+height*0.02);
 		outlet(1,"write","length:"+looplength);
@@ -326,7 +326,7 @@ function draw(){
 					rr=nr;
 				}
 			}else{// if(lanetype[l]==2){
-				r = (laney[l+1]-laney[l]-4)/(metatypes.length+1);
+				r = (laney[l+1]-laney[l])/(metatypes.length);
 				var rr = laney[l];
 				for(var yy = metatypes.length; yy > 0; yy--){
 					var nr = rr + r;
@@ -427,16 +427,16 @@ function draw(){
 			outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
 			//outlet(1,"write", "lane "+laneslist[l]);
 			if(lanetype[l]==0){
-				outlet(1,"write", "notes "+laneslist[l]);
+				outlet(1,"write", "notes");
 			}else if(laneslist[l]==0){
-				outlet(1,"write", "velocity "+laneslist[l]);
+				outlet(1,"write", "velocity");
 			}else if(lanetype[l]==1){
 				outlet(1,"write", "cc "+(laneslist[l]));
 			}else if(lanetype[l]==2){
 				outlet(1,"write", "meta");
 				if(maximisedlist[l]==1){
 					outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
-					r = (laney[l+1]-laney[l]-4)/(metatypes.length+1);
+					r = (laney[l+1]-laney[l]-4)/(metatypes.length);
 					rr = laney[l]-0.2*r;
 					for(var yy = 0; yy < metatypes.length; yy++){
 						rr += r;
@@ -479,9 +479,9 @@ function draw(){
 					if(ll2!=9){
 						ll2 = 9;
 						by2 = laney[1+metalane[ll2]] - 4;
-						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(1 + metatypes.length);
+						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(metatypes.length);
 					}
-					var ey = by2 - (metatypes.length - event[2])*sy2;
+					var ey = by2 - (metatypes.length - 1 - event[2])*sy2;
 					var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 					var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
 					ex1 = Math.max(x_pos, ex1);
@@ -780,22 +780,26 @@ function copytoseq(){
 function laneheights(){
 	var used=0;
 	var unused;
-	for(var i=0;i<laneslist.length;i++) used += (laneused[i]|0);
+	for(var i=0;i<laneslist.length;i++) used += (laneused[i]|0)*(1+(i==0));
 	unused = laneslist.length - used;
 	if(used==0) return -1;
 	var maximised = 0;
 	for(var i=0; i<laneslist.length; i++) {
-		maximised += (maximisedlist[i]==1);
+		maximised += ((maximisedlist[i]|0)==1);
 	}
 	post("\nmaximised",maximised,"used",used,"unused",unused);
 	maximised = 8 * maximised + used + 0.4*unused;
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
-		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]|0) + 0.4 + 0.6 * (laneused[Math.max(0,i-2)]|0)) * maximised;
+		var ii=i-2;
+		if(ii<0)ii=0;
+		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]|0) + 0.4 + 0.6 * (laneused[ii]|0) + 0.6*((i==laneslist.length)&&(maximisedlist[i-1]!=1))) * maximised;
 	}
 	post("\nlaney",laney);
+	post("\nscreen",y_pos+height);
 	post("\nmaximisedlist",maximisedlist);
+	post("\nusedlist",laneused);
 }
 
 function voice_offset(){}
@@ -837,12 +841,12 @@ function mouse(x,y,l,s,a,c,scr){
 	if(scr){
 		if(y<y_pos+0.1*height){
 			if(y<y_pos+0.05*height){
-				scroll_accumulator += scr;
+				scroll_accumulator += scr*2;
 				if(Math.abs(scroll_accumulator)>1){
 					scr = 2*(scroll_accumulator>0)-1;
 					scroll_accumulator = 0;
 					var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
-					if(x<x_pos+0.1*width){
+					if(x<x_pos+0.08*width){
 						loopnts[1] += scr;
 						loopnts[1] = Math.max(0,loopnts[1]);
 						loopnts[1] = Math.min(loopnts[0],loopnts[1]);
@@ -886,7 +890,7 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 		}else if(hovered_event>-1){
 			if(s) scr *= 0.1;
-			if(selected_events[hovered_event]==0){
+			if(selected_events[hovered_event]!=1){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				//if ctrl held it adjusts length;
 				if(c){
@@ -895,9 +899,9 @@ function mouse(x,y,l,s,a,c,scr){
 				}else{
 					var v=0;
 					if(event[3]>=0){
-						v = Math.min(127,Math.max(0,event[3] + scr*10));
+						v = Math.min(127,Math.max(0,event[3] + scr*25));
 					}else if(event[3]<0){
-						v = Math.max(-127,Math.min(0,event[3] - scr*10));
+						v = Math.max(-127,Math.min(0,event[3] - scr*25));
 					}
 					event[3] = v;
 				}
@@ -913,9 +917,9 @@ function mouse(x,y,l,s,a,c,scr){
 						}else{
 							var v=0;
 							if(event[3]>=0){
-								v = Math.min(127,Math.max(0,event[3] + scr*10));
+								v = Math.min(127,Math.max(0,event[3] + scr*25));
 							}else if(event[3]<0){
-								v = Math.max(-127,Math.min(0,event[3] - scr*10));
+								v = Math.max(-127,Math.min(0,event[3] - scr*25));
 							}
 							event[3] = v;
 						}
@@ -929,7 +933,8 @@ function mouse(x,y,l,s,a,c,scr){
 	}else if(l==1){
 		if(old_l==0){ //a click happens
 			clicked = hovered_event;
-			if((clicked == -1) && c) clicked = -2;
+			if((clicked == -1) && (s||c)) clicked = -2-(0.5*s); //shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
+			if(y<y_pos+0.1*height) clicked = -2.5;
 			drag_start_x = x;
 			drag_start_y = y;
 			if(clicked<0){
@@ -967,7 +972,63 @@ function mouse(x,y,l,s,a,c,scr){
 				drawflag=1;
 				post("drag",drag);
 				if(drag == -2){//selection area drag
-				}else if(drag == -1){//pan view around??
+				}else if(drag == -1){//ctrl drag - draw values
+					var dx = drag_start_x - x;
+					//var dy = drag_start_y - y;
+					if(Math.abs(dx)>=1){
+						if(lanetype[Math.max(0,mouse_lane-1)]==1){
+							var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
+							var sx = ((drag_start_x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
+							var ex = xx;
+							var ssx = sx;
+							if(ex<sx){ ex = sx; sx = xx; }
+							var vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
+							var sv = 127 *(1-((drag_start_y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
+							var gv = (sv - vv)/Math.ceil(dx);
+							for(var i=1;i<k.length;i++){
+								var tt=sd.get(k[i]+"[0]");
+								if((tt>sx)&&(tt<ex)){
+									if(sd.get(k[i]+"[1]")==Math.max(0,mouse_lane-1)) seqdict.remove(block+"::"+pattern+"::"+k[i]);
+								}
+							}
+							var event; //
+							event = [xx,Math.max(0,mouse_lane-1),pp,vv,currentquantise/seql];
+							create_event(event);
+							/*for(var i = 0;i<Math.abs(dx);i++){
+								event = [ssx+i,Math.max(0,mouse_lane-1),0,sv,currentquantise/seql];
+								sv+=gv;
+							}*/
+							drag_start_x=x;
+							drag_start_y=y;
+						}
+					}
+				}else if(drag == -0.5){//ruler drag - pan and zoom
+					var dx = drag_start_x - x;
+					var dy = drag_start_y - y;
+					var dir = 0;
+					if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+					if(dir==0){
+						var l = (zoom_end - zoom_start);
+						var p = l/width;
+						p *= dx;
+						zoom_start += p;
+						zoom_start = Math.min(Math.max(0,zoom_start),1-l);
+						zoom_end = zoom_start + l;
+						drag_start_x = x;
+						drag_start_y = y;
+					}else{
+						var l = (zoom_end - zoom_start);
+						var p = 2/width;
+						post("\ndir 1, ",dy);
+						p *= dy;
+						zoom_start += 0.5*p;
+						l-=p;
+						zoom_start = Math.min(Math.max(0,zoom_start),1-l);
+						zoom_end = zoom_start + l;
+						zoom_scale = 1/(zoom_end - zoom_start);
+						drag_start_y = y;
+						drag_start_x = x;
+					}
 				}else{//drag selection/or just the original hovered note
 					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
 					drag_start_x = x;
@@ -1049,15 +1110,11 @@ function mouse(x,y,l,s,a,c,scr){
 					if(lanetype[mouse_lane]==0){//note lane
 						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 					}else if(lanetype[mouse_lane]==2){//meta lane
-						pp = Math.floor((metatypes.length+1)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+						pp = Math.floor((metatypes.length)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 						vv = metatype_defaults[pp][0];
 					}else{
 						vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])); 
 					}
-					var ind = k[(k.length-1)]|0;
-					ind++;
-					while(k.indexOf(ind.toString())>-1) ind++;
-					ind = ind.toString();
 					if(mouse_lane>0)mouse_lane--;
 					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
 					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
@@ -1065,20 +1122,7 @@ function mouse(x,y,l,s,a,c,scr){
 							event.push(metatype_defaults[pp][i]);
 						}
 					}
-					for(var ti=1;ti<k.length;ti++){ //check for duplicate events
-						var ev = sd.get(k[ti]);
-						if((ev[0]==xx)&&(ev[1]==mouse_lane)&&(ev[2]==pp)){
-							ind = k[ti];
-							break; 
-						}
-					}
-					seqdict.replace(block+"::"+pattern+"::"+ind,event);
-					undo.clear();
-					undo.replace(ind,event);
-					post("\npushing",undo.getkeys());
-					push_to_undo_stack("create");
-					copytoseq();
-					drawflag=1;
+					create_event(event);
 				}else{ //select nothing
 					selected_event_count=0;
 					selected_events=[];
@@ -1111,6 +1155,27 @@ function mouse(x,y,l,s,a,c,scr){
 	old_y = y;
 	old_s = s;
 	old_c = c;
+}
+
+function create_event(event) {
+	var ind = k[(k.length - 1)] | 0;
+	ind++;
+	while (k.indexOf(ind.toString()) > -1) ind++;
+	ind = ind.toString();
+	for (var ti = 1; ti < k.length; ti++) { //check for duplicate events
+		var ev = sd.get(k[ti]);
+		if ((ev[0] == event[0]) && (ev[1] == mouse_lane) && (ev[2] == event[2])) {
+			ind = k[ti];
+			break;
+		}
+	}
+	seqdict.replace(block + "::" + pattern + "::" + ind, event);
+	undo.clear();
+	undo.replace(ind, event);
+	//post("\npushing",undo.getkeys());
+	push_to_undo_stack("create");
+	copytoseq();
+	drawflag = 1;
 }
 
 function zoom_to_pattern() {
@@ -1149,6 +1214,10 @@ function keydown(key){
 		if(old_s) dir *= 12;
 		var rem=0;
 		undo.clear();
+		if((selected_event_count==0) && (hovered_event>-1)){
+			selected_event_count++;
+			selected_events[hovered_event]=1;
+		}
 		for(i=0;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
@@ -1174,6 +1243,10 @@ function keydown(key){
 		dir /= (seql);
 		var rem=0;
 		undo.clear();
+		if((selected_event_count==0) && (hovered_event>-1)){
+			selected_event_count++;
+			selected_events[hovered_event]=1;
+		}
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
 				rem=1;
@@ -1221,6 +1294,10 @@ function keydown(key){
 	}else if(key==113){//q, quantises selected notes
 		var rem=0;
 		undo.clear();
+		if((selected_event_count==0) && (hovered_event>-1)){
+			selected_event_count++;
+			selected_events[hovered_event]=1;
+		}
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
@@ -1239,6 +1316,10 @@ function keydown(key){
 	}else if(key==108){//l, makes selected notes legato
 		var rem=0;
 		undo.clear();
+		if((selected_event_count==0) && (hovered_event>-1)){
+			selected_event_count++;
+			selected_events[hovered_event]=1;
+		}
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
