@@ -1395,10 +1395,9 @@ function draw_wire(connection_number){
 			var blob_position = [];
 			var meanvector = [0,0,0];
 			if(cfrom == cto){
-				from_anglevector[0] += from_anglevector[1];
-				//from_anglevector[1] *= 2;
+				//from_anglevector[0] += from_anglevector[1];
 				from_anglevector[2] -= 1;
-				to_anglevector[0] -= to_anglevector[1];
+				//to_anglevector[0] -= to_anglevector[1];
 				//to_anglevector[1] *= 2;
 				to_anglevector[2] -= 1;
 				if(selected.block[cfrom]||selected.wire[connection_number]){
@@ -1467,13 +1466,12 @@ function draw_wire(connection_number){
 			}else{
 				yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
 			}
-			//var bp2 = -Math.min(-0.5,blob_position[2] * 0.2);
-			from_anglevector = [from_anglevector[0]/*(0.5+bp2)*/,from_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
-			to_anglevector = [to_anglevector[0]/*(0.5+bp2)*/,to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
+			from_anglevector = [from_anglevector[0],from_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
+			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
-			meanvector[0] = /*(1-blob_position[2]) **/ meanvector[0] * -0.33/mvl;
-			meanvector[1] = /*(1-blob_position[2]) **/ meanvector[1] * -0.33/mvl;				
+			meanvector[0] = meanvector[0] * -0.33/mvl;
+			meanvector[1] = meanvector[1] * -0.33/mvl;				
 			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var mtot=0;
