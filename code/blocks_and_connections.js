@@ -2606,14 +2606,16 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	}
 	//if((details.get("patcher")=="vst.loader") && (max_v>0)) vst=1;
 	if(voices == v) return 1;
-	
+
 	subvoices = Math.max(1,blocks.get("blocks["+block+"]::subvoices"));
 	
 	// FIRST, IF REMOVING VOICES, REMOVE ALL CONNECTIONS THAT TOUCH THIS BLOCK, STORING THE ONES THAT ARE GOING BACK ON
 	//IN THIS ARRAY OF DICTS
 	var handful = [];
 	var handful_n = [];
-	var hp=0;
+	var remtot = [];
+	var remtot_n = [];
+	var hp=0; rt=0;
 	var direction = 0;
 	if(voices < v){
 		direction = -1;
@@ -2629,7 +2631,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 //			post("f_voice",f_voice,typeof f_voice);
 					if(typeof f_voice == "number"){
 						if(f_voice > voices*sv) { 
+							remtot[rt] = new Dict;
+							remtot[rt] = connections.get("connections["+i+"]");
+							remtot_n[rt] = i;
 							remove_connection(i);
+							rt++;
 							removedtotally = 1;
 						}
 					}else if(f_voice == "all"){
@@ -2648,8 +2654,12 @@ function voicecount(block, voices){     // changes the number of voices assigned
 							}
 						}
 						if(vc==0){
-							removedtotally=1;
+							remtot[rt] = new Dict;
+							remtot[rt] = connections.get("connections["+i+"]");
 							remove_connection(i);
+							remtot_n[rt] = i;
+							rt++;
+							removedtotally=1;
 						}else if(f_v2.length<f_voice.length){
 							connections.set("connections["+i+"]::from::voice", f_v2); 
 							handful[hp]=new Dict;
@@ -2667,7 +2677,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 						//post("\nSV IS ",sv);
 						if(typeof t_voice == "number"){
 							if(t_voice > voices*sv){
+								remtot_n[rt] = i;
+								remtot[rt] = new Dict;
+								remtot[rt] = connections.get("connections["+i+"]");
 								remove_connection(i);
+								rt++;
 							}
 						}else if(t_voice == "all"){
 							handful[hp]=new Dict;
@@ -2686,7 +2700,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 							}
 							if(vc==0){
 								removedtotally=1;
+								remtot_n[rt] = i;
+								remtot[rt] = new Dict;
+								remtot[rt] = connections.get("connections["+i+"]");
 								remove_connection(i);
+								rt++;
 							}else if(t_v2.length<t_voice.length){
 								connections.set("connections["+i+"]::to::voice", t_v2); 
 								handful[hp]=new Dict;
@@ -2702,6 +2720,28 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		}
 	}else if(voices > v){
 		direction = 1;
+	}
+
+	//post("\nhandful length is",handful.length,remtot.length);
+	//add the actions:voicecount event to undo stack here
+	if((loading.progress<=0)&&(!undoing)){
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "voicecount" : { "block" : '+block+', "voices" : '+v+' } } }');
+		if(handful.length>0){
+			for(var h=0;h<handful.length;h++){
+				 remtot.push(handful[h]);
+				 remtot_n.push(handful_n[h]);
+			}
+		}
+		if(remtot.length>0){
+			//post("\nadding,",remtot.length," modified/removed connections to undo stack too",handful_n);
+			undo_stack.setparse("history["+usz+"]::blocks",'{}'); //needed to trigger that bit of the undo function
+			undo_stack.setparse("history["+usz+"]::connections",'{}');
+			for(h=0;h<remtot.length;h++){
+				undo_stack.replace("history["+usz+"]::connections::"+remtot_n[h], remtot[h]);
+			}
+		}
 	}
 
 	// NOW ADD OR REMOVE VOICES:

@@ -525,6 +525,8 @@ undo.name = "undo";
 
 var undo_stack = new Dict;
 undo_stack.name = "undo_stack";
+var redo_stack = new Dict;
+redo_stack.name = "redo_stack";
 
 var undoing = 0; //flag 1 while you do undo actions to avoid writing those actions 
 				// to the undo stack

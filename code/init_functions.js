@@ -291,7 +291,8 @@ function initialise_dictionaries(hardware_file){
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
 
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
-
+	redo_stack.parse('{ "history" : [ {}, {} ] }');
+	
 	SONGS_FOLDER = config.get("SONGS_FOLDER");
 	if((projectpath!="")&&(SONGS_FOLDER.indexOf("/")==-1)){
 		SONGS_FOLDER = projectpath + SONGS_FOLDER;

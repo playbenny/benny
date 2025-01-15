@@ -100,6 +100,12 @@ function blocks_paste(outside_connections,target){
 			}
 			draw_blocks();
 		}
+		if(target.contains("actions::voicecount")){
+			var tblock = target.get("actions::voicecount::block");
+			var tvoices = target.get("actions::voicecount::voices");
+			//post("\nvoicecount",tblock,tvoices);
+			voicecount(tblock,tvoices);
+		}
 	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
@@ -328,6 +334,7 @@ function blocks_paste(outside_connections,target){
 			var tk = tdc.getkeys();
 			if(Array.isArray(tk)){
 				for(var t=0;t<tk.length;t++){
+					post("\npaste/undo connections",tk[t]);
 					new_connection = target.get("connections::"+tk[t]);
 					var pfrom = paste_mapping[+new_connection.get("from::number")];
 					var pto = paste_mapping[+new_connection.get("to::number")];
@@ -2874,17 +2881,43 @@ function undo_button(){
 	usz--;
 	if(usz<0) return -1;
 	undo = undo_stack.get("history["+usz+"]");
-	undo_stack.remove("history["+usz+"]");
+	if(undo==null){
+		if(usz>0)undo_button();
+	}else{
+		redo_stack.append("history","{}");
+		var rsz=redo_stack.getsize("history")|0;
+		rsz--;
+		redo_stack.replace("history["+rsz+"]",undo);
+		undo_stack.remove("history["+usz+"]");
+		blocks_paste(1,undo);
+		undo.parse("{}");
+	}
+	undoing = 0;
+}
+
+function redo_button(){
+	//undoing = 1;
+	var rsz=redo_stack.getsize("history")|0;
+	if(rsz == 0) return -1;
+	post("\nredoing, stack size",rsz);
+	rsz--;
+	if(rsz<0) return -1;
+	undo = redo_stack.get("history["+rsz+"]");
+	post("\nredo:",undo.stringify());
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history","*");
+	usz--;
+	undo_stack.replace("history["+usz+"]",undo);
+	redo_stack.remove("history["+rsz+"]");
 	blocks_paste(1,undo);
 	undo.parse("{}");
-	undoing = 0;
+	//undoing = 0;	
 }
 
 function delete_selection(){
 	if(!undoing){
 		copy_selection(undo);
 		var usz=undo_stack.getsize("history")|0;
-		//post("\nundo stack size",usz);
 		usz = Math.max(0,usz);
 		undo_stack.append("history","{}");
 		undo_stack.setparse("history["+usz+"]",'{}');
