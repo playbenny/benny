@@ -1395,14 +1395,14 @@ function draw_wire(connection_number){
 			var blob_position = [];
 			var meanvector = [0,0,0];
 			if(cfrom == cto){
-				//from_anglevector[0] += from_anglevector[1];
 				from_anglevector[2] -= 1;
-				//to_anglevector[0] -= to_anglevector[1];
-				//to_anglevector[1] *= 2;
+				from_anglevector[1] *= 1.3;
+				to_anglevector[1] *= 1.3;
 				to_anglevector[2] -= 1;
 				if(selected.block[cfrom]||selected.wire[connection_number]){
-					from_anglevector[1] *= 2;
-					to_anglevector[1] *= 2;
+					from_anglevector[1] *= 1.5;
+					to_anglevector[1] *= 1.5;
+					meanvector[2] = 1;
 				}
 			}
 			var fx = from_pos[0];
@@ -1455,7 +1455,7 @@ function draw_wire(connection_number){
 			var s2 = 0.5 - 0.4*short;
 			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1])))-2*(cfrom==cto); //was -0.25 -0.3
+			blob_position[2] =  Math.min(Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))),-1.5*(cfrom==cto)); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
@@ -1470,6 +1470,7 @@ function draw_wire(connection_number){
 			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
+			if(cfrom==cto) mvl *= 0.25;
 			meanvector[0] = meanvector[0] * -0.33/mvl;
 			meanvector[1] = meanvector[1] * -0.33/mvl;				
 			if((to_multi>0) || (from_multi>0)){
@@ -1486,9 +1487,6 @@ function draw_wire(connection_number){
 					i = to_list[t];
 					mtot+=i;
 				}
-				
-				//var minz = 0.5*mtot/(from_list.length+to_list.length);
-				//blob_position[0] += minz;
 
 				if((from_multi>0)&&(to_multi>0)){ 
 					for(i=0;i<from_list.length;i++){
@@ -1567,6 +1565,7 @@ function draw_wire(connection_number){
 	
 					for(i=0;i<to_list.length;i++){
 						to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
+						meanvector[2]=-meanvector[2];
 						for(t=0;t<3;t++){
 							bez_prep[0][t] = blob_position[t];
 							bez_prep[1][t] = blob_position[t]+meanvector[t];
@@ -1609,6 +1608,7 @@ function draw_wire(connection_number){
 						bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 					}
 					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
+					meanvector[2]=-meanvector[2];
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = blob_position[t];
 						bez_prep[1][t] = blob_position[t]+meanvector[t];
