@@ -1346,7 +1346,6 @@ function draw_wire(connection_number){
 				}else{
 					fv=1;
 					from_list = [tl];
-					//from_pos[0] += 0.5*(tl-1)/from_subvoices;
 				}
 			}
 
@@ -1402,6 +1401,10 @@ function draw_wire(connection_number){
 				to_anglevector[0] -= to_anglevector[1];
 				//to_anglevector[1] *= 2;
 				to_anglevector[2] -= 1;
+				if(selected.block[cfrom]||selected.wire[connection_number]){
+					from_anglevector[1] *= 2;
+					to_anglevector[1] *= 2;
+				}
 			}
 			var fx = from_pos[0];
 			var tx = to_pos[0];
@@ -1453,7 +1456,7 @@ function draw_wire(connection_number){
 			var s2 = 0.5 - 0.4*short;
 			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))); //was -0.25 -0.3
+			blob_position[2] =  Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1])))-2*(cfrom==cto); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
