@@ -106,6 +106,21 @@ function blocks_paste(outside_connections,target){
 			//post("\nvoicecount",tblock,tvoices);
 			voicecount(tblock,tvoices);
 		}
+		if(target.contains("actions::parameter")){
+			var tblock = target.get("actions::parameter::block");
+			var tparam = target.get("actions::parameter::parameter");
+			var tvalue = target.get("actions::parameter::value");
+			parameter_value_buffer.poke(1, MAX_PARAMETERS*tblock+tparam,tvalue);
+			redraw_flag.flag |= 4;
+		}
+		if(target.contains("actions::voice_parameter")){
+			var tvoice = target.get("actions::voice_parameter::voice");
+			var tparam = target.get("actions::voice_parameter::parameter");
+			var tvalue = target.get("actions::voice_parameter::value");
+			post("\nundoing to:",tvoice,tparam,tvalue);
+			parameter_static_mod.poke(1, MAX_PARAMETERS*tvoice+tparam,tvalue);
+			redraw_flag.flag |= 4;
+		}
 	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
@@ -1906,6 +1921,26 @@ function qwertymidi_octave(parameter, value){
 	}
 }
 	
+function store_param_undo(parameter,block,value){
+	post("\nstoring undo, block:",block," p:",parameter, " v:", value);
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history",'{}');
+	undo_stack.setparse("history["+usz+"]", '{ "actions" : { "parameter" : {} } }');
+	undo_stack.replace("history["+usz+"]::actions::parameter::block", +block);
+	undo_stack.replace("history["+usz+"]::actions::parameter::parameter", +parameter);
+	undo_stack.replace("history["+usz+"]::actions::parameter::value", +value);
+}
+
+function store_voice_param_undo(parameter,voice,value){
+	post("\nstoring undo, voice:",voice," p:",parameter, " v:", value);
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history",'{}');
+	undo_stack.setparse("history["+usz+"]", '{ "actions" : { "voice_parameter" : {} } }');
+	undo_stack.replace("history["+usz+"]::actions::voice_parameter::voice", +voice);
+	undo_stack.replace("history["+usz+"]::actions::voice_parameter::parameter", +parameter);
+	undo_stack.replace("history["+usz+"]::actions::voice_parameter::value", +value);
+}
+
 function sidebar_parameter_knob(parameter, value){
 	//post("\nsidebar parameter knob P: ",parameter,"  V:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);

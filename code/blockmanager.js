@@ -374,6 +374,8 @@ var mouse_click_actions = [];
 var mouse_click_parameters = [];
 var mouse_click_values = [];
 
+var um_task;
+
 var usermouse = {
 	last : {
 		left_button : 0,
@@ -382,7 +384,8 @@ var usermouse = {
 		got_i : 0,
 		got_t : 0,
 		x : 0,
-		y : 0
+		y : 0,
+		scroll : -1 //holds index of last scrolled parameter, just used so as not to store too many undos
 	},
 	queue : [],
 	qlb : 0,

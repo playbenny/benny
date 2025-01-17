@@ -255,8 +255,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				usermouse.last.got_i = usermouse.got_i;
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
-				//post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
-				if(usermouse.got_t>=2 && usermouse.got_t<=4){
+				if(usermouse.got_t==1){
+					if((mouse_click_actions[usermouse.got_i]==send_button_message)||(mouse_click_actions[usermouse.got_i]==send_button_message_dropdown)){
+						post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
+						var ov = parameter_value_buffer.peek(1,mouse_click_values[usermouse.last.got_i][2]);
+						store_param_undo(mouse_click_values[usermouse.last.got_i][2] - mouse_click_parameters[usermouse.last.got_i]*MAX_PARAMETERS,mouse_click_parameters[usermouse.last.got_i],ov);
+					}
+				}else if(usermouse.got_t>=2 && usermouse.got_t<=4){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
 					if(usermouse.got_i>=0){
@@ -264,6 +269,16 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var p = mouse_click_parameters[usermouse.got_i];
 						var v = mouse_click_values[usermouse.got_i];
 						usermouse.drag.starting_value_x = f(p,"get");
+						if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
+							//post("\nstore, p",p,"b",v);
+							store_param_undo(p[0],p[1],usermouse.drag.starting_value_x);
+						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
+							//post("\nstore, p",p,"v",v);
+							store_voice_param_undo(p[0],p[2],usermouse.drag.starting_value_x);
+						}else{
+							post("\nshould store undo?",mouse_click_actions[usermouse.got_i],p,v,usermouse.drag.starting_value_x);
+						}
+						
 						if((usermouse.got_t==4)){ 
 							usermouse.drag.starting_value_y = f(v,"get");
 						}else{
@@ -1058,6 +1073,9 @@ function mouse_released_on_a_thing_no_drag(){
 function ext_jogwheel(value){
 	mousewheel(usermouse.last.x,usermouse.last.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,value);
 }
+function um_scroll_wait(){
+	usermouse.last.scroll = -1;
+}
 
 function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.shift = shift;
@@ -1137,6 +1155,20 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		
 		if((f==sidebar_parameter_knob)||((f==static_mod_adjust)&&(p[3]!="custom_opv"))){ //tries to line up scrollwheel steps with slider values for int/menu types
 			//that last bit - maybe a temp fix. look at this once you've got mixer bus ui working 100%
+			if(usermouse.last.scroll != b){
+				usermouse.last.scroll = b;
+				if(um_task == null){
+					um_task = new Task(um_scroll_wait,this,0);
+				}else{
+					um_task.cancel();
+				}
+				um_task.schedule(1000);
+				if(f==static_mod_adjust){ // ONLY IF SELECTION HAS CHANGED OR THERE@S BEEN A PAUSE
+					store_voice_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_static_mod.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
+				}else{
+					store_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
+				}
+			}
 			var scalar = ((shift)?0.1:1);
 			if((f!=static_mod_adjust)&&(shift)) scalar = (((alt))?0.01:0.1);
 			if(typeof paramslider_details[p[0]] == "undefined"){
