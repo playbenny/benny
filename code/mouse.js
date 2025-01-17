@@ -981,7 +981,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else if((usermouse.x > sidebar.x) && !automap.lock_c && (automap.offset_range_c>0) && (sidebar.mode=="block") && (usermouse.got_t == 2) && config.get("AUTOMAP_MOUSE_FOLLOW") && (mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)){
 			var r = -1;
 			for(var tr=0;tr<automap.sidebar_row_ys.length;tr++){
-				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr;
+				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr-1;
 			}
 			r++;
 			r = Math.min(r,automap.offset_range_c);
