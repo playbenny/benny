@@ -117,7 +117,7 @@ function blocks_paste(outside_connections,target){
 			var tvoice = target.get("actions::voice_parameter::voice");
 			var tparam = target.get("actions::voice_parameter::parameter");
 			var tvalue = target.get("actions::voice_parameter::value");
-			post("\nundoing to:",tvoice,tparam,tvalue);
+			//post("\nundoing to:",tvoice,tparam,tvalue);
 			parameter_static_mod.poke(1, MAX_PARAMETERS*tvoice+tparam,tvalue);
 			redraw_flag.flag |= 4;
 		}
@@ -1922,7 +1922,7 @@ function qwertymidi_octave(parameter, value){
 }
 	
 function store_param_undo(parameter,block,value){
-	post("\nstoring undo, block:",block," p:",parameter, " v:", value);
+	//post("\nstoring undo, block:",block," p:",parameter, " v:", value);
 	var usz=undo_stack.getsize("history")|0;
 	undo_stack.append("history",'{}');
 	undo_stack.setparse("history["+usz+"]", '{ "actions" : { "parameter" : {} } }');
@@ -1932,7 +1932,7 @@ function store_param_undo(parameter,block,value){
 }
 
 function store_voice_param_undo(parameter,voice,value){
-	post("\nstoring undo, voice:",voice," p:",parameter, " v:", value);
+	//post("\nstoring undo, voice:",voice," p:",parameter, " v:", value);
 	var usz=undo_stack.getsize("history")|0;
 	undo_stack.append("history",'{}');
 	undo_stack.setparse("history["+usz+"]", '{ "actions" : { "voice_parameter" : {} } }');
