@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+16/1/25:
+- undo now works for almost everything in the main part of benny
+- fixes to four stage and eight stage envelopes
 9/1/25:
 - **breaking change** quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
 - fix quantislide osc 
