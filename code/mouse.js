@@ -1155,25 +1155,26 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		
 		if((f==sidebar_parameter_knob)||((f==static_mod_adjust)&&(p[3]!="custom_opv"))){ //tries to line up scrollwheel steps with slider values for int/menu types
 			//that last bit - maybe a temp fix. look at this once you've got mixer bus ui working 100%
-			if(usermouse.last.scroll != b){
-				usermouse.last.scroll = b;
-				if(um_task == null){
-					um_task = new Task(um_scroll_wait,this,0);
-				}else{
-					um_task.cancel();
-				}
-				um_task.schedule(1000);
-				if(f==static_mod_adjust){ // ONLY IF SELECTION HAS CHANGED OR THERE@S BEEN A PAUSE
-					store_voice_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_static_mod.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
-				}else{
-					store_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
-				}
-			}
 			var scalar = ((shift)?0.1:1);
 			if((f!=static_mod_adjust)&&(shift)) scalar = (((alt))?0.01:0.1);
 			if(typeof paramslider_details[p[0]] == "undefined"){
 				t="default";
 			}else{
+				//store undo
+				if(usermouse.last.scroll != MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]){
+					usermouse.last.scroll = MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9];
+					if(um_task == null){
+						um_task = new Task(um_scroll_wait,this,0);
+					}else{
+						um_task.cancel();
+					}
+					um_task.schedule(1000);
+					if(f==static_mod_adjust){ // ONLY IF SELECTION HAS CHANGED OR THERE@S BEEN A PAUSE
+						store_voice_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_static_mod.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
+					}else{
+						store_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
+					}
+				}
 				var t=paramslider_details[p[0]][13];
 				var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
 			}

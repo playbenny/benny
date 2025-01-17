@@ -112,6 +112,7 @@ function blocks_paste(outside_connections,target){
 			var tvalue = target.get("actions::parameter::value");
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*tblock+tparam,tvalue);
 			redraw_flag.flag |= 4;
+			if(tblock == automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 		}
 		if(target.contains("actions::voice_parameter")){
 			var tvoice = target.get("actions::voice_parameter::voice");
@@ -120,6 +121,11 @@ function blocks_paste(outside_connections,target){
 			//post("\nundoing to:",tvoice,tparam,tvalue);
 			parameter_static_mod.poke(1, MAX_PARAMETERS*tvoice+tparam,tvalue);
 			redraw_flag.flag |= 4;
+			if(automap.mapped_c>-1){
+				var avl=voicemap.get(automap.mapped_c);
+				if(!Array.isArray(avl)) avl = [avl];
+				if(avl.indexOf(tvoice)>-1) note_poly.message("setvalue", automap.available_c,"refresh");
+			}
 		}
 	}
 	if(target.contains("blocks")){
@@ -1921,6 +1927,27 @@ function qwertymidi_octave(parameter, value){
 	}
 }
 	
+function automap_undo_point(p,v){
+	var s = (p<0);
+	p = Math.abs(p);
+	if(usermouse.last.scroll != p){
+		//post("\nautomap undo point stored for",automap.mapped_c,p,v);
+		usermouse.last.scroll = p;
+		if(um_task == null){
+			um_task = new Task(um_scroll_wait,this,0);
+		}else{
+			um_task.cancel();
+		}
+		um_task.schedule(1000);
+		//store undo
+		if(s){ // ONLY IF SELECTION HAS CHANGED OR THERE@S BEEN A PAUSE
+			store_voice_param_undo(p,automap.mapped_c,v);
+		}else{
+			store_param_undo(p,automap.mapped_c,v);
+		}
+	}
+}
+
 function store_param_undo(parameter,block,value){
 	//post("\nstoring undo, block:",block," p:",parameter, " v:", value);
 	var usz=undo_stack.getsize("history")|0;
@@ -2912,7 +2939,7 @@ function delete_wave(parameter,value){
 function undo_button(){
 	undoing = 1;
 	var usz=undo_stack.getsize("history")|0;
-	post("\nundoing, stack size",usz);
+	//post("\nundoing, stack size",usz);
 	usz--;
 	if(usz<0) return -1;
 	undo = undo_stack.get("history["+usz+"]");
