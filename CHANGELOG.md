@@ -1,6 +1,8 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+18/1/25:
+- new sidebar view during drag-to-connect showing you the inputs and outputs available on the source/dest blocks
 16/1/25:
 - undo now works for almost everything in the main part of benny
 - fixes to four stage and eight stage envelopes
