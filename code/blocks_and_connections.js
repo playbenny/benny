@@ -1498,7 +1498,7 @@ function remove_potential_wire(gl_objects_only){
 			}
 		}
 		if(gl_objects_only!=1){
-			post("\nremoving",wires_potential_connection);
+			//post("\nremoving",wires_potential_connection);
 			var empt=new Dict;  // wipe this one from the dictionary
 			connections.set("connections["+wires_potential_connection+"]", empt);
 			wire_ends[wires_potential_connection][3] = -99.94;
@@ -1506,6 +1506,7 @@ function remove_potential_wire(gl_objects_only){
 			wires_potential_connection = -1;
 		}
 	}										
+	if(sidebar.mode == "potential_wire") set_sidebar_mode("none");
 }
 
 function make_connection(cno,existing){

@@ -2419,7 +2419,125 @@ function draw_sidebar(){
 		lcd_main.message("textface", "normal");
 		post("\nsidebar notification is:\n",sidebar.notification);
 		long_sidebar_text(sidebar.notification);
-		
+	}else if(sidebar.mode == "potential_wire"){
+		if(wires_potential_connection>-1){
+			if(connections.get("connections["+wires_potential_connection+"]::from::output::type")=="potential"){
+				i = wires_potential_connection;
+				var f_number = connections.get("connections["+i+"]::from::number");
+				var f_label = blocks.get("blocks["+f_number+"]::label");
+				var f_name = blocks.get("blocks["+f_number+"]::name");
+				var t_number = connections.get("connections["+i+"]::to::number");
+				var t_label = blocks.get("blocks["+t_number+"]::label");
+				var t_name = blocks.get("blocks["+t_number+"]::name");
+				var to_has_matrix = 0;
+				if(blocktypes.contains(t_name+"::connections::in::matrix_channels")) to_has_matrix = 1;
+				var t_i_name,f_o_name;
+				var section_colour,section_colour_dark,section_colour_darkest;
+				var type_colour,type_colour_dark,type_colour_darkest;
+				
+				var is_core_control = 0 ; 
+				var f_n_a = f_name;
+				var param_count = null;
+				var button_count = null;
+				f_n_a = f_n_a.split(".");
+				if((f_n_a[0]=="core")&&(f_n_a[1]=="input")){
+					is_core_control = 1; 
+					if(f_n_a[2]=="control"){
+						//it's either core.input.control.auto or .basic so
+						// check if we need to trim the list of midi outs / param outs / available colours
+						var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
+						
+						param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+						button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+						post("core input", param_count,button_count);
+					}
+				}
+
+				type_colour=[192,192,192];
+				type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
+				type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
+
+				section_colour = blocks.get("blocks["+f_number+"]::space::colour");
+				section_colour = [section_colour[0]*1.2,section_colour[1]*1.2,section_colour[2]*1.2];
+				section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
+				section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
+	
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,type_colour_dark );
+				lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
+				setfontsize(fontsmall*2);
+				lcd_main.message("frgb",type_colour);
+				lcd_main.message("write", "new connection");
+
+				y_offset += 1.1* fontheight;
+				
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
+			
+				setfontsize(fontsmall);
+	
+				lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(1+is_core_control)*15*fo1, fo1*13+y_offset,section_colour_darkest );
+				lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+				lcd_main.message("frgb" , section_colour_dark);
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
+				lcd_main.message("write", "from");
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
+				lcd_main.message("write", "output");
+				lcd_main.message("frgb", section_colour );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
+				lcd_main.message("write", f_label);
+			
+				y_offset+=1.4*fontheight;
+				if(EXTERNAL_MATRIX_PRESENT && to_has_matrix) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
+				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset, param_count);
+				if(is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, button_count);				
+				section_colour = blocks.get("blocks["+t_number+"]::space::colour");
+				section_colour = [section_colour[0]*1.2,section_colour[1]*1.2,section_colour[2]*1.2];
+				section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
+				section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
+	
+				y_offset+=1.4*fontheight;
+
+				//TO BLOCK, INPUT, VOICE labels/menus
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
+				
+				lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-15*fo1, fo1*13+y_offset,section_colour_darkest );
+				lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+				
+				lcd_main.message("frgb", section_colour );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
+				lcd_main.message("write", t_label);
+				
+				lcd_main.message("frgb" , section_colour_dark);
+				
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
+				lcd_main.message("write", "to");
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
+				lcd_main.message("write", "input");
+					
+				//draw a list of buttons to select between the various outputs on offer here
+				if(t_i_no!=null){
+					lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
+					lcd_main.message("write", "hide");
+				}
+				y_offset+=1.4*fontheight;
+				if(f_type == "matrix"){
+					y_offset = conn_draw_to_inputs_list(i, t_name, "matrix", y_offset);
+				}else{
+					y_offset = conn_draw_to_inputs_list(i, t_name, "hardware", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset);
+					if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
+				}
+				
+			}else{
+				set_sidebar_mode("wire");
+			}
+		}else{
+			set_sidebar_mode("none");
+		}
 	}else if(sidebar.mode == "file_menu"){
 		// FILE MENU ##############################################################################################################
 		//also: calculate resource usage so you can decide if you've got space to merge the currently selected song

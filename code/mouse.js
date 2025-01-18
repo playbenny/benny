@@ -919,6 +919,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
+										//if((sidebar.mode=="none")||((sidebar.mode=="block")&&(selected.block[usermouse.ids[1]]))){
+											set_sidebar_mode("potential_wire");
+										//}
 										//post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
 										//draw_wire(wires_potential_connection);
 										//post("\ndrew");
