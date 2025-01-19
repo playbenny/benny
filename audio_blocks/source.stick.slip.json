@@ -22,11 +22,11 @@
 				"colour" : -3
 			},
 			{
-				"contains" : [2,3,4,5],
+				"contains" : [2,3,4,5,6],
                 "colour" : -6
 			},
 			{
-				"contains" : [6],
+				"contains" : [7],
                 "colour" : -9,
 				"header" : "audio rate modulation target",
 				"nolabel" : 1,
@@ -40,7 +40,7 @@
 			{
 				"name" : "position",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0 
 			},
@@ -61,21 +61,21 @@
 			{
 				"name" : "tension",
 				"type" : "float",
-				"values" : ["uni", 0.1, 100, "exp100"],
+				"values" : ["uni", 0, 100, "exp100"],
                 "default" : 0.3,
 				"wrap" : 0
 			},
 			{
 				"name" : "static_friction",
 				"type" : "float",
-				"values" : ["uni", 0.1, 100, "exp100"],
+				"values" : ["uni", 0, 100, "exp100"],
                 "default" : 0.3,
 				"wrap" : 0
 			},
 			{
 				"name" : "moving_friction",
 				"type" : "float",
-				"values" : ["uni", 0.1, 100, "exp100"],
+				"values" : ["uni", 0, 100, "exp100"],
                 "default" : 0.3,
 				"wrap" : 0
 			},
@@ -90,7 +90,6 @@
 				"name" : "audio mod destination",
 				"type" : "menu_d",
 				"error_scale" : 0,
-				"force_label" : 1,
 				"values" : ["mass" , "tension", "static friction" , "moving friction"],
 				"wrap" : 1,
 				"default" : 0.3
