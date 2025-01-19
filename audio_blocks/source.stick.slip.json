@@ -3,7 +3,7 @@
 		"patcher" : "source.stick.slip",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Simple model of an object connected to the user input 'position' by a spring, sticking and slipping chaotically. Inspired by Knut Kaulke's work (see https://medias.ircam.fr/x7aa847). The pitch midi input alters the model parameters in order to make the resonant frequency of the mass spring system the note you requested.",
+		"help_text" : "Simple model of an object connected to the user input 'position' by a spring, sticking and slipping chaotically. The texture parameter adds variation to the friction forces as a function of position. This block pairs well with resonators (eg voice.modal, elements). Inspired by Knut Kaulke's work (see https://medias.ircam.fr/x7aa847). The pitch midi input alters the model parameters in order to make the resonant frequency of the mass spring system the note you requested.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -42,7 +42,7 @@
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0 
+				"default" : 0.5 
 			},
 			{
 				"name" : "input_smoothing",
