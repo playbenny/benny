@@ -61,13 +61,13 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer mtof_lookup(\"mtof_lookup\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\nBuffer detuning(\"detuning\");\r\n\r\nHistory pos, smoo, mass, oomass, tens, stat, mov, text, mod;\r\nHistory x, dx;\r\nHistory op, upda(0);\r\n\r\nParam voice_is(0, min=0,default=0,max=4096);\r\nParam voice_offset(0);\r\nParam p(0,min=0,default=60,max=128);\r\n//Param v(0,min=0,default=0,max=1000);\r\n\r\nif((p!=op)){\r\n\ttp = p;\r\n\top = p;\r\n\tov = v;\r\n}\r\nupda+=1;\r\nif(upda>vectorsize){\r\n\tupda = -voice_is;\r\n\tpos = -1 + 2*peek(prm,voice_offset, 0,channels=1);\r\n\tsmoo = peek(prm,1+ voice_offset,0, channels=1);\r\n\tmass = peek(prm,2+ voice_offset, 0,channels=1);\r\n\ttens = peek(prm,3+ voice_offset,0, channels=1);\r\n\tstat = peek(prm,4+ voice_offset,0, channels=1);\r\n\tmov  = peek(prm,5+ voice_offset,0, channels=1);\r\n\ttext = peek(prm,6+ voice_offset,0, channels=1);\r\n\tmod  = floor(4*peek(prm,7+ voice_offset,0, channels=1));\r\n\tmass = (pow(100, mass) - 1)*0.01010101010101010101010101010101*99.99+0.01;\r\n\ttens = (pow(100, tens) - 1)*0.01010101010101010101010101010101;\r\n\tstat = (pow(100, stat) - 1)*0.001010101010101010101010101010101;\r\n\tmov  = (pow(100, mov ) - 1)*0.001010101010101010101010101010101;\r\n\ttext = (pow(100, text) - 1)*1.010101010101010101010101010101;\r\n\tsmoo = (pow(1000, smoo) - 1)*0.001001001001001001001001001001*mstosamps(1000);\r\n\toomass = 1/ mass;\r\n\tmov *= oomass;\r\n}\r\nstop=0;\r\nd = slide((pos+in1),smoo,smoo) - x;\r\nf = d * tens;\r\na = 0;\r\nt = 1 + text * peek(detuning,(1+x)*8192,0);\r\nif(dx==0){\r\n\tif(abs(f)>(stat*mass*t)){\r\n\t\ta = f * oomass;\r\n\t}\r\n}else{\r\n\ta = f * oomass;\r\n}\r\nodx = dx;\r\ndx += a;\r\nif(dx>0){\r\n\tdx-=mov*t;\r\n\tif(dx<0){\r\n\t\tdx=0;\r\n\t\tstop=1;\r\n\t}\r\n}else{\r\n\tdx+=mov*t;\r\n\tif(dx>0){\r\n\t\tdx=0;\r\n\t\tstop=1;\r\n\t}\r\n}\r\ndx_xing = (odx!=0) && ((odx>0)!=(dx>0));\r\nx += dx;\r\n\r\nif(dx_xing){\r\n\tdx = 0; //force it to apply static friction\r\n\t//trigger midi out\r\n}\r\n//if(x>2){\r\n\t//x=clip(x,-1,1);\r\n//\tdx=0;\r\n//}\t\r\n\r\n\r\n\r\nout1 = x;\r\nout2 = dx;",
+					"code" : "Buffer mtof_lookup(\"mtof_lookup\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\nBuffer detuning(\"detuning\");\r\n\r\nHistory pos, smoo, mass, oomass, tens, stat, mov, text, mod, air, dest_m,dest_t,dest_s,dest_v;\r\nHistory x, dx;\r\nHistory op, upda(0);\r\n\r\nParam voice_is(0, min=0,default=0,max=4096);\r\nParam voice_offset(0);\r\n\r\nupda+=1;\r\nif(upda>vectorsize){\r\n\tupda = -voice_is;\r\n\tpos = -1 + 2*peek(prm,voice_offset, 0,channels=1);\r\n\tsmoo = peek(prm,1+ voice_offset,0, channels=1);\r\n\tmass = peek(prm,2+ voice_offset, 0,channels=1);\r\n\ttens = peek(prm,3+ voice_offset,0, channels=1);\r\n\tstat = peek(prm,4+ voice_offset,0, channels=1);\r\n\tmov  = peek(prm,5+ voice_offset,0, channels=1);\r\n\ttext = peek(prm,6+ voice_offset,0, channels=1);\r\n\tair = peek(prm,7+ voice_offset,0, channels=1);\r\n\tmod  = floor(4*peek(prm,7+ voice_offset,0, channels=1));\r\n\tmass = (pow(100, mass) - 1)*0.01010101010101010101010101010101*99.99+0.05;\r\n\ttens = (pow(100, tens) - 1)*0.01010101010101010101010101010101;\r\n\tstat = (pow(1000, stat) - 1)*0.0001001001001001001001001001001;\r\n\tmov  = (pow(1000, mov ) - 1)*0.0001001001001001001001001001001;\r\n\tair  = (pow(100, air ) - 1)*0.001010101010101010101010101010101;\r\n\ttext = (pow(100, text) - 1)*10.10101010101010101010101010101;\r\n\tsmoo = (pow(1000, smoo) - 1)*0.001001001001001001001001001001*mstosamps(1000);\r\n\toomass = 1/ mass;\r\n\tdest = peek(prm,8+ voice_offset,0, channels=1);\r\n\tdest_m = dest<0.25;\r\n\tdest_t = (dest<0.5) - dest_m;\r\n\tdest_s = (dest<0.75) - dest_m - dest_t;\r\n\tdest_v = 1 - dest_s - dest_m - dest_t;\r\n\tmov *= oomass;\r\n}\r\noomass *= (1+dest_m * in2);\r\ntens *= (1+dest_t * in2);\r\nstat *= (1+dest_s * in2);\r\nmov *= (1+dest_v * in2);\r\nstop=0;\r\nd = slide((pos+in1),smoo,smoo) - x;\r\nf = d * tens;\r\na = 0;\r\nt = 1 + text * peek(detuning,(1+x)*8192,0);\r\nif(dx==0){\r\n\tif(abs(f)>(stat*mass*t)){\r\n\t\ta = f * oomass;\r\n\t}\r\n}else{\r\n\ta = f * oomass;\r\n}\r\nodx = dx;\r\ndx += a;\r\nif(dx>0){\r\n\tdx-=mov*t+air * dx;\r\n\tif(dx<0){\r\n\t\tdx=0;\r\n\t\tstop=1;\r\n\t}\r\n}else{\r\n\tdx+=mov*t-air * dx;\r\n\tif(dx>0){\r\n\t\tdx=0;\r\n\t\tstop=1;\r\n\t}\r\n}\r\ndx_xing = (odx!=0) && ((odx>0)!=(dx>0));\r\nx += dx;\r\nif(dx_xing){\r\n\tdx = 0; //force it to apply static friction\r\n\t//trigger midi out\r\n}\r\n//if(x>2){\r\n\t//x=clip(x,-1,1);\r\n//\tdx=0;\r\n//}\t\r\n\r\n\r\n\r\nout1 = x;\r\nout2 = 20*dx;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-3",
 					"maxclass" : "codebox",
-					"numinlets" : 1,
+					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 50.0, 44.0, 923.0, 590.0 ]
@@ -95,6 +95,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
@@ -108,7 +115,8 @@
 
 			}
  ],
-		"originid" : "pat-3496"
+		"originid" : "pat-3526",
+		"autosave" : 0
 	}
 
 }
