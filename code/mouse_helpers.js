@@ -3641,8 +3641,14 @@ function tab_between_display_modes(){
 }
 
 function automap_k_click(p,v){
-	if(usermouse.ctrl){
+	if(usermouse.alt){
 		select_block_by_name("core.input.keyboard");
+	}else if(usermouse.ctrl){
+		if(automap.available_k!=-1){
+			disable_automap_k();
+		}else{
+			enable_automap_k();
+		}
 	}else{
 		//lock
 		if(v==-1){
@@ -3779,5 +3785,18 @@ function start_keyboard_looper(){
 }
 
 function disable_automap_k(p,v){
-	post("\nthis should turn off automap k but it doesn't yet");
+	if(automap.available_k_block>-1){
+		post("\nturning off automap, block is",automap.available_k_block);
+		parameter_value_buffer.poke(1, MAX_PARAMETERS*automap.available_k_block+2,0.1);
+		automap.lock_k = 0;
+		redraw_flag.deferred = 132;	
+	}
+}
+
+function enable_automap_k(p,v){
+	if(automap.available_k_block>-1){
+		post("\nturning on automap");
+		parameter_value_buffer.poke(1, MAX_PARAMETERS*automap.available_k_block+2,0.8);
+		redraw_flag.deferred = 132;	
+	}
 }
