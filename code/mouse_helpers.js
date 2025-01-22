@@ -741,6 +741,11 @@ function sidebar_select_connection(num,val){
 	}
 }
 function show_new_block_menu(){
+	if(sidebar.mode=="wire"){
+		store_back(["wire",selected.wire.indexOf(1),sidebar.scroll.position]);
+	}else{
+		store_back([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);
+	}
 	clear_blocks_selection();
 	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
 	usermouse.clicked3d=-1;
@@ -1075,7 +1080,7 @@ function send_button_message(parameter, value){
 function fwd_button(){
 	if(sidebar.fwd.length>0){
 		var fwd = sidebar.fwd.pop();
-		store_back([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);;
+		store_back([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);
 		//contains sidebar mode, then if it was a block one it contains the selected block and voice and scroll position
 		//or if it was a connection it contains the selected connection and scroll position
 		//or? 
@@ -1086,7 +1091,7 @@ function fwd_button(){
 				if(((fwd[1]==sidebar.selected&(fwd[2]==sidebar.selected_voice)))&&(sidebar.fwd.length>0)) fwd = sidebar.fwd.pop();
 			}
 		}
-		post("\nsidebar fwd",fwd, typeof fwd);
+		//post("\nsidebar fwd",fwd, typeof fwd);
 		if(fwd[0]=="wire"){
 			clear_blocks_selection();
 			sidebar_select_connection(fwd[1],null);
@@ -1103,7 +1108,7 @@ function fwd_button(){
 function back_button(){
 	if(sidebar.back.length>0){
 		var back = sidebar.back.pop();
-		store_fwd([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);;
+		store_fwd([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);
 		//contains sidebar mode, then if it was a block one it contains the selected block and voice and scroll position
 		//or if it was a connection it contains the selected connection and scroll position
 		//or? 
@@ -1114,7 +1119,7 @@ function back_button(){
 				if(((back[1]==sidebar.selected&(back[2]==sidebar.selected_voice)))&&(sidebar.back.length>0)) back = sidebar.back.pop();
 			}
 		}
-		post("\nsidebar back",back, typeof back);
+		//post("\nsidebar back",back, typeof back);
 		if(back[0]=="wire"){
 			clear_blocks_selection();
 			sidebar_select_connection(back[1],null);
@@ -3123,6 +3128,9 @@ function key_escape(){
 				post("\nsorry no you have to make a selection");
 				draw_menu_hint();
 			}
+		}else if(displaymode=="block_menu"){
+			back_button();
+			set_display_mode("blocks");
 		}else{
 			set_display_mode("blocks");
 			if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
