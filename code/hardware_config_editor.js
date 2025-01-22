@@ -2057,40 +2057,55 @@ function keybcallback(data){
 		post("\nrename?");
 		if(newname!=values[id[1]]){
 			post("\nrenaming ",values[id[1]]," to ",newname);
-			configfile.setparse("hardware::"+newname,"{}");
-			var cd = configfile.get("hardware::"+values[id[1]]);
-			if(cd!==null){
-				var ck = cd.getkeys();
-				for(var tc=0;tc<ck.length;tc++){
-					if(ck[tc]!=="connections"){
-						configfile.replace("hardware::"+newname+"::"+ck[tc].toString(),cd.get(ck[tc]));
-						post("\nreplace ","hardware::"+newname+"::"+ck[tc].toString(),cd.get(ck[tc]));
-					}
+			var ohw = configfile.get("hardware");
+			var ohwk = ohw.getkeys();
+			configfile.setparse("hardware","{}");
+			for(var o=0;o<ohwk.length;o++){
+				var targ;
+				if(ohwk[o]!=values[id[1]]){
+					targ = ohwk[o];
+					// copy
+				}else{
+					// replace
+					targ = newname;
 				}
-				configfile.setparse("hardware::"+newname+"::connections","{}");
-				if(configfile.contains("hardware::"+values[id[1]]+"::connections::in")){
-					configfile.setparse("hardware::"+newname+"::connections::in","{}");
-					var cd = configfile.get("hardware::"+values[id[1]]+"::connections::in");
-					if(cd!==null){
-						var ck = cd.getkeys();
-						for(var tc=0;tc<ck.length;tc++){
-							configfile.replace("hardware::"+newname+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
-							post("\nreplace ","hardware::"+newname+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+				configfile.setparse("hardware::"+targ,"{}");
+				var cd = ohw.get(ohwk[o]);//configfile.get("hardware::"+values[id[1]]);
+				if(cd!==null){
+					var ck = cd.getkeys();
+					if(ck==null)ck=[];
+					for(var tc=0;tc<ck.length;tc++){
+						if(ck[tc]!=="connections"){
+							configfile.replace("hardware::"+targ+"::"+ck[tc].toString(),cd.get(ck[tc]));
+							post("\nreplace ","hardware::"+targ+"::"+ck[tc].toString(),cd.get(ck[tc]));
+						}
+					}
+					configfile.setparse("hardware::"+targ+"::connections","{}");
+					if(ohw.contains(ohwk[o]+"::connections::in")){
+						configfile.setparse("hardware::"+targ+"::connections::in","{}");
+						var cd = ohw.get(ohwk[o]+"::connections::in");
+						if(cd!==null){
+							var ck = cd.getkeys();
+							if(ck==null)ck=[];
+							for(var tc=0;tc<ck.length;tc++){
+								configfile.replace("hardware::"+targ+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+								post("\nreplace ","hardware::"+targ+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+							}
+						}
+					}
+					if(ohw.contains(ohwk[o]+"::connections::out")){
+						configfile.setparse("hardware::"+targ+"::connections::out","{}");
+						var cd = ohw.get(ohwk[o]+"::connections::out");
+						if(cd!==null){
+							var ck = cd.getkeys();
+							if(ck==null)ck=[];
+							for(var tc=0;tc<ck.length;tc++){
+								configfile.replace("hardware::"+targ+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
+								post("\nreplace ","hardware::"+targ+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
+							}
 						}
 					}
 				}
-				if(configfile.contains("hardware::"+values[id[1]]+"::connections::out")){
-					configfile.setparse("hardware::"+newname+"::connections::out","{}");
-					var cd = configfile.get("hardware::"+values[id[1]]+"::connections::out");
-					if(cd!==null){
-						var ck = cd.getkeys();
-						for(var tc=0;tc<ck.length;tc++){
-							configfile.replace("hardware::"+newname+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
-							post("\nreplace ","hardware::"+newname+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
-						}
-					}
-				}
-				configfile.remove("hardware::"+values[id[1]]);
 			}
 		}
 	}else if(id[0]=="add"){
