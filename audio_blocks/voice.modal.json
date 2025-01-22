@@ -3,7 +3,7 @@
 		"patcher" : "voice.modal",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Simple voice made around a bank of resonators and a selection of model algorithms for setting the frequencies, amplitudes and bandwidths of those resonators. Models come from an article by Nathan Ho.££-Elements string££-Piano stiff string££-Free Beam (eg xylophone)££-Cantilever Beam (eg mbira)££-Rectangular Membrane££-Rectangular clamped plate££-Tubular bell££-Free Plate",
+		"help_text" : "Simple voice made around a bank of resonators and a selection of model algorithms for setting the frequencies, amplitudes and bandwidths of those resonators. Works as a voice you can play with midi input but also as an effect, and can be used to model body resonances for physical modelling patches.££Models come from an article by Nathan Ho apart from the two measured violin body resonances which come from a paper by Holm & Välimäki (https://www.eurasip.org/Proceedings/Eusipco/Eusipco2000/SESSIONS/FRIPM/SS1/CR1706.PDF) and some measurements taken from a bell in a post online (https://sccode.org/1-5ay/fork).££-Elements string££-Piano stiff string££-Free Beam (eg xylophone)££-Cantilever Beam (eg mbira)££-Rectangular Membrane££-Rectangular clamped plate££-Tubular bell££-Free Plate££-Good vilin££-Bad violin",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -41,7 +41,7 @@
 			{
 				"name" : "frequency_distribution_model",
 				"type" : "menu_l",
-				"values" : ["elements", "stiff_string", "free_beam", "cantilevered_beam", "rectangular_membrane", "rectangular_clamped plate", "tubular_bell", "clamped_tube", "free_plate"],
+				"values" : ["elements", "stiff_string", "free_beam", "cantilevered_beam", "rectangular_membrane", "rectangular_clamped plate", "tubular_bell", "clamped_tube", "free_plate", "good_violin", "bad_violin", "measured bell"],
 				"wrap" : 1,
 				"columns" : 3,
 				"default" : 0
@@ -103,10 +103,10 @@
 				"default" : 0.05
 			},
 			{
-				"name" : "feedback",
+				"name" : "selfmod/feedback",
 				"type" : "float",
 				"error_scale" : 0,
-				"values" : ["uni", 0, 1, "exp100"],
+				"values" : ["bi", -1, 1, "exp100"],
 				"wrap" : 0,
 				"default" : 0
 			},

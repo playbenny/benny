@@ -256,7 +256,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
 				//post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
-				if(usermouse.got_t>=2 && usermouse.got_t<=4){
+				if(usermouse.got_t==1){
+					if((mouse_click_actions[usermouse.got_i]==send_button_message)||(mouse_click_actions[usermouse.got_i]==send_button_message_dropdown)){
+						var ov = parameter_value_buffer.peek(1,mouse_click_values[usermouse.last.got_i][2]);
+						store_param_undo(mouse_click_values[usermouse.last.got_i][2] - mouse_click_parameters[usermouse.last.got_i]*MAX_PARAMETERS,mouse_click_parameters[usermouse.last.got_i],ov);
+					}
+				}else if(usermouse.got_t>=2 && usermouse.got_t<=4){
 					usermouse.drag.starting_x = usermouse.x;
 					usermouse.drag.starting_y = usermouse.y;
 					if(usermouse.got_i>=0){
@@ -264,6 +269,16 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						var p = mouse_click_parameters[usermouse.got_i];
 						var v = mouse_click_values[usermouse.got_i];
 						usermouse.drag.starting_value_x = f(p,"get");
+						if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
+							//post("\nstore, p",p,"b",v);
+							store_param_undo(p[0],p[1],usermouse.drag.starting_value_x);
+						}else if(mouse_click_actions[usermouse.got_i]==static_mod_adjust){
+							//post("\nstore, p",p,"v",v);
+							store_voice_param_undo(p[0],p[2],usermouse.drag.starting_value_x);
+						}else{
+							post("\nshould store undo?",mouse_click_actions[usermouse.got_i],p,v,usermouse.drag.starting_value_x);
+						}
+						
 						if((usermouse.got_t==4)){ 
 							usermouse.drag.starting_value_y = f(v,"get");
 						}else{
@@ -904,6 +919,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
+										//if((sidebar.mode=="none")||((sidebar.mode=="block")&&(selected.block[usermouse.ids[1]]))){
+											set_sidebar_mode("potential_wire");
+										//}
 										//post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
 										//draw_wire(wires_potential_connection);
 										//post("\ndrew");
@@ -966,7 +984,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else if((usermouse.x > sidebar.x) && !automap.lock_c && (automap.offset_range_c>0) && (sidebar.mode=="block") && (usermouse.got_t == 2) && config.get("AUTOMAP_MOUSE_FOLLOW") && (mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)){
 			var r = -1;
 			for(var tr=0;tr<automap.sidebar_row_ys.length;tr++){
-				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr;
+				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr-1;
 			}
 			r++;
 			r = Math.min(r,automap.offset_range_c);
@@ -1058,6 +1076,9 @@ function mouse_released_on_a_thing_no_drag(){
 function ext_jogwheel(value){
 	mousewheel(usermouse.last.x,usermouse.last.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,value);
 }
+function um_scroll_wait(){
+	usermouse.last.scroll = -1;
+}
 
 function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.shift = shift;
@@ -1099,20 +1120,22 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 			}else if(usermouse.ctrl){
 				if(bulgingwire>-1){ //ctrl-scroll a wire to adjust level
-					if(sidebar.mode=="none"){
-						selected.wire[bulgingwire]=1;
-						block_and_wire_colours();
-						redraw_flag.flag |= 2;
-					}else if(sidebar.mode =="wire"){
+					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
+					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
+					if(sidebar.mode =="wire"){
 						if(selected.wire[bulgingwire]!=1){
 							for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
 							selected.wire[bulgingwire]=1;
 							block_and_wire_colours();
 							redraw_flag.flag |= 2;
 						}
+					}else{
+						for(var si=0;si<selected.block.length;si++) selected.block[si]=0;
+						for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
+						selected.wire[bulgingwire]=1;
+						block_and_wire_colours();
+						redraw_flag.flag |= 2;
 					}
-					var scale = connections.get("connections["+bulgingwire+"]::conversion::scale");
-					connection_edit("connections["+bulgingwire+"]::conversion::scale", scale+scroll*0.1);
 				} //todo? ctrl-scroll a block
 			}else if((usermouse.shift)&&(usermouse.alt)){
 				var stw = screentoworld(usermouse.x,usermouse.y);
@@ -1142,6 +1165,21 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			if(typeof paramslider_details[p[0]] == "undefined"){
 				t="default";
 			}else{
+				//store undo
+				if(usermouse.last.scroll != MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]){
+					usermouse.last.scroll = MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9];
+					if(um_task == null){
+						um_task = new Task(um_scroll_wait,this,0);
+					}else{
+						um_task.cancel();
+					}
+					um_task.schedule(1000);
+					if(f==static_mod_adjust){ // ONLY IF SELECTION HAS CHANGED OR THERE@S BEEN A PAUSE
+						store_voice_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_static_mod.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
+					}else{
+						store_param_undo(paramslider_details[p[0]][9],paramslider_details[p[0]][8],parameter_value_buffer.peek(1,MAX_PARAMETERS*paramslider_details[p[0]][8]+paramslider_details[p[0]][9]));
+					}
+				}
 				var t=paramslider_details[p[0]][13];
 				var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
 			}

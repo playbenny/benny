@@ -85,6 +85,7 @@
         "355" : ["ctrl-C", "copy_selection"],
         "376" : ["ctrl-X", "cut_selection"],
         "374" : ["ctrl-V", "blocks_paste", 0],
+        "377" : ["ctrl-Y", "redo_button"],
         "378" : ["ctrl-Z", "undo_button"],
         "628" : ["shift-T", "select_tree_key"],
         "2420" : ["ctrl-alt-T", "reset_set_timer"],

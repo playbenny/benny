@@ -374,6 +374,8 @@ var mouse_click_actions = [];
 var mouse_click_parameters = [];
 var mouse_click_values = [];
 
+var um_task;
+
 var usermouse = {
 	last : {
 		left_button : 0,
@@ -382,7 +384,8 @@ var usermouse = {
 		got_i : 0,
 		got_t : 0,
 		x : 0,
-		y : 0
+		y : 0,
+		scroll : -1 //holds index of last scrolled parameter, just used so as not to store too many undos
 	},
 	queue : [],
 	qlb : 0,
@@ -525,6 +528,8 @@ undo.name = "undo";
 
 var undo_stack = new Dict;
 undo_stack.name = "undo_stack";
+var redo_stack = new Dict;
+redo_stack.name = "redo_stack";
 
 var undoing = 0; //flag 1 while you do undo actions to avoid writing those actions 
 				// to the undo stack

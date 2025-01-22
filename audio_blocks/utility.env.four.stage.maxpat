@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 2,
+			"revision" : 3,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1061.0, 595.0 ],
+		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -237,18 +237,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-29",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 371.0, 454.0, 45.0, 22.0 ],
-					"text" : "mute 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-25",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -454,7 +442,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 2,
+							"revision" : 3,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -633,7 +621,7 @@
 
 							}
  ],
-						"originid" : "pat-3760"
+						"originid" : "pat-3500"
 					}
 ,
 					"patching_rect" : [ 306.0, 169.0, 93.0, 22.0 ],
@@ -686,10 +674,10 @@
 					"id" : "obj-34",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 3,
-					"outlettype" : [ "int", "bang", "int" ],
-					"patching_rect" : [ 453.0, 169.0, 42.0, 22.0 ],
-					"text" : "t 1 b 0"
+					"numoutlets" : 4,
+					"outlettype" : [ "int", "bang", "int", "int" ],
+					"patching_rect" : [ 453.0, 169.0, 56.0, 22.0 ],
+					"text" : "t 1 b 0 -1"
 				}
 
 			}
@@ -957,7 +945,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-19", 0 ],
-					"order" : 2,
+					"order" : 1,
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -966,14 +954,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-20", 0 ],
 					"order" : 0,
-					"source" : [ "obj-18", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-29", 0 ],
-					"order" : 1,
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -1096,6 +1076,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-37", 0 ],
 					"source" : [ "obj-33", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-28", 0 ],
+					"source" : [ "obj-34", 3 ]
 				}
 
 			}
@@ -1330,7 +1317,8 @@
 
 			}
  ],
-		"originid" : "pat-3756"
+		"originid" : "pat-3496",
+		"oscreceiveudpport" : 0
 	}
 
 }

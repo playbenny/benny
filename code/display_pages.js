@@ -1346,7 +1346,6 @@ function draw_wire(connection_number){
 				}else{
 					fv=1;
 					from_list = [tl];
-					//from_pos[0] += 0.5*(tl-1)/from_subvoices;
 				}
 			}
 
@@ -1396,12 +1395,15 @@ function draw_wire(connection_number){
 			var blob_position = [];
 			var meanvector = [0,0,0];
 			if(cfrom == cto){
-				from_anglevector[0] += from_anglevector[1];
-				//from_anglevector[1] *= 2;
 				from_anglevector[2] -= 1;
-				to_anglevector[0] -= to_anglevector[1];
-				//to_anglevector[1] *= 2;
+				from_anglevector[1] *= 1.3;
+				to_anglevector[1] *= 1.3;
 				to_anglevector[2] -= 1;
+				if(selected.block[cfrom]||selected.wire[connection_number]){
+					from_anglevector[1] *= 1.5;
+					to_anglevector[1] *= 1.5;
+					meanvector[2] = 1;
+				}
 			}
 			var fx = from_pos[0];
 			var tx = to_pos[0];
@@ -1453,7 +1455,7 @@ function draw_wire(connection_number){
 			var s2 = 0.5 - 0.4*short;
 			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))); //was -0.25 -0.3
+			blob_position[2] =  Math.min(Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))),-1.5*(cfrom==cto)); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
@@ -1464,13 +1466,13 @@ function draw_wire(connection_number){
 			}else{
 				yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
 			}
-			//var bp2 = -Math.min(-0.5,blob_position[2] * 0.2);
-			from_anglevector = [from_anglevector[0]/*(0.5+bp2)*/,from_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
-			to_anglevector = [to_anglevector[0]/*(0.5+bp2)*/,to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
+			from_anglevector = [from_anglevector[0],from_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
+			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
-			meanvector[0] = /*(1-blob_position[2]) **/ meanvector[0] * -0.33/mvl;
-			meanvector[1] = /*(1-blob_position[2]) **/ meanvector[1] * -0.33/mvl;				
+			if(cfrom==cto) mvl *= 0.25;
+			meanvector[0] = meanvector[0] * -0.33/mvl;
+			meanvector[1] = meanvector[1] * -0.33/mvl;				
 			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var mtot=0;
@@ -1485,9 +1487,6 @@ function draw_wire(connection_number){
 					i = to_list[t];
 					mtot+=i;
 				}
-				
-				//var minz = 0.5*mtot/(from_list.length+to_list.length);
-				//blob_position[0] += minz;
 
 				if((from_multi>0)&&(to_multi>0)){ 
 					for(i=0;i<from_list.length;i++){
@@ -1566,6 +1565,7 @@ function draw_wire(connection_number){
 	
 					for(i=0;i<to_list.length;i++){
 						to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
+						meanvector[2]=-meanvector[2];
 						for(t=0;t<3;t++){
 							bez_prep[0][t] = blob_position[t];
 							bez_prep[1][t] = blob_position[t]+meanvector[t];
@@ -1608,6 +1608,7 @@ function draw_wire(connection_number){
 						bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 					}
 					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
+					meanvector[2]=-meanvector[2];
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = blob_position[t];
 						bez_prep[1][t] = blob_position[t]+meanvector[t];
@@ -2418,7 +2419,125 @@ function draw_sidebar(){
 		lcd_main.message("textface", "normal");
 		post("\nsidebar notification is:\n",sidebar.notification);
 		long_sidebar_text(sidebar.notification);
-		
+	}else if(sidebar.mode == "potential_wire"){
+		if(wires_potential_connection>-1){
+			if(connections.get("connections["+wires_potential_connection+"]::from::output::type")=="potential"){
+				i = wires_potential_connection;
+				var f_number = connections.get("connections["+i+"]::from::number");
+				var f_label = blocks.get("blocks["+f_number+"]::label");
+				var f_name = blocks.get("blocks["+f_number+"]::name");
+				var t_number = connections.get("connections["+i+"]::to::number");
+				var t_label = blocks.get("blocks["+t_number+"]::label");
+				var t_name = blocks.get("blocks["+t_number+"]::name");
+				var to_has_matrix = 0;
+				if(blocktypes.contains(t_name+"::connections::in::matrix_channels")) to_has_matrix = 1;
+				var t_i_name,f_o_name;
+				var section_colour,section_colour_dark,section_colour_darkest;
+				var type_colour,type_colour_dark,type_colour_darkest;
+				
+				var is_core_control = 0 ; 
+				var f_n_a = f_name;
+				var param_count = null;
+				var button_count = null;
+				f_n_a = f_n_a.split(".");
+				if((f_n_a[0]=="core")&&(f_n_a[1]=="input")){
+					is_core_control = 1; 
+					if(f_n_a[2]=="control"){
+						//it's either core.input.control.auto or .basic so
+						// check if we need to trim the list of midi outs / param outs / available colours
+						var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
+						
+						param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+						button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+						post("core input", param_count,button_count);
+					}
+				}
+
+				type_colour=[192,192,192];
+				type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
+				type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
+
+				section_colour = blocks.get("blocks["+f_number+"]::space::colour");
+				section_colour = [section_colour[0]*1.2,section_colour[1]*1.2,section_colour[2]*1.2];
+				section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
+				section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
+	
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,type_colour_dark );
+				lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
+				setfontsize(fontsmall*2);
+				lcd_main.message("frgb",type_colour);
+				lcd_main.message("write", "new connection");
+
+				y_offset += 1.1* fontheight;
+				
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
+			
+				setfontsize(fontsmall);
+	
+				lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(1+is_core_control)*15*fo1, fo1*13+y_offset,section_colour_darkest );
+				lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+				lcd_main.message("frgb" , section_colour_dark);
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
+				lcd_main.message("write", "from");
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
+				lcd_main.message("write", "output");
+				lcd_main.message("frgb", section_colour );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
+				lcd_main.message("write", f_label);
+			
+				y_offset+=1.4*fontheight;
+				if(EXTERNAL_MATRIX_PRESENT && to_has_matrix) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
+				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset, param_count);
+				if(is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, button_count);				
+				section_colour = blocks.get("blocks["+t_number+"]::space::colour");
+				section_colour = [section_colour[0]*1.2,section_colour[1]*1.2,section_colour[2]*1.2];
+				section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
+				section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
+	
+				y_offset+=1.4*fontheight;
+
+				//TO BLOCK, INPUT, VOICE labels/menus
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
+				
+				lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-15*fo1, fo1*13+y_offset,section_colour_darkest );
+				lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+				
+				lcd_main.message("frgb", section_colour );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
+				lcd_main.message("write", t_label);
+				
+				lcd_main.message("frgb" , section_colour_dark);
+				
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
+				lcd_main.message("write", "to");
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
+				lcd_main.message("write", "input");
+					
+				//draw a list of buttons to select between the various outputs on offer here
+				if(t_i_no!=null){
+					lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
+					lcd_main.message("write", "hide");
+				}
+				y_offset+=1.4*fontheight;
+				if(f_type == "matrix"){
+					y_offset = conn_draw_to_inputs_list(i, t_name, "matrix", y_offset);
+				}else{
+					y_offset = conn_draw_to_inputs_list(i, t_name, "hardware", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset);
+					if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
+				}
+				
+			}else{
+				set_sidebar_mode("wire");
+			}
+		}else{
+			set_sidebar_mode("none");
+		}
 	}else if(sidebar.mode == "file_menu"){
 		// FILE MENU ##############################################################################################################
 		//also: calculate resource usage so you can decide if you've got space to merge the currently selected song

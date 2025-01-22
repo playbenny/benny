@@ -1640,6 +1640,9 @@ function clear_everything(){
 
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
 	
+	undo_stack.parse('{ "history" : [ {}, {} ] }');
+	redo_stack.parse('{ "history" : [ {}, {} ] }');
+
 	draw_wave = [];
 	for(i=0;i<128;i++){
 		quantpool.poke(1, i, i);

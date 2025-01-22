@@ -1,0 +1,106 @@
+{
+	"source.stick.slip" : {
+		"patcher" : "source.stick.slip",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Simple model of an object connected to the user input 'position' by a spring, sticking and slipping chaotically. The texture parameter adds variation to the friction forces as a function of position. This block pairs well with resonators (eg voice.modal, elements). Inspired by Knut Kaulke's work (see https://medias.ircam.fr/x7aa847). The pitch midi input alters the model parameters in order to make the resonant frequency of the mass spring system the note you requested.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "position", "modulation" ],
+				"midi" : [ "set pitch", "reset" ]
+			},
+			"out" : {
+				"audio" : [ "position", "velocity" ],
+				"midi" : [ "start trigger", "stop trigger" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,0,0,1,1],
+				"colour" : -3
+			},
+			{
+				"contains" : [2,3,4,5,7,6],
+                "colour" : -6
+			},
+			{
+				"contains" : [8],
+                "colour" : -9,
+				"header" : "audio rate modulation target",
+				"nolabel" : 1,
+				"height" : 0.5
+			}
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "position",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5 
+			},
+			{
+				"name" : "input_smoothing",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp1000"],
+				"wrap" : 0,
+				"default" : 0 
+			},
+			{
+				"name" : "mass",
+				"type" : "float",
+				"values" : ["uni", 0.05, 100, "exp100"],
+                "default" : 0.2,
+				"wrap" : 0
+			},
+			{
+				"name" : "tension",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp100"],
+                "default" : 0.3,
+				"wrap" : 0
+			},
+			{
+				"name" : "static_friction",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp1000"],
+                "default" : 0.3,
+				"wrap" : 0
+			},
+			{
+				"name" : "moving_friction",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp1000"],
+                "default" : 0.3,
+				"wrap" : 0
+			},
+			{
+				"name" : "surface_texture",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp100"],
+                "default" : 0.3,
+				"wrap" : 0
+			},
+            {
+				"name" : "air_resistance",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp100"],
+                "default" : 0.05,
+				"wrap" : 0
+			},
+			{
+				"name" : "audio mod destination",
+				"type" : "menu_d",
+				"error_scale" : 0,
+				"values" : ["mass" , "tension", "static friction" , "moving friction"],
+				"wrap" : 1,
+				"default" : 0.3
+			}
+		]
+	}
+}

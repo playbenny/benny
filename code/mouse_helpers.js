@@ -100,6 +100,33 @@ function blocks_paste(outside_connections,target){
 			}
 			draw_blocks();
 		}
+		if(target.contains("actions::voicecount")){
+			var tblock = target.get("actions::voicecount::block");
+			var tvoices = target.get("actions::voicecount::voices");
+			//post("\nvoicecount",tblock,tvoices);
+			voicecount(tblock,tvoices);
+		}
+		if(target.contains("actions::parameter")){
+			var tblock = target.get("actions::parameter::block");
+			var tparam = target.get("actions::parameter::parameter");
+			var tvalue = target.get("actions::parameter::value");
+			parameter_value_buffer.poke(1, MAX_PARAMETERS*tblock+tparam,tvalue);
+			redraw_flag.flag |= 4;
+			if(tblock == automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
+		}
+		if(target.contains("actions::voice_parameter")){
+			var tvoice = target.get("actions::voice_parameter::voice");
+			var tparam = target.get("actions::voice_parameter::parameter");
+			var tvalue = target.get("actions::voice_parameter::value");
+			//post("\nundoing to:",tvoice,tparam,tvalue);
+			parameter_static_mod.poke(1, MAX_PARAMETERS*tvoice+tparam,tvalue);
+			redraw_flag.flag |= 4;
+			if(automap.mapped_c>-1){
+				var avl=voicemap.get(automap.mapped_c);
+				if(!Array.isArray(avl)) avl = [avl];
+				if(avl.indexOf(tvoice)>-1) note_poly.message("setvalue", automap.available_c,"refresh");
+			}
+		}
 	}
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
@@ -328,6 +355,7 @@ function blocks_paste(outside_connections,target){
 			var tk = tdc.getkeys();
 			if(Array.isArray(tk)){
 				for(var t=0;t<tk.length;t++){
+					post("\npaste/undo connections",tk[t]);
 					new_connection = target.get("connections::"+tk[t]);
 					var pfrom = paste_mapping[+new_connection.get("from::number")];
 					var pto = paste_mapping[+new_connection.get("to::number")];
@@ -1899,6 +1927,47 @@ function qwertymidi_octave(parameter, value){
 	}
 }
 	
+function automap_undo_point(p,v){
+	var s = (p<0);
+	p = Math.abs(p);
+	if(usermouse.last.scroll != p){
+		//post("\nautomap undo point stored for",automap.mapped_c,p,v);
+		usermouse.last.scroll = p;
+		if(um_task == null){
+			um_task = new Task(um_scroll_wait,this,0);
+		}else{
+			um_task.cancel();
+		}
+		um_task.schedule(1000);
+		//store undo
+		if(s){ // ONLY IF SELECTION HAS CHANGED OR THERE@S BEEN A PAUSE
+			store_voice_param_undo(p,automap.mapped_c,v);
+		}else{
+			store_param_undo(p,automap.mapped_c,v);
+		}
+	}
+}
+
+function store_param_undo(parameter,block,value){
+	//post("\nstoring undo, block:",block," p:",parameter, " v:", value);
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history",'{}');
+	undo_stack.setparse("history["+usz+"]", '{ "actions" : { "parameter" : {} } }');
+	undo_stack.replace("history["+usz+"]::actions::parameter::block", +block);
+	undo_stack.replace("history["+usz+"]::actions::parameter::parameter", +parameter);
+	undo_stack.replace("history["+usz+"]::actions::parameter::value", +value);
+}
+
+function store_voice_param_undo(parameter,voice,value){
+	//post("\nstoring undo, voice:",voice," p:",parameter, " v:", value);
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history",'{}');
+	undo_stack.setparse("history["+usz+"]", '{ "actions" : { "voice_parameter" : {} } }');
+	undo_stack.replace("history["+usz+"]::actions::voice_parameter::voice", +voice);
+	undo_stack.replace("history["+usz+"]::actions::voice_parameter::parameter", +parameter);
+	undo_stack.replace("history["+usz+"]::actions::voice_parameter::value", +value);
+}
+
 function sidebar_parameter_knob(parameter, value){
 	//post("\nsidebar parameter knob P: ",parameter,"  V:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
@@ -2870,21 +2939,47 @@ function delete_wave(parameter,value){
 function undo_button(){
 	undoing = 1;
 	var usz=undo_stack.getsize("history")|0;
-	post("\nundoing, stack size",usz);
+	//post("\nundoing, stack size",usz);
 	usz--;
 	if(usz<0) return -1;
 	undo = undo_stack.get("history["+usz+"]");
-	undo_stack.remove("history["+usz+"]");
+	if(undo==null){
+		if(usz>0)undo_button();
+	}else{
+		redo_stack.append("history","{}");
+		var rsz=redo_stack.getsize("history")|0;
+		rsz--;
+		redo_stack.replace("history["+rsz+"]",undo);
+		undo_stack.remove("history["+usz+"]");
+		blocks_paste(1,undo);
+		undo.parse("{}");
+	}
+	undoing = 0;
+}
+
+function redo_button(){
+	//undoing = 1;
+	var rsz=redo_stack.getsize("history")|0;
+	if(rsz == 0) return -1;
+	post("\nredoing, stack size",rsz);
+	rsz--;
+	if(rsz<0) return -1;
+	undo = redo_stack.get("history["+rsz+"]");
+	post("\nredo:",undo.stringify());
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history","*");
+	usz--;
+	undo_stack.replace("history["+usz+"]",undo);
+	redo_stack.remove("history["+rsz+"]");
 	blocks_paste(1,undo);
 	undo.parse("{}");
-	undoing = 0;
+	//undoing = 0;	
 }
 
 function delete_selection(){
 	if(!undoing){
 		copy_selection(undo);
 		var usz=undo_stack.getsize("history")|0;
-		//post("\nundo stack size",usz);
 		usz = Math.max(0,usz);
 		undo_stack.append("history","{}");
 		undo_stack.setparse("history["+usz+"]",'{}');

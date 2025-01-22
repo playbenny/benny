@@ -1,6 +1,14 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+20/1/25:
+- **breaking change** added more models to voice.modal, which will possibly throw off model selection in old songfiles. easy to correct and the new models are nice.
+- stick slip model block (model of a mass sticking and slipping on a surface as it is pulled by a spring - useful for generating rhythms, making lfos more interesting, processing audio, scrapes and scratches)
+18/1/25:
+- new sidebar view during drag-to-connect showing you the inputs and outputs available on the source/dest blocks
+16/1/25:
+- undo now works for almost everything in the main part of benny
+- fixes to four stage and eight stage envelopes
 9/1/25:
 - **breaking change** quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
 - fix quantislide osc 

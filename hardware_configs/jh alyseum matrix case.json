@@ -310,6 +310,29 @@
 			}
 
 		}
+,
+		"hardware.ribbon" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "position and pressure from the doepfer ribbon",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+
+				}
+,
+				"out" : 				{
+					"hardware" : [ "position", "pressure (via maths2)" ],
+					"hardware_channels" : [ 16, 7 ]
+				}
+
+			}
+
+		}
 
 	}
 ,
