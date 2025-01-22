@@ -3678,6 +3678,7 @@ function draw_sidebar(){
 								if((map_y>=0)){// && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
 										maplist.push(-1);
+										mapwrap.push(0);
 										maplistopv.push(-1);
 										mapcolours.push(-1);
 									}
