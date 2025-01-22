@@ -1158,7 +1158,7 @@ function render_controls(){
 				ii++;
 				y_pos+=unit.row;
 			}else{
-				controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+				controls[ii]= this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  , "@varname", "hardwarename."+ii, "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1], "@keymode", 1);
 				//controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 				controls[ii].message("set", cdk[p]);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
