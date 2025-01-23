@@ -3711,7 +3711,7 @@ function draw_sidebar(){
 							note_poly.message("setvalue", automap.available_c,"buttonmaplist",-1);
 						}
 					}
-					if(automap.offset_range_c>0){
+					/*if((automap.offset_range_c>0)&&(automap.mouse_follow)){
 						var ii=automap.sidebar_row_ys[i+automap.offset_c+1];
 						var sbx = mainwindow_width-4;
 						lcd_main.message("frgb",greydark);
@@ -3730,7 +3730,7 @@ function draw_sidebar(){
 								}
 							}
 						}
-					}
+					}*/
 				}
 				colour=block_colour;
 				y_offset += fontheight * 4 * knob_y;
