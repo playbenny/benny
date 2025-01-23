@@ -193,6 +193,7 @@ function initialise_dictionaries(hardware_file){
 	METER_TINT = config.get("METER_TINT");
 	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
 	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
+	automap.mouse_follow = config.get("AUTOMAP_MOUSE_FOLLOW");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
@@ -738,9 +739,9 @@ function load_config_colours(){
 	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
 	var avg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
 	greycolour = [avg,avg,avg];
-	avg *= 0.5;
+	avg *= 0.4;
 	greydark = [avg,avg,avg];
-	avg *= 2*bg_dark_ratio;
+	avg *= 2.5*bg_dark_ratio;
 	greydarkest = [avg,avg,avg];
 	backgroundcolour = config.get("palette::background");
 	backgroundcolour_blocks = config.get("palette::background_blocks");

@@ -3656,6 +3656,7 @@ function automap_k_click(p,v){
 		}else{
 			automap.lock_k = (v!=0);
 		}
+		if((automap.available_k==-1))automap.lock_k = 0;
 		if(automap.lock_k==0){
 			if(sidebar.selected!=automap.mapped_k) automap.mapped_k = -1;
 		}
@@ -3663,14 +3664,19 @@ function automap_k_click(p,v){
 }
 
 function automap_c_click(p,v){
-	if(usermouse.ctrl){
+	if(usermouse.alt){
 		select_block_by_name("core.input.control.auto");
+	}else if(usermouse.ctrl){
+		toggle_automap_c_enable();
 	}else{
 		//lock
 		if(v==-1){
 			automap.lock_c = 1 - automap.lock_c;
 		}else{
 			automap.lock_c = (v!=0);
+		}
+		if(automap.available_c==-1){
+			toggle_automap_c_enable();
 		}
 		if(automap.lock_c==0){
 			if(sidebar.selected!=automap.mapped_c) automap.mapped_c = -1;
@@ -3786,7 +3792,7 @@ function start_keyboard_looper(){
 
 function disable_automap_k(p,v){
 	if(automap.available_k_block>-1){
-		post("\nturning off automap, block is",automap.available_k_block);
+		//post("\nturning off automap, block is",automap.available_k_block);
 		parameter_value_buffer.poke(1, MAX_PARAMETERS*automap.available_k_block+2,0.1);
 		automap.lock_k = 0;
 		redraw_flag.deferred = 132;	
@@ -3795,8 +3801,35 @@ function disable_automap_k(p,v){
 
 function enable_automap_k(p,v){
 	if(automap.available_k_block>-1){
-		post("\nturning on automap");
 		parameter_value_buffer.poke(1, MAX_PARAMETERS*automap.available_k_block+2,0.8);
 		redraw_flag.deferred = 132;	
 	}
+}
+
+function toggle_automap_c_enable(){
+	post("\nauto",automap.available_c,automap.mapped_c);
+	if(automap.available_c>-1){
+		automap.mapped_c=-1;
+		automap.available_c=-1;
+		automap.lock_c=0;
+		for(var i=0;i<MAX_BLOCKS;i++){
+			if(blocks.get("blocks["+i+"]::name")=="core.input.control.auto"){
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.1);
+				post("\off",i);
+				break;
+			}
+		}
+	}else{
+		automap.mapped_c=-1;
+		automap.available_c=automap.voice_c;
+		automap.lock_c=0;
+		for(var i=0;i<MAX_BLOCKS;i++){
+			if(blocks.get("blocks["+i+"]::name")=="core.input.control.auto"){
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.8);
+				post("\non",i);
+				break;
+			}
+		}
+	}
+	redraw_flag.deferred = 132;
 }

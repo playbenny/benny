@@ -290,6 +290,7 @@ var param_defaults = [];
 
 var automap = {
 	available_c : -1,
+	voice_c : -1,
 	available_k : -1,
 	available_k_block : -1,
 	already_k : 0, //if the keyboard is already connected to the current block don't auto
@@ -303,6 +304,7 @@ var automap = {
 	offset_range_c : 0, 
 	c_cols : 4,
 	c_rows : 4,
+	mouse_follow : 0,
 	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check
 	q_gain : 0.125, //default gain for cue auto connections
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
