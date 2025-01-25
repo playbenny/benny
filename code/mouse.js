@@ -981,14 +981,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-		}else if((usermouse.x > sidebar.x) && !automap.lock_c && (automap.offset_range_c>0) && (sidebar.mode=="block") && (usermouse.got_t == 2) && automap.mouse_follow && (mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)){
-			var r = -1;
+		}else if((usermouse.x > sidebar.x) && !automap.lock_c && automap.mouse_follow && (automap.offset_range_c>0) && (sidebar.mode=="block") && (usermouse.got_t == 2) && ((mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob)||(mouse_click_actions[usermouse.got_i]==static_mod_adjust))){
+			var r = 0;
 			for(var tr=0;tr<automap.sidebar_row_ys.length;tr++){
-				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr-1;
+				if(usermouse.y>automap.sidebar_row_ys[tr]) r = tr;
 			}
-			r++;
-			r = Math.min(r,automap.offset_range_c);
-			if(automap.offset_c != r){
+			var cr = automap.groups.indexOf(r);
+			var crn = automap.groups.indexOf(r+1);
+			if(crn==-1)crn=automap.groups.length;
+			//only move the controller offset if the row you're over isn't shown
+			if((cr<automap.offset_c)||(crn>=(automap.offset_c+automap.c_rows))){
+				r = Math.min(cr,automap.offset_range_c);
 				automap.offset_c = r;
 				note_poly.message("setvalue", automap.available_c, "automap_offset", automap.offset_c * automap.c_cols );
 				redraw_flag.flag |= 2;

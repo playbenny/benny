@@ -2974,6 +2974,7 @@ function draw_sidebar(){
 
 			var getmap = 0;
 			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [], mapwrap = [];
+			
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
@@ -3304,10 +3305,14 @@ function draw_sidebar(){
 							}
 						}
 					}
-					if(getmap) automap.sidebar_row_ys[0] = y_offset;
-									
+					if(getmap){
+						automap.groups = []; //index is controller row number
+						automap.groups[0] = 0;
+					}
+					
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
+						automap.sidebar_row_ys[i] = y_offset;
 						colour=block_colour;
 						if(groups[i].contains("colour")){
 							colour = groups[i].get("colour");
@@ -3360,6 +3365,7 @@ function draw_sidebar(){
 													mapcolours.push(colour[0]);
 													mapcolours.push(colour[1]);
 													mapcolours.push(colour[2]);
+													automap.groups[map_y] = i;
 												}
 												map_x++;
 												if(map_x>=automap.c_cols){
@@ -3376,6 +3382,7 @@ function draw_sidebar(){
 												mapcolours.push(colour[0]);
 												mapcolours.push(colour[1]);
 												mapcolours.push(colour[2]);
+												automap.groups[map_y] = i;
 											}
 											map_x++;
 											if(map_x>=automap.c_cols){
@@ -3673,8 +3680,27 @@ function draw_sidebar(){
 							}
 							y_offset=namelabely+fontheight*0.2;
 						}
+						if((automap.mapped_c==block)){ //(automap.offset_range_c>0)&&(automap.mouse_follow)&&
+							automap.sidebar_row_ys[i+1] = y_offset;
+							var gr = 0;
+							var first=-1;
+							for(var gi=0;gi<automap.groups.length;gi++){ 
+								gr += (automap.groups[gi]==i);
+								if((first==-1)&&(automap.groups[gi]==i)) first = gi;
+							}
+							var gh = (y_offset - automap.sidebar_row_ys[i] - 8)/gr;
+							var yy = automap.sidebar_row_ys[i]+4;
+							var sbx = mainwindow_width-4;
+							for(var g=first;g<first+gr;g++){
+								if((g >= automap.offset_c)&&(g < (automap.offset_c+automap.c_rows))){
+									lcd_main.message("frgb",colour);
+									lcd_main.message("moveto",sbx,yy);
+									lcd_main.message("lineto",sbx,yy+gh-4);
+								}							
+								yy += gh;
+							}
+						}
 						if(getmap==1){
-							automap.sidebar_row_ys[map_y+1]=y_offset;
 							if(map_x!=0){ //wrap round to the next row, padding maplist with -1s if still inside the row limit
 								if((map_y>=0)){// && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
@@ -3711,26 +3737,6 @@ function draw_sidebar(){
 							note_poly.message("setvalue", automap.available_c,"buttonmaplist",-1);
 						}
 					}
-					/*if((automap.offset_range_c>0)&&(automap.mouse_follow)){
-						var ii=automap.sidebar_row_ys[i+automap.offset_c+1];
-						var sbx = mainwindow_width-4;
-						lcd_main.message("frgb",greydark);
-						var rc=0;//count how many controller rows per screen row..?
-						for(var i = 0;i<automap.c_rows;i++){
-							if(i+automap.offset_c < automap.sidebar_row_ys.length){
-								var iii = automap.sidebar_row_ys[i+automap.offset_c];
-								if(iii!=undefined){
-									post("\nrow i",i,"from",ii,"to",iii,"over ",rc+1,"rows");
-									lcd_main.message("moveto",sbx,ii+8);
-									lcd_main.message("lineto",sbx,iii-8);
-									ii=iii;
-									rc=0;
-								}else{
-									rc++;
-								}
-							}
-						}
-					}*/
 				}
 				colour=block_colour;
 				y_offset += fontheight * 4 * knob_y;
@@ -3999,7 +4005,6 @@ function draw_sidebar(){
 					click_zone(set_sidebar_mode, "block", null, sidebar.x , y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 					var groups = [];
 					var params = [];
-					var knob = { x:0 , y:0 };
 					params = blocktypes.get(block_name+"::parameters");
 					if(!Array.isArray(params)) params = [params];
 					if(!blocktypes.contains(block_name+"::groups")){

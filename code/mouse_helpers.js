@@ -3807,7 +3807,7 @@ function enable_automap_k(p,v){
 }
 
 function toggle_automap_c_enable(){
-	post("\nauto",automap.available_c,automap.mapped_c);
+	//post("\nauto",automap.available_c,automap.mapped_c);
 	if(automap.available_c>-1){
 		automap.mapped_c=-1;
 		automap.available_c=-1;
@@ -3815,7 +3815,8 @@ function toggle_automap_c_enable(){
 		for(var i=0;i<MAX_BLOCKS;i++){
 			if(blocks.get("blocks["+i+"]::name")=="core.input.control.auto"){
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.1);
-				post("\off",i);
+				note_poly.message("setvalue", i+1, "automapped", 0);
+				//post("\off",i);
 				break;
 			}
 		}
@@ -3826,9 +3827,10 @@ function toggle_automap_c_enable(){
 		for(var i=0;i<MAX_BLOCKS;i++){
 			if(blocks.get("blocks["+i+"]::name")=="core.input.control.auto"){
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.8);
-				post("\non",i);
+				//post("\non",i);
 				break;
 			}
+			
 		}
 	}
 	redraw_flag.deferred = 132;

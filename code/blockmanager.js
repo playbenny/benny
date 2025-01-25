@@ -305,7 +305,8 @@ var automap = {
 	c_cols : 4,
 	c_rows : 4,
 	mouse_follow : 0,
-	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check
+	groups : [], //index is group, content is controller row (ie before offset applied)
+	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check, index is group, content is starting (top) y
 	q_gain : 0.125, //default gain for cue auto connections
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to
