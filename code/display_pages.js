@@ -3334,6 +3334,13 @@ function draw_sidebar(){
 						plist = groups[i].get("contains");
 						if(!Array.isArray(plist)) plist = [plist];
 						slidercount=plist.length;
+						if(getmap){
+							var actualcount=0;
+							t = -1;
+							for(tk=0;tk<plist.length;tk++) if(plist[tk]!=t){t = plist[tk]; actualcount++; }
+							var spares = (actualcount<automap.c_cols) ? (automap.c_cols - actualcount) : 0;
+						}
+
 						var columns = Math.max(1,slidercount);
 						var opvf = groups[i].contains("onepervoice");
 						w_slider = (sidebar.width + fo1)/columns;
@@ -3366,6 +3373,14 @@ function draw_sidebar(){
 													mapcolours.push(colour[1]);
 													mapcolours.push(colour[2]);
 													automap.groups[map_y] = i;
+													if((spares>0)&&(wk>1)&&(map_x<(automap.c_cols-1))&&((map_x/automap.c_cols)<((t+wk)/slidercount))){
+														map_x++;
+														maplist.push(-1);
+														mapwrap.push(0);
+														maplistopv.push(-1);
+														mapcolours.push(-1);
+														spares--;
+													}
 												}
 												map_x++;
 												if(map_x>=automap.c_cols){
@@ -3383,6 +3398,14 @@ function draw_sidebar(){
 												mapcolours.push(colour[1]);
 												mapcolours.push(colour[2]);
 												automap.groups[map_y] = i;
+												if((spares>0)&&(wk>1)&&(map_x<(automap.c_cols-1))&&((map_x/automap.c_cols)<((t+wk)/slidercount))){
+													map_x++;
+													maplist.push(-1);
+													mapwrap.push(0);
+													maplistopv.push(-1);
+													mapcolours.push(-1);
+													spares--;
+												}
 											}
 											map_x++;
 											if(map_x>=automap.c_cols){
