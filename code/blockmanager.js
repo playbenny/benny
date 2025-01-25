@@ -329,6 +329,7 @@ var automap = {
 		dark : [],
 		colour : []
 	},
+	scroll_accumulator : 0, //used in automap direct to core mode (eg for scroll file menu/block menu)
 	assignmode : 0 //actually covers all controllers, if it's in move-to-pick mode this is 1.
 }
 

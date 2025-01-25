@@ -3835,3 +3835,35 @@ function toggle_automap_c_enable(){
 	}
 	redraw_flag.deferred = 132;
 }
+
+function automap_direct_to_core(knob,value){
+	if(displaymode == "block_menu"){
+		mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
+	}else if(sidebar.mode=="file_menu"){
+		automap.scroll_accumulator += value*0.25;
+		if(Math.abs(automap.scroll_accumulator)>=1){
+			file_menu_arrows(value);
+			automap.scroll_accumulator=0;
+		}
+	}else if(sidebar.mode=="wire"){
+		var kx=knob%automap.c_cols;
+		var ky=(knob-kx)/automap.c_cols;
+		var c = 0;
+		if(kx>0){
+			c=kx;
+		}else if(ky>0){
+			c=ky;
+		}
+		if(automap.groups[c]=="force_unity"){
+			return 0;
+		}else{
+			kx= connection_edit(automap.groups[c],"get");
+			kx += value * automap.sidebar_row_ys[c];
+			connection_edit(automap.groups[c],kx);
+		}
+	}else{
+		post("\nreceived ",knob,value," but in ",sidebar.mode," i have nothing assigned to that");
+		post("\ndisabling automap direct mode");
+		note_poly.message("setvalue", automap.available_c, "automapped", 0);
+	}
+}
