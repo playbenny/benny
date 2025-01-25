@@ -25,22 +25,22 @@
 			{
 				"contains" : [2,3,13,5],
 				"height" : 0,
-				"colour" : 10
+				"colour" : -8
 			},
 			{ 
 				"header" : "envelope",
 				"contains" : [6,7,8],
-				"colour" : -3
+				"colour" : -12
 			},
 			{
 				"contains" : [9,10,12,14],
 				"height" : 0,
-				"colour" : -6
+				"colour" : -16
 			},
 			{
 				"contains" : [11, 15,16,17,18,19,20],
 				"height" : 0,
-				"colour" : -9
+				"colour" : -20
 			}
 		],
 		"panel" : {
