@@ -1295,9 +1295,14 @@ function draw_wire(connection_number){
 			}else{
 				num_ins = 1;//potential wires, special case
 			}
-			var from_pos,to_pos, from_anglevector,to_anglevector;
-			var from_colour = config.get("palette::connections::"+from_type);
-			var to_colour = config.get("palette::connections::"+to_type);
+			var from_pos,to_pos, from_anglevector,to_anglevector,from_colour,to_colour;
+			if((from_type=="hardware")&&(to_type=="hardware")&&connections.contains("connections["+connection_number+"]::conversion::soundcard")){
+				from_colour = config.get("palette::connections::soundcard");
+				to_colour = config.get("palette::connections::soundcard");
+			}else{
+				from_colour = config.get("palette::connections::"+from_type);
+				to_colour = config.get("palette::connections::"+to_type);
+			}
 			from_colour[0] = from_colour[0]*0.003921;// /255;
 			from_colour[1] = from_colour[1]*0.003921;// /255;
 			from_colour[2] = from_colour[2]*0.003921;// /255;
@@ -4870,7 +4875,9 @@ function draw_sidebar(){
 										var offset = connections.get("connections["+i+"]::conversion::offset");
 										var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 										var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
-										var col=config.get("palette::connections::"+connections.get("connections["+i+"]::to::input::type"));
+										var tty = connections.get("connections["+i+"]::to::input::type");
+										if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
+										var col=config.get("palette::connections::"+tty);
 										
 										if(mute){
 											lcd_main.message("paintrect",sidebar.x2-fontheight, y_offset, sidebar.x2, fontheight+y_offset,128,128,128);
@@ -5149,7 +5156,9 @@ function draw_sidebar(){
 			if((f_type=="potential")||(t_type=="potential")){
 				type_colour=[192,192,192];
 			}else{
-				type_colour = config.get("palette::connections::"+f_type);
+				var fty = f_type;
+				if((fty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) fty="soundcard";
+				type_colour = config.get("palette::connections::"+fty);
 			}
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
@@ -6004,8 +6013,9 @@ function draw_sidebar(){
 			
 			//lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
 			//lcd_main.message("write", "change");
-			
-			type_colour = config.get("palette::connections::"+t_type);
+			var tty = t_type;
+			if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
+			type_colour = config.get("palette::connections::"+tty);
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
 			if(!sidebar.connection.show_to_inputs){
@@ -6492,6 +6502,8 @@ function draw_sidebar(){
 						if(mute){
 							ccol = [128,128,128];
 						}else{
+							var tty = t_type;
+							if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
 							if(config.contains("palette::connections::"+t_type)){
 								ccol = config.get("palette::connections::"+t_type);
 							}else{

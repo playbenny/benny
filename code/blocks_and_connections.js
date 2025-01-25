@@ -1200,6 +1200,7 @@ function remove_connection(connection_number){
 							outmsg[2] = 0;
 							post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							messnamed("drivers_poly","setvalue",2,"set",outmsg);
+							connections.replace("connections["+cno+"]::conversion::soundcard", 1);
 							use_max_matrix = 0;
 						}
 						if(use_max_matrix){
@@ -1779,6 +1780,7 @@ function make_connection(cno,existing){
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 								post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 								messnamed("drivers_poly","setvalue",2,"set",outmsg);
+								connections.replace("connections["+cno+"]::conversion::soundcard", 1);
 								use_max_matrix = 0;
 							}
 							if(use_max_matrix){
