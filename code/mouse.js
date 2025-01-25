@@ -990,7 +990,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			var crn = automap.groups.indexOf(r+1);
 			if(crn==-1)crn=automap.groups.length;
 			//only move the controller offset if the row you're over isn't shown
-			if((cr<automap.offset_c)||(crn>=(automap.offset_c+automap.c_rows))){
+			if((cr<automap.offset_c)||(crn>(automap.offset_c+automap.c_rows))){
 				r = Math.min(cr,automap.offset_range_c);
 				automap.offset_c = r;
 				note_poly.message("setvalue", automap.available_c, "automap_offset", automap.offset_c * automap.c_cols );
