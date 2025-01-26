@@ -267,9 +267,6 @@ function initialise_dictionaries(hardware_file){
 
 	notepools_dict.parse("notepools","{}");
 	
-	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
-		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
-	}
 	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
@@ -587,6 +584,11 @@ function import_hardware(v){
 	messnamed("click_enabled",click_enabled);
 	prep_midi_indicators();
 	audioiolists = get_hw_meter_positions();
+	MAX_AUDIO_INPUTS = audioiolists[0].length;
+	MAX_AUDIO_OUTPUTS = audioiolists[1].length;
+	config.set("MAX_AUDIO_INPUTS",MAX_AUDIO_INPUTS);
+	config.set("MAX_AUDIO_OUTPUTS",MAX_AUDIO_OUTPUTS);
+
 	var old_dac = this.patcher.getnamed("audio_outputs");
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
@@ -666,10 +668,6 @@ function import_hardware(v){
 	//so we tell the adc~ to listen to those channels, then RENUMBER the channels in the blocktypes dict, to refer to the 
 	//sequential number of the io rather than the channel number
 	//audioiolists[0].length
-	MAX_AUDIO_INPUTS = audioiolists[0].length;
-	MAX_AUDIO_OUTPUTS = audioiolists[1].length;
-	config.set("MAX_AUDIO_INPUTS",MAX_AUDIO_INPUTS);
-	config.set("MAX_AUDIO_OUTPUTS",MAX_AUDIO_OUTPUTS);
 	sidebar.scopes.midi_routing.voice = MAX_NOTE_VOICES + MAX_AUDIO_VOICES + MAX_AUDIO_VOICES * NO_IO_PER_BLOCK + MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS;
 	//var matrixins = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS;
 	var matrixouts = MAX_AUDIO_VOICES*NO_IO_PER_BLOCK+MAX_AUDIO_OUTPUTS;
@@ -679,7 +677,9 @@ function import_hardware(v){
 	matrix.numouts(matrixouts);
 	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
 	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
-
+	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
+		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
+	}
 	messnamed("config_loaded","bang");
 	messnamed("MAX_PARAMETERS", MAX_PARAMETERS); //the wrapper blocks need this so it makes sense to send it
 	messnamed("MAX_BLOCKS",MAX_BLOCKS); //once you've updated blocks, delete all these, and the request global function TODO
