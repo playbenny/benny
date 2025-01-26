@@ -1,150 +1,143 @@
-MATRIX_OUT_CHANNELS = 16;
-MATRIX_IN_CHANNELS = 16; //make these configurable if you ever discover a matrix with >16!
-
 outlets = 1;
 inlets = 1;
 var unit = {
 	header : 10,
-	row : 20,
-	col : 220
+	row : 22,
+	col : 800
 }
 
 var filepath = "";
-var midi_interfaces = {
-	in : [],
-	out : [],
-	not_present_in : [],
-	not_present_out : [],
-	not_used_in : []
-}
-var configfile = new Dict;
-configfile.name = "configfile";
-var blocktypes = new Dict;
-blocktypes.name = "blocktypes";
+var config = new Dict;
+config.name = "config";
+var userconfig = new Dict;
+userconfig.name = "userconfig";
 
-var controls = [];
+var config_descriptions = new Dict;
+config_descriptions.name = "config_descriptions";
+var config_choices = new Dict;
+config_choices.name = "config_choices";
+
+var labels = [];
+var buttons = [];
 var values = [];
 
-var y_pos = 50;
-var ii=0;
-
-var selected = {
-	section : "none",
-	item : -1
-}
-
-var library_hardware = this.patcher.getnamed("hardware_library");
-var library_controllers = this.patcher.getnamed("controller_library");
-var testmatrix = this.patcher.getnamed("testmatrix");
-var latency_test_list = this.patcher.getnamed("latency_test_list");
-var latency_test_button = this.patcher.getnamed("latency_test_button");
-var latency_test_time = this.patcher.getnamed("latency_test_time");
-var latency_test_text = this.patcher.getnamed("latency_test_text");
+var y_pos = 10;
+var l_i=0; var b_i=0;
 
 function loadbang(){
-	configfile.parse("{}");
-	post("\nhardware editor starting");
+	config.parse("{}");
+	post("\nui preferences editor starting");
 	filepath = this.patcher.filepath;
 	filepath = filepath.split("/patchers");
 	filepath = filepath[0];
-	var dropdown = this.patcher.getnamed("hw_list");
-	dropdown.message("prefix", filepath+"/hardware_configs");
 	post("\n path is",filepath);
-	outlet(0,"getmidi","bang");
-	outlet(0,"library","read",filepath+"/data/hardware_library.json");
-	post("\ninterfaces list:\nins:",midi_interfaces.in,"\nouts:",midi_interfaces.out);
-	import_blocktypes("audio_blocks");
+	config.import_json(filepath+"/config.json");
+	userconfig.import_json(filepath+"/userconfig.json");
+	config_descriptions.import_json(filepath+"/data/config.descriptions.json");
+	config_choices.import_json(filepath+"/data/config.choices.json");
+	create_ui();
 }
 
-function import_blocktypes(v)
-{
-	var f = new Folder(v);
-	var d = new Dict;
-		
-	f.reset();
-	while (!f.end) {
-		if(f.extension == ".json"){
-			post("\n  "+f.filename);
-			d.import_json(f.filename);
-			var keys = d.getkeys();
-			if(keys==null){
-				post("ERROR reading block definition json file");
-			}else{
-				keys = keys.toString();
-				blocktypes.set(keys,d.get(keys));
+function create_ui(){
+	c_i = 0;
+	// header
+	labels[c_i]= this.patcher.newdefault(10, 100+20*c_i, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+	labels[c_i].message("set", "benny ui settings");
+	labels[c_i].presentation(1);
+	labels[c_i].presentation_rect(10,y_pos,unit.col,20);
+	c_i++;
+	y_pos+=unit.row + unit.header;
+
+/*	buttons[b_i] = this.patcher.newdefault(50, 100+20*b_i, "textbutton" , "@text",  "show", "@textoncolor", [1.000, 0.792, 0.000, 1.000], "@varname", "show.keyboards");
+	buttons[b_i].listener = new MaxobjListener(controls[ii], keybcallback);
+	buttons[b_i].presentation(1);
+	buttons[b_i].presentation_rect(20+1.7*unit.col,y_pos,0.3*unit.col,20);
+	//values[ii] = [0,0];
+	ii++;*/
+
+	var ck = config.getkeys();
+	for(var i=0;i<ck.length;i++){
+		var ch = config_choices.get(ck[i]);
+		if(ch != "DONT"){
+			post("\n"+ck[i]+" - default: "+config.get(ck[i]));
+			labels[c_i]= this.patcher.newdefault(10, 100+20*c_i, "comment");
+			labels[c_i].message("set", ck[i]);
+			labels[c_i].presentation(1);
+			labels[c_i].presentation_rect(10,y_pos,0.2*unit.col+10,20);
+			c_i++;
+	
+			var def = config.get(ck[i]);
+			var current = def;
+			if(userconfig.contains(ck[i])){
+				current = userconfig.get(ck[i]);
+				post("set to: "+current);
 			}
-		}
-		f.next();
-	}
-	f.close();
-}
-
-function configloaded(path){
-	post("\nhardware config file loaded");
-	//jobs when you load a file:
-	// - scan for midi interfaces that aren't present
-	// - scan for hw or controllers that aren't in the library
-	// render the controls
-	var in_list = [];
-	var out_list = [];
-	selected.section = "none";
-	selected.item = -1;
-	var d = configfile.get("io::controllers");
-	var k = d.getkeys();
-	for(var i=0;i<k.length;i++){
-		in_list.push(d.get(k[i]+"::name"));
-	}
-	for(var i=0;i<midi_interfaces.in.length;i++){
-		if(in_list.indexOf(midi_interfaces.in[i])==-1){
-			midi_interfaces.not_used_in.push(midi_interfaces.in[i]);
-		}
-	}
-	d = configfile.get("hardware");
-	k = d.getkeys();
-	if(k!==null){
-		for(var i=0;i<k.length;i++){
-			if(configfile.contains("hardware::"+k[i]+"::midi_in")){
-				var tm = configfile.get("hardware::"+k[i]+"::midi_in");
-				if(out_list.indexOf(tm)==-1){
-					out_list.push(configfile.get("hardware::"+k[i]+"::midi_in"));
+	
+			post(" CHOICES : "+ch);
+			if(ch == "FOLDER"){
+				labels[c_i]= this.patcher.newdefault(10, 100+20*c_i, "comment");
+				labels[c_i].message("set", current);
+				labels[c_i].presentation(1);
+				labels[c_i].presentation_rect(0.2*unit.col,y_pos,0.4*unit.col+10,20);
+				c_i++;
+				buttons[b_i] = this.patcher.newdefault(50, 100+20*b_i, "textbutton" , "@text",  "set", "@textoncolor", [1.000, 0.792, 0.000, 1.000], "@varname", "setfolder."+ck[i]);
+				buttons[b_i].listener = new MaxobjListener(buttons[b_i], callback);
+				buttons[b_i].presentation(1);
+				buttons[b_i].presentation_rect(0.6*unit.col,y_pos,0.1*unit.col,20);
+				b_i++;
+			}else if(ch == "ORDER_LIST"){
+			}else if(ch == "DONT"){
+			}else if(ch == "TOGGLE"){
+				buttons[b_i] = this.patcher.newdefault(50, 100+20*b_i, "toggle");// ,"@varname", "show.keyboards");
+				buttons[b_i].message("set", current);
+				buttons[b_i].listener = new MaxobjListener(buttons[b_i], callback);
+				buttons[b_i].presentation(1);
+				buttons[b_i].presentation_rect(0.6*unit.col,y_pos,20,20);
+				b_i++;
+			}else if(Array.isArray(ch)){
+				if(ch[0] == "float"){
+					buttons[b_i] = this.patcher.newdefault(50, 100+20*b_i, "flonum", "@minimum", ch[1],"@maximum",ch[2]);// ,"@varname", "show.keyboards");
+					buttons[b_i].message("set", current);
+					buttons[b_i].listener = new MaxobjListener(buttons[b_i], callback);
+					buttons[b_i].presentation(1);
+					buttons[b_i].presentation_rect(0.6*unit.col,y_pos,0.2*unit.col,20);
+					b_i++;
+				}else if(ch[0] == "int"){
+					buttons[b_i] = this.patcher.newdefault(50, 100+20*b_i, "number", "@minimum", ch[1],"@maximum",ch[2]);// ,"@varname", "show.keyboards");
+					buttons[b_i].message("set", current);
+					buttons[b_i].listener = new MaxobjListener(buttons[b_i], callback);
+					buttons[b_i].presentation(1);
+					buttons[b_i].presentation_rect(0.6*unit.col,y_pos,0.2*unit.col,20);
+					b_i++;
+				}else{
+					buttons[b_i] = this.patcher.newdefault(10,  100+20*b_i, "umenu");
+					for(ii=0;ii<ch.length;ii++){
+						buttons[b_i].message("append",ch[ii]);	
+					}
+					buttons[b_i].message("set", current);
+					buttons[b_i].listener = new MaxobjListener(buttons[b_i], callback);
+					buttons[b_i].presentation(1);
+					buttons[b_i].presentation_rect(0.6*unit.col,y_pos,0.2*unit.col,20);
+					b_i++;
 				}
 			}
-		}
-	}
-	d = configfile.get("io::keyboards");
-	if(d!==null){
-		for(var i = 0; i<d.length ; i++){
-			if(Array.isArray(d[i])){
-				for(var ii =0; ii<d[i].length;ii++){
-					in_list.push(d[i][ii]);
-				}
-			}else{
-				in_list.push(d[i]);
+	
+			y_pos+=unit.row;
+			if(config_descriptions.contains(ck[i])){
+				labels[c_i]= this.patcher.newdefault(10, 100+20*c_i, "comment");
+				labels[c_i].message("set", config_descriptions.get(ck[i]));
+				labels[c_i].presentation(1);
+				labels[c_i].presentation_rect(40,y_pos,unit.col-40,20);
+				c_i++;
+				y_pos+=unit.row;
 			}
+			y_pos+=unit.header;
 		}
 	}
-	post("\n collected in list",in_list);
-	post("\n and these interfaces are present but not used for controllers: ",midi_interfaces.not_used_in);
-	for(var i=0;i<in_list.length;i++){
-		if(midi_interfaces.in.indexOf(in_list[i])==-1){
-			if(midi_interfaces.not_present_in.indexOf(in_list[i])==-1) midi_interfaces.not_present_in.push(in_list[i]);
-		}
-	}
-	for(var i=0;i<out_list.length;i++){
-		if(midi_interfaces.out.indexOf(out_list[i])==-1){
-			if(midi_interfaces.not_present_out.indexOf(out_list[i])==-1) midi_interfaces.not_present_out.push(out_list[i]);
-		}
-	}
-	if(!configfile.contains("io::matrix")) configfile.setparse("io::matrix", "{}");
-	render_controls();
 }
 
-function midiins(name){
-	if(midi_interfaces.in.indexOf(name)==-1) midi_interfaces.in.push(name);
-}
+function callback(data){
 
-function midiouts(name){
-	if(midi_interfaces.out.indexOf(name)==-1) midi_interfaces.out.push(name);
 }
 
 function render_controls(){
@@ -2319,55 +2312,4 @@ function deleteall(){
 	latency_test_button.presentation(0);
 	latency_test_time.presentation(0); 
 	latency_test_text.presentation(0); 
-}
-
-function add_midimonitors(interface){
-	controls[ii] = this.patcher.newdefault(10, 100, "comment");
-	controls[ii].message("set", "--- --- --");
-	controls[ii].presentation(1);
-	controls[ii].presentation_position(20+2*unit.col,y_pos);
-	ii++;
-	controls[ii] = this.patcher.newdefault(10, 100, "prepend set note");
-	this.patcher.connect(controls[ii],0,controls[ii-1],0);
-	ii++;
-	controls[ii] = this.patcher.newdefault(10, 100, "prepend set cc  ");
-	this.patcher.connect(controls[ii],0,controls[ii-2],0);
-	ii++;
-	controls[ii] = this.patcher.newdefault(10, 120, "pack", 0,0,0);
-	this.patcher.connect(controls[ii],0,controls[ii-2],0);
-	ii++;
-	controls[ii] = this.patcher.newdefault(10, 120, "pack", 0,0,0);
-	this.patcher.connect(controls[ii],0,controls[ii-2],0);
-	ii++;
-	controls[ii] = this.patcher.newdefault(10, 120, "notein", "@name", interface);
-	this.patcher.connect(controls[ii],0,controls[ii-2],0);
-	this.patcher.connect(controls[ii],1,controls[ii-2],1);
-	this.patcher.connect(controls[ii],2,controls[ii-2],2);
-	ii++;
-	controls[ii] = this.patcher.newdefault(10, 120, "ctlin", "@name", interface);
-	this.patcher.connect(controls[ii],0,controls[ii-2],0);
-	this.patcher.connect(controls[ii],1,controls[ii-2],1);
-	this.patcher.connect(controls[ii],2,controls[ii-2],2);
-	ii++;
-}
-
-function matrix_ext(path){
-	if(path.indexOf(":")!=-1) path = path.split(":")[1];
-	if(path.indexOf("none")!=-1) path = "none";
-	post("\next matrix driver",path);
-	configfile.replace("io::matrix::external",path);
-}
-
-function matrix_soundcard(path){
-	if(path.indexOf(":")!=-1) path = path.split(":")[1];
-	if(path.indexOf("none")!=-1) path = "none";
-	post("\nsoundcard matrix driver",path);
-	configfile.replace("io::matrix::soundcard",path);
-}
-
-function special_controller(path){
-	if(path.indexOf(":")!=-1) path = path.split(":")[1];
-	if(path.indexOf("none")!=-1) path = "none";
-	post("\nspecial controller driver",path);
-	configfile.replace("io::special_controller",path);
 }

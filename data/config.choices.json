@@ -4,482 +4,64 @@
 	"TEMPLATES_FOLDER" : "FOLDER",
 	"type_order" : "ORDER_LIST",
 	"gain_display_format" : ["x","dB"],
-	"click_buffer_scaledown" : 2,
-	"UPSAMPLING" : 1,
-	"RECYCLING" : 1,
-	"waves_preloading" : 1,
-	"wire_dia" : 0.03,
-	"glow" : 0.2,
+	"click_buffer_scaledown" : [1,2,4,8],
+	"UPSAMPLING" : "TOGGLE",
+	"RECYCLING" : "TOGGLE",
+	"waves_preloading" : "TOGGLE",
+	"wire_dia" : ["float", 0.01, 1],
+	"glow" : ["float", 0, 2],
 	"monofont" : "Consolas",
 	"mainfont" : "Arial",
-	"BLOCK_MENU_CLICK_ACTION" : "double_click",
-	"new_block_menu_mouse_action_note" : [ "click", "long_click", "double_click", "ctrl_click", "alt_click" ],
-	"MAX_BEZIER_SEGMENTS" : 16,
-	"MIN_BEZIER_SEGMENTS" : 8,
-	"PRELOAD_WIRES" : 1,
-	"BLOCKS_GRID" : 5,
-	"WIRES_SHOW_ALL" : 1,
-	"WIRES_REDUCE" : 1,
+	"BLOCK_MENU_CLICK_ACTION" : [ "click", "long_click", "double_click", "ctrl_click", "alt_click" ],
+	"MAX_BEZIER_SEGMENTS" : ["int",4,64],
+	"MIN_BEZIER_SEGMENTS" : ["int",4,16],
+	"PRELOAD_WIRES" : "TOGGLE",
+	"BLOCKS_GRID" : ["int",1,50],
+	"WIRES_SHOW_ALL" : "TOGGLE",
+	"WIRES_REDUCE" : "TOGGLE",
 	"MAX_BLOCKS" : 128,
 	"MAX_NOTE_VOICES" : 64,
 	"MAX_AUDIO_VOICES" : 64,
 	"MAX_AUDIO_INPUTS" : 18,
 	"MAX_AUDIO_OUTPUTS" : 24,
-	"NO_IO_PER_BLOCK" : 2,
-	"MAX_PARAMETERS" : 256,
-	"MAX_DATA" : 16384,
-	"MAX_MOD_IDS" : 1024,
+	"NO_IO_PER_BLOCK" : "DONT",
+	"MAX_PARAMETERS" : "DONT",
+	"MAX_DATA" : "DONT",
+	"MAX_MOD_IDS" : "DONT",
 	"MAX_WAVES_SLICES" : 1024,
 	"MAX_WAVES" : 16,
-	"MAX_HARDWARE_MIDI_OUTS" : 256,
-	"MAX_HARDWARE_BLOCKS" : 64,
-	"MAX_CONNECTIONS_PER_OUTPUT" : 32,
-	"MAX_OUTPUTS_PER_VOICE" : 128,
-	"MAX_STATES" : 18,
-	"UNIVERSAL_COLUMNS" : 6,
-	"UNIVERSAL_PATTERNS" : 16,
-	"MERGE_PURGE" : 1,
-	"MAX_PANEL_COLUMNS" : 4,
+	"MAX_HARDWARE_MIDI_OUTS" : "DONT",
+	"MAX_HARDWARE_BLOCKS" : "DONT",
+	"MAX_CONNECTIONS_PER_OUTPUT" : "DONT",
+	"MAX_OUTPUTS_PER_VOICE" : "DONT",
+	"MAX_STATES" : ["int",8,100],
+	"UNIVERSAL_COLUMNS" : "DONT",
+	"UNIVERSAL_PATTERNS" : "DONT",
+	"MERGE_PURGE" : "TOGGLE",
+	"MAX_PANEL_COLUMNS" : ["int",3,10],
 	"SELF_CONNECT_THRESHOLD" : 600,
 	"DOUBLE_CLICK_TIME" : 8,
 	"LONG_PRESS_TIME" : 800,
-	"SLIDER_CLICK_SET" : 0,
-	"SCOPE_DEFAULT_ZOOM" : 0.65,
-	"AUTOLOAD_INCLUDES_STATES" : 0,
-	"MODULATION_IN_PARAMETERS_VIEW" : 1,
-	"AUTOZOOM_ON_SELECT" : 0,
-	"AUTO_INCREMENT_SAVE_KEY" : 0,
-	"CTRL_VOICE_SEL_MOMENTARY" : 1,
-	"SHOW_STATES_ON_PANELS" : 1,
-	"TREE_SELECT_IGNORES_CONTROL_BLOCKS" : 1,
+	"SLIDER_CLICK_SET" : "TOGGLE",
+	"SCOPE_DEFAULT_ZOOM" : ["float",0.01,1],
+	"AUTOLOAD_INCLUDES_STATES" : "TOGGLE",
+	"MODULATION_IN_PARAMETERS_VIEW" : "TOGGLE",
+	"AUTOZOOM_ON_SELECT" : "TOGGLE",
+	"AUTO_INCREMENT_SAVE_KEY" : "TOGGLE",
+	"CTRL_VOICE_SEL_MOMENTARY" : "TOGGLE",
+	"SHOW_STATES_ON_PANELS" : "TOGGLE",
+	"TREE_SELECT_IGNORES_CONTROL_BLOCKS" : "TOGGLE",
 	"TARGET_FPS" : [30, 5],
 	"SELECTED_BLOCK_Z_MOVE" : 1,
 	"SELECTED_BLOCK_DEPENDENTS_Z_MOVE" : 0.5,
-	"METER_TINT" : 0.3,
-	"START_FULLSCREEN" : 0,
-	"SHOW_CONTROL_AUTO_DURING_SONG_LOAD" : 0,
-	"AUTOMAP_MOUSE_FOLLOW" : 0,
-	"ENABLE_RECORD_HARDWARE" : 1,
+	"METER_TINT" : ["float",0,1],
+	"START_FULLSCREEN" : "TOGGLE",
+	"SHOW_CONTROL_AUTO_DURING_SONG_LOAD" : "TOGGLE",
+	"AUTOMAP_MOUSE_FOLLOW" : "TOGGLE",
+	"ENABLE_RECORD_HARDWARE" : "TOGGLE",
 	"sidebar_scrollbar_width" : 27,
 	"sidebar_width_in_units" : 10,
-	"consolevsts" : {
-		"bus" : "console7buss64",
-		"channel" : "console7channel64",
-		"cascade" : "console7cascade64",
-		"crunch" : "console7crunch64"
-	},
-	"maxmsp" : {
-		"preempt" : 1,
-		"seteventinterval" : 2,
-		"setpollthrottle" : 200,
-		"setqueuethrottle" : 10,
-		"setslop" : 100,
-		"setsysqelemthrottle" : 100,
-		"getsystem" : "systemtype"
-	},
-	"palette" : 	{
-		"menu" : [ 255, 200, 25 ],
-		"muted" : [ 30, 30, 40 ],
-		"background" : [0,0,0],
-		"background_blocks" : [0,0,0],
-		"background_block_menu" : [0,0,0],
-		"background_panels" : [0,0,0],
-		"background_waves" : [0,0,0],
-		"background_sidebar" : [0,0,0],
-		"connections" : 		{
-			"block" : [ 55, 255, 255 ],
-			"matrix" : [ 205, 25, 255 ],
-			"hardware" : [ 255, 50, 25 ],
-			"audio" : [ 225, 120, 25 ],
-			"midi" : [ 205, 200, 25 ],
-			"parameters" : [ 120, 225, 25 ],
-			"potential" : [255,255,255]
-		},
-		"gamut" : [ 			{
-				"colour" : [ 208, 0, 108 ]
-			}
-, 			{
-				"colour" : [ 194, 46, 107 ]
-			}
-, 			{
-				"colour" : [ 152, 51, 86 ]
-			}
-, 			{
-				"colour" : [ 191, 0, 94 ]
-			}
-, 			{
-				"colour" : [ 123, 20, 60 ]
-			}
-, 			{
-				"colour" : [ 209, 9, 96 ]
-			}
-, 			{
-				"colour" : [ 190, 55, 96 ]
-			}
-, 			{
-				"colour" : [ 127, 0, 48 ]
-			}
-, 			{
-				"colour" : [ 190, 57, 90 ]
-			}
-, 			{
-				"colour" : [ 187, 0, 74 ]
-			}
-, 			{
-				"colour" : [ 149, 0, 52 ]
-			}
-, 			{
-				"colour" : [ 138, 38, 58 ]
-			}
-, 			{
-				"colour" : [ 205, 31, 76 ]
-			}
-, 			{
-				"colour" : [ 166, 64, 77 ]
-			}
-, 			{
-				"colour" : [ 165, 0, 53 ]
-			}
-, 			{
-				"colour" : [ 123, 0, 35 ]
-			}
-, 			{
-				"colour" : [ 195, 0, 59 ]
-			}
-, 			{
-				"colour" : [ 182, 67, 77 ]
-			}
-, 			{
-				"colour" : [ 113, 15, 32 ]
-			}
-, 			{
-				"colour" : [ 165, 0, 43 ]
-			}
-, 			{
-				"colour" : [ 206, 33, 59 ]
-			}
-, 			{
-				"colour" : [ 189, 61, 67 ]
-			}
-, 			{
-				"colour" : [ 135, 0, 29 ]
-			}
-, 			{
-				"colour" : [ 157, 0, 31 ]
-			}
-, 			{
-				"colour" : [ 151, 57, 54 ]
-			}
-, 			{
-				"colour" : [ 199, 0, 38 ]
-			}
-, 			{
-				"colour" : [ 94, 0, 8 ]
-			}
-, 			{
-				"colour" : [ 106, 0, 12 ]
-			}
-, 			{
-				"colour" : [ 197, 52, 51 ]
-			}
-, 			{
-				"colour" : [ 206, 37, 35 ]
-			}
-, 			{
-				"colour" : [ 212, 0, 24 ]
-			}
-, 			{
-				"colour" : [ 183, 69, 55 ]
-			}
-, 			{
-				"colour" : [ 125, 0, 4 ]
-			}
-, 			{
-				"colour" : [ 177, 0, 13 ]
-			}
-, 			{
-				"colour" : [ 173, 77, 60 ]
-			}
-, 			{
-				"colour" : [ 140, 9, 0 ]
-			}
-, 			{
-				"colour" : [ 104, 24, 9 ]
-			}
-, 			{
-				"colour" : [ 135, 52, 33 ]
-			}
-, 			{
-				"colour" : [ 154, 18, 0 ]
-			}
-, 			{
-				"colour" : [ 195, 57, 26 ]
-			}
-, 			{
-				"colour" : [ 183, 70, 41 ]
-			}
-, 			{
-				"colour" : [ 182, 30, 0 ]
-			}
-, 			{
-				"colour" : [ 200, 49, 11 ]
-			}
-, 			{
-				"colour" : [ 187, 66, 32 ]
-			}
-, 			{
-				"colour" : [ 110, 25, 0 ]
-			}
-, 			{
-				"colour" : [ 131, 30, 0 ]
-			}
-, 			{
-				"colour" : [ 168, 43, 0 ]
-			}
-, 			{
-				"colour" : [ 155, 74, 45 ]
-			}
-, 			{
-				"colour" : [ 164, 55, 0 ]
-			}
-, 			{
-				"colour" : [ 136, 49, 0 ]
-			}
-, 			{
-				"colour" : [ 167, 83, 39 ]
-			}
-, 			{
-				"colour" : [ 114, 42, 0 ]
-			}
-, 			{
-				"colour" : [ 153, 58, 0 ]
-			}
-, 			{
-				"colour" : [ 172, 80, 30 ]
-			}
-, 			{
-				"colour" : [ 139, 69, 29 ]
-			}
-, 			{
-				"colour" : [ 107, 45, 0 ]
-			}
-, 			{
-				"colour" : [ 127, 55, 0 ]
-			}
-, 			{
-				"colour" : [ 137, 60, 0 ]
-			}
-, 			{
-				"colour" : [ 116, 57, 6 ]
-			}
-, 			{
-				"colour" : [ 134, 72, 22 ]
-			}
-, 			{
-				"colour" : [ 157, 90, 25 ]
-			}
-, 			{
-				"colour" : [ 131, 70, 0 ]
-			}
-, 			{
-				"colour" : [ 146, 96, 28 ]
-			}
-, 			{
-				"colour" : [ 142, 98, 21 ]
-			}
-, 			{
-				"colour" : [ 118, 87, 0 ]
-			}
-, 			{
-				"colour" : [ 103, 106, 0 ]
-			}
-, 			{
-				"colour" : [ 80, 103, 0 ]
-			}
-, 			{
-				"colour" : [ 92, 111, 29 ]
-			}
-, 			{
-				"colour" : [ 87, 116, 11 ]
-			}
-, 			{
-				"colour" : [ 80, 117, 27 ]
-			}
-, 			{
-				"colour" : [ 67, 119, 29 ]
-			}
-, 			{
-				"colour" : [ 57, 109, 40 ]
-			}
-, 			{
-				"colour" : [ 0, 92, 2 ]
-			}
-, 			{
-				"colour" : [ 0, 113, 18 ]
-			}
-, 			{
-				"colour" : [ 32, 122, 50 ]
-			}
-, 			{
-				"colour" : [ 0, 98, 191 ]
-			}
-, 			{
-				"colour" : [ 59, 95, 169 ]
-			}
-, 			{
-				"colour" : [ 0, 84, 172 ]
-			}
-, 			{
-				"colour" : [ 0, 65, 136 ]
-			}
-, 			{
-				"colour" : [ 0, 96, 195 ]
-			}
-, 			{
-				"colour" : [ 54, 102, 203 ]
-			}
-, 			{
-				"colour" : [ 0, 95, 208 ]
-			}
-, 			{
-				"colour" : [ 0, 87, 204 ]
-			}
-, 			{
-				"colour" : [ 1, 72, 172 ]
-			}
-, 			{
-				"colour" : [ 1, 73, 186 ]
-			}
-, 			{
-				"colour" : [ 0, 55, 147 ]
-			}
-, 			{
-				"colour" : [ 0, 33, 101 ]
-			}
-, 			{
-				"colour" : [ 75, 78, 152 ]
-			}
-, 			{
-				"colour" : [ 88, 95, 204 ]
-			}
-, 			{
-				"colour" : [ 0, 69, 206 ]
-			}
-, 			{
-				"colour" : [ 0, 85, 249 ]
-			}
-, 			{
-				"colour" : [ 45, 49, 118 ]
-			}
-, 			{
-				"colour" : [ 0, 48, 156 ]
-			}
-, 			{
-				"colour" : [ 61, 88, 245 ]
-			}
-, 			{
-				"colour" : [ 85, 91, 217 ]
-			}
-, 			{
-				"colour" : [ 33, 40, 116 ]
-			}
-, 			{
-				"colour" : [ 93, 89, 185 ]
-			}
-, 			{
-				"colour" : [ 57, 78, 225 ]
-			}
-, 			{
-				"colour" : [ 83, 79, 165 ]
-			}
-, 			{
-				"colour" : [ 81, 83, 202 ]
-			}
-, 			{
-				"colour" : [ 106, 0, 94 ]
-			}
-, 			{
-				"colour" : [ 137, 51, 123 ]
-			}
-, 			{
-				"colour" : [ 168, 41, 150 ]
-			}
-, 			{
-				"colour" : [ 157, 59, 141 ]
-			}
-, 			{
-				"colour" : [ 123, 46, 110 ]
-			}
-, 			{
-				"colour" : [ 112, 23, 99 ]
-			}
-, 			{
-				"colour" : [ 173, 61, 154 ]
-			}
-, 			{
-				"colour" : [ 136, 0, 119 ]
-			}
-, 			{
-				"colour" : [ 81, 0, 69 ]
-			}
-, 			{
-				"colour" : [ 157, 0, 134 ]
-			}
-, 			{
-				"colour" : [ 129, 0, 109 ]
-			}
-, 			{
-				"colour" : [ 171, 66, 144 ]
-			}
-, 			{
-				"colour" : [ 183, 49, 151 ]
-			}
-, 			{
-				"colour" : [ 158, 0, 122 ]
-			}
-, 			{
-				"colour" : [ 150, 64, 121 ]
-			}
-, 			{
-				"colour" : [ 187, 47, 144 ]
-			}
-, 			{
-				"colour" : [ 115, 28, 86 ]
-			}
-, 			{
-				"colour" : [ 130, 0, 93 ]
-			}
-, 			{
-				"colour" : [ 191, 42, 139 ]
-			}
-, 			{
-				"colour" : [ 133, 42, 94 ]
-			}
-, 			{
-				"colour" : [ 176, 0, 115 ]
-			}
-, 			{
-				"colour" : [ 148, 0, 95 ]
-			}
-, 			{
-				"colour" : [ 182, 59, 125 ]
-			}
-, 			{
-				"colour" : [ 122, 0, 70 ]
-			}
-, 			{
-				"colour" : [ 180, 63, 116 ]
-			}
-, 			{
-				"colour" : [ 154, 0, 85 ]
-			}
-, 			{
-				"colour" : [ 175, 70, 109 ]
-			}
-, 			{
-				"colour" : [ 144, 0, 74 ]
-			}
- ]
-	}
-
+	"consolevsts" : "DONT",
+	"maxmsp" : "DONT",
+	"palette" : "DONT"
 }
