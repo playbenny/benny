@@ -1186,6 +1186,11 @@ function draw_menu_hint(){
 	if(blocktypes.contains(usermouse.hover[1]+"::colour")){
 		col = blocktypes.get(usermouse.hover[1]+"::colour");
 		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
+		if(automap.mapped_c == -0.5){
+			mapcolours = [col[0], col[1], col[2]];
+			for(var i=0;i<(automap.c_cols*automap.c_rows - 1);i++)mapcolours.push(-1);
+			note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
+		}
 	}
 	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
 	var topspace=(menu.mode == 3)+1.1*(loading.progress!=0);

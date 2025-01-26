@@ -46,9 +46,9 @@ function set_display_mode(mode,t){
 				maplist.push(-0.5);
 				mapwrap.push(1);
 				maplistopv.push(-1);
-				mapcolours.push(32);
-				mapcolours.push(256);
-				mapcolours.push(32);
+				mapcolours.push(218);
+				mapcolours.push(36);
+				mapcolours.push(0);
 				for(var pad=1;pad<automap.c_cols*automap.c_rows;pad++){
 					maplist.push(-1);
 					mapwrap.push(1);
