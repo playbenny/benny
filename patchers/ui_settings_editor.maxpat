@@ -10,9 +10,11 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 59.0, 107.0, 1000.0, 780.0 ],
+		"rect" : [ 59.0, 107.0, 1059.0, 780.0 ],
 		"openinpresentation" : 1,
 		"gridsize" : [ 15.0, 15.0 ],
+		"toolbarvisible" : 0,
+		"enablehscroll" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-11",
@@ -33,7 +35,6 @@
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 829.0, 256.0, 133.0, 22.0 ],
-					"presentation_linecount" : 3,
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -65,7 +66,6 @@
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
 					"patching_rect" : [ 829.0, 199.0, 110.0, 22.0 ],
-					"presentation_linecount" : 3,
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -236,7 +236,7 @@
 
 			}
  ],
-		"originid" : "pat-3328",
+		"originid" : "pat-3434",
 		"dependency_cache" : [ 			{
 				"name" : "benny_ui_settings_editor.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
@@ -245,7 +245,8 @@
 				"implicit" : 1
 			}
  ],
-		"autosave" : 0
+		"autosave" : 0,
+		"bgcolor" : [ 0.125490196078431, 0.125490196078431, 0.125490196078431, 1.0 ]
 	}
 
 }
