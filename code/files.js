@@ -541,7 +541,9 @@ function import_song(){
 	var b,i,t;
 	//post("\nimport-displaymode is",displaymode);
 	if(loading.progress==-1){
-		try{ preload_task.cancel();	}catch(err){}
+		try{ preload_task.cancel();	}catch(err){
+			post("\nerror cancelling preload task");
+		}
 		//set_display_mode("loading");
 		if(output_looper_active){
 			post("\noutput looper is active so i should be setting it to fullscreen but i wont");
@@ -875,7 +877,7 @@ function import_song(){
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		
-		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){} //if you interupted preloading waves, just restart it in 5secs
+		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){post("\nerror rescheduling preload task");} //if you interupted preloading waves, just restart it in 5secs
 	}
 }
 
