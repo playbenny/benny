@@ -125,7 +125,7 @@ function create_ui(){
 					for(ii=0;ii<ch.length;ii++){
 						buttons[b_i].message("append",ch[ii]);	
 					}
-					buttons[b_i].message("set", current);
+					buttons[b_i].message("set", ch.indexOf(current));
 					buttons[b_i].listener = new MaxobjListener(buttons[b_i], callback);
 					buttons[b_i].presentation(1);
 					buttons[b_i].presentation_rect(0.3*unit.col,y_pos,0.2*unit.col,20);
