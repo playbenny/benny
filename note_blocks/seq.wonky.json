@@ -7,12 +7,19 @@
 		"no_edit" : 1,
 		"help_text" : "The step time sliders control the length of each step, the block pro-ratas these lengths to make them fit into the time period you've set below. You can use this as a clock or there are also value sliders so you can use it as a stand alone sequencer - it outputs both the raw slider values and quantised pitches (with vel following incoming clocks).",
 		"max_polyphony" : 0,
+		"default_polymode" : 	{
+			"stack_mode" : "unison all",
+			"choose_mode" : "blind cycle",
+			"steal_mode" : "cyclic",
+			"return_mode" : 1
+		},
 		"connections" : {
 			"in" : {
 				"midi" : [ "clock in","reset in" ]
 			},
 			"out" : {
 				"parameters" : [ "values" ],
+				"dontdefaultall" : 1,
 				"midi" : [ "pitches", "clock" ]
 			}
 		},

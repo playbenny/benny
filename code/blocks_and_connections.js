@@ -2268,6 +2268,32 @@ function build_new_connection_menu(from, to, fromv,tov){
 	
 	var d = new Dict;
 	d = blocktypes.get(fromname);
+	if(d.contains("connections::out::default")){
+		var def=d.get("connections::out::default");
+		var s_m = d.getsize("connections::out::midi");
+		if(def<s_m){
+			sidebar.connection.default_out_applied = 1;
+			new_connection.replace("from::output::type","midi");
+		}else{
+			def -=s_m;
+			s_m = d.getsize("connections::out::parameters")
+			if(def<s_m){
+				sidebar.connection.default_out_applied = 1;
+				new_connection.replace("from::output::type","parameters");
+			}else{
+				def -= s_m;
+				sidebar.connection.default_out_applied = 2;
+				s_m = d.getsize("connections::out::audio");
+				if(def<s_m){
+					new_connection.replace("from::output::type","audio");
+				}else{
+					def-=s_m;
+					new_connection.replace("from::output::type","hardware");
+				}
+			}
+		}
+		new_connection.replace("from::output::number",def);
+	}
 	if(d.contains("connections::out::hardware")){
 		if(!sidebar.connection.default_out_applied){
 			sidebar.connection.default_out_applied=2;
