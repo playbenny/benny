@@ -222,6 +222,7 @@ function parameter_menu_b(p){ //voice is in [11] blcok is in [8]
 }
 
 function parameter_menu_l(p){
+	setfontsize(fontsmall);
 	var mi = paramslider_details[p][7];
 	var statecount = (paramslider_details[p][17].length);// - 1) / 2;
 	var pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*paramslider_details[p][15]+paramslider_details[p][9]); //

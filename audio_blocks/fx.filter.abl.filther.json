@@ -3,7 +3,7 @@
 		"patcher" : "fx.filter.abl.filther",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "wrapper for the abl.dsp.filther filter. second input is frequence modulation. only available in max 9.",
+		"help_text" : "wrapper for the abl.dsp.filther filter. second input is frequency modulation. only available in max 9.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"from_subvoices" : 2,
