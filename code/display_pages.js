@@ -2161,7 +2161,7 @@ function draw_sidebar(){
 			if(automap.assignmode)turn_off_controller_assign_mode();
 			sidebar.scroll.position = 0;
 		}
-		if((automap.mapped_c==-0.5)&&(sidebar.mode!="wire")){
+		if((automap.mapped_c==-0.5)&&(sidebar.mode!="wire")&&(sidebar.mode!="wires")){
 			automap.mapped_c = -1;
 			note_poly.message("setvalue", automap.available_c, "automapped", 0);
 		}
@@ -6474,9 +6474,9 @@ function draw_sidebar(){
 				lcd_main.message("write", "un");
 				lcd_main.message("moveto", sidebar.x2 - fontheight*2, fontheight*0.75+y_offset);
 				lcd_main.message("write", "mute");
-				lcd_main.message("paintrect", sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight+y_offset,menucolour );
+				lcd_main.message("paintrect", sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 				click_zone(connection_mute_selected,1,null, sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
-				lcd_main.message("frgb" , 0,0,0);				
+				lcd_main.message("frgb" , 128,128,128);				
 				lcd_main.message("moveto", sidebar.x2 + fontheight*0.9, fontheight*0.75+y_offset);
 				lcd_main.message("write", "mute");	
 				var y_o = y_offset + 1.1*fontheight;	
@@ -6484,13 +6484,18 @@ function draw_sidebar(){
 				var block_label;
 				var avg_scale = 0;
 				var num = 0;
+				var same_dest = -1;
 				for(i=0;i<selected.wire.length;i++){
 					if(selected.wire[i]){
 						num++;
 						var f_number = connections.get("connections["+i+"]::from::number");
 						var f_label = blocks.get("blocks["+f_number+"]::label");
-						//var f_name = blocks.get("blocks["+f_number+"]::name");
 						var t_number = connections.get("connections["+i+"]::to::number");
+						if(num==1){
+							same_dest = t_number;
+						}else{
+							if(t_number!=same_dest)same_dest=-1;
+						}
 						var t_label = blocks.get("blocks["+t_number+"]::label");
 						//var t_name = blocks.get("blocks["+t_number+"]::name");
 						//var f_o_no = connections.get("connections["+i+"]::from::output::number");
@@ -6552,6 +6557,77 @@ function draw_sidebar(){
 				mouse_click_parameters[mouse_index] = 0;
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
+			
+				if((automap.available_c>-1)&&(!automap.lock_c)){
+					automap.groups = ["connections_multi"];
+					automap.sidebar_row_ys[0] = 0.01;
+
+					automap.mapped_c=-0.5;
+					var maplist = [];
+					var mapwrap = [];
+					var maplistopv = [];
+					var mapcolours = [];
+					
+					
+					if(automap.c_rows<automap.groups.length){
+						for(var pad=0;pad<automap.c_cols*automap.c_rows;pad++){
+							if(pad<automap.groups.length){
+								maplist.push(-0.5);
+								mapcolours.push(menucolour[0]);
+								mapcolours.push(menucolour[1]);
+								mapcolours.push(menucolour[2]);
+							}else{
+								maplist.push(-1);
+								mapcolours.push(-1);	
+							}
+							mapwrap.push(1);
+							maplistopv.push(-1);
+						}
+					}else{
+						for(var pad=0;pad<automap.c_cols*automap.c_rows;pad++){
+							var px = pad % automap.c_cols;
+							var py = ((pad-px)/automap.c_cols);
+							if((px==0)&&(py<automap.groups.length)){
+								maplist.push(-0.5);
+								mapcolours.push(menucolour[0]);
+								mapcolours.push(menucolour[1]);
+								mapcolours.push(menucolour[2]);
+							}else{
+								maplist.push(-1);
+								mapcolours.push(-1);	
+							}
+							mapwrap.push(1);
+							maplistopv.push(-1);
+						}
+					}
+					note_poly.message("setvalue", automap.available_c, "automapped", 1);
+					note_poly.message("setvalue", automap.available_c, "automap_offset", 0);
+					note_poly.message("setvalue", automap.available_c, "maplistopv",maplistopv);
+					note_poly.message("setvalue", automap.available_c, "maplist",maplist);
+					note_poly.message("setvalue", automap.available_c, "mapwrap",mapwrap);
+					note_poly.message("setvalue", automap.available_c, "mapcolour",mapcolours);
+					note_poly.message("setvalue", automap.available_c, "buttonmaplist",-1);
+				}
+
+				if(same_dest>-1){
+					y_offset+=0.6*fontheight;
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+0.5*y_offset,block_darkest );
+					lcd_main.message("moveto", sidebar.x + fontheight*0.2, fontheight*0.35+y_offset);
+					lcd_main.message("frgb" , block_colour);
+					lcd_main.message("write", "selected wires all have the same destination:");
+					y_offset+=0.6*fontheight;
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+sidebar.width*0.5-fontheight*0.05, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? block_colour:block_darkest );
+					click_zone(insert_multi_menu_button,same_dest,null, sidebar.x, y_offset, sidebar.x+sidebar.width*0.5-fontheight*0.05, fontheight+y_offset,mouse_index,1 );
+					lcd_main.message("moveto", sidebar.x + fontheight*0.2, fontheight*0.75+y_offset);
+					lcd_main.message("frgb" , (usermouse.clicked2d==mouse_index)? block_darkest : block_colour);
+					lcd_main.message("write", "insert block");
+					lcd_main.message("paintrect", sidebar.x+sidebar.width*0.5+fontheight*0.05, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? block_colour:block_darkest );
+					click_zone(insert_mixer,same_dest, null, sidebar.x+sidebar.width*0.5+fontheight*0.05, y_offset, sidebar.x2, fontheight+y_offset ,mouse_index, 1);
+					lcd_main.message("moveto", sidebar.x + sidebar.width*0.5+ fontheight*0.2, fontheight*0.75+y_offset);
+					lcd_main.message("frgb" , (usermouse.clicked2d==mouse_index)? block_darkest : block_colour);
+					lcd_main.message("write", "insert mixer");
+					y_offset+=1.1*fontheight;
+				}
 			}
 		}else if(sidebar.mode == "input_scope"){
 			sidebar.scroll.position = 0;
@@ -6753,7 +6829,7 @@ function draw_sidebar(){
 	if(y_offset+sidebar.scroll.position >= mainwindow_height){
 		sidebar.scroll.max = fontheight + fontheight + sidebar.scroll.position+y_offset-mainwindow_height;
 	}else{
-		if((sidebar.mode!="none")){
+		if(view_changed && (sidebar.mode!="none")){
 			var ttt= (displaymode == "panels") ? 1 : 0;
 			click_rectangle(sidebar.x,y_offset+1,sidebar.x2,mainwindow_height,ttt,ttt);
 		}

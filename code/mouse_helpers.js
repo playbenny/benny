@@ -580,7 +580,6 @@ function open_patcher(block,voice){
 		}else{
 			note_poly.message("setvalue",  voice+1, "open");
 		}
-		//clear_blocks_selection();
 	}else{
 		voice = voice  - MAX_NOTE_VOICES;	
 		if(usermouse.ctrl){
@@ -588,7 +587,6 @@ function open_patcher(block,voice){
 		}else{
 			audio_poly.message("setvalue",  voice+1, "open");
 		}
-		//clear_blocks_selection();
 	}
 }
 
@@ -597,14 +595,19 @@ function swap_block_button(block){
 	menu.show_all_types = 0;
 	menu.mode = 1;
 	set_display_mode("block_menu");
-	//squash_block_menu();
 }
 
 function insert_menu_button(cno){
 	if(cno==-1) cno = selected.wire.indexOf(1);
 	menu.mode = 2;
 	menu.connection_number = cno;
-	//needs to set blocks_page.new_block_click_pos to the average of the 2 block's [x,y,z] TODO
+	set_display_mode("block_menu");
+}
+
+function insert_multi_menu_button(){
+	menu.connection_number = [];
+	for(var i=0;i<connections.getsize("connections");i++) if(selected.wire[i])menu.connection_number.push(i);
+	menu.mode = 2;
 	set_display_mode("block_menu");
 }
 
@@ -3585,8 +3588,10 @@ function blocks_menu_enter(){
 			swap_block(types[sel]);
 			set_display_mode("blocks");
 		}else if(menu.mode == 2){
-			var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
-			var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
+			var cno = menu.connection_number;
+			if(Array.isArray(menu.connection_number)) cno = menu.connection_number[0];
+			var f_no= connections.get("connections["+cno+"]::from::number");
+			var t_no = connections.get("connections["+cno+"]::to::number");
 			//var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
 			var avx = blocks.get("blocks["+f_no+"]::space::x");
 			var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
@@ -3860,6 +3865,10 @@ function automap_direct_to_core(knob,value){
 			kx= connection_edit(automap.groups[c],"get");
 			kx += value * automap.sidebar_row_ys[c];
 			connection_edit(automap.groups[c],kx);
+		}
+	}else if(sidebar.mode=="wires"){
+		if(knob==0){
+			connection_scale_selected(0,value*automap.sidebar_row_ys[0]);
 		}
 	}else{
 		post("\nreceived ",knob,value," but in ",sidebar.mode," i have nothing assigned to that");

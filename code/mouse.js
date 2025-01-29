@@ -453,8 +453,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-								var f_no= connections.get("connections["+menu.connection_number+"]::from::number");
-								var t_no = connections.get("connections["+menu.connection_number+"]::to::number");
+								var cno = menu.connection_number;
+								if(Array.isArray(menu.connection_number)) cno = menu.connection_number[0];
+					
+								var f_no= connections.get("connections["+cno+"]::from::number");
+								var t_no = connections.get("connections["+cno+"]::to::number");
 		
 								var avx = blocks.get("blocks["+f_no+"]::space::x");
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;

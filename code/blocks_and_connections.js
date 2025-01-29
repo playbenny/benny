@@ -42,6 +42,10 @@ function new_block(block_name,x,y){
 	}else{
 		new_voice = next_free_voice(type,block_name);
 	}
+	if(new_voice<0){
+		post("\nnew block failed");
+		return -1;
+	}
 	var t_offset = 0;
 	if(type == "note"){
 		note_patcherlist[new_voice] = patcher;
@@ -2791,6 +2795,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			}else{
 				new_voice = next_free_voice(type,block_name);
 			}
+			if(new_voice<0){
+				post("adding voice failed");
+				return -1;
+			}
 			if(details.contains("voice_data::defaults")){
 				if(loading.wait>1) post("\n- poking in default voicedata");
 				var vd_def = [];
@@ -3045,7 +3053,107 @@ function connection_edit_voices(connection, voice){
 	redraw_flag.flag |= 4;
 }
 
+function insert_block_in_multi_connections(newblockname,newblock){
+	// this gets called by insert block when it realises it's dealing with multi-connections
+	// it needs to take the array from menu.connnection_number, replace it with the first element then call insert block
+	var old_connections_list = menu.connection_number.slice(0);
+	menu.connection_number = old_connections_list[0];
+	post("\ndoing first connection as a normal insert");
+	insert_block_in_connection(newblockname,newblock);
+	// then replace all the other connections
+	for(var i=1;i<old_connections_list.length;i++){
+		swap_connection_destination(old_connections_list[i],newblock,newblockname);
+	}
+}
+
+function swap_connection_destination(cno,newblock,newblockname){
+	//this moves a connection from one block to another. used internally only (ie insert in multi, insert mixer)
+	// get the details of the inserted block
+	var details = new Dict;
+	details = blocktypes.get(newblockname);
+	var intypes = details.get("connections::in").getkeys();
+	if(!Array.isArray(intypes))	intypes=[intypes];
+		
+	//- copy all the connection details
+	var oldconn = new Dict;
+	oldconn = connections.get("connections["+cno+"]");
+	
+	// make a new connection:
+	var f_type = oldconn.get("from::output::type");
+	var t_type = oldconn.get("to::input::type");
+	var i_no;
+	
+	//try to match up types..
+	i_no = intypes.indexOf(f_type);
+	if(i_no==-1){
+		i_no = intypes.indexOf(t_type);
+		if(i_no==-1) i_no = 0;
+		post("matching input type not found, next best chosen");
+	}
+	// so what i'm calling i_no and o_no are actually type number, not output number. 
+	var defaultpos=0;
+	var ftt = ((f_type == "hardware") || (f_type == "matrix")) ? "audio" : f_type;
+	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
+	//if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
+	//if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
+	new_connection.parse('{}');
+/*	if(defaultpos == 1){//this is the rare exception where default is the second one.
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::offset", 0);
+		new_connection.replace("conversion::offset2", 0.5);
+		if(((f_type=="midi")||(f_type=="parameters"))&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+	}else{*/
+		new_connection.replace("conversion",oldconn.get("conversion"));
+	//}
+	new_connection.replace("from",oldconn.get("from"));
+	new_connection.replace("to::number",newblock);
+	new_connection.replace("to::voice","all");
+	new_connection.replace("to::input::number",0/*i_no*/);
+	new_connection.replace("to::input::type",intypes[i_no]);
+	connections.append("connections",new_connection);
+	make_connection(connections.getsize("connections")-1,0);
+	new_connection.clear();
+	
+	set_display_mode("blocks");
+	remove_connection(cno);
+	redraw_flag.flag |= 4;	
+}
+
+function insert_mixer(destination){
+	// assume audio, hw or matrix connections..
+	menu.connection_number = []; //wire numbers
+	for(var i=0;i<connections.getsize("connections");i++){
+		if(selected.wire[i]){
+			menu.connection_number.push(i); //this is for the first insert multi
+			selected.wire[i]=0;
+		}
+	} // prep a list because you need to clear selection to do the inserting.
+	var destx = blocks.get("blocks["+destination+"]::space::x");
+	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
+	var newblock = new_block("mix.bus",destx,desty);
+	draw_blocks();
+	insert_block_in_multi_connections("mix.bus",newblock);
+
+	for(var i=0;i<connections.getsize("connections");i++){
+		if(connections.contains("connections["+i+"]::to")&&(connections.get("connections["+i+"]::to::number")==newblock)){
+			var src = connections.get("connections["+i+"]::from::number");
+			var srcx = blocks.get("blocks["+src+"]::space::x");
+			var srcy = blocks.get("blocks["+src+"]::space::y");
+
+			selected.wire[i]=1;
+			newchanblock = new_block("mix.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
+			draw_blocks();
+			insert_block_in_connection("mix.channel",newchanblock);
+			selected.wire[i]=0;
+		}
+	}
+}
+
 function insert_block_in_connection(newblockname,newblock){
+	if(Array.isArray(menu.connection_number)) insert_block_in_multi_connections(newblockname,newblock);
+
 	// get the details of the inserted block
 	var details = new Dict;
 	details = blocktypes.get(newblockname);
