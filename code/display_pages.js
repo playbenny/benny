@@ -6253,8 +6253,6 @@ function draw_sidebar(){
 				}
 			}
 			
-
-			//i = selected.wire.indexOf(1);
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
 			click_zone(insert_menu_button, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 			lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);

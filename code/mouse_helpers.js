@@ -597,10 +597,22 @@ function swap_block_button(block){
 	set_display_mode("block_menu");
 }
 
+function block_position(number){
+	var x = blocks.get("blocks["+number+"]::space::x");
+	var y = blocks.get("blocks["+number+"]::space::y");
+	return [x,y];
+}
+
 function insert_menu_button(cno){
 	if(cno==-1) cno = selected.wire.indexOf(1);
 	menu.mode = 2;
 	menu.connection_number = cno;
+	var fr=block_position(connections.get("connections["+cno+"]::from::number"));
+	var tt=block_position(connections.get("connections["+cno+"]::to::number"));
+	blocks_page.new_block_click_pos = [0.5*(fr[0]+tt[0]),0.5*(fr[1]+tt[1])];
+	if((fr[1]-tt[1])<2){
+		make_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.5);
+	}
 	set_display_mode("block_menu");
 }
 
@@ -3588,17 +3600,7 @@ function blocks_menu_enter(){
 			swap_block(types[sel]);
 			set_display_mode("blocks");
 		}else if(menu.mode == 2){
-			var cno = menu.connection_number;
-			if(Array.isArray(menu.connection_number)) cno = menu.connection_number[0];
-			var f_no= connections.get("connections["+cno+"]::from::number");
-			var t_no = connections.get("connections["+cno+"]::to::number");
-			//var avx = 0.25*Math.round(2*(blocks.get("blocks["+f_no+"]::space::x") + blocks.get("blocks["+t_no+"]::space::x")));
-			var avx = blocks.get("blocks["+f_no+"]::space::x");
-			var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
-			var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
-			if(dy<1.2) make_space(avx,avy,0.65);
-			var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
-			var r = new_block(types[sel], avx,avy);
+			var r = new_block(types[sel], blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1]);
 			if(blocktypes.get(types[sel]+"::type")=="audio") send_audio_patcherlist(1);
 			draw_block(r);
 			insert_block_in_connection(types[sel],r);							

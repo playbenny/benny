@@ -3058,10 +3058,11 @@ function insert_block_in_multi_connections(newblockname,newblock){
 	// it needs to take the array from menu.connnection_number, replace it with the first element then call insert block
 	var old_connections_list = menu.connection_number.slice(0);
 	menu.connection_number = old_connections_list[0];
-	post("\ndoing first connection as a normal insert");
+	//post("\ndoing first connection as a normal insert");
 	insert_block_in_connection(newblockname,newblock);
 	// then replace all the other connections
 	for(var i=1;i<old_connections_list.length;i++){
+		//post("\nswapping remaining connections over to their new destination:",old_connections_list[i]);
 		swap_connection_destination(old_connections_list[i],newblock,newblockname);
 	}
 }
@@ -3133,27 +3134,36 @@ function insert_mixer(destination){
 	var destx = blocks.get("blocks["+destination+"]::space::x");
 	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
 	var newblock = new_block("mix.bus",destx,desty);
-	draw_blocks();
+	draw_block(newblock);
+	send_audio_patcherlist(1);
 	insert_block_in_multi_connections("mix.bus",newblock);
-
+	var newlist = [];
 	for(var i=0;i<connections.getsize("connections");i++){
-		if(connections.contains("connections["+i+"]::to")&&(connections.get("connections["+i+"]::to::number")==newblock)){
-			var src = connections.get("connections["+i+"]::from::number");
-			var srcx = blocks.get("blocks["+src+"]::space::x");
-			var srcy = blocks.get("blocks["+src+"]::space::y");
-
-			selected.wire[i]=1;
+		if(connections.contains("connections["+i+"]::to")&&(connections.get("connections["+i+"]::to::number")==newblock)) newlist.push(i);
+	}
+	for(var i=0;i<newlist.length;i++){
+		post("\nconnection",newlist[i],"ends at the new mix.bus")
+		var src = connections.get("connections["+newlist[i]+"]::from::number");
+		var srcx = blocks.get("blocks["+src+"]::space::x");
+		var srcy = blocks.get("blocks["+src+"]::space::y");
+		menu.connection_number=newlist[i];
+		//now decide whether it's stereo or mono:
+		var vl = connections.get("connections["+newlist[i]+"]::from::voice");
+		if(((vl == "all")&&((blocks.get("blocks["+src+"]::poly::voices")>1)||(blocks.get("blocks["+src+"]::from_subvoices")>1)))||(Array.isArray(vl))||(blocks.get("blocks["+src+"]::subvoices")>1)){
+			newchanblock = new_block("mix.stereo.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
+		}else{
 			newchanblock = new_block("mix.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
-			draw_blocks();
-			insert_block_in_connection("mix.channel",newchanblock);
-			selected.wire[i]=0;
 		}
+		draw_block(newchanblock);
+		send_audio_patcherlist(1);
+		insert_block_in_connection("mix.channel",newchanblock);
 	}
 }
 
 function insert_block_in_connection(newblockname,newblock){
 	if(Array.isArray(menu.connection_number)) insert_block_in_multi_connections(newblockname,newblock);
 
+	post("\ninserting into connection number",menu.connection_number);
 	// get the details of the inserted block
 	var details = new Dict;
 	details = blocktypes.get(newblockname);
@@ -3194,6 +3204,7 @@ function insert_block_in_connection(newblockname,newblock){
 	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
 	if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
 	if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
+	if((newblockname=="mix.channel")||(newblockname=="mix.stereo.channel")) defaultpos = 3; // mixer channels special case (force unity)
 	new_connection.parse('{}');
 	if(defaultpos == 1){//this is the rare exception where default is the second one.
 		new_connection.replace("conversion::mute" , 0);
@@ -3216,12 +3227,12 @@ function insert_block_in_connection(newblockname,newblock){
 	
 //	new_connection.parse('{}');
 //	new_connection.replace("conversion",t_conv); 
-	if(defaultpos==2){//this is the rare exception where default is the second one.
+	if(defaultpos>=2){//this is the rare exception where default is the second one.
 		new_connection.parse('{}');
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
-		new_connection.replace("conversion::offset", 0);
+		new_connection.replace("conversion::offset", (defaultpos==3)|0);//and this is making the spread wide for mixer channels
 		new_connection.replace("conversion::offset2", 0.5);
 		if(((t_type=="midi")||(t_type=="parameters"))&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
 	}else{
