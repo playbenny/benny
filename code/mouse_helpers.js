@@ -3828,16 +3828,22 @@ function toggle_automap_c_enable(){
 			}
 		}
 	}else{
-		automap.mapped_c=-1;
-		automap.available_c=automap.voice_c;
-		automap.lock_c=0;
-		for(var i=0;i<MAX_BLOCKS;i++){
-			if(blocks.get("blocks["+i+"]::name")=="core.input.control.auto"){
-				parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.8);
-				//post("\non",i);
-				break;
+		if(automap.voice_c>-1){
+			automap.mapped_c=-1;
+			automap.available_c=automap.voice_c;
+			automap.lock_c=0;
+			for(var i=0;i<MAX_BLOCKS;i++){
+				if(blocks.get("blocks["+i+"]::name")=="core.input.control.auto"){
+					parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.8);
+					//post("\non",i);
+					break;
+				}
+				
 			}
-			
+		}else{
+			automap.voice_c = new_block("core.input.control.auto", blocks_page.leftmost-1, blocks_page.highest+1);
+			send_note_patcherlist(1);
+			draw_block(automap.voice_c);
 		}
 	}
 	redraw_flag.deferred = 132;

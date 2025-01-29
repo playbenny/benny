@@ -1717,6 +1717,8 @@ function clear_everything(){
 	automap.mapped_k = -1;
 	automap.mapped_k_v = -1;
 	automap.mapped_q = -1;
+	automap.voice_c = -1;
+	automap.available_k_block = -1;
 }
 
 function write_blockipedia(){
