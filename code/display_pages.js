@@ -3431,7 +3431,7 @@ function draw_sidebar(){
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));
-													mapwrap.push(wrap);
+													mapwrap.push(wrap|0);
 													maplistopv.push(MAX_PARAMETERS*vl[vc]+curp);
 													mapcolours.push(colour[0]);
 													mapcolours.push(colour[1]);
@@ -3440,7 +3440,7 @@ function draw_sidebar(){
 													if((spares>0)&&(wk>1)&&(map_x<(automap.c_cols-1))&&((map_x/automap.c_cols)<((t+wk)/slidercount))){
 														map_x++;
 														maplist.push(-1);
-														mapwrap.push(0);
+														mapwrap.push(-1);
 														maplistopv.push(-1);
 														mapcolours.push(-1);
 														spares--;
@@ -3456,7 +3456,7 @@ function draw_sidebar(){
 											//should this also exclude menu_b from mappings here?
 											if((map_y>=0)){//&&(map_y<automap.c_rows)){
 												maplist.push(MAX_PARAMETERS*block+curp);
-												mapwrap.push(wrap);
+												mapwrap.push(wrap|0);
 												maplistopv.push(-1);
 												mapcolours.push(colour[0]);
 												mapcolours.push(colour[1]);
