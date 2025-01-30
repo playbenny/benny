@@ -4767,7 +4767,9 @@ function draw_sidebar(){
 				}
 				y_offset += 1.1* fontheight;
 				if(conn_count){
-					for(var pass=1;pass>=0;pass--){
+					var audiofound=0;
+					for(var pass=2;pass>=0;pass--){ //pass 2: audio ins, 1: all other ins, 0: outs
+						var first = 1;
 						for(i=0;i<cm;i++){
 							setfontsize(fontsmall);
 							if(connections.contains("connections["+i+"]::from::number")){
@@ -4778,15 +4780,18 @@ function draw_sidebar(){
 									if(connections.get("connections["+i+"]::from::output::type")=="audio"){
 										subv=-1;
 									}
+									if(connections.get("connections["+i+"]::to::number")==comp){
+										//feedback, dont show twice.
+										comp = null;
+									}
 								}else{
 									comp = connections.get("connections["+i+"]::to::number");
 									compv = connections.get("connections["+i+"]::to::voice");
 									if(connections.get("connections["+i+"]::to::input::type")=="audio"){
 										subv=-1;
-									}
-									if(connections.get("connections["+i+"]::from::number")==comp){
-										//feedback, dont show twice.
-										comp = null;
+										if(pass==1)comp = null;
+									}else{
+										if(pass==2)comp = null;
 									}
 								}
 								if((comp == block)){
@@ -4807,6 +4812,26 @@ function draw_sidebar(){
 										}
 									}
 									if(showthisone==1){
+										if(first){
+											//lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.5+y_offset,block_darkest );
+											click_zone(connections_select,pass,block, sidebar.x, y_offset, sidebar.x2 , fontheight*0.5+y_offset,mouse_index,1 );
+											lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.35+y_offset);
+											lcd_main.message("frgb", block_colour);
+											if(pass==2){
+												lcd_main.message("write", "audio inputs");
+												audiofound=1;
+											}else if(pass==1){
+												if(audiofound){
+													lcd_main.message("write", "other inputs");
+												}else{
+													lcd_main.message("write", "inputs");
+												}
+											}else{
+												lcd_main.message("write", "outputs");
+											}
+											y_offset += 0.6* fontheight;
+											first = 0;
+										}
 										lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2 - 3.3*fontheight, fontheight*1.6+y_offset,block_darkest );
 										click_zone(connection_select,0,i, sidebar.x, y_offset, sidebar.x2 - 3.3*fontheight, fontheight*1.7+y_offset,mouse_index,1 );
 										lcd_main.message("frgb" , block_dark);
@@ -4845,7 +4870,8 @@ function draw_sidebar(){
 										if(blocks.get("blocks["+f_number+"]::poly::voices")>1) f_o_v = connections.get("connections["+i+"]::from::voice");
 										if(blocks.get("blocks["+t_number+"]::poly::voices")>1) t_i_v = connections.get("connections["+i+"]::to::voice");
 										lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.45+y_offset);
-										if(pass==1){
+										if(pass>=1){
+											if(f_number==block) f_label = "self";
 											lcd_main.message("write", f_label);
 											lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.7+y_offset);
 										}

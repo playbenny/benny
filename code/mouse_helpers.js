@@ -706,12 +706,8 @@ function select_all(){
 
 function connection_select(parameter,value){
 	var i;
-	for(i=0;i<MAX_BLOCKS;i++){
-		selected.block[i]=0;
-	}
-	for(i=0;i<selected.wire.length;i++){
-		selected.wire[i]=0;
-	}
+	for(i=0;i<MAX_BLOCKS;i++) selected.block[i]=0;
+	for(i=0;i<selected.wire.length;i++)	selected.wire[i]=0;
 	selected.wire[value] = 1;
 	selected.wire_count = 1;
 	selected.block_count = 0;
@@ -720,6 +716,35 @@ function connection_select(parameter,value){
 	set_sidebar_mode("wire");
 	redraw_flag.flag |= 8;
 }
+function connections_select(pass,block){
+	//2 = audio ins, 1=other ins,0=outs
+	var i;
+	var which="to";
+	if(pass==0) which="from";
+	for(i=0;i<MAX_BLOCKS;i++) selected.block[i]=0;
+	for(i=0;i<selected.wire.length;i++)	selected.wire[i]=0;
+	selected.wire_count = 0;
+	selected.block_count = 0;
+	for(i=0;i<connections.getsize("connections");i++){
+		if(connections.contains("connections["+i+"]::from")){
+			if(connections.get("connections["+i+"]::"+which+"::number")==block){
+				if((pass==2)&&(connections.get("connections["+i+"]::to::input::type")=="audio")){
+					selected.wire[i]=1;
+					selected.wire_count++;
+				}else if((pass==1)&&(connections.get("connections["+i+"]::to::input::type")!="audio")){
+					selected.wire[i]=1;
+					selected.wire_count++;
+				}else if(pass==0){
+					selected.wire[i]=1;
+					selected.wire_count++;
+				}
+			}
+		}
+	}
+	set_sidebar_mode("wire");
+	redraw_flag.flag |= 8;
+}
+
 function cpu_select_block(parameter,value){
 	//cpu page select - clears selected voice
 	sidebar.selected_voice = parameter;
