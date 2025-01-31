@@ -1,0 +1,134 @@
+{
+	"seq.curved.time" : {
+		"patcher" : "seq.curved.time",
+		"type" : "audio",
+		"block_ui_patcher" : "seq.curved.time.ui",
+		"help_text" : "This sequencer is about bending time. It sums the internal phasors and the audio input into a timing signal. When this crosses the thresholds (set as even divisions of the 0-1 range) a trigger is emitted. Using interesting timing signals will create interesting rhythms. You can use the division number or counter outputs to address positions of other sequencers (eg seq.values, note.step, note.tracker..) or use the trigger events as a clock to drive other sequencers (eg shape.player, seq.rene)",
+		"max_polyphony" : 0,
+		"ui_in_sidebar_height" : 4,
+		"upsample" : 1,
+		"no_edit" : 1,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
+		},
+		"connections" : {
+			"in" : {
+				"audio" : [ "external phasor in", "internal phasor phasemod" ],
+				"midi" : [ "counter reset" ],
+				"descriptions" : {
+					"audio" : [ "summed with the internal phasors (and wrapped)", "modulates the phase of the internal phasor (consider as a more controllable FM)"],
+					"midi" : [ "resets the counter output" ]
+				}
+			},
+			"out" : {
+				"midi" : [ "trigger", "division number", "counter", "counter wrap" ],
+				"audio" : [ "clock pulse", "phasor sum" ],
+				"default": 0,
+				"descriptions" : {
+					"midi" : [ "a trigger out on every threshold crossing", "an internal counter that wraps at the number you define with the counter-length parameter. resets on stop and if the midi reset input is triggered.", "outputs when the counter wraps around, so can be used as a clock divider" ],
+					"audio" : [ "a click on every threshold crossing"]
+				}
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [8,8,8,9,10],
+				"height" : 0,
+				"colour" : -9
+			},
+			{ 
+				"contains" : [0,1,2,3],
+				"header" : "internal phasor 1",
+				"height" : 0
+			},
+			{ 
+				"contains" : [4,5,6,7],
+				"header" : "internal phasor 2",
+				"height" : 0,
+				"colour" : 9
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "rate_(per bar)",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "exp100"],
+				"error_scale" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "phase_offset",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "warp",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "rate_(per bar)",
+				"type" : "int",
+				"values" : ["uni", 1, 128, "exp100"],
+				"error_scale" : 0,
+				"default" : 0.42
+			},
+			{
+				"name" : "phase_offset",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "warp",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "gain",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "divisions",
+				"type" : "int",
+				"values" : ["uni",1,128,"exp100"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "bar_length_(beats)",
+				"type" : "int",
+				"values" : ["uni",1,128,"exp100"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "counter_length",
+				"type" : "int",
+				"values" : ["uni",1,128,"exp100"],
+				"wrap" : 0,
+				"default" : 0.3
+			}
+		]
+	}
+}
