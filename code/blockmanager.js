@@ -668,7 +668,8 @@ var loading = {
 	lockout : 0, //to prevent hotkey triggering save twice
 	hardware_substitutions_occured : 0, //this is set to 1 to put the warning on the save page
 	save_waitlist : [], //blocks we are waiting for them to say they've completed a 'store' command.
-	save_wait_count : 0
+	save_wait_count : 0,
+	save_type : "selected" //selected, named, save
 }
 
 var cpu_meter = {

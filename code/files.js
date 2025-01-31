@@ -1311,9 +1311,11 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 //copy blocks and connections and states and properties into one dict
 	loading.save_wait_count = 0;
+	if(loading.songpath==undefined) loading.songpath="";
 	if(selectedonly){
 		//post("\nsaving selection only");
-		var savetask = new Task(check_its_safe_to_save_selected,this);
+		loading.save_type = "selected";
+		var savetask = new Task(check_its_safe_to_save,this);
 		savetask.schedule(1000);
 		//messnamed("trigger_save_selected", "bang");
 	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
@@ -1321,14 +1323,16 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		messnamed("trigger_save_as","bang");
 		timed_sidebar_notification("saved as "+loading.songname,2000);
 	}else{
-		var savetask = new Task(check_its_safe_to_save_named,this);
+		loading.save_type = "named";
+		if((loading.songpath !== undefined) && (loading.object_target == loading.songname)) loading.save_type = "save"; //you can't run the check_exists fn because the max object keeps it locked and it fails.
+		var savetask = new Task(check_its_safe_to_save,this);
 		savetask.schedule(1000);
 		//messnamed("save_named",loading.songpath+loading.songname);
 	}
 	set_sidebar_mode("none");
 }
 
-function check_its_safe_to_save_selected(){
+function check_its_safe_to_save(){
 	loading.save_wait_count++;
 	if(loading.save_wait_count>15){
 		post("\nTIMEOUT: I waited 15 seconds for these blocks to tell me they'd finished storing data and they never did: ",loading.save_waitlist);
@@ -1336,8 +1340,22 @@ function check_its_safe_to_save_selected(){
 	}
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
-		messnamed("trigger_save_selected", "bang");
-		timed_sidebar_notification("saved as "+loading.songname,2000);
+		if(loading.save_type=="selected"){
+			post(" selected");
+			messnamed("trigger_save_selected", "bang");
+			timed_sidebar_notification("saved as "+loading.songname,2000);
+		}else if(loading.save_type=="named"){
+			post(" as:",loading.songpath+loading.songname);
+			messnamed("save_named",loading.songpath+loading.songname);
+			timed_sidebar_notification("saved as "+loading.songname,2000);
+			for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
+			read_songs_folder(sidebar.files_page); //update internal songslist
+		}else{
+			messnamed("trigger_save","bang");
+			timed_sidebar_notification("saved again "+loading.songname,2000);
+			for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
+			read_songs_folder(sidebar.files_page); //update internal songslist
+		}
 	}else{
 		post("\nnot ready to save yet, waiting..");
 		savetask.schedule(1000);
@@ -1345,23 +1363,6 @@ function check_its_safe_to_save_selected(){
 }
 
 
-function check_its_safe_to_save_named(){
-	loading.save_wait_count++;
-	if(loading.save_wait_count>15){
-		post("\nTIMEOUT: I waited 15 seconds for these blocks to tell me they'd finished storing data and they never did: ",loading.save_waitlist);
-		loading.save_waitlist=[];
-	}
-	if(loading.save_waitlist.length == 0){
-		post("\nall store routines complete, finalising save");
-		messnamed("save_named",loading.songpath+loading.songname);
-		timed_sidebar_notification("saved as "+loading.songname,2000);
-		for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
-		read_songs_folder(sidebar.files_page); //update internal songslist
-	}else{
-		post("\nnot ready to save yet, waiting..");
-		savetask.schedule(1000);
-	}
-}
 
 function store_wait_for_me(blockno){
 	loading.save_waitlist.push(blockno);
@@ -1464,7 +1465,9 @@ function write_userconfig(){
 }
 
 function file_written(fname){//called when max reports successfully saving the current song dict so we have the filename
+	loading.object_target = fname;
 	loading.songname = fname.split("/").pop();
+	post("\nsave as set obj target to",loading.object_target);
 }
 
 function folder_select(folderstr){

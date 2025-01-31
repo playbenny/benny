@@ -1,6 +1,8 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+31/1/25:
+- seq.curved.time is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
 25/1/25:
 - automap for controllers now works in more places - on connections (for gain/conversion parameter editting) and for scroll file menu / new block menu
 20/1/25:

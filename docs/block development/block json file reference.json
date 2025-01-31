@@ -29,6 +29,7 @@ and the json file has to be saved as the same name too. eg this example is based
         // eg, my fx.delay.buckets i think of as a bbd even though that's not in the name so i want it to come up if i type bbd..
 		"max_polyphony" : 0, //0=unlimited polyphony, 1-... = sets a hard limit on how many voices are allowed
 		"upsample" : 1, //[OPTIONAL, AUDIO BLOCKS ONLY]does it default to upsampling, if so how many x 
+        
 		    //the subvoices keys work like this: normal blocks 1 voice is 1 channel, with a mod input
             //and a second output. some blocks though, a voice has (eg) pairs of ins and outs, like for
             //example a stereo vst.
