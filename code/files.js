@@ -262,7 +262,7 @@ function check_exists(filepath){
 		testfile.freepeer();
 		return 1;
 	}else{
-		post("NOT FOUND");
+		post("NOT FOUND:",filepath );
 		testfile.close();
 		testfile.freepeer();
 		return 0;
