@@ -49,6 +49,7 @@
 	"waves_preloading" : "TOGGLE",
 	"MAX_AUDIO_INPUTS" : "DONT",
 	"MAX_AUDIO_OUTPUTS" : "DONT",
+	"AUDIO_TO_DATA_DOWNSAMPLE" : ["1", "2", "4", "8", "16" ],
 	"NO_IO_PER_BLOCK" : "DONT",
 	"MAX_PARAMETERS" : "DONT",
 	"MAX_DATA" : "DONT",

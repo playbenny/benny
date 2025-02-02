@@ -24,6 +24,7 @@
 	"MAX_AUDIO_VOICES" : "number of audio voice available. has a big effect on baseline cpu usage (the matrix mixer that connects all the audio voices internally is the cause of this). 64 is fine on mid range systems, to keep a laptop from getting too hot for simple patches on the sofa you can set this to 16",
 	"MAX_AUDIO_INPUTS" : 18,
 	"MAX_AUDIO_OUTPUTS" : 24,
+	"AUDIO_TO_DATA_DOWNSAMPLE" : "this mostly affects the minimum scope zoom and how smooth the scopes look. the default 1 is the best appearance, reducing the amount of samples taken (eg 4 or 8) gives a ~20% cpu use reduction on large patches on low end systems.",
 	"NO_IO_PER_BLOCK" : "in theory this allows blocks with more io to be loaded, but a lot of supporting infrastructure for that is not ready. do not adjust.",
 	"MAX_PARAMETERS" : "max parameters a voice can have. do not adjust.",
 	"MAX_DATA" : 16384,

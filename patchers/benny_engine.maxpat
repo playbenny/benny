@@ -14350,8 +14350,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 810.0, 765.0, 218.0, 22.0 ],
-					"text" : "mc.poly~ audio-to-data 170 @parallel 1",
+					"patching_rect" : [ 810.0, 765.0, 303.0, 22.0 ],
+					"text" : "mc.poly~ audio-to-data 170 @parallel 0 @resampling 0",
 					"varname" : "audio_to_data_poly"
 				}
 
@@ -14588,10 +14588,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "jit_matrix" ],
-					"patching_rect" : [ 23.5, 8.25, 100.0, 81.84615384615384 ],
+					"patching_rect" : [ 23.5, 8.25, 100.0, 81.75 ],
 					"pic" : "C:/Users/jhold/Documents/james music/benny misc/benny logo 1.png",
 					"presentation" : 1,
-					"presentation_rect" : [ 34.5, 4.0, 254.0, 207.889230769230778 ]
+					"presentation_rect" : [ 34.5, 4.0, 254.0, 207.64500000000001 ]
 				}
 
 			}
@@ -16386,8 +16386,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "~/Documents/GitHub/benny/media",
-				"patcherrelativepath" : "../media",
+				"bootpath" : "C:/Users/jhold/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../../../jhold/Documents/james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}

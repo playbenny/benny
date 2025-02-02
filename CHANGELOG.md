@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+2/2/25:
+- ui preferences option to downsample the audio_to_data section that does signal->param conversions (downsampling will make no difference here) and scopes and meters, where it affects the maximum scope zoom. the default (1) gives best appearance, but you can save a lot of cpu on low end systems by dropping this to 4 or 8.
+- experimental: i've turned off multithreading for these meters, which actually seems to have reduced cpu use (threads locking around buffer access perhaps?) IF YOU SEE A BIG INCREASE IN CPU USE WITH THIS UPDATE LET ME KNOW
 31/1/25:
 - seq.curved.time is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
 25/1/25:
