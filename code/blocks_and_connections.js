@@ -212,11 +212,9 @@ function new_block(block_name,x,y){
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1), "out_trigger", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
 			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
 			if(!blocktypes.contains(block_name+"::subvoices")) blocktypes.replace(block_name+"::subvoices",2);//is this the right place to be fixing the blocktypes db?!
@@ -260,7 +258,6 @@ function new_block(block_name,x,y){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 				//post(ts[tii]);
 			}
@@ -270,7 +267,6 @@ function new_block(block_name,x,y){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 				//post(ts[tii]);
 			}
@@ -2837,7 +2833,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "vis_meter", 1);
 					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
 					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
-					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 				}
 				if(loading.progress<=0){
 					audio_poly.message("setvalue", new_voice+1, "muteouts", 0);
@@ -2923,7 +2918,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "vis_meter", 0);
 					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
 					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
-					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 				}
 			}
 			v--;

@@ -1175,11 +1175,9 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1), "out_trigger", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(blocks.contains("blocks["+block_index+"]::record_arm")){
 			record_arm[block_index] = blocks.get("blocks["+block_index+"]::record_arm");
 			if(record_arm[block_index]==1) set_block_record_arm(block_index,1);
@@ -1212,7 +1210,6 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 			}
 			for(tii=split;tii<ts.length;tii++){
@@ -1220,7 +1217,6 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii]-=1;
 			}
 			hardware_metermap.replace(block_index,ts);
@@ -1617,7 +1613,6 @@ function clear_everything(){
 	audio_to_data_poly.message("setvalue", 0, "vis_meter", 0);
 	audio_to_data_poly.message("setvalue", 0, "vis_scope", 0);
 	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
-	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 	sidebar.selected_voice = -1;
 	note_poly.message("setvalue", 0,"muteouts",1);
 	audio_poly.message("setvalue", 0,"muteouts",1);

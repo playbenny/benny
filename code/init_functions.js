@@ -263,7 +263,6 @@ function initialise_dictionaries(hardware_file){
 	audio_to_data_poly.message("setvalue", 0, "vis_meter", 0);
 	audio_to_data_poly.message("setvalue", 0, "vis_scope", 0);
 	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
-	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 
 	notepools_dict.parse("notepools","{}");
 	
@@ -677,6 +676,7 @@ function import_hardware(v){
 	matrix.numouts(matrixouts);
 	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
 	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
+	audio_to_data.message("down",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
