@@ -172,16 +172,32 @@ function callback(data){
 	if(ch=="FOLDER"){
 		error("\nnot implemented yet");
 	}else if(ch=="TOGGLE"){
-		if(data.value != config.get(data.maxobject.varname)) userconfig.replace(data.maxobject.varname,data.value);
+		if(data.value != config.get(data.maxobject.varname)){
+			userconfig.replace(data.maxobject.varname,data.value);
+		}else if(userconfig.contains(data.maxobject.varname)){
+			userconfig.remove(data.maxobject.varname);
+		}
 	}else if(ch=="ORDER_LIST"){
 		
 	}else if(Array.isArray(ch)){
 		if(ch[0]=="float"){
-			if(data.value != config.get(data.maxobject.varname)) userconfig.replace(data.maxobject.varname,data.value);
+			if(data.value != config.get(data.maxobject.varname)){
+				userconfig.replace(data.maxobject.varname,data.value);
+			}else if(userconfig.contains(data.maxobject.varname)){
+				userconfig.remove(data.maxobject.varname);
+			}
 		}else if(ch[0]=="int"){
-			if(data.value != config.get(data.maxobject.varname)) userconfig.replace(data.maxobject.varname,data.value);
+			if(data.value != config.get(data.maxobject.varname)){
+				userconfig.replace(data.maxobject.varname,data.value);
+			}else if(userconfig.contains(data.maxobject.varname)){
+				userconfig.remove(data.maxobject.varname);
+			}
 		}else{
-			if(data.value != config.get(data.maxobject.varname)) userconfig.replace(data.maxobject.varname,ch[data.value]);
+			if(data.value != config.get(data.maxobject.varname)){
+				userconfig.replace(data.maxobject.varname,ch[data.value]);
+			}else if(userconfig.contains(data.maxobject.varname)){
+				userconfig.remove(data.maxobject.varname);
+			}
 		}
 	}
 	save_userconfig();
