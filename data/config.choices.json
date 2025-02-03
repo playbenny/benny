@@ -21,7 +21,7 @@
 	"MAX_BLOCKS" : ["int", 16, 1024],
 	"MAX_NOTE_VOICES" : ["int", 32, 1024],
 	"MAX_AUDIO_VOICES" : ["int", 4, 512],
-	"MAX_WAVES" : 16,
+	"MAX_WAVES" : "DONT",
 	"MAX_STATES" : ["int",8,100],
 	"MERGE_PURGE" : "TOGGLE",
 	"MAX_PANEL_COLUMNS" : ["int",3,10],

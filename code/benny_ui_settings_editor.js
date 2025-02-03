@@ -55,7 +55,7 @@ function create_ui(){
 	var ck = config.getkeys();
 	for(var i=0;i<ck.length;i++){
 		var ch = config_choices.get(ck[i]);
-		if(ch != "DONT"){
+		if((ch != "DONT")&&(ch != "FPS")&&(ch != "ORDER_LIST")&&(ch != "FONT")){
 			//post("\n"+ck[i]+" - default: "+config.get(ck[i]));
 			labels[c_i]= this.patcher.newdefault(10, 100+20*c_i, "comment");
 			labels[c_i].message("set", ck[i]);
@@ -80,6 +80,7 @@ function create_ui(){
 				buttons[b_i].presentation_rect(0.25*unit.col,y_pos,0.05*unit.col,20);
 				b_i++;
 			}else if(ch == "ORDER_LIST"){
+			}else if(ch == "FPS"){
 			}else if(ch == "FONT"){
 				labels[c_i]= this.patcher.newdefault(10, 100+20*c_i, "comment");
 				labels[c_i].message("set", current);
