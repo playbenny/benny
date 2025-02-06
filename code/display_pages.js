@@ -1032,29 +1032,18 @@ function block_and_wire_colours(){ //for selection and mute etc
 					}
 				}
 			}
-			
-			wires_enable[i] = cs;
-			if(cs){
-				//cmute = connections.get("connections["+i+"]::conversion::mute");
-				draw_wire(i);
-/*				if(wires_colours[i].length>=wires_colour[i].length){
-					for(segment=0;segment<wires_colour[i].length;segment++){
-						tmc=0.3;
-						tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
-						if(cmute){
-							wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
-						}else{
-							wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
-						}
-					}		
-				}*/
-			}else{
-				if(Array.isArray(wires_position[i])){
-					wires_position[i] = null;
-					wires_scale[i] = null;
-					wires_rotatexyz[i] = null;
-					wires_colour[i] = null;
-				}
+			//draw_wire(i);
+			post("\nb & w c");
+			if(wires_colours[i].length>=wires_colour[i].length){
+				for(segment=0;segment<wires_colour[i].length;segment++){
+					tmc=0.3;
+					tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
+					if(cmute){
+						wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
+					}else{
+						wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
+					}
+				}		
 			}
 		}
 	}
@@ -1248,7 +1237,6 @@ function draw_wire(connection_number){
 		} 
 
 		var drawme=1;
-		wires_enable[connection_number]=1;
 		if(!is_empty(wire_ends[connection_number])){
 			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
 				drawme =0;
@@ -1721,13 +1709,12 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
 	zs = 1 / (1 + zs);
 	tmc *= zs;
-	/*if(cmute){
-		wires[connection_number][segment].colour = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
+	if(cmute){
+		wires_colour[connection_number][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
 	}else{
-		wires[connection_number][segment].colour = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
-	}*/
-	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]]; // legacy, used elsewhere
-	wires_colour[connection_number][segment] = [tmc*col[0],tmc*col[1],tmc*col[2]];// new, used for making matrix for multiple
+		wires_colour[connection_number][segment] = [tmc*col[0],tmc*col[1],tmc*col[2]];
+	}
+	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]]; //storage of unmodified segment colours, to use for highlighting elsewhere
 }
 
 function write_wires_matrix(){

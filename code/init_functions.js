@@ -412,21 +412,6 @@ function initialise_graphics() {
 	menutex_task.schedule(1000);
 }
 
-function mult_test(count){
-	matrix_wire_position.dim = [count,1];
-	matrix_wire_scale.dim = [count,1];
-	matrix_wire_rotatexyz.dim = [count,1];
-	matrix_wire_colour.dim = [count,1];
-
-	for (var x = 0; x < count; x++) {
-		var y = 0;
-		var z = 0;
-		matrix_wire_position.setcell(x,y, "val", x,y,z);
-		matrix_wire_scale.setcell(x,y, "val", 0.5,0.5,0.5);
-		matrix_wire_colour.setcell(x,y,"val",Math.random(),Math.random(),Math.random());
-	}
-}
-
 function stop_graphics(){
 	lcd_main.message("brgb",0,0,0);
 	lcd_main.message("clear");
@@ -443,6 +428,8 @@ function stop_graphics(){
 	flock_cubexy.freepeer();
 	flock_cubeyz.freepeer();
 	flock_cubexz.freepeer();
+	messnamed("wires_matrices","dim",0,0);
+	messnamed("wires_matrices","bang");
 	//world.message("enable",0);
 	var stop_task = new Task(stop_world, this);
 	stop_task.schedule(1);
