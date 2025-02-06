@@ -60,33 +60,43 @@ function clicked_block_preparation() {
 
 function picker_hover_and_special(id){
 	if(usermouse.oid!=id){ //if id has changed
-		//deferred_diag.push("hover - "+id);
+		deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
 		usermouse.oid=id;
-		var thov =id.split('£'); // store hover - any picker id received when not waiting for click
+		var thov =id.split('_'); // store hover - any picker id received when not waiting for click
 		
 		if((thov[0]=="wires")&&(usermouse.clicked3d==-1)){  // wire bulge stuff for a bit
 			if(bulgingwire!=-1){
-				for(var i=0;i<wires[bulgingwire].length;i++){
-					var ta = wires[bulgingwire][i].scale;
-					wires[bulgingwire][i].scale = [ta[0], wire_dia,1];
-				}					
+				if(Array.isArray(wires_scale[bulgingwire])){
+
+					for(var i=0;i<wires_scale[bulgingwire].length;i++){
+						var ta = wires_scale[bulgingwire][i];
+						wires_scale[bulgingwire][i] = [ta[0], wire_dia,1];
+					}					
+				}else{
+					post("didnt find wire",bulgingwire);
+				}
 			}
-			bulgingwire=thov[1];
+			bulgingwire= wires_lookup[thov[1]];
+			post("\n\nwires lookup for ",thov[1]," returned ",bulgingwire);
 			bulgeamount=1;
-			for(var i=0;i<wires[bulgingwire].length;i++){
-				var ta = wires[bulgingwire][i].scale;
+			for(var i=0;i<wires_scale[bulgingwire].length;i++){
+				var ta = wires_scale[bulgingwire][i];
 				ta[1] = wire_dia * (1 + bulgeamount);
-				wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
+				wires_scale[bulgingwire][i] = [ta[0],ta[1],ta[2]];
+				write_wire_matrix(bulgingwire);
+				messnamed("wires_matrices","bang");
 			}
 		}else if(thov[0]!="background"){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if(bulgeamount>0){
 				bulgeamount=0;
-				for(var i=0;i<wires[bulgingwire].length;i++){
-					var ta = wires[bulgingwire][i].scale;
-					wires[bulgingwire][i].scale = [ta[0],wire_dia,1];
+				for(var i=0;i<wires_scale[bulgingwire].length;i++){
+					var ta = wires_scale[bulgingwire][i];
+					wires_scale[bulgingwire][i] = [ta[0],wire_dia,1];
 				}
+				write_wire_matrix(bulgingwire);
+				messnamed("wires_matrices","bang");
 				bulgingwire = -1;
 			}
 		}else{
@@ -128,6 +138,10 @@ function mouseidle(x,y,leftbutton,ctrl,shift,caps,alt,e){
 
 function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 
+}
+
+function phys_picker(id,leftbutton){
+	phys_picker_id = id;
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
@@ -182,11 +196,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								//post("\nITS THIS BLOCK!",i,blocks.get("blocks["+i+"]::name"));
 								if(bx>-0.5){
 									//post(" - the block itself");
-									id="block£"+i+"£"+0;
+									id="block_"+i+"_"+0;
 								}else{
 									bv = Math.floor(bx*-2);
 									//post(" - voice",bv);
-									id="block£"+i+"£"+bv;
+									id="block_"+i+"_"+bv;
 								}
 								i=MAX_BLOCKS;
 							}
@@ -195,14 +209,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}
 			}
 			if(id==null){
-				id = glpicker.touch(x,y);
+				id = phys_picker_id;//.message("touch",x,y);
 			}
 			if(id!=null)picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
-			id = glpicker.touch(x,y);
+			id = phys_picker_id;//phys_picker.touch(x,y);
 			//picker_hover_and_special(id);
 			usermouse.oid=id;
-			var thov =id.split('£'); // store hover - any picker id received when not waiting for click
+			var thov =id.split('_'); // store hover - any picker id received when not waiting for click
 			usermouse.hover = thov.concat();
 		}
 	}
@@ -219,8 +233,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.last_y = usermouse.y;
 					usermouse.drag.distance=0;
 					usermouse.clicked2d=-1;
-					usermouse.ids = id.split('£');
-					if(id=="background" || id=="block_menu_background"){
+					usermouse.ids = id.split('_');
+					if(id=="background" || id=="block-menu-background"){
 						usermouse.clicked3d = "background";
 						usermouse.drag.starting_x = -1; // flag waiting for the first mouse message of a drag, because the initial click may be at wrong location with touch messages. usermouse.x;
 						usermouse.drag.starting_y = -1; //usermouse.y;
@@ -421,7 +435,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						if(usermouse.clicked3d==-2){
 							usermouse.clicked3d=-3;
 						}
-						if(usermouse.ids[0]=="block_menu_background"){
+						if(usermouse.ids[0]=="block-menu-background"){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
@@ -440,7 +454,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 						usermouse.clicked3d = -1;
 					}else if(menu.mode == 1){ //post("SWAP MENU",usermouse.clicked3d,usermouse.ids);
-						if(usermouse.ids[0]=="block_menu_background"){
+						if(usermouse.ids[0]=="block-menu-background"){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
@@ -449,7 +463,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 					}else if(menu.mode == 2){ //post("insert MENU",usermouse.clicked3d,usermouse.ids);
-						if(usermouse.ids[0]=="block_menu_background"){
+						if(usermouse.ids[0]=="block-menu-background"){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
@@ -472,7 +486,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 					}else if(menu.mode == 3){ //post("SUBSTITUTION MENU",usermouse.clicked3d,usermouse.ids);
-						if(usermouse.ids[0]=="block_menu_background"){
+						if(usermouse.ids[0]=="block-menu-background"){
 							//set_display_mode("blocks");
 							post("sorry no, you have to pick a substitute");
 						}else{
@@ -1108,7 +1122,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}
 
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
-		var id = glpicker.touch(x,y);
+		var id = phys_picker_id;// phys_picker.touch(x,y);
 		if(id!=null) picker_hover_and_special(id);
 	}	
 //	post("\nbcd",b,c,d,mouse_index);

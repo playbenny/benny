@@ -1752,6 +1752,29 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]]; //storage of unmodified segment colours, to use for highlighting elsewhere
 }
 
+function write_block_matrix(b){	
+	if(Array.isArray(blocks_cube[b])){
+		bc=matrix_block_index[b];
+		matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
+		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+		//matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].colour[0],blocks_cube[b][0].colour[1],blocks_cube[b][0].colour[2]);
+		vc=matrix_voice_index[b];
+		for(var c=1;c<blocks_cube[b].length;c++){
+			matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
+			matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
+			matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].colour[0],blocks_cube[b][c].colour[1],blocks_cube[b][c].colour[2]);
+			vc++;
+		}
+		mc=matrix_meter_index[b][0];
+		for(var c=0;c<blocks_meter[b].length;c++){
+			matrix_meter_position.setcell(mc,0,"val",blocks_meter[b][c].position[0],blocks_meter[b][c].position[1],blocks_meter[b][c].position[2]);
+			matrix_meter_scale.setcell(mc,0,"val",blocks_meter[b][c].scale[0],blocks_meter[b][c].scale[1],blocks_meter[b][c].scale[2]);
+			matrix_meter_colour.setcell(mc,0,"val",blocks_meter[b][c].colour[0],blocks_meter[b][c].colour[1],blocks_meter[b][c].colour[2]);
+			mc++;
+		}
+	}
+}
+
 function write_blocks_matrix(){
 	matrix_voice_position.dim = [voice_cubes,1];
 	matrix_voice_colour.dim = [voice_cubes,1];
@@ -1767,13 +1790,16 @@ function write_blocks_matrix(){
 	var bc=0;
 	var mc=0;
 	matrix_meter_index = [];
+	matrix_voice_index = [];
 	for(var b=0;b<MAX_BLOCKS;b++){
 		matrix_meter_index[b]=[];
 		if(Array.isArray(blocks_cube[b])){
+			matrix_block_index = bc;
 			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
 			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
 			//matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].colour[0],blocks_cube[b][0].colour[1],blocks_cube[b][0].colour[2]);
 			bc++;
+			matrix_voice_index[b]=vc;
 			for(var c=1;c<blocks_cube[b].length;c++){
 				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
 				matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
@@ -1789,9 +1815,21 @@ function write_blocks_matrix(){
 			}
 		}
 	}
+	matrix_voice_index[b]=vc;
 	messnamed("voices_matrices","bang");
 	messnamed("meters_matrices","bang");
 	messnamed("blocks_matrices","bang");
+}
+
+function write_wire_matrix(i){
+	matrix_wire_index = wires_startindex[i];
+	for(var ii=0;ii<wires_position[i].length;ii++){
+		matrix_wire_position.setcell(matrix_wire_index,0,"val",wires_position[i][ii][0],wires_position[i][ii][1],wires_position[i][ii][2]);
+		matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
+		matrix_wire_rotatexyz.setcell(matrix_wire_index,0,"val",wires_rotatexyz[i][ii]);
+		matrix_wire_colour.setcell(matrix_wire_index,0,"val",wires_colour[i][ii]);
+		matrix_wire_index++;
+	}	
 }
 
 function write_wires_matrix(){

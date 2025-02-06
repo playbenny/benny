@@ -127,8 +127,7 @@ var lcd_main = this.patcher.getnamed("lcd_main");
 var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 var textureset_blocks = this.patcher.getnamed("textureset_blocks");
 
-
-var glpicker = new JitterObject("jit.gl.picker","benny");
+var phys_picker_id;
 
 var scope_buffer = new Buffer("scope_buffer");
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
@@ -394,10 +393,6 @@ var backgroundcolour_panels;
 var backgroundcolour_waves;
 var backgroundcolour_sidebar;
 var backgroundcolour_current;
-
-//this is what a listener looks like
-//var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);
-//var picker_listener = new JitterListener(picker.getregisteredname(), picker_callback);
 
 var mouse_click_actions = [];
 var mouse_click_parameters = [];
