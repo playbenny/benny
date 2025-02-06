@@ -251,6 +251,7 @@ var preload_audio_voice_list = [];
 var matrix_wire_index;
 var matrix_block_index;
 var matrix_voice_index;
+var matrix_meter_index = [];
 
 var matrix_wire_position;
 var matrix_wire_scale;
@@ -265,6 +266,14 @@ var matrix_block_texture;
 var matrix_voice_position;
 var matrix_voice_scale;
 var matrix_voice_colour;
+
+var matrix_meter_position;
+var matrix_meter_scale;
+var matrix_meter_colour;
+
+var voice_cubes;
+var meter_cubes;
+var block_cubes;
 
 var connection_blobs = []; // connection handles. maybe not even blobs one day.
 var background_cube;

@@ -1638,17 +1638,13 @@ function clear_everything(){
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");
 
-	var b,bl;
+	var b;
 	for(b in blocks_cube){
-		for(bl in blocks_cube[b]){
-			blocks_cube[b][bl].freepeer();			
-		}
+		blocks_cube[b][0].freepeer();			
+		
 		blocks_cube[b] = [];
 	}
 	for(b in blocks_meter){
-		for(bl in blocks_meter[b]){
-			blocks_meter[b][bl].freepeer();
-		}
 		blocks_meter[b] = [];
 	}
 	wires_position = [];
@@ -1657,6 +1653,12 @@ function clear_everything(){
 	wires_rotatexyz = [];
 	messnamed("wires_matrices","dim",0,0);
 	messnamed("wires_matrices","bang");
+	messnamed("voices_matrices","dim",0,0);
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","dim",0,0);
+	messnamed("meters_matrices","bang");
+	messnamed("blocks_matrices","dim",0,0);
+	messnamed("blocks_matrices","bang");
 	wire_ends = [];
 	blocks_tex_sent=[];
 	background_cube.shape = "cube";

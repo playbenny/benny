@@ -401,6 +401,14 @@ function initialise_graphics() {
 	matrix_voice_scale.name = "matrix_voice_scale";
 	matrix_voice_colour.name = "matrix_voice_colour";
 
+	matrix_meter_position = new JitterMatrix;
+	matrix_meter_scale = new JitterMatrix;
+	matrix_meter_colour = new JitterMatrix;
+
+	matrix_meter_position.name = "matrix_meter_position";
+	matrix_meter_scale.name = "matrix_meter_scale";
+	matrix_meter_colour.name = "matrix_meter_colour";
+
 	flock_axes(0);
 	messnamed("camera_control", "direction", 0, 0, -1);
 	messnamed("camera_control", "position", camera_position);
@@ -430,6 +438,12 @@ function stop_graphics(){
 	flock_cubexz.freepeer();
 	messnamed("wires_matrices","dim",0,0);
 	messnamed("wires_matrices","bang");
+	messnamed("voices_matrices","dim",0,0);
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","dim",0,0);
+	messnamed("meters_matrices","bang");
+	messnamed("blocks_matrices","dim",0,0);
+	messnamed("blocks_matrices","bang");
 	//world.message("enable",0);
 	var stop_task = new Task(stop_world, this);
 	stop_task.schedule(1);

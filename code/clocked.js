@@ -284,30 +284,26 @@ function check_changed_queue(){
 function meters(){
 	for(i = meters_updatelist.meters.length-1; i>=0; i--){
 		var voice = meters_updatelist.meters[i][1];
-		//try{//if(voice !== 'undefined'){
-			var block = meters_updatelist.meters[i][0];
-			var polyvoice = meters_updatelist.meters[i][2];
-			var tv=[];
-			var mmin,mmax;
-			for(tt=0;tt<NO_IO_PER_BLOCK;tt++){ // need to get from buffer
-				mmin = scope_buffer.peek(1,1+(polyvoice+MAX_AUDIO_VOICES*tt));
-				mmax = scope_buffer.peek(2,1+(polyvoice+MAX_AUDIO_VOICES*tt));
-				//if(blocks_meter[block][voice*NO_IO_PER_BLOCK+tt] === undefined ){
-				//	deferred_diag.push("meter problem: block"+block+"voice"+voice+"tt"+tt);//,"loadingstatus",loading.progress);
-				//}else{
-					//post("\nmeter OK     : block",block,"voice",voice,"tt",tt);
-					tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position;
-					//tv[0] = blocks_cube[block][voice].position[0] + 0.4+tt*0.4/NO_IO_PER_BLOCK + 0.25*(voice==0);
-					tv[1] = blocks_cube[block][voice].position[1] + (mmax+mmin)*0.225;
-					tv[2] = 0.5+blocks_cube[block][voice].position[2];
-					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position = tv;
-					tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale;
-					tv[1] = Math.max(0.225*(mmax-mmin),0.005);
-					blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale = tv;
-				//}
-			}
-		//}catch(err){error("\nmeter undef ", i,"  l: ",meters_updatelist[i],err.name,err.message);}
+		var block = meters_updatelist.meters[i][0];
+		var polyvoice = meters_updatelist.meters[i][2];
+		var tv=[];
+		var mmin,mmax;
+		for(tt=0;tt<NO_IO_PER_BLOCK;tt++){ // need to get from buffer
+			mmin = scope_buffer.peek(1,1+(polyvoice+MAX_AUDIO_VOICES*tt));
+			mmax = scope_buffer.peek(2,1+(polyvoice+MAX_AUDIO_VOICES*tt));
+			tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position;
+			//tv[0] = blocks_cube[block][voice].position[0] + 0.4+tt*0.4/NO_IO_PER_BLOCK + 0.25*(voice==0);
+			tv[1] = blocks_cube[block][voice].position[1] + (mmax+mmin)*0.225;
+			tv[2] = 0.5+blocks_cube[block][voice].position[2];
+			blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position = tv;
+			tv = blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale;
+			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
+			blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale = tv;
+			matrix_meter_position.setcell(matrix_meter_index[block][voice*NO_IO_PER_BLOCK+tt],0,"val",blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position[0],blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position[1],blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].position[2]);
+			matrix_meter_scale.setcell(matrix_meter_index[block][voice*NO_IO_PER_BLOCK+tt],0,"val",blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale[0],blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale[1],blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale[2]);
+		}
 	}
+	messnamed("meters_matrices","bang");
 }
 
 function hardware_meters(){

@@ -1053,6 +1053,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 
 function draw_block(i){ //i is the blockno, we've checked it exists before this point
 	//post("drawing block",i,"\n");
+	var vc=0; var bc=0; var mc=0;
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
@@ -1076,7 +1077,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	if(block_y<blocks_page.lowest) blocks_page.lowest = block_y;
 	if(block_y>blocks_page.highest) blocks_page.highest = block_y;
 	
-	if(is_empty(blocks_cube[i])){
+	if(!Array.isArray(blocks_cube[i])){
 		blocks_cube[i] = [];
 		blocks_meter[i] = [];
 	}
@@ -1093,22 +1094,26 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	noio /= max_poly;
 	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
-			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
-			blocks_cube[i][t].dim = [12, 12];
-			blocks_cube[i][t].name = "block£"+i+"£"+t;
-			blocks_cube[i][t].shape = "cube";
-			if(selected.anysel){
+			var col;
+			if(block_mute){
+				col = [0.3,0.3,0.3,1];
+			}else if(selected.anysel){
 				if(selected.block[i]){
-					blocks_cube[i][t].color = [1,1,1,1];//[block_c[0]/256,block_c[1]/256,block_c[2]/256,1];
+					col = [1,1,1,1];
 				}else{
-					//var c_avg = (block_c[0] + block_c[1] + block_c[2])/3;
-					blocks_cube[i][t].color = [0.4,0.4,0.4,1]; //[(block_c[0]+c_avg)/1024,(block_c[1]+c_avg)/1024,(block_c[2]+c_avg)/1024,1];
+					col = [0.4,0.4,0.4,1]; 
 				}
 			}else{
-				blocks_cube[i][t].color = [1,1,1,1];//[block_c[0]/300,block_c[1]/300,block_c[2]/300,1];
+				col = [1,1,1,1];
 			}
-			if(block_mute) blocks_cube[i][t].color = [0.3,0.3,0.3,1];
+			
 			if(t==0){
+				bc++;
+				blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
+				blocks_cube[i][t].dim = [12, 12];
+				blocks_cube[i][t].name = "block£"+i+"£"+t;
+				blocks_cube[i][t].shape = "cube";
+				blocks_cube[i][t].color = col;
 				blocks_cube[i][0].texture = blocks_cube_texture[i];
 				blocks_cube[i][0].tex_map = 1;
 				blocks_cube[i][0].texzoom = [1,1];
@@ -1116,70 +1121,89 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][0].position = [block_x, block_y, block_z];
 				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
 			}else{
-				var tc = blocks_cube[i][t].color[0]/256;
-				blocks_cube[i][t].color = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
+				blocks_cube[i][t] = {
+					position : [],
+					scale : [],
+					colour : []
+				}
+				vc++;
+				var tc = col[0]/256;
+				blocks_cube[i][t].colour = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
 				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				if(block_type=="audio"){
-					//post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
 					var tv=(t-1)/subvoices;
 					for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = {
+							position : [],
+							scale : [],
+							colour: []
+						};
+						/*blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
 						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter£"+i+"£"+t+"£"+tt;
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
-						//blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].filterclass = "block";
-						//blocks_meter[i][t*NO_IO_PER_BLOCK+tt].blend_enable = 0;
-						//post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
+						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";*/
 					}						
 				}else if(block_type == "hardware"){
 					if(noio==0){
 						post("\nthis hardware block seems to have no audio io?");
 					}else{
 						for(tt=0;tt<noio;tt++){
-							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","benny");
+							blocks_meter[i][(t-1)*noio+tt] = {
+								position : [],
+								scale : [],
+								colour: []
+							};
+							/*new JitterObject("jit.gl.gridshape","benny");
 							blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
 							blocks_meter[i][(t-1)*noio+tt].name = "meter£"+i+"£"+t+"£"+tt;
 							blocks_meter[i][(t-1)*noio+tt].shape = "cube";
 							//blocks_meter[i][(t-1)*noio+tt].filterclass = "block";
-							//blocks_meter[i][t*noio+tt].blend_enable = 0;
+							//blocks_meter[i][t*noio+tt].blend_enable = 0;*/
 						}
 					}					
 					
 				}else if(block_type == "note"){
-					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","benny");
+					blocks_meter[i][t-1] = {
+						position : [],
+						scale : [],
+						colour: []
+					};
+					/*new JitterObject("jit.gl.gridshape","benny");
 					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
 					blocks_meter[i][t-1].name = "meter£"+i+"£"+t+"£0";
 					blocks_meter[i][t-1].shape = "cube";
-					//blocks_meter[i][t-1].filterclass = "block";
+					//blocks_meter[i][t-1].filterclass = "block";*/
 				}	
 			}
 		}
 		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, block_z];
-		blocks_cube[i][t].enable = 1;
+		//blocks_cube[i][t].enable = 1;
 		if(block_type=="audio"){
 			if(t>0){
 				var ios=NO_IO_PER_BLOCK/subvoices;
 				var tv = (t-1)*ios;
 				var mt=Math.sqrt(1-METER_TINT);
-				var mco = blocks_cube[i][t].color; 
+				var mco = blocks_cube[i][t].colour; 
 				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 				for(tt=0;tt<ios;tt++){
-					blocks_meter[i][tv+tt].color = mco;
+					mc++;
+					blocks_meter[i][tv+tt].colour = mco;
 					blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5+block_z];
 					blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
-					blocks_meter[i][tv+tt].enable = 1;
+					//blocks_meter[i][tv+tt].enable = 1;
 				}				
 			}
 		}else if(block_type == "note"){
-			var mt=Math.sqrt(1-METER_TINT);
-			var mco = blocks_cube[i][t].color; 
-			mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 			if(t>0){
-				blocks_meter[i][t-1].color = mco;
+				var mt=Math.sqrt(1-METER_TINT);
+				var mco = blocks_cube[i][t].colour; 
+				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
+				mc++;
+				blocks_meter[i][t-1].colour = mco;
 				blocks_meter[i][t-1].position = [blocks_cube[i][t].position[0], block_y, 0.5+block_z];
 				blocks_meter[i][t-1].scale = [0, 0, 0.05];
-				blocks_meter[i][t-1].enable = 0;
+				//blocks_meter[i][t-1].enable = 0;
 			}			
 		}else if(block_type == "hardware"){
 			if(t>0){
@@ -1187,18 +1211,21 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					//post("this hardware block seems to have no audio io?");
 				}else{
 					var mt=Math.sqrt(1-METER_TINT);
-					var mco = blocks_cube[i][t].color; 
+					var mco = blocks_cube[i][t].colour; 
 					mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 					for(tt=0;tt<noio;tt++){
-						blocks_meter[i][(t-1)*noio+tt].color = mco;
+						mc++;
+						blocks_meter[i][(t-1)*noio+tt].colour = mco;
 						blocks_meter[i][(t-1)*noio+tt].position = [blocks_cube[i][t].position[0] - 0.2 + (tt+0.5)*0.4/noio, block_y, 0.5+block_z];
 						blocks_meter[i][(t-1)*noio+tt].scale = [0.2/noio, 0.025, 0.05];
-						blocks_meter[i][(t-1)*noio+tt].enable = 1;
+						//blocks_meter[i][(t-1)*noio+tt].enable = 1;
 					}
 				}					
 			}
 		}
 	}
+	post("\nblock,",i,"cubes:",bc,vc,block_v*subvoices,mc);
+	return [1,block_v*subvoices,mc];
 }
 
 function draw_blocks(){
@@ -1209,9 +1236,16 @@ function draw_blocks(){
 	blocks_page.lowest=0;
 	blocks_page.highest=0;
 
+	block_cubes = 0;
+	voice_cubes = 0;
+	meter_cubes = 0;
+	
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
-			draw_block(i);
+			var r = draw_block(i);
+			block_cubes+=r[0];
+			voice_cubes+=r[1];
+			meter_cubes+=r[2];
 		}
 	}
 	for(i=0;i<connections.getsize("connections");i++){
@@ -1219,6 +1253,7 @@ function draw_blocks(){
 			draw_wire(i);
 		} 
 	}
+	write_blocks_matrix();
 	write_wires_matrix();
 	prep_meter_updatelist();
 }
@@ -1715,6 +1750,48 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 		wires_colour[connection_number][segment] = [tmc*col[0],tmc*col[1],tmc*col[2]];
 	}
 	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]]; //storage of unmodified segment colours, to use for highlighting elsewhere
+}
+
+function write_blocks_matrix(){
+	matrix_voice_position.dim = [voice_cubes,1];
+	matrix_voice_colour.dim = [voice_cubes,1];
+	matrix_voice_scale.dim = [voice_cubes,1];
+	matrix_meter_position.dim = [meter_cubes,1];
+	matrix_meter_colour.dim = [meter_cubes,1];
+	matrix_meter_scale.dim = [meter_cubes,1];
+	matrix_block_position.dim = [block_cubes,1];
+	matrix_block_colour.dim = [block_cubes,1];
+	matrix_block_scale.dim = [block_cubes,1];
+
+	var vc=0;
+	var bc=0;
+	var mc=0;
+	matrix_meter_index = [];
+	for(var b=0;b<MAX_BLOCKS;b++){
+		matrix_meter_index[b]=[];
+		if(Array.isArray(blocks_cube[b])){
+			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
+			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+			//matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].colour[0],blocks_cube[b][0].colour[1],blocks_cube[b][0].colour[2]);
+			bc++;
+			for(var c=1;c<blocks_cube[b].length;c++){
+				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
+				matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
+				matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].colour[0],blocks_cube[b][c].colour[1],blocks_cube[b][c].colour[2]);
+				vc++;
+			}
+			for(var c=0;c<blocks_meter[b].length;c++){
+				matrix_meter_position.setcell(mc,0,"val",blocks_meter[b][c].position[0],blocks_meter[b][c].position[1],blocks_meter[b][c].position[2]);
+				matrix_meter_scale.setcell(mc,0,"val",blocks_meter[b][c].scale[0],blocks_meter[b][c].scale[1],blocks_meter[b][c].scale[2]);
+				matrix_meter_colour.setcell(mc,0,"val",blocks_meter[b][c].colour[0],blocks_meter[b][c].colour[1],blocks_meter[b][c].colour[2]);
+				matrix_meter_index[b][c]=mc;
+				mc++;
+			}
+		}
+	}
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","bang");
+	messnamed("blocks_matrices","bang");
 }
 
 function write_wires_matrix(){
