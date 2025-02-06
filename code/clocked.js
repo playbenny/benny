@@ -2,21 +2,8 @@ function polycheck(){
 	if(still_checking_polys&4){ send_ui_patcherlist(); }
 	if(still_checking_polys&2){ send_audio_patcherlist(); }
     if(still_checking_polys&1){ send_note_patcherlist(); }
-	if((still_checking_polys&8)&&((still_checking_polys&7)==0)){ upgrade_a_wire(); }
 }
 
-function upgrade_a_wire(){
-	if(displaymode=="blocks"){
-		if(upgrade_wires>0){
-			wire_ends[upgrade_wires-1]=[];
-			draw_wire(upgrade_wires-1); //>0) post("\nupgraded connection",upgrade_wires-1);
-			upgrade_wires--;
-		}else{
-			//upgrade_wires=0;
-			still_checking_polys &= 55;
-		}
-	}
-}
 function slowclock(){
 	//here: check things that need to be copied into buffers have been, check up on things like deferred load happening
 	do_drift();

@@ -1237,6 +1237,7 @@ function draw_blocks(){
 			draw_wire(i);
 		} 
 	}
+	write_wires_matrix();
 	prep_meter_updatelist();
 }
 
@@ -1415,11 +1416,6 @@ function draw_wire(connection_number){
 			to_anglevector = [0, -0.5, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
-			if((loading.progress>0)){//&&(wires[connection_number].length<segments_to_use)){
-				segments_to_use = /*Math.max(wires[connection_number].length,*/MIN_BEZIER_SEGMENTS;//);
-				/*if(upgrade_wires==0)*/ upgrade_wires = connections.getsize("connections");
-				still_checking_polys|=8;
-			}
 			var short=0;
 			// old code was: if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
@@ -1725,16 +1721,23 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		rotZ *= 57.29577951; //180/Math.PI;
 		rotY *= 57.29577951; //180/Math.PI;
 	}
-	if(typeof wires[connection_number][segment] === 'undefined') {
+	/*if(typeof wires[connection_number][segment] === 'undefined') {
 		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","benny");
 		wires[connection_number][segment].shape = "plane";//"opencylinder";
 		wires[connection_number][segment].name = "wires£"+connection_number+"£"+segment;
 		wires[connection_number][segment].dim = [2,2];//[5, 2]; //[3,2]cyl is ribbons, [5,2] cuboids
 		//wires[connection_number][segment].blend_enable = 1;
+	}*/
+	if(!Array.isArray(wires_position[connection_number])){
+		wires_position[connection_number] = [];
+		wires_scale[connection_number] = [];
+		wires_rotatexyz[connection_number] = [];
+		wires_colour[connection_number] = [];
 	}
-	wires[connection_number][segment].position = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
-	wires[connection_number][segment].scale = [seglength*0.52, wire_dia,1];
-	wires[connection_number][segment].rotatexyz = [0, rotY, rotZ];
+
+	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
+	wires_scale[connection_number][segment] = [seglength*0.52, wire_dia,1];
+	wires_rotatexyz[connection_number][segment] = [0, rotY, rotZ];
 	var tmc=0.4;
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
 //	post("\nsetting W_C",connection_number,segment);
@@ -1742,13 +1745,42 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
 	zs = 1 / (1 + zs);
 	tmc *= zs;
-	if(cmute){
-		wires[connection_number][segment].color = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
+	/*if(cmute){
+		wires[connection_number][segment].colour = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
 	}else{
-		wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
+		wires[connection_number][segment].colour = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
+	}*/
+	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]]; // legacy, used elsewhere
+	wires_colour[connection_number][segment] = [tmc*col[0],tmc*col[1],tmc*col[2]];// new, used for making matrix for multiple
+	//wires[connection_number][segment].enable = visible;
+}
+
+function write_wires_matrix(){
+	matrix_wire_index=0;
+	var count=0;
+	for(var i=0;i<wires_position.length;i++){
+		if(Array.isArray(wires[i])) count+=wires_position[i].length;
 	}
-	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]];
-	wires[connection_number][segment].enable = visible;
+	matrix_wire_position.dim = [count,1];
+	matrix_wire_scale.dim = [count,1];
+	matrix_wire_rotatexyz.dim = [count,1];
+	matrix_wire_colour.dim = [count,1];
+
+	post("wire matrix length",count);
+
+	for(var i=0;i<wires_position.length;i++){
+		if(Array.isArray(wires_position[i])){
+			for(var ii=0;ii<wires_position[i].length;ii++){
+				matrix_wire_position.setcell(matrix_wire_index,0,"val",wires_position[i][ii][0],wires_position[i][ii][1],wires_position[i][ii][2]);
+				matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
+				matrix_wire_rotatexyz.setcell(matrix_wire_index,0,"val",wires_rotatexyz[i][ii]);
+				matrix_wire_colour.setcell(matrix_wire_index,0,"val",wires_colour[i][ii]);
+				matrix_wire_index++;
+			}
+		}
+	}
+	messnamed("wires_matrices","bang");
+	post("\n\nmatrices ready",matrix_wire_index);
 }
 
 function set_sidebar_mode(mode){

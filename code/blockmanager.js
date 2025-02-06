@@ -19,7 +19,6 @@ var MAX_USED_AUDIO_INPUTS = 0;
 var MAX_USED_AUDIO_OUTPUTS = 0;
 var NO_IO_PER_BLOCK = 2;
 var MAX_BEZIER_SEGMENTS = 16;//24; //must be a multiple of 4
-var MIN_BEZIER_SEGMENTS = 4;
 var MAX_PARAMETERS = 256;
 var MAX_DATA = 16384;
 var MAX_MOD_IDS = 1024;
@@ -164,8 +163,6 @@ var polybuffer_channels = [];
 var polybuffer_lengths = [];
 
 var preload_task;// = new Task(preload_all_waves, this);
-var preload_task2;// = new Task(preload_some_wires, this);
-var preload_wires_counter = 0;
 var waves_buffer = [];
 
 var midi_indicators = {
@@ -227,6 +224,10 @@ var menu = {
 
 
 var wires = []; // called wires-connectionno-segmentno
+var wires_position = []; // called wires-connectionno-segmentno
+var wires_rotatexyz = [];
+var wires_scale = [];
+var wires_colour = [];
 var wires_colours = [];
 var wires_enable = []; //whether wire enable flag is set
 
@@ -249,6 +250,23 @@ var preload_list=[]; // this is for waves
 var preload_note_voice_list = [];
 var preload_audio_voice_list = [];
 
+var matrix_wire_index;
+var matrix_block_index;
+var matrix_voice_index;
+
+var matrix_wire_position;
+var matrix_wire_scale;
+var matrix_wire_rotatexyz;
+var matrix_wire_colour;
+
+var matrix_block_position;
+var matrix_block_scale; 
+var matrix_block_colour;
+var matrix_block_texture;
+
+var matrix_voice_position;
+var matrix_voice_scale;
+var matrix_voice_colour;
 
 var connection_blobs = []; // connection handles. maybe not even blobs one day.
 var background_cube;
@@ -630,7 +648,6 @@ var param_error_lockup = new Array(MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_HARDWARE
 //both indexed by voice / param num. populated when you make a new block or voice?
 
 var still_checking_polys = 0;
-var upgrade_wires = 0;
 var globals_requested = 0;
 
 var deferred_diag = [];

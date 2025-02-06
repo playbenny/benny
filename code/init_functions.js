@@ -161,7 +161,6 @@ function initialise_dictionaries(hardware_file){
 	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
 	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
 	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
-	MIN_BEZIER_SEGMENTS = config.get("MIN_BEZIER_SEGMENTS");//24; //must be a multiple of 4
 	BLOCKS_GRID = config.get("BLOCKS_GRID");
 	BLOCKS_GRID = [BLOCKS_GRID, 1/BLOCKS_GRID];
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
@@ -375,8 +374,35 @@ function initialise_graphics() {
 	flock_cubexz.name = "flockcubexz";
 	flock_cubexz.color = [0.3, 0.3, 0.3, 1];
 
+	matrix_wire_position = new JitterMatrix;
+	matrix_wire_scale = new JitterMatrix;
+	matrix_wire_rotatexyz = new JitterMatrix;
+	matrix_wire_colour = new JitterMatrix;
+	
+	matrix_wire_position.name = "matrix_wire_position";
+	matrix_wire_scale.name = "matrix_wire_scale";
+	matrix_wire_rotatexyz.name = "matrix_wire_rotatexyz";
+	matrix_wire_colour.name = "matrix_wire_colour";
+
+	matrix_block_position = new JitterMatrix;
+	matrix_block_scale = new JitterMatrix;
+	matrix_block_colour = new JitterMatrix;
+	matrix_block_texture = new JitterMatrix;
+	
+	matrix_block_position.name = "matrix_block_position";
+	matrix_block_scale.name = "matrix_block_scale";
+	matrix_block_colour.name = "matrix_block_colour";
+	matrix_block_texture.name = "matrix_block_texture";
+
+	matrix_voice_position = new JitterMatrix;
+	matrix_voice_scale = new JitterMatrix;
+	matrix_voice_colour = new JitterMatrix;
+
+	matrix_voice_position.name = "matrix_voice_position";
+	matrix_voice_scale.name = "matrix_voice_scale";
+	matrix_voice_colour.name = "matrix_voice_colour";
+
 	flock_axes(0);
-	//	messnamed("camera_control", "position", 0, 0, -2);
 	messnamed("camera_control", "direction", 0, 0, -1);
 	messnamed("camera_control", "position", camera_position);
 	messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0], blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1], blocks_page.highest), blocks_page.lowest), -1);
@@ -385,6 +411,21 @@ function initialise_graphics() {
 
 	var menutex_task = new Task(initialise_block_menu, this);
 	menutex_task.schedule(1000);
+}
+
+function mult_test(count){
+	matrix_wire_position.dim = [count,1];
+	matrix_wire_scale.dim = [count,1];
+	matrix_wire_rotatexyz.dim = [count,1];
+	matrix_wire_colour.dim = [count,1];
+
+	for (var x = 0; x < count; x++) {
+		var y = 0;
+		var z = 0;
+		matrix_wire_position.setcell(x,y, "val", x,y,z);
+		matrix_wire_scale.setcell(x,y, "val", 0.5,0.5,0.5);
+		matrix_wire_colour.setcell(x,y,"val",Math.random(),Math.random(),Math.random());
+	}
 }
 
 function stop_graphics(){
@@ -721,11 +762,6 @@ function import_hardware(v){
 	}
 	startup_loadfile = "";
 
-	if(config.contains("PRELOAD_WIRES")&&config.get("PRELOAD_WIRES")==1){
-		preload_wires_counter = 0;
-		preload_task2 = new Task(preload_some_wires, this);
-		preload_task2.schedule(1100);
-	}
 	slowclock_task = new Task(slowclock, this);
 	slowclock_task.interval = 900;
 	slowclock_task.repeat();

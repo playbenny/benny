@@ -187,27 +187,7 @@ function preload_all_waves(){
 }
 
 
-function preload_some_wires(){
-	if(preload_wires_counter < MAX_BLOCKS){
-		var c = preload_wires_counter++;
-		if(!Array.isArray(wires[c]))wires[c] = [];
-		var segment = wires[c].length;
-		for(;segment<MAX_BEZIER_SEGMENTS;segment++){
-			if(typeof wires[c][segment] === 'undefined') {
-				wires[c][segment] = new JitterObject("jit.gl.gridshape","benny");
-				wires[c][segment].shape = "plane";
-				wires[c][segment].name = "wires£"+c+"£"+segment;
-				wires[c][segment].dim = [2,2];
-				wires[c][segment].enable = 0;
-				wires[c][segment].scale = [0,0,0];
-			}else{post("\nsurprise in wire pre-instantiate task");}
-		}
-		preload_task2.schedule(100);
-	}else{
-		post("\ncompleted pre-instantiating wire polygons")
-		preload_task2.freepeer();
-	}
-}
+
 
 function create_blank_wave_buffer(number,length, channels,name){
 	polybuffer_create_blank(length,channels);

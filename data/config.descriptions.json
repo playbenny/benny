@@ -14,8 +14,6 @@
 	"mainfont" : "main font",
 	"BLOCK_MENU_CLICK_ACTION" : "what mouse action opens the new block menu",
 	"MAX_BEZIER_SEGMENTS" : "maximum number of segments to make a wire out of (raising this seems to make the gpu work hard)",
-	"MIN_BEZIER_SEGMENTS" : "minimum number of segments to make a wire out of",
-	"PRELOAD_WIRES" : "pre-instantiating the opengl objects for wires seems to make their creation faster",
 	"BLOCKS_GRID" : "size of grid snap for block movement",
 	"WIRES_SHOW_ALL" : "if off then only the wires going to/from the currently selected block are shown",
 	"WIRES_REDUCE" : "if on then wires going to polyphonic voices' allocator input are drawn as a single wire, if off then they're drawn as one per voice",

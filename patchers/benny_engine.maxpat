@@ -22,6 +22,17 @@
 		"title" : "benny launcher",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-20",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 0,
+					"patching_rect" : [ 39.0, 127.0, 71.0, 22.0 ],
+					"text" : "jit_multiples"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"bgcolor" : [ 0.109803921568627, 0.109803921568627, 0.109803921568627, 1.0 ],
 					"fontname" : "Arial Bold",
 					"fontsize" : 16.0,
@@ -277,7 +288,7 @@
 
 							}
  ],
-						"originid" : "pat-704"
+						"originid" : "pat-15408"
 					}
 ,
 					"patching_rect" : [ 1123.0, 46.0, 112.0, 22.0 ],
@@ -452,7 +463,7 @@
 
 							}
  ],
-						"originid" : "pat-706"
+						"originid" : "pat-15410"
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -621,7 +632,7 @@
 
 							}
  ],
-						"originid" : "pat-720"
+						"originid" : "pat-15424"
 					}
 ,
 					"patching_rect" : [ 314.5, 242.0, 102.0, 22.0 ],
@@ -860,7 +871,7 @@
 
 							}
  ],
-						"originid" : "pat-722"
+						"originid" : "pat-15426"
 					}
 ,
 					"patching_rect" : [ 725.0, 48.25, 117.0, 22.0 ],
@@ -1085,7 +1096,7 @@
 
 							}
  ],
-						"originid" : "pat-724"
+						"originid" : "pat-15428"
 					}
 ,
 					"patching_rect" : [ 556.0, 527.0, 69.0, 22.0 ],
@@ -2007,7 +2018,7 @@
 
 							}
  ],
-						"originid" : "pat-726"
+						"originid" : "pat-15430"
 					}
 ,
 					"patching_rect" : [ 397.0, 167.25, 100.0, 22.0 ],
@@ -2350,7 +2361,7 @@
 
 							}
  ],
-						"originid" : "pat-728"
+						"originid" : "pat-15432"
 					}
 ,
 					"patching_rect" : [ 742.0, 660.0, 123.0, 22.0 ],
@@ -3130,7 +3141,7 @@
 
 							}
  ],
-						"originid" : "pat-730"
+						"originid" : "pat-15434"
 					}
 ,
 					"patching_rect" : [ 659.0, 132.25, 113.0, 22.0 ],
@@ -4351,7 +4362,7 @@
 
 							}
  ],
-						"originid" : "pat-764"
+						"originid" : "pat-15468"
 					}
 ,
 					"patching_rect" : [ 30.0, 174.0, 161.0, 22.0 ],
@@ -5246,7 +5257,7 @@
 
 							}
  ],
-						"originid" : "pat-768"
+						"originid" : "pat-15472"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 12.25, 43.0, 22.0 ],
@@ -5831,7 +5842,7 @@
 
 							}
  ],
-						"originid" : "pat-770"
+						"originid" : "pat-15474"
 					}
 ,
 					"patching_rect" : [ 781.0, 328.25, 85.0, 22.0 ],
@@ -6267,7 +6278,7 @@
 
 											}
  ],
-										"originid" : "pat-774"
+										"originid" : "pat-15478"
 									}
 ,
 									"patching_rect" : [ 305.0, 329.0, 69.0, 22.0 ],
@@ -8201,7 +8212,7 @@
 
 							}
  ],
-						"originid" : "pat-772"
+						"originid" : "pat-15476"
 					}
 ,
 					"patching_rect" : [ 110.75, 587.0, 298.0, 22.0 ],
@@ -9203,7 +9214,7 @@
 
 											}
  ],
-										"originid" : "pat-784"
+										"originid" : "pat-15488"
 									}
 ,
 									"patching_rect" : [ 30.0, 463.0, 129.0, 22.0 ],
@@ -10082,7 +10093,7 @@
 
 							}
  ],
-						"originid" : "pat-782",
+						"originid" : "pat-15486",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -11929,7 +11940,7 @@
 
 							}
  ],
-						"originid" : "pat-788",
+						"originid" : "pat-15490",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -12971,7 +12982,7 @@
 
 											}
  ],
-										"originid" : "pat-794"
+										"originid" : "pat-15496"
 									}
 ,
 									"patching_rect" : [ 540.0, 18.0, 89.0, 22.0 ],
@@ -14055,7 +14066,7 @@
 
 							}
  ],
-						"originid" : "pat-792"
+						"originid" : "pat-15494"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 41.25, 67.0, 22.0 ],
@@ -16354,7 +16365,7 @@
 
 			}
  ],
-		"originid" : "pat-702",
+		"originid" : "pat-15406",
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -16485,6 +16496,13 @@
 , 			{
 				"name" : "jit.gl.textureset.maxpat",
 				"bootpath" : "C74:/packages/Jitter Tools/patchers/abstractions",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "jit_multiples.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
