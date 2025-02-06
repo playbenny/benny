@@ -60,25 +60,23 @@ function clicked_block_preparation() {
 
 function picker_hover_and_special(id){
 	if(usermouse.oid!=id){ //if id has changed
-		deferred_diag.push("hover - "+id);
+		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
 		usermouse.oid=id;
 		var thov =id.split('_'); // store hover - any picker id received when not waiting for click
-		
 		if((thov[0]=="wires")&&(usermouse.clicked3d==-1)){  // wire bulge stuff for a bit
 			if(bulgingwire!=-1){
 				if(Array.isArray(wires_scale[bulgingwire])){
-
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						var ta = wires_scale[bulgingwire][i];
 						wires_scale[bulgingwire][i] = [ta[0], wire_dia,1];
 					}					
 				}else{
-					post("didnt find wire",bulgingwire);
+					post("\n\ndidnt find wire",bulgingwire);
 				}
 			}
 			bulgingwire= wires_lookup[thov[1]];
-			post("\n\nwires lookup for ",thov[1]," returned ",bulgingwire);
+			//post("\n\nwires lookup for ",thov[1]," returned ",bulgingwire);
 			bulgeamount=1;
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				var ta = wires_scale[bulgingwire][i];
@@ -99,11 +97,13 @@ function picker_hover_and_special(id){
 				messnamed("wires_matrices","bang");
 				bulgingwire = -1;
 			}
+			phys_picker_id = null;
 		}else{
 			//usermouse.hover = thov.concat();
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if(bulgeamount==1) bulgeamount = 0.999;
 		}
+		phys_picker_id=null;
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
 			draw_menu_hint();
 		}	
@@ -202,6 +202,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//post(" - voice",bv);
 									id="block_"+i+"_"+bv;
 								}
+								phys_picker_id = null;
 								i=MAX_BLOCKS;
 							}
 						}
@@ -209,11 +210,20 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}
 			}
 			if(id==null){
-				id = phys_picker_id;//.message("touch",x,y);
+				if(phys_picker_id!=null){
+					id = phys_picker_id;
+				}else{
+					id = glpicker.touch(x,y);
+				}
 			}
 			if(id!=null)picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
-			id = phys_picker_id;//phys_picker.touch(x,y);
+			if(phys_picker_id!=null){
+				id = phys_picker_id;
+			}else{
+				id = glpicker.touch(x,y);
+			}
+
 			//picker_hover_and_special(id);
 			usermouse.oid=id;
 			var thov =id.split('_'); // store hover - any picker id received when not waiting for click
@@ -247,6 +257,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.timer=-1;
 						}
 					}else{
+						if(usermouse.ids[0]=="wires"){
+							usermouse.ids[1] = wires_lookup[usermouse.ids[1]];
+						}
 						usermouse.clicked3d = usermouse.ids[1];
 						usermouse.hover = [].concat(usermouse.ids);
 						if(displaymode=="blocks"){
@@ -594,6 +607,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 							}else{ // ############## END OF DRAG MOVE BLOCKS ################
 								// MOVE BLOCK: - stores the dragged pos in the dict
+								for(t = 0; t<usermouse.drag.dragging.voices.length; t++){//resets the dragged blocks Z pos
+									blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[2] = 0;
+								}
 								if((displaypos[0] != dictpos[0]) || (displaypos[1] != dictpos[1])){
 									ob=-1;
 									for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
@@ -601,12 +617,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											ob=usermouse.drag.dragging.voices[t][0];
 											blocks.replace("blocks["+ob+"]::space::x",blocks_cube[ob][0].position[0]);
 											blocks.replace("blocks["+ob+"]::space::y",blocks_cube[ob][0].position[1]);
+											write_block_matrix(ob);
 										}
-									}
+									}									
 									redraw_flag.flag=4;//need to redraw it (for connections only? unless you've messed anything up....)
-								}
-								for(t = 0; t<usermouse.drag.dragging.voices.length; t++){//resets the dragged blocks Z pos
-									blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[2] = 0;
 								}
 								usermouse.clicked3d = -1;
 								//meters_enable = 1;
@@ -838,7 +852,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
 								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
-								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))/*||(usermouse.hover[0]=="wires")*/))){ //i think hover can't get set to wires
+								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))))){ //i think hover can't get set to wires
 									remove_potential_wire();
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
@@ -1122,7 +1136,11 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}
 
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
-		var id = phys_picker_id;// phys_picker.touch(x,y);
+		if(phys_picker_id!=null){
+			id = phys_picker_id;
+		}else{
+			id = glpicker.touch(x,y);
+		}
 		if(id!=null) picker_hover_and_special(id);
 	}	
 //	post("\nbcd",b,c,d,mouse_index);

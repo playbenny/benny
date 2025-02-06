@@ -349,7 +349,7 @@ function initialise_graphics() {
 	menu_background_cube.shape = "cube";
 	menu_background_cube.scale = [1000, 1, 1000];
 	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block-menu-background";
+	menu_background_cube.name = "block_menu_background";
 	menu_background_cube.color = [0, 0, 0, 1];
 
 	flock_cubexy = new JitterObject("jit.gl.gridshape", "benny");

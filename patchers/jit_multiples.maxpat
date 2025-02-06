@@ -230,13 +230,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-31",
-					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 68.0, 623.0, 112.0, 36.0 ],
-					"text" : "mouse wires_42_0 0"
+					"patching_rect" : [ 68.0, 623.0, 113.0, 22.0 ],
+					"text" : "mouse wires_7_0 0"
 				}
 
 			}

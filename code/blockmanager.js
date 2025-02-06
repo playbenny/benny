@@ -129,6 +129,9 @@ var textureset_blocks = this.patcher.getnamed("textureset_blocks");
 
 var phys_picker_id;
 
+var glpicker = new JitterObject("jit.gl.picker","benny");
+
+
 var scope_buffer = new Buffer("scope_buffer");
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
 var midi_scopes_buffer = new Buffer("midi_scopes_buffer");

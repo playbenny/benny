@@ -782,7 +782,7 @@ function initialise_block_menu(visible){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_menu[i].name = "menu_block£"+types[i]+"£"+i;
+						blocks_menu[i].name = "menu_block_"+types[i]+"_"+i;
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
@@ -815,7 +815,7 @@ function initialise_block_menu(visible){
 						//col = config.get("palette::"+ts[0]);
 						//						post("drawing menu block",ts);
 						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_menu[i].name = "menu_block£"+types[i]+"£"+i;
+						blocks_menu[i].name = "menu_block_"+types[i]+"_"+i;
 						blocks_menu[i].shape = "cube";
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [x, -110, z];
@@ -992,6 +992,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 		}
 	}
+	post("\nb & w c");
 	for(i=connections.getsize("connections")-1;i>=0;i--){
 		if((connections.contains("connections["+i+"]::conversion::mute"))){
 			var cfrom = connections.get("connections["+i+"]::from::number");
@@ -1033,8 +1034,9 @@ function block_and_wire_colours(){ //for selection and mute etc
 				}
 			}
 			//draw_wire(i);
-			post("\nb & w c");
+			post(i);
 			if(wires_colours[i].length>=wires_colour[i].length){
+				post("**");
 				for(segment=0;segment<wires_colour[i].length;segment++){
 					tmc=0.3;
 					tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
@@ -1111,7 +1113,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				bc++;
 				blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
 				blocks_cube[i][t].dim = [12, 12];
-				blocks_cube[i][t].name = "block£"+i+"£"+t;
+				blocks_cube[i][t].name = "block_"+i+"_"+t;
 				blocks_cube[i][t].shape = "cube";
 				blocks_cube[i][t].color = col;
 				blocks_cube[i][0].texture = blocks_cube_texture[i];
@@ -1224,8 +1226,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			}
 		}
 	}
-	post("\nblock,",i,"cubes:",bc,vc,block_v*subvoices,mc);
-	return [1,block_v*subvoices,mc];
+	return [block_v*subvoices,mc];
 }
 
 function draw_blocks(){
@@ -1243,9 +1244,9 @@ function draw_blocks(){
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
 			var r = draw_block(i);
-			block_cubes+=r[0];
-			voice_cubes+=r[1];
-			meter_cubes+=r[2];
+			block_cubes++;
+			voice_cubes+=r[0];
+			meter_cubes+=r[1];
 		}
 	}
 	for(i=0;i<connections.getsize("connections");i++){
@@ -1823,13 +1824,15 @@ function write_blocks_matrix(){
 
 function write_wire_matrix(i){
 	matrix_wire_index = wires_startindex[i];
-	for(var ii=0;ii<wires_position[i].length;ii++){
-		matrix_wire_position.setcell(matrix_wire_index,0,"val",wires_position[i][ii][0],wires_position[i][ii][1],wires_position[i][ii][2]);
-		matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
-		matrix_wire_rotatexyz.setcell(matrix_wire_index,0,"val",wires_rotatexyz[i][ii]);
-		matrix_wire_colour.setcell(matrix_wire_index,0,"val",wires_colour[i][ii]);
-		matrix_wire_index++;
-	}	
+	if(Array.isArray(wires_position[i])){
+		for(var ii=0;ii<wires_position[i].length;ii++){
+			matrix_wire_position.setcell(matrix_wire_index,0,"val",wires_position[i][ii][0],wires_position[i][ii][1],wires_position[i][ii][2]);
+			matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
+			matrix_wire_rotatexyz.setcell(matrix_wire_index,0,"val",wires_rotatexyz[i][ii]);
+			matrix_wire_colour.setcell(matrix_wire_index,0,"val",wires_colour[i][ii]);
+			matrix_wire_index++;
+		}	
+	}
 }
 
 function write_wires_matrix(){
@@ -1843,8 +1846,8 @@ function write_wires_matrix(){
 	matrix_wire_rotatexyz.dim = [count,1];
 	matrix_wire_colour.dim = [count,1];
 
-	post("wire matrix length",count);
-
+	//post("wire matrix length",count);
+	wires_lookup=[];
 	for(var i=0;i<wires_position.length;i++){
 		if(Array.isArray(wires_position[i])){
 			wires_startindex[i] = matrix_wire_index;
@@ -1860,7 +1863,7 @@ function write_wires_matrix(){
 	}
 	wires_startindex[i] = mouse_index;
 	messnamed("wires_matrices","bang");
-	post("\n\nmatrices ready",matrix_wire_index);
+	//post("\n\nmatrices ready",matrix_wire_index);
 }
 
 function set_sidebar_mode(mode){
