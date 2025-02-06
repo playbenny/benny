@@ -1651,14 +1651,12 @@ function clear_everything(){
 		}
 		blocks_meter[b] = [];
 	}
-	for(b in wires){
-		for(bl in wires[b]){
-			wires[b][bl].enable = 0; 
-			wires[b][bl].scale = [0,0,0];//freepeer();
-		}
-		//wires[b] = [];
-		wires_colours[b] = [];
-	}
+	wires_position = [];
+	wires_scale = [];
+	wires_colour = [];
+	wires_rotatexyz = [];
+	messnamed("wires_matrices","dim",0,0);
+	messnamed("wires_matrices","bang");
 	wire_ends = [];
 	blocks_tex_sent=[];
 	background_cube.shape = "cube";

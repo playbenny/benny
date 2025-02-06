@@ -77,12 +77,12 @@ function frameclock(){
 	if((bulgeamount>0) && (bulgeamount<1)){
 		bulgeamount -= 0.1;
 		if(bulgeamount<=0)bulgeamount =0;
-		if(Array.isArray(wires[bulgingwire])){
-			var ll = wires[bulgingwire].length;
+		if(Array.isArray(wires_position[bulgingwire])){
+			var ll = wires_position[bulgingwire].length;
 			for(var i=0;i<ll;i++){
-				var ta = wires[bulgingwire][i].scale;
+				var ta = wires_scale[bulgingwire][i];
 				ta[1] = wire_dia * (1 + bulgeamount);
-				wires[bulgingwire][i].scale = [ta[0],ta[1],ta[2]];
+				wires_scale[bulgingwire][i] = [ta[0],ta[1],ta[2]];
 			}
 			if(bulgeamount==0) bulgingwire=-1;			
 		}

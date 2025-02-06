@@ -222,20 +222,18 @@ var menu = {
 	show_all_types : 0 //to override swap type filtering
 }; 
 
-
-var wires = []; // called wires-connectionno-segmentno
 var wires_position = []; // called wires-connectionno-segmentno
 var wires_rotatexyz = [];
 var wires_scale = [];
 var wires_colour = [];
+var wires_startindex = [];//indexed by wireno like the above, contains the first matrix index of a wire piece.
+var wires_lookup = [];//reverse lookup indexed by matrix/multiple index, contains wire number
+//legacy?
 var wires_colours = [];
 var wires_enable = []; //whether wire enable flag is set
 
 var view_changed = true; //whether you're redrawing click buffers or not
 
-var wires_enable_animate = []; // list of [wireno,target enable value,current seg,direction,length];
-
-var wires_show_all = 1;
 var last_connection_made = -1;
 var wires_potential_connection = -1; //if illustrating a potential connection you set this
 //to the (unused) conn no you use for drawing the wire, then set back to -1 when you freepeer it

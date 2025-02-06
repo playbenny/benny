@@ -183,7 +183,6 @@ function initialise_dictionaries(hardware_file){
 	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
 	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
 	waves_preloading = config.get("waves_preloading");
-	wires_show_all = config.get("WIRES_SHOW_ALL");
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");

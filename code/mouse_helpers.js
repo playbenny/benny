@@ -3194,11 +3194,6 @@ function blocks_and(side){
 	set_display_mode("blocks");
 }
 
-function toggle_show_all_wires(){
-	keyrepeat_task.cancel();
-	wires_show_all = 1 - wires_show_all;
-	redraw_flag.flag |= 4; //8;
-}
 function toggle_show_sidebar_para_mod(){
 	MODULATION_IN_PARAMETERS_VIEW = 1 - MODULATION_IN_PARAMETERS_VIEW;
 	redraw_flag.flag |= 2;

@@ -968,11 +968,12 @@ function turn_off_audio_to_data_if_unused(voice){
 // REMOVE CONNECTION ###################################################################################################
 function remove_connection(connection_number){	
 
-	for(i=0;i<wires[connection_number].length;i++){ // disable the wires
-		wires[connection_number][i].enable=0; //freepeer(); 
-		wires[connection_number][i].scale = [0,0,0]; 
-	}
-	//wires[connection_number]=[];
+	wires_position[connection_number] = null;
+	wires_scale[connection_number] = null;
+	wires_rotatexyz[connection_number] = null;
+	wires_colour[connection_number] = null;
+	
+
 	wire_ends[connection_number][0] = -1.057;
 	selected.wire[connection_number] = 0;
 
@@ -1451,6 +1452,7 @@ function remove_connection(connection_number){
 	var empt=new Dict;  // wipe this one from the dictionary
 	connections.set("connections["+connection_number+"]", empt);
 	rebuild_action_list = 1;
+	redraw_flag.flag |= 4;
 }
 
 function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
@@ -1491,12 +1493,11 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 
 function remove_potential_wire(gl_objects_only){
 	if(wires_potential_connection != -1){
-		if(Array.isArray(wires[wires_potential_connection])){
-			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
-				wires[wires_potential_connection][t].enable = 0; //freepeer();
-				wires[wires_potential_connection][t].scale = [0,0,0];
-				//wires[wires_potential_connection].pop();
-			}
+		if(Array.isArray(wires_position[wires_potential_connection])){
+			wires_position[wires_potential_connection] = null;
+			wires_scale[wires_potential_connection] = null;
+			wires_rotatexyz[wires_potential_connection] = null;
+			wires_colour[wires_potential_connection] = null;
 		}
 		if(gl_objects_only!=1){
 			//post("\nremoving",wires_potential_connection);
