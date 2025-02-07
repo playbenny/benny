@@ -76,7 +76,6 @@ function picker_hover_and_special(id){
 				}
 			}
 			bulgingwire= wires_lookup[thov[1]];
-			//post("\n\nwires lookup for ",thov[1]," returned ",bulgingwire);
 			bulgeamount=1;
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				var ta = wires_scale[bulgingwire][i];
@@ -622,7 +621,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 								usermouse.clicked3d = -1;
 								//meters_enable = 1;
-								block_meters_enable(1);
+								//block_meters_enable(1);
 							}
 							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
@@ -858,7 +857,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										if((dx>=0.75)||(dy>=0.75)){
 											usermouse.drag.starting_value_x = -999; // this is the start of dragging a block. resetting these means it
 											usermouse.drag.starting_value_y = -999; // always passes the dx/dy test.
-											block_meters_enable(0);
+											//block_meters_enable(0);
 											meters_updatelist.meters = [];
 											meters_updatelist.hardware = [];
 											meters_updatelist.midi = [];
@@ -1038,7 +1037,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 }
 
 function mouse_released_on_a_thing_no_drag(){
-	if(usermouse.ids[0]=='block' || usermouse.ids[0]=='label' || usermouse.ids[0]=='meter'){
+	if(usermouse.ids[0]=='block' || usermouse.ids[0]=='meter'){
 		//										deferred_diag[deferred_diag.length] = "you clicked this block "+usermouse.ids[1];
 		if(usermouse.timer>0){
 			if(blocks.get("blocks["+usermouse.ids[1]+"]::type")!="hardware"){

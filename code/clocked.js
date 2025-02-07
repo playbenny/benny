@@ -86,8 +86,7 @@ function frameclock(){
 			}
 			if(bulgeamount==0) bulgingwire=-1;			
 			write_wire_matrix(bulgingwire);
-			messnamed("wires_matrices","bang");
-
+			redraw_flag.matrices |= 1;
 		}
 	}
 	if(redraw_flag.flag & 8){

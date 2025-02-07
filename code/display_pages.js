@@ -848,37 +848,14 @@ function blocks_enable(enab){ //shows or hides all the blocks/wires
 			}
 		}
 	}
-	block_meters_enable(enab);
+	
 	messnamed("wires_multiple","enable",enab);
+	messnamed("voices_multiple","enable",enab);
+	messnamed("meters_multiple","enable",enab);
 }
 
-function block_meters_enable(enab){
-	var i,tt,voice,block;
-	if(enab == 0){
-		for(i = meters_updatelist.midi.length-1; i>=0; i--){
-			block=meters_updatelist.midi[i][0];
-			voice=meters_updatelist.midi[i][1];
-			if(typeof blocks_meter[block][voice] !== 'undefined'){	
-				blocks_meter[block][voice].enable = 0;
-			}
-		}
-	}
-	for(i = meters_updatelist.hardware.length-1; i>=0; i--){
-		block=meters_updatelist.hardware[i][0];
-		voice=meters_updatelist.hardware[i][1];
-		if(typeof blocks_meter[block][voice] !== 'undefined'){
-			blocks_meter[block][voice].enable = enab;
-		}
-	}
-	for(i = meters_updatelist.meters.length-1; i>=0; i--){
-		voice = meters_updatelist.meters[i][1];
-		block = meters_updatelist.meters[i][0];
-		for(tt=voice*NO_IO_PER_BLOCK;tt<(voice+1)*NO_IO_PER_BLOCK;tt++){
-			if(typeof blocks_meter[block][tt] !== 'undefined'){	
-				blocks_meter[block][tt].enable = enab;
-			}
-		}
-	}
+function block_meters_enable(enab){ //never used now?
+	messnamed("meters_multiple","enable",enab);
 }
 
 function block_and_wire_colours(){ //for selection and mute etc
@@ -992,7 +969,6 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 		}
 	}
-	post("\nb & w c");
 	for(i=connections.getsize("connections")-1;i>=0;i--){
 		if((connections.contains("connections["+i+"]::conversion::mute"))){
 			var cfrom = connections.get("connections["+i+"]::from::number");
@@ -1034,9 +1010,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 				}
 			}
 			//draw_wire(i);
-			post(i);
 			if(wires_colours[i].length>=wires_colour[i].length){
-				post("**");
 				for(segment=0;segment<wires_colour[i].length;segment++){
 					tmc=0.3;
 					tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
