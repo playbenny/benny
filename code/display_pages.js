@@ -1276,7 +1276,7 @@ function draw_wire(connection_number){
 		if(!is_empty(wire_ends[connection_number])){
 			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
 				drawme =0;
-				post("\nskipped draw",connection_number);
+				//post("\nskipped draw",connection_number);
 			}
 		}
 		if(drawme){
@@ -1774,9 +1774,11 @@ function write_block_matrix(b){
 			mc++;
 		}
 	}
+	redraw_flag.matrices |= 2;
 }
 
 function write_blocks_matrix(){
+	redraw_flag.matrices &= 253;
 	matrix_voice_position.dim = [voice_cubes,1];
 	matrix_voice_colour.dim = [voice_cubes,1];
 	matrix_voice_scale.dim = [voice_cubes,1];
@@ -1833,9 +1835,12 @@ function write_wire_matrix(i){
 			matrix_wire_index++;
 		}	
 	}
+	redraw_flag.matrices |= 1;
 }
 
 function write_wires_matrix(){
+	redraw_flag.matrices &= 254;
+
 	matrix_wire_index=0;
 	var count=0;
 	for(var i=0;i<wires_position.length;i++){

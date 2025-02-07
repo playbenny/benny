@@ -83,7 +83,6 @@ function picker_hover_and_special(id){
 				ta[1] = wire_dia * (1 + bulgeamount);
 				wires_scale[bulgingwire][i] = [ta[0],ta[1],ta[2]];
 				write_wire_matrix(bulgingwire);
-				messnamed("wires_matrices","bang");
 			}
 		}else if(thov[0]!="background"){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
@@ -94,7 +93,6 @@ function picker_hover_and_special(id){
 					wires_scale[bulgingwire][i] = [ta[0],wire_dia,1];
 				}
 				write_wire_matrix(bulgingwire);
-				messnamed("wires_matrices","bang");
 				bulgingwire = -1;
 			}
 			phys_picker_id = null;
@@ -868,17 +866,21 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											var bdx,bdy;
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
 												//post("dragin",usermouse.drag.dragging.voices[t][0],usermouse.drag.dragging.voices[t][1]);
+												var flg=0;
 												if(ob!=usermouse.drag.dragging.voices[t][0]){
 													ob = usermouse.drag.dragging.voices[t][0];	
+													flg=1;
 													bdx = blocks.get("blocks["+ob+"]::space::x") + block_x - dictpos[0];
 													bdy = blocks.get("blocks["+ob+"]::space::y") + block_y - dictpos[1];
 												}
 												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
 												if(subvoices<1)subvoices = 1;
-												blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
+												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
+												if(flg)write_block_matrix(ob);
 											}
 											for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
+												write_wire_matrix(usermouse.drag.dragging.connections[tt]);
 											}
 										}
 										if(sidebar.mode=="notification") set_sidebar_mode("none");

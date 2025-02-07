@@ -106,6 +106,13 @@ function frameclock(){
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		bangflag=1;
 	}else{
+		if(redraw_flag.matrices & 1){
+			messnamed("wires_matrices","bang");
+		}
+		if(redraw_flag.matrices & 2){
+			messnamed("voices_matrices","bang");
+		}
+		redraw_flag.matrices = 0;
 		if(redraw_flag.flag & 1){
 			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "settings")||(sidebar.mode == "wire")){
 				var vch = view_changed;
@@ -166,6 +173,7 @@ function frameclock(){
 			hardware_meters();
 			meters();
 			midi_meters();
+			messnamed("meters_matrices","bang");
 			sidebar_meters();
 			bangflag = 1;
 		}
@@ -306,27 +314,26 @@ function meters(){
 			matrix_meter_scale.setcell(matrix_meter_index[block][voice*NO_IO_PER_BLOCK+tt],0,"val",blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale[0],blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale[1],blocks_meter[block][voice*NO_IO_PER_BLOCK+tt].scale[2]);
 		}
 	}
-	messnamed("meters_matrices","bang");
 }
 
 function hardware_meters(){
 	for(i = meters_updatelist.hardware.length-1; i>=0; i--){
 		var block=meters_updatelist.hardware[i][0];
 		var voice=meters_updatelist.hardware[i][1];
-		//try/*if(typeof blocks_meter[block][voice] !== 'undefined')*/{
-			var polyvoice = meters_updatelist.hardware[i][2];
-			var mmin = scope_buffer.peek(1,1+(polyvoice));
-			var mmax = scope_buffer.peek(2,1+(polyvoice));
-			var tv=[];
-			tv = blocks_meter[block][voice].position;
-			tv[1] = meters_updatelist.hardware[i][3] + (mmax+mmin) * 0.225;
-			//tv[2] = 0.5+tv[2]; //selected.block[block]*SELECTED_BLOCK_Z_MOVE;
-			tv[2] = 0.5+blocks_cube[block][0].position[2];
-			blocks_meter[block][voice].position = tv;
-			tv = blocks_meter[block][voice].scale;
-			tv[1] = Math.max(0.225*(mmax-mmin),0.005);
-			blocks_meter[block][voice].scale = tv;
-		//}catch(err){error("\nhw meter error block,voice,err",block,voice,typeof blocks_meter[block][voice],err.name,err.message);}
+		var polyvoice = meters_updatelist.hardware[i][2];
+		var mmin = scope_buffer.peek(1,1+(polyvoice));
+		var mmax = scope_buffer.peek(2,1+(polyvoice));
+		var tv=[];
+		tv = blocks_meter[block][voice].position;
+		tv[1] = meters_updatelist.hardware[i][3] + (mmax+mmin) * 0.225;
+		//tv[2] = 0.5+tv[2]; //selected.block[block]*SELECTED_BLOCK_Z_MOVE;
+		tv[2] = 0.5+blocks_cube[block][0].position[2];
+		blocks_meter[block][voice].position = tv;
+		tv = blocks_meter[block][voice].scale;
+		tv[1] = Math.max(0.225*(mmax-mmin),0.005);
+		blocks_meter[block][voice].scale = tv;
+		matrix_meter_position.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].position[0],blocks_meter[block][voice].position[1],blocks_meter[block][voice].position[2]);
+		matrix_meter_scale.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].scale[0],blocks_meter[block][voice].scale[1],blocks_meter[block][voice].scale[2]);
 	}
 }
 
@@ -362,7 +369,7 @@ function midi_meters(){
 	for(i = meters_updatelist.midi.length-1; i>=0; i--){
 		var block=meters_updatelist.midi[i][0];
 		var voice=meters_updatelist.midi[i][1];
-		try{//if(typeof blocks_meter[block][voice] !== 'undefined'){
+//		try{//if(typeof blocks_meter[block][voice] !== 'undefined'){
 			var polyvoice = meters_updatelist.midi[i][2];
 			var mvals = [];
 			for(var ii=0;ii<7;ii++) mvals[ii] = midi_meters_buffer.peek(ii+1,polyvoice);
@@ -394,9 +401,11 @@ function midi_meters(){
 					tv[1] = Math.max(0.45*(v_max-v_min),0.02);
 					tv[2] = held;
 					blocks_meter[block][voice].scale = tv;
+					matrix_meter_position.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].position[0],blocks_meter[block][voice].position[1],blocks_meter[block][voice].position[2]);
+					matrix_meter_scale.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].scale[0],blocks_meter[block][voice].scale[1],blocks_meter[block][voice].scale[2]);
 				}
 			}
-		}catch(err){error("\nmidi meter err ",block,voice, err.name,err.message);}
+//		}catch(err){error("\nmidi meter err ",block,voice, err.name,err.message);}
 	}
 }
 

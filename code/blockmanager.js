@@ -241,7 +241,7 @@ var wires_potential_connection = -1; //if illustrating a potential connection yo
 //to the (unused) conn no you use for drawing the wire, then set back to -1 when you freepeer it
 
 var bulgingwire=-1;
-var bulgeamount;
+var bulgeamount=0;
 
 var recursions = 0; // just because i had an anxiety dream about getting stuck in an infinite loop
 
@@ -523,6 +523,7 @@ var mix_block_has_mutes = 0; //if a mixer channel is muted the unmute all button
 var redraw_flag = {
 	flag : 0,
 	deferred : 0,
+	matrices : 0,
 	targets: [],
 	paneltargets: [],
 	targetcount: 0,
