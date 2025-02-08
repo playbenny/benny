@@ -383,16 +383,6 @@ function initialise_graphics() {
 	matrix_wire_rotatexyz.name = "matrix_wire_rotatexyz";
 	matrix_wire_colour.name = "matrix_wire_colour";
 
-	matrix_block_position = new JitterMatrix;
-	matrix_block_scale = new JitterMatrix;
-	matrix_block_colour = new JitterMatrix;
-	matrix_block_texture = new JitterMatrix;
-	
-	matrix_block_position.name = "matrix_block_position";
-	matrix_block_scale.name = "matrix_block_scale";
-	matrix_block_colour.name = "matrix_block_colour";
-	matrix_block_texture.name = "matrix_block_texture";
-
 	matrix_voice_position = new JitterMatrix;
 	matrix_voice_scale = new JitterMatrix;
 	matrix_voice_colour = new JitterMatrix;

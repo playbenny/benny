@@ -1729,10 +1729,6 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 
 function write_block_matrix(b){	
 	if(Array.isArray(blocks_cube[b])){
-		bc=matrix_block_index[b];
-		matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
-		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
-		//matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].colour[0],blocks_cube[b][0].colour[1],blocks_cube[b][0].colour[2]);
 		vc=matrix_voice_index[b];
 		for(var c=1;c<blocks_cube[b].length;c++){
 			matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
@@ -1759,23 +1755,14 @@ function write_blocks_matrix(){
 	matrix_meter_position.dim = [meter_cubes,1];
 	matrix_meter_colour.dim = [meter_cubes,1];
 	matrix_meter_scale.dim = [meter_cubes,1];
-	matrix_block_position.dim = [block_cubes,1];
-	matrix_block_colour.dim = [block_cubes,1];
-	matrix_block_scale.dim = [block_cubes,1];
-
+	
 	var vc=0;
-	var bc=0;
 	var mc=0;
 	matrix_meter_index = [];
 	matrix_voice_index = [];
 	for(var b=0;b<MAX_BLOCKS;b++){
 		matrix_meter_index[b]=[];
 		if(Array.isArray(blocks_cube[b])){
-			matrix_block_index = bc;
-			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
-			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
-			//matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].colour[0],blocks_cube[b][0].colour[1],blocks_cube[b][0].colour[2]);
-			bc++;
 			matrix_voice_index[b]=vc;
 			for(var c=1;c<blocks_cube[b].length;c++){
 				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
@@ -1795,7 +1782,6 @@ function write_blocks_matrix(){
 	matrix_voice_index[b]=vc;
 	messnamed("voices_matrices","bang");
 	messnamed("meters_matrices","bang");
-	messnamed("blocks_matrices","bang");
 }
 
 function write_wire_matrix(i){
