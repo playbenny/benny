@@ -331,13 +331,6 @@ function initialise_graphics() {
 	}
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 
-	/*background_cube = new JitterObject("jit.gl.gridshape", "benny");
-	background_cube.shape = "cube";
-	background_cube.scale = [100000, 100000, 1];
-	background_cube.position = [0, 0, -200];
-	background_cube.name = "obackground";
-	background_cube.color = [0, 0, 0, 1];*/
-
 	selection_cube = new JitterObject("jit.gl.gridshape", "benny");
 	selection_cube.shape = "cube";
 	selection_cube.name = "selection";
@@ -346,13 +339,6 @@ function initialise_graphics() {
 	selection_cube.position = [0, 0, 0];
 	selection_cube.blend_enable = 1;
 	selection_cube.enable = 0;
-
-	/*menu_background_cube = new JitterObject("jit.gl.gridshape", "benny");
-	menu_background_cube.shape = "cube";
-	menu_background_cube.scale = [1000, 1, 1000];
-	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block_menu_background";
-	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	flock_cubexy = new JitterObject("jit.gl.gridshape", "benny");
 	flock_cubexy.shape = "cube";

@@ -206,24 +206,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-			if(id==null){
-				if(phys_picker_id!=null){
-					id = phys_picker_id;
-				}else{
-					id = glpicker.touch(x,y);
-					error("\nGL",id);
-				}
-			}
+			if(id==null)id = phys_picker_id;
 			if(id!=null)picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
-			if(phys_picker_id!=null){
-				id = phys_picker_id;
-			}else{
-				error("\nGL",id);
-				id = glpicker.touch(x,y);
-			}
-
-			//picker_hover_and_special(id);
+			id = phys_picker_id;
 			usermouse.oid=id;
 			var thov =id.split('_'); // store hover - any picker id received when not waiting for click
 			usermouse.hover = thov.concat();
@@ -1152,12 +1138,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}
 
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
-		if(phys_picker_id!=null){
-			id = phys_picker_id;
-		}else{
-			error("\nGL",id);
-			id = glpicker.touch(x,y);
-		}
+		id = phys_picker_id;
 		if(id!=null) picker_hover_and_special(id);
 	}	
 //	post("\nbcd",b,c,d,mouse_index);

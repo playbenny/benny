@@ -788,11 +788,6 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						/*blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_menu[i].name = "menu_"+types[i]+"_"+i;
-						blocks_menu[i].shape = "cube";*/
-						//blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
-
 						blocks_menu[i]={ color:[],position:[],scale:[],name:"" };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
@@ -822,23 +817,11 @@ function initialise_block_menu(visible){
 							x=-w;
 						}
 						blocks_menu[i]={ color:[],position:[],scale:[],name:"" };
-						//col = config.get("palette::"+ts[0]);
-						//						post("drawing menu block",ts);
-						/*blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_menu[i].name = "menu_"+types[i]+"_"+i;
-						blocks_menu[i].shape = "cube";*/
-						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
+						blocks_menu[i].color = [1,1,1,1];
 						blocks_menu[i].position = [x, -110, z];
 						menu.original_position[i]=[x,-110,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
 						blocks_menu[i].name = types[i];
-						//blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
-						/*blocks_menu[i].texture = blocks_menu_texture[i];
-						blocks_menu[i].tex_map = 1;
-						blocks_menu[i].texzoom = [1,1];
-						blocks_menu[i].texanchor = [0.5,0.5];
-						blocks_menu[i].tex_plane_s = [0.5,0,0,0.5];
-						blocks_menu[i].tex_plane_t = [0,1,-0.5,-0.5];*/
 						x++;					
 					}
 				}
@@ -852,13 +835,6 @@ function initialise_block_menu(visible){
 
 
 function blocks_enable(enab){ //shows or hides all the blocks/wires
-	/*for(var i=0;i<blocks_cube.length;i++){
-		if(typeof blocks_cube[i] !== 'undefined'){
-			for(var t=0;t<blocks_cube[i].length;t++){
-				blocks_cube[i][t].enable = enab;
-			}
-		}
-	}*/
 	messnamed("blocks_multiple","enable",enab);
 	messnamed("wires_multiple","enable",enab);
 	messnamed("voices_multiple","enable",enab);
@@ -1103,16 +1079,6 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				bc++;
 				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
 				blocks_cube[i][t].color = col;
-				/*blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
-				blocks_cube[i][t].dim = [12, 12];
-				blocks_cube[i][t].name = "block_"+i+"_"+t;
-				blocks_cube[i][t].shape = "cube";
-				blocks_cube[i][0].texture = blocks_cube_texture[i];
-				blocks_cube[i][0].tex_map = 1;
-				blocks_cube[i][0].texzoom = [1,1];
-				blocks_cube[i][0].texanchor = [0.5, 0.5];
-				blocks_cube[i][0].position = [block_x, block_y, block_z];
-				*/
 			}else{
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				var tc = col[0]/256;
@@ -1128,10 +1094,6 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 						scale : [],
 						colour: []
 					};
-					/*blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
-					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
-					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter£"+i+"£"+t+"£"+tt;
-					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";*/
 				}						
 			}else if(block_type == "hardware"){
 				if(noio==0){
@@ -1143,12 +1105,6 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 							scale : [],
 							colour: []
 						};
-						/*new JitterObject("jit.gl.gridshape","benny");
-						blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
-						blocks_meter[i][(t-1)*noio+tt].name = "meter£"+i+"£"+t+"£"+tt;
-						blocks_meter[i][(t-1)*noio+tt].shape = "cube";
-						//blocks_meter[i][(t-1)*noio+tt].filterclass = "block";
-						//blocks_meter[i][t*noio+tt].blend_enable = 0;*/
 					}
 				}					
 				
@@ -1158,11 +1114,6 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					scale : [],
 					colour: []
 				};
-				/*new JitterObject("jit.gl.gridshape","benny");
-				blocks_meter[i][t-1].dim = [8,6];// [12, 12];
-				blocks_meter[i][t-1].name = "meter£"+i+"£"+t+"£0";
-				blocks_meter[i][t-1].shape = "cube";
-				//blocks_meter[i][t-1].filterclass = "block";*/
 			}	
 		}
 		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, block_z];

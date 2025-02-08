@@ -141,13 +141,9 @@ function thispatcherstuff(){
 	lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 	textureset_blocks = this.patcher.getnamed("textureset_blocks");
 	
-	glpicker = new JitterObject("jit.gl.picker","benny");
 }
 
 var phys_picker_id;
-
-var glpicker;
-var physpicker;
 
 var scope_buffer = new Buffer("scope_buffer");
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
@@ -220,10 +216,6 @@ var click_i = new Int16Array(9900000); //more than 4k.
 var click_b_s = 2; //click buffer is scaled, >> click_b_s, so 
 var click_b_w = 11 >> click_b_s; //width of the screen log2 (ie so 2^this > actual width)
 
-//var connections_sketch = new JitterObject("jit.gl.sketch","benny");
-
-//these hold all the opengl objects (labels, blocks separate for the main one, in one for the menu one.)
-//var blocks_label = []; //called label-blockno-0
 var blocks_cube = [];  //called block-blockno-voiceno
 var blocks_cube_texture = [];
 var blocks_tex_sent= []; //each element is mutestate+label
