@@ -85,6 +85,7 @@ function picker_hover_and_special(id){
 			}
 		}else if(thov[0]!="background"){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
+			post("hover",usermouse.hover);
 			if(bulgeamount>0){
 				bulgeamount=0;
 				for(var i=0;i<wires_scale[bulgingwire].length;i++){

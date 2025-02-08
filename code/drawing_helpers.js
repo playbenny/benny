@@ -90,7 +90,6 @@ function draw_block_texture(block){
 function block_texture_is(i,tex){
 	blocks_cube_texture[i] = tex;
 	if(Array.isArray(blocks_cube[i])){
-		//post("received texture for existing block ",i,"it is",tex);
 		if(blocks_cube[i].length){
 			blocks_cube[i][0].texture = tex;
 		}
@@ -99,9 +98,7 @@ function block_texture_is(i,tex){
 
 function menu_block_texture_is(i,tex){
 	blocks_menu_texture[i] = tex;
-	//post("\nreceived texture", i,tex,"... ");
 	if(blocks_menu[i]!== undefined){
-		//post("... for existing menu block ",i,"it is",tex);
 		blocks_menu[i].texture = tex;
 	}
 }
