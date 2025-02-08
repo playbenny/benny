@@ -59,7 +59,7 @@ function clicked_block_preparation() {
 }
 
 function picker_hover_and_special(id){
-	post("\nid",id);
+	//post("\nid",id);
 	if(usermouse.oid!=id){ //if id has changed
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
@@ -865,19 +865,23 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											meters_updatelist.midi = [];
 											var ob=-1;
 											var bdx,bdy;
+											var flg=0;
+											var bl=[];
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
-												//post("dragin",usermouse.drag.dragging.voices[t][0],usermouse.drag.dragging.voices[t][1]);
-												var flg=0;
 												if(ob!=usermouse.drag.dragging.voices[t][0]){
 													ob = usermouse.drag.dragging.voices[t][0];	
-													flg=1;
+													bl.push(ob);
 													bdx = blocks.get("blocks["+ob+"]::space::x") + block_x - dictpos[0];
 													bdy = blocks.get("blocks["+ob+"]::space::y") + block_y - dictpos[1];
 												}
 												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
 												if(subvoices<1)subvoices = 1;
 												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
-												if(flg)write_block_matrix(ob);
+											}
+											if(bl.length>0){
+												for(t=0;t<bl.length;t++) write_block_matrix(t);
+												messnamed("voices_matrices","bang");
+												redraw_flag.matrices &= 253;
 											}
 											for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 												draw_wire(usermouse.drag.dragging.connections[tt]);

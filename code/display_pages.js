@@ -1037,7 +1037,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	block_c = blocks.get("blocks["+i+"]::space::colour");
 	block_mute = blocks.get("blocks["+i+"]::mute");
 	if(block_mute){
-		block_c = config.get("palette::muted");
+		block_c = [block_c[0]*0.3, block_c[1]*0.3, block_c[2]*0.3];//config.get("palette::muted");
 	}
 	block_v = blocks.get("blocks["+i+"]::poly::voices");
 	block_name = blocks.get("blocks["+i+"]::name");
@@ -1100,11 +1100,11 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				blocks_cube[i][t] = {
 					position : [],
 					scale : [],
-					colour : []
+					color : []
 				}
 				vc++;
 				var tc = col[0]/256;
-				blocks_cube[i][t].colour = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
+				blocks_cube[i][t].color = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
 				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				if(block_type=="audio"){
@@ -1160,7 +1160,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				var ios=NO_IO_PER_BLOCK/subvoices;
 				var tv = (t-1)*ios;
 				var mt=Math.sqrt(1-METER_TINT);
-				var mco = blocks_cube[i][t].colour; 
+				var mco = blocks_cube[i][t].color; 
 				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 				for(tt=0;tt<ios;tt++){
 					mc++;
@@ -1173,7 +1173,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 		}else if(block_type == "note"){
 			if(t>0){
 				var mt=Math.sqrt(1-METER_TINT);
-				var mco = blocks_cube[i][t].colour; 
+				var mco = blocks_cube[i][t].color; 
 				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 				mc++;
 				blocks_meter[i][t-1].colour = mco;
@@ -1187,7 +1187,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					//post("this hardware block seems to have no audio io?");
 				}else{
 					var mt=Math.sqrt(1-METER_TINT);
-					var mco = blocks_cube[i][t].colour; 
+					var mco = blocks_cube[i][t].color; 
 					mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 					for(tt=0;tt<noio;tt++){
 						mc++;
@@ -1728,12 +1728,13 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 }
 
 function write_block_matrix(b){	
+	post("\nblock matrix",b);
 	if(Array.isArray(blocks_cube[b])){
 		vc=matrix_voice_index[b];
 		for(var c=1;c<blocks_cube[b].length;c++){
 			matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
 			matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
-			matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].colour[0],blocks_cube[b][c].colour[1],blocks_cube[b][c].colour[2]);
+			matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].color[0],blocks_cube[b][c].color[1],blocks_cube[b][c].color[2]);
 			vc++;
 		}
 		mc=matrix_meter_index[b][0];
@@ -1767,7 +1768,7 @@ function write_blocks_matrix(){
 			for(var c=1;c<blocks_cube[b].length;c++){
 				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
 				matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
-				matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].colour[0],blocks_cube[b][c].colour[1],blocks_cube[b][c].colour[2]);
+				matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].color[0],blocks_cube[b][c].color[1],blocks_cube[b][c].color[2]);
 				vc++;
 			}
 			for(var c=0;c<blocks_meter[b].length;c++){
