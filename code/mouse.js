@@ -860,12 +860,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											usermouse.drag.starting_value_x = -999; // this is the start of dragging a block. resetting these means it
 											usermouse.drag.starting_value_y = -999; // always passes the dx/dy test.
 											//block_meters_enable(0);
-											meters_updatelist.meters = [];
-											meters_updatelist.hardware = [];
-											meters_updatelist.midi = [];
+											//meters_updatelist.meters = [];
+											//meters_updatelist.hardware = [];
+											//meters_updatelist.midi = [];
 											var ob=-1;
 											var bdx,bdy;
-											var flg=0;
 											var bl=[];
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
 												if(ob!=usermouse.drag.dragging.voices[t][0]){
@@ -873,13 +872,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 													bl.push(ob);
 													bdx = blocks.get("blocks["+ob+"]::space::x") + block_x - dictpos[0];
 													bdy = blocks.get("blocks["+ob+"]::space::y") + block_y - dictpos[1];
+													var mdx = bdx - blocks_cube[ob][0].position[0];
+													//var mdy = bdy - blocks_cube[ob][0].position[1];
+													for(var m=0;m<blocks_meter[ob].length;m++){
+														blocks_meter[ob][m].position[0]+=mdx;
+													//	blocks_meter[ob][m].position[1]+=mdy;
+													}
 												}
 												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
 												if(subvoices<1)subvoices = 1;
 												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
 											}
 											if(bl.length>0){
-												for(t=0;t<bl.length;t++) write_block_matrix(t);
+												for(t=0;t<bl.length;t++) write_block_matrix(bl[t]);
 												messnamed("voices_matrices","bang");
 												redraw_flag.matrices &= 253;
 											}

@@ -1728,7 +1728,6 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 }
 
 function write_block_matrix(b){	
-	post("\nblock matrix",b);
 	if(Array.isArray(blocks_cube[b])){
 		vc=matrix_voice_index[b];
 		for(var c=1;c<blocks_cube[b].length;c++){
