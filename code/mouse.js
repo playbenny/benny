@@ -59,6 +59,7 @@ function clicked_block_preparation() {
 }
 
 function picker_hover_and_special(id){
+	post("\nid",id);
 	if(usermouse.oid!=id){ //if id has changed
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
@@ -95,7 +96,6 @@ function picker_hover_and_special(id){
 				write_wire_matrix(bulgingwire);
 				bulgingwire = -1;
 			}
-			phys_picker_id = null;
 		}else{
 			//usermouse.hover = thov.concat();
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
@@ -212,6 +212,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					id = phys_picker_id;
 				}else{
 					id = glpicker.touch(x,y);
+					post("\nGL",id);
 				}
 			}
 			if(id!=null)picker_hover_and_special(id);

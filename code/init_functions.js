@@ -329,12 +329,12 @@ function initialise_graphics() {
 	}
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 
-	background_cube = new JitterObject("jit.gl.gridshape", "benny");
+	/*background_cube = new JitterObject("jit.gl.gridshape", "benny");
 	background_cube.shape = "cube";
 	background_cube.scale = [100000, 100000, 1];
 	background_cube.position = [0, 0, -200];
-	background_cube.name = "background";
-	background_cube.color = [0, 0, 0, 1];
+	background_cube.name = "obackground";
+	background_cube.color = [0, 0, 0, 1];*/
 
 	selection_cube = new JitterObject("jit.gl.gridshape", "benny");
 	selection_cube.shape = "cube";
@@ -420,7 +420,7 @@ function stop_graphics(){
 	meters_updatelist.hardware = [];
 	meters_updatelist.meters = [];
 	post("\nstopping graphics");
-	background_cube.freepeer();
+	//background_cube.freepeer();
 	selection_cube.freepeer();
 	menu_background_cube.freepeer();
 	flock_cubexy.freepeer();

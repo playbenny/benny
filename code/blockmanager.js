@@ -272,7 +272,7 @@ var meter_cubes;
 var block_cubes;
 
 var connection_blobs = []; // connection handles. maybe not even blobs one day.
-var background_cube;
+//var background_cube;
 var selection_cube;
 var menu_background_cube;
 var flock_cube;
