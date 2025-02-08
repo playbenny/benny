@@ -112,20 +112,36 @@ var end_of_frame_fn = null;
 var whole_state_xfade_create_task = new Task(create_whole_state_xfade_slider, this);
 var keyrepeat_task = new Task(keydown,this,0);
 
-var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
-var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
-var ui_poly = this.patcher.getnamed("ui_poly");
-var note_poly = this.patcher.getnamed("note_poly");
-var audio_poly = this.patcher.getnamed("audio_poly");
-var audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
-var sigouts = this.patcher.getnamed("sigouts");
-var matrix = this.patcher.getnamed("matrix");
-var deferred_matrix = [];
-var world = this.patcher.getnamed("world");
-var lcd_main = this.patcher.getnamed("lcd_main");
+var output_blocks_poly;
+var voicealloc_poly;
+var ui_poly;
+var note_poly;
+var audio_poly;
+var audio_to_data_poly;
+var sigouts;
+var matrix;
+var deferred_matrix;
+var world;
+var lcd_main;
 
-var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
-var textureset_blocks = this.patcher.getnamed("textureset_blocks");
+var lcd_block_textures;
+var textureset_blocks;
+
+function thispatcherstuff(){
+	output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
+	voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
+	ui_poly = this.patcher.getnamed("ui_poly");
+	note_poly = this.patcher.getnamed("note_poly");
+	audio_poly = this.patcher.getnamed("audio_poly");
+	audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
+	sigouts = this.patcher.getnamed("sigouts");
+	matrix = this.patcher.getnamed("matrix");
+	deferred_matrix = [];
+	world = this.patcher.getnamed("world");
+	lcd_main = this.patcher.getnamed("lcd_main");
+	lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
+	textureset_blocks = this.patcher.getnamed("textureset_blocks");
+}
 
 var phys_picker_id;
 
@@ -250,9 +266,13 @@ var preload_list=[]; // this is for waves
 var preload_note_voice_list = [];
 var preload_audio_voice_list = [];
 
-var matrix_wire_index;
-var matrix_voice_index;
+var matrix_wire_index = [];
+var matrix_block_index = [];
+var matrix_voice_index = [];
 var matrix_meter_index = [];
+
+var matrix_menu_index = [];
+var matrix_menu_lookup = [];
 
 var matrix_wire_position;
 var matrix_wire_scale;
@@ -262,6 +282,16 @@ var matrix_wire_colour;
 var matrix_voice_position;
 var matrix_voice_scale;
 var matrix_voice_colour;
+
+var matrix_block_position;
+var matrix_block_scale;
+var matrix_block_colour;
+var matrix_block_texture;
+
+var matrix_menu_position;
+var matrix_menu_scale;
+var matrix_menu_colour;
+var matrix_menu_texture;
 
 var matrix_meter_position;
 var matrix_meter_scale;

@@ -1640,7 +1640,7 @@ function clear_everything(){
 
 	var b;
 	for(b in blocks_cube){
-		blocks_cube[b][0].freepeer();			
+		//blocks_cube[b][0].freepeer();			
 		
 		blocks_cube[b] = [];
 	}

@@ -886,6 +886,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											if(bl.length>0){
 												for(t=0;t<bl.length;t++) write_block_matrix(bl[t]);
 												messnamed("voices_matrices","bang");
+												messnamed("blocks_matrices","bang");
 												redraw_flag.matrices &= 253;
 											}
 											for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){

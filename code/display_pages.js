@@ -16,6 +16,7 @@ function set_display_mode(mode,t){
 	}
 	var blocks_enabled=(mode=="blocks");
 	if(displaymode!=mode){
+		if(displaymode == "block_menu") hide_block_menu();
 		if((mode!="blocks")&&(mode!="panels")){
 			sidebar.mode="none";
 			remove_midi_scope();
@@ -712,16 +713,17 @@ function draw_block_menu(){
 }
 
 function hide_block_menu(){
-	//post("\nhiding block menu\n");
-	for(var i=0;i<menu.cubecount;i++){
-		blocks_menu[i].enable = 0;
-	}
+	post("\nhiding block menu\n");
+	messnamed("menu_multiple","enable",0);
+	//for(var i=0;i<menu.cubecount;i++){
+	//	blocks_menu[i].enable = 0;
+	//}
 }
 
 function reinitialise_block_menu(){
-	for(var b in blocks_menu){
+	/*for(var b in blocks_menu){
 		if(blocks_menu[b]!=="undefined") blocks_menu[b].freepeer()
-	}
+	}*/
 	blocks_menu=[];
 }
 
@@ -738,7 +740,7 @@ function initialise_block_menu(visible){
 	var col;
 	var vis=0;
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
-		//post("\nA showing block menu",visible); return 0;
+		post("\nA showing block menu",visible);
 		if(menu.mode == 1){
 			swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
 			if(swpt=="hardware") swpt = "audio";
@@ -768,6 +770,8 @@ function initialise_block_menu(visible){
 			}
 		}
 		if(menu.mode == 1) squash_block_menu();
+		write_menu_matrix();
+		messnamed("menu_multiple","enable",visible);
 	}else{
 		post("\ninitialising block menu");
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
@@ -781,13 +785,15 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
+						/*blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_"+types[i]+"_"+i;
-						blocks_menu[i].shape = "cube";
+						blocks_menu[i].shape = "cube";*/
+						//blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
+
+						blocks_menu[i]={ color:[],position:[],scale:[],texture:[] };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
-						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 						menu.original_position[i]=[1000,1000,1000];
 					}else{
 						//	post("\ndrawing menu texture:",i," label is ",ts,"\n");
@@ -812,22 +818,23 @@ function initialise_block_menu(visible){
 							z++;
 							x=-w;
 						}
+						blocks_menu[i]={ color:[],position:[],scale:[],texture:[] };
 						//col = config.get("palette::"+ts[0]);
 						//						post("drawing menu block",ts);
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
+						/*blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
 						blocks_menu[i].name = "menu_"+types[i]+"_"+i;
-						blocks_menu[i].shape = "cube";
+						blocks_menu[i].shape = "cube";*/
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [x, -110, z];
 						menu.original_position[i]=[x,-110,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
-						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
-						blocks_menu[i].texture = blocks_menu_texture[i];
+						//blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
+						/*blocks_menu[i].texture = blocks_menu_texture[i];
 						blocks_menu[i].tex_map = 1;
 						blocks_menu[i].texzoom = [1,1];
 						blocks_menu[i].texanchor = [0.5,0.5];
 						blocks_menu[i].tex_plane_s = [0.5,0,0,0.5];
-						blocks_menu[i].tex_plane_t = [0,1,-0.5,-0.5];
+						blocks_menu[i].tex_plane_t = [0,1,-0.5,-0.5];*/
 						x++;					
 					}
 				}
@@ -841,14 +848,14 @@ function initialise_block_menu(visible){
 
 
 function blocks_enable(enab){ //shows or hides all the blocks/wires
-	for(var i=0;i<blocks_cube.length;i++){
+	/*for(var i=0;i<blocks_cube.length;i++){
 		if(typeof blocks_cube[i] !== 'undefined'){
 			for(var t=0;t<blocks_cube[i].length;t++){
 				blocks_cube[i][t].enable = enab;
 			}
 		}
-	}
-	
+	}*/
+	messnamed("blocks_multiple","enable",enab);
 	messnamed("wires_multiple","enable",enab);
 	messnamed("voices_multiple","enable",enab);
 	messnamed("meters_multiple","enable",enab);
@@ -1082,76 +1089,77 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 			}else{
 				col = [1,1,1,1];
 			}
-			
+			blocks_cube[i][t] = {
+				position : [],
+				scale : [],
+				color : []
+			}
+		
 			if(t==0){
 				bc++;
-				blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
+				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
+				blocks_cube[i][t].color = col;
+				/*blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
 				blocks_cube[i][t].dim = [12, 12];
 				blocks_cube[i][t].name = "block_"+i+"_"+t;
 				blocks_cube[i][t].shape = "cube";
-				blocks_cube[i][t].color = col;
 				blocks_cube[i][0].texture = blocks_cube_texture[i];
 				blocks_cube[i][0].tex_map = 1;
 				blocks_cube[i][0].texzoom = [1,1];
 				blocks_cube[i][0].texanchor = [0.5, 0.5];
 				blocks_cube[i][0].position = [block_x, block_y, block_z];
-				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
+				*/
 			}else{
-				blocks_cube[i][t] = {
-					position : [],
-					scale : [],
-					color : []
-				}
-				vc++;
+				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
 				var tc = col[0]/256;
 				blocks_cube[i][t].color = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
-				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
-				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
-				if(block_type=="audio"){
-					var tv=(t-1)/subvoices;
-					for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = {
-							position : [],
-							scale : [],
-							colour: []
-						};
-						/*blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter£"+i+"£"+t+"£"+tt;
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";*/
-					}						
-				}else if(block_type == "hardware"){
-					if(noio==0){
-						post("\nthis hardware block seems to have no audio io?");
-					}else{
-						for(tt=0;tt<noio;tt++){
-							blocks_meter[i][(t-1)*noio+tt] = {
-								position : [],
-								scale : [],
-								colour: []
-							};
-							/*new JitterObject("jit.gl.gridshape","benny");
-							blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
-							blocks_meter[i][(t-1)*noio+tt].name = "meter£"+i+"£"+t+"£"+tt;
-							blocks_meter[i][(t-1)*noio+tt].shape = "cube";
-							//blocks_meter[i][(t-1)*noio+tt].filterclass = "block";
-							//blocks_meter[i][t*noio+tt].blend_enable = 0;*/
-						}
-					}					
-					
-				}else if(block_type == "note"){
-					blocks_meter[i][t-1] = {
+			}
+			vc++;
+			blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
+			if(block_type=="audio"){
+				var tv=(t-1)/subvoices;
+				for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
+					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = {
 						position : [],
 						scale : [],
 						colour: []
 					};
-					/*new JitterObject("jit.gl.gridshape","benny");
-					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
-					blocks_meter[i][t-1].name = "meter£"+i+"£"+t+"£0";
-					blocks_meter[i][t-1].shape = "cube";
-					//blocks_meter[i][t-1].filterclass = "block";*/
-				}	
-			}
+					/*blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
+					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
+					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter£"+i+"£"+t+"£"+tt;
+					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";*/
+				}						
+			}else if(block_type == "hardware"){
+				if(noio==0){
+					post("\nthis hardware block seems to have no audio io?");
+				}else{
+					for(tt=0;tt<noio;tt++){
+						blocks_meter[i][(t-1)*noio+tt] = {
+							position : [],
+							scale : [],
+							colour: []
+						};
+						/*new JitterObject("jit.gl.gridshape","benny");
+						blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
+						blocks_meter[i][(t-1)*noio+tt].name = "meter£"+i+"£"+t+"£"+tt;
+						blocks_meter[i][(t-1)*noio+tt].shape = "cube";
+						//blocks_meter[i][(t-1)*noio+tt].filterclass = "block";
+						//blocks_meter[i][t*noio+tt].blend_enable = 0;*/
+					}
+				}					
+				
+			}else if(block_type == "note"){
+				blocks_meter[i][t-1] = {
+					position : [],
+					scale : [],
+					colour: []
+				};
+				/*new JitterObject("jit.gl.gridshape","benny");
+				blocks_meter[i][t-1].dim = [8,6];// [12, 12];
+				blocks_meter[i][t-1].name = "meter£"+i+"£"+t+"£0";
+				blocks_meter[i][t-1].shape = "cube";
+				//blocks_meter[i][t-1].filterclass = "block";*/
+			}	
 		}
 		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, block_z];
 		//blocks_cube[i][t].enable = 1;
@@ -1729,14 +1737,19 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 
 function write_block_matrix(b){	
 	if(Array.isArray(blocks_cube[b])){
-		vc=matrix_voice_index[b];
+		var bc=matrix_block_index[b];
+		matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
+		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+		matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
+		matrix_block_texture.setcell(bc,0,"val",b);
+		var vc=matrix_voice_index[b];
 		for(var c=1;c<blocks_cube[b].length;c++){
 			matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
 			matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
 			matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].color[0],blocks_cube[b][c].color[1],blocks_cube[b][c].color[2]);
 			vc++;
 		}
-		mc=matrix_meter_index[b][0];
+		var mc=matrix_meter_index[b][0];
 		for(var c=0;c<blocks_meter[b].length;c++){
 			matrix_meter_position.setcell(mc,0,"val",blocks_meter[b][c].position[0],blocks_meter[b][c].position[1],blocks_meter[b][c].position[2]);
 			matrix_meter_scale.setcell(mc,0,"val",blocks_meter[b][c].scale[0],blocks_meter[b][c].scale[1],blocks_meter[b][c].scale[2]);
@@ -1747,22 +1760,64 @@ function write_block_matrix(b){
 	redraw_flag.matrices |= 2;
 }
 
+function write_menu_matrix(){
+	var menu_cubes = 0;
+	for(var i=0;i<blocks_menu.length;i++) menu_cubes += (blocks_menu[i] !== undefined);
+
+	matrix_menu_position.dim = [menu_cubes,1];
+	matrix_menu_scale.dim = [menu_cubes,1];
+	matrix_menu_colour.dim = [menu_cubes,1];
+	matrix_menu_texture.dim = [menu_cubes,1];
+	var lastvalid=null;
+	bm=0;
+	for(var i=0;i<blocks_menu.length;i++){
+		if(blocks_menu[i]!== undefined){
+			matrix_menu_index[bm]=i;
+			matrix_menu_lookup[i]=bm;
+			matrix_menu_position.setcell(bm,0,"val",blocks_menu[i].position[0],blocks_menu[i].position[1],blocks_menu[i].position[2]);
+			matrix_menu_scale.setcell(bm,0,"val",blocks_menu[i].scale[0],blocks_menu[i].scale[1],blocks_menu[i].scale[2]);
+			matrix_menu_colour.setcell(bm,0,"val",blocks_menu[i].color[0],blocks_menu[i].color[1],blocks_menu[i].color[2]);
+			matrix_menu_texture.setcell(bm,0,"val",i);//blocks_menu[i].texture);
+			if(blocks_menu_texture[i]==null){
+				if(lastvalid==null)error("\nbad menu textures");
+				blocks_menu_texture[i]=lastvalid;
+			}else{
+				lastvalid=blocks_menu_texture[i];
+			}
+			bm++;
+		}
+	}
+	messnamed("menu_multiple","texture",blocks_menu_texture);
+	messnamed("menu_matrices","bang");
+}
+
 function write_blocks_matrix(){
 	redraw_flag.matrices &= 253;
 	matrix_voice_position.dim = [voice_cubes,1];
 	matrix_voice_colour.dim = [voice_cubes,1];
 	matrix_voice_scale.dim = [voice_cubes,1];
+	matrix_block_position.dim = [block_cubes,1];
+	matrix_block_scale.dim = [block_cubes,1];
+	matrix_block_colour.dim = [block_cubes,1];
+	matrix_block_texture.dim = [block_cubes,1];
 	matrix_meter_position.dim = [meter_cubes,1];
 	matrix_meter_colour.dim = [meter_cubes,1];
 	matrix_meter_scale.dim = [meter_cubes,1];
 	
 	var vc=0;
 	var mc=0;
+	var bc=0;
 	matrix_meter_index = [];
 	matrix_voice_index = [];
 	for(var b=0;b<MAX_BLOCKS;b++){
 		matrix_meter_index[b]=[];
 		if(Array.isArray(blocks_cube[b])){
+			matrix_block_index[b]=bc;
+			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
+			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+			matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
+			matrix_block_texture.setcell(bc,0,"val",b);
+			bc++;
 			matrix_voice_index[b]=vc;
 			for(var c=1;c<blocks_cube[b].length;c++){
 				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
@@ -1779,7 +1834,9 @@ function write_blocks_matrix(){
 			}
 		}
 	}
+	if(b!=MAX_BLOCKS)error("\nYOU PRESUMED WRONG JAMES");
 	matrix_voice_index[b]=vc;
+	messnamed("blocks_matrices","bang");
 	messnamed("voices_matrices","bang");
 	messnamed("meters_matrices","bang");
 }

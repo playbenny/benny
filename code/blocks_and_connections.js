@@ -2533,12 +2533,12 @@ function check_for_connection_overlap(n){
 
 function remove_block(block){
 	//hide the cubes and meters first, to give the illusion it all happens fast
-	for(i=0;i<blocks_cube[block].length;i++){
+	/*for(i=0;i<blocks_cube[block].length;i++){
 		blocks_cube[block][i].enable = 0;
 	}
 	for(i=0;i<blocks_meter[block].length;i++){
 		blocks_meter[block][i].enable = 0;
-	}
+	}*/
 	if(record_arm[block]>0) set_block_record_arm(block,0);
 	post("removing block",block,"\n");
 	var i;
@@ -2905,7 +2905,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			}
 			for(i=0;i<subvoices;i++){
 				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
-				blocks_cube[block][v*subvoices - i].freepeer(); //enable = 0;
+				//blocks_cube[block][v*subvoices - i].freepeer(); //enable = 0;
 				blocks_cube[block].pop(); //= null;
 			}
 			for(i=(v-1)*NO_IO_PER_BLOCK;i<blocks_meter[block].length;i++){

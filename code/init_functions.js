@@ -11,6 +11,7 @@
 // restart calls reset,init dicts, import hardware 
 
 function loadbang(){
+	thispatcherstuff();
 	var path = this.patcher.filepath;
 	projectpath = path.split("patchers/");
 	projectpath = projectpath[0];
@@ -94,6 +95,7 @@ function systemtypeis(type){
 
 function initialise_reset(hardware_file){
 	post("\n\nreset stage 1 : resets\n------------------");
+	thispatcherstuff();
 	messnamed("getpath","bang");
 	config.parse('{ }');
 	config.import_json("config.json");
@@ -390,6 +392,26 @@ function initialise_graphics() {
 	matrix_voice_position.name = "matrix_voice_position";
 	matrix_voice_scale.name = "matrix_voice_scale";
 	matrix_voice_colour.name = "matrix_voice_colour";
+
+	matrix_block_position = new JitterMatrix;
+	matrix_block_scale = new JitterMatrix;
+	matrix_block_colour = new JitterMatrix;
+	matrix_block_texture = new JitterMatrix;
+
+	matrix_block_position.name = "matrix_block_position";
+	matrix_block_scale.name = "matrix_block_scale";
+	matrix_block_colour.name = "matrix_block_colour";
+	matrix_block_texture.name = "matrix_block_texture";
+
+	matrix_menu_position = new JitterMatrix;
+	matrix_menu_scale = new JitterMatrix;
+	matrix_menu_colour = new JitterMatrix;
+	matrix_menu_texture = new JitterMatrix;
+
+	matrix_menu_position.name = "matrix_menu_position";
+	matrix_menu_scale.name = "matrix_menu_scale";
+	matrix_menu_colour.name = "matrix_menu_colour";
+	matrix_menu_texture.name = "matrix_menu_texture";
 
 	matrix_meter_position = new JitterMatrix;
 	matrix_meter_scale = new JitterMatrix;

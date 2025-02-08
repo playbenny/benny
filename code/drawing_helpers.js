@@ -91,16 +91,14 @@ function block_texture_is(i,tex){
 	blocks_cube_texture[i] = tex;
 	if(Array.isArray(blocks_cube[i])){
 		if(blocks_cube[i].length){
-			blocks_cube[i][0].texture = tex;
+			messnamed("blocks_multiple","texture",blocks_cube_texture);
 		}
 	}
 }
 
 function menu_block_texture_is(i,tex){
 	blocks_menu_texture[i] = tex;
-	if(blocks_menu[i]!== undefined){
-		blocks_menu[i].texture = tex;
-	}
+	//messnamed("menu_multiple","texture",blocks_menu_texture);
 }
 
 function gain_display(gain){

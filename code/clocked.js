@@ -110,6 +110,7 @@ function frameclock(){
 		}
 		if(redraw_flag.matrices & 2){
 			messnamed("voices_matrices","bang");
+			messnamed("blocks_matrices","bang");
 		}
 		redraw_flag.matrices = 0;
 		if(redraw_flag.flag & 1){
