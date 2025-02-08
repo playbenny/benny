@@ -1178,9 +1178,12 @@ function request_redraw(n){
 }
 
 function draw_menu_hint(){
+	var num = matrix_menu_lookup[usermouse.hover[1]];
+	if(num == undefined) return 0
+	var type = blocks_menu[num].name;
 	var col = menucolour;
-	if(blocktypes.contains(usermouse.hover[1]+"::colour")){
-		col = blocktypes.get(usermouse.hover[1]+"::colour");
+	if(blocktypes.contains(type+"::colour")){
+		col = blocktypes.get(type+"::colour");
 		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
 		if(automap.mapped_c == -0.5){
 			mapcolours = [col[0], col[1], col[2]];
@@ -1227,8 +1230,8 @@ function draw_menu_hint(){
 	}
 	
 	
-	if(blocktypes.contains(usermouse.hover[1]+"::help_text")){
-		var block_name = usermouse.hover[1];
+	if(blocktypes.contains(type+"::help_text")){
+		var block_name = type;
 		var hint=blocktypes.get(block_name+"::help_text")+" ";
 		//		post("\n"+usermouse.hover[1]+" : "+hint);
 		function get_io_name_and_description(ty,dir) {
@@ -1262,7 +1265,7 @@ function draw_menu_hint(){
 		lcd_main.message("paintrect", sidebar.x,9+fontheight*(1.1+topspace),sidebar.x2,9+fontheight*(2.1+topspace),cod);
 		lcd_main.message("frgb",col);
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
-		lcd_main.message("write", usermouse.hover[1]);
+		lcd_main.message("write", block_name);
 		setfontsize(fontheight/2.5);
 		lcd_main.message("textface", "normal");
 		var bold=0;

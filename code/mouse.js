@@ -451,17 +451,20 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-
-								set_display_mode("blocks");
+								var num = matrix_menu_lookup[usermouse.hover[1]];
+								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								var type = blocks_menu[num].name;
+								
 								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 								end_of_frame_fn = function(){
-									var r = new_block(usermouse.ids[1], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+									var r = new_block(type, Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 									draw_block(r);
 									selected.block[r] = 1;
 									sidebar.scopes.voice = -1;
 									sidebar.selected_voice = -1;
 									redraw_flag.flag |= 8;
 								}
+								set_display_mode("blocks");
 							}
 						}
 						usermouse.clicked3d = -1;

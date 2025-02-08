@@ -740,7 +740,7 @@ function initialise_block_menu(visible){
 	var col;
 	var vis=0;
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
-		post("\nA showing block menu",visible);
+		//post("\nA showing block menu",visible);
 		if(menu.mode == 1){
 			swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
 			if(swpt=="hardware") swpt = "audio";
@@ -790,7 +790,7 @@ function initialise_block_menu(visible){
 						blocks_menu[i].shape = "cube";*/
 						//blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 
-						blocks_menu[i]={ color:[],position:[],scale:[],texture:[] };
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"" };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
@@ -818,7 +818,7 @@ function initialise_block_menu(visible){
 							z++;
 							x=-w;
 						}
-						blocks_menu[i]={ color:[],position:[],scale:[],texture:[] };
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"" };
 						//col = config.get("palette::"+ts[0]);
 						//						post("drawing menu block",ts);
 						/*blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
@@ -828,6 +828,7 @@ function initialise_block_menu(visible){
 						blocks_menu[i].position = [x, -110, z];
 						menu.original_position[i]=[x,-110,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
+						blocks_menu[i].name = types[i];
 						//blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 						/*blocks_menu[i].texture = blocks_menu_texture[i];
 						blocks_menu[i].tex_map = 1;
@@ -1834,8 +1835,8 @@ function write_blocks_matrix(){
 			}
 		}
 	}
-	if(b!=MAX_BLOCKS)error("\nYOU PRESUMED WRONG JAMES");
 	matrix_voice_index[b]=vc;
+	messnamed("blocks_multiple","texture",blocks_cube_texture);
 	messnamed("blocks_matrices","bang");
 	messnamed("voices_matrices","bang");
 	messnamed("meters_matrices","bang");
