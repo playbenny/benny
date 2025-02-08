@@ -347,12 +347,12 @@ function initialise_graphics() {
 	selection_cube.blend_enable = 1;
 	selection_cube.enable = 0;
 
-	menu_background_cube = new JitterObject("jit.gl.gridshape", "benny");
+	/*menu_background_cube = new JitterObject("jit.gl.gridshape", "benny");
 	menu_background_cube.shape = "cube";
 	menu_background_cube.scale = [1000, 1, 1000];
 	menu_background_cube.position = [0, -200, 0];
 	menu_background_cube.name = "block_menu_background";
-	menu_background_cube.color = [0, 0, 0, 1];
+	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	flock_cubexy = new JitterObject("jit.gl.gridshape", "benny");
 	flock_cubexy.shape = "cube";
@@ -443,8 +443,8 @@ function stop_graphics(){
 	meters_updatelist.meters = [];
 	post("\nstopping graphics");
 	//background_cube.freepeer();
+	//menu_background_cube.freepeer();
 	selection_cube.freepeer();
-	menu_background_cube.freepeer();
 	flock_cubexy.freepeer();
 	flock_cubeyz.freepeer();
 	flock_cubexz.freepeer();

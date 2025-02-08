@@ -86,7 +86,6 @@ function picker_hover_and_special(id){
 			}
 		}else if(thov[0]!="background"){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
-			post("hover",usermouse.hover);
 			if(bulgeamount>0){
 				bulgeamount=0;
 				for(var i=0;i<wires_scale[bulgingwire].length;i++){
@@ -101,7 +100,7 @@ function picker_hover_and_special(id){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if(bulgeamount==1) bulgeamount = 0.999;
 		}
-		phys_picker_id=null;
+		//phys_picker_id=null;
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
 			draw_menu_hint();
 		}	
@@ -212,7 +211,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					id = phys_picker_id;
 				}else{
 					id = glpicker.touch(x,y);
-					post("\nGL",id);
+					error("\nGL",id);
 				}
 			}
 			if(id!=null)picker_hover_and_special(id);
@@ -220,6 +219,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			if(phys_picker_id!=null){
 				id = phys_picker_id;
 			}else{
+				error("\nGL",id);
 				id = glpicker.touch(x,y);
 			}
 
@@ -1155,6 +1155,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		if(phys_picker_id!=null){
 			id = phys_picker_id;
 		}else{
+			error("\nGL",id);
 			id = glpicker.touch(x,y);
 		}
 		if(id!=null) picker_hover_and_special(id);

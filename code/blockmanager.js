@@ -120,7 +120,7 @@ var audio_poly;
 var audio_to_data_poly;
 var sigouts;
 var matrix;
-var deferred_matrix;
+var deferred_matrix=[];
 var world;
 var lcd_main;
 
@@ -136,17 +136,18 @@ function thispatcherstuff(){
 	audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
 	sigouts = this.patcher.getnamed("sigouts");
 	matrix = this.patcher.getnamed("matrix");
-	deferred_matrix = [];
 	world = this.patcher.getnamed("world");
 	lcd_main = this.patcher.getnamed("lcd_main");
 	lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 	textureset_blocks = this.patcher.getnamed("textureset_blocks");
+	
+	glpicker = new JitterObject("jit.gl.picker","benny");
 }
 
 var phys_picker_id;
 
-var glpicker = new JitterObject("jit.gl.picker","benny");
-
+var glpicker;
+var physpicker;
 
 var scope_buffer = new Buffer("scope_buffer");
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
@@ -303,8 +304,8 @@ var block_cubes;
 
 var connection_blobs = []; // connection handles. maybe not even blobs one day.
 //var background_cube;
+//var menu_background_cube;
 var selection_cube;
-var menu_background_cube;
 var flock_cube;
 var flocklist=[];
 var flockblocklist=[];

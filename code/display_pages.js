@@ -83,6 +83,9 @@ function set_display_mode(mode,t){
 				clear_blocks_selection();
 			}	
 		}
+		if(displaymode=="blocks"){
+			center_view(1);
+		}
 	}
 	blocks_enable(blocks_enabled);	
 }

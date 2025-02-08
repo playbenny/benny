@@ -1666,11 +1666,11 @@ function clear_everything(){
 	background_cube.position = [0, 0, -200];
 	background_cube.name = "background";
 	background_cube.color = [0, 0, 0, 1];*/
-	menu_background_cube.shape = "cube";
+	/*menu_background_cube.shape = "cube";
 	menu_background_cube.scale = [1000, 1, 1000 ];
 	menu_background_cube.position = [0, -200, 0];
 	menu_background_cube.name = "block-menu-background";
-	menu_background_cube.color = [0, 0, 0, 1];
+	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
