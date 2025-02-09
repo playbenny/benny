@@ -1,4 +1,5 @@
 function clicked_block_preparation() {
+	post("\nclicked block, ids is",usermouse.ids);
 	if ((selected.block_count > 1) && (selected.block[usermouse.ids[1]] != 0)) {
 		// if the clicked block is selected and multiple blocks are selected, then you drag them all
 		var t = 0;
@@ -59,7 +60,7 @@ function clicked_block_preparation() {
 }
 
 function picker_hover_and_special(id){
-	//post("\nid",id);
+//	post("\nid",id,"incoming hov",usermouse.hover);
 	if(usermouse.oid!=id){ //if id has changed
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
@@ -86,6 +87,14 @@ function picker_hover_and_special(id){
 				write_wire_matrix(bulgingwire);
 			}
 		}else if(thov[0]!="background"){
+			if(thov[0]=="voice"){
+				thov[0] ="block";
+				var bv = matrix_voice_lookup[thov[1]];
+				thov[1] = bv[0];
+				thov[2] = bv[1];
+				id = "block_"+thov[1]+"_"+thov[2];
+				usermouse.oid = id;
+			}	
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if(bulgeamount>0){
 				bulgeamount=0;
@@ -97,15 +106,15 @@ function picker_hover_and_special(id){
 				bulgingwire = -1;
 			}
 		}else{
-			//usermouse.hover = thov.concat();
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if(bulgeamount==1) bulgeamount = 0.999;
 		}
-		//phys_picker_id=null;
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
 			draw_menu_hint();
 		}	
 	}
+//	post(" - - hover is",usermouse.hover,"returning id",id);
+	return id;
 }
 // usermouse. left_button, shift, ctrl, alt, x, y, got_i, got_t  <-- all the latest values. got_i , _t = 2d click index and type
 //     last.left_button, last.got_i / _t <-- last message's left button, index+type
@@ -148,7 +157,6 @@ function phys_picker(id,leftbutton){
 		}else{
 			mouse(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0);
 		}
-		post("\nleftbutton 0",id);
 	}
 }
 
@@ -192,7 +200,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.
 			//instead first do a manual check of blocks and if that doesn't see anything try picker for wires.
-			if(displaymode=="blocks"){
+			/*if(displaymode=="blocks"){
 				var stw = screentoworld(usermouse.x,usermouse.y);
 				for(var i=0;i<MAX_BLOCKS;i++){
 					if(blocks.contains("blocks["+i+"]::space::x")){
@@ -217,13 +225,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-			if(id==null)id = phys_picker_id;
-			if(id!=null)picker_hover_and_special(id);
+			if(id==null)*/id = phys_picker_id;
+			if(id!=null) id = picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
 			id = phys_picker_id;
-			usermouse.oid=id;
-			var thov =id.split('_'); // store hover - any picker id received when not waiting for click
-			usermouse.hover = thov.concat();
+			if(id!=null) id = picker_hover_and_special(id);
 		}
 	}
 	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
@@ -259,7 +265,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.clicked3d = usermouse.ids[1];
 						usermouse.hover = [].concat(usermouse.ids);
 						if(displaymode=="blocks"){
-							if((usermouse.ids[0]=="block")||(usermouse.ids[0]=="meter")){
+							if((usermouse.ids[0]=="block")){
 								clicked_block_preparation();
 							}
 						}

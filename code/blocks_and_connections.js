@@ -2909,7 +2909,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				blocks_cube[block].pop(); //= null;
 			}
 			for(i=(v-1)*NO_IO_PER_BLOCK;i<blocks_meter[block].length;i++){
-				blocks_meter[block][i].freepeer(); //enable = 0;
+				blocks_meter[block][i].pop();//freepeer(); //enable = 0;
 			}
 			blocks_meter[block].pop();
 			for(i=0;i<MAX_PARAMETERS;i++) is_flocked[MAX_PARAMETERS*(removeme+voiceoffset)+t] = 0;

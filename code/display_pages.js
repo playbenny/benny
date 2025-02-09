@@ -1412,17 +1412,17 @@ function draw_wire(connection_number){
 				}
 			}
 
-			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
+			/*if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
 				if((dist<3.5)&&(Math.abs(fx-tx)<0.5)){
 					segments_to_use = 1; //flag for short wires - use less segments.
 					short=1;
 				}else if(dist<6){
 					segments_to_use /= 2;
 					short=1;
-					if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
+					//if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
 				}
 			}
-			segments_to_use = Math.round(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
+			segments_to_use = Math.round(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));*/
 			var bez_prep=[];
 			for(t=0;t<6;t++) bez_prep[t] = new Array(3);
 			segment=0;
@@ -1775,6 +1775,7 @@ function write_blocks_matrix(){
 			bc++;
 			matrix_voice_index[b]=vc;
 			for(var c=1;c<blocks_cube[b].length;c++){
+				matrix_voice_lookup[vc]=[b,c];
 				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
 				matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
 				matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].color[0],blocks_cube[b][c].color[1],blocks_cube[b][c].color[2]);
