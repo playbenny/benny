@@ -1178,20 +1178,6 @@ function request_redraw(n){
 }
 
 function draw_menu_hint(){
-	var num = matrix_menu_lookup[usermouse.hover[1]];
-	if(num == undefined) return 0
-	var type = blocks_menu[num].name;
-	var col = menucolour;
-	if(blocktypes.contains(type+"::colour")){
-		col = blocktypes.get(type+"::colour");
-		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
-		if(automap.mapped_c == -0.5){
-			mapcolours = [col[0], col[1], col[2]];
-			for(var i=0;i<(automap.c_cols*automap.c_rows - 1);i++)mapcolours.push(-1);
-			note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
-		}
-	}
-	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
 	var topspace=(menu.mode == 3)+1.1*(loading.progress!=0);
 	lcd_main.message("clear");
 	lcd_main.message("paintrect", sidebar.x,9+1.1*(loading.progress!=0)*fontheight,sidebar.x2,9+(topspace+1)*fontheight,menudarkest);
@@ -1228,8 +1214,31 @@ function draw_menu_hint(){
 		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.75));
 		lcd_main.message("write","search: "+menu.search);
 	}
-	
-	
+
+	var num = matrix_menu_index[usermouse.hover[1]];
+	if((num == undefined)||(num == -1)){
+		if((menu.search!="")&&(matrix_menu_index[0]!==undefined)){
+			num = matrix_menu_index[0];
+			post("\nforced num to");
+		}else{
+			post("\nusermouse.hover",usermouse.hover);
+			lcd_main.message("bang");
+			return 0;
+		}
+	}else{post(num);}
+	var type = blocks_menu[num].name;
+	var col = menucolour;
+	if(blocktypes.contains(type+"::colour")){
+		col = blocktypes.get(type+"::colour");
+		col = [col[0]*1.2,col[1]*1.2,col[2]*1.2];
+		if(automap.mapped_c == -0.5){
+			mapcolours = [col[0], col[1], col[2]];
+			for(var i=0;i<(automap.c_cols*automap.c_rows - 1);i++)mapcolours.push(-1);
+			note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
+		}
+	}
+	var cod = [col[0]*bg_dark_ratio,col[1]*bg_dark_ratio,col[2]*bg_dark_ratio];
+
 	if(blocktypes.contains(type+"::help_text")){
 		var block_name = type;
 		var hint=blocktypes.get(block_name+"::help_text")+" ";

@@ -788,7 +788,7 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i]={ color:[],position:[],scale:[],name:"" };
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:1 };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
@@ -1433,7 +1433,7 @@ function draw_wire(connection_number){
 			var s2 = 0.5 - 0.4*short;
 			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.min(Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))),-1.5*(cfrom==cto)); //was -0.25 -0.3
+			blob_position[2] =  Math.min(Math.max(-2,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))),-1.5*(cfrom==cto)); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
@@ -1648,11 +1648,10 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute){
 }
 
 function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
-	var t;
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
 	var seglength = 0;
-	for(t=0;t<3;t++){
+	for(var t=0;t<3;t++){
 		avg_pos[t] = (from_pos[t] + to_pos[t])/2;
 		pos_dif[t] = (to_pos[t] - from_pos[t]);
 		seglength += pos_dif[t] * pos_dif[t];
@@ -1665,13 +1664,13 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 		rotz=0;
 	}else{
 		seglength = Math.sqrt(seglength);
-		var rotY = (7.8540-Math.acos(pos_dif[2]/seglength)) % 6.28;
+		var rotY = (7.853981633974-Math.acos(pos_dif[2]/seglength)) % 6.283185307179586476;
 		var rotZ = Math.atan(pos_dif[1]/pos_dif[0]);
 	
 		if(from_pos[0]<=to_pos[0]) rotY	= -rotY;
 		//if(usermouse.caps) post("\nroty",rotY,"rotz",rotZ);
-		rotZ *= 57.29577951; //180/Math.PI;
-		rotY *= 57.29577951; //180/Math.PI;
+		rotZ *= 57.2957795130823; //180/Math.PI;
+		rotY *= 57.2957795130823; //180/Math.PI;
 	}
 
 	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
@@ -1696,7 +1695,7 @@ function write_block_matrix(b){
 		matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
 		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
 		matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
-		matrix_block_texture.setcell(bc,0,"val",b);
+		matrix_block_texture.setcell(bc,0,"val",b|0);
 		var vc=matrix_voice_index[b];
 		for(var c=1;c<blocks_cube[b].length;c++){
 			matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
@@ -1717,7 +1716,7 @@ function write_block_matrix(b){
 
 function write_menu_matrix(){
 	var menu_cubes = 0;
-	for(var i=0;i<blocks_menu.length;i++) menu_cubes += (blocks_menu[i] !== undefined);
+	for(var i=0;i<blocks_menu.length;i++) menu_cubes += (blocks_menu[i] !== undefined)&&(blocks_menu[i].enable);
 
 	matrix_menu_position.dim = [menu_cubes,1];
 	matrix_menu_scale.dim = [menu_cubes,1];
@@ -1726,13 +1725,13 @@ function write_menu_matrix(){
 	var lastvalid=null;
 	bm=0;
 	for(var i=0;i<blocks_menu.length;i++){
-		if(blocks_menu[i]!== undefined){
+		if((blocks_menu[i]!== undefined)&&(blocks_menu[i].enable)){
 			matrix_menu_index[bm]=i;
 			matrix_menu_lookup[i]=bm;
 			matrix_menu_position.setcell(bm,0,"val",blocks_menu[i].position[0],blocks_menu[i].position[1],blocks_menu[i].position[2]);
 			matrix_menu_scale.setcell(bm,0,"val",blocks_menu[i].scale[0],blocks_menu[i].scale[1],blocks_menu[i].scale[2]);
 			matrix_menu_colour.setcell(bm,0,"val",blocks_menu[i].color[0],blocks_menu[i].color[1],blocks_menu[i].color[2]);
-			matrix_menu_texture.setcell(bm,0,"val",i);//blocks_menu[i].texture);
+			matrix_menu_texture.setcell(bm,0,"val",i);
 			if(blocks_menu_texture[i]==null){
 				if(lastvalid==null)error("\nbad menu textures");
 				blocks_menu_texture[i]=lastvalid;

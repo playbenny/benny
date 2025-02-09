@@ -71,6 +71,7 @@ function picker_hover_and_special(id){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						var ta = wires_scale[bulgingwire][i];
 						wires_scale[bulgingwire][i] = [ta[0], wire_dia,1];
+						write_wire_matrix(bulgingwire);
 					}					
 				}else{
 					post("\n\ndidnt find wire",bulgingwire);
@@ -139,6 +140,16 @@ function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
 
 function phys_picker(id,leftbutton){
 	phys_picker_id = id;
+	if((leftbutton==0)&&(usermouse.qlb)){
+		var l=usermouse.queue.length;
+		if(l>0){
+			var m = usermouse.queue[l-1];
+			mouse(m[0],m[1],0,m[3],m[4],m[5],m[6],m[7]);
+		}else{
+			mouse(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0);
+		}
+		post("\nleftbutton 0",id);
+	}
 }
 
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
@@ -437,7 +448,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-								var num = matrix_menu_lookup[usermouse.hover[1]];
+								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
 								var type = blocks_menu[num].name;
 								
@@ -568,13 +579,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
 						if (usermouse.ids[0] == "block" || usermouse.ids[0] == "meter"){
-							// var tcol=blocks_cube[usermouse.ids[1]][0].color;
-							//var displaypos = [0.25*Math.round(4*blocks_cube[usermouse.ids[1]][0].position[0]) , 0.25*Math.round(4*blocks_cube[usermouse.ids[1]][0].position[1])];
 							var displaypos = [blocks_cube[usermouse.ids[1]][0].position[0] , blocks_cube[usermouse.ids[1]][0].position[1]];
 							var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 							if((usermouse.hover[1] != usermouse.ids[1]) && (usermouse.hover[0] != "background")){
 								//############# CONNECT BLOCKS ########################## based on hover and ids which are set in picker not this fn
-							//	deferred_diag[deferred_diag.length] = "i think you dropped block "+usermouse.ids[1]+" on "+usermouse.hover[1];
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
@@ -597,6 +605,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								// MOVE BLOCK: - stores the dragged pos in the dict
 								for(t = 0; t<usermouse.drag.dragging.voices.length; t++){//resets the dragged blocks Z pos
 									blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[2] = 0;
+									write_block_matrix(usermouse.drag.dragging.voices[t][0]);
+								}
+								if(usermouse.drag.dragging.voices.length>0){
+									messnamed("voices_matrices","bang");
+									messnamed("blocks_matrices","bang");
 								}
 								if((displaypos[0] != dictpos[0]) || (displaypos[1] != dictpos[1])){
 									ob=-1;
@@ -605,14 +618,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											ob=usermouse.drag.dragging.voices[t][0];
 											blocks.replace("blocks["+ob+"]::space::x",blocks_cube[ob][0].position[0]);
 											blocks.replace("blocks["+ob+"]::space::y",blocks_cube[ob][0].position[1]);
-											write_block_matrix(ob);
 										}
 									}									
 									redraw_flag.flag=4;//need to redraw it (for connections only? unless you've messed anything up....)
 								}
 								usermouse.clicked3d = -1;
-								//meters_enable = 1;
-								//block_meters_enable(1);
 							}
 							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF

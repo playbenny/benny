@@ -3474,6 +3474,7 @@ function type_to_search(key){
 				}
 			}
 		}
+		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
 	}
