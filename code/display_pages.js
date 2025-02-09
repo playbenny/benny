@@ -956,6 +956,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 		}
 	}
+	write_blocks_matrix();
 	for(i=connections.getsize("connections")-1;i>=0;i--){
 		if((connections.contains("connections["+i+"]::conversion::mute"))){
 			var cfrom = connections.get("connections["+i+"]::from::number");
