@@ -3474,6 +3474,9 @@ function type_to_search(key){
 				}
 			}
 		}
+		if((x==-w)&&(z==-3.5)){
+			matrix_menu_index=[];
+		}
 		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
@@ -3603,6 +3606,7 @@ function blocks_menu_enter(){
 			sel=i;
 		}
 	}
+	post("\nenter. count = ",count, "sel = ",sel);
 	if(count==1){
 		var types = blocktypes.getkeys();
 		if(menu.mode == 0){

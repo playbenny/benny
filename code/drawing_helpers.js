@@ -1219,7 +1219,7 @@ function draw_menu_hint(){
 	if((num == undefined)||(num == -1)){
 		if((menu.search!="")&&(matrix_menu_index[0]!==undefined)){
 			num = matrix_menu_index[0];
-			post("\nforced num to");
+			post("\nforced num to",num);
 		}else{
 			post("\nusermouse.hover",usermouse.hover);
 			lcd_main.message("bang");

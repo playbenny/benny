@@ -788,7 +788,7 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:1 };
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:0 };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
@@ -816,7 +816,7 @@ function initialise_block_menu(visible){
 							z++;
 							x=-w;
 						}
-						blocks_menu[i]={ color:[],position:[],scale:[],name:"" };
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:1 };
 						blocks_menu[i].color = [1,1,1,1];
 						blocks_menu[i].position = [x, -110, z];
 						menu.original_position[i]=[x,-110,z];
