@@ -3606,7 +3606,6 @@ function blocks_menu_enter(){
 			sel=i;
 		}
 	}
-	post("\nenter. count = ",count, "sel = ",sel);
 	if(count==1){
 		var types = blocktypes.getkeys();
 		if(menu.mode == 0){
@@ -3616,6 +3615,10 @@ function blocks_menu_enter(){
 			end_of_frame_fn = function(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 				draw_block(r);
+				write_block_matrix(r);
+				messnamed("voices_matrices","bang");
+				messnamed("blocks_matrices","bang");	
+				redraw_flag.matrices &= 253;
 				selected.block[r] = 1;
 				sidebar.scopes.voice = -1;
 				sidebar.selected_voice = -1;
@@ -3628,6 +3631,7 @@ function blocks_menu_enter(){
 			var r = new_block(types[sel], blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1]);
 			if(blocktypes.get(types[sel]+"::type")=="audio") send_audio_patcherlist(1);
 			draw_block(r);
+			write_block_matrix(r);
 			insert_block_in_connection(types[sel],r);							
 			redraw_flag.flag |= 4;
 		}else if(menu.mode == 3){
