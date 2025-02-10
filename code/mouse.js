@@ -72,8 +72,8 @@ function picker_hover_and_special(id){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						var ta = wires_scale[bulgingwire][i];
 						wires_scale[bulgingwire][i] = [ta[0], wire_dia,1];
-						write_wire_matrix(bulgingwire);
 					}					
+					write_wire_matrix(bulgingwire);
 				}else{
 					post("\n\ndidnt find wire",bulgingwire);
 				}
@@ -84,8 +84,8 @@ function picker_hover_and_special(id){
 				var ta = wires_scale[bulgingwire][i];
 				ta[1] = wire_dia * (1 + bulgeamount);
 				wires_scale[bulgingwire][i] = [ta[0],ta[1],ta[2]];
-				write_wire_matrix(bulgingwire);
 			}
+			write_wire_matrix(bulgingwire);
 		}else if(thov[0]!="background"){
 			if(thov[0]=="voice"){
 				thov[0] ="block";
@@ -198,8 +198,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	var id = null;
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
-			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.
-			//instead first do a manual check of blocks and if that doesn't see anything try picker for wires.
+			//i do manual hit detection while dragging a block because i couldn't work out how to make phys picker see things under the dragged block..
 			if((displaymode=="blocks") && (usermouse.last.left_button)){
 				var stw = screentoworld(usermouse.x,usermouse.y);
 				for(var i=0;i<MAX_BLOCKS;i++){
@@ -680,10 +679,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 								selected.wire[usermouse.ids[1]]=afters;
 								if(afters==1) sidebar.lastmode=-1; //force reassign scopes
-								redraw_flag.flag=10;
+								redraw_flag.flag=4;
 							}else{
 								selected.wire[usermouse.ids[1]]=1 - selected.wire[usermouse.ids[1]];
-								redraw_flag.flag=10;
+								redraw_flag.flag=4;
 							}
 						}
 						usermouse.ids[0]="done";
