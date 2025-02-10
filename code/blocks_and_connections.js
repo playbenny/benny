@@ -2458,7 +2458,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		post("\nERROR how have we got here without a potential connection?",fromname,toname);
 	}
 
-	redraw_flag.flag|=4;
+	redraw_flag.flag |= 4;
 }
 
 function check_for_connection_overlap(n){
@@ -2597,7 +2597,7 @@ function remove_block(block){
 		panels_order.splice(i,1);
 	}
 	set_display_mode("blocks");
-	redraw_flag.flag = 12;
+	redraw_flag.flag |= 12;
 }
 
 
@@ -2993,7 +2993,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	if(((displaymode=="custom")||(displaymode=="custom_fullscreen"))&&(custom_block==block)){
 		set_display_mode(displaymode,custom_block);
 	}else{
-		redraw_flag.flag=4;
+		redraw_flag.flag = 4;
 	}
 //	rebuild_action_list = 1;
 }
