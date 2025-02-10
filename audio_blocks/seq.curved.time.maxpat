@@ -10,9 +10,36 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-44",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 971.0, 190.0, 218.0, 48.0 ],
+					"text" : "locked phasors freak out A LOT with clock modulation happening.. this smooths it?"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "History ov(0);\r\nv=in1;\r\nif((v<0.01) && (ov>0.99)){\r\n\tov=v;\r\n}else if(v>ov){\r\n\tov=v;\r\n}else if(v==0){\r\n\tov=v;\r\n}\r\nout1 = ov;",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-42",
+					"maxclass" : "gen.codebox~",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
+					"patching_rect" : [ 849.0, 248.0, 340.0, 200.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-30",
 					"maxclass" : "newobj",
@@ -43,10 +70,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 311.0, 69.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -58,10 +81,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 691.0, 534.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -73,10 +92,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 585.0, 541.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -425,6 +440,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 303.0, 232.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -437,6 +456,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 64.0, 303.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -838,7 +861,7 @@
 
 							}
  ],
-						"originid" : "pat-4100"
+						"originid" : "pat-3694"
 					}
 ,
 					"patching_rect" : [ 215.0, 303.0, 101.0, 22.0 ],
@@ -1247,7 +1270,7 @@
 
 							}
  ],
-						"originid" : "pat-4102"
+						"originid" : "pat-3696"
 					}
 ,
 					"patching_rect" : [ 103.0, 303.0, 101.0, 22.0 ],
@@ -1266,8 +1289,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 354.0, 172.0, 69.0, 22.0 ],
-					"text" : "phasor~ 4n"
+					"patching_rect" : [ 849.0, 215.0, 116.0, 22.0 ],
+					"text" : "phasor~ 4n @lock 1"
 				}
 
 			}
@@ -1314,6 +1337,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 10.0, 647.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1338,10 +1365,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 17.0, 15.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1685,7 +1708,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-131", 0 ],
+					"destination" : [ "obj-42", 0 ],
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -1801,6 +1824,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-131", 0 ],
+					"source" : [ "obj-42", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-5", 0 ]
 				}
@@ -1828,7 +1858,7 @@
 
 			}
  ],
-		"originid" : "pat-4098"
+		"originid" : "pat-3692"
 	}
 
 }
