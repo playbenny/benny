@@ -1,5 +1,5 @@
 function clicked_block_preparation() {
-	post("\nclicked block, ids is",usermouse.ids);
+	//post("\nclicked block, ids is",usermouse.ids);
 	if ((selected.block_count > 1) && (selected.block[usermouse.ids[1]] != 0)) {
 		// if the clicked block is selected and multiple blocks are selected, then you drag them all
 		var t = 0;
@@ -200,7 +200,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//because picker uses AABB hit detection it sees wires as being huge, so it doesn't really work.
 			//instead first do a manual check of blocks and if that doesn't see anything try picker for wires.
-			/*if(displaymode=="blocks"){
+			if((displaymode=="blocks") && (usermouse.last.left_button)){
 				var stw = screentoworld(usermouse.x,usermouse.y);
 				for(var i=0;i<MAX_BLOCKS;i++){
 					if(blocks.contains("blocks["+i+"]::space::x")){
@@ -218,14 +218,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//post(" - voice",bv);
 									id="block_"+i+"_"+bv;
 								}
-								phys_picker_id = null;
+								//phys_picker_id = null;
+								//post("\n\nset id to",id);
 								i=MAX_BLOCKS;
 							}
 						}
 					}
 				}
 			}
-			if(id==null)*/id = phys_picker_id;
+			if(id==null) id = phys_picker_id;
 			if(id!=null) id = picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
 			id = phys_picker_id;
@@ -584,7 +585,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.starting_x = 0;
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
-						if (usermouse.ids[0] == "block" || usermouse.ids[0] == "meter"){
+						if (usermouse.ids[0] == "block"){
 							var displaypos = [blocks_cube[usermouse.ids[1]][0].position[0] , blocks_cube[usermouse.ids[1]][0].position[1]];
 							var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 							if((usermouse.hover[1] != usermouse.ids[1]) && (usermouse.hover[0] != "background")){
@@ -804,7 +805,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
 				}
 			}else if((usermouse.clicked3d != -1) && (usermouse.clicked3d != -2)){ //############################## 3D DRAG
-				//	post("3d drag, hover",usermouse.hover,"ids",usermouse.ids,"\n");
+				//	post("\n3d drag, id",id,"hover",usermouse.hover,"ids",usermouse.ids,"phys",phys_picker_id);
 				if(displaymode == "blocks"){
 					if(usermouse.left_button==1){
 						if(usermouse.drag.starting_x>0){
@@ -834,7 +835,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									messnamed("camera_control","position",  camera_position);
 									//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
-							}else if((usermouse.ids[0] == "block")||(usermouse.ids[0] == "meter")){
+							}else if((usermouse.ids[0] == "block")){
 								var tsx = (sidebar.mode == "none") ? (mainwindow_width-20) : (sidebar.x - 20);
 								if(usermouse.x<20){
 									camera_position[0] -= 0.0003*camera_position[2]*Math.max(20,20 - usermouse.x);
@@ -856,7 +857,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
 								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
-								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter")))))){ //i think hover can't get set to wires
+								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&(usermouse.hover[0]=="block"))))){ //i think hover can't get set to wires
 									remove_potential_wire();
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
@@ -901,7 +902,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 										if(sidebar.mode=="notification") set_sidebar_mode("none");
 									}
-								}else if(((usermouse.hover[0]=="block")||(usermouse.hover[0]=="meter"))&&(selected.block_count<=1)){
+								}else if(((usermouse.hover[0]=="block"))&&(selected.block_count<=1)){
 									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 									// ############## INDICATE POSSIBLE CONNECTION by drawing a 'potential' wire	
 									var drawwire=1;
@@ -980,12 +981,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											if(drawnlist.indexOf(usermouse.drag.dragging.voices[t][0])==-1){
 												drawnlist.push(usermouse.drag.dragging.voices[t][0]);
 												draw_block(usermouse.drag.dragging.voices[t][0]);
+												write_block_matrix(usermouse.drag.dragging.voices[t][0]);
 											}
 										}
 										draw_wire(wires_potential_connection);
 										for(var t=0;t<usermouse.drag.dragging.connections.length;t++){
 											draw_wire(usermouse.drag.dragging.connections[t]);
+											write_wire_matrix(usermouse.drag.dragging.connections[t]);
 										}
+										write_wires_matrix();
 									}
 								}
 							}	

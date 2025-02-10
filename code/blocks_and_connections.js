@@ -1498,6 +1498,7 @@ function remove_potential_wire(gl_objects_only){
 			wires_scale[wires_potential_connection] = null;
 			wires_rotatexyz[wires_potential_connection] = null;
 			wires_colour[wires_potential_connection] = null;
+			write_wires_matrix();
 		}
 		if(gl_objects_only!=1){
 			//post("\nremoving",wires_potential_connection);
