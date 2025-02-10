@@ -861,7 +861,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&(usermouse.hover[0]=="block"))))){ //i think hover can't get set to wires
 									if(wires_potential_connection>-1) remove_potential_wire();
-									post("\nFIRSTBIT");
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
 										var dy = Math.abs(block_y-usermouse.drag.starting_value_y);
@@ -892,7 +891,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 													if(subvoices<1)subvoices = 1;
 												}
 												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
-												post("\nset position of block",ob,"voice",usermouse.drag.dragging.voices[t][1],"to:",blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position);
+												//post("\nset position of block",ob,"voice",usermouse.drag.dragging.voices[t][1],"to:",blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position);
 											}
 											if(bl.length>0){
 												for(t=0;t<bl.length;t++) write_block_matrix(bl[t]);
@@ -918,15 +917,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										if(sidebar.mode=="notification") set_sidebar_mode("none");
 									}
 								}else if(((usermouse.hover[0]=="block"))&&(selected.block_count<=1)){
-									post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2],"ids",usermouse.ids,"wpc",wires_potential_connection);
+									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2],"ids",usermouse.ids,"wpc",wires_potential_connection);
 									// ############## INDICATE POSSIBLE CONNECTION by drawing a 'potential' wire	
 									var drawwire=1;
 									if(wires_potential_connection != -1){
 										if((connections.contains("connections["+wires_potential_connection+"]::to"))&&(connections.get("connections["+wires_potential_connection+"]::to::number")==usermouse.hover[1])&&(connections.get("connections["+wires_potential_connection+"]::to::voice")==usermouse.hover[2])){
 											//already drawn the potential connection wirer to this block
 											drawwire = 0;	
-										}else{
-											post("\ncont_to",(connections.contains("connections["+wires_potential_connection+"]::to")),"to=",(connections.get("connections["+wires_potential_connection+"]::to::number")==usermouse.hover[1]),"v=",(connections.get("connections["+wires_potential_connection+"]::to::voice")==usermouse.hover[2]));
 										}
 									}
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
@@ -940,7 +937,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 									if(drawwire == 1){
-										post("\nDRAWWIRE");
 										potential_connection.replace("from::number",+usermouse.ids[1]);
 										potential_connection.replace("to::number",+usermouse.hover[1]);
 										potential_connection.replace("to::input::type","potential");

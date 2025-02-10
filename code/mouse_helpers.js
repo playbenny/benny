@@ -3449,7 +3449,7 @@ function type_to_search(key){
 					results[tt].push(i);
 					blocks_menu[i].enable = 1;
 				}else{
-					blocks_menu[i].enable = 0;
+					if(blocks_menu[i] !== undefined) blocks_menu[i].enable = 0;
 				}
 			}
 		}

@@ -1021,7 +1021,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 
 
 function draw_block(i){ //i is the blockno, we've checked it exists before this point
-	post("\ndrawing block",i);
+	// post("\ndrawing block",i);
 	var vc=0; var bc=0; var mc=0;
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
@@ -1061,10 +1061,8 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 		noio += blocktypes.getsize(block_name+"::connections::out::hardware_channels");
 	}						
 	noio /= max_poly;
-	post("pos",block_x,block_y,block_z);
 	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
-			post("voice/sub",t);
 			var col;
 			if(block_mute){
 				col = [0.3,0.3,0.3,1];
@@ -1858,7 +1856,7 @@ function write_wires_matrix(){
 			}
 		}
 	}
-	wires_startindex[i] = mouse_index;
+	wires_startindex[wires_position.length] = matrix_wire_index;
 	messnamed("wires_matrices","bang");
 	//post("\n\nmatrices ready",matrix_wire_index);
 }
@@ -2264,7 +2262,7 @@ function draw_topbar(){
 }
 
 function draw_sidebar(){	
-	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
+	deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		if(sidebar.mode == "param_number_entry") return 0; // just bail!

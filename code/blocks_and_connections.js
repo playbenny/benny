@@ -1501,7 +1501,7 @@ function remove_potential_wire(){
 			wires_colour[wires_potential_connection] = null;
 			write_wires_matrix();
 		}
-		post("\nremoving",wires_potential_connection,"dragging length",usermouse.drag.dragging.connections.length);
+		//post("\nremoving",wires_potential_connection,"dragging length",usermouse.drag.dragging.connections.length);
 		var empt=new Dict;  // wipe this one from the dictionary
 		connections.set("connections["+wires_potential_connection+"]", empt);
 		wire_ends[wires_potential_connection][3] = -99.94;
