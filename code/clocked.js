@@ -325,8 +325,7 @@ function hardware_meters(){
 		var mmax = scope_buffer.peek(2,1+(polyvoice));
 		var tv=[];
 		tv = blocks_meter[block][voice].position;
-		tv[1] = meters_updatelist.hardware[i][3] + (mmax+mmin) * 0.225;
-		//tv[2] = 0.5+tv[2]; //selected.block[block]*SELECTED_BLOCK_Z_MOVE;
+		tv[1] = blocks_cube[block][0].position[1] + (mmax+mmin) * 0.225;
 		tv[2] = 0.5+blocks_cube[block][0].position[2];
 		blocks_meter[block][voice].position = tv;
 		tv = blocks_meter[block][voice].scale;
@@ -363,48 +362,48 @@ function draw_midi_indicators(){
 	}
 }
 
-function midi_meters(){
+function midi_meters(){ //currently locked to 1 per voice but easy to generalise to more i think
 	var minsize = Math.max(1,1+0.1*(camera_position[2]-5));
 	minsize *= minsize;
 	for(i = meters_updatelist.midi.length-1; i>=0; i--){
 		var block=meters_updatelist.midi[i][0];
 		var voice=meters_updatelist.midi[i][1];
-//		try{//if(typeof blocks_meter[block][voice] !== 'undefined'){
-			var polyvoice = meters_updatelist.midi[i][2];
-			var mvals = [];
-			for(var ii=0;ii<7;ii++) mvals[ii] = midi_meters_buffer.peek(ii+1,polyvoice);
-			if(mvals[1]){
-				midi_meters_buffer.poke(2,polyvoice,0); //wipe change flag
-				if((mvals[2]==0)||(mvals[4]<mvals[3])){
-					blocks_meter[block][voice].enable = 0;
-				}else{
-					blocks_meter[block][voice].enable = 1;
-					var p_min, p_max, v_min, v_max;
-					var held = mvals[2]*0.05;
-					if(meters_updatelist.midi[i][3]==1){
-						p_min = 0; p_max = 1;
-						v_min = (mvals[5])/129;
-						v_max = (mvals[6]+1)/129;
-					}else{		
-						p_min = (mvals[3])/(128 + minsize);
-						p_max = (minsize + mvals[4])/(128 + minsize);
-						v_min = (mvals[5])/(128 + 0.5*minsize);
-						v_max = (0.5*minsize + mvals[6])/(128 + 0.5*minsize);
-					}
-					var tv=[];
-					tv = blocks_cube[block][voice+1].position;
-					tv[0] = tv[0] - 0.185 + (p_max+p_min)*0.185;
-					tv[1] = tv[1] - 0.41 + (v_max+v_min)*0.41;
-					tv[2] = 0.5 + tv[2]; //selected.block[block];
-					blocks_meter[block][voice].position = tv;
-					tv[0] = Math.max(0.185*(p_max-p_min),0.02);
-					tv[1] = Math.max(0.45*(v_max-v_min),0.02);
-					tv[2] = held;
-					blocks_meter[block][voice].scale = tv;
-					matrix_meter_position.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].position[0],blocks_meter[block][voice].position[1],blocks_meter[block][voice].position[2]);
-					matrix_meter_scale.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].scale[0],blocks_meter[block][voice].scale[1],blocks_meter[block][voice].scale[2]);
+		var polyvoice = meters_updatelist.midi[i][2];
+		var mvals = [];
+		for(var ii=0;ii<7;ii++) mvals[ii] = midi_meters_buffer.peek(ii+1,polyvoice);
+		if(mvals[1]){
+			midi_meters_buffer.poke(2,polyvoice,0); //wipe change flag
+			if((mvals[2]==0)||(mvals[4]<mvals[3])){
+				if(blocks_meter[block][voice].enable) matrix_meter_scale.setcell(matrix_meter_index[block][voice],0,"val",0,0,0);
+				blocks_meter[block][voice].enable = 0;
+			}else{
+				blocks_meter[block][voice].enable = 1;
+				var p_min, p_max, v_min, v_max;
+				var held = mvals[2]*0.05;
+				if(meters_updatelist.midi[i][3]==1){
+					p_min = 0; p_max = 1;
+					v_min = (mvals[5])/129;
+					v_max = (mvals[6]+1)/129;
+				}else{		
+					p_min = (mvals[3])/(128 + minsize);
+					p_max = (minsize + mvals[4])/(128 + minsize);
+					v_min = (mvals[5])/(128 + 0.5*minsize);
+					v_max = (0.5*minsize + mvals[6])/(128 + 0.5*minsize);
 				}
+				var tv=[];
+				tv = blocks_cube[block][voice+1].position.concat();
+				tv[0] = tv[0] - 0.185 + (p_max+p_min)*0.185;
+				tv[1] = tv[1] - 0.41 + (v_max+v_min)*0.41;
+				tv[2] = 0.5 + tv[2]; //selected.block[block];
+				blocks_meter[block][voice].position = tv.concat();
+				tv[0] = Math.max(0.185*(p_max-p_min),0.02);
+				tv[1] = Math.max(0.45*(v_max-v_min),0.02);
+				tv[2] = held;
+				blocks_meter[block][voice].scale = tv.concat();
+				matrix_meter_position.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].position[0],blocks_meter[block][voice].position[1],blocks_meter[block][voice].position[2]);
+				matrix_meter_scale.setcell(matrix_meter_index[block][voice],0,"val",blocks_meter[block][voice].scale[0],blocks_meter[block][voice].scale[1],blocks_meter[block][voice].scale[2]);
 			}
+		}
 //		}catch(err){error("\nmidi meter err ",block,voice, err.name,err.message);}
 	}
 }

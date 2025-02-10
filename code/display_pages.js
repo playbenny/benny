@@ -961,6 +961,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 		if((connections.contains("connections["+i+"]::conversion::mute"))){
 			var cfrom = connections.get("connections["+i+"]::from::number");
 			var cto = connections.get("connections["+i+"]::to::number");
+			cmute = connections.get("connections["+i+"]::conversion::mute");
 			cs = selected.wire[i];
 			if(selected.anysel && !cs){
 				if(selected.block[cfrom]){
@@ -997,14 +998,18 @@ function block_and_wire_colours(){ //for selection and mute etc
 					}
 				}
 			}
-			//draw_wire(i);
-			if(wires_colours[i].length>=wires_colour[i].length){
-				for(segment=0;segment<wires_colour[i].length;segment++){
-					tmc=0.3;
-					tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
-					if(cmute){
+			if(cs){
+				draw_wire(i);
+			}else{
+			//if(wires_colours[i].length>=wires_colour[i].length){
+				tmc=0.3;
+				tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
+				if(cmute){
+					for(segment=0;segment<wires_colour[i].length;segment++){
 						wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
-					}else{
+					}
+				}else{
+					for(segment=0;segment<wires_colour[i].length;segment++){
 						wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
 					}
 				}		
@@ -1412,17 +1417,19 @@ function draw_wire(connection_number){
 				}
 			}
 
-			/*if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
+			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
 				if((dist<3.5)&&(Math.abs(fx-tx)<0.5)){
-					segments_to_use = 1; //flag for short wires - use less segments.
+					//segments_to_use = 1; //flag for short wires - use less segments.
 					short=1;
+					//segments_to_use /= 4;
 				}else if(dist<6){
-					segments_to_use /= 2;
+					//segments_to_use /= 2;
 					short=1;
 					//if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
 				}
 			}
-			segments_to_use = Math.round(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));*/
+			//segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
+			//dynamic segment allocation with the new multiples system would require very careful housekeeping? at the moment enabling it just makes it go very wrong very fast
 			var bez_prep=[];
 			for(t=0;t<6;t++) bez_prep[t] = new Array(3);
 			segment=0;
@@ -1567,6 +1574,7 @@ function draw_wire(connection_number){
 				}else{
 					from_pos[0] += 0.5 * (from_list[0]-1)/from_subvoices + 0.4 * fconx + 0.55;
 				}
+				if(from_pos[1]>(to_pos[1]+1))short=1;
 				if(short){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1599,7 +1607,7 @@ function draw_wire(connection_number){
 					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute);	
 				}
 			}
-			if(Array.isArray(wires_position[connection_number])){
+			/*if(Array.isArray(wires_position[connection_number])){
 				if(segments_to_use<wires_position[connection_number].length){
 					//remove wires
 					for(var sr = wires_position[connection_number].length-1;sr>=segment;sr--){
@@ -1608,8 +1616,9 @@ function draw_wire(connection_number){
 						wires_scale[connection_number].pop();
 						wires_colour[connection_number].pop();
 					}
+					redraw_flag.matrices |= 1;
 				}
-			}
+			}*/
 			return 1;
 		}
 	}
