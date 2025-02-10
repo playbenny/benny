@@ -901,17 +901,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											}
 											for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
+												write_wire_matrix(usermouse.drag.dragging.connections[tt]);
 											}
 											if(redraw_flag.matrices & 1){
-												//write_wires_matrix();
 												messnamed("wires_matrices","bang");
 												redraw_flag.matrices &= 254;
 											}else{
-												for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
-													write_wire_matrix(usermouse.drag.dragging.connections[tt]);
-												}
-												messnamed("wires_matrices","bang");
-												redraw_flag.matrices &= 254;
+												post("\nno dragged wires?");
 											}
 										}
 										if(sidebar.mode=="notification") set_sidebar_mode("none");
