@@ -522,7 +522,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
 					if(usermouse.ids[0] == "background"){
 						if(usermouse.drag.distance<20){
-							if(usermouse.ctrl){
+							if(usermouse.alt){
 								center_view(1);
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
@@ -634,6 +634,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									post("\nself connect,",usermouse.ids,"fname",fname);
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
@@ -679,9 +680,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 								selected.wire[usermouse.ids[1]]=afters;
 								if(afters==1) sidebar.lastmode=-1; //force reassign scopes
+								write_wires_matrix();
 								redraw_flag.flag=4;
 							}else{
 								selected.wire[usermouse.ids[1]]=1 - selected.wire[usermouse.ids[1]];
+								write_wire_matrix(usermouse.ids[1]);
 								redraw_flag.flag=4;
 							}
 						}
@@ -857,7 +860,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&(usermouse.hover[0]=="block"))))){ //i think hover can't get set to wires
-									remove_potential_wire();
+									if(wires_potential_connection>-1) remove_potential_wire();
+									post("\nFIRSTBIT");
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
 										var dy = Math.abs(block_y-usermouse.drag.starting_value_y);
@@ -868,9 +872,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//meters_updatelist.meters = [];
 											//meters_updatelist.hardware = [];
 											//meters_updatelist.midi = [];
-											var ob=-1;
+											var ob=-1.1;
 											var bdx,bdy;
 											var bl=[];
+											var subvoices = 1;
 											for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
 												if(ob!=usermouse.drag.dragging.voices[t][0]){
 													ob = usermouse.drag.dragging.voices[t][0];	
@@ -883,10 +888,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 														blocks_meter[ob][m].position[0]+=mdx;
 													//	blocks_meter[ob][m].position[1]+=mdy;
 													}
+													subvoices = blocks.get("blocks["+ob+"]::subvoices");
+													if(subvoices<1)subvoices = 1;
 												}
-												var subvoices = blocks.get("blocks["+ob+"]::subvoices");
-												if(subvoices<1)subvoices = 1;
 												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
+												post("\nset position of block",ob,"voice",usermouse.drag.dragging.voices[t][1],"to:",blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position);
 											}
 											if(bl.length>0){
 												for(t=0;t<bl.length;t++) write_block_matrix(bl[t]);
@@ -898,24 +904,29 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 												draw_wire(usermouse.drag.dragging.connections[tt]);
 											}
 											if(redraw_flag.matrices&1){
-												write_wires_matrix();
+												//write_wires_matrix();
+												messnamed("wires_matrices","bang");
 												redraw_flag &= 254;
 											}else{
 												for(tt=0;tt<usermouse.drag.dragging.connections.length;tt++){
 													write_wire_matrix(usermouse.drag.dragging.connections[tt]);
 												}
+												messnamed("wires_matrices","bang");
+												redraw_flag &= 254;
 											}
 										}
 										if(sidebar.mode=="notification") set_sidebar_mode("none");
 									}
 								}else if(((usermouse.hover[0]=="block"))&&(selected.block_count<=1)){
-									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
+									post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2],"ids",usermouse.ids,"wpc",wires_potential_connection);
 									// ############## INDICATE POSSIBLE CONNECTION by drawing a 'potential' wire	
 									var drawwire=1;
 									if(wires_potential_connection != -1){
 										if((connections.contains("connections["+wires_potential_connection+"]::to"))&&(connections.get("connections["+wires_potential_connection+"]::to::number")==usermouse.hover[1])&&(connections.get("connections["+wires_potential_connection+"]::to::voice")==usermouse.hover[2])){
 											//already drawn the potential connection wirer to this block
 											drawwire = 0;	
+										}else{
+											post("\ncont_to",(connections.contains("connections["+wires_potential_connection+"]::to")),"to=",(connections.get("connections["+wires_potential_connection+"]::to::number")==usermouse.hover[1]),"v=",(connections.get("connections["+wires_potential_connection+"]::to::voice")==usermouse.hover[2]));
 										}
 									}
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
@@ -929,29 +940,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 									if(drawwire == 1){
+										post("\nDRAWWIRE");
 										potential_connection.replace("from::number",+usermouse.ids[1]);
 										potential_connection.replace("to::number",+usermouse.hover[1]);
 										potential_connection.replace("to::input::type","potential");
 										potential_connection.replace("from::output::type","potential");
 										var temptovoice = usermouse.hover[2];
-										/*if(blocks.contains("blocks["+usermouse.hover[1]+"]::subvoices")){
-											var t_sub = blocks.get("blocks["+usermouse.hover[1]+"]::subvoices");
-											if(t_sub>1){
-												if(blocks.contains("blocks["+usermouse.hover[1]+"]::to_subvoices")){
-													t_sub = blocks.get("blocks["+usermouse.hover[1]+"]::to_subvoices");
-												}
-											}
-											post("\nsubv",t_sub,blocks.get("blocks["+usermouse.hover[1]+"]::name"));
-
-											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
-											temptovoice = temptovoice/t_sub;
-										}*/
 										potential_connection.replace("to::voice",temptovoice);
 										var tempfromvoice = usermouse.ids[2];
-										/*if(blocks.contains("blocks["+usermouse.ids[1]+"]::subvoices")){
-											//post("\nadjusted for subvoices"); //more efficient to do it here than add more to wire drawing routines
-											tempfromvoice = tempfromvoice / blocks.get("blocks["+usermouse.ids[1]+"]::subvoices");
-										}*/
 										potential_connection.replace("from::voice",tempfromvoice);
 										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
 										if(wires_potential_connection==-1){
@@ -959,7 +955,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											var w=1;
 											for(var i=1;i<csize;i++){ //look for an empty slot
 												if(!connections.contains("connections["+i+"]::to::number")){
-													//post("\nfound an empty slot,",i," to use for potential connection wire");
+													post("\nfound an empty slot,",i," to use for potential connection wire");
 													connections.replace("connections["+i+"]",potential_connection);
 													wires_potential_connection = i;
 													w=0;
@@ -969,31 +965,33 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											if(w==1){
 												connections.append("connections",potential_connection);
 												wires_potential_connection = connections.getsize("connections")-1;
-												//post("\nappended, number is",wires_potential_connection);
+												post("\nappended, number is",wires_potential_connection);
 											}
 										}else{
-											//post("\nreplaced", wires_potential_connection);
+											post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
 										//if((sidebar.mode=="none")||((sidebar.mode=="block")&&(selected.block[usermouse.ids[1]]))){
-											set_sidebar_mode("potential_wire");
+										set_sidebar_mode("potential_wire");
 										//}
-										//post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
+										post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
 										//draw_wire(wires_potential_connection);
 										//post("\ndrew");
 									
 										var drawnlist = [];
 										for(var t=0;t<usermouse.drag.dragging.voices.length;t++){
 											if(drawnlist.indexOf(usermouse.drag.dragging.voices[t][0])==-1){
+												post("\nupdating block",usermouse.drag.dragging.voices[t][0]);
 												drawnlist.push(usermouse.drag.dragging.voices[t][0]);
+												blocks_cube[usermouse.drag.dragging.voices[t][0]] = [];
 												draw_block(usermouse.drag.dragging.voices[t][0]);
-												write_block_matrix(usermouse.drag.dragging.voices[t][0]);
 											}
 										}
+										write_blocks_matrix();
 										draw_wire(wires_potential_connection);
 										for(var t=0;t<usermouse.drag.dragging.connections.length;t++){
 											draw_wire(usermouse.drag.dragging.connections[t]);
-											write_wire_matrix(usermouse.drag.dragging.connections[t]);
+											//write_wire_matrix(usermouse.drag.dragging.connections[t]);
 										}
 										write_wires_matrix();
 									}

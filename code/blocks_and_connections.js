@@ -1491,7 +1491,8 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 	return cused;
 }
 
-function remove_potential_wire(gl_objects_only){
+function remove_potential_wire(){
+	post("\nremove potential??",wires_potential_connection);
 	if(wires_potential_connection != -1){
 		if(Array.isArray(wires_position[wires_potential_connection])){
 			wires_position[wires_potential_connection] = null;
@@ -1500,14 +1501,12 @@ function remove_potential_wire(gl_objects_only){
 			wires_colour[wires_potential_connection] = null;
 			write_wires_matrix();
 		}
-		if(gl_objects_only!=1){
-			//post("\nremoving",wires_potential_connection);
-			var empt=new Dict;  // wipe this one from the dictionary
-			connections.set("connections["+wires_potential_connection+"]", empt);
-			wire_ends[wires_potential_connection][3] = -99.94;
-			wire_ends[wires_potential_connection][1] = -99.94;
-			wires_potential_connection = -1;
-		}
+		post("\nremoving",wires_potential_connection,"dragging length",usermouse.drag.dragging.connections.length);
+		var empt=new Dict;  // wipe this one from the dictionary
+		connections.set("connections["+wires_potential_connection+"]", empt);
+		wire_ends[wires_potential_connection][3] = -99.94;
+		wire_ends[wires_potential_connection][1] = -99.94;
+		wires_potential_connection = -1;
 	}										
 	if(sidebar.mode == "potential_wire") set_sidebar_mode("none");
 }
@@ -2448,7 +2447,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if(check_for_connection_overlap(wires_potential_connection)){
 			connections.replace("connections["+wires_potential_connection+"]::overlap",1);
 		}else{
-			//remove_potential_wire(1);
+			//remove_potential_wire();
 			make_connection(wires_potential_connection,0);
 		}
 		new_connection.clear();
