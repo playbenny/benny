@@ -89,9 +89,7 @@ function frameclock(){
 			redraw_flag.matrices |= 1;
 		}
 	}
-	if(redraw_flag.flag & 8){
-		block_and_wire_colours();
-	}
+
 	if(redraw_flag.flag & 4){
 		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
 		bangflag=1;
@@ -103,8 +101,10 @@ function frameclock(){
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if(displaymode=="waves") draw_waves();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
+		if(redraw_flag.flag & 8) block_and_wire_colours();
 		bangflag=1;
 	}else{
+		if(redraw_flag.flag & 8) block_and_wire_colours();
 		if(redraw_flag.matrices & 1){
 			messnamed("wires_matrices","bang");
 		}

@@ -1492,7 +1492,6 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 }
 
 function remove_potential_wire(){
-	post("\nremove potential??",wires_potential_connection);
 	if(wires_potential_connection != -1){
 		if(Array.isArray(wires_position[wires_potential_connection])){
 			wires_position[wires_potential_connection] = null;

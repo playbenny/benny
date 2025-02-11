@@ -1456,31 +1456,19 @@ function fire_whole_state_btn(state,value){
 
 function fire_whole_state(state, value){
 	//post("\nfire whole state",state);
-//	var pv=[];
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
 	var sc_list = stat.getkeys();
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
-//	var mf=0;
 	for(var i=0;i<sc_list.length;i++){
 		if(sc_list[i]!="static_mod") fire_block_state(state,sc_list[i]);
-/*		var b = sc_list[i];
-		pv = states.get("states::"+state+"::"+b);
-		if(!is_empty(pv)){
-			var m=0;
-			if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
-			if(m!=pv[0])mf=1;
-			mute_particular_block(b,pv[0]);
-			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, pv[t]);
-		}*/
 	}
-//	if((mf==1) && (displaymode != "block_menu")) redraw_flag.flag |= 8;
 }
 
 function fade_state(){
 	//post("\nfade whole state",state_fade.position);
-	var pv=[];// , qv = [];
+	var pv=[];
 	var state = state_fade.selected;
 	if(state==-1) state="current";
 	var stat = new Dict();
@@ -1524,7 +1512,6 @@ function fade_state(){
 		}
 	}
 	redraw_flag.flag |= 2;
-	//if(mf==1)redraw_flag.flag |= 8;
 }
 
 function blend_state(state, amount){ //this isn't suitable for xfading, it's for the states block really - it blends current value with state value (no way to wind back to starting point etc)

@@ -947,7 +947,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											var w=1;
 											for(var i=1;i<csize;i++){ //look for an empty slot
 												if(!connections.contains("connections["+i+"]::to::number")){
-													post("\nfound an empty slot,",i," to use for potential connection wire");
+													//post("\nfound an empty slot,",i," to use for potential connection wire");
 													connections.replace("connections["+i+"]",potential_connection);
 													wires_potential_connection = i;
 													w=0;
@@ -957,23 +957,23 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											if(w==1){
 												connections.append("connections",potential_connection);
 												wires_potential_connection = connections.getsize("connections")-1;
-												post("\nappended, number is",wires_potential_connection);
+												// post("\nappended, number is",wires_potential_connection);
 											}
 										}else{
-											post("\nreplaced", wires_potential_connection);
+											// post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
 										//if((sidebar.mode=="none")||((sidebar.mode=="block")&&(selected.block[usermouse.ids[1]]))){
 										set_sidebar_mode("potential_wire");
 										//}
-										post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
+										// post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
 										//draw_wire(wires_potential_connection);
 										//post("\ndrew");
 									
 										var drawnlist = [];
 										for(var t=0;t<usermouse.drag.dragging.voices.length;t++){
 											if(drawnlist.indexOf(usermouse.drag.dragging.voices[t][0])==-1){
-												post("\nupdating block",usermouse.drag.dragging.voices[t][0]);
+												// post("\nupdating block",usermouse.drag.dragging.voices[t][0]);
 												drawnlist.push(usermouse.drag.dragging.voices[t][0]);
 												blocks_cube[usermouse.drag.dragging.voices[t][0]] = [];
 												draw_block(usermouse.drag.dragging.voices[t][0]);

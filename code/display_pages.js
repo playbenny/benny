@@ -1841,7 +1841,6 @@ function write_wires_matrix(){
 	matrix_wire_rotatexyz.dim = [count,1];
 	matrix_wire_colour.dim = [count,1];
 
-	//post("wire matrix length",count);
 	wires_lookup=[];
 	for(var i=0;i<wires_position.length;i++){
 		if(Array.isArray(wires_position[i])){
@@ -1858,7 +1857,6 @@ function write_wires_matrix(){
 	}
 	wires_startindex[wires_position.length] = matrix_wire_index;
 	messnamed("wires_matrices","bang");
-	//post("\n\nmatrices ready",matrix_wire_index);
 }
 
 function set_sidebar_mode(mode){
@@ -2262,7 +2260,6 @@ function draw_topbar(){
 }
 
 function draw_sidebar(){	
-	deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		if(sidebar.mode == "param_number_entry") return 0; // just bail!

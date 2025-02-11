@@ -1163,7 +1163,7 @@ function center_view(resetz){
 		camera_position[0] = (maxx+minx)*0.5;
 	}
 	camera();
-	redraw_flag.flag |= 8;	
+	redraw_flag.flag |= 4;	
 }
 
 function request_redraw(n){
