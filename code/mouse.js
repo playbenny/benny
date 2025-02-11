@@ -65,7 +65,7 @@ function picker_hover_and_special(id){
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
 		usermouse.oid=id;
-		var thov =id.split('_'); // store hover - any picker id received when not waiting for click
+		var thov = id.split('_'); // store hover - any picker id received when not waiting for click
 		if((thov[0]=="wires")&&(usermouse.clicked3d==-1)){  // wire bulge stuff for a bit
 			if(bulgingwire!=-1){
 				if(Array.isArray(wires_scale[bulgingwire])){
@@ -680,14 +680,16 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 								selected.wire[usermouse.ids[1]]=afters;
 								if(afters==1) sidebar.lastmode=-1; //force reassign scopes
-								write_wires_matrix();
+								//write_wires_matrix();
 								redraw_flag.flag=4;
 							}else{
 								selected.wire[usermouse.ids[1]]=1 - selected.wire[usermouse.ids[1]];
-								write_wire_matrix(usermouse.ids[1]);
+								//write_wire_matrix(usermouse.ids[1]);
 								redraw_flag.flag=4;
 							}
 						}
+						block_and_wire_colours();
+						usermouse.clicked3d = -1;
 						usermouse.ids[0]="done";
 					}else if(displaymode=="flocks"){
 						if(usermouse.ids[0] == "block" ){

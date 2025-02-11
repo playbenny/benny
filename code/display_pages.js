@@ -1377,17 +1377,6 @@ function draw_wire(connection_number){
 			// many-blob-corner-one, many-corner-blob-corner-many, one-corner-blob-many
 			var blob_position = [];
 			var meanvector = [0,0,0];
-			if(cfrom == cto){
-				from_anglevector[2] -= 1;
-				from_anglevector[1] *= 1.3;
-				to_anglevector[1] *= 1.3;
-				to_anglevector[2] -= 1;
-				if(selected.block[cfrom]||selected.wire[connection_number]){
-					from_anglevector[1] *= 1.5;
-					to_anglevector[1] *= 1.5;
-					meanvector[2] = 1;
-				}
-			}
 			var fx = from_pos[0];
 			var tx = to_pos[0];
 			if(from_multi>0){
@@ -1438,7 +1427,7 @@ function draw_wire(connection_number){
 			var s2 = 0.5 - 0.4*short;
 			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.min(Math.max(-2,-0.5 -0.5*(Math.max(0,mvl-3))),-1.1*(cfrom==cto)); //was -0.25 -0.3
+			blob_position[2] =  Math.min(Math.max(-2,-0.5 -0.5*(Math.max(0,mvl-3))),0); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
@@ -1453,19 +1442,20 @@ function draw_wire(connection_number){
 			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
+			meanvector[0] = meanvector[0] * -0.33/mvl;
+			meanvector[1] = meanvector[1] * -0.33/mvl;				
 			if(cfrom==cto){
-				mvl *= 0.25;
+				from_anglevector[1] *= 1.3;
+				to_anglevector[1] *= 1.3;
 				blob_position[0]=from_pos[0]-0.8;
 				from_anglevector[2] = 0;
 				to_anglevector[2] = 0;
 				blob_position[2] = from_pos[2];
-			} 
-			meanvector[0] = meanvector[0] * -0.33/mvl;
-			meanvector[1] = meanvector[1] * -0.33/mvl;				
-			if((from_pos[1]<=(to_pos[1]))&&(cfrom!=cto)){
+				meanvector[0] = 0;
+				meanvector[1] *= 5;
+			}else if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
 				meanvector[0] *= 0.2;
 				meanvector[1] *= 10;
-				//post("\nmv,",meanvector[1],"to_anglev",to_anglevector[1]);
 			}
 			if((to_multi>0) || (from_multi>0)){
 				var i;
