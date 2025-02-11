@@ -4,13 +4,13 @@ function config_toggle_gain_display_format(ta,tb){
 	}else{
 		config.replace("gain_display_format", "x");
 	}
-	redraw_flag.flag=4;
+	redraw_flag.flag = 4;
 }
 
 function play(state){
 	if(state!=playing){
 		playing=state;
-		redraw_flag.flag=2;
+		redraw_flag.flag = 2;
 		if(playing&&(set_timer_start==null)){
 			var da = new Date;
 			set_timer_start = da.getTime();
@@ -677,7 +677,7 @@ function clear_blocks_selection(){
 	}
 	selected.block_count = 0;
 	selected.wire_count = 0;
-	redraw_flag.flag=10;
+	redraw_flag.flag = 10;
 	redraw_flag.targets = [];
 	redraw_flag.targetcount = 0;
 	sidebar.scopes.midi = -1;
@@ -699,7 +699,7 @@ function select_all(){
 		selected.wire[t]=0;
 	}
 	selected.wire_count = 0;
-	redraw_flag.flag=10;
+	redraw_flag.flag = 10;
 	redraw_flag.targets = [];
 	redraw_flag.targetcount = 0;	
 }
@@ -1456,31 +1456,19 @@ function fire_whole_state_btn(state,value){
 
 function fire_whole_state(state, value){
 	//post("\nfire whole state",state);
-//	var pv=[];
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
 	var sc_list = stat.getkeys();
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
-//	var mf=0;
 	for(var i=0;i<sc_list.length;i++){
 		if(sc_list[i]!="static_mod") fire_block_state(state,sc_list[i]);
-/*		var b = sc_list[i];
-		pv = states.get("states::"+state+"::"+b);
-		if(!is_empty(pv)){
-			var m=0;
-			if(blocks.contains("blocks["+b+"]::mute")) m=blocks.get("blocks["+b+"]::mute");
-			if(m!=pv[0])mf=1;
-			mute_particular_block(b,pv[0]);
-			for(var t=1;t<pv.length;t++) parameter_value_buffer.poke(1, MAX_PARAMETERS*b+t-1, pv[t]);
-		}*/
 	}
-//	if((mf==1) && (displaymode != "block_menu")) redraw_flag.flag |= 8;
 }
 
 function fade_state(){
 	//post("\nfade whole state",state_fade.position);
-	var pv=[];// , qv = [];
+	var pv=[];
 	var state = state_fade.selected;
 	if(state==-1) state="current";
 	var stat = new Dict();
@@ -1524,7 +1512,6 @@ function fade_state(){
 		}
 	}
 	redraw_flag.flag |= 2;
-	//if(mf==1)redraw_flag.flag |= 8;
 }
 
 function blend_state(state, amount){ //this isn't suitable for xfading, it's for the states block really - it blends current value with state value (no way to wind back to starting point etc)
@@ -2322,7 +2309,7 @@ function mute_all_blocks(action){
 		if(blocks.contains("blocks["+i+"]::type")) mute_particular_block(i,av);
 	}
 	if(av!=-1) anymuted=av;
-	redraw_flag.flag=10;
+	redraw_flag.flag = 10;
 	if(av==0) messnamed("unmute_all","bang");
 }
 
@@ -2400,7 +2387,7 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 			}					
 		}
 	}
-	redraw_flag.flag=8;
+	redraw_flag.flag = 8;
 }
 
 function mute_particular_block(block,av){ // i=block, av=value, av=-1 means toggle
@@ -2467,7 +2454,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 					recursions++;
 					if(recursions>1000){
 						usermouse.shift = 0;
-						redraw_flag.flag=4;
+						redraw_flag.flag = 4;
 						post("\n\n\nemergency exitting infinite-looking recursion loop. how did that happen? you should file a bug report\n\n\n")
 						return(0);
 					}else{
@@ -2477,7 +2464,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 			}
 		}
 	}	
-	redraw_flag.flag=10;
+	redraw_flag.flag = 10;
 }
 
 
@@ -2529,7 +2516,7 @@ function connection_edit(parameter,value){
 			redraw_flag.flag |= 8;
 		}
 		sidebar.lastmode="recalculate";
-		redraw_flag.flag|=2;
+		redraw_flag.flag |= 2;
 	}
 }
 
@@ -2595,7 +2582,7 @@ function panel_assign_click(parameter,value){
 		}
 	}
 	if(fplist!=[]) 
-	redraw_flag.flag=4;	
+	redraw_flag.flag = 4;	
 }
 
 function cycle_automap_offset(p,v){
@@ -2677,7 +2664,7 @@ function flock_click(parameter,value){
 	blocks.replace("blocks["+parameter[0]+"]::flock::parameters",fplist);
 	// now needs to get voicelist for the block, then store 'is_flocked' for these (up to) 3 params
 	flock_add_to_array(parameter[0],fplist[0],fplist[1],fplist[2]);
-	redraw_flag.flag=4;
+	redraw_flag.flag = 4;
 }
 
 function flock_add_to_array(block,x,y,z){
@@ -2791,7 +2778,7 @@ function block_edit(parameter,value){
 		}
 		blocks.replace(parameter,Math.min(1,Math.max(0,value)));
 		if(pt[1]=="flock") rebuild_action_list = 1;
-		redraw_flag.flag=2;
+		redraw_flag.flag = 2;
 	}
 }
 
@@ -2830,7 +2817,7 @@ function select_song(song){
 		currentsong = song;
 		usermouse.timer = DOUBLE_CLICK_TIME;
 		post("\n song info",songs_info[currentsong]);
-		redraw_flag.flag|=2;
+		redraw_flag.flag |= 2;
 	}
 }
 
@@ -3194,11 +3181,6 @@ function blocks_and(side){
 	set_display_mode("blocks");
 }
 
-function toggle_show_all_wires(){
-	keyrepeat_task.cancel();
-	wires_show_all = 1 - wires_show_all;
-	redraw_flag.flag |= 4; //8;
-}
 function toggle_show_sidebar_para_mod(){
 	MODULATION_IN_PARAMETERS_VIEW = 1 - MODULATION_IN_PARAMETERS_VIEW;
 	redraw_flag.flag |= 2;
@@ -3454,7 +3436,7 @@ function type_to_search(key){
 					results[tt].push(i);
 					blocks_menu[i].enable = 1;
 				}else{
-					blocks_menu[i].enable = 0;
+					if(blocks_menu[i] !== undefined) blocks_menu[i].enable = 0;
 				}
 			}
 		}
@@ -3479,6 +3461,10 @@ function type_to_search(key){
 				}
 			}
 		}
+		if((x==-w)&&(z==-3.5)){
+			matrix_menu_index=[];
+		}
+		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
 	}
@@ -3544,7 +3530,7 @@ function number_entry(key){
 	if(key == -4){//enter
 		request_set_block_parameter(sidebar.selected,sidebar.param_number,(+sidebar.param_number_entry));
 		sidebar.mode = "block";
-		redraw_flag.flag|=2;
+		redraw_flag.flag |=2;
 	}else if(key == -3){//esc
 		sidebar.param_number_entry = "";
 		sidebar.mode = "block";
@@ -3596,7 +3582,7 @@ function block_search_typing(key){
 		}
 		if(ch) block_and_wire_colours();
 	}
-	redraw_flag.flag|=2;
+	redraw_flag.flag |=2;
 }
 
 function blocks_menu_enter(){
@@ -3616,6 +3602,10 @@ function blocks_menu_enter(){
 			end_of_frame_fn = function(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 				draw_block(r);
+				write_block_matrix(r);
+				messnamed("voices_matrices","bang");
+				messnamed("blocks_matrices","bang");	
+				redraw_flag.matrices &= 253;
 				selected.block[r] = 1;
 				sidebar.scopes.voice = -1;
 				sidebar.selected_voice = -1;
@@ -3628,6 +3618,7 @@ function blocks_menu_enter(){
 			var r = new_block(types[sel], blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1]);
 			if(blocktypes.get(types[sel]+"::type")=="audio") send_audio_patcherlist(1);
 			draw_block(r);
+			write_block_matrix(r);
 			insert_block_in_connection(types[sel],r);							
 			redraw_flag.flag |= 4;
 		}else if(menu.mode == 3){
@@ -3747,7 +3738,9 @@ function conn_assign_controller_moved(type,number){
 }
 
 function conn_toggle_control_auto_assign(){
-	post("\ntodo toggle auto-turn-on-auto");
+	sidebar.connection.auto_pick_controller = 1 - sidebar.connection.auto_pick_controller;
+	sidebar.connection.show_from_outputs = 1;
+	redraw_flag.flag |= 2;
 }
 
 function turn_off_controller_assign_mode(){

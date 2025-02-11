@@ -187,27 +187,7 @@ function preload_all_waves(){
 }
 
 
-function preload_some_wires(){
-	if(preload_wires_counter < MAX_BLOCKS){
-		var c = preload_wires_counter++;
-		if(!Array.isArray(wires[c]))wires[c] = [];
-		var segment = wires[c].length;
-		for(;segment<MAX_BEZIER_SEGMENTS;segment++){
-			if(typeof wires[c][segment] === 'undefined') {
-				wires[c][segment] = new JitterObject("jit.gl.gridshape","benny");
-				wires[c][segment].shape = "plane";
-				wires[c][segment].name = "wires£"+c+"£"+segment;
-				wires[c][segment].dim = [2,2];
-				wires[c][segment].enable = 0;
-				wires[c][segment].scale = [0,0,0];
-			}else{post("\nsurprise in wire pre-instantiate task");}
-		}
-		preload_task2.schedule(100);
-	}else{
-		post("\ncompleted pre-instantiating wire polygons")
-		preload_task2.freepeer();
-	}
-}
+
 
 function create_blank_wave_buffer(number,length, channels,name){
 	polybuffer_create_blank(length,channels);
@@ -1658,39 +1638,39 @@ function clear_everything(){
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");
 
-	var b,bl;
+	var b;
 	for(b in blocks_cube){
-		for(bl in blocks_cube[b]){
-			blocks_cube[b][bl].freepeer();			
-		}
+		//blocks_cube[b][0].freepeer();			
+		
 		blocks_cube[b] = [];
 	}
 	for(b in blocks_meter){
-		for(bl in blocks_meter[b]){
-			blocks_meter[b][bl].freepeer();
-		}
 		blocks_meter[b] = [];
 	}
-	for(b in wires){
-		for(bl in wires[b]){
-			wires[b][bl].enable = 0; 
-			wires[b][bl].scale = [0,0,0];//freepeer();
-		}
-		//wires[b] = [];
-		wires_colours[b] = [];
-	}
+	wires_position = [];
+	wires_scale = [];
+	wires_colour = [];
+	wires_rotatexyz = [];
+	messnamed("wires_matrices","dim",0,0);
+	messnamed("wires_matrices","bang");
+	messnamed("voices_matrices","dim",0,0);
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","dim",0,0);
+	messnamed("meters_matrices","bang");
+	messnamed("blocks_matrices","dim",0,0);
+	messnamed("blocks_matrices","bang");
 	wire_ends = [];
 	blocks_tex_sent=[];
-	background_cube.shape = "cube";
+	/*background_cube.shape = "cube";
 	background_cube.scale = [10000, 10000, 1 ];
 	background_cube.position = [0, 0, -200];
 	background_cube.name = "background";
-	background_cube.color = [0, 0, 0, 1];
-	menu_background_cube.shape = "cube";
+	background_cube.color = [0, 0, 0, 1];*/
+	/*menu_background_cube.shape = "cube";
 	menu_background_cube.scale = [1000, 1, 1000 ];
 	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block_menu_background";
-	menu_background_cube.color = [0, 0, 0, 1];
+	menu_background_cube.name = "block-menu-background";
+	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
