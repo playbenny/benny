@@ -5398,8 +5398,8 @@ function draw_sidebar(){
 				if(Array.isArray(firv)) firv=firv[0];
 
 				if(sidebar.connection.show_from_outputs){
-					auto_pick_controller = 1;
-					note_poly.message("setvalue", firv+1,"connection_assign_mode",1);
+					auto_pick_controller = 1 & sidebar.connection.auto_pick_controller;
+					note_poly.message("setvalue", firv+1,"connection_assign_mode",auto_pick_controller);
 					automap.assignmode = 1;
 				}else{
 					automap.assignmode = 0;

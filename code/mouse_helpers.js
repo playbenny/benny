@@ -3738,7 +3738,9 @@ function conn_assign_controller_moved(type,number){
 }
 
 function conn_toggle_control_auto_assign(){
-	post("\ntodo toggle auto-turn-on-auto");
+	sidebar.connection.auto_pick_controller = 1 - sidebar.connection.auto_pick_controller;
+	sidebar.connection.show_from_outputs = 1;
+	redraw_flag.flag |= 2;
 }
 
 function turn_off_controller_assign_mode(){
