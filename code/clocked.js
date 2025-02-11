@@ -75,7 +75,7 @@ function frameclock(){
 		rebuild_action_list=0;
 	}
 	if((bulgeamount>0) && (bulgeamount<1)){
-		bulgeamount -= 0.1;
+		bulgeamount -= 0.025;
 		if(bulgeamount<=0)bulgeamount =0;
 		if(Array.isArray(wires_position[bulgingwire])){
 			var ll = wires_position[bulgingwire].length;

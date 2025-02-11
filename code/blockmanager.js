@@ -519,6 +519,7 @@ var sidebar = {
 		default_out_applied : 0, //ie on a new connection
 		default_in_applied : 0,
 		auto_pick_controller : 1,
+		selected : -1,
 		defaults : {
 			offset : 0.5,
 			offset2 : 0.5,

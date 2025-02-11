@@ -430,10 +430,6 @@ function stop_graphics(){
 	post("\nstopping graphics");
 	//background_cube.freepeer();
 	//menu_background_cube.freepeer();
-	selection_cube.freepeer();
-	flock_cubexy.freepeer();
-	flock_cubeyz.freepeer();
-	flock_cubexz.freepeer();
 	messnamed("wires_matrices","dim",0,0);
 	messnamed("wires_matrices","bang");
 	messnamed("voices_matrices","dim",0,0);
@@ -442,6 +438,10 @@ function stop_graphics(){
 	messnamed("meters_matrices","bang");
 	messnamed("blocks_matrices","dim",0,0);
 	messnamed("blocks_matrices","bang");
+	selection_cube.freepeer();
+	flock_cubexy.freepeer();
+	flock_cubeyz.freepeer();
+	flock_cubexz.freepeer();
 	//world.message("enable",0);
 	var stop_task = new Task(stop_world, this);
 	stop_task.schedule(1);

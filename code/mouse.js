@@ -66,24 +66,19 @@ function picker_hover_and_special(id){
 		var ohov=usermouse.hover[1];
 		usermouse.oid=id;
 		var thov = id.split('_'); // store hover - any picker id received when not waiting for click
-		if((thov[0]=="wires")&&(usermouse.clicked3d==-1)){  // wire bulge stuff for a bit
+		if((thov[0]=="wires")&&((usermouse.clicked3d==-1)||(usermouse.clicked3d=="background"))){  // wire bulge stuff for a bit
 			if(bulgingwire!=-1){
-				if(Array.isArray(wires_scale[bulgingwire])){
+				if(Array.isArray(wires_scale[bulgingwire]) && !(selected.wire[bulgingwire])){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
-						var ta = wires_scale[bulgingwire][i];
-						wires_scale[bulgingwire][i] = [ta[0], wire_dia,1];
+						wires_scale[bulgingwire][i][1] = wire_dia;
 					}					
 					write_wire_matrix(bulgingwire);
-				}else{
-					post("\n\ndidnt find wire",bulgingwire);
 				}
 			}
-			bulgingwire= wires_lookup[thov[1]];
+			bulgingwire = wires_lookup[thov[1]];
 			bulgeamount=1;
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
-				var ta = wires_scale[bulgingwire][i];
-				ta[1] = wire_dia * (1 + bulgeamount);
-				wires_scale[bulgingwire][i] = [ta[0],ta[1],ta[2]];
+				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
 			write_wire_matrix(bulgingwire);
 		}else if(thov[0]!="background"){
@@ -96,18 +91,17 @@ function picker_hover_and_special(id){
 				usermouse.oid = id;
 			}	
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
-			if(bulgeamount>0){
+			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
 				bulgeamount=0;
 				for(var i=0;i<wires_scale[bulgingwire].length;i++){
-					var ta = wires_scale[bulgingwire][i];
-					wires_scale[bulgingwire][i] = [ta[0],wire_dia,1];
+					wires_scale[bulgingwire][i][1] = wire_dia;
 				}
 				write_wire_matrix(bulgingwire);
 				bulgingwire = -1;
 			}
 		}else{
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
-			if(bulgeamount==1) bulgeamount = 0.999;
+			if((bulgeamount==1) && !(selected.wire[bulgingwire])) bulgeamount = 0.999;
 		}
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
 			draw_menu_hint();
@@ -476,7 +470,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-								swap_block(usermouse.ids[1]);
+								var num = matrix_menu_index[usermouse.hover[1]];
+								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								var newb = blocks_menu[num].name;
+								swap_block(newb);
 								set_display_mode("blocks");
 							}
 						}
@@ -496,10 +493,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
 								if(dy<1.2) make_space(avx,avy,0.65);
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
-								var r = new_block(usermouse.ids[1], avx,avy);
-								if(blocktypes.get(usermouse.ids[1]+"::type")=="audio") send_audio_patcherlist(1);
+								var num = matrix_menu_index[usermouse.hover[1]];
+								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								var newb = blocks_menu[num].name;
+								var r = new_block(newb, avx,avy);
+								if(blocktypes.get(newb+"::type")=="audio") send_audio_patcherlist(1);
 								draw_block(r);
-								insert_block_in_connection(usermouse.ids[1],r);							
+								insert_block_in_connection(newb,r);							
 								redraw_flag.flag |= 4;						
 							}
 						}
@@ -509,9 +509,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							post("sorry no, you have to pick a substitute");
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
-								post("substitution found!!"+usermouse.ids[1]);
-								loading.recent_substitutions.replace(menu.swap_block_target, usermouse.ids[1]);
-								menu.swap_block_target = usermouse.ids[1];
+								var num = matrix_menu_index[usermouse.hover[1]];
+								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								var newb = blocks_menu[num].name;
+								post("substitution found!!"+newb);
+								loading.recent_substitutions.replace(menu.swap_block_target, newb);
+								menu.swap_block_target = newb;
 								set_display_mode("blocks");
 								import_song();
 								//swap_block(usermouse.ids[1]);
@@ -520,6 +523,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
+					if((usermouse.ids[0] == "background") && (bulgeamount>0.5)){
+						usermouse.ids = ["wires", bulgingwire, 0];
+						post("\nset to last wire not background");
+					}
 					if(usermouse.ids[0] == "background"){
 						if(usermouse.drag.distance<20){
 							if(usermouse.alt){
@@ -673,7 +680,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									for(ti=0;ti<selected.wire.length;ti++){
 										selected.wire[ti]=0;
 									}
-									selected.wire_count=1;						
+									selected.wire_count=1;	
 								}
 								for(ti=0;ti<selected.block.length;ti++){
 									selected.block[ti]=0;

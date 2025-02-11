@@ -1000,8 +1000,10 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 			if(cs){
 				draw_wire(i);
+				for(var ii=0;ii<wires_scale[i].length;ii++){
+					wires_scale[i][ii][1] = 2 * wire_dia;
+				}	
 			}else{
-			//if(wires_colours[i].length>=wires_colour[i].length){
 				tmc=0.3;
 				tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
 				if(cmute){
@@ -1012,6 +1014,9 @@ function block_and_wire_colours(){ //for selection and mute etc
 					for(segment=0;segment<wires_colour[i].length;segment++){
 						wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
 					}
+				}
+				for(var ii=0;ii<wires_scale[i].length;ii++){
+					wires_scale[i][ii][1] = wire_dia;
 				}		
 			}
 		}
@@ -1452,9 +1457,9 @@ function draw_wire(connection_number){
 				to_anglevector[2] = 0;
 				blob_position[2] = from_pos[2];
 				meanvector[0] = 0;
-				meanvector[1] *= 5;
+				meanvector[1] *= 3;
 			}else if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
-				meanvector[0] *= 0.2;
+				meanvector[0] *= 0.1;
 				meanvector[1] *= 10;
 			}
 			if((to_multi>0) || (from_multi>0)){
@@ -1682,7 +1687,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	}
 
 	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
-	wires_scale[connection_number][segment] = [seglength*0.52, wire_dia,1];
+	wires_scale[connection_number][segment] = [seglength*0.52, wire_dia*(1+selected.wire[connection_number]),1];
 	wires_rotatexyz[connection_number][segment] = [0, rotY, rotZ];
 	var tmc=0.4;
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
@@ -1803,6 +1808,7 @@ function write_blocks_matrix(){
 	messnamed("voices_matrices","bang");
 	messnamed("meters_matrices","bang");
 }
+
 
 function write_wire_matrix(i){
 	matrix_wire_index = wires_startindex[i];
@@ -5363,6 +5369,7 @@ function draw_sidebar(){
 			}
 	
 			sidebar.mode = "wire";
+			sidebar.connection.selected = i;
 
 			automap.groups = [];
 			automap.sidebar_row_ys = []; // i reuse these two for automap direct mode control over gain/conversion params. ys contains scaling multiplier for the knobs.
