@@ -2454,7 +2454,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if(sidebar.mode=="none")set_sidebar_mode("connection");
 		wires_potential_connection = -1;
 	}else{
-		post("\nERROR how have we got here without a potential connection?",fromname,toname);
+		post("\nERROR how have we got here without a potential connection?",fromname,toname,"clicked3d",usermouse.clicked3d);
 	}
 
 	redraw_flag.flag |= 4;
@@ -2555,8 +2555,8 @@ function remove_block(block){
 	// disable the cubes and meters
 	voicecount(block, 0); // remove all voices (this removes individual polyvoices and turns off audio-to-data voices)
 	// it's been removed from voicealoc lists by the voicecount function, which also freepeers the cubes and meters
-	blocks_meter[block]=[];
-	blocks_cube[block]=[];
+	blocks_meter[block]=null;
+	blocks_cube[block]=null;
 	if(blocktypes.contains(blocks.get("blocks["+block+"]::name")+"::block_ui_patcher")){
 		ui_patcherlist[block]='blank.ui';
 		still_checking_polys |=4;
@@ -2595,6 +2595,7 @@ function remove_block(block){
 	if(i> -1){
 		panels_order.splice(i,1);
 	}
+	write_blocks_matrix();
 	set_display_mode("blocks");
 	redraw_flag.flag |= 12;
 }
@@ -2908,9 +2909,8 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				blocks_cube[block].pop(); //= null;
 			}
 			for(i=(v-1)*NO_IO_PER_BLOCK;i<blocks_meter[block].length;i++){
-				blocks_meter[block][i].pop();//freepeer(); //enable = 0;
+				blocks_meter[block].pop();//freepeer(); //enable = 0;
 			}
-			blocks_meter[block].pop();
 			for(i=0;i<MAX_PARAMETERS;i++) is_flocked[MAX_PARAMETERS*(removeme+voiceoffset)+t] = 0;
 			if(type=="audio"){ 
 				var tout;

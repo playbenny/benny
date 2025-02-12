@@ -1780,6 +1780,7 @@ function write_blocks_matrix(){
 		matrix_meter_index[b]=[];
 		if(Array.isArray(blocks_cube[b])){
 			matrix_block_index[b]=bc;
+			matrix_block_lookup[bc]=b;
 			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
 			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
 			matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);

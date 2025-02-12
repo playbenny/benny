@@ -261,6 +261,7 @@ var preload_audio_voice_list = [];
 
 var matrix_wire_index = [];
 var matrix_block_index = [];
+var matrix_block_lookup = [];
 var matrix_voice_index = [];
 var matrix_voice_lookup = [];
 var matrix_meter_index = [];

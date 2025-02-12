@@ -22,7 +22,7 @@ function clicked_block_preparation() {
 		//for (var i = 0; i < t; i++)	post("\nmultidrag", usermouse.drag.dragging.voices[i][0], usermouse.drag.dragging.voices[i][1]);
 	} else {
 		// if the clicked block is not selected, or is the only one selected, then you drag it				
-		var b = usermouse.ids[1];
+		var b = usermouse.ids[1];	
 		var tvc = blocks.get("blocks[" + b + "]::poly::voices")*Math.max(1,blocks.get("blocks[" + b + "]::subvoices"));
 		usermouse.drag.dragging.voices = [];
 		for (var i = 0; i <= tvc; i++) {
@@ -59,6 +59,26 @@ function clicked_block_preparation() {
 	}
 }
 
+function picker_lookups(id){
+	var thov = id.split('_');
+	if(thov[0]=="voice"){
+		thov[0] ="block";
+		var bv = matrix_voice_lookup[thov[1]];
+		thov[1] = bv[0];
+		thov[2] = bv[1];
+		id = "block_"+thov[1]+"_"+thov[2];
+	}else if(thov[0]=="block"){
+		// post("\nresetting block from lookup",thov[1]);
+		thov[1] = matrix_block_lookup[thov[1]];
+		// post("to",thov[1]);
+		id = "block_"+thov[1]+"_0";
+	}else if(thov[0]=="wires"){
+		thov[1] = wires_lookup[thov[1]];
+		id = "wires_"+thov[1]+"_0";
+	}
+	return id;
+}
+
 function picker_hover_and_special(id){
 //	post("\nid",id,"incoming hov",usermouse.hover);
 	if(usermouse.oid!=id){ //if id has changed
@@ -75,21 +95,13 @@ function picker_hover_and_special(id){
 					write_wire_matrix(bulgingwire);
 				}
 			}
-			bulgingwire = wires_lookup[thov[1]];
+			bulgingwire = thov[1];
 			bulgeamount=1;
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
 			write_wire_matrix(bulgingwire);
 		}else if(thov[0]!="background"){
-			if(thov[0]=="voice"){
-				thov[0] ="block";
-				var bv = matrix_voice_lookup[thov[1]];
-				thov[1] = bv[0];
-				thov[2] = bv[1];
-				id = "block_"+thov[1]+"_"+thov[2];
-				usermouse.oid = id;
-			}	
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
 				bulgeamount=0;
@@ -219,10 +231,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 			}
-			if(id==null) id = phys_picker_id;
+			if(id==null) id = picker_lookups(phys_picker_id);
 			if(id!=null) id = picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
-			id = phys_picker_id;
+			id = picker_lookups(phys_picker_id);
 			if(id!=null) id = picker_hover_and_special(id);
 		}
 	}
@@ -253,9 +265,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.timer=-1;
 						}
 					}else{
-						if(usermouse.ids[0]=="wires"){
-							usermouse.ids[1] = wires_lookup[usermouse.ids[1]];
-						}
 						usermouse.clicked3d = usermouse.ids[1];
 						usermouse.hover = [].concat(usermouse.ids);
 						if(displaymode=="blocks"){
@@ -1163,7 +1172,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}
 
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
-		id = phys_picker_id;
+		id = picker_lookups(phys_picker_id);
 		if(id!=null) picker_hover_and_special(id);
 	}	
 //	post("\nbcd",b,c,d,mouse_index);
