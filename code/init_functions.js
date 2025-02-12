@@ -1062,8 +1062,8 @@ function deferred_diagnostics(){
 
 function topbar_size(){
 	var w=(topbar.used_length>0)? topbar.used_length:sidebar.x;
-	var tw=(w)/mainwindow_width;
-	var th=(fontheight+11)/mainwindow_height;
+	var tw=(w+3)/mainwindow_width;
+	var th=(fontheight+14)/mainwindow_height;
 	topbar.videoplane.message("scale",tw,th);
 	topbar.videoplane.message("position",-1+tw,1-th,0);
 	topbar.videoplane.message("texzoom",1/tw,1/th);
@@ -1071,7 +1071,7 @@ function topbar_size(){
 }
 
 function sidebar_size(){
-	var w = sidebar.width+sidebar.scrollbar_width+2;
+	var w = sidebar.width+sidebar.scrollbar_width+6;
 	var h = sidebar.used_height;
 	if(h==0){
 		sidebar.videoplane.message("enable",0);
@@ -1092,8 +1092,8 @@ function statesbar_size(){
 		statesbar.videoplane.message("enable",0);
 	}else{
 		statesbar.videoplane.message("enable",1);
-		var tw=(11+fontheight)/mainwindow_width;
-		var th=(h+2)/mainwindow_height;
+		var tw=(14+fontheight)/mainwindow_width;
+		var th=(h+5)/mainwindow_height;
 		statesbar.videoplane.message("scale",tw,th);
 		statesbar.videoplane.message("position",-1+tw,-1+th,0);
 		statesbar.videoplane.message("texzoom",1/tw,1/th);

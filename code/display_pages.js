@@ -1934,9 +1934,9 @@ function draw_state_xfade(){
 		mouse_click_parameters[state_fade.index] = state_fade.selected;
 		mouse_click_values[state_fade.index] = 0;
 		statesfadebar.videoplane.message("enable",1);
-		var tw=(sidebar.x-7)/mainwindow_width;
+		var tw=(sidebar.x)/mainwindow_width;
 		var th1=(state_fade.y+fontheight*0.5)/mainwindow_height;
-		var th2=(fontheight+4)/mainwindow_height;
+		var th2=(fontheight+10)/mainwindow_height;
 		statesfadebar.shown = 1;
 		statesfadebar.videoplane.message("scale",tw,th2);
 		statesfadebar.videoplane.message("position",-1+tw,1-2*th1,0);
