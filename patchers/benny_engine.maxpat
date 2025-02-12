@@ -27,8 +27,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 952.0, 333.0, 468.0, 22.0 ],
-					"text" : "jit.gl.videoplane benny @tex_map 1 @transform_reset 2 @auto_material 0 @enable 0",
+					"patching_rect" : [ 952.0, 333.0, 598.0, 22.0 ],
+					"text" : "jit.gl.videoplane benny @tex_map 1 @transform_reset 2 @auto_material 0 @enable 0 @mat_emission 1 1 1 1",
 					"varname" : "statesbar_videoplane"
 				}
 
@@ -40,8 +40,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 952.0, 303.0, 468.0, 22.0 ],
-					"text" : "jit.gl.videoplane benny @tex_map 1 @transform_reset 2 @auto_material 0 @enable 0",
+					"patching_rect" : [ 952.0, 303.0, 598.0, 22.0 ],
+					"text" : "jit.gl.videoplane benny @tex_map 1 @transform_reset 2 @auto_material 0 @enable 0 @mat_emission 1 1 1 1",
 					"varname" : "topbar_videoplane"
 				}
 
@@ -53,8 +53,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 952.0, 269.0, 468.0, 22.0 ],
-					"text" : "jit.gl.videoplane benny @tex_map 1 @enable 0 @auto_material 0 @transform_reset 2",
+					"patching_rect" : [ 952.0, 269.0, 598.0, 22.0 ],
+					"text" : "jit.gl.videoplane benny @tex_map 1 @enable 0 @auto_material 0 @transform_reset 2 @mat_emission 1 1 1 1",
 					"varname" : "sidebar_videoplane"
 				}
 
@@ -340,7 +340,7 @@
 
 							}
  ],
-						"originid" : "pat-710"
+						"originid" : "pat-708"
 					}
 ,
 					"patching_rect" : [ 1123.0, 46.0, 112.0, 22.0 ],
@@ -515,7 +515,7 @@
 
 							}
  ],
-						"originid" : "pat-712"
+						"originid" : "pat-710"
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -684,7 +684,7 @@
 
 							}
  ],
-						"originid" : "pat-726"
+						"originid" : "pat-724"
 					}
 ,
 					"patching_rect" : [ 314.5, 242.0, 102.0, 22.0 ],
@@ -923,7 +923,7 @@
 
 							}
  ],
-						"originid" : "pat-728"
+						"originid" : "pat-726"
 					}
 ,
 					"patching_rect" : [ 725.0, 48.25, 117.0, 22.0 ],
@@ -1148,7 +1148,7 @@
 
 							}
  ],
-						"originid" : "pat-730"
+						"originid" : "pat-728"
 					}
 ,
 					"patching_rect" : [ 556.0, 527.0, 69.0, 22.0 ],
@@ -2058,7 +2058,7 @@
 
 							}
  ],
-						"originid" : "pat-732"
+						"originid" : "pat-730"
 					}
 ,
 					"patching_rect" : [ 397.0, 167.25, 100.0, 22.0 ],
@@ -2401,7 +2401,7 @@
 
 							}
  ],
-						"originid" : "pat-734"
+						"originid" : "pat-732"
 					}
 ,
 					"patching_rect" : [ 742.0, 660.0, 123.0, 22.0 ],
@@ -3085,7 +3085,7 @@
 
 							}
  ],
-						"originid" : "pat-736"
+						"originid" : "pat-734"
 					}
 ,
 					"patching_rect" : [ 659.0, 132.25, 113.0, 22.0 ],
@@ -4306,7 +4306,7 @@
 
 							}
  ],
-						"originid" : "pat-770"
+						"originid" : "pat-768"
 					}
 ,
 					"patching_rect" : [ 30.0, 174.0, 161.0, 22.0 ],
@@ -5189,7 +5189,7 @@
 
 							}
  ],
-						"originid" : "pat-774"
+						"originid" : "pat-772"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 12.25, 43.0, 22.0 ],
@@ -5688,7 +5688,7 @@
 
 							}
  ],
-						"originid" : "pat-776"
+						"originid" : "pat-774"
 					}
 ,
 					"patching_rect" : [ 850.5, 388.0, 85.0, 22.0 ],
@@ -6124,7 +6124,7 @@
 
 											}
  ],
-										"originid" : "pat-780"
+										"originid" : "pat-778"
 									}
 ,
 									"patching_rect" : [ 305.0, 329.0, 69.0, 22.0 ],
@@ -8058,7 +8058,7 @@
 
 							}
  ],
-						"originid" : "pat-778"
+						"originid" : "pat-776"
 					}
 ,
 					"patching_rect" : [ 110.75, 587.0, 298.0, 22.0 ],
@@ -9060,7 +9060,7 @@
 
 											}
  ],
-										"originid" : "pat-790"
+										"originid" : "pat-788"
 									}
 ,
 									"patching_rect" : [ 30.0, 463.0, 129.0, 22.0 ],
@@ -9939,7 +9939,7 @@
 
 							}
  ],
-						"originid" : "pat-788",
+						"originid" : "pat-786",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -11786,7 +11786,7 @@
 
 							}
  ],
-						"originid" : "pat-794",
+						"originid" : "pat-792",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -12828,7 +12828,7 @@
 
 											}
  ],
-										"originid" : "pat-800"
+										"originid" : "pat-798"
 									}
 ,
 									"patching_rect" : [ 540.0, 18.0, 89.0, 22.0 ],
@@ -13912,7 +13912,7 @@
 
 							}
  ],
-						"originid" : "pat-798"
+						"originid" : "pat-796"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 41.25, 67.0, 22.0 ],
@@ -14024,7 +14024,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 9.0, 254.0, 88.0, 30.0 ],
 					"text" : "start",
-					"textoncolor" : [ 1.0, 0.827, 0.0, 1.0 ],
+					"textoncolor" : [ 1.0, 0.216, 0.0, 1.0 ],
 					"varname" : "startbutton"
 				}
 
@@ -14364,7 +14364,7 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-159",
+					"id" : "obj-64",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
@@ -14377,7 +14377,7 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-160",
+					"id" : "obj-74",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
@@ -14678,13 +14678,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-31", 1 ],
-					"source" : [ "obj-159", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
 					"source" : [ "obj-162", 0 ]
 				}
@@ -14839,7 +14832,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-160", 0 ],
+					"destination" : [ "obj-74", 0 ],
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -15086,6 +15079,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-31", 1 ],
+					"source" : [ "obj-64", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-40", 0 ],
 					"source" : [ "obj-65", 1 ]
 				}
@@ -15136,7 +15136,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-160", 0 ],
+					"destination" : [ "obj-74", 0 ],
 					"order" : 1,
 					"source" : [ "obj-70", 0 ]
 				}
@@ -15290,7 +15290,7 @@
 
 			}
  ],
-		"originid" : "pat-706",
+		"originid" : "pat-704",
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -15381,6 +15381,76 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "controllermanager.js",
+				"bootpath" : "~/Documents/GitHub/benny/code",
+				"patcherrelativepath" : "../code",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.clock.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.auto.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.auto.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.control.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.keyboard.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.keyboard.ui.js",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "core.input.keyboard.ui.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/note_blocks",
+				"patcherrelativepath" : "../note_blocks",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -15487,6 +15557,13 @@
 				"implicit" : 1
 			}
 , 			{
+				"name" : "parameterwatcher.gendsp",
+				"bootpath" : "~/Documents/GitHub/benny/code",
+				"patcherrelativepath" : "../code",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "ui_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
@@ -15502,6 +15579,13 @@
 			}
 , 			{
 				"name" : "voicealloc.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voiceheader.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",

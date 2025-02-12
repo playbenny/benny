@@ -2168,6 +2168,8 @@ function draw_topbar(){
 			lcd_main.message("moveto",mainwindow_width-9-fo1*2,9+fo1*6);
 			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
 			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
+			statesbar.videoplane.message("enable",0);
+			statesbar.used_height=0;
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 9 - fontheight;
@@ -2241,6 +2243,10 @@ function draw_topbar(){
 				lcd_main.message("write", "all");			
 				click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
 			}
+			if(y_o < mainwindow_height - 9 - fontheight){
+				statesbar.used_height = mainwindow_height - y_o;
+			}
+			statesbar_size();
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
@@ -2252,6 +2258,11 @@ function draw_topbar(){
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
 		lcd_main.message("write", loading.songname);
 		mouse_index++;
+	}
+	var w = 11 + fontheight*(x_o-0.2);
+	if(topbar.used_length!=w){
+		topbar.used_length=w;
+		topbar_size();
 	}
 }
 
@@ -6982,6 +6993,11 @@ function draw_sidebar(){
 	}
 	if(fullscreen&&view_changed&&((displaymode=="blocks")||(displaymode=="panels")))draw_clock();
 	view_changed = false;
+	var h=Math.min(mainwindow_height,y_offset+2);
+	if(h!=sidebar.used_height){
+		sidebar.used_height=h;
+		sidebar_size();
+	}
 }
 
 
