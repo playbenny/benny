@@ -127,6 +127,23 @@ var lcd_main;
 var lcd_block_textures;
 var textureset_blocks;
 
+var topbar = {
+	lcd: null,
+	videoplane: null,
+	used_length:0
+}
+
+var statesbar = {
+	lcd: null,
+	videoplane: null,
+	used_height:0
+}
+
+var statesfadebar = {
+	videoplane: null,
+	shown: 0,
+}
+
 function thispatcherstuff(){
 	output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
 	voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
@@ -140,7 +157,10 @@ function thispatcherstuff(){
 	lcd_main = this.patcher.getnamed("lcd_main");
 	lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
 	textureset_blocks = this.patcher.getnamed("textureset_blocks");
-	
+	topbar.videoplane = this.patcher.getnamed("topbar_videoplane");
+	sidebar.videoplane = this.patcher.getnamed("sidebar_videoplane");
+	statesbar.videoplane = this.patcher.getnamed("statesbar_videoplane");
+	statesfadebar.videoplane = this.patcher.getnamed("statesfadebar_videoplane");
 }
 
 var phys_picker_id;
@@ -472,6 +492,8 @@ var usermouse = {
 }
 
 var sidebar = {
+	videoplane: null,
+	used_height: 0,
 	mode : "none",
 	lastmode : "none",
 	selected : -1,

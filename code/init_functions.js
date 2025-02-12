@@ -238,7 +238,7 @@ function initialise_dictionaries(hardware_file){
 	messnamed("play",0);
 
 	sidebar.mode = "none";
-	
+	blocks_cube = [];
 	var i;
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		note_patcherlist[i]='blank.note';
@@ -1060,6 +1060,48 @@ function deferred_diagnostics(){
 	}
 }
 
+function topbar_size(){
+	var w=(topbar.used_length>0)? topbar.used_length:sidebar.x;
+	var tw=(w)/mainwindow_width;
+	var th=(fontheight+11)/mainwindow_height;
+	topbar.videoplane.message("scale",tw,th);
+	topbar.videoplane.message("position",-1+tw,1-th,0);
+	topbar.videoplane.message("texzoom",1/tw,1/th);
+	topbar.videoplane.message("texanchor",0.5*tw,1-0.5*th);
+}
+
+function sidebar_size(){
+	var w = sidebar.width+sidebar.scrollbar_width+2;
+	var h = sidebar.used_height;
+	if(h==0){
+		sidebar.videoplane.message("enable",0);
+	}else{
+		sidebar.videoplane.message("enable",1);
+		var tw = w/mainwindow_width;
+		var th = h/mainwindow_height;
+		sidebar.videoplane.message("scale",tw,th,1);
+		sidebar.videoplane.message("position",1-tw,1-th,0);
+		sidebar.videoplane.message("texzoom",1/tw,1/th);
+		sidebar.videoplane.message("texanchor",1-0.5*tw,1-0.5*th);
+	}
+}
+
+function statesbar_size(){
+	var h=(statesbar.used_height>0)? statesbar.used_height:0;
+	if(h==0){
+		statesbar.videoplane.message("enable",0);
+	}else{
+		statesbar.videoplane.message("enable",1);
+		var tw=(11+fontheight)/mainwindow_width;
+		var th=(h+2)/mainwindow_height;
+		statesbar.videoplane.message("scale",tw,th);
+		statesbar.videoplane.message("position",-1+tw,-1+th,0);
+		statesbar.videoplane.message("texzoom",1/tw,1/th);
+		statesbar.videoplane.message("texanchor",0.5*tw,0.5*th);
+	}
+}
+
+
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
 		post("\nmain window : "+width+"x"+height+"px");
@@ -1081,6 +1123,10 @@ function size(width,height,scale){
 		sidebar.width = fontheight*sidebar.width_in_units;
 		sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
 		sidebar.x = sidebar.x2 -sidebar.width;
+
+		topbar_size();
+		sidebar_size();
+		topbar.videoplane.message("enable",1);
 
 		sidebar.meters.startx = 9+1.1* fontheight;
 		sidebar.meters.spread = 4;
