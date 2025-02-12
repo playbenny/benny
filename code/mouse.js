@@ -60,6 +60,7 @@ function clicked_block_preparation() {
 }
 
 function picker_lookups(id){
+	if(id === undefined) return null;
 	var thov = id.split('_');
 	if(thov[0]=="voice"){
 		thov[0] ="block";

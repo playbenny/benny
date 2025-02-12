@@ -121,8 +121,10 @@ function redraw(){
 		draw_topbar();
 		draw_sidebar();
 		if(fullscreen) draw_clock();
+		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
+		topbar.videoplane.message("enable",0);
 	}else if(displaymode == "custom"){
 		clear_screens();
 		draw_topbar();
