@@ -1778,7 +1778,7 @@ function write_blocks_matrix(){
 	matrix_voice_index = [];
 	for(var b=0;b<MAX_BLOCKS;b++){
 		matrix_meter_index[b]=[];
-		if(Array.isArray(blocks_cube[b])){
+		if((Array.isArray(blocks_cube[b]))){
 			matrix_block_index[b]=bc;
 			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
 			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
@@ -1930,6 +1930,15 @@ function draw_state_xfade(){
 		mouse_click_actions[state_fade.index] = whole_state_xfade;
 		mouse_click_parameters[state_fade.index] = state_fade.selected;
 		mouse_click_values[state_fade.index] = 0;
+		statesfadebar.videoplane.message("enable",1);
+		var tw=(sidebar.x-7)/mainwindow_width;
+		var th1=(state_fade.y+fontheight*0.5)/mainwindow_height;
+		var th2=(fontheight+4)/mainwindow_height;
+		statesfadebar.shown = 1;
+		statesfadebar.videoplane.message("scale",tw,th2);
+		statesfadebar.videoplane.message("position",-1+tw,1-2*th1,0);
+		statesfadebar.videoplane.message("texzoom",1/tw,1/th2);
+		statesfadebar.videoplane.message("texanchor",0.5*tw,1-th1);
 	}
 }
 
@@ -2242,11 +2251,19 @@ function draw_topbar(){
 				lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight);
 				lcd_main.message("write", "all");			
 				click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
+			}else{
+				y_o += 1.2*fontheight;
 			}
 			if(y_o < mainwindow_height - 9 - fontheight){
 				statesbar.used_height = mainwindow_height - y_o;
 			}
 			statesbar_size();
+			if(statesfadebar.shown == 1){
+				if(!((state_fade.position>-1) && (state_fade.selected > -2))){
+					statesfadebar.shown = 0;
+					statesfadebar.videoplane.message("enable",0);
+				}
+			}
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful

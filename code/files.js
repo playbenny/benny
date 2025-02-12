@@ -1638,15 +1638,9 @@ function clear_everything(){
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");
 
-	var b;
-	for(b in blocks_cube){
-		//blocks_cube[b][0].freepeer();			
-		
-		blocks_cube[b] = [];
-	}
-	for(b in blocks_meter){
-		blocks_meter[b] = [];
-	}
+	blocks_cube = [];
+	blocks_meter = [];
+	
 	wires_position = [];
 	wires_scale = [];
 	wires_colour = [];

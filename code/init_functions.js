@@ -238,7 +238,7 @@ function initialise_dictionaries(hardware_file){
 	messnamed("play",0);
 
 	sidebar.mode = "none";
-	
+	blocks_cube = [];
 	var i;
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		note_patcherlist[i]='blank.note';
@@ -1071,7 +1071,7 @@ function topbar_size(){
 }
 
 function sidebar_size(){
-	var w = sidebar.width+sidebar.scrollbar_width;
+	var w = sidebar.width+sidebar.scrollbar_width+2;
 	var h = sidebar.used_height;
 	if(h==0){
 		sidebar.videoplane.message("enable",0);

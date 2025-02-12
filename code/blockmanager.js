@@ -139,6 +139,10 @@ var statesbar = {
 	used_height:0
 }
 
+var statesfadebar = {
+	videoplane: null,
+	shown: 0,
+}
 
 function thispatcherstuff(){
 	output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
@@ -156,7 +160,7 @@ function thispatcherstuff(){
 	topbar.videoplane = this.patcher.getnamed("topbar_videoplane");
 	sidebar.videoplane = this.patcher.getnamed("sidebar_videoplane");
 	statesbar.videoplane = this.patcher.getnamed("statesbar_videoplane");
-	// statesfadebar.videoplane = this.patcher.getnamed("statefadebar_videoplane");
+	statesfadebar.videoplane = this.patcher.getnamed("statesfadebar_videoplane");
 }
 
 var phys_picker_id;
