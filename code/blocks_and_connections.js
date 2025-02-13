@@ -3246,6 +3246,7 @@ function insert_block_in_connection(newblockname,newblock){
 	//outlet(8,"bang");
 	set_display_mode("blocks");
 	remove_connection(menu.connection_number);
+	selected.block[newblock]=1;
 	redraw_flag.flag |= 4;	
 }
 
