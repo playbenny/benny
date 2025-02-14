@@ -3,13 +3,16 @@
 		"patcher" : "fx.filter.2pole",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "surreal machines' zero delay feedback filter model",
+		"help_text" : "surreal machines' zero delay feedback filter model. in benny this has audio rate cutoff modulation and accurate key follow from midi input. the outputs are a fade between lowpass and highpass and a separate bandpass.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "cutoff" ],
-				"midi" : [ "notes" ]
+				"midi" : [ "notes" ],
+				"descriptions" : {
+					"midi" : [ "used for key follow" ]
+				}
 			},
 			"out" : {
 				"audio" : [ "lp/hp", "bp" ]
