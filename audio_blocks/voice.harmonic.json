@@ -20,15 +20,21 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,2,3,4,5,6,7],
-				"colour" : -5
+				"colour" : 30
 			},
 			{
 				"contains" : [11,12,13],
-				"colour" : -3
+				"colour" : 5
 			},
 			{
-				"contains" : [8,9,10,14,15,16,17,19,18],
-				"height" : 0
+				"contains" : [14,20,15,16,17,18],
+				"height" : 0,
+				"colour" : -15
+			},
+			{
+				"contains" : [8,9,10,19],
+				"height" : 0,
+				"colour" : -25
 			}
 		],
 		"panel" : {
@@ -174,6 +180,14 @@
 				"values" : ["env","opposite","1","2","3","4","5","6","7","8"],
 				"wrap" : 0,
 				"default" : 0				
+			},	
+			{
+				"name" : "attack_shape",
+				"type" : "menu_b",
+				"forcelabel" : 1,
+				"values" : ["attack_shape_regular", "attack_shape_mirror" ],
+				"wrap" : 1,
+				"default" : 0.3
 			}
 		]
 	}

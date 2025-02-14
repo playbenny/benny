@@ -20,12 +20,12 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,4],
-				"colour" : 0
+				"colour" : 4
 			},
 			{
 				"contains" : [2,3,13,5],
 				"height" : 0,
-				"colour" : -4
+				"colour" : -2
 			},
 			{ 
 				"header" : "envelope",
@@ -38,7 +38,7 @@
 				"colour" : -12
 			},
 			{
-				"contains" : [11, 15,16,17,18,19,20,21],
+				"contains" : [21,11, 15,16,17,18,19,20],
 				"height" : 0,
 				"colour" : -20
 			}
@@ -201,7 +201,7 @@
 				"type" : "menu_b",
 				"forcelabel" : 1,
 				"values" : ["attack_shape_regular", "attack_shape_mirror" ],
-				"wrap" : 0,
+				"wrap" : 1,
 				"default" : 0.3
 			}
 		]
