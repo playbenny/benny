@@ -1,6 +1,17 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+12/2/25:
+- HUGE PERFORMANCE IMPROVEMENTS! i'd been putting this off but it wasn't as bad as i feared (!) the 3d graphics now takes advantage of 'hardware instancing' which means the cpu overhead of large patches is vastly reduced. on my mid-range framework intel laptop (no gpu) with a particular largeish patch ('blackpool late 80s') from my live set the cpu usage/power draw drops by 50% (!) despite it actually hitting a higher FPS than before. 
+- mouse selection and hover on the blocks page is also vastly improved as it now uses physics based picking on the gpu instead of the axis aligned bounding box method it used before. everything should feel a lot snappier.
+- wires also look a bit better and the hover / selection graphics are clearer.
+2/2/25:
+- ui preferences option to downsample the audio_to_data section that does signal->param conversions (downsampling will make no real difference here) and scopes and meters, where it affects the maximum scope zoom in. the default (1) gives best appearance, but you can save a lot of cpu (~20%?) on low end systems by dropping this to 4 or 8.
+- experimental: i've turned off multithreading for these meters, which actually seems to have reduced cpu use (threads locking around buffer access perhaps?) IF YOU SEE A BIG INCREASE IN CPU USE WITH THIS UPDATE LET ME KNOW
+31/1/25:
+- seq.curved.time is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
+25/1/25:
+- automap for controllers now works in more places - on connections (for gain/conversion parameter editting) and for scroll file menu / new block menu
 20/1/25:
 - **breaking change** added more models to voice.modal, which will possibly throw off model selection in old songfiles. easy to correct and the new models are nice.
 - stick slip model block (model of a mass sticking and slipping on a surface as it is pulled by a spring - useful for generating rhythms, making lfos more interesting, processing audio, scrapes and scratches)

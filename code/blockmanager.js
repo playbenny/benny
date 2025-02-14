@@ -19,7 +19,6 @@ var MAX_USED_AUDIO_INPUTS = 0;
 var MAX_USED_AUDIO_OUTPUTS = 0;
 var NO_IO_PER_BLOCK = 2;
 var MAX_BEZIER_SEGMENTS = 16;//24; //must be a multiple of 4
-var MIN_BEZIER_SEGMENTS = 4;
 var MAX_PARAMETERS = 256;
 var MAX_DATA = 16384;
 var MAX_MOD_IDS = 1024;
@@ -113,23 +112,38 @@ var end_of_frame_fn = null;
 var whole_state_xfade_create_task = new Task(create_whole_state_xfade_slider, this);
 var keyrepeat_task = new Task(keydown,this,0);
 
-var output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
-var voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
-var ui_poly = this.patcher.getnamed("ui_poly");
-var note_poly = this.patcher.getnamed("note_poly");
-var audio_poly = this.patcher.getnamed("audio_poly");
-var audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
-var sigouts = this.patcher.getnamed("sigouts");
-var matrix = this.patcher.getnamed("matrix");
-var deferred_matrix = [];
-var world = this.patcher.getnamed("world");
-var lcd_main = this.patcher.getnamed("lcd_main");
+var output_blocks_poly;
+var voicealloc_poly;
+var ui_poly;
+var note_poly;
+var audio_poly;
+var audio_to_data_poly;
+var sigouts;
+var matrix;
+var deferred_matrix=[];
+var world;
+var lcd_main;
 
-var lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
-var textureset_blocks = this.patcher.getnamed("textureset_blocks");
+var lcd_block_textures;
+var textureset_blocks;
 
+function thispatcherstuff(){
+	output_blocks_poly = this.patcher.getnamed("output_blocks_poly");
+	voicealloc_poly = this.patcher.getnamed("voicealloc_poly");
+	ui_poly = this.patcher.getnamed("ui_poly");
+	note_poly = this.patcher.getnamed("note_poly");
+	audio_poly = this.patcher.getnamed("audio_poly");
+	audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
+	sigouts = this.patcher.getnamed("sigouts");
+	matrix = this.patcher.getnamed("matrix");
+	world = this.patcher.getnamed("world");
+	lcd_main = this.patcher.getnamed("lcd_main");
+	lcd_block_textures = this.patcher.getnamed("lcd_block_textures");
+	textureset_blocks = this.patcher.getnamed("textureset_blocks");
+	
+}
 
-var glpicker = new JitterObject("jit.gl.picker","benny");
+var phys_picker_id;
 
 var scope_buffer = new Buffer("scope_buffer");
 var midi_meters_buffer = new Buffer("midi_meters_buffer");
@@ -164,8 +178,6 @@ var polybuffer_channels = [];
 var polybuffer_lengths = [];
 
 var preload_task;// = new Task(preload_all_waves, this);
-var preload_task2;// = new Task(preload_some_wires, this);
-var preload_wires_counter = 0;
 var waves_buffer = [];
 
 var midi_indicators = {
@@ -204,10 +216,6 @@ var click_i = new Int16Array(9900000); //more than 4k.
 var click_b_s = 2; //click buffer is scaled, >> click_b_s, so 
 var click_b_w = 11 >> click_b_s; //width of the screen log2 (ie so 2^this > actual width)
 
-//var connections_sketch = new JitterObject("jit.gl.sketch","benny");
-
-//these hold all the opengl objects (labels, blocks separate for the main one, in one for the menu one.)
-//var blocks_label = []; //called label-blockno-0
 var blocks_cube = [];  //called block-blockno-voiceno
 var blocks_cube_texture = [];
 var blocks_tex_sent= []; //each element is mutestate+label
@@ -225,22 +233,24 @@ var menu = {
 	show_all_types : 0 //to override swap type filtering
 }; 
 
-
-var wires = []; // called wires-connectionno-segmentno
+var wires_position = []; // called wires-connectionno-segmentno
+var wires_rotatexyz = [];
+var wires_scale = [];
+var wires_colour = [];
+var wires_startindex = [];//indexed by wireno like the above, contains the first matrix index of a wire piece.
+var wires_lookup = [];//reverse lookup indexed by matrix/multiple index, contains wire number
+//legacy?
 var wires_colours = [];
 var wires_enable = []; //whether wire enable flag is set
 
 var view_changed = true; //whether you're redrawing click buffers or not
 
-var wires_enable_animate = []; // list of [wireno,target enable value,current seg,direction,length];
-
-var wires_show_all = 1;
 var last_connection_made = -1;
 var wires_potential_connection = -1; //if illustrating a potential connection you set this
 //to the (unused) conn no you use for drawing the wire, then set back to -1 when you freepeer it
 
 var bulgingwire=-1;
-var bulgeamount;
+var bulgeamount=0;
 
 var recursions = 0; // just because i had an anxiety dream about getting stuck in an infinite loop
 
@@ -249,11 +259,46 @@ var preload_list=[]; // this is for waves
 var preload_note_voice_list = [];
 var preload_audio_voice_list = [];
 
+var matrix_wire_index = [];
+var matrix_block_index = [];
+var matrix_voice_index = [];
+var matrix_voice_lookup = [];
+var matrix_meter_index = [];
+
+var matrix_menu_index = [];
+var matrix_menu_lookup = [];
+
+var matrix_wire_position;
+var matrix_wire_scale;
+var matrix_wire_rotatexyz;
+var matrix_wire_colour;
+
+var matrix_voice_position;
+var matrix_voice_scale;
+var matrix_voice_colour;
+
+var matrix_block_position;
+var matrix_block_scale;
+var matrix_block_colour;
+var matrix_block_texture;
+
+var matrix_menu_position;
+var matrix_menu_scale;
+var matrix_menu_colour;
+var matrix_menu_texture;
+
+var matrix_meter_position;
+var matrix_meter_scale;
+var matrix_meter_colour;
+
+var voice_cubes;
+var meter_cubes;
+var block_cubes;
 
 var connection_blobs = []; // connection handles. maybe not even blobs one day.
-var background_cube;
+//var background_cube;
+//var menu_background_cube;
 var selection_cube;
-var menu_background_cube;
 var flock_cube;
 var flocklist=[];
 var flockblocklist=[];
@@ -290,6 +335,7 @@ var param_defaults = [];
 
 var automap = {
 	available_c : -1,
+	voice_c : -1,
 	available_k : -1,
 	available_k_block : -1,
 	already_k : 0, //if the keyboard is already connected to the current block don't auto
@@ -303,7 +349,9 @@ var automap = {
 	offset_range_c : 0, 
 	c_cols : 4,
 	c_rows : 4,
-	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check
+	mouse_follow : 0,
+	groups : [], //index is group, content is controller row (ie before offset applied)
+	sidebar_row_ys : [], //gets populated if mouse_follow on to speed up the hover check, index is group, content is starting (top) y
 	q_gain : 0.125, //default gain for cue auto connections
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to
@@ -326,6 +374,7 @@ var automap = {
 		dark : [],
 		colour : []
 	},
+	scroll_accumulator : 0, //used in automap direct to core mode (eg for scroll file menu/block menu)
 	assignmode : 0 //actually covers all controllers, if it's in move-to-pick mode this is 1.
 }
 
@@ -365,10 +414,6 @@ var backgroundcolour_panels;
 var backgroundcolour_waves;
 var backgroundcolour_sidebar;
 var backgroundcolour_current;
-
-//this is what a listener looks like
-//var mylistener = new JitterListener(mywindow.getregisteredname(), thecallback);
-//var picker_listener = new JitterListener(picker.getregisteredname(), picker_callback);
 
 var mouse_click_actions = [];
 var mouse_click_parameters = [];
@@ -473,6 +518,8 @@ var sidebar = {
 		show_to_inputs : 0,
 		default_out_applied : 0, //ie on a new connection
 		default_in_applied : 0,
+		auto_pick_controller : 1,
+		selected : -1,
 		defaults : {
 			offset : 0.5,
 			offset2 : 0.5,
@@ -496,6 +543,7 @@ var mix_block_has_mutes = 0; //if a mixer channel is muted the unmute all button
 var redraw_flag = {
 	flag : 0,
 	deferred : 0,
+	matrices : 0,
 	targets: [],
 	paneltargets: [],
 	targetcount: 0,
@@ -626,7 +674,6 @@ var param_error_lockup = new Array(MAX_AUDIO_VOICES+MAX_NOTE_VOICES+MAX_HARDWARE
 //both indexed by voice / param num. populated when you make a new block or voice?
 
 var still_checking_polys = 0;
-var upgrade_wires = 0;
 var globals_requested = 0;
 
 var deferred_diag = [];
@@ -664,7 +711,8 @@ var loading = {
 	lockout : 0, //to prevent hotkey triggering save twice
 	hardware_substitutions_occured : 0, //this is set to 1 to put the warning on the save page
 	save_waitlist : [], //blocks we are waiting for them to say they've completed a 'store' command.
-	save_wait_count : 0
+	save_wait_count : 0,
+	save_type : "selected" //selected, named, save
 }
 
 var cpu_meter = {

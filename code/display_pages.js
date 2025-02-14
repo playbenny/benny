@@ -11,11 +11,12 @@ function set_display_mode(mode,t){
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
 			mode = "blocks"; //only show flocks if there are flocks
-			redraw_flag.flag=4;
+			redraw_flag.flag = 4;
 		}
 	}
 	var blocks_enabled=(mode=="blocks");
 	if(displaymode!=mode){
+		if(displaymode == "block_menu") hide_block_menu();
 		if((mode!="blocks")&&(mode!="panels")){
 			sidebar.mode="none";
 			remove_midi_scope();
@@ -36,6 +37,33 @@ function set_display_mode(mode,t){
 		}
 		displaymode=mode;
 		if(mode == "block_menu"){
+			if((automap.available_c>-1)&&(!automap.lock_c)){
+				automap.mapped_c=-0.5;
+				var maplist = [];
+				var mapwrap = [];
+				var maplistopv = [];
+				var mapcolours = [];
+				automap.groups = [];
+				maplist.push(-0.5);
+				mapwrap.push(1);
+				maplistopv.push(-1);
+				mapcolours.push(218);
+				mapcolours.push(36);
+				mapcolours.push(0);
+				for(var pad=1;pad<automap.c_cols*automap.c_rows;pad++){
+					maplist.push(-1);
+					mapwrap.push(1);
+					maplistopv.push(-1);
+					mapcolours.push(-1);	
+				}
+				note_poly.message("setvalue", automap.available_c, "automapped", 1);
+				note_poly.message("setvalue", automap.available_c, "automap_offset", 0);
+				note_poly.message("setvalue", automap.available_c,"maplistopv",maplistopv);
+				note_poly.message("setvalue", automap.available_c,"maplist",maplist);
+				note_poly.message("setvalue", automap.available_c,"mapwrap",mapwrap);
+				note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
+				note_poly.message("setvalue", automap.available_c,"buttonmaplist",-1);
+			}
 			if(menu.search!=""){
 				menu.search = "";
 				type_to_search(-6);
@@ -43,17 +71,20 @@ function set_display_mode(mode,t){
 		}
 		camera();
 		//post("display mode set to "+mode+"\n");
-		redraw_flag.flag=4;
+		redraw_flag.flag = 4;
 	}else{
 		if(displaymode=="panels") { 
 			if(usermouse.ctrl){
 				displaymode = "panels_edit";
 				flock_axes(0);
 				camera();
-				redraw_flag.flag=4;
+				redraw_flag.flag = 4;
 			}else{
 				clear_blocks_selection();
 			}	
+		}
+		if(displaymode=="blocks"){
+			center_view(1);
 		}
 	}
 	blocks_enable(blocks_enabled);	
@@ -235,7 +266,7 @@ function draw_panels(){
 			if(x>=MAX_PANEL_COLUMNS){
 				//post("\npanels list overflowed, TODO scroll or autosize!");
 				MAX_PANEL_COLUMNS++;
-				redraw.redraw_flag=4;
+				redraw_flag.flag = 4;
 				return(1);
 			}
 		}
@@ -251,7 +282,7 @@ function draw_panels(){
 	}
 	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>2)){
 		MAX_PANEL_COLUMNS--;
-		redraw.redraw_flag=4;
+		redraw_flag.flag = 4;
 	}
 }
 
@@ -685,16 +716,17 @@ function draw_block_menu(){
 }
 
 function hide_block_menu(){
-	//post("\nhiding block menu\n");
-	for(var i=0;i<menu.cubecount;i++){
-		blocks_menu[i].enable = 0;
-	}
+	post("\nhiding block menu\n");
+	messnamed("menu_multiple","enable",0);
+	//for(var i=0;i<menu.cubecount;i++){
+	//	blocks_menu[i].enable = 0;
+	//}
 }
 
 function reinitialise_block_menu(){
-	for(var b in blocks_menu){
+	/*for(var b in blocks_menu){
 		if(blocks_menu[b]!=="undefined") blocks_menu[b].freepeer()
-	}
+	}*/
 	blocks_menu=[];
 }
 
@@ -711,7 +743,7 @@ function initialise_block_menu(visible){
 	var col;
 	var vis=0;
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
-		//post("\nA showing block menu",visible); return 0;
+		//post("\nA showing block menu",visible);
 		if(menu.mode == 1){
 			swpt = blocks.get("blocks["+menu.swap_block_target+"]::type");
 			if(swpt=="hardware") swpt = "audio";
@@ -741,6 +773,8 @@ function initialise_block_menu(visible){
 			}
 		}
 		if(menu.mode == 1) squash_block_menu();
+		write_menu_matrix();
+		messnamed("menu_multiple","enable",visible);
 	}else{
 		post("\ninitialising block menu");
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
@@ -754,13 +788,10 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_menu[i].name = "menu_block£"+types[i]+"£"+i;
-						blocks_menu[i].shape = "cube";
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:0 };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
-						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
 						menu.original_position[i]=[1000,1000,1000];
 					}else{
 						//	post("\ndrawing menu texture:",i," label is ",ts,"\n");
@@ -785,22 +816,12 @@ function initialise_block_menu(visible){
 							z++;
 							x=-w;
 						}
-						//col = config.get("palette::"+ts[0]);
-						//						post("drawing menu block",ts);
-						blocks_menu[i] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_menu[i].name = "menu_block£"+types[i]+"£"+i;
-						blocks_menu[i].shape = "cube";
-						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
+						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:1 };
+						blocks_menu[i].color = [1,1,1,1];
 						blocks_menu[i].position = [x, -110, z];
 						menu.original_position[i]=[x,-110,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
-						blocks_menu[i].enable = 0; //1;//0;//1; just set it to zero as you're initialising, you'll show it later.
-						blocks_menu[i].texture = blocks_menu_texture[i];
-						blocks_menu[i].tex_map = 1;
-						blocks_menu[i].texzoom = [1,1];
-						blocks_menu[i].texanchor = [0.5,0.5];
-						blocks_menu[i].tex_plane_s = [0.5,0,0,0.5];
-						blocks_menu[i].tex_plane_t = [0,1,-0.5,-0.5];
+						blocks_menu[i].name = types[i];
 						x++;					
 					}
 				}
@@ -814,52 +835,14 @@ function initialise_block_menu(visible){
 
 
 function blocks_enable(enab){ //shows or hides all the blocks/wires
-	for(var i=0;i<blocks_cube.length;i++){
-		if(typeof blocks_cube[i] !== 'undefined'){
-			for(var t=0;t<blocks_cube[i].length;t++){
-				blocks_cube[i][t].enable = enab;
-			}
-		}
-	}
-	block_meters_enable(enab);
-	for(var i=0;i<wires.length;i++){
-		if(Array.isArray(wires[i]) ){
-			for(var t=0;t<wires[i].length;t++){
-				if(typeof wires[i][t] !== 'undefined'){
-					wires[i][t].enable = enab && wires_enable[i];
-				}
-			}
-		}
-	}
+	messnamed("blocks_multiple","enable",enab);
+	messnamed("wires_multiple","enable",enab);
+	messnamed("voices_multiple","enable",enab);
+	messnamed("meters_multiple","enable",enab);
 }
 
-function block_meters_enable(enab){
-	var i,tt,voice,block;
-	if(enab == 0){
-		for(i = meters_updatelist.midi.length-1; i>=0; i--){
-			block=meters_updatelist.midi[i][0];
-			voice=meters_updatelist.midi[i][1];
-			if(typeof blocks_meter[block][voice] !== 'undefined'){	
-				blocks_meter[block][voice].enable = 0;
-			}
-		}
-	}
-	for(i = meters_updatelist.hardware.length-1; i>=0; i--){
-		block=meters_updatelist.hardware[i][0];
-		voice=meters_updatelist.hardware[i][1];
-		if(typeof blocks_meter[block][voice] !== 'undefined'){
-			blocks_meter[block][voice].enable = enab;
-		}
-	}
-	for(i = meters_updatelist.meters.length-1; i>=0; i--){
-		voice = meters_updatelist.meters[i][1];
-		block = meters_updatelist.meters[i][0];
-		for(tt=voice*NO_IO_PER_BLOCK;tt<(voice+1)*NO_IO_PER_BLOCK;tt++){
-			if(typeof blocks_meter[block][tt] !== 'undefined'){	
-				blocks_meter[block][tt].enable = enab;
-			}
-		}
-	}
+function block_meters_enable(enab){ //never used now?
+	messnamed("meters_multiple","enable",enab);
 }
 
 function block_and_wire_colours(){ //for selection and mute etc
@@ -973,10 +956,12 @@ function block_and_wire_colours(){ //for selection and mute etc
 			}
 		}
 	}
+	write_blocks_matrix();
 	for(i=connections.getsize("connections")-1;i>=0;i--){
 		if((connections.contains("connections["+i+"]::conversion::mute"))){
 			var cfrom = connections.get("connections["+i+"]::from::number");
 			var cto = connections.get("connections["+i+"]::to::number");
+			cmute = connections.get("connections["+i+"]::conversion::mute");
 			cs = selected.wire[i];
 			if(selected.anysel && !cs){
 				if(selected.block[cfrom]){
@@ -1013,37 +998,36 @@ function block_and_wire_colours(){ //for selection and mute etc
 					}
 				}
 			}
-			var visible = cs || wires_show_all;
-			wires_enable[i] = visible;
-			if(visible){
-				cmute = connections.get("connections["+i+"]::conversion::mute");
+			if(cs){
 				draw_wire(i);
-				if(wires_colours[i].length>=wires[i].length){
-					for(segment=0;segment<wires[i].length;segment++){
-						tmc=0.3;
-						tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
-						if(cmute){
-							wires[i][segment].color = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
-						}else{
-							wires[i][segment].color = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2],1];	
-						}
-						wires[i][segment].enable = 1;
-					}		
-				}
+				for(var ii=0;ii<wires_scale[i].length;ii++){
+					wires_scale[i][ii][1] = 2 * wire_dia;
+				}	
 			}else{
-				if(Array.isArray(wires[i])){
-					for(segment=0;segment<wires[i].length;segment++){
-						wires[i][segment].enable = 0;
+				tmc=0.3;
+				tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
+				if(cmute){
+					for(segment=0;segment<wires_colour[i].length;segment++){
+						wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
+					}
+				}else{
+					for(segment=0;segment<wires_colour[i].length;segment++){
+						wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
 					}
 				}
+				for(var ii=0;ii<wires_scale[i].length;ii++){
+					wires_scale[i][ii][1] = wire_dia;
+				}		
 			}
 		}
 	}
+	write_wires_matrix();
 }
 
 
 function draw_block(i){ //i is the blockno, we've checked it exists before this point
-	//post("drawing block",i,"\n");
+	// post("\ndrawing block",i);
+	var vc=0; var bc=0; var mc=0;
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
 	block_y = blocks.get("blocks["+i+"]::space::y");
@@ -1051,7 +1035,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	block_c = blocks.get("blocks["+i+"]::space::colour");
 	block_mute = blocks.get("blocks["+i+"]::mute");
 	if(block_mute){
-		block_c = config.get("palette::muted");
+		block_c = [block_c[0]*0.3, block_c[1]*0.3, block_c[2]*0.3];//config.get("palette::muted");
 	}
 	block_v = blocks.get("blocks["+i+"]::poly::voices");
 	block_name = blocks.get("blocks["+i+"]::name");
@@ -1067,7 +1051,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	if(block_y<blocks_page.lowest) blocks_page.lowest = block_y;
 	if(block_y>blocks_page.highest) blocks_page.highest = block_y;
 	
-	if(is_empty(blocks_cube[i])){
+	if(!Array.isArray(blocks_cube[i])){
 		blocks_cube[i] = [];
 		blocks_meter[i] = [];
 	}
@@ -1084,70 +1068,67 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 	noio /= max_poly;
 	for(t=0;t<=block_v*subvoices;t++){
 		if(is_empty(blocks_cube[i][t])) {
-			blocks_cube[i][t] = new JitterObject("jit.gl.gridshape","benny");
-			blocks_cube[i][t].dim = [12, 12];
-			blocks_cube[i][t].name = "block£"+i+"£"+t;
-			blocks_cube[i][t].shape = "cube";
-			if(selected.anysel){
+			var col;
+			if(block_mute){
+				col = [0.3,0.3,0.3,1];
+			}else if(selected.anysel){
 				if(selected.block[i]){
-					blocks_cube[i][t].color = [1,1,1,1];//[block_c[0]/256,block_c[1]/256,block_c[2]/256,1];
+					col = [1,1,1,1];
 				}else{
-					//var c_avg = (block_c[0] + block_c[1] + block_c[2])/3;
-					blocks_cube[i][t].color = [0.4,0.4,0.4,1]; //[(block_c[0]+c_avg)/1024,(block_c[1]+c_avg)/1024,(block_c[2]+c_avg)/1024,1];
+					col = [0.4,0.4,0.4,1]; 
 				}
 			}else{
-				blocks_cube[i][t].color = [1,1,1,1];//[block_c[0]/300,block_c[1]/300,block_c[2]/300,1];
+				col = [1,1,1,1];
 			}
-			if(block_mute) blocks_cube[i][t].color = [0.3,0.3,0.3,1];
+			blocks_cube[i][t] = {
+				position : [],
+				scale : [],
+				color : []
+			}
+		
 			if(t==0){
-				blocks_cube[i][0].texture = blocks_cube_texture[i];
-				blocks_cube[i][0].tex_map = 1;
-				blocks_cube[i][0].texzoom = [1,1];
-				blocks_cube[i][0].texanchor = [0.5, 0.5];
-				blocks_cube[i][0].position = [block_x, block_y, block_z];
+				bc++;
 				blocks_cube[i][0].scale = [0.45, 0.45, 0.45];
+				blocks_cube[i][t].color = col;
 			}else{
-				var tc = blocks_cube[i][t].color[0]/256;
-				blocks_cube[i][t].color = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
-				blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
 				blocks_cube[i][t].scale = [-0.05 + 0.25 / subvoices, 0.45, 0.45];		
-				if(block_type=="audio"){
-					//post("\nt is ",t,"block_v is",block_v,"subvoices is",subvoices);
-					var tv=(t-1)/subvoices;
-					for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = new JitterObject("jit.gl.gridshape","benny");
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].dim = [8,6];// [12, 12];
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].name = "meter£"+i+"£"+t+"£"+tt;
-						blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].shape = "cube";
-						//blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt].filterclass = "block";
-						//blocks_meter[i][t*NO_IO_PER_BLOCK+tt].blend_enable = 0;
-						//post("makin meter ",(tv)*NO_IO_PER_BLOCK+tt);
-					}						
-				}else if(block_type == "hardware"){
-					if(noio==0){
-						post("\nthis hardware block seems to have no audio io?");
-					}else{
-						for(tt=0;tt<noio;tt++){
-							blocks_meter[i][(t-1)*noio+tt] = new JitterObject("jit.gl.gridshape","benny");
-							blocks_meter[i][(t-1)*noio+tt].dim = [8,6];// [12, 12];
-							blocks_meter[i][(t-1)*noio+tt].name = "meter£"+i+"£"+t+"£"+tt;
-							blocks_meter[i][(t-1)*noio+tt].shape = "cube";
-							//blocks_meter[i][(t-1)*noio+tt].filterclass = "block";
-							//blocks_meter[i][t*noio+tt].blend_enable = 0;
-						}
-					}					
-					
-				}else if(block_type == "note"){
-					blocks_meter[i][t-1] = new JitterObject("jit.gl.gridshape","benny");
-					blocks_meter[i][t-1].dim = [8,6];// [12, 12];
-					blocks_meter[i][t-1].name = "meter£"+i+"£"+t+"£0";
-					blocks_meter[i][t-1].shape = "cube";
-					//blocks_meter[i][t-1].filterclass = "block";
-				}	
+				var tc = col[0]/256;
+				blocks_cube[i][t].color = [block_c[0]*tc,block_c[1]*tc,block_c[2]*tc,1];
 			}
+			vc++;
+			blocks_cube[i][t].position = [block_x+0.15+(0.5/subvoices)*t+ 0.1, block_y, block_z];
+			if(block_type=="audio"){
+				var tv=(t-1)/subvoices;
+				for(tt=0;tt<NO_IO_PER_BLOCK/subvoices;tt++){
+					blocks_meter[i][(tv)*NO_IO_PER_BLOCK+tt] = {
+						position : [],
+						scale : [],
+						colour: []
+					};
+				}						
+			}else if(block_type == "hardware"){
+				if(noio==0){
+					post("\nthis hardware block seems to have no audio io?");
+				}else{
+					for(tt=0;tt<noio;tt++){
+						blocks_meter[i][(t-1)*noio+tt] = {
+							position : [],
+							scale : [],
+							colour: []
+						};
+					}
+				}					
+				
+			}else if(block_type == "note"){
+				blocks_meter[i][t-1] = {
+					position : [],
+					scale : [],
+					colour: []
+				};
+			}	
 		}
 		blocks_cube[i][t].position = [block_x+(0.125*subvoices + 0.125)*(t!=0)+(0.5/subvoices)*t, block_y, block_z];
-		blocks_cube[i][t].enable = 1;
+		//blocks_cube[i][t].enable = 1;
 		if(block_type=="audio"){
 			if(t>0){
 				var ios=NO_IO_PER_BLOCK/subvoices;
@@ -1156,21 +1137,23 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 				var mco = blocks_cube[i][t].color; 
 				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 				for(tt=0;tt<ios;tt++){
-					blocks_meter[i][tv+tt].color = mco;
+					mc++;
+					blocks_meter[i][tv+tt].colour = mco;
 					blocks_meter[i][tv+tt].position = [blocks_cube[i][t].position[0] + tt*0.2 + 0.1 - 0.2/subvoices, block_y, 0.5+block_z];
 					blocks_meter[i][tv+tt].scale = [(-0.05 + 0.25/subvoices)/ios, 0.025, 0.05];
-					blocks_meter[i][tv+tt].enable = 1;
+					//blocks_meter[i][tv+tt].enable = 1;
 				}				
 			}
 		}else if(block_type == "note"){
-			var mt=Math.sqrt(1-METER_TINT);
-			var mco = blocks_cube[i][t].color; 
-			mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 			if(t>0){
-				blocks_meter[i][t-1].color = mco;
+				var mt=Math.sqrt(1-METER_TINT);
+				var mco = blocks_cube[i][t].color; 
+				mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
+				mc++;
+				blocks_meter[i][t-1].colour = mco;
 				blocks_meter[i][t-1].position = [blocks_cube[i][t].position[0], block_y, 0.5+block_z];
 				blocks_meter[i][t-1].scale = [0, 0, 0.05];
-				blocks_meter[i][t-1].enable = 0;
+				//blocks_meter[i][t-1].enable = 0;
 			}			
 		}else if(block_type == "hardware"){
 			if(t>0){
@@ -1181,15 +1164,17 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 					var mco = blocks_cube[i][t].color; 
 					mco = [METER_TINT + mt*mco[0], METER_TINT + mt*mco[1], METER_TINT + mt*mco[2], 1];
 					for(tt=0;tt<noio;tt++){
-						blocks_meter[i][(t-1)*noio+tt].color = mco;
+						mc++;
+						blocks_meter[i][(t-1)*noio+tt].colour = mco;
 						blocks_meter[i][(t-1)*noio+tt].position = [blocks_cube[i][t].position[0] - 0.2 + (tt+0.5)*0.4/noio, block_y, 0.5+block_z];
 						blocks_meter[i][(t-1)*noio+tt].scale = [0.2/noio, 0.025, 0.05];
-						blocks_meter[i][(t-1)*noio+tt].enable = 1;
+						//blocks_meter[i][(t-1)*noio+tt].enable = 1;
 					}
 				}					
 			}
 		}
 	}
+	return [block_v*subvoices,mc];
 }
 
 function draw_blocks(){
@@ -1200,9 +1185,16 @@ function draw_blocks(){
 	blocks_page.lowest=0;
 	blocks_page.highest=0;
 
+	block_cubes = 0;
+	voice_cubes = 0;
+	meter_cubes = 0;
+	
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
-			draw_block(i);
+			var r = draw_block(i);
+			block_cubes++;
+			voice_cubes+=r[0];
+			meter_cubes+=r[1];
 		}
 	}
 	for(i=0;i<connections.getsize("connections");i++){
@@ -1210,37 +1202,28 @@ function draw_blocks(){
 			draw_wire(i);
 		} 
 	}
+	write_blocks_matrix();
+	write_wires_matrix();
 	prep_meter_updatelist();
 }
 
 function draw_wire(connection_number){
 	var t;
-	//post("\ndraw wire",connection_number);
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
-		if(typeof selected.wire[connection_number] === 'undefined') selected.wire[connection_number] = 0;
+		selected.wire[connection_number] |= 0;
 		var cfrom = connections.get("connections["+connection_number+"]::from::number");
 		var cto = connections.get("connections["+connection_number+"]::to::number");
 		// now just get the block positions and compare to stored ones in wire_ends
-		var visible = wires_show_all || selected.wire[connection_number] || selected.block[cfrom] || selected.block[cto] || (connection_number == wires_potential_connection);
-
 		if(cfrom === null){
 			post("\n\n\n\n\nERROR connection NOT FOUND");
 			return -1;
 		} 
 
 		var drawme=1;
-		if(wires_enable[connection_number]!=visible){
-			wires_enable[connection_number]=visible;
-			if(Array.isArray(wires[connection_number])){
-				for(t=0;t<wires[connection_number].length;t++){
-					wires[connection_number][t].enable = visible;
-				}
-			}
-			if(visible==0)drawme=0;
-		}
-		if(drawme && !is_empty(wire_ends[connection_number])){
+		if(!is_empty(wire_ends[connection_number])){
 			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
 				drawme =0;
+				// post("\nskipped draw",connection_number,"\n  frompos",blocks_cube[cfrom][0].position,"\n    topos",blocks_cube[cto][0].position,"\n wireends",wire_ends[connection_number]);
 			}
 		}
 		if(drawme){
@@ -1268,9 +1251,14 @@ function draw_wire(connection_number){
 			}else{
 				num_ins = 1;//potential wires, special case
 			}
-			var from_pos,to_pos, from_anglevector,to_anglevector;
-			var from_colour = config.get("palette::connections::"+from_type);
-			var to_colour = config.get("palette::connections::"+to_type);
+			var from_pos,to_pos, from_anglevector,to_anglevector,from_colour,to_colour;
+			if((from_type=="hardware")&&(to_type=="hardware")&&connections.contains("connections["+connection_number+"]::conversion::soundcard")){
+				from_colour = config.get("palette::connections::soundcard");
+				to_colour = config.get("palette::connections::soundcard");
+			}else{
+				from_colour = config.get("palette::connections::"+from_type);
+				to_colour = config.get("palette::connections::"+to_type);
+			}
 			from_colour[0] = from_colour[0]*0.003921;// /255;
 			from_colour[1] = from_colour[1]*0.003921;// /255;
 			from_colour[2] = from_colour[2]*0.003921;// /255;
@@ -1376,35 +1364,24 @@ function draw_wire(connection_number){
 				}
 			}
 
-			if(is_empty(wires[connection_number])) wires[connection_number] = [];
 			if(is_empty(wires_colours[connection_number])) wires_colours[connection_number] = [];
-			
+			if(!Array.isArray(wires_position[connection_number])){
+				wires_position[connection_number] = [];
+				wires_scale[connection_number] = [];
+				wires_rotatexyz[connection_number] = [];
+				wires_colour[connection_number] = [];
+			}
+		
 			from_anglevector = [0, -0.5, 0];
 			to_anglevector = [0, -0.5, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
-			if((loading.progress>0)){//&&(wires[connection_number].length<segments_to_use)){
-				segments_to_use = /*Math.max(wires[connection_number].length,*/MIN_BEZIER_SEGMENTS;//);
-				/*if(upgrade_wires==0)*/ upgrade_wires = connections.getsize("connections");
-				still_checking_polys|=8;
-			}
 			var short=0;
 			// old code was: if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
 			// many-blob-corner-one, many-corner-blob-corner-many, one-corner-blob-many
 			var blob_position = [];
 			var meanvector = [0,0,0];
-			if(cfrom == cto){
-				from_anglevector[2] -= 1;
-				from_anglevector[1] *= 1.3;
-				to_anglevector[1] *= 1.3;
-				to_anglevector[2] -= 1;
-				if(selected.block[cfrom]||selected.wire[connection_number]){
-					from_anglevector[1] *= 1.5;
-					to_anglevector[1] *= 1.5;
-					meanvector[2] = 1;
-				}
-			}
 			var fx = from_pos[0];
 			var tx = to_pos[0];
 			if(from_multi>0){
@@ -1435,27 +1412,27 @@ function draw_wire(connection_number){
 
 			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
 				if((dist<3.5)&&(Math.abs(fx-tx)<0.5)){
-					segments_to_use = 1; //flag for short wires - use less segments.
+					//segments_to_use = 1; //flag for short wires - use less segments.
 					short=1;
+					//segments_to_use /= 4;
 				}else if(dist<6){
-					segments_to_use /= 2;
+					//segments_to_use /= 2;
 					short=1;
-					if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
+					//if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
 				}
 			}
-			segments_to_use = Math.round(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
+			//segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
+			//dynamic segment allocation with the new multiples system would require very careful housekeeping? at the moment enabling it just makes it go very wrong very fast
 			var bez_prep=[];
 			for(t=0;t<6;t++) bez_prep[t] = new Array(3);
 			segment=0;
-
-
 			blob_position[0] = ((fx + tx)*0.5);
 			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
 			meanvector[0] = fx - tx;
 			var s2 = 0.5 - 0.4*short;
 			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.min(Math.max(-3,-0.5 -0.5*(Math.max(0,mvl-3)) + Math.max(-1,Math.min(0,meanvector[1]))),-1.5*(cfrom==cto)); //was -0.25 -0.3
+			blob_position[2] =  Math.min(Math.max(-2,-0.5 -0.5*(Math.max(0,mvl-3))),0); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
@@ -1470,9 +1447,21 @@ function draw_wire(connection_number){
 			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
-			if(cfrom==cto) mvl *= 0.25;
 			meanvector[0] = meanvector[0] * -0.33/mvl;
 			meanvector[1] = meanvector[1] * -0.33/mvl;				
+			if(cfrom==cto){
+				from_anglevector[1] *= 1.3;
+				to_anglevector[1] *= 1.3;
+				blob_position[0]=from_pos[0]-0.8;
+				from_anglevector[2] = 0;
+				to_anglevector[2] = 0;
+				blob_position[2] = from_pos[2];
+				meanvector[0] = 0;
+				meanvector[1] *= 3;
+			}else if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
+				meanvector[0] *= 0.1;
+				meanvector[1] *= 10;
+			}
 			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var mtot=0;
@@ -1499,7 +1488,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = from_colour[t];
 							bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute);
 					}
 					// this is the first half
 					for(i=0;i<to_list.length;i++){
@@ -1512,7 +1501,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 							bez_prep[5][t] = to_colour[t];
 						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute);
 					}
 				}else if(from_multi>0){  //only from is multi, so many-blob-corner-one, this is the same whether its got a corner[0] or not as the blob is the corner
 					for(i=0;i<from_list.length;i++){
@@ -1525,7 +1514,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = from_colour[t];
 							bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute);
 					}
 					if(to_multi<0){
 						to_pos[0] += -0.4 + 0.8 * tconx;
@@ -1541,7 +1530,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]+3*to_colour[t])*0.35;
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);		
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute);		
 				}else{ // one-corner-blob-many //ie to_multi==1
 					to_pos[0] += 0.55 + 0.4 * tconx;
 					if(from_multi<0){
@@ -1561,7 +1550,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]*3+to_colour[t])*0.35;
 						bez_prep[5][t] = (from_colour[t]+3*to_colour[t])*0.35;
 					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);					
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute);					
 	
 					for(i=0;i<to_list.length;i++){
 						to_pos[0] = tp + 0.5 * (to_list[i]-1)/to_subvoices + 0.4 * tconx + 0.55;
@@ -1574,7 +1563,7 @@ function draw_wire(connection_number){
 							bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 							bez_prep[5][t] = to_colour[t];
 						}
-						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute, visible);
+						segment=draw_bezier(connection_number, segment, segments_to_use*0.5 , bez_prep, cmute);
 					}
 				}
 			}else{ // single wire
@@ -1588,6 +1577,7 @@ function draw_wire(connection_number){
 				}else{
 					from_pos[0] += 0.5 * (from_list[0]-1)/from_subvoices + 0.4 * fconx + 0.55;
 				}
+				if(from_pos[1]>(to_pos[1]))short=1;
 				if(short){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1597,7 +1587,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute, visible);	
+					segment=draw_bezier(connection_number, segment, segments_to_use, bez_prep, cmute);	
 				}else{
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1607,7 +1597,7 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = from_colour[t];
 						bez_prep[5][t] = (from_colour[t]+to_colour[t])*0.7;
 					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute);	
 					meanvector[2]=-meanvector[2];
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = blob_position[t];
@@ -1617,31 +1607,34 @@ function draw_wire(connection_number){
 						bez_prep[4][t] = (from_colour[t]+to_colour[t])*0.7;
 						bez_prep[5][t] = to_colour[t];
 					}
-					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute, visible);	
+					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute);	
 				}
 			}
-			if(Array.isArray(wires[connection_number])){
-				if(segments_to_use<wires[connection_number].length){
+			/*if(Array.isArray(wires_position[connection_number])){
+				if(segments_to_use<wires_position[connection_number].length){
 					//remove wires
-					for(var sr = wires[connection_number].length-1;sr>=segment;sr--){
-						wires[connection_number][sr].enable = 0;
-						wires[connection_number][sr].scale = [0,0,0];
+					for(var sr = wires_position[connection_number].length-1;sr>=segment;sr--){
+						wires_position[connection_number].pop();
+						wires_rotatexyz[connection_number].pop();
+						wires_scale[connection_number].pop();
+						wires_colour[connection_number].pop();
 					}
+					redraw_flag.matrices |= 1;
 				}
-			}
+			}*/
 			return 1;
 		}
 	}
 	return 0;
 }
 
-function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, visible){
+function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute){
 	//if(connection_number == wires_potential_connection) post("\nbez:",connection_number, segment, num_segments, "\nfrom:",bez_prep[0], bez_prep[1], "\nto",bez_prep[2], bez_prep[3], bez_prep[4], bez_prep[5], cmute, visible)
 	var t, tt, i, ott;
 	var p = [];
 	num_segments = Math.max(1,Math.floor(num_segments));
 	if(num_segments <= 1){
-		draw_cylinder(connection_number,segment,bez_prep[0],bez_prep[3],cmute,bez_prep[4],visible);
+		draw_cylinder(connection_number,segment,bez_prep[0],bez_prep[3],cmute,bez_prep[4]);
 		segment++;
 		return segment;
 	}else{
@@ -1657,7 +1650,7 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, 
 		var col = [bez_prep[4][0], bez_prep[4][1], bez_prep[4][2]];
 		var cold = [(bez_prep[5][0]-bez_prep[4][0])*iseg, (bez_prep[5][1]-bez_prep[4][1])*iseg, (bez_prep[5][2]-bez_prep[4][2])*iseg];
 		for(t=0;t<num_segments;t++){
-			draw_cylinder(connection_number,segment, p[t], p[t+1], cmute, col, visible);
+			draw_cylinder(connection_number,segment, p[t], p[t+1], cmute, col);
 			col[0]+=cold[0];
 			col[1]+=cold[1];
 			col[2]+=cold[2];
@@ -1667,12 +1660,11 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute, 
 	}
 }
 
-function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, visible){
-	var t;
+function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
 	var seglength = 0;
-	for(t=0;t<3;t++){
+	for(var t=0;t<3;t++){
 		avg_pos[t] = (from_pos[t] + to_pos[t])/2;
 		pos_dif[t] = (to_pos[t] - from_pos[t]);
 		seglength += pos_dif[t] * pos_dif[t];
@@ -1685,38 +1677,182 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col, 
 		rotz=0;
 	}else{
 		seglength = Math.sqrt(seglength);
-		var rotY = (7.8540-Math.acos(pos_dif[2]/seglength)) % 6.28;
+		var rotY = (7.853981633974-Math.acos(pos_dif[2]/seglength)) % 6.283185307179586476;
 		var rotZ = Math.atan(pos_dif[1]/pos_dif[0]);
 	
 		if(from_pos[0]<=to_pos[0]) rotY	= -rotY;
 		//if(usermouse.caps) post("\nroty",rotY,"rotz",rotZ);
-		rotZ *= 57.29577951; //180/Math.PI;
-		rotY *= 57.29577951; //180/Math.PI;
+		rotZ *= 57.2957795130823; //180/Math.PI;
+		rotY *= 57.2957795130823; //180/Math.PI;
 	}
-	if(typeof wires[connection_number][segment] === 'undefined') {
-		wires[connection_number][segment] = new JitterObject("jit.gl.gridshape","benny");
-		wires[connection_number][segment].shape = "plane";//"opencylinder";
-		wires[connection_number][segment].name = "wires£"+connection_number+"£"+segment;
-		wires[connection_number][segment].dim = [2,2];//[5, 2]; //[3,2]cyl is ribbons, [5,2] cuboids
-		//wires[connection_number][segment].blend_enable = 1;
-	}
-	wires[connection_number][segment].position = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
-	wires[connection_number][segment].scale = [seglength*0.52, wire_dia,1];
-	wires[connection_number][segment].rotatexyz = [0, rotY, rotZ];
+
+	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
+	wires_scale[connection_number][segment] = [seglength*0.52, wire_dia*(1+selected.wire[connection_number]),1];
+	wires_rotatexyz[connection_number][segment] = [0, rotY, rotZ];
 	var tmc=0.4;
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
-//	post("\nsetting W_C",connection_number,segment);
-//	post("col",col);
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
 	zs = 1 / (1 + zs);
 	tmc *= zs;
 	if(cmute){
-		wires[connection_number][segment].color = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2], 1];
+		wires_colour[connection_number][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
 	}else{
-		wires[connection_number][segment].color = [tmc*col[0],tmc*col[1],tmc*col[2], 1];
+		wires_colour[connection_number][segment] = [tmc*col[0],tmc*col[1],tmc*col[2]];
 	}
-	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]];
-	wires[connection_number][segment].enable = visible;
+	wires_colours[connection_number][segment] = [zs*col[0],zs*col[1],zs*col[2]]; //storage of unmodified segment colours, to use for highlighting elsewhere
+}
+
+function write_block_matrix(b){	
+	if(Array.isArray(blocks_cube[b])){
+		var bc=matrix_block_index[b];
+		matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
+		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+		matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
+		matrix_block_texture.setcell(bc,0,"val",b|0);
+		var vc=matrix_voice_index[b];
+		for(var c=1;c<blocks_cube[b].length;c++){
+			matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
+			matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
+			matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].color[0],blocks_cube[b][c].color[1],blocks_cube[b][c].color[2]);
+			vc++;
+		}
+		var mc=matrix_meter_index[b][0];
+		for(var c=0;c<blocks_meter[b].length;c++){
+			matrix_meter_position.setcell(mc,0,"val",blocks_meter[b][c].position[0],blocks_meter[b][c].position[1],blocks_meter[b][c].position[2]);
+			matrix_meter_scale.setcell(mc,0,"val",blocks_meter[b][c].scale[0],blocks_meter[b][c].scale[1],blocks_meter[b][c].scale[2]);
+			matrix_meter_colour.setcell(mc,0,"val",blocks_meter[b][c].colour[0],blocks_meter[b][c].colour[1],blocks_meter[b][c].colour[2]);
+			mc++;
+		}
+	}
+	redraw_flag.matrices |= 2;
+}
+
+function write_menu_matrix(){
+	var menu_cubes = 0;
+	for(var i=0;i<blocks_menu.length;i++) menu_cubes += (blocks_menu[i] !== undefined)&&(blocks_menu[i].enable);
+
+	matrix_menu_position.dim = [menu_cubes,1];
+	matrix_menu_scale.dim = [menu_cubes,1];
+	matrix_menu_colour.dim = [menu_cubes,1];
+	matrix_menu_texture.dim = [menu_cubes,1];
+	var lastvalid=null;
+	bm=0;
+	for(var i=0;i<blocks_menu.length;i++){
+		if((blocks_menu[i]!== undefined)&&(blocks_menu[i].enable)){
+			matrix_menu_index[bm]=i;
+			matrix_menu_lookup[i]=bm;
+			matrix_menu_position.setcell(bm,0,"val",blocks_menu[i].position[0],blocks_menu[i].position[1],blocks_menu[i].position[2]);
+			matrix_menu_scale.setcell(bm,0,"val",blocks_menu[i].scale[0],blocks_menu[i].scale[1],blocks_menu[i].scale[2]);
+			matrix_menu_colour.setcell(bm,0,"val",blocks_menu[i].color[0],blocks_menu[i].color[1],blocks_menu[i].color[2]);
+			matrix_menu_texture.setcell(bm,0,"val",i);
+			if(blocks_menu_texture[i]==null){
+				if(lastvalid==null)error("\nbad menu textures");
+				blocks_menu_texture[i]=lastvalid;
+			}else{
+				lastvalid=blocks_menu_texture[i];
+			}
+			bm++;
+		}
+	}
+	messnamed("menu_multiple","texture",blocks_menu_texture);
+	messnamed("menu_matrices","bang");
+}
+
+function write_blocks_matrix(){
+	redraw_flag.matrices &= 253;
+	matrix_voice_position.dim = [voice_cubes,1];
+	matrix_voice_colour.dim = [voice_cubes,1];
+	matrix_voice_scale.dim = [voice_cubes,1];
+	matrix_block_position.dim = [block_cubes,1];
+	matrix_block_scale.dim = [block_cubes,1];
+	matrix_block_colour.dim = [block_cubes,1];
+	matrix_block_texture.dim = [block_cubes,1];
+	matrix_meter_position.dim = [meter_cubes,1];
+	matrix_meter_colour.dim = [meter_cubes,1];
+	matrix_meter_scale.dim = [meter_cubes,1];
+	
+	var vc=0;
+	var mc=0;
+	var bc=0;
+	matrix_meter_index = [];
+	matrix_voice_index = [];
+	for(var b=0;b<MAX_BLOCKS;b++){
+		matrix_meter_index[b]=[];
+		if(Array.isArray(blocks_cube[b])){
+			matrix_block_index[b]=bc;
+			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
+			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+			matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
+			matrix_block_texture.setcell(bc,0,"val",b);
+			bc++;
+			matrix_voice_index[b]=vc;
+			for(var c=1;c<blocks_cube[b].length;c++){
+				matrix_voice_lookup[vc]=[b,c];
+				matrix_voice_position.setcell(vc,0,"val",blocks_cube[b][c].position[0],blocks_cube[b][c].position[1],blocks_cube[b][c].position[2]);
+				matrix_voice_scale.setcell(vc,0,"val",blocks_cube[b][c].scale[0],blocks_cube[b][c].scale[1],blocks_cube[b][c].scale[2]);
+				matrix_voice_colour.setcell(vc,0,"val",blocks_cube[b][c].color[0],blocks_cube[b][c].color[1],blocks_cube[b][c].color[2]);
+				vc++;
+			}
+			for(var c=0;c<blocks_meter[b].length;c++){
+				matrix_meter_position.setcell(mc,0,"val",blocks_meter[b][c].position[0],blocks_meter[b][c].position[1],blocks_meter[b][c].position[2]);
+				matrix_meter_scale.setcell(mc,0,"val",blocks_meter[b][c].scale[0],blocks_meter[b][c].scale[1],blocks_meter[b][c].scale[2]);
+				matrix_meter_colour.setcell(mc,0,"val",blocks_meter[b][c].colour[0],blocks_meter[b][c].colour[1],blocks_meter[b][c].colour[2]);
+				matrix_meter_index[b][c]=mc;
+				mc++;
+			}
+		}
+	}
+	matrix_voice_index[b]=vc;
+	messnamed("blocks_multiple","texture",blocks_cube_texture);
+	messnamed("blocks_matrices","bang");
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","bang");
+}
+
+
+function write_wire_matrix(i){
+	matrix_wire_index = wires_startindex[i];
+	if(Array.isArray(wires_position[i])){
+		for(var ii=0;ii<wires_position[i].length;ii++){
+			matrix_wire_position.setcell(matrix_wire_index,0,"val",wires_position[i][ii][0],wires_position[i][ii][1],wires_position[i][ii][2]);
+			matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
+			matrix_wire_rotatexyz.setcell(matrix_wire_index,0,"val",wires_rotatexyz[i][ii]);
+			matrix_wire_colour.setcell(matrix_wire_index,0,"val",wires_colour[i][ii]);
+			matrix_wire_index++;
+		}	
+	}
+	redraw_flag.matrices |= 1;
+}
+
+function write_wires_matrix(){
+	redraw_flag.matrices &= 254;
+
+	matrix_wire_index=0;
+	var count=0;
+	for(var i=0;i<wires_position.length;i++){
+		if(Array.isArray(wires_position[i])) count+=wires_position[i].length;
+	}
+	matrix_wire_position.dim = [count,1];
+	matrix_wire_scale.dim = [count,1];
+	matrix_wire_rotatexyz.dim = [count,1];
+	matrix_wire_colour.dim = [count,1];
+
+	wires_lookup=[];
+	for(var i=0;i<wires_position.length;i++){
+		if(Array.isArray(wires_position[i])){
+			wires_startindex[i] = matrix_wire_index;
+			for(var ii=0;ii<wires_position[i].length;ii++){
+				matrix_wire_position.setcell(matrix_wire_index,0,"val",wires_position[i][ii][0],wires_position[i][ii][1],wires_position[i][ii][2]);
+				matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
+				matrix_wire_rotatexyz.setcell(matrix_wire_index,0,"val",wires_rotatexyz[i][ii]);
+				matrix_wire_colour.setcell(matrix_wire_index,0,"val",wires_colour[i][ii]);
+				wires_lookup[matrix_wire_index] = i;
+				matrix_wire_index++;
+			}
+		}
+	}
+	wires_startindex[wires_position.length] = matrix_wire_index;
+	messnamed("wires_matrices","bang");
 }
 
 function set_sidebar_mode(mode){
@@ -2120,7 +2256,6 @@ function draw_topbar(){
 }
 
 function draw_sidebar(){	
-	//deferred_diag.push("draw sidebar, mode "+sidebar.mode);
 	sidebar.scroll.max = 0;
 	if(sidebar.mode!=sidebar.lastmode) {
 		if(sidebar.mode == "param_number_entry") return 0; // just bail!
@@ -2128,6 +2263,10 @@ function draw_sidebar(){
 		if(sidebar.lastmode!="recalculate"){
 			if(automap.assignmode)turn_off_controller_assign_mode();
 			sidebar.scroll.position = 0;
+		}
+		if((automap.mapped_c==-0.5)&&(sidebar.mode!="wire")&&(sidebar.mode!="wires")){
+			automap.mapped_c = -1;
+			note_poly.message("setvalue", automap.available_c, "automapped", 0);
 		}
 		view_changed = true;
 	}
@@ -2146,7 +2285,7 @@ function draw_sidebar(){
 	y_offset=0;
 	count_selected_blocks_and_wires();
 	if(selected.block_count!=1){
-		if((automap.mapped_k!=-1)&&!automap.lock_k){
+		if((automap.mapped_k>-1)&&!automap.lock_k){
 			note_poly.message("setvalue",  automap.available_k, "maptarget", "none");
 			automap.mapped_k = -1;
 		}
@@ -2546,6 +2685,7 @@ function draw_sidebar(){
 		var free_a=MAX_AUDIO_VOICES;
 
 		
+		
 		for(i = 0;i<MAX_BLOCKS;i++){
 			if(blocks.contains("blocks["+i+"]::space::colour")) free_b--;
 		}
@@ -2571,6 +2711,33 @@ function draw_sidebar(){
 		}	 
 		var file_menu_x = sidebar.x2 - fontheight * 15;
 		if(sidebar.mode != sidebar.lastmode){
+			if((automap.available_c>-1)&&(!automap.lock_c)){
+				automap.mapped_c=-0.5;
+				var maplist = [];
+				var mapwrap = [];
+				var maplistopv = [];
+				var mapcolours = [];
+				automap.groups = [];
+				maplist.push(-0.5);
+				mapwrap.push(1);
+				maplistopv.push(-1);
+				mapcolours.push(32);
+				mapcolours.push(32);
+				mapcolours.push(250);
+				for(var pad=1;pad<automap.c_cols*automap.c_rows;pad++){
+					maplist.push(-1);
+					mapwrap.push(1);
+					maplistopv.push(-1);
+					mapcolours.push(-1);	
+				}
+				note_poly.message("setvalue", automap.available_c, "automapped", 1);
+				note_poly.message("setvalue", automap.available_c, "automap_offset", 0);
+				note_poly.message("setvalue", automap.available_c,"maplistopv",maplistopv);
+				note_poly.message("setvalue", automap.available_c,"maplist",maplist);
+				note_poly.message("setvalue", automap.available_c,"mapwrap",mapwrap);
+				note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
+				note_poly.message("setvalue", automap.available_c,"buttonmaplist",-1);
+			}
 			clear_sidebar_paramslider_details();
 			sidebar.lastmode = sidebar.mode;
 			audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
@@ -2787,7 +2954,7 @@ function draw_sidebar(){
 		// BLOCK SCOPES AND PARAMS #######################################################################################################	
 		if(selected.block_count != 1){
 			var sx = sidebar.x;
-			automap.count = ((automap.mapped_c!=-1)&&(automap.lock_c)) + (automap.mapped_k!=-1) + (automap.mapped_q!=-1);
+			automap.count = ((automap.mapped_c!=-1)&&(automap.lock_c)) + (automap.mapped_k>-1) + (automap.mapped_q!=-1);
 			if(automap.count == 1) sx += sidebar.width*0.5;
 			if(automap.count) draw_automap_headers(sx, block);
 		}
@@ -2974,6 +3141,7 @@ function draw_sidebar(){
 
 			var getmap = 0;
 			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [], mapwrap = [];
+			
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
@@ -3035,9 +3203,15 @@ function draw_sidebar(){
 					}
 				}else{
 					if(!automap.lock_k){
-						 automap.mapped_k = -1;
+						 automap.mapped_k = -2;
 						 note_poly.message("setvalue", automap.available_k, "automapped", 0);
 					}
+				}
+			}else{
+				if((block_name == "core.input.keyboard")||!has_midi_in){
+					automap.mapped_k = -2;
+				}else{
+					automap.mapped_k = -1;
 				}
 			}
 			if(automap.available_c!=-1){
@@ -3112,7 +3286,7 @@ function draw_sidebar(){
 				}
 			}
 			
-			automap.count = (automap.mapped_c!=-1) + (automap.mapped_k!=-1) + (automap.mapped_q!=-1);
+			automap.count = (automap.mapped_k>-1) || (automap.mapped_q!=-1) || ((automap.devicename_c!="")&&(block_name!="core.input.control.auto")) || ((automap.mapped_k==-1)||(automap.available_k_block>-1));
 			
 			if(automap.count) draw_automap_headers(sx, block);
 
@@ -3298,9 +3472,14 @@ function draw_sidebar(){
 							}
 						}
 					}
-								
+					if(getmap){
+						automap.groups = []; //index is controller row number
+						automap.groups[0] = 0;
+					}
+					
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
+						automap.sidebar_row_ys[i] = y_offset;
 						colour=block_colour;
 						if(groups[i].contains("colour")){
 							colour = groups[i].get("colour");
@@ -3322,6 +3501,13 @@ function draw_sidebar(){
 						plist = groups[i].get("contains");
 						if(!Array.isArray(plist)) plist = [plist];
 						slidercount=plist.length;
+						if(getmap){
+							var actualcount=0;
+							t = -1;
+							for(tk=0;tk<plist.length;tk++) if(plist[tk]!=t){t = plist[tk]; actualcount++; }
+							var spares = (actualcount<automap.c_cols) ? (automap.c_cols - actualcount) : 0;
+						}
+
 						var columns = Math.max(1,slidercount);
 						var opvf = groups[i].contains("onepervoice");
 						w_slider = (sidebar.width + fo1)/columns;
@@ -3348,11 +3534,20 @@ function draw_sidebar(){
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));
-													mapwrap.push(wrap);
+													mapwrap.push(wrap|0);
 													maplistopv.push(MAX_PARAMETERS*vl[vc]+curp);
 													mapcolours.push(colour[0]);
 													mapcolours.push(colour[1]);
 													mapcolours.push(colour[2]);
+													automap.groups[map_y] = i;
+													if((spares>0)&&(wk>1)&&(map_x<(automap.c_cols-1))&&((map_x/automap.c_cols)<((t+wk)/slidercount))){
+														map_x++;
+														maplist.push(-1);
+														mapwrap.push(-1);
+														maplistopv.push(-1);
+														mapcolours.push(-1);
+														spares--;
+													}
 												}
 												map_x++;
 												if(map_x>=automap.c_cols){
@@ -3364,11 +3559,20 @@ function draw_sidebar(){
 											//should this also exclude menu_b from mappings here?
 											if((map_y>=0)){//&&(map_y<automap.c_rows)){
 												maplist.push(MAX_PARAMETERS*block+curp);
-												mapwrap.push(wrap);
+												mapwrap.push(wrap|0);
 												maplistopv.push(-1);
 												mapcolours.push(colour[0]);
 												mapcolours.push(colour[1]);
 												mapcolours.push(colour[2]);
+												automap.groups[map_y] = i;
+												if((spares>0)&&(wk>1)&&(map_x<(automap.c_cols-1))&&((map_x/automap.c_cols)<((t+wk)/slidercount))){
+													map_x++;
+													maplist.push(-1);
+													mapwrap.push(0);
+													maplistopv.push(-1);
+													mapcolours.push(-1);
+													spares--;
+												}
 											}
 											map_x++;
 											if(map_x>=automap.c_cols){
@@ -3666,12 +3870,32 @@ function draw_sidebar(){
 							}
 							y_offset=namelabely+fontheight*0.2;
 						}
+						if((automap.mapped_c==block)){ //(automap.offset_range_c>0)&&(automap.mouse_follow)&&
+							automap.sidebar_row_ys[i+1] = y_offset;
+							var gr = 0;
+							var first=-1;
+							for(var gi=0;gi<automap.groups.length;gi++){ 
+								gr += (automap.groups[gi]==i);
+								if((first==-1)&&(automap.groups[gi]==i)) first = gi;
+							}
+							var gh = (y_offset - automap.sidebar_row_ys[i] - 8)/gr;
+							var yy = automap.sidebar_row_ys[i]+4;
+							var sbx = mainwindow_width-4;
+							for(var g=first;g<first+gr;g++){
+								if((g >= automap.offset_c)&&(g < (automap.offset_c+automap.c_rows))){
+									lcd_main.message("frgb",colour);
+									lcd_main.message("moveto",sbx,yy);
+									lcd_main.message("lineto",sbx,yy+gh-4);
+								}							
+								yy += gh;
+							}
+						}
 						if(getmap==1){
-							automap.sidebar_row_ys[map_y]=y_offset;
 							if(map_x!=0){ //wrap round to the next row, padding maplist with -1s if still inside the row limit
 								if((map_y>=0)){// && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
 										maplist.push(-1);
+										mapwrap.push(0);
 										maplistopv.push(-1);
 										mapcolours.push(-1);
 									}
@@ -3971,7 +4195,6 @@ function draw_sidebar(){
 					click_zone(set_sidebar_mode, "block", null, sidebar.x , y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 					var groups = [];
 					var params = [];
-					var knob = { x:0 , y:0 };
 					params = blocktypes.get(block_name+"::parameters");
 					if(!Array.isArray(params)) params = [params];
 					if(!blocktypes.contains(block_name+"::groups")){
@@ -4647,7 +4870,9 @@ function draw_sidebar(){
 				}
 				y_offset += 1.1* fontheight;
 				if(conn_count){
-					for(var pass=1;pass>=0;pass--){
+					var audiofound=0;
+					for(var pass=2;pass>=0;pass--){ //pass 2: audio ins, 1: all other ins, 0: outs
+						var first = 1;
 						for(i=0;i<cm;i++){
 							setfontsize(fontsmall);
 							if(connections.contains("connections["+i+"]::from::number")){
@@ -4658,15 +4883,18 @@ function draw_sidebar(){
 									if(connections.get("connections["+i+"]::from::output::type")=="audio"){
 										subv=-1;
 									}
+									if(connections.get("connections["+i+"]::to::number")==comp){
+										//feedback, dont show twice.
+										comp = null;
+									}
 								}else{
 									comp = connections.get("connections["+i+"]::to::number");
 									compv = connections.get("connections["+i+"]::to::voice");
 									if(connections.get("connections["+i+"]::to::input::type")=="audio"){
 										subv=-1;
-									}
-									if(connections.get("connections["+i+"]::from::number")==comp){
-										//feedback, dont show twice.
-										comp = null;
+										if(pass==1)comp = null;
+									}else{
+										if(pass==2)comp = null;
 									}
 								}
 								if((comp == block)){
@@ -4687,6 +4915,26 @@ function draw_sidebar(){
 										}
 									}
 									if(showthisone==1){
+										if(first){
+											//lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.5+y_offset,block_darkest );
+											click_zone(connections_select,pass,block, sidebar.x, y_offset, sidebar.x2 , fontheight*0.5+y_offset,mouse_index,1 );
+											lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.35+y_offset);
+											lcd_main.message("frgb", block_colour);
+											if(pass==2){
+												lcd_main.message("write", "audio inputs");
+												audiofound=1;
+											}else if(pass==1){
+												if(audiofound){
+													lcd_main.message("write", "other inputs");
+												}else{
+													lcd_main.message("write", "inputs");
+												}
+											}else{
+												lcd_main.message("write", "outputs");
+											}
+											y_offset += 0.6* fontheight;
+											first = 0;
+										}
 										lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2 - 3.3*fontheight, fontheight*1.6+y_offset,block_darkest );
 										click_zone(connection_select,0,i, sidebar.x, y_offset, sidebar.x2 - 3.3*fontheight, fontheight*1.7+y_offset,mouse_index,1 );
 										lcd_main.message("frgb" , block_dark);
@@ -4725,7 +4973,8 @@ function draw_sidebar(){
 										if(blocks.get("blocks["+f_number+"]::poly::voices")>1) f_o_v = connections.get("connections["+i+"]::from::voice");
 										if(blocks.get("blocks["+t_number+"]::poly::voices")>1) t_i_v = connections.get("connections["+i+"]::to::voice");
 										lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.45+y_offset);
-										if(pass==1){
+										if(pass>=1){
+											if(f_number==block) f_label = "self";
 											lcd_main.message("write", f_label);
 											lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, fontheight*0.7+y_offset);
 										}
@@ -4755,7 +5004,9 @@ function draw_sidebar(){
 										var offset = connections.get("connections["+i+"]::conversion::offset");
 										var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 										var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
-										var col=config.get("palette::connections::"+connections.get("connections["+i+"]::to::input::type"));
+										var tty = connections.get("connections["+i+"]::to::input::type");
+										if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
+										var col=config.get("palette::connections::"+tty);
 										
 										if(mute){
 											lcd_main.message("paintrect",sidebar.x2-fontheight, y_offset, sidebar.x2, fontheight+y_offset,128,128,128);
@@ -5034,7 +5285,9 @@ function draw_sidebar(){
 			if((f_type=="potential")||(t_type=="potential")){
 				type_colour=[192,192,192];
 			}else{
-				type_colour = config.get("palette::connections::"+f_type);
+				var fty = f_type;
+				if((fty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) fty="soundcard";
+				type_colour = config.get("palette::connections::"+fty);
 			}
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
@@ -5114,10 +5367,13 @@ function draw_sidebar(){
 			}else{
 				var t_i_name = blocktypes.get(t_name+"::connections::in::"+t_type+"["+t_i_no+"]");
 			}
-
 	
 			sidebar.mode = "wire";
-			
+			sidebar.connection.selected = i;
+
+			automap.groups = [];
+			automap.sidebar_row_ys = []; // i reuse these two for automap direct mode control over gain/conversion params. ys contains scaling multiplier for the knobs.
+
 			// FROM BLOCK, OUTPUT, VOICE labels/menus
 
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
@@ -5149,8 +5405,8 @@ function draw_sidebar(){
 				if(Array.isArray(firv)) firv=firv[0];
 
 				if(sidebar.connection.show_from_outputs){
-					auto_pick_controller = 1;
-					note_poly.message("setvalue", firv+1,"connection_assign_mode",1);
+					auto_pick_controller = 1 & sidebar.connection.auto_pick_controller;
+					note_poly.message("setvalue", firv+1,"connection_assign_mode",auto_pick_controller);
 					automap.assignmode = 1;
 				}else{
 					automap.assignmode = 0;
@@ -5400,34 +5656,13 @@ function draw_sidebar(){
 							//post("\nSCOPES: ",sidebar.scopes.voicelist);
 						}
 					}
-				}//else { //from midi
-				/*	sidebar.scopes.voice = -1;
-					post("assigning midi scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");
-					var listvoice = f_o_v.slice();
-					var voffset = -1;
-					if(f_o_v=="all"){
-						listvoice = voicemap.get(f_number);
-						voffset=0;
-					}
-					if(!Array.isArray(listvoice)) listvoice = [listvoice];
-					sidebar.scopes.voicelist = [];
-					audio_to_data_poly.message("setvalue", 0, "vis_scope", 1);
-					if(!is_empty(listvoice)){
-						for(tii=0;tii<listvoice.length;tii++){
-							sidebar.scopes.voicelist[tii] = listvoice[tii]+voffset;
-						}							
-					}
-					sidebar.scopes.midi = f_number; 
-				//	post("scopes voicelist",sidebar.scopes.voicelist);
-					sidebar.scopes.width = (sidebar.width + fo1);
-					messnamed("midi_scope_source_voices",sidebar.scopes.voicelist);
-					messnamed("midi_scope_source_output",f_o_no);
-				*/				//}
+				}
 			}
 
 
-
 			// conversion params header
+
+
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.6+y_offset,type_colour_darkest );
 			lcd_main.message("frgb" , type_colour_dark);
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
@@ -5441,9 +5676,6 @@ function draw_sidebar(){
 				}
 			}
 			y_offset+=fontheight*0.7;			
-
-
-
 
 			//conversion settings here
 			if(mute){
@@ -5463,6 +5695,8 @@ function draw_sidebar(){
 				draw_h_slider_labelled(sidebar.x, y_offset, sidebar.x2-fo1*22, fontheight+y_offset,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,scale);
 				mouse_click_actions[mouse_index] = connection_edit;
 				mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::scale";
+				automap.groups[0] = "connections["+i+"]::conversion::scale";
+				automap.sidebar_row_ys[0] = 0.01;
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
 				lcd_main.message("paintrect", sidebar.x2-fontheight*2.1,y_offset,sidebar.x2-fontheight*1.1,y_offset+fontheight,type_colour_dark);
@@ -5475,6 +5709,7 @@ function draw_sidebar(){
 				lcd_main.message("write","flip");
 				click_zone(connection_edit, "connections["+i+"]::conversion::scale", -scale, sidebar.x2-fontheight*2.1,y_offset,sidebar.x2-fontheight*1.1,y_offset+fontheight*1.1,mouse_index, 1);
 			}else{
+				automap.groups[0] = "force_unity";
 				lcd_main.message("frgb" , type_colour);
 				lcd_main.message("moveto", sidebar.x+fo1*2, y_offset+fontheight*0.7);
 				if(f_type=="matrix"){
@@ -5504,11 +5739,15 @@ function draw_sidebar(){
 						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+						automap.groups[1]="connections["+i+"]::conversion::vector";
+						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
 						draw_h_slider(sidebar.x,y_offset+fontheight*1.1,sidebar.x2,y_offset+2.1*fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+						automap.groups[2]="connections["+i+"]::conversion::offset";
+						automap.sidebar_row_ys[2] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
 						lcd_main.message("frgb",type_colour_dark);
@@ -5534,12 +5773,18 @@ function draw_sidebar(){
 					draw_vector(sidebar.x, y_offset, sidebar.x2-fo1*54, fo1*19+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					automap.groups[1]="connections["+i+"]::conversion::vector";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					draw_2d_slider(sidebar.x2-fontheight*5.3, y_offset, sidebar.x2-fontheight*2.7, fo1*19+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+					automap.groups[2]="connections["+i+"]::conversion::offset";
+					automap.groups[3]="connections["+i+"]::conversion::offset2";
+					automap.sidebar_row_ys[2] = 1/256;
+					automap.sidebar_row_ys[3] = 1/256;
 					mouse_index++;
 					lcd_main.message("moveto", (sidebar.x2-fontheight*5.1), (fontheight*1.1+y_offset));
 					if(offset<0.5){
@@ -5559,6 +5804,8 @@ function draw_sidebar(){
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+					automap.groups[1]="connections["+i+"]::conversion::offset";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					lcd_main.message("frgb",type_colour_dark);
@@ -5590,11 +5837,15 @@ function draw_sidebar(){
 						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+						automap.groups[1]="connections["+i+"]::conversion::vector";
+						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
 						draw_h_slider(sidebar.x,y_offset+fo1*11,sidebar.x2,y_offset+21*fo1,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+						automap.groups[2]="connections["+i+"]::conversion::offset";
+						automap.sidebar_row_ys[2] = 0.025;	
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
 						lcd_main.message("frgb",type_colour_dark);
@@ -5620,12 +5871,18 @@ function draw_sidebar(){
 					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					automap.groups[1]="connections["+i+"]::conversion::vector";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					draw_2d_slider(sidebar.x2-fo1*15.5, y_offset+16.5*fo1, sidebar.x2, fo1*32+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+					automap.groups[2]="connections["+i+"]::conversion::offset";
+					automap.groups[3]="connections["+i+"]::conversion::offset2";
+					automap.sidebar_row_ys[2] = 1/256;
+					automap.sidebar_row_ys[3] = 1/256;
 					mouse_index++;	
 					
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
@@ -5661,6 +5918,8 @@ function draw_sidebar(){
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset2-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
+					automap.groups[1]="connections["+i+"]::conversion::offset2";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					lcd_main.message("frgb",type_colour_dark);
@@ -5680,11 +5939,15 @@ function draw_sidebar(){
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*22,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset*2-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+					automap.groups[1]="connections["+i+"]::conversion::offset";
+					automap.sidebar_row_ys[1] = 1/256;
+					automap.sidebar_row_ys[2] = 1/256;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					draw_h_slider(sidebar.x,y_offset+fontheight*1.1,sidebar.x2-fo1*22,y_offset+2.1*fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset2*2-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
+					automap.groups[2]="connections["+i+"]::conversion::offset2";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 
@@ -5707,6 +5970,8 @@ function draw_sidebar(){
 					draw_vector(sidebar.x2-21*fo1, y_offset, sidebar.x2, 21*fo1+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					automap.groups[1]="connections["+i+"]::conversion::vector";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 
@@ -5719,6 +5984,8 @@ function draw_sidebar(){
 					draw_h_slider(sidebar.x, y_offset+fo1*11, sidebar.x2-fo1*22, fo1*21+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+					automap.groups[2]="connections["+i+"]::conversion::offset";
+					automap.sidebar_row_ys[2] = 1/256;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;		
 					
@@ -5737,12 +6004,18 @@ function draw_sidebar(){
 					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					automap.groups[1]="connections["+i+"]::conversion::vector";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					draw_2d_slider(sidebar.x2-fo1*15.5, y_offset+16.5*fo1, sidebar.x2, fo1*32+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,offset,offset2);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 					mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
+					automap.groups[2]="connections["+i+"]::conversion::offset";
+					automap.groups[3]="connections["+i+"]::conversion::offset2";
+					automap.sidebar_row_ys[2] = 1/256;
+					automap.sidebar_row_ys[3] = 1/256;
 					mouse_index++;	
 					
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
@@ -5780,6 +6053,8 @@ function draw_sidebar(){
 					draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset-1);
 					mouse_click_actions[mouse_index] = connection_edit;
 					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+					automap.groups[1]="connections["+i+"]::conversion::offset";
+					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					lcd_main.message("frgb",type_colour_dark);
@@ -5787,6 +6062,54 @@ function draw_sidebar(){
 					lcd_main.message("write","offset",(2*offset-1).toPrecision(2));//offset);
 					y_offset+=11*fo1;
 				}			
+			}
+
+			if((automap.available_c>-1)&&(!automap.lock_c)){
+				automap.mapped_c=-0.5;
+				var maplist = [];
+				var mapwrap = [];
+				var maplistopv = [];
+				var mapcolours = [];
+				
+				
+				if(automap.c_rows<automap.groups.length){
+					for(var pad=0;pad<automap.c_cols*automap.c_rows;pad++){
+						if(pad<automap.groups.length){
+							maplist.push(-0.5);
+							mapcolours.push(type_colour[0]);
+							mapcolours.push(type_colour[1]);
+							mapcolours.push(type_colour[2]);
+						}else{
+							maplist.push(-1);
+							mapcolours.push(-1);	
+						}
+						mapwrap.push(1);
+						maplistopv.push(-1);
+					}
+				}else{
+					for(var pad=0;pad<automap.c_cols*automap.c_rows;pad++){
+						var px = pad % automap.c_cols;
+						var py = ((pad-px)/automap.c_cols);
+						if((px==0)&&(py<automap.groups.length)){
+							maplist.push(-0.5);
+							mapcolours.push(type_colour[0]);
+							mapcolours.push(type_colour[1]);
+							mapcolours.push(type_colour[2]);
+						}else{
+							maplist.push(-1);
+							mapcolours.push(-1);	
+						}
+						mapwrap.push(1);
+						maplistopv.push(-1);
+					}
+				}
+				note_poly.message("setvalue", automap.available_c, "automapped", 1);
+				note_poly.message("setvalue", automap.available_c, "automap_offset", 0);
+				note_poly.message("setvalue", automap.available_c, "maplistopv",maplistopv);
+				note_poly.message("setvalue", automap.available_c, "maplist",maplist);
+				note_poly.message("setvalue", automap.available_c, "mapwrap",mapwrap);
+				note_poly.message("setvalue", automap.available_c, "mapcolour",mapcolours);
+				note_poly.message("setvalue", automap.available_c, "buttonmaplist",-1);
 			}
 
 			section_colour = blocks.get("blocks["+t_number+"]::space::colour");
@@ -5820,8 +6143,9 @@ function draw_sidebar(){
 			
 			//lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
 			//lcd_main.message("write", "change");
-			
-			type_colour = config.get("palette::connections::"+t_type);
+			var tty = t_type;
+			if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
+			type_colour = config.get("palette::connections::"+tty);
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
 			if(!sidebar.connection.show_to_inputs){
@@ -6059,8 +6383,6 @@ function draw_sidebar(){
 				}
 			}
 			
-
-			//i = selected.wire.indexOf(1);
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? type_colour_dark:type_colour_darkest );
 			click_zone(insert_menu_button, i, 0, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 			lcd_main.message("moveto" , sidebar.x + fo1+fo1, fontheight*0.75+y_offset);
@@ -6280,9 +6602,9 @@ function draw_sidebar(){
 				lcd_main.message("write", "un");
 				lcd_main.message("moveto", sidebar.x2 - fontheight*2, fontheight*0.75+y_offset);
 				lcd_main.message("write", "mute");
-				lcd_main.message("paintrect", sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight+y_offset,menucolour );
+				lcd_main.message("paintrect", sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 				click_zone(connection_mute_selected,1,null, sidebar.x2 - fontheight, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
-				lcd_main.message("frgb" , 0,0,0);				
+				lcd_main.message("frgb" , 128,128,128);				
 				lcd_main.message("moveto", sidebar.x2 + fontheight*0.9, fontheight*0.75+y_offset);
 				lcd_main.message("write", "mute");	
 				var y_o = y_offset + 1.1*fontheight;	
@@ -6290,13 +6612,18 @@ function draw_sidebar(){
 				var block_label;
 				var avg_scale = 0;
 				var num = 0;
+				var same_dest = -1;
 				for(i=0;i<selected.wire.length;i++){
 					if(selected.wire[i]){
 						num++;
 						var f_number = connections.get("connections["+i+"]::from::number");
 						var f_label = blocks.get("blocks["+f_number+"]::label");
-						//var f_name = blocks.get("blocks["+f_number+"]::name");
 						var t_number = connections.get("connections["+i+"]::to::number");
+						if(num==1){
+							same_dest = t_number;
+						}else{
+							if(t_number!=same_dest)same_dest=-1;
+						}
 						var t_label = blocks.get("blocks["+t_number+"]::label");
 						//var t_name = blocks.get("blocks["+t_number+"]::name");
 						//var f_o_no = connections.get("connections["+i+"]::from::output::number");
@@ -6308,6 +6635,8 @@ function draw_sidebar(){
 						if(mute){
 							ccol = [128,128,128];
 						}else{
+							var tty = t_type;
+							if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
 							if(config.contains("palette::connections::"+t_type)){
 								ccol = config.get("palette::connections::"+t_type);
 							}else{
@@ -6356,6 +6685,77 @@ function draw_sidebar(){
 				mouse_click_parameters[mouse_index] = 0;
 				mouse_click_values[mouse_index] = 0;
 				mouse_index++;
+			
+				if((automap.available_c>-1)&&(!automap.lock_c)){
+					automap.groups = ["connections_multi"];
+					automap.sidebar_row_ys[0] = 0.01;
+
+					automap.mapped_c=-0.5;
+					var maplist = [];
+					var mapwrap = [];
+					var maplistopv = [];
+					var mapcolours = [];
+					
+					
+					if(automap.c_rows<automap.groups.length){
+						for(var pad=0;pad<automap.c_cols*automap.c_rows;pad++){
+							if(pad<automap.groups.length){
+								maplist.push(-0.5);
+								mapcolours.push(menucolour[0]);
+								mapcolours.push(menucolour[1]);
+								mapcolours.push(menucolour[2]);
+							}else{
+								maplist.push(-1);
+								mapcolours.push(-1);	
+							}
+							mapwrap.push(1);
+							maplistopv.push(-1);
+						}
+					}else{
+						for(var pad=0;pad<automap.c_cols*automap.c_rows;pad++){
+							var px = pad % automap.c_cols;
+							var py = ((pad-px)/automap.c_cols);
+							if((px==0)&&(py<automap.groups.length)){
+								maplist.push(-0.5);
+								mapcolours.push(menucolour[0]);
+								mapcolours.push(menucolour[1]);
+								mapcolours.push(menucolour[2]);
+							}else{
+								maplist.push(-1);
+								mapcolours.push(-1);	
+							}
+							mapwrap.push(1);
+							maplistopv.push(-1);
+						}
+					}
+					note_poly.message("setvalue", automap.available_c, "automapped", 1);
+					note_poly.message("setvalue", automap.available_c, "automap_offset", 0);
+					note_poly.message("setvalue", automap.available_c, "maplistopv",maplistopv);
+					note_poly.message("setvalue", automap.available_c, "maplist",maplist);
+					note_poly.message("setvalue", automap.available_c, "mapwrap",mapwrap);
+					note_poly.message("setvalue", automap.available_c, "mapcolour",mapcolours);
+					note_poly.message("setvalue", automap.available_c, "buttonmaplist",-1);
+				}
+
+				if(same_dest>-1){
+					y_offset+=0.6*fontheight;
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+0.5*y_offset,block_darkest );
+					lcd_main.message("moveto", sidebar.x + fontheight*0.2, fontheight*0.35+y_offset);
+					lcd_main.message("frgb" , block_colour);
+					lcd_main.message("write", "selected wires all have the same destination:");
+					y_offset+=0.6*fontheight;
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+sidebar.width*0.5-fontheight*0.05, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? block_colour:block_darkest );
+					click_zone(insert_multi_menu_button,same_dest,null, sidebar.x, y_offset, sidebar.x+sidebar.width*0.5-fontheight*0.05, fontheight+y_offset,mouse_index,1 );
+					lcd_main.message("moveto", sidebar.x + fontheight*0.2, fontheight*0.75+y_offset);
+					lcd_main.message("frgb" , (usermouse.clicked2d==mouse_index)? block_darkest : block_colour);
+					lcd_main.message("write", "insert block");
+					lcd_main.message("paintrect", sidebar.x+sidebar.width*0.5+fontheight*0.05, y_offset, sidebar.x2, fontheight+y_offset,(usermouse.clicked2d==mouse_index)? block_colour:block_darkest );
+					click_zone(insert_mixer,same_dest, null, sidebar.x+sidebar.width*0.5+fontheight*0.05, y_offset, sidebar.x2, fontheight+y_offset ,mouse_index, 1);
+					lcd_main.message("moveto", sidebar.x + sidebar.width*0.5+ fontheight*0.2, fontheight*0.75+y_offset);
+					lcd_main.message("frgb" , (usermouse.clicked2d==mouse_index)? block_darkest : block_colour);
+					lcd_main.message("write", "insert mixer");
+					y_offset+=1.1*fontheight;
+				}
 			}
 		}else if(sidebar.mode == "input_scope"){
 			sidebar.scroll.position = 0;
@@ -6557,7 +6957,7 @@ function draw_sidebar(){
 	if(y_offset+sidebar.scroll.position >= mainwindow_height){
 		sidebar.scroll.max = fontheight + fontheight + sidebar.scroll.position+y_offset-mainwindow_height;
 	}else{
-		if((sidebar.mode!="none")){
+		if(view_changed && (sidebar.mode!="none")){
 			var ttt= (displaymode == "panels") ? 1 : 0;
 			click_rectangle(sidebar.x,y_offset+1,sidebar.x2,mainwindow_height,ttt,ttt);
 		}
@@ -6949,15 +7349,10 @@ function draw_resource_monitor_page() {
 }
 
 function draw_automap_headers(sx, block) {
-	var c_section_start;
-	if ((automap.mapped_k != -1) && (automap.already_k == 0)) {
+	if ((automap.already_k == 0)&&((automap.mapped_k>-1) || ((automap.available_k_block>-1)&&(sidebar.mode=="block")&&(automap.mapped_k==-1)))){
 		//DRAW KEYBOARD AUTOMAP HEADER LINE
-		var midiins = blocktypes.get(blocks.get("blocks[" + automap.mapped_k + "]::name") + "::connections::in::midi");
-		if (!Array.isArray(midiins)) midiins = [midiins];
-		//lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x + fontheight * 2.1, y_offset + fontheight * 0.5, automap.colours_k.darkest);
 		click_zone(automap_k_click, -1, -1, sidebar.x, y_offset, sidebar.x + 22, y_offset + fontheight * 0.5, mouse_index, 1);
-		if (!usermouse.ctrl && (usermouse.clicked2d == mouse_index - 1)) {
-			//lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
+		if (!usermouse.ctrl && (usermouse.clicked2d == mouse_index - 1) &&(automap.mapped_k>-1)) {
 			lcd_main.message("frgb", automap.colours_k.colour);
 			lcd_main.message("paintrect", sidebar.x + fo1, y_offset + 2.5 * fo1, sidebar.x + 22 - fo1, y_offset + fontheight * 0.45, automap.colours_k.colour);
 			lcd_main.message("moveto", sidebar.x + 1.5 * fo1, y_offset + (2.5 - 1.5 * automap.lock_k) * fo1);
@@ -6966,10 +7361,14 @@ function draw_automap_headers(sx, block) {
 			lcd_main.message("lineto", sidebar.x + 20 - 1.5 * fo1, y_offset + 2.5 * fo1);
 			sx = sidebar.x + 26 + 2.4 * fontheight;
 		} else {
-			if (automap.lock_k) {
-				lcd_main.message("frgb", automap.colours_k.colour);
-			} else {
-				lcd_main.message("frgb", automap.colours_k.dark);
+			if(automap.mapped_k>-1){
+				if (automap.lock_k) {
+					lcd_main.message("frgb", automap.colours_k.colour);
+				} else {
+					lcd_main.message("frgb", automap.colours_k.dark);
+				}
+			}else{
+				lcd_main.message("frgb", greydark);
 			}
 			lcd_main.message("framerect", sidebar.x, y_offset, sidebar.x + 22, y_offset + fontheight * 0.5);
 			var tmp = y_offset + 0.25 * fontheight - 2;
@@ -6986,7 +7385,14 @@ function draw_automap_headers(sx, block) {
 			lcd_main.message("lineto", sidebar.x + 14, tbt);
 			lcd_main.message("moveto", sidebar.x + 16, y_offset);
 			lcd_main.message("lineto", sidebar.x + 16, tmp);
-			if (automap.lock_k && block != automap.mapped_k) {
+			if(automap.mapped_k==-1){
+				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.2 * fontheight);
+				lcd_main.message("write", "automap");
+				lcd_main.message("moveto", sidebar.x + 26, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", "off");
+				sx = sidebar.x + 26 + 2.4 * fontheight;
+				click_zone(enable_automap_k, null, automap.mapped_k, sidebar.x + 24, y_offset, sx - 2, y_offset + fontheight * 0.5, mouse_index, 1);
+			}else if(automap.lock_k && block != automap.mapped_k) {
 				var labl = blocks.get("blocks[" + automap.mapped_k + "]::label");
 				sx = sidebar.x + 26 + (0.1 + labl.length * 0.16) * fontheight;
 				//lcd_main.message("paintrect", sidebar.x + fontheight * 2.1, y_offset, sx - fo1, y_offset + fontheight * 0.5, automap.colours_k.darkest);
@@ -7007,87 +7413,89 @@ function draw_automap_headers(sx, block) {
 					lcd_main.message("write", "automapped to:");
 					sx = sidebar.x + 26 + 2.4 * fontheight;
 				}	
-				click_zone(disable_automap_k, null, automap.mapped_k, sidebar.x + 24, y_offset, sx - 2, y_offset + fontheight * 0.5, mouse_index, 1);
 			}
 		}
-		var linewrap=0;
-		if(sidebar.dropdown != "automap_k_input"){
-			var bw2 = fontheight * (0.8 + midiins[automap.inputno_k].length / 7);
-			var ex = sx + bw2 - fo1;
-			if(midiins.length>1){
-				lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-				lcd_main.message("frgb", automap.colours_k.colour);
-				lcd_main.message("paintpoly", ex - 4*fo1, y_offset + 2*fo1, ex - fo1, y_offset + 2*fo1, ex - 2.5*fo1, y_offset + 3.5*fo1, ex - 4*fo1, y_offset + 2*fo1);				
-				click_zone(open_dropdown, "automap_k_input", "automap_k_input", sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
-			}else{
-				lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
-				lcd_main.message("frgb", automap.colours_k.dark);				
-			}
-			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", midiins[automap.inputno_k]);			
-			sx+=bw2;
-		}else{
-			var ml = 0;
-			for (var ti = 0; ti < midiins.length; ti++) ml = Math.max(ml,midiins[ti].length);
-			var bw2 = fontheight * (0.3 + ml / 7);
-			var ex = sx + bw2 - fo1;
-			linewrap = 1;
-			for (var ti = 0; ti < midiins.length; ti++) {
-				if (ti == automap.inputno_k) {
+		if(automap.mapped_k>-1){
+			var midiins = blocktypes.get(blocks.get("blocks[" + automap.mapped_k + "]::name") + "::connections::in::midi");
+			if (!Array.isArray(midiins)) midiins = [midiins];	
+			var linewrap=0;
+			if(sidebar.dropdown != "automap_k_input"){
+				var bw2 = fontheight * (0.8 + midiins[automap.inputno_k].length / 7);
+				var ex = sx + bw2 - fo1;
+				if(midiins.length>1){
 					lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
 					lcd_main.message("frgb", automap.colours_k.colour);
-					click_zone(open_dropdown, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
-				} else {
+					lcd_main.message("paintpoly", ex - 4*fo1, y_offset + 2*fo1, ex - fo1, y_offset + 2*fo1, ex - 2.5*fo1, y_offset + 3.5*fo1, ex - 4*fo1, y_offset + 2*fo1);				
+					click_zone(open_dropdown, "automap_k_input", "automap_k_input", sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+				}else{
 					lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
-					click_zone(set_automap_k_input, ti, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
-					lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("frgb", automap.colours_k.dark);				
 				}
 				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-				lcd_main.message("write", midiins[ti]);
-				y_offset+=fontheight*0.6;
+				lcd_main.message("write", midiins[automap.inputno_k]);			
+				sx+=bw2;
+			}else{
+				var ml = 0;
+				for (var ti = 0; ti < midiins.length; ti++) ml = Math.max(ml,midiins[ti].length);
+				var bw2 = fontheight * (0.3 + ml / 7);
+				var ex = sx + bw2 - fo1;
+				linewrap = 1;
+				for (var ti = 0; ti < midiins.length; ti++) {
+					if (ti == automap.inputno_k) {
+						lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+						lcd_main.message("frgb", automap.colours_k.colour);
+						click_zone(open_dropdown, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					} else {
+						lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
+						click_zone(set_automap_k_input, ti, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+						lcd_main.message("frgb", automap.colours_k.dark);
+					}
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", midiins[ti]);
+					y_offset+=fontheight*0.6;
+				}
+				sx+=bw2;
 			}
-			sx+=bw2;
-		}
-		if(linewrap) y_offset-=fontheight*0.6;//sx = sidebar.x; 
-		if(usermouse.caps){
-			var bw2 = fo1 * 12;
-			var ex = sx + bw2 - fo1;
-			lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
-			click_zone(qwertymidi_octave, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-			lcd_main.message("frgb", automap.colours_k.dark);
-			lcd_main.message("moveto", sx + fo1, y_offset + 0.25 * fontheight);
-			lcd_main.message("write", "octave");
-			lcd_main.message("frgb", automap.colours_k.colour);
-			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
-			oct = Math.floor(oct * 9.99);
-			lcd_main.message("write", oct-2);
-			sx += bw2;		
-		}
-		if(playing){
-			var bw2 = fo1 * 10;
+			if(linewrap) y_offset-=fontheight*0.6;//sx = sidebar.x; 
+			if(usermouse.caps){
+				var bw2 = fo1 * 12;
+				var ex = sx + bw2 - fo1;
+				lcd_main.message("paintrect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.darkest);
+				click_zone(qwertymidi_octave, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
+				lcd_main.message("frgb", automap.colours_k.dark);
+				lcd_main.message("moveto", sx + fo1, y_offset + 0.25 * fontheight);
+				lcd_main.message("write", "octave");
+				lcd_main.message("frgb", automap.colours_k.colour);
+				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+				var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
+				oct = Math.floor(oct * 9.99);
+				lcd_main.message("write", oct-2);
+				sx += bw2;		
+			}
+			if(playing){
+				var bw2 = fo1 * 10;
+				var ex = sx + bw2 - fo1;		
+				lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+				click_zone(start_keyboard_looper, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
+				//lcd_main.message("frgb", automap.colours_k.dark);
+				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", "loop");
+				sx += bw2;		
+			}
+			var bw2 = fo1 * 15;
 			var ex = sx + bw2 - fo1;		
 			lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-			click_zone(start_keyboard_looper, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
+			click_zone(reify_automap_k, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
 			//lcd_main.message("frgb", automap.colours_k.dark);
 			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", "loop");
-			sx += bw2;		
+			lcd_main.message("write", "connect");
+			sx += bw2;	
+			if(linewrap) sx = sidebar.x2;
 		}
-		var bw2 = fo1 * 15;
-		var ex = sx + bw2 - fo1;		
-		lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-		click_zone(reify_automap_k, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-		//lcd_main.message("frgb", automap.colours_k.dark);
-		lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-		lcd_main.message("write", "connect");
-		sx += bw2;	
-		if(linewrap) sx = sidebar.x2;
 	}
-
-	if (automap.mapped_c != -1) {
+	if ((automap.mapped_c != -1) || ((automap.voice_c>-1)&&(blocks.get("blocks["+sidebar.selected+"]::name")!="core.input.control.auto"))){
 		if(sx!=sidebar.x){
-			var chw = 26 + fontheight * 0.8;// * 1.2;
+			var chw = 26 + 4 + fontheight * (0.8 + 0.4 * (automap.mapped_c == -1));// * 1.2;
 			if(automap.lock_c && block != automap.mapped_c) {
 				var labl = blocks.get("blocks[" + automap.mapped_c + "]::label");
 				chw += (0.1 + labl.length * 0.18) * fontheight;
@@ -7100,19 +7508,22 @@ function draw_automap_headers(sx, block) {
 			}
 		}
 		// DRAW AUTOMAP HEADER LINE
-		//lcd_main.message("paintrect", sx, y_offset, sidebar.x2, y_offset + fontheight * 0.5, automap.colours_c.darkest);
 		var hf = 0.25 * fontheight;
 		click_zone(automap_c_click, null, -1, sx, y_offset, sx + 22, y_offset + fontheight * 0.5, mouse_index, 1);
-		if (!usermouse.ctrl && (usermouse.clicked2d == mouse_index - 1)) {
-			//lcd_main.message("framerect",sidebar.x,y_offset,sidebar.x+22,y_offset+fontheight*0.5);
-			//lcd_main.message("paintrect", sx + fo1, y_offset + 2.5 * fo1, sx + 22 - fo1, y_offset + fontheight * 0.45, automap.colours_c.colour);
+		if(!usermouse.ctrl && (usermouse.clicked2d == mouse_index - 1)) {
 			lcd_main.message("frgb", automap.colours_c.colour);
 			lcd_main.message("moveto", sx + 1.5 * fo1, y_offset + (2.5 - 1.5 * automap.lock_k) * fo1);
 			lcd_main.message("lineto", sx + 1.5 * fo1, y_offset + fo1 * (1 - 0.5 * automap.lock_k));
 			lcd_main.message("lineto", sx + 20 - 1.5 * fo1, y_offset + fo1 * (1 - 0.5 * automap.lock_k));
 			lcd_main.message("lineto", sx + 20 - 1.5 * fo1, y_offset + 2.5 * fo1);
 		} else {
-			if (automap.lock_c) {
+			if(automap.mapped_c<0){
+				lcd_main.message("frgb", greydark);
+				lcd_main.message("moveto", sx+26, y_offset + 0.2 * fontheight);
+				lcd_main.message("write", "automap");
+				lcd_main.message("moveto", sx+26, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", "off");
+			}else if (automap.lock_c) {
 				lcd_main.message("frgb", automap.colours_c.colour);
 			} else {
 				lcd_main.message("frgb", automap.colours_c.dark);
@@ -7123,45 +7534,29 @@ function draw_automap_headers(sx, block) {
 			lcd_main.message("lineto", sx + 0.106 * fontheight + 9, fo1 * 1.44 + y_offset);
 		}
 		sx += 26;
-		if (automap.lock_c && block != automap.mapped_c) {
-			var labl = blocks.get("blocks[" + automap.mapped_c + "]::label");
-			//lcd_main.message("paintrect", sx + fontheight * 2.1, y_offset, sidebar.x2, y_offset + fontheight * 0.5, automap.colours_c.darkest);
+		if(automap.mapped_c>-1){
+			if (automap.lock_c && block != automap.mapped_c) {
+				var labl = blocks.get("blocks[" + automap.mapped_c + "]::label");
+				//lcd_main.message("paintrect", sx + fontheight * 2.1, y_offset, sidebar.x2, y_offset + fontheight * 0.5, automap.colours_c.darkest);
+				lcd_main.message("frgb", automap.colours_c.dark);
+				lcd_main.message("moveto", sx, y_offset + 0.2 * fontheight);
+				lcd_main.message("write", "locked to");
+				lcd_main.message("frgb", automap.colours_c.colour);
+				lcd_main.message("moveto", sx, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", labl);
+				var osx = sx;
+				sx += (0.1 + labl.length * 0.18) * fontheight;
+				click_zone(select_block, null, automap.mapped_c, osx - 2, y_offset, sx, y_offset + fontheight * 0.5, mouse_index, 1);
+			}
 			lcd_main.message("frgb", automap.colours_c.dark);
 			lcd_main.message("moveto", sx, y_offset + 0.2 * fontheight);
-			lcd_main.message("write", "locked to");
+			lcd_main.message("write", "rows");
 			lcd_main.message("frgb", automap.colours_c.colour);
 			lcd_main.message("moveto", sx, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", labl);
-			var osx = sx;
-			sx += (0.1 + labl.length * 0.18) * fontheight;
-			click_zone(select_block, null, automap.mapped_c, osx - 2, y_offset, sx, y_offset + fontheight * 0.5, mouse_index, 1);
+			lcd_main.message("write", automap.offset_c + 1, "-", automap.offset_c + automap.c_rows);
+			click_zone(cycle_automap_offset, 1, null, sx - 2, y_offset, sidebar.x2, y_offset + 0.5 * fontheight, mouse_index, 1);
+			sx += fontheight * 0.8;// * 1.2;
 		}
-		lcd_main.message("frgb", automap.colours_c.dark);
-		lcd_main.message("moveto", sx, y_offset + 0.2 * fontheight);
-		lcd_main.message("write", "rows");
-		lcd_main.message("frgb", automap.colours_c.colour);
-		lcd_main.message("moveto", sx, y_offset + 0.4 * fontheight);
-		lcd_main.message("write", automap.offset_c + 1, "-", automap.offset_c + automap.c_rows);
-		click_zone(cycle_automap_offset, 1, null, sx - 2, y_offset, sidebar.x2, y_offset + 0.5 * fontheight, mouse_index, 1);
-		sx += fontheight * 0.8;// * 1.2;
-		/*var isnext = (automap.mapped_q != -1);
-		if (isnext && (sx < sidebar.x + 0.5 * sidebar.width)) {
-			var osx = sx;
-			sx = sidebar.x + 0.5 * sidebar.width;
-			lcd_main.message("paintrect", osx, y_offset, sx - fo1, y_offset + fontheight * 0.5, automap.colours_c.darkest[0] * 0.5, automap.colours_c.darkest[1] * 0.5, automap.colours_c.darkest[2] * 0.5);
-		} else if (isnext && (c_section_start == 0.33) && (sx < sidebar.x + 0.66 * sidebar.width)) {
-			var osx = sx;
-			sx = sidebar.x + 0.667 * sidebar.width;
-			lcd_main.message("paintrect", osx, y_offset, sx - fo1, y_offset + fontheight * 0.5, automap.colours_c.darkest[0] * 0.5, automap.colours_c.darkest[1] * 0.5, automap.colours_c.darkest[2] * 0.5);
-		} else if (isnext && (c_section_start == 0.5) && (sx < sidebar.x + 0.75 * sidebar.width)) {
-			var osx = sx;
-			sx = sidebar.x + 0.75 * sidebar.width;
-			lcd_main.message("paintrect", osx, y_offset, sx - fo1, y_offset + fontheight * 0.5, automap.colours_c.darkest[0] * 0.5, automap.colours_c.darkest[1] * 0.5, automap.colours_c.darkest[2] * 0.5);
-		} else {
-			lcd_main.message("paintrect", sx, y_offset, sidebar.x2, y_offset + fontheight * 0.5, automap.colours_c.darkest[0] * 0.5, automap.colours_c.darkest[1] * 0.5, automap.colours_c.darkest[2] * 0.5);
-			y_offset += fontheight * 0.6;
-			sx = sidebar.x;
-		}*/
 	}
 
 	if (automap.mapped_q != -1) {
@@ -7219,7 +7614,7 @@ function set_automap_q(v) {
 
 function remove_automaps(){
 	if((automap.available_c != -1) && !automap.lock_c){
-		if (automap.mapped_c != -1) {
+		if((automap.mapped_c > -0.01)){
 			automap.mapped_c = -1;
 			note_poly.message("setvalue", automap.available_c, "automapped", 0);
 		}
@@ -7247,6 +7642,7 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 			automap.mapped_c = -1;
 		}else{
 			automap.available_c = voice;
+			automap.voice_c = voice;
 			redraw_flag.flag |= 2;
 		} 
 		automap.devicename_c = name;

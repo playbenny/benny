@@ -1,0 +1,969 @@
+{
+	"notepools" : 	{
+		"shape" : 		{
+			"1" : [ 1, 3, 2, 4, 3, 5, 4, 6, 5, 7, 6, 8, 7, 10, 8, 11, 12, 9, 12 ]
+		}
+,
+		"notes" : 		{
+			"1" : [ 0, 3, 5, 8, 10, 12, 15, 17, 19, 20, 22, 24, 27, 29, 32, 34, 36, 39, 41, 43, 44, 46, 48, 51, 53, 56, 58, 60, 63, 65, 67, 68, 70, 72, 75, 77, 80, 82, 84, 87, 89, 91, 92, 94, 96, 99, 101, 104, 106, 108, 111, 113, 115, 116, 118, 120 ]
+		}
+
+	}
+,
+	"waves" : [ 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+ ],
+	"connections" : [ 		{
+
+		}
+, 		{
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 6,
+				"output" : 				{
+					"type" : "midi",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "midi",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 8,
+				"output" : 				{
+					"type" : "midi",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"to" : 			{
+				"number" : 6,
+				"input" : 				{
+					"type" : "midi",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+
+		}
+, 		{
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0.725,
+				"offset" : 0.325,
+				"offset2" : 0.5
+			}
+,
+			"from" : 			{
+				"number" : 5,
+				"output" : 				{
+					"type" : "audio",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"to" : 			{
+				"number" : 9,
+				"voice" : "all",
+				"input" : 				{
+					"number" : 0,
+					"type" : "audio"
+				}
+
+			}
+
+		}
+, 		{
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 1,
+				"offset2" : 0.5
+			}
+,
+			"from" : 			{
+				"number" : 9,
+				"voice" : "all",
+				"output" : 				{
+					"number" : 0,
+					"type" : "audio"
+				}
+
+			}
+,
+			"to" : 			{
+				"number" : 3,
+				"input" : 				{
+					"type" : "hardware",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+
+		}
+ ],
+	"blocks" : [ 		{
+			"patcher" : "core.clock",
+			"name" : "core.clock",
+			"label" : "core.clock",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9.254545360685926,
+				"y" : 3.899984107264351,
+				"colour" : [ 131, 30, 0 ]
+			}
+,
+			"mute" : 0,
+			"automap_to" : 0
+		}
+, 		{
+			"patcher" : "core.input.control.auto",
+			"name" : "core.input.control.auto",
+			"label" : "core.input.control.auto",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -6.808844215724196,
+				"y" : 3.871256361044217,
+				"colour" : [ 155, 74, 45 ]
+			}
+,
+			"mute" : 0,
+			"selected_controller" : "Midi Fighter Twister"
+		}
+, 		{
+			"patcher" : "core.input.keyboard",
+			"name" : "core.input.keyboard",
+			"label" : "core.input.keyboard",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 0
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -4.406541967451401,
+				"y" : 3.801848330502001,
+				"colour" : [ 136, 49, 0 ]
+			}
+,
+			"mute" : 0
+		}
+, 		{
+			"name" : "hardware.out.1+2",
+			"label" : "hardware.out.1+2",
+			"type" : "hardware",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 2
+			}
+,
+			"panel" : 			{
+				"enable" : 0
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9.978569036328052,
+				"y" : -6.624990533835126,
+				"colour" : [ 183, 49, 151 ]
+			}
+,
+			"mute" : 0
+		}
+, 		{
+
+		}
+, 		{
+			"patcher" : "voice.basic",
+			"name" : "voice.basic",
+			"label" : "voice.basic",
+			"type" : "audio",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"return_mode" : 1,
+				"latching_mode" : 0,
+				"voices" : 6
+			}
+,
+			"panel" : 			{
+				"parameters" : [ 0, 1, 6, 7, 8 ],
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9.199999809265137,
+				"y" : -2.750000095367432,
+				"colour" : [ 0, 95, 208 ]
+			}
+,
+			"upsample" : 1,
+			"subvoices" : 1,
+			"automap_to" : 0,
+			"mute" : 0
+		}
+, 		{
+			"patcher" : "seq.shape.player",
+			"name" : "seq.shape.player",
+			"label" : "seq.shape.player",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"return_mode" : 1,
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"parameters" : [ 4, 5 ],
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -8.955278684361438,
+				"y" : -0.351540283496688,
+				"colour" : [ 137, 60, 0 ]
+			}
+,
+			"automap_to" : 0,
+			"mute" : 0
+		}
+, 		{
+			"patcher" : "core.scales.shapes",
+			"name" : "core.scales.shapes",
+			"label" : "core.scales.shapes",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"return_mode" : 0,
+				"latching" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -11.581377674149945,
+				"y" : -2.709311162925027,
+				"colour" : [ 131, 30, 0 ]
+			}
+,
+			"automap_to" : 0,
+			"mute" : 0
+		}
+, 		{
+			"patcher" : "seq.curved.time",
+			"name" : "seq.curved.time",
+			"label" : "seq.curved.time",
+			"type" : "audio",
+			"poly" : 			{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9,
+				"y" : 2,
+				"colour" : [ 153, 58, 0 ]
+			}
+,
+			"automap_to" : 0
+		}
+, 		{
+			"patcher" : "fx.reverb.abl.prism",
+			"name" : "fx.reverb.abl.prism",
+			"label" : "fx.reverb.abl.prism",
+			"type" : "audio",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"return_mode" : 1,
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 0
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9.600000381469727,
+				"y" : -4.599999904632568,
+				"colour" : [ 136, 0, 119 ]
+			}
+,
+			"upsample" : 1,
+			"subvoices" : 2
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+ ],
+	"states" : 	{
+		"current" : 		{
+			"static_mod" : 			{
+				"0" : 				{
+					"0" : [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.464285790920258, 0.0, 0.0, 0.0 ]
+				}
+
+			}
+,
+			"0" : [ 0, 0.5, 0.0, 0.0, 0.090000003576279, 0.40625, 0.0234375, 0.0234375, 0.2109375, 0.600000023841858, 0.5, 0.25, 0.5 ],
+			"1" : [ 0, 0.742500007152557, 0.899999976158142, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+			"2" : [ 0, 0.0, 0.0, 0.550000011920929, 0.0, 0.75, 0.25, 0.123999997973442, 0.004999999888241, 0.0, 0.600000023841858 ],
+			"3" : [ 0 ],
+			"5" : [ 0, 0.289523839950562, 0.875, 0.0, 0.019999999552965, 0.5, 0.300000011920929, 0.004687500186265, 0.0, 0.759374976158142, 0.0, 0.0, 1.0, 0.5, 0.0, 0.75, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 ],
+			"6" : [ 0, 0.0, 0.0, 0.46000000834465, 0.2109375, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+			"7" : [ 0 ],
+			"8" : [ 0, 0.128125011920929, 0.0, 0.3515625, 1.0, 0.15625, 0.0, 0.4453125, 0.625, 0.300000011920929, 0.300000011920929, 0.300000011920929 ],
+			"9" : [ 0, 0.300000011920929, 0.5078125, 0.25, 0.5, 0.100000001490116, 0.100000001490116, 0.400000005960464 ]
+		}
+
+	}
+
+}

@@ -42,6 +42,10 @@ function new_block(block_name,x,y){
 	}else{
 		new_voice = next_free_voice(type,block_name);
 	}
+	if(new_voice<0){
+		post("\nnew block failed");
+		return -1;
+	}
 	var t_offset = 0;
 	if(type == "note"){
 		note_patcherlist[new_voice] = patcher;
@@ -208,11 +212,9 @@ function new_block(block_name,x,y){
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1), "out_trigger", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(vst==1){  // so subvoices = 2 means each voice contains 2 subvoices. these are displayed like voices, but you can only select them in
 			// pairs, ditto per voice edits. but audio routing is like they're 2 things. more useful on wide blocks when i add them later.
 			if(!blocktypes.contains(block_name+"::subvoices")) blocktypes.replace(block_name+"::subvoices",2);//is this the right place to be fixing the blocktypes db?!
@@ -256,7 +258,6 @@ function new_block(block_name,x,y){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 				//post(ts[tii]);
 			}
@@ -266,7 +267,6 @@ function new_block(block_name,x,y){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 				//post(ts[tii]);
 			}
@@ -968,11 +968,12 @@ function turn_off_audio_to_data_if_unused(voice){
 // REMOVE CONNECTION ###################################################################################################
 function remove_connection(connection_number){	
 
-	for(i=0;i<wires[connection_number].length;i++){ // disable the wires
-		wires[connection_number][i].enable=0; //freepeer(); 
-		wires[connection_number][i].scale = [0,0,0]; 
-	}
-	//wires[connection_number]=[];
+	wires_position[connection_number] = null;
+	wires_scale[connection_number] = null;
+	wires_rotatexyz[connection_number] = null;
+	wires_colour[connection_number] = null;
+	
+
 	wire_ends[connection_number][0] = -1.057;
 	selected.wire[connection_number] = 0;
 
@@ -1200,6 +1201,7 @@ function remove_connection(connection_number){
 							outmsg[2] = 0;
 							post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							messnamed("drivers_poly","setvalue",2,"set",outmsg);
+							connections.replace("connections["+cno+"]::conversion::soundcard", 1);
 							use_max_matrix = 0;
 						}
 						if(use_max_matrix){
@@ -1450,6 +1452,7 @@ function remove_connection(connection_number){
 	var empt=new Dict;  // wipe this one from the dictionary
 	connections.set("connections["+connection_number+"]", empt);
 	rebuild_action_list = 1;
+	redraw_flag.flag |= 4;
 }
 
 function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
@@ -1488,23 +1491,21 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 	return cused;
 }
 
-function remove_potential_wire(gl_objects_only){
+function remove_potential_wire(){
 	if(wires_potential_connection != -1){
-		if(Array.isArray(wires[wires_potential_connection])){
-			for(var t=wires[wires_potential_connection].length-1;t>=0;t--){
-				wires[wires_potential_connection][t].enable = 0; //freepeer();
-				wires[wires_potential_connection][t].scale = [0,0,0];
-				//wires[wires_potential_connection].pop();
-			}
+		if(Array.isArray(wires_position[wires_potential_connection])){
+			wires_position[wires_potential_connection] = null;
+			wires_scale[wires_potential_connection] = null;
+			wires_rotatexyz[wires_potential_connection] = null;
+			wires_colour[wires_potential_connection] = null;
+			write_wires_matrix();
 		}
-		if(gl_objects_only!=1){
-			//post("\nremoving",wires_potential_connection);
-			var empt=new Dict;  // wipe this one from the dictionary
-			connections.set("connections["+wires_potential_connection+"]", empt);
-			wire_ends[wires_potential_connection][3] = -99.94;
-			wire_ends[wires_potential_connection][1] = -99.94;
-			wires_potential_connection = -1;
-		}
+		//post("\nremoving",wires_potential_connection,"dragging length",usermouse.drag.dragging.connections.length);
+		var empt=new Dict;  // wipe this one from the dictionary
+		connections.set("connections["+wires_potential_connection+"]", empt);
+		wire_ends[wires_potential_connection][3] = -99.94;
+		wire_ends[wires_potential_connection][1] = -99.94;
+		wires_potential_connection = -1;
 	}										
 	if(sidebar.mode == "potential_wire") set_sidebar_mode("none");
 }
@@ -1779,6 +1780,7 @@ function make_connection(cno,existing){
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
 								post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 								messnamed("drivers_poly","setvalue",2,"set",outmsg);
+								connections.replace("connections["+cno+"]::conversion::soundcard", 1);
 								use_max_matrix = 0;
 							}
 							if(use_max_matrix){
@@ -2266,6 +2268,32 @@ function build_new_connection_menu(from, to, fromv,tov){
 	
 	var d = new Dict;
 	d = blocktypes.get(fromname);
+	if(d.contains("connections::out::default")){
+		var def=d.get("connections::out::default");
+		var s_m = d.getsize("connections::out::midi");
+		if(def<s_m){
+			sidebar.connection.default_out_applied = 1;
+			new_connection.replace("from::output::type","midi");
+		}else{
+			def -=s_m;
+			s_m = d.getsize("connections::out::parameters")
+			if(def<s_m){
+				sidebar.connection.default_out_applied = 1;
+				new_connection.replace("from::output::type","parameters");
+			}else{
+				def -= s_m;
+				sidebar.connection.default_out_applied = 2;
+				s_m = d.getsize("connections::out::audio");
+				if(def<s_m){
+					new_connection.replace("from::output::type","audio");
+				}else{
+					def-=s_m;
+					new_connection.replace("from::output::type","hardware");
+				}
+			}
+		}
+		new_connection.replace("from::output::number",def);
+	}
 	if(d.contains("connections::out::hardware")){
 		if(!sidebar.connection.default_out_applied){
 			sidebar.connection.default_out_applied=2;
@@ -2418,7 +2446,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if(check_for_connection_overlap(wires_potential_connection)){
 			connections.replace("connections["+wires_potential_connection+"]::overlap",1);
 		}else{
-			//remove_potential_wire(1);
+			//remove_potential_wire();
 			make_connection(wires_potential_connection,0);
 		}
 		new_connection.clear();
@@ -2429,7 +2457,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		post("\nERROR how have we got here without a potential connection?",fromname,toname);
 	}
 
-	redraw_flag.flag|=4;
+	redraw_flag.flag |= 4;
 }
 
 function check_for_connection_overlap(n){
@@ -2504,12 +2532,12 @@ function check_for_connection_overlap(n){
 
 function remove_block(block){
 	//hide the cubes and meters first, to give the illusion it all happens fast
-	for(i=0;i<blocks_cube[block].length;i++){
+	/*for(i=0;i<blocks_cube[block].length;i++){
 		blocks_cube[block][i].enable = 0;
 	}
 	for(i=0;i<blocks_meter[block].length;i++){
 		blocks_meter[block][i].enable = 0;
-	}
+	}*/
 	if(record_arm[block]>0) set_block_record_arm(block,0);
 	post("removing block",block,"\n");
 	var i;
@@ -2568,7 +2596,7 @@ function remove_block(block){
 		panels_order.splice(i,1);
 	}
 	set_display_mode("blocks");
-	redraw_flag.flag = 12;
+	redraw_flag.flag |= 12;
 }
 
 
@@ -2763,6 +2791,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			}else{
 				new_voice = next_free_voice(type,block_name);
 			}
+			if(new_voice<0){
+				post("adding voice failed");
+				return -1;
+			}
 			if(details.contains("voice_data::defaults")){
 				if(loading.wait>1) post("\n- poking in default voicedata");
 				var vd_def = [];
@@ -2801,7 +2833,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "vis_meter", 1);
 					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
 					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
-					audio_to_data_poly.message("setvalue", (new_voice+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 				}
 				if(loading.progress<=0){
 					audio_poly.message("setvalue", new_voice+1, "muteouts", 0);
@@ -2873,11 +2904,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			}
 			for(i=0;i<subvoices;i++){
 				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
-				blocks_cube[block][v*subvoices - i].freepeer(); //enable = 0;
+				//blocks_cube[block][v*subvoices - i].freepeer(); //enable = 0;
 				blocks_cube[block].pop(); //= null;
 			}
 			for(i=(v-1)*NO_IO_PER_BLOCK;i<blocks_meter[block].length;i++){
-				blocks_meter[block][i].freepeer(); //enable = 0;
+				blocks_meter[block][i].pop();//freepeer(); //enable = 0;
 			}
 			blocks_meter[block].pop();
 			for(i=0;i<MAX_PARAMETERS;i++) is_flocked[MAX_PARAMETERS*(removeme+voiceoffset)+t] = 0;
@@ -2887,7 +2918,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "vis_meter", 0);
 					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "vis_scope", 0);
 					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "out_value", 0);
-					audio_to_data_poly.message("setvalue", (removeme+1+tout*MAX_AUDIO_VOICES), "out_trigger", 0);
 				}
 			}
 			v--;
@@ -2962,7 +2992,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	if(((displaymode=="custom")||(displaymode=="custom_fullscreen"))&&(custom_block==block)){
 		set_display_mode(displaymode,custom_block);
 	}else{
-		redraw_flag.flag=4;
+		redraw_flag.flag = 4;
 	}
 //	rebuild_action_list = 1;
 }
@@ -3017,7 +3047,117 @@ function connection_edit_voices(connection, voice){
 	redraw_flag.flag |= 4;
 }
 
+function insert_block_in_multi_connections(newblockname,newblock){
+	// this gets called by insert block when it realises it's dealing with multi-connections
+	// it needs to take the array from menu.connnection_number, replace it with the first element then call insert block
+	var old_connections_list = menu.connection_number.slice(0);
+	menu.connection_number = old_connections_list[0];
+	//post("\ndoing first connection as a normal insert");
+	insert_block_in_connection(newblockname,newblock);
+	// then replace all the other connections
+	for(var i=1;i<old_connections_list.length;i++){
+		//post("\nswapping remaining connections over to their new destination:",old_connections_list[i]);
+		swap_connection_destination(old_connections_list[i],newblock,newblockname);
+	}
+}
+
+function swap_connection_destination(cno,newblock,newblockname){
+	//this moves a connection from one block to another. used internally only (ie insert in multi, insert mixer)
+	// get the details of the inserted block
+	var details = new Dict;
+	details = blocktypes.get(newblockname);
+	var intypes = details.get("connections::in").getkeys();
+	if(!Array.isArray(intypes))	intypes=[intypes];
+		
+	//- copy all the connection details
+	var oldconn = new Dict;
+	oldconn = connections.get("connections["+cno+"]");
+	
+	// make a new connection:
+	var f_type = oldconn.get("from::output::type");
+	var t_type = oldconn.get("to::input::type");
+	var i_no;
+	
+	//try to match up types..
+	i_no = intypes.indexOf(f_type);
+	if(i_no==-1){
+		i_no = intypes.indexOf(t_type);
+		if(i_no==-1) i_no = 0;
+		post("matching input type not found, next best chosen");
+	}
+	// so what i'm calling i_no and o_no are actually type number, not output number. 
+	var defaultpos=0;
+	var ftt = ((f_type == "hardware") || (f_type == "matrix")) ? "audio" : f_type;
+	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
+	//if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
+	//if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
+	new_connection.parse('{}');
+/*	if(defaultpos == 1){//this is the rare exception where default is the second one.
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::offset", 0);
+		new_connection.replace("conversion::offset2", 0.5);
+		if(((f_type=="midi")||(f_type=="parameters"))&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
+	}else{*/
+		new_connection.replace("conversion",oldconn.get("conversion"));
+	//}
+	new_connection.replace("from",oldconn.get("from"));
+	new_connection.replace("to::number",newblock);
+	new_connection.replace("to::voice","all");
+	new_connection.replace("to::input::number",0/*i_no*/);
+	new_connection.replace("to::input::type",intypes[i_no]);
+	connections.append("connections",new_connection);
+	make_connection(connections.getsize("connections")-1,0);
+	new_connection.clear();
+	
+	set_display_mode("blocks");
+	remove_connection(cno);
+	redraw_flag.flag |= 4;	
+}
+
+function insert_mixer(destination){
+	// assume audio, hw or matrix connections..
+	menu.connection_number = []; //wire numbers
+	for(var i=0;i<connections.getsize("connections");i++){
+		if(selected.wire[i]){
+			menu.connection_number.push(i); //this is for the first insert multi
+			selected.wire[i]=0;
+		}
+	} // prep a list because you need to clear selection to do the inserting.
+	var destx = blocks.get("blocks["+destination+"]::space::x");
+	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
+	var newblock = new_block("mix.bus",destx,desty);
+	draw_block(newblock);
+	send_audio_patcherlist(1);
+	insert_block_in_multi_connections("mix.bus",newblock);
+	var newlist = [];
+	for(var i=0;i<connections.getsize("connections");i++){
+		if(connections.contains("connections["+i+"]::to")&&(connections.get("connections["+i+"]::to::number")==newblock)) newlist.push(i);
+	}
+	for(var i=0;i<newlist.length;i++){
+		post("\nconnection",newlist[i],"ends at the new mix.bus")
+		var src = connections.get("connections["+newlist[i]+"]::from::number");
+		var srcx = blocks.get("blocks["+src+"]::space::x");
+		var srcy = blocks.get("blocks["+src+"]::space::y");
+		menu.connection_number=newlist[i];
+		//now decide whether it's stereo or mono:
+		var vl = connections.get("connections["+newlist[i]+"]::from::voice");
+		if(((vl == "all")&&((blocks.get("blocks["+src+"]::poly::voices")>1)||(blocks.get("blocks["+src+"]::from_subvoices")>1)))||(Array.isArray(vl))||(blocks.get("blocks["+src+"]::subvoices")>1)){
+			newchanblock = new_block("mix.stereo.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
+		}else{
+			newchanblock = new_block("mix.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
+		}
+		draw_block(newchanblock);
+		send_audio_patcherlist(1);
+		insert_block_in_connection("mix.channel",newchanblock);
+	}
+}
+
 function insert_block_in_connection(newblockname,newblock){
+	if(Array.isArray(menu.connection_number)) insert_block_in_multi_connections(newblockname,newblock);
+
+	post("\ninserting into connection number",menu.connection_number);
 	// get the details of the inserted block
 	var details = new Dict;
 	details = blocktypes.get(newblockname);
@@ -3058,6 +3198,7 @@ function insert_block_in_connection(newblockname,newblock){
 	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
 	if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
 	if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
+	if((newblockname=="mix.channel")||(newblockname=="mix.stereo.channel")) defaultpos = 3; // mixer channels special case (force unity)
 	new_connection.parse('{}');
 	if(defaultpos == 1){//this is the rare exception where default is the second one.
 		new_connection.replace("conversion::mute" , 0);
@@ -3080,12 +3221,12 @@ function insert_block_in_connection(newblockname,newblock){
 	
 //	new_connection.parse('{}');
 //	new_connection.replace("conversion",t_conv); 
-	if(defaultpos==2){//this is the rare exception where default is the second one.
+	if(defaultpos>=2){//this is the rare exception where default is the second one.
 		new_connection.parse('{}');
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
-		new_connection.replace("conversion::offset", 0);
+		new_connection.replace("conversion::offset", (defaultpos==3)|0);//and this is making the spread wide for mixer channels
 		new_connection.replace("conversion::offset2", 0.5);
 		if(((t_type=="midi")||(t_type=="parameters"))&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
 	}else{

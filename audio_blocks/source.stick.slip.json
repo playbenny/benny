@@ -8,9 +8,8 @@
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "position", "modulation" ],
-				"midi" : [ "set pitch", "reset" ]
-			},
+				"audio" : [ "position", "modulation" ]
+			},	
 			"out" : {
 				"audio" : [ "position", "velocity" ],
 				"midi" : [ "start trigger", "stop trigger" ]

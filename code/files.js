@@ -187,27 +187,7 @@ function preload_all_waves(){
 }
 
 
-function preload_some_wires(){
-	if(preload_wires_counter < MAX_BLOCKS){
-		var c = preload_wires_counter++;
-		if(!Array.isArray(wires[c]))wires[c] = [];
-		var segment = wires[c].length;
-		for(;segment<MAX_BEZIER_SEGMENTS;segment++){
-			if(typeof wires[c][segment] === 'undefined') {
-				wires[c][segment] = new JitterObject("jit.gl.gridshape","benny");
-				wires[c][segment].shape = "plane";
-				wires[c][segment].name = "wires£"+c+"£"+segment;
-				wires[c][segment].dim = [2,2];
-				wires[c][segment].enable = 0;
-				wires[c][segment].scale = [0,0,0];
-			}else{post("\nsurprise in wire pre-instantiate task");}
-		}
-		preload_task2.schedule(100);
-	}else{
-		post("\ncompleted pre-instantiating wire polygons")
-		preload_task2.freepeer();
-	}
-}
+
 
 function create_blank_wave_buffer(number,length, channels,name){
 	polybuffer_create_blank(length,channels);
@@ -262,7 +242,7 @@ function check_exists(filepath){
 		testfile.freepeer();
 		return 1;
 	}else{
-		post("NOT FOUND");
+		post("NOT FOUND:",filepath );
 		testfile.close();
 		testfile.freepeer();
 		return 0;
@@ -541,7 +521,9 @@ function import_song(){
 	var b,i,t;
 	//post("\nimport-displaymode is",displaymode);
 	if(loading.progress==-1){
-		try{ preload_task.cancel();	}catch(err){}
+		try{ preload_task.cancel();	}catch(err){
+			post("\nerror cancelling preload task");
+		}
 		//set_display_mode("loading");
 		if(output_looper_active){
 			post("\noutput looper is active so i should be setting it to fullscreen but i wont");
@@ -875,7 +857,7 @@ function import_song(){
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		
-		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){} //if you interupted preloading waves, just restart it in 5secs
+		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){post("\nerror rescheduling preload task");} //if you interupted preloading waves, just restart it in 5secs
 	}
 }
 
@@ -1173,11 +1155,9 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1), "out_trigger", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "vis_scope", 0);
 		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_value", 0);
-		audio_to_data_poly.message("setvalue", (new_voice+1+MAX_AUDIO_VOICES), "out_trigger", 0);
 		if(blocks.contains("blocks["+block_index+"]::record_arm")){
 			record_arm[block_index] = blocks.get("blocks["+block_index+"]::record_arm");
 			if(record_arm[block_index]==1) set_block_record_arm(block_index,1);
@@ -1210,7 +1190,6 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii] -= 1;
 			}
 			for(tii=split;tii<ts.length;tii++){
@@ -1218,7 +1197,6 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_meter", 1);
 				audio_to_data_poly.message("setvalue", ts[tii],"vis_scope", 0);
 				audio_to_data_poly.message("setvalue", ts[tii],"out_value", 0);
-				audio_to_data_poly.message("setvalue", ts[tii],"out_trigger", 0);
 				ts[tii]-=1;
 			}
 			hardware_metermap.replace(block_index,ts);
@@ -1309,9 +1287,11 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 //copy blocks and connections and states and properties into one dict
 	loading.save_wait_count = 0;
+	if(loading.songpath==undefined) loading.songpath="";
 	if(selectedonly){
 		//post("\nsaving selection only");
-		var savetask = new Task(check_its_safe_to_save_selected,this);
+		loading.save_type = "selected";
+		var savetask = new Task(check_its_safe_to_save,this);
 		savetask.schedule(1000);
 		//messnamed("trigger_save_selected", "bang");
 	}else if(saveas || (loading.songname=="") || (loading.songname=="autoload")){
@@ -1319,14 +1299,16 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		messnamed("trigger_save_as","bang");
 		timed_sidebar_notification("saved as "+loading.songname,2000);
 	}else{
-		var savetask = new Task(check_its_safe_to_save_named,this);
+		loading.save_type = "named";
+		if((loading.songpath !== undefined) && (loading.object_target == loading.songname)) loading.save_type = "save"; //you can't run the check_exists fn because the max object keeps it locked and it fails.
+		var savetask = new Task(check_its_safe_to_save,this);
 		savetask.schedule(1000);
 		//messnamed("save_named",loading.songpath+loading.songname);
 	}
 	set_sidebar_mode("none");
 }
 
-function check_its_safe_to_save_selected(){
+function check_its_safe_to_save(){
 	loading.save_wait_count++;
 	if(loading.save_wait_count>15){
 		post("\nTIMEOUT: I waited 15 seconds for these blocks to tell me they'd finished storing data and they never did: ",loading.save_waitlist);
@@ -1334,8 +1316,22 @@ function check_its_safe_to_save_selected(){
 	}
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
-		messnamed("trigger_save_selected", "bang");
-		timed_sidebar_notification("saved as "+loading.songname,2000);
+		if(loading.save_type=="selected"){
+			post(" selected");
+			messnamed("trigger_save_selected", "bang");
+			timed_sidebar_notification("saved as "+loading.songname,2000);
+		}else if(loading.save_type=="named"){
+			post(" as:",loading.songpath+loading.songname);
+			messnamed("save_named",loading.songpath+loading.songname);
+			timed_sidebar_notification("saved as "+loading.songname,2000);
+			for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
+			read_songs_folder(sidebar.files_page); //update internal songslist
+		}else{
+			messnamed("trigger_save","bang");
+			timed_sidebar_notification("saved again "+loading.songname,2000);
+			for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
+			read_songs_folder(sidebar.files_page); //update internal songslist
+		}
 	}else{
 		post("\nnot ready to save yet, waiting..");
 		savetask.schedule(1000);
@@ -1343,23 +1339,6 @@ function check_its_safe_to_save_selected(){
 }
 
 
-function check_its_safe_to_save_named(){
-	loading.save_wait_count++;
-	if(loading.save_wait_count>15){
-		post("\nTIMEOUT: I waited 15 seconds for these blocks to tell me they'd finished storing data and they never did: ",loading.save_waitlist);
-		loading.save_waitlist=[];
-	}
-	if(loading.save_waitlist.length == 0){
-		post("\nall store routines complete, finalising save");
-		messnamed("save_named",loading.songpath+loading.songname);
-		timed_sidebar_notification("saved as "+loading.songname,2000);
-		for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
-		read_songs_folder(sidebar.files_page); //update internal songslist
-	}else{
-		post("\nnot ready to save yet, waiting..");
-		savetask.schedule(1000);
-	}
-}
 
 function store_wait_for_me(blockno){
 	loading.save_waitlist.push(blockno);
@@ -1462,7 +1441,9 @@ function write_userconfig(){
 }
 
 function file_written(fname){//called when max reports successfully saving the current song dict so we have the filename
+	loading.object_target = fname;
 	loading.songname = fname.split("/").pop();
+	post("\nsave as set obj target to",loading.object_target);
 }
 
 function folder_select(folderstr){
@@ -1612,7 +1593,6 @@ function clear_everything(){
 	audio_to_data_poly.message("setvalue", 0, "vis_meter", 0);
 	audio_to_data_poly.message("setvalue", 0, "vis_scope", 0);
 	audio_to_data_poly.message("setvalue", 0, "out_value", 0);
-	audio_to_data_poly.message("setvalue", 0, "out_trigger", 0);
 	sidebar.selected_voice = -1;
 	note_poly.message("setvalue", 0,"muteouts",1);
 	audio_poly.message("setvalue", 0,"muteouts",1);
@@ -1658,39 +1638,39 @@ function clear_everything(){
 	notepools_dict.parse("notepools","{}");
 	messnamed("LOAD_NOTEPOOLS","bang");
 
-	var b,bl;
+	var b;
 	for(b in blocks_cube){
-		for(bl in blocks_cube[b]){
-			blocks_cube[b][bl].freepeer();			
-		}
+		//blocks_cube[b][0].freepeer();			
+		
 		blocks_cube[b] = [];
 	}
 	for(b in blocks_meter){
-		for(bl in blocks_meter[b]){
-			blocks_meter[b][bl].freepeer();
-		}
 		blocks_meter[b] = [];
 	}
-	for(b in wires){
-		for(bl in wires[b]){
-			wires[b][bl].enable = 0; 
-			wires[b][bl].scale = [0,0,0];//freepeer();
-		}
-		//wires[b] = [];
-		wires_colours[b] = [];
-	}
+	wires_position = [];
+	wires_scale = [];
+	wires_colour = [];
+	wires_rotatexyz = [];
+	messnamed("wires_matrices","dim",0,0);
+	messnamed("wires_matrices","bang");
+	messnamed("voices_matrices","dim",0,0);
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","dim",0,0);
+	messnamed("meters_matrices","bang");
+	messnamed("blocks_matrices","dim",0,0);
+	messnamed("blocks_matrices","bang");
 	wire_ends = [];
 	blocks_tex_sent=[];
-	background_cube.shape = "cube";
+	/*background_cube.shape = "cube";
 	background_cube.scale = [10000, 10000, 1 ];
 	background_cube.position = [0, 0, -200];
 	background_cube.name = "background";
-	background_cube.color = [0, 0, 0, 1];
-	menu_background_cube.shape = "cube";
+	background_cube.color = [0, 0, 0, 1];*/
+	/*menu_background_cube.shape = "cube";
 	menu_background_cube.scale = [1000, 1, 1000 ];
 	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block_menu_background";
-	menu_background_cube.color = [0, 0, 0, 1];
+	menu_background_cube.name = "block-menu-background";
+	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	i = MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
@@ -1715,6 +1695,8 @@ function clear_everything(){
 	automap.mapped_k = -1;
 	automap.mapped_k_v = -1;
 	automap.mapped_q = -1;
+	automap.voice_c = -1;
+	automap.available_k_block = -1;
 }
 
 function write_blockipedia(){

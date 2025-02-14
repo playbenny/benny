@@ -2,65 +2,39 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
-			"major" : 8,
-			"minor" : 3,
-			"revision" : 1,
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 4,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 775.0, 118.0, 600.0, 450.0 ],
-		"bglocked" : 0,
-		"openinpresentation" : 0,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
+		"rect" : [ 832.0, 119.0, 895.0, 823.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
-		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-2",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 437.0, 417.0, 35.0, 22.0 ],
+					"patching_rect" : [ 652.0, 792.0, 35.0, 22.0 ],
 					"text" : "out 2"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"code" : "//needs to bang out for when it's time to sample for sample-value, and for triggers\r\n\r\nHistory min_slow;\r\nHistory min_fast;\r\nHistory max_slow;\r\nHistory max_fast;\r\nHistory pointer;\r\nHistory clock_fast(0);\r\nHistory trig_debounce;\r\nHistory value_debounce;\r\nHistory last_out;\r\n\r\nBuffer scopes(\"scope_buffer\");\r\n\r\nParam size(min=16,max=256,default=64);\r\nParam rate(min=1,max=48000,default=4800);\r\nParam channel(min=0,max=99999999,default=0);\r\n\r\nParam out_value(min=0,max=1,default=0);\r\nParam out_trigger(min=0,max=1,default=0);\r\nParam vis_meter(min=0,max=1,default=0);\r\nParam vis_scope(min=0,max=8,default=0);\r\n\r\nParam rate_limit(min=0,max=10000,default=0);\r\n\r\n\r\nParam sens(min=0,max=1,default=0.1);\r\n\r\nif(vis_scope){\r\n\tclock_fast = delta(phasor(rate))<0;\r\n\tif(in1<min_fast) min_fast = in1;\r\n\tif(in1>max_fast) max_fast = in1;\r\n}else{\r\n\tclock_fast = 0;\r\n\tmin_fast = 10;\r\n\tmax_fast = -10;\r\n}\r\nclock_slow = delta(phasor(30))<0;\r\n\r\nif(in1<min_slow) min_slow = in1;\r\nif(in1>max_slow) max_slow = in1;\r\n\r\nif(trig_debounce){\r\n\ttrig_debounce = trig_debounce-1;\r\n\tout2=0;\r\n}else{\r\n\tif((slide(delta(in1),0,1000)>sens) && (out_trigger)){\r\n\t\tout2=1;\r\n\t\ttrig_debounce=1000;\r\n\t}else{\r\n\t\tout2=0;\r\n\t}\r\n}\r\nif(clock_slow){\r\n\tpoke(scopes, min_slow, channel, 0, 0);//channel actually used as pointer, channel is 0\r\n\tpoke(scopes, max_slow, channel, 1, 0);\r\n\tmin_slow = 10;\r\n\tmax_slow = -10;\r\n\t}\r\nif(clock_fast){\r\n\tpointer = (pointer + 1) % size;\r\n\tschannel = 256*channel;\r\n\tpoke(scopes, min_fast, pointer+schannel, 0, 0);\r\n\tpoke(scopes, max_fast, pointer+schannel, 1, 0);\r\n\tmin_fast = 10;\r\n\tmax_fast = -10;\r\n}\r\nt = slide(abs(in1+10),0,1000)-10;\r\nif((abs((last_out-t)*128)>1) && (out_value) && (value_debounce==0) ){\r\n\tout2=1;\r\n\ttrig_debounce=2;\r\n\tlast_out=t;\r\n\tvalue_debounce=rate_limit;\r\n}\r\nif(value_debounce>0) value_debounce-=1;\r\nout1 = t;",
+					"code" : "//needs to bang out for when it's time to sample for sample-value, and for triggers\r\n\r\nHistory min_slow;\r\nHistory min_fast;\r\nHistory max_slow;\r\nHistory max_fast;\r\nHistory pointer;\r\nHistory count_fast;\r\nHistory count_slow;\r\nHistory value_debounce;\r\nHistory last_out;\r\n\r\nBuffer scopes(\"scope_buffer\");\r\n\r\nParam size(min=16,max=256,default=64);\r\nParam rate(min=1,max=48000,default=10);\r\nParam channel(min=0,max=99999999,default=0);\r\nParam slowrate(1470);\r\n\r\nParam out_value(min=0,max=1,default=0);\r\nParam vis_meter(min=0,max=1,default=0);\r\nParam vis_scope(min=0,max=8,default=0);\r\n\r\nParam rate_limit(min=0,max=10000,default=1600);\r\n\r\nclock_fast = 0;\r\nif(vis_scope){\r\n\tcount_fast+=1;\r\n\tif(count_fast>rate){\r\n\t\tclock_fast = 1;\r\n\t\tcount_fast -= rate;\r\n\t}\r\n\tmin_fast = (in1<min_fast) ? in1 : min_fast;\r\n\tmax_fast = (in1>max_fast) ? in1 : max_fast;\r\n\tif(clock_fast){\r\n\t\tpointer = (pointer + 1) % size;\r\n\t\tschannel = 256*channel;\r\n\t\tpoke(scopes, min_fast, pointer+schannel, 0, 0);\r\n\t\tpoke(scopes, max_fast, pointer+schannel, 1, 0);\r\n\t\tmin_fast = 10;\r\n\t\tmax_fast = -10;\r\n\t}\r\n}else{\r\n\tmin_fast = 10;\r\n\tmax_fast = -10;\r\n}\r\n\r\ncount_slow+=1;\r\nmin_slow = (in1<min_slow) ? in1 : min_slow;\r\nmax_slow = (in1>max_slow) ? in1 : max_slow;\r\nif(count_slow>slowrate){\r\n\tcount_slow=0;\r\n\tpoke(scopes, min_slow, channel, 0, 0);//channel actually used as pointer, channel is 0\r\n\tpoke(scopes, max_slow, channel, 1, 0);\r\n\tmin_slow = 10;\r\n\tmax_slow = -10;\r\n}\r\n\r\nt = slide(abs(in1+10),0,1000)-10;\r\nif((abs((last_out-t)*128)>1) && (out_value) && (value_debounce==0) ){\r\n\tout2=1;\r\n\tlast_out=t;\r\n\tvalue_debounce=rate_limit;\r\n}\r\nif(value_debounce>0) value_debounce-=1;\r\nout1 = t;",
 					"fontface" : 0,
-					"fontname" : "Lucida Console",
+					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-5",
 					"maxclass" : "codebox",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 50.0, 52.0, 406.0, 353.0 ]
+					"patching_rect" : [ 50.0, 52.0, 637.0, 724.0 ]
 				}
 
 			}
@@ -82,7 +56,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 50.0, 421.0, 35.0, 22.0 ],
+					"patching_rect" : [ 50.0, 792.0, 35.0, 22.0 ],
 					"text" : "out 1"
 				}
 
@@ -110,6 +84,7 @@
 
 			}
  ],
+		"originid" : "pat-3890",
 		"autosave" : 0
 	}
 

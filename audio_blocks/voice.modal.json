@@ -108,7 +108,7 @@
 				"error_scale" : 0,
 				"values" : ["bi", -1, 1, "exp100"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "gain",
