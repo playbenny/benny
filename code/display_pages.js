@@ -126,6 +126,7 @@ function redraw(){
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
 		topbar.videoplane.message("enable",0);
+		bottombar.videoplane.message("enable",0);
 	}else if(displaymode == "custom"){
 		clear_screens();
 		draw_topbar();
@@ -143,6 +144,7 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_custom();
+		bottombar.videoplane.message("enable",0);
 	}else if(displaymode == "flocks"){
 		meters_enable=0;
 		clear_screens();
@@ -7839,7 +7841,9 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 function setup_bottom_bar(block){
 	post("\nsetting up bottom bar",block);
 	bottombar.block = block;
+	var r = bottombar.right;
 	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-9) : (sidebar.x - 5);
+	if(r!=bottombar.right) bottombar_size();
 	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
 }
 

@@ -3807,11 +3807,19 @@ function save_preset(){
 	//see if there's a preset file for this block?
 	if(!blocktypes.contains(block_name+"::presets")){
 		//add preset section
-		blocktypes.replace(block_name+"::presets","{}");
+		blocktypes.setparse(block_name+"::presets","{}");
 	}
-	blocktypes.replace(block_name+"::presets::"+presetname,'{ "values" : "*" }');
+	blocktypes.setparse(block_name+"::presets::"+presetname,'{ "values" : "*" }');
 	blocktypes.replace(block_name+"::presets::"+presetname+"::values",pv);
+	
+	// now need to save to a userpreset file
+	post("\nsaving to userpresets")
+	userpresets.setparse(block_name+"::presets::"+presetname,"{}");
+	userpresets.replace(block_name+"::presets::"+presetname+"::values",pv);
+	userpresets.export_json(projectpath+"userpresets.json");
+	
 	set_sidebar_mode("block");
+
 }
 
 function encapsulate_selection(name){
@@ -4058,7 +4066,7 @@ function encapsulate_selection(name){
 	
 	//then replace the patcher name with the right one?? before saving json?
 	new_encapsulated.replace(name+"::patcher",name);
-	new_encapsulated.export_json(projectpath+"/audio_blocks/"+name+".json");
+	new_encapsulated.export_json(projectpath+"audio_blocks/"+name+".json");
 	
 	if(displaymode!="blocks")set_display_mode("blocks");
 	var new_encapsulated_blockno = new_block(name,minx-0.5,miny-0.5);
