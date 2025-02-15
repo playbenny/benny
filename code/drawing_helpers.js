@@ -131,6 +131,7 @@ function draw_cpu_meter(){
 }
 
 function setfontsize(size){
+	if(size=="small") size = fontsmall;
 	if(cur_font_size!=size){
 		cur_font_size=size;
 		lcd_main.message("font",mainfont,size);

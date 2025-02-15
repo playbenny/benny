@@ -721,17 +721,10 @@ function draw_block_menu(){
 }
 
 function hide_block_menu(){
-	post("\nhiding block menu\n");
 	messnamed("menu_multiple","enable",0);
-	//for(var i=0;i<menu.cubecount;i++){
-	//	blocks_menu[i].enable = 0;
-	//}
 }
 
 function reinitialise_block_menu(){
-	/*for(var b in blocks_menu){
-		if(blocks_menu[b]!=="undefined") blocks_menu[b].freepeer()
-	}*/
 	blocks_menu=[];
 }
 
@@ -2187,19 +2180,18 @@ function draw_topbar(){
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
 		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
-			var y_o = mainwindow_height - 9 - fontheight;
+			var y_o = mainwindow_height - 5 - fontheight;
 			if(bottombar.block>-1){ //hide bottombar button
 				lcd_main.message("paintrect", 5,y_o, 9+fontheight, fontheight + y_o,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
 				lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
-				lcd_main.message("moveto",mainwindow_width-9-fo1*2,9+fo1*6);
-				lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
-				lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
+				lcd_main.message("moveto",9+fo1*8,mainwindow_height-5-fo1*4);
+				lcd_main.message("lineto",9+fo1*7,mainwindow_height-5-fo1*3);
+				lcd_main.message("lineto",9+fo1*8,mainwindow_height-5-fo1*2);
 				click_zone(hide_bottom_bar,null,custom_block, 5,y_o, 9+fontheight, fontheight + y_o,mouse_index,1);
 				y_o -= 1.1*fontheight;
 			}else{
 				//if there are avalable bottombars, show buttons for them?
 			}
-			
 			
 			var cll = config.getsize("palette::gamut");
 			var c = new Array(3);
@@ -7049,7 +7041,13 @@ function draw_sidebar(){
 		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,scrollbar_index,2);
 	}
 	if(fullscreen&&view_changed&&((displaymode=="blocks")||(displaymode=="panels")))draw_clock();
+	var h=Math.min(mainwindow_height,y_offset+2);
+	if(h!=sidebar.used_height){
+		sidebar.used_height=h;
+		sidebar_size();
+	}
 	if(bottombar.block>-1){
+		if(sidebar.used_height<(mainwindow_height-bottombar.height))view_changed=1;
 		if(view_changed){
 			setup_bottom_bar(bottombar.block);
 		}else{
@@ -7057,11 +7055,6 @@ function draw_sidebar(){
 		} 
 	}
 	view_changed = false;
-	var h=Math.min(mainwindow_height,y_offset+2);
-	if(h!=sidebar.used_height){
-		sidebar.used_height=h;
-		sidebar_size();
-	}
 }
 
 
@@ -7756,8 +7749,8 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 function setup_bottom_bar(block){
 	post("\nsetting up bottom bar",block);
 	bottombar.block = block;
-	bottombar.right = (sidebar.mode=="none") ? (mainwindow_width-9) : (sidebar.x - 5);
-	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-9, bottombar.right, mainwindow_height-5);
+	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-9) : (sidebar.x - 5);
+	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
 }
 
 function draw_bottom_bar(){
@@ -7766,4 +7759,9 @@ function draw_bottom_bar(){
 
 function update_bottom_bar(){
 	ui_poly.message("setvalue",  bottombar.block+1, "update");
+}
+
+function hide_bottom_bar(){
+	bottombar.block = -1;
+	redraw_flag.flag|=4;
 }
