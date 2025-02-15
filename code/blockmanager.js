@@ -491,6 +491,13 @@ var usermouse = {
 	}
 }
 
+var bottombar = {
+	videoplane: null,
+	height: 200,
+	block: -1,
+	available : []
+}
+
 var sidebar = {
 	videoplane: null,
 	used_height: 0,

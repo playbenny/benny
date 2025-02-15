@@ -21,6 +21,7 @@
 	"MAX_AUDIO_VOICES" : ["int", 4, 512],
 	"MAX_WAVES" : "DONT",
 	"MAX_STATES" : ["int",8,100],
+	"BOTTOMBAR_HEIGHT" : ["int",1,10],
 	"MERGE_PURGE" : "TOGGLE",
 	"MAX_PANEL_COLUMNS" : ["int",3,10],
 	"SELF_CONNECT_THRESHOLD" : ["int",100, 10000],

@@ -1101,6 +1101,12 @@ function statesbar_size(){
 	}
 }
 
+function bottombar_size(){
+	bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
+	if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
+	//todo: videoplane
+}
+
 
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
@@ -1127,6 +1133,7 @@ function size(width,height,scale){
 		topbar_size();
 		sidebar_size();
 		topbar.videoplane.message("enable",1);
+		bottombar_size();
 
 		sidebar.meters.startx = 9+1.1* fontheight;
 		sidebar.meters.spread = 4;

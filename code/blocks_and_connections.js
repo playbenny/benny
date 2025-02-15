@@ -974,7 +974,7 @@ function remove_connection(connection_number){
 	wires_colour[connection_number] = null;
 	
 
-	wire_ends[connection_number][0] = -1.057;
+	wire_ends[connection_number] = [-1.057];
 	selected.wire[connection_number] = 0;
 
 	if(connections.contains("connections["+connection_number+"]::overlap")){

@@ -459,7 +459,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								var num = matrix_menu_index[usermouse.hover[1]];
-								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								if(num == undefined) error("\nhow 1?",usermouse.hover[1],num);
 								var type = blocks_menu[num].name;
 								
 								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
@@ -481,7 +481,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								var num = matrix_menu_index[usermouse.hover[1]];
-								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								if(num == undefined) error("\nhow 2?",usermouse.hover[1],num);
 								var newb = blocks_menu[num].name;
 								swap_block(newb);
 								set_display_mode("blocks");
@@ -504,7 +504,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(dy<1.2) make_space(avx,avy,0.65);
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 								var num = matrix_menu_index[usermouse.hover[1]];
-								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								if(num == undefined) error("\nhow 3?",usermouse.hover[1],num);
 								var newb = blocks_menu[num].name;
 								var r = new_block(newb, avx,avy);
 								if(blocktypes.get(newb+"::type")=="audio") send_audio_patcherlist(1);
@@ -520,7 +520,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}else{
 							if(usermouse.clicked3d!="background_dragged"){
 								var num = matrix_menu_index[usermouse.hover[1]];
-								if(num == undefined) error("\nhow ?",usermouse.hover[1],num);
+								if(num == undefined) error("\nhow 4?",usermouse.hover[1],num);
 								var newb = blocks_menu[num].name;
 								post("substitution found!!"+newb);
 								loading.recent_substitutions.replace(menu.swap_block_target, newb);

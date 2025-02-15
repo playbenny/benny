@@ -177,10 +177,12 @@ function frameclock(){
 			sidebar_meters();
 			bangflag = 1;
 		}
+		if(bottombar.block>-1)update_bottom_bar();
 		if(sidebar.panel) update_custom();
 	}else if(displaymode == "panels"){
 		sidebar_meters();
 		update_custom_panels();
+		if(bottombar.block>-1)update_bottom_bar();
 		bangflag=1;
 	}else if(displaymode == "waves"){
 		sidebar_meters();
