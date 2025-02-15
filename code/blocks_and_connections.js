@@ -2701,7 +2701,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 					}
 				}
 				if(!removedtotally){
-					if(connections.get("connections["+i+"]::to::number") == block){
+					if((connections.contains("connections["+i+"]::to::number"))&&(connections.get("connections["+i+"]::to::number") == block)){
 						sv = 1;
 						if(connections.get("connections["+i+"]::to::input::type") == "audio") sv = subvoices;
 						//post("\nSV IS ",sv);
