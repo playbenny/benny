@@ -26,6 +26,7 @@ var b_list = [];
 var v_list = []; // list of voices of the channels connected to this mixer
 var v_name = []; 
 var v_colour = [];
+var b_colour = [];
 var v_type = [];
 var omute = [];
 var osolo = [];

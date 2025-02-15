@@ -20,25 +20,25 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,4],
-				"colour" : 0
+				"colour" : 4
 			},
 			{
 				"contains" : [2,3,13,5],
 				"height" : 0,
-				"colour" : -8
+				"colour" : -2
 			},
 			{ 
 				"header" : "envelope",
 				"contains" : [6,7,8],
-				"colour" : -12
+				"colour" : -8
 			},
 			{
 				"contains" : [9,10,12,14],
 				"height" : 0,
-				"colour" : -16
+				"colour" : -12
 			},
 			{
-				"contains" : [11, 15,16,17,18,19,20],
+				"contains" : [21,11, 15,16,17,18,19,20],
 				"height" : 0,
 				"colour" : -20
 			}
@@ -195,6 +195,14 @@
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5
+			},	
+			{
+				"name" : "attack_shape",
+				"type" : "menu_b",
+				"forcelabel" : 1,
+				"values" : ["attack_shape_regular", "attack_shape_mirror" ],
+				"wrap" : 1,
+				"default" : 0.3
 			}
 		]
 	}

@@ -58,6 +58,7 @@
 	"RECYCLING" : 1,
 	"ENABLE_RECORD_HARDWARE" : 1,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
+	"BOTTOMBAR_HEIGHT" : 3,
 	"waves_preloading" : 1,
 	"consolevsts" : {
 		"bus" : "console7buss64",

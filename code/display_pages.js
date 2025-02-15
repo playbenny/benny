@@ -120,9 +120,12 @@ function redraw(){
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
+		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
 		if(fullscreen) draw_clock();
+		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
+		topbar.videoplane.message("enable",0);
 	}else if(displaymode == "custom"){
 		clear_screens();
 		draw_topbar();
@@ -192,6 +195,7 @@ function get_hw_meter_positions(){
 
 function draw_panels(){
 	//deferred_diag.push("draw panels "+mouse_index);
+	var panelsbottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
 	panels_custom = [];
 	var i,b,x=0,y=0,h;
 	var statecount;
@@ -255,18 +259,19 @@ function draw_panels(){
 				has_ui = Math.min(4,blocktypes.get(block_name+"::ui_in_sidebar_height"));
 			}
 			if(blocktypes.contains(block_name+"::no_ui_in_panel")) has_ui = 0;
+			if(bottombar.block==b) has_ui = 0;
 			h+=has_ui;
 			if(has_params) h-=0.5;
 			panels_custom.push(b);
 		}
 
-		if(18+(y+h+0.9)*fontheight>mainwindow_height){
+		if(18+(y+h+0.9)*fontheight>panelsbottom){
 			x++;
 			y=0;
 			if(x>=MAX_PANEL_COLUMNS){
 				//post("\npanels list overflowed, TODO scroll or autosize!");
 				MAX_PANEL_COLUMNS++;
-				redraw_flag.flag = 4;
+				redraw_flag.deferred = 4;
 				return(1);
 			}
 		}
@@ -1778,8 +1783,9 @@ function write_blocks_matrix(){
 	matrix_voice_index = [];
 	for(var b=0;b<MAX_BLOCKS;b++){
 		matrix_meter_index[b]=[];
-		if(Array.isArray(blocks_cube[b])){
+		if((Array.isArray(blocks_cube[b]))){
 			matrix_block_index[b]=bc;
+			matrix_block_lookup[bc]=b;
 			matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
 			matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
 			matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
@@ -1866,6 +1872,7 @@ function set_sidebar_mode(mode){
 		sidebar.dropdown = null;
 		sidebar.scroll.position = 0;
 		sidebar.scroll.max = 0;
+		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
 		//if((sidebar.mode == "none")||(mode=="none")) center_view(1);
 		if(mode=="block"){
 			sidebar.scopes.voice = -1;//causes it to ask te right block to display a scope
@@ -1885,8 +1892,7 @@ function set_sidebar_mode(mode){
 }
 
 function clear_screens(){
-	//lcd_main.message("brgb", 0, 0, 0);
-	//deferred_diag.push("clear screens, mode "+displaymode);
+	//post("\ncleared screen",arguments.callee.caller.name);
 	view_changed = true;
 	if(displaymode=="panels"){
 		backgroundcolour_current = backgroundcolour_panels;
@@ -1930,6 +1936,15 @@ function draw_state_xfade(){
 		mouse_click_actions[state_fade.index] = whole_state_xfade;
 		mouse_click_parameters[state_fade.index] = state_fade.selected;
 		mouse_click_values[state_fade.index] = 0;
+		statesfadebar.videoplane.message("enable",1);
+		var tw=(sidebar.x)/mainwindow_width;
+		var th1=(state_fade.y+fontheight*0.5)/mainwindow_height;
+		var th2=(fontheight+10)/mainwindow_height;
+		statesfadebar.shown = 1;
+		statesfadebar.videoplane.message("scale",tw,th2);
+		statesfadebar.videoplane.message("position",-1+tw,1-2*th1,0);
+		statesfadebar.videoplane.message("texzoom",1/tw,1/th2);
+		statesfadebar.videoplane.message("texanchor",0.5*tw,1-th1);
 	}
 }
 
@@ -2169,8 +2184,23 @@ function draw_topbar(){
 			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
 			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
+			statesbar.videoplane.message("enable",0);
+			statesbar.used_height=0;
 		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 9 - fontheight;
+			if(bottombar.block>-1){ //hide bottombar button
+				lcd_main.message("paintrect", 5,y_o, 9+fontheight, fontheight + y_o,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
+				lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
+				lcd_main.message("moveto",mainwindow_width-9-fo1*2,9+fo1*6);
+				lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
+				lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
+				click_zone(hide_bottom_bar,null,custom_block, 5,y_o, 9+fontheight, fontheight + y_o,mouse_index,1);
+				y_o -= 1.1*fontheight;
+			}else{
+				//if there are avalable bottombars, show buttons for them?
+			}
+			
+			
 			var cll = config.getsize("palette::gamut");
 			var c = new Array(3);
 			// draw a button for each possible state
@@ -2240,6 +2270,18 @@ function draw_topbar(){
 				lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight);
 				lcd_main.message("write", "all");			
 				click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
+			}else{
+				y_o += 1.2*fontheight;
+			}
+			if(y_o < mainwindow_height - 9 - fontheight){
+				statesbar.used_height = mainwindow_height - y_o;
+			}
+			statesbar_size();
+			if(statesfadebar.shown == 1){
+				if(!((state_fade.position>-1) && (state_fade.selected > -2))){
+					statesfadebar.shown = 0;
+					statesfadebar.videoplane.message("enable",0);
+				}
 			}
 		}
 	}else if(loading.progress>0){
@@ -2252,6 +2294,11 @@ function draw_topbar(){
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
 		lcd_main.message("write", loading.songname);
 		mouse_index++;
+	}
+	var w = 11 + fontheight*(x_o-0.2);
+	if(topbar.used_length!=w){
+		topbar.used_length=w;
+		topbar_size();
 	}
 }
 
@@ -3347,7 +3394,7 @@ function draw_sidebar(){
 					lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,block_darkest);
 					click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,1);
 				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels")){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (bottombar.block != block)){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
 					if((block_voicecount>1) && (blocktypes.contains(block_name+"::ui_in_sidebar_expands"))) ui_h += (block_voicecount-1) * blocktypes.get(block_name+"::ui_in_sidebar_expands");
 					var miplus16 = mouse_index + 16;
@@ -3394,17 +3441,38 @@ function draw_sidebar(){
 						mouse_click_parameters[mouse_index] = "custom";
 					}
 				}
+				var endx=sidebar.x2;
+				if(blocktypes.contains(block_name+"::ui_to_bottom_panel")){
+					endx=sidebar.x + 0.5*sidebar.width-fo1;
+				}
 				if(usermouse.clicked2d == mouse_index){
 					efg = block_darkest;
 					ebg = menucolour;
 				}
-				lcd_main.message("paintrect", sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
+				lcd_main.message("paintrect", sidebar.x,y_offset,endx,y_offset+fontheight*0.5,ebg);
 				lcd_main.message("frgb" , efg);
-				if(view_changed===true) click_rectangle( sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
+				if(view_changed===true) click_rectangle( sidebar.x,y_offset,endx,y_offset+fontheight*0.5,mouse_index,1);
 				mouse_index++;
 				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);
 				lcd_main.message("write", et);
 
+				if(endx<sidebar.x2){
+					mouse_click_parameters[mouse_index] = block;
+					mouse_click_actions[mouse_index] = setup_bottom_bar;
+					mouse_click_values[mouse_index] = block;
+					ebg=block_darkest;
+					efg=block_colour;
+					if(usermouse.clicked2d == mouse_index){
+						ebg = menucolour;
+						efg = block_darkest;
+					}
+					lcd_main.message("paintrect", endx+fo1,y_offset,sidebar.x2,y_offset+fontheight*0.5,ebg);
+					lcd_main.message("frgb" , efg);
+					if(view_changed===true) click_rectangle( endx,y_offset,sidebar.x2,y_offset+fontheight*0.5,mouse_index,1);
+					mouse_index++;
+					lcd_main.message("moveto" ,endx+2*fo1, y_offset+fontheight*0.4);
+					lcd_main.message("write", "put in bottom panel");
+				}
 				y_offset += fontheight*0.6;
 			}else if(blocktypes.contains(block_name+"::plugin_name")){
 				var fc = block_colour;
@@ -6981,7 +7049,19 @@ function draw_sidebar(){
 		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,scrollbar_index,2);
 	}
 	if(fullscreen&&view_changed&&((displaymode=="blocks")||(displaymode=="panels")))draw_clock();
+	if(bottombar.block>-1){
+		if(view_changed){
+			setup_bottom_bar(bottombar.block);
+		}else{
+			update_bottom_bar();
+		} 
+	}
 	view_changed = false;
+	var h=Math.min(mainwindow_height,y_offset+2);
+	if(h!=sidebar.used_height){
+		sidebar.used_height=h;
+		sidebar_size();
+	}
 }
 
 
@@ -7673,4 +7753,17 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 	}
 }
 
+function setup_bottom_bar(block){
+	post("\nsetting up bottom bar",block);
+	bottombar.block = block;
+	bottombar.right = (sidebar.mode=="none") ? (mainwindow_width-9) : (sidebar.x - 5);
+	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-9, bottombar.right, mainwindow_height-5);
+}
 
+function draw_bottom_bar(){
+	ui_poly.message("setvalue",  bottombar.block+1, "draw");
+}
+
+function update_bottom_bar(){
+	ui_poly.message("setvalue",  bottombar.block+1, "update");
+}

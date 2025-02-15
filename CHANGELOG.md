@@ -1,6 +1,8 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+14/2/25:
+- **breaking change** the envelopes in voice.basic,voice.pitch.env,voice.dual,voice.harmonic,voice.noise,env.asr,vca.env,2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
 12/2/25:
 - HUGE PERFORMANCE IMPROVEMENTS! i'd been putting this off but it wasn't as bad as i feared (!) the 3d graphics now takes advantage of 'hardware instancing' which means the cpu overhead of large patches is vastly reduced. on my mid-range framework intel laptop (no gpu) with a particular largeish patch ('blackpool late 80s') from my live set the cpu usage/power draw drops by 50% (!) despite it actually hitting a higher FPS than before. 
 - mouse selection and hover on the blocks page is also vastly improved as it now uses physics based picking on the gpu instead of the axis aligned bounding box method it used before. everything should feel a lot snappier.

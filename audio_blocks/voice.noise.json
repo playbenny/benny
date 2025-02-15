@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "noise source + VCA + ENV. midi to the 'damp' input causes the envelope to close quickly.",
 		"max_polyphony" : 0,
-		"upsample" : 2,
+		"upsample" : 1,
 		"latching_enable" : 1,
 		"connections" : {
 			"in" : { 
@@ -14,21 +14,27 @@
 			},
 			"out" : {
 				"audio" : [ "noise", "s&h" ],
-				"midi" : ["through"]
+				"midi" : [ "through" ]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,9],
-				"colour" : 10
+				"contains" : [0,0,9,12],
+				"colour" : 20,
+				"height" : 0
 			},
 			{ 
 				"contains" : [1,2,3],
-				"colour" : 5
+				"colour" : 0
 			},
 			{
-				"contains" : [4,5,6,7,8,10],
-				"height" : 0
+				"contains" : [4,11,5,6],
+				"height" : 0,
+				"colour" : -10
+			},
+			{	"contains" : [7,8,10],
+				"height" : 0,
+				"colour" : -20
 			}
 		],
 		"panel" : {
@@ -114,7 +120,22 @@
 				"values" : ["bi", -1, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0.5				
-			}	
+			},	
+			{
+				"name" : "attack_shape",
+				"type" : "menu_b",
+				"forcelabel" : 1,
+				"values" : ["attack_shape_regular", "attack_shape_mirror" ],
+				"wrap" : 1,
+				"default" : 0.3
+			},
+			{
+				"name" : "env_->_highpass",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0.5				
+			}
 		]
 	}
 }

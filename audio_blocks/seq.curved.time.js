@@ -44,7 +44,7 @@ function setup(x1,y1,x2,y2,sw){
 	gh=height-3;
 	unit = height / 8;
 	gh-=unit;
-	drawcurves();
+	drawcurves(1);
 }
 
 function draw(){
@@ -122,7 +122,7 @@ function drawcurves(force){
 			var ov=(10+tot[tot.length-1]*div)%1;
 			var xing=[];
 			var act="moveto";
-			for(ii=0;ii<=gw;ii+=1){
+			for(ii=0;ii<gw;ii+=1){
 				i=ii%gw;
 				outlet(1,act,gx+i,gy+gh*((9.999999999-tot[i])%1));
 				v=(10+tot[i]*div)%1;
