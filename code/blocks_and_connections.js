@@ -3782,6 +3782,37 @@ function is_selection_encapsulatable(){
 		return 0;
 	}
 }
+function select_preset(preset,pname){
+	post("selected preset",preset," = ",pname);
+	var bn = selected.block.indexOf(1);
+	var bna = blocks.get("blocks["+bn+"]::name");
+	var pv = blocktypes.get(bna+"::presets::"+pname+"::values");
+	post("\nparameter array:",pv);
+	parameter_value_buffer.poke(1,MAX_PARAMETERS*bn,pv);
+	redraw_flag.flag |= 4;
+}
+
+function save_preset(){
+	var presetname = text_being_editted;
+	var block = selected.block.indexOf(1);
+	var block_name = blocks.get("blocks["+block+"]::name");
+	post("\nsaving preset",presetname,"for block",block,"-",block_name);
+	var params = blocktypes.get(block_name+"::parameters");
+	if(blocktypes.getsize(block_name+"::parameters")==1) params = [params];	
+	var pv=new Array(params.length); //unline states doesn't include mute (would be silly)
+	for(var p=0;p<params.length;p++){
+		pv[p] = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+p);
+	}
+	post("parameter array",pv);
+	//see if there's a preset file for this block?
+	if(!blocktypes.contains(block_name+"::presets")){
+		//add preset section
+		blocktypes.replace(block_name+"::presets","{}");
+	}
+	blocktypes.replace(block_name+"::presets::"+presetname,'{ "values" : "*" }');
+	blocktypes.replace(block_name+"::presets::"+presetname+"::values",pv);
+	set_sidebar_mode("block");
+}
 
 function encapsulate_selection(name){
 	if((name=="name")||(name==null))name=text_being_editted;

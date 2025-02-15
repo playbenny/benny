@@ -2470,6 +2470,41 @@ function draw_sidebar(){
 		lcd_main.message("moveto" ,sidebar.x2-fontheight*1.9, fontheight*0.75+y_offset);
 		lcd_main.message("write", "cancel");
 		y_offset += fontheight;
+	}else if(sidebar.mode == "name_preset"){
+		// when encapsulating blocks you need to name the encapsulation first ##############################################################################################################
+		if(sidebar.mode != sidebar.lastmode){
+			if(displaymode == "blocks") center_view(1);
+			clear_sidebar_paramslider_details();
+			sidebar.lastmode = sidebar.mode;
+			audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
+			remove_midi_scope();
+			redraw_flag.targets=[];
+			text_being_editted = "";
+		}
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menudarkest);
+		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		lcd_main.message("write", "enter a name for the preset");
+		y_offset+=1.1*fontheight;
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menucolour);
+		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , 0,0,0);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		if(text_being_editted.length<15) setfontsize(fontsmall*2);
+		lcd_main.message("write", text_being_editted);
+		setfontsize(fontsmall*2);
+		y_offset+=1.1*fontheight;
+		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
+		click_zone(save_preset, text_being_editted, text_being_editted, sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("moveto" ,sidebar.x2-fontheight*6.1, fontheight*0.75+y_offset);
+		lcd_main.message("write", "save preset");
+		lcd_main.message("paintrect", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,menudarkest);
+		click_zone(set_sidebar_mode, "none", "", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
+		lcd_main.message("frgb" , menudark);
+		lcd_main.message("moveto" ,sidebar.x2-fontheight*1.9, fontheight*0.75+y_offset);
+		lcd_main.message("write", "cancel");
+		y_offset += fontheight;
 	}else if(sidebar.mode == "edit_state"){
 		// EDIT STATE  ##############################################################################################################
 		var cll = config.getsize("palette::gamut");
@@ -4471,6 +4506,45 @@ function draw_sidebar(){
 				
 				y_offset += 1.1* fontheight;					
 			}
+			if(blocktypes.contains(block_name+"::presets")){
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+3.4*fontheight, fontheight*0.5+y_offset,block_darkest );
+				lcd_main.message("frgb",block_colour);
+				lcd_main.message("moveto",sidebar.x+0.2*fontheight,y_offset+0.35*fontheight);
+				lcd_main.message("write","preset");
+				
+				click_zone(open_dropdown, "preset", "preset", sidebar.x, y_offset, sidebar.x2, 0.5*fontheight + y_offset, mouse_index, 1);
+				if(sidebar.dropdown!="preset"){
+					if (usermouse.clicked2d == mouse_index) {
+						bc = block_colour;
+						fc = block_darkest;
+					} else {
+						bc = block_darkest;
+						fc = block_colour;
+					}
+					lcd_main.message("paintrect", sidebar.x + 3.4 * fontheight, y_offset, sidebar.x2, 0.5*fontheight + y_offset, bc);
+					lcd_main.message("frgb", fc);
+					lcd_main.message("paintpoly", sidebar.x2 - 4*fo1, y_offset + 2.5*fo1, sidebar.x2 - fo1, y_offset + 2.5*fo1, sidebar.x2 - 2.5*fo1, y_offset + 4*fo1, sidebar.x2 - 4*fo1, y_offset + 2.5*fo1);				
+					y_offset += 0.6 * fontheight;
+				}else{
+					var presetdict = blocktypes.get(block_name + "::presets");
+					var presetlist = presetdict.getkeys();
+					for(var pl=0;pl<presetlist.length;pl++){
+						if((mouse_index==usermouse.clicked2d)){
+							fc = block_darkest;
+							bc = block_colour;
+						}else{
+							bc = block_darkest;
+							fc = block_colour;
+						}
+						click_zone(select_preset, pl, presetlist[pl], sidebar.x + 2.1 * fontheight, y_offset, sidebar.x2, 0.5*fontheight + y_offset, mouse_index, 1);
+						lcd_main.message("paintrect", sidebar.x + 3.5 * fontheight, y_offset, sidebar.x2, 0.5*fontheight + y_offset, bc);
+						lcd_main.message("frgb", fc);
+						lcd_main.message("moveto", sidebar.x + 3.7 * fontheight, fontheight * 0.35 + y_offset);
+						lcd_main.message("write", presetlist[pl]);	
+						y_offset+=0.6*fontheight;			
+					}
+				}
+			}
 			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")){
 		// BLOCK SETTINGS ##############################################################################################################
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour );
@@ -4478,8 +4552,24 @@ function draw_sidebar(){
 				lcd_main.message("frgb", 0,0,0 );
 				lcd_main.message("write", "block settings");
 				y_offset += 1.1* fontheight;
-
-				if((block_type == "audio")||(block_type == "hardware")){ //TODO build hw recording!
+				if((block_type!="hardware")){
+					if(usermouse.clicked2d == mouse_index){
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-7.7*fontheight, fontheight+y_offset,255,158,150 );
+						lcd_main.message("frgb" ,255,255,255);
+					}else if(record_arm[block]){
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-7.7*fontheight, fontheight+y_offset,255,58,50 );
+						lcd_main.message("frgb" ,0,0,0);
+					}else{
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-7.7*fontheight, fontheight+y_offset,block_darkest );
+						lcd_main.message("frgb" ,255,58,50);
+					}
+					click_zone(set_sidebar_mode,"name_preset",1, sidebar.x, y_offset, sidebar.x2-7.7*fontheight, fontheight+y_offset,mouse_index,1 );
+					lcd_main.message("moveto" ,sidebar.x+0.2*fontheight, fontheight*0.5+y_offset);
+					lcd_main.message("write", "store");
+					lcd_main.message("moveto" ,sidebar.x+0.2*fontheight, fontheight*0.75+y_offset);
+					lcd_main.message("write", "preset");
+				}
+				if((block_type == "audio")||(block_type == "hardware")){
 					if(usermouse.clicked2d == mouse_index){
 						lcd_main.message("paintrect", sidebar.x2-7.6*fontheight, y_offset, sidebar.x2-6.6*fontheight, fontheight+y_offset,255,158,150 );
 						lcd_main.message("frgb" ,255,255,255);
