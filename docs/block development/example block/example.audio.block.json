@@ -127,5 +127,8 @@
 				"values" : ["firstvoice", "one", 1]
 			}
 		]
+	},
+	"presets" : {
+		"the best way" : "to add developer presets is to save them in benny, they'll go to the file userpresets.json, just copy the whole presets key for your block into your own block definition file",
 	}
 }
