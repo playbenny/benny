@@ -2904,12 +2904,10 @@ function voicecount(block, voices){     // changes the number of voices assigned
 				voicemap.remove(block.toString()); //doesn't need to mess around, with hardware you're either removing everything or nothing.
 			}
 			for(i=0;i<subvoices;i++){
-				//post("\nv = ",v,"i=",i,"removing",v*subvoices- i);
-				//blocks_cube[block][v*subvoices - i].freepeer(); //enable = 0;
-				blocks_cube[block].pop(); //= null;
+				blocks_cube[block].pop(); 
 			}
-			for(i=(v-1)*NO_IO_PER_BLOCK;i<blocks_meter[block].length;i++){
-				blocks_meter[block].pop();//freepeer(); //enable = 0;
+			for(i=blocks_meter[block].length-1;i>=(v-1)*NO_IO_PER_BLOCK;i--){
+				blocks_meter[block].pop();
 			}
 			for(i=0;i<MAX_PARAMETERS;i++) is_flocked[MAX_PARAMETERS*(removeme+voiceoffset)+t] = 0;
 			if(type=="audio"){ 
@@ -2973,16 +2971,13 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			}
 		}
 		// and run draw_blocks to make sure cubes etc are assigned to the new voices, even if we're not on that screen
-		//draw_blocks();
 		draw_block(block);
-		rebuild_action_list=1;//build_mod_sum_action_list();
-		//rebuild_action_list=0;
+		rebuild_action_list=1;
 	}else if(direction==-1){
 		for(i=0;i<hp;i++){
 			connections.replace("connections["+handful_n[i]+"]",handful[i]);
 			make_connection(handful_n[i],0);
 		}
-		//build_mod_sum_action_list();
 		rebuild_action_list=1;
 	}
 	if(sidebar.mode=="block"){
@@ -2994,7 +2989,6 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	}else{
 		redraw_flag.flag = 4;
 	}
-//	rebuild_action_list = 1;
 }
 
 function connection_edit_voices(connection, voice){

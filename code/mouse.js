@@ -106,6 +106,9 @@ function picker_hover_and_special(id){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
 				bulgeamount=0;
+				if(wires_scale[bulgingwire]==null){
+					post("\nerror condition:",bulgingwire);
+				}
 				for(var i=0;i<wires_scale[bulgingwire].length;i++){
 					wires_scale[bulgingwire][i][1] = wire_dia;
 				}

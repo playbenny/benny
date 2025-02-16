@@ -115,12 +115,12 @@ function camera(){
 function redraw(){
 	redraw_flag.flag = 0;
 	if(displaymode == "blocks"){
-		meters_enable=0;
+		meters_enable = 0;
 		draw_blocks();
 		clear_screens();
 		draw_topbar();
 		draw_sidebar();
-		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
+		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
 		if(fullscreen) draw_clock();
 		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
