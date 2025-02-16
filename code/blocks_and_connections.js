@@ -3137,14 +3137,17 @@ function insert_mixer(destination){
 		menu.connection_number=newlist[i];
 		//now decide whether it's stereo or mono:
 		var vl = connections.get("connections["+newlist[i]+"]::from::voice");
+		var chan_type;
 		if(((vl == "all")&&((blocks.get("blocks["+src+"]::poly::voices")>1)||(blocks.get("blocks["+src+"]::from_subvoices")>1)))||(Array.isArray(vl))||(blocks.get("blocks["+src+"]::subvoices")>1)){
-			newchanblock = new_block("mix.stereo.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
+			chan_type = "mix.stereo.channel";
 		}else{
-			newchanblock = new_block("mix.channel", (destx+srcx)*0.5, 0.5*(desty+srcy));
+			chan_type = "mix.channel";
 		}
+		newchanblock = new_block(chan_type, (destx+srcx)*0.5, 0.5*(desty+srcy));
 		draw_block(newchanblock);
 		send_audio_patcherlist(1);
-		insert_block_in_connection("mix.channel",newchanblock);
+		insert_block_in_connection(chan_type,newchanblock);
+		// now need to repair the channel->bus connection - make it force unity rather than a normal one.
 	}
 }
 
