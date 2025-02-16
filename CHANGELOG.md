@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 *This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
+16/2/25:
+- **breaking change** the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
+- bottom panel area. experimental. at the moment only the mixer bus can be put there.
 14/2/25:
 - **breaking change** the envelopes in voice.basic,voice.pitch.env,voice.dual,voice.harmonic,voice.noise,env.asr,vca.env,2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
 12/2/25:
@@ -21,7 +24,6 @@
 - new sidebar view during drag-to-connect showing you the inputs and outputs available on the source/dest blocks
 16/1/25:
 - undo now works for almost everything in the main part of benny
-- fixes to four stage and eight stage envelopes
 9/1/25:
 - **breaking change** quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
 - fix quantislide osc 

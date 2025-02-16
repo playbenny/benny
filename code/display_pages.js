@@ -3609,7 +3609,7 @@ function draw_sidebar(){
 						var opvf = groups[i].contains("onepervoice");
 						w_slider = (sidebar.width + fo1)/columns;
 						maxnamelabely =-99999;
-						if((h_slider>0) && (h_slider<1) && (vl.length != 1) && !params[curp].contains("nopervoice")) h_slider =0;
+						//if((h_slider>0) && (h_slider<1) && (vl.length != 1) && !params[curp].contains("nopervoice")) h_slider =0;
 						y1 = y_offset +  fontheight * (4 * knob_y);
 						y2 = y_offset +  fontheight * (4 * knob_y + h_slider+1.5*(h_slider==0));
 						var h_ext=0;
@@ -3681,7 +3681,7 @@ function draw_sidebar(){
 									x1 = sidebar.x + w_slider*knob_x;
 									x2 = sidebar.x + w_slider*(knob_x+wk) - fo1;
 									p_values = params[curp].get("values");
-									namelabely=y1+fontheight*(0.4+h_slider);
+									namelabely=y1+fontheight*(0.4+h_slider*(h_slider>=1));
 									var flags = (p_values[0]=="bi");
 									if(opvf){
 										flags |= 2;
@@ -3705,7 +3705,7 @@ function draw_sidebar(){
 										var h_s=h_slider;
 										if(h_slider==0){
 											h_s=1.5;
-										}else{
+										}else if(h_slider>=1){
 											if(maxnamelabely>0){
 												h_s = (maxnamelabely - y_offset)/fontheight;
 											}else{
@@ -3868,7 +3868,7 @@ function draw_sidebar(){
 										var click_to_set = 0;
 										if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
 										if(h_slider<1){
-											paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
+											paramslider_details[curp]=[x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,0*h_slider,0,click_to_set];
 										}else{
 											paramslider_details[curp]=[x1,y1,x2,y2,colour[0],colour[1],colour[2],mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 										}
@@ -3976,7 +3976,7 @@ function draw_sidebar(){
 								if((map_y>=0)){// && (map_y<automap.c_rows)){
 									for(var tm=0;tm<(automap.c_cols-map_x);tm++){
 										maplist.push(-1);
-										mapwrap.push(0);
+										mapwrap.push(-1);
 										maplistopv.push(-1);
 										mapcolours.push(-1);
 									}
@@ -3989,6 +3989,7 @@ function draw_sidebar(){
 					if(getmap!=0){
 						while(map_y<automap.c_rows){ //pads out the list up to rows x cols long.
 							mapcolours.push(-1);
+							mapwrap.push(-1);
 							map_x++;
 							if(map_x>=automap.c_cols){
 								map_x = 0;
@@ -7823,7 +7824,7 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 }
 
 function setup_bottom_bar(block){
-	post("\nsetting up bottom bar",block);
+	//post("\nsetting up bottom bar",block);
 	bottombar.block = block;
 	var r = bottombar.right;
 	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-9) : (sidebar.x - 5);

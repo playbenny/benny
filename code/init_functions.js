@@ -1114,11 +1114,10 @@ function bottombar_size(){
 		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
 		var cy = 1 - 2 * (mainwindow_height - 0.5 * bottombar.height)/mainwindow_height;
 		var th=(bottombar.height)/mainwindow_height;
-		post("\nbb, half tw,",0.5*tw,"or",cx);
 		bottombar.videoplane.message("scale",tw,th);
 		bottombar.videoplane.message("position",cx,cy,0);
 		bottombar.videoplane.message("texzoom",1/tw,1/th);
-		bottombar.videoplane.message("texanchor",0.5*tw,0.5*th);
+		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
 		setup_bottom_bar(bottombar.block);
 	}else{

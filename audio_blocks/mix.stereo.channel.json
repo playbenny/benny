@@ -24,7 +24,7 @@
 			{ 
 				"contains" : [0],
 				"onepervoice" : 1,
-				"height" : 3
+				"height" : 3.5
 			},
 			{ 
 				"contains" : [5], 
@@ -37,24 +37,30 @@
 				"height" : 0.6
 			},
 			{ 
-				"contains" : [2],
-				"onepervoice" : 1,
-				"height" : 0
-			},
-			{ 
 				"contains" : [3],
+				"header" : "voicing",
 				"onepervoice" : 1,
-				"height" : 0
+				"height" : 0,
+				"colour" : 25
 			},
 			{ 
 				"contains" : [4], 
 				"onepervoice" : 1,
-				"height" : 0
+				"height" : 0,
+				"colour" : 30
+			},
+			{ 
+				"contains" : [2],
+				"onepervoice" : 1,
+				"height" : 0.6,
+				"nolabel" : 1,
+				"colour" : 35
 			},
 			{ 
 				"contains" : [7], 
 				"onepervoice" : 1,
-				"height" : 0.6
+				"height" : 0.6,
+				"header" : "console model"
 			}			
 		],
 		"panel" : {
@@ -66,7 +72,7 @@
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.39
+				"default" : 0.7
 			},
 			{
 				"name" : "pan",
