@@ -3623,11 +3623,10 @@ function draw_sidebar(){
 								p_type = params[curp].get("type");
 								wrap = params[curp].get("wrap");
 								if(getmap==1){
-									if(p_type!="button"){
-										if(opvf && (p_type=="menu_b")){
-											//these should get added to button map list instead
-											//is it here or later?
-										}else if(opvf){
+									var forcemap= params[curp].contains("forcemap");
+									var skiptype  = (p_type=="button")||(p_type=="menu_b")||(p_type=="menu_l")||(p_type=="menu_d");
+									if(!skiptype || forcemap){
+										if(opvf){
 											for(var vc=0;vc<current_p;vc++){
 												if((map_y>=0)){
 													maplist.push(0-(MAX_PARAMETERS*block+curp));
@@ -3653,8 +3652,7 @@ function draw_sidebar(){
 												}	
 											}
 										}else{
-											//should this also exclude menu_b from mappings here?
-											if((map_y>=0)){//&&(map_y<automap.c_rows)){
+											if((map_y>=0)){
 												maplist.push(MAX_PARAMETERS*block+curp);
 												mapwrap.push(wrap|0);
 												maplistopv.push(-1);
@@ -3665,7 +3663,7 @@ function draw_sidebar(){
 												if((spares>0)&&(wk>1)&&(map_x<(automap.c_cols-1))&&((map_x/automap.c_cols)<((t+wk)/slidercount))){
 													map_x++;
 													maplist.push(-1);
-													mapwrap.push(0);
+													mapwrap.push(-1);
 													maplistopv.push(-1);
 													mapcolours.push(-1);
 													spares--;
@@ -3687,22 +3685,17 @@ function draw_sidebar(){
 									var flags = (p_values[0]=="bi");
 									if(opvf){
 										flags |= 2;
-										//flags |= 4 * t;
 									}else if(params[curp].contains("nopervoice")){
 										flags &= 61;
 										flags |= 4; //removes 2 flag, adds 4 flag
-									} 
+									}
+									//for poly voices convert gui menu styles into menu_i type faders: you can override with the nopervoice key in block json.
 									if(((p_type=="menu_d")||(p_type=="menu_l")) && (vl.length != 1)&&!params[curp].contains("nopervoice")) p_type = "menu_i";
 									if(p_type=="button"){
 										paramslider_details[curp]=[x1,y1,x2,y2/*maxnamelabely*/,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index,block,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
 										parameter_button(curp);
-										//pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
-										//var statecount = (p_values.length - 1) / 2;
-										//var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-										/*draw_button(x1,y1,x2,y2,colour[0]/2,colour[1]/2,colour[2]/2,mouse_index, p_values[pv2]);*/
 										mouse_click_actions[mouse_index] = send_button_message;
 										mouse_click_parameters[mouse_index] = block;
-										//mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
 										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
 											//but it's so much easier just to call this fn
 											buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 0.99);											
@@ -3714,10 +3707,10 @@ function draw_sidebar(){
 											h_s=1.5;
 										}else{
 											if(maxnamelabely>0){
-												h_s = (maxnamelabely - y_offset)/fontheight; //+=0.9;
+												h_s = (maxnamelabely - y_offset)/fontheight;
 											}else{
 												h_s += 0.9;//4;
-												maxnamelabely = y1+fontheight*h_s;//_offset+h_s;
+												maxnamelabely = y1+fontheight*h_s;
 												//post("\nset max",maxnamelabely,y_offset,h_s);
 											}
 										}
@@ -3738,7 +3731,7 @@ function draw_sidebar(){
 										if(params[curp].contains("columns")) cols = params[curp].get("columns");
 										var valcol;
 										if(params[curp].contains("colours")){
-											valcol = params[curp].get("colours");//["+bl+"]");
+											valcol = params[curp].get("colours");
 										}else{
 											valcol = [colour];
 										}
@@ -3753,15 +3746,6 @@ function draw_sidebar(){
 										var fl=0;
 										var h_s = fontheight*(h_slider + (h_slider==0)*1.5);
 										if(params[curp].contains("force_label")){
-											/*if(maxnamelabely<0){
-												maxnamelabely = y1+fontheight*(h_s-0.6);
-												lcd_main.message("moveto",x1+4,maxnamelabely);
-												maxnamelabely=-9999;
-												h_s-=0.4;
-											}else{
-												lcd_main.message("moveto",x1+4,maxnamelabely-fontheight*0.2);
-										}
-										h_s-=0.6;*/
 											lcd_main.message("moveto",x1+4,y1+fontheight*0.4);
 											lcd_main.message("frgb",colour);
 											lcd_main.message("write",params[curp].get("name"));
@@ -3772,7 +3756,7 @@ function draw_sidebar(){
 										if(params[curp].contains("columns")) cols = params[curp].get("columns");
 										var valcol;
 										if(params[curp].contains("colours")){
-											valcol = params[curp].get("colours");//["+bl+"]");
+											valcol = params[curp].get("colours");
 										}else{
 											valcol = [colour];
 										}

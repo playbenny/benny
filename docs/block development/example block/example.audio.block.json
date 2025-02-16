@@ -46,6 +46,7 @@
 				"name" : "a toggle",
 				"type" : "menu_b",
 				"values" : ["0", "1"],
+				"force_map" : 1, 
 				"wrap" : 1,
 				"default" : 0
 			},
@@ -129,6 +130,6 @@
 		]
 	},
 	"presets" : {
-		"the best way" : "to add developer presets is to save them in benny, they'll go to the file userpresets.json, just copy the whole presets key for your block into your own block definition file",
+		"the best way" : "to add developer presets is to save them in benny, they'll go to the file userpresets.json, just copy the whole presets key for your block into your own block definition file"
 	}
 }
