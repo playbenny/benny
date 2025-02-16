@@ -21,16 +21,16 @@
 		"groups" : [
 			{
 				"contains" : [0],
-				"height" : 0
+				"height" : 0.6,
+				"header" : "lock mixer to controller"
 			}
 		],
 		"parameters" : [
 			{
 				"name" : "controller",
-				"type" : "menu_l",
+				"type" : "menu_d",
 				"values" : ["1"],
 				"wrap" : 1,
-				"columns" : 3,
 				"default" : 0
 			}
 		]

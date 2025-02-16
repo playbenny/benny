@@ -63,9 +63,6 @@
 				"header" : "console model"
 			}			
 		],
-		"panel" : {
-			"parameters" : [0]
-		},
 		"parameters" : [
 			{
 				"name" : "level",
