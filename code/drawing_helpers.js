@@ -1515,11 +1515,17 @@ function draw_clock(){
 	}
 }
 
-function long_sidebar_text(textcontent) {
+function long_sidebar_text(textcontent,size) {
+	if(size!=null){
+		setfontsize(fontsmall*size);
+	}else{
+		size = 1;
+		setfontsize(fontsmall);
+	}
 	var t;
 	var textcontentrows = 0.4 + textcontent.length / 45 + textcontent.split("£").length - 1;
 	var rowstart = 0;
-	var rowend = 7 * sidebar.width_in_units;
+	var rowend = Math.ceil(7 * sidebar.width_in_units/size);
 	textcontent = textcontent + "                       ";
 	var bold = 0;
 	var sameline = 0;
@@ -1527,7 +1533,7 @@ function long_sidebar_text(textcontent) {
 		while ((textcontent[rowend] != ' ') && (rowend > 1 + rowstart)) { rowend--; }
 		var sliced = textcontent.slice(rowstart, rowend);
 		if (!sameline) {
-			lcd_main.message("moveto", sidebar.x + fontheight * 0.2, y_offset + fontheight * (0.75 + 0.4 * ri));
+			lcd_main.message("moveto", sidebar.x + fontheight * 0.2, y_offset + fontheight * (0.75 + 0.4 * ri * size));
 		} else {
 			ri--;
 		}
@@ -1555,9 +1561,9 @@ function long_sidebar_text(textcontent) {
 		lcd_main.message("write", sliced);
 		if (!sameline) {
 			rowstart = rowend + 1;
-			rowend += 7 * sidebar.width_in_units;
+			rowend += Math.ceil(7 * sidebar.width_in_units/size);
 		} else {
-			var t = rowstart + 46;
+			var t = rowstart + 46/size;
 			rowstart = rowend + 1;
 			rowend = t;
 		}
@@ -1568,7 +1574,7 @@ function long_sidebar_text(textcontent) {
 		}
 	}
 	if (!bold) lcd_main.message("textface", "bold");
-	y_offset = y_offset + fontheight * (0.75 + 0.4 * ri);
+	y_offset = y_offset + fontheight * (0.75 + 0.4 * ri * size);
 }
 
 function sidebar_notification(message){

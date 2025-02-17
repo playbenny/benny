@@ -2630,10 +2630,9 @@ function draw_sidebar(){
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,menudarkest);
 		lcd_main.message("frgb", menucolour);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		setfontsize(fontsmall);
 		lcd_main.message("textface", "normal");
 		post("\nsidebar notification is:\n",sidebar.notification);
-		long_sidebar_text(sidebar.notification);
+		long_sidebar_text(sidebar.notification,2);
 	}else if(sidebar.mode == "potential_wire"){
 		if(wires_potential_connection>-1){
 			if(connections.get("connections["+wires_potential_connection+"]::from::output::type")=="potential"){
