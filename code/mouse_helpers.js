@@ -2822,7 +2822,12 @@ function select_song(song){
 }
 
 function wave_chosen(number,name,path){
-	post("\nwave chosen, number: ",number,"\n name: ",name,"\n path: ",path);
+	if(name == null){
+		error("\nfilename error:",name,path);
+		error("\nplease rename the file, avoiding special characters like / \ *");
+		sidebar_notification("FILENAME ERROR. Please rename the file, avoiding special characters like / \ *");
+		return -1;
+	}
 	var t = polybuffer_load_wave(path,name);
 	if(t==-1){
 		t = waves_polybuffer.count;
