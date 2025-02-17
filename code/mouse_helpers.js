@@ -2825,7 +2825,8 @@ function wave_chosen(number,name,path){
 	if(name == null){
 		error("\nfilename error:",name,path);
 		error("\nplease rename the file, avoiding special characters like / \ *");
-		sidebar_notification("FILENAME ERROR. Please rename the file, avoiding special characters like / \ *");
+		waves.selected = -1;
+		timed_sidebar_notification("FILENAME ERROR. Please rename the file, avoiding special characters like / \ *",5000);
 		return -1;
 	}
 	var t = polybuffer_load_wave(path,name);
