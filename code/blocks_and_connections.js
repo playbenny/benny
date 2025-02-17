@@ -3055,9 +3055,10 @@ function insert_block_in_multi_connections(newblockname,newblock){
 	}
 }
 
-function swap_connection_destination(cno,newblock,newblockname){
+function swap_connection_destination(cno,newblock,newblockname,newvoice){
 	//this moves a connection from one block to another. used internally only (ie insert in multi, insert mixer)
 	// get the details of the inserted block
+	if(newvoice==null)newvoice="all"
 	var details = new Dict;
 	details = blocktypes.get(newblockname);
 	var intypes = details.get("connections::in").getkeys();
@@ -3098,7 +3099,7 @@ function swap_connection_destination(cno,newblock,newblockname){
 	//}
 	new_connection.replace("from",oldconn.get("from"));
 	new_connection.replace("to::number",newblock);
-	new_connection.replace("to::voice","all");
+	new_connection.replace("to::voice",newvoice);
 	new_connection.replace("to::input::number",0/*i_no*/);
 	new_connection.replace("to::input::type",intypes[i_no]);
 	connections.append("connections",new_connection);
@@ -3112,43 +3113,73 @@ function swap_connection_destination(cno,newblock,newblockname){
 
 function insert_mixer(destination){
 	// assume audio, hw or matrix connections..
-	menu.connection_number = []; //wire numbers
+	var con_list = []; //wire numbers
+	var used_channel_types = [0,0];
+	var con_type = [];
 	for(var i=0;i<connections.getsize("connections");i++){
 		if(selected.wire[i]){
-			menu.connection_number.push(i); //this is for the first insert multi
+			con_list.push(i); 
 			selected.wire[i]=0;
+			var src = connections.get("connections["+i+"]::from::number");
+			//now decide whether it's stereo or mono:
+			var vl = connections.get("connections["+i+"]::from::voice");
+			var chan_type = (((vl == "all")&&((blocks.get("blocks["+src+"]::poly::voices")>1)||(blocks.get("blocks["+src+"]::from_subvoices")>1)))||(Array.isArray(vl))||(blocks.get("blocks["+src+"]::subvoices")>1)) |0;
+			used_channel_types[chan_type] += 1;
+			con_type.push(chan_type);
 		}
-	} // prep a list because you need to clear selection to do the inserting.
+	}
 	var destx = blocks.get("blocks["+destination+"]::space::x");
 	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
-	var newblock = new_block("mix.bus",destx,desty);
-	draw_block(newblock);
-	send_audio_patcherlist(1);
-	insert_block_in_multi_connections("mix.bus",newblock);
-	var newlist = [];
-	for(var i=0;i<connections.getsize("connections");i++){
-		if(connections.contains("connections["+i+"]::to")&&(connections.get("connections["+i+"]::to::number")==newblock)) newlist.push(i);
-	}
-	for(var i=0;i<newlist.length;i++){
-		post("\nconnection",newlist[i],"ends at the new mix.bus")
-		var src = connections.get("connections["+newlist[i]+"]::from::number");
-		var srcx = blocks.get("blocks["+src+"]::space::x");
-		var srcy = blocks.get("blocks["+src+"]::space::y");
-		menu.connection_number=newlist[i];
-		//now decide whether it's stereo or mono:
-		var vl = connections.get("connections["+newlist[i]+"]::from::voice");
-		var chan_type;
-		if(((vl == "all")&&((blocks.get("blocks["+src+"]::poly::voices")>1)||(blocks.get("blocks["+src+"]::from_subvoices")>1)))||(Array.isArray(vl))||(blocks.get("blocks["+src+"]::subvoices")>1)){
-			chan_type = "mix.stereo.channel";
-		}else{
-			chan_type = "mix.channel";
+	var newbus = new_block("mix.bus",destx,desty);
+	draw_block(newbus);
+	desty += 1.5;
+	var newchan = [];
+	var ii=0;
+	for(var i=0;i<2;i++){
+		if(used_channel_types[i]>0){
+			var newchanname = "mix.channel";
+			if(i==1) newchanname = "mix.stereo.channel";
+			post("\nadding",newchanname,"with",used_channel_types[i],"channels");
+			newchan[ii] = new_block(newchanname,destx,desty);
+			draw_block(newchan[ii]);
+			if(used_channel_types[i]>1) voicecount(newchan[ii],used_channel_types[i]);
+			destx+=1.5+0.5*used_channel_types[i];
+			send_audio_patcherlist(1);
+			var cn=1;
+			for(var ci=0;ci<con_list.length;ci++){
+				if(con_type[ci]==i){
+					post("\n- swapping destination of connection",con_list[ci]);
+					if(i==0){
+						swap_connection_destination(con_list[ci],newchan[ii],newchanname,cn);
+					}else{
+						var cnn = [ 2*cn-1, 2*cn ];						
+						swap_connection_destination(con_list[ci],newchan[ii],newchanname,cnn);
+					}
+					cn++;
+				}
+			}
+			post("\n- connecting to bus");
+			new_connection.parse('{}');
+			new_connection.replace("conversion::mute" , 0);
+			new_connection.replace("conversion::scale", 1);
+			new_connection.replace("conversion::vector", 0);	
+			new_connection.replace("conversion::offset", 1);
+			new_connection.replace("conversion::offset2", 0.5);
+			new_connection.replace("conversion::force_unity", 1);
+			new_connection.replace("from::number",newchan[ii]);
+			new_connection.replace("to::number",newbus);
+			new_connection.replace("to::voice","all");
+			new_connection.replace("from::voice","all");
+			new_connection.replace("to::input::number",0);
+			new_connection.replace("to::input::type","audio");
+			new_connection.replace("from::output::number",0);
+			new_connection.replace("from::output::type","audio");
+			connections.append("connections",new_connection);
+			make_connection(connections.getsize("connections")-1,0);
+			ii++;
 		}
-		newchanblock = new_block(chan_type, (destx+srcx)*0.5, 0.5*(desty+srcy));
-		draw_block(newchanblock);
-		send_audio_patcherlist(1);
-		insert_block_in_connection(chan_type,newchanblock);
-		// now need to repair the channel->bus connection - make it force unity rather than a normal one.
 	}
+	redraw_flag.flag |= 4;
 }
 
 function insert_block_in_connection(newblockname,newblock){

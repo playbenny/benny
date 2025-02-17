@@ -312,7 +312,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							//post("\nstore, p",p,"v",v);
 							store_voice_param_undo(p[0],p[2],usermouse.drag.starting_value_x);
 						}else{
-							deferred_diag.push("should store undo?",mouse_click_actions[usermouse.got_i],p,v,usermouse.drag.starting_value_x);
+							deferred_diag.push("should store undo?",mouse_click_actions[usermouse.got_i].name,p,v,usermouse.drag.starting_value_x);
 						}
 						
 						if((usermouse.got_t==4)){ 
