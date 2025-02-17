@@ -3130,6 +3130,7 @@ function insert_mixer(destination){
 	}
 	var destx = blocks.get("blocks["+destination+"]::space::x");
 	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
+	var desttype = connections.get("connections["+con_list[0]+"]::to::input::type");
 	var newbus = new_block("mix.bus",destx,desty);
 	draw_block(newbus);
 	desty += 1.5;
@@ -3179,6 +3180,23 @@ function insert_mixer(destination){
 			ii++;
 		}
 	}
+	post("\nconnecting bus to original destination");
+	new_connection.parse('{}');
+	new_connection.replace("conversion::mute" , 0);
+	new_connection.replace("conversion::scale", 1);
+	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::offset", 1);
+	new_connection.replace("conversion::offset2", 0.5);
+	new_connection.replace("from::number",newbus);
+	new_connection.replace("to::number",destination);
+	new_connection.replace("to::voice","all");
+	new_connection.replace("from::voice","all");
+	new_connection.replace("to::input::number",0);
+	new_connection.replace("to::input::type",desttype);
+	new_connection.replace("from::output::number",0);
+	new_connection.replace("from::output::type","audio");
+	connections.append("connections",new_connection);
+	make_connection(connections.getsize("connections")-1,0);
 	redraw_flag.flag |= 4;
 }
 

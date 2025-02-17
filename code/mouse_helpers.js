@@ -2822,6 +2822,7 @@ function select_song(song){
 }
 
 function wave_chosen(number,name,path){
+	post("\nwave chosen, number: ",number,"\n name: ",name,"\n path: ",path);
 	var t = polybuffer_load_wave(path,name);
 	if(t==-1){
 		t = waves_polybuffer.count;
