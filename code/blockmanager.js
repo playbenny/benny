@@ -161,6 +161,7 @@ function thispatcherstuff(){
 	sidebar.videoplane = this.patcher.getnamed("sidebar_videoplane");
 	statesbar.videoplane = this.patcher.getnamed("statesbar_videoplane");
 	statesfadebar.videoplane = this.patcher.getnamed("statesfadebar_videoplane");
+	bottombar.videoplane = this.patcher.getnamed("bottombar_videoplane");
 }
 
 var phys_picker_id;
@@ -593,6 +594,10 @@ config.name = "config";
 var userconfig = new Dict;
 userconfig.name = "userconfig";
 userconfig.filechanged = function(){};
+
+var userpresets = new Dict;
+userpresets.name = "userpresets";
+userpresets.filechanged = function(){};
 
 var keymap = new Dict;
 keymap.name = "keymap";

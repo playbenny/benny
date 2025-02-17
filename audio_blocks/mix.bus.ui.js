@@ -50,8 +50,12 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	if(width<sw*0.54){ 
+	if(sw==-1){
+		mini=2;
+	}else if(width<sw*0.54){ 
 		mini=1;
+	}else{
+		mini=0;
 	}
 	unit = height / 18;
 	u1 = 0.1 * unit;
@@ -69,29 +73,54 @@ function draw(){
 function update(force){
 	if(block>=0){
 		var x=0;
+		outlet(0,"setfontsize","small");
 		for(var b=0;b<b_list.length;b++){
 			var fgc = b_colour[b];
 			var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
-			for(var v=v_list[b].length-1;v>=0;v--){
-				var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
-				if((omute[b][v]!=mute)||force){
-					omute[b][v] = mute;
-					outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2,130,130,130,5,v_list[b][v],"mute",b_list[b]);
-				}
-				var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
-				if((osolo[b][v]!=solo)||force){
-					osolo[b][v] = solo;
-					outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
-				}
-				if(check_eq_params_for_changes(b,v)||force){
-					draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
-					oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
-				}
-				level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
-				if((olevel[b][v]!=level[b][v])||force){
-					olevel[b][v] = level[b][v];
-					outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+			if(mini==2){//bottom bar view is different layout
+				for(var v=v_list[b].length-1;v>=0;v--){
+					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
+					if((omute[b][v]!=mute)||force){
+						omute[b][v] = mute;
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2,130,130,130,5,v_list[b][v],"mute",b_list[b]);
+					}
+					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
+					if((osolo[b][v]!=solo)||force){
+						osolo[b][v] = solo;
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
+					}
+					if(check_eq_params_for_changes(b,v)||force){
+						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+					}
+					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
+					if((olevel[b][v]!=level[b][v])||force){
+						olevel[b][v] = level[b][v];
+						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+					}
+				}				
+			}else{
+				for(var v=v_list[b].length-1;v>=0;v--){
+					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
+					if((omute[b][v]!=mute)||force){
+						omute[b][v] = mute;
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2,130,130,130,5,v_list[b][v],"mute",b_list[b]);
+					}
+					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
+					if((osolo[b][v]!=solo)||force){
+						osolo[b][v] = solo;
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
+					}
+					if(check_eq_params_for_changes(b,v)||force){
+						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+					}
+					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
+					if((olevel[b][v]!=level[b][v])||force){
+						olevel[b][v] = level[b][v];
+						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+					}
 				}
 			}
 			var xx = x+v_list[b].length;

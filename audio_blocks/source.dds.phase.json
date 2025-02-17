@@ -1,8 +1,8 @@
 {
-	"source.abb.phase.distortion" : {
-		"patcher" : "source.abb.phase.distortion",
+	"source.dds.phase" : {
+		"patcher" : "source.dds.phase",
 		"type" : "audio",
-		"help_text" : "crunked up phase distortion oscillator alligator",
+		"help_text" : "crunked up phase distortion oscillator alligator££By Luke Abbott",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {

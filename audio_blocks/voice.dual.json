@@ -338,6 +338,7 @@
 			{
 				"name" : "attack_shape",
 				"type" : "menu_b",
+				"nopervoice" : 1,
 				"forcelabel" : 1,
 				"values" : ["attack_shape_regular", "attack_shape_mirror" ],
 				"wrap" : 1,
@@ -346,6 +347,7 @@
 			{
 				"name" : "attack_shape",
 				"type" : "menu_b",
+				"nopervoice" : 1,
 				"forcelabel" : 1,
 				"values" : ["attack_shape_regular", "attack_shape_mirror" ],
 				"wrap" : 1,
