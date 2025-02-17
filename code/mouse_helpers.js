@@ -2822,7 +2822,7 @@ function select_song(song){
 }
 
 function wave_chosen(number,name,path){
-	if(name == null){
+	if((name == null)||(name=="")){
 		error("\nfilename error:",name,path);
 		error("\nplease rename the file, avoiding special characters like / \ *");
 		waves.selected = -1;
@@ -2830,7 +2830,10 @@ function wave_chosen(number,name,path){
 		return -1;
 	}
 	var t = polybuffer_load_wave(path,name);
-	if(t==-1){
+	if(t==-2){
+		post("\n load fail");
+		return -1;
+	}else if(t==-1){
 		t = waves_polybuffer.count;
 	}else{
 		t++;
