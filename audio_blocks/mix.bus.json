@@ -23,6 +23,11 @@
 				"contains" : [0],
 				"height" : 0.6,
 				"header" : "lock mixer to controller"
+			},
+			{
+				"contains" : [1],
+				"height" : 0.6,
+				"header" : "summing style"
 			}
 		],
 		"parameters" : [
@@ -32,6 +37,13 @@
 				"values" : ["1"],
 				"wrap" : 1,
 				"default" : 0
+			},
+			{
+				"name" : "bypass_console",
+				"type" : "menu_b",
+				"values" : ["console7 summing enabled", "linear digital summing"],
+				"wrap" : 1,
+				"default" : 0.25
 			}
 		]
 	}
