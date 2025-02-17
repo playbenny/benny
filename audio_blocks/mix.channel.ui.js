@@ -29,9 +29,9 @@ var oamount = [];
 var shape = [];
 var sweep = [];
 var amount = [];
+var o_left = 0;
 
 function setup(x1,y1,x2,y2,sw){
-	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
@@ -43,11 +43,10 @@ function setup(x1,y1,x2,y2,sw){
 	}
 	unit = height / (mini?10:18);
 	u1 = 0.1 * unit;
-	//post("\nno_vo",no_voicings);
 	if(block>=0){
 		scan_for_channels();
-		//check_params_for_changes();
 		draw();
+
 	}
 }
 
@@ -58,9 +57,13 @@ function draw(){
 		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 
 		check_params_for_changes()
+		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
 		for(var v=0;v<v_list.length;v++){
 			draw_eq_curve(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
+			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
+			outlet(1,"frgb",255,255,255);
+			outlet(1,"write",channelnames[v]);
 			x+=cw;
 		}
 	}
@@ -150,16 +153,15 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 	}
 }
 
-function draw_channels(b,v,x1,y1,x2,y2,fg,bg){
-	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	var h=y2-y1;
-	if(b_type[b]=="mix.channel.stereo"){
-		outlet(0,"custom_ui_element","param_v_scroll",x1+u1,h*0.6+y1,x2-u1,y2,fg[0],fg[1],fg[2],[block,5+r]);
+function mouse(x,y,leftbutton,shift,alt,ctrl){
+	if(oleft!=leftbutton){
+		oleft=leftbutton;
+		if(leftbutton==0){//release
+			x *= cols / width;
+			x = Math.floor(x);
+			messnamed("to_blockmanager","name_mixer_channel",block,x);
+		}
 	}
-}
-function draw_mutesolo(b,v,x1,y1,x2,y2,fg,bg){
-	outlet(0,"custom_ui_element","opv_button",x1,y1,x2,0.5*(y1+y2),130,130,130,5,v_list[v],"mute",block);
-	outlet(0,"custom_ui_element","opv_button",x1,0.5*(y1+y2),x2,y2,255,20,20,6,v_list[v],"solo",block);
 }
 
 function voice_is(v){
@@ -175,6 +177,12 @@ function scan_for_channels(){
 		v_list = vl;
 		cols = vl.length;
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
+		if(blocks.contains("blocks["+block+"]::channelnames")){
+			channelnames = blocks.get("blocks["+block+"]::channel_names");
+		}else{
+			channelnames=[];
+			for(var i=0;i<cols;i++) channelnames.push((i+1));
+		}
 		block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 		block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
 		for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
@@ -193,10 +201,6 @@ function voice_offset(){}
 
 function loadbang(){
 	outlet(0,"getvoice");
-}
-
-function quer(){
-	post("vlist is",v_list,"novoicings =",no_voicings);
 }
 
 function store(){

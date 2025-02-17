@@ -60,7 +60,7 @@ function setup(x1,y1,x2,y2,sw){
 	unit = height / 18;
 	u1 = 0.1 * unit;
 	if(block>=0){
-		ovhash = -1;
+		// ovhash = -1;
 		scan_for_channels();
 		draw();
 	}
@@ -226,7 +226,8 @@ function scan_for_channels(){
 				if((n2[0] == "mix")&&(n2[1] != "bus")){
 					tb_list.push(b);
 					bx_list.push(blocks.get("blocks["+b+"]::space::x"));
-					hash += (b+1) * map.getsize(b);
+					var vl= map.get(b);
+					hash += (b+1) * vl.length;
 				}
 			}
 			if(!Array.isArray(shape[b])){
@@ -243,6 +244,7 @@ function scan_for_channels(){
 			}
 		}
 		if(hash!=ovhash){
+			post("\nhash:",hash,"ovhash",ovhash);
 			ovhash=hash;
 			b_list = tb_list.slice();
 			v_list=[];

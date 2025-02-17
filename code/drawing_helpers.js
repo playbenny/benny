@@ -1594,3 +1594,20 @@ function timed_sidebar_notification(message, time){
 function return_from_notify(){
 	if(sidebar.mode == "notification") set_sidebar_mode(sidebar.notification_return);
 }
+
+function name_mixer_channel(block,chan){
+	if(blocks.contains("blocks["+block+"]::name")&&(blocks.get("blocks["+block+"]::name").indexOf("mix.")>-1)){
+		post("\nnaming mixer channel");
+		if(!blocks.contains("blocks["+block+"]::channel_names")){
+			var channelnames=[];
+			vl = voicemap.get(block);
+			if(!Array.isArray(vl))vl=[vl];
+			for(var i=0;i<vl.length;i++){
+				channelnames.push((i+1));
+			}
+			blocks.replace("blocks["+block+"]::channel_names",channelnames);
+		}
+		text_being_editted = channelnames[chan];
+		set_sidebar_mode("edit_channel_name");
+	}
+}
