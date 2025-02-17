@@ -279,7 +279,7 @@ function scan_for_channels(){
 				for(var t=0;t<vl.length;t++){
 					outlet(3,vl[t]*MAX_PARAMETERS);
 				}
-				parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
+				//parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
 
 				cols += vl.length;
 				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
