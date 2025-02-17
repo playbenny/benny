@@ -266,17 +266,16 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 			}
 		}
 		if(exists==-1){
-			if(check_exists(wavepath)){
+			if((wavepath==null)||(wavepath=="")){
+				post("\nbad filename, skipping load fn");
+				return -2;
+			}else if(check_exists(wavepath)){
 				waves_polybuffer.append(wavepath);
 				//post("\n(loading)")
 				get_polybuffer_info();
 				return -1;
 			}else{
 				var pathonly = wavepath.split(wavename)[0];
-				if(pathonly == null){
-					error("\nfatal wave load error:\n- ",wavepath,"\n- ",wavename,"\n- ",dictpath,"\n- ",pathonly);
-					return -1;
-				}
 				var last_slash = pathonly.split("/");
 				var last_folder = last_slash.pop();
 				last_folder = last_slash.pop();

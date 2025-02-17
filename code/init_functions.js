@@ -720,7 +720,7 @@ function import_hardware(v){
 	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
 	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
 	audio_to_data_poly.message("down",((+config.get("AUDIO_TO_DATA_DOWNSAMPLE"))|0));
-	post("\nset audio_to_date poly downsampling to ",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));
+	post("\nset audio_to_data poly downsampling to ",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
