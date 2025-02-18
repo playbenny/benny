@@ -131,8 +131,8 @@ function scan_check(type, name){
 function copy_from_library(name){
 	post(" copied from library");
 	var bucket = new Dict;
-	bucket.import_json(projectpath+"/data/vst_library/vst."+name+".json");
-	bucket.export_json(projectpath+"/audio_blocks/vst."+name+".json");
+	bucket.import_json(projectpath+"data/vst_library/vst."+name+".json");
+	bucket.export_json(projectpath+"audio_blocks/vst."+name+".json");
 }
 
 function check_exists(name){

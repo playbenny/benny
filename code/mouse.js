@@ -106,6 +106,9 @@ function picker_hover_and_special(id){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
 				bulgeamount=0;
+				if(wires_scale[bulgingwire]==null){
+					post("\nerror condition:",bulgingwire);
+				}
 				for(var i=0;i<wires_scale[bulgingwire].length;i++){
 					wires_scale[bulgingwire][i][1] = wire_dia;
 				}
@@ -309,7 +312,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							//post("\nstore, p",p,"v",v);
 							store_voice_param_undo(p[0],p[2],usermouse.drag.starting_value_x);
 						}else{
-							post("\nshould store undo?",mouse_click_actions[usermouse.got_i],p,v,usermouse.drag.starting_value_x);
+							deferred_diag.push("should store undo?",mouse_click_actions[usermouse.got_i].name,p,v,usermouse.drag.starting_value_x);
 						}
 						
 						if((usermouse.got_t==4)){ 

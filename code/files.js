@@ -266,7 +266,10 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 			}
 		}
 		if(exists==-1){
-			if(check_exists(wavepath)){
+			if((wavepath==null)||(wavepath=="")){
+				post("\nbad filename, skipping load fn");
+				return -2;
+			}else if(check_exists(wavepath)){
 				waves_polybuffer.append(wavepath);
 				//post("\n(loading)")
 				get_polybuffer_info();
@@ -283,14 +286,14 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 				}
 				waves_search_paths.push(SONGS_FOLDER);
 				post("\nnot found in the location stored in the save file, searching");
-				post(", trying search paths:",waves_search_paths);
 				var r = -1;
 				for(var s=0;s<=waves_search_paths.length;s++){
-					post(".");
 					r = search_for_waves(waves_search_paths[s],wavename,dictpath);
 					if(r!=-1){
 						//post("\nfound something!",r);
 						s=99999;
+					}else{
+						post("\n - not found in ",waves_search_paths[s]);
 					}
 				}
 				if(r==-1){

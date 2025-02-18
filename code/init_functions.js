@@ -49,6 +49,8 @@ function loadbang(){
 	dropdown.message("prefix", projectpath+"hardware_configs");
 	userconfig.parse('{ }');
 	userconfig.import_json(projectpath+"userconfig.json");
+	userpresets.parse("{}");
+	userpresets.import_json(projectpath+"userpresets.json");
 	config.parse('{ }');
 	config.import_json(projectpath+"config.json");
 	keymap.parse('{}');
@@ -279,6 +281,8 @@ function initialise_dictionaries(hardware_file){
 	post("\nbuilding blocktypes database");
 	import_blocktypes("note_blocks");
 	import_blocktypes("audio_blocks");
+
+	import_presets();
 
 	check_for_new_prefixes();
 
@@ -716,7 +720,7 @@ function import_hardware(v){
 	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
 	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
 	audio_to_data_poly.message("down",((+config.get("AUDIO_TO_DATA_DOWNSAMPLE"))|0));
-	post("\nset audio_to_date poly downsampling to ",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));
+	post("\nset audio_to_data poly downsampling to ",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
 	}
@@ -1103,8 +1107,22 @@ function statesbar_size(){
 
 function bottombar_size(){
 	bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-	if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
-	//todo: videoplane
+	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-9) : (sidebar.x - 5);
+	if(bottombar.block>-1){
+		var w=bottombar.right - 9 - fontheight;
+		var tw=w/mainwindow_width;
+		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
+		var cy = 1 - 2 * (mainwindow_height - 0.5 * bottombar.height)/mainwindow_height;
+		var th=(bottombar.height)/mainwindow_height;
+		bottombar.videoplane.message("scale",tw,th);
+		bottombar.videoplane.message("position",cx,cy,0);
+		bottombar.videoplane.message("texzoom",1/tw,1/th);
+		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
+		bottombar.videoplane.message("enable",1);
+		setup_bottom_bar(bottombar.block);
+	}else{
+		bottombar.videoplane.message("enable",0);
+	}
 }
 
 
@@ -1242,5 +1260,22 @@ function prep_midi_indicators(){
 		this.patcher.connect(m_in,0,m_lim,0);
 		this.patcher.connect(m_lim,0,m_m,0);
 		midi_indicators.status[i]=0;
+	}
+}
+
+function import_presets(){
+	var k = userpresets.getkeys();
+	if(k==null) return 0;
+	for(var i=0;i<k.length;i++){
+		if(blocktypes.contains(k[i])){
+			post("\nimporting presets for",k[i],":");
+			var pd=new Dict;
+			pd = userpresets.get(k[i]+"::presets");
+			pdk = pd.getkeys();
+			for(var ii=0;ii<pdk.length;ii++){
+				post(pdk[ii]);
+				blocktypes.replace(k[i]+"::presets::"+pdk[ii]+"::values",userpresets.get(k[i]+"::presets::"+pdk[ii]+"::values"));
+			}
+		}
 	}
 }
