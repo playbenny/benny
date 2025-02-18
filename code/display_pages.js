@@ -2509,6 +2509,17 @@ function draw_sidebar(){
 		y_offset += fontheight;
 	}else if(sidebar.mode == "edit_channel_name"){
 		// enter preset name  ##############################################################################################################
+		var b = selected.block.indexOf(1);
+		var fg,bg,mg;
+		if((b>-1)&&(b!==null)){
+			fg = blocks.get("blocks["+b+"]::space::colour");
+			bg = [fg[0]*0.3,fg[1]*0.3,fg[2]*0.3];
+			mg = [fg[0]*0.5,fg[1]*0.5,fg[2]*0.5];
+		}else{
+			fg=menucolour;
+			bg=menudarkest;
+			mg=menudark;
+		}
 		if(sidebar.mode != sidebar.lastmode){
 			if(displaymode == "blocks") center_view(1);
 			clear_sidebar_paramslider_details();
@@ -2518,12 +2529,12 @@ function draw_sidebar(){
 			redraw_flag.targets=[];
 			// sidebar.text_being_edited = "";
 		}
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menudarkest);
-		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,bg);
+		lcd_main.message("frgb" , fg);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "enter a name for channel "+(1+sidebar.channelnaming[1]));
 		y_offset+=1.1*fontheight;
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menucolour);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,fg);
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
@@ -2531,14 +2542,14 @@ function draw_sidebar(){
 		lcd_main.message("write", sidebar.text_being_edited);
 		setfontsize(fontsmall*2);
 		y_offset+=1.1*fontheight;
-		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
+		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mg);
 		click_zone(edited_channel_name, sidebar.text_being_edited, sidebar.text_being_edited, sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mouse_index,1);
-		lcd_main.message("frgb" , menucolour);
+		lcd_main.message("frgb" , fg);
 		lcd_main.message("moveto" ,sidebar.x2-fontheight*6.1, fontheight*0.75+y_offset);
 		lcd_main.message("write", "save name");
-		lcd_main.message("paintrect", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,menudarkest);
+		lcd_main.message("paintrect", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,bg);
 		click_zone(set_sidebar_mode, "none", "", sidebar.x2-fontheight*2.1, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
-		lcd_main.message("frgb" , menudark);
+		lcd_main.message("frgb" , mg);
 		lcd_main.message("moveto" ,sidebar.x2-fontheight*1.9, fontheight*0.75+y_offset);
 		lcd_main.message("write", "cancel");
 		y_offset += fontheight;

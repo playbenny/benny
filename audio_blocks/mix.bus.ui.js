@@ -45,6 +45,7 @@ var shape = [];
 var sweep = [];
 var amount = [];
 var channelnames = [];
+var col_to_chan = []; //holds block,channel
 
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
@@ -142,6 +143,9 @@ function update(force){
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
 					outlet(1,"frgb",bgc);
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos);
+					if(force){
+						outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos+height-4*unit,x_pos+width,y_pos+height,0,0,0,block,0);
+					}
 				}	
 				var xx = x+v_list[b].length;
 				x = xx;		
@@ -180,16 +184,25 @@ function update(force){
 
 function check_eq_params_for_changes(b,v){
 	var dr=0;
-	//for(var b=0;b<b_list.length;b++){
-	//	for(var v=0;v<v_list[b].length;v++){
-			//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
-			shape[b][v] = Math.floor(0.99*no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
-			amount[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+3);
-			sweep[b][v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4)-2);
-			if((shape[b][v]!=oshape[b][v])||(amount[b][v]!=oamount[b][v])||(sweep[b][v]!=osweep[b][v])) dr = 1;
-	//	}
-	//}
+	shape[b][v] = Math.floor(0.99*no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
+	amount[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+3);
+	sweep[b][v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4)-2);
+	if((shape[b][v]!=oshape[b][v])||(amount[b][v]!=oamount[b][v])||(sweep[b][v]!=osweep[b][v])) dr = 1;
 	return dr;
+}
+
+function mouse(x,y,leftbutton,shift,alt,ctrl){
+	// post("\nmouse",(x,y,leftbutton,shift,alt,ctrl));
+	if(y>(y_pos+height-4*unit)){
+		var xx = Math.floor((x-x_pos)*cols/width);
+		post("\nclicked column",xx,"which is",col_to_chan[xx]);
+		if(ctrl){
+			messnamed("to_blockmanager","name_mixer_channel",col_to_chan[xx][0],col_to_chan[xx][1]);
+		}else{
+			messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
+		}
+
+	}
 }
 
 function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
@@ -274,12 +287,13 @@ function scan_for_channels(){
 				var n2 = nam.split(".");
 				if((n2[0] == "mix")&&(n2[1] != "bus")){
 					tb_list.push(b);
-					bx_list.push(blocks.get("blocks["+b+"]::space::x"));
+					var x=blocks.get("blocks["+b+"]::space::x");
+					bx_list.push(x);
 					var vl= voicemap.get(b);
 					if(!Array.isArray(vl)){
 						hash+= b+1;
 					}else{
-						hash += (b+1) * vl.length;
+						hash += (b+1) * (vl.length+99.9*x);
 					}
 					// post("\nb",(b+1),"size",vl.length);
 				}
@@ -320,6 +334,7 @@ function scan_for_channels(){
 				}
 			}
 			channelnames=[];
+			col_to_chan=[];
 			for(var bb=0;bb<b_list.length;bb++){
 				b=b_list[bb];
 				var nam = blocks.get("blocks["+b+"]::name");
@@ -350,6 +365,7 @@ function scan_for_channels(){
 				//parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
 
 				cols += vl.length;
+				for(var tv=0;tv<vl.length;tv++) col_to_chan.push([b,tv]);
 				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 			}
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
