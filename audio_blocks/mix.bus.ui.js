@@ -19,8 +19,8 @@ var display_col_offset = 0;
 var mini=0;
 var drawflag=0;
 var namelist;
-var map = new Dict;
-map.name = "voicemap";
+var voicemap = new Dict;
+voicemap.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
 var blocktypes = new Dict;
@@ -52,7 +52,11 @@ function setup(x1,y1,x2,y2,sw){
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
 	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	width = x2-x1;
+	var w = x2-x1;
+	if(w!=width){
+		ovhash=-1;
+	}
+	width = w;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
@@ -66,7 +70,7 @@ function setup(x1,y1,x2,y2,sw){
 	unit = height / 18;
 	u1 = 0.1 * unit;
 	if(block>=0){
-		ovhash = -1;
+		// post("\nmixer setup");
 		scan_for_channels();
 		draw();
 	}
@@ -89,11 +93,11 @@ function update(force){
 			mutemsg="m";
 			solomsg="s";
 		}
-		for(var b=0;b<b_list.length;b++){
-			var fgc = b_colour[b];
-			var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
+		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
-			if(mini==2){//bottom bar view is different layout
+			for(var b=0;b<b_list.length;b++){
+				var fgc = b_colour[b];
+				var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
 				for(var v=v_list[b].length-1;v>=0;v--){
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
@@ -138,8 +142,14 @@ function update(force){
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
 					outlet(1,"frgb",bgc);
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos);
-				}				
-			}else{
+				}	
+				var xx = x+v_list[b].length;
+				x = xx;		
+			}					
+		}else{
+			for(var b=0;b<b_list.length;b++){
+				var fgc = b_colour[b];
+				var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
 				for(var v=v_list[b].length-1;v>=0;v--){
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
@@ -161,9 +171,9 @@ function update(force){
 						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
 					}
 				}
+				var xx = x+v_list[b].length;
+				x = xx;
 			}
-			var xx = x+v_list[b].length;
-			x = xx;
 		}
 	}
 }
@@ -246,7 +256,7 @@ function voice_is(v){
 	block = v;
 	ovhash = -1;
 	scan_for_channels();
-	bv = map.get(v);
+	bv = voicemap.get(v);
 	if(Array.isArray(bv)) bv=bv[0];
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
@@ -265,8 +275,12 @@ function scan_for_channels(){
 				if((n2[0] == "mix")&&(n2[1] != "bus")){
 					tb_list.push(b);
 					bx_list.push(blocks.get("blocks["+b+"]::space::x"));
-					var vl= map.get(b);
-					hash += (b+1) * vl.length;
+					var vl= voicemap.get(b);
+					if(!Array.isArray(vl)){
+						hash+= b+1;
+					}else{
+						hash += (b+1) * vl.length;
+					}
 					// post("\nb",(b+1),"size",vl.length);
 				}
 			}
@@ -283,9 +297,9 @@ function scan_for_channels(){
 				olevel[b] = [];
 			}
 		}
-		post("\nnew hash",hash);
+		// post("\nnew hash",hash);
 		if(hash!=ovhash){
-			post("\nhash:",hash,"ovhash",ovhash);
+			// post("\nhash:",hash,"ovhash",ovhash);
 			ovhash=hash;
 			b_list = tb_list.slice();
 			v_list=[];
@@ -317,7 +331,7 @@ function scan_for_channels(){
 					b_type.push(nam);
 				}
 				b_colour.push(blocks.get("blocks["+b+"]::space::colour"));
-				var vl = map.get(b);
+				var vl = voicemap.get(b);
 				if(!Array.isArray(vl)) vl = [vl];
 				v_list.push(vl);
 				var cnams = [];
@@ -342,9 +356,9 @@ function scan_for_channels(){
 			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 			block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
 			for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
-			cw = (width+u1) / cols;
 			outlet(3,"bang");
 		}
+		cw = (width+u1) / cols;
 	}
 }
 

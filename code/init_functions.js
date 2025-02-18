@@ -1120,6 +1120,7 @@ function bottombar_size(){
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
 		setup_bottom_bar(bottombar.block);
+		redraw_flag.deferred |= 4;
 	}else{
 		bottombar.videoplane.message("enable",0);
 	}
