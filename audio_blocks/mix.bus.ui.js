@@ -1,8 +1,11 @@
 var MAX_DATA = 16384;
 var MAX_PARAMETERS = 256;
+var MAX_AUDIO_VOICES = 64;
+var MAX_NOTE_VOICES = 64;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var parameter_value_buffer = new Buffer("parameter_value_buffer");
+var scope_buffer = new Buffer("scope_buffer");
 outlets = 4;
 var config = new Dict;
 config.name = "config";
@@ -46,6 +49,8 @@ var channelnames = [];
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
+	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
+	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	height = y2-y1;
@@ -86,41 +91,53 @@ function update(force){
 		}
 		for(var b=0;b<b_list.length;b++){
 			var fgc = b_colour[b];
-			var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
+			var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
 			if(mini==2){//bottom bar view is different layout
 				for(var v=v_list[b].length-1;v>=0;v--){
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
 						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.5)*cw-2,y_pos+height-4.2*unit,[fgc[0]*1.5,fgc[1]*1.5,fgc[2]*1.5],0,v_list[b][v],b_list[b]);
+						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
 					}
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
 						omute[b][v] = mute;
-						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+unit*8.1,130,130,130,5,v_list[b][v],mutemsg,b_list[b]);
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*11.6,x_pos+(x+v+1)*cw-8,y_pos+height-unit*8,130,130,130,5,v_list[b][v],mutemsg,b_list[b]);
 					}
 					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
 					if((osolo[b][v]!=solo)||force){
 						osolo[b][v] = solo;
-						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+unit*8.2,x_pos+(x+v+1)*cw-2,y_pos+unit*12.2,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*7.6,x_pos+(x+v+1)*cw-8,y_pos+height-4*unit,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
 					}
 					if(check_eq_params_for_changes(b,v)||force){
-						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
 						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 					}
 					if(force){
 						outlet(1,"frgb",fgc);
 						if(channelnames[b] !== undefined){
-							outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-2.2*unit);
+							outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-2*unit);
 							outlet(1,"write",channelnames[b][v]);
 						}
 						if(v==0){
 							outlet(1,"frgb",[fgc[0]*0.7,fgc[1]*0.7,fgc[2]*0.7]);
-							outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-0.8*unit);
+							outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-0.6*unit);
 							outlet(1,"write",b_name[b]);
 						}
 					}
+					var meter = scope_buffer.peek(2,1+(v_list[b][v]-MAX_NOTE_VOICES));
+					outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-4.2*unit);
+					outlet(1,"frgb",fgc);
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
+					outlet(1,"frgb",bgc);
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos);
+					meter = scope_buffer.peek(2,1+(v_list[b][v]+MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
+					outlet(1,"moveto",4+x_pos+(x+v)*cw,y_pos+height-4.2*unit);
+					outlet(1,"frgb",fgc);
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
+					outlet(1,"frgb",bgc);
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos);
 				}				
 			}else{
 				for(var v=v_list[b].length-1;v>=0;v--){
