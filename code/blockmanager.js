@@ -563,7 +563,8 @@ var sidebar = {
 	fwd : [],
 	files_page : "songs",
 	notification : "",
-	text_being_editted : "",
+	text_being_edited : "",
+	channelnaming : ["block","channel"], //set when you bring up the edit channel name mode
 	dropdown : null
 }
 

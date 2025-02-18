@@ -170,8 +170,9 @@ function draw_v_slider(x1,y1,x2,y2,r,g,b,index,value){
 }
 
 function draw_button(x1,y1,x2,y2,r,g,b,index,label,value){
+	// post("\ndrawing button",/*x1,y1,x2,y2,*/r,g,b,index,label,value);
 	var rat = bg_dark_ratio*2;
-	if((usermouse.clicked2d==index)||(value>0.5)) rat = 1 - rat;
+	if((usermouse.clicked2d==index)||(value>=0.5)) rat = 1 - rat;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*rat,g*rat,b*rat);
 	lcd_main.message("framerect",x1,y1,x2,y2,r,g,b);
 	rat = (usermouse.clicked2d != index) * 2;
@@ -1095,7 +1096,8 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		var vc=view_changed;
 		view_changed = true;
 		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
-		draw_button(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, highlight,pv>0.5);
+		var m=(1 + (pv>0.5))*0.5;
+		draw_button(x1,y1,x2,y2,r*m,g*m,b*m,mouse_index, highlight,pv>0.5);
 		mouse_click_actions[mouse_index] = static_mod_adjust;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
 		mouse_click_values[mouse_index] = 0.99* (pv<=0.5);
@@ -1598,16 +1600,35 @@ function return_from_notify(){
 function name_mixer_channel(block,chan){
 	if(blocks.contains("blocks["+block+"]::name")&&(blocks.get("blocks["+block+"]::name").indexOf("mix.")>-1)){
 		post("\nnaming mixer channel");
+		var channelnames=[];
 		if(!blocks.contains("blocks["+block+"]::channel_names")){
-			var channelnames=[];
 			vl = voicemap.get(block);
 			if(!Array.isArray(vl))vl=[vl];
 			for(var i=0;i<vl.length;i++){
 				channelnames.push((i+1));
 			}
 			blocks.replace("blocks["+block+"]::channel_names",channelnames);
+		}else{
+			channelnames = blocks.get("blocks["+block+"]::channel_names");
+			if(!Array.isArray(channelnames))channelnames=[channelnames];
 		}
-		text_being_editted = channelnames[chan];
+		sidebar.text_being_edited = channelnames[chan].toString();
+		sidebar.channelnaming = [block,chan];
+		post("\nchan name edit: ",block,chan,sidebar.text_being_edited);
 		set_sidebar_mode("edit_channel_name");
 	}
+}
+function edited_channel_name(){
+	if(sidebar.text_being_edited == "cancel"){
+		
+	}else{
+		post("\nnaming params:",sidebar.channelnaming);
+		var channelnames = blocks.get("blocks["+sidebar.channelnaming[0]+"]::channel_names");
+		post("\nexisting names:",channelnames);
+		channelnames[sidebar.channelnaming[1]] = sidebar.text_being_edited;
+		post("\nnow:",channelnames);
+		blocks.replace("blocks["+sidebar.channelnaming[0]+"]::channel_names",channelnames);
+	}
+	selected.block[sidebar.channelnaming[0]]=1;
+	set_sidebar_mode("none");
 }

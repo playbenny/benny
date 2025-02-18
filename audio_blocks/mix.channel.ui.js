@@ -29,7 +29,8 @@ var oamount = [];
 var shape = [];
 var sweep = [];
 var amount = [];
-var o_left = 0;
+var oleft = 0;
+var channelnames = [];
 
 function setup(x1,y1,x2,y2,sw){
 	MAX_DATA = config.get("MAX_DATA");
@@ -157,7 +158,7 @@ function mouse(x,y,leftbutton,shift,alt,ctrl){
 	if(oleft!=leftbutton){
 		oleft=leftbutton;
 		if(leftbutton==0){//release
-			x *= cols / width;
+			x = (x - x_pos) * cols / width;
 			x = Math.floor(x);
 			messnamed("to_blockmanager","name_mixer_channel",block,x);
 		}
@@ -177,8 +178,15 @@ function scan_for_channels(){
 		v_list = vl;
 		cols = vl.length;
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
-		if(blocks.contains("blocks["+block+"]::channelnames")){
+		if(blocks.contains("blocks["+block+"]::channel_names")){
 			channelnames = blocks.get("blocks["+block+"]::channel_names");
+			if(!Array.isArray(channelnames)) channelnames = [channelnames];
+			if(channelnames.length<vl.length){
+				for(var i=channelnames.length;i<vl.length;i++){
+					channelnames[i]=(i+1).toString();
+				}
+				blocks.replace("blocks["+block+"]::channel_names",channelnames);
+			}
 		}else{
 			channelnames=[];
 			for(var i=0;i<cols;i++) channelnames.push((i+1));
