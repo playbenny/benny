@@ -98,6 +98,7 @@ function picker_hover_and_special(id){
 			}
 			bulgingwire = thov[1];
 			bulgeamount=1;
+			if(!Array.isArray(wires_scale[bulgingwire])) wires_scale[bulgingwire]=[];
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}

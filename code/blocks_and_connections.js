@@ -1201,7 +1201,7 @@ function remove_connection(connection_number){
 							outmsg[2] = 0;
 							post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							messnamed("drivers_poly","setvalue",2,"set",outmsg);
-							connections.replace("connections["+cno+"]::conversion::soundcard", 1);
+							connections.replace("connections["+connection_number+"]::conversion::soundcard", 1);
 							use_max_matrix = 0;
 						}
 						if(use_max_matrix){

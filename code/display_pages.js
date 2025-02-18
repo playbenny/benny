@@ -5460,6 +5460,13 @@ function draw_sidebar(){
 				if((fty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) fty="soundcard";
 				type_colour = config.get("palette::connections::"+fty);
 			}
+			if(fty=="soundcard"){
+				if(Math.abs(scale)>2){
+					scale = Math.min(2,Math.max(-2,scale));
+					post("\nclipped gain of soundcard connection (RME mixer only goes up to +6)");
+					connections.replace("connections["+i+"]::conversion::scale",scale);
+				}
+			}
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
 			section_colour = blocks.get("blocks["+f_number+"]::space::colour");
@@ -6808,8 +6815,8 @@ function draw_sidebar(){
 						}else{
 							var tty = t_type;
 							if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
-							if(config.contains("palette::connections::"+t_type)){
-								ccol = config.get("palette::connections::"+t_type);
+							if(config.contains("palette::connections::"+tty)){
+								ccol = config.get("palette::connections::"+tty);
 							}else{
 								ccol = menucolour;
 							}
