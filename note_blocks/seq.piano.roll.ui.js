@@ -178,10 +178,12 @@ function setup(x1,y1,x2,y2,sw){
 	if(width<sw*0.5){ 
 		mini=1;
 	}
-	if(block>-1) laneheights();
+	if(block>-1){
+		laneheights();
+		zoom_to_pattern();
+		draw();
+	}
 	draw_mouselayer_flag = 1;
-	zoom_to_pattern();
-	draw();
 }
 
 function flag(f){
@@ -293,7 +295,7 @@ function draw(){
 		outlet(1,"write","length:"+looplength);
 
 		outlet(0,"custom_ui_element","mouse_passthrough",x_pos - (x_pos==9)*9,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
-	
+
 		outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		var labelled=[];
 		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
@@ -321,6 +323,13 @@ function draw(){
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
 						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
+						if(yy<(highestnote-lowestnote)){
+							if((r>(0.4*unit))||([0,5].indexOf((yy+lowestnote)%12)>-1)){
+								outlet(1,"frgb",0,0,0);
+								outlet(1,"moveto", x_pos+9,nr-0.2*r);
+								outlet(1,"write",notenames[(yy+lowestnote)%12]+"-"+(Math.floor((yy+lowestnote)/12)-2));
+							}
+						}
 						rr=nr;
 					}
 				}else{// if(lanetype[l]==2){
@@ -341,17 +350,17 @@ function draw(){
 
 		if((st>=zoom_start)&&(st<=zoom_end)){
 			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
-			for(var l=0; l<laney.length-1; l++){
-				outlet(1,"moveto", x_pos + (st - zoom_start) * zoom_scale , laney[l]);
-				outlet(1,"lineto", x_pos + (st - zoom_start) * zoom_scale , laney[l+1]-6);
-			}
+			//for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (st - zoom_start) * zoom_scale , laney[0]);
+				outlet(1,"lineto", x_pos + (st - zoom_start) * zoom_scale , laney[laney.length-1]-6);
+			//}
 		}				
 		if((playheadpos>=zoom_start)&&(playheadpos<=zoom_end)){
 			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-			for(var l=0; l<laney.length-1; l++){
-				outlet(1,"moveto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l]);
-				outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l+1]-6);
-			}
+			//for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[0]);
+				outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[laney.length-1]-6);
+			//}
 		}
 		var shown_range_in_beats = seql / zoom_scale;
 		var firstbeat = Math.ceil(zoom_start*seql);
@@ -545,7 +554,7 @@ function draw(){
 							by2 = laney[1+notelane[ll2]] - 4;
 							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
 						}
-						if((event[2]<lowestnote)||(event[2]>highestnote)){
+						if((event[2]<(lowestnote+2))||(event[2]>(highestnote-2))){
 							drawflag = 2;
 							return 0;
 						}
