@@ -78,6 +78,7 @@ var drag = 0;
 var drag_start_x;
 var drag_start_y;
 var drag_moved;
+var drag_dist;
 
 var drawflag = 0;
 var draw_mouselayer_flag = 0;
@@ -192,6 +193,7 @@ function flag(f){
 }
 
 function draw(){
+	if(block<0)return 0;
 	if(drawflag&2)get_note_range();
 	if((drawflag&4) && mini)zoom_to_pattern();
 	//post("draw",drawflag);
@@ -431,7 +433,7 @@ function draw(){
 				}else if(lanetype[l]==1){
 					outlet(1,"write", "cc "+(laneslist[l]));
 				}else if(lanetype[l]==2){
-					outlet(1,"write", "meta");
+					outlet(1,"write", "modifier");
 					if(maximisedlist[l]==1){
 						outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
 						r = (laney[l+1]-laney[l]-4)/(metatypes.length);
@@ -491,7 +493,7 @@ function draw(){
 							selected_events[k[i]] &= 3;
 						}
 					}
-					col = pal[(8+event[2])% 16];
+					col = pal[(8+(event[2]|0))% 16];
 					if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
 						hovered_event = k[i];
 						if(selected_events[k[i]]){
@@ -617,14 +619,14 @@ function draw(){
 				for(var p=0;p<metatype_params[event[2]].length;p++){
 					if(metatype_params[event[2]][p]=="chance/every"){
 						if(event[ind]<0){
-							displayedparams += (128+event[ind]).toFixed(2) + "in every 128";
+							displayedparams += (128+event[ind]).toFixed(2) + " in every 128";
 						}else{
 							displayedparams += ((event[ind]/1.27).toFixed(2))+"% chance";
 						}
 					}else if(metatype_params[event[2]][p]=="range"){
-						displayedparams += "range:" + (1 + Math.floor(event[ind] / 16));
+						displayedparams += " range:" + (1 + Math.floor(event[ind] / 16));
 					}else if(metatype_params[event[2]][p]=="division"){
-						displayedparams += "division:" + (2 + Math.floor(event[ind] / 8));
+						displayedparams += " division:" + (2 + Math.floor(event[ind] / 8));
 					}
 					if(ind==3){
 						ind=5;
@@ -632,7 +634,7 @@ function draw(){
 						ind++;
 					}
 				}
-				outlet(1,"write","hovered meta:",metatypes[event[2]],displayedparams,"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+				outlet(1,"write","hovered modifier:",metatypes[event[2]],displayedparams);//,"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}else{
 				outlet(1,"write","hovered cc:",event[1]-1,event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}
@@ -641,12 +643,32 @@ function draw(){
 				for(var se=0;se<selected_events.length;se++){
 					if(selected_events[se]){
 						outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-						var event = seqdict.get(block+"::"+pattern+"::"+selected_events[se]);
+						var event = seqdict.get(block+"::"+pattern+"::"+se);
 						outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 						if(event[1]==0){
 							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}else if(event[1]==9){
-							outlet(1,"write","selected meta:",metatypes[event[2]],"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+							var displayedparams = "";
+							var ind = 3;
+							for(var p=0;p<metatype_params[event[2]].length;p++){
+								if(metatype_params[event[2]][p]=="chance/every"){
+									if(event[ind]<0){
+										displayedparams += (128+event[ind]).toFixed(2) + " in every 128";
+									}else{
+										displayedparams += ((event[ind]/1.27).toFixed(2))+"% chance";
+									}
+								}else if(metatype_params[event[2]][p]=="range"){
+									displayedparams += " range:" + (1 + Math.floor(event[ind] / 16));
+								}else if(metatype_params[event[2]][p]=="division"){
+									displayedparams += " division:" + (2 + Math.floor(event[ind] / 8));
+								}
+								if(ind==3){
+									ind=5;
+								}else{
+									ind++;
+								}
+							}
+							outlet(1,"write","selected modifier:",metatypes[event[2]],displayedparams);
 						}else{
 							outlet(1,"write","selected cc:",event[1], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}
@@ -935,6 +957,7 @@ function mouse(x,y,l,s,a,c,scr){
 			if(y<y_pos+0.1*height) clicked = -2.5;
 			drag_start_x = x;
 			drag_start_y = y;
+			drag_dist = 0;
 			if(clicked<0){
 				drag = 3 + clicked;
 			}else{
@@ -958,15 +981,17 @@ function mouse(x,y,l,s,a,c,scr){
 			old_l = 1;
 		}else{//already clicked, so a drag
 			//post("\n---");
-			if(drag>0){
+			var dx = drag_start_x - x;
+			var dy = drag_start_y - y;
+			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
+			if((drag>0)&&(drag_dist>10)){
 				drag=-drag;
 				if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
 					selected_event_count=1;
 					selected_events=[];
 					selected_events[hovered_event]=1;
-				}
-				if(a&&(hovered_event>-1)&&(selected_events[hovered_event]==1)){
-					//if ctrl is held it makes an entirely new set of events
+				}else if(a&&(hovered_event>-1)&&(selected_events[hovered_event]==1)){
+					//if alt is held it makes an entirely new copy of the set of events
 					var newsellist=[];
 					sd = seqdict.get(block+"::"+pattern);
 					k = sd.getkeys();						
@@ -988,25 +1013,55 @@ function mouse(x,y,l,s,a,c,scr){
 						selected_events[newsellist[i]]=1;
 					}
 					hovered_event = newhov;
+				}else if(c&&(hovered_event==-1)){
+					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
+					if((!s)&&quantise_enable){
+						xx = Math.floor(xx*seql/currentquantise)/(seql/currentquantise);
+					}
+					var vv = 100;
+					var pp = 0;
+					
+					if(lanetype[mouse_lane]==0){//note lane
+						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+					}else if(lanetype[mouse_lane]==2){//meta lane
+						pp = Math.floor((metatypes.length)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+						vv = metatype_defaults[pp][0];
+					}else{
+						vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])); 
+					}
+					if(mouse_lane>0)mouse_lane--;
+					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
+					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
+						for(var i=1;i<metatype_defaults[pp].length;i++){
+							event.push(metatype_defaults[pp][i]);
+						}
+					}
+					var ind = create_event(event);
+					selected_events = [];
+					selected_events[ind] = 1;
+					selected_event_count=1;
+					hovered_event = ind;
+					drag = 4;
+					drag_dist=0;
+					drawflag=1;
 				}
+				
 			}
 			if(drag<0){
 				drawflag=1;
 				//post("drag",drag);
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//ctrl drag - draw values
-					var dx = drag_start_x - x;
-					//var dy = drag_start_y - y;
 					if(Math.abs(dx)>=1){
-						if(lanetype[Math.max(0,mouse_lane-1)]==1){
+						if(lanetype[mouse_lane]==1){
 							var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 							var sx = ((drag_start_x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 							var ex = xx;
-							var ssx = sx;
+							//var ssx = sx;
 							if(ex<sx){ ex = sx; sx = xx; }
 							var vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
-							var sv = 127 *(1-((drag_start_y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
-							var gv = (sv - vv)/Math.ceil(dx);
+							//var sv = 127 *(1-((drag_start_y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
+							//var gv = (sv - vv)/Math.ceil(dx);
 							for(var i=1;i<k.length;i++){
 								var tt=sd.get(k[i]+"[0]");
 								if((tt>sx)&&(tt<ex)){
@@ -1014,7 +1069,7 @@ function mouse(x,y,l,s,a,c,scr){
 								}
 							}
 							var event; //
-							event = [xx,Math.max(0,mouse_lane-1),pp,vv,currentquantise/seql];
+							event = [xx,Math.max(0,mouse_lane-1),0,vv,currentquantise/seql];
 							create_event(event);
 							/*for(var i = 0;i<Math.abs(dx);i++){
 								event = [ssx+i,Math.max(0,mouse_lane-1),0,sv,currentquantise/seql];
@@ -1025,8 +1080,6 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 					}
 				}else if(drag == -0.5){//ruler drag - pan and zoom
-					var dx = drag_start_x - x;
-					var dy = drag_start_y - y;
 					var dir = 0;
 					if(Math.abs(dx)<Math.abs(dy)) dir = 1;
 					if(dir==0){
@@ -1083,6 +1136,7 @@ function mouse(x,y,l,s,a,c,scr){
 		}
 	}else{
 		if(old_l==1){// a release
+			if(drag_dist<20) drag=0;
 			if(drag<0){
 				drag = 0;
 				if(drag_moved)push_to_undo_stack("move");
@@ -1121,10 +1175,11 @@ function mouse(x,y,l,s,a,c,scr){
 					drawflag=1;
 				}
 			}else{ //release on background
+				//the create note if ctrl held routine is now on-click to facilitate click-drag to create notes.
 				if(c){ //create note
 					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 					if((!s)&&quantise_enable){
-						xx = Math.round(xx*seql/currentquantise)/(seql/currentquantise);
+						xx = Math.floor(xx*seql/currentquantise)/(seql/currentquantise);
 					}
 					var vv = 100;
 					var pp = 0;
@@ -1246,8 +1301,13 @@ function keydown(key){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 				undo.replace(k[i],event);
 				rem=1;
-				var n = event[2] + dir;
-				if((n>=0)&&(n<127)) event[2] = n;
+				if(event[1]==9){
+					var n = event[2] - dir;
+					if((n>=0)&&(n<metatypes.length)) event[2] = n;
+				}else{
+					var n = event[2] + dir;
+					if((n>=0)&&(n<127)) event[2] = n;
+				}
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 			}
 		}
