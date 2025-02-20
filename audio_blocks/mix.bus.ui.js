@@ -321,7 +321,7 @@ function scan_for_channels(){
 			b_colour=[];
 			b_type=[];
 			cols = 0;
-			post("\nsorting mixer channel groups by x position",bx_list);
+			// post("\nsorting mixer channel groups by x position",bx_list);
 			for(var bb=1;bb<b_list.length;bb++){
 				if(bx_list[bb]<bx_list[bb-1]){
 					var bt=b_list[bb-1];
@@ -353,7 +353,7 @@ function scan_for_channels(){
 				if(blocks.contains("blocks["+b+"]::channel_names")){
 					cnams = blocks.get("blocks["+b+"]::channel_names");
 					if(!Array.isArray(cnams))cnams = [cnams];
-					post("\nfound names:",cnams);
+					// post("\nfound names:",cnams);
 				}else{
 					for(var t=0;t<vl.length;t++) cnams.push((t+1));
 				}
