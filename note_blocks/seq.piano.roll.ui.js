@@ -88,11 +88,11 @@ var clipboard = [];
 
 //in the meta lane, attach more values to the event, so you don't need too many lanes. however, having some 
 //redundancy is good so you could eg stack probabilistic transposes
-var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "arp", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose"  ];
-var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"]]
+var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "arp", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose", "to out B/C"  ];
+var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","choice"]]
 // more types? trills and arps? splitting - eg if the param is 3 it divides the length by 3 and plays 3 notes?
 // randomise velocity
-var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1],[-127,1], [-127,1] ];
+var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1],[-127,1], [-127,1], [-127,0] ];
 
 function playhead(p){
 	playheadpos = p;
@@ -279,11 +279,6 @@ function draw(){
 			}
 		}
 	}else{
-		//starting from the mini code but the following changes:
-		//lanes (with maximising)
-		//  store lane y positions
-		//scroll and zoom (on x axis for all, on y axis for note lanes)
-		//notes as rectangles
 		if(laney.length==0) laneheights();
 		laneused=[1,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
@@ -307,37 +302,39 @@ function draw(){
 		hovered_event = -1;
 		selected_event_count = 0;
 		for(var l=0; l<laney.length-1; l++){
-			var ll = laneslist[l]; //actual lane
-			if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
-			var r = 18;
-			if((lanetype[l]==1)||(maximisedlist[l]==0)){
-				if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
-				outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-				if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
-			}else if(lanetype[l]==0){
-				r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
-				var rr = laney[l];
-				for(var yy = highestnote - lowestnote; yy >= 0; yy--){
-					var nr = rr + r;
-					var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
-					if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
-					outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
-					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
-					rr=nr;
+			if(laney[l]!=laney[l+1]){
+				var ll = laneslist[l]; //actual lane
+				if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
+				var r = 18;
+				if((lanetype[l]==1)||(maximisedlist[l]==0)){
+					if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+					outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+				}else if(lanetype[l]==0){
+					r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
+					var rr = laney[l];
+					for(var yy = highestnote - lowestnote; yy >= 0; yy--){
+						var nr = rr + r;
+						var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
+						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
+						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
+						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
+						rr=nr;
+					}
+				}else{// if(lanetype[l]==2){
+					r = (laney[l+1]-laney[l])/(metatypes.length);
+					var rr = laney[l];
+					for(var yy = metatypes.length; yy > 0; yy--){
+						var nr = rr + r;
+						var s = (0.5*maximisedlist[ll])+(((yy%2)+1)*0.5);
+						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
+						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
+						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
+						rr=nr;
+					}
 				}
-			}else{// if(lanetype[l]==2){
-				r = (laney[l+1]-laney[l])/(metatypes.length);
-				var rr = laney[l];
-				for(var yy = metatypes.length; yy > 0; yy--){
-					var nr = rr + r;
-					var s = (0.5*maximisedlist[ll])+(((yy%2)+1)*0.5);
-					if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
-					outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
-					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
-					rr=nr;
-				}
+				outlet(1,"paintrect",x_pos,laney[l+1]-4,width+x_pos,laney[l+1],0,0,0);
 			}
-			outlet(1,"paintrect",x_pos,laney[l+1]-4,width+x_pos,laney[l+1],0,0,0);
 		}
 
 		if((st>=zoom_start)&&(st<=zoom_end)){
@@ -422,30 +419,31 @@ function draw(){
 		}
 
 		for(var l=0; l<laney.length-1; l++){
-			var s = ((maximisedlist[l]==1) + 0.45);
-			outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
-			outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
-			//outlet(1,"write", "lane "+laneslist[l]);
-			if(lanetype[l]==0){
-				outlet(1,"write", "notes");
-			}else if(laneslist[l]==0){
-				outlet(1,"write", "velocity");
-			}else if(lanetype[l]==1){
-				outlet(1,"write", "cc "+(laneslist[l]));
-			}else if(lanetype[l]==2){
-				outlet(1,"write", "meta");
-				if(maximisedlist[l]==1){
-					outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
-					r = (laney[l+1]-laney[l]-4)/(metatypes.length);
-					rr = laney[l]-0.2*r;
-					for(var yy = 0; yy < metatypes.length; yy++){
-						rr += r;
-						outlet(1,"moveto",x_pos+18,rr);
-						outlet(1,"write",metatypes[yy]);
+			if(laney[l]!=laney[l+1]){
+				var s = ((maximisedlist[l]==1) + 0.45);
+				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
+				outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
+				//outlet(1,"write", "lane "+laneslist[l]);
+				if(lanetype[l]==0){
+					outlet(1,"write", "notes");
+				}else if(laneslist[l]==0){
+					outlet(1,"write", "velocity");
+				}else if(lanetype[l]==1){
+					outlet(1,"write", "cc "+(laneslist[l]));
+				}else if(lanetype[l]==2){
+					outlet(1,"write", "meta");
+					if(maximisedlist[l]==1){
+						outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
+						r = (laney[l+1]-laney[l]-4)/(metatypes.length);
+						rr = laney[l]-0.2*r;
+						for(var yy = 0; yy < metatypes.length; yy++){
+							rr += r;
+							outlet(1,"moveto",x_pos+18,rr);
+							outlet(1,"write",metatypes[yy]);
+						}
 					}
-	
-				}
-			}			
+				}			
+			}
 		}
 		var selx1,selx2,sely1,sely2;
 		if(drag!=0){
@@ -788,13 +786,13 @@ function laneheights(){
 		maximised += ((maximisedlist[i]|0)==1);
 	}
 	//post("\nmaximised",maximised,"used",used,"unused",unused);
-	maximised = 8 * maximised + used + 0.4*unused;
+	maximised = 8 * maximised + used + 0.1*unused + 3*((maximisedlist[0]!=1)+(maximisedlist[laneslist.length-1]!=1))+ 2*(maximisedlist[1]!=1);
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
 		var ii=i-2;
 		if(ii<0)ii=0;
-		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]|0) + 0.4 + 0.6 * (laneused[ii]|0) + 0.6*((i==laneslist.length)&&(maximisedlist[i-1]!=1))) * maximised;
+		laney[i] = laney[i-1] + (7.9 * (maximisedlist[i-1]|0) + 0.1 + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]!=1)) + 2*((i==2)&&(maximisedlist[1]!=1))) * maximised;
 	}
 	//post("\nlaney",laney);
 	//post("\nscreen",y_pos+height);
