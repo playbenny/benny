@@ -90,10 +90,10 @@ var clipboard = [];
 //in the meta lane, attach more values to the event, so you don't need too many lanes. however, having some 
 //redundancy is good so you could eg stack probabilistic transposes
 var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "arp", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose", "to out B/C"  ];
-var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","choice"]]
+var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","output"]]
 // more types? trills and arps? splitting - eg if the param is 3 it divides the length by 3 and plays 3 notes?
 // randomise velocity
-var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1],[-127,1], [-127,1], [-127,0] ];
+var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1], [-127,1], [-127,1], [-127,0] ];
 
 function playhead(p){
 	playheadpos = p;
@@ -283,6 +283,7 @@ function draw(){
 			}
 		}
 	}else{
+		var m_sel = { sx:0, ex:1, y:0, col:[]};
 		if(laney.length==0) laneheights();
 		laneused=[1,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
@@ -304,7 +305,7 @@ function draw(){
 		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
 		mouse_lane = -1;
 		hovered_event = -1;
-		selected_event_count = 0;
+	
 		for(var l=0; l<laney.length-1; l++){
 			if(laney[l]!=laney[l+1]){
 				var ll = laneslist[l]; //actual lane
@@ -394,9 +395,13 @@ function draw(){
 		}
 		outlet(1,"moveto",x_pos+width*0.3,y_pos+height*0.02);
 		if(currentquantise<1){
-			outlet(1,"write","grid: 1/"+Math.round(1/currentquantise));
+			outlet(1,"write","grid: 1/"+Math.round(1/currentquantise)+"beat");
 		}else{
-			outlet(1,"write","grid:"+currentquantise);
+			if(currentquantise>1){
+				outlet(1,"write","grid:"+currentquantise+"beats");
+			}else{
+				outlet(1,"write","grid:"+currentquantise+"beat");
+			}
 		}
 		outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 
@@ -424,7 +429,13 @@ function draw(){
 				outlet(1,"write",Math.floor(b));
 			}else if((b % step) == 0){//(2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
 				outlet(1,"moveto",bx,y_pos+height*0.075);
-				outlet(1,"write",Math.floor(b));
+				if((step<4)&&((b % 4) == 0)){
+					outlet(1,"frgb",blockcolour[0]*0.7,blockcolour[1]*0.7,blockcolour[2]*0.7);
+					outlet(1,"write",Math.floor(b));
+					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+				}else{
+					outlet(1,"write",Math.floor(b));
+				}
 			}
 			b++;
 		}
@@ -479,6 +490,9 @@ function draw(){
 
 		var ll = -99; var ll2 = -99;
 		var by = -1; var sy = -1; var by2 = -1; var sy2=-1;
+		selected_event_count=0;
+		for(var i=1;i<k.length;i++) if(selected_events[k[i]]) selected_event_count++;
+		
 		for(var i=1;i<k.length;i++){ //[0] is the looppoints
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 			if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
@@ -511,7 +525,6 @@ function draw(){
 							col = [255,255,255];
 						}
 					}else if(selected_events[k[i]]){
-						selected_event_count++;
 						col = [col[1]*c,col[2]*c,col[0]*c];
 					}else{
 						col = [col[0]*c,col[1]*c,col[2]*c];
@@ -523,6 +536,50 @@ function draw(){
 						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 						outlet(1,"frgb",0,0,0);
 						outlet(1,"write",metatypes[event[2]]);
+
+						if((selected_event_count==1)&&(selected_events[k[i]])){// edit box for the details of modifiers
+							var eex = ex2 + 0.5*unit;
+							var eey = ey;
+							if(eex+5*unit > width+x_pos){
+								eex = ex1 - 5.5*unit;
+								
+								if(eex<x_pos){
+									eex = x_pos + width*0.5 - 2.5*unit;
+									eey = ey-Math.max(1,sy2) - 0.5*unit;
+								} 
+							}
+							outlet(1,"paintrect",eex,eey-2*unit,eex+5*unit,eey,col[0]*0.2,col[1]*0.2,col[2]*0.2);
+							outlet(1,"framerect",eex,eey-2*unit,eex+5*unit,eey,col);
+							var displayedparams = "";
+							var ind = 3;
+							var ly = eey-1.4*unit;
+							post("\nmodifier: length",event.length,"metalen",metatype_params[event[2]].length);
+							for(var p=0;p<metatype_params[event[2]].length;p++){
+								if(metatype_params[event[2]][p]=="chance/every"){
+									if(event[ind]<0){
+										displayedparams = (128+event[ind]).toFixed(2) + " in every 128";
+									}else{
+										displayedparams = ((event[ind]/1.27).toFixed(2))+"% chance";
+									}
+								}else if(metatype_params[event[2]][p]=="range"){
+									displayedparams = " range:" + (1 + Math.floor(event[ind]|0));
+								}else if(metatype_params[event[2]][p]=="division"){
+									displayedparams = " division: " + (2 + Math.floor(event[ind]|0));
+								}else if(metatype_params[event[2]][p]=="output"){
+									var choices = ["B","C"];
+									displayedparams = " output: " + choices[Math.floor(event[ind]|0) % 2];
+								}
+								outlet(1,"moveto",eex+9,ly);
+								outlet(1,"write",displayedparams);
+								ly+=0.6*unit;
+								if(ind==3){
+									ind=5;
+								}else{
+									ind++;
+								}
+							}
+
+						}
 					}
 				}else{
 				//if(event[1]!=9){
@@ -650,11 +707,11 @@ function draw(){
 		}else{
 			if(selected_event_count==1){
 				for(var se=0;se<selected_events.length;se++){
-					if(selected_events[se]){
-						outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+					if(selected_events[se] && seqdict.contains(block+"::"+pattern+"::"+se)){
 						var event = seqdict.get(block+"::"+pattern+"::"+se);
-						outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 						if(event[1]==0){
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}else if(event[1]==9){
 							var displayedparams = "";
@@ -677,8 +734,12 @@ function draw(){
 									ind++;
 								}
 							}
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 							outlet(1,"write","selected modifier:",metatypes[event[2]],displayedparams);
 						}else{
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
 							outlet(1,"write","selected cc:",event[1], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}
 					}
@@ -906,14 +967,24 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					drawflag = 1;
 				}else{
-					scr *= 0.125;
-					if(zoom_end-zoom_start>scr){
+					scr *= 0.5;
+					var wx = zoom_end-zoom_start;
+					//if(wx>scr){
 						var xx = (x-x_pos)/width;
-						zoom_start = Math.max(0,zoom_start + scr*xx);
-						zoom_end = Math.min(1, zoom_end - (1-xx)*scr);
+
+						zoom_start += wx*scr*xx;//Math.max(0,zoom_start + scr*xx);
+						zoom_end -= wx*scr*(1-xx);//Math.min(1, zoom_end - (1-xx)*scr);
+						if(zoom_start<0){
+							zoom_end+=zoom_start;
+							zoom_start=0;
+						}
+						if(zoom_end>1){
+							zoom_start-=(zoom_end-1);
+							zoom_end=1;
+						}
 						zoom_scale = 1 / (zoom_end-zoom_start);
 						//post("\nzoom",zoom_start,zoom_end,zoom_scale);
-					}
+					//}
 					drawflag = 1;
 				}
 			}
@@ -927,12 +998,24 @@ function mouse(x,y,l,s,a,c,scr){
 					event[4] = Math.max(event[4],0.000000001);
 				}else{
 					var v=0;
-					if(event[3]>=0){
-						v = Math.min(127,Math.max(0,event[3] + scr*25));
-					}else if(event[3]<0){
-						v = Math.max(-127,Math.min(0,event[3] - scr*25));
+					if(lanetype[mouse_lane]==2){
+						var lim=0;
+						var ind=3;
+						if(a){
+							ind = 5;
+						}else if(metatype_params[event[2]][0] == "chance/every") lim=1;
+						if(event[ind] >= 0){
+							v = Math.min(127+lim,Math.max(-lim,event[ind] + scr*25));
+							if(v>127)v=-254+v; //wrap
+						}else if(event[ind]<0){
+							v = Math.max(-127-lim,Math.min(lim,event[ind] + scr*25));
+							if(v<-127)v=254+v;
+						}
+						event[ind] = v;
+					}else{
+						v = Math.min(127,Math.max(0,event[3] + scr*25));						
+						event[3] = v;
 					}
-					event[3] = v;
 				}
 				seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 				copytoseq();
@@ -945,17 +1028,29 @@ function mouse(x,y,l,s,a,c,scr){
 							event[4] = Math.max(event[4],0.000000001);
 						}else{
 							var v=0;
-							if(event[3]>=0){
-								v = Math.min(127,Math.max(0,event[3] + scr*25));
-							}else if(event[3]<0){
-								v = Math.max(-127,Math.min(0,event[3] - scr*25));
+							if(lanetype[mouse_lane]==2){
+								var lim=0;
+								var ind=3;
+								if(a){
+									ind = 5;
+								}else if(metatype_params[event[2]][0] == "chance/every") lim=1;
+								if(event[ind] >= 0){
+									v = Math.min(127+lim,Math.max(-lim,event[ind] + scr*25));
+									if(v>127)v=-254+v; //wrap
+								}else if(event[ind]<0){
+									v = Math.max(-127-lim,Math.min(lim,event[ind] + scr*25));
+									if(v<-127)v=254+v;
+								}
+								event[ind] = v;
+							}else{
+								v = Math.min(127,Math.max(0,event[3] + scr*25));						
+								event[3] = v;
 							}
-							event[3] = v;
 						}
 						seqdict.replace(block+"::"+pattern+"::"+k[i],event);
-						copytoseq();
 					}
 				}
+				copytoseq();
 			}
 			drawflag = 1;
 		}
@@ -1022,7 +1117,7 @@ function mouse(x,y,l,s,a,c,scr){
 						selected_events[newsellist[i]]=1;
 					}
 					hovered_event = newhov;
-				}else if(c&&(hovered_event==-1)){
+				}else if(c&&(hovered_event==-1)&&lanetype[mouse_lane]!=1){
 					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 					if((!s)&&quantise_enable){
 						xx = Math.floor(xx*seql/currentquantise)/(seql/currentquantise);
@@ -1035,9 +1130,9 @@ function mouse(x,y,l,s,a,c,scr){
 					}else if(lanetype[mouse_lane]==2){//meta lane
 						pp = Math.floor((metatypes.length)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 						vv = metatype_defaults[pp][0];
-					}else{
+					}/*else{
 						vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])); 
-					}
+					}*/
 					if(mouse_lane>0)mouse_lane--;
 					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
 					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
@@ -1102,16 +1197,21 @@ function mouse(x,y,l,s,a,c,scr){
 						drag_start_y = y;
 					}else{
 						var l = (zoom_end - zoom_start);
-						var p = 2/width;
-						post("\ndir 1, ",dy);
-						p *= dy;
-						zoom_start += 0.5*p;
-						l-=p;
-						zoom_start = Math.min(Math.max(0,zoom_start),1-l);
-						zoom_end = zoom_start + l;
+						var xx = (x-x_pos)/width;
+						dy*=0.01;
+						zoom_start += l*xx*dy;
+						zoom_end -= l*(1-xx)*dy;
+						if(zoom_start<0){
+							zoom_end+=zoom_start;
+							zoom_start=0;
+						}
+						if(zoom_end>1){
+							zoom_start-=(zoom_end-1);
+							zoom_end=1;
+						}
 						zoom_scale = 1/(zoom_end - zoom_start);
-						drag_start_y = y;
 						drag_start_x = x;
+						drag_start_y = y;
 					}
 				}else{//drag selection/or just the original hovered note
 					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
@@ -1203,23 +1303,24 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					if(mouse_lane>0)mouse_lane--;
 					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
-					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
+					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>=1)){
 						for(var i=1;i<metatype_defaults[pp].length;i++){
 							event.push(metatype_defaults[pp][i]);
 						}
 					}
-					create_event(event);
+					var ind = create_event(event);
+					selected_event[ind]=1;
 				}else{ //select nothing
 					selected_event_count=0;
 					selected_events=[];
-					drawflag=1;
+					drawflag|=1;
 				}
 			}
 		}
 		if(moved){
 			for(var i=0;i<laney.length-1;i++){
 				if((y>laney[i])&&(y<laney[i+1])){
-					if(maximisedlist[i]==0){
+					if(!s && maximisedlist[i]==0){
 						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
 						maximisedlist[i]=1;
 						//post("\nmaximised lane:",i);
@@ -1255,13 +1356,14 @@ function create_event(event) {
 			break;
 		}
 	}
+	post("\nnew event:",event);
 	seqdict.replace(block + "::" + pattern + "::" + ind, event);
 	undo.clear();
 	undo.replace(ind, event);
 	//post("\npushing",undo.getkeys());
 	push_to_undo_stack("create");
 	copytoseq();
-	drawflag = 1;
+	drawflag |= 1 + (event[1]==0);
 	return ind;
 }
 
@@ -1293,7 +1395,7 @@ function keydown(key){
 		old_c=1;
 	}else{old_c = 0;}
 	if(key == -15){
-		zoom_start = 0; zoom_end = 1; zoom_scale = 1;
+		zoom_to_pattern();
 		for(var i=0;i<maximisedlist.length;i++)maximisedlist[i]=(i==0);
 		drawflag=1;
 	}else if((key == -9)||(key == -10)){//up down
