@@ -283,7 +283,6 @@ function draw(){
 			}
 		}
 	}else{
-		var m_sel = { sx:0, ex:1, y:0, col:[]};
 		if(laney.length==0) laneheights();
 		laneused=[1,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
@@ -303,13 +302,13 @@ function draw(){
 		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
 		var ls2 = Math.max(0,ls);
 		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
-		mouse_lane = -1;
+		//mouse_lane = -1;
 		hovered_event = -1;
 	
 		for(var l=0; l<laney.length-1; l++){
 			if(laney[l]!=laney[l+1]){
 				var ll = laneslist[l]; //actual lane
-				if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
+				if((drag==0)&&(mouse_y>=laney[l])&&(mouse_y<laney[l+1]))mouse_lane = l;
 				var r = 18;
 				if((lanetype[l]==1)||(maximisedlist[l]==0)){
 					if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
@@ -553,7 +552,6 @@ function draw(){
 							var displayedparams = "";
 							var ind = 3;
 							var ly = eey-1.4*unit;
-							post("\nmodifier: length",event.length,"metalen",metatype_params[event[2]].length);
 							for(var p=0;p<metatype_params[event[2]].length;p++){
 								if(metatype_params[event[2]][p]=="chance/every"){
 									if(event[ind]<0){
@@ -611,7 +609,7 @@ function draw(){
 							by2 = laney[1+notelane[ll2]] - 4;
 							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
 						}
-						if((event[2]<(lowestnote+2))||(event[2]>(highestnote-2))){
+						if(((event[2]<(lowestnote+2))&&(lowestnote>0))||((event[2]>(highestnote-2))&&(highestnote<127))){
 							drawflag = 2;
 							return 0;
 						}
@@ -635,7 +633,7 @@ function draw(){
 								col = [255,255,255];
 							}
 						}else if(selected_events[k[i]]){
-							selected_event_count++;
+							//selected_event_count++;
 							col = [blockcolour[1]*c,blockcolour[2]*c,blockcolour[0]*c];
 						}else{
 							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
@@ -655,13 +653,13 @@ function draw(){
 						}
 						if(hovered_event == k[i]){
 							if(selected_events[k[i]]){
-								selected_event_count++;
+								//selected_event_count++;
 								col = [(col[1]+64)*0.8,(col[2]+64)*0.8,(col[0]+64)*0.8];
 							}else{
 								col = [255,255,255];
 							}
 						}else if(selected_events[k[i]]){
-							selected_event_count++;
+							//selected_event_count++;
 							col = [col[1],col[2],col[0]];
 						}
 					}
@@ -974,14 +972,8 @@ function mouse(x,y,l,s,a,c,scr){
 
 						zoom_start += wx*scr*xx;//Math.max(0,zoom_start + scr*xx);
 						zoom_end -= wx*scr*(1-xx);//Math.min(1, zoom_end - (1-xx)*scr);
-						if(zoom_start<0){
-							zoom_end+=zoom_start;
-							zoom_start=0;
-						}
-						if(zoom_end>1){
-							zoom_start-=(zoom_end-1);
-							zoom_end=1;
-						}
+						zoom_start = Math.max(zoom_start,0);
+						zoom_end = Math.min(zoom_end, 1);
 						zoom_scale = 1 / (zoom_end-zoom_start);
 						//post("\nzoom",zoom_start,zoom_end,zoom_scale);
 					//}
@@ -1089,6 +1081,7 @@ function mouse(x,y,l,s,a,c,scr){
 			var dy = drag_start_y - y;
 			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
 			if((drag>0)&&(drag_dist>10)){
+				post("\ndrag start",lanetype[mouse_lane],mouse_lane);
 				drag=-drag;
 				if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
 					selected_event_count=1;
@@ -1124,17 +1117,16 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					var vv = 100;
 					var pp = 0;
-					
+					post("\nCREATE",mouse_lane,lanetype[mouse_lane]);
 					if(lanetype[mouse_lane]==0){//note lane
 						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 					}else if(lanetype[mouse_lane]==2){//meta lane
 						pp = Math.floor((metatypes.length)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 						vv = metatype_defaults[pp][0];
-					}/*else{
-						vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])); 
-					}*/
-					if(mouse_lane>0)mouse_lane--;
-					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
+					}
+					var ml=mouse_lane;
+					if(ml>0)ml--;
+					var event = [xx,ml,pp,vv,currentquantise/seql];
 					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
 						for(var i=1;i<metatype_defaults[pp].length;i++){
 							event.push(metatype_defaults[pp][i]);
@@ -1145,7 +1137,7 @@ function mouse(x,y,l,s,a,c,scr){
 					selected_events[ind] = 1;
 					selected_event_count=1;
 					hovered_event = ind;
-					drag = 4;
+					drag = -4;
 					drag_dist=0;
 					drawflag=1;
 				}
@@ -1153,7 +1145,7 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 			if(drag<0){
 				drawflag=1;
-				//post("drag",drag);
+				post("drag",drag,lanetype[mouse_lane]);
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//ctrl drag - draw values
 					if(Math.abs(dx)>=1){
@@ -1201,14 +1193,8 @@ function mouse(x,y,l,s,a,c,scr){
 						dy*=0.01;
 						zoom_start += l*xx*dy;
 						zoom_end -= l*(1-xx)*dy;
-						if(zoom_start<0){
-							zoom_end+=zoom_start;
-							zoom_start=0;
-						}
-						if(zoom_end>1){
-							zoom_start-=(zoom_end-1);
-							zoom_end=1;
-						}
+						zoom_start = Math.max(zoom_start,0);
+						zoom_end = Math.min(zoom_end, 1);
 						zoom_scale = 1/(zoom_end - zoom_start);
 						drag_start_x = x;
 						drag_start_y = y;
@@ -1217,9 +1203,15 @@ function mouse(x,y,l,s,a,c,scr){
 					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
 					drag_start_x = x;
 					var pp = 0;
+					var vv = 0;
+					post("\ndragin",lanetype[mouse_lane],mouse_lane,selected_event_count);
 					if(lanetype[mouse_lane]==0){
 						pp = Math.round((highestnote-lowestnote+3)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
 						if(pp!=0) drag_start_y = y;
+					}else if(lanetype[mouse_lane]==1){
+						if(selected_event_count<=1) xx=0;
+						vv = Math.round((130)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
+						if(vv!=0) drag_start_y = y;
 					}
 					if(selected_event_count>0){
 						for(i=1;i<k.length;i++){
@@ -1230,6 +1222,7 @@ function mouse(x,y,l,s,a,c,scr){
 									event[4] = Math.max(event[4],0.0000001);
 								}else{
 									event[2] += pp;
+									event[3] = Math.max(Math.min(127,event[3]+vv),1);
 									event[0] += xx;
 									event[0] = Math.min(1, Math.max(0,event[0]));
 								}
@@ -1245,7 +1238,7 @@ function mouse(x,y,l,s,a,c,scr){
 		}
 	}else{
 		if(old_l==1){// a release
-			if(drag_dist<20) drag=0;
+			if(drag_dist<10) drag=0;
 			if(drag<0){
 				drag = 0;
 				if(drag_moved)push_to_undo_stack("move");
@@ -1309,7 +1302,7 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 					}
 					var ind = create_event(event);
-					selected_event[ind]=1;
+					selected_events[ind]=1;
 				}else{ //select nothing
 					selected_event_count=0;
 					selected_events=[];
