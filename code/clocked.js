@@ -410,16 +410,6 @@ function midi_meters(){ //currently locked to 1 per voice but easy to generalise
 	}
 }
 
-function move_flock_blocks(){
-	for(var i=0;i<flocklist.length;i++){ // FLOCK.
-		p = flocklist[i];
-		b=3*p;
-		blocks_cube[flockblocklist[p]][flockvoicelist[p]].position = [flock_cube_size*(flock_buffer.peek(4, b)-0.5),flock_cube_size*(flock_buffer.peek(4, b+1)-0.5),5+flock_cube_size*flock_buffer.peek(4, b+2)];
-	}	
-}
-
-
-
 function sidebar_meters(){
 	var i, ii, peakflag =0,mmin,mmax;
 	var peaklist = [];

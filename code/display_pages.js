@@ -1758,6 +1758,44 @@ function write_menu_matrix(){
 	messnamed("menu_matrices","bang");
 }
 
+function move_flock_blocks(){
+	redraw_flag.matrices &= 253;
+	matrix_voice_position.dim = [1,1];
+	matrix_voice_colour.dim = [1,1];
+	matrix_voice_scale.dim = [1,1];
+	matrix_block_position.dim = [flocklist.length,1];
+	matrix_block_scale.dim = [flocklist.length,1];
+	matrix_block_colour.dim = [flocklist.length,1];
+	matrix_block_texture.dim = [flocklist.length,1];
+	matrix_meter_position.dim = [1,1];
+	matrix_meter_colour.dim = [1,1];
+	matrix_meter_scale.dim = [1,1];
+	var vc=0;
+	var mc=0;
+	var bc=0;
+	matrix_meter_index = [];
+	matrix_voice_index = [];
+	for(var i=0;i<flocklist.length;i++){ // FLOCK.
+		var p = flocklist[i];
+		var bb = 3*p;
+		var b = flockblocklist[p];
+		// var v = flockvoicelist[p];
+		matrix_meter_index[b]=[];
+		matrix_block_index[b]=bc;
+		matrix_block_lookup[bc]=b;
+		matrix_block_position.setcell(bc,0,"val",flock_cube_size*(flock_buffer.peek(4, bb)-0.5),flock_cube_size*(flock_buffer.peek(4, bb+1)-0.5),5+flock_cube_size*flock_buffer.peek(4, bb+2));
+		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+		matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
+		matrix_block_texture.setcell(bc,0,"val",b);
+		bc++;
+	}
+	matrix_voice_index[b]=vc;
+	messnamed("blocks_multiple","texture",blocks_cube_texture);
+	messnamed("blocks_matrices","bang");
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","bang");
+}	
+
 function write_blocks_matrix(){
 	redraw_flag.matrices &= 253;
 	matrix_voice_position.dim = [voice_cubes,1];
@@ -4066,7 +4104,6 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 				var groups = [];
 				var params = [];
-				var knob = { x:0 , y:0 };
 				var cx = [];
 				var cy = [];
 				if(!has_params){
@@ -4088,6 +4125,8 @@ function draw_sidebar(){
 					}
 
 					var w_slider,h_slider,colour,plist;
+					var knob_y=0;
+					var knob_x=0;
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
 					for(i=0;i<groups.length;i++){
 						//colour=menucolour;
@@ -4143,7 +4182,7 @@ function draw_sidebar(){
 								knob_x+=wk;
 								if(knob_x>=columns){
 									knob_x = 0;
-									//knob_y++;
+									// knob_y++;
 									y_offset += fontheight * (h_slider + 1 + 0.1*(h_slider==0));
 								}	
 							}
@@ -4186,6 +4225,7 @@ function draw_sidebar(){
 					setfontsize(fontsmall);
 				}
 				y_offset += fontheight * 4 * knob_y;
+				post("\ny_offset at end of panel",y_offset);
 				//y_offset += fontheight*1.1;
 			}else if(sidebar.mode == "panel_assign"){
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour );
@@ -4196,7 +4236,6 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 				var groups = [];
 				var params = [];
-				var knob = { x:0 , y:0 };
 				var cx = [];
 				var cy = [];
 				if(!has_params){
@@ -4216,7 +4255,9 @@ function draw_sidebar(){
 					}else{
 						groups = blocktypes.get(block_name+"::groups");
 					}
-
+					
+					var knob_y=0;
+					var knob_x=0;
 					var w_slider,h_slider,colour,plist;
 					var maxnamelabely,namelabely,x1,x2,y1,y2,blockoffset,p_type,p_values,pv,namearr,tk,wk,wrap;
 					for(i=0;i<groups.length;i++){
