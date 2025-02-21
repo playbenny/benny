@@ -3520,7 +3520,7 @@ function squash_block_menu(){
 
 function show_and_search_new_block_menu(key){
 	if(!usermouse.caps && (key>=97)&& (key<=122)){
-		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
+		blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);// [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
@@ -3608,10 +3608,15 @@ function blocks_menu_enter(){
 		if(menu.mode == 0){
 			post("\nnew block",sel,types[sel]);
 			set_display_mode("blocks");
-			//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 			end_of_frame_fn = function(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 				draw_block(r);
+				var bpw = (blocks_page.rightmost - blocks_page.leftmost);
+				var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
+				if(d > 0){
+					camera_position[0] += 1.5*d*bpw;
+					camera();
+				}
 				write_block_matrix(r);
 				messnamed("voices_matrices","bang");
 				messnamed("blocks_matrices","bang");	
