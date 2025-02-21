@@ -414,7 +414,7 @@ function draw(){
 			if(b == start){
 				start_x = bx;
 				if(b == loopstart) loopstart_x = bx;
-				var cm=0.2 + (drag == -0.4);
+				var cm=0.2 + ((drag >= -0.41)&&(drag <= -0.39));
 				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
 					cm+=0.3;
 					drawflag|=1;
@@ -426,15 +426,25 @@ function draw(){
 				outlet(1,"write",Math.floor(b));
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 			}else if(b == loopstart){
-				loopstart_x = bx
-				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				loopstart_x = bx;
+				var cm=0.2 + ((drag >= -0.31)&&(drag <= -0.29));
+				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
+					cm+=0.3;
+					drawflag|=1;
+				}
+				outlet(1,"frgb",blockcolour[0]*cm,blockcolour[1]*cm,blockcolour[2]*cm);
 				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
 				outlet(1,"write",Math.floor(b));
 			}else if(b == loopstart + looplength){
 				loopend_x = bx;
-				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				var cm=0.2 + ((drag >= -0.31)&&(drag <= -0.29));
+				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
+					cm+=0.3;
+					drawflag|=1;
+				}
+				outlet(1,"frgb",blockcolour[0]*cm,blockcolour[1]*cm,blockcolour[2]*cm);
 				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx-height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
@@ -746,11 +756,11 @@ function draw(){
 								}
 							}
 							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+							outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 							outlet(1,"write","selected modifier:",metatypes[event[2]],displayedparams);
 						}else{
 							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+							outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 							outlet(1,"write","selected cc:",event[1], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}
 					}
@@ -995,7 +1005,7 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 		}else if(hovered_event>-1){
 			if(s) scr *= 0.1;
-			if(selected_events[hovered_event]!=1){
+			if((selected_events[hovered_event]|0)==0){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				//if ctrl held it adjusts length;
 				if(c){
@@ -1111,7 +1121,7 @@ function mouse(x,y,l,s,a,c,scr){
 			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
 			if((drag>0)&&(drag_dist>10)){
 				drag=-drag;
-				if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
+				if((hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
 					selected_event_count=1;
 					selected_events=[];
 					selected_events[hovered_event]=1;
@@ -1375,15 +1385,15 @@ function mouse(x,y,l,s,a,c,scr){
 						maximisedlist[i]=1;
 						//post("\nmaximised lane:",i);
 						laneheights();
-						drawflag=1;
+						drawflag |= 1;
 						//post("calced new heights",laney,"maxl",maximisedlist);
 					}else{
-						drawflag = 1; //so all movement in the maximised lane causes a draw
+						drawflag |= 1; //so all movement in the maximised lane causes a draw
 						// there's a possibility to optimise this - either by storing a short list
 						// of displayed note/bar coords and checking in that, or by using numbered
 						// passthrough zones for the notes (this makes drawing much more expensive tho)
 					}
-				}
+				}else if((y<laney[0])&&(y>(y_pos+height*0.05))) drawflag |= 1;
 			}
 		}
 	}
