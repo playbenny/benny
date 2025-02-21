@@ -1717,13 +1717,13 @@ function scroll_waves(parameter,value){
 }
 
 function edit_label(parameter,value){
-	//post("\nok so",text_being_editted);
+	//post("\nok so",sidebar.text_being_edited);
 	if(parameter == "ok"){
 		var block = selected.block.indexOf(1);
 		//post("bblock",block);
 		if(block>-1){
-			if(text_being_editted!=""){
-				blocks.replace("blocks["+block+"]::label",text_being_editted);
+			if(sidebar.text_being_edited!=""){
+				blocks.replace("blocks["+block+"]::label",sidebar.text_being_edited);
 				set_sidebar_mode("block");
 				redraw_flag.flag |= 4;
 			}	
@@ -1735,8 +1735,8 @@ function edit_state_label(parameter,value){
 	if(parameter == "ok"){
 		var state = sidebar.selected;
 		if(state>-1){
-//			if(text_being_editted!=""){
-				states.replace("names::"+state,text_being_editted);
+//			if(sidebar.text_being_edited!=""){
+				states.replace("names::"+state,sidebar.text_being_edited);
 				set_sidebar_mode("none");
 				redraw_flag.flag |= 4;
 //			}	
@@ -1744,7 +1744,7 @@ function edit_state_label(parameter,value){
 	}
 }
 function edit_delete(){
-	text_being_editted = text_being_editted.slice(0,-1);
+	sidebar.text_being_edited = sidebar.text_being_edited.slice(0,-1);
 	redraw_flag.flag |= 2;
 }
 function edit_typing(key){
@@ -1759,7 +1759,7 @@ function edit_typing(key){
 		key-=32;
 	}
 	if((key>45)&&(key<123)){
-		text_being_editted = text_being_editted + String.fromCharCode(key);
+		sidebar.text_being_edited = sidebar.text_being_edited + String.fromCharCode(key);
 	}
 	redraw_flag.flag |= 2;
 }
@@ -3520,7 +3520,7 @@ function squash_block_menu(){
 
 function show_and_search_new_block_menu(key){
 	if(!usermouse.caps && (key>=97)&& (key<=122)){
-		blocks_page.new_block_click_pos = [usermouse.x,usermouse.y];
+		blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);// [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
@@ -3568,13 +3568,13 @@ function draw_number_entry(pno,number){
 
 function block_search_typing(key){
 	if(key==-7){
-		text_being_editted = text_being_editted.slice(0, -1);
+		sidebar.text_being_edited = sidebar.text_being_edited.slice(0, -1);
 	}else if(key==-6){
-		text_being_editted = "";
+		sidebar.text_being_edited = "";
 	}else{
-		text_being_editted = text_being_editted + String.fromCharCode(key);
+		sidebar.text_being_edited = sidebar.text_being_edited + String.fromCharCode(key);
 	}	
-	if(text_being_editted!=""){
+	if(sidebar.text_being_edited!=""){
 		ch=0;
 		for(var i=0;i<blocks.getsize("blocks");i++){
 			//var hit = 0;
@@ -3583,7 +3583,7 @@ function block_search_typing(key){
 			if(blocks.contains("blocks["+i+"]::label")) str = str + blocks.get("blocks["+i+"]::label");
 			var t = selected.block[i];
 			str = str.toLowerCase();
-			if(str.indexOf(text_being_editted.toLowerCase())!=-1){
+			if(str.indexOf(sidebar.text_being_edited.toLowerCase())!=-1){
 				selected.block[i] = 1;
 			}else{
 				selected.block[i] = 0;
@@ -3608,10 +3608,15 @@ function blocks_menu_enter(){
 		if(menu.mode == 0){
 			post("\nnew block",sel,types[sel]);
 			set_display_mode("blocks");
-			//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 			end_of_frame_fn = function(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 				draw_block(r);
+				var bpw = (blocks_page.rightmost - blocks_page.leftmost);
+				var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
+				if(d > 0){
+					camera_position[0] += 1.5*d*bpw;
+					camera();
+				}
 				write_block_matrix(r);
 				messnamed("voices_matrices","bang");
 				messnamed("blocks_matrices","bang");	

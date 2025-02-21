@@ -1,8 +1,11 @@
 var MAX_DATA = 16384;
 var MAX_PARAMETERS = 256;
+var MAX_AUDIO_VOICES = 64;
+var MAX_NOTE_VOICES = 64;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var parameter_value_buffer = new Buffer("parameter_value_buffer");
+var scope_buffer = new Buffer("scope_buffer");
 outlets = 4;
 var config = new Dict;
 config.name = "config";
@@ -16,8 +19,8 @@ var display_col_offset = 0;
 var mini=0;
 var drawflag=0;
 var namelist;
-var map = new Dict;
-map.name = "voicemap";
+var voicemap = new Dict;
+voicemap.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
 var blocktypes = new Dict;
@@ -41,12 +44,20 @@ var olevel = [];
 var shape = [];
 var sweep = [];
 var amount = [];
+var channelnames = [];
+var col_to_chan = []; //holds block,channel
 
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
+	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
+	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	width = x2-x1;
+	var w = x2-x1;
+	if(w!=width){
+		ovhash=-1;
+	}
+	width = w;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
@@ -60,7 +71,7 @@ function setup(x1,y1,x2,y2,sw){
 	unit = height / 18;
 	u1 = 0.1 * unit;
 	if(block>=0){
-		ovhash = -1;
+		// post("\nmixer setup");
 		scan_for_channels();
 		draw();
 	}
@@ -74,33 +85,75 @@ function update(force){
 	if(block>=0){
 		var x=0;
 		outlet(0,"setfontsize","small");
-		for(var b=0;b<b_list.length;b++){
-			var fgc = b_colour[b];
-			var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
+		var mutemsg="mute";
+		var solomsg="solo";
+		if(cw<20){
+			mutemsg="";
+			solomsg="";
+		}else if(cw<70){
+			mutemsg="m";
+			solomsg="s";
+		}
+		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
-			if(mini==2){//bottom bar view is different layout
+			for(var b=0;b<b_list.length;b++){
+				var fgc = b_colour[b];
+				var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
 				for(var v=v_list[b].length-1;v>=0;v--){
+					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
+					if((olevel[b][v]!=level[b][v])||force){
+						olevel[b][v] = level[b][v];
+						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
+					}
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
 						omute[b][v] = mute;
-						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2,130,130,130,5,v_list[b][v],"mute",b_list[b]);
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*11.6,x_pos+(x+v+1)*cw-8,y_pos+height-unit*8,130,130,130,5,v_list[b][v],mutemsg,b_list[b]);
 					}
 					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
 					if((osolo[b][v]!=solo)||force){
 						osolo[b][v] = solo;
-						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*7.6,x_pos+(x+v+1)*cw-8,y_pos+height-4*unit,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
 					}
 					if(check_eq_params_for_changes(b,v)||force){
-						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
 						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 					}
-					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
-					if((olevel[b][v]!=level[b][v])||force){
-						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+					if(force){
+						outlet(1,"frgb",fgc);
+						if(channelnames[b] !== undefined){
+							outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-2*unit);
+							outlet(1,"write",channelnames[b][v]);
+						}
+						if(v==0){
+							outlet(1,"frgb",[fgc[0]*0.7,fgc[1]*0.7,fgc[2]*0.7]);
+							outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-0.6*unit);
+							outlet(1,"write",b_name[b]);
+						}
 					}
-				}				
-			}else{
+					var meter = scope_buffer.peek(2,1+(v_list[b][v]-MAX_NOTE_VOICES));
+					outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-4.2*unit);
+					outlet(1,"frgb",fgc);
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
+					outlet(1,"frgb",bgc);
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos);
+					meter = scope_buffer.peek(2,1+(v_list[b][v]+MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
+					outlet(1,"moveto",4+x_pos+(x+v)*cw,y_pos+height-4.2*unit);
+					outlet(1,"frgb",fgc);
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
+					outlet(1,"frgb",bgc);
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos);
+					if(force){
+						outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos+height-4*unit,x_pos+width,y_pos+height,0,0,0,block,0);
+					}
+				}	
+				var xx = x+v_list[b].length;
+				x = xx;		
+			}					
+		}else{
+			for(var b=0;b<b_list.length;b++){
+				var fgc = b_colour[b];
+				var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
 				for(var v=v_list[b].length-1;v>=0;v--){
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
@@ -122,25 +175,34 @@ function update(force){
 						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
 					}
 				}
+				var xx = x+v_list[b].length;
+				x = xx;
 			}
-			var xx = x+v_list[b].length;
-			x = xx;
 		}
 	}
 }
 
 function check_eq_params_for_changes(b,v){
 	var dr=0;
-	//for(var b=0;b<b_list.length;b++){
-	//	for(var v=0;v<v_list[b].length;v++){
-			//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
-			shape[b][v] = Math.floor(0.99*no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
-			amount[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+3);
-			sweep[b][v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4)-2);
-			if((shape[b][v]!=oshape[b][v])||(amount[b][v]!=oamount[b][v])||(sweep[b][v]!=osweep[b][v])) dr = 1;
-	//	}
-	//}
+	shape[b][v] = Math.floor(0.99*no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
+	amount[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+3);
+	sweep[b][v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4)-2);
+	if((shape[b][v]!=oshape[b][v])||(amount[b][v]!=oamount[b][v])||(sweep[b][v]!=osweep[b][v])) dr = 1;
 	return dr;
+}
+
+function mouse(x,y,leftbutton,shift,alt,ctrl){
+	// post("\nmouse",(x,y,leftbutton,shift,alt,ctrl));
+	if(y>(y_pos+height-4*unit)){
+		var xx = Math.floor((x-x_pos)*cols/width);
+		post("\nclicked column",xx,"which is",col_to_chan[xx]);
+		if(ctrl){
+			messnamed("to_blockmanager","name_mixer_channel",col_to_chan[xx][0],col_to_chan[xx][1]);
+		}else{
+			messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
+		}
+
+	}
 }
 
 function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
@@ -207,7 +269,7 @@ function voice_is(v){
 	block = v;
 	ovhash = -1;
 	scan_for_channels();
-	bv = map.get(v);
+	bv = voicemap.get(v);
 	if(Array.isArray(bv)) bv=bv[0];
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
@@ -225,8 +287,15 @@ function scan_for_channels(){
 				var n2 = nam.split(".");
 				if((n2[0] == "mix")&&(n2[1] != "bus")){
 					tb_list.push(b);
-					bx_list.push(blocks.get("blocks["+b+"]::space::x"));
-					hash += (b+1) * map.getsize(b);
+					var x=blocks.get("blocks["+b+"]::space::x");
+					bx_list.push(x);
+					var vl= voicemap.get(b);
+					if(!Array.isArray(vl)){
+						hash+= b+1;
+					}else{
+						hash += (b+1) * (vl.length+99.9*x);
+					}
+					// post("\nb",(b+1),"size",vl.length);
 				}
 			}
 			if(!Array.isArray(shape[b])){
@@ -242,7 +311,9 @@ function scan_for_channels(){
 				olevel[b] = [];
 			}
 		}
+		// post("\nnew hash",hash);
 		if(hash!=ovhash){
+			// post("\nhash:",hash,"ovhash",ovhash);
 			ovhash=hash;
 			b_list = tb_list.slice();
 			v_list=[];
@@ -250,7 +321,7 @@ function scan_for_channels(){
 			b_colour=[];
 			b_type=[];
 			cols = 0;
-			post("\nsorting mixer channel groups by x position",bx_list);
+			// post("\nsorting mixer channel groups by x position",bx_list);
 			for(var bb=1;bb<b_list.length;bb++){
 				if(bx_list[bb]<bx_list[bb-1]){
 					var bt=b_list[bb-1];
@@ -262,6 +333,8 @@ function scan_for_channels(){
 					bb--;
 				}
 			}
+			channelnames=[];
+			col_to_chan=[];
 			for(var bb=0;bb<b_list.length;bb++){
 				b=b_list[bb];
 				var nam = blocks.get("blocks["+b+"]::name");
@@ -273,24 +346,35 @@ function scan_for_channels(){
 					b_type.push(nam);
 				}
 				b_colour.push(blocks.get("blocks["+b+"]::space::colour"));
-				var vl = map.get(b);
+				var vl = voicemap.get(b);
 				if(!Array.isArray(vl)) vl = [vl];
 				v_list.push(vl);
+				var cnams = [];
+				if(blocks.contains("blocks["+b+"]::channel_names")){
+					cnams = blocks.get("blocks["+b+"]::channel_names");
+					if(!Array.isArray(cnams))cnams = [cnams];
+					// post("\nfound names:",cnams);
+				}else{
+					for(var t=0;t<vl.length;t++) cnams.push((t+1));
+				}
+				channelnames[bb]=[];//cnams.concat();
 				for(var t=0;t<vl.length;t++){
 					outlet(3,vl[t]*MAX_PARAMETERS);
+					channelnames[bb].push(cnams[t]);
 				}
 				//parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
 
 				cols += vl.length;
+				for(var tv=0;tv<vl.length;tv++) col_to_chan.push([b,tv]);
 				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 			}
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
 			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 			block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
 			for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
-			cw = (width+u1) / cols;
 			outlet(3,"bang");
 		}
+		cw = (width+u1) / cols;
 	}
 }
 

@@ -63,6 +63,10 @@ var start = 0;
 var loopstart = 0;
 var looplength = 0;
 
+var start_x = -1;
+var loopstart_x = -1;
+var loopend_x = -1;
+
 var zoom_start = 0;
 var zoom_end = 1;
 var zoom_scale = 1;
@@ -78,6 +82,7 @@ var drag = 0;
 var drag_start_x;
 var drag_start_y;
 var drag_moved;
+var drag_dist;
 
 var drawflag = 0;
 var draw_mouselayer_flag = 0;
@@ -88,11 +93,11 @@ var clipboard = [];
 
 //in the meta lane, attach more values to the event, so you don't need too many lanes. however, having some 
 //redundancy is good so you could eg stack probabilistic transposes
-var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "arp", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose"  ];
-var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"]]
+var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "arp", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose", "to out B/C"  ];
+var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","output"]]
 // more types? trills and arps? splitting - eg if the param is 3 it divides the length by 3 and plays 3 notes?
 // randomise velocity
-var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1],[-127,1], [-127,1] ];
+var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1], [-127,1], [-127,1], [-127,0] ];
 
 function playhead(p){
 	playheadpos = p;
@@ -177,10 +182,12 @@ function setup(x1,y1,x2,y2,sw){
 	if(width<sw*0.5){ 
 		mini=1;
 	}
-	if(block>-1) laneheights();
+	if(block>-1){
+		laneheights();
+		zoom_to_pattern();
+		draw();
+	}
 	draw_mouselayer_flag = 1;
-	zoom_to_pattern();
-	draw();
 }
 
 function flag(f){
@@ -192,6 +199,7 @@ function flag(f){
 }
 
 function draw(){
+	if(block<0)return 0;
 	if(drawflag&2)get_note_range();
 	if((drawflag&4) && mini)zoom_to_pattern();
 	//post("draw",drawflag);
@@ -279,11 +287,6 @@ function draw(){
 			}
 		}
 	}else{
-		//starting from the mini code but the following changes:
-		//lanes (with maximising)
-		//  store lane y positions
-		//scroll and zoom (on x axis for all, on y axis for note lanes)
-		//notes as rectangles
 		if(laney.length==0) laneheights();
 		laneused=[1,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos+9,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
@@ -296,63 +299,72 @@ function draw(){
 		outlet(1,"write","length:"+looplength);
 
 		outlet(0,"custom_ui_element","mouse_passthrough",x_pos - (x_pos==9)*9,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
-	
+
 		outlet(1,"paintrect",x_pos,y_pos+height*0.05,x_pos+width,y_pos+height*0.09,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		var labelled=[];
 		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
 		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
 		var ls2 = Math.max(0,ls);
 		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
-		mouse_lane = -1;
+		//mouse_lane = -1;
 		hovered_event = -1;
-		selected_event_count = 0;
+	
 		for(var l=0; l<laney.length-1; l++){
-			var ll = laneslist[l]; //actual lane
-			if((mouse_y>=laney[l])&&(mouse_y<laney[l+1])) mouse_lane = l;
-			var r = 18;
-			if((lanetype[l]==1)||(maximisedlist[l]==0)){
-				if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
-				outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
-				if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
-			}else if(lanetype[l]==0){
-				r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
-				var rr = laney[l];
-				for(var yy = highestnote - lowestnote; yy >= 0; yy--){
-					var nr = rr + r;
-					var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
-					if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
-					outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
-					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
-					rr=nr;
+			if(laney[l]!=laney[l+1]){
+				var ll = laneslist[l]; //actual lane
+				if((drag==0)&&(mouse_y>=laney[l])&&(mouse_y<laney[l+1]))mouse_lane = l;
+				var r = 18;
+				if((lanetype[l]==1)||(maximisedlist[l]==0)){
+					if(ls>0) outlet(1,"paintrect",x_pos,laney[l],ls+x_pos,laney[l+1]-4,blockcolour[0]*0.05,blockcolour[1]*0.05,blockcolour[2]*0.05);
+					outlet(1,"paintrect",x_pos+ls2,laney[l],le+x_pos,laney[l+1]-4,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
+					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,laney[l],width+x_pos,laney[l+1]-4,blockcolour[0]*0.03,blockcolour[1]*0.03,blockcolour[2]*0.03);
+				}else if(lanetype[l]==0){
+					r = (laney[l+1]-laney[l]-4)/(highestnote-lowestnote+1);
+					var rr = laney[l];
+					for(var yy = highestnote - lowestnote; yy >= 0; yy--){
+						var nr = rr + r;
+						var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
+						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
+						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
+						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
+						if(yy<(highestnote-lowestnote)){
+							if((r>(0.4*unit))||([0,5].indexOf((yy+lowestnote)%12)>-1)){
+								outlet(1,"frgb",0,0,0);
+								outlet(1,"moveto", x_pos+9,nr-0.2*r);
+								outlet(1,"write",notenames[(yy+lowestnote)%12]+"-"+(Math.floor((yy+lowestnote)/12)-2));
+							}
+						}
+						rr=nr;
+					}
+				}else{// if(lanetype[l]==2){
+					r = (laney[l+1]-laney[l])/(metatypes.length);
+					var rr = laney[l];
+					for(var yy = metatypes.length; yy > 0; yy--){
+						var nr = rr + r;
+						var s = (0.5*maximisedlist[ll])+(((yy%2)+1)*0.5);
+						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
+						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
+						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
+						rr=nr;
+					}
 				}
-			}else{// if(lanetype[l]==2){
-				r = (laney[l+1]-laney[l])/(metatypes.length);
-				var rr = laney[l];
-				for(var yy = metatypes.length; yy > 0; yy--){
-					var nr = rr + r;
-					var s = (0.5*maximisedlist[ll])+(((yy%2)+1)*0.5);
-					if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
-					outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
-					if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
-					rr=nr;
-				}
+				outlet(1,"paintrect",x_pos,laney[l+1]-4,width+x_pos,laney[l+1],0,0,0);
 			}
-			outlet(1,"paintrect",x_pos,laney[l+1]-4,width+x_pos,laney[l+1],0,0,0);
 		}
 
 		if((st>=zoom_start)&&(st<=zoom_end)){
 			outlet(1,"frgb", blockcolour[0]*0.12,blockcolour[1]*0.12,blockcolour[2]*0.12);
-			for(var l=0; l<laney.length-1; l++){
-				outlet(1,"moveto", x_pos + (st - zoom_start) * zoom_scale , laney[l]);
-				outlet(1,"lineto", x_pos + (st - zoom_start) * zoom_scale , laney[l+1]-6);
-			}
+			//for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (st - zoom_start) * zoom_scale , laney[0]);
+				outlet(1,"lineto", x_pos + (st - zoom_start) * zoom_scale , laney[laney.length-1]-6);
+			//}
 		}				
 		if((playheadpos>=zoom_start)&&(playheadpos<=zoom_end)){
 			outlet(1,"frgb", blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
-			for(var l=0; l<laney.length-1; l++){
-				outlet(1,"moveto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l]);
-				outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[l+1]-6);
-			}
+			//for(var l=0; l<laney.length-1; l++){
+				outlet(1,"moveto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[0]);
+				outlet(1,"lineto", x_pos + (width - 2) * (playheadpos - zoom_start) * zoom_scale , laney[laney.length-1]-6);
+			//}
 		}
 		var shown_range_in_beats = seql / zoom_scale;
 		var firstbeat = Math.ceil(zoom_start*seql);
@@ -386,9 +398,13 @@ function draw(){
 		}
 		outlet(1,"moveto",x_pos+width*0.3,y_pos+height*0.02);
 		if(currentquantise<1){
-			outlet(1,"write","grid: 1/"+Math.round(1/currentquantise));
+			outlet(1,"write","grid: 1/"+Math.round(1/currentquantise)+"beat");
 		}else{
-			outlet(1,"write","grid:"+currentquantise);
+			if(currentquantise>1){
+				outlet(1,"write","grid:"+currentquantise+"beats");
+			}else{
+				outlet(1,"write","grid:"+currentquantise+"beat");
+			}
 		}
 		outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 
@@ -396,56 +412,82 @@ function draw(){
 		while(bw*step<24){ step *= 2; }
 		for(var b = firstbeat;bx<x_pos+width-20;bx+=bw){
 			if(b == start){
-				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				start_x = bx;
+				if(b == loopstart) loopstart_x = bx;
+				var cm=0.2 + ((drag >= -0.41)&&(drag <= -0.39));
+				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
+					cm+=0.3;
+					drawflag|=1;
+				}
+				outlet(1,"frgb",blockcolour[0]*cm,blockcolour[1]*cm,blockcolour[2]*cm);
 				outlet(1,"paintpoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
 				outlet(1,"write",Math.floor(b));
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 			}else if(b == loopstart){
-				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				loopstart_x = bx;
+				var cm=0.2 + ((drag >= -0.31)&&(drag <= -0.29));
+				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
+					cm+=0.3;
+					drawflag|=1;
+				}
+				outlet(1,"frgb",blockcolour[0]*cm,blockcolour[1]*cm,blockcolour[2]*cm);
 				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
 				outlet(1,"write",Math.floor(b));
 			}else if(b == loopstart + looplength){
-				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				loopend_x = bx;
+				var cm=0.2 + ((drag >= -0.31)&&(drag <= -0.29));
+				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
+					cm+=0.3;
+					drawflag|=1;
+				}
+				outlet(1,"frgb",blockcolour[0]*cm,blockcolour[1]*cm,blockcolour[2]*cm);
 				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx-height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
 				outlet(1,"write",Math.floor(b));
 			}else if((b % step) == 0){//(2*Math.abs(b-Math.floor(b))<step)&&(bx>=x_pos)&&(bx<(x_pos+width-20))){
 				outlet(1,"moveto",bx,y_pos+height*0.075);
-				outlet(1,"write",Math.floor(b));
+				if((step<4)&&((b % 4) == 0)){
+					outlet(1,"frgb",blockcolour[0]*0.7,blockcolour[1]*0.7,blockcolour[2]*0.7);
+					outlet(1,"write",Math.floor(b));
+					outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
+				}else{
+					outlet(1,"write",Math.floor(b));
+				}
 			}
 			b++;
 		}
 
 		for(var l=0; l<laney.length-1; l++){
-			var s = ((maximisedlist[l]==1) + 0.45);
-			outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
-			outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
-			//outlet(1,"write", "lane "+laneslist[l]);
-			if(lanetype[l]==0){
-				outlet(1,"write", "notes");
-			}else if(laneslist[l]==0){
-				outlet(1,"write", "velocity");
-			}else if(lanetype[l]==1){
-				outlet(1,"write", "cc "+(laneslist[l]));
-			}else if(lanetype[l]==2){
-				outlet(1,"write", "meta");
-				if(maximisedlist[l]==1){
-					outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
-					r = (laney[l+1]-laney[l]-4)/(metatypes.length);
-					rr = laney[l]-0.2*r;
-					for(var yy = 0; yy < metatypes.length; yy++){
-						rr += r;
-						outlet(1,"moveto",x_pos+18,rr);
-						outlet(1,"write",metatypes[yy]);
+			if(laney[l]!=laney[l+1]){
+				var s = ((maximisedlist[l]==1) + 0.45);
+				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
+				outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
+				//outlet(1,"write", "lane "+laneslist[l]);
+				if(lanetype[l]==0){
+					outlet(1,"write", "notes");
+				}else if(laneslist[l]==0){
+					outlet(1,"write", "velocity");
+				}else if(lanetype[l]==1){
+					outlet(1,"write", "cc "+(laneslist[l]));
+				}else if(lanetype[l]==2){
+					outlet(1,"write", "modifier");
+					if(maximisedlist[l]==1){
+						outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
+						r = (laney[l+1]-laney[l]-4)/(metatypes.length);
+						rr = laney[l]-0.2*r;
+						for(var yy = 0; yy < metatypes.length; yy++){
+							rr += r;
+							outlet(1,"moveto",x_pos+18,rr);
+							outlet(1,"write",metatypes[yy]);
+						}
 					}
-	
-				}
-			}			
+				}			
+			}
 		}
 		var selx1,selx2,sely1,sely2;
 		if(drag!=0){
@@ -470,6 +512,9 @@ function draw(){
 
 		var ll = -99; var ll2 = -99;
 		var by = -1; var sy = -1; var by2 = -1; var sy2=-1;
+		selected_event_count=0;
+		for(var i=1;i<k.length;i++) if(selected_events[k[i]]) selected_event_count++;
+		
 		for(var i=1;i<k.length;i++){ //[0] is the looppoints
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 			if((event == null)||((event[0]+event[4])<zoom_start)||(event[0]>zoom_end)){
@@ -493,7 +538,7 @@ function draw(){
 							selected_events[k[i]] &= 3;
 						}
 					}
-					col = pal[(8+event[2])% 16];
+					col = pal[(8+(event[2]|0))% 16];
 					if((hovered_event==k[i])||((mouse_y<=ey)&&(mouse_y>=ey-sy2)&&(mouse_x>=ex1)&&(mouse_x<=ex2))){
 						hovered_event = k[i];
 						if(selected_events[k[i]]){
@@ -502,7 +547,6 @@ function draw(){
 							col = [255,255,255];
 						}
 					}else if(selected_events[k[i]]){
-						selected_event_count++;
 						col = [col[1]*c,col[2]*c,col[0]*c];
 					}else{
 						col = [col[0]*c,col[1]*c,col[2]*c];
@@ -514,6 +558,49 @@ function draw(){
 						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 						outlet(1,"frgb",0,0,0);
 						outlet(1,"write",metatypes[event[2]]);
+
+						if((selected_event_count==1)&&(selected_events[k[i]])){// edit box for the details of modifiers
+							var eex = ex2 + 0.5*unit;
+							var eey = ey;
+							if(eex+5*unit > width+x_pos){
+								eex = ex1 - 5.5*unit;
+								
+								if(eex<x_pos){
+									eex = x_pos + width*0.5 - 2.5*unit;
+									eey = ey-Math.max(1,sy2) - 0.5*unit;
+								} 
+							}
+							outlet(1,"paintrect",eex,eey-2*unit,eex+5*unit,eey,col[0]*0.2,col[1]*0.2,col[2]*0.2);
+							outlet(1,"framerect",eex,eey-2*unit,eex+5*unit,eey,col);
+							var displayedparams = "";
+							var ind = 3;
+							var ly = eey-1.4*unit;
+							for(var p=0;p<metatype_params[event[2]].length;p++){
+								if(metatype_params[event[2]][p]=="chance/every"){
+									if(event[ind]<0){
+										displayedparams = (128+event[ind]).toFixed(2) + " in every 128";
+									}else{
+										displayedparams = ((event[ind]/1.27).toFixed(2))+"% chance";
+									}
+								}else if(metatype_params[event[2]][p]=="range"){
+									displayedparams = " range:" + (1 + Math.floor(event[ind]|0));
+								}else if(metatype_params[event[2]][p]=="division"){
+									displayedparams = " division: " + (2 + Math.floor(event[ind]|0));
+								}else if(metatype_params[event[2]][p]=="output"){
+									var choices = ["B","C"];
+									displayedparams = " output: " + choices[Math.floor(event[ind]|0) % 2];
+								}
+								outlet(1,"moveto",eex+9,ly);
+								outlet(1,"write",displayedparams);
+								ly+=0.6*unit;
+								if(ind==3){
+									ind=5;
+								}else{
+									ind++;
+								}
+							}
+
+						}
 					}
 				}else{
 				//if(event[1]!=9){
@@ -545,7 +632,7 @@ function draw(){
 							by2 = laney[1+notelane[ll2]] - 4;
 							sy2 = (laney[1+notelane[ll2]] - laney[notelane[ll2]] - 4)/(highestnote-lowestnote+1);	
 						}
-						if((event[2]<lowestnote)||(event[2]>highestnote)){
+						if(((event[2]<(lowestnote+2))&&(lowestnote>0))||((event[2]>(highestnote-2))&&(highestnote<127))){
 							drawflag = 2;
 							return 0;
 						}
@@ -569,7 +656,7 @@ function draw(){
 								col = [255,255,255];
 							}
 						}else if(selected_events[k[i]]){
-							selected_event_count++;
+							//selected_event_count++;
 							col = [blockcolour[1]*c,blockcolour[2]*c,blockcolour[0]*c];
 						}else{
 							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
@@ -589,13 +676,13 @@ function draw(){
 						}
 						if(hovered_event == k[i]){
 							if(selected_events[k[i]]){
-								selected_event_count++;
+								//selected_event_count++;
 								col = [(col[1]+64)*0.8,(col[2]+64)*0.8,(col[0]+64)*0.8];
 							}else{
 								col = [255,255,255];
 							}
 						}else if(selected_events[k[i]]){
-							selected_event_count++;
+							//selected_event_count++;
 							col = [col[1],col[2],col[0]];
 						}
 					}
@@ -610,7 +697,7 @@ function draw(){
 		if(hovered_event>-1){
 			outlet(1,"frgb",blockcolour);
 			var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
-			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 			if(event[1]==0){
 				outlet(1,"write","hovered note:",nn[event[2]],event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}else if(event[1]==9){
@@ -619,14 +706,14 @@ function draw(){
 				for(var p=0;p<metatype_params[event[2]].length;p++){
 					if(metatype_params[event[2]][p]=="chance/every"){
 						if(event[ind]<0){
-							displayedparams += (128+event[ind]).toFixed(2) + "in every 128";
+							displayedparams += (128+event[ind]).toFixed(2) + " in every 128";
 						}else{
 							displayedparams += ((event[ind]/1.27).toFixed(2))+"% chance";
 						}
 					}else if(metatype_params[event[2]][p]=="range"){
-						displayedparams += "range:" + (1 + Math.floor(event[ind] / 16));
+						displayedparams += " range:" + (1 + Math.floor(event[ind] / 16));
 					}else if(metatype_params[event[2]][p]=="division"){
-						displayedparams += "division:" + (2 + Math.floor(event[ind] / 8));
+						displayedparams += " division:" + (2 + Math.floor(event[ind] / 8));
 					}
 					if(ind==3){
 						ind=5;
@@ -634,22 +721,46 @@ function draw(){
 						ind++;
 					}
 				}
-				outlet(1,"write","hovered meta:",metatypes[event[2]],displayedparams,"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+				outlet(1,"write","hovered modifier:",metatypes[event[2]],displayedparams);//,"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}else{
 				outlet(1,"write","hovered cc:",event[1]-1,event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}
 		}else{
 			if(selected_event_count==1){
 				for(var se=0;se<selected_events.length;se++){
-					if(selected_events[se]){
-						outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-						var event = seqdict.get(block+"::"+pattern+"::"+selected_events[se]);
-						outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+					if(selected_events[se] && seqdict.contains(block+"::"+pattern+"::"+se)){
+						var event = seqdict.get(block+"::"+pattern+"::"+se);
 						if(event[1]==0){
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}else if(event[1]==9){
-							outlet(1,"write","selected meta:",metatypes[event[2]],"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
+							var displayedparams = "";
+							var ind = 3;
+							for(var p=0;p<metatype_params[event[2]].length;p++){
+								if(metatype_params[event[2]][p]=="chance/every"){
+									if(event[ind]<0){
+										displayedparams += (128+event[ind]).toFixed(2) + " in every 128";
+									}else{
+										displayedparams += ((event[ind]/1.27).toFixed(2))+"% chance";
+									}
+								}else if(metatype_params[event[2]][p]=="range"){
+									displayedparams += " range:" + (1 + Math.floor(event[ind] / 16));
+								}else if(metatype_params[event[2]][p]=="division"){
+									displayedparams += " division:" + (2 + Math.floor(event[ind] / 8));
+								}
+								if(ind==3){
+									ind=5;
+								}else{
+									ind++;
+								}
+							}
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
+							outlet(1,"write","selected modifier:",metatypes[event[2]],displayedparams);
 						}else{
+							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
+							outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 							outlet(1,"write","selected cc:",event[1], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}
 					}
@@ -658,7 +769,7 @@ function draw(){
 		}
 		if(selected_event_count>0){
 			outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.04);
+			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.04);
 			outlet(1,"write",selected_event_count,"events selected");
 		}
 	}
@@ -788,13 +899,13 @@ function laneheights(){
 		maximised += ((maximisedlist[i]|0)==1);
 	}
 	//post("\nmaximised",maximised,"used",used,"unused",unused);
-	maximised = 8 * maximised + used + 0.4*unused;
+	maximised = 8 * maximised + used + 0.1*unused + 3*((maximisedlist[0]!=1)+(maximisedlist[laneslist.length-1]!=1))+ 2*(maximisedlist[1]!=1);
 	maximised = height * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
 		var ii=i-2;
 		if(ii<0)ii=0;
-		laney[i] = laney[i-1] + (8 * (maximisedlist[i-1]|0) + 0.4 + 0.6 * (laneused[ii]|0) + 0.6*((i==laneslist.length)&&(maximisedlist[i-1]!=1))) * maximised;
+		laney[i] = laney[i-1] + (7.9 * (maximisedlist[i-1]|0) + 0.1 + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]!=1)) + 2*((i==2)&&(maximisedlist[1]!=1))) * maximised;
 	}
 	//post("\nlaney",laney);
 	//post("\nscreen",y_pos+height);
@@ -861,7 +972,7 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					drawflag = 1;
 					seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
-					post("\nupdate lengths,",1+voice);
+					//post("\nupdate lengths,",1+voice);
 					messnamed("to_polys","note", "setvalue",1+voice,"updatelengths");
 				}
 			}else{
@@ -877,20 +988,24 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					drawflag = 1;
 				}else{
-					scr *= 0.125;
-					if(zoom_end-zoom_start>scr){
+					scr *= 0.5;
+					var wx = zoom_end-zoom_start;
+					//if(wx>scr){
 						var xx = (x-x_pos)/width;
-						zoom_start = Math.max(0,zoom_start + scr*xx);
-						zoom_end = Math.min(1, zoom_end - (1-xx)*scr);
+
+						zoom_start += wx*scr*xx;//Math.max(0,zoom_start + scr*xx);
+						zoom_end -= wx*scr*(1-xx);//Math.min(1, zoom_end - (1-xx)*scr);
+						zoom_start = Math.max(zoom_start,0);
+						zoom_end = Math.min(zoom_end, 1);
 						zoom_scale = 1 / (zoom_end-zoom_start);
 						//post("\nzoom",zoom_start,zoom_end,zoom_scale);
-					}
+					//}
 					drawflag = 1;
 				}
 			}
 		}else if(hovered_event>-1){
 			if(s) scr *= 0.1;
-			if(selected_events[hovered_event]!=1){
+			if((selected_events[hovered_event]|0)==0){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				//if ctrl held it adjusts length;
 				if(c){
@@ -898,12 +1013,24 @@ function mouse(x,y,l,s,a,c,scr){
 					event[4] = Math.max(event[4],0.000000001);
 				}else{
 					var v=0;
-					if(event[3]>=0){
-						v = Math.min(127,Math.max(0,event[3] + scr*25));
-					}else if(event[3]<0){
-						v = Math.max(-127,Math.min(0,event[3] - scr*25));
+					if(lanetype[mouse_lane]==2){
+						var lim=0;
+						var ind=3;
+						if(a){
+							ind = 5;
+						}else if(metatype_params[event[2]][0] == "chance/every") lim=1;
+						if(event[ind] >= 0){
+							v = Math.min(127+lim,Math.max(-lim,event[ind] + scr*25));
+							if(v>127)v=-254+v; //wrap
+						}else if(event[ind]<0){
+							v = Math.max(-127-lim,Math.min(lim,event[ind] + scr*25));
+							if(v<-127)v=254+v;
+						}
+						event[ind] = v;
+					}else{
+						v = Math.min(127,Math.max(0,event[3] + scr*25));						
+						event[3] = v;
 					}
-					event[3] = v;
 				}
 				seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 				copytoseq();
@@ -916,27 +1043,56 @@ function mouse(x,y,l,s,a,c,scr){
 							event[4] = Math.max(event[4],0.000000001);
 						}else{
 							var v=0;
-							if(event[3]>=0){
-								v = Math.min(127,Math.max(0,event[3] + scr*25));
-							}else if(event[3]<0){
-								v = Math.max(-127,Math.min(0,event[3] - scr*25));
+							if(lanetype[mouse_lane]==2){
+								var lim=0;
+								var ind=3;
+								if(a){
+									ind = 5;
+								}else if(metatype_params[event[2]][0] == "chance/every") lim=1;
+								if(event[ind] >= 0){
+									v = Math.min(127+lim,Math.max(-lim,event[ind] + scr*25));
+									if(v>127)v=-254+v; //wrap
+								}else if(event[ind]<0){
+									v = Math.max(-127-lim,Math.min(lim,event[ind] + scr*25));
+									if(v<-127)v=254+v;
+								}
+								event[ind] = v;
+							}else{
+								v = Math.min(127,Math.max(0,event[3] + scr*25));						
+								event[3] = v;
 							}
-							event[3] = v;
 						}
 						seqdict.replace(block+"::"+pattern+"::"+k[i],event);
-						copytoseq();
 					}
 				}
+				copytoseq();
 			}
 			drawflag = 1;
 		}
 	}else if(l==1){
 		if(old_l==0){ //a click happens
 			clicked = hovered_event;
-			if((clicked == -1) && (s||c)) clicked = -2-(0.5*s); //shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
-			if(y<y_pos+0.1*height) clicked = -2.5;
+			if(y<y_pos+0.1*height){
+				if(Math.abs(x-start_x)<20){
+					clicked = -2.6; // -> 0.4 for start drag
+					if((Math.abs(x-loopstart_x)<20)&&(y>y_pos+0.05*height)){
+						clicked = -2.7;
+					}
+				}else if(Math.abs(x-loopstart_x)<20){
+					clicked = -2.7;  // -> 0.3 for loopstart drag
+				}else if(Math.abs(x-loopend_x)<20){
+					clicked = -2.8; // -> 0.2 for end drag
+				}else{
+					clicked = -2.5;  //topbar is just pan/zoom
+				}
+			}else if(clicked == -1){ //background
+				clicked = -2.5;  // default is pan/zoom
+				if(s) clicked = -1; //select
+				if(c) clicked = -2; //create
+			} //default click drag is pan/zoom, shift is select, ctrl is create. was: shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
 			drag_start_x = x;
 			drag_start_y = y;
+			drag_dist = 0;
 			if(clicked<0){
 				drag = 3 + clicked;
 			}else{
@@ -960,15 +1116,17 @@ function mouse(x,y,l,s,a,c,scr){
 			old_l = 1;
 		}else{//already clicked, so a drag
 			//post("\n---");
-			if(drag>0){
+			var dx = drag_start_x - x;
+			var dy = drag_start_y - y;
+			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
+			if((drag>0)&&(drag_dist>10)){
 				drag=-drag;
-				if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
+				if((hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
 					selected_event_count=1;
 					selected_events=[];
 					selected_events[hovered_event]=1;
-				}
-				if(a&&(hovered_event>-1)&&(selected_events[hovered_event]==1)){
-					//if ctrl is held it makes an entirely new set of events
+				}else if(a&&(hovered_event>-1)&&(selected_events[hovered_event]==1)){
+					//if alt is held it makes an entirely new copy of the set of events
 					var newsellist=[];
 					sd = seqdict.get(block+"::"+pattern);
 					k = sd.getkeys();						
@@ -990,25 +1148,52 @@ function mouse(x,y,l,s,a,c,scr){
 						selected_events[newsellist[i]]=1;
 					}
 					hovered_event = newhov;
+				}else if(c&&(hovered_event==-1)&&lanetype[mouse_lane]!=1){
+					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
+					if((!s)&&quantise_enable){
+						xx = Math.floor(xx*seql/currentquantise)/(seql/currentquantise);
+					}
+					var vv = 100;
+					var pp = 0;
+					if(lanetype[mouse_lane]==0){//note lane
+						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+					}else if(lanetype[mouse_lane]==2){//meta lane
+						pp = Math.floor((metatypes.length)*(((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
+						vv = metatype_defaults[pp][0];
+					}
+					var ml=mouse_lane;
+					if(ml>0)ml--;
+					var event = [xx,ml,pp,vv,currentquantise/seql];
+					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
+						for(var i=1;i<metatype_defaults[pp].length;i++){
+							event.push(metatype_defaults[pp][i]);
+						}
+					}
+					var ind = create_event(event);
+					selected_events = [];
+					selected_events[ind] = 1;
+					selected_event_count=1;
+					hovered_event = ind;
+					drag = -4;
+					drag_dist=0;
+					drawflag=1;
 				}
+				
 			}
 			if(drag<0){
 				drawflag=1;
-				//post("drag",drag);
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//ctrl drag - draw values
-					var dx = drag_start_x - x;
-					//var dy = drag_start_y - y;
 					if(Math.abs(dx)>=1){
-						if(lanetype[Math.max(0,mouse_lane-1)]==1){
+						if(lanetype[mouse_lane]==1){
 							var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 							var sx = ((drag_start_x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 							var ex = xx;
-							var ssx = sx;
+							//var ssx = sx;
 							if(ex<sx){ ex = sx; sx = xx; }
 							var vv = 127 *(1-((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
-							var sv = 127 *(1-((drag_start_y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
-							var gv = (sv - vv)/Math.ceil(dx);
+							//var sv = 127 *(1-((drag_start_y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane]));
+							//var gv = (sv - vv)/Math.ceil(dx);
 							for(var i=1;i<k.length;i++){
 								var tt=sd.get(k[i]+"[0]");
 								if((tt>sx)&&(tt<ex)){
@@ -1016,7 +1201,7 @@ function mouse(x,y,l,s,a,c,scr){
 								}
 							}
 							var event; //
-							event = [xx,Math.max(0,mouse_lane-1),pp,vv,currentquantise/seql];
+							event = [xx,Math.max(0,mouse_lane-1),0,vv,currentquantise/seql];
 							create_event(event);
 							/*for(var i = 0;i<Math.abs(dx);i++){
 								event = [ssx+i,Math.max(0,mouse_lane-1),0,sv,currentquantise/seql];
@@ -1027,8 +1212,6 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 					}
 				}else if(drag == -0.5){//ruler drag - pan and zoom
-					var dx = drag_start_x - x;
-					var dy = drag_start_y - y;
 					var dir = 0;
 					if(Math.abs(dx)<Math.abs(dy)) dir = 1;
 					if(dir==0){
@@ -1042,24 +1225,58 @@ function mouse(x,y,l,s,a,c,scr){
 						drag_start_y = y;
 					}else{
 						var l = (zoom_end - zoom_start);
-						var p = 2/width;
-						post("\ndir 1, ",dy);
-						p *= dy;
-						zoom_start += 0.5*p;
-						l-=p;
-						zoom_start = Math.min(Math.max(0,zoom_start),1-l);
-						zoom_end = zoom_start + l;
+						var xx = (x-x_pos)/width;
+						dy*=0.01;
+						zoom_start += l*xx*dy;
+						zoom_end -= l*(1-xx)*dy;
+						zoom_start = Math.max(zoom_start,0);
+						zoom_end = Math.min(zoom_end, 1);
 						zoom_scale = 1/(zoom_end - zoom_start);
-						drag_start_y = y;
 						drag_start_x = x;
+						drag_start_y = y;
+					}
+				}else if((drag >= -0.4)&&(drag <= -0.1)){ //marker drag
+					var dx=0;
+					var bw = (width-2) * 0.5* zoom_scale / seql;
+					if((x - drag_start_x)>=bw){
+						dx=1;
+					}else if((x-drag_start_x)<=-bw){
+						dx=-1;
+					}
+					if(dx!=0){
+						drag_start_x=x;
+						var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+						var dr=Math.floor(drag*-100);
+						if(dr == 39){ //some wierd rounding happens so this perverted nonsense is how i have chosen to solve it
+							loopnts[1] += dx;
+							loopnts[1] = Math.max(0,loopnts[1]);
+							loopnts[1] = Math.min(loopnts[0],loopnts[1]);
+						}else if(dr == 29){
+							loopnts[2] += dx;
+							loopnts[2] = Math.max(0,loopnts[2]);
+							loopnts[2] = Math.min(loopnts[0]-loopnts[3],loopnts[2]);
+						}else if(dr == 20){
+							loopnts[3] += dx;
+							loopnts[3] = Math.max(1,loopnts[3]); //? smaller would be fine
+							loopnts[3] = Math.min(loopnts[0]-loopnts[2],loopnts[3]);
+						}
+						drawflag = 1;
+						seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
+						// post("\nupdate lengths,",1+voice,loopnts);
+						messnamed("to_polys","note", "setvalue",1+voice,"updatelengths");     
 					}
 				}else{//drag selection/or just the original hovered note
 					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
 					drag_start_x = x;
 					var pp = 0;
+					var vv = 0;
 					if(lanetype[mouse_lane]==0){
 						pp = Math.round((highestnote-lowestnote+3)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
 						if(pp!=0) drag_start_y = y;
+					}else if(lanetype[mouse_lane]==1){
+						if(selected_event_count<=1) xx=0;
+						vv = Math.round((130)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
+						if(vv!=0) drag_start_y = y;
 					}
 					if(selected_event_count>0){
 						for(i=1;i<k.length;i++){
@@ -1070,6 +1287,7 @@ function mouse(x,y,l,s,a,c,scr){
 									event[4] = Math.max(event[4],0.0000001);
 								}else{
 									event[2] += pp;
+									event[3] = Math.max(Math.min(127,event[3]+vv),1);
 									event[0] += xx;
 									event[0] = Math.min(1, Math.max(0,event[0]));
 								}
@@ -1085,6 +1303,7 @@ function mouse(x,y,l,s,a,c,scr){
 		}
 	}else{
 		if(old_l==1){// a release
+			if(drag_dist<10) drag=0;
 			if(drag<0){
 				drag = 0;
 				if(drag_moved)push_to_undo_stack("move");
@@ -1123,10 +1342,11 @@ function mouse(x,y,l,s,a,c,scr){
 					drawflag=1;
 				}
 			}else{ //release on background
+				//the create note if ctrl held routine is now on-click to facilitate click-drag to create notes.
 				if(c){ //create note
 					var xx = ((x-x_pos)/width) * (zoom_end-zoom_start) + zoom_start;
 					if((!s)&&quantise_enable){
-						xx = Math.round(xx*seql/currentquantise)/(seql/currentquantise);
+						xx = Math.floor(xx*seql/currentquantise)/(seql/currentquantise);
 					}
 					var vv = 100;
 					var pp = 0;
@@ -1141,36 +1361,39 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					if(mouse_lane>0)mouse_lane--;
 					var event = [xx,mouse_lane,pp,vv,currentquantise/seql];
-					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>1)){
+					if((lanetype[mouse_lane]==2)&&(metatype_defaults[pp].length>=1)){
 						for(var i=1;i<metatype_defaults[pp].length;i++){
 							event.push(metatype_defaults[pp][i]);
 						}
 					}
-					create_event(event);
+					var ind = create_event(event);
+					selected_events=[];
+					selected_event_count=1;
+					selected_events[ind]=1;
 				}else{ //select nothing
 					selected_event_count=0;
 					selected_events=[];
-					drawflag=1;
+					drawflag|=1;
 				}
 			}
 		}
 		if(moved){
 			for(var i=0;i<laney.length-1;i++){
 				if((y>laney[i])&&(y<laney[i+1])){
-					if(maximisedlist[i]==0){
+					if(!s && maximisedlist[i]==0){
 						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
 						maximisedlist[i]=1;
 						//post("\nmaximised lane:",i);
 						laneheights();
-						drawflag=1;
+						drawflag |= 1;
 						//post("calced new heights",laney,"maxl",maximisedlist);
 					}else{
-						drawflag = 1; //so all movement in the maximised lane causes a draw
+						drawflag |= 1; //so all movement in the maximised lane causes a draw
 						// there's a possibility to optimise this - either by storing a short list
 						// of displayed note/bar coords and checking in that, or by using numbered
 						// passthrough zones for the notes (this makes drawing much more expensive tho)
 					}
-				}
+				}else if((y<laney[0])&&(y>(y_pos+height*0.05))) drawflag |= 1;
 			}
 		}
 	}
@@ -1193,13 +1416,14 @@ function create_event(event) {
 			break;
 		}
 	}
+	//post("\nnew event:",event);
 	seqdict.replace(block + "::" + pattern + "::" + ind, event);
 	undo.clear();
 	undo.replace(ind, event);
 	//post("\npushing",undo.getkeys());
 	push_to_undo_stack("create");
 	copytoseq();
-	drawflag = 1;
+	drawflag |= 1 + (event[1]==0);
 	return ind;
 }
 
@@ -1231,7 +1455,7 @@ function keydown(key){
 		old_c=1;
 	}else{old_c = 0;}
 	if(key == -15){
-		zoom_start = 0; zoom_end = 1; zoom_scale = 1;
+		zoom_to_pattern();
 		for(var i=0;i<maximisedlist.length;i++)maximisedlist[i]=(i==0);
 		drawflag=1;
 	}else if((key == -9)||(key == -10)){//up down
@@ -1248,8 +1472,13 @@ function keydown(key){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 				undo.replace(k[i],event);
 				rem=1;
-				var n = event[2] + dir;
-				if((n>=0)&&(n<127)) event[2] = n;
+				if(event[1]==9){
+					var n = event[2] - dir;
+					if((n>=0)&&(n<metatypes.length)) event[2] = n;
+				}else{
+					var n = event[2] + dir;
+					if((n>=0)&&(n<127)) event[2] = n;
+				}
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 			}
 		}

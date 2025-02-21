@@ -18,9 +18,12 @@
 				"parameters" : [ "record cc in 1", "record cc in 2", "record cc in 3", "record cc in 4", "record cc in 5", "record cc in 6", "record cc in 7", "record cc in 8"]
 			},
 			"out" : {
-				"midi" : [ "notes out", "loop reached" ],
+				"midi" : [ "notes out", "notes out B", "notes out C", "loop reached" ],
 				"parameters" : [ "cc out 1", "cc out 2", "cc out 3", "cc out 4", "cc out 5", "cc out 6", "cc out 7", "cc out 8", "playhead_position" ],
-				"dontdefaultall" : 1
+				"dontdefaultall" : 1,
+				"descriptions" : {
+					"midi" : [ "", "you can insert a meta-note that sends notes to these outputs instead of the main one","","sends a note when the loop end is reached"]
+				}
 			}
 		},
 		"groups" : [

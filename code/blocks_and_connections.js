@@ -1201,7 +1201,7 @@ function remove_connection(connection_number){
 							outmsg[2] = 0;
 							post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 							messnamed("drivers_poly","setvalue",2,"set",outmsg);
-							connections.replace("connections["+cno+"]::conversion::soundcard", 1);
+							connections.replace("connections["+connection_number+"]::conversion::soundcard", 1);
 							use_max_matrix = 0;
 						}
 						if(use_max_matrix){
@@ -3839,7 +3839,7 @@ function select_preset(preset,pname){
 }
 
 function save_preset(){
-	var presetname = text_being_editted;
+	var presetname = sidebar.text_being_edited;
 	var block = selected.block.indexOf(1);
 	var block_name = blocks.get("blocks["+block+"]::name");
 	post("\nsaving preset",presetname,"for block",block,"-",block_name);
@@ -3869,7 +3869,7 @@ function save_preset(){
 }
 
 function encapsulate_selection(name){
-	if((name=="name")||(name==null))name=text_being_editted;
+	if((name=="name")||(name==null))name=sidebar.text_being_edited;
 
 	post("\nENCAPSULATION COMING SOON",name);
 	//step 1: build encapsulated file

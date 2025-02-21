@@ -563,6 +563,8 @@ var sidebar = {
 	fwd : [],
 	files_page : "songs",
 	notification : "",
+	text_being_edited : "",
+	channelnaming : ["block","channel"], //set when you bring up the edit channel name mode
 	dropdown : null
 }
 
@@ -586,8 +588,6 @@ var am_foreground = 1; //other windows will message to say they want keyboard no
 var paramslider_details = []; //indexed by param number
 //x1,y1,x2,y2,r,g,b,mouse_index,block,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,gets-overwritten-with-y-coord-returned(bottom),click_to_set
 var camera_position = [-2, 0, 23];
-
-var text_being_editted="";
 
 var config = new Dict;
 config.name = "config";
