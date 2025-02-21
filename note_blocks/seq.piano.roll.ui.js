@@ -1081,7 +1081,6 @@ function mouse(x,y,l,s,a,c,scr){
 			var dy = drag_start_y - y;
 			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
 			if((drag>0)&&(drag_dist>10)){
-				post("\ndrag start",lanetype[mouse_lane],mouse_lane);
 				drag=-drag;
 				if((hovered_event>-1) && (selected_events[hovered_event]!=1)){
 					selected_event_count=1;
@@ -1117,7 +1116,6 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					var vv = 100;
 					var pp = 0;
-					post("\nCREATE",mouse_lane,lanetype[mouse_lane]);
 					if(lanetype[mouse_lane]==0){//note lane
 						pp = lowestnote + Math.floor((highestnote-lowestnote+1)*(1 - ((y-laney[mouse_lane]))/(laney[mouse_lane+1] - laney[mouse_lane])));
 					}else if(lanetype[mouse_lane]==2){//meta lane
@@ -1145,7 +1143,6 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 			if(drag<0){
 				drawflag=1;
-				post("drag",drag,lanetype[mouse_lane]);
 				if(drag == -2){//selection area drag
 				}else if(drag == -1){//ctrl drag - draw values
 					if(Math.abs(dx)>=1){
@@ -1204,7 +1201,6 @@ function mouse(x,y,l,s,a,c,scr){
 					drag_start_x = x;
 					var pp = 0;
 					var vv = 0;
-					post("\ndragin",lanetype[mouse_lane],mouse_lane,selected_event_count);
 					if(lanetype[mouse_lane]==0){
 						pp = Math.round((highestnote-lowestnote+3)*(drag_start_y - y)/(laney[mouse_lane+1] - laney[mouse_lane]));
 						if(pp!=0) drag_start_y = y;
@@ -1349,7 +1345,7 @@ function create_event(event) {
 			break;
 		}
 	}
-	post("\nnew event:",event);
+	//post("\nnew event:",event);
 	seqdict.replace(block + "::" + pattern + "::" + ind, event);
 	undo.clear();
 	undo.replace(ind, event);
