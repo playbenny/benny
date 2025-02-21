@@ -276,10 +276,10 @@ function draw(){
 				var ey,col;
 				if(event[1]==0){
 					ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
-					col = pal[(8+(event[2]|0))% 16];
+					col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 				}else{
 					ey = by - (event[2])*(height-3)/metatypes.length;
-					col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+					col = pal[(8+(event[2]|0))% 16];
 				}
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
