@@ -709,7 +709,7 @@ function draw(){
 						var event = seqdict.get(block+"::"+pattern+"::"+se);
 						if(event[1]==0){
 							outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-							outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+							outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 							outlet(1,"write","selected event:",nn[event[2]], event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 						}else if(event[1]==9){
 							var displayedparams = "";
@@ -949,7 +949,7 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 					drawflag = 1;
 					seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
-					post("\nupdate lengths,",1+voice);
+					//post("\nupdate lengths,",1+voice);
 					messnamed("to_polys","note", "setvalue",1+voice,"updatelengths");
 				}
 			}else{
@@ -1049,8 +1049,13 @@ function mouse(x,y,l,s,a,c,scr){
 	}else if(l==1){
 		if(old_l==0){ //a click happens
 			clicked = hovered_event;
-			if((clicked == -1) && (s||c)) clicked = -2-(0.5*s); //shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
-			if(y<y_pos+0.1*height) clicked = -2.5;
+			if(y<y_pos+0.1*height){
+				clicked = -2.5;  //topbar is just pan/zoom
+			}else if(clicked == -1){ //background
+				clicked = -2.5;  // default is pan/zoom
+				if(s) clicked = -1; //select
+				if(c) clicked = -2; //create
+			} //default click drag is pan/zoom, shift is select, ctrl is create. was: shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
 			drag_start_x = x;
 			drag_start_y = y;
 			drag_dist = 0;
@@ -1298,6 +1303,8 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 					}
 					var ind = create_event(event);
+					selected_events=[];
+					selected_event_count=1;
 					selected_events[ind]=1;
 				}else{ //select nothing
 					selected_event_count=0;
