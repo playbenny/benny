@@ -63,6 +63,10 @@ var start = 0;
 var loopstart = 0;
 var looplength = 0;
 
+var start_x = -1;
+var loopstart_x = -1;
+var loopend_x = -1;
+
 var zoom_start = 0;
 var zoom_end = 1;
 var zoom_scale = 1;
@@ -408,19 +412,28 @@ function draw(){
 		while(bw*step<24){ step *= 2; }
 		for(var b = firstbeat;bx<x_pos+width-20;bx+=bw){
 			if(b == start){
-				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
+				start_x = bx;
+				if(b == loopstart) loopstart_x = bx;
+				var cm=0.2 + (drag == -0.4);
+				if((Math.abs(mouse_x-bx)<20) && (mouse_y<y_pos+height*0.085)){
+					cm+=0.3;
+					drawflag|=1;
+				}
+				outlet(1,"frgb",blockcolour[0]*cm,blockcolour[1]*cm,blockcolour[2]*cm);
 				outlet(1,"paintpoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
 				outlet(1,"write",Math.floor(b));
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 			}else if(b == loopstart){
+				loopstart_x = bx
 				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
 				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx+height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
 				outlet(1,"moveto",bx,y_pos+height*0.075);
 				outlet(1,"write",Math.floor(b));
 			}else if(b == loopstart + looplength){
+				loopend_x = bx;
 				outlet(1,"frgb",blockcolour[0]*0.2,blockcolour[1]*0.2,blockcolour[2]*0.2);
 				outlet(1,"framepoly",bx , y_pos+height*0.055, bx, y_pos+height*0.085, bx-height*0.03, y_pos+height*0.07, bx, y_pos+height*0.055);
 				outlet(1,"frgb",blockcolour[0]*0.5,blockcolour[1]*0.5,blockcolour[2]*0.5);
@@ -674,7 +687,7 @@ function draw(){
 		if(hovered_event>-1){
 			outlet(1,"frgb",blockcolour);
 			var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
-			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.02);
+			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.02);
 			if(event[1]==0){
 				outlet(1,"write","hovered note:",nn[event[2]],event[3].toFixed(2),"start:", time_to_beat_divs(event[0]), "length:",time_to_beat_divs(event[4]));
 			}else if(event[1]==9){
@@ -746,7 +759,7 @@ function draw(){
 		}
 		if(selected_event_count>0){
 			outlet(1,"frgb",blockcolour[1],blockcolour[2],blockcolour[0]);
-			outlet(1,"moveto",x_pos+9+width*0.36,y_pos+height*0.04);
+			outlet(1,"moveto",x_pos+9+width*0.4,y_pos+height*0.04);
 			outlet(1,"write",selected_event_count,"events selected");
 		}
 	}
@@ -1050,7 +1063,18 @@ function mouse(x,y,l,s,a,c,scr){
 		if(old_l==0){ //a click happens
 			clicked = hovered_event;
 			if(y<y_pos+0.1*height){
-				clicked = -2.5;  //topbar is just pan/zoom
+				if(Math.abs(x-start_x)<20){
+					clicked = -2.6; // -> 0.4 for start drag
+					if((Math.abs(x-loopstart_x)<20)&&(y>y_pos+0.05*height)){
+						clicked = -2.7;
+					}
+				}else if(Math.abs(x-loopstart_x)<20){
+					clicked = -2.7;  // -> 0.3 for loopstart drag
+				}else if(Math.abs(x-loopend_x)<20){
+					clicked = -2.8; // -> 0.2 for end drag
+				}else{
+					clicked = -2.5;  //topbar is just pan/zoom
+				}
 			}else if(clicked == -1){ //background
 				clicked = -2.5;  // default is pan/zoom
 				if(s) clicked = -1; //select
@@ -1200,6 +1224,36 @@ function mouse(x,y,l,s,a,c,scr){
 						zoom_scale = 1/(zoom_end - zoom_start);
 						drag_start_x = x;
 						drag_start_y = y;
+					}
+				}else if((drag >= -0.4)&&(drag <= -0.1)){ //marker drag
+					var dx=0;
+					var bw = (width-2) * 0.5* zoom_scale / seql;
+					if((x - drag_start_x)>=bw){
+						dx=1;
+					}else if((x-drag_start_x)<=-bw){
+						dx=-1;
+					}
+					if(dx!=0){
+						drag_start_x=x;
+						var loopnts = seqdict.get(block+"::"+pattern+"::looppoints");
+						var dr=Math.floor(drag*-100);
+						if(dr == 39){ //some wierd rounding happens so this perverted nonsense is how i have chosen to solve it
+							loopnts[1] += dx;
+							loopnts[1] = Math.max(0,loopnts[1]);
+							loopnts[1] = Math.min(loopnts[0],loopnts[1]);
+						}else if(dr == 29){
+							loopnts[2] += dx;
+							loopnts[2] = Math.max(0,loopnts[2]);
+							loopnts[2] = Math.min(loopnts[0]-loopnts[3],loopnts[2]);
+						}else if(dr == 20){
+							loopnts[3] += dx;
+							loopnts[3] = Math.max(1,loopnts[3]); //? smaller would be fine
+							loopnts[3] = Math.min(loopnts[0]-loopnts[2],loopnts[3]);
+						}
+						drawflag = 1;
+						seqdict.replace(block+"::"+pattern+"::looppoints", loopnts);
+						// post("\nupdate lengths,",1+voice,loopnts);
+						messnamed("to_polys","note", "setvalue",1+voice,"updatelengths");     
 					}
 				}else{//drag selection/or just the original hovered note
 					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
