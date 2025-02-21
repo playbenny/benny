@@ -268,19 +268,22 @@ function draw(){
 			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
-				//var ex1 = x_pos + event[0]*(width-1);
 				var col = pal[(event[1]-1)];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex1,by);
 			}else{
-				var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+				var ey,col;
+				if(event[1]==0){
+					ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+					col = pal[(8+(event[2]|0))% 16];
+				}else{
+					ey = by - (event[2])*(height-3)/metatypes.length;
+					col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+				}
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
-				//var ex1 = x_pos + event[0]*(width-2);
-				//var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
 				var c = 0.2+0.8* Math.abs(event[3])/128;
-				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex2,ey);
@@ -1121,6 +1124,10 @@ function mouse(x,y,l,s,a,c,scr){
 			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
 			if((drag>0)&&(drag_dist>10)){
 				drag=-drag;
+				if(drag == -2){
+					selected_event_count=0;
+					selected_events=[];
+				}
 				if((hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
 					selected_event_count=1;
 					selected_events=[];
