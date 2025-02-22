@@ -17,7 +17,7 @@
 			{ 
                 "header"   : "Wavetable Oscillator",
 				"contains" : [0, 2, 1, 3],
-				"height" : 2,
+				"height" : 0,
                 "colour"    : 41
 			},
 			{ 
@@ -35,25 +35,25 @@
 			{ 
                 "header"   : "Filter",
 				"contains" : [8, 9, 10, 11],
-				"height" : 2,
+				"height" : 0,
                 "colour"    : 30
 			},
 			{ 
                 "header"   : "Vactrol Gate",
 				"contains" : [12, 13, 14, 15],
-				"height" : 2,
+				"height" : 0,
                 "colour"    : -8
 			},
 			{ 
                 "header"   : "Vibe",
 				"contains" : [20, 21, 22, 23],
-				"height" : 2,
+				"height" : 0,
                 "colour"    : -13
 			},
 			{ 
                 "header"   : "Output",
 				"contains" : [24, 25, 26],
-				"height" : 2,
+				"height" : 0,
                 "colour"    : -18
 			}
 			
@@ -79,8 +79,8 @@
             {
 				"name" : "scan",
                 "type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 1,
+				"values" : ["uni", 0, 10, "lin"],
+				"wrap" : 0,
 				"default" : 0
 			},
             {
