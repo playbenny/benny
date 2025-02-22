@@ -109,11 +109,12 @@ function picker_hover_and_special(id){
 				bulgeamount=0;
 				if(wires_scale[bulgingwire]==null){
 					post("\nerror condition:",bulgingwire);
+				}else{
+					for(var i=0;i<wires_scale[bulgingwire].length;i++){
+						wires_scale[bulgingwire][i][1] = wire_dia;
+					}
+					write_wire_matrix(bulgingwire);
 				}
-				for(var i=0;i<wires_scale[bulgingwire].length;i++){
-					wires_scale[bulgingwire][i][1] = wire_dia;
-				}
-				write_wire_matrix(bulgingwire);
 				bulgingwire = -1;
 			}
 		}else{
