@@ -14,8 +14,11 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "record notes in", "trigger in", "jump forwards", "jump backwards", "reset" ],
-				"parameters" : [ "record cc in 1", "record cc in 2", "record cc in 3", "record cc in 4", "record cc in 5", "record cc in 6", "record cc in 7", "record cc in 8"]
+				"midi" : [ "record notes in", "trigger in", "jump forwards", "jump backwards", "reset", "modifiers in" ],
+				"parameters" : [ "record cc in 1", "record cc in 2", "record cc in 3", "record cc in 4", "record cc in 5", "record cc in 6", "record cc in 7", "record cc in 8"],
+				"descriptions" : {
+					"midi" : [ "", "clock input not yet implemented", "jump not yet implmented", "jump not yet implemented", "", "vel maps to the 2nd parameter if present, note selects (C=skip,C#=vel rand,D=cc rand,D#=divide,E=oct up,F=oct down,F#,G,G# chromatic transpose,A output select)"]
+				}
 			},
 			"out" : {
 				"midi" : [ "notes out", "notes out B", "notes out C", "loop reached" ],

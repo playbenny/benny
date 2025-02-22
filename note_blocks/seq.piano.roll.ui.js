@@ -1026,7 +1026,7 @@ function mouse(x,y,l,s,a,c,scr){
 							max = 127;
 							if(metatype_params[event[2]][0] == "chance/every"){
 								min = -1;
-								max = 128;
+								max = 129;
 							}
 							scr *= 8;
 						}else{
@@ -1034,10 +1034,10 @@ function mouse(x,y,l,s,a,c,scr){
 						}
 						if(event[ind] >= 0){
 							v = Math.min(max,Math.max(min,event[ind] + scr));
-							if(v>127)v=-256+v; //wrap
+							if(v>128)v=-256+v; //wrap
 						}else if(event[ind]<0){
 							v = Math.max(-128+min,Math.min(-min,event[ind] + scr));
-							if(v<-127)v=256+v;
+							if(v<-128)v=256+v;
 						}
 						event[ind] = v;
 					}else{
