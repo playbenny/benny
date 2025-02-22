@@ -7,7 +7,7 @@ function set_display_mode(mode,t){
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
 		last_displaymode = displaymode;
-		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, sidebar.x2, mainwindow_height-9,mainwindow_width);
+		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
 			mode = "blocks"; //only show flocks if there are flocks
@@ -1758,6 +1758,44 @@ function write_menu_matrix(){
 	messnamed("menu_matrices","bang");
 }
 
+function move_flock_blocks(){
+	redraw_flag.matrices &= 253;
+	matrix_voice_position.dim = [1,1];
+	matrix_voice_colour.dim = [1,1];
+	matrix_voice_scale.dim = [1,1];
+	matrix_block_position.dim = [flocklist.length,1];
+	matrix_block_scale.dim = [flocklist.length,1];
+	matrix_block_colour.dim = [flocklist.length,1];
+	matrix_block_texture.dim = [flocklist.length,1];
+	matrix_meter_position.dim = [1,1];
+	matrix_meter_colour.dim = [1,1];
+	matrix_meter_scale.dim = [1,1];
+	var vc=0;
+	var mc=0;
+	var bc=0;
+	matrix_meter_index = [];
+	matrix_voice_index = [];
+	for(var i=0;i<flocklist.length;i++){ // FLOCK.
+		var p = flocklist[i];
+		var bb = 3*p;
+		var b = flockblocklist[p];
+		// var v = flockvoicelist[p];
+		matrix_meter_index[b]=[];
+		matrix_block_index[b]=bc;
+		matrix_block_lookup[bc]=b;
+		matrix_block_position.setcell(bc,0,"val",flock_cube_size*(flock_buffer.peek(4, bb)-0.5),flock_cube_size*(flock_buffer.peek(4, bb+1)-0.5),5+flock_cube_size*flock_buffer.peek(4, bb+2));
+		matrix_block_scale.setcell(bc,0,"val",blocks_cube[b][0].scale[0],blocks_cube[b][0].scale[1],blocks_cube[b][0].scale[2]);
+		matrix_block_colour.setcell(bc,0,"val",blocks_cube[b][0].color[0],blocks_cube[b][0].color[1],blocks_cube[b][0].color[2]);
+		matrix_block_texture.setcell(bc,0,"val",b);
+		bc++;
+	}
+	matrix_voice_index[b]=vc;
+	messnamed("blocks_multiple","texture",blocks_cube_texture);
+	messnamed("blocks_matrices","bang");
+	messnamed("voices_matrices","bang");
+	messnamed("meters_matrices","bang");
+}	
+
 function write_blocks_matrix(){
 	redraw_flag.matrices &= 253;
 	matrix_voice_position.dim = [voice_cubes,1];
@@ -3098,7 +3136,7 @@ function draw_sidebar(){
 			var tii,ts;
 			var block_voicecount = 1;
 
-			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")){
+			if((sidebar.mode == "settings")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")){
 			}else{
 				sidebar.mode = "block";
 				if(AUTOZOOM_ON_SELECT)center_view(1);
@@ -4066,7 +4104,6 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 				var groups = [];
 				var params = [];
-				var knob = { x:0 , y:0 };
 				var cx = [];
 				var cy = [];
 				if(!has_params){
@@ -4088,6 +4125,8 @@ function draw_sidebar(){
 					}
 
 					var w_slider,h_slider,colour,plist;
+					var knob_y=0;
+					var knob_x=0;
 					var maxnamelabely,namelabely,x1,x2,y1,y2,p_type,p_values,pv,namearr,tk,wk,wrap;
 					for(i=0;i<groups.length;i++){
 						//colour=menucolour;
@@ -4143,7 +4182,7 @@ function draw_sidebar(){
 								knob_x+=wk;
 								if(knob_x>=columns){
 									knob_x = 0;
-									//knob_y++;
+									// knob_y++;
 									y_offset += fontheight * (h_slider + 1 + 0.1*(h_slider==0));
 								}	
 							}
@@ -4196,7 +4235,6 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 				var groups = [];
 				var params = [];
-				var knob = { x:0 , y:0 };
 				var cx = [];
 				var cy = [];
 				if(!has_params){
@@ -4216,7 +4254,9 @@ function draw_sidebar(){
 					}else{
 						groups = blocktypes.get(block_name+"::groups");
 					}
-
+					
+					var knob_y=0;
+					var knob_x=0;
 					var w_slider,h_slider,colour,plist;
 					var maxnamelabely,namelabely,x1,x2,y1,y2,blockoffset,p_type,p_values,pv,namearr,tk,wk,wrap;
 					for(i=0;i<groups.length;i++){
@@ -4577,7 +4617,7 @@ function draw_sidebar(){
 					}
 				}
 			}
-			if((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")){
+			if((sidebar.mode == "settings")){
 		// BLOCK SETTINGS ##############################################################################################################
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour );
 				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
@@ -4849,178 +4889,193 @@ function draw_sidebar(){
 					lcd_main.message("write", "off");
 				}
 				y_offset += fontheight*1.1;
-
+			}
+			if((has_params) && ((sidebar.mode=="block")||(sidebar.mode=="settings"))){
 				// flock 
-				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-4.4*fontheight, fontheight+y_offset,block_darkest );
-				if(usermouse.clicked2d == mouse_index){ 
-					bc = block_colour;
-					fc = block_dark;
-				}else{
-					bc = block_darkest;
-					fc = block_colour;
-				}
-				lcd_main.message("paintrect", sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-2.2*fontheight, fontheight+y_offset,block_dark );
-				//lcd_main.message("frgb", menucolour );
-				lcd_main.message("frgb" , block_colour);
-				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-				lcd_main.message("write", "flock");
-				lcd_main.message("moveto" ,sidebar.x2-4.1*fontheight, fontheight*0.75+y_offset);
-				lcd_main.message("write", "assign");
-				click_zone(set_sidebar_mode,"flock",null, sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-2.2*fontheight, fontheight+y_offset,mouse_index,1 );
 				var this_b_is_flocked=0;
 				if(!is_empty(flocklist)){
 					for(var fli=0;fli<flocklist.length;fli++){ 
 						if(block == flockblocklist[flocklist[fli]]) this_b_is_flocked=1;
 					}
 				}
-				if(!this_b_is_flocked){
-					y_offset += fontheight*1.1;	
-				}else{
-					if(sidebar.mode == "settings_flockpreset"){
-						click_zone(set_sidebar_mode,"settings","settings", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
-						lcd_main.message("paintrect", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,block_colour);
-						lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("frgb", block_darkest );
-						lcd_main.message("write", "choose");
-						lcd_main.message("frgb", block_darkest );
-						lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.75+y_offset);
-						lcd_main.message("write", "preset");
-						y_offset += fontheight*1.1;		
-						//TODO there'll be a flock_presets dict, here you'd list the names of entries. these are hard presets btw, no user saving.
-						var presetlist = flock_presets.getkeys();
-						for(var pri=0; pri<presetlist.length; pri++){
-							lcd_main.message("paintrect", sidebar.x+ 2.1*fontheight, y_offset, sidebar.x2, 0.65*fontheight+y_offset,block_darkest);
-							lcd_main.message("moveto" ,sidebar.x+ 2.3*fontheight, fontheight*0.5+y_offset);
-							lcd_main.message("frgb", block_colour );
-							lcd_main.message("write", presetlist[pri]);
-							click_zone(set_flock_preset,presetlist[pri],block, sidebar.x+ 2.1*fontheight, y_offset, sidebar.x2, 0.65*fontheight+y_offset,mouse_index,1);
-							y_offset += fontheight*0.75
+				if((sidebar.mode == "settings")||this_b_is_flocked){
+					if(this_b_is_flocked && !(displaymode == "flocks")){
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-6.6*fontheight, fontheight+y_offset,block_darkest );
+						if(usermouse.clicked2d == mouse_index){ 
+							bc = block_colour;
+							fc = block_dark;
+						}else{
+							bc = block_darkest;
+							fc = block_colour;
 						}
+						lcd_main.message("paintrect", sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-4.4*fontheight, fontheight+y_offset,bc );
+						lcd_main.message("frgb" , fc);
+						lcd_main.message("moveto" ,sidebar.x2-fontheight*6.3, fontheight*0.75+y_offset);
+						lcd_main.message("write", "show");	
+						click_zone(set_display_mode,"flocks",null, sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-4.4*fontheight, fontheight+y_offset,mouse_index,1 );
+					}else{
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-4.4*fontheight, fontheight+y_offset,block_darkest );
+					}
+					if(usermouse.clicked2d == mouse_index){ 
+						bc = block_colour;
+						fc = block_dark;
+					}else{
+						bc = block_darkest;
+						fc = block_colour;
+					}
+					lcd_main.message("paintrect", sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-2.2*fontheight, fontheight+y_offset,block_dark );
+					lcd_main.message("frgb" , block_colour);
+					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+					lcd_main.message("write", "flock");
+					lcd_main.message("moveto" ,sidebar.x2-4.1*fontheight, fontheight*0.75+y_offset);
+					lcd_main.message("write", "assign");
+					click_zone(set_sidebar_mode,"flock",null, sidebar.x2-4.3*fontheight, y_offset, sidebar.x2-2.2*fontheight, fontheight+y_offset,mouse_index,1 );
+					if(!this_b_is_flocked){
 						y_offset += fontheight*1.1;	
 					}else{
-						click_zone(set_sidebar_mode, "settings_flockpreset", "settings_flockpreset", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
-						lcd_main.message("paintrect", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,block_dark);
-						lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("frgb", block_darkest );
-						lcd_main.message("write", "choose");
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.75+y_offset);
-						lcd_main.message("write", "preset");
-						y_offset += fontheight*1.1;
-						draw_h_slider(sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::flock::weight"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::weight";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-6.3*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "weight");
-						draw_h_slider(sidebar.x2-3.2*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::flock::tension"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::tension";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-3.0*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "tension");
-						y_offset += 0.75* fontheight;
-						draw_h_slider(sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::flock::friction"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::friction";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-6.3*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "friction");
-						draw_h_slider(sidebar.x2-3.2*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::flock::bounce"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::bounce";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-3.0*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "bounce");
-						y_offset += 0.75* fontheight;
-						draw_h_slider(sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,-1+2*blocks.get("blocks["+block+"]::flock::attrep"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::attrep";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-6.3*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "attract/repel");
-						draw_h_slider(sidebar.x2-3.2*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,-1+2*blocks.get("blocks["+block+"]::flock::align"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::align";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-3.0*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "align");
-						y_offset += 0.75* fontheight;
-						draw_h_slider(sidebar.x2-6.5*fontheight, y_offset, sidebar.x2-3.3*fontheight, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,-1+2*blocks.get("blocks["+block+"]::flock::twist"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::twist";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-6.3*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "twist");
-						draw_h_slider(sidebar.x2-3.2*fontheight, y_offset, sidebar.x2, fontheight*0.65+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::flock::brownian"));
-						mouse_click_actions[mouse_index] = block_edit;
-						mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::brownian";
-						mouse_click_values[mouse_index] = 0;
-						mouse_index++;
-						lcd_main.message("frgb", block_colour );
-						lcd_main.message("moveto" ,sidebar.x2-3.0*fontheight, fontheight*0.5+y_offset);
-						lcd_main.message("write", "brownian");
-						y_offset += 0.75* fontheight;
-						
+						if(sidebar.dropdown == "settings_flockpreset"){
+							click_zone(set_sidebar_mode,"settings","settings", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+							lcd_main.message("paintrect", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,block_colour);
+							lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.5+y_offset);
+							lcd_main.message("frgb", block_darkest );
+							lcd_main.message("write", "choose");
+							lcd_main.message("frgb", block_darkest );
+							lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.75+y_offset);
+							lcd_main.message("write", "preset");
+							lcd_main.message("paintpoly", sidebar.x2 - 4*fo1, y_offset + 2.5*fo1, sidebar.x2 - fo1, y_offset + 2.5*fo1, sidebar.x2 - 2.5*fo1, y_offset + 4*fo1, sidebar.x2 - 4*fo1, y_offset + 2.5*fo1);				
+							y_offset += fontheight*1.1;		
+							//TODO there'll be a flock_presets dict, here you'd list the names of entries. these are hard presets btw, no user saving.
+							var presetlist = flock_presets.getkeys();
+							for(var pri=0; pri<presetlist.length; pri++){
+								lcd_main.message("paintrect", sidebar.x+ 2.1*fontheight, y_offset, sidebar.x2, 0.65*fontheight+y_offset,block_darkest);
+								lcd_main.message("moveto" ,sidebar.x+ 2.3*fontheight, fontheight*0.5+y_offset);
+								lcd_main.message("frgb", block_colour );
+								lcd_main.message("write", presetlist[pri]);
+								click_zone(set_flock_preset,presetlist[pri],block, sidebar.x+ 2.1*fontheight, y_offset, sidebar.x2, 0.65*fontheight+y_offset,mouse_index,1);
+								y_offset += fontheight*0.75
+							}
+							y_offset += fontheight*1.1;	
+						}else{
+							click_zone(open_dropdown, "settings_flockpreset", "settings_flockpreset", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+							lcd_main.message("paintrect", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,block_dark);
+							lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.5+y_offset);
+							lcd_main.message("frgb", block_darkest );
+							lcd_main.message("write", "choose");
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.75+y_offset);
+							lcd_main.message("write", "preset");
+							lcd_main.message("paintpoly", sidebar.x2 - 4*fo1, y_offset + 2.5*fo1, sidebar.x2 - fo1, y_offset + 2.5*fo1, sidebar.x2 - 2.5*fo1, y_offset + 4*fo1, sidebar.x2 - 4*fo1, y_offset + 2.5*fo1);				
+							y_offset += fontheight*1.1;
+							draw_h_slider(sidebar.x, y_offset, sidebar.x+2.4*fontheight, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,blocks.get("blocks["+block+"]::flock::tension"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::tension";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+0.2*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "tension");
+							draw_h_slider(sidebar.x+2.5*fontheight, y_offset, sidebar.x+4.9*fontheight, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,blocks.get("blocks["+block+"]::flock::weight"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::weight";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+2.7*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "weight");
+							draw_h_slider(sidebar.x+5*fontheight, y_offset, sidebar.x+7.4*fontheight, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,blocks.get("blocks["+block+"]::flock::friction"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::friction";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+5.2*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "friction");
+							draw_h_slider(sidebar.x + 7.5*fontheight, y_offset, sidebar.x2, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,blocks.get("blocks["+block+"]::flock::brownian"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::brownian";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+7.7*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "brownian");
+							y_offset += 0.6 * fontheight;
+							draw_h_slider(sidebar.x, y_offset, sidebar.x+2.4*fontheight, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,blocks.get("blocks["+block+"]::flock::bounce"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::bounce";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+0.2*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "bounce");
+							draw_h_slider(sidebar.x+2.5*fontheight, y_offset, sidebar.x+4.9*fontheight, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,-1+2*blocks.get("blocks["+block+"]::flock::attrep"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::attrep";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+2.7*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "attract/repel");
+							draw_h_slider(sidebar.x+5*fontheight, y_offset, sidebar.x+7.4*fontheight, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,-1+2*blocks.get("blocks["+block+"]::flock::align"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::align";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+5.2*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "align");
+							draw_h_slider(sidebar.x+7.5*fontheight, y_offset, sidebar.x2, fontheight*0.5+y_offset,block_colour[0]*0.6,block_colour[1]*0.6,block_colour[2]*0.6,mouse_index,-1+2*blocks.get("blocks["+block+"]::flock::twist"));
+							mouse_click_actions[mouse_index] = block_edit;
+							mouse_click_parameters[mouse_index] = "blocks["+block+"]::flock::twist";
+							mouse_click_values[mouse_index] = 0;
+							mouse_index++;
+							lcd_main.message("frgb", block_colour );
+							lcd_main.message("moveto" ,sidebar.x+7.7*fontheight, fontheight*0.35+y_offset);
+							lcd_main.message("write", "twist");
+							y_offset += 0.6* fontheight;						
+						}
 					}
 				}
-
+				if(block_voicecount>1){
+					// error section
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+3.4*fontheight, fontheight*0.5+y_offset,block_darkest );
+					var ew = sidebar.width - 3.7 * fontheight;
+					ew/=3;
+					ew+=0.1*fontheight;
+					var es = sidebar.x+3.5*fontheight;
+					draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight*0.5+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::spread"));
+					mouse_click_actions[mouse_index] = block_edit;
+					mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::spread";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					es+=ew;
+					draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight*0.5+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::drift"));
+					mouse_click_actions[mouse_index] = block_edit;
+					mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::drift";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					es+=ew;
+					draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight*0.5+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::lockup"));
+					mouse_click_actions[mouse_index] = block_edit;
+					mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::lockup";
+					mouse_click_values[mouse_index] = 0;
+					mouse_index++;
+					lcd_main.message("frgb", block_colour );
+					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.35+y_offset);
+					lcd_main.message("write", "parameter errors");
+					es = sidebar.x+3.7*fontheight;
+					lcd_main.message("moveto" ,es, fontheight*0.35+y_offset);
+					lcd_main.message("write", "spread");
+					es+=ew;
+					lcd_main.message("moveto" ,es, fontheight*0.35+y_offset);
+					lcd_main.message("write", "drift");
+					es+=ew;
+					lcd_main.message("moveto" ,es, fontheight*0.35+y_offset);
+					lcd_main.message("write", "freeze");
+					y_offset+=fontheight*0.6;
+				}
 			}
 
-			if((has_params) && ((sidebar.mode == "settings")||(sidebar.mode == "settings_flockpreset")||((sidebar.mode == "block")&&(block_voicecount>1)))){
-				// error section
-				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+3.4*fontheight, fontheight*0.5+y_offset,block_darkest );
-				var ew = sidebar.width - 3.7 * fontheight;
-				ew/=3;
-				ew+=0.1*fontheight;
-				var es = sidebar.x+3.5*fontheight;
-				draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight*0.5+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::spread"));
-				mouse_click_actions[mouse_index] = block_edit;
-				mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::spread";
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				es+=ew;
-				draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight*0.5+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::drift"));
-				mouse_click_actions[mouse_index] = block_edit;
-				mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::drift";
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				es+=ew;
-				draw_h_slider(es, y_offset, es+ew-0.1*fontheight, fontheight*0.5+y_offset,block_colour[0],block_colour[1],block_colour[2],mouse_index,blocks.get("blocks["+block+"]::error::lockup"));
-				mouse_click_actions[mouse_index] = block_edit;
-				mouse_click_parameters[mouse_index] = "blocks["+block+"]::error::lockup";
-				mouse_click_values[mouse_index] = 0;
-				mouse_index++;
-				lcd_main.message("frgb", block_colour );
-				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.35+y_offset);
-				lcd_main.message("write", "parameter errors");
-				es = sidebar.x+3.7*fontheight;
-				lcd_main.message("moveto" ,es, fontheight*0.35+y_offset);
-				lcd_main.message("write", "spread");
-				es+=ew;
-				lcd_main.message("moveto" ,es, fontheight*0.35+y_offset);
-				lcd_main.message("write", "drift");
-				es+=ew;
-				lcd_main.message("moveto" ,es, fontheight*0.35+y_offset);
-				lcd_main.message("write", "freeze");
-				y_offset+=fontheight*0.6;
-			}
-
-			if((sidebar.mode != "settings")&&(sidebar.mode != "settings_flockpreset")){
+			if((sidebar.mode != "settings")){
 				lcd_main.message("frgb", block_colour);
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_darkest );
 				click_zone(set_sidebar_mode,"settings",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
@@ -7140,7 +7195,7 @@ function draw_sidebar(){
 		}	
 	}
 
-	if((sidebar.mode!="block")&&(sidebar.mode!="settings")&&(sidebar.mode!="settings_flockpreset")&&(sidebar.mode!="add_state")&&(sidebar.mode!="help")){ // DISABLE AUTOMAPPED MIDI CONTROLLERS
+	if((sidebar.mode!="block")&&(sidebar.mode!="settings")&&(sidebar.mode!="add_state")&&(sidebar.mode!="help")){ // DISABLE AUTOMAPPED MIDI CONTROLLERS
 		remove_automaps();
 	}
 	if(y_offset+sidebar.scroll.position >= mainwindow_height){

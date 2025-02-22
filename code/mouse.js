@@ -107,13 +107,12 @@ function picker_hover_and_special(id){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
 				bulgeamount=0;
-				if(wires_scale[bulgingwire]==null){
-					post("\nerror condition:",bulgingwire);
+				if(wires_scale[bulgingwire]!=null){
+					for(var i=0;i<wires_scale[bulgingwire].length;i++){
+						wires_scale[bulgingwire][i][1] = wire_dia;
+					}
+					write_wire_matrix(bulgingwire);
 				}
-				for(var i=0;i<wires_scale[bulgingwire].length;i++){
-					wires_scale[bulgingwire][i][1] = wire_dia;
-				}
-				write_wire_matrix(bulgingwire);
 				bulgingwire = -1;
 			}
 		}else{
@@ -313,7 +312,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							//post("\nstore, p",p,"v",v);
 							store_voice_param_undo(p[0],p[2],usermouse.drag.starting_value_x);
 						}else{
-							deferred_diag.push("should store undo?",mouse_click_actions[usermouse.got_i].name,p,v,usermouse.drag.starting_value_x);
+							// deferred_diag.push("should store undo?",mouse_click_actions[usermouse.got_i].name,p,v,usermouse.drag.starting_value_x);
 						}
 						
 						if((usermouse.got_t==4)){ 
@@ -545,7 +544,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
 					if((usermouse.ids[0] == "background") && (bulgeamount>0.5)){
 						usermouse.ids = ["wires", bulgingwire, 0];
-						post("\nset to last wire not background");
+						// post("\nset to last wire not background");
 					}
 					if(usermouse.ids[0] == "background"){
 						if(usermouse.drag.distance<20){

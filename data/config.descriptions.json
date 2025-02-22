@@ -42,7 +42,7 @@
 	"DOUBLE_CLICK_TIME" : "maximum time gap between clicks for it to register as a double click",
 	"LONG_PRESS_TIME" : "time delay before a long press is registered",
 	"SLIDER_CLICK_SET" : "if this is enabled then when you click on a slider it jumps to the point you clicked on (if off this is selectively enabled on parameters where it makes sense but isn't the default behaviour for most sliders)",
-	"SCOPE_DEFAULT_ZOOM" : "zoom setting for the sidebar audio scopes",
+	"SCOPE_DEFAULT_ZOOM" : "zoom setting for the sidebar audio scopes. the default is zoomed in to show waveforms at note frequencies at 0.65. Lower numbers are less zoomed in - eg 0.12 shows about 500ms, or a beat at 120.",
 	"AUTOLOAD_INCLUDES_STATES" : "if set to 0 supresses the 'init' state for the autoload patch",
 	"MODULATION_IN_PARAMETERS_VIEW" : "if enabled modulation source names and amount sliders are shown (small) under each row of parameters in the sidebar view",
 	"AUTOZOOM_ON_SELECT" : "if enabled selecting a block causes the equivalent of pressing 'home' - zooming out to show all blocks leaving nothing covering the sidebar",

@@ -268,19 +268,22 @@ function draw(){
 			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
-				//var ex1 = x_pos + event[0]*(width-1);
 				var col = pal[(event[1]-1)];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex1,by);
 			}else{
-				var ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+				var ey,col;
+				if(event[1]==0){
+					ey = by - (event[2]-lowestnote)*(height-3)/(highestnote-lowestnote+1);
+					col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
+				}else{
+					ey = by - (event[2])*(height-3)/metatypes.length;
+					col = pal[(8+(event[2]|0))% 16];
+				}
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
 				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
-				//var ex1 = x_pos + event[0]*(width-2);
-				//var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)),x_pos+width-2);
 				var c = 0.2+0.8* Math.abs(event[3])/128;
-				var col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex2,ey);
@@ -1121,6 +1124,10 @@ function mouse(x,y,l,s,a,c,scr){
 			drag_dist += Math.sqrt((dx*dx) + (dy*dy));
 			if((drag>0)&&(drag_dist>10)){
 				drag=-drag;
+				if(drag == -2){
+					selected_event_count=0;
+					selected_events=[];
+				}
 				if((hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
 					selected_event_count=1;
 					selected_events=[];
@@ -1267,7 +1274,7 @@ function mouse(x,y,l,s,a,c,scr){
 					}
 				}else{//drag selection/or just the original hovered note
 					var xx = (zoom_end-zoom_start)*(x - drag_start_x) / width;
-					drag_start_x = x;
+					// drag_start_x = x;
 					var pp = 0;
 					var vv = 0;
 					if(lanetype[mouse_lane]==0){
@@ -1279,24 +1286,46 @@ function mouse(x,y,l,s,a,c,scr){
 						if(vv!=0) drag_start_y = y;
 					}
 					if(selected_event_count>0){
+						var snapped=0;
+						for(i=1;i<k.length;i++){ //if any non-note events present it disables snapping to grid.
+							if(selected_events[k[i]]>0){
+								var e = seqdict.get(block+"::"+pattern+"::"+k[i]);
+								if((e[1]!=0)&&(e[1]!=9)){
+									snapped = -1;
+									i = k.length;
+								}
+							}
+						}
 						for(i=1;i<k.length;i++){
 							if(selected_events[k[i]]>0){
 								var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 								if(c){
 									event[4] += xx;
 									event[4] = Math.max(event[4],0.0000001);
+									drag_start_x = x;
 								}else{
 									event[2] += pp;
 									event[3] = Math.max(Math.min(127,event[3]+vv),1);
-									event[0] += xx;
-									event[0] = Math.min(1, Math.max(0,event[0]));
+									if(s||(snapped == -1)){
+										event[0] += xx;
+										event[0] = Math.min(1, Math.max(0,event[0]));
+										drag_start_x = x;
+									}else{
+										var nt = Math.round((event[0]+0.5*xx) * seql/currentquantise)/(seql/currentquantise);
+										if((nt!=event[0])||snapped){
+											event[0] = nt;
+											event[0] = Math.min(1, Math.max(0,event[0]));
+											drag_start_x = x;
+											snapped = 1;
+										}
+									} 
 								}
 								seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 								drawflag = 1;
 								drag_moved = 1;
-								copytoseq();
 							}
 						}
+						copytoseq();
 					}
 				}
 			}
@@ -1555,12 +1584,14 @@ function keydown(key){
 		for(i=1;i<k.length;i++){
 			if(selected_events[k[i]]){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-				undo.replace(k[i],event);
-				var nt = Math.round(event[0] * seql/currentquantise)/(seql/currentquantise);
-				if(event[0]!=nt){
-					rem=1;
-					event[0]=nt;
-					seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+				if((event[1]==0)||(event[1]==9)||(k.length==1)){
+					undo.replace(k[i],event);
+					var nt = Math.round(event[0] * seql/currentquantise)/(seql/currentquantise);
+					if(event[0]!=nt){
+						rem=1;
+						event[0]=nt;
+						seqdict.replace(block+"::"+pattern+"::"+k[i],event);
+					}
 				}
 			}
 		}
