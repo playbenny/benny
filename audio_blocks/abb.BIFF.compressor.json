@@ -16,11 +16,15 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [3, 4, 5, 6],
+				"contains" : [3,4,5,6],
 				"height" : 2
 			},
 			{ 
-				"contains" : [0, 1, 2, 8, 7 ],
+				"contains" : [0,1,10,2],
+				"height" : 2
+			},
+			{ 
+				"contains" : [8,7,9],
 				"height" : 2
 			}
 		],
@@ -29,23 +33,23 @@
 		},
 		"parameters" : [
 			{
-				"name" : "wet/dry",
+				"name" : "wet level",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 1
 			},
 			{
-				"name" : "drive",
+				"name" : "dry level",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 1
 			},
 			{
 				"name" : "side hp",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 250, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
@@ -66,14 +70,14 @@
             {
 				"name" : "attack",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 300, "exp1000"],
 				"wrap" : 0,
 				"default" : 0
 			},
             {
 				"name" : "release",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 1, 1000, "exp1000"],
 				"wrap" : 0,
 				"default" : 0
 			},
@@ -85,11 +89,25 @@
 				"default" : 0
 			},
             {
-				"name" : "output trim",
+				"name" : "output gain",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "sidechain",
+				"type" : "menu_b",
+				"values" : ["internal", "external"],
+				"wrap" : 1,
+				"default" : 0.25
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
 			}
 		]
 	}
