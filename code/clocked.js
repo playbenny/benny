@@ -89,7 +89,7 @@ function frameclock(){
 			redraw_flag.matrices |= 1;
 		}
 	}
-
+	if(redraw_flag.flag) post("\nflag",redraw_flag.flag);
 	if(redraw_flag.flag & 4){
 		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
 		bangflag=1;
@@ -177,8 +177,8 @@ function frameclock(){
 			sidebar_meters();
 			bangflag = 1;
 		}
-		if(bottombar.block>-1)update_bottom_bar();
-		if(sidebar.panel) update_custom();
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
+		if(sidebar.panel&&!(redraw_flag.flag&6)) update_custom();
 	}else if(displaymode == "panels"){
 		sidebar_meters();
 		update_custom_panels();

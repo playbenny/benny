@@ -1098,19 +1098,20 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
 		var m=(1 + (pv>0.5))*0.5;
 		draw_button(x1,y1,x2,y2,r*m,g*m,b*m,mouse_index, highlight,pv>0.5);
-		mouse_click_actions[mouse_index] = static_mod_adjust;
+		mouse_click_actions[mouse_index] = static_mod_adjust_custom;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
 		mouse_click_values[mouse_index] = 0.99* (pv<=0.5);
 		view_changed = vc;
 		mouse_index++;		
-	}else if(type=="opv_v_slider"){
+	}else if(type=="opv_v_slider_passthrough"){
 		var block = highlight; 
 		var vc=view_changed;
 		view_changed = true;
 		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
 		//post("\nslider",dataindex,block,paramindex,pv);
-		draw_v_slider(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, pv);
-		mouse_click_actions[mouse_index] = static_mod_adjust;
+		// draw_v_slider(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, pv);
+		click_rectangle(x1,y1,x2,y2,mouse_index,2);
+		mouse_click_actions[mouse_index] = static_mod_adjust_custom;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex,"custom_opv"];
 		mouse_click_values[mouse_index] = null; //0.99* (pv<=0.5);
 		view_changed = vc;
@@ -1123,7 +1124,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		//post("\nslider",dataindex,block,paramindex,pv);
 		click_rectangle(x1,y1,x2,y2,mouse_index,4);
 		// draw_v_slider(x1,y1,x2,y2,r*0.5,g*0.5,b*0.5,mouse_index, pv);
-		mouse_click_actions[mouse_index] = static_mod_adjust;
+		mouse_click_actions[mouse_index] = static_mod_adjust_custom;
 		mouse_click_parameters[mouse_index] = [xp1, block, paramindex,"custom_opv"];
 		mouse_click_values[mouse_index] = [dataindex, block, paramindex,"custom_opv"]; //0.99* (pv<=0.5);
 		view_changed = vc;

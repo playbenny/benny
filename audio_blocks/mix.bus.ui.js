@@ -16,6 +16,7 @@ var controller=-1;
 var block=-1;
 var display_row_offset = 0;
 var display_col_offset = 0;
+var bg_dark_ratio= 0.2;
 var mini=0;
 var drawflag=0;
 var namelist;
@@ -109,7 +110,8 @@ function update(force){
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
 						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
+						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
+						draw_slider(x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,fgc[0]*0.8,fgc[1]*0.8,fgc[2]*0.8,level[b][v]);
 					}
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
@@ -181,7 +183,8 @@ function update(force){
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
 						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+						draw_slider(x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc[0],fgc[1],fgc[2],level[b][v]);
 					}
 				}
 				var xx = x+v_list[b].length;
@@ -410,3 +413,24 @@ function store(){
 }
 
 function enabled(){}
+
+function draw_slider(x1,y1,x2,y2,r,g,b,value){
+	outlet(1,"paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	
+	var ly;
+ 	if(value>=0) {
+		if(value>=1){
+			var m = 1 - (value % 1)*0.9;
+			outlet(1,"paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		ly = y1 + (y2 - y1) * (1-(value%1));
+		outlet(1,"paintrect",x1,ly,x2,y2,r,g,b);
+	}else{
+		if(value<=-1){
+			var m = 1 - (value % 1)*0.9;
+			outlet(1,"paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		ly = y1 + (y2-y1)*(1+(value%1));
+		outlet(1,"paintrect",x1,y1,x2,ly,r,g,b);
+	}
+}
