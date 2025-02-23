@@ -1568,6 +1568,13 @@ function make_connection(cno,existing){
 	var varr=[];
 	var max_poly;
 	var hw_mute=0; //if from block is hardware, and is muted, this gets set to 1, and the connection is set to silent
+	if((loading.progress<=0)&&(!undoing)){
+		if(!existing){
+			var usz=undo_stack.getsize("history")|0;
+			undo_stack.append("history","{}");
+			undo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_wire" : '+cno+'} }');
+		}// there should be an else for this so that undo stores connection changes TODO
+	}
 	// work out which polyvoices/matrix slots correspond
 	if(f_type == "matrix"){
 		max_poly = blocktypes.get(f_name+"::max_polyphony");
@@ -3299,6 +3306,11 @@ function insert_block_in_connection(newblockname,newblock){
 	//click_clear(0,0);
 	//outlet(8,"bang");
 	set_display_mode("blocks");
+	var usz=undo_stack.getsize("history")|0;
+	undo_stack.append("history",'{}');
+	undo_stack.setparse("history["+usz+"]", '{ "connections" : { } }');
+	undo_stack.setparse("history["+usz+"]::connections::"+menu.connection_number,"{}");
+	undo_stack.replace("history["+usz+"]::connections::"+menu.connection_number,connections.get("connections["+menu.connection_number+"]"));
 	remove_connection(menu.connection_number);
 	selected.block[newblock]=1;
 	redraw_flag.flag |= 4;	

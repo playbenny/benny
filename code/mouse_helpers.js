@@ -112,7 +112,11 @@ function blocks_paste(outside_connections,target){
 			var tblock = target.get("actions::voicecount::block");
 			var tvoices = target.get("actions::voicecount::voices");
 			//post("\nvoicecount",tblock,tvoices);
-			voicecount(tblock,tvoices);
+			if(blocks.contains("blocks["+tblock+"]::poly")){
+				voicecount(tblock,tvoices);
+			}else{
+				undo_button();
+			}
 		}
 		if(target.contains("actions::parameter")){
 			var tblock = target.get("actions::parameter::block");
@@ -139,251 +143,251 @@ function blocks_paste(outside_connections,target){
 	if(target.contains("blocks")){
 		count_selected_blocks_and_wires();
 		var td = target.get("blocks");
-		var copied_blocks = td.getkeys();
-		if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
-		var copied_type = td.get(copied_blocks[0]+"::name");
-		var same = 0;
-		if((selected.block_count==1) && (copied_blocks.length==1) && (!outside_connections)){
-			//maybe the copied block is the same as the selected block, check
-			same = 1;
-			var selb = selected.block.indexOf(1);
-			if(copied_type != blocks.get("blocks["+selb+"]::name")){
-				same = 0;
-			}else{
-				//compare params!
-				var vals = target.get("block_params::"+copied_blocks[0]);
-				var v2 = parameter_value_buffer.peek(1,selb*MAX_PARAMETERS,vals.length);
-				for(var pc=0;pc<vals.length;pc++){
-					if(v2[pc]!=vals[pc]) same = 0;
-				}
-				// i can't be bothered to compare settings who is ever going to do that
-			}
-		}
-		if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
-			//you could run through blocks in clipboard, but it'd get confusing
-			//so restricted to one.
-			//get type, first see if the block selected is the same as the copied one,
-			//if so, deselect, paste new target. if not: see if any selected blocks are same type
-			//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
-			for(var i=0; i<selected.block.length;i++){
-				if(selected.block[i]){
-					var ty = blocks.get("blocks["+i+"]::name");
-					if(ty!=copied_type){
-						//then swap the selected block to this type, then target settings params etc
-						//should this be only if just one selected??
-						menu.swap_block_target = i;
-						swap_block(copied_type);
-					}
-					//target params
+		if(td!=null){
+			var copied_blocks = td.getkeys();
+			if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
+			var copied_type = td.get(copied_blocks[0]+"::name");
+			var same = 0;
+			if((selected.block_count==1) && (copied_blocks.length==1) && (!outside_connections)){
+				//maybe the copied block is the same as the selected block, check
+				same = 1;
+				var selb = selected.block.indexOf(1);
+				if(copied_type != blocks.get("blocks["+selb+"]::name")){
+					same = 0;
+				}else{
+					//compare params!
 					var vals = target.get("block_params::"+copied_blocks[0]);
-					parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
-					//target block settings
-					var tdd = td.get(copied_blocks[0]+"::poly");
-					var tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						if(tkeys[t]!="voices"){
-							blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
-						}else{
-							voicecount(i,tdd.get("voices"));
-						}
+					var v2 = parameter_value_buffer.peek(1,selb*MAX_PARAMETERS,vals.length);
+					for(var pc=0;pc<vals.length;pc++){
+						if(v2[pc]!=vals[pc]) same = 0;
 					}
-					draw_block(i);
-					tdd = td.get(copied_blocks[0]+"::panel");
-					tkeys = tdd.getkeys();
-					if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[0]+"::error");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[0]+"::flock");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					if(target.contains("block_data::"+copied_blocks[0])){
-						var vl = voicemap.get(i);
-						if(!Array.isArray(vl)) vl=[vl];
-						for(var t=0;t<vl.length;t++){
-							var vals = target.get("block_data::"+copied_blocks[0]+"::"+t);
-							voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
-						}
-					}
-						//set redraw
+					// i can't be bothered to compare settings who is ever going to do that
 				}
 			}
-		}else{
-			clear_blocks_selection();
-			var new_blocks_indexes=[];
-			var paste_mapping = [];
-			for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
-			for(var b=0;b<copied_blocks.length;b++){
-				var name = target.get("blocks::"+copied_blocks[b]+"::name");
-				var excl = blocktypes.contains(name+"::exclusive");
-				if(excl){
-					for(i=0;i<MAX_BLOCKS;i++){
-						if(blocks.get("blocks["+i+"]::name") == name){
-							excl=2;
-							i=MAX_BLOCKS;
+			if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
+				//you could run through blocks in clipboard, but it'd get confusing
+				//so restricted to one.
+				//get type, first see if the block selected is the same as the copied one,
+				//if so, deselect, paste new target. if not: see if any selected blocks are same type
+				//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
+				for(var i=0; i<selected.block.length;i++){
+					if(selected.block[i]){
+						var ty = blocks.get("blocks["+i+"]::name");
+						if(ty!=copied_type){
+							//then swap the selected block to this type, then target settings params etc
+							//should this be only if just one selected??
+							menu.swap_block_target = i;
+							swap_block(copied_type);
 						}
+						//target params
+						var vals = target.get("block_params::"+copied_blocks[0]);
+						parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
+						//target block settings
+						var tdd = td.get(copied_blocks[0]+"::poly");
+						var tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							if(tkeys[t]!="voices"){
+								blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+							}else{
+								voicecount(i,tdd.get("voices"));
+							}
+						}
+						draw_block(i);
+						tdd = td.get(copied_blocks[0]+"::panel");
+						tkeys = tdd.getkeys();
+						if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[0]+"::error");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[0]+"::flock");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						if(target.contains("block_data::"+copied_blocks[0])){
+							var vl = voicemap.get(i);
+							if(!Array.isArray(vl)) vl=[vl];
+							for(var t=0;t<vl.length;t++){
+								var vals = target.get("block_data::"+copied_blocks[0]+"::"+t);
+								voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
+							}
+						}
+							//set redraw
 					}
 				}
-				var new_block_index;
-				if(excl==2){
-					post("\ncan't paste this block, it's exclusive, only one instance is allowed.");
-					new_block_index = -1;
-				}else{
-					var px, py;
-					px = td.get(copied_blocks[b]+"::space::x");
-					py = td.get(copied_blocks[b]+"::space::y");
-					if(target!=undo){
-						px += pasteoffset[0];
-						py += pasteoffset[1];
-					}
-					for(var i=0;i<MAX_BLOCKS;i++){ //crude collision detection
-						if(blocks.contains("blocks["+i+"]::space::x")){
-							if((px == blocks.get("blocks["+i+"]::space::x"))&&(py == blocks.get("blocks["+i+"]::space::y"))){
-								px+=0.5;
-								py+=0.5;
-								i=-1;
+			}else{
+				clear_blocks_selection();
+				var new_blocks_indexes=[];
+				var paste_mapping = [];
+				for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
+				for(var b=0;b<copied_blocks.length;b++){
+					var name = target.get("blocks::"+copied_blocks[b]+"::name");
+					var excl = blocktypes.contains(name+"::exclusive");
+					if(excl){
+						for(i=0;i<MAX_BLOCKS;i++){
+							if(blocks.get("blocks["+i+"]::name") == name){
+								excl=2;
+								i=MAX_BLOCKS;
 							}
 						}
 					}
-					new_block_index = new_block(name,px,py);
-				}
-				if(new_block_index==-1){
-					if(excl!=2)post("\nerror pasting, "+name+" not found");
-				}else{
-					new_blocks_indexes.push(new_block_index);
-					paste_mapping[copied_blocks[b]] = new_block_index;
-					//ok you've made the right type of block, but all its settings and parameters are defaults
-					//you could integrate pasting into new block but i don't really like the sound of that? paste is never mission-critical like new block is
-					//ok can i iterate through the keys in the copy buffer to make this futureproof rather than doing them specifically?
-					//sort of, nested ones sound like a headache so i'll go through them one by one
-					//and poly requires voicecount calling so that's special. 
-					//poly/panel/error/flock/(space)
-					var vals = target.get("block_params::"+copied_blocks[b]);
-					parameter_value_buffer.poke(1,new_block_index*MAX_PARAMETERS,vals);
-					var tdd = td.get(copied_blocks[b]+"::poly");
-					var tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						if(tkeys[t]!="voices"){
-							blocks.replace("blocks["+new_block_index+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
-						}else{
-							voicecount(new_block_index,tdd.get("voices"));
+					var new_block_index;
+					if(excl==2){
+						post("\ncan't paste this block, it's exclusive, only one instance is allowed.");
+						new_block_index = -1;
+					}else{
+						var px, py;
+						px = td.get(copied_blocks[b]+"::space::x");
+						py = td.get(copied_blocks[b]+"::space::y");
+						if(target!=undo){
+							px += pasteoffset[0];
+							py += pasteoffset[1];
 						}
-					}
-					blocks.replace("blocks["+new_block_index+"]::space::colour",target.get("blocks::"+copied_blocks[b]+"::space::colour"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::upsample")) blocks.replace("blocks["+new_block_index+"]::upsample",target.get("blocks::"+copied_blocks[b]+"::upsample"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",target.get("blocks::"+copied_blocks[b]+"::subvoices"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::from_subvoices")) blocks.replace("blocks["+new_block_index+"]::from_subvoices",target.get("blocks::"+copied_blocks[b]+"::from_subvoices"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::to_subvoices")) blocks.replace("blocks["+new_block_index+"]::to_subvoices",target.get("blocks::"+copied_blocks[b]+"::to_subvoices"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::mute")) blocks.replace("blocks["+new_block_index+"]::mute",target.get("blocks::"+copied_blocks[b]+"::mute"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::bypass")) blocks.replace("blocks["+new_block_index+"]::bypass",target.get("blocks::"+copied_blocks[b]+"::bypass"));
-					
-					draw_block(new_block_index);
-					tdd = td.get(copied_blocks[b]+"::panel");
-					tkeys = tdd.getkeys();
-					if(td.getsize(copied_blocks[b]+"::panel")==1) tkeys = [tkeys];
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+new_block_index+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[b]+"::error");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+new_block_index+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[b]+"::flock");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					var vl = voicemap.get(new_block_index);
-					if(!Array.isArray(vl)) vl=[vl];
-					if(target.contains("block_data::"+copied_blocks[b])){
-						for(var t=0;t<vl.length;t++){
-							var vals = target.get("block_data::"+copied_blocks[b]+"::"+t);
-							voice_data_buffer.poke( 1,MAX_DATA*vl[t],vals);
-						}
-					}
-					if(target.contains("parameter_static_mod::"+copied_blocks[b])){
-						for(var t=0;t<vl.length;t++){
-							if(target.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
-								post("pasting static mod ",t,vl[t]);
-								var vals = target.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
-								parameter_static_mod.poke(1,MAX_PARAMETERS*vl[t],vals);
-							}
-						}
-					}
-					selected.block[new_block_index] = 1;
-				}				
-			}
-			if(target.contains("states")){
-				var tds = target.get("states");
-				var tk = tds.getkeys();
-				if(tk!=null){
-					for(var t=0;t<tk.length;t++){
-						
-						var tdsb = target.get("states::"+tk[t]);
-						if(tdsb!=null){
-							var tkb = tdsb.getkeys();
-							var stat=0;
-							if(Array.isArray(tkb)){
-								for(var tt=0;tt<tkb.length;tt++){
-									if(tkb[tt]=="static_mod"){
-										stat=1;
-									}else{
-										if(paste_mapping[+tkb[tt]]!=-1){
-											states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::"+tkb[tt]));
-										}
-									}
+						for(var i=0;i<MAX_BLOCKS;i++){ //crude collision detection
+							if(blocks.contains("blocks["+i+"]::space::x")){
+								if((px == blocks.get("blocks["+i+"]::space::x"))&&(py == blocks.get("blocks["+i+"]::space::y"))){
+									px+=0.5;
+									py+=0.5;
+									i=-1;
 								}
-								if(stat){
-									tdsb = target.get("states::"+tk[t]+"::static_mod");
-									if(tdsb!=null){
-										tkb = tdsb.getkeys();
-										for(var tt=0;tt<tkb.length;tt++){
+							}
+						}
+						new_block_index = new_block(name,px,py);
+					}
+					if(new_block_index==-1){
+						if(excl!=2)post("\nerror pasting, "+name+" not found");
+					}else{
+						new_blocks_indexes.push(new_block_index);
+						paste_mapping[copied_blocks[b]] = new_block_index;
+						//ok you've made the right type of block, but all its settings and parameters are defaults
+						//you could integrate pasting into new block but i don't really like the sound of that? paste is never mission-critical like new block is
+						//ok can i iterate through the keys in the copy buffer to make this futureproof rather than doing them specifically?
+						//sort of, nested ones sound like a headache so i'll go through them one by one
+						//and poly requires voicecount calling so that's special. 
+						//poly/panel/error/flock/(space)
+						var vals = target.get("block_params::"+copied_blocks[b]);
+						parameter_value_buffer.poke(1,new_block_index*MAX_PARAMETERS,vals);
+						var tdd = td.get(copied_blocks[b]+"::poly");
+						var tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							if(tkeys[t]!="voices"){
+								blocks.replace("blocks["+new_block_index+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+							}else{
+								voicecount(new_block_index,tdd.get("voices"));
+							}
+						}
+						blocks.replace("blocks["+new_block_index+"]::space::colour",target.get("blocks::"+copied_blocks[b]+"::space::colour"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::upsample")) blocks.replace("blocks["+new_block_index+"]::upsample",target.get("blocks::"+copied_blocks[b]+"::upsample"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",target.get("blocks::"+copied_blocks[b]+"::subvoices"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::from_subvoices")) blocks.replace("blocks["+new_block_index+"]::from_subvoices",target.get("blocks::"+copied_blocks[b]+"::from_subvoices"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::to_subvoices")) blocks.replace("blocks["+new_block_index+"]::to_subvoices",target.get("blocks::"+copied_blocks[b]+"::to_subvoices"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::mute")) blocks.replace("blocks["+new_block_index+"]::mute",target.get("blocks::"+copied_blocks[b]+"::mute"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::bypass")) blocks.replace("blocks["+new_block_index+"]::bypass",target.get("blocks::"+copied_blocks[b]+"::bypass"));
+						
+						draw_block(new_block_index);
+						tdd = td.get(copied_blocks[b]+"::panel");
+						tkeys = tdd.getkeys();
+						if(td.getsize(copied_blocks[b]+"::panel")==1) tkeys = [tkeys];
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+new_block_index+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[b]+"::error");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+new_block_index+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[b]+"::flock");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						var vl = voicemap.get(new_block_index);
+						if(!Array.isArray(vl)) vl=[vl];
+						if(target.contains("block_data::"+copied_blocks[b])){
+							for(var t=0;t<vl.length;t++){
+								var vals = target.get("block_data::"+copied_blocks[b]+"::"+t);
+								voice_data_buffer.poke( 1,MAX_DATA*vl[t],vals);
+							}
+						}
+						if(target.contains("parameter_static_mod::"+copied_blocks[b])){
+							for(var t=0;t<vl.length;t++){
+								if(target.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
+									post("pasting static mod ",t,vl[t]);
+									var vals = target.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
+									parameter_static_mod.poke(1,MAX_PARAMETERS*vl[t],vals);
+								}
+							}
+						}
+						selected.block[new_block_index] = 1;
+					}				
+				}
+				if(target.contains("states")){
+					var tds = target.get("states");
+					var tk = tds.getkeys();
+					if(tk!=null){
+						for(var t=0;t<tk.length;t++){
+							
+							var tdsb = target.get("states::"+tk[t]);
+							if(tdsb!=null){
+								var tkb = tdsb.getkeys();
+								var stat=0;
+								if(Array.isArray(tkb)){
+									for(var tt=0;tt<tkb.length;tt++){
+										if(tkb[tt]=="static_mod"){
+											stat=1;
+										}else{
 											if(paste_mapping[+tkb[tt]]!=-1){
-												states.replace("states::"+tk[t]+"::static_mod::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::static_mod::"+tkb[tt]));
+												states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::"+tkb[tt]));
 											}
 										}
-									}										
+									}
+									if(stat){
+										tdsb = target.get("states::"+tk[t]+"::static_mod");
+										if(tdsb!=null){
+											tkb = tdsb.getkeys();
+											for(var tt=0;tt<tkb.length;tt++){
+												if(paste_mapping[+tkb[tt]]!=-1){
+													states.replace("states::"+tk[t]+"::static_mod::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::static_mod::"+tkb[tt]));
+												}
+											}
+										}										
+									}
 								}
 							}
 						}
 					}
 				}
-			}
-			//todo: opv values
-			// connections between selected blocks (these aren't copied yet)
-			var tdc = target.get("connections");
-			var tk = tdc.getkeys();
-			if(Array.isArray(tk)){
-				for(var t=0;t<tk.length;t++){
-					post("\npaste/undo connections",tk[t]);
-					new_connection = target.get("connections::"+tk[t]);
-					var pfrom = paste_mapping[+new_connection.get("from::number")];
-					var pto = paste_mapping[+new_connection.get("to::number")];
-					if(pfrom != -1) new_connection.replace("from::number",pfrom);
-					if(pto != -1) new_connection.replace("to::number",pto);
-					if(((pfrom==-1)||(pto==-1))&&(outside_connections != 1)){
-						//do nothing - this connection is outside
-					}else{
-						connections.append("connections",new_connection);
-						var co = connections.getsize("connections")-1;
-						make_connection(co,0);
-						new_connection.clear();		
-						selected.wire[co]=1;
-						//draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
-					}
-				}				
-			}
-			if(target!=undo){
-				pasteoffset[0] += 2;
-				pasteoffset[1] -= 0.25;				
+				//todo: opv values
+				var tdc = target.get("connections");
+				var tk = tdc.getkeys();
+				if(Array.isArray(tk)){
+					for(var t=0;t<tk.length;t++){
+						post("\npaste/undo connections",tk[t]);
+						new_connection = target.get("connections::"+tk[t]);
+						var pfrom = paste_mapping[+new_connection.get("from::number")];
+						var pto = paste_mapping[+new_connection.get("to::number")];
+						if(pfrom != -1) new_connection.replace("from::number",pfrom);
+						if(pto != -1) new_connection.replace("to::number",pto);
+						if(((pfrom==-1)||(pto==-1))&&(outside_connections != 1)){
+							//do nothing - this connection is outside
+						}else{
+							connections.append("connections",new_connection);
+							var co = connections.getsize("connections")-1;
+							make_connection(co,0);
+							new_connection.clear();		
+							selected.wire[co]=1;
+						}
+					}				
+				}
+				if(target!=undo){
+					pasteoffset[0] += 2;
+					pasteoffset[1] -= 0.25;				
+				}
 			}
 		}
 	}else{
@@ -394,6 +398,29 @@ function blocks_paste(outside_connections,target){
 					var vals = target.get("block_params::"+pk[t]);
 					parameter_value_buffer.poke(1,pk[t]*MAX_PARAMETERS,vals);
 				}
+			}
+		}
+		if(target.contains("connections")){
+			// connections between selected blocks (these aren't copied yet)
+			var tdc = target.get("connections");
+			var tk = tdc.getkeys();
+			if(Array.isArray(tk)){
+				for(var t=0;t<tk.length;t++){
+					post("\npaste/undo connections",tk[t]);
+					new_connection = target.get("connections::"+tk[t]);
+					if(!connections.contains("connections["+tk[t]+"]::to")){ //if possible put it back where it came from
+						connections.replace("connections["+tk[t]+"]",new_connection);
+						var co = tk[t];
+
+					}else{
+						connections.append("connections",new_connection);
+						var co = connections.getsize("connections")-1;
+					}
+					post("\nrestored connection number",co);
+					make_connection(co,0);
+					new_connection.clear();		
+					selected.wire[co]=1;
+				}				
 			}
 		}
 	}
