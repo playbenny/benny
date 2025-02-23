@@ -47,6 +47,12 @@ var amount = [];
 var channelnames = [];
 var col_to_chan = []; //holds block,channel
 
+var mous = {
+	x : 0,
+	y : 0,
+	l : 0
+};
+
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
@@ -116,6 +122,8 @@ function update(force){
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*7.6,x_pos+(x+v+1)*cw-8,y_pos+height-4*unit,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
 					}
 					if(check_eq_params_for_changes(b,v)||force){
+						// if(v_type[b][v]=="mix.channel") p = 4; // NOTE it does know the channel types so future versions can support many diff channel strips
+						outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,0,0,0,3,v_list[b][v],b_list[b],4);
 						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
 						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 					}
@@ -166,6 +174,7 @@ function update(force){
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
 					}
 					if(check_eq_params_for_changes(b,v)||force){
+						outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
 						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
 						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 					}
@@ -193,15 +202,19 @@ function check_eq_params_for_changes(b,v){
 
 function mouse(x,y,leftbutton,shift,alt,ctrl){
 	// post("\nmouse",(x,y,leftbutton,shift,alt,ctrl));
-	if(y>(y_pos+height-4*unit)){
-		var xx = Math.floor((x-x_pos)*cols/width);
-		post("\nclicked column",xx,"which is",col_to_chan[xx]);
-		if(ctrl){
-			messnamed("to_blockmanager","name_mixer_channel",col_to_chan[xx][0],col_to_chan[xx][1]);
-		}else{
-			messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
+	if(leftbutton==1){
+		if(mous.l==0){ //a click happened
+			mous.l=1;
+			if(y>(y_pos+height-4*unit)){
+				var xx = Math.floor((x-x_pos)*cols/width);
+				// post("\nclicked column",xx,"which is",col_to_chan[xx]);
+				if(ctrl){
+					messnamed("to_blockmanager","name_mixer_channel",col_to_chan[xx][0],col_to_chan[xx][1]);
+				}else{
+					messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
+				}
+			}
 		}
-
 	}
 }
 
@@ -317,6 +330,7 @@ function scan_for_channels(){
 			ovhash=hash;
 			b_list = tb_list.slice();
 			v_list=[];
+			v_type=[];
 			b_name=[];
 			b_colour=[];
 			b_type=[];
@@ -358,15 +372,19 @@ function scan_for_channels(){
 					for(var t=0;t<vl.length;t++) cnams.push((t+1));
 				}
 				channelnames[bb]=[];//cnams.concat();
+				var tl=[];
 				for(var t=0;t<vl.length;t++){
 					outlet(3,vl[t]*MAX_PARAMETERS);
 					channelnames[bb].push(cnams[t]);
+					tl.push(nam);
 				}
+				if(!Array.isArray(tl))tl=[tl];
+				v_type.push(tl);
 				//parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
 
 				cols += vl.length;
 				for(var tv=0;tv<vl.length;tv++) col_to_chan.push([b,tv]);
-				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
+				// post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 			}
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
 			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
