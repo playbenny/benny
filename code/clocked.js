@@ -89,7 +89,6 @@ function frameclock(){
 			redraw_flag.matrices |= 1;
 		}
 	}
-	if(redraw_flag.flag) post("\nflag",redraw_flag.flag);
 	if(redraw_flag.flag & 4){
 		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
 		bangflag=1;
