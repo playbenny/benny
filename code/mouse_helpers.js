@@ -79,14 +79,22 @@ function blocks_paste(outside_connections,target){
 		if(target.contains("actions::move_blocks")){
 			var listd = target.get("actions::move_blocks");
 			var list = listd.getkeys();
+			var really = 0;
 			if(!Array.isArray(list))list = [list];
 			for(var i=0;i<list.length;i++){
 				var x = target.get("actions::move_blocks::"+list[i]+"::x");
 				var y = target.get("actions::move_blocks::"+list[i]+"::y");
+				var ox = blocks.get("blocks["+list[i]+"]::space::x");
+				var oy = blocks.get("blocks["+list[i]+"]::space::y");
+				really |= ((x!=ox)||(y!=oy));
 				blocks.replace("blocks["+list[i]+"]::space::x",x);
 				blocks.replace("blocks["+list[i]+"]::space::y",y);
 			}
-			draw_blocks();
+			if(really){
+				draw_blocks();
+			}else{
+				undo_button();
+			}
 		}
 		if(target.contains("actions::make_space")){
 			var listd = target.get("actions::make_space");
