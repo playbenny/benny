@@ -80,7 +80,7 @@ function setup(x1,y1,x2,y2,sw){
 	unit = height / 18;
 	u1 = 0.1 * unit;
 	if(block>=0){
-		// post("\nmixer setup");
+		// post("\nmixer setup",block);
 		scan_for_channels();
 		draw();
 	}
@@ -155,13 +155,13 @@ function update(force){
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
 					outlet(1,"frgb",bgc);
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos);
-					if(force){
-						outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos+height-4*unit,x_pos+width,y_pos+height,0,0,0,block,0);
-					}
 				}	
 				var xx = x+v_list[b].length;
 				x = xx;		
 			}					
+			if(force){
+				outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos+height-4*unit,x_pos+width,y_pos+height,0,0,0,block,0);
+			}
 		}else{
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
@@ -206,7 +206,7 @@ function check_eq_params_for_changes(b,v){
 }
 
 function mouse(x,y,leftbutton,shift,alt,ctrl){
-	// post("\nmouse",(x,y,leftbutton,shift,alt,ctrl));
+	// post("\nmouse",x,y,leftbutton,shift,alt,ctrl);
 	if(leftbutton==1){
 		if(mous.l==0){ //a click happened
 			mous.l=1;
@@ -219,6 +219,10 @@ function mouse(x,y,leftbutton,shift,alt,ctrl){
 					messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
 				}
 			}
+		}
+	}else{
+		if(mous.l==1){ //release
+			mous.l=0; 
 		}
 	}
 }

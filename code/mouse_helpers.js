@@ -1027,7 +1027,7 @@ function files_switch_folder(){
 }
 
 function custom_mouse_passthrough(parameter,value){
-	//post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
+	// post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	ui_poly.message("setvalue", parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
 }
 function custom_direct_mouse_passthrough(parameter,value){

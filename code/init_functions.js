@@ -1107,7 +1107,7 @@ function statesbar_size(){
 
 function bottombar_size(){
 	bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-9) : (sidebar.x - 5);
+	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 	if(bottombar.block>-1){
 		var w=bottombar.right - 9 - fontheight;
 		var tw=w/mainwindow_width;
