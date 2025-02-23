@@ -44,7 +44,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0
 			},
 			{
 				"name" : "side hp",
@@ -105,7 +105,7 @@
 			{
 				"name" : "drive",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 1, "exp100"],
 				"wrap" : 0,
 				"default" : 0
 			}
