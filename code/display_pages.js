@@ -2220,19 +2220,33 @@ function draw_topbar(){
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
 		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
-			var y_o = mainwindow_height - 5 - fontheight;
-			if(bottombar.block>-1){ //hide bottombar button
-				lcd_main.message("paintrect", 5,y_o, 9+fontheight, fontheight + y_o,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
-				lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
-				lcd_main.message("moveto",9+fo1*8,mainwindow_height-5-fo1*4);
-				lcd_main.message("lineto",9+fo1*7,mainwindow_height-5-fo1*3);
-				lcd_main.message("lineto",9+fo1*8,mainwindow_height-5-fo1*2);
-				click_zone(hide_bottom_bar,null,custom_block, 5,y_o, 9+fontheight, fontheight + y_o,mouse_index,1);
-				y_o -= 1.1*fontheight;
-			}else{
-				//if there are avalable bottombars, show buttons for them?
+			var y_o = mainwindow_height - 5;
+			if(bottombar.available_blocks.length>0){
+				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
+					var bna = blocks.get("blocks["+bottombar.available_blocks[bi]+"]::label");
+					bna = bna.split(".");
+					y_o -= fo1*(7+3*(bna.length-1));
+					lcd_main.message("paintrect", 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
+					lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
+					for(var nb=0;nb<bna.length;nb++){
+						lcd_main.message("moveto",5+fo1*2,y_o+fo1*(4+3*nb));
+						lcd_main.message("write",bna[nb]);
+					}
+					if(bottombar.available_blocks[bi] == bottombar.block){ //hide bottombar button
+						lcd_main.message("moveto",9+fo1*8,y_o+fo1*(1+3*(bna.length)));
+						lcd_main.message("lineto",9+fo1*7,y_o+fo1*(0+3*(bna.length)));
+						lcd_main.message("lineto",9+fo1*8,y_o+fo1*(-1+3*(bna.length)));
+						click_zone(hide_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
+					}else{
+						// lcd_main.message("moveto",9+fo1*7,mainwindow_height-5-fo1*5);
+						// lcd_main.message("lineto",9+fo1*8,mainwindow_height-5-fo1*4);
+						// lcd_main.message("lineto",9+fo1*7,mainwindow_height-5-fo1*3);
+						click_zone(setup_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
+					}
+				}
 			}
 			
+			y_o -= 1.1*fontheight;
 			var cll = config.getsize("palette::gamut");
 			var c = new Array(3);
 			// draw a button for each possible state

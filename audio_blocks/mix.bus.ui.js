@@ -24,6 +24,8 @@ var voicemap = new Dict;
 voicemap.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
+var connections = new Dict;
+connections.name = "connections";
 var blocktypes = new Dict;
 blocktypes.name = "blocktypes";
 var b_list = [];
@@ -297,23 +299,29 @@ function scan_for_channels(){
 		var bx_list=[];
 		var tb_list=[];
 		var hash = 0;
-		for(var b=0;b<blocks.getsize("blocks");b++){
-			if(blocks.contains("blocks["+b+"]::name")){
-				var nam = blocks.get("blocks["+b+"]::name");
-				var n2 = nam.split(".");
-				if((n2[0] == "mix")&&(n2[1] != "bus")){
-					tb_list.push(b);
-					var x=blocks.get("blocks["+b+"]::space::x");
-					bx_list.push(x);
-					var vl= voicemap.get(b);
-					if(!Array.isArray(vl)){
-						hash+= b+1;
-					}else{
-						hash += (b+1) * (vl.length+99.9*x);
+		for(var c=0;c<connections.getsize("connections");c++){
+			if(connections.contains("connections["+c+"]::to")&&(connections.get("connections["+c+"]::to::number")==block)){
+				var b = connections.get("connections["+c+"]::from::number");
+				if(blocks.contains("blocks["+b+"]::name")){
+					var nam = blocks.get("blocks["+b+"]::name");
+					var n2 = nam.split(".");
+					if((n2[0] == "mix")&&(n2[1] != "bus")){
+						tb_list.push(b);
+						var x=blocks.get("blocks["+b+"]::space::x");
+						bx_list.push(x);
+						var vl= voicemap.get(b);
+						if(!Array.isArray(vl)){
+							hash+= b+1;
+						}else{
+							hash += (b+1) * (vl.length+99.9*x);
+						}
+						// post("\nb",(b+1),"size",vl.length);
 					}
-					// post("\nb",(b+1),"size",vl.length);
 				}
 			}
+		}
+		for(var b=0;b<blocks.getsize("blocks");b++){
+			
 			if(!Array.isArray(shape[b])){
 				shape[b] = [];
 				oshape[b] = [];

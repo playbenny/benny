@@ -79,6 +79,11 @@ function new_block(block_name,x,y){
 			note_poly.message("setvalue", new_voice+1,"reset");
 		}
 	}
+	if(details.contains("ui_to_bottom_panel")){
+		if(bottombar.available_blocks.indexOf(new_block_index)==-1){
+			bottombar.available_blocks.push(new_block_index);
+		}
+	}
 	// now store it in block dict
 	ui_patcherlist[new_block_index] = "blank.ui"; //if the new block has no ui we need to be sure it gets unloaded
 	if(type=="hardware"){
@@ -2561,7 +2566,10 @@ function remove_block(block){
 		ui_patcherlist[block]='blank.ui';
 		still_checking_polys |=4;
 	}
-	
+	var b_ind = bottombar.available_blocks.indexOf(block);
+	if(b_ind>-1){
+		bottombar.available_blocks.splice(b_ind, 1);
+	}
 	var empt=new Dict;  // wipe this block from the dictionary
 	blocks.set("blocks["+block+"]", empt);
 	//voicealloc_poly.message("setvalue", (block+1),"off");	 // turn off the polyrouter for this block

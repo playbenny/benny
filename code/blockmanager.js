@@ -496,7 +496,7 @@ var bottombar = {
 	videoplane: null,
 	height: 200,
 	block: -1,
-	available : []
+	available_blocks : []
 }
 
 var sidebar = {
