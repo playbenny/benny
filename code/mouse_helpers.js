@@ -93,7 +93,11 @@ function blocks_paste(outside_connections,target){
 			if(really){
 				draw_blocks();
 			}else{
-				undo_button();
+				if(undoing==1){
+					undo_button();
+				}else if(undoing==2){
+					redo_button();
+				}
 			}
 		}
 		if(target.contains("actions::make_space")){
@@ -115,7 +119,11 @@ function blocks_paste(outside_connections,target){
 			if(blocks.contains("blocks["+tblock+"]::poly")){
 				voicecount(tblock,tvoices);
 			}else{
-				undo_button();
+				if(undoing==1){
+					undo_button();
+				}else if(undoing==2){
+					redo_button();
+				}
 			}
 		}
 		if(target.contains("actions::parameter")){
@@ -3074,15 +3082,20 @@ function redo_button(){
 	rsz--;
 	if(rsz<0) return -1;
 	undo = redo_stack.get("history["+rsz+"]");
-	post("\nredo:",undo.stringify());
-	var usz=undo_stack.getsize("history")|0;
-	undo_stack.append("history","*");
-	usz--;
-	undo_stack.replace("history["+usz+"]",undo);
-	redo_stack.remove("history["+rsz+"]");
-	blocks_paste(1,undo);
-	undo.parse("{}");
-	//undoing = 0;	
+	if((undo==null)||(undo=="*")){
+		redo_button();
+	}else{
+		undoing = 2;
+		post("\nredo:",undo.stringify());
+		var usz=undo_stack.getsize("history")|0;
+		undo_stack.append("history","*");
+		usz--;
+		undo_stack.replace("history["+usz+"]",undo);
+		redo_stack.remove("history["+rsz+"]");
+		blocks_paste(1,undo);
+		undo.parse("{}");
+	} 
+	undoing = 0;
 }
 
 function delete_selection(){

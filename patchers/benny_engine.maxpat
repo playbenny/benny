@@ -366,7 +366,7 @@
 
 							}
  ],
-						"originid" : "pat-710"
+						"originid" : "pat-716"
 					}
 ,
 					"patching_rect" : [ 1123.0, 46.0, 112.0, 22.0 ],
@@ -541,7 +541,7 @@
 
 							}
  ],
-						"originid" : "pat-712"
+						"originid" : "pat-718"
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -710,7 +710,7 @@
 
 							}
  ],
-						"originid" : "pat-726"
+						"originid" : "pat-732"
 					}
 ,
 					"patching_rect" : [ 314.5, 242.0, 102.0, 22.0 ],
@@ -949,7 +949,7 @@
 
 							}
  ],
-						"originid" : "pat-728"
+						"originid" : "pat-734"
 					}
 ,
 					"patching_rect" : [ 725.0, 48.25, 117.0, 22.0 ],
@@ -1174,7 +1174,7 @@
 
 							}
  ],
-						"originid" : "pat-730"
+						"originid" : "pat-736"
 					}
 ,
 					"patching_rect" : [ 556.0, 527.0, 69.0, 22.0 ],
@@ -2084,7 +2084,7 @@
 
 							}
  ],
-						"originid" : "pat-732"
+						"originid" : "pat-738"
 					}
 ,
 					"patching_rect" : [ 397.0, 167.25, 100.0, 22.0 ],
@@ -2427,7 +2427,7 @@
 
 							}
  ],
-						"originid" : "pat-734"
+						"originid" : "pat-740"
 					}
 ,
 					"patching_rect" : [ 742.0, 660.0, 123.0, 22.0 ],
@@ -3111,7 +3111,7 @@
 
 							}
  ],
-						"originid" : "pat-736"
+						"originid" : "pat-742"
 					}
 ,
 					"patching_rect" : [ 659.0, 132.25, 113.0, 22.0 ],
@@ -4332,7 +4332,7 @@
 
 							}
  ],
-						"originid" : "pat-770"
+						"originid" : "pat-776"
 					}
 ,
 					"patching_rect" : [ 30.0, 174.0, 161.0, 22.0 ],
@@ -4555,6 +4555,44 @@
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-19",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 5,
+									"outlettype" : [ "dictionary", "", "", "", "" ],
+									"patching_rect" : [ 248.5, 170.0, 89.0, 22.0 ],
+									"saved_object_attributes" : 									{
+										"embed" : 0,
+										"legacy" : 0,
+										"parameter_enable" : 0,
+										"parameter_mappable" : 0
+									}
+,
+									"text" : "dict redo_stack"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-18",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 5,
+									"outlettype" : [ "dictionary", "", "", "", "" ],
+									"patching_rect" : [ 248.5, 142.0, 92.0, 22.0 ],
+									"saved_object_attributes" : 									{
+										"embed" : 0,
+										"legacy" : 0,
+										"parameter_enable" : 0,
+										"parameter_mappable" : 0
+									}
+,
+									"text" : "dict undo_stack"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-15",
 									"maxclass" : "newobj",
 									"numinlets" : 2,
@@ -4701,7 +4739,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 5,
 									"outlettype" : [ "dictionary", "", "", "", "" ],
-									"patching_rect" : [ 86.0, 130.0, 61.0, 22.0 ],
+									"patching_rect" : [ 80.0, 129.0, 61.0, 22.0 ],
 									"saved_object_attributes" : 									{
 										"embed" : 0,
 										"legacy" : 0,
@@ -5234,7 +5272,7 @@
 
 							}
  ],
-						"originid" : "pat-774"
+						"originid" : "pat-780"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 12.25, 43.0, 22.0 ],
@@ -5733,7 +5771,7 @@
 
 							}
  ],
-						"originid" : "pat-776"
+						"originid" : "pat-782"
 					}
 ,
 					"patching_rect" : [ 850.5, 388.0, 85.0, 22.0 ],
@@ -6169,7 +6207,7 @@
 
 											}
  ],
-										"originid" : "pat-780"
+										"originid" : "pat-786"
 									}
 ,
 									"patching_rect" : [ 305.0, 329.0, 69.0, 22.0 ],
@@ -8103,7 +8141,7 @@
 
 							}
  ],
-						"originid" : "pat-778"
+						"originid" : "pat-784"
 					}
 ,
 					"patching_rect" : [ 110.75, 587.0, 298.0, 22.0 ],
@@ -9105,7 +9143,7 @@
 
 											}
  ],
-										"originid" : "pat-790"
+										"originid" : "pat-796"
 									}
 ,
 									"patching_rect" : [ 30.0, 463.0, 129.0, 22.0 ],
@@ -9984,7 +10022,7 @@
 
 							}
  ],
-						"originid" : "pat-788",
+						"originid" : "pat-794",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -11831,7 +11869,7 @@
 
 							}
  ],
-						"originid" : "pat-794",
+						"originid" : "pat-800",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -12873,7 +12911,7 @@
 
 											}
  ],
-										"originid" : "pat-800"
+										"originid" : "pat-806"
 									}
 ,
 									"patching_rect" : [ 540.0, 18.0, 89.0, 22.0 ],
@@ -13957,7 +13995,7 @@
 
 							}
  ],
-						"originid" : "pat-798"
+						"originid" : "pat-804"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 41.25, 67.0, 22.0 ],
@@ -15513,7 +15551,7 @@
 
 			}
  ],
-		"originid" : "pat-706",
+		"originid" : "pat-712",
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -15545,8 +15583,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "~/Documents/james music/benny misc",
-				"patcherrelativepath" : "../../../james music/benny misc",
+				"bootpath" : "C:/Users/jhold/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../../../jhold/Documents/james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}
