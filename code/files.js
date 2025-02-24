@@ -1056,6 +1056,12 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 		ui_patcherlist[block_index] = "blank.ui";
 	}else{
 		ui_patcherlist[block_index] = ui;
+		if(blocktypes.contains(block_name+"::ui_to_bottom_panel")){
+			if(bottombar.available_blocks.indexOf(block_index)==-1){
+				bottombar.available_blocks.push(block_index);
+			}
+		}
+	
 	}
 	still_checking_polys |= 4;
 	voicemap.replace(block_index, new_voice+offs); //set the voicemap

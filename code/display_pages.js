@@ -7956,9 +7956,8 @@ function setup_bottom_bar(block){
 	//post("\nsetting up bottom bar",block);
 	if((displaymode=="custom")&&custom_block==block)set_display_mode("blocks");
 	bottombar.block = block;
-	var r = bottombar.right;
 	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
-	if(r!=bottombar.right) bottombar_size();
+	bottombar_size();
 	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
 }
 

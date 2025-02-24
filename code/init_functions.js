@@ -1110,19 +1110,21 @@ function statesbar_size(){
 
 function bottombar_size(){
 	if(bottombar.block>-1){
+		var h = bottombar.height;
+		var r = bottombar.right;
 		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
 		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 		var w=bottombar.right - 9 - fontheight;
 		var tw=w/mainwindow_width;
 		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
-		var cy = 1 - 2 * (mainwindow_height - 0.5 * bottombar.height)/mainwindow_height;
-		var th=(bottombar.height)/mainwindow_height;
+		var cy = 1 - 2 * (mainwindow_height - 0.5 * (bottombar.height + 9))/mainwindow_height;
+		var th=(bottombar.height+9)/mainwindow_height;
 		bottombar.videoplane.message("scale",tw,th);
 		bottombar.videoplane.message("position",cx,cy,0);
 		bottombar.videoplane.message("texzoom",1/tw,1/th);
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
-		setup_bottom_bar(bottombar.block);
+		if((h!=bottombar.height)||(r!=bottombar.right)) setup_bottom_bar(bottombar.block);
 		redraw_flag.deferred |= 4;
 	}else{
 		bottombar.videoplane.message("enable",0);
