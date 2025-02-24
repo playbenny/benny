@@ -1106,9 +1106,9 @@ function statesbar_size(){
 }
 
 function bottombar_size(){
-	bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 	if(bottombar.block>-1){
+		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
+		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 		var w=bottombar.right - 9 - fontheight;
 		var tw=w/mainwindow_width;
 		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;

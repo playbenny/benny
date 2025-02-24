@@ -66,10 +66,14 @@ function new_block(block_name,x,y){
 		}
 		//post("HARDWARE BLOCK, NEW VOICE",new_voice,"T OFFSET",t_offset);
 	}
-	if((loading.progress<=0)&&(!undoing)){
+	if((loading.progress<=0)&&(undoing!=1)){
 		var usz=undo_stack.getsize("history")|0;
 		undo_stack.append("history","{}");
 		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_block" : '+new_block_index+'} }');
+	}else if((loading.progress<=0)&&(undoing==1)){
+		var usz=redo_stack.getsize("history")|0;
+		redo_stack.append("history","{}");
+		redo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_block" : '+new_block_index+'} }');
 	}
 	voicemap.replace(new_block_index, new_voice+t_offset); //set the voicemap
 	if(recycled){
@@ -1568,11 +1572,17 @@ function make_connection(cno,existing){
 	var varr=[];
 	var max_poly;
 	var hw_mute=0; //if from block is hardware, and is muted, this gets set to 1, and the connection is set to silent
-	if((loading.progress<=0)&&(!undoing)){
+	if((loading.progress<=0)&&(undoing!=1)){
 		if(!existing){
 			var usz=undo_stack.getsize("history")|0;
 			undo_stack.append("history","{}");
 			undo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_wire" : '+cno+'} }');
+		}// there should be an else for this so that undo stores connection changes TODO
+	}else if((loading.progress<=0)&&(undoing==1)){
+		if(!existing){
+			var usz=redo_stack.getsize("history")|0;
+			redo_stack.append("history","{}");
+			redo_stack.setparse("history["+usz+"]", '{ "actions" : { "create_wire" : '+cno+'} }');
 		}// there should be an else for this so that undo stores connection changes TODO
 	}
 	// work out which polyvoices/matrix slots correspond

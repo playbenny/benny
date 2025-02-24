@@ -2,11 +2,15 @@ function set_display_mode(mode,t){
 	if(mode == "custom"){
 		custom_block = +t;
 		last_displaymode = displaymode;
+		if(bottombar.block==custom_block)hide_bottom_bar();
 		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
-		ui_poly.message("setvalue",  custom_block+1, "setup", x1,18+fontheight*1.1, sidebar.x-9, mainwindow_height-9,mainwindow_width);
+		var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
+		ui_poly.message("setvalue",  custom_block+1, "setup", x1,18+fontheight*1.1, sidebar.x-9, y1,mainwindow_width);
+		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
-		last_displaymode = displaymode;
+		if(displaymode!="custom") last_displaymode = displaymode;
+		if(bottombar.block>-1)hide_bottom_bar();
 		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
@@ -2219,9 +2223,9 @@ function draw_topbar(){
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
-		}else if((displaymode == "blocks")||(displaymode == "panels")||((displaymode == "custom") && (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){ //draw states / init / unmute all
+		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 5;
-			if(bottombar.available_blocks.length>0){
+			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1))){
 				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
 					var bna = blocks.get("blocks["+bottombar.available_blocks[bi]+"]::label");
 					bna = bna.split(".");
@@ -2245,79 +2249,82 @@ function draw_topbar(){
 					}
 				}
 			}
-			
-			y_o -= 1.1*fontheight;
-			var cll = config.getsize("palette::gamut");
-			var c = new Array(3);
-			// draw a button for each possible state
-			for(i=MAX_STATES-1;i>=-1;i--){
-				var statecontents;
-				if(i == -1){
-					statecontents = states.contains("states::current");
-				}else{
-					statecontents = states.contains("states::"+i);
-				}
-				if(statecontents){
-					if((state_fade.position>-1) && (state_fade.selected ==i)){
-						state_fade.y = y_o;
-						state_fade.index = mouse_index;
-					} 
-					if(i < 0){
-						if(usermouse.clicked2d!=mouse_index){
-							c = menucolour;
-						}else{
-							c=[255,255,255];
-						}
-						lcd_main.message("framerect", 5, y_o, 9+fontheight, fontheight + y_o,c );
-						if(usermouse.alt){
-							lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.45);
-							lcd_main.message("write", "init+");
-							lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.75);
-							lcd_main.message("write", "data");
-						}else{
-							lcd_main.message("moveto",5 + fontheight*0.25, y_o+fontheight*0.75);
-							lcd_main.message("write", "init");
-						}	
-					}else{
-						if(usermouse.clicked2d!=mouse_index){
-							c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
-						}else{
-							c=[255,255,255];
-						} 
-						lcd_main.message("paintrect", 5, y_o, 9+fontheight, fontheight + y_o,c );		
-						if(states.contains("names::"+i)){
-							var sn=states.get("names::"+i);
-							sn = sn.split(".");
-							if(!Array.isArray(sn)) sn = [sn];
-							for(var si=0;si<sn.length;si++){
-								lcd_main.message("moveto",5 + fontheight*0.1, y_o+fontheight*(1-0.25*(sn.length-si)));
-								lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
-								lcd_main.message("write",sn[si]);
-							}
-						}					
-					}
-					click_zone( [fire_whole_state_btn_click,fire_whole_state_btn_release], i, 0, 0, y_o, 9+fontheight*1.2, fontheight + y_o,mouse_index,6 );							
-					y_o -= 1.1*fontheight;
-				}
-			}
-			if(anymuted || mix_block_has_mutes){
-				y_o -= 0.3*fontheight
-				if(usermouse.clicked2d == mouse_index){
-					lcd_main.message("paintrect", 5, y_o, 9+fontheight, y_o + 1.2*fontheight,0,0,0 );
-					lcd_main.message("frgb", menucolour);		
-				}else{
-					lcd_main.message("paintrect", 5, y_o, 9+fontheight, y_o + 1.2*fontheight,menudarkest );
-					lcd_main.message("frgb", menucolour);		
-				}
-				lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight*0.4);
-				lcd_main.message("write", "un");
-				lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight*0.7);
-				lcd_main.message("write", "mute");
-				lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight);
-				lcd_main.message("write", "all");			
-				click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
+			if((displaymode=="custom") && !(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))){
+				//skip the next bit
 			}else{
-				y_o += 1.2*fontheight;
+				y_o -= 1.1*fontheight;
+				var cll = config.getsize("palette::gamut");
+				var c = new Array(3);
+				// draw a button for each possible state
+				for(i=MAX_STATES-1;i>=-1;i--){
+					var statecontents;
+					if(i == -1){
+						statecontents = states.contains("states::current");
+					}else{
+						statecontents = states.contains("states::"+i);
+					}
+					if(statecontents){
+						if((state_fade.position>-1) && (state_fade.selected ==i)){
+							state_fade.y = y_o;
+							state_fade.index = mouse_index;
+						} 
+						if(i < 0){
+							if(usermouse.clicked2d!=mouse_index){
+								c = menucolour;
+							}else{
+								c=[255,255,255];
+							}
+							lcd_main.message("framerect", 5, y_o, 9+fontheight, fontheight + y_o,c );
+							if(usermouse.alt){
+								lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.45);
+								lcd_main.message("write", "init+");
+								lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.75);
+								lcd_main.message("write", "data");
+							}else{
+								lcd_main.message("moveto",5 + fontheight*0.25, y_o+fontheight*0.75);
+								lcd_main.message("write", "init");
+							}	
+						}else{
+							if(usermouse.clicked2d!=mouse_index){
+								c = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
+							}else{
+								c=[255,255,255];
+							} 
+							lcd_main.message("paintrect", 5, y_o, 9+fontheight, fontheight + y_o,c );		
+							if(states.contains("names::"+i)){
+								var sn=states.get("names::"+i);
+								sn = sn.split(".");
+								if(!Array.isArray(sn)) sn = [sn];
+								for(var si=0;si<sn.length;si++){
+									lcd_main.message("moveto",5 + fontheight*0.1, y_o+fontheight*(1-0.25*(sn.length-si)));
+									lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
+									lcd_main.message("write",sn[si]);
+								}
+							}					
+						}
+						click_zone( [fire_whole_state_btn_click,fire_whole_state_btn_release], i, 0, 0, y_o, 9+fontheight*1.2, fontheight + y_o,mouse_index,6 );							
+						y_o -= 1.1*fontheight;
+					}
+				}
+				if(anymuted || mix_block_has_mutes){
+					y_o -= 0.3*fontheight
+					if(usermouse.clicked2d == mouse_index){
+						lcd_main.message("paintrect", 5, y_o, 9+fontheight, y_o + 1.2*fontheight,0,0,0 );
+						lcd_main.message("frgb", menucolour);		
+					}else{
+						lcd_main.message("paintrect", 5, y_o, 9+fontheight, y_o + 1.2*fontheight,menudarkest );
+						lcd_main.message("frgb", menucolour);		
+					}
+					lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight*0.4);
+					lcd_main.message("write", "un");
+					lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight*0.7);
+					lcd_main.message("write", "mute");
+					lcd_main.message("moveto", 5 + fontheight*0.2, y_o+fontheight);
+					lcd_main.message("write", "all");			
+					click_zone(mute_all_blocks, "unmute", 0, 0, y_o, 9+fontheight, y_o + fontheight,mouse_index,1 );
+				}else{
+					y_o += 1.2*fontheight;
+				}
 			}
 			if(y_o < mainwindow_height - 9 - fontheight){
 				statesbar.used_height = mainwindow_height - y_o;
@@ -7946,6 +7953,7 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 
 function setup_bottom_bar(block){
 	//post("\nsetting up bottom bar",block);
+	if((displaymode=="custom")&&custom_block==block)set_display_mode("blocks");
 	bottombar.block = block;
 	var r = bottombar.right;
 	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
@@ -7963,5 +7971,9 @@ function update_bottom_bar(){
 
 function hide_bottom_bar(){
 	bottombar.block = -1;
+	bottombar.videoplane.message("enable",0);
+	if(displaymode=="custom"){
+		set_display_mode("custom",custom_block);
+	}
 	redraw_flag.flag|=4;
 }

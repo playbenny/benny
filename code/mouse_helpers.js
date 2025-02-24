@@ -149,6 +149,20 @@ function blocks_paste(outside_connections,target){
 		}
 	}
 	if(target.contains("blocks")){
+		if(undoing==1){
+			var usz=redo_stack.getsize("history")|0;
+			usz = Math.max(0,usz);
+			redo_stack.append("history","{}");
+			redo_stack.setparse("history["+usz+"]",'{}');
+			redo_stack.replace("history["+usz+"]",target);
+		}else if(undoing==2){
+			var usz=undo_stack.getsize("history")|0;
+			usz = Math.max(0,usz);
+			undo_stack.append("history","{}");
+			undo_stack.setparse("history["+usz+"]",'{}');
+			undo_stack.replace("history["+usz+"]",target);
+		}
+	
 		count_selected_blocks_and_wires();
 		var td = target.get("blocks");
 		if(td!=null){
@@ -3083,14 +3097,17 @@ function redo_button(){
 	if(rsz<0) return -1;
 	undo = redo_stack.get("history["+rsz+"]");
 	if((undo==null)||(undo=="*")){
+		redo_stack.remove("history["+rsz+"]");
 		redo_button();
 	}else{
 		undoing = 2;
 		post("\nredo:",undo.stringify());
-		var usz=undo_stack.getsize("history")|0;
-		undo_stack.append("history","*");
-		usz--;
-		undo_stack.replace("history["+usz+"]",undo);
+		if(undo.contains("actions")){
+			var usz=undo_stack.getsize("history")|0;
+			undo_stack.append("history","*");
+			usz--;
+			undo_stack.replace("history["+usz+"]",undo);
+		}
 		redo_stack.remove("history["+rsz+"]");
 		blocks_paste(1,undo);
 		undo.parse("{}");
@@ -3099,7 +3116,7 @@ function redo_button(){
 }
 
 function delete_selection(){
-	if(!undoing){
+	if(undoing!=1){
 		copy_selection(undo);
 		var usz=undo_stack.getsize("history")|0;
 		usz = Math.max(0,usz);
@@ -3231,6 +3248,10 @@ function key_escape(){
 		waves.selected=-1;
 		redraw_flag.flag |= 4;
 	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
+		if((last_displaymode!="blocks")&&(last_displaymode!="panels")){
+			post("\ndon't want to return to:",last_displaymode,"mode so i'm going to blocks instead");
+			last_displaymode="blocks";
+		}
 		set_display_mode(last_displaymode);
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
