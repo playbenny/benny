@@ -1076,6 +1076,9 @@ function topbar_size(){
 
 function sidebar_size(){
 	var w = sidebar.width+sidebar.scrollbar_width+6;
+	if(sidebar.mode=="file_menu"){
+		w = fontheight * 15+sidebar.scrollbar_width+6;
+	}
 	var h = sidebar.used_height;
 	if(h==0){
 		sidebar.videoplane.message("enable",0);

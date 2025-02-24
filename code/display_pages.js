@@ -2369,6 +2369,7 @@ function draw_sidebar(){
 			note_poly.message("setvalue", automap.available_c, "automapped", 0);
 		}
 		view_changed = true;
+		sidebar_size();
 	}
 	if((sidebar.scopes.midi_routing.number!=-1)){
 		if(!selected.wire[sidebar.scopes.midi_routing.number]){
