@@ -93,12 +93,12 @@ var clipboard = [];
 
 //in the meta lane, attach more values to the event, so you don't need too many lanes. however, having some 
 //redundancy is good so you could eg stack probabilistic transposes
-var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "arp", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose", "to out B/C"  ];
-var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["division","pattern"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","output"]]
+var metatypes = ["skip", "velocity randomisation", "cc randomisation", "note divide", "octaves up transpose", "octaves down transpose", "chromatic transpose", "chromatic transpose", "chromatic transpose", "to out B/C"  ];
+var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","range"],["chance/every","output"]]
 // more types? trills and arps? splitting - eg if the param is 3 it divides the length by 3 and plays 3 notes?
 // randomise velocity
-var metatype_defaults = [ [-127], [64], [64], [2], [2,2], [-127,2], [-127, 2], [-127,1], [-127,1], [-127,1], [-127,0] ];
-
+var metatype_defaults = [ [-127], [64], [64], [2], [-127,2], [-127,2], [-127,1], [-127,1], [-127,1], [-127,0] ];
+var metatype_ranges = [ ["bi"] , ["uni"], ["uni"], [32], ["bi",4], ["bi",4], ["bi",24], ["bi",24], ["bi",24], [2]];
 function playhead(p){
 	playheadpos = p;
 	drawflag = 1;
@@ -573,22 +573,22 @@ function draw(){
 									eey = ey-Math.max(1,sy2) - 0.5*unit;
 								} 
 							}
-							outlet(1,"paintrect",eex,eey-2*unit,eex+5*unit,eey,col[0]*0.2,col[1]*0.2,col[2]*0.2);
-							outlet(1,"framerect",eex,eey-2*unit,eex+5*unit,eey,col);
+							outlet(1,"paintrect",eex,eey-1.6*unit,eex+5*unit,eey,col[0]*0.2,col[1]*0.2,col[2]*0.2);
+							outlet(1,"framerect",eex,eey-1.6*unit,eex+5*unit,eey,col);
 							var displayedparams = "";
 							var ind = 3;
-							var ly = eey-1.4*unit;
+							var ly = eey-1.0*unit;
 							for(var p=0;p<metatype_params[event[2]].length;p++){
 								if(metatype_params[event[2]][p]=="chance/every"){
 									if(event[ind]<0){
-										displayedparams = (128+event[ind]).toFixed(2) + " in every 128";
+										displayedparams = Math.round(128+event[ind]) + " in every 128";
 									}else{
 										displayedparams = ((event[ind]/1.27).toFixed(2))+"% chance";
 									}
 								}else if(metatype_params[event[2]][p]=="range"){
-									displayedparams = " range:" + (1 + Math.floor(event[ind]|0));
+									displayedparams = " range:" + (Math.floor(event[ind]|0));
 								}else if(metatype_params[event[2]][p]=="division"){
-									displayedparams = " division: " + (2 + Math.floor(event[ind]|0));
+									displayedparams = " division: " + (Math.floor(event[ind]|0));
 								}else if(metatype_params[event[2]][p]=="output"){
 									var choices = ["B","C"];
 									displayedparams = " output: " + choices[Math.floor(event[ind]|0) % 2];
@@ -1007,37 +1007,50 @@ function mouse(x,y,l,s,a,c,scr){
 				}
 			}
 		}else if(hovered_event>-1){
-			if(s) scr *= 0.1;
 			if((selected_events[hovered_event]|0)==0){
 				var event = seqdict.get(block+"::"+pattern+"::"+hovered_event);
 				//if ctrl held it adjusts length;
 				if(c){
+					if(s) scr *= 0.125;
 					event[4] -= scr*0.25/seql;
 					event[4] = Math.max(event[4],0.000000001);
 				}else{
 					var v=0;
 					if(lanetype[mouse_lane]==2){
-						var lim=0;
-						var ind=3;
-						if(a){
-							ind = 5;
-						}else if(metatype_params[event[2]][0] == "chance/every") lim=1;
+						var ind=3 + 2*(a|0); //3 or 5
+						var max = metatype_ranges[event[2]][(a)|0];
+						var min = 0;
+						scr = Math.round(scr*4.3478);
+						if(s) scr *= 0.125;
+						if((max == "uni")||(max == "bi")){
+							max = 127;
+							if(metatype_params[event[2]][0] == "chance/every"){
+								min = -1;
+								max = 129;
+							}
+							scr *= 8;
+						}else{
+							min = 1;
+						}
 						if(event[ind] >= 0){
-							v = Math.min(127+lim,Math.max(-lim,event[ind] + scr*25));
-							if(v>127)v=-254+v; //wrap
+							v = Math.min(max,Math.max(min,event[ind] + scr));
+							if(v>128)v=-256+v; //wrap
 						}else if(event[ind]<0){
-							v = Math.max(-127-lim,Math.min(lim,event[ind] + scr*25));
-							if(v<-127)v=254+v;
+							v = Math.max(-128+min,Math.min(-min,event[ind] + scr));
+							if(v<-128)v=256+v;
 						}
 						event[ind] = v;
 					}else{
-						v = Math.min(127,Math.max(0,event[3] + scr*25));						
+						if(s) scr *= 0.125;
+						v = Math.min(127,Math.max(0,event[3] + scr*34.782));						
 						event[3] = v;
 					}
 				}
 				seqdict.replace(block+"::"+pattern+"::"+hovered_event,event);
 				copytoseq();
 			}else{
+				if(!c) scr = Math.round(scr*4.3478);
+				if(s) scr *= 0.125;
 				for(i=0;i<k.length;i++){
 					if(selected_events[k[i]]){
 						var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
@@ -1047,21 +1060,29 @@ function mouse(x,y,l,s,a,c,scr){
 						}else{
 							var v=0;
 							if(lanetype[mouse_lane]==2){
-								var lim=0;
-								var ind=3;
-								if(a){
-									ind = 5;
-								}else if(metatype_params[event[2]][0] == "chance/every") lim=1;
+								var ind=3 + 2*(a|0); //3 or 5
+								var max = metatype_ranges[event[2]][(a)|0];
+								var min = 0;
+								if((max == "uni")||(max == "bi")){
+									max = 127;
+									if(metatype_params[event[2]][0] == "chance/every"){
+										min = -1;
+										max = 128;
+									}
+									scr *= 8;
+								}else{
+									min = 1;
+								}
 								if(event[ind] >= 0){
-									v = Math.min(127+lim,Math.max(-lim,event[ind] + scr*25));
-									if(v>127)v=-254+v; //wrap
+									v = Math.min(max,Math.max(min,event[ind] + scr));
+									if(v>127)v=-256+v; //wrap
 								}else if(event[ind]<0){
-									v = Math.max(-127-lim,Math.min(lim,event[ind] + scr*25));
-									if(v<-127)v=254+v;
+									v = Math.max(-128+min,Math.min(-min,event[ind] + scr));
+									if(v<-127)v=256+v;
 								}
 								event[ind] = v;
 							}else{
-								v = Math.min(127,Math.max(0,event[3] + scr*25));						
+								v = Math.min(127,Math.max(0,event[3] + scr*34.782));						
 								event[3] = v;
 							}
 						}
@@ -1501,12 +1522,15 @@ function keydown(key){
 				var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
 				undo.replace(k[i],event);
 				rem=1;
-				if(event[1]==9){
-					var n = event[2] - dir;
-					if((n>=0)&&(n<metatypes.length)) event[2] = n;
-				}else{
+				if(event[1]!=9){
 					var n = event[2] + dir;
 					if((n>=0)&&(n<127)) event[2] = n;
+				}else{
+					if(metatype_params[event[2]].length==1){
+						event[3] += dir;
+					}else{
+						event[5] += dir;
+					}
 				}
 				seqdict.replace(block+"::"+pattern+"::"+k[i],event);
 			}
