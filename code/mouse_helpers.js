@@ -3530,6 +3530,25 @@ function type_to_search(key){
 		var type_order = config.get("type_order");
 		var types = blocktypes.getkeys();
 		var results = [];
+		var found =0;
+		for(var i=0;i<menu.cubecount;i++){
+			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			}else{
+				var str = types[i];
+				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
+				str = str.toLowerCase();
+				while(str.indexOf(".")>=0) str = str.replace(".","");
+				if(str.indexOf(menu.search)!=-1){
+					found=1;
+					break;
+				}
+			}
+		}
+		if((found==0)&&(menu.search.length>0)){
+			type_to_search(-7);
+			return 0;
+		}
+		
 		for(var i=0;i<menu.cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 			}else{
