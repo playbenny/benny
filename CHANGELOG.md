@@ -1,7 +1,3 @@
-## CHANGELOG
-
-*This changelog is for noteworthy changes since the first public release. Breaking changes or changes to default behaviour will be in bold. Changes that are still on a branch on github rather than on main will be in ()*
-
 16/2/25:
 - **breaking change** the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
 - bottom panel area. experimental. at the moment only the mixer bus can be put there.
