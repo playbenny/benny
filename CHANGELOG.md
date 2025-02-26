@@ -1,9 +1,27 @@
+25/2/25:
+- **flocking** improvements - once you've assigned some parameters to flocking the flock controls are visible at the bottom of the sidebar parameters view, which makes tuning behaviour easier. you can also click blocks in the flock visualiser to select them in the sidebar to adjust.
+
+22/2/25:
+- **piano roll** improvements - snap to grid while dragging, nice fast pan and zoom, and now all the modifier events work: they let you apply skipping, transposing, repeating notes, etc, to the pattern, with the option to use probability or a cyclic 'n times out of every x events' to decide when. presently you need to scroll over the modifier event to adjust the 1st modifier event parameter, alt-scroll adjusts the second if there are two.
+- you can also play modifier notes into an input on the piano roll
+
+20/2/25:
+- **mixer** improvements - you can name channels, the bus displays the names when it's in the bottom bar view, many ui fixes.
+- if you select multiple connections going to one place you can insert a mixer (channels+bus)
+- it's now possible to bypass the airwindows console system on the mixer
+
 16/2/25:
 - the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. *breaking change* if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
 - **bottom panel area**. experimental. at the moment only the mixer bus can be put there.
 
+15/2/25:
+- **presets** - block developers can include presets in their blocks, and the user can save their own presets for any blocks.
+
 14/2/25:
-- the envelopes in voice.basic, voice.pitch.env, voice.dual, voice.harmonic, voice.noise, env.asr, vca.env, 2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. *breaking change* the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
+- the **envelopes** in voice.basic, voice.pitch.env, voice.dual, voice.harmonic, voice.noise, env.asr, vca.env, 2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. *breaking change* the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
+
+13/2/25:
+- 3d objects now go *behind* the sidebar and other control panel areas
 
 12/2/25:
 - **huge performance improvements**! i'd been putting this off but it wasn't as bad as i feared (!) the 3d graphics now takes advantage of 'hardware instancing' which means the cpu overhead of large patches is vastly reduced. on my mid-range framework intel laptop (no gpu) with a particular largeish patch ('blackpool late 80s') from my live set the cpu usage/power draw drops by 50% (!) despite it actually hitting a higher FPS than before. 
@@ -173,3 +191,6 @@
 - shift-delete to delete the selected blocks AND all blocks that are now left redundant by that deletion. (ctrl-shift click does the same but with mute)
 - facility for opened max/msp patcher windows to stop benny listening to the keyboard while they have focus (this also optionally drops the benny framerate so that while developing patches your laptop doesn't got so hot)
 - **changed default behaviour:** autozoom_on_select is now 0. set it to 1 (in userconfig) if you want the old behaviour where selecting things would make the camera zoom out to make sure nothing obscures the sidebar.
+
+20/07/24:
+- public alpha first shared.
