@@ -1,12 +1,12 @@
 16/2/25:
-- **breaking change** the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
-- bottom panel area. experimental. at the moment only the mixer bus can be put there.
+- *breaking change* the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
+- **bottom panel area**. experimental. at the moment only the mixer bus can be put there.
 
 14/2/25:
-- **breaking change** the envelopes in voice.basic,voice.pitch.env,voice.dual,voice.harmonic,voice.noise,env.asr,vca.env,2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
+- *breaking change* the envelopes in voice.basic,voice.pitch.env,voice.dual,voice.harmonic,voice.noise,env.asr,vca.env,2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
 
 12/2/25:
-- HUGE PERFORMANCE IMPROVEMENTS! i'd been putting this off but it wasn't as bad as i feared (!) the 3d graphics now takes advantage of 'hardware instancing' which means the cpu overhead of large patches is vastly reduced. on my mid-range framework intel laptop (no gpu) with a particular largeish patch ('blackpool late 80s') from my live set the cpu usage/power draw drops by 50% (!) despite it actually hitting a higher FPS than before. 
+- **huge performance improvements**! i'd been putting this off but it wasn't as bad as i feared (!) the 3d graphics now takes advantage of 'hardware instancing' which means the cpu overhead of large patches is vastly reduced. on my mid-range framework intel laptop (no gpu) with a particular largeish patch ('blackpool late 80s') from my live set the cpu usage/power draw drops by 50% (!) despite it actually hitting a higher FPS than before. 
 - mouse selection and hover on the blocks page is also vastly improved as it now uses physics based picking on the gpu instead of the axis aligned bounding box method it used before. everything should feel a lot snappier.
 - wires also look a bit better and the hover / selection graphics are clearer.
 
@@ -15,69 +15,69 @@
 - experimental: i've turned off multithreading for these meters, which actually seems to have reduced cpu use (threads locking around buffer access perhaps?)
 
 31/1/25:
-- seq.curved.time is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
+- *seq.curved.time* is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
 
 25/1/25:
-- automap for controllers now works in more places - on connections (for gain/conversion parameter editting) and for scroll file menu / new block menu
+- **automap for controllers** now works in more places - on connections (for gain/conversion parameter editting) and for scroll file menu / new block menu
 
 20/1/25:
-- **breaking change** added more models to voice.modal, which will possibly throw off model selection in old songfiles. easy to correct and the new models are nice.
-- stick slip model block (model of a mass sticking and slipping on a surface as it is pulled by a spring - useful for generating rhythms, making lfos more interesting, processing audio, scrapes and scratches)
+- *breaking change* added more models to **voice.modal**, which will possibly throw off model selection in old songfiles. easy to correct and the new models are nice.
+- **stick slip model block** (model of a mass sticking and slipping on a surface as it is pulled by a spring - useful for generating rhythms, making lfos more interesting, processing audio, scrapes and scratches)
 
 18/1/25:
 - new sidebar view during drag-to-connect showing you the inputs and outputs available on the source/dest blocks
 
 16/1/25:
-- undo now works for almost everything in the main part of benny
+- **undo now works for almost everything** in the main part of benny
 
 9/1/25:
-- **breaking change** quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
+- *breaking change* quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
 - fix quantislide osc 
 
 28/12/24:
-- updated the clock input of rene which is a **breaking change** if you were using the other inputs, just fix those connections and it'll work as before though. rene ui improvements, new features.
-- piano roll is enabled but it's still a work in progress - fine for playing back things you record with the keyboard and making small edits. more coming soon.
+- updated the clock input of **rene** which is a *breaking change* if you were using the other inputs, just fix those connections and it'll work as before though. rene ui improvements, new features.
+- **piano roll** is enabled but it's still a work in progress.
 
 27/12/24:
-- quanti.slide osc added (has a scale quantiser built in, after unstable pitch+fm+range+detune+midi note+slide)
-- sidechain compressor now just a simple gen algorithm, no longer requires pro-c2 to work.
+- **quanti.slide.osc** added (has a scale quantiser built in, after unstable pitch+fm+range+detune+midi note+slide)
+- **sidechain compressor** now just a simple gen algorithm, no longer requires pro-c2 to work.
 
 26/12/24:
-- **breaking change** there are now separate forward and backwards trigger inputs to note.step and note.tracker, which means if you were using row-select or reset inputs you'll need to fix those connections because they'll point to the wrong input now.
+- *breaking change* there are now separate forward and backwards trigger inputs to note.step and note.tracker, which means if you were using row-select or reset inputs you'll need to fix those connections because they'll point to the wrong input now.
 - a few js error trapping things to make it work in max 9 v8 engine (it does, but i'm not switching for now because that would prevent max8 users using it and it doesn't bring huge performance gains)
 
 24/12/24:
 - improved how qwerty input octave control works
-- improved shape player block. removed the two self-playing modes because this is something you can do using one or two other blocks so it doesn't need to be built in.
+- improved **shape player block**. removed the two self-playing modes because this is something you can do using one or two other blocks so it doesn't need to be built in.
 
 05/12/24:
-- four stage env added, lets you do complex envelopes. easily chainable, lots of interesting trigger ins and outs.
+- **four stage env** added, lets you do complex envelopes. easily chainable, lots of interesting trigger ins and outs.
 - dropdowns now available as a parameter display type
-- added a bunch of the new max9 abl devices - so far: compressor, limiter, 3band eq, all the reverbs, all the filters, all the modulation (chorus etc) dsps
+- added a bunch of the **new max9 abl devices - so far: compressor, limiter, 3band eq, all the reverbs, all the filters, all the modulation (chorus etc)**
 
 19/11/24:
-- midi.lfo now lets you modulate the rate without glitching
+- **midi.lfo** now lets you modulate the rate without glitching
 - value to value connections now have an offset. likewise audio-value, value-audio, etc (i think this is not a breaking change, still testing with savefiles)
 
 16/11/24:
-- **breaking change** the mode of shape player where the note at the clock input sets offset has been removed, just map input note to the offset slider to do this.
+- *breaking change* the mode of shape player where the note at the clock input sets offset has been removed, just map input note to the offset slider to do this.
 
 11/11/24:
-- **breaking change** the range for the output of cv scale quantiser has been fixed.
+- *breaking change* the range for the output of cv scale quantiser has been fixed.
 - source/voice basic and pitch env osc have had exp fm modes added. this is the new default, works well with the audio output of cv scale quantiser.
 
 10/11/24:
-- type numbers while over a slider to enter the value directly
+- **type numbers while over a slider to enter the value directly**
 - midi message rate displayed on resource monitor page.
 - START_FULLSCREEN key in config.
-- **breaking change** seq values has had a few changes. if you were using it and using the note->position or reset inputs you'll need to find those connections and select the right input again. also the undocumented and buggy D=reverse,B=reset 'feature' on the trigger input is removed - all notes trigger it now, and there's a separate 'reverse' input. there's also a note out that uses the velocity of the incoming trigger (the note comes from the sequence value).
-- midi.delay has an output midi gain control.
+- *breaking change* seq values has had a few changes. if you were using it and using the note->position or reset inputs you'll need to find those connections and select the right input again. also the undocumented and buggy D=reverse,B=reset 'feature' on the trigger input is removed - all notes trigger it now, and there's a separate 'reverse' input. there's also a note out that uses the velocity of the incoming trigger (the note comes from the sequence value).
+- **midi.delay** has an output midi gain control.
 - the new midi recording (in input keyboard) stuff is now in main, but the piano roll block is hidden from the menu for now
 
 06/11/24:
-- env.asr's EOA/EOR outputs now output notes who's velocity matches the peak level of the envelope in that cycle. makes it more useful for looped envelope bouncing ball stuff. possibly a **breaking change** if you used this output on something velocity-sensitive.
+- **env.asr**'s EOA/EOR outputs now output notes who's velocity matches the peak level of the envelope in that cycle. makes it more useful for looped envelope bouncing ball stuff. possibly a *breaking change* if you used this output on something velocity-sensitive.
 - request_set_voice_param - the way a block asks to set its own parameters, now sets the block param instead if there's only one voice. testing to see if any issues with existing blocks.
-- **breaking change** source.random - value out is now bipolar, which makes it more useful
+- *breaking change* **source.random** - value out is now bipolar, which makes it more useful
 
 20/10/24:
 - dragging blocks off the edges of the page / into the sidebar area now scrolls the blocks page
@@ -115,7 +115,7 @@
 20/09/24:
 - random per-note delay options added to the midi delay block, useful for making the notes of a chord not all arrive simultaneously
 - audio rate smoothing block added (useful after an env used as an envelope follower)
-- env and vca.env updated to make audio rate trigger/follow inputs actually work **breaking change** the options for in2 on the env.asr have changed
+- env and vca.env updated to make audio rate trigger/follow inputs actually work *breaking change* the options for in2 on the env.asr have changed
 - bonk block added. detects drum transients, can be trained to identify a number of different drums. currently saving the training data isn't implemented.
 
 16/09/24:
@@ -123,7 +123,7 @@
 - vca.env made more useful
 
 15/09/24:
-- **breaking change** midi.scale.quantise is renamed to utility.cv.scale.quantise. if you have problems loading old songs you can open the json and run a find replace to swap all instances of the old name to the new name.
+- *breaking change* midi.scale.quantise is renamed to utility.cv.scale.quantise. if you have problems loading old songs you can open the json and run a find replace to swap all instances of the old name to the new name.
 - new midi.scale.quantise (does midi-only quantising)
 - fixes and improvements to sample tracker - slice drawing, patterns
 - fullscreen clock / click to toggle to timer / ctrl click resets timer
@@ -148,8 +148,8 @@
 - utility.midi.smooth block - uses the cytomic smoothing algorithm used in the calculus block to provide simple effective value-stream smoothing.
 
 18/08/24:
-- **breaking change** the mix curve on buckets and tape and stretch delays has been changed. at the midpoint both wet and dry signals are at 100% - ie the mix fader *brings in* the wet signal, which doesn't create the impression of the music getting quieter. (previously all 3 had different behaviour, none of which was quite right)
-- **breaking change** rene no longer supports per-voice values for the contents of the cells. but now cell enable buttons work in the ui
+- *breaking change* the mix curve on buckets and tape and stretch delays has been changed. at the midpoint both wet and dry signals are at 100% - ie the mix fader *brings in* the wet signal, which doesn't create the impression of the music getting quieter. (previously all 3 had different behaviour, none of which was quite right)
+- *breaking change* rene no longer supports per-voice values for the contents of the cells. but now cell enable buttons work in the ui
 - fixes to core.input.control
 - vst parameter sync between plugin window ui and benny fixed
 - modal synthesis voice added
