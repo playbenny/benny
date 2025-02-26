@@ -28,6 +28,9 @@
 - mouse selection and hover on the blocks page is also vastly improved as it now uses physics based picking on the gpu instead of the axis aligned bounding box method it used before. everything should feel a lot snappier.
 - wires also look a bit better and the hover / selection graphics are clearer.
 
+8/2/25:
+- **ui preferences editor** - saves users having to edit any .json files, has helpful info about what the settings do. autosaves but you have to fully close all max windows and restart benny to apply some of the settings.
+
 2/2/25:
 - ui preferences option to downsample the audio_to_data section that does signal->param conversions (downsampling will make no real difference here) and scopes and meters, where it affects the maximum scope zoom in. the default (1) gives best appearance, but you can save a lot of cpu (~20%?) on low end systems by dropping this to 4 or 8.
 - experimental: i've turned off multithreading for these meters, which actually seems to have reduced cpu use (threads locking around buffer access perhaps?)
@@ -63,6 +66,7 @@
 26/12/24:
 - *breaking change* there are now separate forward and backwards trigger inputs to note.step and note.tracker, which means if you were using row-select or reset inputs you'll need to fix those connections because they'll point to the wrong input now.
 - a few js error trapping things to make it work in max 9 v8 engine (it does, but i'm not switching for now because that would prevent max8 users using it and it doesn't bring huge performance gains)
+- key 'SHOW_CONTROL_AUTO_DURING_SONG_LOAD' added. if you enable this then while it loads a song it shows you the fullscreen control auto view, which should have labels telling you what the knobs of your controller are assigned to.
 
 24/12/24:
 - improved how qwerty input octave control works
