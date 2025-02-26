@@ -15,7 +15,7 @@
 - experimental: i've turned off multithreading for these meters, which actually seems to have reduced cpu use (threads locking around buffer access perhaps?)
 
 31/1/25:
-- *seq.curved.time* is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
+- **seq.curved.time** is a rhythm sequencer based around bending time. two phasors with a curve-warp option are summed and when they cross thresholds a trigger is emitted. makes a nice weird lfo too.
 
 25/1/25:
 - **automap for controllers** now works in more places - on connections (for gain/conversion parameter editting) and for scroll file menu / new block menu
@@ -84,68 +84,68 @@
 - (in a branch) core.input.keyboard now has history recording, can loop bits of the recording and can spawn an already-connected piano roll block playing back that loop too.
 
 13/10/24:
-- tides (version 1) added
-- 'make space' fn : shift+alt+scroll on the blocks page to push all blocks away from the mouse cursor (or pull towards)
-- clouds now supports saving the contents of its internal buffer to a wave slot (and to disk so it's recalled when you load the song next time)
+- **tides** (version 1) added
+- '**make space**' fn : shift+alt+scroll on the blocks page to push all blocks away from the mouse cursor (or pull towards)
+- **clouds** now supports saving the contents of its internal buffer to a wave slot (and to disk so it's recalled when you load the song next time)
 
 12/10/24:
-- rings, clouds, warps, sheep and braids all added too. the MI blocks with pitch inputs have been adjusted to work with benny's global tuning table system. also added the MI verb and phase vocoder
-- voice.basic now has a row of velocity modulation controls, which makes that more conventient.
+- **rings, clouds, warps, sheep and braids** all added too. the MI blocks with pitch inputs have been adjusted to work with benny's global tuning table system. also added the MI verb and phase vocoder
+- **voice.basic** now has a row of velocity modulation controls, which makes that more convenient.
 - file menu laid out in a hopefully more intuitive way
-- seq.wonky - set step lengths with sliders, it fits the steps into the desired loop length and follows an incoming clock
+- **seq.wonky** - set step lengths with sliders, it fits the steps into the desired loop length and follows an incoming clock
 
 9/10/24:
-- voice.plaits is a wrapper for v boehm's port of MI plaits. works really nicely with benny's workflow i think, and is fun in polyphony. the audio input destination selectors work with the module's different behaviour for when things are plugged in or not, when things aren't connected to the mod inputs there's an internal decay envelope. grateful for Emilie's generosity.
+- **voice.plaits** is a wrapper for v boehm's port of MI plaits. works really nicely with benny's workflow i think, and is fun in polyphony. the audio input destination selectors work with the module's different behaviour for when things are plugged in or not, when things aren't connected to the mod inputs there's an internal decay envelope. grateful for Emilie's generosity.
 
 8/10/24:
 - renamed some blocks for clarity. introduced aliases list so that this doesn't break anyone's old savefiles.
-- recording from hardware blocks is possible now
-- there is a midi in indicator - a dot for each available input device - to help you check midi inputs are working properly etc. next to the play button.
+- **recording from hardware blocks is possible now**
+- there is a **midi in indicator** - a dot for each available input device - to help you check midi inputs are working properly etc. next to the play button.
 
 26/09/24:
-- utility.fidget block - adhd for parameter values
+- **utility.fidget** block - adhd for parameter values
 
 23/09/24:
-- seq.values supports patterns
+- **seq.values** supports patterns
 - WIRES_REDUCE key in userconfig simplifies wire drawing for connections to/from all voices
 - distance-fog effect on further wires, cleans up display
 - mechanism to take a load off max scheduler by only enabling midi outputs if they're connected (currently only used on utility.env.asr's EOA/EOR outs)
 - when connecting a paramater (1d) output to a midi input labelled as 'notes' or 'notes in' or 'pitch' benny automatically sets the conversion settings to turn the values into different notes (as opposed to different velocities, the default)
 
 20/09/24:
-- random per-note delay options added to the midi delay block, useful for making the notes of a chord not all arrive simultaneously
-- audio rate smoothing block added (useful after an env used as an envelope follower)
+- random per-note delay options added to the **midi.delay** block, useful for making the notes of a chord not all arrive simultaneously
+- audio rate **smoothing block** added (useful after an env used as an envelope follower)
 - env and vca.env updated to make audio rate trigger/follow inputs actually work *breaking change* the options for in2 on the env.asr have changed
-- bonk block added. detects drum transients, can be trained to identify a number of different drums. currently saving the training data isn't implemented.
+- **bonk block added. detects drum transients**, can be trained to identify a number of different drums. currently saving the training data isn't implemented.
 
 16/09/24:
 - meter_tint in the config sets the colour of block meters (0 = the block colour, 1 = white)
-- vca.env made more useful
+- **vca.env** made more useful
 
 15/09/24:
-- *breaking change* midi.scale.quantise is renamed to utility.cv.scale.quantise. if you have problems loading old songs you can open the json and run a find replace to swap all instances of the old name to the new name.
-- new midi.scale.quantise (does midi-only quantising)
-- fixes and improvements to sample tracker - slice drawing, patterns
-- fullscreen clock / click to toggle to timer / ctrl click resets timer
+- *breaking change* midi.scale.quantise is renamed to **utility.cv.scale.quantise**. if you have problems loading old songs you can open the json and run a find replace to swap all instances of the old name to the new name.
+- new **midi.scale.quantise** (does midi-only quantising)
+- fixes and improvements to **sample tracker** - slice drawing, patterns
+- fullscreen **clock** / click to toggle to timer / ctrl click resets timer
 - support for 'special controllers' (eg my new live pc has a high res encoder to adjust last param)
 - waves page param value step fixed so it's useable now
-- midi pitch range block
+- **midi pitch range** block
 
 11/09/24:
-- preliminary alysseum matrix support works - in hw editor you can define what matrix io a hardware block is connected to then in the new connection view a new type of wire is available - matrix - which is purple.
-- drag and drop audio files onto the launcher benny logo loads them into the next free slots
+- preliminary **alysseum matrix support** works - in hw editor you can define what matrix io a hardware block is connected to then in the new connection view a new type of wire is available - matrix - which is purple.
+- **drag and drop audio files** onto the launcher benny logo loads them into the next free slots
 - fixes to setting up midi only hardware blocks
 - fixes to muting hardware blocks' midi handler
 
 04/08/24:
-- hardware editor layout improvements (collapsing tree), support for selecting soundcard and external matrix drivers, improved labelling, selecting matrix channels
-- experimental support for nearly-direct routing of hardware-hardware connections through RME totalmix (instead of bringing audio into max, through the internal matrix and back out, this drastically reduces the latency of these connections). needs to be enabled under advanced in hardware manager. known issue: these connections don't show up on benny's audio meters.
+- **hardware editor** layout improvements (collapsing tree), support for selecting soundcard and external matrix drivers, improved labelling, selecting matrix channels
+- experimental support for nearly-direct routing of **hardware-hardware connections through RME totalmix** (instead of bringing audio into max, through the internal matrix and back out, this drastically reduces the latency of these connections). needs to be enabled under advanced in hardware manager. known issue: these connections don't show up on benny's audio meters.
 
 28/08/24:
-- fixes to vst manager
+- fixes to **vst manager**
 - support for drivers for external matrixes (eg alysseum, erica in hardware, or soundcard driver matrix mixers too, eg RME totalmix) (this is in a branch)
-- utility.midi.calculus block added - given a stream of midi values it outputs rate of change (with a nice smoothing algo) and integral as well as difference to last value and noteouts for change, 'becomes nonzero' and 'becomes zero'.
-- utility.midi.smooth block - uses the cytomic smoothing algorithm used in the calculus block to provide simple effective value-stream smoothing.
+- **utility.midi.calculus** block added - given a stream of midi values it outputs rate of change (with a nice smoothing algo) and integral as well as difference to last value and noteouts for change, 'becomes nonzero' and 'becomes zero'.
+- **utility.midi.smooth** block - uses the cytomic smoothing algorithm used in the calculus block to provide simple effective value-stream smoothing.
 
 18/08/24:
 - *breaking change* the mix curve on buckets and tape and stretch delays has been changed. at the midpoint both wet and dry signals are at 100% - ie the mix fader *brings in* the wet signal, which doesn't create the impression of the music getting quieter. (previously all 3 had different behaviour, none of which was quite right)
@@ -153,7 +153,7 @@
 - fixes to core.input.control
 - vst parameter sync between plugin window ui and benny fixed
 - modal synthesis voice added
-- wave.scan now supports free play (ie playing even when transport stopped) 
+- **wave.scan** now supports free play (ie playing even when transport stopped) 
 - fix to panel slider behaviours, fix behaviour when dragging along a row of sliders with the 'click to set' property enabled
 - improvements to notepool loading (trying to avoid duplicate loads without messing it up..)
 
@@ -166,7 +166,7 @@
     - starting states can be set for controllers per-song. (still in testing)
 
 06/08/24:
-- added AMXD (max for live device) support
+- added **AMXD (max for live device)** support - add your AMXD devices in the vst manager
 - added insert key shortcut on the connection edit sidebar view
 - warnings when saving a patch where substitution have occured
 - fixes to loading, merge, muting
