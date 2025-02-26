@@ -1,8 +1,6 @@
-changelog
-
-- 16/2/25 *breaking change* the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
+- 16/2/25 the mixer channel/stereo channel now compensate the gain fader when 'cascade' or 'crunch' modes are selected to roughly match the 'channel' mode gain. *breaking change* if you used cascade or crunch you'll need to raise your level sliders on those channels to match how it sounded before.
 - **bottom panel area**. experimental. at the moment only the mixer bus can be put there.
-- 14/2/25 *breaking change* the envelopes in voice.basic,voice.pitch.env,voice.dual,voice.harmonic,voice.noise,env.asr,vca.env,2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
+- 14/2/25 the envelopes in voice.basic, voice.pitch.env, voice.dual, voice.harmonic, voice.noise, env.asr, vca.env, 2pole.filter.env have been upgraded to include a switch between regular envelope behaviour (an exponential envelope rises fast initially and falls fast initially, slowing as it progresses in both directions) and 'mirrored' mode, where exponential envelopes start to rise slowly, accelerating as they go on, forming a mirrored version of the decay curve. *breaking change* the old default was the mirrored behaviour, but the new default is the opposite, which means some old patches might sound wrong until you flip the (new) mode button.
 
 12/2/25:
 - **huge performance improvements**! i'd been putting this off but it wasn't as bad as i feared (!) the 3d graphics now takes advantage of 'hardware instancing' which means the cpu overhead of large patches is vastly reduced. on my mid-range framework intel laptop (no gpu) with a particular largeish patch ('blackpool late 80s') from my live set the cpu usage/power draw drops by 50% (!) despite it actually hitting a higher FPS than before. 
@@ -20,7 +18,7 @@ changelog
 - **automap for controllers** now works in more places - on connections (for gain/conversion parameter editting) and for scroll file menu / new block menu
 
 20/1/25:
-- *breaking change* added more models to **voice.modal**, which will possibly throw off model selection in old songfiles. easy to correct and the new models are nice.
+- added more models to **voice.modal**, *breaking change* which will possibly throw off model selection in old songfiles. easy to correct and the new models are nice.
 - **stick slip model block** (model of a mass sticking and slipping on a surface as it is pulled by a spring - useful for generating rhythms, making lfos more interesting, processing audio, scrapes and scratches)
 
 18/1/25:
@@ -30,7 +28,7 @@ changelog
 - **undo now works for almost everything** in the main part of benny
 
 9/1/25:
-- *breaking change* quantpool was populated slightly wrong, i think. very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
+- quantpool was populated slightly wrong, i think. *breaking change* very slight chance if you were using quantisers of any kind they may need a slight offset adjustment
 - fix quantislide osc 
 
 28/12/24:
