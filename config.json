@@ -53,7 +53,6 @@
 	"MAX_STATES" : 18,
 	"SONGS_FOLDER" : "",
 	"RECORD_FOLDER" : "",
-	"TEMPLATES_FOLDER" : "templates",
 	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mix", "vst", "amxd" ],
 	"RECYCLING" : 1,
 	"ENABLE_RECORD_HARDWARE" : 1,

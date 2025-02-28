@@ -24,11 +24,10 @@ function loadbang(){
 	}else{
 		userconfigfile.close();
 		userconfigfile.freepeer();
-		post("\n-------------\nfirst run. hello!\nsetting songs folder and templates folder, you can change these in the file menu.");
+		post("\n-------------\nfirst run. hello!\nsetting songs folder, you can change this in the file menu.");
 		var newuserconfig = new Dict;
 		newuserconfig.parse("{}");
 		newuserconfig.replace("last_hardware_config","no_hardware.json");
-		newuserconfig.replace("TEMPLATES_FOLDER", "templates");
 		newuserconfig.replace("SONGS_FOLDER", "demosongs");
 		newuserconfig.replace("glow", 0.2);
 		newuserconfig.export_json(projectpath+"userconfig.json");
@@ -300,14 +299,8 @@ function initialise_dictionaries(hardware_file){
 		post("\songs folder is ",SONGS_FOLDER);
 	}	
 	read_songs_folder("songs");
-	
-	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
-	if((projectpath!="")&&(TEMPLATES_FOLDER.indexOf("/")==-1)){
-		TEMPLATES_FOLDER = projectpath + TEMPLATES_FOLDER;
-		post("\ntemplates folder is ",TEMPLATES_FOLDER);
-	}
-	read_songs_folder("templates");	
-			
+	if(startup_loadfile=="autoload") read_songs_folder("templates");
+
 	preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 
@@ -758,7 +751,9 @@ function import_hardware(v){
 			loading.wait=1;
 			loading.songname = "autoload";
 			import_song();	
-		}	
+		}else{
+			load_elsewhere(startup_loadfile);
+		}
 	}else{
 		load_elsewhere(startup_loadfile);
 	}
@@ -1076,7 +1071,7 @@ function topbar_size(){
 
 function sidebar_size(){
 	var w = sidebar.width+sidebar.scrollbar_width+6;
-	if(sidebar.mode=="file_menu"){
+	if((sidebar.mode=="file_menu")||(sidebar.mode=="file_more")){
 		w = fontheight * 15+sidebar.scrollbar_width+6;
 	}
 	var h = sidebar.used_height;
@@ -1124,7 +1119,10 @@ function bottombar_size(){
 		bottombar.videoplane.message("texzoom",1/tw,1/th);
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
-		if((h!=bottombar.height)||(r!=bottombar.right)) setup_bottom_bar(bottombar.block);
+		if((h!=bottombar.height)||(r!=bottombar.right)){
+			// ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+			setup_bottom_bar(bottombar.block);
+		}
 		redraw_flag.deferred |= 4;
 	}else{
 		bottombar.videoplane.message("enable",0);

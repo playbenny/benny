@@ -1074,14 +1074,6 @@ function clear_everything_btn(parameter,value){
 		post("\ndanger",value,"(",parameter,")");
 	}
 }
-function files_switch_folder(){
-	if(sidebar.files_page=="songs"){
-		sidebar.files_page="templates";
-	}else{
-		sidebar.files_page="songs";
-	}
-	redraw_flag.flag |= 2;
-}
 
 function custom_mouse_passthrough(parameter,value){
 	// post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
@@ -2233,7 +2225,7 @@ function send_record_arm_messages(block){
 	if((loading.songname == "autoload")||(loading.songname=="")){
 		path = path + "untitled";
 	}else{
-		path = path + loading.songname; //songlist[0][currentsong];
+		path = path + loading.songname;
 	}
 	path = path + "-" + blocks.get("blocks["+block+"]::label") + "-" +(da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
 	//post("\npath is ",path);
@@ -2887,21 +2879,13 @@ function automap_default(a,b){
 }
 
 function file_menu_enter(){
-	if(sidebar.files_page == "templates"){
-		merge_song();
-	}else{
-		load_song();
-	}
+	load_song();
 }
 
 function select_song(song){
 	if((usermouse.timer>0)&&(song==currentsong)&&(!playing)){
 		usermouse.timer=0;
-		if(sidebar.files_page == "templates"){
-			merge_song();
-		}else{
-			load_song();
-		}
+		load_song();
 	}else{
 		currentsong = song;
 		usermouse.timer = DOUBLE_CLICK_TIME;
@@ -3387,9 +3371,8 @@ function cut_selection(){
 	delete_selection();
 }
 function file_menu_arrows(dir){
-	var df = (sidebar.files_page == "templates")|0;
 	currentsong+=dir;
-	currentsong = (currentsong + songlist[df].length) % (songlist[df].length);
+	currentsong = (currentsong + songlist.length) % (songlist.length);
 	redraw_flag.flag |= 2;
 }
 

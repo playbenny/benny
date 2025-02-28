@@ -54,7 +54,6 @@ var METER_TINT = 0.3;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
-var TEMPLATES_FOLDER = "templates";
 var MUTEDWIRE = [0.16,0.16,0.14, 1];
 var SOUNDCARD_HAS_MATRIX = 0;
 var EXTERNAL_MATRIX_PRESENT = 0;
@@ -687,7 +686,7 @@ var loaded_note_patcherlist = new Array(MAX_NOTE_VOICES);
 var loaded_ui_patcherlist = new Array(MAX_BLOCKS);
 var vst_list = new Array(MAX_AUDIO_VOICES);
 
-var songlist = [[],[]]; //two pages - songs, templates
+var songlist = [];
 var currentsong = -1;
 
 var fullscreen = 0;

@@ -4,8 +4,9 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	if(folder_name_or_path=="songs"){
 		var f = new Folder(SONGS_FOLDER);
 		var df = 0;
-	}else if(folder_name_or_path == "templates"){
-		var f = new Folder(TEMPLATES_FOLDER);
+	}else if(folder_name_or_path=="templates"){
+		var f = new Folder(projectpath+"templates");
+		post("\n\nF:",projectpath+"templates");
 		var df = 1;
 	}else{
 		var f = new Folder(folder_name_or_path);
@@ -13,11 +14,10 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	}
 	post("\nreading songs from folder: ",folder_name_or_path);
 	f.reset();
-	if(df==0) songlist[0] = [];
-	if(df==1) songlist[1] = [];
+	if(df==0) songlist = [];
 	var fpath = f.pathname;
 	var i=0, tss;
-	if(!Array.isArray(songs_moddate[df])) songs_moddate[df] = [];
+	if(!Array.isArray(songs_moddate)) songs_moddate = [];
 	if(fpath[fpath.length-1] !== "/" ) fpath = fpath+"/";
 	while(!f.end){
 		if(f.extension == ".json"){
@@ -29,12 +29,12 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 			}*/
 			tss = f.filename.split(".json")[0];
 			var tsd = f.moddate.toString();
-			if(df<2) songlist[df][i] = tss;
+			if(df<2) songlist[i] = tss;
 			if(songs.contains(tss)){
-				if(tsd!=songs_moddate[df][i]) songs.remove(tss);
+				if(tsd!=songs_moddate[i]) songs.remove(tss);
 			}
 			if(!songs.contains(tss)){
-				songs_moddate[df][i] = tsd;
+				songs_moddate[i] = tsd;
 				song.import_json(fpath+f.filename);
 				copy_song_to_songs_dict(tss);
 				post("\npreloaded songfile:",f.filename);
@@ -48,32 +48,32 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 
 	if((preload_list.length == 0) && (df<2)){
 		var blocktypes_count_cumulative = new Dict;
-		for(var i=0;i<songlist[df].length;i++){
+		for(var i=0;i<songlist.length;i++){
 			var blocktypes_count_this = new Dict;
-			if(songs.contains(songlist[df][i]+"::waves")){
-				var ws=songs.getsize(songlist[df][i]+"::waves");
+			if(songs.contains(songlist[i]+"::waves")){
+				var ws=songs.getsize(songlist[i]+"::waves");
 				for(var t=0;t<ws;t++){
-					var pat = songs.get(songlist[df][i]+"::waves["+t+"]::path");
-					var nam = songs.get(songlist[df][i]+"::waves["+t+"]::name");
+					var pat = songs.get(songlist[i]+"::waves["+t+"]::path");
+					var nam = songs.get(songlist[i]+"::waves["+t+"]::name");
 					if(pat!=null){
-						preload_list.push([pat,nam,songlist[df][i]+"::waves["+t+"]::"]);
+						preload_list.push([pat,nam,songlist[i]+"::waves["+t+"]::"]);
 						//polybuffer_load_wave(pat,nam);
 					}
 				}
 			}
 			var bc=0, vc_n=0, vc_a=0, vc_h=0;
-			if(songs.contains(songlist[df][i]+"::blocks")){
-				var bs=songs.getsize(songlist[df][i]+"::blocks");
+			if(songs.contains(songlist[i]+"::blocks")){
+				var bs=songs.getsize(songlist[i]+"::blocks");
 				for(var t=0;t<bs;t++){
-					if(songs.contains(songlist[df][i]+"::blocks["+t+"]::type")){
+					if(songs.contains(songlist[i]+"::blocks["+t+"]::type")){
 						bc++;
-						var ty = songs.get(songlist[df][i]+"::blocks["+t+"]::type");
-						var vc = songs.get(songlist[df][i]+"::blocks["+t+"]::poly::voices");
-						if(songs.contains(songlist[df][i]+"::blocks["+t+"]::subvoices")){
-							var sb=songs.get(songlist[df][i]+"::blocks["+t+"]::subvoices");
+						var ty = songs.get(songlist[i]+"::blocks["+t+"]::type");
+						var vc = songs.get(songlist[i]+"::blocks["+t+"]::poly::voices");
+						if(songs.contains(songlist[i]+"::blocks["+t+"]::subvoices")){
+							var sb=songs.get(songlist[i]+"::blocks["+t+"]::subvoices");
 							if(sb>1) vc/=sb;
 						}
-						var nam = songs.get(songlist[df][i]+"::blocks["+t+"]::name");
+						var nam = songs.get(songlist[i]+"::blocks["+t+"]::name");
 						if(ty=="note"){
 							vc_n += vc;
 							if(blocktypes_count_this.contains("note::"+nam)){
@@ -453,22 +453,15 @@ function load_next_song(slow){
 	usermouse.ctrl = slow;
 	currentsong++;
 	if(currentsong<0)currentsong=0;
-	if(currentsong==songlist[0].length)currentsong=0;
-	post("\nload next song: ", currentsong, songlist[0][currentsong]);
+	if(currentsong==songlist.length)currentsong=0;
+	post("\nload next song: ", currentsong, songlist[currentsong]);
 	load_song();
 	usermouse.ctrl = oc;
 }
 
 function load_song(){
 	if(currentsong<0) return -1;
-	var df; 
-	if(sidebar.files_page == "templates"){
-		df=1;
-		loading.songpath = TEMPLATES_FOLDER;
-	}else{
-		df=0;
-		loading.songpath = SONGS_FOLDER;
-	}
+	loading.songpath = SONGS_FOLDER;
 	if(playing) play_button();
 	meters_enable = 0;
 	clear_everything();
@@ -478,7 +471,7 @@ function load_song(){
 	loading.bundling=16;
 	loading.wait=1;
 	loading.hardware_substitutions_occured = 0;
-	loading.songname = songlist[df][currentsong];
+	loading.songname = songlist[currentsong];
 	if(usermouse.ctrl){
 		loading.bundling=1;
 		loading.wait=20;
@@ -500,22 +493,15 @@ function merge_song(){
 		loading.bundling=4;
 	}
 	//loading.wait=2;
-	var df; 
-	if(sidebar.files_page == "templates"){
-		df=1;
-		loading.songpath = TEMPLATES_FOLDER;
-	}else{
-		df=0;
-		loading.songpath = SONGS_FOLDER;
-	}
-	loading.songname = songlist[df][currentsong];
+	loading.songpath = SONGS_FOLDER;
+	loading.songname = songlist[currentsong];
 	song_select.previous_name = song_select.current_name;
 	song_select.previous_blocks = song_select.current_blocks.slice();
-	song_select.current_name = songlist[df][currentsong];
+	song_select.current_name = songlist[currentsong];
 	song_select.current_blocks = [];
 	song_select.show = 1;
 	if(MERGE_PURGE>0) purge_muted_trees();
-	import_song(songlist[df][currentsong]);
+	import_song(songlist[currentsong]);
 }
 
 // this fn is called repeatedly, at each call it loads a bit more song, then sets a flag
@@ -1454,6 +1440,21 @@ function file_written(fname){//called when max reports successfully saving the c
 	loading.songname = fname.split("/").pop();
 	post("\nsave as set obj target to",loading.object_target);
 }
+function select_recent_folder(name,blank){
+	post("\nselected recent folder:",name);
+	SONGS_FOLDER = name;
+	var recent_folders=[];
+	if(userconfig.contains("RECENT_SONGS_FOLDERS")){
+		recent_folders = userconfig.get("RECENT_SONGS_FOLDERS");
+		if(!Array.isArray(recent_folders)) recent_folders=[recent_folders];
+		r = recent_folders.indexOf(name);
+		recent_folders.splice(r,1);
+		recent_folders.push(name);
+	}
+	userconfig.replace("SONGS_FOLDER",name);
+	write_userconfig();
+	read_songs_folder("songs");
+}
 
 function folder_select(folderstr){
 	post("new songs folder selected",folderstr);
@@ -1461,15 +1462,19 @@ function folder_select(folderstr){
 		if(folder_target == "song"){
 			SONGS_FOLDER = folderstr;
 			post("\nselected new songs folder:",folderstr);
+			var recent_folders=[];
+			if(userconfig.contains("RECENT_SONGS_FOLDERS")){
+				recent_folders = userconfig.get("RECENT_SONGS_FOLDERS");
+				if(!Array.isArray(recent_folders)) recent_folders=[recent_folders];
+			}
+			if(recent_folders.indexOf(folderstr)==-1){
+				recent_folders.push(folderstr);
+				if(recent_folders.length>9)recent_folders.shift();
+				userconfig.replace("RECENT_SONGS_FOLDERS",recent_folders);
+			}
 			userconfig.replace("SONGS_FOLDER",folderstr);
 			write_userconfig();
 			read_songs_folder("songs");
-		}else if(folder_target == "template"){
-			TEMPLATES_FOLDER = folderstr;
-			post("\nselected new templates folder:",folderstr);
-			userconfig.replace("TEMPLATES_FOLDER",folderstr);
-			write_userconfig();
-			read_songs_folder("templates");
 		}else if(folder_target == "record"){
 			post("\nselected new record folder:",folderstr);
 			config.replace("RECORD_FOLDER",folderstr);
