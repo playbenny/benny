@@ -1447,13 +1447,35 @@ function select_recent_folder(name,blank){
 	if(userconfig.contains("RECENT_SONGS_FOLDERS")){
 		recent_folders = userconfig.get("RECENT_SONGS_FOLDERS");
 		if(!Array.isArray(recent_folders)) recent_folders=[recent_folders];
-		r = recent_folders.indexOf(name);
-		recent_folders.splice(r,1);
-		recent_folders.push(name);
+		var r = recent_folders.indexOf(name);
+		if(r!=-1){
+			recent_folders.splice(r,1);
+			recent_folders.push(name);
+			post("\nreordered");
+		}
+		userconfig.replace("RECENT_SONGS_FOLDERS",recent_folders);
 	}
 	userconfig.replace("SONGS_FOLDER",name);
 	write_userconfig();
 	read_songs_folder("songs");
+}
+
+function add_path_to_recent_folders(folderstr){
+	var recent_folders=[];
+	if(userconfig.contains("RECENT_SONGS_FOLDERS")){
+		recent_folders = userconfig.get("RECENT_SONGS_FOLDERS");
+		if(!Array.isArray(recent_folders)) recent_folders=[recent_folders];
+	}
+	var r = recent_folders.indexOf(folderstr);
+	if(r!=-1){
+		recent_folders.splice(r,1);
+		recent_folders.push(folderstr);
+	}else{
+		recent_folders.push(folderstr);
+		if(recent_folders.length>9)recent_folders.shift();
+	}	
+	userconfig.replace("RECENT_SONGS_FOLDERS",recent_folders);
+	write_userconfig();
 }
 
 function folder_select(folderstr){
@@ -1467,7 +1489,11 @@ function folder_select(folderstr){
 				recent_folders = userconfig.get("RECENT_SONGS_FOLDERS");
 				if(!Array.isArray(recent_folders)) recent_folders=[recent_folders];
 			}
-			if(recent_folders.indexOf(folderstr)==-1){
+			var r = recent_folders.indexOf(folderstr);
+			if(r!=-1){
+				recent_folders.splice(r,1);
+				recent_folders.push(folderstr);
+			}else{
 				recent_folders.push(folderstr);
 				if(recent_folders.length>9)recent_folders.shift();
 				userconfig.replace("RECENT_SONGS_FOLDERS",recent_folders);

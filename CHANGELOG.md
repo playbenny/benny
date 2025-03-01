@@ -1,3 +1,6 @@
+28/2/25:
+- simplified the files page, removed the 'templates' folder. on the 'files/...' menu there's a list of recently used folders.
+
 25/2/25:
 - **flocking** improvements - once you've assigned some parameters to flocking the flock controls are visible at the bottom of the sidebar parameters view, which makes tuning behaviour easier. you can also click blocks in the flock visualiser to select them in the sidebar to adjust.
 

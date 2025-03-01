@@ -977,6 +977,7 @@ function load_elsewhere(fname){
 		song.import_json(fname);
 		loading.songpath = fname.split(tss)[0];
 		post("\npath", loading.songpath);
+		add_path_to_recent_folders(loading.songpath);
 		copy_song_to_songs_dict(tss);
 		if(playing) play_button();
 		meters_enable = 0;
@@ -2222,6 +2223,10 @@ function send_record_arm_messages(block){
 	var da = new Date();
 	var tt = blocks.get("blocks["+block+"]::type");
 	var path = config.get("RECORD_FOLDER");
+	if((path=="")||(path=="auto")){
+		path = SONGS_FOLDER;
+		error("\nno record folder set so i'm recording into the songs folder.");
+	}
 	if((loading.songname == "autoload")||(loading.songname=="")){
 		path = path + "untitled";
 	}else{
