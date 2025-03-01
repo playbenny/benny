@@ -518,7 +518,15 @@ function import_hardware(v){
 			ob = d.get(keys[i]+"::output_block");
 			d3.setparse('{}');
 			d3.import_json(projectpath+"output_blocks/"+ob+".json");
-			
+			var d4 = d3.get(ob);
+			var d4k=d4.getkeys();
+			// post("\nd4k:",d4k);
+			for(t=0;t<d4k.length;t++){
+				if((d4k[t]!="parameters")&&(d4k[t]!="panel")&&(d4k[t]!="connections")&&(d4k[t]!="type")&&(d4k[t]!="patcher")&&(d4k[t]!="max_polyphony")){
+					post("\ncopied output block key:",d4k[t]);
+					blocktypes.set(keys[i]+"::"+d4k[t],d4.get(d4k[t]));
+				}
+			}
 			if(d3.contains(ob+"::parameters")){
 				if(d3.contains(ob+"::groups")){
 					blocktypes.set(keys[i]+"::groups");
@@ -544,7 +552,7 @@ function import_hardware(v){
 					p_type = d4.get("type");
 					p_values = d4.get("values");
 					write_parameter_info_buffer(p_values,p_type,MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
-					post("\nopb,",MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
+					// post("\nopb,",MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
 					blocktypes.setparse(keys[i]+"::parameters["+t+"]","{}");
 					blocktypes.set(keys[i]+"::parameters["+t+"]",d4);
 					if(t+1<plist)blocktypes.append(keys[i]+"::parameters","*");

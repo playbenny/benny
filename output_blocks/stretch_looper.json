@@ -1,8 +1,11 @@
 {
 	"stretch_looper" : {
 		"patcher" : "stretch_looper",
+		"block_ui_patcher" : "stretch_looper.ui",
 		"type" : "output",
 		"help_text" : "stereo output channels with continuity looper that timestretches to match the next song.",
+		"ui_to_bottom_panel" : 1,
+		"ui_in_sidebar_height" : 6,		
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {

@@ -6,7 +6,6 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 		var df = 0;
 	}else if(folder_name_or_path=="templates"){
 		var f = new Folder(projectpath+"templates");
-		post("\n\nF:",projectpath+"templates");
 		var df = 1;
 	}else{
 		var f = new Folder(folder_name_or_path);
@@ -1441,7 +1440,6 @@ function file_written(fname){//called when max reports successfully saving the c
 	post("\nsave as set obj target to",loading.object_target);
 }
 function select_recent_folder(name,blank){
-	post("\nselected recent folder:",name);
 	SONGS_FOLDER = name;
 	var recent_folders=[];
 	if(userconfig.contains("RECENT_SONGS_FOLDERS")){
@@ -1451,7 +1449,6 @@ function select_recent_folder(name,blank){
 		if(r!=-1){
 			recent_folders.splice(r,1);
 			recent_folders.push(name);
-			post("\nreordered");
 		}
 		userconfig.replace("RECENT_SONGS_FOLDERS",recent_folders);
 	}

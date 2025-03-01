@@ -3102,7 +3102,6 @@ function draw_sidebar(){
 			lcd_main.message("moveto",file_menu_x+fontheight*0.2, y_offset+fontheight*0.45);
 			lcd_main.message("write","recent folders:");
 			recent_folders=userconfig.get("RECENT_SONGS_FOLDERS");
-			post("\nrecent folders,",recent_folders);
 			for(var rf=0;rf<recent_folders.length;rf++){
 				lcd_main.message("moveto",file_menu_x+2.5*fontheight,y_offset+fontheight*0.45);
 				lcd_main.message("write",recent_folders[rf]);
