@@ -7,6 +7,13 @@
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
+		"default_polymode" : {
+			"stack_mode" : "1x",
+			"choose_mode" : "first free",
+			"steal_mode" : "oldest",
+			"return_mode" : 1,
+			"latching" : 0
+		},
 		"connections" : {
 			"in" : { 
 				"audio" : [ "in" ],
@@ -18,19 +25,22 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,1],
+				"contains" : [0,1],
 				"height" : 2
 			},
 			{ 
 				"contains" : [2,2,3],
 				"height" : 2
+			},
+			{
+				"contains" : [4],
+				"height" : 0.6
 			}
 		],
 		"parameters" : [
 			{
 				"name" : "freeze",
 				"type" : "menu_b",
-				"nopervoice" : 1,
 				"values" : ["off",  "on"],
 				"colours" : [0,[50,200,250]],
 				"wrap" : 1,
@@ -57,6 +67,14 @@
 				"values" : ["bi", -1, 1, "exp1000"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "only voice 1 passes dry signal",
+				"nopervoice" : 1,
+				"type" : "menu_b",
+				"values" : ["only voice 1 passes dry signal", "all voices pass dry signal"],
+				"wrap" : 1,
+				"default" : 0.1
 			}
 		]
 	}
