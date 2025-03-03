@@ -98,7 +98,6 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				}
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
-			post("\nwrote songs info",i);
 			var td = blocktypes_count_this.get("note");
 			if(td!=null){
 				var tdk = td.getkeys();

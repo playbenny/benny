@@ -1815,17 +1815,18 @@ function edit_typing(key){
 }
 
 function edit_song_notes(key){
-	post("\ntyping,",key);
+	post(/*"\ntyping,",*/key);
 	var caps = 0;
 	if(key==-2){
 		sidebar.text_being_edited = sidebar.text_being_edited+" ";
 	}else if(key==-4){
 		sidebar.text_being_edited = sidebar.text_being_edited+"£";
 	}else{
+		post(String.fromCharCode(key));
 		if(key>512) {
 			caps=1;
 			key-=512;
-			key-=32;
+			//key-=32;
 		}
 		sidebar.text_being_edited = sidebar.text_being_edited + String.fromCharCode(key);
 	}
