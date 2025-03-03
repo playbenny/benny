@@ -4,14 +4,16 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	if(folder_name_or_path=="songs"){
 		var f = new Folder(SONGS_FOLDER);
 		var df = 0;
+		post("\nreading songs from folder: ",SONGS_FOLDER);
 	}else if(folder_name_or_path=="templates"){
 		var f = new Folder(projectpath+"templates");
 		var df = 1;
+		post("\nreading songs from folder: ",projectpath+"templates");
 	}else{
 		var f = new Folder(folder_name_or_path);
 		var df = 2;
+		post("\nreading songs from folder: ",folder_name_or_path);
 	}
-	post("\nreading songs from folder: ",folder_name_or_path);
 	f.reset();
 	if(df==0) songlist = [];
 	var fpath = f.pathname;
@@ -47,6 +49,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 
 	if((preload_list.length == 0) && (df<2)){
 		var blocktypes_count_cumulative = new Dict;
+		songs_info = [];
 		for(var i=0;i<songlist.length;i++){
 			var blocktypes_count_this = new Dict;
 			if(songs.contains(songlist[i]+"::waves")){
@@ -95,6 +98,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				}
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
+			post("\nwrote songs info",i);
 			var td = blocktypes_count_this.get("note");
 			if(td!=null){
 				var tdk = td.getkeys();
@@ -1458,6 +1462,8 @@ function select_recent_folder(name,blank){
 	}
 	userconfig.replace("SONGS_FOLDER",name);
 	write_userconfig();
+	preload_list = [];
+	currentsong = -1;
 	read_songs_folder("songs");
 }
 

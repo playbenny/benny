@@ -2793,21 +2793,21 @@ function draw_sidebar(){
 			}
 			blocks.replace("notepad",sidebar.text_being_edited);
 		}
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menucolour);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,greycolour);
 		lcd_main.message("frgb", 0,0,0 );
 		setfontsize(fontsmall*2);
 		lcd_main.message("textface", "bold");
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "song notes");
 		y_offset += 1.1* fontheight;
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,menudarkest);
-		lcd_main.message("frgb", menucolour);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,greydarkest);
+		lcd_main.message("frgb", greycolour);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("textface", "normal");
 		long_sidebar_text(sidebar.text_being_edited+sidebar.notification,2);
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
 		if(sidebar.notification=="_"){
-			sidebar.notification="";
+			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
