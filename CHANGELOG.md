@@ -1,3 +1,6 @@
+03/03/25:
+- **song notes** (under files / ... / edit song notes) are shown when you select a song in the file list, and pop up while/after it loads the song.
+
 28/2/25:
 - simplified the files page, removed the 'templates' folder. on the 'files/...' menu there's a list of recently used folders.
 

@@ -2368,6 +2368,11 @@ function draw_topbar(){
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
 		lcd_main.message("write", loading.songname);
 		mouse_index++;
+		if(sidebar.mode=="notification"){
+			y_offset = 9 + 1.1*fontheight;
+			lcd_main.message("frgb",menucolour);
+			long_sidebar_text(sidebar.notification,2);
+		} 
 	}
 	var w = 11 + fontheight*(x_o-0.2);
 	if(topbar.used_length!=w){
@@ -2757,7 +2762,11 @@ function draw_sidebar(){
 		setfontsize(fontsmall*2);
 		lcd_main.message("textface", "bold");
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		lcd_main.message("write", "notification");
+		if(loading.progress!=-1){
+			lcd_main.message("write", "notification");
+		}else{
+			lcd_main.message("write", "song notes");
+		}
 		y_offset += 1.1* fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,menudarkest);
 		lcd_main.message("frgb", menucolour);
@@ -2765,6 +2774,44 @@ function draw_sidebar(){
 		lcd_main.message("textface", "normal");
 		post("\nsidebar notification is:\n",sidebar.notification);
 		long_sidebar_text(sidebar.notification,2);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
+	}else if(sidebar.mode == "edit_song_notes"){
+		if(sidebar.mode != sidebar.lastmode){
+			sidebar.text_being_edited=null;
+			if(loading.songname!=null){
+				loading.songname = loading.songname.split(".json")[0];
+				sidebar.text_being_edited = songs.get(loading.songname+"::notepad");
+			}else if(blocks.contains("notepad")){
+				sidebar.text_being_edited = blocks.get("notepad");
+			}
+			if(sidebar.text_being_edited == null)sidebar.text_being_edited="";
+			sidebar.notification = "_";
+			sidebar.lastmode = "edit_song_notes";
+		}else{
+			if(loading.songname!=null){
+				songs.replace(loading.songname+"::notepad",sidebar.text_being_edited);
+			}
+			blocks.replace("notepad",sidebar.text_being_edited);
+		}
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menucolour);
+		lcd_main.message("frgb", 0,0,0 );
+		setfontsize(fontsmall*2);
+		lcd_main.message("textface", "bold");
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		lcd_main.message("write", "song notes");
+		y_offset += 1.1* fontheight;
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,menudarkest);
+		lcd_main.message("frgb", menucolour);
+		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+		lcd_main.message("textface", "normal");
+		long_sidebar_text(sidebar.text_being_edited+sidebar.notification,2);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
+		if(sidebar.notification=="_"){
+			sidebar.notification="";
+		}else{
+			sidebar.notification="_";
+		}
+
 	}else if(sidebar.mode == "potential_wire"){
 		if(wires_potential_connection>-1){
 			if(connections.get("connections["+wires_potential_connection+"]::from::output::type")=="potential"){
@@ -2890,8 +2937,6 @@ function draw_sidebar(){
 		var free_b=MAX_BLOCKS;
 		var free_n=MAX_NOTE_VOICES;
 		var free_a=MAX_AUDIO_VOICES;
-
-		
 		
 		for(i = 0;i<MAX_BLOCKS;i++){
 			if(blocks.contains("blocks["+i+"]::space::colour")) free_b--;
@@ -2953,18 +2998,27 @@ function draw_sidebar(){
 		setfontsize(fontsmall*2);
 		for(i=0;i<songlist.length;i++){
 			y_offset += 1.1*fontheight;
+			click_zone(select_song,i,i, file_menu_x , y_offset, sidebar.x2, y_offset+1.1*fontheight,mouse_index,1 );
 			if(i==currentsong){
 				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,gcolour );
 				lcd_main.message("frgb", 0, 0, 0 );
 				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
 				lcd_main.message("write" , songlist[i]);
+				if(songs.contains(songlist[i]+"::notepad")){
+					var notes = songs.get(songlist[i]+"::notepad");
+					post("\nsong notes:",notes);
+					y_offset += 1.1*fontheight;
+					lcd_main.message("frgb", gcolour );
+					long_sidebar_text(notes,1.5);
+					y_offset -= 1.5*fontheight;
+					setfontsize(fontsmall*2);
+				}
 			}else{
 				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,gdarkest );	
 				lcd_main.message("frgb" , gcolour);
 				lcd_main.message("moveto", file_menu_x + fontheight*0.2, y_offset+fontheight*0.75);
 				lcd_main.message("write" , songlist[i]);
 			}
-			click_zone(select_song,i,i, file_menu_x , y_offset, sidebar.x2, y_offset+1.1*fontheight,mouse_index,1 );
 		}
 		y_offset += 1.5*fontheight;
 		
@@ -3100,7 +3154,7 @@ function draw_sidebar(){
 		click_zone(clear_everything_btn, 0,mouse_index, sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset, mouse_index,1 );
 		lcd_main.message("moveto", sidebar.x2-fontheight*5.8, 9+fontheight*0.75+y_offset);
 		lcd_main.message("write", "clear everything");
-		y_offset+=2.2*fontheight;
+		y_offset+=1.7*fontheight;
 
 		//collect all and save:
 		if(0){
@@ -3109,8 +3163,15 @@ function draw_sidebar(){
 			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
 			lcd_main.message("frgb",greycolour);
 			lcd_main.message("write", "collect all and save");
-			y_offset+=1.1*fontheight;
+			y_offset+=1.7*fontheight;
 		}
+
+		click_zone(set_sidebar_mode, "edit_song_notes","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("frgb",greycolour);
+		lcd_main.message("write", "edit song notes");
+		y_offset+=1.7*fontheight;
 
 		//songs folder
 		setfontsize(fontsmall);

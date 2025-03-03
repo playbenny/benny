@@ -675,6 +675,8 @@ waves_dict.name = "waves";
 var proll = new Dict;
 proll.name = "seq-piano-roll";
 
+var notepad_dict = new Dict; // for song notes
+notepad_dict.name = "notepad"; 
 
 var audio_patcherlist = new Array(MAX_AUDIO_VOICES);
 var audio_upsamplelist = new Array(MAX_AUDIO_VOICES);
