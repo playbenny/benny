@@ -538,7 +538,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
-					if((usermouse.ids[0] == "background") && (bulgeamount>0.5)){
+					if((usermouse.ids[0] == "background") && (bulgeamount>0.5) && (bulgeamount<1)){
 						usermouse.ids = ["wires", bulgingwire, 0];
 						// post("\nset to last wire not background");
 					}
@@ -710,7 +710,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								redraw_flag.flag=4;
 							}
 						}
-						block_and_wire_colours();
+						redraw_flag.flag |= 8; //block_and_wire_colours();
 						usermouse.clicked3d = -1;
 						usermouse.ids[0]="done";
 					}else if(displaymode=="flocks"){
@@ -1010,6 +1010,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//write_wire_matrix(usermouse.drag.dragging.connections[t]);
 										}
 										write_wires_matrix();
+										redraw_flag.matrices &= 253;
 									}
 								}
 							}	
@@ -1202,14 +1203,15 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 						if(selected.wire[bulgingwire]!=1){
 							for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
 							selected.wire[bulgingwire]=1;
-							block_and_wire_colours();
-							redraw_flag.flag |= 2;
+							//redraw_flag.flag |= 8; //block_and_wire_colours();
+							//redraw_flag.flag |= 2;
+							redraw_flag.flag |= 10;
 						}
 					}else{
 						for(var si=0;si<selected.block.length;si++) selected.block[si]=0;
 						for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
 						selected.wire[bulgingwire]=1;
-						block_and_wire_colours();
+						redraw_flag.flag |= 8; //block_and_wire_colours();
 						redraw_flag.flag |= 2;
 					}
 				} //todo? ctrl-scroll a block

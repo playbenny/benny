@@ -103,13 +103,16 @@ function frameclock(){
 		if(redraw_flag.flag & 8) block_and_wire_colours();
 		bangflag=1;
 	}else{
-		if(redraw_flag.flag & 8) block_and_wire_colours();
-		if(redraw_flag.matrices & 1){
-			messnamed("wires_matrices","bang");
-		}
-		if(redraw_flag.matrices & 2){
-			messnamed("voices_matrices","bang");
-			messnamed("blocks_matrices","bang");
+		if(redraw_flag.flag & 8){
+			block_and_wire_colours(); //<<this fn always copies over the matrices
+		}else{
+			if(redraw_flag.matrices & 1){
+				messnamed("wires_matrices","bang");
+			}
+			if(redraw_flag.matrices & 2){
+				messnamed("voices_matrices","bang");
+				messnamed("blocks_matrices","bang");
+			}
 		}
 		redraw_flag.matrices = 0;
 		if(redraw_flag.flag & 1){

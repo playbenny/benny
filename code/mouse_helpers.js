@@ -1488,7 +1488,7 @@ function fire_whole_state_btn(state,value){
 			for(var i = MAX_BLOCKS;i>=0;i--) selected.block.push(0);
 			for(var i = sc_list.length-1;i>=0;i--) selected.block[sc_list[i]]=1;
 			post("\nselected these blocks",sc_list);
-			block_and_wire_colours();
+			redraw_flag.flag |= 8; //block_and_wire_colours();
 		}
 	}else if(usermouse.alt){
 		reload_voicedata();
@@ -2598,7 +2598,7 @@ function connection_edit(parameter,value){
 		//pm[0] holds the connection number
 		make_connection(pm[0],1);
 		if(pn[2]=="mute"){
-			draw_wire(pm[0]);
+			//draw_wire(pm[0]);
 			redraw_flag.flag |= 8;
 		}
 		sidebar.lastmode="recalculate";
@@ -3452,7 +3452,7 @@ function convert_matrix_to_regular(cno, channels){
 	remove_connection(cno);
 	connections.replace("connections["+cno+"]",new_connection);
 	make_connection(cno,0);
-	block_and_wire_colours();
+	redraw_flag.flag |= 8; //block_and_wire_colours();
 	sidebar_select_connection(cno);
 }
 
@@ -3463,7 +3463,7 @@ function convert_regular_to_matrix(cno, channels){
 	remove_connection(cno);
 	connections.replace("connections["+cno+"]",new_connection);
 	make_connection(cno,0);
-	block_and_wire_colours();
+	redraw_flag.flag |= 8; //block_and_wire_colours();
 	sidebar_select_connection(cno);
 }
 
@@ -3698,7 +3698,7 @@ function block_search_typing(key){
 			}
 			ch |= (selected.block[i]!=t);
 		}
-		if(ch) block_and_wire_colours();
+		if(ch) redraw_flag.flag |= 8; //block_and_wire_colours();
 	}
 	redraw_flag.flag |=2;
 }

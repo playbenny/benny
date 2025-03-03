@@ -1508,6 +1508,7 @@ function remove_potential_wire(){
 			wires_rotatexyz[wires_potential_connection] = null;
 			wires_colour[wires_potential_connection] = null;
 			write_wires_matrix();
+			redraw_flag.matrices &= 254;
 		}
 		//post("\nremoving",wires_potential_connection,"dragging length",usermouse.drag.dragging.connections.length);
 		var empt=new Dict;  // wipe this one from the dictionary
@@ -2247,7 +2248,7 @@ function make_connection(cno,existing){
 				}
 			}
 		}
-		draw_wire(cno);
+		if(!existing) draw_wire(cno);
 	}
 	if(!existing) rebuild_action_list = 1;
 	last_connection_made=cno;
@@ -2478,8 +2479,8 @@ function build_new_connection_menu(from, to, fromv,tov){
 	}else{
 		post("\nERROR how have we got here without a potential connection?",fromname,toname,"clicked3d",usermouse.clicked3d);
 	}
-
-	redraw_flag.flag |= 4;
+	redraw_flag.flag |= 8;
+	// redraw_flag.flag |= 4;
 }
 
 function check_for_connection_overlap(n){
@@ -3453,7 +3454,7 @@ function build_mod_sum_action_list(){
 	//var ttt=new Date().getTime();
 	if(loading.progress>0) return 0;
 	messnamed("modulation_processor", "pause",1);
-	post("\nBuilding new mod sum action list");
+	// post("\nBuilding new mod sum action list");
 // this was the old do_parameters loop, now it fills a buffer with a list of things to sum and where they go
 // buffer has 4 channels. 
 // ch1 is the index of the destination, this repeats for all rows relating to this particular param/etc. it changing is the sign to sum up, dump the number, move on.

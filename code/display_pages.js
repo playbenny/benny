@@ -34,7 +34,7 @@ function set_display_mode(mode,t){
 			flock_axes(0);
 		}
 		if(mode == "blocks"){
-			if(displaymode == "panels") block_and_wire_colours();
+			//if(displaymode == "panels") block_and_wire_colours(); //this wouldn't run as bawc returns if not in blocks mode
 			if(displaymode == "flocks"){
 				draw_blocks();
 			}
@@ -850,12 +850,14 @@ function block_meters_enable(enab){ //never used now?
 }
 
 function block_and_wire_colours(){ //for selection and mute etc
+	// post("\nbawc");
 	if(displaymode != "blocks") return -1;
 	var i, t, cmute,tmc,segment,cs;
 	var block_c=[];
 	var block_v, subvoices, block_mute;
 	var tree_highlight = [];
 	var tree_highlight_c = [];
+	var block_moved = []; //set to 1 if a block z changes
 	selected.anysel = 0;
 	if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){
 		selected.anysel = 1;
@@ -917,12 +919,19 @@ function block_and_wire_colours(){ //for selection and mute etc
 								}else{
 									blocks_cube[i][t].color = [0.4*block_c[0],0.4*block_c[1],0.4*block_c[2],1]; 
 								}
-								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_Z_MOVE];
+								if(blocks_cube[i][t].position[2] != SELECTED_BLOCK_Z_MOVE){
+									block_moved[i] = 1;
+									blocks_cube[i][t].position[2] = SELECTED_BLOCK_Z_MOVE;
+								}
 							}else{
 								csc = 0.3 + 0.4*tree_highlight[i];
 								if(block_mute||search) csc = 0.2;
 								blocks_cube[i][t].color = [csc*block_c[0],csc*block_c[1],csc*block_c[2],1];
-								blocks_cube[i][t].position = [p[0],p[1],SELECTED_BLOCK_DEPENDENTS_Z_MOVE*(2*tree_highlight[i]-1)];
+								var newz=SELECTED_BLOCK_DEPENDENTS_Z_MOVE*(2*tree_highlight[i]-1);
+								if(blocks_cube[i][t].position[2] != newz){
+									blocks_cube[i][t].position[2] = newz;
+									block_moved[i] = 1;
+								}
 								if((t>0) && (blocks_meter[i][t*2-1] != null)){
 									blocks_meter[i][t-1].color = [csc*(METER_TINT+mt*block_c[0]),csc*(METER_TINT+mt*block_c[1]),csc*(METER_TINT+mt*block_c[2]),1];
 								}
@@ -934,7 +943,10 @@ function block_and_wire_colours(){ //for selection and mute etc
 							}else{
 								blocks_cube[i][t].color = block_c;
 							}
-							blocks_cube[i][t].position = [p[0],p[1],0];
+							if(blocks_cube[i][t].position[2]!=0){
+								blocks_cube[i][t].position[2] = 0;
+								block_moved[i] = 1;
+							}
 						}
 						if(t==1){
 							var mt=Math.sqrt(1-METER_TINT);
@@ -967,6 +979,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 			var cto = connections.get("connections["+i+"]::to::number");
 			cmute = connections.get("connections["+i+"]::conversion::mute");
 			cs = selected.wire[i];
+			var mov = block_moved[cfrom] || block_moved[cto];
 			if(selected.anysel && !cs){
 				if(selected.block[cfrom]){
 					if((sidebar.selected==cfrom)&&(sidebar.selected_voice>-1)){
@@ -1002,30 +1015,33 @@ function block_and_wire_colours(){ //for selection and mute etc
 					}
 				}
 			}
-			if(cs){
-				draw_wire(i);
+			if(selected.wire[i]){
+				draw_wire(i); //because it may have moved fwd/back
 				for(var ii=0;ii<wires_scale[i].length;ii++){
 					wires_scale[i][ii][1] = 2 * wire_dia;
-				}	
-			}else{
-				tmc=0.3;
-				tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
-				if(cmute){
-					for(segment=0;segment<wires_colour[i].length;segment++){
-						wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
-					}
-				}else{
-					for(segment=0;segment<wires_colour[i].length;segment++){
-						wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
-					}
 				}
+				if(bulgingwire==i)bulgeamount=1;
+			}else{
+				if(mov)draw_wire(i);
 				for(var ii=0;ii<wires_scale[i].length;ii++){
 					wires_scale[i][ii][1] = wire_dia;
 				}		
 			}
+			tmc=0.3;
+			tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
+			if(cmute){
+				for(segment=0;segment<wires_colour[i].length;segment++){
+					wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
+				}
+			}else{
+				for(segment=0;segment<wires_colour[i].length;segment++){
+					wires_colour[i][segment] = [tmc*wires_colours[i][segment][0],tmc*wires_colours[i][segment][1],tmc*wires_colours[i][segment][2]];	
+				}
+			}
 		}
 	}
 	write_wires_matrix();
+	redraw_flag.matrices&=253;
 }
 
 
@@ -1208,10 +1224,12 @@ function draw_blocks(){
 	}
 	write_blocks_matrix();
 	write_wires_matrix();
+	redraw_flag.matrices &= 253;
 	prep_meter_updatelist();
 }
 
 function draw_wire(connection_number){
+	// post("\ndraw wire",connection_number);
 	var t;
 	if((connections.contains("connections["+connection_number+"]::from::number")) && (connections.contains("connections["+connection_number+"]::to::number"))){
 		selected.wire[connection_number] |= 0;
@@ -1415,7 +1433,7 @@ function draw_wire(connection_number){
 			}
 
 			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
-				if((dist<3.5)&&(Math.abs(fx-tx)<0.5)){
+				/*if((dist<3.5)&&(Math.abs(fx-tx)<0.5)){
 					//segments_to_use = 1; //flag for short wires - use less segments.
 					short=1;
 					//segments_to_use /= 4;
@@ -1423,7 +1441,8 @@ function draw_wire(connection_number){
 					//segments_to_use /= 2;
 					short=1;
 					//if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
-				}
+				}*/
+				short = 1;
 			}
 			//segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
 			//dynamic segment allocation with the new multiples system would require very careful housekeeping? at the moment enabling it just makes it go very wrong very fast
@@ -1433,15 +1452,15 @@ function draw_wire(connection_number){
 			blob_position[0] = ((fx + tx)*0.5);
 			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
 			meanvector[0] = fx - tx;
-			var s2 = 0.5 - 0.4*short;
-			meanvector[1] = from_pos[1] + s2*from_anglevector[1] - to_pos[1] + s2*to_anglevector[1];
+			//var s2 = 0.5;// - 0.4*short;
+			meanvector[1] = from_pos[1] + 0.5*from_anglevector[1] - to_pos[1] + 0.5*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
 			blob_position[2] =  Math.min(Math.max(-2,-0.5 -0.5*(Math.max(0,mvl-3))),0); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
 			mvl = mvl - mv3;
-			var yclip = from_pos[1]-to_pos[1];
+			var yclip = from_pos[1]-to_pos[1]-0.5;
 			if((yclip<=0)||(cfrom==cto)){
 				yclip=1000;
 			}else{
@@ -1462,9 +1481,11 @@ function draw_wire(connection_number){
 				blob_position[2] = from_pos[2];
 				meanvector[0] = 0;
 				meanvector[1] *= 3;
-			}else if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
+			}else{// if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
+				var yd = to_pos[1]+0.5 - from_pos[1];
+				yd = 5* Math.max(0,Math.min(yd,2));
 				meanvector[0] *= 0.1;
-				meanvector[1] *= 10;
+				meanvector[1] *= yd;
 			}
 			if((to_multi>0) || (from_multi>0)){
 				var i;
@@ -3337,7 +3358,7 @@ function draw_sidebar(){
 								if(blocktypes.contains(block_name+"::connections::in::automap_poly")&&blocktypes.get(block_name+"::connections::in::automap_poly")==0){
 									// force selection to not be block if this key is set 
 									sidebar.selected_voice = 0; //this is a little hacky but it works?
-									block_and_wire_colours();
+									redraw_flag.flag |= 8; //block_and_wire_colours();
 									automap.mapped_k_v = 0;
 									var vl=bvs[sidebar.selected_voice];
 									note_poly.message("setvalue",  automap.available_k, "maptarget", MAX_BLOCKS + vl);
@@ -5593,7 +5614,7 @@ function draw_sidebar(){
 					connections.replace("connections["+i+"]::to::input::type",t_type);
 					connections.replace("connections["+i+"]::to::voice","all");
 					post("\nreset the other end of the connection because matrix can only go to matrix")
-					block_and_wire_colours();
+					redraw_flag.flag |= 8; //block_and_wire_colours();
 				}
 			}else if((t_type=="matrix")){
 				t_type = "potential";
@@ -5603,7 +5624,7 @@ function draw_sidebar(){
 				connections.replace("connections["+i+"]::to::input::type",t_type);
 				connections.replace("connections["+i+"]::to::voice","all");
 				post("\nreset the other end of the connection because matrix can only go to matrix")
-				block_and_wire_colours();
+				redraw_flag.flag |= 8; //block_and_wire_colours();
 			}
 			//post("\nfoname",f_o_name,f_type,f_o_no);
 			var to_has_matrix = 0;
@@ -7948,6 +7969,7 @@ function setup_bottom_bar(block){
 	//post("\nsetting up bottom bar",block);
 	if((displaymode=="custom")&&custom_block==block)set_display_mode("blocks");
 	var r = bottombar.right;
+	if(bottombar.block != block) r=-1;
 	bottombar.block = block;
 	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 	if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
