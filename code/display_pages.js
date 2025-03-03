@@ -7943,7 +7943,7 @@ function draw_automap_headers(sx, block) {
 		//lcd_main.message("paintrect", sx, y_offset, sidebar.x2, y_offset + fontheight * 0.5, automap.colours_q.darkest[0] * 0.5, automap.colours_q.darkest[1] * 0.5, automap.colours_q.darkest[2] * 0.5);
 	}
 
-	// if (sx != sidebar.x) y_offset += fontheight * 0.6;
+	if (sx != sidebar.x) y_offset += fontheight * 0.6;
 	//return y_offset;
 }
 
