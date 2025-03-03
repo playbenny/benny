@@ -2032,13 +2032,24 @@ function unscale_parameter(block, parameter, value){
 
 function qwertymidi_octave(parameter, value){
 	if(value=="get"){
-		var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
+		var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9);
 		return(oct);
 	}else{
 		value = Math.max(0,Math.min(0.9999999,value));
 		parameter_value_buffer.poke(1, MAX_PARAMETERS * automap.available_k_block + 9, value);
 		redraw_flag.flag |= 2;
 	}
+}
+
+function automap_q_gain(parameter,value){
+	if(value=="get"){
+		return(automap.q_gain);
+	}else{
+		value = Math.max(0,Math.min(1,value));
+		automap.q_gain = value;
+		set_automap_q(automap.q_gain);
+		redraw_flag.flag |= 2;
+	}	
 }
 	
 function automap_undo_point(p,v){

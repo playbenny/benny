@@ -410,7 +410,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "out", "out" ],
-					"hardware_channels" : [ 25, 26 ]
+					"hardware_channels" : [ 33, 34 ]
 				}
 
 			}

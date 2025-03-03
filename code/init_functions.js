@@ -542,7 +542,6 @@ function import_hardware(v){
 					blocktypes.set(keys[i]+"::panel",d3.get(ob+"::panel"));
 				}
 				//post("found output block parameters\n");
-				//blocktypes.set(keys[i]+"::connections",d3.get(ob+"connections"));
 				blocktypes.set(keys[i]+"::parameters");
 				blocktypes.append(keys[i]+"::parameters");
 				var plist= d3.getsize(ob+"::parameters");
@@ -572,18 +571,6 @@ function import_hardware(v){
 					output_blocks[hch] = ob;
 				}
 				if(ch[t]>MAX_USED_AUDIO_OUTPUTS) MAX_USED_AUDIO_OUTPUTS = ch[t];
-			}
-			if((d.contains(keys[i]+"::cue_out"))&&(d.get(keys[i]+"::cue_out")==1)){
-				automap.available_q = ch;
-				post("\ncue out is on channel(s)",ch);
-			}
-			if((d.contains(keys[i]+"::click_out"))&&(d.get(keys[i]+"::click_out") == 1)){
-				post("\nfound click out");
-				var clickdac = this.patcher.newdefault(90,208, "dac~", ch);
-				clickdac.message("sendbox", "varname", "click_output");
-				click_enabled = 1;
-				var global_transport_and_click = this.patcher.getnamed("global_transport_and_click");
-				for(var ccc=0;ccc<ch.length;ccc++) this.patcher.connect(global_transport_and_click, 1, clickdac, ccc);
 			}
 		}
 		if(d.contains(keys[i]+"::connections::out::hardware_channels")){
@@ -678,6 +665,18 @@ function import_hardware(v){
 					ch[ci] = audioiolists[1].indexOf(ch[ci])+1;
 				}
 				blocktypes.replace(keys[i]+"::connections::in::hardware_channels",ch);
+				if((blocktypes.contains(keys[i]+"::cue_out"))&&(blocktypes.get(keys[i]+"::cue_out")==1)){
+					automap.available_q = ch;
+					post("\ncue out is on channel(s)",ch);
+				}
+				if((blocktypes.contains(keys[i]+"::click_out"))&&(blocktypes.get(keys[i]+"::click_out") == 1)){
+					post("\nclick out is on channel(s)",ch);
+					var clickdac = this.patcher.newdefault(90,208, "dac~", ch);
+					clickdac.message("sendbox", "varname", "click_output");
+					click_enabled = 1;
+					var global_transport_and_click = this.patcher.getnamed("global_transport_and_click");
+					for(var ccc=0;ccc<ch.length;ccc++) this.patcher.connect(global_transport_and_click, 1, clickdac, ccc);
+				}
 			}
 			if(blocktypes.contains(keys[i]+"::connections::out::hardware_channels")){
 				var ch = blocktypes.get(keys[i]+"::connections::out::hardware_channels");
