@@ -1437,12 +1437,12 @@ function draw_wire(connection_number){
 					//segments_to_use = 1; //flag for short wires - use less segments.
 					short=1;
 					//segments_to_use /= 4;
-				}else if(dist<6){
+				}else */if(dist<6){
 					//segments_to_use /= 2;
 					short=1;
 					//if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
-				}*/
-				short = 1;
+				}
+				// short = 1;
 			}
 			//segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
 			//dynamic segment allocation with the new multiples system would require very careful housekeeping? at the moment enabling it just makes it go very wrong very fast
@@ -1455,7 +1455,7 @@ function draw_wire(connection_number){
 			//var s2 = 0.5;// - 0.4*short;
 			meanvector[1] = from_pos[1] + 0.5*from_anglevector[1] - to_pos[1] + 0.5*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.min(Math.max(-2,-0.5 -0.5*(Math.max(0,mvl-3))),0); //was -0.25 -0.3
+			blob_position[2] =  Math.min(Math.max(-2,-0.75 -0.5*(Math.max(0,mvl-3))),0); //was -0.25 -0.3
 			var mv3=mvl*0.05;
 			mv3 = mv3 * mv3 * mv3 * 20;
 			mv3 = Math.min(15,mv3);
@@ -1602,7 +1602,7 @@ function draw_wire(connection_number){
 				}else{
 					from_pos[0] += 0.5 * (from_list[0]-1)/from_subvoices + 0.4 * fconx + 0.55;
 				}
-				if(from_pos[1]>(to_pos[1]))short=1;
+				// if(from_pos[1]>(to_pos[1]))short=1;
 				if(short){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
