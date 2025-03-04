@@ -377,6 +377,7 @@ var automap = {
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to
 	mapped_q_channels : [],
+	mapped_q_output : 0,
 	lock_c : 0,
 	lock_k : 0,
 	lock_q : 0,

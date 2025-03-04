@@ -416,6 +416,8 @@ function initialise_graphics() {
 }
 
 function stop_graphics(){
+	if(fullscreen) world.message("fullscreen",0);
+	fullscreen = 0;
 	lcd_main.message("brgb",0,0,0);
 	lcd_main.message("clear");
 	lcd_main.message("bang");

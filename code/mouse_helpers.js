@@ -2089,6 +2089,15 @@ function automap_q_gain(parameter,value){
 		redraw_flag.flag |= 2;
 	}	
 }
+function select_q_output(parameter,value){
+	set_automap_q(0);
+	post("\nset output:",parameter);
+	automap.mapped_q_output = parameter;
+	automap.mapped_q = -1;
+	automap.mapped_q_channels = [];
+	sidebar.dropdown=null;
+	redraw_flag.flag |= 2;
+}
 	
 function automap_undo_point(p,v){
 	var s = (p<0);

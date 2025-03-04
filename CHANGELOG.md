@@ -1,3 +1,6 @@
+04/03/25:
+- improved the (headphones?) **cue** facility - if a cue out is set up in your hardware profile then automap cue becomes available, with the ability to select which  output of a block / which voice you listen to, as well as cue gain control and the ability to lock the cue to the current source. also works on connections and the input scope view.
+
 03/03/25:
 - **song notes** (under files / ... / edit song notes) are shown when you select a song in the file list, and pop up while/after it loads the song.
 
