@@ -1814,6 +1814,22 @@ function edit_typing(key){
 	redraw_flag.flag |= 2;
 }
 
+function edit_typing_with_spaces(key){
+	if(key==-2){
+		sidebar.text_being_edited = sidebar.text_being_edited+" ";
+	}else{
+		if(key>512) {
+			caps=1;
+			key-=512;
+			// key-=32;
+		}
+		if((key>45)&&(key<123)){
+			sidebar.text_being_edited = sidebar.text_being_edited + String.fromCharCode(key);
+		}
+	}
+	redraw_flag.flag |= 2;
+}
+
 function edit_song_notes(key){
 	post(/*"\ntyping,",*/key);
 	var caps = 0;
@@ -3863,22 +3879,21 @@ function automap_c_click(p,v){
 	}
 }
 function automap_q_click(p,v){
-	/*if(usermouse.ctrl){
-		select_block_by_name("core.input.keyboard");
-	}else{*/
+	if(usermouse.ctrl){
+		automap.q_gain = -automap.q_gain;
+		set_automap_q(automap.q_gain);
+		automap.lock_q=0;
+		redraw_flag.flag |= 2;
+		// post("\ntoggled mute cue",automap.q_gain);
+	}else{
 		//lock
 		if(v==-1){
 			automap.lock_q = 1 - automap.lock_q;
 		}else{
 			automap.lock_q = (v!=0);
 		}
-		redraw_flag.flag = 2;
-		/*if(automap.lock_q==0){
-			var mq = automap.mapped_q.split(".");
-
-			if(sidebar.selected!=automap.mapped_q) automap.mapped_q = -1;
-		}*/
-	//}
+		redraw_flag.flag |= 2;
+	}
 }
 
 function conn_assign_controller_moved(type,number){
@@ -3991,6 +4006,7 @@ function toggle_automap_c_enable(){
 	//post("\nauto",automap.available_c,automap.mapped_c);
 	if(automap.available_c>-1){
 		automap.mapped_c=-1;
+		automap.voice_c = automap.available_c;
 		automap.available_c=-1;
 		automap.lock_c=0;
 		for(var i=0;i<MAX_BLOCKS;i++){
@@ -4011,8 +4027,7 @@ function toggle_automap_c_enable(){
 					parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.8);
 					//post("\non",i);
 					break;
-				}
-				
+				}	
 			}
 		}else{
 			automap.voice_c = new_block("core.input.control.auto", blocks_page.leftmost-1, blocks_page.highest+1);
