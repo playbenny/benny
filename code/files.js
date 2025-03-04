@@ -18,6 +18,7 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	if(df==0) songlist = [];
 	var fpath = f.pathname;
 	var i=0, tss;
+	if(df!=0) i = songlist.length;
 	if(!Array.isArray(songs_moddate)) songs_moddate = [];
 	if(fpath[fpath.length-1] !== "/" ) fpath = fpath+"/";
 	while(!f.end){
