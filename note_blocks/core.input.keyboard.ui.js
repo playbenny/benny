@@ -118,10 +118,9 @@ function draw(){
 			}
 		}
 		var sd = seqdict.get(block);
+		if(sd=="*") return 0;
 		var k = sd.getkeys();
-		if(k==null){
-			return 0;
-		}
+		if(k==null) return 0;
 		var by = y_pos+height - 2;
 		var sy = (height-3)/129;
 		for(var i=0;i<k.length;i++){
