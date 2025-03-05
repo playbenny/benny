@@ -3320,7 +3320,6 @@ function draw_sidebar(){
 							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
 					}else if(blocktypes.contains(block_name+"::connections::in::midi")){
-						//assign_midi_scope
 						sidebar.scopes.midi = block;
 						if(sidebar.selected_voice<0){
 							sidebar.scopes.midivoicelist = bvs;
@@ -5583,6 +5582,7 @@ function draw_sidebar(){
 			var f_type = connections.get("connections["+i+"]::from::output::type");
 			var t_i_no = connections.get("connections["+i+"]::to::input::number");
 			var t_type = connections.get("connections["+i+"]::to::input::type");
+			var midi_out_no_offset = 0;
 			if(sidebar.connection.default_in_applied != 0){
 				sidebar.connection.show_to_inputs = 1;
 			}else if(sidebar.mode!="wire"){
@@ -5795,6 +5795,19 @@ function draw_sidebar(){
 			lcd_main.message("frgb", section_colour );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
 			lcd_main.message("write", f_label);
+			if(!is_core_control){
+				if((f_type=="parameters")&&(blocktypes.contains(f_name+"::connections::out::midi"))){
+					var mlist=blocktypes.get(f_name+"::connections::out::midi");
+					if(!Array.isArray(mlist))mlist=[mlist];
+					midi_out_no_offset+=mlist.length;//used in the metering
+				}
+			}else{
+				if((f_type=="parameters")&&(blocktypes.contains(f_name+"::connections::out::parameters"))){
+					var mlist=blocktypes.get(f_name+"::connections::out::parameters");
+					if(!Array.isArray(mlist))mlist=[mlist];
+					midi_out_no_offset+=mlist.length;//used in the metering
+				}
+			}
 			if(!sidebar.connection.show_from_outputs){
 				lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
 				lcd_main.message("write", "change");
@@ -5941,7 +5954,7 @@ function draw_sidebar(){
 					for(tii=0;tii<tf_o_v.length;tii++){
 						//post("\ntii",tii,"tf_o_v",tf_o_v,"vm[tf]",vm[+tf_o_v[tii]]);
 						sidebar.scopes.midivoicelist[tii] = vm[+tf_o_v[tii]];
-						sidebar.scopes.midioutlist[tii] = +f_o_no;
+						sidebar.scopes.midioutlist[tii] = midi_out_no_offset + f_o_no;
 					}
 					sidebar.scopes.width = (sidebar.width + fo1);
 				}else if(f_type=="audio"){
