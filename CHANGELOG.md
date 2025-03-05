@@ -1,5 +1,5 @@
 05/03/25:
-- sidebar midi scope view: now all the midi and parameter outputs are shown at once, and parameter value outputs get their own kind of display. hopefully this gives an instant idea of what kind of midi/value outputs are available from a block.
+- sidebar midi scope view: now all the midi and parameter outputs are shown at once, and parameter value outputs get their own kind of display. hopefully this gives an instant idea of what kind of midi/value outputs are available from a block. you can click midi scopes to show a label describing them.
 
 04/03/25:
 - improved the (headphones?) **cue** facility - if a cue out is set up in your hardware profile then automap cue becomes available, with the ability to select which  output of a block / which voice you listen to, as well as cue gain control and the ability to lock the cue to the current source. also works on connections and the input scope view.
