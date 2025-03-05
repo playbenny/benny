@@ -1123,12 +1123,19 @@ function scope_zoom(parameter,value){
 		messnamed("scope_rate",60*Math.pow(2,sidebar.scopes.zoom*8));
 	}
 }
-function scope_midinames(parameter,value){
-	sidebar.scopes.midinames = 1 - sidebar.scopes.midinames;
-	if(sidebar.scopes.midinames == 0){
-		redraw_flag.flag |= 2;
+function scope_midinames(t,value){
+	if(sidebar.scopes.midinames<2){
+		sidebar.scopes.midinames=2 + t;
+	}else{
+		if(t!=sidebar.scopes.midinames-2){
+			sidebar.scopes.midinames= t+2;
+		}else{
+			sidebar.scopes.midinames= config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
+		}
 	}
+	redraw_flag.flag |= 2;
 }
+
 function send_button_message_dropdown(parameter,value){
 	sidebar.dropdown=null;
 	send_button_message(parameter,value);

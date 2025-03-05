@@ -527,6 +527,7 @@ function sidebar_midi_scope(){
 	if(sidebar.scopes.midi_routing.number!=-1){ //this is the second scope at the end of connection view, which gets its data another way
 		y1 = sidebar.scopes.midi_routing.starty;
 		y2 = sidebar.scopes.midi_routing.endy;
+		x1 = sidebar.x + 2;
 		sy = (y2-y1-2)/128;
 		y2-=2;
 		r =0;

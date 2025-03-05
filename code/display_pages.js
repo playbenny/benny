@@ -2396,6 +2396,7 @@ function draw_sidebar(){
 			note_poly.message("setvalue", automap.available_c, "automapped", 0);
 		}
 		view_changed = true;
+		if(sidebar.scopes.midinames>1)sidebar.scopes.midinames= config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
 		sidebar_size();
 	}
 	if((sidebar.scopes.midi_routing.number!=-1)){
@@ -3630,9 +3631,29 @@ function draw_sidebar(){
 						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
 							var tw = sw * ((sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12);
 							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,block_darkest);
+							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,mouse_index,1);
+							if(sidebar.scopes.midinames== 2 + t){
+								var ms = blocktypes.getsize(block_name+"::connections::out::midi");
+								var nam = "";
+								if(t<ms){
+									nam = blocktypes.get(block_name+"::connections::out::midi["+t+"]");
+								}else{
+									nam = blocktypes.get(block_name+"::connections::out::parameters["+(t-ms)+"]");
+								}
+								var tx = x1;
+								lcd_main.message("frgb",block_dark);
+								if(tx+(fontheight*nam.length)*0.2>sidebar.x2){
+									tx = x1+tw - (fontheight*(3.6+nam.length)/6.5);
+									lcd_main.message("moveto",tx+fo1,y_offset+0.4*fontheight);
+									lcd_main.message("write",nam+" ^");
+								}else{
+									lcd_main.message("moveto",tx,y_offset+0.4*fontheight);
+									lcd_main.message("write","^ "+nam);
+								}
+								y_offset+=fontheight*0.5;
+							}
 							x1+=tw;
 						}
-						click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,1);
 					}
 				}
 				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (bottombar.block != block)){
