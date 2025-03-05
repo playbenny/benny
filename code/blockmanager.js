@@ -529,8 +529,9 @@ var sidebar = {
 		starty : 0,
 		endy: 0,
 		voicelist : [-1, -1],
-		midivoicelist : [],
-		midioutlist : [],
+		midivoicelist : [], //list of voices to show (overlaid)
+		midioutlist : [], //list of outputs to show (separate scopes for each)
+		midiouttypes : [], //0 = notes, 1 = thin notes, 2 = values
 		midi : -1, //this is the target id for midi notes that you're watching
 		midinames : 1,
 		fg: [255,255,255],

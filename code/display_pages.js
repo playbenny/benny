@@ -1471,7 +1471,8 @@ function draw_wire(connection_number){
 			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
 			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
 			meanvector[0] = meanvector[0] * -0.33/mvl;
-			meanvector[1] = meanvector[1] * -0.33/mvl;				
+			meanvector[1] = meanvector[1] * -0.33/mvl;	
+			meanvector[2] = 0;			
 			if(cfrom==cto){
 				from_anglevector[1] *= 1.3;
 				to_anglevector[1] *= 1.3;
@@ -3319,18 +3320,24 @@ function draw_sidebar(){
 							messnamed("scope_size",(sidebar.scopes.width)/2);
 							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
-					}else if(blocktypes.contains(block_name+"::connections::in::midi")){
+					}else if(blocktypes.contains(block_name+"::connections::out::midi")){
 						sidebar.scopes.midi = block;
 						if(sidebar.selected_voice<0){
 							sidebar.scopes.midivoicelist = bvs;
-							for(var te=0;te<bvs.length;te++){
-								sidebar.scopes.midioutlist[te] = 0; //in future support selecting the output you monitor, or displaying them all?
-							}
 						}else{
 							sidebar.scopes.midivoicelist = [bvs[sidebar.selected_voice]];
-							sidebar.scopes.midioutlist = [0];
 						}
-						//post("\naassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist);
+						var tl = blocktypes.get(block_name+"::connections::out::midi");
+						var ll= 0;
+						if(Array.isArray(tl)) ll = tl.length;
+						sidebar.scopes.midiouttypes = [];
+						for(var t=0;t<ll;t++)sidebar.scopes.midiouttypes.push(0);
+						if(blocktypes.contains(block_name+"::connections::out::parameters")) ll += blocktypes.getsize(block_name+"::connections::out::parameters");
+						for(;t<ll;t++)sidebar.scopes.midiouttypes.push(2);
+						if(blocktypes.contains(block_name+"::connections::out::midi_scopes_types")) sidebar.scopes.midiouttypes = blocktypes.get(block_name+"::connections::out::midi_scopes_types");
+						sidebar.scopes.midioutlist = [];
+						for(var t =0;t<ll;t++) sidebar.scopes.midioutlist.push(t);
+						// post("\nassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist, " types",sidebar.scopes.midiouttypes);
 					}
 				}
 				sidebar.selected = block;
@@ -3598,7 +3605,7 @@ function draw_sidebar(){
 				if(block_type == "audio" || block_type == "hardware"){
 					if(sidebar.selected_voice != -1){
 						for(i=0;i<NO_IO_PER_BLOCK;i++){
-							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+							// lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
 							if(view_changed===true) click_rectangle( sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
 						}
 						mouse_click_actions[mouse_index] = scope_zoom;
@@ -3607,16 +3614,26 @@ function draw_sidebar(){
 						mouse_index++;
 					}else{
 						for(i=0;i<sidebar.scopes.voicelist.length;i++){
-							lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+							// lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
 							click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
 						}
 					}
 					
 					y_offset += fontheight*2.1;						
-				}else if(blocktypes.contains(block_name+"::connections::in::midi")){
+				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::midi"))){
 					y_offset += fontheight*2.1;
-					lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,block_darkest);
-					click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,1);
+					var sc = 0;
+					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += (sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12;
+					if(sc>0){
+						var sw = (sidebar.width+fo1) / sc;
+						x1 = sidebar.x;
+						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
+							var tw = sw * ((sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12);
+							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,block_darkest);
+							x1+=tw;
+						}
+						click_zone(scope_midinames, null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,1);
+					}
 				}
 				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (bottombar.block != block)){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
@@ -5954,8 +5971,9 @@ function draw_sidebar(){
 					for(tii=0;tii<tf_o_v.length;tii++){
 						//post("\ntii",tii,"tf_o_v",tf_o_v,"vm[tf]",vm[+tf_o_v[tii]]);
 						sidebar.scopes.midivoicelist[tii] = vm[+tf_o_v[tii]];
-						sidebar.scopes.midioutlist[tii] = midi_out_no_offset + f_o_no;
 					}
+					sidebar.scopes.midioutlist = [midi_out_no_offset + f_o_no];
+					sidebar.scopes.midiouttypes = [0];
 					sidebar.scopes.width = (sidebar.width + fo1);
 				}else if(f_type=="audio"){
 					//post("assigning connection audio scope block",f_number,"voice",f_o_v,"output",f_o_no,"\n");

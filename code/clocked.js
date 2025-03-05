@@ -458,52 +458,73 @@ function sidebar_midi_scope(){
 	var t,v,sx,sy;
 	var x1,y1,x2,y2;
 	var ly=1,llx=-100;
+	var sc=0;
+	for(t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += (sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12;
+	var sw = (sidebar.width+fo1) / sc;
 	x1 = sidebar.x;
-	x2 = sidebar.x2;
-	sx = (x2-x1)/128;
-	x1+=2;
 	y1 = sidebar.scopes.starty;
 	y2 = sidebar.scopes.endy;
 	sy = (y2-y1-2)/128;
 	y2-=2;
-	r =0;
-	//actually need to iterate over all voices/outputs?
-	//but there are flags for if you need to bother drawing
-	var vi,cha=0;
-	for(vi=0;vi<sidebar.scopes.midivoicelist.length;vi++){
-		if(midi_scopes_change_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi]))>0){ 
-			cha +=1;
-			midi_scopes_change_buffer.poke(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi]),0);
+	for(var outp = 0; outp<sidebar.scopes.midioutlist.length; outp++){
+		var tsw = (sidebar.scopes.midiouttypes[outp]==0) ? 1 : 0.12;
+		x2 = x1+(sw*tsw)-fo1;
+		x1+=2;
+		r =0;
+		var vi,cha=view_changed;// there are flags for if you need to bother drawing
+		for(vi=0;vi<sidebar.scopes.midivoicelist.length;vi++){
+			if(midi_scopes_change_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp]))>0){ 
+				cha +=1;
+				midi_scopes_change_buffer.poke(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp]),0);
+			}
 		}
-	}
-	if(cha>0){
-		lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
-		lcd_main.message("frgb",sidebar.scopes.fg);
-		if(sidebar.scopes.midinames == 1) setfontsize(fontsmall);
-		for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
-			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi])*128,128);
-			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
-			for(t=0;t<128;t++){
-				if(v[t]){
-					if(Math.abs(v[t])>127){
-						if(r!=1)lcd_main.message("frgb",255,0,0);
-						r=1;
-						v[t]=127;
-					}else if(r==1){
-						lcd_main.message("frgb",sidebar.scopes.fg);
+		if(cha>0){
+			if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)) setfontsize(fontsmall);
+			lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
+			if((sidebar.scopes.midiouttypes[outp]<2)){
+				lcd_main.message("frgb",sidebar.scopes.fg);
+				sx = (x2-x1-12)/128;
+				for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
+					v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp])*128,128);
+					//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
+					for(t=0;t<128;t++){
+						if(v[t]){
+							if(Math.abs(v[t])>127){
+								if(r!=1)lcd_main.message("frgb",255,0,0);
+								r=1;
+								v[t]=127;
+							}else if(r==1){
+								lcd_main.message("frgb",sidebar.scopes.fg);
+							}
+							lcd_main.message("moveto", x1+t*sx, y2);
+							lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
+							if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)){
+								if(t>llx+4){ly=1; llx=t;}else{ly++;}
+								lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
+								lcd_main.message("write", note_names[t]);
+							}
+						}
 					}
-					lcd_main.message("moveto", x1+t*sx, y2);
-					lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
-					if(sidebar.scopes.midinames == 1){
-						if(t>llx+4){ly=1; llx=t;}else{ly++;}
-						lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
-						lcd_main.message("write", note_names[t]);
+				}
+			}else{
+				sx = (x2-x1-2)/sidebar.scopes.midivoicelist.length;
+				for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
+					v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp])*128);
+					if(v!=0){
+						if(Math.abs(v)>127){
+							v=127;
+							lcd_main.message("paintrect", x1+vi*sx, y2-sy*127, x1+(vi+1)*sx, y2, 255,0,0 );
+						}else{
+							//lcd_main.message("frgb",sidebar.scopes.fg);
+							lcd_main.message("paintrect", x1+vi*sx, y2-sy*Math.abs(v), x1+(vi+1)*sx, y2, sidebar.scopes.fg );
+						}
 					}
 				}
 			}
 		}
+		x1 = x2 + fo1;
 	}
-	if(sidebar.scopes.midi_routing.number!=-1){
+	if(sidebar.scopes.midi_routing.number!=-1){ //this is the second scope at the end of connection view, which gets its data another way
 		y1 = sidebar.scopes.midi_routing.starty;
 		y2 = sidebar.scopes.midi_routing.endy;
 		sy = (y2-y1-2)/128;
