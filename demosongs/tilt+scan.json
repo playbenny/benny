@@ -1,0 +1,1045 @@
+{
+	"notepools" : 	{
+		"shape" : 		{
+
+		}
+,
+		"notes" : 		{
+
+		}
+
+	}
+,
+	"waves" : [ 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+ ],
+	"connections" : [ 		{
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 1
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 2
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 1
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 3
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 2
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 4
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 3
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 5
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 4
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 6
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 5
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 7
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 6
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 4,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : 8
+			}
+,
+			"to" : 			{
+				"number" : 5,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 7
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0.5,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 5,
+				"output" : 				{
+					"type" : "audio",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"to" : 			{
+				"number" : 3,
+				"input" : 				{
+					"type" : "hardware",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0,
+				"offset2" : 0.5
+			}
+
+		}
+, 		{
+			"from" : 			{
+				"number" : 6,
+				"output" : 				{
+					"type" : "parameters",
+					"number" : 0
+				}
+,
+				"voice" : "all"
+			}
+,
+			"to" : 			{
+				"number" : 4,
+				"input" : 				{
+					"type" : "parameters",
+					"number" : 2
+				}
+,
+				"voice" : "all"
+			}
+,
+			"conversion" : 			{
+				"mute" : 0,
+				"scale" : 1,
+				"vector" : 0,
+				"offset" : 0
+			}
+
+		}
+ ],
+	"blocks" : [ 		{
+			"patcher" : "core.clock",
+			"name" : "core.clock",
+			"label" : "core.clock",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9.25,
+				"y" : 3.25,
+				"colour" : [ 131, 30, 0 ]
+			}
+,
+			"mute" : 0,
+			"automap_to" : 0
+		}
+, 		{
+			"patcher" : "core.input.control.auto",
+			"name" : "core.input.control.auto",
+			"label" : "core.input.control.auto",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -7,
+				"y" : 3.25,
+				"colour" : [ 155, 74, 45 ]
+			}
+,
+			"mute" : 0,
+			"selected_controller" : "Midi Fighter Twister"
+		}
+, 		{
+			"patcher" : "core.input.keyboard",
+			"name" : "core.input.keyboard",
+			"label" : "core.input.keyboard",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 0
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -4.75,
+				"y" : 3.25,
+				"colour" : [ 136, 49, 0 ]
+			}
+,
+			"mute" : 0
+		}
+, 		{
+			"name" : "hardware.out.1+2",
+			"label" : "hardware.out.1+2",
+			"type" : "hardware",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"latching_mode" : 0,
+				"voices" : 2
+			}
+,
+			"panel" : 			{
+				"enable" : 0
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9.25,
+				"y" : -4.25,
+				"colour" : [ 183, 49, 151 ]
+			}
+
+		}
+, 		{
+			"patcher" : "midi.tilt+.scan",
+			"name" : "midi.tilt+.scan",
+			"label" : "midi.tilt+.scan",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1,
+				"voices" : 8
+			}
+,
+			"panel" : 			{
+				"enable" : 0
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -9,
+				"y" : 0,
+				"colour" : [ 118, 87, 0 ]
+			}
+
+		}
+, 		{
+			"patcher" : "voice.harmonic",
+			"name" : "voice.harmonic",
+			"label" : "voice.harmonic",
+			"type" : "audio",
+			"poly" : 			{
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"return_mode" : 1,
+				"latching_mode" : 0,
+				"voices" : 5
+			}
+,
+			"panel" : 			{
+				"parameters" : [ 11, 12, 13 ],
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -7.199999999999999,
+				"y" : -2.4,
+				"colour" : [ 0, 95, 208 ]
+			}
+,
+			"upsample" : 2,
+			"subvoices" : 1,
+			"automap_to" : 0
+		}
+, 		{
+			"patcher" : "midi.lfo",
+			"name" : "midi.lfo",
+			"label" : "midi.lfo",
+			"type" : "note",
+			"poly" : 			{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1,
+				"voices" : 1
+			}
+,
+			"panel" : 			{
+				"enable" : 1
+			}
+,
+			"error" : 			{
+				"spread" : 0,
+				"drift" : 0,
+				"lockup" : 0
+			}
+,
+			"flock" : 			{
+				"weight" : 0.2,
+				"tension" : 0.2,
+				"friction" : 0.4,
+				"bounce" : 0.7,
+				"attrep" : 0.5,
+				"align" : 0.5,
+				"twist" : 0.5,
+				"brownian" : 0
+			}
+,
+			"space" : 			{
+				"x" : -11.600000000000001,
+				"y" : 0.4,
+				"colour" : [ 131, 70, 0 ]
+			}
+,
+			"automap_to" : 0
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+, 		{
+
+		}
+ ],
+	"notepad" : "this is an example of using tilt scan to modulate the partials of a harmonic osc voice.",
+	"panels_order" : [ 0, 1, 6 ],
+	"MAX_PANEL_COLUMNS" : 2,
+	"states" : 	{
+		"current" : 		{
+			"0" : [ 0, 0.5, 0.0, 0.0, 0.090000003576279, 0.40625, 0.0234375, 0.0234375, 0.2109375, 0.600000023841858, 0.5, 0.25, 0.5 ],
+			"1" : [ 0, 0.742500007152557, 0.899999976158142, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.007811999879777, 0.0625, 0.1171879991889, 0.171875, 0.226561993360519, 0.28125, 0.335938006639481, 0.390625, 0.445311993360519, 0.5, 0.554687976837158, 0.609375, 0.664062023162842, 0.71875, 0.773437976837158, 0.828125, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+			"2" : [ 0, 0.0, 0.0, 0.550000011920929, 0.0, 0.75, 0.25, 0.123999997973442, 0.0, 0.0, 0.600000023841858 ],
+			"3" : [ 0 ],
+			"4" : [ 0, 0.466319441795349, 0.0, 0.009027873165905, 1.0, 0.268749982118607 ],
+			"5" : [ 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.050000000745058, 0.6328125, 0.532812476158142, 0.200000002980232, 0.0, 1.0, 0.5, 0.75, 0.0, 0.300000011920929 ],
+			"6" : [ 0, 0.140625, 0.470937490463257, 0.0, 0.5, 0.25 ]
+		}
+
+	}
+
+}
