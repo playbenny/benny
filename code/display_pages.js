@@ -1453,26 +1453,22 @@ function draw_wire(connection_number){
 			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
 			meanvector[0] = fx - tx;
 			//var s2 = 0.5;// - 0.4*short;
-			meanvector[1] = from_pos[1] + 0.5*from_anglevector[1] - to_pos[1] + 0.5*to_anglevector[1];
+			meanvector[1] = from_pos[1] + 0.85*from_anglevector[1] - to_pos[1] + 0.85*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.min(Math.max(-2,-0.75 -0.5*(Math.max(0,mvl-3))),0); //was -0.25 -0.3
-			var mv3=mvl*0.05;
-			mv3 = mv3 * mv3 * mv3 * 20;
-			mv3 = Math.min(15,mv3);
-			mvl = mvl - mv3;
-			var yclip = from_pos[1]-to_pos[1]-0.5;
-			if((yclip<=0)||(cfrom==cto)){
-				yclip=1000;
-			}else{
-				yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
-			}
-			from_anglevector = [from_anglevector[0],from_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
-			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
-			from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
-			to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
-			meanvector[0] = meanvector[0] * -0.33/mvl;
-			meanvector[1] = meanvector[1] * -0.33/mvl;	
+			blob_position[2] =  Math.max(-1.25,-0.6 -0.5*(Math.max(0,mvl-3))); //was -0.25 -0.3
+			meanvector[0] = meanvector[0] * -0.5/mvl;
+			meanvector[1] = meanvector[1] * -0.5/mvl;	
 			meanvector[2] = 0;			
+			from_anglevector = [from_anglevector[0],from_anglevector[1]*(2+0.25*mvl+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
+			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+0.25*mvl+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
+			// var yclip = from_pos[1]-to_pos[1]-0.5;
+			// if((yclip<=0)||(cfrom==cto)){
+			// 	yclip=1000;
+			// }else{
+			// 	yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
+			// }
+			// from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
+			// to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
 			if(cfrom==cto){
 				from_anglevector[1] *= 1.3;
 				to_anglevector[1] *= 1.3;
@@ -1482,12 +1478,14 @@ function draw_wire(connection_number){
 				blob_position[2] = from_pos[2];
 				meanvector[0] = 0;
 				meanvector[1] *= 3;
-			}else{// if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
+			}else if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
 				var yd = to_pos[1]+0.5 - from_pos[1];
-				yd = 5* Math.max(0,Math.min(yd,2));
+				yd = 5* Math.max(0.2,Math.min(yd,2));
 				meanvector[0] *= 0.1;
 				meanvector[1] *= yd;
 			}
+
+			// post("\nwire:\nfrom_av",from_anglevector,"\nto_av",to_anglevector,"\nblob",blob_position,"\nmeanvect",meanvector,"\nmvl",mvl,"to_multi",to_multi,"from_multi",from_multi,"short",short);
 			if((to_multi>0) || (from_multi>0)){
 				var i;
 				var mtot=0;
