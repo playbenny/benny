@@ -3708,7 +3708,7 @@ function draw_sidebar(){
 					}
 				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::parameters"))){
 					// post("\ndrawing just params",sidebar.scopes.midiouttypes);
-					sidebar.scopes.endy = sidebar.scopes.starty + fontheight; // just params? smaller scopes.
+					if(sidebar.scopes.endy == y_offset+2*fontheight) sidebar.scopes.endy = sidebar.scopes.starty + fontheight; // just params? no custom height? smaller scopes.
 					y_offset = sidebar.scopes.endy + fo1;
 					sidebar.scopes.fg = block_dark;
 					var sc = 0;
