@@ -105,6 +105,7 @@ function update(force){
 		}
 		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
+			if(force)outlet(0,"setfontsize","small");
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
 				var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];

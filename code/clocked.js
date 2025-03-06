@@ -9,7 +9,7 @@ function slowclock(){
 	do_drift();
 	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();
-	if(sidebar.mode == "edit_song_notes") redraw_flag.flag|=2;
+	if((sidebar.notification == " ")||(sidebar.notification == "_")) redraw_flag.flag|=2;
 	recursions=0;
 	if((deferred_diag.length>0)&&(usermouse.qlb==0)){
 		if(usermouse.ctrl){

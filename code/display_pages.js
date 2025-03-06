@@ -299,11 +299,9 @@ function draw_panels(){
 
 function draw_panel_edit(x1,y,h,b,column_width){
 	var i,cx,cy,r;
-//	var block_name=blocks.get("blocks["+b+"]::name");
 	var block_colour = blocks.get("blocks["+b+"]::space::colour");
 	block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
-//	var block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
-	var block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
+	var block_darkest = shadeRGB(block_colour, bg_dark_ratio);
 	var x2 = x1 + column_width;
 	setfontsize(fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
@@ -2476,7 +2474,12 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
-		lcd_main.message("write", sidebar.text_being_edited);
+		if(sidebar.notification=="_"){
+			sidebar.notification=" ";
+		}else{
+			sidebar.notification="_";
+		}
+		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
 		setfontsize(fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-fontheight*2.5,fontheight+y_offset,block_darkest);
@@ -2509,7 +2512,12 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
-		lcd_main.message("write", sidebar.text_being_edited);
+		if(sidebar.notification=="_"){
+			sidebar.notification=" ";
+		}else{
+			sidebar.notification="_";
+		}
+		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
 		setfontsize(fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*6.8,fontheight+y_offset,menudarkest);
@@ -2555,7 +2563,12 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
-		lcd_main.message("write", sidebar.text_being_edited);
+		if(sidebar.notification=="_"){
+			sidebar.notification=" ";
+		}else{
+			sidebar.notification="_";
+		}
+		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
 		setfontsize(fontsmall*2);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
@@ -2590,7 +2603,12 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
-		lcd_main.message("write", sidebar.text_being_edited);
+		if(sidebar.notification=="_"){
+			sidebar.notification=" ";
+		}else{
+			sidebar.notification="_";
+		}
+		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
 		setfontsize(fontsmall*2);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
@@ -2636,7 +2654,12 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
-		lcd_main.message("write", sidebar.text_being_edited);
+		if(sidebar.notification=="_"){
+			sidebar.notification=" ";
+		}else{
+			sidebar.notification="_";
+		}
+		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
 		setfontsize(fontsmall*2);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mg);
@@ -2678,7 +2701,12 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 255,255,255);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
-		lcd_main.message("write", sidebar.text_being_edited);
+		if(sidebar.notification=="_"){
+			sidebar.notification=" ";
+		}else{
+			sidebar.notification="_";
+		}
+		lcd_main.message("write", sidebar.text_being_edited + sidebar.notification);
 		setfontsize(fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*5.5,fontheight+y_offset,block_darkest);
@@ -3337,6 +3365,23 @@ function draw_sidebar(){
 						sidebar.scopes.midioutlist = [];
 						for(var t =0;t<ll;t++) sidebar.scopes.midioutlist.push(t);
 						// post("\nassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist, " types",sidebar.scopes.midiouttypes);
+					}else if(blocktypes.contains(block_name+"::connections::out::parameters")){
+						sidebar.scopes.midi = block;
+						if(sidebar.selected_voice<0){
+							sidebar.scopes.midivoicelist = bvs;
+						}else{
+							sidebar.scopes.midivoicelist = [bvs[sidebar.selected_voice]];
+						}
+						var ll= blocktypes.getsize(block_name+"::connections::out::parameters");
+						if(blocktypes.contains(block_name+"::connections::out::midi_scopes_types")){
+							sidebar.scopes.midiouttypes = blocktypes.get(block_name+"::connections::out::midi_scopes_types");
+						}else{
+							sidebar.scopes.midiouttypes = [];
+							for(var t=0;t<ll;t++)sidebar.scopes.midiouttypes.push(2);
+						}
+						sidebar.scopes.midioutlist = [];
+						for(var t =0;t<ll;t++) sidebar.scopes.midioutlist.push(t);
+						// post("\nassigned midi scopes block ",sidebar.scopes.midi,"voices",sidebar.scopes.midivoicelist, "outs", sidebar.scopes.midioutlist, " types",sidebar.scopes.midiouttypes);
 					}
 				}
 				sidebar.selected = block;
@@ -3598,7 +3643,7 @@ function draw_sidebar(){
 			if(sidebar.mode == "block"){
 				sidebar.scopes.starty = y_offset;
 				sidebar.scopes.endy = y_offset+2*fontheight;
-				sidebar.scopes.bg = block_darkest;
+				sidebar.scopes.bg = shadeRGB(block_darkest,0.5);
 				sidebar.scopes.fg = block_colour;
 				
 				if(block_type == "audio" || block_type == "hardware"){
@@ -3628,7 +3673,7 @@ function draw_sidebar(){
 						x1 = sidebar.x;
 						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
 							var tw = sw * ((sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12);
-							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,block_darkest);
+							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,sidebar.scopes.bg);
 							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,mouse_index,1);
 							if(sidebar.scopes.midinames== 2 + t){
 								var ms = blocktypes.getsize(block_name+"::connections::out::midi");
@@ -3638,6 +3683,37 @@ function draw_sidebar(){
 								}else{
 									nam = blocktypes.get(block_name+"::connections::out::parameters["+(t-ms)+"]");
 								}
+								var tx = x1;
+								lcd_main.message("frgb",sidebar.scopes.fg);
+								if(tx+(fontheight*nam.length)*0.2>sidebar.x2){
+									tx = x1+tw - (fontheight*(3.6+nam.length)/6.5);
+									lcd_main.message("moveto",tx+fo1,y_offset+0.4*fontheight);
+									lcd_main.message("write",nam+" ^");
+								}else{
+									lcd_main.message("moveto",tx,y_offset+0.4*fontheight);
+									lcd_main.message("write","^ "+nam);
+								}
+								y_offset+=fontheight*0.5;
+							}
+							x1+=tw;
+						}
+					}
+				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::parameters"))){
+					// post("\ndrawing just params",sidebar.scopes.midiouttypes);
+					y_offset += fontheight*1.1;
+					sidebar.scopes.endy -= fontheight; // just params? smaller scopes.
+					sidebar.scopes.fg = block_dark;
+					var sc = 0;
+					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += (sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12;
+					if(sc>0){
+						var sw = (sidebar.width+fo1) / sc;
+						x1 = sidebar.x;
+						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
+							var tw = sw * ((sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12);
+							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,sidebar.scopes.bg);
+							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,mouse_index,1);
+							if(sidebar.scopes.midinames== 2 + t){
+								var nam = blocktypes.get(block_name+"::connections::out::parameters["+(t)+"]");
 								var tx = x1;
 								lcd_main.message("frgb",block_dark);
 								if(tx+(fontheight*nam.length)*0.2>sidebar.x2){
@@ -5941,7 +6017,7 @@ function draw_sidebar(){
 			sidebar.scopes.starty = y_offset;
 			sidebar.scopes.endy = y_offset+2*fontheight;
 			//lcd_main.message("paintrect", sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,section_colour_darkest);
-			sidebar.scopes.bg=section_colour_darkest;
+			sidebar.scopes.bg = section_colour_darkest;
 			sidebar.scopes.fg=section_colour;
 			click_zone(scope_zoom,null,null, sidebar.x, sidebar.scopes.starty,sidebar.x2,sidebar.scopes.endy,mouse_index,2);
 			y_offset += fontheight*2.1;
@@ -7767,9 +7843,7 @@ function draw_resource_monitor_page() {
 			rectype = "paintrect";
 			bfree--;
 			if (Array.isArray(voicecolours[i + MAX_NOTE_VOICES])) c = voicecolours[i + MAX_NOTE_VOICES];
-			if (mutemap.peek(1, i + 1)) {
-				c = [c[0] * 0.5, c[1] * 0.5, c[2] * 0.5];
-			}
+			if (mutemap.peek(1, i + 1)) c = shadeRGB(c,0.5);
 		}
 		if (voiceselect[i + MAX_NOTE_VOICES]) lcd_main.message("paintrect", tx - 4, y_offset - 4, tx + 22, y_offset + 22, menucolour);
 		lcd_main.message(rectype, tx, y_offset, tx + 18, y_offset + 18, c);
@@ -7960,7 +8034,7 @@ function draw_automap_headers(sx, block) {
 			if(automap.lock_c && (block != automap.mapped_c) && (automap.mapped_c >= 0)) {
 				var labl = blocks.get("blocks[" + automap.mapped_c + "]::label");
 				if(labl!=null) chw += (0.1 + labl.length * 0.18) * fontheight;
-			}else if(automap.mapped_c<0) chw += 1.6*fontheight;
+			}else if(automap.mapped_c==-0.5) chw += 1.6*fontheight;
 			if(sx+chw>sidebar.x2){ // if the automap c overhangs, wrap
 				sx = sidebar.x;
 				y_offset+=0.6*fontheight;
