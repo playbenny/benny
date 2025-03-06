@@ -15,7 +15,8 @@
 				"midi" : [ "clock" ],
 				"parameters" : [ "play", "bar count" ],
 				"midi_scopes_types" : [2,3,3],
-				"midi_scopes_height" : 0.2,
+				"midi_scopes_height" : 0.5,
+				"midi_scopes_shade" : 0.7,
 				"dontdefaultall" : 1,
 				"descriptions" : {
 					"midi" : [ "notes at the rate selected"],

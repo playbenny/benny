@@ -49,3 +49,7 @@ audio_blocks/vst.FabFilter.Pro-C.2.json
 audio_blocks/vst.ValhallaVintageVerb.json
 audio_blocks/vst.ValhallaPlate.json
 audio_blocks/vst.ValhallaVintageVerb_x64.json
+audio_blocks/abb.BIFF.compressor.maxpat
+audio_blocks/abb.BIFF.compressor.json
+audio_blocks/voice.dds.wave.maxpat
+audio_blocks/voice.dds.wave.json

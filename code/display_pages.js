@@ -3648,7 +3648,11 @@ function draw_sidebar(){
 					sidebar.scopes.endy = y_offset+2*fontheight;
 				}
 				sidebar.scopes.bg = shadeRGB(block_darkest,0.5);
-				sidebar.scopes.fg = block_colour;
+				if(blocktypes.contains(block_name+"::connections::out::midi_scopes_shade")){
+					sidebar.scopes.fg = shadeRGB(block_colour, blocktypes.get(block_name+"::connections::out::midi_scopes_shade"));
+				}else{
+					sidebar.scopes.fg = block_colour;
+				}
 				
 				if(block_type == "audio" || block_type == "hardware"){
 					if(sidebar.selected_voice != -1){
