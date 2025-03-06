@@ -11,7 +11,7 @@
 			},
 			"out" : {
 				"midi" : [ "clock","output B","output C" ],
-				"midi_scopes_types" : [ 2,2,2 ]
+				"midi_scopes_types" : [ 3,3,3 ]
 			}
 		},
 		"groups" : [

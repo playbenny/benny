@@ -459,7 +459,7 @@ function sidebar_midi_scope(){
 	var x1,y1,x2,y2;
 	var ly=1,llx=-100;
 	var sc=0;
-	for(t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += (sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12;
+	for(t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += !(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12;
 	var sw = (sidebar.width+fo1) / sc;
 	x1 = sidebar.x;
 	y1 = sidebar.scopes.starty;
@@ -467,7 +467,7 @@ function sidebar_midi_scope(){
 	sy = (y2-y1-2)/128;
 	y2-=2;
 	for(var outp = 0; outp<sidebar.scopes.midioutlist.length; outp++){
-		var tsw = (sidebar.scopes.midiouttypes[outp]==0) ? 1 : 0.12;
+		var tsw = !(sidebar.scopes.midiouttypes[outp]&1) ? 1 : 0.12;
 		x2 = x1+(sw*tsw)-fo1;
 		x1+=2;
 		r =0;

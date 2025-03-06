@@ -3360,7 +3360,7 @@ function draw_sidebar(){
 						sidebar.scopes.midiouttypes = [];
 						for(var t=0;t<ll;t++)sidebar.scopes.midiouttypes.push(0);
 						if(blocktypes.contains(block_name+"::connections::out::parameters")) ll += blocktypes.getsize(block_name+"::connections::out::parameters");
-						for(;t<ll;t++)sidebar.scopes.midiouttypes.push(2);
+						for(;t<ll;t++)sidebar.scopes.midiouttypes.push(3);
 						if(blocktypes.contains(block_name+"::connections::out::midi_scopes_types")) sidebar.scopes.midiouttypes = blocktypes.get(block_name+"::connections::out::midi_scopes_types");
 						sidebar.scopes.midioutlist = [];
 						for(var t =0;t<ll;t++) sidebar.scopes.midioutlist.push(t);
@@ -3377,7 +3377,7 @@ function draw_sidebar(){
 							sidebar.scopes.midiouttypes = blocktypes.get(block_name+"::connections::out::midi_scopes_types");
 						}else{
 							sidebar.scopes.midiouttypes = [];
-							for(var t=0;t<ll;t++)sidebar.scopes.midiouttypes.push(2);
+							for(var t=0;t<ll;t++)sidebar.scopes.midiouttypes.push(3);
 						}
 						sidebar.scopes.midioutlist = [];
 						for(var t =0;t<ll;t++) sidebar.scopes.midioutlist.push(t);
@@ -3642,7 +3642,11 @@ function draw_sidebar(){
 
 			if(sidebar.mode == "block"){
 				sidebar.scopes.starty = y_offset;
-				sidebar.scopes.endy = y_offset+2*fontheight;
+				if(blocktypes.contains(block_name+"::connections::out::midi_scopes_height")){
+					sidebar.scopes.endy = y_offset+fontheight * blocktypes.get(block_name+"::connections::out::midi_scopes_height");
+				}else{
+					sidebar.scopes.endy = y_offset+2*fontheight;
+				}
 				sidebar.scopes.bg = shadeRGB(block_darkest,0.5);
 				sidebar.scopes.fg = block_colour;
 				
@@ -3663,16 +3667,16 @@ function draw_sidebar(){
 						}
 					}
 					
-					y_offset += fontheight*2.1;						
+					y_offset = sidebar.scopes.endy + fo1;					
 				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::midi"))){
-					y_offset += fontheight*2.1;
+					y_offset = sidebar.scopes.endy + fo1;
 					var sc = 0;
-					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += (sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12;
+					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += !(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12;
 					if(sc>0){
 						var sw = (sidebar.width+fo1) / sc;
 						x1 = sidebar.x;
 						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
-							var tw = sw * ((sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12);
+							var tw = sw * (!(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12);
 							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,sidebar.scopes.bg);
 							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,mouse_index,1);
 							if(sidebar.scopes.midinames== 2 + t){
@@ -3700,16 +3704,16 @@ function draw_sidebar(){
 					}
 				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::parameters"))){
 					// post("\ndrawing just params",sidebar.scopes.midiouttypes);
-					y_offset += fontheight*1.1;
-					sidebar.scopes.endy -= fontheight; // just params? smaller scopes.
+					sidebar.scopes.endy = sidebar.scopes.starty + fontheight; // just params? smaller scopes.
+					y_offset = sidebar.scopes.endy + fo1;
 					sidebar.scopes.fg = block_dark;
 					var sc = 0;
-					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += (sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12;
+					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += !(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12;
 					if(sc>0){
 						var sw = (sidebar.width+fo1) / sc;
 						x1 = sidebar.x;
 						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
-							var tw = sw * ((sidebar.scopes.midiouttypes[t]==0) ? 1 : 0.12);
+							var tw = sw * (!(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12);
 							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,sidebar.scopes.bg);
 							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,mouse_index,1);
 							if(sidebar.scopes.midinames== 2 + t){

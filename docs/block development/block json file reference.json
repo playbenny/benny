@@ -70,7 +70,7 @@ and the json file has to be saved as the same name too. eg this example is based
                         "parameters" : [ "bar counter" ],
                         "audio" : ["main output", "this out has a very special set of functions described here"]
                     },
-                    "midi_scopes_types" : [ 0,0,0,1,2] //array, one per midi, parameter out, type and size of midi scope. 0 = notes, 1 = thin notes, 2 = values
+                    "midi_scopes_types" : [ 0,0,0,1,3] //array, one per midi, parameter out, type and size of midi scope. 0 = notes, 1 = thin notes, 2 = values,3=thin values
                 }
             },
         "default_polymode" : { //optional, defines default polyphony allocator behaviour for the block

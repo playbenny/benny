@@ -1632,6 +1632,9 @@ function clear_everything(){
 	mod_param.parse('{ }');
 	states.parse('{ }');
 
+	bottombar.block=-1;
+	bottombar_size();
+	sidebar_size();
 	wipe_midi_meters();
 	remove_all_routings();
 
