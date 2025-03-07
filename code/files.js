@@ -403,6 +403,12 @@ function buffer_loaded(number,path,name,buffername){
 	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),*/"name",name);
 	var tn=+number+1;
 	var exists=0;
+	if(tn>=waves_dict.getsize("waves")){
+		while((tn) >= waves_dict.getsize("waves")){
+			waves_dict.append("waves","*");
+			waves_dict.setparse("waves["+(waves_dict.getsize("waves"))+"]","{}");
+		}
+	}
 	if(waves_dict.contains("waves["+tn+"]::name")){
 		if(waves_dict.get("waves["+tn+"]::path")==path){
 			//post("not overwriting existing wave info in dictionary");

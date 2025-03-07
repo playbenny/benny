@@ -944,7 +944,11 @@ function file_drop(fname){
 				inuse = 0;
 			}else{
 				waves.selected++;
-				if(waves.selected>100) inuse = 0;
+				if((waves.selected+1) >= waves_dict.getsize("waves")){
+					waves_dict.append("waves","*");
+					waves_dict.setparse("waves["+(waves.selected+1)+"]","{}");
+				}
+				if(waves.selected>10000){error("thats a lot of waves"); inuse = 0;}
 			}
 		}
 		var ffn = fname.split("/").pop();
@@ -1075,7 +1079,16 @@ function clear_everything_btn(parameter,value){
 		post("\ndanger",value,"(",parameter,")");
 	}
 }
-
+function clear_wave_btn(parameter,value){
+	if(value == danger_button){
+		delete_wave(waves.selected,waves.selected);
+		danger_button = -1;
+	}else{
+		danger_button = value;
+		redraw_flag.flag |= 4;
+		post("\ndanger",value,"(",parameter,")");
+	}
+}
 function custom_mouse_passthrough(parameter,value){
 	// post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	ui_poly.message("setvalue", parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
@@ -3021,6 +3034,10 @@ function wave_chosen(number,name,path){
 function load_wave(parameter,value){
 	post("loading a wave file into buffer slot",parameter);
 	waves.selected = parameter;
+	while((waves.selected+1) >= waves_dict.getsize("waves")){
+		waves_dict.append("waves","*");
+		waves_dict.setparse("waves["+(waves_dict.getsize("waves"))+"]","{}");
+	}
 	messnamed("choose_and_read_wave",parameter);
 	//waves_buffer[parameters].replace;
 }
@@ -3029,10 +3046,26 @@ function setup_waves(parameter,value){
 	if(value=="get"){
 		return 10*waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
 	}else{
-		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,0.1*value)));
+		var cv = Math.max(0,Math.min(1,0.1*value));
+		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],cv);
 		store_wave_slices(parameter[0]);
 		messnamed("wave_updated",parameter[0]);
-		redraw_flag.flag = 4;
+		if((cv<waves.zoom_start)||(cv>waves.zoom_end)){
+			var wzs = waves.zoom_start;
+			if(parameter[1]=="start"){
+				var l = waves.zoom_end-waves.zoom_start;
+				waves.zoom_start = Math.min(1-0.7*l, Math.max(0,cv - 0.3*l));
+				waves.zoom_end = l + waves.zoom_start;
+			}else if(parameter[1]=="end"){
+				var l = waves.zoom_end-waves.zoom_start;
+				waves.zoom_end = Math.max(0.7*l, Math.min(1,cv+0.3*l));
+				waves.zoom_start = waves.zoom_end - l;
+			}
+			if(wzs!=waves.zoom_start){
+				draw_wave_z[waves.selected] = [[],[],[],[]];
+			}
+		}
+		redraw_flag.flag |= 4;
 	}
 }
 function store_wave_slices(waveno){
@@ -3076,7 +3109,7 @@ function zoom_waves(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
@@ -3108,7 +3141,7 @@ function wave_stripe_click(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
@@ -3138,7 +3171,7 @@ function wave_stripe_click(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
@@ -3152,7 +3185,12 @@ function delete_wave(parameter,value){
 	waves_dict.setparse("waves["+t+"]","{}");
 	waves.selected = -1;
 	messnamed("waves_buffers",parameter,"clearlow");
-	redraw_flag.flag = 4;
+	clear_wave_graphic_z(parameter);
+	redraw_flag.flag |= 4;
+}
+
+function copy_wave(parameter,value){
+	error("\nsorry not implemented yet");
 }
 
 function undo_button(){

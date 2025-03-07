@@ -644,7 +644,7 @@ function clear_wave_graphic_z(n,newl){
 		if(!Array.isArray(draw_wave_z[n-1][i])) draw_wave_z[n-1][i] = [];
 		var t = 0;
 		while(t<newl){
-			draw_wave_z[n-1][i][t]=0;
+			draw_wave_z[n-1][i][t]=1-(2*(i&1));
 			t++;
 		}  
 		i++;
@@ -776,14 +776,16 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	if(w>250){
-		lcd_main.message("frgb",90,90,90);
+		lcd_main.message("frgb",menucolour);
+		var second=1;
 		for(t=0;t<=d;t++){
 			i = Math.floor(w*((t*dl+st)-waves.zoom_start)/(waves.zoom_end-waves.zoom_start));
-			if((i>0)&&(i<w)){
+			if((i>=0)&&(i<w)){
 				if(t==d){
-					lcd_main.message("frgb",90,90,90);
-				}else if(t==1){
-					lcd_main.message("frgb",40,40,40);
+					lcd_main.message("frgb",menudark);
+				}else if(t==second){
+					lcd_main.message("frgb",menudarkest);
+					second=-1;
 				}
 				lcd_main.message("moveto",x1+i+i,y1);
 				lcd_main.message("lineto",x1+i+i,y2-fo1);
@@ -857,14 +859,14 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 		dl /= d;
 		dl *= w;
 		if(!(waves.selected == buffer-1)||(dl!=1)){			
-			lcd_main.message("frgb",60,60,60);
+			lcd_main.message("frgb",menudarkest);
 			for(t=0;t<d;t++){
 				i = Math.floor(t*dl+st);
 				lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
 				lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
 			}
 		}
-		lcd_main.message("frgb",90,90,90);
+		lcd_main.message("frgb",menudark);
 		lcd_main.message("moveto",x1+st+st,y1+h*2*ch);
 		lcd_main.message("lineto",x1+st+st,y1+h*2*(ch+1));
 		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
