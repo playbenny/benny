@@ -82,7 +82,12 @@ function setup(x1,y1,x2,y2,sw){
 	if(block>=0){
 		// post("\nmixer setup",block);
 		scan_for_channels();
-		draw();
+		if(b_list.length==0){
+			outlet(1,"moveto",x_pos+20,y_pos+2*unit);
+			outlet(1,"write","once you connect channels they'll show here");
+		}else{
+			draw();
+		}
 	}
 }
 

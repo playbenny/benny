@@ -4147,7 +4147,7 @@ function draw_sidebar(){
 													mouse_click_parameters[mouse_index] = block;
 													mouse_click_values[mouse_index] = ["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];
 												}else{*/
-													mouse_click_actions[mouse_index] = static_mod_adjust;
+													mouse_click_actions[mouse_index] = static_mod_adjust_custom_opv_button;
 													mouse_click_parameters[mouse_index] = [curp, block, vl[v]];
 													//post("\npv,sc",pv,statecount);
 													mouse_click_values[mouse_index] = ((1.01+pv2-ppv2)/statecount) % 1;//["param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount];

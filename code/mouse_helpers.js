@@ -1903,7 +1903,7 @@ function static_mod_adjust(parameter,value){
 }
 
 function static_mod_adjust_custom(parameter,value){
-	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){
@@ -1933,6 +1933,40 @@ function static_mod_adjust_custom(parameter,value){
 		// redraw_flag.deferred|=2;
 	}
 }
+
+function static_mod_adjust_custom_opv_button(parameter,value){ // this version has the 'toggle all' fn.
+	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index,"ctrl",usermouse.ctrl);
+	//parameter holds paramno, blockno, voiceno
+	
+	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
+	if(value=="get"){
+		return parameter_static_mod.peek(1,addr);
+	}else{
+		if(usermouse.ctrl){
+			//turn off all others, toggle clicked.
+			vl = voicemap.get(parameter[1]);
+			if(!Array.isArray(vl)) vl = [vl];
+			for(var i=0;i<vl.length;i++){
+				var ov = parameter_static_mod.peek(1,vl[i]*MAX_PARAMETERS+parameter[0]);
+				if(vl[i]!=parameter[2]){
+					if(ov!=0) parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],0);
+				}else{
+					parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],((ov<0.5)|0)*0.99);
+				}
+			}
+		}else{
+			//set value
+			var t = parameter_value_buffer.peek(1,MAX_PARAMETERS*parameter[1]+parameter[0]);
+			var t2 = t + Math.max(-1,Math.min(1,value));
+			t2 = Math.max(0,Math.min(1,t2));
+			t2 -= t;  //clip the value so that it + the param (at block level) value doesn't go off the edges
+			parameter_static_mod.poke(1,addr,t2);
+		}
+		// redraw_flag.flag|=2; //custom ui elements get update called every frame so you don't need to flag this
+		// redraw_flag.deferred|=2;
+	}
+}
+
 
 function data_edit(parameter,value){
 	//post("\nDATA EDIT!!",parameter,"or",parameter[0],parameter[1],value);

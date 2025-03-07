@@ -1102,7 +1102,7 @@ function custom_ui_element(type,x1,y1,x2,y2,r,g,b,dataindex,paramindex,highlight
 		var pv = voice_parameter_buffer.peek(1,MAX_PARAMETERS*paramindex+dataindex);
 		var m=(1 + (pv>0.5))*0.5;
 		draw_button(x1,y1,x2,y2,r*m,g*m,b*m,mouse_index, highlight,pv>0.5);
-		mouse_click_actions[mouse_index] = static_mod_adjust_custom;
+		mouse_click_actions[mouse_index] = static_mod_adjust_custom_opv_button;
 		mouse_click_parameters[mouse_index] = [dataindex, block, paramindex];
 		mouse_click_values[mouse_index] = 0.99* (pv<=0.5);
 		view_changed = vc;
