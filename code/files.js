@@ -406,7 +406,7 @@ function buffer_loaded(number,path,name,buffername){
 	if(tn>=waves_dict.getsize("waves")){
 		while((tn) >= waves_dict.getsize("waves")){
 			waves_dict.append("waves","*");
-			waves_dict.setparse("waves["+(waves_dict.getsize("waves"))+"]","{}");
+			waves_dict.setparse("waves["+(waves_dict.getsize("waves")-1)+"]","{}");
 		}
 	}
 	if(waves_dict.contains("waves["+tn+"]::name")){

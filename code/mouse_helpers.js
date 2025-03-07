@@ -930,12 +930,24 @@ function panel_edit_button(parameter,value){
 	redraw_flag.flag=4;
 }
 
+function extend_waves_dict(newlen){
+	while((newlen+1) >= waves_dict.getsize("waves")){
+		waves_dict.append("waves","*");
+		waves_dict.setparse("waves["+(waves_dict.getsize("waves")-1)+"]","{}");
+	}
+	if(newlen>MAX_WAVES){
+		error("\nTODO - need to increase MAX_WAVES here, but to do so we need to:");
+		error("\nre-scale all wave select sliders, like during load");
+		error("\nstore tracker wave mapping table?\n");
+	}
+}
+
 function file_drop(fname){
 	var ts = fname.split(".").pop();
 	ts = ts.toLowerCase();
 	if(ts=="json"){
 		load_elsewhere(fname);
-	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")){
+	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")||(ts=="mp3")||(ts=="flac")){
 		post("\n\nloading audio file from drag and drop,");
 		/*if(waves.selected == -1)*/ waves.selected = 0;
 		inuse=1;
@@ -945,8 +957,7 @@ function file_drop(fname){
 			}else{
 				waves.selected++;
 				if((waves.selected+1) >= waves_dict.getsize("waves")){
-					waves_dict.append("waves","*");
-					waves_dict.setparse("waves["+(waves.selected+1)+"]","{}");
+					extend_waves_dict(waves.selected+1);
 				}
 				if(waves.selected>10000){error("thats a lot of waves"); inuse = 0;}
 			}
@@ -956,6 +967,7 @@ function file_drop(fname){
 		waves_dict.replace("waves["+(waves.selected+1)+"]::name","loading");
 		waves_dict.replace("waves["+(waves.selected+1)+"]::path","loading");
 		wave_chosen(waves.selected, ffn,fname);
+		set_display_mode("waves");
 	}else{
 		post("\ndrag and drop, unknown file type?",ts);
 	}
@@ -3034,10 +3046,7 @@ function wave_chosen(number,name,path){
 function load_wave(parameter,value){
 	post("loading a wave file into buffer slot",parameter);
 	waves.selected = parameter;
-	while((waves.selected+1) >= waves_dict.getsize("waves")){
-		waves_dict.append("waves","*");
-		waves_dict.setparse("waves["+(waves_dict.getsize("waves"))+"]","{}");
-	}
+	extend_waves_dict(waves.selected+1);
 	messnamed("choose_and_read_wave",parameter);
 	//waves_buffer[parameters].replace;
 }
@@ -3178,6 +3187,8 @@ function wave_stripe_click(parameter,value){
 		}
 	}
 }
+
+
 
 function delete_wave(parameter,value){
 	post("\n\n\n\ndeleting slot number",parameter)
