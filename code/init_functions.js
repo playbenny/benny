@@ -200,7 +200,7 @@ function initialise_dictionaries(hardware_file){
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
-	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
+	sidebar.x2 = mainwindow.width - sidebar.scrollbar_width;
 	sidebar.x = sidebar.x2 -sidebar.width;
 
 	SOUNDCARD_HAS_MATRIX = 0;
@@ -1072,8 +1072,8 @@ function deferred_diagnostics(){
 
 function topbar_size(){
 	var w=(topbar.used_length>0)? topbar.used_length:sidebar.x;
-	var tw=(w+3)/mainwindow_width;
-	var th=(fontheight+14)/mainwindow_height;
+	var tw=(w+3)/mainwindow.width;
+	var th=(fontheight+14)/mainwindow.height;
 	topbar.videoplane.message("scale",tw,th);
 	topbar.videoplane.message("position",-1+tw,1-th,0);
 	topbar.videoplane.message("texzoom",1/tw,1/th);
@@ -1090,8 +1090,8 @@ function sidebar_size(){
 		sidebar.videoplane.message("enable",0);
 	}else{
 		sidebar.videoplane.message("enable",1);
-		var tw = w/mainwindow_width;
-		var th = h/mainwindow_height;
+		var tw = w/mainwindow.width;
+		var th = h/mainwindow.height;
 		sidebar.videoplane.message("scale",tw,th,1);
 		sidebar.videoplane.message("position",1-tw,1-th,0);
 		sidebar.videoplane.message("texzoom",1/tw,1/th);
@@ -1105,8 +1105,8 @@ function statesbar_size(){
 		statesbar.videoplane.message("enable",0);
 	}else{
 		statesbar.videoplane.message("enable",1);
-		var tw=(14+fontheight)/mainwindow_width;
-		var th=(h+5)/mainwindow_height;
+		var tw=(14+fontheight)/mainwindow.width;
+		var th=(h+5)/mainwindow.height;
 		statesbar.videoplane.message("scale",tw,th);
 		statesbar.videoplane.message("position",-1+tw,-1+th,0);
 		statesbar.videoplane.message("texzoom",1/tw,1/th);
@@ -1119,20 +1119,20 @@ function bottombar_size(){
 		var h = bottombar.height;
 		var r = bottombar.right;
 		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
+		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow.height-bottombar.height))) ? (mainwindow.width-5) : (sidebar.x - 5);
 		if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
 		var w=bottombar.right - 9 - fontheight;
-		var tw=w/mainwindow_width;
-		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
-		var cy = 1 - 2 * (mainwindow_height - 0.5 * (bottombar.height + 9))/mainwindow_height;
-		var th=(bottombar.height+9)/mainwindow_height;
+		var tw=w/mainwindow.width;
+		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow.width;
+		var cy = 1 - 2 * (mainwindow.height - 0.5 * (bottombar.height + 9))/mainwindow.height;
+		var th=(bottombar.height+9)/mainwindow.height;
 		bottombar.videoplane.message("scale",tw,th);
 		bottombar.videoplane.message("position",cx,cy,0);
 		bottombar.videoplane.message("texzoom",1/tw,1/th);
-		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
+		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow.width,0.5*th);
 		bottombar.videoplane.message("enable",1);
 		if((h!=bottombar.height)||(r!=bottombar.right)){
-			// ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+			// ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow.height - bottombar.height-5, bottombar.right, mainwindow.height-5,-1);
 			setup_bottom_bar(bottombar.block);
 		}
 		redraw_flag.deferred |= 4;
@@ -1143,25 +1143,25 @@ function bottombar_size(){
 
 
 function size(width,height,scale){
-	if(mainwindow_width!=width || mainwindow_height!=height){
+	if(mainwindow.width!=width || mainwindow.height!=height){
 		post("\nmain window : "+width+"x"+height+"px");
 		reinitialise_block_menu();
 		blocks_tex_sent = [];
-		mainwindow_width = width;
-		mainwindow_height = height;
+		mainwindow.width = width;
+		mainwindow.height = height;
 		if((typeof scale == "number") && (scale>0)) scale_2d = scale;
 		lcd_main.message("dim",width,height);
 		click_b_w=1; //work out the next power of two after the width, eg 640 --> 1024, use this for the click matrix row length for speed
 		var t = 1;// << click_b_s;
-		while(t<mainwindow_width){
+		while(t<mainwindow.width){
 			t*=2;
 			click_b_w++;
 		}
-		fontheight = (mainwindow_height-24) / 18;
+		fontheight = (mainwindow.height-24) / 18;
 		fontsmall = fontheight / 3.2;
 		fo1 = fontheight * 0.1;
 		sidebar.width = fontheight*sidebar.width_in_units;
-		sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
+		sidebar.x2 = mainwindow.width - sidebar.scrollbar_width;
 		sidebar.x = sidebar.x2 -sidebar.width;
 
 		topbar_size();
@@ -1177,9 +1177,9 @@ function size(width,height,scale){
 				for(var i=0;i<waves_buffer[number].channelcount();i++){
 					var t=0;
 					var ii=i*2;
-					draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
-					draw_wave[number][ii+1]=new Array((mainwindow_width/2)|0);
-					while(t<mainwindow_width/2){
+					draw_wave[number][ii]=new Array((mainwindow.width/2)|0);
+					draw_wave[number][ii+1]=new Array((mainwindow.width/2)|0);
+					while(t<mainwindow.width/2){
 						draw_wave[number][ii][t]=1;
 						draw_wave[number][ii+1][t]=-1;
 						t++;

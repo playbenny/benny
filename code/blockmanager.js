@@ -64,8 +64,11 @@ var panelslider_visible = new Array(MAX_BLOCKS);
 var danger_button = -1;
 var folder_target = "";//when you pop open a folder select box, where is the result going?
 
-var mainwindow_width = 320;
-var mainwindow_height = 240;
+var mainwindow = {
+	width : 320,
+  	height : 240
+}
+
 var scale_2d = 1;
 
 var displaymode = "loading";
@@ -216,7 +219,8 @@ var waves = {
 	remapping : [],
 	age : [],
 	seq_no : 0,
-	scroll_position: 0
+	scroll_position: 0,
+	show_in_bottom_panel: 0
 }
 
 var quantpool = new Buffer("QUANTPOOL");
