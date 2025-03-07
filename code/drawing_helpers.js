@@ -1543,7 +1543,7 @@ function long_sidebar_text(textcontent,size) {
 		setfontsize(fontsmall);
 	}
 	var t;
-	var textcontentrows = 0.4 + textcontent.length / 45 + textcontent.split("£").length - 1;
+	var textcontentrows = 0.4 + textcontent.length * size / 45 + textcontent.split("£").length - 1;
 	var rowstart = 0;
 	var rowend = Math.ceil(7 * sidebar.width_in_units/size);
 	textcontent = textcontent + "                       ";
@@ -1594,7 +1594,7 @@ function long_sidebar_text(textcontent,size) {
 		}
 	}
 	if (!bold) lcd_main.message("textface", "bold");
-	y_offset = y_offset + fontheight * (0.75 + 0.4 * ri * size);
+	y_offset = y_offset + fontheight * (0.75 + 0.4 * ri) * size;
 }
 
 function sidebar_notification(message){
