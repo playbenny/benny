@@ -682,7 +682,7 @@ function waves_playhead(voice, wave, block){
 	if(blocks.contains("blocks["+block+"]::name")){
 		waves.v_to_w[voice] = wave;
 		var col = blocks.get("blocks["+block+"]::space::colour");
-		waves.v_label[voice] = blocks.get("blocks["+block+"]::name");
+		waves.v_label[voice] = blocks.get("blocks["+block+"]::label");
 		waves.v_helper[voice] = col;
 		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
 	}else{

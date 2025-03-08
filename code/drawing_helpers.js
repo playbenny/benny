@@ -72,7 +72,7 @@ function draw_block_texture(block){
 				lcd_block_textures.message("paintoval", 96,8,120,32);
 			}
 			lcd_block_textures.message("frgb",255,255,255);
-			lcd_block_textures.message("font",mainfont,(bln.length>0)?16:25);
+			lcd_block_textures.message("font",mainfont,(block_label == blocks.get("blocks["+block+"]::name"))?16:25);
 			lcd_block_textures.message("textface","normal");
 			for(var t=0;t<bln.length;t++){
 				lcd_block_textures.message("moveto",5, 28+t*29);
@@ -624,9 +624,8 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 }
 
 function clear_wave_graphic(n,newl){
-	post("\ncwg",n);
 	draw_wave[n-1] = [[],[],[],[]];
-	return; //i honestly don't know what this stuff below is about?
+	return; //the stuff below is theoretically a hair faster as you create the array so you don't need to check for nans in the loop every time drawing it but it was causing problems
 	if(!Array.isArray(draw_wave[n-1])) draw_wave[n-1]=[[],[],[],[]];
 	var i = 0;
 	while(i<4){

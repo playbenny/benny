@@ -3167,7 +3167,6 @@ function wave_stripe_click(parameter,value){
 			waves.zoom_start=0;
 			waves.zoom_end = 1;
 			waves.selected = parameter;
-			post("\nclicked",parameter);
 			clear_wave_graphic(waves.selected+1,1);
 		}
 	}else if(value=="get"){
@@ -3465,7 +3464,6 @@ function key_escape(){
 			set_display_mode("blocks");
 		}
 	}else if((displaymode=="waves")&&(waves.selected!=-1)){
-		post("\nesc so clear",waves.selected+1);
 		clear_wave_graphic(waves.selected+1,1);
 		waves.selected = -1;
 		redraw_flag.flag |= 4;
