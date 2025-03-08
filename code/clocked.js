@@ -659,6 +659,16 @@ function draw_playheads(){
 				// post("\nplayhead at ",v,"on wave",waves.v_to_w[waves.playheadlist[i]],"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
 			}
 			//playheads[waves.playheadlist[i]] = -1; //???
+		}else if(waves.ph_ox[i]>=0){
+			var w = waves.v_to_w[waves.playheadlist[i]];
+			lcd_main.message("frgb",shadeRGB(waves.w_helper[w][6],bg_dark_ratio));
+			lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]);
+			lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][3]);
+			if((w==waves.selected)&&(waves.v_label[waves.playheadlist[i]]!=null)){
+				var l = waves.v_label[waves.playheadlist[i]].length * fontheight / 6;
+				lcd_main.message("paintrect",waves.ph_ox[i],waves.w_helper[w][3],waves.ph_ox[i]+l,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+			}
+			waves.ph_ox[i] = -1;
 		}
 	}
 }
