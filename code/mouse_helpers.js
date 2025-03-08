@@ -3055,10 +3055,12 @@ function setup_waves(parameter,value){
 	if(value=="get"){
 		return 10*waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
 	}else{
-		var cv = Math.max(0,Math.min(1,0.1*value));
-		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],cv);
-		store_wave_slices(parameter[0]);
-		messnamed("wave_updated",parameter[0]);
+		if(!isNaN(value)){
+			var cv = Math.max(0,Math.min(1,0.1*value));
+			waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],cv);
+			store_wave_slices(parameter[0]);
+			messnamed("wave_updated",parameter[0]);
+		}
 		if((cv<waves.zoom_start)||(cv>waves.zoom_end)){
 			var wzs = waves.zoom_start;
 			if(parameter[1]=="start"){
@@ -3147,6 +3149,8 @@ function zoom_waves(parameter,value){
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
+			waves.w_helper[waves.selected][4]=waves.zoom_start;
+			waves.w_helper[waves.selected][5]=waves.zoom_end;
 		}
 		redraw_flag.flag |= 4;
 	}
@@ -3163,6 +3167,8 @@ function wave_stripe_click(parameter,value){
 			waves.zoom_start=0;
 			waves.zoom_end = 1;
 			waves.selected = parameter;
+			post("\nclicked",parameter);
+			clear_wave_graphic(waves.selected+1,1);
 		}
 	}else if(value=="get"){
 		waves.drag_start_x = usermouse.x;
@@ -3459,7 +3465,9 @@ function key_escape(){
 			set_display_mode("blocks");
 		}
 	}else if((displaymode=="waves")&&(waves.selected!=-1)){
-		waves.selected=-1;
+		post("\nesc so clear",waves.selected+1);
+		clear_wave_graphic(waves.selected+1,1);
+		waves.selected = -1;
 		redraw_flag.flag |= 4;
 	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
 		if((last_displaymode!="blocks")&&(last_displaymode!="panels")){

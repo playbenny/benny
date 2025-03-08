@@ -224,10 +224,13 @@ var waves = {
 	show_in_bottom_panel: 0,
 	playheadlist : [], //list of voices to check for playhead movement.
 	v_to_w : [], //list of which wave each voice is playing at the moment
+	v_helper : [], //colour of each voice's playhead, defined when you get the message about a playhead existing.
+	v_label : [],
 	visible : [], //0 or 1 for if it's onscreen.
-	w_helper : [], // for each wave its x1,y1,height, width, so the playhead has everything in one place
+	w_helper : [], // for each wave its x1,y1,height, width, range min max, colour,chans so the playhead has everything in one place
 	ph_ox : [] //old playhead x, by voice.
 }
+//var playheads = []; //index by voice, holds position, replaces the buffer method which crashed max
 var waves_playheads_buffer = new Buffer("waves_playheads");
 
 var quantpool = new Buffer("QUANTPOOL");

@@ -21,7 +21,7 @@ function set_display_mode(mode,t){
 	var blocks_enabled=(mode=="blocks");
 	if(displaymode!=mode){
 		if(displaymode == "block_menu") hide_block_menu();
-		if((mode!="blocks")&&(mode!="panels")){
+		if((mode!="blocks")&&(mode!="panels")&&(mode!="waves")){
 			sidebar.mode="none";
 			remove_midi_scope();
 			sidebar.scopes.voice = -1;
@@ -34,10 +34,12 @@ function set_display_mode(mode,t){
 			flock_axes(0);
 		}
 		if(mode == "blocks"){
-			//if(displaymode == "panels") block_and_wire_colours(); //this wouldn't run as bawc returns if not in blocks mode
 			if(displaymode == "flocks"){
 				draw_blocks();
 			}
+		}
+		if(mode=="waves"){
+			draw_wave= [];
 		}
 		displaymode=mode;
 		if(mode == "block_menu"){
@@ -91,7 +93,8 @@ function set_display_mode(mode,t){
 		}
 		if(displaymode=="waves"){
 			if(waves.selected != -1){
-				waves.selected=-1;
+				clear_wave_graphic(waves.selected+1,1);
+				waves.selected = -1;
 			}else{
 				clear_blocks_selection();
 				sidebar.mode = "none";
@@ -590,7 +593,6 @@ function draw_waves(){
 	var x1,x2,y1,y2;
 	x1 = 9;
 	y1 = 9 + 1.1 * fontheight;
-	// post("\nsidebar:",sidebar.mode);
 	if(sidebar.mode!="none"){
 		x2 = sidebar.x;
 	}else{
@@ -634,6 +636,7 @@ function draw_waves(){
 			lcd_main.message("moveto",x1,y_offset+fontheight*0.4);
 			if(waves_dict.contains("waves["+(slot+1)+"]::name")){
 				waves.visible[slot]=1;
+				waves.ph_ox[slot] = -1;
 				c=config.get("palette::gamut["+2*slot+"]::colour");
 				cd = shadeRGB(c,0.5);
 				waves.w_helper[slot]=[stripex1,y_offset,x2,y_offset+fontheight*1.9-2,0,1,cd,waves_dict.get("waves["+(slot+1)+"]::channels")];
@@ -693,10 +696,11 @@ function draw_waves(){
 		}
 		setfontsize(fontsmall);
 		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
+			waves.ph_ox[waves.selected] = -1;
 			waves.visible[waves.selected]=1;
 			c=config.get("palette::gamut["+2*waves.selected+"]::colour");
 			cd = shadeRGB(c,0.6);
-			waves.w_helper[waves.selected] = [x1,y1+fontheight*1.6,x2,y2-fontheight*1.1,waves.zoom_start,waves.zoom_end,cd,waves_dict.get("waves["+(waves.selected+1)+"]::channels")];
+			waves.w_helper[waves.selected] = [x1,y1+fontheight*2.1,x2,y2-fontheight*1.6,waves.zoom_start,waves.zoom_end,cd,waves_dict.get("waves["+(waves.selected+1)+"]::channels")];
 			var dd=shadeRGB(c,0.3);
 			lcd_main.message("frgb",c);
 			lcd_main.message("moveto",x1,y1 + fontheight*0.32);
@@ -764,7 +768,7 @@ function draw_waves(){
 			lcd_main.message("write","end: "+friendlytime(wl * waves_dict.get("waves["+(waves.selected+1)+"]::end")));
 			lcd_main.message("moveto",x1+2*w+9,y1+fontheight*0.82);
 			lcd_main.message("write","divisions: "+Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(waves.selected+1)+"]::divisions")));
-			draw_zoomable_waveform(x1,y1+fontheight*1.6,x2,y2-fontheight*1.1,cd[0],cd[1],cd[2],waves.selected+1,mouse_index,2);
+			draw_zoomable_waveform(x1,y1+fontheight*2.1,x2,y2-fontheight*1.6,cd[0],cd[1],cd[2],waves.selected+1,mouse_index,2);//extra margin of .5 above and below for playhead labels and markers
 			mouse_click_actions[mouse_index] = zoom_waves;
 			mouse_click_parameters[mouse_index] = waves.selected;
 			mouse_click_values[mouse_index] = 0;

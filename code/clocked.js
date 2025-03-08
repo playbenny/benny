@@ -611,10 +611,13 @@ function draw_scope(x1,y1,x2,y2,voice){
 	}		
 }
 
+function playhead_report(voice,value){
+	playheads[voice] = value;
+}
 
 function draw_playheads(){
 	for(var i = 0; i<waves.playheadlist.length; i++){
-		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]);
+		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]); //playheads[waves.playheadlist[i]];
 		if(v!=-1){
 			var w = waves.v_to_w[waves.playheadlist[i]];
 			if(waves.visible[w]&&Array.isArray(waves.w_helper[w])&&(v>waves.w_helper[w][4])&&(v<waves.w_helper[w][5])){
@@ -622,7 +625,7 @@ function draw_playheads(){
 				if(x!=waves.ph_ox[i]){
 					ii = Math.floor((waves.ph_ox[i]-waves.w_helper[w][0])*0.5);
 					var h= 0.5*(waves.w_helper[w][3]-waves.w_helper[w][1])/waves.w_helper[w][7];
-					lcd_main.message("frgb",0,0,0);
+					lcd_main.message("frgb",shadeRGB(waves.w_helper[w][6],bg_dark_ratio));
 					lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]);
 					lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][3]);
 					for(ch=0;ch<waves.w_helper[w][7];ch++){
@@ -632,23 +635,30 @@ function draw_playheads(){
 						lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmin+2*ch)-1);
 						lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmax+2*ch)+1);
 					}
-					/*if(isNaN(wmin)||isNaN(wmax)){post("nan",i); wmin=1; wmax=-1; samps=20;}
-					for(t=0;t<samps;t++){
-						s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+chunkstart+Math.random())*chunk));
-						if(s>wmax){ wmax=s; chngd=1; }
-						if(s<wmin){ wmin=s; chngd=1; }
-					}
-					draw_wave_z[buffer-1][ch*2][i] = wmin;
-					draw_wave_z[buffer-1][ch*2+1][i] = wmax;*/
-					//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
-					lcd_main.message("frgb",255,255,255);
+					lcd_main.message("frgb",waves.v_helper[waves.playheadlist[i]]);
 					lcd_main.message("moveto",x,waves.w_helper[w][1]);
 					lcd_main.message("lineto",x,waves.w_helper[w][3]);
+					if((w==waves.selected)&&(waves.v_label[waves.playheadlist[i]]!=null)){
+						var olx = waves.ph_ox[i];
+						var lx = x;
+						var l = waves.v_label[waves.playheadlist[i]].length * fontheight / 6;
+						olx = Math.min(olx, waves.w_helper[w][2]-l);
+						lx = Math.min(lx, waves.w_helper[w][2]-l);
+						if(olx<lx){
+							lcd_main.message("paintrect",olx,waves.w_helper[w][3],lx,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+						}else if(olx!=lx){
+							lcd_main.message("paintrect",olx,waves.w_helper[w][3],olx+l,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+						}
+						lcd_main.message("paintrect",lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,waves.v_helper[waves.playheadlist[i]]);
+						lcd_main.message("frgb",0,0,0);
+						lcd_main.message("moveto",lx+fo1,waves.w_helper[w][3]+0.32*fontheight);
+						lcd_main.message("write",waves.v_label[waves.playheadlist[i]]);
+					}
 					waves.ph_ox[i] = x;
 				}
 				// post("\nplayhead at ",v,"on wave",waves.v_to_w[waves.playheadlist[i]],"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
 			}
-			waves_playheads_buffer.poke(1,waves.playheadlist[i],-1);
+			//playheads[waves.playheadlist[i]] = -1; //???
 		}
 	}
 }
@@ -666,9 +676,22 @@ function do_drift(){
 	}
 }
 
-function waves_playhead(voice, wave){
+function waves_playhead(voice, wave, block){
 	//should make a list of playheads to check for changes, reset this list on clear everything? could also check it during remove block/voice
 	post("\nvoice",voice,"reports that it has a playhead on wave",wave);
-	waves.v_to_w[voice] = wave;
-	if(waves.playheadlist.indexOf(voice)==-1)waves.playheadlist.push(voice);
+	if(blocks.contains("blocks["+block+"]::name")){
+		waves.v_to_w[voice] = wave;
+		var col = blocks.get("blocks["+block+"]::space::colour");
+		waves.v_label[voice] = blocks.get("blocks["+block+"]::name");
+		waves.v_helper[voice] = col;
+		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
+	}else{
+		waves.v_to_w[voice] = null;
+		if(waves.playheadlist.indexOf(voice)!=-1){
+			post("\nreomving",voice,"from playhead list, was",waves.playheadlist);
+			waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);
+			post("is now",waves.playheadlist);
+			waves.v_label[voice] = null;
+		}
+	}
 }
