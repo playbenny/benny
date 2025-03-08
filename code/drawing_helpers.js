@@ -783,12 +783,13 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 			if((i>=0)&&(i<w)){
 				if(t==d){
 					lcd_main.message("frgb",menudark);
-				}else if(t==second){
-					lcd_main.message("frgb",menudarkest);
-					second=-1;
 				}
 				lcd_main.message("moveto",x1+i+i,y1);
 				lcd_main.message("lineto",x1+i+i,y2-fo1);
+			}
+			if(second==1){
+				lcd_main.message("frgb",menudarkest);
+				second=0;
 			}
 		}
 	}
@@ -1651,4 +1652,17 @@ function edited_channel_name(){
 	}
 	selected.block[sidebar.channelnaming[0]]=1;
 	set_sidebar_mode("none");
+}
+
+
+function friendlytime(ms){
+	if(ms<1000){
+		return Math.floor(ms)+"ms";
+	}else if(ms<60000){
+		ms/=1000;
+		return ms.toFixed(2)+"s";
+	}else{
+		ms/=1000;
+		return Math.floor(ms/60)+"m"+Math.floor(ms%60)+"s";
+	}
 }

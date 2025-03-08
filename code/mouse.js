@@ -183,6 +183,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.last.x = x;
 	usermouse.last.y = y; //these two aren't like the others, just used for special input - jogwheel
 	usermouse.shift = shift;
+	usermouse.scroll = 0;
+	
 	if(usermouse.ctrl != ctrl){
 		usermouse.ctrl = ctrl;
 		if((ctrl==0)&&usermouse.ctrl_voice_select){//reverts to just block selected
@@ -1165,7 +1167,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.y = y;
 	usermouse.last.x = x;
 	usermouse.last.y = y;
-
+	usermouse.scroll = scroll;
 	var tcell;
 	
 	if(usermouse.sidebar_scrolling != null){

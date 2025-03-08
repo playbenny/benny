@@ -93,6 +93,7 @@ function set_display_mode(mode,t){
 			if(waves.selected != -1){
 				waves.selected=-1;
 			}else{
+				clear_blocks_selection();
 				sidebar.mode = "none";
 			}
 			redraw_flag.flag |= 4;
@@ -584,21 +585,23 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 
 function draw_waves(){
 	messnamed("update_wave_colls","bang");
+	waves.visible = [];
 	//determine display mode, screen sizes
 	var x1,x2,y1,y2;
 	x1 = 9;
 	y1 = 9 + 1.1 * fontheight;
 	// post("\nsidebar:",sidebar.mode);
 	if(sidebar.mode!="none"){
-		x2 = sidebar.x - 5;
+		x2 = sidebar.x;
 	}else{
-		x2 = mainwindow.width - 9;
+		x2 = mainwindow.width;
 	}
 	if(bottombar.block>-1){
 		y2 = mainwindow.height - bottombar.height - 9; 
 	}else{
 		y2 = mainwindow.height - 9;
 	}
+	waves.width = x2 - x1 - 9;
 	var c=[], cd=[];
 	if(waves.selected==-1){ // waves list
 		//todo: playheads
@@ -607,7 +610,7 @@ function draw_waves(){
 		for(var i=1;i<=MAX_WAVES;i++){
 			if(waves_dict.contains("waves["+(i)+"]::name")) lastused = i;
 		}
-		if((lastused+1)>Math.floor((y2-y1)/(2*fontheight))){
+		if((lastused+1)>Math.floor((y2-y1)/(4*fontheight))){
 			x2 -= 9;
 			lcd_main.message("frgb", menudarkest);
 			lcd_main.message("moveto",x2,y1);
@@ -620,9 +623,9 @@ function draw_waves(){
 			lcd_main.message("lineto",x2,p+l2);
 			//click zone for the scrollbar
 			click_zone(scroll_waves, null, null, x2-9,y1,x2+12,y2,mouse_index,2);
-			x2 -= 9;
 		}
-		var slot = 0 + Math.floor(waves.scroll_position/fontheight);
+		x2 -= 9;
+		var slot = 0 + Math.floor(waves.scroll_position/(3*fontheight));
 		var y_offset = y1;
 		setfontsize(fontsmall);
 		y2-=fontheight*2;
@@ -630,8 +633,10 @@ function draw_waves(){
 		for(;y_offset<y2;slot++){
 			lcd_main.message("moveto",x1,y_offset+fontheight*0.4);
 			if(waves_dict.contains("waves["+(slot+1)+"]::name")){
+				waves.visible[slot]=1;
 				c=config.get("palette::gamut["+2*slot+"]::colour");
 				cd = shadeRGB(c,0.5);
+				waves.w_helper[slot]=[stripex1,y_offset,x2,y_offset+fontheight*1.9-2,0,1,cd,waves_dict.get("waves["+(slot+1)+"]::channels")];
 				draw_stripe(stripex1,y_offset,x2,y_offset+fontheight*1.9-2,cd[0],cd[1],cd[2],slot+1,mouse_index);
 				click_rectangle(x1,y_offset,stripex1,y_offset+fontheight*2,mouse_index,1);
 				mouse_click_actions[mouse_index] = wave_stripe_click;
@@ -680,27 +685,29 @@ function draw_waves(){
 			y_offset += fontheight * 2;
 		}
 	}else{ // single wave
+		x2 -= 9;
 		if(waves.show_in_bottom_panel){ // draw in bottom panel
 			
 		}else{ //fullscreen
 
 		}
 		setfontsize(fontsmall);
-		var y_offset = y1;
 		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
+			waves.visible[waves.selected]=1;
 			c=config.get("palette::gamut["+2*waves.selected+"]::colour");
 			cd = shadeRGB(c,0.6);
+			waves.w_helper[waves.selected] = [x1,y1+fontheight*1.6,x2,y2-fontheight*1.1,waves.zoom_start,waves.zoom_end,cd,waves_dict.get("waves["+(waves.selected+1)+"]::channels")];
 			var dd=shadeRGB(c,0.3);
 			lcd_main.message("frgb",c);
-			lcd_main.message("moveto",x1,y_offset + fontheight*0.32);
+			lcd_main.message("moveto",x1,y1 + fontheight*0.32);
 			lcd_main.message("write",Math.round(waves.selected+1),waves_dict.get("waves["+(waves.selected+1)+"]::name"));
 			lcd_main.message("frgb",dd);
-			lcd_main.message("moveto",x2-7*fontheight,y_offset + fontheight*0.32);
+			lcd_main.message("moveto",x2-7*fontheight,y1 + fontheight*0.32);
 			lcd_main.message("write","length");
-			lcd_main.message("moveto",x2-4.4*fontheight,y_offset + fontheight*0.32);
+			lcd_main.message("moveto",x2-4.4*fontheight,y1 + fontheight*0.32);
 			lcd_main.message("write","channels");
 			lcd_main.message("frgb",cd);
-			lcd_main.message("moveto",x2-6*fontheight,y_offset + fontheight*0.32);
+			lcd_main.message("moveto",x2-6*fontheight,y1 + fontheight*0.32);
 			var wl = waves_dict.get("waves["+(waves.selected+1)+"]::size");
 			lcd_main.message("write",friendlytime(wl));
 			lcd_main.message("moveto",x2-3*fontheight,y1 + fontheight*0.32);
@@ -751,13 +758,13 @@ function draw_waves(){
 			mouse_index++;
 
 			lcd_main.message("frgb",c);
-			lcd_main.message("moveto",x1+9,y_offset+fontheight*0.82);
+			lcd_main.message("moveto",x1+9,y1+fontheight*0.82);
 			lcd_main.message("write","start: "+friendlytime(wl * waves_dict.get("waves["+(waves.selected+1)+"]::start")));
-			lcd_main.message("moveto",x1+w+9,y_offset+fontheight*0.82);
+			lcd_main.message("moveto",x1+w+9,y1+fontheight*0.82);
 			lcd_main.message("write","end: "+friendlytime(wl * waves_dict.get("waves["+(waves.selected+1)+"]::end")));
-			lcd_main.message("moveto",x1+2*w+9,y_offset+fontheight*0.82);
+			lcd_main.message("moveto",x1+2*w+9,y1+fontheight*0.82);
 			lcd_main.message("write","divisions: "+Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(waves.selected+1)+"]::divisions")));
-			draw_zoomable_waveform(9,y_offset+fontheight*1.6,x2,y2-fontheight*1.1,cd[0],cd[1],cd[2],waves.selected+1,mouse_index,2);
+			draw_zoomable_waveform(x1,y1+fontheight*1.6,x2,y2-fontheight*1.1,cd[0],cd[1],cd[2],waves.selected+1,mouse_index,2);
 			mouse_click_actions[mouse_index] = zoom_waves;
 			mouse_click_parameters[mouse_index] = waves.selected;
 			mouse_click_values[mouse_index] = 0;
@@ -766,18 +773,16 @@ function draw_waves(){
 			waves.selected = -1;
 		}
 	}
-}
-
-function friendlytime(ms){
-	if(ms<1000){
-		return Math.floor(ms)+"ms";
-	}else if(ms<60000){
-		ms/=1000;
-		return ms.toFixed(2)+"s";
-	}else{
-		ms/=1000;
-		return Math.floor(ms/60)+"m"+Math.floor(ms%60)+"s";
-	}
+	/*
+	for(var i = 0; i<waves.playheadlist.length; i++){
+		var v = waves.playheadlist[i];
+		var w = waves.v_to_w[v];
+		if(v<MAX_NOTE_VOICES){
+			note_poly.message("setvalue",v+1,"playhead_visible",waves.visible[w]);
+		}else{
+			audio_poly.message("setvalue",v+1-MAX_NOTE_VOICES,"playhead_visible",waves.visible[w]);			
+		}
+	}*/ //i think this (turning off the buffer writes for non-visible playheads) is pointless - more work than it saves, and what if other things want to see the playheads?
 }
 
 function draw_custom(){
@@ -2050,6 +2055,7 @@ function clear_screens(){
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
+	waves.visible=[];
 	scrollbar_index = 3;//mouse_index;
 	mouse_index=4;
 	lcd_main.message("brgb", backgroundcolour_current);
@@ -3818,7 +3824,7 @@ function draw_sidebar(){
 						}
 					}
 				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (bottombar.block != block)){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (displaymode != "waves") && (bottombar.block != block)){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
 					if((block_voicecount>1) && (blocktypes.contains(block_name+"::ui_in_sidebar_expands"))) ui_h += (block_voicecount-1) * blocktypes.get(block_name+"::ui_in_sidebar_expands");
 					var miplus16 = mouse_index + 16;

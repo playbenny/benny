@@ -216,12 +216,19 @@ var waves = {
 	selected : -1,
 	zoom_start : 0,
 	zoom_end : 1,
+	width : 640, //of the ui, for the mouse
 	remapping : [],
 	age : [],
 	seq_no : 0,
 	scroll_position: 0,
-	show_in_bottom_panel: 0
+	show_in_bottom_panel: 0,
+	playheadlist : [], //list of voices to check for playhead movement.
+	v_to_w : [], //list of which wave each voice is playing at the moment
+	visible : [], //0 or 1 for if it's onscreen.
+	w_helper : [], // for each wave its x1,y1,height, width, so the playhead has everything in one place
+	ph_ox : [] //old playhead x, by voice.
 }
+var waves_playheads_buffer = new Buffer("waves_playheads");
 
 var quantpool = new Buffer("QUANTPOOL");
 var indexpool = new Buffer("INDEXPOOL");
@@ -476,6 +483,7 @@ var usermouse = {
 	caps : 0,
 	x : 0,
 	y : 0,
+	scroll : 0,
 	timer : 0,
 	scroll_accumulator : 0,
 	sidebar_scrolling: null,
@@ -745,6 +753,7 @@ var loading = {
 	bundling : 1, //set to 1 for a slow load with a rest between each thing loaded, higher loads things in chunks, loads faster overall.
 	wait : 1, //how many frame to wait between stages of loading
 	mapping : [],
+	incoming_max_waves: 16,
 	conncount : 0, //how many connections
 	merge : 0,
 	mutelist : [], //each entry is [blockno,mute], you resend the message once everything should've loaded

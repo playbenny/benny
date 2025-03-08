@@ -200,8 +200,7 @@ function create_blank_wave_buffer(number,length, channels,name){
 	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name,buffername);
 	var d = new Dict;
 	d.name = "temp";
-	//if(number>waves_dict.getsize("waves")) 
-	//	waves_dict.append("waves","*");
+	if(number>=waves_dict.getsize("waves")) extend_waves_dict(number+1);
 	d.replace("name",name+"-"+number+"-"+length+"-"+channels);
 	d.replace("path","");
 	d.replace("length",waves_buffer[number].framecount());
@@ -403,25 +402,18 @@ function buffer_loaded(number,path,name,buffername){
 	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),*/"name",name);
 	var tn=+number+1;
 	var exists=0;
-	if(tn>=waves_dict.getsize("waves")){
-		while((tn) >= waves_dict.getsize("waves")){
-			waves_dict.append("waves","*");
-			waves_dict.setparse("waves["+(waves_dict.getsize("waves")-1)+"]","{}");
-		}
-	}
+	if(tn>=waves_dict.getsize("waves"))	extend_waves_dict(tn);
 	if(waves_dict.contains("waves["+tn+"]::name")){
 		if(waves_dict.get("waves["+tn+"]::path")==path){
 			//post("not overwriting existing wave info in dictionary");
 			exists=1;
 		}else{
-			post("\npath doesn't match so overwriting",waves_dict.get("waves["+tn+"]::path"),path);
+			//post("\npath doesn't match so overwriting",waves_dict.get("waves["+tn+"]::path"),path);
 		}
 	}
 	if(!exists){
 		var d = new Dict;
 		d.name = "temp";
-		//if(number>waves_dict.getsize("waves")) 
-		//	waves_dict.append("waves","*");
 		d.replace("name",name);
 		d.replace("path",path);
 		d.replace("length",waves_buffer[number].framecount());
@@ -586,8 +578,10 @@ function import_song(){
 		if(loading.progress == 0){
 			if(songs.contains(loading.songname+"::waves")){
 				build_wave_remapping_list(loading.songname);
-				post("\nloading waves, size",songs.getsize(loading.songname+"::waves"));
-				for(i=0;i<songs.getsize(loading.songname+"::waves");i++){
+				var cursize = waves_dict.getsize("waves");
+				if(loading.incoming_max_waves>=cursize) extend_waves_dict(loading.incoming_max_waves);
+				post("\nloading waves, size",loading.incoming_max_waves);
+				for(i=0;i<loading.incoming_max_waves;i++){
 					var ii=i+1;
 					if(songs.contains(loading.songname+"::waves["+ii+"]::path")){
 						t = waves.remapping[i];
@@ -602,7 +596,7 @@ function import_song(){
 						}else{
 							polyslot++;
 						}
-						//post("this wave is in polyslot",polyslot);
+						// post("this wave is in polyslot",polyslot);
 						waves_dict.replace("waves["+tt+"]", songs.get(loading.songname+"::waves["+ii+"]"));
 						waves_dict.replace("waves["+tt+"]::buffername","waves."+polyslot);
 						buffer_loaded(t,pat,nam,"waves."+polyslot);
@@ -784,7 +778,7 @@ function import_song(){
 							for(t=0;t<l;t++){
 								if(loading.wave_paramlist[t][0]==loading.mapping[b]){
 									//post("\nadjusting param no ",loading.wave_paramlist[t][1]," to ",stpv[loading.wave_paramlist[t][1]+1]);
-									stpv[loading.wave_paramlist[t][1]+1] = (waves.remapping[Math.floor(MAX_WAVES*(stpv[loading.wave_paramlist[t][1]+1]))]+0.2) / MAX_WAVES;
+									stpv[loading.wave_paramlist[t][1]+1] = (waves.remapping[Math.floor(loading.incoming_max_waves*(stpv[loading.wave_paramlist[t][1]+1]))]+0.2) / MAX_WAVES;
 									//post(" to ",stpv[loading.wave_paramlist[t][1]+1]);
 								}
 							}
@@ -804,7 +798,7 @@ function import_song(){
 						for(t=0;t<l;t++){
 							if(loading.wave_paramlist[t][0]==loading.mapping[b]){
 								//post("\nadjusting ",stpv[loading.wave_paramlist[t][1]+1]);
-								stpv[loading.wave_paramlist[t][1]+1] = (waves.remapping[Math.floor(MAX_WAVES*(stpv[loading.wave_paramlist[t][1]+1]))]+0.2) / MAX_WAVES;
+								stpv[loading.wave_paramlist[t][1]+1] = (waves.remapping[Math.floor(loading.incoming_max_waves*(stpv[loading.wave_paramlist[t][1]+1]))]+0.2) / MAX_WAVES;
 								//post(" to ",stpv[loading.wave_paramlist[t][1]+1]);
 							}
 						}
@@ -886,10 +880,17 @@ function swap_block_check_connections(b,oldname,oldtype,newname,newtype){
 
 function build_wave_remapping_list(){
 	if(songs.contains(loading.songname+"::waves")){
+		if(songs.contains(loading.songname+"::MAX_WAVES")){
+			loading.incoming_max_waves = songs.get(loading.songname+"::MAX_WAVES");
+		}else{
+			loading.incoming_max_waves = songs.getsize(loading.songname+"::waves")-1;
+			if(loading.incoming_max_waves==17)loading.incoming_max_waves=16;
+		}
+		post("\nincoming wavetable has ",loading.incoming_max_waves," slots. ");
 		var i,a;
 		var freelist = [];
 		post("\nchecking if any waves need remapping");
-		for(i=0;i<MAX_WAVES;i++){
+		for(i=0;i<loading.incoming_max_waves;i++){
 			freelist[i]=1;
 			if(waves_dict.contains("waves["+ (1+i)+"]::name")) {
 				freelist[i]=0;
@@ -899,7 +900,7 @@ function build_wave_remapping_list(){
 			}*/
 		}
 		//post("\nfreelist = ",freelist," agelist = ",waves.age);
-		for(i=0;i<MAX_WAVES;i++){
+		for(i=0;i<loading.incoming_max_waves;i++){
 			if(songs.contains(loading.songname+"::waves["+(1+i)+"]::name")){
 				a=-1;
 				var lowest = waves.seq_no;
@@ -928,6 +929,14 @@ function build_wave_remapping_list(){
 }
 
 function request_waves_remapping(type, voice){
+	if(loading.incoming_max_waves != MAX_WAVES){
+		post("\n max waves is different now to when the file was saved, notifying voice ",voice,type);
+		if(type=="audio"){
+			audio_poly.message("setvalue", (voice-MAX_NOTE_VOICES)+1,"remapping_sizechange",loading.incoming_max_waves,MAX_WAVES);
+		}else if(type=="ui"){
+			ui_poly.message("setvalue", voice+1,"remapping_sizechange",loading.incoming_max_waves,MAX_WAVES);
+		}
+	}
 	post("\n remapping request received,",type,voice,"the remapping i sent out is",waves.remapping);
 	if(type=="audio"){
 		audio_poly.message("setvalue", (voice-MAX_NOTE_VOICES)+1,"remapping",waves.remapping);
@@ -1093,7 +1102,7 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			p_type = params[i].get("type");
 			p_values = params[i].get("values");
 			if(p_type == "wave"){
-				var curwav = Math.floor(MAX_WAVES * paramvalues[i+1]);
+				var curwav = Math.floor(loading.incoming_max_waves * paramvalues[i+1]);
 				post("\nprocessing remapping for block",block_index,block_name," wave was ",curwav," and will be ",waves.remapping[curwav]);
 				paramvalues[i+1] = (waves.remapping[curwav]+0.2)/MAX_WAVES;
 				loading.wave_paramlist.push([block_index,i]);
@@ -1280,6 +1289,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 			if(blocks.contains("blocks["+b+"]::mute")) store[b][0] = blocks.get("blocks["+b+"]::mute");
 		}
 	}
+	songs.replace(loading.songname+"::MAX_WAVES",MAX_WAVES);
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
 		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
@@ -1626,10 +1636,7 @@ function clear_everything(){
 
 	var i;
 	var emptys="{}";
-	for(i=0;i<=MAX_WAVES;i++)	emptys= emptys+",{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
-
-	var emptys="{}";
 	for(i=0;i<MAX_BLOCKS-1;i++)	emptys= emptys+",{}";
 	blocks.parse('{ "blocks" : ['+emptys+'] }');
 	voicemap.parse('{ }');
@@ -1658,6 +1665,8 @@ function clear_everything(){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
 	}
+	waves.playheadlist = [];
+	waves.v_to_w = [];
 	waves.seq_no = 0;
 	waves.selected = -1;
 	for(i=0;i<MAX_NOTE_VOICES;i++) note_patcherlist[i]='blank.note';

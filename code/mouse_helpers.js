@@ -3097,28 +3097,53 @@ function store_wave_slices(waveno){
 }
 
 function zoom_waves(parameter,value){
+	// post("\nzoom waves",parameter,value);
 	if(value=="get"){
+		waves.drag_start_x = usermouse.x;
+		waves.drag_start_y = usermouse.y;
 		return 0;//waves.zoom_start;
+	}else if(value=="all"){
+		waves.zoom_start = 0;
+		waves.zoom_end = 1;
+		draw_wave_z[waves.selected] = [[],[],[],[]];
+		redraw_flag.flag |= 4;
 	}else{
-		var w = Math.max(waves.zoom_end- waves.zoom_start,0.00001);
-		var skew = usermouse.x / mainwindow.width;
+		//this is how piano roll does it but:
 		var wzs = waves.zoom_start;
 		var wze = waves.zoom_end;
-		waves.zoom_start += (skew)* w*value;
-		waves.zoom_end -= (1-skew)*w*value;
-		if(waves.zoom_start>waves.zoom_end){
-			var t = waves.zoom_start;
-			waves.zoom_start=waves.zoom_end;
-			waves.zoom_end = t+0.00001;
+		var dx = usermouse.x - waves.drag_start_x;
+		var dy = usermouse.y - waves.drag_start_y;
+		if((dx==0)&&(dy==0)&&(value!=0)){
+			if(usermouse.shift){
+				dx = -10000*value;
+			}else{
+				dy = -1000*value;
+			}
 		}
-		if(waves.zoom_start<0){
-			waves.zoom_end -= waves.zoom_start;
-			if(waves.zoom_end>1)waves.zoom_end = 1;
-			waves.zoom_start = 0;
-		}else if(waves.zoom_end > 1){
-			waves.zoom_start -= (waves.zoom_end-1);
-			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves.zoom_end = 1;
+		var dir = 0;
+		if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+		if(dir==0){
+			var l = (waves.zoom_end - waves.zoom_start);
+			var p = (0.1+l)/(waves.width*1.1);
+			p *= dx;
+			waves.zoom_start += p;
+			waves.zoom_start = Math.min(Math.max(0,waves.zoom_start),1-l);
+			waves.zoom_end = waves.zoom_start + l;
+			waves.drag_start_y = usermouse.y;
+			waves.drag_start_x = usermouse.x;
+		}else{
+			var l = (waves.zoom_end - waves.zoom_start);
+			var xx = (usermouse.x-fontheight*1.1-9)/waves.width;
+			dy*=0.01;
+			waves.zoom_start += l*xx*dy;
+			waves.zoom_end -= l*(1-xx)*dy;
+			waves.zoom_end = Math.max(waves.zoom_start+0.00001,waves.zoom_end);
+			waves.zoom_end = Math.min(waves.zoom_end, 1);
+			waves.zoom_start = Math.min(waves.zoom_end-0.00001,waves.zoom_start);
+			waves.zoom_start = Math.max(waves.zoom_start,0);
+			waves.zoom_scale = 1/(waves.zoom_end - waves.zoom_start);
+			waves.drag_start_x = usermouse.x;
+			waves.drag_start_y = usermouse.y;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
@@ -3131,12 +3156,64 @@ function wave_stripe_click(parameter,value){
 	//	post("\nstripe click",parameter,value);
 	redraw_flag.flag |= 4;
 	if(	waves.selected != parameter){
-		waves.zoom_start=0;
-		waves.zoom_end = 1;
-		waves.selected = parameter;
-		return 0;
+		if(usermouse.scroll!=0){
+			waves.scroll_position -= fontheight * usermouse.scroll * 2;
+			waves.scroll_position = Math.max(0,waves.scroll_position);
+		}else{
+			waves.zoom_start=0;
+			waves.zoom_end = 1;
+			waves.selected = parameter;
+		}
+	}else if(value=="get"){
+		waves.drag_start_x = usermouse.x;
+		waves.drag_start_y = usermouse.y;
+		return 0;//waves.zoom_start;
+	}else{
+		//this is how piano roll does it but:
+		var wzs = waves.zoom_start;
+		var wze = waves.zoom_end;
+		var dx = usermouse.x - waves.drag_start_x;
+		var dy = usermouse.y - waves.drag_start_y;
+		if((dx==0)&&(dy==0)&&(value!=0)){
+			if(usermouse.shift){
+				dx = -10000 * value;
+			}else{
+				dy = -1000 * value;
+			}
+		}
+		var dir = 0;
+		if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+		if(dir==0){
+			var l = (waves.zoom_end - waves.zoom_start);
+			//the stripe is faster to drag l-r on when zoomed in than the big wave
+			var p = 0.75/waves.width;
+			p *= dx;
+			waves.zoom_start += p;
+			waves.zoom_start = Math.min(Math.max(0,waves.zoom_start),1-l);
+			waves.zoom_end = waves.zoom_start + l;
+			waves.drag_start_y = usermouse.y;
+			waves.drag_start_x = usermouse.x;
+		}else{
+			var l = (waves.zoom_end - waves.zoom_start);
+			var xx = (usermouse.x-fontheight*1.1-9)/waves.width;
+			dy*=0.01;
+			waves.zoom_start += l*xx*dy;
+			waves.zoom_end -= l*(1-xx)*dy;
+			waves.zoom_end = Math.max(waves.zoom_start+0.00001,waves.zoom_end);
+			waves.zoom_end = Math.min(waves.zoom_end, 1);
+			waves.zoom_start = Math.min(waves.zoom_end-0.00001,waves.zoom_start);
+			waves.zoom_start = Math.max(waves.zoom_start,0);
+			waves.zoom_scale = 1/(waves.zoom_end - waves.zoom_start);
+			waves.drag_start_x = usermouse.x;
+			waves.drag_start_y = usermouse.y;
+		}
+		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
+			draw_wave_z[waves.selected] = [[],[],[],[]];
+		}
+		redraw_flag.flag |= 4;
 	}
-	if(value=="get"){
+	
+	/*if(value=="get"){
 		var skew = usermouse.x / mainwindow.width;
 		var wl = waves.zoom_end - waves.zoom_start;
 		var wzs = waves.zoom_start;
@@ -3185,7 +3262,7 @@ function wave_stripe_click(parameter,value){
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
 		}
-	}
+	}*/
 }
 
 

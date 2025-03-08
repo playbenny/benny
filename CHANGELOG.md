@@ -1,3 +1,6 @@
+08/03/25:
+- big update to the waves section and related blocks. the waves ui has been made clearer, easier to use and more stable, wave drawing is better, zooming and panning works. playheads are drawn on the main waves page for all the blocks in the set. the waves page can now coexist with the sidebar. there's no longer any limit on the number of waves loaded. 
+
 06/03/25:
 - **freeze** block inspired by watching my friend chris duffin (xam duo, etc) play sax into a guitar freeze pedal. when on (via a midi in or a button in the ui) the block freezes a small section of audio - either by looping (forward or bidirectional) or a basic FFT-stretch-freeze effect. the position slider lets you move already-captured loops' start and end around in the buffer. works well polyphonically - if you add voices it lets you grab and hold multiple instants from an incoming audio stream, for example.
 - **tilt+scan** block for generating structured modulation for multiple voices or multiple parameters. wire each voice of this block to a voice on a block you want to modulate, in order, and this will let you tilt (optionally exponentially) the values and/or scan a resizable bump through the voices' values. you can also use it to modulate many parameters of one voice, for example the partials on a harmonic oscillator, as shown in the demosong.

@@ -95,10 +95,10 @@ function frameclock(){
 	}else if(redraw_flag.flag & 2){
 		clear_screens();
 		draw_topbar();
+		if(displaymode=="waves") draw_waves();
 		draw_sidebar();
 		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
-		if(displaymode=="waves") draw_waves();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		if(redraw_flag.flag & 8) block_and_wire_colours();
 		bangflag=1;
@@ -188,6 +188,7 @@ function frameclock(){
 		bangflag=1;
 	}else if(displaymode == "waves"){
 		sidebar_meters();
+		if(waves.playheadlist.length>0) draw_playheads();
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){
@@ -610,6 +611,48 @@ function draw_scope(x1,y1,x2,y2,voice){
 	}		
 }
 
+
+function draw_playheads(){
+	for(var i = 0; i<waves.playheadlist.length; i++){
+		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]);
+		if(v!=-1){
+			var w = waves.v_to_w[waves.playheadlist[i]];
+			if(waves.visible[w]&&Array.isArray(waves.w_helper[w])&&(v>waves.w_helper[w][4])&&(v<waves.w_helper[w][5])){
+				var x = Math.floor(waves.w_helper[w][0]+v*(waves.w_helper[w][2]-waves.w_helper[w][0]));
+				if(x!=waves.ph_ox[i]){
+					ii = Math.floor((waves.ph_ox[i]-waves.w_helper[w][0])*0.5);
+					var h= 0.5*(waves.w_helper[w][3]-waves.w_helper[w][1])/waves.w_helper[w][7];
+					lcd_main.message("frgb",0,0,0);
+					lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]);
+					lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][3]);
+					for(ch=0;ch<waves.w_helper[w][7];ch++){
+						var wmin = draw_wave[w][ch*2][ii];
+						var wmax = draw_wave[w][ch*2+1][ii];
+						lcd_main.message("frgb",waves.w_helper[w][6]);
+						lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmin+2*ch)-1);
+						lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmax+2*ch)+1);
+					}
+					/*if(isNaN(wmin)||isNaN(wmax)){post("nan",i); wmin=1; wmax=-1; samps=20;}
+					for(t=0;t<samps;t++){
+						s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+chunkstart+Math.random())*chunk));
+						if(s>wmax){ wmax=s; chngd=1; }
+						if(s<wmin){ wmin=s; chngd=1; }
+					}
+					draw_wave_z[buffer-1][ch*2][i] = wmin;
+					draw_wave_z[buffer-1][ch*2+1][i] = wmax;*/
+					//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
+					lcd_main.message("frgb",255,255,255);
+					lcd_main.message("moveto",x,waves.w_helper[w][1]);
+					lcd_main.message("lineto",x,waves.w_helper[w][3]);
+					waves.ph_ox[i] = x;
+				}
+				// post("\nplayhead at ",v,"on wave",waves.v_to_w[waves.playheadlist[i]],"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
+			}
+			waves_playheads_buffer.poke(1,waves.playheadlist[i],-1);
+		}
+	}
+}
+
 function do_drift(){
 	var i,t;
 	for(i=param_error_drift.length;i--;){
@@ -621,4 +664,11 @@ function do_drift(){
 			}
 		}
 	}
+}
+
+function waves_playhead(voice, wave){
+	//should make a list of playheads to check for changes, reset this list on clear everything? could also check it during remove block/voice
+	post("\nvoice",voice,"reports that it has a playhead on wave",wave);
+	waves.v_to_w[voice] = wave;
+	if(waves.playheadlist.indexOf(voice)==-1)waves.playheadlist.push(voice);
 }

@@ -145,7 +145,7 @@
         "573" : ["-", "poly_key" , 1]
     },
     "waves" : {
-
+        "-15" : ["home" , "zoom_waves", "all","all"]
     },
     "sidebar" : {
         "file_menu" : {

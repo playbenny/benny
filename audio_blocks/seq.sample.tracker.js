@@ -979,7 +979,9 @@ function store(){
 	}
 	messnamed("to_blockmanager","store_ok_done",block);
 }
-
+function remapping_sizechange(froom,too){
+	post("\nwavetable size change, not implemented",froom,too);
+}
 function remapping(froom,too){
 	post("\nremapping_list "+froom +" -> "+too+" .. ");
 	var cx,cy,cv,ct=0;
