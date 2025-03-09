@@ -92,12 +92,12 @@ function set_display_mode(mode,t){
 			center_view(1);
 		}
 		if(displaymode=="waves"){
-			if(waves.selected != -1){
-				clear_wave_graphic(waves.selected+1,1);
-				waves.selected = -1;
-			}else{
+			if(sidebar.mode!="none"){
 				clear_blocks_selection();
 				sidebar.mode = "none";
+			}else{
+				clear_wave_graphic(waves.selected+1,1);
+				waves.selected = -1;
 			}
 			redraw_flag.flag |= 4;
 		}

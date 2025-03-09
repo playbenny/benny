@@ -1465,11 +1465,12 @@ function remove_connection(connection_number){
 }
 
 function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
+	// post("\ntesting block ",f_block,"voice",f_voice_no,"output",f_o_no,"type",f_type);
 	var cused = 0;
 	for (var testc = connections.getsize("connections"); testc >= 0; testc--) {
 		if((connections.contains("connections[" + testc + "]::from"))) {
 			if (connections.get("connections[" + testc + "]::from::number") == f_block) {
-				if ((connections.get("connections[" + testc + "]::from::output::type") == f_type) && (connections.get("connections[" + testc + "]::from::output::number") == f_o_no)) {
+				if (((connections.get("connections[" + testc + "]::from::output::type") == f_type)) && (connections.get("connections[" + testc + "]::from::output::number") == f_o_no)) {
 					var fv = connections.get("connections[" + testc + "]::from::voice");
 					//post("\ntesting fv", fv, f_voice_no);
 					if (fv == "all") {
@@ -1486,11 +1487,13 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 				}
 			}
 		}
+		// post("result", cused);
 	}
 	//tell the voice that this output is in use
 	var vl=voicemap.get(f_block);
 	if(!Array.isArray(vl))vl=[vl];
 	var f_voice = vl[f_voice_no];
+	if(f_type=="parameters")f_o_no+=blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
 	if(blocks.get("blocks["+f_block+"]::type")=="audio"){
 		audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
 	}else if(blocks.get("blocks["+f_block+"]::type")=="note"){

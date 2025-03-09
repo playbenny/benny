@@ -666,7 +666,7 @@ function draw_playheads(){
 			}
 			//playheads[waves.playheadlist[i]] = -1; //???
 		}else if(waves.ph_ox[i]>=0){
-			redraw_flag.flag |= 4;
+			redraw_flag.deferred |= 4;
 			waves.ph_ox[i] = -1;
 		}
 	}

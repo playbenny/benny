@@ -1633,7 +1633,7 @@ function clear_everything(){
 	if(SOUNDCARD_HAS_MATRIX) messnamed("drivers_poly", "setvalue",2,"clear");
 	//	matrix.message("clear"); //clears the audio matrix
 	messnamed("clear_matrix","bang");
-
+	messnamed("clear_everything","bang");
 	var i;
 	var emptys="{}";
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');

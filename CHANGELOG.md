@@ -1,5 +1,5 @@
 08/03/25:
-- big update to the waves section and related blocks. the waves ui has been made clearer, easier to use and more stable, wave drawing is better, zooming and panning works. playheads are drawn on the main waves page for all the blocks in the set. the waves page can now coexist with the sidebar. there's no longer any limit on the number of waves loaded. 
+- big update to the **waves section** and related blocks. the waves ui has been made clearer, easier to use and more stable, wave drawing is better, zooming and panning works. playheads are drawn on the main waves page for all the blocks in the set. hopefully this makes it easier to understand what blocks like the multi.sample.player are doing. the waves page can now coexist with the sidebar. there's no longer any limit on the number of waves loaded.
 
 06/03/25:
 - **freeze** block inspired by watching my friend chris duffin (xam duo, etc) play sax into a guitar freeze pedal. when on (via a midi in or a button in the ui) the block freezes a small section of audio - either by looping (forward or bidirectional) or a basic FFT-stretch-freeze effect. the position slider lets you move already-captured loops' start and end around in the buffer. works well polyphonically - if you add voices it lets you grab and hold multiple instants from an incoming audio stream, for example.
