@@ -95,10 +95,10 @@ function frameclock(){
 	}else if(redraw_flag.flag & 2){
 		clear_screens();
 		draw_topbar();
-		draw_sidebar();
 		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
-		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if(displaymode=="waves") draw_waves();
+		draw_sidebar();
+		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		if(redraw_flag.flag & 8) block_and_wire_colours();
 		bangflag=1;
@@ -188,6 +188,7 @@ function frameclock(){
 		bangflag=1;
 	}else if(displaymode == "waves"){
 		sidebar_meters();
+		if(waves.playheadlist.length>0) draw_playheads();
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){
@@ -610,6 +611,67 @@ function draw_scope(x1,y1,x2,y2,voice){
 	}		
 }
 
+function playhead_report(voice,value){
+	playheads[voice] = value;
+}
+
+function draw_playheads(){
+	for(var i = 0; i<waves.playheadlist.length; i++){
+		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]);
+		if(v!=-1){
+			var w = waves_playheads_buffer.peek(2,waves.playheadlist[i]) |0;
+			if(waves.visible[w]&&Array.isArray(waves.w_helper[w])&&(v>waves.w_helper[w][4])&&(v<waves.w_helper[w][5])){
+				var x = Math.floor(waves.w_helper[w][0]+v*(waves.w_helper[w][2]-waves.w_helper[w][0]));
+				if((x!=waves.ph_ox[i])||(redraw_flag.flag&6)){
+					ii = Math.floor((waves.ph_ox[i]-waves.w_helper[w][0])*0.5);
+					var h= 0.5*(waves.w_helper[w][3]-waves.w_helper[w][1])/waves.w_helper[w][7];
+					lcd_main.message("frgb",shadeRGB(waves.w_helper[w][6],bg_dark_ratio));
+					lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]);
+					lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][3]);
+					for(ch=0;ch<waves.w_helper[w][7];ch++){
+						var wmin = draw_wave[w][ch*2][ii];
+						var wmax = draw_wave[w][ch*2+1][ii];
+						lcd_main.message("frgb",waves.w_helper[w][6]);
+						lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmin+2*ch)-1);
+						lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmax+2*ch)+1);
+					}
+					lcd_main.message("frgb",waves.v_helper[waves.playheadlist[i]]);
+					lcd_main.message("moveto",x,waves.w_helper[w][1]);
+					lcd_main.message("lineto",x,waves.w_helper[w][3]);
+					if((w==waves.selected)&&(waves.v_label[waves.playheadlist[i]]!=null)){
+						var olx = waves.ph_ox[i];
+						var lx = x;
+						var l = (waves.v_label[waves.playheadlist[i]].length+2) * fontheight / 6;
+						olx = Math.min(olx, waves.w_helper[w][2]-l);
+						lx = Math.min(lx, waves.w_helper[w][2]-l);
+						if(olx<lx){
+							lcd_main.message("paintrect",olx,waves.w_helper[w][3],lx,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+						}else if(olx!=lx){
+							lcd_main.message("paintrect",olx,waves.w_helper[w][3],olx+l,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+						}
+						lcd_main.message("paintrect",lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,waves.v_helper[waves.playheadlist[i]]);
+						click_rectangle(lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,mouse_index,1);
+						mouse_click_actions[mouse_index] = select_block_and_voice;
+						mouse_click_parameters[mouse_index] = waves.v_jump[waves.playheadlist[i]][0];
+						mouse_click_values[mouse_index] = waves.v_jump[waves.playheadlist[i]][1];
+						mouse_index++;
+						
+						lcd_main.message("frgb",0,0,0);
+						lcd_main.message("moveto",lx+fo1,waves.w_helper[w][3]+0.35*fontheight);
+						lcd_main.message("write",waves.v_label[waves.playheadlist[i]]);
+					}
+					waves.ph_ox[i] = x;
+				}
+				// post("\nplayhead at ",v,"on wave",w,"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
+			}
+			//playheads[waves.playheadlist[i]] = -1; //???
+		}else if(waves.ph_ox[i]>=0){
+			redraw_flag.deferred |= 4;
+			waves.ph_ox[i] = -1;
+		}
+	}
+}
+
 function do_drift(){
 	var i,t;
 	for(i=param_error_drift.length;i--;){
@@ -619,6 +681,39 @@ function do_drift(){
 					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
 				}
 			}
+		}
+	}
+}
+
+function waves_playhead(voice, block, enable){
+	//should make a list of playheads to check for changes, reset this list on clear everything? could also check it during remove block/voice
+	// post("\nvoice",voice,"reports that it has a playhead on wave",wave);
+	if(enable && (blocks.contains("blocks["+block+"]::name"))){
+		var vl = voicemap.get(block);
+		var col = blocks.get("blocks["+block+"]::space::colour");
+		waves.v_label[voice] = blocks.get("blocks["+block+"]::label");
+		if(Array.isArray(vl)){
+			var ind = vl.indexOf((voice));
+			if(ind==-1){
+				post("\nplayhead report doesn't match, block",block,"contains these voices ",vl," but i was looking for",voice,"i have disabled this playhead for now");
+				waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);
+				waves.v_label[voice] = null;
+			}else{
+				waves.v_label[voice] = waves.v_label[voice]+" "+(ind+1);
+			}
+			waves.v_jump[voice] = [block, ind];
+		}else {
+			waves.v_jump[voice] = [block, -1];
+		}
+		waves.v_helper[voice] = col;
+		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
+	}else{
+		post("\nclearing playhead assignment for voice",voice);
+		if(waves.playheadlist.indexOf(voice)!=-1){
+			post("\nreomving",voice,"from playhead list, was",waves.playheadlist);
+			waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);
+			post("is now",waves.playheadlist);
+			waves.v_label[voice] = null;
 		}
 	}
 }

@@ -1370,15 +1370,6 @@ function remove_connection(connection_number){
 						remove_routing(connection_number);
 						mod_buffer.poke(1, tmod_id, 0)
 					}
-					if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
-						var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
-						if(wl[f_o_no]==1){
-							//this is more complicated than make conn - we need to check if
-							//any other connections are using this output?
-							var cused = is_output_used(f_o_no,i,f_block,"midi"); //this fn turns it on or off as well as answering the question
-							if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
-						}
-					}		
 				}else if(f_type == "parameters"){
 					if((t_type == "audio") || (t_type == "hardware")){
 						m_index = (f_voice)*128+f_o_no;
@@ -1453,7 +1444,16 @@ function remove_connection(connection_number){
 						mod_buffer.poke(1, tmod_id, 0)
 					}		
 				}		
-
+				if(((f_type=="parameters")||(f_type=="midi"))&&(blocktypes.contains(f_name+"::connections::out::midi_watched"))){
+					// post("\nremove connection used status, needs to be adapted for params still!?",f_o_no,f_type);
+					var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+					if(wl[f_o_no]==1){
+						//this is more complicated than make conn - we need to check if
+						//any other connections are using this output?
+						var cused = is_output_used(f_o_no,i,f_block,"midi"); //this fn turns it on or off as well as answering the question
+						if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
+					}
+				}		
 			}
 		}
 	}
@@ -1465,11 +1465,12 @@ function remove_connection(connection_number){
 }
 
 function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
+	// post("\ntesting block ",f_block,"voice",f_voice_no,"output",f_o_no,"type",f_type);
 	var cused = 0;
 	for (var testc = connections.getsize("connections"); testc >= 0; testc--) {
 		if((connections.contains("connections[" + testc + "]::from"))) {
 			if (connections.get("connections[" + testc + "]::from::number") == f_block) {
-				if ((connections.get("connections[" + testc + "]::from::output::type") == f_type) && (connections.get("connections[" + testc + "]::from::output::number") == f_o_no)) {
+				if (((connections.get("connections[" + testc + "]::from::output::type") == f_type)) && (connections.get("connections[" + testc + "]::from::output::number") == f_o_no)) {
 					var fv = connections.get("connections[" + testc + "]::from::voice");
 					//post("\ntesting fv", fv, f_voice_no);
 					if (fv == "all") {
@@ -1486,11 +1487,13 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 				}
 			}
 		}
+		// post("result", cused);
 	}
 	//tell the voice that this output is in use
 	var vl=voicemap.get(f_block);
 	if(!Array.isArray(vl))vl=[vl];
 	var f_voice = vl[f_voice_no];
+	if(f_type=="parameters")f_o_no+=blocktypes.getsize(blocks.get("blocks["+f_block+"]::name")+"::connections::out::midi");
 	if(blocks.get("blocks["+f_block+"]::type")=="audio"){
 		audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,cused);
 	}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
@@ -1543,7 +1546,7 @@ function make_connection(cno,existing){
 	var t_voice_list = connections.get("connections["+cno+"]::to::voice");
 	var conversion = connections.get("connections["+cno+"]::conversion");
 	if((!existing)&&conversion.get("mute")==1){
-		post("\nno point making this muted connection");
+		// post("\nno point making this muted connection");
 		return 0;
 	}
 	var f_block = 1* connections.get("connections["+cno+"]::from::number");
@@ -1569,6 +1572,7 @@ function make_connection(cno,existing){
 	var f_voice,t_voice;
 	var v,i;
 	var ta;
+	var enab = 0;
 	var m_index;
 	var varr=[];
 	var max_poly;
@@ -1747,7 +1751,7 @@ function make_connection(cno,existing){
 			if(((t_type == "midi")||(t_type == "block")) && (t_voice_list == "all")){ 
 	//midi that goes to a polyalloc - handled here not per-to-voice
 				if(f_type == "midi"){ //midi to midi(polyrouter)
-					var enab = 1-conversion.get("mute");
+					enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
@@ -1758,7 +1762,7 @@ function make_connection(cno,existing){
 					}
 				}else if(f_type == "audio"){//audio to midi (polyrouter)
 					audio_to_data_poly.message("setvalue", (f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-					var enab = 1-conversion.get("mute");
+					enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
@@ -1770,7 +1774,7 @@ function make_connection(cno,existing){
 					}
 				}else if(f_type == "parameters"){//param to midi (polyrouter)
 					//audio_to_data_poly.message("setvalue", (f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-					var enab = 1-conversion.get("mute");
+					enab = 1-conversion.get("mute");
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
@@ -1844,7 +1848,7 @@ function make_connection(cno,existing){
 							//post("\nturning on number",(f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
 							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 							audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
@@ -1859,7 +1863,7 @@ function make_connection(cno,existing){
 						}else if(t_type == "block"){
 							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 							audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
@@ -1912,7 +1916,7 @@ function make_connection(cno,existing){
 								wrap = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::parameters["+t_i_no+"]::wrap");
 							}
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offv = conversion.get("offset2");
 							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale,offv*256-128,0,cno,v); //offn*256-128,offv*256-128
@@ -1942,21 +1946,6 @@ function make_connection(cno,existing){
 							//post("\nERROR : ext matrix connections can only go to the ext matrix");
 						}
 					}else if(f_type == "midi"){
-						if(blocktypes.contains(f_name+"::connections::out::midi_watched")){
-							var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
-							post("\nchecking midi watched");
-							if(wl[f_o_no]==1){
-								post(" ... ");
-								//tell the voice that this output is in use
-								if(blocks.get("blocks["+f_block+"]::type")=="audio"){
-									audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
-									post("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
-								}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
-									note_poly.message("setvalue", f_voice + 1, "enable_output",f_o_no,1);
-									post("setvalue", f_voice + 1, "enable_output",f_o_no,1);
-								}
-							}
-						}
 						if((t_type == "audio") || (t_type == "hardware")){
 							//this is a midi-audio connection for a single voice - works like parammod but eventually sends a number to the sig~ instead of to a buffer
 							m_index = (f_voice)*128+f_o_no;
@@ -1998,7 +1987,7 @@ function make_connection(cno,existing){
 							mod_buffer.poke(1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
 							//post("midi to audio",tvv);
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offs = conversion.get("offset");
 							if(typeof offs === "number"){
@@ -2014,7 +2003,7 @@ function make_connection(cno,existing){
 							set_routing(f_voice,f_o_no,enab,3,6,tmod_id,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 						}else if(t_type == "midi"){
 							//this is a midi-midi connection for a single voice
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
@@ -2031,7 +2020,7 @@ function make_connection(cno,existing){
 							//m_index = (f_voice)*128+f_o_no;
 							//add_to_midi_routemap(m_index,t_voice);
 							post("\nper-voice muting isn't supported (yet) TODO it shouldn't let you make this connection");
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
@@ -2086,7 +2075,7 @@ function make_connection(cno,existing){
 								wrap = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::parameters["+t_i_no+"]::wrap");
 							}
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offs = conversion.get("offset");
 							if(typeof offs === "number"){
@@ -2142,7 +2131,7 @@ function make_connection(cno,existing){
 							mod_buffer.poke(1, tmod_id, 0); 		
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
 							//post("param to audio",tvv);
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							/*var offs = conversion.get("offset");
 							if(typeof offs === "number"){
@@ -2158,7 +2147,7 @@ function make_connection(cno,existing){
 							set_routing(f_voice,f_o_no,enab,1,6,tmod_id,t_i_no,0,scale,0,0,cno,v);
 						}else if(t_type == "midi"){
 							//this is a param-midi connection for a single voice
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
@@ -2174,7 +2163,7 @@ function make_connection(cno,existing){
 							//post("fv",f_voice,"f_o",f_o_no);
 							//m_index = (f_voice)*128+f_o_no;
 							//add_to_midi_routemap(m_index,t_voice);
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
@@ -2229,7 +2218,7 @@ function make_connection(cno,existing){
 								wrap = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::parameters["+t_i_no+"]::wrap");
 							}
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
-							var enab = 1-conversion.get("mute");
+							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offs = conversion.get("offset");
 							if(typeof offs === "number"){
@@ -2243,8 +2232,20 @@ function make_connection(cno,existing){
 							set_routing(f_voice,f_o_no,enab,1 ,6,tmod_id,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 						}		
 					}
-
-					
+					if(((f_type=="parameters")||(f_type=="midi"))&&(blocktypes.contains(f_name+"::connections::out::midi_watched"))){
+						var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+						// post("\nchecking midi watched", f_o_no, f_type, wl[f_o_no]);
+						if(wl[f_o_no]==1){
+							//tell the voice that this output is in use
+							if(blocks.get("blocks["+f_block+"]::type")=="audio"){
+								audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,enab);
+								// post("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
+							}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
+								note_poly.message("setvalue", f_voice + 1, "enable_output",f_o_no,enab);
+								// post("setvalue", f_voice + 1, "enable_output",f_o_no,1);
+							}
+						}
+					}					
 				}
 			}
 		}

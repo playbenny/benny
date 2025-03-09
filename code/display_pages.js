@@ -21,7 +21,7 @@ function set_display_mode(mode,t){
 	var blocks_enabled=(mode=="blocks");
 	if(displaymode!=mode){
 		if(displaymode == "block_menu") hide_block_menu();
-		if((mode!="blocks")&&(mode!="panels")){
+		if((mode!="blocks")&&(mode!="panels")&&(mode!="waves")){
 			sidebar.mode="none";
 			remove_midi_scope();
 			sidebar.scopes.voice = -1;
@@ -34,10 +34,12 @@ function set_display_mode(mode,t){
 			flock_axes(0);
 		}
 		if(mode == "blocks"){
-			//if(displaymode == "panels") block_and_wire_colours(); //this wouldn't run as bawc returns if not in blocks mode
 			if(displaymode == "flocks"){
 				draw_blocks();
 			}
+		}
+		if(mode=="waves"){
+			draw_wave= [];
 		}
 		displaymode=mode;
 		if(mode == "block_menu"){
@@ -74,8 +76,7 @@ function set_display_mode(mode,t){
 			}
 		}
 		camera();
-		//post("display mode set to "+mode+"\n");
-		redraw_flag.flag = 4;
+		redraw_flag.flag |= 4;
 	}else{
 		if(displaymode=="panels") { 
 			if(usermouse.ctrl){
@@ -89,6 +90,16 @@ function set_display_mode(mode,t){
 		}
 		if(displaymode=="blocks"){
 			center_view(1);
+		}
+		if(displaymode=="waves"){
+			if(sidebar.mode!="none"){
+				clear_blocks_selection();
+				sidebar.mode = "none";
+			}else{
+				clear_wave_graphic(waves.selected+1,1);
+				waves.selected = -1;
+			}
+			redraw_flag.flag |= 4;
 		}
 	}
 	blocks_enable(blocks_enabled);	
@@ -123,9 +134,9 @@ function redraw(){
 		draw_blocks();
 		clear_screens();
 		draw_topbar();
+		if(fullscreen) draw_clock();
 		draw_sidebar();
 		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
-		if(fullscreen) draw_clock();
 		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
@@ -140,9 +151,10 @@ function redraw(){
 		meters_enable=0;
 		clear_screens();
 		draw_topbar();
-		draw_sidebar();
 		if(fullscreen) draw_clock();
+		draw_sidebar();
 		draw_panels();
+		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
 		meters_enable=1;
 	}else if(displaymode == "custom_fullscreen"){
 		clear_screens();
@@ -156,10 +168,13 @@ function redraw(){
 		draw_sidebar();
 		if(fullscreen) draw_clock();
 	}else if(displaymode == "waves"){
-		sidebar.mode="none";
+		// sidebar.mode="none";
 		clear_screens();
 		draw_topbar();
+		if(fullscreen) draw_clock();
 		draw_waves();
+		draw_sidebar();
+		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
 	}
 }
 
@@ -576,128 +591,195 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 
 function draw_waves(){
 	messnamed("update_wave_colls","bang");
-	var num_slots = MAX_WAVES;//waves_dict.getsize("waves");
-	var slot;
-	var c=new Array(3);
-	var slot_h = mainwindow_height*0.16;
-	var bigsloth = mainwindow_height*0.7;//-fontheight*10.2-18; 
-	setfontsize(fontsmall*2);
-	var colinc = config.getsize("palette::gamut") / (num_slots+1);
-	var sloty = fontheight+fo1+9-waves.scroll_position;
-	//post("\nwavescr",waves.scroll_position);
-	for(slot=0;slot<(num_slots);slot++){
-		if((sloty>fontheight)&&(sloty<mainwindow_height)){
+	waves.visible = [];
+	//determine display mode, screen sizes
+	var x1,x2,y1,y2;
+	x1 = 9;
+	y1 = 9 + 1.1 * fontheight;
+	if(sidebar.mode!="none"){
+		x2 = sidebar.x;
+	}else{
+		x2 = mainwindow_width;
+	}
+	if(bottombar.block>-1){
+		y2 = mainwindow_height - bottombar.height - 9; 
+	}else{
+		y2 = mainwindow_height - 9;
+	}
+	waves.width = x2 - x1 - 9;
+	var c=[], cd=[];
+	if(waves.selected==-1){ // waves list
+		//todo: playheads
+		//first determine if the used slots fit without a scrollbar:
+		var lastused=-1;
+		for(var i=1;i<=MAX_WAVES;i++){
+			if(waves_dict.contains("waves["+(i)+"]::name")) lastused = i;
+		}
+		if((lastused+1)>Math.floor((y2-y1)/(4*fontheight))){
+			x2 -= 9;
+			lcd_main.message("frgb", menudarkest);
+			lcd_main.message("moveto",x2,y1);
+			lcd_main.message("lineto",x2,y2);		
+			var l = (y2-y1) / ((lastused+2) * 2 * fontheight);
+			var l2 = (y2-y1) * l;
+			var p = waves.scroll_position * l + y1;
+			lcd_main.message("frgb", menucolour);
+			lcd_main.message("moveto",x2,p);
+			lcd_main.message("lineto",x2,p+l2);
+			//click zone for the scrollbar
+			click_zone(scroll_waves, null, null, x2-9,y1,x2+12,y2,mouse_index,2);
+		}
+		x2 -= 9;
+		var slot = 0 + Math.floor(waves.scroll_position/(3*fontheight));
+		var y_offset = y1;
+		setfontsize(fontsmall);
+		y2-=fontheight*2;
+		var stripex1 = x1 + fontheight * 5;
+		for(;y_offset<y2;slot++){
+			lcd_main.message("moveto",x1,y_offset+fontheight*0.4);
 			if(waves_dict.contains("waves["+(slot+1)+"]::name")){
-				if(slot==waves.selected){
-					//draw controls bar and zoomed wave
-					c=config.get("palette::gamut["+Math.floor(slot*colinc)+"]::colour");
-					lcd_main.message("framerect",9, sloty, sidebar.x2,sloty+0.9*fontheight,c[0],c[1],c[2]);
-	
-					c=config.get("palette::gamut["+Math.floor(1+slot*colinc)+"]::colour");
-					draw_h_slider(sidebar.x2-17*fontheight,sloty+fo1,sidebar.x2-13.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::start"));
-					mouse_click_actions[mouse_index] = setup_waves;
-					mouse_click_parameters[mouse_index] = [slot+1,"start"];
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-	
-					c=config.get("palette::gamut["+Math.floor(2+slot*colinc)+"]::colour");
-					draw_h_slider(sidebar.x2-13*fontheight,sloty+fo1,sidebar.x2-9.1*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::end"));
-					mouse_click_actions[mouse_index] = setup_waves;
-					mouse_click_parameters[mouse_index] = [slot+1,"end"];
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-	
-					c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-					draw_h_slider(sidebar.x2-9*fontheight,sloty+fo1,sidebar.x2-5*fontheight,sloty+fontheight*0.7,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(slot+1)+"]::divisions"));
-					mouse_click_actions[mouse_index] = setup_waves;
-					mouse_click_parameters[mouse_index] = [slot+1,"divisions"];
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-	
-					lcd_main.message("paintrect",sidebar.x2-3*fontheight,sloty+fo1,sidebar.x2,sloty+fontheight*0.7,255,0,0);
-					click_rectangle(sidebar.x2-3*fontheight,sloty+fo1,sidebar.x2,sloty+fontheight*0.7,mouse_index,1);
-					mouse_click_actions[mouse_index] = delete_wave;
-					mouse_click_parameters[mouse_index] = slot;
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					lcd_main.message("frgb",menucolour);
-					lcd_main.message("moveto",sidebar.x2-2.7*fontheight,sloty+fontheight*0.6);
-					setfontsize(fontsmall);
-					lcd_main.message("textface","normal");
-					lcd_main.message("write","delete");
-					
-					c=config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour");
-					draw_stripe(9,sloty+fontheight*0.8,sidebar.x2,sloty+fontheight*1.8,c[0],c[1],c[2],slot+1,mouse_index);
-					mouse_click_actions[mouse_index] = wave_stripe_click;
-					mouse_click_parameters[mouse_index] = slot;
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
-					lcd_main.message("moveto",18,sloty+fontheight*0.6);
-					setfontsize(fontsmall*1.5);
-					lcd_main.message("textface","bold");
-					lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
-					setfontsize(fontsmall);
-					lcd_main.message("textface","normal");
-					lcd_main.message("moveto",mainwindow_width-17*fontheight,sloty+fontheight*0.6);
-					lcd_main.message("write","start");
-					lcd_main.message("moveto",mainwindow_width-13*fontheight,sloty+fontheight*0.6);
-					lcd_main.message("write","end");
-					lcd_main.message("moveto",mainwindow_width - 9*fontheight,sloty+fontheight*0.6);
-					lcd_main.message("write","divisions:",Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(slot+1)+"]::divisions")));
-					draw_zoomable_waveform(9,sloty+fontheight*1.8,sidebar.x2,sloty+bigsloth+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index,2);
-					mouse_click_actions[mouse_index] = zoom_waves;
-					mouse_click_parameters[mouse_index] = slot;
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					
-					sloty+=bigsloth;
+				waves.visible[slot]=1;
+				// waves.ph_ox[slot] = -1;
+				c=config.get("palette::gamut["+2*slot+"]::colour");
+				cd = shadeRGB(c,0.5);
+				waves.w_helper[slot]=[stripex1,y_offset,x2,y_offset+fontheight*1.9-2,0,1,cd,waves_dict.get("waves["+(slot+1)+"]::channels")];
+				draw_stripe(stripex1,y_offset,x2,y_offset+fontheight*1.9-2,cd[0],cd[1],cd[2],slot+1,mouse_index);
+				click_rectangle(x1,y_offset,stripex1,y_offset+fontheight*2,mouse_index,1);
+				mouse_click_actions[mouse_index] = wave_stripe_click;
+				mouse_click_parameters[mouse_index] = slot;
+				mouse_click_values[mouse_index] = 0;
+				mouse_index++;
+				lcd_main.message("frgb",c);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
+				lcd_main.message("moveto",x1,y_offset + fontheight*0.32);
+				var nam = waves_dict.get("waves["+(slot+1)+"]::name");
+				var n2 = nam.split(".").pop();
+				if((n2=="wav")||(n2=="mp3")||(n2=="aif")) nam = nam.slice(0,-4);
+				if((n2=="flac")||(n2=="aiff")) nam = nam.slice(0,-5);
+				if(nam.length>27) nam = "..."+nam.slice(-26);
+				lcd_main.message("write",Math.round(slot+1),nam);
+				lcd_main.message("frgb",shadeRGB(cd,0.5));//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
+				lcd_main.message("moveto",x1,y_offset + fontheight*0.82);
+				lcd_main.message("write","length");
+				lcd_main.message("moveto",x1,y_offset + fontheight*1.32);
+				lcd_main.message("write","channels");
+				lcd_main.message("frgb",cd);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
+				lcd_main.message("moveto",x1+fontheight*1.4,y_offset + fontheight*0.82);
+				var l = waves_dict.get("waves["+(slot+1)+"]::size");
+				if(l<1000){
+					lcd_main.message("write",Math.floor(l)+"ms");
+				}else if(l<60000){
+					l/=1000;
+					lcd_main.message("write",l.toFixed(2)+"s");
 				}else{
-					c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-					draw_stripe(9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2],slot+1,mouse_index);
-					mouse_click_actions[mouse_index] = wave_stripe_click;
-					mouse_click_parameters[mouse_index] = slot;
-					mouse_click_values[mouse_index] = 0;
-					mouse_index++;
-					lcd_main.message("frgb",menucolour);//config.get("palette::gamut["+Math.floor(4+slot*colinc)+"]::colour"))
-					lcd_main.message("moveto",18,sloty+fontheight*0.32);
-					setfontsize(fontsmall);
-					lcd_main.message("textface","bold");
-					lcd_main.message("write",slot+1,waves_dict.get("waves["+(slot+1)+"]::name"));
+					l/=1000;
+					lcd_main.message("write",Math.floor(l/60)+"m"+Math.floor(l%60)+"s");
 				}
-				
+				lcd_main.message("moveto",x1+fontheight*1.4,y_offset + fontheight*1.32);
+				lcd_main.message("write",waves_dict.get("waves["+(slot+1)+"]::channels"));
 			}else{
-				//draw placeholder marker that's a load button
-				c=config.get("palette::gamut["+Math.floor(3+slot*colinc)+"]::colour");
-				lcd_main.message("framerect",9,sloty,sidebar.x2,sloty+slot_h-fo1,c[0],c[1],c[2]);
-				//lcd_main.message("frgb",menudark);
-				lcd_main.message("moveto",18,sloty+fontheight*0.32);
-				setfontsize(fontsmall);
-				lcd_main.message("textface","bold");
-				lcd_main.message("write",slot+1,"---");
-				click_rectangle(9,sloty,sidebar.x2,sloty+slot_h-fo1,mouse_index,1);
+				lcd_main.message("frgb",menudark);
+				lcd_main.message("write", Math.round(slot+1));
+				lcd_main.message("framerect",stripex1,y_offset,x2,y_offset+fontheight*1.9,menudarkest);
+				lcd_main.message("moveto",x1+fontheight*0.2,y_offset+fontheight*0.4);
+				lcd_main.message("write", "click to load a wave");
+				click_rectangle(x1,y_offset,x2,y_offset+fontheight*2,mouse_index,1);
 				mouse_click_actions[mouse_index] = load_wave;
 				mouse_click_parameters[mouse_index] = slot;
 				mouse_click_values[mouse_index] = "";	
 				mouse_index++;
 			}
+			y_offset += fontheight * 2;
 		}
-		sloty+=slot_h;
-	}
-	lcd_main.message("frgb", menudarkest);
-	lcd_main.message("moveto",mainwindow_width-5,9);
-	lcd_main.message("lineto",mainwindow_width-5,mainwindow_height-9);		
-	var l = (mainwindow_height-18) / (/*mainwindow_height + sidebar.scroll.max*/ slot_h*(MAX_WAVES-1)+bigsloth - 18);
-	var l2 = (mainwindow_height-18) * l;
-	var p = waves.scroll_position * l + 9;
-	lcd_main.message("frgb", menucolour);
-	lcd_main.message("moveto",mainwindow_width-5,p);
-	lcd_main.message("lineto",mainwindow_width-5,p+l2);
-	//click zone for the scrollbar
-	click_zone(scroll_waves, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,mouse_index,2);
+	}else{ // single wave
+		x2 -= 9;
+		if(waves.show_in_bottom_panel){ // draw in bottom panel
+			
+		}else{ //fullscreen
 
-	lcd_main.message("bang");
-	//outlet(8,"bang");
+		}
+		setfontsize(fontsmall);
+		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
+			// waves.ph_ox[waves.selected] = -1; 
+			waves.visible[waves.selected]=1;
+			c=config.get("palette::gamut["+2*waves.selected+"]::colour");
+			cd = shadeRGB(c,0.6);
+			waves.w_helper[waves.selected] = [x1,y1+fontheight*2.1,x2,y2-fontheight*1.6,waves.zoom_start,waves.zoom_end,cd,waves_dict.get("waves["+(waves.selected+1)+"]::channels")];
+			var dd=shadeRGB(c,0.3);
+			lcd_main.message("frgb",c);
+			lcd_main.message("moveto",x1,y1 + fontheight*0.32);
+			lcd_main.message("write",Math.round(waves.selected+1),waves_dict.get("waves["+(waves.selected+1)+"]::name"));
+			lcd_main.message("frgb",dd);
+			lcd_main.message("moveto",x2-7*fontheight,y1 + fontheight*0.32);
+			lcd_main.message("write","length");
+			lcd_main.message("moveto",x2-4.4*fontheight,y1 + fontheight*0.32);
+			lcd_main.message("write","channels");
+			lcd_main.message("frgb",cd);
+			lcd_main.message("moveto",x2-6*fontheight,y1 + fontheight*0.32);
+			var wl = waves_dict.get("waves["+(waves.selected+1)+"]::size");
+			lcd_main.message("write",friendlytime(wl));
+			lcd_main.message("moveto",x2-3*fontheight,y1 + fontheight*0.32);
+			lcd_main.message("write",waves_dict.get("waves["+(waves.selected+1)+"]::channels"));
+			var w = (x2-x1)/2.9;
+			draw_h_slider(x1,y1+fontheight*0.5,x1+0.9*w,y1+fontheight*1.5,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(waves.selected+1)+"]::start"));
+			mouse_click_actions[mouse_index] = setup_waves;
+			mouse_click_parameters[mouse_index] = [waves.selected+1,"start"];
+			mouse_click_values[mouse_index] = 0;
+			mouse_index++;
+
+			draw_h_slider(x1 + w,y1+fontheight*0.5,x1 + 1.9*w,y1+fontheight*1.5,cd[0],cd[1],cd[2],mouse_index,waves_dict.get("waves["+(waves.selected+1)+"]::end"));
+			mouse_click_actions[mouse_index] = setup_waves;
+			mouse_click_parameters[mouse_index] = [waves.selected+1,"end"];
+			mouse_click_values[mouse_index] = 0;
+			mouse_index++;
+
+			draw_h_slider(x1 + 2*w,y1+fontheight*0.5,x1 + 2.9*w,y1+fontheight*1.5,c[0],c[1],c[2],mouse_index,waves_dict.get("waves["+(waves.selected+1)+"]::divisions"));
+			mouse_click_actions[mouse_index] = setup_waves;
+			mouse_click_parameters[mouse_index] = [waves.selected+1,"divisions"];
+			mouse_click_values[mouse_index] = 0;
+			mouse_index++;
+
+			lcd_main.message("paintrect",x2-2.5*fontheight,y1,x2-1.4*fontheight,y1+fontheight*0.4,shadeRGB(menudarkest,((usermouse.clicked2d == mouse_index)*2 + 1)));
+			click_rectangle(x2-2.7*fontheight,y1,x2-1.4*fontheight,y1+fontheight,mouse_index,1);
+			mouse_click_actions[mouse_index] = copy_wave;
+			mouse_click_parameters[mouse_index] = waves.selected;
+			mouse_click_values[mouse_index] = 0;
+			mouse_index++;
+			lcd_main.message("frgb",menudark);
+			lcd_main.message("moveto",x2-2.3*fontheight,y1+fontheight*0.32);
+			lcd_main.message("write","copy");
+
+			lcd_main.message("paintrect",x2-1.3*fontheight,y1,x2,y1+fontheight*0.4,(((danger_button == mouse_index)||(usermouse.clicked2d == mouse_index))*2 + 1) * 80,0,0);
+			click_rectangle(x2-1.3*fontheight,y1,x2,y1+fontheight*0.5,mouse_index,1);
+			mouse_click_actions[mouse_index] = clear_wave_btn; //delete_wave;
+			mouse_click_parameters[mouse_index] = waves.selected;
+			mouse_click_values[mouse_index] = mouse_index;
+			mouse_index++;
+			lcd_main.message("frgb",(2 - (usermouse.clicked2d == mouse_index)) * 64,0,0);
+			lcd_main.message("moveto",x2-1.1*fontheight,y1+fontheight*0.32);
+			lcd_main.message("write","delete");
+			
+			draw_stripe(x1,y2-fontheight,x2,y2,dd[0],dd[1],dd[2],waves.selected+1,mouse_index);
+			mouse_click_actions[mouse_index] = wave_stripe_click;
+			mouse_click_parameters[mouse_index] = waves.selected;
+			mouse_click_values[mouse_index] = 0;
+			mouse_index++;
+
+			lcd_main.message("frgb",c);
+			lcd_main.message("moveto",x1+9,y1+fontheight*0.82);
+			lcd_main.message("write","start: "+friendlytime(wl * waves_dict.get("waves["+(waves.selected+1)+"]::start")));
+			lcd_main.message("moveto",x1+w+9,y1+fontheight*0.82);
+			lcd_main.message("write","end: "+friendlytime(wl * waves_dict.get("waves["+(waves.selected+1)+"]::end")));
+			lcd_main.message("moveto",x1+2*w+9,y1+fontheight*0.82);
+			lcd_main.message("write","divisions: "+Math.floor(1+(MAX_WAVES_SLICES-0.0001)*waves_dict.get("waves["+(waves.selected+1)+"]::divisions")));
+			draw_zoomable_waveform(x1,y1+fontheight*2.1,x2,y2-fontheight*1.6,cd[0],cd[1],cd[2],waves.selected+1,mouse_index,2);//extra margin of .5 above and below for playhead labels and markers
+			mouse_click_actions[mouse_index] = zoom_waves;
+			mouse_click_parameters[mouse_index] = waves.selected;
+			mouse_click_values[mouse_index] = 0;
+			mouse_index++;
+		}else{
+			waves.selected = -1;
+		}
+	}
 }
 
 function draw_custom(){
@@ -1970,6 +2052,7 @@ function clear_screens(){
 		mouse_click_parameters[0] = 0;
 		mouse_click_values[0] = 0;		
 	}
+	waves.visible=[];
 	scrollbar_index = 3;//mouse_index;
 	mouse_index=4;
 	lcd_main.message("brgb", backgroundcolour_current);
@@ -2165,12 +2248,12 @@ function draw_topbar(){
 	
 		if(view_changed===true) click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.2), 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = set_display_mode;
+		mouse_click_parameters[mouse_index] = "waves";		
 		if((displaymode == "waves")||(usermouse.clicked2d==mouse_index)){
-			if(displaymode == "waves")mouse_click_parameters[mouse_index] = "blocks";
+			// if(displaymode == "waves") mouse_click_parameters[mouse_index] = "blocks";
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.2), 9+fontheight,menucolour );
 			lcd_main.message("frgb", 0,0,0);
 		}else{
-			mouse_click_parameters[mouse_index] = "waves";		
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.2), 9+fontheight,menudarkest );
 			lcd_main.message("frgb", menucolour);
 		}
@@ -3738,7 +3821,7 @@ function draw_sidebar(){
 						}
 					}
 				}
-				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (bottombar.block != block)){
+				if(blocktypes.contains(block_name+"::ui_in_sidebar_height") && (displaymode != "custom") && (displaymode != "panels") && (displaymode != "waves") && (bottombar.block != block)){
 					var ui_h = blocktypes.get(block_name+"::ui_in_sidebar_height");
 					if((block_voicecount>1) && (blocktypes.contains(block_name+"::ui_in_sidebar_expands"))) ui_h += (block_voicecount-1) * blocktypes.get(block_name+"::ui_in_sidebar_expands");
 					var miplus16 = mouse_index + 16;

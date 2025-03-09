@@ -72,7 +72,7 @@ function draw_block_texture(block){
 				lcd_block_textures.message("paintoval", 96,8,120,32);
 			}
 			lcd_block_textures.message("frgb",255,255,255);
-			lcd_block_textures.message("font",mainfont,(bln.length>0)?16:25);
+			lcd_block_textures.message("font",mainfont,(block_label == blocks.get("blocks["+block+"]::name"))?16:25);
 			lcd_block_textures.message("textface","normal");
 			for(var t=0;t<bln.length;t++){
 				lcd_block_textures.message("moveto",5, 28+t*29);
@@ -624,6 +624,8 @@ function draw_h_slider(x1,y1,x2,y2,r,g,b,index,value){
 }
 
 function clear_wave_graphic(n,newl){
+	draw_wave[n-1] = [[],[],[],[]];
+	return; //the stuff below is theoretically a hair faster as you create the array so you don't need to check for nans in the loop every time drawing it but it was causing problems
 	if(!Array.isArray(draw_wave[n-1])) draw_wave[n-1]=[[],[],[],[]];
 	var i = 0;
 	while(i<4){
@@ -644,7 +646,7 @@ function clear_wave_graphic_z(n,newl){
 		if(!Array.isArray(draw_wave_z[n-1][i])) draw_wave_z[n-1][i] = [];
 		var t = 0;
 		while(t<newl){
-			draw_wave_z[n-1][i][t]=0;
+			draw_wave_z[n-1][i][t]=1-(2*(i&1));
 			t++;
 		}  
 		i++;
@@ -652,9 +654,10 @@ function clear_wave_graphic_z(n,newl){
 }
 
 function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
+	// post("\ndraw waveform",buffer,"coords",x1,y1,x2,y2,"colours",r,g,b,highlight);
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	var w = Math.floor((x2-x1-1)/2);
-	var i,t,ch,s,dl,d,st;
+	var i,t,ch,s,dl,d;
 	var hls;
 	var hle ;
 	var wmin,wmax;
@@ -662,16 +665,8 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	if(view_changed===true){
 		click_rectangle(x1,y1,x2,y2,index, 3);
 	}
-	if(!Array.isArray(draw_wave[buffer-1])){
+	if((!Array.isArray(draw_wave[buffer-1]))||(w!=draw_wave[buffer-1][0].length)){
 		draw_wave[buffer-1] = [[],[],[],[]];
-		subsamples = 20;
-	}
-	if(w!=draw_wave[buffer-1][0].length) {
-		if(isNaN(draw_wave[buffer-1][0].length)){ 
-			draw_wave[buffer-1][0] = [];
-		}
-		draw_wave[buffer-1][0].length = w;
-		clear_wave_graphic(buffer,w);
 		subsamples = 20;
 	}
 	var length = waves_dict.get("waves["+buffer+"]::length");
@@ -689,20 +684,6 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	dl *= w;
-/*	lcd_main.message("frgb",90,90,90);
-	if(w>250){
-		for(t=0;t<d;t++){
-			i = Math.floor(t*dl+st);
-			lcd_main.message("moveto",x1+i+i,y1);
-			lcd_main.message("lineto",x1+i+i,y2-fo1);
-		}
-		lcd_main.message("frgb",255,255,255);
-		lcd_main.message("moveto",x1+st+st,y1);
-		lcd_main.message("lineto",x1+st+st,y2-fo1);
-		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
-		lcd_main.message("moveto",x1+i+i,y1);
-		lcd_main.message("lineto",x1+i+i,y2-fo1);	
-	}*/
 	for(ch=0;ch<chans;ch++){
 		var curc=1;
 		if(highlight<1){ 
@@ -714,9 +695,9 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 		for(i=0;i<w;i++){
 			wmin = draw_wave[buffer-1][ch*2][i];
 			wmax = draw_wave[buffer-1][ch*2+1][i];
+			if(isNaN(wmin))wmin=1;
+			if(isNaN(wmax))wmax=-1;
 			t=subsamples;
-			/*if(isNaN(wmin)){ wmin=1; }
-			if(isNaN(wmax)){ wmax=-1; }*/
 			for(;t>=0;t--){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
@@ -733,23 +714,16 @@ function draw_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 			}
 			lcd_main.message("moveto",x1+i+i,y1+h*(1+wmin+2*ch)-1);
 			lcd_main.message("lineto",x1+i+i,y1+h*(1+wmax+2*ch)+1);
-			//post("\n",i,x1+i+i,"dw len",draw_wave[buffer-1][ch*2].length,wmin,wmax);
 		}
 	}
 }
 
 
-function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_offset,zoom_amount){
-	if(zoom_amount==null){
-		zoom_offset=-1;
-		zoom_amount=1;
-	}
+function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 	lcd_main.message("paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 3);
 	var i,t,ch,s,dl,d,st;
-	var hls;
-	var hle ;
-	var wmin,wmax;
+	var hls, hle, wmin,wmax;
 	var w = Math.floor((x2-x1-1)/2);
 	var samps=2,chngd=0;
 	if(!Array.isArray(draw_wave_z[buffer-1])){
@@ -776,17 +750,24 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
 	if(w>250){
-		lcd_main.message("frgb",90,90,90);
+		lcd_main.message("frgb",menucolour);
+		var second=1;
 		for(t=0;t<=d;t++){
 			i = Math.floor(w*((t*dl+st)-waves.zoom_start)/(waves.zoom_end-waves.zoom_start));
-			if((i>0)&&(i<w)){
+			if((i>=0)&&(i<=w)){
 				if(t==d){
-					lcd_main.message("frgb",90,90,90);
-				}else if(t==1){
-					lcd_main.message("frgb",40,40,40);
+					lcd_main.message("frgb",menudark);
+					lcd_main.message("paintpoly",x1+i+i+2,y1,x1+i+i+2,y1-0.5*fontheight,x1+i+i+2-0.32*fontheight,y1-0.25*fontheight,x1+i+i+2,y1);
 				}
 				lcd_main.message("moveto",x1+i+i,y1);
 				lcd_main.message("lineto",x1+i+i,y2-fo1);
+				if(second==1){
+					lcd_main.message("paintpoly",x1+i+i,y1,x1+i+i,y1-0.5*fontheight,x1+i+i+0.32*fontheight,y1-0.25*fontheight,x1+i+i,y1);
+				}
+			}
+			if(second==1){
+				lcd_main.message("frgb",menudarkest);
+				second=0;
 			}
 		}
 	}
@@ -822,7 +803,7 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight,zoom_of
 		}
 	}
 	if(chngd){
-		redraw_flag.deferred = 4;
+		redraw_flag.deferred = 2;
 	}
 }
 
@@ -849,22 +830,22 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 	var chunk = waves_dict.get("waves["+buffer+"]::length")/w;
 	var chans = waves_dict.get("waves["+buffer+"]::channels");
 	var h = 0.5*(y2-y1)/chans;
+	st = waves_dict.get("waves["+buffer+"]::start");
+	d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
+	dl = waves_dict.get("waves["+buffer+"]::end") - st;
+	st = Math.floor(st*w);
+	dl /= d;
+	dl *= w;
 	for(ch=0;ch<chans;ch++){
-		st = waves_dict.get("waves["+buffer+"]::start");
-		d = Math.floor(waves_dict.get("waves["+buffer+"]::divisions")*(MAX_WAVES_SLICES-0.0001))+1;
-		dl = waves_dict.get("waves["+buffer+"]::end") - st;
-		st = Math.floor(st*w);
-		dl /= d;
-		dl *= w;
 		if(!(waves.selected == buffer-1)||(dl!=1)){			
-			lcd_main.message("frgb",60,60,60);
+			lcd_main.message("frgb",menudarkest);
 			for(t=0;t<d;t++){
 				i = Math.floor(t*dl+st);
 				lcd_main.message("moveto",x1+i+i,y1+h*2*ch);
 				lcd_main.message("lineto",x1+i+i,y1+h*2*(ch+1));
 			}
 		}
-		lcd_main.message("frgb",90,90,90);
+		lcd_main.message("frgb",menudark);
 		lcd_main.message("moveto",x1+st+st,y1+h*2*ch);
 		lcd_main.message("lineto",x1+st+st,y1+h*2*(ch+1));
 		i=Math.floor(waves_dict.get("waves["+buffer+"]::end")*w);
@@ -874,8 +855,8 @@ function draw_stripe(x1,y1,x2,y2,r,g,b,buffer,index){
 		for(i=0;i<w;i++){
 			wmin = draw_wave[buffer-1][ch*2][i];
 			wmax = draw_wave[buffer-1][ch*2+1][i];
-			if(isNaN(wmin))wmin=0;
-			if(isNaN(wmax))wmax=0;
+			if(isNaN(wmin))wmin=1;
+			if(isNaN(wmax))wmax=-1;
 			for(t=0;t<20;t++){
 				s=waves_buffer[buffer-1].peek(ch+1,Math.floor((i+Math.random())*chunk));
 				if(s>wmax) wmax=s;
@@ -1649,4 +1630,17 @@ function edited_channel_name(){
 	}
 	selected.block[sidebar.channelnaming[0]]=1;
 	set_sidebar_mode("none");
+}
+
+
+function friendlytime(ms){
+	if(ms<1000){
+		return Math.floor(ms)+"ms";
+	}else if(ms<60000){
+		ms/=1000;
+		return ms.toFixed(2)+"s";
+	}else{
+		ms/=1000;
+		return Math.floor(ms/60)+"m"+Math.floor(ms%60)+"s";
+	}
 }

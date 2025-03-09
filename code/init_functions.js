@@ -219,8 +219,8 @@ function initialise_dictionaries(hardware_file){
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
-		emptys= emptys+",{}";
 	}
+	emptys= emptys+",{}"; //this was one line higher to make a bigger set of empty entries, which we don't need now.
 	//for(i=0;i<=MAX_WAVES;i++)	
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 

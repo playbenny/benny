@@ -63,6 +63,7 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	menucolour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	MAX_WAVES = config.get("MAX_WAVES");
 	width = x2-x1;
 	height = y2-y1;
 	x_pos = x1;
@@ -522,6 +523,11 @@ function store(){
 	}
 	messnamed("to_blockmanager","store_ok_done",block);
 }
+
+function remapping_sizechange(froom,too){
+	post("\nwavetable size change, not implemented",froom,too);
+}
+
 function remapping(froom,too){
 	post("\nremapping_list "+froom +" -> "+too+" .. ");
 	var cx,cy,cv,ct=0;

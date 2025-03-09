@@ -930,12 +930,24 @@ function panel_edit_button(parameter,value){
 	redraw_flag.flag=4;
 }
 
+function extend_waves_dict(newlen){
+	while((newlen+1) >= waves_dict.getsize("waves")){
+		waves_dict.append("waves","*");
+		waves_dict.setparse("waves["+(waves_dict.getsize("waves")-1)+"]","{}");
+	}
+	if(newlen>MAX_WAVES){
+		error("\nTODO - need to increase MAX_WAVES here, but to do so we need to:");
+		error("\nre-scale all wave select sliders, like during load");
+		error("\nstore tracker wave mapping table?\n");
+	}
+}
+
 function file_drop(fname){
 	var ts = fname.split(".").pop();
 	ts = ts.toLowerCase();
 	if(ts=="json"){
 		load_elsewhere(fname);
-	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")){
+	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")||(ts=="mp3")||(ts=="flac")){
 		post("\n\nloading audio file from drag and drop,");
 		/*if(waves.selected == -1)*/ waves.selected = 0;
 		inuse=1;
@@ -944,7 +956,10 @@ function file_drop(fname){
 				inuse = 0;
 			}else{
 				waves.selected++;
-				if(waves.selected>100) inuse = 0;
+				if((waves.selected+1) >= waves_dict.getsize("waves")){
+					extend_waves_dict(waves.selected+1);
+				}
+				if(waves.selected>10000){error("thats a lot of waves"); inuse = 0;}
 			}
 		}
 		var ffn = fname.split("/").pop();
@@ -952,6 +967,7 @@ function file_drop(fname){
 		waves_dict.replace("waves["+(waves.selected+1)+"]::name","loading");
 		waves_dict.replace("waves["+(waves.selected+1)+"]::path","loading");
 		wave_chosen(waves.selected, ffn,fname);
+		set_display_mode("waves");
 	}else{
 		post("\ndrag and drop, unknown file type?",ts);
 	}
@@ -1075,7 +1091,16 @@ function clear_everything_btn(parameter,value){
 		post("\ndanger",value,"(",parameter,")");
 	}
 }
-
+function clear_wave_btn(parameter,value){
+	if(value == danger_button){
+		delete_wave(waves.selected,waves.selected);
+		danger_button = -1;
+	}else{
+		danger_button = value;
+		redraw_flag.flag |= 4;
+		post("\ndanger",value,"(",parameter,")");
+	}
+}
 function custom_mouse_passthrough(parameter,value){
 	// post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	ui_poly.message("setvalue", parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
@@ -3021,6 +3046,7 @@ function wave_chosen(number,name,path){
 function load_wave(parameter,value){
 	post("loading a wave file into buffer slot",parameter);
 	waves.selected = parameter;
+	extend_waves_dict(waves.selected+1);
 	messnamed("choose_and_read_wave",parameter);
 	//waves_buffer[parameters].replace;
 }
@@ -3029,10 +3055,28 @@ function setup_waves(parameter,value){
 	if(value=="get"){
 		return 10*waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
 	}else{
-		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,0.1*value)));
-		store_wave_slices(parameter[0]);
-		messnamed("wave_updated",parameter[0]);
-		redraw_flag.flag = 4;
+		if(!isNaN(value)){
+			var cv = Math.max(0,Math.min(1,0.1*value));
+			waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],cv);
+			store_wave_slices(parameter[0]);
+			messnamed("wave_updated",parameter[0]);
+		}
+		if((cv<waves.zoom_start)||(cv>waves.zoom_end)){
+			var wzs = waves.zoom_start;
+			if(parameter[1]=="start"){
+				var l = waves.zoom_end-waves.zoom_start;
+				waves.zoom_start = Math.min(1-0.7*l, Math.max(0,cv - 0.3*l));
+				waves.zoom_end = l + waves.zoom_start;
+			}else if(parameter[1]=="end"){
+				var l = waves.zoom_end-waves.zoom_start;
+				waves.zoom_end = Math.max(0.7*l, Math.min(1,cv+0.3*l));
+				waves.zoom_start = waves.zoom_end - l;
+			}
+			if(wzs!=waves.zoom_start){
+				draw_wave_z[waves.selected] = [[],[],[],[]];
+			}
+		}
+		redraw_flag.flag |= 4;
 	}
 }
 function store_wave_slices(waveno){
@@ -3055,31 +3099,58 @@ function store_wave_slices(waveno){
 }
 
 function zoom_waves(parameter,value){
+	// post("\nzoom waves",parameter,value);
 	if(value=="get"){
+		waves.drag_start_x = usermouse.x;
+		waves.drag_start_y = usermouse.y;
 		return 0;//waves.zoom_start;
+	}else if(value=="all"){
+		waves.zoom_start = 0;
+		waves.zoom_end = 1;
+		draw_wave_z[waves.selected] = [[],[],[],[]];
+		redraw_flag.flag |= 4;
 	}else{
-		var w = Math.max(waves.zoom_end- waves.zoom_start,0.00001);
-		var skew = usermouse.x / mainwindow_width;
+		//this is how piano roll does it but:
 		var wzs = waves.zoom_start;
 		var wze = waves.zoom_end;
-		waves.zoom_start += (skew)* w*value;
-		waves.zoom_end -= (1-skew)*w*value;
-		if(waves.zoom_start>waves.zoom_end){
-			var t = waves.zoom_start;
-			waves.zoom_start=waves.zoom_end;
-			waves.zoom_end = t+0.00001;
+		var dx = usermouse.x - waves.drag_start_x;
+		var dy = usermouse.y - waves.drag_start_y;
+		if((dx==0)&&(dy==0)&&(value!=0)){
+			if(usermouse.shift){
+				dx = -10000*value;
+			}else{
+				dy = -1000*value;
+			}
 		}
-		if(waves.zoom_start<0){
-			waves.zoom_end -= waves.zoom_start;
-			if(waves.zoom_end>1)waves.zoom_end = 1;
-			waves.zoom_start = 0;
-		}else if(waves.zoom_end > 1){
-			waves.zoom_start -= (waves.zoom_end-1);
-			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+		var dir = 0;
+		if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+		if(dir==0){
+			var l = (waves.zoom_end - waves.zoom_start);
+			var p = (0.1+l)/(waves.width*1.1);
+			p *= dx;
+			waves.zoom_start += p;
+			waves.zoom_start = Math.min(Math.max(0,waves.zoom_start),1-l);
+			waves.zoom_end = waves.zoom_start + l;
+			waves.drag_start_y = usermouse.y;
+			waves.drag_start_x = usermouse.x;
+		}else{
+			var l = (waves.zoom_end - waves.zoom_start);
+			var xx = (usermouse.x-fontheight*1.1-9)/waves.width;
+			dy*=0.01;
+			waves.zoom_start += l*xx*dy;
+			waves.zoom_end -= l*(1-xx)*dy;
+			waves.zoom_end = Math.max(waves.zoom_start+0.00001,waves.zoom_end);
+			waves.zoom_end = Math.min(waves.zoom_end, 1);
+			waves.zoom_start = Math.min(waves.zoom_end-0.00001,waves.zoom_start);
+			waves.zoom_start = Math.max(waves.zoom_start,0);
+			waves.zoom_scale = 1/(waves.zoom_end - waves.zoom_start);
+			waves.drag_start_x = usermouse.x;
+			waves.drag_start_y = usermouse.y;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
+			waves.w_helper[waves.selected][4]=waves.zoom_start;
+			waves.w_helper[waves.selected][5]=waves.zoom_end;
 		}
 		redraw_flag.flag |= 4;
 	}
@@ -3089,12 +3160,65 @@ function wave_stripe_click(parameter,value){
 	//	post("\nstripe click",parameter,value);
 	redraw_flag.flag |= 4;
 	if(	waves.selected != parameter){
-		waves.zoom_start=0;
-		waves.zoom_end = 1;
-		waves.selected = parameter;
-		return 0;
+		if(usermouse.scroll!=0){
+			waves.scroll_position -= fontheight * usermouse.scroll * 2;
+			waves.scroll_position = Math.max(0,waves.scroll_position);
+		}else{
+			waves.zoom_start=0;
+			waves.zoom_end = 1;
+			waves.selected = parameter;
+			clear_wave_graphic(waves.selected+1,1);
+		}
+	}else if(value=="get"){
+		waves.drag_start_x = usermouse.x;
+		waves.drag_start_y = usermouse.y;
+		return 0;//waves.zoom_start;
+	}else{
+		//this is how piano roll does it but:
+		var wzs = waves.zoom_start;
+		var wze = waves.zoom_end;
+		var dx = usermouse.x - waves.drag_start_x;
+		var dy = usermouse.y - waves.drag_start_y;
+		if((dx==0)&&(dy==0)&&(value!=0)){
+			if(usermouse.shift){
+				dx = -10000 * value;
+			}else{
+				dy = -1000 * value;
+			}
+		}
+		var dir = 0;
+		if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+		if(dir==0){
+			var l = (waves.zoom_end - waves.zoom_start);
+			//the stripe is faster to drag l-r on when zoomed in than the big wave
+			var p = 0.75/waves.width;
+			p *= dx;
+			waves.zoom_start += p;
+			waves.zoom_start = Math.min(Math.max(0,waves.zoom_start),1-l);
+			waves.zoom_end = waves.zoom_start + l;
+			waves.drag_start_y = usermouse.y;
+			waves.drag_start_x = usermouse.x;
+		}else{
+			var l = (waves.zoom_end - waves.zoom_start);
+			var xx = (usermouse.x-fontheight*1.1-9)/waves.width;
+			dy*=0.01;
+			waves.zoom_start += l*xx*dy;
+			waves.zoom_end -= l*(1-xx)*dy;
+			waves.zoom_end = Math.max(waves.zoom_start+0.00001,waves.zoom_end);
+			waves.zoom_end = Math.min(waves.zoom_end, 1);
+			waves.zoom_start = Math.min(waves.zoom_end-0.00001,waves.zoom_start);
+			waves.zoom_start = Math.max(waves.zoom_start,0);
+			waves.zoom_scale = 1/(waves.zoom_end - waves.zoom_start);
+			waves.drag_start_x = usermouse.x;
+			waves.drag_start_y = usermouse.y;
+		}
+		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
+			draw_wave_z[waves.selected] = [[],[],[],[]];
+		}
+		redraw_flag.flag |= 4;
 	}
-	if(value=="get"){
+	
+	/*if(value=="get"){
 		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
 		var wzs = waves.zoom_start;
@@ -3108,7 +3232,7 @@ function wave_stripe_click(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
@@ -3138,13 +3262,15 @@ function wave_stripe_click(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
 		}
-	}
+	}*/
 }
+
+
 
 function delete_wave(parameter,value){
 	post("\n\n\n\ndeleting slot number",parameter)
@@ -3152,7 +3278,12 @@ function delete_wave(parameter,value){
 	waves_dict.setparse("waves["+t+"]","{}");
 	waves.selected = -1;
 	messnamed("waves_buffers",parameter,"clearlow");
-	redraw_flag.flag = 4;
+	clear_wave_graphic_z(parameter);
+	redraw_flag.flag |= 4;
+}
+
+function copy_wave(parameter,value){
+	error("\nsorry not implemented yet");
 }
 
 function undo_button(){
@@ -3333,7 +3464,8 @@ function key_escape(){
 			set_display_mode("blocks");
 		}
 	}else if((displaymode=="waves")&&(waves.selected!=-1)){
-		waves.selected=-1;
+		clear_wave_graphic(waves.selected+1,1);
+		waves.selected = -1;
 		redraw_flag.flag |= 4;
 	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
 		if((last_displaymode!="blocks")&&(last_displaymode!="panels")){
