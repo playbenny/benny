@@ -685,6 +685,15 @@ function waves_playhead(voice, block, enable){
 	if(enable && (blocks.contains("blocks["+block+"]::name"))){
 		var col = blocks.get("blocks["+block+"]::space::colour");
 		waves.v_label[voice] = blocks.get("blocks["+block+"]::label");
+		var vl = voicemap.get(block);
+		if(Array.isArray(vl)){
+			var ind = vl.indexOf((voice));
+			if(ind==-1){
+				post("\nwhgy?",vl,"looking for",voice);
+			}else{
+				waves.v_label[voice] = waves.v_label[voice]+" "+(ind+1);
+			}
+		}
 		waves.v_helper[voice] = col;
 		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
 	}else{
