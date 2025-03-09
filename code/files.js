@@ -217,9 +217,9 @@ function create_blank_wave_buffer(number,length, channels,name){
 	for(var i=0;i<waves_buffer[number].channelcount();i++){
 		var t=0;
 		var ii=i*2;
-		draw_wave[number][ii]=new Array((mainwindow.width/2)|0);
-		draw_wave[number][ii+1]=new Array((mainwindow.width/2)|0);
-		while(t<mainwindow.width/2){
+		draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
+		draw_wave[number][ii+1]=new Array((mainwindow_width/2)|0);
+		while(t<mainwindow_width/2){
 			draw_wave[number][ii][t]=1;
 			draw_wave[number][ii+1][t]=-1;
 			t++;
@@ -433,9 +433,9 @@ function buffer_loaded(number,path,name,buffername){
 	for(var i=0;i<tc;i++){
 		var t=0;
 		var ii=2*i;
-		draw_wave[number][ii]=new Array((mainwindow.width/2)|0);
-		draw_wave[number][ii+1]=new Array((mainwindow.width/2)|0);
-		while(t<mainwindow.width/2){
+		draw_wave[number][ii]=new Array((mainwindow_width/2)|0);
+		draw_wave[number][ii+1]=new Array((mainwindow_width/2)|0);
+		while(t<mainwindow_width/2){
 			draw_wave[number][ii][t]=1;
 			draw_wave[number][ii+1][t]=-1;
 			t++;

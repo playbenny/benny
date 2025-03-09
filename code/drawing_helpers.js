@@ -2,7 +2,7 @@ function click_clear(index,type){
 	if(usermouse.left_button) return 1;
 	//post("\nwiping click matrix");
 	view_changed = true;
-	click_rectangle(0,0,mainwindow.width,mainwindow.height,index,type); // wipe click matrix
+	click_rectangle(0,0,mainwindow_width,mainwindow_height,index,type); // wipe click matrix
 }
 function click_oval(x1,y1,x2,y2,index,type){
 	click_rectangle(x1,y1,x2,y2,index,type); //sorry, i lied. TODO draw ovals here
@@ -803,7 +803,7 @@ function draw_zoomable_waveform(x1,y1,x2,y2,r,g,b,buffer,index,highlight){
 		}
 	}
 	if(chngd){
-		redraw_flag.deferred = 4;
+		redraw_flag.deferred = 2;
 	}
 }
 
@@ -1151,7 +1151,7 @@ function center_view(resetz){
 	}
 	var w = maxx-minx;
 	var h = maxy-miny;
-	h *= (mainwindow.width/mainwindow.height);
+	h *= (mainwindow_width/mainwindow_height);
 	var d = Math.max(w,h);
 	
 	
@@ -1467,7 +1467,7 @@ function midi_indicator(number){
 }
 
 function draw_clock(){
-	var cx2 = ((sidebar.mode == "none")&&!automap.lock_c &&!automap.lock_k &&!automap.lock_q) ? (mainwindow.width) : (sidebar.x);
+	var cx2 = ((sidebar.mode == "none")&&!automap.lock_c &&!automap.lock_k &&!automap.lock_q) ? (mainwindow_width) : (sidebar.x);
 	if(sidebar.mode == "file_menu") cx2 = sidebar.x2 - fontheight * 15;
 	var cx = cx2 - fontheight*2 - 9;
 	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);

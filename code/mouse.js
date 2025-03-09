@@ -468,7 +468,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									var r = new_block(type, Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 									draw_block(r);
 									var bpw = (blocks_page.rightmost - blocks_page.leftmost);
-									var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow.width);
+									var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
 									if(d > 0){
 										camera_position[0] += 1.5*d*bpw;
 										camera();
@@ -781,8 +781,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}
 				if(f!="none"){
-					xdist/=(mainwindow.width*0.25);
-					ydist/=(mainwindow.height*0.3);
+					xdist/=(mainwindow_width*0.25);
+					ydist/=(mainwindow_height*0.3);
 					if((usermouse.shift!=usermouse.last.shift)||(usermouse.alt!=usermouse.last.alt)){
 						usermouse.drag.starting_x = usermouse.x;
 						usermouse.drag.starting_y = usermouse.y;
@@ -864,7 +864,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									//messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}
 							}else if((usermouse.ids[0] == "block")){
-								var tsx = (sidebar.mode == "none") ? (mainwindow.width-20) : (sidebar.x - 20);
+								var tsx = (sidebar.mode == "none") ? (mainwindow_width-20) : (sidebar.x - 20);
 								if(usermouse.x<20){
 									camera_position[0] -= 0.0003*camera_position[2]*Math.max(20,20 - usermouse.x);
 									messnamed("camera_control","position",  camera_position);
@@ -875,8 +875,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if(usermouse.y<20){
 									camera_position[1] += 0.0003*camera_position[2]*Math.max(20,20 - usermouse.y);
 									messnamed("camera_control","position",  camera_position);
-								}else if(usermouse.y>(mainwindow.height-20)){
-									camera_position[1] -= 0.0003*camera_position[2]*Math.max(20,usermouse.x-mainwindow.height+20);
+								}else if(usermouse.y>(mainwindow_height-20)){
+									camera_position[1] -= 0.0003*camera_position[2]*Math.max(20,usermouse.x-mainwindow_height+20);
 									messnamed("camera_control","position",  camera_position);
 								}
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
@@ -1188,8 +1188,8 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
 		if(displaymode=="blocks"){
 			if((!usermouse.ctrl)&&(!usermouse.shift)&&(!usermouse.alt)){
-				var xx = (2 * x / mainwindow.width) - 1;
-				var yy = (2 * y / mainwindow.height) - 1;
+				var xx = (2 * x / mainwindow_width) - 1;
+				var yy = (2 * y / mainwindow_height) - 1;
 				
 				camera_position[2] = camera_position[2]-20*scroll;
 				if(camera_position[2]<1.5)camera_position[2]=1.6;

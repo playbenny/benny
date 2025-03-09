@@ -4,14 +4,14 @@ function set_display_mode(mode,t){
 		last_displaymode = displaymode;
 		if(bottombar.block==custom_block)hide_bottom_bar();
 		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
-		var y1 = (bottombar.block>-1) ? (mainwindow.height - bottombar.height-9) : (mainwindow.height-9);
-		ui_poly.message("setvalue",  custom_block+1, "setup", x1,18+fontheight*1.1, sidebar.x-9, y1,mainwindow.width);
+		var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
+		ui_poly.message("setvalue",  custom_block+1, "setup", x1,18+fontheight*1.1, sidebar.x-9, y1,mainwindow_width);
 		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
 		if(displaymode!="custom") last_displaymode = displaymode;
 		if(bottombar.block>-1)hide_bottom_bar();
-		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow.width-9, mainwindow.height-9,mainwindow.width);
+		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
 			mode = "blocks"; //only show flocks if there are flocks
@@ -134,9 +134,9 @@ function redraw(){
 		draw_blocks();
 		clear_screens();
 		draw_topbar();
+		if(fullscreen) draw_clock();
 		draw_sidebar();
 		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
-		if(fullscreen) draw_clock();
 		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
@@ -151,9 +151,10 @@ function redraw(){
 		meters_enable=0;
 		clear_screens();
 		draw_topbar();
-		draw_sidebar();
 		if(fullscreen) draw_clock();
+		draw_sidebar();
 		draw_panels();
+		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
 		meters_enable=1;
 	}else if(displaymode == "custom_fullscreen"){
 		clear_screens();
@@ -170,8 +171,10 @@ function redraw(){
 		// sidebar.mode="none";
 		clear_screens();
 		draw_topbar();
+		if(fullscreen) draw_clock();
 		draw_waves();
 		draw_sidebar();
+		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
 	}
 }
 
@@ -213,7 +216,7 @@ function get_hw_meter_positions(){
 
 function draw_panels(){
 	//deferred_diag.push("draw panels "+mouse_index);
-	var panelsbottom = (bottombar.block==-1) ? mainwindow.height : mainwindow.height - bottombar.height - 9;
+	var panelsbottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
 	panels_custom = [];
 	var i,b,x=0,y=0,h;
 	var statecount;
@@ -248,7 +251,7 @@ function draw_panels(){
 	if(sidebar.mode != "none"){
 		column_width = (sidebar.x-18 - fontheight*1.1) / MAX_PANEL_COLUMNS;
 	}else{
-		column_width = (mainwindow.width-18 - fontheight*1.1)/MAX_PANEL_COLUMNS;
+		column_width = (mainwindow_width-18 - fontheight*1.1)/MAX_PANEL_COLUMNS;
 	}
 	for(i=0;i<panels_order.length;i++){
 		b = panels_order[i];
@@ -582,7 +585,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 			mouse_click_values[mouse_index] = b;
 			mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 		}
-		ui_poly.message("setvalue",  b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow.width);
+		ui_poly.message("setvalue",  b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
 	}
 }
 
@@ -596,12 +599,12 @@ function draw_waves(){
 	if(sidebar.mode!="none"){
 		x2 = sidebar.x;
 	}else{
-		x2 = mainwindow.width;
+		x2 = mainwindow_width;
 	}
 	if(bottombar.block>-1){
-		y2 = mainwindow.height - bottombar.height - 9; 
+		y2 = mainwindow_height - bottombar.height - 9; 
 	}else{
-		y2 = mainwindow.height - 9;
+		y2 = mainwindow_height - 9;
 	}
 	waves.width = x2 - x1 - 9;
 	var c=[], cd=[];
@@ -636,7 +639,7 @@ function draw_waves(){
 			lcd_main.message("moveto",x1,y_offset+fontheight*0.4);
 			if(waves_dict.contains("waves["+(slot+1)+"]::name")){
 				waves.visible[slot]=1;
-				waves.ph_ox[slot] = -1;
+				// waves.ph_ox[slot] = -1;
 				c=config.get("palette::gamut["+2*slot+"]::colour");
 				cd = shadeRGB(c,0.5);
 				waves.w_helper[slot]=[stripex1,y_offset,x2,y_offset+fontheight*1.9-2,0,1,cd,waves_dict.get("waves["+(slot+1)+"]::channels")];
@@ -696,7 +699,7 @@ function draw_waves(){
 		}
 		setfontsize(fontsmall);
 		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
-			waves.ph_ox[waves.selected] = -1;
+			// waves.ph_ox[waves.selected] = -1; 
 			waves.visible[waves.selected]=1;
 			c=config.get("palette::gamut["+2*waves.selected+"]::colour");
 			cd = shadeRGB(c,0.6);
@@ -858,7 +861,7 @@ function initialise_block_menu(visible){
 		messnamed("menu_multiple","enable",visible);
 	}else{
 		post("\ninitialising block menu");
-		var w = 4 - (Math.max(0,Math.min(3,((mainwindow.height/mainwindow.width)-0.4)*5)) |0 );
+		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
 		for(var typ in type_order){
 			z++;
 			z+=0.5;
@@ -2067,14 +2070,14 @@ function draw_state_xfade(){
 		state_fade.colour = [c2[0]*(state_fade.position)+c[0]*(1- state_fade.position),c2[1]*(state_fade.position)+c[1]*(1- state_fade.position),c2[2]*(state_fade.position)+c[2]*(1- state_fade.position)];
 		var x = 9+(sidebar.x-18-fontheight)*(state_fade.position);
 		lcd_main.message("paintrect",x, state_fade.y, x+fontheight,fontheight+state_fade.y,state_fade.colour );
-		click_rectangle( 9+fontheight*state_fade.x, 0, 9+fontheight*(state_fade.x+1.2), mainwindow.height ,mouse_index,2 );							
+		click_rectangle( 9+fontheight*state_fade.x, 0, 9+fontheight*(state_fade.x+1.2), mainwindow_height ,mouse_index,2 );							
 		mouse_click_actions[state_fade.index] = whole_state_xfade;
 		mouse_click_parameters[state_fade.index] = state_fade.selected;
 		mouse_click_values[state_fade.index] = 0;
 		statesfadebar.videoplane.message("enable",1);
-		var tw=(sidebar.x)/mainwindow.width;
-		var th1=(state_fade.y+fontheight*0.5)/mainwindow.height;
-		var th2=(fontheight+10)/mainwindow.height;
+		var tw=(sidebar.x)/mainwindow_width;
+		var th1=(state_fade.y+fontheight*0.5)/mainwindow_height;
+		var th2=(fontheight+10)/mainwindow_height;
 		statesfadebar.shown = 1;
 		statesfadebar.videoplane.message("scale",tw,th2);
 		statesfadebar.videoplane.message("position",-1+tw,1-2*th1,0);
@@ -2313,16 +2316,16 @@ function draw_topbar(){
 		}
 
 		if(displaymode == "custom_fullscreen"){
-			lcd_main.message("paintrect", mainwindow.width-9-fontheight,9,mainwindow.width-9,9+fontheight,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
+			lcd_main.message("paintrect", mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
 			lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
-			lcd_main.message("moveto",mainwindow.width-9-fo1*2,9+fo1*6);
-			lcd_main.message("lineto",mainwindow.width-9-fo1*3,9+fo1*7);
-			lcd_main.message("lineto",mainwindow.width-9-fo1*2,9+fo1*8);
-			click_zone(set_display_mode,"custom",custom_block,mainwindow.width-9-fontheight,9,mainwindow.width-9,9+fontheight,mouse_index,1);
+			lcd_main.message("moveto",mainwindow_width-9-fo1*2,9+fo1*6);
+			lcd_main.message("lineto",mainwindow_width-9-fo1*3,9+fo1*7);
+			lcd_main.message("lineto",mainwindow_width-9-fo1*2,9+fo1*8);
+			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
 		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")){ //draw states / init / unmute all
-			var y_o = mainwindow.height - 5;
+			var y_o = mainwindow_height - 5;
 			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1))){
 				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
 					var bna = blocks.get("blocks["+bottombar.available_blocks[bi]+"]::label");
@@ -2340,9 +2343,9 @@ function draw_topbar(){
 						lcd_main.message("lineto",9+fo1*8,y_o+fo1*(-1+3*(bna.length)));
 						click_zone(hide_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
 					}else{
-						// lcd_main.message("moveto",9+fo1*7,mainwindow.height-5-fo1*5);
-						// lcd_main.message("lineto",9+fo1*8,mainwindow.height-5-fo1*4);
-						// lcd_main.message("lineto",9+fo1*7,mainwindow.height-5-fo1*3);
+						// lcd_main.message("moveto",9+fo1*7,mainwindow_height-5-fo1*5);
+						// lcd_main.message("lineto",9+fo1*8,mainwindow_height-5-fo1*4);
+						// lcd_main.message("lineto",9+fo1*7,mainwindow_height-5-fo1*3);
 						click_zone(setup_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
 					}
 				}
@@ -2424,8 +2427,8 @@ function draw_topbar(){
 					y_o += 1.2*fontheight;
 				}
 			}
-			if(y_o < mainwindow.height - 9 - fontheight){
-				statesbar.used_height = mainwindow.height - y_o;
+			if(y_o < mainwindow_height - 9 - fontheight){
+				statesbar.used_height = mainwindow_height - y_o;
 			}
 			statesbar_size();
 			if(statesfadebar.shown == 1){
@@ -2437,7 +2440,7 @@ function draw_topbar(){
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
-		lcd_main.message("paintrect", 13 + fontheight*x_o, 13, 5+fontheight*x_o+(mainwindow.width-fontheight*x_o-17)*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2)), 5+fontheight,menudark);
+		lcd_main.message("paintrect", 13 + fontheight*x_o, 13, 5+fontheight*x_o+(mainwindow_width-fontheight*x_o-17)*(loading.progress/(MAX_BLOCKS+4*loading.mapping.length+2)), 5+fontheight,menudark);
 		lcd_main.message("framerect", 9 + fontheight*x_o, 9, sidebar.x2, 9+fontheight,menucolour);
 		lcd_main.message("frgb", 0,0,0);		
 		lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
@@ -2514,11 +2517,11 @@ function draw_sidebar(){
 	var has_params=0;
 	var block;
 	if(/*(sidebar.mode!="none")||*/((selected.block_count+selected.wire_count)>0)){
-		click_zone(do_nothing, null, null, sidebar.x,0,sidebar.x2,mainwindow.height,0,1); //was 0);
+		click_zone(do_nothing, null, null, sidebar.x,0,sidebar.x2,mainwindow_height,0,1); //was 0);
 		mouse_index--; //because this is using an already assigned index no, but click_zone increments mouse_index
 		if((sidebar.mode=="none") && fullscreen){
 			//wipe clock space
-			lcd_main.message("paintrect", mainwindow.width-2.1*fontheight, 9, mainwindow.width,fontheight+9,0,0,0);
+			lcd_main.message("paintrect", mainwindow_width-2.1*fontheight, 9, mainwindow_width,fontheight+9,0,0,0);
 		}
 	}
 	
@@ -2882,13 +2885,13 @@ function draw_sidebar(){
 			lcd_main.message("write", "song notes");
 		}
 		y_offset += 1.1* fontheight;
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow.height-9,menudarkest);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,menudarkest);
 		lcd_main.message("frgb", menucolour);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("textface", "normal");
 		post("\nsidebar notification is:\n",sidebar.notification);
 		long_sidebar_text(sidebar.notification,2);
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow.height-9,0,0,0);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
 	}else if(sidebar.mode == "edit_song_notes"){
 		if(sidebar.mode != sidebar.lastmode){
 			sidebar.text_being_edited=null;
@@ -2914,12 +2917,12 @@ function draw_sidebar(){
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "song notes");
 		y_offset += 1.1* fontheight;
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow.height-9,greydarkest);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,greydarkest);
 		lcd_main.message("frgb", greycolour);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("textface", "normal");
 		long_sidebar_text(sidebar.text_being_edited+sidebar.notification,2);
-		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow.height-9,0,0,0);
+		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
@@ -3834,7 +3837,7 @@ function draw_sidebar(){
 							click_zone(set_display_mode, "custom", block, sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mouse_index,1);
 							//if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 						}
-						ui_poly.message("setvalue",  block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow.width);
+						ui_poly.message("setvalue",  block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width);
 						custom_block = block;
 						y_offset += ui_h + fo1;
 					}
@@ -4072,7 +4075,7 @@ function draw_sidebar(){
 										}
 									}//buttons need target/message to be stored so are done later
 								}
-								if((y2>0)&&(y1<mainwindow.height)){
+								if((y2>0)&&(y1<mainwindow_height)){
 									x1 = sidebar.x + w_slider*knob_x;
 									x2 = sidebar.x + w_slider*(knob_x+wk) - fo1;
 									p_values = params[curp].get("values");
@@ -4356,7 +4359,7 @@ function draw_sidebar(){
 							}
 							var gh = (y_offset - automap.sidebar_row_ys[i] - 8)/gr;
 							var yy = automap.sidebar_row_ys[i]+4;
-							var sbx = mainwindow.width-4;
+							var sbx = mainwindow_width-4;
 							for(var g=first;g<first+gr;g++){
 								if((g >= automap.offset_c)&&(g < (automap.offset_c+automap.c_rows))){
 									lcd_main.message("frgb",colour);
@@ -5735,7 +5738,7 @@ function draw_sidebar(){
 					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 					lcd_main.message("write", "help");
 					y_offset += 1.1* fontheight;
-					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow.height-9,block_darkest);
+					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,block_darkest);
 					lcd_main.message("frgb", block_colour);
 					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 					setfontsize(fontsmall);
@@ -7547,22 +7550,22 @@ function draw_sidebar(){
 	if((sidebar.mode!="block")&&(sidebar.mode!="settings")&&(sidebar.mode!="add_state")&&(sidebar.mode!="help")){ // DISABLE AUTOMAPPED MIDI CONTROLLERS
 		remove_automaps();
 	}
-	if(y_offset+sidebar.scroll.position >= mainwindow.height){
-		sidebar.scroll.max = fontheight + fontheight + sidebar.scroll.position+y_offset-mainwindow.height;
+	if(y_offset+sidebar.scroll.position >= mainwindow_height){
+		sidebar.scroll.max = fontheight + fontheight + sidebar.scroll.position+y_offset-mainwindow_height;
 	}else{
 		if(view_changed && (sidebar.mode!="none")){
 			var ttt= (displaymode == "panels") ? 1 : 0;
-			click_rectangle(sidebar.x,y_offset+1,sidebar.x2,mainwindow.height,ttt,ttt);
+			click_rectangle(sidebar.x,y_offset+1,sidebar.x2,mainwindow_height,ttt,ttt);
 		}
 	}
 	if((sidebar.scroll.max>0)){
-		var sbx = mainwindow.width-(sidebar.scrollbar_width-8)*0.5;
-		var l = (mainwindow.height-18) / (mainwindow.height + sidebar.scroll.max - 18);
-		var l2 = (mainwindow.height-18) * l;
+		var sbx = mainwindow_width-(sidebar.scrollbar_width-8)*0.5;
+		var l = (mainwindow_height-18) / (mainwindow_height + sidebar.scroll.max - 18);
+		var l2 = (mainwindow_height-18) * l;
 		var p = sidebar.scroll.position * l + 9;
 		lcd_main.message("frgb", block_darkest);
 		lcd_main.message("moveto",sbx,9);
-		lcd_main.message("lineto",sbx,mainwindow.height-9);		
+		lcd_main.message("lineto",sbx,mainwindow_height-9);		
 		if(mouse_index==usermouse.clicked2d){
 			lcd_main.message("frgb", block_colour);
 		}else{
@@ -7571,16 +7574,16 @@ function draw_sidebar(){
 		lcd_main.message("moveto",sbx,p);
 		lcd_main.message("lineto",sbx,p+l2);
 		//click zone for the scrollbar
-		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow.width+2,mainwindow.height,scrollbar_index,2);
+		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,scrollbar_index,2);
 	}
 	if(fullscreen&&view_changed&&((displaymode=="blocks")||(displaymode=="panels")))draw_clock();
-	var h=Math.min(mainwindow.height,y_offset+2);
+	var h=Math.min(mainwindow_height,y_offset+2);
 	if(h!=sidebar.used_height){
 		sidebar.used_height=h;
 		sidebar_size();
 	}
 	if(bottombar.block>-1){
-		if(sidebar.used_height<(mainwindow.height-bottombar.height))view_changed=1;
+		if(sidebar.used_height<(mainwindow_height-bottombar.height))view_changed=1;
 		if(view_changed){
 			setup_bottom_bar(bottombar.block);
 		}else{
@@ -7874,7 +7877,7 @@ function draw_resource_monitor_page() {
 		lcd_main.message("paintrect", tx, y_offset, tx + 18, y_offset + 18, c);
 		click_zone(cpu_select_block, -1, i, tx - 4, y_offset - 4, tx + 22, y_offset + 22, mouse_index, 1);
 		tx += wm;
-		if (tx > mainwindow.width - 18) {
+		if (tx > mainwindow_width - 18) {
 			tx = sidebar.x;
 			y_offset += wm;
 		}
@@ -7902,7 +7905,7 @@ function draw_resource_monitor_page() {
 		lcd_main.message(rectype, tx, y_offset, tx + 18, y_offset + 18, c);
 		click_zone(cpu_select_block, voiceno[i], voiceparent[i], tx - 4, y_offset - 4, tx + 22, y_offset + 22, mouse_index, 1);
 		tx += wm;
-		if (tx > mainwindow.width - 18) {
+		if (tx > mainwindow_width - 18) {
 			tx = sidebar.x;
 			y_offset += wm;
 		}
@@ -7942,7 +7945,7 @@ function draw_resource_monitor_page() {
 			lcd_main.message("lineto", tx + 16, y_offset);
 		}
 		tx += wm;
-		if (tx > mainwindow.width - 18) {
+		if (tx > mainwindow_width - 18) {
 			tx = sidebar.x;
 			y_offset += wm;
 		}
@@ -8368,10 +8371,10 @@ function setup_bottom_bar(block){
 	var r = bottombar.right;
 	if(bottombar.block != block) r=-1;
 	bottombar.block = block;
-	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow.height-bottombar.height))) ? (mainwindow.width-5) : (sidebar.x - 5);
+	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 	if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
 	if(r!=bottombar.right) bottombar_size();
-	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow.height - bottombar.height-5, bottombar.right, mainwindow.height-5,-1);
+	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
 }
 
 function draw_bottom_bar(){

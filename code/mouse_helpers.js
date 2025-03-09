@@ -856,11 +856,11 @@ function screentoworld(x,y){
 	//var real = connections_sketch.screentoworld(x,y);
 	//post("\nreal stw", real);
 	var camera_stw_scale = 0.53589838486224541294510731698826 * camera_position[2];
-	x/=mainwindow.width;
-	y/=-mainwindow.height;
+	x/=mainwindow_width;
+	y/=-mainwindow_height;
 	x-=0.5;
 	y+=0.5;
-	x*=camera_stw_scale*mainwindow.width/mainwindow.height;
+	x*=camera_stw_scale*mainwindow_width/mainwindow_height;
 	y*=camera_stw_scale;
 	x+=camera_position[0];
 	y+=camera_position[1];
@@ -1747,8 +1747,8 @@ function reset_set_timer(){
 }
 
 function blocks_zoom_key(scroll){
-	var xx = (2 * usermouse.x / mainwindow.width) - 1;
-	var yy = (2 * usermouse.y / mainwindow.height) - 1;
+	var xx = (2 * usermouse.x / mainwindow_width) - 1;
+	var yy = (2 * usermouse.y / mainwindow_height) - 1;
 	
 	camera_position[2] = camera_position[2]-20*scroll;
 	if(camera_position[2]<1.5)camera_position[2]=1.6;
@@ -1790,10 +1790,10 @@ function scroll_waves(parameter,value){
 	if(value=="get"){
 		return -waves.scroll_position/5000;
 	}else if(value=="rel"){
-		waves.scroll_position = Math.min(Math.max(0,waves.scroll_position-parameter*100),mainwindow.height*(MAX_WAVES+2)/6-0.01);
+		waves.scroll_position = Math.min(Math.max(0,waves.scroll_position-parameter*100),mainwindow_height*(MAX_WAVES+2)/6-0.01);
 		redraw_flag.flag |= 4;
 	}else{
-		waves.scroll_position = Math.min(Math.max(0,-value*5000),mainwindow.height*(MAX_WAVES+2)/6-0.01);
+		waves.scroll_position = Math.min(Math.max(0,-value*5000),mainwindow_height*(MAX_WAVES+2)/6-0.01);
 		redraw_flag.flag |= 4;
 	}
 }
@@ -3219,7 +3219,7 @@ function wave_stripe_click(parameter,value){
 	}
 	
 	/*if(value=="get"){
-		var skew = usermouse.x / mainwindow.width;
+		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
 		var wzs = waves.zoom_start;
 		var wze = waves.zoom_end;
@@ -3239,7 +3239,7 @@ function wave_stripe_click(parameter,value){
 		}
 		return 0;
 	}else{
-		var skew = usermouse.x / mainwindow.width;
+		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
 		var wzs = waves.zoom_start;
 		var wze = waves.zoom_end;
@@ -3790,7 +3790,7 @@ function type_to_search(key){
 				}
 			}
 		}
-		var w = 4 - (Math.max(0,Math.min(3,((mainwindow.height/mainwindow.width)-0.4)*5)) |0 );
+		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
 		var z=-3.5; var x=-w;
 		for(var i =0;i<results.length;i++){
 			var f=0;
@@ -3832,7 +3832,7 @@ function squash_block_menu(){
 	//squashes the block menu to only show visible blocks
 	var type_order = config.get("type_order");
 	var types = blocktypes.getkeys();
-	var w = 4 - (Math.max(0,Math.min(3,((mainwindow.height/mainwindow.width)-0.4)*5)) |0 );
+	var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
 	var z=-3.5; var x=-w;
 	for(var t in type_order){
 		var f=0;
@@ -3952,7 +3952,7 @@ function blocks_menu_enter(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
 				draw_block(r);
 				var bpw = (blocks_page.rightmost - blocks_page.leftmost);
-				var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow.width);
+				var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
 				if(d > 0){
 					camera_position[0] += 1.5*d*bpw;
 					camera();

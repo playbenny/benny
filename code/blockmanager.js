@@ -64,10 +64,8 @@ var panelslider_visible = new Array(MAX_BLOCKS);
 var danger_button = -1;
 var folder_target = "";//when you pop open a folder select box, where is the result going?
 
-var mainwindow = {
-	width : 320,
-  	height : 240
-}
+var mainwindow_width = 320;
+var mainwindow_height = 240;
 
 var scale_2d = 1;
 
@@ -225,6 +223,7 @@ var waves = {
 	playheadlist : [], //list of voices to check for playhead movement.
 	v_helper : [], //colour of each voice's playhead, defined when you get the message about a playhead existing.
 	v_label : [],
+	v_jump : [], //[block,voice] for jumping to that one in the sidebar.
 	visible : [], //0 or 1 for if it's onscreen.
 	w_helper : [], // for each wave its x1,y1,height, width, range min max, colour,chans so the playhead has everything in one place
 	ph_ox : [] //old playhead x, by voice.

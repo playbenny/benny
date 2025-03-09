@@ -95,9 +95,9 @@ function frameclock(){
 	}else if(redraw_flag.flag & 2){
 		clear_screens();
 		draw_topbar();
+		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 		if(displaymode=="waves") draw_waves();
 		draw_sidebar();
-		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		if(redraw_flag.flag & 8) block_and_wire_colours();
@@ -622,7 +622,7 @@ function draw_playheads(){
 			var w = waves_playheads_buffer.peek(2,waves.playheadlist[i]) |0;
 			if(waves.visible[w]&&Array.isArray(waves.w_helper[w])&&(v>waves.w_helper[w][4])&&(v<waves.w_helper[w][5])){
 				var x = Math.floor(waves.w_helper[w][0]+v*(waves.w_helper[w][2]-waves.w_helper[w][0]));
-				if(x!=waves.ph_ox[i]){
+				if((x!=waves.ph_ox[i])||(redraw_flag.flag&6)){
 					ii = Math.floor((waves.ph_ox[i]-waves.w_helper[w][0])*0.5);
 					var h= 0.5*(waves.w_helper[w][3]-waves.w_helper[w][1])/waves.w_helper[w][7];
 					lcd_main.message("frgb",shadeRGB(waves.w_helper[w][6],bg_dark_ratio));
@@ -650,6 +650,12 @@ function draw_playheads(){
 							lcd_main.message("paintrect",olx,waves.w_helper[w][3],olx+l,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
 						}
 						lcd_main.message("paintrect",lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,waves.v_helper[waves.playheadlist[i]]);
+						click_rectangle(lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,mouse_index,1);
+						mouse_click_actions[mouse_index] = select_block_and_voice;
+						mouse_click_parameters[mouse_index] = waves.v_jump[waves.playheadlist[i]][0];
+						mouse_click_values[mouse_index] = waves.v_jump[waves.playheadlist[i]][1];
+						mouse_index++;
+						
 						lcd_main.message("frgb",0,0,0);
 						lcd_main.message("moveto",lx+fo1,waves.w_helper[w][3]+0.35*fontheight);
 						lcd_main.message("write",waves.v_label[waves.playheadlist[i]]);
@@ -683,16 +689,21 @@ function waves_playhead(voice, block, enable){
 	//should make a list of playheads to check for changes, reset this list on clear everything? could also check it during remove block/voice
 	// post("\nvoice",voice,"reports that it has a playhead on wave",wave);
 	if(enable && (blocks.contains("blocks["+block+"]::name"))){
+		var vl = voicemap.get(block);
 		var col = blocks.get("blocks["+block+"]::space::colour");
 		waves.v_label[voice] = blocks.get("blocks["+block+"]::label");
-		var vl = voicemap.get(block);
 		if(Array.isArray(vl)){
 			var ind = vl.indexOf((voice));
 			if(ind==-1){
-				post("\nwhgy?",vl,"looking for",voice);
+				post("\nplayhead report doesn't match, block",block,"contains these voices ",vl," but i was looking for",voice,"i have disabled this playhead for now");
+				waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);
+				waves.v_label[voice] = null;
 			}else{
 				waves.v_label[voice] = waves.v_label[voice]+" "+(ind+1);
 			}
+			waves.v_jump[voice] = [block, ind];
+		}else {
+			waves.v_jump[voice] = [block, -1];
 		}
 		waves.v_helper[voice] = col;
 		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
