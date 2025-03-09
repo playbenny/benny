@@ -617,9 +617,9 @@ function playhead_report(voice,value){
 
 function draw_playheads(){
 	for(var i = 0; i<waves.playheadlist.length; i++){
-		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]); //playheads[waves.playheadlist[i]];
+		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]);
 		if(v!=-1){
-			var w = waves.v_to_w[waves.playheadlist[i]];
+			var w = waves_playheads_buffer.peek(2,waves.playheadlist[i]) |0;
 			if(waves.visible[w]&&Array.isArray(waves.w_helper[w])&&(v>waves.w_helper[w][4])&&(v<waves.w_helper[w][5])){
 				var x = Math.floor(waves.w_helper[w][0]+v*(waves.w_helper[w][2]-waves.w_helper[w][0]));
 				if(x!=waves.ph_ox[i]){
@@ -641,7 +641,7 @@ function draw_playheads(){
 					if((w==waves.selected)&&(waves.v_label[waves.playheadlist[i]]!=null)){
 						var olx = waves.ph_ox[i];
 						var lx = x;
-						var l = waves.v_label[waves.playheadlist[i]].length * fontheight / 6;
+						var l = (waves.v_label[waves.playheadlist[i]].length+2) * fontheight / 6;
 						olx = Math.min(olx, waves.w_helper[w][2]-l);
 						lx = Math.min(lx, waves.w_helper[w][2]-l);
 						if(olx<lx){
@@ -651,23 +651,16 @@ function draw_playheads(){
 						}
 						lcd_main.message("paintrect",lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,waves.v_helper[waves.playheadlist[i]]);
 						lcd_main.message("frgb",0,0,0);
-						lcd_main.message("moveto",lx+fo1,waves.w_helper[w][3]+0.32*fontheight);
+						lcd_main.message("moveto",lx+fo1,waves.w_helper[w][3]+0.35*fontheight);
 						lcd_main.message("write",waves.v_label[waves.playheadlist[i]]);
 					}
 					waves.ph_ox[i] = x;
 				}
-				// post("\nplayhead at ",v,"on wave",waves.v_to_w[waves.playheadlist[i]],"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
+				// post("\nplayhead at ",v,"on wave",w,"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
 			}
 			//playheads[waves.playheadlist[i]] = -1; //???
 		}else if(waves.ph_ox[i]>=0){
-			var w = waves.v_to_w[waves.playheadlist[i]];
-			lcd_main.message("frgb",shadeRGB(waves.w_helper[w][6],bg_dark_ratio));
-			lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]);
-			lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][3]);
-			if((w==waves.selected)&&(waves.v_label[waves.playheadlist[i]]!=null)){
-				var l = waves.v_label[waves.playheadlist[i]].length * fontheight / 6;
-				lcd_main.message("paintrect",waves.ph_ox[i],waves.w_helper[w][3],waves.ph_ox[i]+l,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
-			}
+			redraw_flag.flag |= 4;
 			waves.ph_ox[i] = -1;
 		}
 	}
@@ -686,17 +679,16 @@ function do_drift(){
 	}
 }
 
-function waves_playhead(voice, wave, block){
+function waves_playhead(voice, block, enable){
 	//should make a list of playheads to check for changes, reset this list on clear everything? could also check it during remove block/voice
-	post("\nvoice",voice,"reports that it has a playhead on wave",wave);
-	if(blocks.contains("blocks["+block+"]::name")){
-		waves.v_to_w[voice] = wave;
+	// post("\nvoice",voice,"reports that it has a playhead on wave",wave);
+	if(enable && (blocks.contains("blocks["+block+"]::name"))){
 		var col = blocks.get("blocks["+block+"]::space::colour");
 		waves.v_label[voice] = blocks.get("blocks["+block+"]::label");
 		waves.v_helper[voice] = col;
 		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
 	}else{
-		waves.v_to_w[voice] = null;
+		post("\nclearing playhead assignment for voice",voice);
 		if(waves.playheadlist.indexOf(voice)!=-1){
 			post("\nreomving",voice,"from playhead list, was",waves.playheadlist);
 			waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);

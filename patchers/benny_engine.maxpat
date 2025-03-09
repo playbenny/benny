@@ -8175,7 +8175,7 @@
 									"numoutlets" : 2,
 									"outlettype" : [ "float", "bang" ],
 									"patching_rect" : [ 500.0, 507.0, 178.0, 22.0 ],
-									"text" : "buffer~ waves_playheads 100 1"
+									"text" : "buffer~ waves_playheads 100 2"
 								}
 
 							}

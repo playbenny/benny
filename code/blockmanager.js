@@ -223,7 +223,6 @@ var waves = {
 	scroll_position: 0,
 	show_in_bottom_panel: 0,
 	playheadlist : [], //list of voices to check for playhead movement.
-	v_to_w : [], //list of which wave each voice is playing at the moment
 	v_helper : [], //colour of each voice's playhead, defined when you get the message about a playhead existing.
 	v_label : [],
 	visible : [], //0 or 1 for if it's onscreen.
@@ -231,7 +230,7 @@ var waves = {
 	ph_ox : [] //old playhead x, by voice.
 }
 //var playheads = []; //index by voice, holds position, replaces the buffer method which crashed max
-var waves_playheads_buffer = new Buffer("waves_playheads");
+var waves_playheads_buffer = new Buffer("waves_playheads"); //ch1=playhead,ch2=wave
 
 var quantpool = new Buffer("QUANTPOOL");
 var indexpool = new Buffer("INDEXPOOL");

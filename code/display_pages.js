@@ -677,7 +677,7 @@ function draw_waves(){
 				lcd_main.message("frgb",menudark);
 				lcd_main.message("write", Math.round(slot+1));
 				lcd_main.message("framerect",stripex1,y_offset,x2,y_offset+fontheight*1.9,menudarkest);
-				lcd_main.message("moveto",x1+9,y_offset+fontheight*0.4);
+				lcd_main.message("moveto",x1+fontheight*0.2,y_offset+fontheight*0.4);
 				lcd_main.message("write", "click to load a wave");
 				click_rectangle(x1,y_offset,x2,y_offset+fontheight*2,mouse_index,1);
 				mouse_click_actions[mouse_index] = load_wave;
@@ -777,16 +777,6 @@ function draw_waves(){
 			waves.selected = -1;
 		}
 	}
-	/*
-	for(var i = 0; i<waves.playheadlist.length; i++){
-		var v = waves.playheadlist[i];
-		var w = waves.v_to_w[v];
-		if(v<MAX_NOTE_VOICES){
-			note_poly.message("setvalue",v+1,"playhead_visible",waves.visible[w]);
-		}else{
-			audio_poly.message("setvalue",v+1-MAX_NOTE_VOICES,"playhead_visible",waves.visible[w]);			
-		}
-	}*/ //i think this (turning off the buffer writes for non-visible playheads) is pointless - more work than it saves, and what if other things want to see the playheads?
 }
 
 function draw_custom(){

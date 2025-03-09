@@ -1666,7 +1666,6 @@ function clear_everything(){
 		waves.age[i]=0;
 	}
 	waves.playheadlist = [];
-	waves.v_to_w = [];
 	waves.seq_no = 0;
 	waves.selected = -1;
 	for(i=0;i<MAX_NOTE_VOICES;i++) note_patcherlist[i]='blank.note';
