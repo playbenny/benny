@@ -56,7 +56,7 @@
 				"colour" : 31
 			},
 			{ 
-				"contains" : [2],
+				"contains" : [3],
 				"onepervoice" : 1,
 				"height" : 0.999,
 				"colour" : 37
