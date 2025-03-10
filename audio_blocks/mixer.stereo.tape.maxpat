@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -107,7 +107,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 818.0, 858.5, 129.0, 85.0 ],
-					"setfilter" : [ 0, 5, 1, 0, 0, 155.520187377929688, 0.5, 0.473166406154633, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 5, 1, 0, 0, 194.445724487304688, 0.445625454187393, 0.38947656750679, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -194,7 +194,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1112.0, 719.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 46.721778869628906, 1.0, 0.543431401252747, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 2, 1, 0, 0, 46.721778869628906, 1.0, 0.300000011920929, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -509,7 +509,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 818.0, 706.5, 129.0, 85.0 ],
-					"setfilter" : [ 0, 5, 1, 0, 0, 155.520187377929688, 2.517676830291748, 0.473166406154633, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 5, 1, 0, 0, 194.445724487304688, 0.891250908374786, 0.38947656750679, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -653,8 +653,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 467.0, 776.0, 169.0, 22.0 ],
-					"text" : "3 0.2, 2 0.23, 1 0.825, 5 0.125"
+					"patching_rect" : [ 467.0, 776.0, 162.0, 22.0 ],
+					"text" : "3 0.2, 2 0.23, 1 0.75, 5 0.125"
 				}
 
 			}
@@ -674,7 +674,7 @@
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_invisible" : 1,
-							"parameter_longname" : "vst~[9]",
+							"parameter_longname" : "vst~[23]",
 							"parameter_modmode" : 0,
 							"parameter_shortname" : "vst~[1]",
 							"parameter_type" : 3
@@ -697,16 +697,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "ToTape664.vstinfo",
+							"pluginname" : "totape664.vstinfo",
 							"plugindisplayname" : "airwindows ToTape6",
 							"pluginsavedname" : "",
 							"pluginsaveduniqueid" : 1953461365,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"sliderorder" : [  ],
-							"slidervisibility" : [ 1, 1, 1, 1, 1, 1 ],
-							"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjO8lMs8....3C...3O"
+							"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjO1xVy8....3C...3O"
 						}
 ,
 						"snapshotlist" : 						{
@@ -716,29 +714,27 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "airwindows ToTape6",
-									"origin" : "ToTape664.vstinfo",
+									"origin" : "totape664.vstinfo",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
-									"embed" : 0,
+									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "ToTape664.vstinfo",
+										"pluginname" : "totape664.vstinfo",
 										"plugindisplayname" : "airwindows ToTape6",
 										"pluginsavedname" : "",
 										"pluginsaveduniqueid" : 1953461365,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"sliderorder" : [  ],
-										"slidervisibility" : [ 1, 1, 1, 1, 1, 1 ],
-										"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjO8lMs8....3C...3O"
+										"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjO1xVy8....3C...3O"
 									}
 ,
 									"fileref" : 									{
 										"name" : "airwindows ToTape6",
-										"filename" : "airwindows ToTape6.maxsnap",
-										"filepath" : "~/Documents/Max 9/Snapshots",
+										"filename" : "airwindows ToTape6_20250310.maxsnap",
+										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "83abbf86b72e0bd32ccf50c2ca579ed2"
+										"snapshotfileid" : "8dbe5ee0663479bc42fb67d24c3697e7"
 									}
 
 								}
@@ -1064,7 +1060,7 @@
 
 							}
  ],
-						"originid" : "pat-5358"
+						"originid" : "pat-5800"
 					}
 ,
 					"patching_rect" : [ 12.833333333333314, 327.0, 134.0, 22.0 ],
@@ -1302,7 +1298,7 @@
 
 							}
  ],
-						"originid" : "pat-5360"
+						"originid" : "pat-5802"
 					}
 ,
 					"patching_rect" : [ 154.0, 327.0, 140.0, 22.0 ],
@@ -1646,7 +1642,7 @@
 
 							}
  ],
-						"originid" : "pat-5362"
+						"originid" : "pat-5804"
 					}
 ,
 					"patching_rect" : [ 78.0, 257.0, 62.0, 22.0 ],
@@ -2655,7 +2651,7 @@
 
 							}
  ],
-						"originid" : "pat-5366"
+						"originid" : "pat-5808"
 					}
 ,
 					"patching_rect" : [ 333.75, 249.0, 101.0, 22.0 ],
@@ -2671,6 +2667,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 250.75, 116.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -2718,10 +2718,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 77.0, 1019.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -2942,7 +2938,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 962.0, 719.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 25.95654296875, 1.0, 1.086862802505493, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 2, 1, 0, 0, 25.95654296875, 1.0, 0.600000023841858, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -2957,7 +2953,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 537.260356869016391, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 132.053314208984375, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 2, 1, 0, 0, 149.501190185546875, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -3008,7 +3004,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 676.831785440444946, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 5, 1, 0, 0, 272.469970703125, 0.163117289543152, 0.686862766742706, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 5, 1, 0, 0, 349.228240966796875, 1.0, 0.200000002980232, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -3209,7 +3205,7 @@
 										"filename" : "airwindows Console7Channel_20250216.maxsnap",
 										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "5fbb2dc0e7a8a23b624edd337f9915a9"
+										"snapshotfileid" : "49d26ce801f83cd27fcc0920c9c08f7b"
 									}
 
 								}
@@ -3231,10 +3227,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 202.0, 154.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -3258,10 +3250,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 259.0, 1016.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -3274,10 +3262,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 457.0, 431.556071519851685, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -3289,10 +3273,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 201.0, 1016.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -3305,10 +3285,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 343.0, 431.556071519851685, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -4642,7 +4618,7 @@
 
 			}
  ],
-		"originid" : "pat-5356"
+		"originid" : "pat-5798"
 	}
 
 }

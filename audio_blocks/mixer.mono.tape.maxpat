@@ -10,9 +10,21 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-49",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
+					"patching_rect" : [ 310.0, 695.0, 29.5, 22.0 ],
+					"text" : "*~"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-43",
 					"maxclass" : "newobj",
@@ -179,18 +191,6 @@
 					"outlettype" : [ "float" ],
 					"patching_rect" : [ 923.285714285714221, 192.0, 32.0, 22.0 ],
 					"text" : "/ 36."
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-45",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 297.75, 756.0, 29.5, 22.0 ],
-					"text" : "+~"
 				}
 
 			}
@@ -433,7 +433,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 818.0, 706.5, 129.0, 85.0 ],
-					"setfilter" : [ 0, 5, 1, 0, 0, 155.520187377929688, 2.517676830291748, 0.473166406154633, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 5, 1, 0, 0, 194.445724487304688, 0.891250908374786, 0.38947656750679, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -553,8 +553,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 467.0, 776.0, 169.0, 22.0 ],
-					"text" : "3 0.2, 2 0.23, 1 0.825, 5 0.125"
+					"patching_rect" : [ 467.0, 776.0, 155.0, 22.0 ],
+					"text" : "3 0.2, 2 0.23, 1 0.75, 5 0.25"
 				}
 
 			}
@@ -574,7 +574,7 @@
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_invisible" : 1,
-							"parameter_longname" : "vst~[9]",
+							"parameter_longname" : "vst~[20]",
 							"parameter_modmode" : 0,
 							"parameter_shortname" : "vst~[1]",
 							"parameter_type" : 3
@@ -597,16 +597,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "ToTape664.vstinfo",
+							"pluginname" : "totape664.vstinfo",
 							"plugindisplayname" : "airwindows ToTape6",
 							"pluginsavedname" : "",
 							"pluginsaveduniqueid" : 1953461365,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"sliderorder" : [  ],
-							"slidervisibility" : [ 1, 1, 1, 1, 1, 1 ],
-							"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjOJo408....3C...3O"
+							"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjOnoxz8....3C...3O"
 						}
 ,
 						"snapshotlist" : 						{
@@ -616,29 +614,27 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "airwindows ToTape6",
-									"origin" : "ToTape664.vstinfo",
+									"origin" : "totape664.vstinfo",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
-									"embed" : 0,
+									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "ToTape664.vstinfo",
+										"pluginname" : "totape664.vstinfo",
 										"plugindisplayname" : "airwindows ToTape6",
 										"pluginsavedname" : "",
 										"pluginsaveduniqueid" : 1953461365,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"sliderorder" : [  ],
-										"slidervisibility" : [ 1, 1, 1, 1, 1, 1 ],
-										"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjOJo408....3C...3O"
+										"blob" : "84.CMlaKA....fQPMDZ....AP2azUG...P......PTYlEVcrQG................................FyLyT+7Qgq4SyLyjOnoxz8....3C...3O"
 									}
 ,
 									"fileref" : 									{
 										"name" : "airwindows ToTape6",
 										"filename" : "airwindows ToTape6.maxsnap",
-										"filepath" : "~/Documents/Max 9/Snapshots",
+										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "83abbf86b72e0bd32ccf50c2ca579ed2"
+										"snapshotfileid" : "863622a53b36690d79d3701795e80403"
 									}
 
 								}
@@ -964,7 +960,7 @@
 
 							}
  ],
-						"originid" : "pat-3332"
+						"originid" : "pat-5410"
 					}
 ,
 					"patching_rect" : [ 12.833333333333314, 327.0, 134.0, 22.0 ],
@@ -1202,7 +1198,7 @@
 
 							}
  ],
-						"originid" : "pat-3334"
+						"originid" : "pat-5412"
 					}
 ,
 					"patching_rect" : [ 154.0, 327.0, 140.0, 22.0 ],
@@ -1546,7 +1542,7 @@
 
 							}
  ],
-						"originid" : "pat-3336"
+						"originid" : "pat-5414"
 					}
 ,
 					"patching_rect" : [ 78.0, 257.0, 62.0, 22.0 ],
@@ -1678,9 +1674,9 @@
 				"box" : 				{
 					"id" : "obj-53",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 5,
-					"outlettype" : [ "", "", "", "", "" ],
+					"numinlets" : 4,
+					"numoutlets" : 11,
+					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
 					"patching_rect" : [ 250.75, 154.0, 113.5, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -2555,7 +2551,7 @@
 
 							}
  ],
-						"originid" : "pat-3338"
+						"originid" : "pat-5418"
 					}
 ,
 					"patching_rect" : [ 333.75, 249.0, 101.0, 22.0 ],
@@ -2571,10 +2567,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 250.75, 116.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -2607,7 +2599,7 @@
 				"box" : 				{
 					"id" : "obj-97",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
+					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 58.0, 890.0, 87.0, 22.0 ],
@@ -2622,6 +2614,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 77.0, 1019.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -2842,7 +2838,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 962.0, 719.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 25.95654296875, 1.0, 1.086862802505493, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 2, 1, 0, 0, 25.95654296875, 1.0, 0.600000023841858, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -2857,7 +2853,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 537.260356869016391, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 2, 1, 0, 0, 132.053314208984375, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 2, 1, 0, 0, 149.501190185546875, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -2908,7 +2904,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 676.831785440444946, 472.0, 129.0, 85.0 ],
-					"setfilter" : [ 0, 5, 1, 0, 0, 272.469970703125, 0.163117289543152, 0.686862766742706, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+					"setfilter" : [ 0, 5, 1, 0, 0, 349.228240966796875, 1.0, 0.200000002980232, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 				}
 
 			}
@@ -3067,7 +3063,7 @@
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................A......"
+							"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AyLyL+."
 						}
 ,
 						"snapshotlist" : 						{
@@ -3089,7 +3085,7 @@
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................A......"
+										"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AyLyL+."
 									}
 ,
 									"fileref" : 									{
@@ -3097,7 +3093,7 @@
 										"filename" : "airwindows Console7Channel_20250216.maxsnap",
 										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "5fbb2dc0e7a8a23b624edd337f9915a9"
+										"snapshotfileid" : "49d26ce801f83cd27fcc0920c9c08f7b"
 									}
 
 								}
@@ -3119,6 +3115,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 202.0, 154.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -3142,6 +3142,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 259.0, 1016.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -3154,6 +3158,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 457.0, 431.556071519851685, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -3165,6 +3173,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 201.0, 1016.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -3177,6 +3189,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 343.0, 431.556071519851685, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -3813,7 +3829,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-49", 1 ],
+					"order" : 0,
+					"source" : [ "obj-25", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-83", 1 ],
+					"order" : 1,
 					"source" : [ "obj-25", 0 ]
 				}
 
@@ -3980,13 +4005,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-13", 0 ],
-					"source" : [ "obj-45", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-43", 0 ],
 					"source" : [ "obj-46", 0 ]
 				}
@@ -4012,6 +4030,13 @@
 					"destination" : [ "obj-46", 1 ],
 					"order" : 0,
 					"source" : [ "obj-48", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 1 ],
+					"source" : [ "obj-49", 0 ]
 				}
 
 			}
@@ -4240,6 +4265,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-49", 0 ],
+					"source" : [ "obj-81", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-81", 0 ],
 					"source" : [ "obj-82", 0 ]
 				}
@@ -4247,7 +4279,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-45", 0 ],
+					"destination" : [ "obj-13", 0 ],
 					"source" : [ "obj-83", 0 ]
 				}
 
@@ -4319,48 +4351,7 @@
 
 			}
  ],
-		"originid" : "pat-3330",
-		"parameters" : 		{
-			"obj-13" : [ "vst~[9]", "vst~[1]", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
-		"dependency_cache" : [ 			{
-				"name" : "airwindows Console7Channel_20250216.maxsnap",
-				"bootpath" : "~/Documents/GitHub/benny/data",
-				"patcherrelativepath" : "../data",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "airwindows ToTape6.maxsnap",
-				"bootpath" : "~/Documents/Max 9/Snapshots",
-				"patcherrelativepath" : "../../../Max 9/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "ar.cliponly~.mxe64",
-				"type" : "mx64"
-			}
-, 			{
-				"name" : "mix.channel.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-				"patcherrelativepath" : ".",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+		"originid" : "pat-5408"
 	}
 
 }
