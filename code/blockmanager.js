@@ -226,7 +226,9 @@ var waves = {
 	v_jump : [], //[block,voice] for jumping to that one in the sidebar.
 	visible : [], //0 or 1 for if it's onscreen.
 	w_helper : [], // for each wave its x1,y1,height, width, range min max, colour,chans so the playhead has everything in one place
-	ph_ox : [] //old playhead x, by voice.
+	ph_ox : [], //old playhead x, by voice.
+	q_playing : 0,
+	q_player : null
 }
 //var playheads = []; //index by voice, holds position, replaces the buffer method which crashed max
 var waves_playheads_buffer = new Buffer("waves_playheads"); //ch1=playhead,ch2=wave

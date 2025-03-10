@@ -7,8 +7,8 @@ function polycheck(){
 function slowclock(){
 	//here: check things that need to be copied into buffers have been, check up on things like deferred load happening
 	do_drift();
-	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();
+	if(usermouse.qlb==0) world.getsize();
 	if((sidebar.notification == " ")||(sidebar.notification == "_")) redraw_flag.flag|=2;
 	recursions=0;
 	if((deferred_diag.length>0)&&(usermouse.qlb==0)){
@@ -22,7 +22,7 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
-	if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
+	// if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 }
 
 function frameclock(){

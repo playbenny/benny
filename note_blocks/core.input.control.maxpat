@@ -164,7 +164,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1133.0, 1246.0, 39.0, 22.0 ],
+					"patching_rect" : [ 1218.0, 1194.0, 39.0, 22.0 ],
 					"text" : "dump"
 				}
 
@@ -176,7 +176,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 1133.0, 1278.0, 169.0, 22.0 ],
+					"patching_rect" : [ 1143.0, 1230.0, 169.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"precision" : 6
@@ -560,7 +560,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1236.0, 1457.0, 112.0, 22.0 ],
+					"patching_rect" : [ 1068.0, 1419.0, 112.0, 22.0 ],
 					"text" : "r #0turn_off_outs"
 				}
 
@@ -572,7 +572,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 1236.0, 1489.0, 71.0, 22.0 ],
+					"patching_rect" : [ 1068.0, 1451.0, 71.0, 22.0 ],
 					"text" : "routepass 0"
 				}
 
@@ -584,7 +584,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1213.0, 1428.0, 85.0, 22.0 ],
+					"patching_rect" : [ 1045.0, 1390.0, 85.0, 22.0 ],
 					"text" : "r #0enabled"
 				}
 
@@ -5437,7 +5437,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1054.0, 1489.0, 109.0, 22.0 ],
+					"patching_rect" : [ 1010.0, 1359.0, 109.0, 22.0 ],
 					"text" : "r #0automapped"
 				}
 
@@ -6194,7 +6194,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 1054.0, 1518.0, 29.5, 22.0 ],
+					"patching_rect" : [ 1010.0, 1388.0, 29.5, 22.0 ],
 					"text" : "+ 1"
 				}
 
@@ -6206,7 +6206,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 1062.0, 1558.0, 42.0, 22.0 ],
+					"patching_rect" : [ 1027.0, 1530.0, 42.0, 22.0 ],
 					"text" : "gate 2"
 				}
 
@@ -6302,7 +6302,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1138.0, 1384.0, 63.0, 22.0 ],
+					"patching_rect" : [ 1193.0, 1270.0, 63.0, 22.0 ],
 					"text" : "prepend 0"
 				}
 
@@ -6362,7 +6362,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 1217.5, 1537.0, 122.0, 22.0 ],
+					"patching_rect" : [ 1050.0, 1499.0, 122.0, 22.0 ],
 					"text" : "metro 2243 @defer 1"
 				}
 
@@ -6374,7 +6374,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1165.0, 1209.0, 155.0, 75.0 ],
+					"patching_rect" : [ 1079.0, 1198.0, 155.0, 75.0 ],
 					"text" : "this is a list of outputs from the controller that are connected to something. you can use this to dim the other leds"
 				}
 
@@ -6473,7 +6473,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1032.0, 1209.0, 153.0, 48.0 ],
+					"patching_rect" : [ 827.0, 1301.0, 153.0, 48.0 ],
 					"text" : "offset (ie the 'first' value) is not done for value/colour yet"
 				}
 
@@ -7689,6 +7689,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 244.0, 1294.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -7713,10 +7717,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 319.75, 0.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 

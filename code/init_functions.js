@@ -652,6 +652,7 @@ function import_hardware(v){
 				if(n.indexOf("hw_rec_")!=-1){
 					this.patcher.remove(oor);
 				}
+				if((n=="q_out")||(n=="q_player")) this.patcher.remove(oor);
 				oor = ooor;
 			}
 		}
@@ -672,6 +673,16 @@ function import_hardware(v){
 				if((blocktypes.contains(keys[i]+"::cue_out"))&&(blocktypes.get(keys[i]+"::cue_out")==1)){
 					automap.available_q = ch;
 					post("\ncue out is on channel(s)",ch);
+					waves.q_player = this.patcher.newdefault(950,900, "play~", "waves.1", 2);
+					waves.q_player.message("sendbox", "varname", "q_player");
+					var q_out = this.patcher.newdefault(950,930, "dac~", ch);
+					q_out.message("sendbox","varname","q_out");
+					this.patcher.connect(waves.q_player, 0, q_out, 0);
+					if(Array.isArray(ch)&&(ch.length>1)){
+						this.patcher.connect(waves.q_player, 1, q_out, 1);
+					}else{
+						this.patcher.connect(waves.q_player, 1, q_out, 0);
+					}
 				}
 				if((blocktypes.contains(keys[i]+"::click_out"))&&(blocktypes.get(keys[i]+"::click_out") == 1)){
 					post("\nclick out is on channel(s)",ch);

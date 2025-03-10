@@ -1928,7 +1928,7 @@ function static_mod_adjust(parameter,value){
 }
 
 function static_mod_adjust_custom(parameter,value){
-	post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){
@@ -3098,28 +3098,75 @@ function store_wave_slices(waveno){
 	}
 }
 
+function q_player_release_check(){
+	if(waves.q_playing==1){
+		if((usermouse.left_button == 0)||(usermouse.qlb==0)){
+			// messnamed("q_player","stop");
+			waves.q_player.message("stop");
+			waves.q_playing = 0;
+			q_player_release_task.freepeer();
+		}else{
+			q_player_release_task.schedule(135);   
+			// deferred_diag.push("mice"+usermouse.left_button+" "+usermouse.qlb);
+		}
+	}else{
+		q_player_release_task.freepeer();
+		waves.q_playing = 0;
+	}
+}
+
 function zoom_waves(parameter,value){
-	// post("\nzoom waves",parameter,value);
 	if(value=="get"){
 		waves.drag_start_x = usermouse.x;
 		waves.drag_start_y = usermouse.y;
-		return 0;//waves.zoom_start;
+		if((automap.available_q!=-1)&&(automap.lock_q<=0)){
+			set_automap_q(0);
+			automap.mapped_q=-0.5;
+			var x = (usermouse.x - waves.w_helper[waves.selected][0])/(waves.w_helper[waves.selected][2]-waves.w_helper[waves.selected][0]);
+			x *= (waves.zoom_end-waves.zoom_start);
+			x += waves.zoom_start;
+			x *= waves_dict.get("waves["+(waves.selected+1)+"]::size"); //size>>ms, which is what play~ wants. length=samples, which groove would take.
+			// post("\nQ MESSAGE",waves_dict.get("waves["+(waves.selected+1)+"]::buffername"),"play",x);
+			if(waves.q_playing == 1){
+				// messnamed("q_player","stop");
+				waves.q_player.message("stop");
+			}
+			// messnamed("q_player","set",waves_dict.get("waves["+(waves.selected+1)+"]::buffername"));
+			waves.q_player.message("set",waves_dict.get("waves["+(waves.selected+1)+"]::buffername"));
+			waves.q_player.message("start",x);
+			// messnamed("q_player","start",x);
+			// deferred_diag.push("start "+x);
+			// post("\nTODO schedule check for mouseup so that you can stop the preview player");
+			waves.q_playing=1;  
+			q_player_release_task = new Task(q_player_release_check, this);
+			q_player_release_task.schedule(205);  
+		}
+		return 0;
 	}else if(value=="all"){
 		waves.zoom_start = 0;
 		waves.zoom_end = 1;
 		draw_wave_z[waves.selected] = [[],[],[],[]];
 		redraw_flag.flag |= 4;
 	}else{
-		//this is how piano roll does it but:
 		var wzs = waves.zoom_start;
 		var wze = waves.zoom_end;
-		var dx = usermouse.x - waves.drag_start_x;
-		var dy = usermouse.y - waves.drag_start_y;
-		if((dx==0)&&(dy==0)&&(value!=0)){
-			if(usermouse.shift){
-				dx = -10000*value;
-			}else{
-				dy = -1000*value;
+		var dx=0;
+		var dy=0;
+		if(value=="zoom"){
+			dy = parameter;
+			dy *= Math.sqrt(waves.zoom_end - waves.zoom_start);
+		}else if(value=="pan"){
+			dx = parameter;
+		}else{
+			//this is how piano roll does it but:
+			dx = usermouse.x - waves.drag_start_x;
+			dy = usermouse.y - waves.drag_start_y;
+			if((dx==0)&&(dy==0)&&(value!=0)){
+				if(usermouse.shift){
+					dx = -10000*value;
+				}else{
+					dy = -1000*value;
+				}
 			}
 		}
 		var dir = 0;
@@ -4222,7 +4269,21 @@ function toggle_automap_c_enable(){
 }
 
 function automap_direct_to_core(knob,value){
-	if(displaymode == "block_menu"){
+	if(displaymode == "waves"){
+		if(knob==0){
+			if(waves.selected==-1){
+				scroll_waves(-0.2*value, "rel");
+			}else{
+				zoom_waves(10*value,"zoom");
+			}
+		}else{
+			zoom_waves(10*value,"pan");
+			/*var os = usermouse.shift;
+			usermouse.shift=1;
+			mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
+			usermouse.shift=os;*/
+		}
+	}else if(displaymode == "block_menu"){
 		mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
 	}else if(sidebar.mode=="file_menu"){
 		automap.scroll_accumulator += value*0.25;
