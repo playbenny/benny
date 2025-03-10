@@ -1,5 +1,5 @@
 {
-	"mix.bus" : {
+	"mixer.bus" : {
 		"patcher" : "mix.bus",
 		"type" : "audio",
 		"block_ui_patcher" : "mix.bus.ui",

@@ -1,0 +1,21 @@
+{
+	"filetype" : "C74Snapshot",
+	"version" : 2,
+	"minorversion" : 0,
+	"name" : "airwindows Console7Channel",
+	"origin" : "console7channel64.vstinfo",
+	"type" : "VST",
+	"subtype" : "AudioEffect",
+	"embed" : 1,
+	"snapshot" : 	{
+		"pluginname" : "console7channel64.vstinfo",
+		"plugindisplayname" : "airwindows Console7Channel",
+		"pluginsavedname" : "",
+		"pluginsaveduniqueid" : 1668247153,
+		"version" : 1,
+		"isbank" : 0,
+		"isbase64" : 1,
+		"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................AyLyL+."
+	}
+
+}

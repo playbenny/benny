@@ -3158,15 +3158,15 @@ function insert_mixer(destination){
 	var destx = blocks.get("blocks["+destination+"]::space::x");
 	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
 	var desttype = connections.get("connections["+con_list[0]+"]::to::input::type");
-	var newbus = new_block("mix.bus",destx,desty);
+	var newbus = new_block("mixer.bus",destx,desty);
 	draw_block(newbus);
 	desty += 1.5;
 	var newchan = [];
 	var ii=0;
 	for(var i=0;i<2;i++){
 		if(used_channel_types[i]>0){
-			var newchanname = "mix.channel";
-			if(i==1) newchanname = "mix.stereo.channel";
+			var newchanname = "mixer.mono.basic";
+			if(i==1) newchanname = "mixer.stereo.basic";
 			post("\nadding",newchanname,"with",used_channel_types[i],"channels");
 			newchan[ii] = new_block(newchanname,destx,desty);
 			draw_block(newchan[ii]);
@@ -3271,7 +3271,7 @@ function insert_block_in_connection(newblockname,newblock){
 	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
 	if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
 	if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
-	if((newblockname=="mix.channel")||(newblockname=="mix.stereo.channel")) defaultpos = 3; // mixer channels special case (force unity)
+	if((newblockname=="mixer.mono.basic")||(newblockname=="mixer.stereo.basic")) defaultpos = 3; // mixer channels special case (force unity)
 	new_connection.parse('{}');
 	if(defaultpos == 1){//this is the rare exception where default is the second one.
 		new_connection.replace("conversion::mute" , 0);

@@ -4,5 +4,8 @@
     "utility.midi.calculus" : "midi.calculus",
     "utility.midi.fidget" : "midi.fidget",
     "utility.midi.delay" : "midi.utility.delay",
-    "utility.midi.smooth" : "midi.smooth"
+    "utility.midi.smooth" : "midi.smooth",
+    "mix.channel" : "mixer.mono.basic",
+    "mix.stereo.channel" : "mixer.stereo.basic",
+    "mix.bus" : "mixer.bus"
 }

@@ -22,7 +22,6 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
-	// if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 }
 
 function frameclock(){
@@ -95,7 +94,7 @@ function frameclock(){
 	}else if(redraw_flag.flag & 2){
 		clear_screens();
 		draw_topbar();
-		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
+		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")||(displaymode=="waves"))) draw_clock();
 		if(displaymode=="waves") draw_waves();
 		draw_sidebar();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();

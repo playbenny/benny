@@ -131,11 +131,13 @@ function update(force){
 						osolo[b][v] = solo;
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*7.6,x_pos+(x+v+1)*cw-8,y_pos+height-4*unit,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
 					}
-					if(check_eq_params_for_changes(b,v)||force){
-						// if(v_type[b][v]=="mix.channel") p = 4; // NOTE it does know the channel types so future versions can support many diff channel strips
-						outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,0,0,0,3,v_list[b][v],b_list[b],4);
-						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
-						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+					if((v_type[b][v]=="mixer.mono.basic")||(v_type[b][v]=="mixer.stereo.basic")){
+						if(check_eq_params_for_changes(b,v)||force){
+							// if(v_type[b][v]=="mix.channel") p = 4; // NOTE it does know the channel types so future versions can support many diff channel strips
+							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,0,0,0,3,v_list[b][v],b_list[b],4);
+							draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
+							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+						}
 					}
 					if(force){
 						outlet(1,"frgb",fgc);
@@ -315,7 +317,7 @@ function scan_for_channels(){
 				if(blocks.contains("blocks["+b+"]::name")){
 					var nam = blocks.get("blocks["+b+"]::name");
 					var n2 = nam.split(".");
-					if((n2[0] == "mix")&&(n2[1] != "bus")){
+					if((n2[0] == "mixer")&&(n2[1] != "bus")){
 						tb_list.push(b);
 						var x=blocks.get("blocks["+b+"]::space::x");
 						bx_list.push(x);
@@ -415,6 +417,7 @@ function scan_for_channels(){
 		}
 		cw = (width+u1) / cols;
 	}
+	post("\nchannel types:",b_type);
 }
 
 function voice_offset(){}

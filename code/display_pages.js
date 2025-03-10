@@ -5092,7 +5092,7 @@ function draw_sidebar(){
 				lcd_main.message("paintrect", sidebar.x2-2.1*fontheight, y_offset, sidebar.x2-1.1*fontheight, fontheight+y_offset,bc );
 				click_zone(swap_block_button,block,null, sidebar.x2-2.1*fontheight, y_offset, sidebar.x2-1.1*fontheight, fontheight+y_offset,mouse_index,1 );
 				lcd_main.message("frgb" , fc);
-				lcd_main.message("moveto" ,sidebar.x2-1.9*fontheight, fontheight*0.75+y_offset);
+				lcd_main.message("moveto" ,sidebar.x2-1.97*fontheight, fontheight*0.75+y_offset);
 				lcd_main.message("write", "swap");
 				if(danger_button == mouse_index){
 					lcd_main.message("paintrect", sidebar.x2-1*fontheight, y_offset, sidebar.x2, fontheight+y_offset,255,0,0 );
@@ -7622,7 +7622,6 @@ function draw_sidebar(){
 		//click zone for the scrollbar
 		click_zone(scroll_sidebar, null, null, sidebar.x2,0,mainwindow_width+2,mainwindow_height,scrollbar_index,2);
 	}
-	if(fullscreen&&view_changed&&((displaymode=="blocks")||(displaymode=="panels")))draw_clock();
 	var h=Math.min(mainwindow_height,y_offset+2);
 	if(h!=sidebar.used_height){
 		sidebar.used_height=h;
