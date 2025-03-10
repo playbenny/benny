@@ -417,7 +417,7 @@ function scan_for_channels(){
 		}
 		cw = (width+u1) / cols;
 	}
-	post("\nchannel types:",b_type);
+	// post("\nchannel types:",b_type);
 }
 
 function voice_offset(){}

@@ -49,19 +49,19 @@
 			{ 
 				"contains" : [3],
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.999,
 				"colour" : 26
 			},
 			{ 
 				"contains" : [4], 
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.999,
 				"colour" : 31
 			},
 			{ 
 				"contains" : [8],
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.999,
 				"colour" : 37
 			},
 			{ 
