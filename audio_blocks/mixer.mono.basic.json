@@ -26,12 +26,7 @@
 				"onepervoice" : 1,
 				"height" : 2.5
 			},
-			{ 
-				"contains" : [1],
-				"onepervoice" : 1,
-				"height" : 0.999,
-				"colour" : 10
-			},
+
 			{ 
 				"contains" : [5], 
 				"onepervoice" : 1,
@@ -61,6 +56,12 @@
 				"onepervoice" : 1,
 				"height" : 0.6,
 				"colour" : 37
+			},
+			{ 
+				"contains" : [1],
+				"onepervoice" : 1,
+				"height" : 0.999,
+				"colour" : 10
 			},
 			{ 
 				"contains" : [7], 
