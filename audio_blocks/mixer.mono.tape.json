@@ -43,23 +43,22 @@
 				"height" : 0.6
 			},
 			{ 
-				"contains" : [3],
+				"contains" : [2],
 				"header" : "voicing",
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.999,
 				"colour" : 26
 			},
 			{ 
 				"contains" : [4], 
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.999,
 				"colour" : 31
 			},
 			{ 
-				"contains" : [2],
-				"nolabel" : 1,
+				"contains" : [3],
 				"onepervoice" : 1,
-				"height" : 0.6,
+				"height" : 0.990,
 				"colour" : 37
 			},
 			{ 
@@ -94,7 +93,7 @@
 			{
 				"name" : "amount",
 				"type" : "float",
-				"values" : ["uni", -24,24, "exp.001"],
+				"values" : ["bi", -24,24, "exp10"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
