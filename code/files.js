@@ -889,7 +889,7 @@ function build_wave_remapping_list(){
 		post("\nincoming wavetable has ",loading.incoming_max_waves," slots. ");
 		var i,a;
 		var freelist = [];
-		post("\nchecking if any waves need remapping");
+		// post("\nchecking if any waves need remapping");
 		for(i=0;i<loading.incoming_max_waves;i++){
 			freelist[i]=1;
 			if(waves_dict.contains("waves["+ (1+i)+"]::name")) {
@@ -924,7 +924,7 @@ function build_wave_remapping_list(){
 				freelist[a]=0;
 			}//else{post("\nskipped blank slot ",i);}
 		}
-		post("\nremapping table goes like this ",waves.remapping);
+		//post("\nremapping table goes like this ",waves.remapping);
 	}
 }
 

@@ -666,10 +666,6 @@ function import_hardware(v){
 			if(blocktypes.contains(keys[i]+"::connections::in::hardware_channels")){
 				var ch = blocktypes.get(keys[i]+"::connections::in::hardware_channels");
 				if(!Array.isArray(ch)) ch=[ch];
-				for(var ci=0;ci<ch.length;ci++){
-					ch[ci] = audioiolists[1].indexOf(ch[ci])+1;
-				}
-				blocktypes.replace(keys[i]+"::connections::in::hardware_channels",ch);
 				if((blocktypes.contains(keys[i]+"::cue_out"))&&(blocktypes.get(keys[i]+"::cue_out")==1)){
 					automap.available_q = ch;
 					post("\ncue out is on channel(s)",ch);
@@ -684,6 +680,10 @@ function import_hardware(v){
 						this.patcher.connect(waves.q_player, 1, q_out, 0);
 					}
 				}
+				for(var ci=0;ci<ch.length;ci++){
+					ch[ci] = audioiolists[1].indexOf(ch[ci])+1;
+				}
+				blocktypes.replace(keys[i]+"::connections::in::hardware_channels",ch);
 				if((blocktypes.contains(keys[i]+"::click_out"))&&(blocktypes.get(keys[i]+"::click_out") == 1)){
 					post("\nclick out is on channel(s)",ch);
 					var clickdac = this.patcher.newdefault(90,208, "dac~", ch);

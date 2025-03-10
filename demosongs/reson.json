@@ -602,9 +602,9 @@
 			"mute" : 0
 		}
 , 		{
-			"patcher" : "mix.channel",
-			"name" : "mix.channel",
-			"label" : "mix.channel",
+			"patcher" : "mixer.mono.basic",
+			"name" : "mixer.mono.basic",
+			"label" : "mixer.mono.basic",
 			"type" : "audio",
 			"poly" : 			{
 				"stack_mode" : "1x",
@@ -650,9 +650,9 @@
 			"mute" : 0
 		}
 , 		{
-			"patcher" : "mix.bus",
-			"name" : "mix.bus",
-			"label" : "mix.bus",
+			"patcher" : "mixer.bus",
+			"name" : "mixer.bus",
+			"label" : "mixer.bus",
 			"type" : "audio",
 			"poly" : 			{
 				"stack_mode" : "1x",
@@ -743,9 +743,9 @@
 			"mute" : 0
 		}
 , 		{
-			"patcher" : "mix.stereo.channel",
-			"name" : "mix.stereo.channel",
-			"label" : "mix.stereo.channel",
+			"patcher" : "mixer.stereo.basic",
+			"name" : "mixer.stereo.basic",
+			"label" : "mixer.stereo.basic",
 			"type" : "audio",
 			"poly" : 			{
 				"stack_mode" : "1x",
