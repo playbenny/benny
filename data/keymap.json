@@ -26,14 +26,20 @@
             "-7" : ["delete","edit_delete"],
             "-4" : ["enter" , "save_preset", "name"],
             "-3" : ["ESC", "set_sidebar_mode","block"],
-            "all" : ["all","edit_typing"]
+            "all" : ["all","edit_typing_with_spaces"]
         },
         "edit_channel_name" : {
             "-6" : ["del","edit_delete"],
             "-7" : ["delete","edit_delete"],
             "-4" : ["enter" , "edited_channel_name"],
             "-3" : ["ESC", "set_sidebar_mode","block"],
-            "all" : ["all","edit_typing"]
+            "all" : ["all","edit_typing_with_spaces"]
+        },
+        "edit_song_notes" : {
+            "-6" : ["del","edit_delete"],
+            "-7" : ["delete","edit_delete"],
+            "-3" : ["ESC", "set_sidebar_mode","block"],
+            "all" : ["all","edit_song_notes"]
         },
         "block_search" : {
             "-4" : ["enter", "set_sidebar_mode", "none"],
@@ -63,6 +69,7 @@
         "-22" : ["F6" , "set_sidebar_mode","settings"],
         "-23" : ["F7" , "blocks_and","connections"],
         "-24" : ["F8" , "blocks_and","file_menu"],
+        "232" : ["ctrl-F8" , "blocks_and","file_more"],
         "-25" : ["F9" , "messnamed" ,"core.input.keyboard", "toggle_loop"],
         "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
         "-26" : ["F10", "open_core_control_auto"],
@@ -138,7 +145,7 @@
         "573" : ["-", "poly_key" , 1]
     },
     "waves" : {
-
+        "-15" : ["home" , "zoom_waves", "all","all"]
     },
     "sidebar" : {
         "file_menu" : {

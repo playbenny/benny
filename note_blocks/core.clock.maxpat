@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 4,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1112.0, 921.0 ],
+		"rect" : [ 78.0, 89.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -24,7 +24,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 4,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -245,14 +245,10 @@
 
 							}
  ],
-						"originid" : "pat-3632"
+						"originid" : "pat-3624"
 					}
 ,
 					"patching_rect" : [ 38.0, 116.0, 91.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p synchro_start"
 				}
 
@@ -268,7 +264,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 4,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -451,14 +447,10 @@
 
 							}
  ],
-						"originid" : "pat-3634"
+						"originid" : "pat-3626"
 					}
 ,
 					"patching_rect" : [ 146.0, 116.0, 154.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p midi_control_of_transport"
 				}
 
@@ -475,7 +467,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 4,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1883,14 +1875,10 @@
 
 							}
  ],
-						"originid" : "pat-3636"
+						"originid" : "pat-3628"
 					}
 ,
 					"patching_rect" : [ 570.0, 558.0, 113.5, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p kuramoto"
 				}
 
@@ -1907,7 +1895,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 4,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -2148,14 +2136,10 @@
 
 							}
  ],
-						"originid" : "pat-3638"
+						"originid" : "pat-3630"
 					}
 ,
 					"patching_rect" : [ 353.0, 622.0, 121.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p velocity_humaniser"
 				}
 
@@ -2216,8 +2200,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 310.0, 115.0, 24.0, 24.0 ],
-					"svg" : ""
+					"patching_rect" : [ 310.0, 115.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -2252,7 +2235,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 531.0, 753.0, 150.0, 48.0 ],
+					"patching_rect" : [ 431.75, 798.0, 150.0, 48.0 ],
 					"text" : "bar out comes before the note, makes it good for resets"
 				}
 
@@ -2264,8 +2247,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 381.0, 808.0, 75.0, 22.0 ],
-					"text" : "pak 2 0 -127"
+					"patching_rect" : [ 349.0, 860.0, 58.0, 22.0 ],
+					"text" : "pak 2 0 0"
 				}
 
 			}
@@ -2595,7 +2578,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 4,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -2603,7 +2586,6 @@
 						"classnamespace" : "box",
 						"rect" : [ 663.0, 285.0, 640.0, 457.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-21",
@@ -2907,7 +2889,7 @@
 
 							}
  ],
-						"originid" : "pat-3644",
+						"originid" : "pat-3636",
 						"bgfillcolor_type" : "gradient",
 						"bgfillcolor_color1" : [ 0.435294, 0.462745, 0.498039, 1.0 ],
 						"bgfillcolor_color2" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
@@ -2915,10 +2897,6 @@
 					}
 ,
 					"patching_rect" : [ 343.0, 432.0, 95.0, 23.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p detect_edge"
 				}
 
@@ -3566,7 +3544,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-195", 1 ],
+					"destination" : [ "obj-195", 2 ],
 					"source" : [ "obj-186", 0 ]
 				}
 
@@ -4272,7 +4250,7 @@
 
 			}
  ],
-		"originid" : "pat-3630"
+		"originid" : "pat-3622"
 	}
 
 }

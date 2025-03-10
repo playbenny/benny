@@ -18,7 +18,8 @@
 				"automap_to" : 0
 			},
 			"out" : {
-				"midi" : [ "notes out", "row out", "pattern start", "loop start", "loop end" ]
+				"midi" : [ "notes out", "row out", "pattern start", "loop start", "loop end" ],
+				"midi_scopes_types" : [ 0, 3,3,3,3 ]
 			}
 		},
 		"groups" : [

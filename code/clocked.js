@@ -7,9 +7,9 @@ function polycheck(){
 function slowclock(){
 	//here: check things that need to be copied into buffers have been, check up on things like deferred load happening
 	do_drift();
-	if(usermouse.qlb==0) world.getsize();
 	if(globals_requested) send_globals();
-
+	if(usermouse.qlb==0) world.getsize();
+	if((sidebar.notification == " ")||(sidebar.notification == "_")) redraw_flag.flag|=2;
 	recursions=0;
 	if((deferred_diag.length>0)&&(usermouse.qlb==0)){
 		if(usermouse.ctrl){
@@ -22,7 +22,7 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
-	if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
+	// if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
 }
 
 function frameclock(){
@@ -89,28 +89,30 @@ function frameclock(){
 			redraw_flag.matrices |= 1;
 		}
 	}
-
 	if(redraw_flag.flag & 4){
 		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
 		bangflag=1;
 	}else if(redraw_flag.flag & 2){
 		clear_screens();
 		draw_topbar();
-		draw_sidebar();
 		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
-		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if(displaymode=="waves") draw_waves();
+		draw_sidebar();
+		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		if(redraw_flag.flag & 8) block_and_wire_colours();
 		bangflag=1;
 	}else{
-		if(redraw_flag.flag & 8) block_and_wire_colours();
-		if(redraw_flag.matrices & 1){
-			messnamed("wires_matrices","bang");
-		}
-		if(redraw_flag.matrices & 2){
-			messnamed("voices_matrices","bang");
-			messnamed("blocks_matrices","bang");
+		if(redraw_flag.flag & 8){
+			block_and_wire_colours(); //<<this fn always copies over the matrices
+		}else{
+			if(redraw_flag.matrices & 1){
+				messnamed("wires_matrices","bang");
+			}
+			if(redraw_flag.matrices & 2){
+				messnamed("voices_matrices","bang");
+				messnamed("blocks_matrices","bang");
+			}
 		}
 		redraw_flag.matrices = 0;
 		if(redraw_flag.flag & 1){
@@ -177,8 +179,8 @@ function frameclock(){
 			sidebar_meters();
 			bangflag = 1;
 		}
-		if(bottombar.block>-1)update_bottom_bar();
-		if(sidebar.panel) update_custom();
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
+		if(sidebar.panel&&!(redraw_flag.flag&6)) update_custom();
 	}else if(displaymode == "panels"){
 		sidebar_meters();
 		update_custom_panels();
@@ -186,6 +188,7 @@ function frameclock(){
 		bangflag=1;
 	}else if(displaymode == "waves"){
 		sidebar_meters();
+		if(waves.playheadlist.length>0) draw_playheads();
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){
@@ -456,54 +459,76 @@ function sidebar_midi_scope(){
 	var t,v,sx,sy;
 	var x1,y1,x2,y2;
 	var ly=1,llx=-100;
+	var sc=0;
+	for(t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += !(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12;
+	var sw = (sidebar.width+fo1) / sc;
 	x1 = sidebar.x;
-	x2 = sidebar.x2;
-	sx = (x2-x1)/128;
-	x1+=2;
 	y1 = sidebar.scopes.starty;
 	y2 = sidebar.scopes.endy;
 	sy = (y2-y1-2)/128;
 	y2-=2;
-	r =0;
-	//actually need to iterate over all voices/outputs?
-	//but there are flags for if you need to bother drawing
-	var vi,cha=0;
-	for(vi=0;vi<sidebar.scopes.midivoicelist.length;vi++){
-		if(midi_scopes_change_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi]))>0){ 
-			cha +=1;
-			midi_scopes_change_buffer.poke(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi]),0);
+	for(var outp = 0; outp<sidebar.scopes.midioutlist.length; outp++){
+		var tsw = !(sidebar.scopes.midiouttypes[outp]&1) ? 1 : 0.12;
+		x2 = x1+(sw*tsw)-fo1;
+		x1+=2;
+		r =0;
+		var vi,cha=view_changed;// there are flags for if you need to bother drawing
+		for(vi=0;vi<sidebar.scopes.midivoicelist.length;vi++){
+			if(midi_scopes_change_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp]))>0){ 
+				cha +=1;
+				midi_scopes_change_buffer.poke(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp]),0);
+			}
 		}
-	}
-	if(cha>0){
-		lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
-		lcd_main.message("frgb",sidebar.scopes.fg);
-		if(sidebar.scopes.midinames == 1) setfontsize(fontsmall);
-		for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
-			v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[vi])*128,128);
-			//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
-			for(t=0;t<128;t++){
-				if(v[t]){
-					if(Math.abs(v[t])>127){
-						if(r!=1)lcd_main.message("frgb",255,0,0);
-						r=1;
-						v[t]=127;
-					}else if(r==1){
-						lcd_main.message("frgb",sidebar.scopes.fg);
+		if(cha>0){
+			if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)) setfontsize(fontsmall);
+			lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
+			if((sidebar.scopes.midiouttypes[outp]<2)){
+				lcd_main.message("frgb",sidebar.scopes.fg);
+				sx = (x2-x1-12)/128;
+				for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
+					v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp])*128,128);
+					//post("\ndrawing scope for voice",vl[vi]," which is",vi,"of",vl.length);
+					for(t=0;t<128;t++){
+						if(v[t]){
+							if(Math.abs(v[t])>127){
+								if(r!=1)lcd_main.message("frgb",255,0,0);
+								r=1;
+								v[t]=127;
+							}else if(r==1){
+								lcd_main.message("frgb",sidebar.scopes.fg);
+							}
+							lcd_main.message("moveto", x1+t*sx, y2);
+							lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
+							if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)){
+								if(t>llx+4){ly=1; llx=t;}else{ly++;}
+								lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
+								lcd_main.message("write", note_names[t]);
+							}
+						}
 					}
-					lcd_main.message("moveto", x1+t*sx, y2);
-					lcd_main.message("lineto", x1+t*sx, y2-sy*Math.abs(v[t]));
-					if(sidebar.scopes.midinames == 1){
-						if(t>llx+4){ly=1; llx=t;}else{ly++;}
-						lcd_main.message("moveto", x1+t*sx+6, y1+(ly*fontheight)*0.4);
-						lcd_main.message("write", note_names[t]);
+				}
+			}else{
+				sx = (x2-x1-2)/sidebar.scopes.midivoicelist.length;
+				for(vi = 0;vi<sidebar.scopes.midivoicelist.length; vi++){
+					v = midi_scopes_buffer.peek(1,(sidebar.scopes.midivoicelist[vi]*128 + sidebar.scopes.midioutlist[outp])*128);
+					if(v!=0){
+						if(Math.abs(v)>127){
+							v=127;
+							lcd_main.message("paintrect", x1+vi*sx, y2-sy*127, x1+(vi+1)*sx, y2, 255,0,0 );
+						}else{
+							//lcd_main.message("frgb",sidebar.scopes.fg);
+							lcd_main.message("paintrect", x1+vi*sx, y2-sy*Math.abs(v), x1+(vi+1)*sx, y2, sidebar.scopes.fg );
+						}
 					}
 				}
 			}
 		}
+		x1 = x2 + fo1;
 	}
-	if(sidebar.scopes.midi_routing.number!=-1){
+	if(sidebar.scopes.midi_routing.number!=-1){ //this is the second scope at the end of connection view, which gets its data another way
 		y1 = sidebar.scopes.midi_routing.starty;
 		y2 = sidebar.scopes.midi_routing.endy;
+		x1 = sidebar.x + 2;
 		sy = (y2-y1-2)/128;
 		y2-=2;
 		r =0;
@@ -586,6 +611,67 @@ function draw_scope(x1,y1,x2,y2,voice){
 	}		
 }
 
+function playhead_report(voice,value){
+	playheads[voice] = value;
+}
+
+function draw_playheads(){
+	for(var i = 0; i<waves.playheadlist.length; i++){
+		var v = waves_playheads_buffer.peek(1,waves.playheadlist[i]);
+		if(v!=-1){
+			var w = waves_playheads_buffer.peek(2,waves.playheadlist[i]) |0;
+			if(waves.visible[w]&&Array.isArray(waves.w_helper[w])&&(v>waves.w_helper[w][4])&&(v<waves.w_helper[w][5])){
+				var x = Math.floor(waves.w_helper[w][0]+v*(waves.w_helper[w][2]-waves.w_helper[w][0]));
+				if((x!=waves.ph_ox[i])||(redraw_flag.flag&6)){
+					ii = Math.floor((waves.ph_ox[i]-waves.w_helper[w][0])*0.5);
+					var h= 0.5*(waves.w_helper[w][3]-waves.w_helper[w][1])/waves.w_helper[w][7];
+					lcd_main.message("frgb",shadeRGB(waves.w_helper[w][6],bg_dark_ratio));
+					lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]);
+					lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][3]);
+					for(ch=0;ch<waves.w_helper[w][7];ch++){
+						var wmin = draw_wave[w][ch*2][ii];
+						var wmax = draw_wave[w][ch*2+1][ii];
+						lcd_main.message("frgb",waves.w_helper[w][6]);
+						lcd_main.message("moveto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmin+2*ch)-1);
+						lcd_main.message("lineto",waves.ph_ox[i],waves.w_helper[w][1]+h*(1+wmax+2*ch)+1);
+					}
+					lcd_main.message("frgb",waves.v_helper[waves.playheadlist[i]]);
+					lcd_main.message("moveto",x,waves.w_helper[w][1]);
+					lcd_main.message("lineto",x,waves.w_helper[w][3]);
+					if((w==waves.selected)&&(waves.v_label[waves.playheadlist[i]]!=null)){
+						var olx = waves.ph_ox[i];
+						var lx = x;
+						var l = (waves.v_label[waves.playheadlist[i]].length+2) * fontheight / 6;
+						olx = Math.min(olx, waves.w_helper[w][2]-l);
+						lx = Math.min(lx, waves.w_helper[w][2]-l);
+						if(olx<lx){
+							lcd_main.message("paintrect",olx,waves.w_helper[w][3],lx,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+						}else if(olx!=lx){
+							lcd_main.message("paintrect",olx,waves.w_helper[w][3],olx+l,waves.w_helper[w][3]+0.5*fontheight,0,0,0);
+						}
+						lcd_main.message("paintrect",lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,waves.v_helper[waves.playheadlist[i]]);
+						click_rectangle(lx,waves.w_helper[w][3],lx+l,waves.w_helper[w][3]+0.5*fontheight,mouse_index,1);
+						mouse_click_actions[mouse_index] = select_block_and_voice;
+						mouse_click_parameters[mouse_index] = waves.v_jump[waves.playheadlist[i]][0];
+						mouse_click_values[mouse_index] = waves.v_jump[waves.playheadlist[i]][1];
+						mouse_index++;
+						
+						lcd_main.message("frgb",0,0,0);
+						lcd_main.message("moveto",lx+fo1,waves.w_helper[w][3]+0.35*fontheight);
+						lcd_main.message("write",waves.v_label[waves.playheadlist[i]]);
+					}
+					waves.ph_ox[i] = x;
+				}
+				// post("\nplayhead at ",v,"on wave",w,"range is",waves.w_helper[w][4],waves.w_helper[w][5],"w_helper is array:",Array.isArray(waves.w_helper[w]));				
+			}
+			//playheads[waves.playheadlist[i]] = -1; //???
+		}else if(waves.ph_ox[i]>=0){
+			redraw_flag.deferred |= 4;
+			waves.ph_ox[i] = -1;
+		}
+	}
+}
+
 function do_drift(){
 	var i,t;
 	for(i=param_error_drift.length;i--;){
@@ -595,6 +681,39 @@ function do_drift(){
 					parameter_error_spread_buffer.poke(1,MAX_PARAMETERS*i+t,parameter_error_spread_buffer.peek(1, MAX_PARAMETERS*i+t)+(Math.random()-0.5)*param_error_drift[i][t]);
 				}
 			}
+		}
+	}
+}
+
+function waves_playhead(voice, block, enable){
+	//should make a list of playheads to check for changes, reset this list on clear everything? could also check it during remove block/voice
+	// post("\nvoice",voice,"reports that it has a playhead on wave",wave);
+	if(enable && (blocks.contains("blocks["+block+"]::name"))){
+		var vl = voicemap.get(block);
+		var col = blocks.get("blocks["+block+"]::space::colour");
+		waves.v_label[voice] = blocks.get("blocks["+block+"]::label");
+		if(Array.isArray(vl)){
+			var ind = vl.indexOf((voice));
+			if(ind==-1){
+				post("\nplayhead report doesn't match, block",block,"contains these voices ",vl," but i was looking for",voice,"i have disabled this playhead for now");
+				waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);
+				waves.v_label[voice] = null;
+			}else{
+				waves.v_label[voice] = waves.v_label[voice]+" "+(ind+1);
+			}
+			waves.v_jump[voice] = [block, ind];
+		}else {
+			waves.v_jump[voice] = [block, -1];
+		}
+		waves.v_helper[voice] = col;
+		if(waves.playheadlist.indexOf(voice)==-1) waves.playheadlist.push(voice);
+	}else{
+		post("\nclearing playhead assignment for voice",voice);
+		if(waves.playheadlist.indexOf(voice)!=-1){
+			post("\nreomving",voice,"from playhead list, was",waves.playheadlist);
+			waves.playheadlist.splice(waves.playheadlist.indexOf(voice),1);
+			post("is now",waves.playheadlist);
+			waves.v_label[voice] = null;
 		}
 	}
 }

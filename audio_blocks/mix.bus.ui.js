@@ -16,6 +16,7 @@ var controller=-1;
 var block=-1;
 var display_row_offset = 0;
 var display_col_offset = 0;
+var bg_dark_ratio= 0.2;
 var mini=0;
 var drawflag=0;
 var namelist;
@@ -23,6 +24,8 @@ var voicemap = new Dict;
 voicemap.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
+var connections = new Dict;
+connections.name = "connections";
 var blocktypes = new Dict;
 blocktypes.name = "blocktypes";
 var b_list = [];
@@ -46,6 +49,12 @@ var sweep = [];
 var amount = [];
 var channelnames = [];
 var col_to_chan = []; //holds block,channel
+
+var mous = {
+	x : 0,
+	y : 0,
+	l : 0
+};
 
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
@@ -71,9 +80,14 @@ function setup(x1,y1,x2,y2,sw){
 	unit = height / 18;
 	u1 = 0.1 * unit;
 	if(block>=0){
-		// post("\nmixer setup");
+		// post("\nmixer setup",block);
 		scan_for_channels();
-		draw();
+		if(b_list.length==0){
+			outlet(1,"moveto",x_pos+20,y_pos+2*unit);
+			outlet(1,"write","once you connect channels they'll show here");
+		}else{
+			draw();
+		}
 	}
 }
 
@@ -96,6 +110,7 @@ function update(force){
 		}
 		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
+			// if(force)outlet(1,"setfontsize","small");
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
 				var bgc = [fgc[0]*0.3,fgc[1]*0.3,fgc[2]*0.3];
@@ -103,7 +118,8 @@ function update(force){
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
 						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
+						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
+						draw_slider(x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,fgc[0]*0.8,fgc[1]*0.8,fgc[2]*0.8,level[b][v]);
 					}
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
@@ -116,6 +132,8 @@ function update(force){
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*7.6,x_pos+(x+v+1)*cw-8,y_pos+height-4*unit,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
 					}
 					if(check_eq_params_for_changes(b,v)||force){
+						// if(v_type[b][v]=="mix.channel") p = 4; // NOTE it does know the channel types so future versions can support many diff channel strips
+						outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,0,0,0,3,v_list[b][v],b_list[b],4);
 						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
 						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 					}
@@ -143,13 +161,13 @@ function update(force){
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
 					outlet(1,"frgb",bgc);
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos);
-					if(force){
-						outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos+height-4*unit,x_pos+width,y_pos+height,0,0,0,block,0);
-					}
 				}	
 				var xx = x+v_list[b].length;
 				x = xx;		
 			}					
+			if(force){
+				outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos+height-4*unit,x_pos+width,y_pos+height,0,0,0,block,0);
+			}
 		}else{
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
@@ -166,13 +184,15 @@ function update(force){
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
 					}
 					if(check_eq_params_for_changes(b,v)||force){
+						outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
 						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
 						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 					}
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
 						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
+						draw_slider(x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc[0],fgc[1],fgc[2],level[b][v]);
 					}
 				}
 				var xx = x+v_list[b].length;
@@ -192,16 +212,24 @@ function check_eq_params_for_changes(b,v){
 }
 
 function mouse(x,y,leftbutton,shift,alt,ctrl){
-	// post("\nmouse",(x,y,leftbutton,shift,alt,ctrl));
-	if(y>(y_pos+height-4*unit)){
-		var xx = Math.floor((x-x_pos)*cols/width);
-		post("\nclicked column",xx,"which is",col_to_chan[xx]);
-		if(ctrl){
-			messnamed("to_blockmanager","name_mixer_channel",col_to_chan[xx][0],col_to_chan[xx][1]);
-		}else{
-			messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
+	// post("\nmouse",x,y,leftbutton,shift,alt,ctrl);
+	if(leftbutton==1){
+		if(mous.l==0){ //a click happened
+			mous.l=1;
+			if(y>(y_pos+height-4*unit)){
+				var xx = Math.floor((x-x_pos)*cols/width);
+				// post("\nclicked column",xx,"which is",col_to_chan[xx]);
+				if(ctrl){
+					messnamed("to_blockmanager","name_mixer_channel",col_to_chan[xx][0],col_to_chan[xx][1]);
+				}else{
+					messnamed("to_blockmanager","select_block",col_to_chan[xx][0],col_to_chan[xx][0]);
+				}
+			}
 		}
-
+	}else{
+		if(mous.l==1){ //release
+			mous.l=0; 
+		}
 	}
 }
 
@@ -281,23 +309,29 @@ function scan_for_channels(){
 		var bx_list=[];
 		var tb_list=[];
 		var hash = 0;
-		for(var b=0;b<blocks.getsize("blocks");b++){
-			if(blocks.contains("blocks["+b+"]::name")){
-				var nam = blocks.get("blocks["+b+"]::name");
-				var n2 = nam.split(".");
-				if((n2[0] == "mix")&&(n2[1] != "bus")){
-					tb_list.push(b);
-					var x=blocks.get("blocks["+b+"]::space::x");
-					bx_list.push(x);
-					var vl= voicemap.get(b);
-					if(!Array.isArray(vl)){
-						hash+= b+1;
-					}else{
-						hash += (b+1) * (vl.length+99.9*x);
+		for(var c=0;c<connections.getsize("connections");c++){
+			if(connections.contains("connections["+c+"]::to")&&(connections.get("connections["+c+"]::to::number")==block)){
+				var b = connections.get("connections["+c+"]::from::number");
+				if(blocks.contains("blocks["+b+"]::name")){
+					var nam = blocks.get("blocks["+b+"]::name");
+					var n2 = nam.split(".");
+					if((n2[0] == "mix")&&(n2[1] != "bus")){
+						tb_list.push(b);
+						var x=blocks.get("blocks["+b+"]::space::x");
+						bx_list.push(x);
+						var vl= voicemap.get(b);
+						if(!Array.isArray(vl)){
+							hash+= b+1;
+						}else{
+							hash += (b+1) * (vl.length+99.9*x);
+						}
+						// post("\nb",(b+1),"size",vl.length);
 					}
-					// post("\nb",(b+1),"size",vl.length);
 				}
 			}
+		}
+		for(var b=0;b<blocks.getsize("blocks");b++){
+			
 			if(!Array.isArray(shape[b])){
 				shape[b] = [];
 				oshape[b] = [];
@@ -317,6 +351,7 @@ function scan_for_channels(){
 			ovhash=hash;
 			b_list = tb_list.slice();
 			v_list=[];
+			v_type=[];
 			b_name=[];
 			b_colour=[];
 			b_type=[];
@@ -358,15 +393,19 @@ function scan_for_channels(){
 					for(var t=0;t<vl.length;t++) cnams.push((t+1));
 				}
 				channelnames[bb]=[];//cnams.concat();
+				var tl=[];
 				for(var t=0;t<vl.length;t++){
 					outlet(3,vl[t]*MAX_PARAMETERS);
 					channelnames[bb].push(cnams[t]);
+					tl.push(nam);
 				}
+				if(!Array.isArray(tl))tl=[tl];
+				v_type.push(tl);
 				//parameter_value_buffer.poke(1, b*MAX_PARAMETERS, [0.39, 0.5, 0, 0.25, 0.5, 0, 0]);
 
 				cols += vl.length;
 				for(var tv=0;tv<vl.length;tv++) col_to_chan.push([b,tv]);
-				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
+				// post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 			}
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
 			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
@@ -392,3 +431,24 @@ function store(){
 }
 
 function enabled(){}
+
+function draw_slider(x1,y1,x2,y2,r,g,b,value){
+	outlet(1,"paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	
+	var ly;
+ 	if(value>=0) {
+		if(value>=1){
+			var m = 1 - (value % 1)*0.9;
+			outlet(1,"paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		ly = y1 + (y2 - y1) * (1-(value%1));
+		outlet(1,"paintrect",x1,ly,x2,y2,r,g,b);
+	}else{
+		if(value<=-1){
+			var m = 1 - (value % 1)*0.9;
+			outlet(1,"paintrect",x1,y1,x2,y2,(r*m),(g*m),(b*m));
+		}
+		ly = y1 + (y2-y1)*(1+(value%1));
+		outlet(1,"paintrect",x1,y1,x2,ly,r,g,b);
+	}
+}

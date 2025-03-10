@@ -1,0 +1,81 @@
+{
+	"fx.freeze" : {
+		"patcher" : "fx.freeze",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "freeze time! multiple ways. stereo in stereo out.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"default_polymode" : {
+			"stack_mode" : "1x",
+			"choose_mode" : "first free",
+			"steal_mode" : "oldest",
+			"return_mode" : 1,
+			"latching" : 0
+		},
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ],
+				"midi" : [ "freeze (while held)", "freeze (toggle)"]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1],
+				"height" : 2
+			},
+			{ 
+				"contains" : [2,2,3],
+				"height" : 2
+			},
+			{
+				"contains" : [4],
+				"height" : 0.6
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "freeze",
+				"type" : "menu_b",
+				"values" : ["off",  "on"],
+				"colours" : [0,[50,200,250]],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "type",
+				"type" : "menu_l",
+				"values" : ["fft", "loop", "bidirectional"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "length",
+				"type" : "menu_l",
+				"columns" : 4,
+				"values" : ["64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "position variation",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "only voice 1 passes dry signal",
+				"nopervoice" : 1,
+				"type" : "menu_b",
+				"values" : ["only voice 1 passes dry signal", "all voices pass dry signal"],
+				"wrap" : 1,
+				"default" : 0.1
+			}
+		]
+	}
+}

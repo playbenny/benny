@@ -54,7 +54,6 @@ var METER_TINT = 0.3;
 var SONGS_FOLDER = "songs"; //current songs folder, actually gets read in from config file. every song file in the root of this folder is preloaded (it doesn't look in subfolders),
 //  and all the wavs referenced in them are also loaded. this makes loading bits of a live set faster, but it means if your folder is full of junk the app will use a lot of memory.
 var waves_preloading = 1;
-var TEMPLATES_FOLDER = "templates";
 var MUTEDWIRE = [0.16,0.16,0.14, 1];
 var SOUNDCARD_HAS_MATRIX = 0;
 var EXTERNAL_MATRIX_PRESENT = 0;
@@ -67,6 +66,7 @@ var folder_target = "";//when you pop open a folder select box, where is the res
 
 var mainwindow_width = 320;
 var mainwindow_height = 240;
+
 var scale_2d = 1;
 
 var displaymode = "loading";
@@ -214,11 +214,24 @@ var waves = {
 	selected : -1,
 	zoom_start : 0,
 	zoom_end : 1,
+	width : 640, //of the ui, for the mouse
 	remapping : [],
 	age : [],
 	seq_no : 0,
-	scroll_position: 0
+	scroll_position: 0,
+	show_in_bottom_panel: 0,
+	playheadlist : [], //list of voices to check for playhead movement.
+	v_helper : [], //colour of each voice's playhead, defined when you get the message about a playhead existing.
+	v_label : [],
+	v_jump : [], //[block,voice] for jumping to that one in the sidebar.
+	visible : [], //0 or 1 for if it's onscreen.
+	w_helper : [], // for each wave its x1,y1,height, width, range min max, colour,chans so the playhead has everything in one place
+	ph_ox : [], //old playhead x, by voice.
+	q_playing : 0,
+	q_player : null
 }
+//var playheads = []; //index by voice, holds position, replaces the buffer method which crashed max
+var waves_playheads_buffer = new Buffer("waves_playheads"); //ch1=playhead,ch2=wave
 
 var quantpool = new Buffer("QUANTPOOL");
 var indexpool = new Buffer("INDEXPOOL");
@@ -378,6 +391,7 @@ var automap = {
 	available_q : -1, //for cue (listen) automapping - holds the audio out(s) cue should go to
 	mapped_q : -1, //if it's mapped this is the block it's mapped to
 	mapped_q_channels : [],
+	mapped_q_output : 0,
 	lock_c : 0,
 	lock_k : 0,
 	lock_q : 0,
@@ -472,6 +486,7 @@ var usermouse = {
 	caps : 0,
 	x : 0,
 	y : 0,
+	scroll : 0,
 	timer : 0,
 	scroll_accumulator : 0,
 	sidebar_scrolling: null,
@@ -496,7 +511,8 @@ var bottombar = {
 	videoplane: null,
 	height: 200,
 	block: -1,
-	available : []
+	right: -1,
+	available_blocks : []
 }
 
 var sidebar = {
@@ -528,8 +544,9 @@ var sidebar = {
 		starty : 0,
 		endy: 0,
 		voicelist : [-1, -1],
-		midivoicelist : [],
-		midioutlist : [],
+		midivoicelist : [], //list of voices to show (overlaid)
+		midioutlist : [], //list of outputs to show (separate scopes for each)
+		midiouttypes : [], //0 = notes, 1 = thin notes, 2 = values
 		midi : -1, //this is the target id for midi notes that you're watching
 		midinames : 1,
 		fg: [255,255,255],
@@ -615,7 +632,7 @@ var redo_stack = new Dict;
 redo_stack.name = "redo_stack";
 
 var undoing = 0; //flag 1 while you do undo actions to avoid writing those actions 
-				// to the undo stack
+				// to the undo stack, 2 for while redoing
 
 var flock_presets = new Dict;
 flock_presets.name = "flock_presets";
@@ -675,6 +692,8 @@ waves_dict.name = "waves";
 var proll = new Dict;
 proll.name = "seq-piano-roll";
 
+var notepad_dict = new Dict; // for song notes
+notepad_dict.name = "notepad"; 
 
 var audio_patcherlist = new Array(MAX_AUDIO_VOICES);
 var audio_upsamplelist = new Array(MAX_AUDIO_VOICES);
@@ -686,7 +705,7 @@ var loaded_note_patcherlist = new Array(MAX_NOTE_VOICES);
 var loaded_ui_patcherlist = new Array(MAX_BLOCKS);
 var vst_list = new Array(MAX_AUDIO_VOICES);
 
-var songlist = [[],[]]; //two pages - songs, templates
+var songlist = [];
 var currentsong = -1;
 
 var fullscreen = 0;
@@ -737,6 +756,7 @@ var loading = {
 	bundling : 1, //set to 1 for a slow load with a rest between each thing loaded, higher loads things in chunks, loads faster overall.
 	wait : 1, //how many frame to wait between stages of loading
 	mapping : [],
+	incoming_max_waves: 16,
 	conncount : 0, //how many connections
 	merge : 0,
 	mutelist : [], //each entry is [blockno,mute], you resend the message once everything should've loaded

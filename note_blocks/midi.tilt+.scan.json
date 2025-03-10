@@ -1,0 +1,71 @@
+{
+	"midi.tilt+.scan" : {
+		"patcher" : "midi.tilt+.scan",
+		"type" : "note",
+		"help_text" : "Generates modulation for multiple voices: wire each voice of this block to a voice on a block you want to modulate, in order, and this will let you tilt (optionally exponentially) the values and/or 'scan' a resizeable bump through the voices' values. ££you can also use this block attached to eg a harmonic oscillators partials sliders to replicate the 'verbos harmonic oscillator' eurorack module, or to the fixed filter bank block.",
+		"max_polyphony" : 0,
+		"default_polymode" : 	{
+				"stack_mode" : "unison all",
+				"choose_mode" : "blind cycle",
+				"steal_mode" : "cyclic",
+				"return_mode" : 1
+		},
+		"connections" : {
+			"out" : {
+				"parameters" : [ "out" ],
+				"midi_scope_height" : 3
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0, 1]
+			},
+			{ 
+				"contains" : [2, 3, 4],
+				"colour" : 7
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "tilt amount",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+                "nopervoice" : 1,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "tilt curve",
+				"type" : "menu_f",
+				"values" : ["lin", "exp"],
+                "nopervoice" : 1,
+				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "scan position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "scan amount",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+                "nopervoice" : 1,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "scan width",
+				"type" : "float",
+				"nopervoice" : 1,
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.25
+			}
+		]
+	}
+}

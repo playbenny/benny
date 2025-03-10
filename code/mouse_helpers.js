@@ -79,14 +79,26 @@ function blocks_paste(outside_connections,target){
 		if(target.contains("actions::move_blocks")){
 			var listd = target.get("actions::move_blocks");
 			var list = listd.getkeys();
+			var really = 0;
 			if(!Array.isArray(list))list = [list];
 			for(var i=0;i<list.length;i++){
 				var x = target.get("actions::move_blocks::"+list[i]+"::x");
 				var y = target.get("actions::move_blocks::"+list[i]+"::y");
+				var ox = blocks.get("blocks["+list[i]+"]::space::x");
+				var oy = blocks.get("blocks["+list[i]+"]::space::y");
+				really |= ((x!=ox)||(y!=oy));
 				blocks.replace("blocks["+list[i]+"]::space::x",x);
 				blocks.replace("blocks["+list[i]+"]::space::y",y);
 			}
-			draw_blocks();
+			if(really){
+				draw_blocks();
+			}else{
+				if(undoing==1){
+					undo_button();
+				}else if(undoing==2){
+					redo_button();
+				}
+			}
 		}
 		if(target.contains("actions::make_space")){
 			var listd = target.get("actions::make_space");
@@ -104,7 +116,15 @@ function blocks_paste(outside_connections,target){
 			var tblock = target.get("actions::voicecount::block");
 			var tvoices = target.get("actions::voicecount::voices");
 			//post("\nvoicecount",tblock,tvoices);
-			voicecount(tblock,tvoices);
+			if(blocks.contains("blocks["+tblock+"]::poly")){
+				voicecount(tblock,tvoices);
+			}else{
+				if(undoing==1){
+					undo_button();
+				}else if(undoing==2){
+					redo_button();
+				}
+			}
 		}
 		if(target.contains("actions::parameter")){
 			var tblock = target.get("actions::parameter::block");
@@ -129,253 +149,267 @@ function blocks_paste(outside_connections,target){
 		}
 	}
 	if(target.contains("blocks")){
+		if(undoing==1){
+			var usz=redo_stack.getsize("history")|0;
+			usz = Math.max(0,usz);
+			redo_stack.append("history","{}");
+			redo_stack.setparse("history["+usz+"]",'{}');
+			redo_stack.replace("history["+usz+"]",target);
+		}else if(undoing==2){
+			var usz=undo_stack.getsize("history")|0;
+			usz = Math.max(0,usz);
+			undo_stack.append("history","{}");
+			undo_stack.setparse("history["+usz+"]",'{}');
+			undo_stack.replace("history["+usz+"]",target);
+		}
+	
 		count_selected_blocks_and_wires();
 		var td = target.get("blocks");
-		var copied_blocks = td.getkeys();
-		if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
-		var copied_type = td.get(copied_blocks[0]+"::name");
-		var same = 0;
-		if((selected.block_count==1) && (copied_blocks.length==1) && (!outside_connections)){
-			//maybe the copied block is the same as the selected block, check
-			same = 1;
-			var selb = selected.block.indexOf(1);
-			if(copied_type != blocks.get("blocks["+selb+"]::name")){
-				same = 0;
-			}else{
-				//compare params!
-				var vals = target.get("block_params::"+copied_blocks[0]);
-				var v2 = parameter_value_buffer.peek(1,selb*MAX_PARAMETERS,vals.length);
-				for(var pc=0;pc<vals.length;pc++){
-					if(v2[pc]!=vals[pc]) same = 0;
-				}
-				// i can't be bothered to compare settings who is ever going to do that
-			}
-		}
-		if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
-			//you could run through blocks in clipboard, but it'd get confusing
-			//so restricted to one.
-			//get type, first see if the block selected is the same as the copied one,
-			//if so, deselect, paste new target. if not: see if any selected blocks are same type
-			//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
-			for(var i=0; i<selected.block.length;i++){
-				if(selected.block[i]){
-					var ty = blocks.get("blocks["+i+"]::name");
-					if(ty!=copied_type){
-						//then swap the selected block to this type, then target settings params etc
-						//should this be only if just one selected??
-						menu.swap_block_target = i;
-						swap_block(copied_type);
-					}
-					//target params
+		if(td!=null){
+			var copied_blocks = td.getkeys();
+			if(!Array.isArray(copied_blocks)) copied_blocks = [copied_blocks];
+			var copied_type = td.get(copied_blocks[0]+"::name");
+			var same = 0;
+			if((selected.block_count==1) && (copied_blocks.length==1) && (!outside_connections)){
+				//maybe the copied block is the same as the selected block, check
+				same = 1;
+				var selb = selected.block.indexOf(1);
+				if(copied_type != blocks.get("blocks["+selb+"]::name")){
+					same = 0;
+				}else{
+					//compare params!
 					var vals = target.get("block_params::"+copied_blocks[0]);
-					parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
-					//target block settings
-					var tdd = td.get(copied_blocks[0]+"::poly");
-					var tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						if(tkeys[t]!="voices"){
-							blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
-						}else{
-							voicecount(i,tdd.get("voices"));
-						}
+					var v2 = parameter_value_buffer.peek(1,selb*MAX_PARAMETERS,vals.length);
+					for(var pc=0;pc<vals.length;pc++){
+						if(v2[pc]!=vals[pc]) same = 0;
 					}
-					draw_block(i);
-					tdd = td.get(copied_blocks[0]+"::panel");
-					tkeys = tdd.getkeys();
-					if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[0]+"::error");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[0]+"::flock");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					if(target.contains("block_data::"+copied_blocks[0])){
-						var vl = voicemap.get(i);
-						if(!Array.isArray(vl)) vl=[vl];
-						for(var t=0;t<vl.length;t++){
-							var vals = target.get("block_data::"+copied_blocks[0]+"::"+t);
-							voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
-						}
-					}
-						//set redraw
+					// i can't be bothered to compare settings who is ever going to do that
 				}
 			}
-		}else{
-			clear_blocks_selection();
-			var new_blocks_indexes=[];
-			var paste_mapping = [];
-			for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
-			for(var b=0;b<copied_blocks.length;b++){
-				var name = target.get("blocks::"+copied_blocks[b]+"::name");
-				var excl = blocktypes.contains(name+"::exclusive");
-				if(excl){
-					for(i=0;i<MAX_BLOCKS;i++){
-						if(blocks.get("blocks["+i+"]::name") == name){
-							excl=2;
-							i=MAX_BLOCKS;
+			if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
+				//you could run through blocks in clipboard, but it'd get confusing
+				//so restricted to one.
+				//get type, first see if the block selected is the same as the copied one,
+				//if so, deselect, paste new target. if not: see if any selected blocks are same type
+				//paste values (and opvs?) and all the keys from blocks dict too (inc voicecount)
+				for(var i=0; i<selected.block.length;i++){
+					if(selected.block[i]){
+						var ty = blocks.get("blocks["+i+"]::name");
+						if(ty!=copied_type){
+							//then swap the selected block to this type, then target settings params etc
+							//should this be only if just one selected??
+							menu.swap_block_target = i;
+							swap_block(copied_type);
 						}
+						//target params
+						var vals = target.get("block_params::"+copied_blocks[0]);
+						parameter_value_buffer.poke(1,i*MAX_PARAMETERS,vals);
+						//target block settings
+						var tdd = td.get(copied_blocks[0]+"::poly");
+						var tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							if(tkeys[t]!="voices"){
+								blocks.replace("blocks["+i+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+							}else{
+								voicecount(i,tdd.get("voices"));
+							}
+						}
+						draw_block(i);
+						tdd = td.get(copied_blocks[0]+"::panel");
+						tkeys = tdd.getkeys();
+						if(td.getsize(copied_blocks[0]+"::panel")==1) tkeys = [tkeys];
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[0]+"::error");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[0]+"::flock");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						if(target.contains("block_data::"+copied_blocks[0])){
+							var vl = voicemap.get(i);
+							if(!Array.isArray(vl)) vl=[vl];
+							for(var t=0;t<vl.length;t++){
+								var vals = target.get("block_data::"+copied_blocks[0]+"::"+t);
+								voice_data_buffer.poke(1,MAX_DATA*vl[t],vals);
+							}
+						}
+							//set redraw
 					}
 				}
-				var new_block_index;
-				if(excl==2){
-					post("\ncan't paste this block, it's exclusive, only one instance is allowed.");
-					new_block_index = -1;
-				}else{
-					var px, py;
-					px = td.get(copied_blocks[b]+"::space::x");
-					py = td.get(copied_blocks[b]+"::space::y");
-					if(target!=undo){
-						px += pasteoffset[0];
-						py += pasteoffset[1];
-					}
-					for(var i=0;i<MAX_BLOCKS;i++){ //crude collision detection
-						if(blocks.contains("blocks["+i+"]::space::x")){
-							if((px == blocks.get("blocks["+i+"]::space::x"))&&(py == blocks.get("blocks["+i+"]::space::y"))){
-								px+=0.5;
-								py+=0.5;
-								i=-1;
+			}else{
+				clear_blocks_selection();
+				var new_blocks_indexes=[];
+				var paste_mapping = [];
+				for(var i=0;i<MAX_BLOCKS;i++) paste_mapping[i]=-1;
+				for(var b=0;b<copied_blocks.length;b++){
+					var name = target.get("blocks::"+copied_blocks[b]+"::name");
+					var excl = blocktypes.contains(name+"::exclusive");
+					if(excl){
+						for(i=0;i<MAX_BLOCKS;i++){
+							if(blocks.get("blocks["+i+"]::name") == name){
+								excl=2;
+								i=MAX_BLOCKS;
 							}
 						}
 					}
-					new_block_index = new_block(name,px,py);
-				}
-				if(new_block_index==-1){
-					if(excl!=2)post("\nerror pasting, "+name+" not found");
-				}else{
-					new_blocks_indexes.push(new_block_index);
-					paste_mapping[copied_blocks[b]] = new_block_index;
-					//ok you've made the right type of block, but all its settings and parameters are defaults
-					//you could integrate pasting into new block but i don't really like the sound of that? paste is never mission-critical like new block is
-					//ok can i iterate through the keys in the copy buffer to make this futureproof rather than doing them specifically?
-					//sort of, nested ones sound like a headache so i'll go through them one by one
-					//and poly requires voicecount calling so that's special. 
-					//poly/panel/error/flock/(space)
-					var vals = target.get("block_params::"+copied_blocks[b]);
-					parameter_value_buffer.poke(1,new_block_index*MAX_PARAMETERS,vals);
-					var tdd = td.get(copied_blocks[b]+"::poly");
-					var tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						if(tkeys[t]!="voices"){
-							blocks.replace("blocks["+new_block_index+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
-						}else{
-							voicecount(new_block_index,tdd.get("voices"));
+					var new_block_index;
+					if(excl==2){
+						post("\ncan't paste this block, it's exclusive, only one instance is allowed.");
+						new_block_index = -1;
+					}else{
+						var px, py;
+						px = td.get(copied_blocks[b]+"::space::x");
+						py = td.get(copied_blocks[b]+"::space::y");
+						if(target!=undo){
+							px += pasteoffset[0];
+							py += pasteoffset[1];
 						}
-					}
-					blocks.replace("blocks["+new_block_index+"]::space::colour",target.get("blocks::"+copied_blocks[b]+"::space::colour"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::upsample")) blocks.replace("blocks["+new_block_index+"]::upsample",target.get("blocks::"+copied_blocks[b]+"::upsample"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",target.get("blocks::"+copied_blocks[b]+"::subvoices"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::from_subvoices")) blocks.replace("blocks["+new_block_index+"]::from_subvoices",target.get("blocks::"+copied_blocks[b]+"::from_subvoices"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::to_subvoices")) blocks.replace("blocks["+new_block_index+"]::to_subvoices",target.get("blocks::"+copied_blocks[b]+"::to_subvoices"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::mute")) blocks.replace("blocks["+new_block_index+"]::mute",target.get("blocks::"+copied_blocks[b]+"::mute"));
-					if(target.contains("blocks::"+copied_blocks[b]+"::bypass")) blocks.replace("blocks["+new_block_index+"]::bypass",target.get("blocks::"+copied_blocks[b]+"::bypass"));
-					
-					draw_block(new_block_index);
-					tdd = td.get(copied_blocks[b]+"::panel");
-					tkeys = tdd.getkeys();
-					if(td.getsize(copied_blocks[b]+"::panel")==1) tkeys = [tkeys];
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+new_block_index+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[b]+"::error");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+new_block_index+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					tdd = td.get(copied_blocks[b]+"::flock");
-					tkeys = tdd.getkeys();
-					for(var t=0;t<tkeys.length;t++){
-						blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
-					}
-					var vl = voicemap.get(new_block_index);
-					if(!Array.isArray(vl)) vl=[vl];
-					if(target.contains("block_data::"+copied_blocks[b])){
-						for(var t=0;t<vl.length;t++){
-							var vals = target.get("block_data::"+copied_blocks[b]+"::"+t);
-							voice_data_buffer.poke( 1,MAX_DATA*vl[t],vals);
-						}
-					}
-					if(target.contains("parameter_static_mod::"+copied_blocks[b])){
-						for(var t=0;t<vl.length;t++){
-							if(target.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
-								post("pasting static mod ",t,vl[t]);
-								var vals = target.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
-								parameter_static_mod.poke(1,MAX_PARAMETERS*vl[t],vals);
-							}
-						}
-					}
-					selected.block[new_block_index] = 1;
-				}				
-			}
-			if(target.contains("states")){
-				var tds = target.get("states");
-				var tk = tds.getkeys();
-				if(tk!=null){
-					for(var t=0;t<tk.length;t++){
-						
-						var tdsb = target.get("states::"+tk[t]);
-						if(tdsb!=null){
-							var tkb = tdsb.getkeys();
-							var stat=0;
-							if(Array.isArray(tkb)){
-								for(var tt=0;tt<tkb.length;tt++){
-									if(tkb[tt]=="static_mod"){
-										stat=1;
-									}else{
-										if(paste_mapping[+tkb[tt]]!=-1){
-											states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::"+tkb[tt]));
-										}
-									}
+						for(var i=0;i<MAX_BLOCKS;i++){ //crude collision detection
+							if(blocks.contains("blocks["+i+"]::space::x")){
+								if((px == blocks.get("blocks["+i+"]::space::x"))&&(py == blocks.get("blocks["+i+"]::space::y"))){
+									px+=0.5;
+									py+=0.5;
+									i=-1;
 								}
-								if(stat){
-									tdsb = target.get("states::"+tk[t]+"::static_mod");
-									if(tdsb!=null){
-										tkb = tdsb.getkeys();
-										for(var tt=0;tt<tkb.length;tt++){
+							}
+						}
+						new_block_index = new_block(name,px,py);
+					}
+					if(new_block_index==-1){
+						if(excl!=2)post("\nerror pasting, "+name+" not found");
+					}else{
+						new_blocks_indexes.push(new_block_index);
+						paste_mapping[copied_blocks[b]] = new_block_index;
+						//ok you've made the right type of block, but all its settings and parameters are defaults
+						//you could integrate pasting into new block but i don't really like the sound of that? paste is never mission-critical like new block is
+						//ok can i iterate through the keys in the copy buffer to make this futureproof rather than doing them specifically?
+						//sort of, nested ones sound like a headache so i'll go through them one by one
+						//and poly requires voicecount calling so that's special. 
+						//poly/panel/error/flock/(space)
+						var vals = target.get("block_params::"+copied_blocks[b]);
+						parameter_value_buffer.poke(1,new_block_index*MAX_PARAMETERS,vals);
+						var tdd = td.get(copied_blocks[b]+"::poly");
+						var tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							if(tkeys[t]!="voices"){
+								blocks.replace("blocks["+new_block_index+"]::poly::"+tkeys[t],tdd.get(tkeys[t]));
+							}else{
+								voicecount(new_block_index,tdd.get("voices"));
+							}
+						}
+						blocks.replace("blocks["+new_block_index+"]::space::colour",target.get("blocks::"+copied_blocks[b]+"::space::colour"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::upsample")) blocks.replace("blocks["+new_block_index+"]::upsample",target.get("blocks::"+copied_blocks[b]+"::upsample"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::subvoices")) blocks.replace("blocks["+new_block_index+"]::subvoices",target.get("blocks::"+copied_blocks[b]+"::subvoices"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::from_subvoices")) blocks.replace("blocks["+new_block_index+"]::from_subvoices",target.get("blocks::"+copied_blocks[b]+"::from_subvoices"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::to_subvoices")) blocks.replace("blocks["+new_block_index+"]::to_subvoices",target.get("blocks::"+copied_blocks[b]+"::to_subvoices"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::mute")) blocks.replace("blocks["+new_block_index+"]::mute",target.get("blocks::"+copied_blocks[b]+"::mute"));
+						if(target.contains("blocks::"+copied_blocks[b]+"::bypass")) blocks.replace("blocks["+new_block_index+"]::bypass",target.get("blocks::"+copied_blocks[b]+"::bypass"));
+						
+						draw_block(new_block_index);
+						tdd = td.get(copied_blocks[b]+"::panel");
+						tkeys = tdd.getkeys();
+						if(td.getsize(copied_blocks[b]+"::panel")==1) tkeys = [tkeys];
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+new_block_index+"]::panel::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[b]+"::error");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+new_block_index+"]::error::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						tdd = td.get(copied_blocks[b]+"::flock");
+						tkeys = tdd.getkeys();
+						for(var t=0;t<tkeys.length;t++){
+							blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						var vl = voicemap.get(new_block_index);
+						if(!Array.isArray(vl)) vl=[vl];
+						if(target.contains("block_data::"+copied_blocks[b])){
+							for(var t=0;t<vl.length;t++){
+								var vals = target.get("block_data::"+copied_blocks[b]+"::"+t);
+								voice_data_buffer.poke( 1,MAX_DATA*vl[t],vals);
+							}
+						}
+						if(target.contains("parameter_static_mod::"+copied_blocks[b])){
+							for(var t=0;t<vl.length;t++){
+								if(target.contains("parameter_static_mod::"+copied_blocks[b]+"::"+t)){
+									post("pasting static mod ",t,vl[t]);
+									var vals = target.get("parameter_static_mod::"+copied_blocks[b]+"::"+t);
+									parameter_static_mod.poke(1,MAX_PARAMETERS*vl[t],vals);
+								}
+							}
+						}
+						selected.block[new_block_index] = 1;
+					}				
+				}
+				if(target.contains("states")){
+					var tds = target.get("states");
+					var tk = tds.getkeys();
+					if(tk!=null){
+						for(var t=0;t<tk.length;t++){
+							
+							var tdsb = target.get("states::"+tk[t]);
+							if(tdsb!=null){
+								var tkb = tdsb.getkeys();
+								var stat=0;
+								if(Array.isArray(tkb)){
+									for(var tt=0;tt<tkb.length;tt++){
+										if(tkb[tt]=="static_mod"){
+											stat=1;
+										}else{
 											if(paste_mapping[+tkb[tt]]!=-1){
-												states.replace("states::"+tk[t]+"::static_mod::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::static_mod::"+tkb[tt]));
+												states.replace("states::"+tk[t]+"::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::"+tkb[tt]));
 											}
 										}
-									}										
+									}
+									if(stat){
+										tdsb = target.get("states::"+tk[t]+"::static_mod");
+										if(tdsb!=null){
+											tkb = tdsb.getkeys();
+											for(var tt=0;tt<tkb.length;tt++){
+												if(paste_mapping[+tkb[tt]]!=-1){
+													states.replace("states::"+tk[t]+"::static_mod::"+paste_mapping[+tkb[tt]],target.get("states::"+tk[t]+"::static_mod::"+tkb[tt]));
+												}
+											}
+										}										
+									}
 								}
 							}
 						}
 					}
 				}
-			}
-			//todo: opv values
-			// connections between selected blocks (these aren't copied yet)
-			var tdc = target.get("connections");
-			var tk = tdc.getkeys();
-			if(Array.isArray(tk)){
-				for(var t=0;t<tk.length;t++){
-					post("\npaste/undo connections",tk[t]);
-					new_connection = target.get("connections::"+tk[t]);
-					var pfrom = paste_mapping[+new_connection.get("from::number")];
-					var pto = paste_mapping[+new_connection.get("to::number")];
-					if(pfrom != -1) new_connection.replace("from::number",pfrom);
-					if(pto != -1) new_connection.replace("to::number",pto);
-					if(((pfrom==-1)||(pto==-1))&&(outside_connections != 1)){
-						//do nothing - this connection is outside
-					}else{
-						connections.append("connections",new_connection);
-						var co = connections.getsize("connections")-1;
-						make_connection(co,0);
-						new_connection.clear();		
-						selected.wire[co]=1;
-						//draw_wire(co);	//better to draw the wires as you go than risk a cpu spike from trying to do them all at once later
-					}
-				}				
-			}
-			if(target!=undo){
-				pasteoffset[0] += 2;
-				pasteoffset[1] -= 0.25;				
+				//todo: opv values
+				var tdc = target.get("connections");
+				var tk = tdc.getkeys();
+				if(Array.isArray(tk)){
+					for(var t=0;t<tk.length;t++){
+						post("\npaste/undo connections",tk[t]);
+						new_connection = target.get("connections::"+tk[t]);
+						var pfrom = paste_mapping[+new_connection.get("from::number")];
+						var pto = paste_mapping[+new_connection.get("to::number")];
+						if(pfrom != -1) new_connection.replace("from::number",pfrom);
+						if(pto != -1) new_connection.replace("to::number",pto);
+						if(((pfrom==-1)||(pto==-1))&&(outside_connections != 1)){
+							//do nothing - this connection is outside
+						}else{
+							connections.append("connections",new_connection);
+							var co = connections.getsize("connections")-1;
+							make_connection(co,0);
+							new_connection.clear();		
+							selected.wire[co]=1;
+						}
+					}				
+				}
+				if(target!=undo){
+					pasteoffset[0] += 2;
+					pasteoffset[1] -= 0.25;				
+				}
 			}
 		}
 	}else{
@@ -386,6 +420,29 @@ function blocks_paste(outside_connections,target){
 					var vals = target.get("block_params::"+pk[t]);
 					parameter_value_buffer.poke(1,pk[t]*MAX_PARAMETERS,vals);
 				}
+			}
+		}
+		if(target.contains("connections")){
+			// connections between selected blocks (these aren't copied yet)
+			var tdc = target.get("connections");
+			var tk = tdc.getkeys();
+			if(Array.isArray(tk)){
+				for(var t=0;t<tk.length;t++){
+					post("\npaste/undo connections",tk[t]);
+					new_connection = target.get("connections::"+tk[t]);
+					if(!connections.contains("connections["+tk[t]+"]::to")){ //if possible put it back where it came from
+						connections.replace("connections["+tk[t]+"]",new_connection);
+						var co = tk[t];
+
+					}else{
+						connections.append("connections",new_connection);
+						var co = connections.getsize("connections")-1;
+					}
+					post("\nrestored connection number",co);
+					make_connection(co,0);
+					new_connection.clear();		
+					selected.wire[co]=1;
+				}				
 			}
 		}
 	}
@@ -873,12 +930,24 @@ function panel_edit_button(parameter,value){
 	redraw_flag.flag=4;
 }
 
+function extend_waves_dict(newlen){
+	while((newlen+1) >= waves_dict.getsize("waves")){
+		waves_dict.append("waves","*");
+		waves_dict.setparse("waves["+(waves_dict.getsize("waves")-1)+"]","{}");
+	}
+	if(newlen>MAX_WAVES){
+		error("\nTODO - need to increase MAX_WAVES here, but to do so we need to:");
+		error("\nre-scale all wave select sliders, like during load");
+		error("\nstore tracker wave mapping table?\n");
+	}
+}
+
 function file_drop(fname){
 	var ts = fname.split(".").pop();
 	ts = ts.toLowerCase();
 	if(ts=="json"){
 		load_elsewhere(fname);
-	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")){
+	}else if((ts=="wav")||(ts=="aiff")||(ts=="aif")||(ts=="mp3")||(ts=="flac")){
 		post("\n\nloading audio file from drag and drop,");
 		/*if(waves.selected == -1)*/ waves.selected = 0;
 		inuse=1;
@@ -887,7 +956,10 @@ function file_drop(fname){
 				inuse = 0;
 			}else{
 				waves.selected++;
-				if(waves.selected>100) inuse = 0;
+				if((waves.selected+1) >= waves_dict.getsize("waves")){
+					extend_waves_dict(waves.selected+1);
+				}
+				if(waves.selected>10000){error("thats a lot of waves"); inuse = 0;}
 			}
 		}
 		var ffn = fname.split("/").pop();
@@ -895,6 +967,7 @@ function file_drop(fname){
 		waves_dict.replace("waves["+(waves.selected+1)+"]::name","loading");
 		waves_dict.replace("waves["+(waves.selected+1)+"]::path","loading");
 		wave_chosen(waves.selected, ffn,fname);
+		set_display_mode("waves");
 	}else{
 		post("\ndrag and drop, unknown file type?",ts);
 	}
@@ -920,6 +993,7 @@ function load_elsewhere(fname){
 		song.import_json(fname);
 		loading.songpath = fname.split(tss)[0];
 		post("\npath", loading.songpath);
+		add_path_to_recent_folders(loading.songpath);
 		copy_song_to_songs_dict(tss);
 		if(playing) play_button();
 		meters_enable = 0;
@@ -1017,17 +1091,18 @@ function clear_everything_btn(parameter,value){
 		post("\ndanger",value,"(",parameter,")");
 	}
 }
-function files_switch_folder(){
-	if(sidebar.files_page=="songs"){
-		sidebar.files_page="templates";
+function clear_wave_btn(parameter,value){
+	if(value == danger_button){
+		delete_wave(waves.selected,waves.selected);
+		danger_button = -1;
 	}else{
-		sidebar.files_page="songs";
+		danger_button = value;
+		redraw_flag.flag |= 4;
+		post("\ndanger",value,"(",parameter,")");
 	}
-	redraw_flag.flag |= 2;
 }
-
 function custom_mouse_passthrough(parameter,value){
-	//post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
+	// post("\n\nCUSTOM MOUSE PASSTHROUGH",parameter,value,usermouse.x,usermouse.y);
 	ui_poly.message("setvalue", parameter,"mouse",usermouse.x,usermouse.y,usermouse.left_button,usermouse.shift,usermouse.alt,usermouse.ctrl,value);
 }
 function custom_direct_mouse_passthrough(parameter,value){
@@ -1073,12 +1148,19 @@ function scope_zoom(parameter,value){
 		messnamed("scope_rate",60*Math.pow(2,sidebar.scopes.zoom*8));
 	}
 }
-function scope_midinames(parameter,value){
-	sidebar.scopes.midinames = 1 - sidebar.scopes.midinames;
-	if(sidebar.scopes.midinames == 0){
-		redraw_flag.flag |= 2;
+function scope_midinames(t,value){
+	if(sidebar.scopes.midinames<2){
+		sidebar.scopes.midinames=2 + t;
+	}else{
+		if(t!=sidebar.scopes.midinames-2){
+			sidebar.scopes.midinames= t+2;
+		}else{
+			sidebar.scopes.midinames= config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
+		}
 	}
+	redraw_flag.flag |= 2;
 }
+
 function send_button_message_dropdown(parameter,value){
 	sidebar.dropdown=null;
 	send_button_message(parameter,value);
@@ -1438,7 +1520,7 @@ function fire_whole_state_btn(state,value){
 			for(var i = MAX_BLOCKS;i>=0;i--) selected.block.push(0);
 			for(var i = sc_list.length-1;i>=0;i--) selected.block[sc_list[i]]=1;
 			post("\nselected these blocks",sc_list);
-			block_and_wire_colours();
+			redraw_flag.flag |= 8; //block_and_wire_colours();
 		}
 	}else if(usermouse.alt){
 		reload_voicedata();
@@ -1764,7 +1846,45 @@ function edit_typing(key){
 	redraw_flag.flag |= 2;
 }
 
+function edit_typing_with_spaces(key){
+	if(key==-2){
+		sidebar.text_being_edited = sidebar.text_being_edited+" ";
+	}else{
+		if(key>512) {
+			caps=1;
+			key-=512;
+			// key-=32;
+		}
+		if((key>45)&&(key<123)){
+			sidebar.text_being_edited = sidebar.text_being_edited + String.fromCharCode(key);
+		}
+	}
+	redraw_flag.flag |= 2;
+}
 
+function edit_song_notes(key){
+	post(/*"\ntyping,",*/key);
+	var caps = 0;
+	if(key==-2){
+		sidebar.text_being_edited = sidebar.text_being_edited+" ";
+	}else if(key==-4){
+		sidebar.text_being_edited = sidebar.text_being_edited+"£";
+	}else{
+		post(String.fromCharCode(key));
+		if(key>512) {
+			caps=1;
+			key-=512;
+			//key-=32;
+		}
+		sidebar.text_being_edited = sidebar.text_being_edited + String.fromCharCode(key);
+	}
+	redraw_flag.flag |= 2;
+}
+
+function editted_song_notes(){
+	post("\ndone.",sidebar.text_being_edited);
+	set_sidebar_mode("none");
+}
 function static_mod_adjust(parameter,value){
 	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
@@ -1806,6 +1926,72 @@ function static_mod_adjust(parameter,value){
 		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }
+
+function static_mod_adjust_custom(parameter,value){
+	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	//parameter holds paramno, blockno, voiceno
+	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
+	if(value=="get"){
+		return parameter_static_mod.peek(1,addr);
+	}else{
+		if(usermouse.alt){
+			//tilt
+			vl = voicemap.get(parameter[1]);
+			if(!Array.isArray(vl)) vl = [vl];
+			hovvoice = vl.indexOf(parameter[2]);
+			var diff = parameter_static_mod.peek(1,addr) - value;
+			for(var i=0;i<vl.length;i++){
+				var ii = hovvoice-i;
+				ii *= diff;
+				var ov = parameter_static_mod.peek(1,vl[i]*MAX_PARAMETERS+parameter[0]);
+				parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],ov+ii);
+			}
+		}else{
+			//set value
+			var t = parameter_value_buffer.peek(1,MAX_PARAMETERS*parameter[1]+parameter[0]);
+			var t2 = t + Math.max(-1,Math.min(1,value));
+			t2 = Math.max(0,Math.min(1,t2));
+			t2 -= t;  //clip the value so that it + the param (at block level) value doesn't go off the edges
+			parameter_static_mod.poke(1,addr,t2);
+		}
+		// redraw_flag.flag|=2; //custom ui elements get update called every frame so you don't need to flag this
+		// redraw_flag.deferred|=2;
+	}
+}
+
+function static_mod_adjust_custom_opv_button(parameter,value){ // this version has the 'toggle all' fn.
+	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index,"ctrl",usermouse.ctrl);
+	//parameter holds paramno, blockno, voiceno
+	
+	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
+	if(value=="get"){
+		return parameter_static_mod.peek(1,addr);
+	}else{
+		if(usermouse.ctrl){
+			//turn off all others, toggle clicked.
+			vl = voicemap.get(parameter[1]);
+			if(!Array.isArray(vl)) vl = [vl];
+			for(var i=0;i<vl.length;i++){
+				var ov = parameter_static_mod.peek(1,vl[i]*MAX_PARAMETERS+parameter[0]);
+				if(vl[i]!=parameter[2]){
+					if(ov!=0) parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],0);
+				}else{
+					parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],((ov<0.5)|0)*0.99);
+				}
+			}
+		}else{
+			//set value
+			var t = parameter_value_buffer.peek(1,MAX_PARAMETERS*parameter[1]+parameter[0]);
+			var t2 = t + Math.max(-1,Math.min(1,value));
+			t2 = Math.max(0,Math.min(1,t2));
+			t2 -= t;  //clip the value so that it + the param (at block level) value doesn't go off the edges
+			parameter_static_mod.poke(1,addr,t2);
+		}
+		// redraw_flag.flag|=2; //custom ui elements get update called every frame so you don't need to flag this
+		// redraw_flag.deferred|=2;
+	}
+}
+
 
 function data_edit(parameter,value){
 	//post("\nDATA EDIT!!",parameter,"or",parameter[0],parameter[1],value);
@@ -1950,13 +2136,33 @@ function unscale_parameter(block, parameter, value){
 
 function qwertymidi_octave(parameter, value){
 	if(value=="get"){
-		var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9)
+		var oct = parameter_value_buffer.peek(1,MAX_PARAMETERS * automap.available_k_block + 9);
 		return(oct);
 	}else{
 		value = Math.max(0,Math.min(0.9999999,value));
 		parameter_value_buffer.poke(1, MAX_PARAMETERS * automap.available_k_block + 9, value);
 		redraw_flag.flag |= 2;
 	}
+}
+
+function automap_q_gain(parameter,value){
+	if(value=="get"){
+		return(automap.q_gain);
+	}else{
+		value = Math.max(0,Math.min(1,value));
+		automap.q_gain = value;
+		set_automap_q(automap.q_gain);
+		redraw_flag.flag |= 2;
+	}	
+}
+function select_q_output(parameter,value){
+	set_automap_q(0);
+	post("\nset output:",parameter);
+	automap.mapped_q_output = parameter;
+	automap.mapped_q = -1;
+	automap.mapped_q_channels = [];
+	sidebar.dropdown=null;
+	redraw_flag.flag |= 2;
 }
 	
 function automap_undo_point(p,v){
@@ -2141,10 +2347,14 @@ function send_record_arm_messages(block){
 	var da = new Date();
 	var tt = blocks.get("blocks["+block+"]::type");
 	var path = config.get("RECORD_FOLDER");
+	if((path=="")||(path=="auto")){
+		path = SONGS_FOLDER;
+		error("\nno record folder set so i'm recording into the songs folder.");
+	}
 	if((loading.songname == "autoload")||(loading.songname=="")){
 		path = path + "untitled";
 	}else{
-		path = path + loading.songname; //songlist[0][currentsong];
+		path = path + loading.songname;
 	}
 	path = path + "-" + blocks.get("blocks["+block+"]::label") + "-" +(da.getMonth()+1) + "-" + da.getDate() + "-" + da.getHours()+"-"+da.getMinutes();
 	//post("\npath is ",path);
@@ -2512,7 +2722,7 @@ function connection_edit(parameter,value){
 		//pm[0] holds the connection number
 		make_connection(pm[0],1);
 		if(pn[2]=="mute"){
-			draw_wire(pm[0]);
+			//draw_wire(pm[0]);
 			redraw_flag.flag |= 8;
 		}
 		sidebar.lastmode="recalculate";
@@ -2798,21 +3008,13 @@ function automap_default(a,b){
 }
 
 function file_menu_enter(){
-	if(sidebar.files_page == "templates"){
-		merge_song();
-	}else{
-		load_song();
-	}
+	load_song();
 }
 
 function select_song(song){
 	if((usermouse.timer>0)&&(song==currentsong)&&(!playing)){
 		usermouse.timer=0;
-		if(sidebar.files_page == "templates"){
-			merge_song();
-		}else{
-			load_song();
-		}
+		load_song();
 	}else{
 		currentsong = song;
 		usermouse.timer = DOUBLE_CLICK_TIME;
@@ -2844,6 +3046,7 @@ function wave_chosen(number,name,path){
 function load_wave(parameter,value){
 	post("loading a wave file into buffer slot",parameter);
 	waves.selected = parameter;
+	extend_waves_dict(waves.selected+1);
 	messnamed("choose_and_read_wave",parameter);
 	//waves_buffer[parameters].replace;
 }
@@ -2852,10 +3055,28 @@ function setup_waves(parameter,value){
 	if(value=="get"){
 		return 10*waves_dict.get("waves["+parameter[0]+"]::"+parameter[1]);
 	}else{
-		waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],Math.max(0,Math.min(1,0.1*value)));
-		store_wave_slices(parameter[0]);
-		messnamed("wave_updated",parameter[0]);
-		redraw_flag.flag = 4;
+		if(!isNaN(value)){
+			var cv = Math.max(0,Math.min(1,0.1*value));
+			waves_dict.replace("waves["+parameter[0]+"]::"+parameter[1],cv);
+			store_wave_slices(parameter[0]);
+			messnamed("wave_updated",parameter[0]);
+		}
+		if((cv<waves.zoom_start)||(cv>waves.zoom_end)){
+			var wzs = waves.zoom_start;
+			if(parameter[1]=="start"){
+				var l = waves.zoom_end-waves.zoom_start;
+				waves.zoom_start = Math.min(1-0.7*l, Math.max(0,cv - 0.3*l));
+				waves.zoom_end = l + waves.zoom_start;
+			}else if(parameter[1]=="end"){
+				var l = waves.zoom_end-waves.zoom_start;
+				waves.zoom_end = Math.max(0.7*l, Math.min(1,cv+0.3*l));
+				waves.zoom_start = waves.zoom_end - l;
+			}
+			if(wzs!=waves.zoom_start){
+				draw_wave_z[waves.selected] = [[],[],[],[]];
+			}
+		}
+		redraw_flag.flag |= 4;
 	}
 }
 function store_wave_slices(waveno){
@@ -2877,32 +3098,106 @@ function store_wave_slices(waveno){
 	}
 }
 
+function q_player_release_check(){
+	if(waves.q_playing==1){
+		if((usermouse.left_button == 0)||(usermouse.qlb==0)){
+			// messnamed("q_player","stop");
+			waves.q_player.message("stop");
+			waves.q_playing = 0;
+			q_player_release_task.freepeer();
+		}else{
+			q_player_release_task.schedule(135);   
+			// deferred_diag.push("mice"+usermouse.left_button+" "+usermouse.qlb);
+		}
+	}else{
+		q_player_release_task.freepeer();
+		waves.q_playing = 0;
+	}
+}
+
 function zoom_waves(parameter,value){
 	if(value=="get"){
-		return 0;//waves.zoom_start;
+		waves.drag_start_x = usermouse.x;
+		waves.drag_start_y = usermouse.y;
+		if((automap.available_q!=-1)&&(automap.lock_q<=0)){
+			set_automap_q(0);
+			automap.mapped_q=-0.5;
+			var x = (usermouse.x - waves.w_helper[waves.selected][0])/(waves.w_helper[waves.selected][2]-waves.w_helper[waves.selected][0]);
+			x *= (waves.zoom_end-waves.zoom_start);
+			x += waves.zoom_start;
+			x *= waves_dict.get("waves["+(waves.selected+1)+"]::size"); //size>>ms, which is what play~ wants. length=samples, which groove would take.
+			// post("\nQ MESSAGE",waves_dict.get("waves["+(waves.selected+1)+"]::buffername"),"play",x);
+			if(waves.q_playing == 1){
+				// messnamed("q_player","stop");
+				waves.q_player.message("stop");
+			}
+			// messnamed("q_player","set",waves_dict.get("waves["+(waves.selected+1)+"]::buffername"));
+			waves.q_player.message("set",waves_dict.get("waves["+(waves.selected+1)+"]::buffername"));
+			waves.q_player.message("start",x);
+			// messnamed("q_player","start",x);
+			// deferred_diag.push("start "+x);
+			// post("\nTODO schedule check for mouseup so that you can stop the preview player");
+			waves.q_playing=1;  
+			q_player_release_task = new Task(q_player_release_check, this);
+			q_player_release_task.schedule(205);  
+		}
+		return 0;
+	}else if(value=="all"){
+		waves.zoom_start = 0;
+		waves.zoom_end = 1;
+		draw_wave_z[waves.selected] = [[],[],[],[]];
+		redraw_flag.flag |= 4;
 	}else{
-		var w = Math.max(waves.zoom_end- waves.zoom_start,0.00001);
-		var skew = usermouse.x / mainwindow_width;
 		var wzs = waves.zoom_start;
 		var wze = waves.zoom_end;
-		waves.zoom_start += (skew)* w*value;
-		waves.zoom_end -= (1-skew)*w*value;
-		if(waves.zoom_start>waves.zoom_end){
-			var t = waves.zoom_start;
-			waves.zoom_start=waves.zoom_end;
-			waves.zoom_end = t+0.00001;
+		var dx=0;
+		var dy=0;
+		if(value=="zoom"){
+			dy = parameter;
+			dy *= Math.sqrt(waves.zoom_end - waves.zoom_start);
+		}else if(value=="pan"){
+			dx = parameter;
+		}else{
+			//this is how piano roll does it but:
+			dx = usermouse.x - waves.drag_start_x;
+			dy = usermouse.y - waves.drag_start_y;
+			if((dx==0)&&(dy==0)&&(value!=0)){
+				if(usermouse.shift){
+					dx = -10000*value;
+				}else{
+					dy = -1000*value;
+				}
+			}
 		}
-		if(waves.zoom_start<0){
-			waves.zoom_end -= waves.zoom_start;
-			if(waves.zoom_end>1)waves.zoom_end = 1;
-			waves.zoom_start = 0;
-		}else if(waves.zoom_end > 1){
-			waves.zoom_start -= (waves.zoom_end-1);
-			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+		var dir = 0;
+		if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+		if(dir==0){
+			var l = (waves.zoom_end - waves.zoom_start);
+			var p = (0.1+l)/(waves.width*1.1);
+			p *= dx;
+			waves.zoom_start += p;
+			waves.zoom_start = Math.min(Math.max(0,waves.zoom_start),1-l);
+			waves.zoom_end = waves.zoom_start + l;
+			waves.drag_start_y = usermouse.y;
+			waves.drag_start_x = usermouse.x;
+		}else{
+			var l = (waves.zoom_end - waves.zoom_start);
+			var xx = (usermouse.x-fontheight*1.1-9)/waves.width;
+			dy*=0.01;
+			waves.zoom_start += l*xx*dy;
+			waves.zoom_end -= l*(1-xx)*dy;
+			waves.zoom_end = Math.max(waves.zoom_start+0.00001,waves.zoom_end);
+			waves.zoom_end = Math.min(waves.zoom_end, 1);
+			waves.zoom_start = Math.min(waves.zoom_end-0.00001,waves.zoom_start);
+			waves.zoom_start = Math.max(waves.zoom_start,0);
+			waves.zoom_scale = 1/(waves.zoom_end - waves.zoom_start);
+			waves.drag_start_x = usermouse.x;
+			waves.drag_start_y = usermouse.y;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
+			waves.w_helper[waves.selected][4]=waves.zoom_start;
+			waves.w_helper[waves.selected][5]=waves.zoom_end;
 		}
 		redraw_flag.flag |= 4;
 	}
@@ -2912,12 +3207,65 @@ function wave_stripe_click(parameter,value){
 	//	post("\nstripe click",parameter,value);
 	redraw_flag.flag |= 4;
 	if(	waves.selected != parameter){
-		waves.zoom_start=0;
-		waves.zoom_end = 1;
-		waves.selected = parameter;
-		return 0;
+		if(usermouse.scroll!=0){
+			waves.scroll_position -= fontheight * usermouse.scroll * 2;
+			waves.scroll_position = Math.max(0,waves.scroll_position);
+		}else{
+			waves.zoom_start=0;
+			waves.zoom_end = 1;
+			waves.selected = parameter;
+			clear_wave_graphic(waves.selected+1,1);
+		}
+	}else if(value=="get"){
+		waves.drag_start_x = usermouse.x;
+		waves.drag_start_y = usermouse.y;
+		return 0;//waves.zoom_start;
+	}else{
+		//this is how piano roll does it but:
+		var wzs = waves.zoom_start;
+		var wze = waves.zoom_end;
+		var dx = usermouse.x - waves.drag_start_x;
+		var dy = usermouse.y - waves.drag_start_y;
+		if((dx==0)&&(dy==0)&&(value!=0)){
+			if(usermouse.shift){
+				dx = -10000 * value;
+			}else{
+				dy = -1000 * value;
+			}
+		}
+		var dir = 0;
+		if(Math.abs(dx)<Math.abs(dy)) dir = 1;
+		if(dir==0){
+			var l = (waves.zoom_end - waves.zoom_start);
+			//the stripe is faster to drag l-r on when zoomed in than the big wave
+			var p = 0.75/waves.width;
+			p *= dx;
+			waves.zoom_start += p;
+			waves.zoom_start = Math.min(Math.max(0,waves.zoom_start),1-l);
+			waves.zoom_end = waves.zoom_start + l;
+			waves.drag_start_y = usermouse.y;
+			waves.drag_start_x = usermouse.x;
+		}else{
+			var l = (waves.zoom_end - waves.zoom_start);
+			var xx = (usermouse.x-fontheight*1.1-9)/waves.width;
+			dy*=0.01;
+			waves.zoom_start += l*xx*dy;
+			waves.zoom_end -= l*(1-xx)*dy;
+			waves.zoom_end = Math.max(waves.zoom_start+0.00001,waves.zoom_end);
+			waves.zoom_end = Math.min(waves.zoom_end, 1);
+			waves.zoom_start = Math.min(waves.zoom_end-0.00001,waves.zoom_start);
+			waves.zoom_start = Math.max(waves.zoom_start,0);
+			waves.zoom_scale = 1/(waves.zoom_end - waves.zoom_start);
+			waves.drag_start_x = usermouse.x;
+			waves.drag_start_y = usermouse.y;
+		}
+		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
+			draw_wave_z[waves.selected] = [[],[],[],[]];
+		}
+		redraw_flag.flag |= 4;
 	}
-	if(value=="get"){
+	
+	/*if(value=="get"){
 		var skew = usermouse.x / mainwindow_width;
 		var wl = waves.zoom_end - waves.zoom_start;
 		var wzs = waves.zoom_start;
@@ -2931,7 +3279,7 @@ function wave_stripe_click(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
@@ -2961,13 +3309,15 @@ function wave_stripe_click(parameter,value){
 		}else if(waves.zoom_end > 1){
 			waves.zoom_start -= (waves.zoom_end-1);
 			if(waves.zoom_start<0)waves.zoom_start=0;
-			waves_zoom_end = 1;
+			waves.zoom_end = 1;
 		}
 		if((wze!=waves.zoom_end)||(wzs!=waves.zoom_start)){
 			draw_wave_z[waves.selected] = [[],[],[],[]];
 		}
-	}
+	}*/
 }
+
+
 
 function delete_wave(parameter,value){
 	post("\n\n\n\ndeleting slot number",parameter)
@@ -2975,7 +3325,12 @@ function delete_wave(parameter,value){
 	waves_dict.setparse("waves["+t+"]","{}");
 	waves.selected = -1;
 	messnamed("waves_buffers",parameter,"clearlow");
-	redraw_flag.flag = 4;
+	clear_wave_graphic_z(parameter);
+	redraw_flag.flag |= 4;
+}
+
+function copy_wave(parameter,value){
+	error("\nsorry not implemented yet");
 }
 
 function undo_button(){
@@ -3007,19 +3362,27 @@ function redo_button(){
 	rsz--;
 	if(rsz<0) return -1;
 	undo = redo_stack.get("history["+rsz+"]");
-	post("\nredo:",undo.stringify());
-	var usz=undo_stack.getsize("history")|0;
-	undo_stack.append("history","*");
-	usz--;
-	undo_stack.replace("history["+usz+"]",undo);
-	redo_stack.remove("history["+rsz+"]");
-	blocks_paste(1,undo);
-	undo.parse("{}");
-	//undoing = 0;	
+	if((undo==null)||(undo=="*")){
+		redo_stack.remove("history["+rsz+"]");
+		redo_button();
+	}else{
+		undoing = 2;
+		post("\nredo:",undo.stringify());
+		if(undo.contains("actions")){
+			var usz=undo_stack.getsize("history")|0;
+			undo_stack.append("history","*");
+			usz--;
+			undo_stack.replace("history["+usz+"]",undo);
+		}
+		redo_stack.remove("history["+rsz+"]");
+		blocks_paste(1,undo);
+		undo.parse("{}");
+	} 
+	undoing = 0;
 }
 
 function delete_selection(){
-	if(!undoing){
+	if(undoing!=1){
 		copy_selection(undo);
 		var usz=undo_stack.getsize("history")|0;
 		usz = Math.max(0,usz);
@@ -3148,9 +3511,14 @@ function key_escape(){
 			set_display_mode("blocks");
 		}
 	}else if((displaymode=="waves")&&(waves.selected!=-1)){
-		waves.selected=-1;
+		clear_wave_graphic(waves.selected+1,1);
+		waves.selected = -1;
 		redraw_flag.flag |= 4;
 	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
+		if((last_displaymode!="blocks")&&(last_displaymode!="panels")){
+			post("\ndon't want to return to:",last_displaymode,"mode so i'm going to blocks instead");
+			last_displaymode="blocks";
+		}
 		set_display_mode(last_displaymode);
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
@@ -3286,9 +3654,8 @@ function cut_selection(){
 	delete_selection();
 }
 function file_menu_arrows(dir){
-	var df = (sidebar.files_page == "templates")|0;
 	currentsong+=dir;
-	currentsong = (currentsong + songlist[df].length) % (songlist[df].length);
+	currentsong = (currentsong + songlist.length) % (songlist.length);
 	redraw_flag.flag |= 2;
 }
 
@@ -3341,6 +3708,7 @@ function conn_set_to_input(c,value){
 			if(new_connection.get("conversion::offset2")==0) new_connection.replace("conversion::offset2",0.5);
 			if(new_connection.get("conversion::offset2")==1) new_connection.replace("conversion::offset2",0.5);
 		}else{
+			if(new_connection.get("conversion::offset")==0) new_connection.replace("conversion::offset",0.5);
 			if(new_connection.get("conversion::vector")==0.25) new_connection.replace("conversion::vector",0);
 			if(new_connection.get("conversion::offset2")==1) new_connection.replace("conversion::offset2",0.5);
 		}
@@ -3363,7 +3731,7 @@ function convert_matrix_to_regular(cno, channels){
 	remove_connection(cno);
 	connections.replace("connections["+cno+"]",new_connection);
 	make_connection(cno,0);
-	block_and_wire_colours();
+	redraw_flag.flag |= 8; //block_and_wire_colours();
 	sidebar_select_connection(cno);
 }
 
@@ -3374,7 +3742,7 @@ function convert_regular_to_matrix(cno, channels){
 	remove_connection(cno);
 	connections.replace("connections["+cno+"]",new_connection);
 	make_connection(cno,0);
-	block_and_wire_colours();
+	redraw_flag.flag |= 8; //block_and_wire_colours();
 	sidebar_select_connection(cno);
 }
 
@@ -3429,6 +3797,25 @@ function type_to_search(key){
 		var type_order = config.get("type_order");
 		var types = blocktypes.getkeys();
 		var results = [];
+		var found =0;
+		for(var i=0;i<menu.cubecount;i++){
+			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			}else{
+				var str = types[i];
+				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
+				str = str.toLowerCase();
+				while(str.indexOf(".")>=0) str = str.replace(".","");
+				if(str.indexOf(menu.search)!=-1){
+					found=1;
+					break;
+				}
+			}
+		}
+		if((found==0)&&(menu.search.length>0)){
+			type_to_search(-7);
+			return 0;
+		}
+		
 		for(var i=0;i<menu.cubecount;i++){
 			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 			}else{
@@ -3590,7 +3977,7 @@ function block_search_typing(key){
 			}
 			ch |= (selected.block[i]!=t);
 		}
-		if(ch) block_and_wire_colours();
+		if(ch) redraw_flag.flag |= 8; //block_and_wire_colours();
 	}
 	redraw_flag.flag |=2;
 }
@@ -3722,22 +4109,21 @@ function automap_c_click(p,v){
 	}
 }
 function automap_q_click(p,v){
-	/*if(usermouse.ctrl){
-		select_block_by_name("core.input.keyboard");
-	}else{*/
+	if(usermouse.ctrl){
+		automap.q_gain = -automap.q_gain;
+		set_automap_q(automap.q_gain);
+		automap.lock_q=0;
+		redraw_flag.flag |= 2;
+		// post("\ntoggled mute cue",automap.q_gain);
+	}else{
 		//lock
 		if(v==-1){
 			automap.lock_q = 1 - automap.lock_q;
 		}else{
 			automap.lock_q = (v!=0);
 		}
-		redraw_flag.flag = 2;
-		/*if(automap.lock_q==0){
-			var mq = automap.mapped_q.split(".");
-
-			if(sidebar.selected!=automap.mapped_q) automap.mapped_q = -1;
-		}*/
-	//}
+		redraw_flag.flag |= 2;
+	}
 }
 
 function conn_assign_controller_moved(type,number){
@@ -3850,6 +4236,7 @@ function toggle_automap_c_enable(){
 	//post("\nauto",automap.available_c,automap.mapped_c);
 	if(automap.available_c>-1){
 		automap.mapped_c=-1;
+		automap.voice_c = automap.available_c;
 		automap.available_c=-1;
 		automap.lock_c=0;
 		for(var i=0;i<MAX_BLOCKS;i++){
@@ -3870,8 +4257,7 @@ function toggle_automap_c_enable(){
 					parameter_value_buffer.poke(1, MAX_PARAMETERS*i+1,0.8);
 					//post("\non",i);
 					break;
-				}
-				
+				}	
 			}
 		}else{
 			automap.voice_c = new_block("core.input.control.auto", blocks_page.leftmost-1, blocks_page.highest+1);
@@ -3883,7 +4269,21 @@ function toggle_automap_c_enable(){
 }
 
 function automap_direct_to_core(knob,value){
-	if(displaymode == "block_menu"){
+	if(displaymode == "waves"){
+		if(knob==0){
+			if(waves.selected==-1){
+				scroll_waves(-0.2*value, "rel");
+			}else{
+				zoom_waves(10*value,"zoom");
+			}
+		}else{
+			zoom_waves(10*value,"pan");
+			/*var os = usermouse.shift;
+			usermouse.shift=1;
+			mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
+			usermouse.shift=os;*/
+		}
+	}else if(displaymode == "block_menu"){
 		mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
 	}else if(sidebar.mode=="file_menu"){
 		automap.scroll_accumulator += value*0.25;

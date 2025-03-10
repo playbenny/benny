@@ -4,15 +4,51 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 3,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 238.0, 206.0, 1061.0, 595.0 ],
+		"rect" : [ 92.0, 353.0, 1061.0, 595.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 376.0, 82.0, 150.0, 34.0 ],
+					"text" : "totalmix crashes if you set it higher than 32?"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "int", "int" ],
+					"patching_rect" : [ 298.0, 114.0, 74.0, 22.0 ],
+					"text" : "minimum 32"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 106.0, 29.0, 180.0, 22.0 ],
+					"text" : "num_inputs 14, num_outputs 32"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-3",
 					"linecount" : 2,
@@ -47,7 +83,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 3,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -649,14 +685,10 @@
 
 							}
  ],
-						"originid" : "pat-3784"
+						"originid" : "pat-4154"
 					}
 ,
 					"patching_rect" : [ 437.0, 317.0, 187.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p set_connection_vol_and_phase"
 				}
 
@@ -673,7 +705,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 3,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -895,14 +927,10 @@
 
 							}
  ],
-						"originid" : "pat-3786"
+						"originid" : "pat-4156"
 					}
 ,
 					"patching_rect" : [ 437.0, 224.0, 79.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p quick_clear"
 				}
 
@@ -918,7 +946,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 3,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1173,14 +1201,10 @@
 
 							}
  ],
-						"originid" : "pat-3788"
+						"originid" : "pat-4158"
 					}
 ,
 					"patching_rect" : [ 264.0, 224.0, 165.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p keep_track_of_connections"
 				}
 
@@ -1221,7 +1245,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 3,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1384,14 +1408,10 @@
 
 							}
  ],
-						"originid" : "pat-3790"
+						"originid" : "pat-4160"
 					}
 ,
 					"patching_rect" : [ 89.0, 224.0, 131.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p rme_vol_fader_curve"
 				}
 
@@ -1416,8 +1436,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 677.0, 333.0, 24.0, 24.0 ],
-					"svg" : ""
+					"patching_rect" : [ 677.0, 333.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -1572,7 +1591,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 298.0, 74.0, 150.0, 48.0 ],
+					"patching_rect" : [ 213.0, 56.0, 150.0, 48.0 ],
 					"text" : "DONT CALL RESET until you have number of inputs, outputs"
 				}
 
@@ -1589,7 +1608,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 3,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1597,6 +1616,7 @@
 						"classnamespace" : "box",
 						"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-13",
@@ -2466,7 +2486,7 @@
 									"maxclass" : "inlet",
 									"numinlets" : 0,
 									"numoutlets" : 1,
-									"outlettype" : [ "" ],
+									"outlettype" : [ "int" ],
 									"patching_rect" : [ 682.0, 65.0, 30.0, 30.0 ]
 								}
 
@@ -3239,14 +3259,10 @@
 
 							}
  ],
-						"originid" : "pat-3792"
+						"originid" : "pat-4162"
 					}
 ,
 					"patching_rect" : [ 677.0, 165.0, 94.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"globalpatchername" : ""
-					}
-,
 					"text" : "p init_and_reset"
 				}
 
@@ -3293,8 +3309,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 677.0, 205.0, 24.0, 24.0 ],
-					"svg" : ""
+					"patching_rect" : [ 677.0, 205.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -3434,22 +3449,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"order" : 1,
-					"source" : [ "obj-197", 4 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-183", 3 ],
-					"order" : 0,
-					"source" : [ "obj-197", 4 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-183", 2 ],
 					"order" : 0,
 					"source" : [ "obj-197", 3 ]
@@ -3482,6 +3481,13 @@
 					"destination" : [ "obj-220", 0 ],
 					"order" : 1,
 					"source" : [ "obj-197", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-197", 4 ]
 				}
 
 			}
@@ -3629,8 +3635,31 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-197", 0 ],
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-57", 0 ],
 					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"order" : 1,
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-183", 3 ],
+					"order" : 0,
+					"source" : [ "obj-5", 0 ]
 				}
 
 			}
@@ -3642,7 +3671,7 @@
 
 			}
  ],
-		"originid" : "pat-3782",
+		"originid" : "pat-4152",
 		"oscreceiveudpport" : 0
 	}
 

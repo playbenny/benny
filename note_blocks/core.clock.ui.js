@@ -34,7 +34,7 @@ function setup(x1,y1,x2,y2,sw){
 	}
 	//MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	//beats_per_bar = Math.floor(2 + 9*parameter_value_buffer.peek(1, MAX_PARAMETERS*block + 10));
-	width = x2-x1-1-(width<300);
+	width = x2-x1-(width<300);
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;

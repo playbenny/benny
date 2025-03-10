@@ -140,17 +140,19 @@ function picker_hover_and_special(id){
 function mouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
 	usermouse.qlb = leftbutton;
-	//deferred_diag.push("mouse"+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
+	// deferred_diag.push("mouse"+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
 }
 
 function mouseidle(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(!usermouse.qlb){
 		usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
 		usermouse.qlb = leftbutton;
-		//deferred_diag.push("idle    "+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
-	}/*else{
+		// deferred_diag.push("idle    "+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
+	}else{
 		deferred_diag.push("idle during click??????");
-	}*/
+		usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
+		usermouse.qlb = leftbutton; //nb previously, these two lines weren't here, these messages were dumped, but now i only see them when a mouse release has failed to register
+	}
 }
 
 function mouseidleout(x,y,leftbutton,ctrl,shift,caps,alt,e){
@@ -183,11 +185,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	usermouse.last.x = x;
 	usermouse.last.y = y; //these two aren't like the others, just used for special input - jogwheel
 	usermouse.shift = shift;
+	usermouse.scroll = 0;
+	
 	if(usermouse.ctrl != ctrl){
 		usermouse.ctrl = ctrl;
 		if((ctrl==0)&&usermouse.ctrl_voice_select){//reverts to just block selected
 			sidebar.selected_voice = -1;
-			if(displaymode=="blocks")redraw_flag.flag |= 4;
+			if(displaymode=="blocks"){
+				redraw_flag.flag |= 10;
+			}
 		}	
 		/*if(sidebar.mode == "file_menu")*/ redraw_flag.flag |= 2;
 	}
@@ -408,13 +414,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								static_mod_adjust(pb,0);
 								usermouse.alt = 1;
 								redraw_flag.flag=2;
-							}/*else if(usermouse.ctrl == 1){
-								if(usermouse.shift == 1){
-									set_sidebar_mode("panel_assign");
-								}else{
-									set_sidebar_mode("flock");
-								}
-							}*/else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
+							}else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = static_mod_adjust(pb,"get");
@@ -542,7 +542,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
-					if((usermouse.ids[0] == "background") && (bulgeamount>0.5)){
+					if((usermouse.ids[0] == "background") && (bulgeamount>0.5) && (bulgeamount<1)){
 						usermouse.ids = ["wires", bulgingwire, 0];
 						// post("\nset to last wire not background");
 					}
@@ -714,7 +714,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								redraw_flag.flag=4;
 							}
 						}
-						block_and_wire_colours();
+						redraw_flag.flag |= 8; //block_and_wire_colours();
 						usermouse.clicked3d = -1;
 						usermouse.ids[0]="done";
 					}else if(displaymode=="flocks"){
@@ -724,7 +724,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 							selected.block[usermouse.ids[1]]=1;
 							sidebar.selected_voice = -1;
-							set_sidebar_mode("settings");
+							set_sidebar_mode("block");
 							redraw_flag.flag|=10;
 						}
 					}
@@ -1014,6 +1014,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//write_wire_matrix(usermouse.drag.dragging.connections[t]);
 										}
 										write_wires_matrix();
+										redraw_flag.matrices &= 253;
 									}
 								}
 							}	
@@ -1168,7 +1169,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	usermouse.y = y;
 	usermouse.last.x = x;
 	usermouse.last.y = y;
-
+	usermouse.scroll = scroll;
 	var tcell;
 	
 	if(usermouse.sidebar_scrolling != null){
@@ -1206,14 +1207,15 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 						if(selected.wire[bulgingwire]!=1){
 							for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
 							selected.wire[bulgingwire]=1;
-							block_and_wire_colours();
-							redraw_flag.flag |= 2;
+							//redraw_flag.flag |= 8; //block_and_wire_colours();
+							//redraw_flag.flag |= 2;
+							redraw_flag.flag |= 10;
 						}
 					}else{
 						for(var si=0;si<selected.block.length;si++) selected.block[si]=0;
 						for(var si=0;si<selected.wire.length;si++) selected.wire[si]=0;
 						selected.wire[bulgingwire]=1;
-						block_and_wire_colours();
+						redraw_flag.flag |= 8; //block_and_wire_colours();
 						redraw_flag.flag |= 2;
 					}
 				} //todo? ctrl-scroll a block

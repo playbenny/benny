@@ -11,7 +11,7 @@
 		"connections" : {
 			"out" : {
 				"midi" : [ "notes", "pressure" ],
-				"parameters" : ["bend", "bend-", "bend+", "modulation", "sustain" ]
+				"parameters" : ["bend", "bend-", "bend+", "modulation", "sustain", "breath (cc2)", "volume (cc7)", "expression (cc11)", "other ccs" ]
 			}
 		},
 		"groups" : [

@@ -257,15 +257,15 @@
 
 		}
 ,
-		"hardware.fx_boy" : 		{
+		"hardware.filter.xtreme" : 		{
 			"type" : "hardware",
-			"help_text" : "FX boy!",
+			"help_text" : "doepfer xtreme(!) filter",
 			"exclusive" : 1,
 			"max_polyphony" : 1,
-			"substitute" : "fx.wavefold",
+			"substitute" : 59,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "X", "Y" ],
+					"hardware" : [ "in LP", "in HP", "cutoff" ],
 					"hardware_channels" : [ 8, 23, 24 ]
 				}
 ,
@@ -374,7 +374,7 @@
 					"hardware_channels" : [ 9, 10, 19 ],
 					"midi" : [ "lpg" ],
 					"midi_channels" : [ 2 ],
-					"midi_ranges" : [ [ "jsobject", -1266636810283968 ] ]
+					"midi_ranges" : [ [ "jsobject", -1266634963375728 ] ]
 				}
 ,
 				"out" : 				{
@@ -410,7 +410,7 @@
 			"connections" : 			{
 				"in" : 				{
 					"hardware" : [ "out", "out" ],
-					"hardware_channels" : [ 25, 26 ]
+					"hardware_channels" : [ 33, 34 ]
 				}
 
 			}

@@ -24,11 +24,10 @@ function loadbang(){
 	}else{
 		userconfigfile.close();
 		userconfigfile.freepeer();
-		post("\n-------------\nfirst run. hello!\nsetting songs folder and templates folder, you can change these in the file menu.");
+		post("\n-------------\nfirst run. hello!\nsetting songs folder, you can change this in the file menu.");
 		var newuserconfig = new Dict;
 		newuserconfig.parse("{}");
 		newuserconfig.replace("last_hardware_config","no_hardware.json");
-		newuserconfig.replace("TEMPLATES_FOLDER", "templates");
 		newuserconfig.replace("SONGS_FOLDER", "demosongs");
 		newuserconfig.replace("glow", 0.2);
 		newuserconfig.export_json(projectpath+"userconfig.json");
@@ -195,6 +194,8 @@ function initialise_dictionaries(hardware_file){
 	METER_TINT = config.get("METER_TINT");
 	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
 	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
+	sidebar.scopes.midinames= config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
+	
 	automap.mouse_follow = config.get("AUTOMAP_MOUSE_FOLLOW");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
@@ -218,8 +219,8 @@ function initialise_dictionaries(hardware_file){
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
-		emptys= emptys+",{}";
 	}
+	emptys= emptys+",{}"; //this was one line higher to make a bigger set of empty entries, which we don't need now.
 	//for(i=0;i<=MAX_WAVES;i++)	
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
 
@@ -300,14 +301,8 @@ function initialise_dictionaries(hardware_file){
 		post("\songs folder is ",SONGS_FOLDER);
 	}	
 	read_songs_folder("songs");
-	
-	TEMPLATES_FOLDER = config.get("TEMPLATES_FOLDER");
-	if((projectpath!="")&&(TEMPLATES_FOLDER.indexOf("/")==-1)){
-		TEMPLATES_FOLDER = projectpath + TEMPLATES_FOLDER;
-		post("\ntemplates folder is ",TEMPLATES_FOLDER);
-	}
-	read_songs_folder("templates");	
-			
+	if(startup_loadfile=="autoload") read_songs_folder("templates");
+
 	preload_task = new Task(preload_all_waves, this);
 	preload_task.schedule(100);
 
@@ -423,6 +418,8 @@ function initialise_graphics() {
 }
 
 function stop_graphics(){
+	if(fullscreen) world.message("fullscreen",0);
+	fullscreen = 0;
 	lcd_main.message("brgb",0,0,0);
 	lcd_main.message("clear");
 	lcd_main.message("bang");
@@ -525,7 +522,15 @@ function import_hardware(v){
 			ob = d.get(keys[i]+"::output_block");
 			d3.setparse('{}');
 			d3.import_json(projectpath+"output_blocks/"+ob+".json");
-			
+			var d4 = d3.get(ob);
+			var d4k=d4.getkeys();
+			// post("\nd4k:",d4k);
+			for(t=0;t<d4k.length;t++){
+				if((d4k[t]!="parameters")&&(d4k[t]!="panel")&&(d4k[t]!="connections")&&(d4k[t]!="type")&&(d4k[t]!="patcher")&&(d4k[t]!="max_polyphony")){
+					post("\ncopied output block key:",d4k[t]);
+					blocktypes.set(keys[i]+"::"+d4k[t],d4.get(d4k[t]));
+				}
+			}
 			if(d3.contains(ob+"::parameters")){
 				if(d3.contains(ob+"::groups")){
 					blocktypes.set(keys[i]+"::groups");
@@ -541,7 +546,6 @@ function import_hardware(v){
 					blocktypes.set(keys[i]+"::panel",d3.get(ob+"::panel"));
 				}
 				//post("found output block parameters\n");
-				//blocktypes.set(keys[i]+"::connections",d3.get(ob+"connections"));
 				blocktypes.set(keys[i]+"::parameters");
 				blocktypes.append(keys[i]+"::parameters");
 				var plist= d3.getsize(ob+"::parameters");
@@ -551,7 +555,7 @@ function import_hardware(v){
 					p_type = d4.get("type");
 					p_values = d4.get("values");
 					write_parameter_info_buffer(p_values,p_type,MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
-					post("\nopb,",MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
+					// post("\nopb,",MAX_PARAMETERS*(MAX_BLOCKS+i)+t);
 					blocktypes.setparse(keys[i]+"::parameters["+t+"]","{}");
 					blocktypes.set(keys[i]+"::parameters["+t+"]",d4);
 					if(t+1<plist)blocktypes.append(keys[i]+"::parameters","*");
@@ -571,18 +575,6 @@ function import_hardware(v){
 					output_blocks[hch] = ob;
 				}
 				if(ch[t]>MAX_USED_AUDIO_OUTPUTS) MAX_USED_AUDIO_OUTPUTS = ch[t];
-			}
-			if((d.contains(keys[i]+"::cue_out"))&&(d.get(keys[i]+"::cue_out")==1)){
-				automap.available_q = ch;
-				post("\ncue out is on channel(s)",ch);
-			}
-			if((d.contains(keys[i]+"::click_out"))&&(d.get(keys[i]+"::click_out") == 1)){
-				post("\nfound click out");
-				var clickdac = this.patcher.newdefault(90,208, "dac~", ch);
-				clickdac.message("sendbox", "varname", "click_output");
-				click_enabled = 1;
-				var global_transport_and_click = this.patcher.getnamed("global_transport_and_click");
-				for(var ccc=0;ccc<ch.length;ccc++) this.patcher.connect(global_transport_and_click, 1, clickdac, ccc);
 			}
 		}
 		if(d.contains(keys[i]+"::connections::out::hardware_channels")){
@@ -660,6 +652,7 @@ function import_hardware(v){
 				if(n.indexOf("hw_rec_")!=-1){
 					this.patcher.remove(oor);
 				}
+				if((n=="q_out")||(n=="q_player")) this.patcher.remove(oor);
 				oor = ooor;
 			}
 		}
@@ -677,6 +670,28 @@ function import_hardware(v){
 					ch[ci] = audioiolists[1].indexOf(ch[ci])+1;
 				}
 				blocktypes.replace(keys[i]+"::connections::in::hardware_channels",ch);
+				if((blocktypes.contains(keys[i]+"::cue_out"))&&(blocktypes.get(keys[i]+"::cue_out")==1)){
+					automap.available_q = ch;
+					post("\ncue out is on channel(s)",ch);
+					waves.q_player = this.patcher.newdefault(950,900, "play~", "waves.1", 2);
+					waves.q_player.message("sendbox", "varname", "q_player");
+					var q_out = this.patcher.newdefault(950,930, "dac~", ch);
+					q_out.message("sendbox","varname","q_out");
+					this.patcher.connect(waves.q_player, 0, q_out, 0);
+					if(Array.isArray(ch)&&(ch.length>1)){
+						this.patcher.connect(waves.q_player, 1, q_out, 1);
+					}else{
+						this.patcher.connect(waves.q_player, 1, q_out, 0);
+					}
+				}
+				if((blocktypes.contains(keys[i]+"::click_out"))&&(blocktypes.get(keys[i]+"::click_out") == 1)){
+					post("\nclick out is on channel(s)",ch);
+					var clickdac = this.patcher.newdefault(90,208, "dac~", ch);
+					clickdac.message("sendbox", "varname", "click_output");
+					click_enabled = 1;
+					var global_transport_and_click = this.patcher.getnamed("global_transport_and_click");
+					for(var ccc=0;ccc<ch.length;ccc++) this.patcher.connect(global_transport_and_click, 1, clickdac, ccc);
+				}
 			}
 			if(blocktypes.contains(keys[i]+"::connections::out::hardware_channels")){
 				var ch = blocktypes.get(keys[i]+"::connections::out::hardware_channels");
@@ -758,7 +773,9 @@ function import_hardware(v){
 			loading.wait=1;
 			loading.songname = "autoload";
 			import_song();	
-		}	
+		}else{
+			load_elsewhere(startup_loadfile);
+		}
 	}else{
 		load_elsewhere(startup_loadfile);
 	}
@@ -772,10 +789,10 @@ function import_hardware(v){
 function load_config_colours(){
 	menucolour = config.get("palette::menu");
 	var dimm=0.5;
-	menudark = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	menudark = shadeRGB(menucolour,dimm);
 	state_fade.lastcolour = menudark;
 	dimm=bg_dark_ratio;
-	menudarkest = [ menucolour[0]* dimm, menucolour[1]*dimm, menucolour[2]*dimm ];
+	menudarkest = shadeRGB(menucolour, dimm);
 	var avg = (menucolour[0]+menucolour[1]+menucolour[2])/3;
 	greycolour = [avg,avg,avg];
 	avg *= 0.4;
@@ -873,7 +890,7 @@ function assign_block_colours(){
 							var tc = gps[gp].get("colour");
 							if(!Array.isArray(tc)){
 								var nc = config.get("palette::gamut["+((t2+tc+cll)%cll)+"]::colour");
-								nc = [nc[0]*1.2,nc[1]*1.2,nc[2]*1.2];
+								nc = shadeRGB(nc, 1.2);
 								blocktypes.replace(types[i]+"::groups["+gp+"]::colour",nc);
 							}
 						}
@@ -1076,6 +1093,9 @@ function topbar_size(){
 
 function sidebar_size(){
 	var w = sidebar.width+sidebar.scrollbar_width+6;
+	if((sidebar.mode=="file_menu")||(sidebar.mode=="file_more")){
+		w = fontheight * 15+sidebar.scrollbar_width+6;
+	}
 	var h = sidebar.used_height;
 	if(h==0){
 		sidebar.videoplane.message("enable",0);
@@ -1106,20 +1126,26 @@ function statesbar_size(){
 }
 
 function bottombar_size(){
-	bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-9) : (sidebar.x - 5);
 	if(bottombar.block>-1){
+		var h = bottombar.height;
+		var r = bottombar.right;
+		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
+		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
+		if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
 		var w=bottombar.right - 9 - fontheight;
 		var tw=w/mainwindow_width;
 		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
-		var cy = 1 - 2 * (mainwindow_height - 0.5 * bottombar.height)/mainwindow_height;
-		var th=(bottombar.height)/mainwindow_height;
+		var cy = 1 - 2 * (mainwindow_height - 0.5 * (bottombar.height + 9))/mainwindow_height;
+		var th=(bottombar.height+9)/mainwindow_height;
 		bottombar.videoplane.message("scale",tw,th);
 		bottombar.videoplane.message("position",cx,cy,0);
 		bottombar.videoplane.message("texzoom",1/tw,1/th);
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
-		setup_bottom_bar(bottombar.block);
+		if((h!=bottombar.height)||(r!=bottombar.right)){
+			// ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+			setup_bottom_bar(bottombar.block);
+		}
 		redraw_flag.deferred |= 4;
 	}else{
 		bottombar.videoplane.message("enable",0);

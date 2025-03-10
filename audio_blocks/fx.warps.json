@@ -3,7 +3,7 @@
 		"patcher" : "fx.warps",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Warps module, which lets you smoothly fade between several different algorithms for combining two signals.",
+		"help_text" : "A wrapper for Volker Böhm's port of Émilie Gillet's Warps module, which lets you smoothly fade between several different algorithms for combining two signals. ££In 'easter' mode it acts as a frequency shifter, with algo controlling freq,timbre xfading upper/lower sidebands,level 1 controlling feedback and level 2 xfading dry and wet.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -74,6 +74,7 @@
 				"type" : "menu_b",
 				"force_label" : 1,
 				"values" : ["off", "on"],
+				"nopervoice": 1,
 				"wrap" : 1,
 				"default" : 0.25
 			}

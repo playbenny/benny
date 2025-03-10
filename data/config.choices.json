@@ -8,6 +8,7 @@
 	"mainfont" : "FONT",
 	"sidebar_scrollbar_width" : ["int", 4, 80],
 	"click_buffer_scaledown" : [1,2,3,4],
+	"SIDEBAR_MIDI_SCOPE_NOTE_NAMES" : "TOGGLE",
 	"glow" : ["float", 0, 2],
 	"METER_TINT" : ["float",0,1],
 	"wire_dia" : ["float", 0.01, 1],
