@@ -1974,7 +1974,7 @@ function static_mod_adjust_custom_opv_button(parameter,value){ // this version h
 			for(var i=0;i<vl.length;i++){
 				var ov = parameter_static_mod.peek(1,vl[i]*MAX_PARAMETERS+parameter[0]);
 				if(vl[i]!=parameter[2]){
-					if(ov!=0) parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],0);
+					if(ov>=0.5) parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],0);
 				}else{
 					parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],((ov<0.5)|0)*0.99);
 				}
