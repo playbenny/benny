@@ -1,0 +1,96 @@
+{
+	"abb.midi.looper" : {
+		"patcher" : "abb.midi.looper",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ],
+				"automap_poly":0
+			},
+			"out" : {
+				"midi" : [ "looper", "looper + friend", "friend", "midi thru" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0,1,2,3]
+			},
+			{
+				"contains": [4,5,6,7]
+			}
+		],
+		"panel" : {
+			"parameters" : [6,7]
+		},
+		"parameters" : [
+			{
+				"name" : "reset",
+				"type" : "button",
+				"values" : ["firstvoice", "reset", "loopreset"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "bar length",
+				"type" : "menu_l",
+				"values" : ["1 bar", "2 bars", "4 bars", "8 bars", "16 bars"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "input on/off",
+				"type" : "menu_b",
+				"values" : ["loop_input_off", "loop_input_on"],
+				"wrap" : 1,
+				"default" : 0.75
+			},
+			{
+				"name" : "thru on/off",
+				"type" : "menu_b",
+				"values" : ["no thru", "thru"],
+				"wrap" : 1,
+				"default" : 0.75
+			},
+			{
+			"name" : "phase",
+			"type" : "float",
+			"values":["uni", 0, 1, "lin"],
+			"wrap":0,
+			"default": 1
+			},
+			{
+			"name" : "quantise",
+			"type" : "menu_b",
+			"values" : ["unquantised", "16th notes"],
+			"wrap" : 1,
+			"default" : 0.25
+			},
+			{
+			"name" : "shift",
+			"type" : "float",
+			"values" : ["uni", -1, 1, "lin"],
+			"wrap" : 0,
+			"default" : 0.5
+			},
+			{
+			"name" : "friend",
+			"type" : "float",
+			"values" : ["uni", 0, 1, "lin"],
+			"wrap" : 0,
+			"default" : 0
+			},
+			{
+				"name" : "pattern",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

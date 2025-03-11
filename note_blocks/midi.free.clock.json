@@ -10,8 +10,7 @@
 				"midi" : [ "reset in" ]
 			},
 			"out" : {
-				"midi" : [ "clock","output B","output C" ],
-				"midi_scopes_types" : [ 3,3,3 ]
+				"midi" : [ "clock","output B","output C" ]
 			}
 		},
 		"groups" : [
@@ -43,7 +42,6 @@
 			{
 				"name" : "run_while_stopped",
 				"type" : "menu_l",
-				"nopervoice" : 1,
 				"values" : ["run_only_when_playing", "run_always"],
 				"wrap" : 0,
 				"default" : 0

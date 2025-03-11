@@ -11,8 +11,7 @@
 				"midi" : [ "advance", "backwards", "setpos", "resync" ]
 			},
 			"out" : {
-				"midi" : [ "notes" ],
-				"parameters" : [ "pointer" ],
+				"midi" : [ "notes", "pointer" ],
 				"humanise" : 1
 			}
 		},

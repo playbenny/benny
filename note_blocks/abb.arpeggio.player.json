@@ -1,0 +1,144 @@
+{
+	"abb.arpeggio.player" : {
+		"patcher" : "abb.arpeggio.player",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "midi in" ],
+				"automap_poly":0
+			},
+			"out" : {
+				"midi" : [ "midiout" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0,1,2,3]
+			},
+			{
+				"contains": [4,5,6,7]
+			},
+			{
+				"contains": [8,9,10,11]
+			},
+			{
+				"contains": [12,13,14]
+			}
+		],
+		"panel" : {
+			"parameters" : [1,3,4,7]
+		},
+		"parameters" : [
+			{
+				"name" : "pitch",
+				"type" : "float",
+			    "values":["uni", 0, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0
+			},
+            {
+				"name" : "speed",
+                "type"	: "int",
+				"values" : ["uni", 1, 7, "lin"],
+				"wrap" : 0,
+				"default" : 0.65
+			},
+            {
+				"name" : "division",
+				"type" : "menu_b",
+				"values" : ["even", "odd"],
+				"wrap" : 1,
+				"default" : 0.25
+            },
+            {
+				"name" : "free clock",
+				"type" : "float",
+			    "values":["bi", -1, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0.5
+			},
+            {
+				"name" : "steps",
+                "type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+            {
+				"name" : "gap",
+                "type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "direction",
+				"type" : "menu_b",
+				"values" : ["up", "down","updown","random"],
+				"wrap" : 1,
+				"default" : 0
+            },
+            {
+				"name" : "history",
+                "type"	: "int",
+				"values" : ["uni", 1, 20, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+            {
+				"name" : "swing",
+				"type" : "float",
+			    "values":["bi", -1, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0.5
+			},
+			{
+				"name" : "nudge",
+				"type" : "float",
+			    "values":["bi", -1, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0.5
+			},
+            {
+				"name" : "compress",
+                "type"	: "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+			    "values":["uni", 0, 1, "lin"],
+			    "wrap":0,
+		    	"default": 1
+			},
+            {
+				"name" : "density",
+                "type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+            {
+				"name" : "phase",
+                "type"	: "int",
+				"values" : ["uni", 0, 7, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "bunch",
+				"type" : "float",
+			    "values":["uni", 0, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0
+			}
+		]
+	}
+}

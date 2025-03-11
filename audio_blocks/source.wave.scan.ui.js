@@ -23,12 +23,10 @@ var o_w=-1;
 function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little fx/waveform hint window bottom right
 //	post("drawing sequencers");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	MAX_WAVES = config.get("MAX_WAVES");
 	width = x2-x1;
 	if(width != o_w){
 		for(var i=0;i<v_list.length;i++) {
-			var wave = 1+ Math.floor(MAX_WAVES*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i],1));
-			// post("\nui triggered clear,",wave);
+			wave = 1+ Math.floor(MAX_WAVES*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i],1));
 			messnamed("to_blockmanager","clear_wave_graphic",wave,width);
 		}
 		o_w = width;
@@ -41,31 +39,11 @@ function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little f
 	if(block>=0){
 		v_list = map.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
-		draw(1);
+		draw();
 	}
 }
 
 function draw(){
-	update(1);
-}
-
-function mouse(x,y,l,s,a,c,scr){
-	post("\nmouse",x,y,l,s,a,c,scr);
-	if((x>=x_pos)&&(x<=x_pos+width)){
-		if((y>=y_pos)&&(y<=y_pos+height)){
-			var tx=x-x_pos;
-			tx/=width; //this next line checks for modulation - any difference between voice value and block value, and inverts that so that you get what you clicked. if possible.
-			post("==",tx);
-			
-			var rx = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[0]+7)-parameter_value_buffer.peek(1, MAX_PARAMETERS*block+7);
-			if(rx==NaN) rx = 0;
-			if(rx!=0) post("\ncurrent diff is:",rx,"you want",tx,"so i'll set it to",tx-rx);
-			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+7,Math.min(1,Math.max(0,tx-rx)));
-			voice_parameter_buffer.poke(1, MAX_PARAMETERS*v_list[0]+7,tx);
-		}
-	}
-}
-function update(force){
 	if(block>=0){
 		var i;
 		//var c,r,ph,rr,rc,fc;
@@ -76,12 +54,30 @@ function update(force){
 			//need to find out if highlight has changed, only draw if it has.
 			wave = 1+ Math.floor(MAX_WAVES*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i],1));
 			highlight = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7,1);
-			if(force||(o_hl[i]!=highlight)){
+			if(o_hl[i]!=highlight){
 				o_hl[i]=highlight;
 				outlet(0, "custom_ui_element","waveform_slice_highlight",x_pos, y_pos, width+x_pos, (1+i)*unit+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block+1,wave,highlight); 
 			}
 		}
 	}
+}
+
+function mouse(x,y,l,s,a,c,scr){
+	//post("\nmouse",x,y,l,s,a,c,scr);
+	if((x>=x_pos)&&(x<=x_pos+width)){
+		if((y>=y_pos)&&(y<=y_pos+height)){
+			var tx=x-x_pos;
+			tx/=width; //this next line checks for modulation - any difference between voice value and block value, and inverts that so that you get what you clicked. if possible.
+			var rx = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[0]+7)-parameter_value_buffer.peek(1, MAX_PARAMETERS*block+7);
+			if(rx==NaN) rx = 0;
+			if(rx!=0) post("\ncurrent diff is:",rx,"you want",tx,"so i'll set it to",tx-rx);
+			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+7,Math.min(1,Math.max(0,tx-rx)));
+			voice_parameter_buffer.poke(1, MAX_PARAMETERS*v_list[0]+7,tx);
+		}
+	}
+}
+function update(){
+	draw();
 }
 
 function keydown(){}

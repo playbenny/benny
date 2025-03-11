@@ -9,8 +9,7 @@
 				"midi" : [ "trigger in", "reset+ornament in" ]
 			},
 			"out" : {
-				"midi" : [ "notes out", "ornament notifier" ],
-				"midi_scopes_types" : [ 0,1 ]
+				"midi" : [ "notes out", "ornament notifier" ]
 			}
 		},
 		"groups" : [

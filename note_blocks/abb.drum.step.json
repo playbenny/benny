@@ -1,0 +1,79 @@
+{
+	"abb.drum.step" : {
+		"patcher" : "abb.drum.step",
+		"type" : "note",
+		"block_ui_patcher" : "abb.drum.step.ui",
+		"ui_in_sidebar_height" : 2,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "note in" ]
+			},
+			"out" : {
+				"midi" : [ "Drum 1", "Drum 2", "Drum 3" ]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0, 1, 2],
+				"header"	: "Drum 1"
+			},
+			{ 
+				"contains" : [3, 4, 5],
+				"header"	: "Drum 2"
+			}
+			
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3, 4, 5]
+		},
+		"parameters" : [
+			{
+                "name" : "Density",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.15
+			},
+			{
+                "name" : "Phase",
+				"type"	: "int",
+				"values" : ["uni", 0, 7, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+                "name" : "Bunch",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+                "name" : "Density",
+				"type"	: "int",
+				"values" : ["uni", 0, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.15
+			},
+			{
+                "name" : "Phase",
+				"type"	: "int",
+				"values" : ["uni", 0, 7, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+                "name" : "Bunch",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 1,
+				"default" : 0
+			}
+			
+		]
+	}
+}

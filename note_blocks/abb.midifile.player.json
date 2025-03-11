@@ -1,0 +1,86 @@
+{
+	"abb.midifile.player" : {
+		"patcher" : "abb.midifile.player",
+		"type" : "note",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "new note",
+        "block_ui_patcher"	:	"self",
+		"max_polyphony" : 1,
+		"connections" : {
+			"out" : {
+				"midi" : [ "midifile output"]
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0,1,2]
+			},
+			{
+				"contains": [3,4,5,6,7]
+			}
+		],
+		"panel" : {
+			"parameters" : [0,1,2]
+		},
+		"parameters" : [
+			{
+				"name" : "octave",
+                "type"	: "int",
+				"values" : ["uni", -3, 3, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "compress",
+                "type"	: "int",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "level",
+				"type" : "float",
+			    "values":["uni", 0, 1, "lin"],
+			    "wrap":0,
+		    	"default": 1
+			},
+            {
+				"name" : "swing",
+				"type" : "float",
+			    "values":["uni", -1, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0.5
+			},
+            {
+				"name" : "swing div",
+				"type" : "menu_b",
+				"values" : ["16th", "12th", "8th", "6th"],
+				"wrap" : 1,
+				"default" : 0.1
+            },
+            {
+				"name" : "nudge",
+				"type" : "float",
+			    "values":["uni", -1, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0.5
+			},
+            {
+				"name" : "slop",
+				"type" : "float",
+			    "values":["uni", 0, 1, "lin"],
+			    "wrap":0,
+		    	"default": 0
+			},
+			{
+				"name" : "pattern",
+				"type"	: "int",
+				"values" : ["uni", 1, 16, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

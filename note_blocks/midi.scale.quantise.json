@@ -52,7 +52,7 @@
 			{
 				"name" : "output",
 				"type" : "menu_l",
-				"values" : [ "on_every_note in", "only_on_change" ],
+				"values" : [ "on every note in", "only on change" ],
 				"wrap" : 1,
 				"error_scale" : 0,
 				"default" : 0.1

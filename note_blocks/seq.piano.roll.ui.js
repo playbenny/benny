@@ -1257,10 +1257,8 @@ function mouse(x,y,l,s,a,c,scr){
 						dy*=0.01;
 						zoom_start += l*xx*dy;
 						zoom_end -= l*(1-xx)*dy;
-						zoom_end = Math.max(zoom_start+0.00001,zoom_end);
-						zoom_end = Math.min(zoom_end, 1);
-						zoom_start = Math.min(zoom_end-0.00001,zoom_start);
 						zoom_start = Math.max(zoom_start,0);
+						zoom_end = Math.min(zoom_end, 1);
 						zoom_scale = 1/(zoom_end - zoom_start);
 						drag_start_x = x;
 						drag_start_y = y;

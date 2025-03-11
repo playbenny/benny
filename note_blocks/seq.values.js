@@ -24,7 +24,6 @@ var cursors = []; //holds last drawn position of playheads (per row)
 // 3-131? data values
 var notelist = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var menucolour,menudark,block_colour=[0,255,0];
-var change;
 
 function setup(x1,y1,x2,y2,sw){
 //	post("drawing sequencers");
@@ -55,7 +54,7 @@ function draw(){
 			cursors[i]=-1;
 			l[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+3)*127.99)+1;
 			s[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+2)*127.99);
-			p[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7)*15.99);
+			p[i] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*15.99);
 			if(l[i]+s[i]>maxl) maxl = l[i]+s[i];
 		}
 		fulldraw();
@@ -89,14 +88,13 @@ function fulldraw(){
 			}
 		}
 	}
-	change = 0;
 }
 
 function update(){
 	if(block>=0){
 		var r,i;
 		maxl=1;
-		// change = 0;
+		change = 0;
 		for(i=0;i<v_list.length;i++) {
 			//cursors[i]=-1;
 			var pp = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7)*15.99);
@@ -120,8 +118,7 @@ function update(){
 			outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,0,0,0);
 			fulldraw();
 			return 0;
-		}
-		// post("update");		
+		}		
 		for(r=0;r<v_list.length;r++){
 			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
 			if(cursors[r]!=ph){

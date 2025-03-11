@@ -62,7 +62,6 @@
 			{
 				"name" : "follow_global_transport",
 				"type" : "menu_l",
-				"nopervoice" : 1,
 				"values" : ["run_always", "follow_global_transport"],
 				"wrap" : 0,
 				"default" : 0.25
