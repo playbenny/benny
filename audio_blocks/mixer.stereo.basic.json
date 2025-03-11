@@ -37,14 +37,14 @@
 				"height" : 0.6
 			},
 			{ 
-				"contains" : [3],
+				"contains" : [4],
 				"header" : "voicing",
 				"onepervoice" : 1,
 				"height" : 0,
 				"colour" : 25
 			},
 			{ 
-				"contains" : [4], 
+				"contains" : [3], 
 				"onepervoice" : 1,
 				"height" : 0,
 				"colour" : 30

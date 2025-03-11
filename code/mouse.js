@@ -624,7 +624,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
 											makewire=0;
-											sidebar_notification("This block can only be connected to a mix.bus block");
+											sidebar_notification("This block can only be connected to a mixer.bus block");
 										}
 									}
 									if(makewire){
@@ -665,7 +665,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
 											makewire=0;
-											sidebar_notification("This block can only be connected to a mix.bus block");
+											sidebar_notification("This block can only be connected to a mixer.bus block");
 										}
 									}
 									if(makewire){
@@ -955,7 +955,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
 											drawwire=0;
-											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mix.bus block");
+											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mixer.bus block");
 										}else{
 											if(sidebar.mode=="notification") set_sidebar_mode("none");
 										}
