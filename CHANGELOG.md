@@ -1,3 +1,10 @@
+11/03/25:
+- new mixer channel types. there are now stereo- and mono- input variants of 3 different mixer channels, each designed for performable control of one aspect of the sound:
+    - .basic - is the original channel, with eq shape and stereo width set by choosing a preset 'voicing'. amount and freq controls allow fine-tuning, but these are designed to work well together. mono channel has a sidechain input designed for ducking.
+    - .comp - based around a luke abbott multiband compressor design for versatile and live-show-safe dynamic control. the mono version has an optional sidechain in that automatically turns on if you connect something to it. the stereo version works slightly more on the mid channel than the sides.
+    - .tape - has a slightly offset pre and post emphasis eq around airwindows' totape6. with positive amounts it's a boost into the tape saturation and a smaller cut after, leaving a bump with extra harmonic energy. with amount set negative the opposite happens, a shallow wide dip turns into a wide dip with a clean boost in the middle of it that works well for solid clean weight on a part's fundamental. again the mono version of this has a sidechain compressor input.
+- all the mixer blocks are named more logically now (but old songs will adapt automatically).
+
 10/03/25:
 - big update to the **waves section** and related blocks. the waves ui has been made clearer, easier to use and more stable, wave drawing is better, zooming and panning works. playheads are drawn on the main waves page for all the blocks in the set. hopefully this makes it easier to understand what blocks like the multi.sample.player are doing. the waves page can now coexist with the sidebar. there's no longer any limit on the number of waves loaded.
 - if you have a cue output set up in your hardware profile you can cue a wave by clicking and holding on it in the waves section. automapping controllers now control zoom and pan on waves.
