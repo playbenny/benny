@@ -83,14 +83,16 @@ function update(){
 	}
 }
 
+// IN MIXER TAPE 'SHAPE' BECOMES THE FINAL HIGHPASS
+
 
 function check_params_for_changes(){
 	var dr=0;
 	for(var v=0;v<v_list.length;v++){
 		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
-		shape[v] = Math.floor(no_voicings*0.999*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2));
-		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
-		sweep[v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)-2);
+		shape[v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2)+4);
+		amount[v] = -2 + 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
+		sweep[v] = Math.pow(2, 9*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)+2);
 		if((shape[v]!=oshape[v])||(amount[v]!=oamount[v])||(sweep[v]!=osweep[v])) dr = 1;
 	}
 	return dr;
@@ -98,58 +100,41 @@ function check_params_for_changes(){
 
 function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	var h=y2-y1;
-	var voicing = mcv.get(shp);
-	/* the numbers in a voicings list:
-	low: freq, res, -1=hpf, otherwise it's shelf gain
-	mid: f, res, gain (db)
-	high: f, res
-	width */
-	//post("\nvoicing",voicing);
-	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
-	voicing[0] *= swp;
-	voicing[3] *= swp;
-	voicing[6] *= swp;
+	var h=0.5 * (y2-y1-1);
+	var voicing = [ shp, 0.08, Math.pow(swp,0.7), swp, 0.16];
 	var w=x2-x1; // we want to show about 12 octaves, starting at 6Hz, so one pixel is 12/w octaves
 	var step=0.12*w; //Math.pow(2,12/w);
 	var w2 = 0.2 / w;
 	voicing[0] = Math.log(voicing[0]*0.2+0.01)*step; //1/log(2)
 	voicing[3] = Math.log(voicing[3]*0.2+0.01)*step;
-	voicing[6] = Math.log(voicing[6]*0.2+0.01)*step;
+	voicing[2] = Math.log(voicing[2]*0.2+0.01)*step; //this is the dip before the 
 	outlet(1,"frgb",fg);
-	//voicing[2] = Math.pow(2,voicing[2]*0.16667);
-	voicing[5] = Math.pow(2,voicing[5]*0.16667)-1;
+	//voicing[5] = Math.pow(2,voicing[5]*0.16667)-1;
 	for(x=0;x<w;x+=2){
 		var g = 0;
-		if(voicing[2]==-1){//hpf
-			if(x<voicing[0]){
-				var d = (voicing[0]-x);
-				g -= d*d*w2;
-			}
-			//g += voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
-		}else{
-			if(x<voicing[0]){
-				g += voicing[2];
-			}else{
-				var d = x-voicing[0];
-				g += voicing[2]*(Math.pow(2.718,-d*d*0.005*voicing[1]));
-			}
-		}
-		if(voicing[5]!=0){
-			var d = x-voicing[3];
-			g += voicing[5]*Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]));
-		}
-		if(x>=voicing[6]){
-			var d = (x-voicing[6]);
+		var d;
+		// if(voicing[2]==-1){//hpf
+		if(x<voicing[0]){
+			d = (voicing[0]-x);
 			g -= d*d*w2;
+		}else{
+			d = (voicing[0]-x);
+		}
+		g += Math.abs(amnt)*voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
+		if(amnt!=0){
+			var d = x-voicing[3];
+			d *= 0.3+Math.pow(Math.abs(amnt),0.5);
+			g += Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]*amnt))* amnt;
+			d = x-(voicing[2]);
+			d *= 0.4+Math.pow(Math.abs(amnt),0.6);
+			g -= Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]*2*amnt))* amnt*0.75;
 		}
 		g+=1;
-		g = g * amnt + (1-amnt);
-		g *= 0.5 * h;
+		g *=  h;
 		if((x==0)||(g<1)){
-			outlet(1,"moveto",x+x1,y2-Math.max(1,g));
+			outlet(1,"moveto",x+x1,y2-1-Math.max(1,g));
 		}else{
-			outlet(1,"lineto",x+x1,y2-g);
+			outlet(1,"lineto",x+x1,y2-1-Math.min(g,2*h-1));
 		}
 	}
 }
