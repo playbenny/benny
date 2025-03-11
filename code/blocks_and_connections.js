@@ -1459,7 +1459,7 @@ function remove_connection(connection_number){
 				var cused = is_input_used(t_i_no,t_voice,t_block,"audio");
 				
 				//audio_poly.message("setvalue", t_voice + 1 - MAX_NOTE_VOICES, "input_connected",t_i_no,enab);
-				post("\nWATCHED INLET!! notifying audio voice: ",t_voice-MAX_NOTE_VOICES,"input",t_i_no,"state",enab);
+				//post("\nWATCHED INLET!! notifying audio voice: ",t_voice-MAX_NOTE_VOICES,"input",t_i_no,"state",enab);
 			}
 		}
 	}
@@ -2295,7 +2295,7 @@ function make_connection(cno,existing){
 				}
 				if((t_type=="audio")&&(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio_watched"))&&(blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio_watched["+t_i_no+"]")==1)){
 					audio_poly.message("setvalue", t_voice + 1 - MAX_NOTE_VOICES, "input_connected",t_i_no,1); //always 1, whether muted or not, as it represents a 'plug'
-					post("\nWATCHED INLET!! notifying audio voice: ",t_voice-MAX_NOTE_VOICES,"input",t_i_no,"state",1);
+					//post("\nWATCHED INLET!! notifying audio voice: ",t_voice-MAX_NOTE_VOICES,"input",t_i_no,"state",1);
 				}
 			}
 		}
