@@ -88,7 +88,7 @@ function check_params_for_changes(){
 	var dr=0;
 	for(var v=0;v<v_list.length;v++){
 		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
-		shape[v] = Math.floor(no_voicings*0.999*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2));
+		shape[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2);
 		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
 		sweep[v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)-2);
 		if((shape[v]!=oshape[v])||(amount[v]!=oamount[v])||(sweep[v]!=osweep[v])) dr = 1;
@@ -97,8 +97,9 @@ function check_params_for_changes(){
 }
 
 function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+	shp = Math.floor(no_voicings*0.999*shp);
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	var h=y2-y1;
+	var h=y2-y1-1;
 	var voicing = mcv.get(shp);
 	/* the numbers in a voicings list:
 	low: freq, res, -1=hpf, otherwise it's shelf gain
@@ -147,7 +148,7 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 		g = g * amnt + (1-amnt);
 		g *= 0.5 * h;
 		if((x==0)||(g<1)){
-			outlet(1,"moveto",x+x1,y2-Math.max(1,g));
+			outlet(1,"moveto",x+x1,y2-1-Math.max(1,g));
 		}else{
 			outlet(1,"lineto",x+x1,y2-g);
 		}
