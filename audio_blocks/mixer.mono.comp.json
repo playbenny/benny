@@ -11,6 +11,7 @@
 		"connections" : {
 			"in" : { 
 				"audio" : [ "audio in", "sidechain in" ],
+				"audio_watched" : [0,1],
 				"midi" : ["channel mute toggle", "channel solo toggle"]
 			},
 			"out" : {
