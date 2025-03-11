@@ -133,9 +133,14 @@ function update(force){
 					}
 					if((v_type[b][v]=="mixer.mono.basic")||(v_type[b][v]=="mixer.stereo.basic")){
 						if(check_eq_params_for_changes(b,v)||force){
-							// if(v_type[b][v]=="mix.channel") p = 4; // NOTE it does know the channel types so future versions can support many diff channel strips
 							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,0,0,0,3,v_list[b][v],b_list[b],4);
-							draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
+							draw_eq_curve_basic(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
+							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+						}
+					}else if((v_type[b][v]=="mixer.mono.tape")||(v_type[b][v]=="mixer.stereo.tape")){
+						if(check_eq_params_for_changes(b,v)||force){
+							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,0,0,0,3,v_list[b][v],b_list[b],4);
+							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 						}
 					}
@@ -185,11 +190,20 @@ function update(force){
 						osolo[b][v] = solo;
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
 					}
-					if(check_eq_params_for_changes(b,v)||force){
-						outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
-						draw_eq_curve(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
-						oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+					if((v_type[b][v]=="mixer.mono.basic")||(v_type[b][v]=="mixer.stereo.basic")){
+						if(check_eq_params_for_changes(b,v)||force){
+							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
+							draw_eq_curve_basic(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+						}
+					}else if((v_type[b][v]=="mixer.mono.tape")||(v_type[b][v]=="mixer.stereo.tape")){
+						if(check_eq_params_for_changes(b,v)||force){
+							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
+							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+						}
 					}
+
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
 					if((olevel[b][v]!=level[b][v])||force){
 						olevel[b][v] = level[b][v];
@@ -206,9 +220,9 @@ function update(force){
 
 function check_eq_params_for_changes(b,v){
 	var dr=0;
-	shape[b][v] = Math.floor(0.99*no_voicings*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2));
+	shape[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2);
 	amount[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+3);
-	sweep[b][v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4)-2);
+	sweep[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+4);
 	if((shape[b][v]!=oshape[b][v])||(amount[b][v]!=oamount[b][v])||(sweep[b][v]!=osweep[b][v])) dr = 1;
 	return dr;
 }
@@ -235,16 +249,18 @@ function mouse(x,y,leftbutton,shift,alt,ctrl){
 	}
 }
 
-function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+function draw_eq_curve_basic(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+	shp = Math.floor(no_voicings*0.999*shp);
+	swp = Math.pow(2, 4*swp-2);
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	var h=y2-y1;
+	var h=y2-y1-1;
 	var voicing = mcv.get(shp);
 	/* the numbers in a voicings list:
 	low: freq, res, -1=hpf, otherwise it's shelf gain
 	mid: f, res, gain (db)
 	high: f, res
 	width */
-	//post("\nvoicing",shp,"is",voicing);
+	//post("\nvoicing",voicing);
 	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
 	voicing[0] *= swp;
 	voicing[3] *= swp;
@@ -286,14 +302,55 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 		g = g * amnt + (1-amnt);
 		g *= 0.5 * h;
 		if((x==0)||(g<1)){
-			outlet(1,"moveto",x+x1,y2-Math.max(1,g));
+			outlet(1,"moveto",x+x1,y2-1-Math.max(1,g));
 		}else{
 			outlet(1,"lineto",x+x1,y2-g);
 		}
 	}
 }
 
-
+function draw_eq_curve_tape(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+	shp = Math.pow(2, 9*shp+4);
+	swp = Math.pow(2, 9*swp+2);
+	amnt = -2 + 4*amnt;
+	outlet(1,"paintrect",x1,y1,x2,y2,bg);
+	var h=0.5 * (y2-y1-1);
+	var voicing = [ shp, (amnt>0) ? 0.05*amnt*amnt*amnt : -(0.1*amnt*amnt*amnt*amnt*amnt), Math.pow(swp,0.9), swp, 0.1+(0.16*amnt*amnt*amnt*amnt),  Math.abs(amnt)*0.3+0.36,(amnt>0) ? amnt*amnt*0.2 : -amnt*amnt*0.4];
+	var w=x2-x1; // we want to show about 12 octaves, starting at 6Hz, so one pixel is 12/w octaves
+	var step=0.12*w; //Math.pow(2,12/w);
+	var w2 = 0.2 / w;
+	voicing[0] = Math.log(voicing[0]*0.2+0.01)*step; //1/log(2)
+	voicing[3] = Math.log(voicing[3]*0.2+0.01)*step;
+	voicing[2] = Math.log(voicing[2]*0.2+0.01)*step; //this is the dip before the 
+	outlet(1,"frgb",fg);
+	//voicing[5] = Math.pow(2,voicing[5]*0.16667)-1;
+	for(x=0;x<w;x+=2){
+		var g = 0;
+		var d;
+		// if(voicing[2]==-1){//hpf
+		if(x<voicing[0]){
+			d = (voicing[0]-x);
+			g -= d*d*w2;
+		}
+		d = (voicing[0]*0.8-x);
+		g += voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
+		if(amnt!=0){
+			var d = x-voicing[3];
+			d *= 0.3+Math.pow(Math.abs(amnt),0.5);
+			g += Math.pow(2.718, -d*d*0.005*voicing[4])* amnt;
+			d = x-(voicing[2]);
+			// d *= 0.4+Math.pow(Math.abs(amnt),0.6);
+			g -= Math.pow(2.718, -d*d*0.005*voicing[5])* voicing[6];
+		}
+		g += 1;
+		g *=  h;
+		if((x==0)){
+			outlet(1,"moveto",x+x1,y2-1-Math.max(1,g));
+		}else{
+			outlet(1,"lineto",x+x1,y2-1-Math.min(Math.max(1,g),2*h-1));
+		}
+	}
+}
 
 function voice_is(v){
 	block = v;

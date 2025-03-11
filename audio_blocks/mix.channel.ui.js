@@ -60,7 +60,7 @@ function draw(){
 		check_params_for_changes()
 		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
 			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
 			outlet(1,"frgb",255,255,255);
@@ -76,7 +76,7 @@ function update(){
 		var fgc = block_colour;
 		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
 			x+=cw;
 		}
@@ -90,14 +90,15 @@ function check_params_for_changes(){
 		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
 		shape[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2);
 		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
-		sweep[v] = Math.pow(2, 4*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)-2);
+		sweep[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4);
 		if((shape[v]!=oshape[v])||(amount[v]!=oamount[v])||(sweep[v]!=osweep[v])) dr = 1;
 	}
 	return dr;
 }
 
-function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+function draw_eq_curve_basic(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 	shp = Math.floor(no_voicings*0.999*shp);
+	swp = Math.pow(2, 4*swp-2);
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
 	var h=y2-y1-1;
 	var voicing = mcv.get(shp);

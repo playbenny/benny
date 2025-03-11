@@ -47,7 +47,6 @@ function setup(x1,y1,x2,y2,sw){
 	if(block>=0){
 		scan_for_channels();
 		draw();
-
 	}
 }
 
@@ -56,11 +55,10 @@ function draw(){
 		var x=0;
 		var fgc = block_colour;
 		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
-
 		check_params_for_changes()
 		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_tape(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
 			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
 			outlet(1,"frgb",255,255,255);
@@ -76,7 +74,7 @@ function update(){
 		var fgc = block_colour;
 		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_tape(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
 			x+=cw;
 		}
@@ -92,18 +90,19 @@ function check_params_for_changes(){
 		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
 		shape[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2);
 		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
-		sweep[v] = Math.pow(2, 9*voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4)+2);
+		sweep[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4);
 		if((shape[v]!=oshape[v])||(amount[v]!=oamount[v])||(sweep[v]!=osweep[v])) dr = 1;
 	}
 	return dr;
 }
 
-function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
-	shp = Math.pow(2, 4*shp+4);
+function draw_eq_curve_tape(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+	shp = Math.pow(2, 9*shp+4);
+	swp = Math.pow(2, 9*swp+2);
 	amnt = -2 + 4*amnt;
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
 	var h=0.5 * (y2-y1-1);
-	var voicing = [ shp, 0.08, Math.pow(swp,0.7), swp, 0.16];
+	var voicing = [ shp, (amnt>0) ? 0.05*amnt*amnt*amnt : -(0.1*amnt*amnt*amnt*amnt*amnt), Math.pow(swp,0.9), swp, 0.1+(0.16*amnt*amnt*amnt*amnt),  Math.abs(amnt)*0.3+0.36,(amnt>0) ? amnt*amnt*0.2 : -amnt*amnt*0.4];
 	var w=x2-x1; // we want to show about 12 octaves, starting at 6Hz, so one pixel is 12/w octaves
 	var step=0.12*w; //Math.pow(2,12/w);
 	var w2 = 0.2 / w;
@@ -119,24 +118,23 @@ function draw_eq_curve(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 		if(x<voicing[0]){
 			d = (voicing[0]-x);
 			g -= d*d*w2;
-		}else{
-			d = (voicing[0]-x);
 		}
-		g += Math.abs(amnt)*voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
+		d = (voicing[0]*0.8-x);
+		g += voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
 		if(amnt!=0){
 			var d = x-voicing[3];
 			d *= 0.3+Math.pow(Math.abs(amnt),0.5);
-			g += Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]*amnt))* amnt;
+			g += Math.pow(2.718, -d*d*0.005*voicing[4])* amnt;
 			d = x-(voicing[2]);
-			d *= 0.4+Math.pow(Math.abs(amnt),0.6);
-			g -= Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]*2*amnt))* amnt*0.75;
+			// d *= 0.4+Math.pow(Math.abs(amnt),0.6);
+			g -= Math.pow(2.718, -d*d*0.005*voicing[5])* voicing[6];
 		}
-		g+=1;
+		g += 1;
 		g *=  h;
-		if((x==0)||(g<1)){
+		if((x==0)){
 			outlet(1,"moveto",x+x1,y2-1-Math.max(1,g));
 		}else{
-			outlet(1,"lineto",x+x1,y2-1-Math.min(g,2*h-1));
+			outlet(1,"lineto",x+x1,y2-1-Math.min(Math.max(1,g),2*h-1));
 		}
 	}
 }
