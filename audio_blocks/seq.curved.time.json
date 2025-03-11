@@ -4,6 +4,7 @@
 		"type" : "audio",
 		"block_ui_patcher" : "seq.curved.time.ui",
 		"help_text" : "This sequencer is about bending time. It sums the internal phasors and the audio input into a timing signal. When this crosses the thresholds (set as even divisions of the 0-1 range) a trigger is emitted. Using interesting timing signals will create interesting rhythms. You can use the division number or counter outputs to address positions of other sequencers (eg seq.values, note.step, note.tracker..) or use the trigger events as a clock to drive other sequencers (eg shape.player, seq.rene)",
+		"synonyms" : ["divider"],
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"upsample" : 1,
