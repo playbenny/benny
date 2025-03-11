@@ -2380,7 +2380,7 @@ function draw_topbar(){
 					lcd_main.message("paintrect", 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
 					lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
 					for(var nb=0;nb<bna.length;nb++){
-						lcd_main.message("moveto",5+fo1*2,y_o+fo1*(4+3*nb));
+						lcd_main.message("moveto",5+fo1,y_o+fo1*(4+3*nb));
 						lcd_main.message("write",bna[nb]);
 					}
 					if(bottombar.available_blocks[bi] == bottombar.block){ //hide bottombar button

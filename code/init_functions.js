@@ -91,6 +91,7 @@ function systemtypeis(type){
 		config.replace("consolevsts::channel", "Console7Channel");
 		config.replace("consolevsts::cascade", "Console7Cascade");
 		config.replace("consolevsts::crunch", "Console7Crunch");
+		config.replace("consolevsts::tape", "totape6");
 	}
 }
 
