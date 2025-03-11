@@ -260,7 +260,7 @@ function draw_eq_curve_basic(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
 	mid: f, res, gain (db)
 	high: f, res
 	width */
-	//post("\nvoicing",voicing);
+	// post("\nvoicing",shp,"of",no_voicings,"is:",voicing);
 	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
 	voicing[0] *= swp;
 	voicing[3] *= swp;
@@ -370,9 +370,6 @@ function voice_is(v){
 	scan_for_channels();
 	bv = voicemap.get(v);
 	if(Array.isArray(bv)) bv=bv[0];
-	var voicings_list = mcv.getkeys();
-	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
-	no_voicings = voicings_list.length;
 }
 
 function scan_for_channels(){
@@ -486,6 +483,9 @@ function scan_for_channels(){
 		}
 		cw = (width+u1) / cols;
 	}
+	var voicings_list = mcv.getkeys();
+	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
+	no_voicings = voicings_list.length;
 	// post("\nchannel types:",b_type);
 }
 
