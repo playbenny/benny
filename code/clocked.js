@@ -189,6 +189,7 @@ function frameclock(){
 	}else if(displaymode == "waves"){
 		sidebar_meters();
 		if(waves.playheadlist.length>0) draw_playheads();
+		if(bottombar.block>-1)update_bottom_bar();
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){

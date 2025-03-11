@@ -98,7 +98,7 @@
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.25
+				"default" : 0.5
 			},
 			{
 				"name" : "sweep",
