@@ -146,13 +146,14 @@ function update(force){
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 						}
 					}else if((v_type[b][v]=="mixer.mono.comp")||(v_type[b][v]=="mixer.stereo.comp")){
-						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos+unit*4,bgc);
-						var metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v])));
-						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.1)*cw,y_pos-metery,dc);
-						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+1)));
-						outlet(1, "paintrect",x_pos+(x+v+0.1)*cw,y_pos,x_pos+(x+v+0.2)*cw,y_pos-metery,dc);
-						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
-						outlet(1, "paintrect",x_pos+(x+v+0.2)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos-metery,dc);
+						var hh = (height-unit*12);
+						outlet(1, "paintrect",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+0.8)*cw,y_pos+hh,0,0,0);
+						var metery = hh * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v])));
+						outlet(1, "paintrect",x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+0.6)*cw,y_pos-metery,fgc);
+						metery = hh * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+1)));
+						outlet(1, "paintrect",x_pos+(x+v+0.6)*cw,y_pos,x_pos+(x+v+0.7)*cw,y_pos-metery,fgc);
+						metery = hh * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
+						outlet(1, "paintrect",x_pos+(x+v+0.7)*cw,y_pos,x_pos+(x+v+0.8)*cw,y_pos-metery,fgc);
 						/*if(check_eq_params_for_changes(b,v)||force){
 							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
 							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
@@ -216,7 +217,7 @@ function update(force){
 							outlet(1,"moveto",x_pos+(x+v+0.1)*cw,y_pos+unit*3.7);
 							outlet(1,"frgb",fgc);
 							var vnlist = ["clean", "sub", "kick", "body", "mid", "hi-mid", "high"];
-							outlet(1,"write",vnlist[Math.floor(vnlist.length*0.99*shape[b][v])]);
+							outlet(1,"write",vnlist[Math.floor(vnlist.length*0.999*shape[b][v])]);
 						}
 					}else if((v_type[b][v]=="mixer.mono.tape")||(v_type[b][v]=="mixer.stereo.tape")){
 						if(check_eq_params_for_changes(b,v)||force){
@@ -227,11 +228,11 @@ function update(force){
 					}else if((v_type[b][v]=="mixer.mono.comp")||(v_type[b][v]=="mixer.stereo.comp")){
 						
 						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos+unit*4,bgc);
-						var metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v])));
+						var metery = unit * 4 * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v])));
 						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.1)*cw,y_pos-metery,dc);
-						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+1)));
+						metery = unit * 4 * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+1)));
 						outlet(1, "paintrect",x_pos+(x+v+0.1)*cw,y_pos,x_pos+(x+v+0.2)*cw,y_pos-metery,dc);
-						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
+						metery = unit * 4 * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
 						outlet(1, "paintrect",x_pos+(x+v+0.2)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos-metery,dc);
 						shape[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2);
 						if(check_eq_params_for_changes(b,v)||force){
@@ -254,15 +255,15 @@ function update(force){
 						draw_pan_slider(x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+unit*5.0,fgc[0],fgc[1],fgc[2],pan[b][v]);
 					}
 					var meter = scope_buffer.peek(2,1+(v_list[b][v]-MAX_NOTE_VOICES));
-					outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-2.1*unit);
+					outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-2.1*unit-2);
 					outlet(1,"frgb",fgc);
-					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+unit*5.1 + (1-meter)*(height-7.2*unit));
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+unit*5.1 + (1-meter)*(height-7.3*unit));
 					outlet(1,"frgb",bgc);
 					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+unit*5.1);
 					meter = scope_buffer.peek(2,1+(v_list[b][v]+MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
-					outlet(1,"moveto",4+x_pos+(x+v)*cw,y_pos+height-2.1*unit);
+					outlet(1,"moveto",4+x_pos+(x+v)*cw,y_pos+height-2.1*unit-2);
 					outlet(1,"frgb",fgc);
-					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+unit*5.1+(1-meter)*(height-7.3*unit));
 					outlet(1,"frgb",bgc);
 					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+unit*5.1);
 				}
@@ -542,7 +543,7 @@ function scan_for_channels(){
 	}
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
-	no_voicings = voicings_list.length;
+	no_voicings = 7; //voicings_list.length; //NB if you change voicingslist!...
 	// post("\nchannel types:",b_type);
 }
 
