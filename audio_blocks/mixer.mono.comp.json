@@ -45,25 +45,25 @@
 				"contains" : [3],
 				"onepervoice" : 1,
 				"height" : 0.999,
-				"colour" : 26
+				"colour" : 6
 			},
 			{ 
 				"contains" : [4], 
 				"onepervoice" : 1,
 				"height" : 0.999,
-				"colour" : 31
+				"colour" : 4
 			},
 			{ 
 				"contains" : [8],
 				"onepervoice" : 1,
 				"height" : 0.999,
-				"colour" : 37
+				"colour" : 16
 			},
 			{ 
 				"contains" : [1],
 				"onepervoice" : 1,
 				"height" : 0.999,
-				"colour" : 10
+				"colour" : -10
 			},
 			{ 
 				"contains" : [7], 

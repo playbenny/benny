@@ -41,26 +41,26 @@
 				"header" : "voicing",
 				"onepervoice" : 1,
 				"height" : 0,
-				"colour" : 25
+				"colour" : 11
 			},
 			{ 
 				"contains" : [3], 
 				"onepervoice" : 1,
 				"height" : 0,
-				"colour" : 30
+				"colour" : 16
 			},
 			{ 
 				"contains" : [2],
 				"onepervoice" : 1,
 				"height" : 0.6,
 				"nolabel" : 1,
-				"colour" : 35
+				"colour" : 26
 			},
 			{ 
 				"contains" : [1],
 				"onepervoice" : 1,
 				"height" : 0.999,
-				"colour" : 10
+				"colour" : -10
 			},
 			{ 
 				"contains" : [7], 

@@ -43,7 +43,9 @@ var oshape = [];
 var osweep = [];
 var oamount = [];
 var level = [];
+var pan = [];
 var olevel = [];
+var opan = [];
 var shape = [];
 var sweep = [];
 var amount = [];
@@ -143,7 +145,20 @@ function update(force){
 							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v+0.5)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+height-unit*12,fgc,bgc);
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 						}
-					}
+					}else if((v_type[b][v]=="mixer.mono.comp")||(v_type[b][v]=="mixer.stereo.comp")){
+						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos+unit*4,bgc);
+						var metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v])));
+						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.1)*cw,y_pos-metery,dc);
+						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+1)));
+						outlet(1, "paintrect",x_pos+(x+v+0.1)*cw,y_pos,x_pos+(x+v+0.2)*cw,y_pos-metery,dc);
+						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
+						outlet(1, "paintrect",x_pos+(x+v+0.2)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos-metery,dc);
+						/*if(check_eq_params_for_changes(b,v)||force){
+							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
+							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+						}*/
+					}else{ post("unknown channel",v_type[b][v]);}
 					if(force){
 						outlet(1,"frgb",fgc);
 						if(channelnames[b] !== undefined){
@@ -179,22 +194,29 @@ function update(force){
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
 				var bgc = [fgc[0]*0.15,fgc[1]*0.15,fgc[2]*0.15];
+				var dc = [0.4*fgc[0],0.4*fgc[1],0.4*fgc[2]];
 				for(var v=v_list[b].length-1;v>=0;v--){
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
 					if((omute[b][v]!=mute)||force){
 						omute[b][v] = mute;
-						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*4,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2,130,130,130,5,v_list[b][v],"mute",b_list[b]);
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height-unit,130,130,130,5,v_list[b][v],"mute",b_list[b]);
 					}
 					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
 					if((osolo[b][v]!=solo)||force){
 						osolo[b][v] = solo;
-						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
+						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
 					}
 					if((v_type[b][v]=="mixer.mono.basic")||(v_type[b][v]=="mixer.stereo.basic")){
 						if(check_eq_params_for_changes(b,v)||force){
-							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
-							draw_eq_curve_basic(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*3,0,0,0,3,v_list[b][v],b_list[b],4);
+							draw_eq_curve_basic(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*3,fgc,bgc);
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+							outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw,y_pos+unit*3.1,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc[0],fgc[1],fgc[2],2,v_list[b][v],b_list[b]);
+							outlet(1,"paintrect",x_pos+(x+v)*cw,y_pos+unit*3.1,x_pos+(x+v+1)*cw-2,y_pos+unit*4,bgc);
+							outlet(1,"moveto",x_pos+(x+v+0.1)*cw,y_pos+unit*3.7);
+							outlet(1,"frgb",fgc);
+							var vnlist = ["clean", "sub", "kick", "body", "mid", "hi-mid", "high"];
+							outlet(1,"write",vnlist[Math.floor(vnlist.length*0.99*shape[b][v])]);
 						}
 					}else if((v_type[b][v]=="mixer.mono.tape")||(v_type[b][v]=="mixer.stereo.tape")){
 						if(check_eq_params_for_changes(b,v)||force){
@@ -202,14 +224,47 @@ function update(force){
 							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 						}
+					}else if((v_type[b][v]=="mixer.mono.comp")||(v_type[b][v]=="mixer.stereo.comp")){
+						
+						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos+unit*4,bgc);
+						var metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v])));
+						outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.1)*cw,y_pos-metery,dc);
+						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+1)));
+						outlet(1, "paintrect",x_pos+(x+v+0.1)*cw,y_pos,x_pos+(x+v+0.2)*cw,y_pos-metery,dc);
+						metery = unit * 4 * Math.max(1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
+						outlet(1, "paintrect",x_pos+(x+v+0.2)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos-metery,dc);
+						shape[b][v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[b][v]+2);
+						if(check_eq_params_for_changes(b,v)||force){
+							outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v+0.3)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4.0,fgc,2,v_list[b][v],b_list[b]);
+							draw_slider(x_pos+(x+v+0.3)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4.0,dc[0],dc[1],dc[2],shape[b][v]);
+							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
+						}
 					}
 
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
-					if((olevel[b][v]!=level[b][v])||force){
+					if(force||(olevel[b][v]!=level[b][v])){
 						olevel[b][v] = level[b][v];
-						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc,0,v_list[b][v],b_list[b]);
-						draw_slider(x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*4.1,fgc[0],fgc[1],fgc[2],level[b][v]);
+						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw,y_pos+unit*5.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2.1,fgc,0,v_list[b][v],b_list[b]);
+						draw_slider(x_pos+(x+v)*cw+8,y_pos+unit*5.1,x_pos+(x+v+1)*cw-2,y_pos+height-unit*2.1,dc[0],dc[1],dc[2],level[b][v]);
 					}
+					pan[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]+1);
+					if(force||(opan[b][v]!=pan[b][v])){
+						opan[b][v] = pan[b][v];
+						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+unit*5.1,fgc,1,v_list[b][v],b_list[b]);
+						draw_pan_slider(x_pos+(x+v)*cw,y_pos+unit*4.1,x_pos+(x+v+1)*cw-2,y_pos+unit*5.0,fgc[0],fgc[1],fgc[2],pan[b][v]);
+					}
+					var meter = scope_buffer.peek(2,1+(v_list[b][v]-MAX_NOTE_VOICES));
+					outlet(1,"moveto",x_pos+(x+v)*cw,y_pos+height-2.1*unit);
+					outlet(1,"frgb",fgc);
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+unit*5.1 + (1-meter)*(height-7.2*unit));
+					outlet(1,"frgb",bgc);
+					outlet(1,"lineto",x_pos+(x+v)*cw,y_pos+unit*5.1);
+					meter = scope_buffer.peek(2,1+(v_list[b][v]+MAX_AUDIO_VOICES-MAX_NOTE_VOICES));
+					outlet(1,"moveto",4+x_pos+(x+v)*cw,y_pos+height-2.1*unit);
+					outlet(1,"frgb",fgc);
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+(1-meter)*(height-4.2*unit));
+					outlet(1,"frgb",bgc);
+					outlet(1,"lineto",4+x_pos+(x+v)*cw,y_pos+unit*5.1);
 				}
 				var xx = x+v_list[b].length;
 				x = xx;
@@ -411,6 +466,8 @@ function scan_for_channels(){
 				osolo[b] = [];
 				level[b] = [];
 				olevel[b] = [];
+				pan[b] = [];
+				opan[b] = [];
 			}
 		}
 		// post("\nnew hash",hash);
@@ -523,4 +580,13 @@ function draw_slider(x1,y1,x2,y2,r,g,b,value){
 		ly = y1 + (y2-y1)*(1+(value%1));
 		outlet(1,"paintrect",x1,y1,x2,ly,r,g,b);
 	}
+}
+function draw_pan_slider(x1,y1,x2,y2,r,g,b,value){
+	outlet(1,"paintrect",x1,y1,x2,y2,r*bg_dark_ratio,g*bg_dark_ratio,b*bg_dark_ratio);
+	var w = x2 - x1;
+	w -= 4;
+	var x = x1 + 1 + w*value;
+	outlet(1,"moveto", x, y1);
+	outlet(1,"frgb",r,g,b);
+	outlet(1,"lineto", x, y2-2);
 }
