@@ -7,7 +7,7 @@
 		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in" ]
+				"midi" : [ "notes in","reset in" ]
 			},
 			"out" : {
 				"midi" : [ "notes out" ]
