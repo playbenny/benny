@@ -9,7 +9,8 @@
 		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {
-				"midi" : [ "note in" ]
+				"midi" : [ "note in" ],
+				"automap_poly" : 0
 			},
 			"out" : {
 				"midi" : [ "note out", "inverted note out" ]

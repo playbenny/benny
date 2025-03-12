@@ -9,7 +9,8 @@
 		"max_polyphony" : 1,
 		"connections" : {
 			"out" : {
-				"midi" : [ "button A", "button B", "button C", "switched output A", "switched output B", "switched output C" ]
+				"midi" : [ "button A", "button B", "button C", "switched output A", "switched output B", "switched output C" ],
+				"automap_poly" : 0
 			},
 			"in" : {
 				"midi" : [ "A in","B in","C in", "switched input A", "switched input B", "switched input C" ]

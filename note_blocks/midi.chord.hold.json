@@ -8,7 +8,8 @@
 		"max_polyphony" : 1,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in","reset in" ]
+				"midi" : [ "notes in","reset in" ],
+				"automap_poly" : 0
 			},
 			"out" : {
 				"midi" : [ "notes out" ]

@@ -3586,7 +3586,6 @@ function draw_sidebar(){
 
 			var getmap = 0;
 			var map_x = 0, map_y = 0, maplist = [], maplistopv = [], buttonmaplist = [], mapcolours = [], mapwrap = [];
-			
 			var sx=sidebar.x;
 			if(automap.available_k!=-1){
 				if((block_name != "core.input.keyboard")&&has_midi_in){
@@ -5858,6 +5857,7 @@ function draw_sidebar(){
 			var t_v_no = blocks.get("blocks["+t_number+"]::poly::voices");
 			var from_subvoices = 1;
 			var to_subvoices = 1;
+			var not_to_block = 0;
 			if(f_type=="audio"){
 				if(blocks.contains("blocks["+f_number+"]::from_subvoices")){
 					from_subvoices = blocks.get("blocks["+f_number+"]::from_subvoices");
@@ -5867,7 +5867,18 @@ function draw_sidebar(){
 				if(blocks.contains("blocks["+t_number+"]::to_subvoices")){
 					to_subvoices = blocks.get("blocks["+t_number+"]::to_subvoices");
 				}else if(blocks.contains("blocks["+t_number+"]::subvoices")) to_subvoices = blocks.get("blocks["+t_number+"]::subvoices");
-			}			
+			}else if(t_type=="midi"){
+				if(blocktypes.contains(t_name+"::connections::in::automap_poly")&&blocktypes.get(t_name+"::connections::in::automap_poly")==0){
+					if(t_i_v == "all"){
+						post("\nthis block needs you to send midi direct to the voices, not to the main block polyphonic allocator.")
+						t_i_v = [1];
+						connections.replace("connections["+i+"]::to::voice",1);
+						redraw_flag.flag |= 4;
+					}
+					not_to_block = 1;
+					
+				}
+			}		
 			var t_i_name,f_o_name;
 
 
@@ -6899,7 +6910,7 @@ function draw_sidebar(){
 				
 				y_offset+= fo1*7;			
 			}
-			if(show_poly_options){
+			if(show_poly_options&&!not_to_block){
 				draw_sidebar_polyphony_options(t_number,section_colour,section_colour_dark,section_colour_darkest,t_name);
 			}
 
