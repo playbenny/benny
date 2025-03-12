@@ -1,18 +1,19 @@
 {
-	"mix.stereo.channel" : {
-		"patcher" : "mix.stereo.channel",
+	"mixer.mono.tape" : {
+		"patcher" : "mixer.mono.tape",
 		"type" : "audio",
-		"block_ui_patcher" : "mix.channel.ui",
+		"block_ui_patcher" : "mixer.tape.ui",
 		"ui_in_sidebar_height" : 1,
 		"no_ui_in_panel" : 1,
 		"no_edit" : 1,
-		"help_text" : "stereo mixer channel. ££borrows the mix concept from worrng modules - each voicing has an eq shape and width setting, you can vary the amount and sweep the frequencies. ££uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mix.bus BLOCK.££IMPORTANT the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without them it defaults to normal digital summing.",
+		"help_text" : "mono mixer channel. ££runs a wide peak eq with adaptive q into airwindows' totape6 and then partially cancels out that eq afterwards, leaving a squashy but dynamic signal with performable control over emphasis. with amount positive this emphasis is tapey, with amount negative the rest of the sound is tapey but the emphasis is clean. there is a high pass filter at the end of the channel.££the mono version of this block has a very simple sidechain compressor.££uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mix.bus BLOCK.££IMPORTANT this block needs airwindows totape6 to do anything at all. also the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without them it defaults to normal digital summing.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
-		"subvoices" : 2,
+		"from_subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "in" ],
+				"audio" : [ "audio in", "sidechain in" ],
+				"audio_watched" : [0,1],
 				"midi" : ["channel mute toggle", "channel solo toggle"]
 			},
 			"out" : {
@@ -24,7 +25,7 @@
 			{ 
 				"contains" : [0],
 				"onepervoice" : 1,
-				"height" : 3.5
+				"height" : 2.5
 			},
 			{ 
 				"contains" : [5], 
@@ -37,31 +38,36 @@
 				"height" : 0.6
 			},
 			{ 
-				"contains" : [3],
+				"contains" : [4],
 				"header" : "voicing",
 				"onepervoice" : 1,
-				"height" : 0,
-				"colour" : 25
+				"height" : 0.999,
+				"colour" : 11
 			},
 			{ 
-				"contains" : [4], 
+				"contains" : [3], 
 				"onepervoice" : 1,
-				"height" : 0,
-				"colour" : 30
+				"height" : 0.999,
+				"colour" : 16
 			},
 			{ 
 				"contains" : [2],
 				"onepervoice" : 1,
-				"height" : 0.6,
-				"nolabel" : 1,
-				"colour" : 35
+				"height" : 0.990,
+				"colour" : 36
+			},
+			{ 
+				"contains" : [1],
+				"onepervoice" : 1,
+				"height" : 0.999,
+				"colour" : -10
 			},
 			{ 
 				"contains" : [7], 
 				"onepervoice" : 1,
 				"height" : 0.6,
 				"header" : "console model"
-			}			
+			}		
 		],
 		"parameters" : [
 			{
@@ -79,30 +85,30 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "hi-mid", "high"],
+				"name" : "highpass",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "amount",
 				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
+				"values" : ["bi", -24,24, "exp10"],
 				"wrap" : 0,
-				"default" : 0.25
+				"default" : 0.5
 			},
 			{
 				"name" : "sweep",
 				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
+				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "mute",
 				"type" : "menu_b",
-				"values" : ["mute off", "mute on"],
+				"values" : ["mute_off", "mute_on"],
 				"colours" : [[90,90,90], [130,130,130]],
 				"wrap" : 1,
 				"default" : 0
@@ -110,7 +116,7 @@
 			{
 				"name" : "solo",
 				"type" : "menu_b",
-				"values" : ["solo off", "solo on"],
+				"values" : ["solo_off", "solo_on"],
 				"colours" : [[128,20,20], [255,20,20]],
 				"wrap" : 1,
 				"default" : 0

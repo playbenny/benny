@@ -47,7 +47,6 @@ function setup(x1,y1,x2,y2,sw){
 	if(block>=0){
 		scan_for_channels();
 		draw();
-
 	}
 }
 
@@ -55,12 +54,11 @@ function draw(){
 	if(block>=0){
 		var x=0;
 		var fgc = block_colour;
-		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
-
+		var bgc = [fgc[0]*0.15,fgc[1]*0.15,fgc[2]*0.15];
 		check_params_for_changes()
 		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_tape(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
 			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
 			outlet(1,"frgb",255,255,255);
@@ -74,14 +72,19 @@ function update(){
 	if(check_params_for_changes()==1){
 		var x=0;
 		var fgc = block_colour;
-		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
+		var bgc = [fgc[0]*0.1,fgc[1]*0.15,fgc[2]*0.15];
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_tape(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
+			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
+			outlet(1,"frgb",255,255,255);
+			outlet(1,"write",channelnames[v]);
 			x+=cw;
 		}
 	}
 }
+
+// IN MIXER TAPE 'SHAPE' BECOMES THE FINAL HIGHPASS
 
 
 function check_params_for_changes(){
@@ -96,63 +99,59 @@ function check_params_for_changes(){
 	return dr;
 }
 
-function draw_eq_curve_basic(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
-	shp = Math.floor(no_voicings*0.999*shp);
-	swp = Math.pow(2, 4*swp-2);
+
+function draw_eq_curve_tape(shp,amnt,swp,x1,y1,x2,y2,fg,bg){
+	shp = Math.pow(2, 9*shp+4);
+	swp = Math.pow(2, 9*swp+2);
+	amnt = -2 + 4*amnt;
 	outlet(1,"paintrect",x1,y1,x2,y2,bg);
-	var h=y2-y1-1;
-	var voicing = mcv.get(shp);
-	/* the numbers in a voicings list:
-	low: freq, res, -1=hpf, otherwise it's shelf gain
-	mid: f, res, gain (db)
-	high: f, res
-	width */
-	//post("\nvoicing",voicing);
-	//post("\nfreqs",voicing[0],voicing[3],voicing[6]);
-	voicing[0] *= swp;
-	voicing[3] *= swp;
-	voicing[6] *= swp;
+	var h=0.5 * (y2-y1-1);
+	var voicing = [ shp, (amnt>0) ? 0.05*amnt*amnt*amnt : -(0.02*amnt*amnt*amnt*amnt*amnt), Math.pow(swp,0.9), swp, 0.1+(0.16*amnt*amnt*amnt*amnt),  Math.abs(amnt)*0.3+0.36,(amnt>0) ? amnt*amnt*0.2 : -amnt*amnt*0.4];
 	var w=x2-x1; // we want to show about 12 octaves, starting at 6Hz, so one pixel is 12/w octaves
 	var step=0.12*w; //Math.pow(2,12/w);
 	var w2 = 0.2 / w;
 	voicing[0] = Math.log(voicing[0]*0.2+0.01)*step; //1/log(2)
 	voicing[3] = Math.log(voicing[3]*0.2+0.01)*step;
-	voicing[6] = Math.log(voicing[6]*0.2+0.01)*step;
-	outlet(1,"frgb",fg);
-	//voicing[2] = Math.pow(2,voicing[2]*0.16667);
-	voicing[5] = Math.pow(2,voicing[5]*0.16667)-1;
+	voicing[2] = Math.log(voicing[2]*0.2+0.01)*step; //this is the dip before the 
+	outlet(1,"frgb",0.2*fg[0],0.2*fg[0],0);
+	//voicing[5] = Math.pow(2,voicing[5]*0.16667)-1;
+	var liney=[];
+	var i = 0;
 	for(x=0;x<w;x+=2){
 		var g = 0;
-		if(voicing[2]==-1){//hpf
-			if(x<voicing[0]){
-				var d = (voicing[0]-x);
-				g -= d*d*w2;
-			}
-			//g += voicing[1]*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
-		}else{
-			if(x<voicing[0]){
-				g += voicing[2];
-			}else{
-				var d = x-voicing[0];
-				g += voicing[2]*(Math.pow(2.718,-d*d*0.005*voicing[1]));
-			}
-		}
-		if(voicing[5]!=0){
-			var d = x-voicing[3];
-			g += voicing[5]*Math.pow(2.718, -d*d*0.005*Math.abs(voicing[4]));
-		}
-		if(x>=voicing[6]){
-			var d = (x-voicing[6]);
+		var d;
+		// if(voicing[2]==-1){//hpf
+		if(x<voicing[0]){
+			d = (voicing[0]-x);
 			g -= d*d*w2;
 		}
-		g+=1;
-		g = g * amnt + (1-amnt);
-		g *= 0.5 * h;
-		if((x==0)||(g<1)){
-			outlet(1,"moveto",x+x1,y2-1-Math.max(1,g));
-		}else{
-			outlet(1,"lineto",x+x1,y2-g);
+		d = (voicing[0]*0.8-x);
+		g += Math.min(0.9,0.3*voicing[1])*Math.pow(2.718,-d*d*0.005*Math.abs(voicing[1]));
+		g += 1;
+		var g2 = g;
+		if(amnt!=0){
+			var d = x-voicing[3];
+			d *= 0.3+Math.pow(Math.abs(amnt),0.5);
+			g += Math.pow(2.718, -d*d*0.005*voicing[4])* amnt;
+			d = x-(voicing[2]);
+			// d *= 0.4+Math.pow(Math.abs(amnt),0.6);
+			g2 -= Math.pow(2.718, -d*d*0.005*voicing[5])* voicing[6];
 		}
+		liney[i] = y2-1-Math.min(Math.max(1,h * (g + g2 - 1)),2*h-1);
+		i++;
+		g = Math.floor(g* h);
+		g2 = Math.floor(g2* h);
+		if((g!=g2)){
+			outlet(1,"moveto",x+x1,y2-1-Math.min(Math.max(1,g),2*h-1));
+			outlet(1,"lineto",x+x1,y2-1-Math.min(Math.max(1,g2),2*h-1));
+		}
+	}
+	i=1;
+	outlet(1,"frgb",fg);
+	outlet(1, "moveto",x1,liney[i]);
+	for(x=2;x<w;x+=2){
+		outlet(1,"lineto",x+x1,liney[i]);
+		i++;
 	}
 }
 

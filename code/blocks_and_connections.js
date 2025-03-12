@@ -1455,6 +1455,12 @@ function remove_connection(connection_number){
 					}
 				}		
 			}
+			if((t_type=="audio")&&(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio_watched"))&&(blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio_watched["+t_i_no+"]")==1)){
+				var cused = is_input_used(t_i_no,t_voice,t_block,"audio");
+				
+				//audio_poly.message("setvalue", t_voice + 1 - MAX_NOTE_VOICES, "input_connected",t_i_no,enab);
+				//post("\nWATCHED INLET!! notifying audio voice: ",t_voice-MAX_NOTE_VOICES,"input",t_i_no,"state",enab);
+			}
 		}
 	}
 
@@ -1462,6 +1468,46 @@ function remove_connection(connection_number){
 	connections.set("connections["+connection_number+"]", empt);
 	rebuild_action_list = 1;
 	redraw_flag.flag |= 4;
+}
+
+
+function is_input_used(t_i_no, t_voice_no, t_block, t_type) {
+	// post("\ntesting block ",t_block,"voice",t_voice_no,"output",t_i_no,"type",t_type);
+	var cused = 0;
+	for (var testc = connections.getsize("connections"); testc >= 0; testc--) {
+		if((connections.contains("connections[" + testc + "]::to"))) {
+			if (connections.get("connections[" + testc + "]::to::number") == t_block) {
+				if (((connections.get("connections[" + testc + "]::to::input::type") == t_type)) && (connections.get("connections[" + testc + "]::to::input::number") == t_i_no)) {
+					var fv = connections.get("connections[" + testc + "]::to::voice");
+					//post("\ntesting fv", fv, t_voice_no);
+					if (fv == "all") {
+						cused = 1;
+					} else if (fv == t_voice_no) {
+						cused = 1;
+					} else if (Array.isArray(fv) && (fv.indexOf(t_voice_no) > -1)) {
+						cused = 1;
+					}
+					if(cused==1){
+						//post("\nis output used returning 1");
+						testc = -1;
+					}
+				}
+			}
+		}
+		// post("result", cused);
+	}
+	//tell the voice that this output is in use
+	var vl=voicemap.get(t_block);
+	if(!Array.isArray(vl)) vl=[vl];
+	var f_voice = vl[t_voice_no];
+	if(t_type=="parameters")t_i_no+=blocktypes.getsize(blocks.get("blocks["+t_block+"]::name")+"::connections::in::midi");
+	if(blocks.get("blocks["+t_block+"]::type")=="audio"){
+		audio_poly.message("setvalue", f_voice + 1 - MAX_NOTE_VOICES, "input_connected",t_i_no,cused);
+	}else if(blocks.get("blocks["+t_block+"]::type")=="note"){
+		note_poly.message("setvalue", f_voice + 1, "input_connected",t_i_no,cused);
+	}
+	
+	return cused;
 }
 
 function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
@@ -2246,6 +2292,10 @@ function make_connection(cno,existing){
 							}
 						}
 					}					
+				}
+				if((t_type=="audio")&&(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio_watched"))&&(blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::audio_watched["+t_i_no+"]")==1)){
+					audio_poly.message("setvalue", t_voice + 1 - MAX_NOTE_VOICES, "input_connected",t_i_no,1); //always 1, whether muted or not, as it represents a 'plug'
+					//post("\nWATCHED INLET!! notifying audio voice: ",t_voice-MAX_NOTE_VOICES,"input",t_i_no,"state",1);
 				}
 			}
 		}
@@ -3158,15 +3208,15 @@ function insert_mixer(destination){
 	var destx = blocks.get("blocks["+destination+"]::space::x");
 	var desty = blocks.get("blocks["+destination+"]::space::y")+1.5;
 	var desttype = connections.get("connections["+con_list[0]+"]::to::input::type");
-	var newbus = new_block("mix.bus",destx,desty);
+	var newbus = new_block("mixer.bus",destx,desty);
 	draw_block(newbus);
 	desty += 1.5;
 	var newchan = [];
 	var ii=0;
 	for(var i=0;i<2;i++){
 		if(used_channel_types[i]>0){
-			var newchanname = "mix.channel";
-			if(i==1) newchanname = "mix.stereo.channel";
+			var newchanname = "mixer.mono.basic";
+			if(i==1) newchanname = "mixer.stereo.basic";
 			post("\nadding",newchanname,"with",used_channel_types[i],"channels");
 			newchan[ii] = new_block(newchanname,destx,desty);
 			draw_block(newchan[ii]);
@@ -3271,7 +3321,7 @@ function insert_block_in_connection(newblockname,newblock){
 	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
 	if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
 	if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
-	if((newblockname=="mix.channel")||(newblockname=="mix.stereo.channel")) defaultpos = 3; // mixer channels special case (force unity)
+	if((newblockname=="mixer.mono.basic")||(newblockname=="mixer.stereo.basic")) defaultpos = 3; // mixer channels special case (force unity)
 	new_connection.parse('{}');
 	if(defaultpos == 1){//this is the rare exception where default is the second one.
 		new_connection.replace("conversion::mute" , 0);
