@@ -123,7 +123,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 10, "exp" ],
 				"wrap" : 0,
-				"default" : 0.134				
+				"default" : 0.434				
 			}
 		]
 	}
