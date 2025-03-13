@@ -5876,9 +5876,12 @@ function draw_sidebar(){
 						redraw_flag.flag |= 4;
 					}
 					not_to_block = 1;
-					
 				}
-			}		
+			}else if((t_type=="hardware")&&(blocktypes.get(t_name+"::max_polyphony")==1)&&(t_i_v != "all")){
+				t_i_v = "all";
+				connections.replace("connections["+i+"]::to::voice","all");
+				redraw_flag.flag |= 4;
+			}	
 			var t_i_name,f_o_name;
 
 
