@@ -491,6 +491,10 @@ var usermouse = {
 	scroll_accumulator : 0,
 	sidebar_scrolling: null,
 	long_press_function : null,
+	wiretouch : {
+		x : -1,
+		y : -1
+	},
 	drag : {
 		starting_x : 0,
 		starting_y : 0,

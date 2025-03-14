@@ -98,6 +98,7 @@ function picker_hover_and_special(id){
 			}
 			bulgingwire = thov[1];
 			bulgeamount=1;
+			usermouse.wiretouch.x = usermouse.x; usermouse.wiretouch.y = usermouse.y;
 			if(!Array.isArray(wires_scale[bulgingwire])) wires_scale[bulgingwire]=[];
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
@@ -114,6 +115,7 @@ function picker_hover_and_special(id){
 					write_wire_matrix(bulgingwire);
 				}
 				bulgingwire = -1;
+				usermouse.wiretouch.x=-9999;
 			}
 		}else{
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
@@ -543,8 +545,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
 					if((usermouse.ids[0] == "background") && (bulgeamount>0.5) && (bulgeamount<1)){
-						usermouse.ids = ["wires", bulgingwire, 0];
-						// post("\nset to last wire not background");
+						var d = (usermouse.x-usermouse.wiretouch.x) * (usermouse.x-usermouse.wiretouch.x) + (usermouse.y-usermouse.wiretouch.y)*(usermouse.y-usermouse.wiretouch.y);
+						if(d<100){
+							usermouse.ids = ["wires", bulgingwire, 0];
+							// post("\nset to last wire not background");
+						}
 					}
 					if(usermouse.ids[0] == "background"){
 						if(usermouse.drag.distance<20){
