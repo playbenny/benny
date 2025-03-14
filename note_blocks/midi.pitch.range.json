@@ -4,6 +4,7 @@
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "gate (or split) notes based on pitch",
+		"synonyms" : ["split"],
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
