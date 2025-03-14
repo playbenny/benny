@@ -53,31 +53,23 @@ function setup(x1,y1,x2,y2,sw){
 
 function draw(){
 	if(block>=0){
-		var x=0;
-		var fgc = block_colour;
-		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
-
-		check_params_for_changes()
-		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
-		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
-			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
-			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
-			outlet(1,"frgb",255,255,255);
-			outlet(1,"write",channelnames[v]);
-			x+=cw;
-		}
+		update(1);
 	}
 }
 
-function update(){
-	if(check_params_for_changes()==1){
+function update(force){
+	if((check_params_for_changes()==1)||force){
 		var x=0;
-		var fgc = block_colour;
-		var bgc = [fgc[0]*0.2,fgc[1]*0.2,fgc[2]*0.2];
 		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,fgc,bgc);
+			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,block_colour,block_darkest);
 			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
+			x+=cw;
+		}
+		x=0;
+		outlet(1,"frgb",255,255,255);
+		for(var v=0;v<v_list.length;v++){
+			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
+			outlet(1,"write",channelnames[v]);
 			x+=cw;
 		}
 	}

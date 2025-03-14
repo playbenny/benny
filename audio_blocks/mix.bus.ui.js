@@ -1,3 +1,8 @@
+//TODO HERE -
+//remove unused things?
+//comp meters : bring over check for change fn from channel ui
+//when you scan voices store the 3 colours you want to use per-channel (at the moment they seem to be looked up for ntohing?)
+
 var MAX_DATA = 16384;
 var MAX_PARAMETERS = 256;
 var MAX_AUDIO_VOICES = 64;
@@ -49,6 +54,8 @@ var opan = [];
 var shape = [];
 var sweep = [];
 var amount = [];
+var meter = [];
+var ometer = [];
 var channelnames = [];
 var col_to_chan = []; //holds block,channel
 
@@ -469,6 +476,8 @@ function scan_for_channels(){
 				olevel[b] = [];
 				pan[b] = [];
 				opan[b] = [];
+				meter[b] = [0,0,0]; 
+				ometer[b] = [0,0,0]; 
 			}
 		}
 		// post("\nnew hash",hash);

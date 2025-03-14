@@ -531,6 +531,7 @@ function sidebar_midi_scope(){
 		y2 = sidebar.scopes.midi_routing.endy;
 		x1 = sidebar.x + 2;
 		sy = (y2-y1-2)/128;
+		sx = (x2-x1-12)/128;
 		y2-=2;
 		r =0;
 		cha = 0;
