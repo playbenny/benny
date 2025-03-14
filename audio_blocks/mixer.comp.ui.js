@@ -111,7 +111,7 @@ function scan_for_channels(){
 			channelnames=[];
 			for(var i=0;i<cols;i++) channelnames.push((i+1));
 		}
-		if(!Array.isArray(meter[0])) for(var i=0;i<cols;i++){ meter[i] = [1,1,1]; ometer[i] = [1,1,1]; }
+		if(!Array.isArray(ometer[cols-1])) for(var i=0;i<cols;i++){ meter[i] = [1,1,1]; ometer[i] = [1,1,1]; }
 		block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 		block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
 		cw = (width+2) / cols;
