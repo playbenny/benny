@@ -24,28 +24,28 @@
 			{
 				"name" : "attack",
 				"type" : "float",
-				"values" : ["uni", 0,10, "lin"],
+				"values" : ["uni", 0,10, "exp100"],
 				"wrap" : 0,
 				"default" : 0.1
 			},
 			{
 				"name" : "release",
 				"type" : "float",
-				"values" : ["uni", 0,10, "lin"],
+				"values" : ["uni", 0,10, "exp100"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
 			{
 				"name" : "threshold",
 				"type" : "float",
-				"values" : ["uni", -70.6,6, "exp"],
+				"values" : ["uni", -70.6,6, "exp.01"],
 				"wrap" : 0,
 				"default" : 0.39
 			},
 			{
 				"name" : "ratio",
 				"type" : "float",
-				"values" : ["uni", 1,64, "exp"],
+				"values" : ["uni", 1,64, "exp10"],
 				"wrap" : 0,
 				"default" : 0.25
 			},
