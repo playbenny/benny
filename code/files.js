@@ -564,12 +564,11 @@ function import_song(){
 		if(current_x_max>-999){
 			loading.xoffset = current_x_max + 4 - new_x_min;
 		}
-		if(songs.contains(loading.songname+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
+		if(songs.contains(loading.songname+"::notepad")){ 
 			sidebar.notification = songs.get(loading.songname+"::notepad");
 			set_sidebar_mode("notification");
-			// draw_sidebar();
-			// lcd_main.message("bang");
-			post("\n\n\nSONG NOTES\n\n"+ sidebar.notification+"\n\n");
+			blocks.replace("notepad",sidebar.notification);
+			//post("\n\n\nSONG NOTES\n\n"+ sidebar.notification+"\n\n");
 		}
 		loading.conncount = songs.getsize(loading.songname+"::connections");
 		loading.progress++;
