@@ -6709,8 +6709,7 @@ function draw_sidebar(){
 					y_offset+=11*fo1;
 				}			
 			}
-
-			if((automap.available_c>-1)&&(!automap.lock_c)){
+			if((automap.available_c>-1)&&(!automap.lock_c)&&((automap.available_c-1) != f_number)){
 				automap.mapped_c=-0.5;
 				var maplist = [];
 				var mapwrap = [];
@@ -6926,14 +6925,6 @@ function draw_sidebar(){
 				//a special routing, a special imaginary connection, and a special destination voice no? desttype controls the gate in the routing patch,
 				//so a simple solution is a new type that then goes direct into the monitor slot. 
 				//index = routing_index[cno][destvoiceno][sourcevoice]; <- you can use this to find the existing connection and just copy the values out!
-				/*	routing_buffer.poke(1,index+1,type);
-					routing_buffer.poke(1,index+2,desttype);
-					routing_buffer.poke(1,index+3,destvoice);
-					routing_buffer.poke(1,index+4,destinput);
-					routing_buffer.poke(1,index+5,scalen);
-					routing_buffer.poke(1,index+6,scalev);
-					routing_buffer.poke(1,index+7,offsetn);
-					routing_buffer.poke(1,index+8,offsetv);*/
 				sidebar.scopes.midi_routing.starty = y_offset;
 				sidebar.scopes.midi_routing.endy = y_offset + fontheight*2;
 				sidebar.scopes.midi_routing.bg = section_colour_darkest;
