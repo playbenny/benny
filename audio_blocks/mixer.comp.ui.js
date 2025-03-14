@@ -1,12 +1,10 @@
 var MAX_DATA = 16384;
-var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
-var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 outlets = 3;
 var config = new Dict;
 config.name = "config";
 var block_colour = [128,128,128];
-var width, height,x_pos,y_pos,unit,cw,cols;
+var width, height,x_pos,y_pos,cw,cols;
 var block=-1;
 var namelist;
 var map = new Dict;
@@ -21,14 +19,10 @@ var channelnames = [];
 
 function setup(x1,y1,x2,y2,sw){
 	MAX_DATA = config.get("MAX_DATA");
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	if(width<sw*0.54){ 
-		mini=1;
-	}
 	if(block>=0){
 		scan_for_channels();
 		draw();
@@ -43,7 +37,7 @@ function draw(){
 }
 
 function update(force){
-	if(force||(check_meters_for_changes()==1)){
+	if((check_meters_for_changes()==1)||force){
 		var x=0;
 		for(var v=0;v<v_list.length;v++){
 			draw_comp_meters(x,v);
@@ -70,16 +64,12 @@ function check_meters_for_changes(){
 }
 
 function draw_comp_meters(x,v){
-	post("\nmeters",meter[v]);
-	outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos+unit*4,block_darkest);
+	outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos+height,block_darkest);
 	var metery = height * Math.max(-1,Math.log(meter[v][0]));
-	post(metery);
 	outlet(1, "paintrect",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+0.1)*cw,y_pos-metery,block_colour);
 	metery = height * Math.max(-1,Math.log(meter[v][1]));
-	post(metery);
 	outlet(1, "paintrect",x_pos+(x+v+0.1)*cw,y_pos,x_pos+(x+v+0.2)*cw,y_pos-metery,block_colour);
 	metery = height * Math.max(-1,Math.log(meter[v][2]));
-	post(metery);
 	outlet(1, "paintrect",x_pos+(x+v+0.2)*cw,y_pos,x_pos+(x+v+0.3)*cw,y_pos-metery,block_colour);
 }
 
@@ -89,6 +79,7 @@ function mouse(x,y,leftbutton,shift,alt,ctrl){
 		if(leftbutton==0){//release
 			x = (x - x_pos) * cols / width;
 			x = Math.floor(x);
+			post("\nname channel",block,x);
 			messnamed("to_blockmanager","name_mixer_channel",block,x);
 		}
 	}
@@ -120,10 +111,10 @@ function scan_for_channels(){
 			channelnames=[];
 			for(var i=0;i<cols;i++) channelnames.push((i+1));
 		}
-		for(var i=0;i<cols;i++){ meter[i] = [0,0,0]; ometer[i] = [0,0,0]; }
+		if(!Array.isArray(meter[0])) for(var i=0;i<cols;i++){ meter[i] = [1,1,1]; ometer[i] = [1,1,1]; }
 		block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 		block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
-		cw = (width+unit*0.1) / cols;
+		cw = (width+2) / cols;
 	}
 }
 

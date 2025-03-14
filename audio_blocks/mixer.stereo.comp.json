@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "mixer.comp.ui",
 		"ui_in_sidebar_height" : 1,
 		"no_edit" : 1,
-		"help_text" : "stereo mixer channel. ££based around a mid-side modification of luke abbott's 'abb.boff' multiband channel compressor with tilt control. ££uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mix.bus BLOCK.££IMPORTANT the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without them it defaults to normal digital summing.",
+		"help_text" : "stereo mixer channel. ££based around a mid-side modification of luke abbott's 'abb.boff' multiband channel compressor with tilt control. ££uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mixer.bus BLOCK.££IMPORTANT the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without them it defaults to normal digital summing.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
 		"subvoices" : 2,
