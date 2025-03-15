@@ -840,6 +840,7 @@ function import_song(){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
 		messnamed("update_wave_colls","bang");
+		post("\nmarker");
 		if((still_checking_polys&7)==0){
 			update_all_voices_mutestatus();
 		}
@@ -851,7 +852,6 @@ function import_song(){
 		rebuild_action_list=1;
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
-		
 		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){post("\nerror rescheduling preload task");} //if you interupted preloading waves, just restart it in 5secs
 	}
 }
@@ -1677,6 +1677,7 @@ function clear_everything(){
 	}
 	selected.anysel = 0;
 	still_checking_polys = 0;//7;
+	loading.songname = "#reset#";
 	send_note_patcherlist(1);
 	send_audio_patcherlist(1);
 	send_ui_patcherlist(1);

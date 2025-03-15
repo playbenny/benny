@@ -1,3 +1,6 @@
+15/03/25:
+- on startup the tempo is set to a random value to protect users from accidentally starting a song at 120bpm.
+
 11/03/25:
 - new mixer channel types. there are now stereo input and mono input variants of 3 different mixer channels, each designed for performable control of one aspect of the sound:
     - .basic - is the original channel, with eq shape and stereo width set by choosing a preset 'voicing'. amount and freq controls allow fine-tuning, but these are designed to work well together. the mono channel has a very simple sidechain compressor input designed for ducking/negative space.
