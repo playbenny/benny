@@ -80,7 +80,6 @@ function update(force){
 function check_params_for_changes(){
 	var dr=0;
 	for(var v=0;v<v_list.length;v++){
-		//draw_mutesolo(block,v,x_pos+x,y_pos+height*0.4,x_pos+x+cw-u1,y_pos+height,fgc,bgc);
 		shape[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2);
 		amount[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+3);
 		sweep[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+4);

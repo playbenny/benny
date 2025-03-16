@@ -164,11 +164,11 @@ function update(force){
 						outlet(1, "paintrect",x_pos+(x+v+0.6)*cw,y_pos,x_pos+(x+v+0.7)*cw,y_pos-metery,fgc);
 						metery = hh * Math.max(-1,Math.log(voice_data_buffer.peek(1, MAX_DATA*v_list[b][v]+2)));
 						outlet(1, "paintrect",x_pos+(x+v+0.7)*cw,y_pos,x_pos+(x+v+0.8)*cw,y_pos-metery,fgc);
-						/*if(check_eq_params_for_changes(b,v)||force){
-							outlet(0,"custom_ui_element","opv_2d_slider_passthrough",x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,0,0,0,3,v_list[b][v],b_list[b],4);
-							draw_eq_curve_tape(shape[b][v],amount[b][v],sweep[b][v],x_pos+(x+v)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+unit*4,fgc,bgc);
+						if(check_eq_params_for_changes(b,v)||force){
+							outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v+0.3)*cw,y_pos,x_pos+(x+v+1)*cw-2,y_pos+hh,fgc,2,v_list[b][v],b_list[b]);
+							draw_slider(x_pos+(x+v+0.8)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+hh,fgc[0],fgc[1],fgc[2],shape[b][v]);
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
-						}*/
+						}
 					}else{ post("unknown channel",v_type[b][v]);}
 					if(force){
 						outlet(1,"frgb",fgc);
