@@ -364,8 +364,6 @@ var wire_ends = [];
 
 var wire_dia = 0.03;
 
-var cur_font_size = 0;
-
 var param_defaults = [];
 
 var automap = {

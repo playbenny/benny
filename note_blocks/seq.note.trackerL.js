@@ -23,6 +23,7 @@ voicemap.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
 var v_list = [];
+var mainfont;
 var keymap = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 28, -1, 14, 16, -1, 19, 21, 23, -1, 26, -1, -1, -1, 31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 30, -1, 32, -1, -1, -1, -1, 8, 5, 4, 17, -1, 7, 9, 25, 11, -1, -1, 12, 10, 27, 29, 13, 18, 2, 20, 24, 6, 15, 3, 22, 1, -1, -1, -1, -1, -1];
 var cursors = new Array(128); //holds last drawn position of playheads (per row)
 //data format: for each voice the buffer holds:
@@ -35,6 +36,7 @@ function setup(x1,y1,x2,y2,sw){
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	menucolour = config.get("palette::menu");
+	mainfont = config.get("mainfont");
 	mini=0;
 	width = x2-x1;
 	if(width<500){ mini=1;}
@@ -77,7 +79,7 @@ function draw(){
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
 		//outlet(1,"paintrect",9+x_pos,9+y_pos,sx-9+x_pos,sy-9+y_pos,menucolour[0]*0.1,menucolour[1]*0.1,menucolour[2]*0.1);
 		if(!mini){
-			outlet(0,"setfontsize",rh*0.8);
+			outlet(1,"font",mainfont,rh*0.8);
 			outlet(1,"frgb",menucolour);
 			outlet(1,"moveto",x_pos,rh*1.0+y_pos);
 			outlet(1,"write","oct");

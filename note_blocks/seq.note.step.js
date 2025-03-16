@@ -46,6 +46,7 @@ var oldview=[];
 var graph_y,graph_y2,graph_h;
 var colnames=["note","vel","len","del","skip","group"];
 var scr_accum_x=0,scr_accum_y=0;
+var mainfont;
 //data format: for each voice the buffer holds:
 // 0 - playhead position (updated by player voice)
 // 1-16383 data values, split over a flexible number of columns (6) and patterns (16)
@@ -63,6 +64,8 @@ function setup(x1,y1,x2,y2,sw){
 	max_rows = Math.floor((MAX_DATA-1)/(UNIVERSAL_COLUMNS*UNIVERSAL_PATTERNS));
 	pattsize = max_rows*UNIVERSAL_COLUMNS;
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	mainfont = config.get("mainfont");
+
 	mini=0;
 	width = x2-x1;
 	height = y2-y1;
@@ -165,7 +168,7 @@ function draw(){
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		if(!mini){
 			outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,0);
-			outlet(0,"setfontsize",Math.min(unit*0.4,uy*0.8));//draw side note list scrollbar
+			outlet(1,"font",mainfont,Math.min(unit*0.4,uy*0.8));//draw side note list scrollbar
 			for(var y=view_y;y<view_y2;y++){
 				var shade = (3 + brightlist[y%12]) * 0.10;
 				outlet(1,"paintrect",x_pos,sy+(view_y2-y-1)*uy,sx-unit*0.1,sy+(view_y2-y)*uy,blockcolour[0]*shade,blockcolour[1]*shade,blockcolour[2]*shade);
@@ -173,7 +176,7 @@ function draw(){
 				outlet(1,"frgb",blockcolour);
 				outlet(1,"write",note_names[y]);
 			}
-			outlet(0,"setfontsize",unit*0.4);
+			outlet(1,"font",mainfont,unit*0.4);
 			for(var g=1;g<UNIVERSAL_COLUMNS-1;g++){ // draw graph select buttons
 				var se = 0.1 + 0.6*(selected_graph==g);
 				outlet(1,"paintrect",x_pos,graph_y+graph_h*(g-1)/(UNIVERSAL_COLUMNS-2),sx-unit*0.1,graph_y+graph_h*g/(UNIVERSAL_COLUMNS-2),blockcolour[0]*se,blockcolour[1]*se,blockcolour[2]*se);
@@ -218,7 +221,7 @@ function draw(){
 				}
 			}
 		}
-		outlet(0,"setfontsize",unit*0.4);
+		outlet(1,"font",mainfont,unit*0.4);
 		for(c=0;c<v_list.length;c++){
 			cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			start[c]  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));

@@ -322,7 +322,7 @@ function draw_panel_edit(x1,y,h,b,column_width){
 	block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
 	var block_darkest = shadeRGB(block_colour, bg_dark_ratio);
 	var x2 = x1 + column_width;
-	setfontsize(fontsmall);
+	lcd_main.message("font",mainfont,fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
 	lcd_main.message("moveto",fontheight*0.2+x1,18+y*fontheight+fontheight*1.5);
 	lcd_main.message("frgb", 255, 255, 255);
@@ -370,8 +370,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 	var block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
 	if(sidebar.selected==b) block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
 	var x2 = x1 + column_width;
-	cur_font_size=0;
-	setfontsize(fontsmall);
+	lcd_main.message("font",mainfont,fontsmall);
 	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
 	click_rectangle(x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mouse_index,1);
 	mouse_click_actions[mouse_index] = select_block;
@@ -636,7 +635,7 @@ function draw_waves(){
 		x2 -= 9;
 		var slot = 0 + Math.floor(waves.scroll_position/(3*fontheight));
 		var y_offset = y1;
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		y2-=fontheight*2;
 		var stripex1 = x1 + fontheight * 5;
 		for(;y_offset<y2;slot++){
@@ -702,7 +701,7 @@ function draw_waves(){
 		}else{ //fullscreen
 
 		}
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		if(waves_dict.contains("waves["+(waves.selected+1)+"]::name")){
 			// waves.ph_ox[waves.selected] = -1; 
 			waves.visible[waves.selected]=1;
@@ -2133,7 +2132,7 @@ function draw_state_xfade(){
 }
 
 function draw_topbar(){
-	setfontsize(fontsmall);
+	lcd_main.message("font",mainfont,fontsmall);
 	lcd_main.message("textface", "bold");
 	lcd_main.message("pensize", 2, 2);
 	lcd_main.message("frgb",menucolour);
@@ -2574,7 +2573,7 @@ function draw_sidebar(){
 	y_offset = 9 - sidebar.scroll.position;
 
 	// MODAL SIDEBAR MODES FIRST - EDIT LABEL, EDIT STATE, FILE, CPU
-	setfontsize(fontsmall);
+	lcd_main.message("font",mainfont,fontsmall);
 	if(sidebar.mode == "edit_label"){
 		// EDIT BLOCK LABEL ##############################################################################################################
 		block = sidebar.selected;
@@ -2602,14 +2601,14 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "block", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
+		if(sidebar.text_being_edited.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
 		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2-fontheight*2.5,fontheight+y_offset,block_darkest);
 		lcd_main.message("frgb" , block_colour);
@@ -2640,14 +2639,14 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
+		if(sidebar.text_being_edited.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
 		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*6.8,fontheight+y_offset,menudarkest);
 		lcd_main.message("frgb" , menucolour);
@@ -2691,14 +2690,14 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
+		if(sidebar.text_being_edited.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
 		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
 		click_zone(encapsulate_selection, sidebar.text_being_edited, sidebar.text_being_edited, sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mouse_index,1);
@@ -2731,14 +2730,14 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
+		if(sidebar.text_being_edited.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
 		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,menudark);
 		click_zone(save_preset, sidebar.text_being_edited, sidebar.text_being_edited, sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mouse_index,1);
@@ -2782,14 +2781,14 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 0,0,0);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
+		if(sidebar.text_being_edited.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
 		lcd_main.message("write", sidebar.text_being_edited+sidebar.notification);
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mg);
 		click_zone(edited_channel_name, sidebar.text_being_edited, sidebar.text_being_edited, sidebar.x2-fontheight*6.3, y_offset, sidebar.x2-fontheight*2.2,fontheight+y_offset,mouse_index,1);
@@ -2829,14 +2828,14 @@ function draw_sidebar(){
 		click_zone(set_sidebar_mode, "none", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
 		lcd_main.message("frgb" , 255,255,255);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-		if(sidebar.text_being_edited.length<15) setfontsize(fontsmall*2);
+		if(sidebar.text_being_edited.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 		if(sidebar.notification=="_"){
 			sidebar.notification=" ";
 		}else{
 			sidebar.notification="_";
 		}
 		lcd_main.message("write", sidebar.text_being_edited + sidebar.notification);
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		y_offset+=1.1*fontheight;
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x+fontheight*5.5,fontheight+y_offset,block_darkest);
 		lcd_main.message("frgb" , block_colour);
@@ -2922,7 +2921,7 @@ function draw_sidebar(){
 	}else if(sidebar.mode == "notification"){
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menucolour);
 		lcd_main.message("frgb", 0,0,0 );
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		lcd_main.message("textface", "bold");
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		if(loading.progress!=-1){
@@ -2958,7 +2957,7 @@ function draw_sidebar(){
 		}
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,greycolour);
 		lcd_main.message("frgb", 0,0,0 );
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		lcd_main.message("textface", "bold");
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "song notes");
@@ -3020,7 +3019,7 @@ function draw_sidebar(){
 	
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,type_colour_dark );
 				lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
-				setfontsize(fontsmall*2);
+				lcd_main.message("font",mainfont,fontsmall*2);
 				lcd_main.message("frgb",type_colour);
 				lcd_main.message("write", "new connection");
 
@@ -3028,7 +3027,7 @@ function draw_sidebar(){
 				
 				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
 			
-				setfontsize(fontsmall);
+				lcd_main.message("font",mainfont,fontsmall);
 	
 				lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(1+is_core_control)*15*fo1, fo1*13+y_offset,section_colour_darkest );
 				lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
@@ -3158,7 +3157,7 @@ function draw_sidebar(){
 		
 		y_offset += (0.4+0.6*loading.hardware_substitutions_occured)*fontheight;
 		
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		for(i=0;i<songlist.length;i++){
 			y_offset += 1.1*fontheight;
 			click_zone(select_song,i,i, file_menu_x , y_offset, sidebar.x2, y_offset+1.1*fontheight,mouse_index,1 );
@@ -3174,7 +3173,7 @@ function draw_sidebar(){
 					lcd_main.message("frgb", gcolour );
 					long_sidebar_text(notes,1.5);
 					y_offset -= 1.5*fontheight;
-					setfontsize(fontsmall*2);
+					lcd_main.message("font",mainfont,fontsmall*2);
 				}
 			}else{
 				lcd_main.message("paintrect", file_menu_x , y_offset, sidebar.x2, y_offset+fontheight,gdarkest );	
@@ -3188,7 +3187,7 @@ function draw_sidebar(){
 		lcd_main.message("paintrect", file_menu_x, 0, sidebar.x2, 18+fontheight*(1+0.6*loading.hardware_substitutions_occured),0,0,0 );
 
 		if(loading.hardware_substitutions_occured==1){
-			setfontsize(fontsmall);
+			lcd_main.message("font",mainfont,fontsmall);
 			lcd_main.message("paintrect", file_menu_x , 9 + 1.1*fontheight, sidebar.x2, 9+1.6*fontheight,50,0,0 );	
 			lcd_main.message("frgb" , 255,50,50);
 			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*1.45);
@@ -3196,7 +3195,7 @@ function draw_sidebar(){
 		}
 
 		lcd_main.message("paintrect", file_menu_x, 9, file_menu_x+fontheight*1.7, 9+fontheight,gdarkest );
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		if(!playing){
 			lcd_main.message("frgb" , gcolour);
 		}else{
@@ -3232,12 +3231,12 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.5, 9+fontheight,gdarkest );
 			lcd_main.message("frgb" , gcolour);
 			click_zone(save_song, 1, "", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.6, 9+fontheight,mouse_index,1 );
-			setfontsize(fontsmall);
+			lcd_main.message("font",mainfont,fontsmall);
 			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.45);
 			lcd_main.message("write", "save");
 			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.75);
 			lcd_main.message("write", "selected");
-			setfontsize(fontsmall*2);
+			lcd_main.message("font",mainfont,fontsmall*2);
 		}else{
 			lcd_main.message("paintrect", file_menu_x + fontheight*4.1, 9, file_menu_x + fontheight*5.9, 9+fontheight,gdarkest );
 			if((loading.songname != "")&&(loading.songname!="autoload")){
@@ -3260,14 +3259,14 @@ function draw_sidebar(){
 				lcd_main.message("frgb", gcolour);
 			}
 			click_zone( save_song, 0, 1, file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.8, 9+fontheight,mouse_index,1 );
-			//setfontsize(fontsmall);
+			//lcd_main.message("font",mainfont,fontsmall);
 			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.75);
 			lcd_main.message("write", "save as");
 		}
 
 		/*lcd_main.message("paintrect", sidebar.x2 - fontheight * 3.4, 9,  sidebar.x2 - fontheight * 1.2, 9+fontheight,gdarkest);
 		click_zone(files_switch_folder, 1, "", sidebar.x2 - fontheight * 3.4, 9, sidebar.x2 - fontheight * 1.1, 9+fontheight,mouse_index,1 );
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		lcd_main.message("frgb",gcolour);
 		lcd_main.message("moveto", sidebar.x2 - fontheight * 3.2, 9+fontheight*0.5);
 		lcd_main.message("write", "folder:");
@@ -3278,7 +3277,7 @@ function draw_sidebar(){
 		lcd_main.message("paintrect", sidebar.x2-fontheight,9,sidebar.x2,fontheight+9,gdarkest);
 		lcd_main.message("moveto", sidebar.x2-fontheight*0.8, 9+fontheight*0.75);
 		lcd_main.message("frgb",gcolour);
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		lcd_main.message("write", "...");
 	}else if(sidebar.mode == "file_more"){
 		//browse, and list of folders (songs, record), and a collect all button
@@ -3292,7 +3291,7 @@ function draw_sidebar(){
 			read_songs_folder(sidebar.files_page);
 		}
 		var file_menu_x = sidebar.x2 - fontheight * 15;
-		setfontsize(fontsmall*2);
+		lcd_main.message("font",mainfont,fontsmall*2);
 		click_zone(set_sidebar_mode,"file_menu", "file_menu",sidebar.x2-1.1*fontheight,0,sidebar.x2,fontheight+9,mouse_index,1 );
 		lcd_main.message("paintrect", sidebar.x2-fontheight,9,sidebar.x2,fontheight+9,greydarkest);
 		lcd_main.message("moveto", sidebar.x2-fontheight*0.8, 9+fontheight*0.75);
@@ -3337,7 +3336,7 @@ function draw_sidebar(){
 		y_offset+=1.7*fontheight;
 
 		//songs folder
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		lcd_main.message("paintrect", file_menu_x, 9+y_offset+fontheight*0.25, sidebar.x2, 9+fontheight+y_offset,greydarkest);
 		lcd_main.message("frgb",greycolour);
 		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+y_offset);
@@ -3533,9 +3532,9 @@ function draw_sidebar(){
 				bntt = bnt[0];
 			}
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-			if(bntt.length<15) setfontsize(fontsmall*2);
+			if(bntt.length<15) lcd_main.message("font",mainfont,fontsmall*2);
 			lcd_main.message("write", bntt);
-			setfontsize(fontsmall);
+			lcd_main.message("font",mainfont,fontsmall);
 			if(block_type!="hardware"){
 				if(view_changed===true) click_rectangle( sidebar.x2 - fontheight*2.4, y_offset, sidebar.x2 - fontheight*1.1, fontheight+y_offset,mouse_index,1 );
 				mouse_click_actions[mouse_index] = bypass_selected_block;
@@ -4560,7 +4559,7 @@ function draw_sidebar(){
 					}else{
 						fplist = [-1,-1,-1];
 					}
-					setfontsize(fontheight);
+					lcd_main.message("font",mainfont,fontheight);
 					for(i=0;i<cx.length;i++){
 						if(cx[i]!=0){
 							lcd_main.message("paintoval", cx[i]-r,cy[i]-r,cx[i]+r,cy[i]+r,0,0,0);
@@ -4582,7 +4581,7 @@ function draw_sidebar(){
 							}
 						}
 					}
-					setfontsize(fontsmall);
+					lcd_main.message("font",mainfont,fontsmall);
 				}
 				y_offset += fontheight * 4 * knob_y;
 				//y_offset += fontheight*1.1;
@@ -4692,7 +4691,7 @@ function draw_sidebar(){
 					}else{
 						fplist = [];
 					}
-					setfontsize(fontheight);
+					lcd_main.message("font",mainfont,fontheight);
 					for(i=0;i<cx.length;i++){
 						if(cx[i]!=0){
 							lcd_main.message("paintoval", cx[i]-r,cy[i]-r,cx[i]+r,cy[i]+r,0,0,0);
@@ -4709,7 +4708,7 @@ function draw_sidebar(){
 							}
 						}
 					}
-					setfontsize(fontsmall);
+					lcd_main.message("font",mainfont,fontsmall);
 				}
 				y_offset += fontheight * 4 * knob_y;
 				//y_offset += fontheight*1.1;
@@ -5471,7 +5470,7 @@ function draw_sidebar(){
 					for(var pass=2;pass>=0;pass--){ //pass 2: audio ins, 1: all other ins, 0: outs
 						var first = 1;
 						for(i=0;i<cm;i++){
-							setfontsize(fontsmall);
+							lcd_main.message("font",mainfont,fontsmall);
 							if(connections.contains("connections["+i+"]::from::number")){
 								var comp,compv,subv=1;
 								if(pass==0){
@@ -5786,7 +5785,7 @@ function draw_sidebar(){
 					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,block_darkest);
 					lcd_main.message("frgb", block_colour);
 					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-					setfontsize(fontsmall);
+					lcd_main.message("font",mainfont,fontsmall);
 					lcd_main.message("textface", "normal");
 					var hint=blocktypes.get(block_name+"::help_text")+" ";
 					function get_io_name_and_description(ty,dir) {
@@ -5918,7 +5917,7 @@ function draw_sidebar(){
 
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,type_colour_dark );
 			lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
-			setfontsize(fontsmall*2);
+			lcd_main.message("font",mainfont,fontsmall*2);
 			lcd_main.message("frgb",type_colour);
 			if((f_type=="potential")||(t_type=="potential")){
 				lcd_main.message("write", "new connection");
@@ -6034,7 +6033,7 @@ function draw_sidebar(){
 				}
 			}
 
-			setfontsize(fontsmall);
+			lcd_main.message("font",mainfont,fontsmall);
 
 			click_zone(conn_show_from_outputs_list,0,-1,sidebar.x, y_offset+0.7*fontheight, sidebar.x2, fontheight*1.3+y_offset,mouse_index,1);
 			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(1+is_core_control)*15*fo1, fo1*13+y_offset,section_colour_darkest );
@@ -7414,7 +7413,7 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
-			setfontsize(fontsmall*2);
+			lcd_main.message("font",mainfont,fontsmall*2);
 			lcd_main.message("write", "input",sidebar.scopes.voice+1);
 			
 			y_offset += fontheight*1.1;
@@ -7438,7 +7437,7 @@ function draw_sidebar(){
 							lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
-							setfontsize(fontsmall*1.5);
+							lcd_main.message("font",mainfont,fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);
 
 							sidebar.scopes.starty = y_offset + fontheight*1.1;
@@ -7491,7 +7490,7 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
-			setfontsize(fontsmall*2);
+			lcd_main.message("font",mainfont,fontsmall*2);
 			lcd_main.message("write", "output",sidebar.scopes.voice+1);
 
 			y_offset += fontheight*1.1;
@@ -7513,7 +7512,7 @@ function draw_sidebar(){
 							lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 							lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 							lcd_main.message("frgb", menucolour);
-							setfontsize(fontsmall*1.5);
+							lcd_main.message("font",mainfont,fontsmall*1.5);
 							lcd_main.message("write", bk[b],cnam);							
 							y_offset += fontheight*1.1;
 							sidebar.scopes.starty = y_offset;
@@ -7568,7 +7567,7 @@ function draw_sidebar(){
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 			lcd_main.message("frgb", menucolour);
-			setfontsize(fontsmall*2);
+			lcd_main.message("font",mainfont,fontsmall*2);
 			lcd_main.message("write", "midi input indicators");
 			y_offset += fontheight*1.1;
 			

@@ -65,12 +65,16 @@ var mous = {
 	l : 0
 };
 
+var mainfont,fontsmall;
+
 function setup(x1,y1,x2,y2,sw){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
 	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	mainfont = config.get("mainfont");
+	fontsmall = config.get("fontsmall");
 	var w = x2-x1;
 	if(w!=width){
 		ovhash=-1;
@@ -107,7 +111,7 @@ function draw(){
 function update(force){
 	if(block>=0){
 		var x=0;
-		outlet(0,"setfontsize","small");
+		outlet(1,"font",mainfont,fontsmall); //'small' size font. this is 1/18th, i'm not sure it's a great way of doing it.
 		var mutemsg="mute";
 		var solomsg="solo";
 		if(cw<20){
@@ -119,7 +123,6 @@ function update(force){
 		}
 		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
-			// if(force)outlet(1,"setfontsize","small");
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
 				var bgc = [fgc[0]*0.15,fgc[1]*0.15,fgc[2]*0.15];

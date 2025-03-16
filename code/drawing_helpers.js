@@ -130,14 +130,6 @@ function draw_cpu_meter(){
 	lcd_main.message("lineto", 5, pk);
 }
 
-function setfontsize(size){
-	if(size=="small") size = fontsmall;
-	if(cur_font_size!=size){
-		cur_font_size=size;
-		lcd_main.message("font",mainfont,size);
-	}
-}
-
 function shadeRGB(colour,shade){
 	return [colour[0]*shade,colour[1]*shade,colour[2]*shade];
 }
@@ -223,7 +215,7 @@ function parameter_menu_b(p){ //voice is in [11] blcok is in [8]
 }
 
 function parameter_menu_l(p){
-	setfontsize(fontsmall);
+	lcd_main.message("font",mainfont,fontsmall);
 	var mi = paramslider_details[p][7];
 	var statecount = (paramslider_details[p][17].length);// - 1) / 2;
 	var pv = voice_parameter_buffer.peek(1, MAX_PARAMETERS*paramslider_details[p][15]+paramslider_details[p][9]); //
@@ -332,7 +324,7 @@ function labelled_parameter_v_slider(sl_no){
 	}else{
 		lcd_main.message("frgb",paramslider_details[sl_no][4], paramslider_details[sl_no][5], paramslider_details[sl_no][6]);
 	}
-	setfontsize(fontsmall);
+	lcd_main.message("font",mainfont,fontsmall);
 	namelabely=paramslider_details[sl_no][12];
 	for(var c = 0;c<paramslider_details[sl_no][11].length;c++){
 		lcd_main.message("moveto",paramslider_details[sl_no][0]+fo1,namelabely);
@@ -941,9 +933,9 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 		}
 	}
 	if(sidebar.mode != "connections"){
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 		if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
-			//setfontsize( Math.min(uy,ux)*0.4);
+			//lcd_main.message("font",mainfont, Math.min(uy,ux)*0.4);
 			if(Math.min(uy,ux)*0.4>=fontsmall){
 				lcd_main.message("frgb", menucolour);
 				for(cx=v1-1;cx>=0;cx--){
@@ -1185,7 +1177,7 @@ function draw_menu_hint(){
 	lcd_main.message("paintrect", sidebar.x,9+1.1*(loading.progress!=0)*fontheight,sidebar.x2,9+(topspace+1)*fontheight,menudarkest);
 	lcd_main.message("frgb",menucolour);
 	lcd_main.message("textface", "bold");
-	setfontsize(fontsmall*2);
+	lcd_main.message("font",mainfont,fontsmall*2);
 	lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(0.75+1.1*(loading.progress!=0)));
 	if(menu.mode == 1){
 		lcd_main.message("write", "swap block:");
@@ -1193,7 +1185,7 @@ function draw_menu_hint(){
 			topspace += 1.1;
 			lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),menudark);
 			lcd_main.message("frgb",0,0,0);
-			setfontsize(fontheight/2.5);
+			lcd_main.message("font",mainfont,fontheight/2.5);
 			lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.35));
 			lcd_main.message("write","just showing (potentially) matching types,");
 			lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.8));
@@ -1275,7 +1267,7 @@ function draw_menu_hint(){
 		lcd_main.message("frgb",col);
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.85+topspace));
 		lcd_main.message("write", block_name);
-		setfontsize(fontheight/2.5);
+		lcd_main.message("font",mainfont,fontheight/2.5);
 		lcd_main.message("textface", "normal");
 		var bold=0;
 		var sameline=0;
@@ -1471,7 +1463,7 @@ function draw_clock(){
 	if(sidebar.mode == "file_menu") cx2 = sidebar.x2 - fontheight * 15;
 	var cx = cx2 - fontheight*2 - 9;
 	lcd_main.message("paintrect", cx,9,cx2,9+fontheight,0,0,0);
-	setfontsize(fontheight*0.8);
+	lcd_main.message("font",mainfont,fontheight*0.8);
 	var currentdate = new Date;
 	if(set_timer_show){
 		lcd_main.message("moveto",cx, 9+fontheight*0.8);
@@ -1518,10 +1510,10 @@ function draw_clock(){
 
 function long_sidebar_text(textcontent,size) {
 	if(size!=null){
-		setfontsize(fontsmall*size);
+		lcd_main.message("font",mainfont,fontsmall*size);
 	}else{
 		size = 1;
-		setfontsize(fontsmall);
+		lcd_main.message("font",mainfont,fontsmall);
 	}
 	var t;
 	var textcontentrows = 0.4 + textcontent.length * size / 45 + textcontent.split("£").length - 1;

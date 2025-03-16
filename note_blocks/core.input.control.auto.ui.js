@@ -61,13 +61,11 @@ function drawbuttons() {
 	outlet(0, "custom_ui_element", "mouse_passthrough", x_pos, h4 * rows + y_pos, w4 * 0.5 * cols + x_pos, height + y_pos, 0, 0, 0, block, 0);
 	var colour = (clicked == 1) ? menucolour : menudark;
 	outlet(1, "framerect", w4 * 0.05 + x_pos, h4 * (rows + 0.05) + y_pos, w4 * (cols / 2 - 0.05) + x_pos, height + y_pos - h4 * 0.05, colour);
-	//outlet(0,"setfontsize", 30);
 	outlet(1, "moveto", x_pos + w4 * 0.1, y_pos + h4 * (rows + btnhgt - 0.2));
 	outlet(1, "write", "zero all");
 	outlet(0, "custom_ui_element", "mouse_passthrough", w4 * 0.5 * cols + x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0, block, 0);
 	var colour = (clicked == 2) ? menucolour : menudark;
 	outlet(1, "framerect", w4 * (cols / 2 + 0.05) + x_pos, h4 * (rows + 0.05) + y_pos, w4 * (cols - 0.05) + x_pos, height + y_pos - h4 * 0.05, colour);
-	//outlet(0,"setfontsize", 30);
 	outlet(1, "moveto", x_pos + w4 * (cols / 2 + 0.1), y_pos + h4 * (rows + btnhgt - 0.2));
 	outlet(1, "write", "store starting positions");
 }

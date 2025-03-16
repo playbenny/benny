@@ -481,7 +481,7 @@ function sidebar_midi_scope(){
 			}
 		}
 		if(cha>0){
-			if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)) setfontsize(fontsmall);
+			if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)) lcd_main.message("font",mainfont,fontsmall);
 			lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
 			if((sidebar.scopes.midiouttypes[outp]<2)){
 				lcd_main.message("frgb",sidebar.scopes.fg);

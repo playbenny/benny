@@ -1171,6 +1171,7 @@ function size(width,height,scale){
 		}
 		fontheight = (mainwindow_height-24) / 18;
 		fontsmall = fontheight / 3.2;
+		config.replace("fontsmall",fontsmall);
 		fo1 = fontheight * 0.1;
 		sidebar.width = fontheight*sidebar.width_in_units;
 		sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;

@@ -41,6 +41,7 @@ var rcol = []; //row colour. per column arrays (ironically probably more storage
 //explainer: if a row is 'grouped' into a round robin then the colour sequence doesn't advance, to keep it making sense.
 var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 var discont_x,discont_x2,bh;
+var mainfont;
 //data format: for each voice the buffer holds:
 // 0 - playhead position (updated by player voice)
 // 1-16383 data values, split over a flexible number of columns (6) and patterns (16)
@@ -58,6 +59,8 @@ function setup(x1,y1,x2,y2,sw){
 	max_rows = Math.floor((MAX_DATA-1)/(UNIVERSAL_COLUMNS*UNIVERSAL_PATTERNS));
 	pattsize = max_rows*UNIVERSAL_COLUMNS;
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	mainfont = config.get("mainfont");
+
 	mini=0;
 	width = x2-x1;
 	height = y2-y1;
@@ -107,7 +110,7 @@ function draw(){
 		i= showcols;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		if(!mini){
-			outlet(0,"setfontsize",rh*0.8);
+			outlet(1,"font",mainfont,rh*0.8);
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*2.6+y_pos);
 			if(cursorx2==0){
