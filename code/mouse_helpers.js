@@ -3523,9 +3523,7 @@ function key_escape(){
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
 			usermouse.clicked3d=-1;
-			if(wires_potential_connection>-1){
-				remove_potential_wire();
-			}
+			if(wires_potential_connection>-1) clear_or_close();
 			draw_blocks();
 		}else if((displaymode=="block_menu")&&(menu.mode==3)){
 			if(menu.search!=""){
