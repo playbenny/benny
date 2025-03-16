@@ -1589,7 +1589,7 @@ function return_from_notify(){
 }
 
 function name_mixer_channel(block,chan){
-	if(blocks.contains("blocks["+block+"]::name")&&(blocks.get("blocks["+block+"]::name").indexOf("mix.")>-1)){
+	if(blocks.contains("blocks["+block+"]::name")&&(blocks.get("blocks["+block+"]::name").indexOf("mixer.")>-1)){
 		post("\nnaming mixer channel");
 		var channelnames=[];
 		if(!blocks.contains("blocks["+block+"]::channel_names")){

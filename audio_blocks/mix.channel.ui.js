@@ -53,6 +53,7 @@ function setup(x1,y1,x2,y2,sw){
 
 function draw(){
 	if(block>=0){
+		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
 		update(1);
 	}
 }
