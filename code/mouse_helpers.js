@@ -3523,8 +3523,10 @@ function key_escape(){
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
 			usermouse.clicked3d=-1;
+			if(wires_potential_connection>-1){
+				remove_potential_wire();
+			}
 			draw_blocks();
-			//post("\nabort 3d drag!!",usermouse.drag.dragging.voices[0],blocks.get("blocks["+usermouse.drag.dragging.voices[0][0]+"]::space::x"));
 		}else if((displaymode=="block_menu")&&(menu.mode==3)){
 			if(menu.search!=""){
 				menu.search="";
