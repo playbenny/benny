@@ -67,14 +67,14 @@
 			{
 				"name" : "clock_looseness",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 1, "exp10"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
 				"name" : "per-event_error",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["uni", 0, 1, "exp10"],
 				"wrap" : 0,
 				"default" : 0
 			},
