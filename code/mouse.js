@@ -77,11 +77,12 @@ function picker_lookups(id){
 		thov[1] = wires_lookup[thov[1]];
 		id = "wires_"+thov[1]+"_0";
 	}
+	// deferred_diag.push("lookups returns "+id);
 	return id;
 }
 
 function picker_hover_and_special(id){
-//	post("\nid",id,"incoming hov",usermouse.hover);
+	// post("\nid",id,"incoming hov",usermouse.hover);
 	if(usermouse.oid!=id){ //if id has changed
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
@@ -125,7 +126,7 @@ function picker_hover_and_special(id){
 			draw_menu_hint();
 		}	
 	}
-//	post(" - - hover is",usermouse.hover,"returning id",id);
+	// deferred_diag.push(" - - hover is"+usermouse.hover+"returning id"+id);
 	return id;
 }
 // usermouse. left_button, shift, ctrl, alt, x, y, got_i, got_t  <-- all the latest values. got_i , _t = 2d click index and type
@@ -174,6 +175,33 @@ function phys_picker(id,leftbutton){
 	}
 }
 
+function manual_hit_detection(){
+	var id = null;
+	var stw = screentoworld(usermouse.x,usermouse.y);
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if(blocks.contains("blocks["+i+"]::space::x")){
+			var by = Math.abs(blocks.get("blocks["+i+"]::space::y")-stw[1]);
+			if(by<0.5){
+				var bx = blocks.get("blocks["+i+"]::space::x")-stw[0];
+				var bv = blocks.get("blocks["+i+"]::poly::voices");
+				if((bx<0.5)&&(bx>-0.5*(1+bv))){
+					//post("\nITS THIS BLOCK!",i,blocks.get("blocks["+i+"]::name"));
+					if(bx>-0.5){
+						//post(" - the block itself");
+						id="block_"+i+"_"+0;
+					}else{
+						bv = Math.floor(bx*-2);
+						//post(" - voice",bv);
+						id="block_"+i+"_"+bv;
+					}
+					i=MAX_BLOCKS;
+				}
+			}
+		}
+	}
+	return id;
+}
+
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(!am_foreground&&leftbutton) other_window_active(0); // you got a mouse event, so you should make sure you're foreground? but only after a click
 
@@ -217,32 +245,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//i do manual hit detection while dragging a block because i couldn't work out how to make phys picker see things under the dragged block..
-			if((displaymode=="blocks") && (usermouse.last.left_button)){
-				var stw = screentoworld(usermouse.x,usermouse.y);
-				for(var i=0;i<MAX_BLOCKS;i++){
-					if(blocks.contains("blocks["+i+"]::space::x")){
-						var by = Math.abs(blocks.get("blocks["+i+"]::space::y")-stw[1]);
-						if(by<0.5){
-							var bx = blocks.get("blocks["+i+"]::space::x")-stw[0];
-							var bv = blocks.get("blocks["+i+"]::poly::voices");
-							if((bx<0.5)&&(bx>-0.5*(1+bv))){
-								//post("\nITS THIS BLOCK!",i,blocks.get("blocks["+i+"]::name"));
-								if(bx>-0.5){
-									//post(" - the block itself");
-									id="block_"+i+"_"+0;
-								}else{
-									bv = Math.floor(bx*-2);
-									//post(" - voice",bv);
-									id="block_"+i+"_"+bv;
-								}
-								//phys_picker_id = null;
-								//post("\n\nset id to",id);
-								i=MAX_BLOCKS;
-							}
-						}
-					}
-				}
-			}
+			if((displaymode=="blocks") && (usermouse.last.left_button)) id = manual_hit_detection();
 			if(id==null) id = picker_lookups(phys_picker_id);
 			if(id!=null) id = picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
@@ -263,7 +266,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.last_y = usermouse.y;
 					usermouse.drag.distance=0;
 					usermouse.clicked2d=-1;
+					if(id=="background"){
+						var t = manual_hit_detection();
+						if(t!=null) id = t;
+						// deferred_diag.push("used manual hit detect and got something that physics didnt");
+					}
 					usermouse.ids = id.split('_');
+					// deferred_diag.push("mouse id"+usermouse.ids+" button "+leftbutton);
 					if(id=="background" || id=="block-menu-background"){
 						usermouse.clicked3d = "background";
 						usermouse.drag.starting_x = -1; // flag waiting for the first mouse message of a drag, because the initial click may be at wrong location with touch messages. usermouse.x;
@@ -665,7 +674,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
-									post("\nself connect,",usermouse.ids,"fname",fname);
+									// post("\nself connect,",usermouse.ids,"fname",fname);
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
@@ -996,12 +1005,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											// post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
-										//if((sidebar.mode=="none")||((sidebar.mode=="block")&&(selected.block[usermouse.ids[1]]))){
 										set_sidebar_mode("potential_wire");
-										//}
-										// post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
-										//draw_wire(wires_potential_connection);
-										//post("\ndrew");
 									
 										var drawnlist = [];
 										for(var t=0;t<usermouse.drag.dragging.voices.length;t++){
