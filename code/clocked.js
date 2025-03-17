@@ -22,7 +22,7 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
-	if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels"))) draw_clock();
+	if((fullscreen && ((displaymode=="blocks")||(displaymode=="panels")))&&(Math.random()<0.05)) draw_clock();
 }
 
 function frameclock(){

@@ -1566,6 +1566,8 @@ function long_sidebar_text(textcontent,size) {
 			lcd_main.message("textface", "normal");
 		}
 	}
+	lcd_main.message("font",mainfont,fontsmall);
+
 	if (!bold) lcd_main.message("textface", "bold");
 	y_offset = y_offset + fontheight * (0.75 + 0.4 * ri) * size;
 }
