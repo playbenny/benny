@@ -103,8 +103,8 @@
 				"channel" : 1,
 				"first" : 1,
 				"scaling" : 0.125,
-				"columns" : 8,
-				"rows" : 1,
+				"columns" : 4,
+				"rows" : 2,
 				"buttons" : 				{
 					"type" : "note",
 					"channel" : 1,
