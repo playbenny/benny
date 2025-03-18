@@ -114,9 +114,9 @@ function draw_graphs(x1,y1,x2,y2,poolno){
 	for(i=0;i<pool_shape[poolno].length;i++){
 		//outlet(0,"custom_ui_element","data_v_scroll",x1+xunit*i,y1,x1+xunit*(i+1),y2,colours[poolno],MAX_DATA*v_list[poolno]+i);
 		outlet(1,"paintrect",x1+xunit*i,y1+(y2-y1)*(1-(pool_shape[poolno][i]/poolmax)),x1+xunit*(i+1),y2,colours[poolno]);
-		outlet(1,"frgb",0,0,0);
-		outlet(1,"moveto",x1+xunit*(i+0.1),y2+(xunit*0.1));
-		outlet(1,"write",pool_shape[poolno][i]);
+		// outlet(1,"frgb",0,0,0);
+		// outlet(1,"moveto",x1+xunit*(i+0.1),y2+(xunit*0.1));
+		// outlet(1,"write",pool_shape[poolno][i]);
 	}
 }
 function update(){

@@ -41,7 +41,7 @@ function update(force){
 		var x=0;
 		for(var v=0;v<v_list.length;v++){
 			draw_comp_meters(x,v);
-			x+=cw;
+			// x+=cw;
 		}
 		x = 0;
 		outlet(1,"frgb",255,255,255);
