@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 1,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -56,7 +56,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 252.0, 115.0, 150.0, 34.0 ],
-					"text" : "this magic number is\n0.00000005, a bit at 24 bit"
+					"text" : "this magic number is\n0.0000001, 2 bits at 24 bit"
 				}
 
 			}
@@ -199,7 +199,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 50.0, 134.0, 94.0, 22.0 ],
+					"patching_rect" : [ 50.0, 115.0, 94.0, 22.0 ],
 					"text" : "snapshot~ 1200"
 				}
 
@@ -397,7 +397,7 @@
 
 			}
  ],
-		"originid" : "pat-3786"
+		"originid" : "pat-4378"
 	}
 
 }
