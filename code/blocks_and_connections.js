@@ -1199,6 +1199,16 @@ function remove_connection(connection_number){
 				remove_routing(connection_number);
 				turn_off_audio_to_data_if_unused((f_voices[i]+(1+f_o_no)*MAX_AUDIO_VOICES));
 			}
+			if(((f_type=="parameters")||(f_type=="midi"))&&(blocktypes.contains(f_name+"::connections::out::midi_watched"))){
+				// post("\nremove connection used status, needs to be adapted for params still!?",f_o_no,f_type);
+				var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+				if(wl[f_o_no]==1){
+					//this is more complicated than make conn - we need to check if
+					//any other connections are using this output?
+					var cused = is_output_used(f_o_no,i,f_block,"midi",connection_number); //this fn turns it on or off as well as answering the question
+					if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
+				}
+			}	
 		}else{
 			f_voice = +f_voices[i];
 			for(v=0;v<t_voices.length;v++){
@@ -1459,7 +1469,7 @@ function remove_connection(connection_number){
 					if(wl[f_o_no]==1){
 						//this is more complicated than make conn - we need to check if
 						//any other connections are using this output?
-						var cused = is_output_used(f_o_no,i,f_block,"midi"); //this fn turns it on or off as well as answering the question
+						var cused = is_output_used(f_o_no,i,f_block,"midi",connection_number); //this fn turns it on or off as well as answering the question
 						if(cused) post("\nthis was a watched output, but is still in use so i haven't disabled it");
 					}
 				}		
@@ -1519,15 +1529,15 @@ function is_input_used(t_i_no, t_voice_no, t_block, t_type) {
 	return cused;
 }
 
-function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
-	// post("\ntesting block ",f_block,"voice",f_voice_no,"output",f_o_no,"type",f_type);
+function is_output_used(f_o_no, f_voice_no, f_block, f_type,ignore) {
+	// post("\ntesting block ",f_block,"voice",f_voice_no,"output",f_o_no,"type",f_type,"ignore:",ignore);
 	var cused = 0;
 	for (var testc = connections.getsize("connections"); testc >= 0; testc--) {
-		if((connections.contains("connections[" + testc + "]::from"))) {
+		if((testc!=ignore)&&(connections.contains("connections[" + testc + "]::from"))) {
 			if (connections.get("connections[" + testc + "]::from::number") == f_block) {
 				if (((connections.get("connections[" + testc + "]::from::output::type") == f_type)) && (connections.get("connections[" + testc + "]::from::output::number") == f_o_no)) {
 					var fv = connections.get("connections[" + testc + "]::from::voice");
-					//post("\ntesting fv", fv, f_voice_no);
+					// post("\ntesting fv", fv, f_voice_no);
 					if (fv == "all") {
 						cused = 1;
 					} else if (fv == f_voice_no) {
@@ -1536,7 +1546,7 @@ function is_output_used(f_o_no, f_voice_no, f_block, f_type) {
 						cused = 1;
 					}
 					if(cused==1){
-						//post("\nis output used returning 1");
+						// post("\nis output used returning 1 because of connecton",testc);
 						testc = -1;
 					}
 				}
@@ -1840,6 +1850,20 @@ function make_connection(cno,existing){
 						set_routing(f_voices[i],f_o_no, enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}
 				}
+				if(((f_type=="parameters")||(f_type=="midi"))&&(blocktypes.contains(f_name+"::connections::out::midi_watched"))){
+					var wl=blocktypes.get(f_name+"::connections::out::midi_watched");
+					// post("\nchecking midi watched", f_o_no, f_type, wl[f_o_no]);
+					if(wl[f_o_no]==1){
+						//tell the voice that this output is in use
+						if(blocks.get("blocks["+f_block+"]::type")=="audio"){
+							audio_poly.message("setvalue", f_voices[i] + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,enab);
+							// post("setvalue", f_voices[i] + 1 - MAX_NOTE_VOICES, "enable_output",f_o_no,1);
+						}else if(blocks.get("blocks["+f_block+"]::type")=="note"){
+							note_poly.message("setvalue", f_voices[i] + 1, "enable_output",f_o_no,enab);
+							// post("setvalue", f_voices[i] + 1, "enable_output",f_o_no,1);
+						}
+					}
+				}					
 			}else{
 				f_voice = +f_voices[i];
 				for(v=0;v<t_voices.length;v++){
