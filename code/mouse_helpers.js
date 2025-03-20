@@ -1022,7 +1022,7 @@ function select_folder(parameter,value){
 }
 
 function open_core_control_auto(){
-	post("\nlooking");
+	// post("\nlooking");
 	for(var i=0;i<MAX_BLOCKS;i++){
 		if((blocks.contains("blocks["+i+"]::name"))&&(blocks.get("blocks["+i+"]::name")=="core.input.control.auto")){
 			var show=0;

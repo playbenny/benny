@@ -72,7 +72,7 @@
         "232" : ["ctrl-F8" , "blocks_and","file_more"],
         "-25" : ["F9" , "messnamed" ,"core.input.keyboard", "toggle_loop"],
         "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
-        "-26" : ["F10", "open_core_control_auto"],
+        "229" : ["ctrl-F11", "open_core_control_auto"],
         "-27" : ["F11", "toggle_fullscreen"],
         "-28" : ["F12" , "set_sidebar_mode","cpu"]
     },

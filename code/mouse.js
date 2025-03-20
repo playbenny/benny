@@ -1413,13 +1413,13 @@ function keydown(key){
 	if(keymap.contains("sidebar::"+sidebar.mode+"::"+key)){
 		var action = keymap.get("sidebar::"+sidebar.mode+"::"+key);
 		var paras = action.slice(2,99);
-		//post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
+		// post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;
 	}else if(keymap.contains("global::"+key)){
 		var action = keymap.get("global::"+key);
 		var paras = action.slice(2,99);
-		//post("\nfound in keymap", action[0],action[1], "paras",paras);
+		// post("\nfound in global keymap", action[0],action[1], "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}else if(keymap.contains(displaymode+"::"+key)){

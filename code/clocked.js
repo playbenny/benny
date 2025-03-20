@@ -196,6 +196,7 @@ function frameclock(){
 			draw_custom();
 		}else{
 			update_custom();
+			if(bottombar.block>-1)update_bottom_bar();
 		}
 		sidebar_meters();
 		bangflag=1;
