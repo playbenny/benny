@@ -74,6 +74,7 @@ function set_display_mode(mode,t){
 				note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
 				note_poly.message("setvalue", automap.available_c,"buttonmaplist",-1);
 			}
+			statesbar_size();
 			if(menu.search!=""){
 				menu.search = "";
 				type_to_search(-6);
@@ -2066,6 +2067,8 @@ function set_sidebar_mode(mode){
 		sidebar.mode = mode;
 		if(mode=="file_menu"){
 			displaymode="blocks";
+			hide_bottom_bar();
+			statesbar_size();
 			center_view(1);
 			redraw_flag.flag  |= 4;
 		}

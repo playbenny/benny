@@ -3546,6 +3546,8 @@ function key_escape(){
 					set_sidebar_mode("none");
 					center_view(1);
 				}
+			}else if(bottombar.block>-1){
+				hide_bottom_bar();	
 			}else{
 				center_view(1);
 			}

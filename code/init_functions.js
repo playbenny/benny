@@ -1113,7 +1113,7 @@ function sidebar_size(){
 
 function statesbar_size(){
 	var h=(statesbar.used_height>0)? statesbar.used_height:0;
-	if(h==0){
+	if((h==0)||(displaymode=="block_menu")||(sidebar.mode == "file_menu")){
 		statesbar.videoplane.message("enable",0);
 	}else{
 		statesbar.videoplane.message("enable",1);
