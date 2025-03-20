@@ -3478,6 +3478,11 @@ function draw_sidebar(){
 							messnamed("scope_size",(sidebar.scopes.width)/2);
 							// post("scopes width",ts.length,"scopes list",sidebar.scopes.voicelist);
 						}
+					}else if((block_name == "core.input.control.auto")||(block_name == "core.input.control.basic")){
+						// no scopes
+						sidebar.scopes.voicelist = [];
+						sidebar.scopes.midioutlist = [];
+						sidebar.scopes.midiouttypes = [];
 					}else if(blocktypes.contains(block_name+"::connections::out::midi")){
 						sidebar.scopes.midi = block;
 						if(sidebar.selected_voice<0){
@@ -3783,7 +3788,6 @@ function draw_sidebar(){
 				}else{
 					sidebar.scopes.fg = block_colour;
 				}
-				
 				if(block_type == "audio" || block_type == "hardware"){
 					if(sidebar.selected_voice != -1){
 						for(i=0;i<NO_IO_PER_BLOCK;i++){
