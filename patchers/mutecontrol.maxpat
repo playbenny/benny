@@ -176,8 +176,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 2,
 					"outlettype" : [ "float", "float" ],
-					"patching_rect" : [ 50.0, 382.0, 61.0, 22.0 ],
-					"text" : "split -0. 0."
+					"patching_rect" : [ 50.0, 382.0, 127.0, 22.0 ],
+					"text" : "split -0.00001 0.00001"
 				}
 
 			}
@@ -465,7 +465,7 @@
 
 			}
  ],
-		"originid" : "pat-4098"
+		"originid" : "pat-4852"
 	}
 
 }
