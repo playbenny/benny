@@ -1,7 +1,7 @@
 {
 	"midi.utility.delay" : {
 		"patcher" : "utility.midi.delay",
-		"type" : "audio",
+		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "utility delay for midi. has time settings in samples, vectors, ms and beats that are added together.",
 		"max_polyphony" : 0,
