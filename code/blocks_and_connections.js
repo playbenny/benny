@@ -3411,6 +3411,11 @@ function insert_block_in_connection(newblockname,newblock){
 	redraw_flag.flag |= 4;	
 }
 
+function ext_swap_block(block_name,target){
+	menu.swap_block_target = target;
+	swap_block(block_name);
+}
+
 function swap_block(block_name){
 	// if type changes you need to allocate a new voice number, this is where it falls down atm
 
