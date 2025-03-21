@@ -14,6 +14,18 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-86",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 105.0, 298.0, 29.5, 22.0 ],
+					"text" : "i 32"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-81",
 					"maxclass" : "button",
 					"numinlets" : 1,
@@ -313,7 +325,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 362.0, 367.0, 50.0, 36.0 ],
-					"text" : "fx.clouds.pvoc"
+					"text" : "fx.delay.tape"
 				}
 
 			}
@@ -372,8 +384,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 294.5, 281.5, 55.0, 22.0 ],
-					"text" : "del 2000"
+					"patching_rect" : [ 294.5, 281.5, 61.0, 22.0 ],
+					"text" : "del 20000"
 				}
 
 			}
@@ -458,7 +470,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 177.5, 98.0, 50.0, 64.0 ],
-					"text" : "fx.clouds.pvoc::type audio"
+					"text" : "fx.delay.tape::type audio"
 				}
 
 			}
@@ -483,7 +495,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 263.0, 217.0, 50.0, 36.0 ],
-					"text" : "fx.clouds.pvoc"
+					"text" : "fx.delay.tape"
 				}
 
 			}
@@ -599,7 +611,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 333.0, 209.0, 74.0, 22.0 ],
-					"text" : "33 40 24"
+					"text" : "25 31 24"
 				}
 
 			}
@@ -634,8 +646,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 156.0, 256.0, 93.0, 22.0 ],
-					"text" : "voicecount 4 63"
+					"patching_rect" : [ 104.5, 332.0, 93.0, 22.0 ],
+					"text" : "voicecount 4 $1"
 				}
 
 			}
@@ -860,7 +872,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-5", 0 ],
+					"destination" : [ "obj-86", 0 ],
 					"source" : [ "obj-36", 0 ]
 				}
 
@@ -1169,6 +1181,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-79", 0 ],
 					"source" : [ "obj-81", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-86", 0 ]
 				}
 
 			}
