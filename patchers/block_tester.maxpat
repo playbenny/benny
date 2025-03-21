@@ -14,6 +14,30 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-8",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 457.5, 457.0, 150.0, 62.0 ],
+					"text" : "stores maximum and average cpu use\ntakes 90s per block so approx 4h to complete"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 552.0, 142.0, 22.0, 22.0 ],
+					"text" : "t 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-86",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -42,9 +66,9 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
-					"outlettype" : [ "int", "bang" ],
+					"outlettype" : [ "bang", "bang" ],
 					"patching_rect" : [ 589.0, 137.0, 32.0, 22.0 ],
-					"text" : "t 0 b"
+					"text" : "t b b"
 				}
 
 			}
@@ -222,7 +246,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 482.0, 41.0, 150.0, 48.0 ],
+					"patching_rect" : [ 482.0, 41.0, 151.0, 48.0 ],
 					"text" : "you need to add a hw in, connect it to the block that gets added, then hit start"
 				}
 
@@ -325,7 +349,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 362.0, 367.0, 50.0, 36.0 ],
-					"text" : "fx.delay.tape"
+					"text" : "fx.abl.fuzz"
 				}
 
 			}
@@ -464,13 +488,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-27",
-					"linecount" : 4,
+					"linecount" : 3,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 177.5, 98.0, 50.0, 64.0 ],
-					"text" : "fx.delay.tape::type audio"
+					"patching_rect" : [ 177.5, 98.0, 50.0, 50.0 ],
+					"text" : "fx.abl.fuzz::type audio"
 				}
 
 			}
@@ -495,7 +519,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 263.0, 217.0, 50.0, 36.0 ],
-					"text" : "fx.delay.tape"
+					"text" : "fx.abl.fuzz"
 				}
 
 			}
@@ -611,7 +635,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 333.0, 209.0, 74.0, 22.0 ],
-					"text" : "25 31 24"
+					"text" : "29 46 24"
 				}
 
 			}
@@ -755,6 +779,22 @@
 				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-18", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-68", 3 ],
+					"order" : 0,
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-69", 1 ],
+					"order" : 1,
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
@@ -910,7 +950,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-11", 1 ],
-					"order" : 1,
+					"order" : 2,
 					"source" : [ "obj-40", 0 ]
 				}
 
@@ -919,6 +959,22 @@
 				"patchline" : 				{
 					"destination" : [ "obj-44", 0 ],
 					"order" : 0,
+					"source" : [ "obj-40", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-68", 3 ],
+					"order" : 1,
+					"source" : [ "obj-40", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-69", 1 ],
+					"order" : 3,
 					"source" : [ "obj-40", 0 ]
 				}
 
@@ -1156,16 +1212,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-68", 3 ],
-					"order" : 0,
-					"source" : [ "obj-79", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-69", 1 ],
-					"order" : 1,
+					"destination" : [ "obj-2", 0 ],
 					"source" : [ "obj-79", 0 ]
 				}
 
@@ -1192,7 +1239,7 @@
 
 			}
  ],
-		"originid" : "pat-3697",
+		"originid" : "pat-3700",
 		"dependency_cache" : [  ],
 		"autosave" : 0
 	}
