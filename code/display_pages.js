@@ -1137,13 +1137,13 @@ function block_and_wire_colours(){ //for selection and mute etc
 			if(selected.wire[i]){
 				draw_wire(i); //because it may have moved fwd/back
 				for(var ii=0;ii<wires_scale[i].length;ii++){
-					wires_scale[i][ii][0] = 2 * wire_dia;
+					wires_scale[i][ii][1] = 2 * wire_dia;
 				}
 				if(bulgingwire==i)bulgeamount=1;
 			}else{
 				if(mov)draw_wire(i);
 				for(var ii=0;ii<wires_scale[i].length;ii++){
-					wires_scale[i][ii][0] = wire_dia;
+					wires_scale[i][ii][1] = wire_dia;
 				}		
 			}
 			tmc=0.3;
@@ -1795,7 +1795,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
 	var seglength = 0;
-	var rotX, rotZ;
+	var rotY, rotZ;
 	for(var t=0;t<3;t++){
 		avg_pos[t] = (from_pos[t] + to_pos[t])/2;
 		pos_dif[t] = (to_pos[t] - from_pos[t]);
@@ -1805,20 +1805,30 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 		//post("\nzero length vector",seglength,pos_dif,"\n");
 		//return;
 		seglength=0.01;
-		rotX=0;
+		rotY=0;
 		rotZ=0;
 	}else{
 		seglength = Math.sqrt(seglength);
-		rotX = ((Math.asin(pos_dif[2]/seglength)));// % 6.283185307179586476);
-		rotX *= 57.2957795130823; //180/Math.PI;
-		rotZ = -Math.atan2(pos_dif[0],pos_dif[1]);
+		rotY = -((Math.asin(pos_dif[2]/seglength)));// % 6.283185307179586476);
+		// post("\n",segment,"-",2*(pos_dif[1]<0)+(pos_dif[0]<0));
+		rotY *= 57.2957795130823; //180/Math.PI;
+		if((pos_dif[1]>=0)&&(pos_dif[0]<0)){
+			// if(usermouse.caps){
+				rotY = -rotY;
+			// }else{
+				// rotY = ((180 + rotY) % 360)-180;
+			// }
+			// post("\nin q1",segment);
+		}
+		// post("\n",segment," y ",rotY);
+		rotZ = Math.atan2(pos_dif[1],pos_dif[0]);
 		rotZ *= 57.2957795130823; //180/Math.PI;
 	}
 
 	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ]; // + pos_dif[2]*0.5
 	var wd = wire_dia*(1+selected.wire[connection_number]);
-	wires_scale[connection_number][segment] = [wd,(seglength+wd)*0.52, 1];
-	wires_rotatexyz[connection_number][segment] = [rotX, 0, rotZ];
+	wires_scale[connection_number][segment] = [(seglength+wd)*0.52, wd, wd];
+	wires_rotatexyz[connection_number][segment] = [0, rotY, rotZ];
 	var tmc=0.4;
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);

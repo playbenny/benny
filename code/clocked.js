@@ -80,7 +80,7 @@ function frameclock(){
 		if(Array.isArray(wires_position[bulgingwire])){
 			var ll = wires_position[bulgingwire].length;
 			for(var i=0;i<ll;i++){
-				wires_scale[bulgingwire][i][0] = wire_dia * (1 + bulgeamount);
+				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
 			if(bulgeamount==0) bulgingwire=-1;			
 			write_wire_matrix(bulgingwire);
