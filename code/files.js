@@ -830,7 +830,7 @@ function import_song(){
 			var po = songs.get(loading.songname+"::panels_order");
 			post("\nloading panels order: ",po);
 			for(i=0;i<po.length;i++){
-				panels_order[panels_order.length]=loading.mapping[po[i]];
+				panels.order.push(loading.mapping[po[i]]);
 			}
 			if(songs.contains(loading.songname+"::MAX_PANEL_COLUMNS")){
 				MAX_PANEL_COLUMNS = 0 | songs.get(loading.songname+"::MAX_PANEL_COLUMNS");
@@ -1294,8 +1294,8 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
 	}
 	post("current state stored");
-	if(panels_order.length){
-		blocks.replace("panels_order",panels_order);
+	if(panels.order.length){
+		blocks.replace("panels_order",panels.order);
 		blocks.replace("MAX_PANEL_COLUMNS",MAX_PANEL_COLUMNS);
 	}
 	if(fullscreen && saveas){
@@ -1692,7 +1692,7 @@ function clear_everything(){
 		quantpool.poke(1, i, i);
 		indexpool.poke(1, i, i);
 	}
-	panels_order=[];
+	panels.order=[];
 	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);

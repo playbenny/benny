@@ -894,8 +894,14 @@ function select_block(parameter,value){
 		selected.wire_count = 0;
 		redraw_flag.flag |= 2;
 		if(displaymode == "blocks") redraw_flag.flag |= 8;
-		if(usermouse.ctrl && (displaymode == "panels")){
-			set_sidebar_mode("edit_label");
+		if(displaymode == "panels"){
+			if(usermouse.ctrl){
+				panels.editting = value;
+				set_sidebar_mode("panel_assign");
+			}else{
+				set_sidebar_mode("none");
+				panels.editting = -1;
+			}
 		}
 	}
 }
@@ -908,24 +914,24 @@ function panels_bg_click(){
 function panel_edit_button(parameter,value){
 	post("panel edit",parameter,value);
 	if(value=="up"){
-		for(var i=1;i<panels_order.length;i++){
-			if(panels_order[i]==parameter){
-				panels_order[i] = panels_order[i-1];
-				panels_order[i-1] = parameter;
+		for(var i=1;i<panels.order.length;i++){
+			if(panels.order[i]==parameter){
+				panels.order[i] = panels.order[i-1];
+				panels.order[i-1] = parameter;
 			}
 		}
 	}else if(value=="down"){
-		for(var i=panels_order.length-1;i>=0;i--){
-			if(panels_order[i]==parameter){
-				panels_order[i] = panels_order[i+1];
-				panels_order[i+1] = parameter;
+		for(var i=panels.order.length-1;i>=0;i--){
+			if(panels.order[i]==parameter){
+				panels.order[i] = panels.order[i+1];
+				panels.order[i+1] = parameter;
 			}
 		}
 	}else if(value=="hide"){
 		blocks.replace("blocks["+parameter+"]::panel::enable",0);
-		panels_order.splice(panels_order.indexOf(parameter),1);
+		panels.order.splice(panels.order.indexOf(parameter),1);
 		redraw_flag.paneltargets[parameter] = 0;
-		//post("panels order is now",panels_order);
+		//post("panels order is now",panels.order);
 	}
 	redraw_flag.flag=4;
 }
@@ -3501,6 +3507,7 @@ function key_escape(){
 	if(displaymode=="panels"){
 		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
 			set_sidebar_mode("block");
+			panels.editting = -1;
 		}else if(sidebar.mode!="none"){
 			clear_blocks_selection();
 			if(sidebar.mode == "file_menu"){

@@ -2701,9 +2701,9 @@ function remove_block(block){
 		song_select.previous_blocks.splice(i,1);
 		if(song_select.previous_blocks.length==0) song_select.show=0;
 	}
-	i = panels_order.indexOf(block); //remove block from panels page
+	i = panels.order.indexOf(block); //remove block from panels page
 	if(i> -1){
-		panels_order.splice(i,1);
+		panels.order.splice(i,1);
 	}
 	write_blocks_matrix();
 	set_display_mode("blocks");

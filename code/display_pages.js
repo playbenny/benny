@@ -17,9 +17,10 @@ function set_display_mode(mode,t){
 			mode = "blocks"; //only show flocks if there are flocks
 			redraw_flag.flag = 4;
 		}
-	}
+	}else if(mode == "panels") panels.editting = -1;
 	var blocks_enabled=(mode=="blocks");
 	if(displaymode!=mode){
+		if(displaymode == "panels") panels.editting = -1;
 		if(displaymode == "block_menu") hide_block_menu();
 		if((mode!="blocks")&&(mode!="panels")&&(mode!="waves")){
 			sidebar.mode="none";
@@ -222,7 +223,7 @@ function get_hw_meter_positions(){
 function draw_panels(){
 	//deferred_diag.push("draw panels "+mouse_index);
 	var panelsbottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
-	panels_custom = [];
+	panels.custom = [];
 	var i,b,x=0,y=0,h;
 	var statecount;
 	var block_name;
@@ -232,14 +233,14 @@ function draw_panels(){
 	panelslider_index=MAX_PARAMETERS+1;
 	redraw_flag.paneltargets=[];
 	var seen=[];
-	if(panels_order.length){
-		for(i=0;i<panels_order.length;i++){
-			b=panels_order[i];
+	if(panels.order.length){
+		for(i=0;i<panels.order.length;i++){
+			b=panels.order[i];
 			if((seen[b]!=1)&&(blocks.get("blocks["+b+"]::panel::enable")==1)){
 				block_is_in_custom_order[b]=1;
 				seen[b]=1;
 			}else{
-				panels_order.splice(i,1);
+				panels.order.splice(i,1);
 			}
 		}
 	}
@@ -247,7 +248,7 @@ function draw_panels(){
 		if(block_is_in_custom_order[b]!=1){
 			if(blocks.contains("blocks["+b+"]::panel::enable")){
 				if((seen[b]!=1)&&(blocks.get("blocks["+b+"]::panel::enable")==1)){
-					panels_order[panels_order.length] = b;
+					panels.order.push(b);
 				}
 			}
 		}
@@ -258,8 +259,8 @@ function draw_panels(){
 	}else{
 		column_width = (mainwindow_width-18 - fontheight*1.1)/MAX_PANEL_COLUMNS;
 	}
-	for(i=0;i<panels_order.length;i++){
-		b = panels_order[i];
+	for(i=0;i<panels.order.length;i++){
+		b = panels.order[i];
 		//work out height first
 		h=1; //title, floating blocks?, mute
 		statecount=0;
@@ -288,22 +289,21 @@ function draw_panels(){
 			if(bottombar.block==b) has_ui = 0;
 			h+=has_ui;
 			if(has_params) h-=0.5;
-			panels_custom.push(b);
+			panels.custom.push(b);
 		}
 
 		if(18+(y+h+0.9)*fontheight>panelsbottom){
 			x++;
 			y=0;
-			if(x>=MAX_PANEL_COLUMNS){
-				//post("\npanels list overflowed, TODO scroll or autosize!");
+			if(x>=MAX_PANEL_COLUMNS){ //when it overflows it just draws it better next frame
 				MAX_PANEL_COLUMNS++;
 				redraw_flag.deferred = 4;
 				return(1);
 			}
 		}
 		var x1 = 18 + fontheight*1.1 + x * column_width;
-		if(displaymode=="panels_edit"){
-			draw_panel_edit(x1,y,h,b,column_width-9);
+		if((displaymode=="panels_edit")||(panels.editting == b)){
+			draw_panel_edit(x1,y,h,b,column_width-9,statecount,has_params,has_ui);
 		}else{
 			draw_panel(x1,y,h,b,column_width-9,statecount,has_params,has_ui);
 		}
@@ -317,28 +317,21 @@ function draw_panels(){
 	}
 }
 
-function draw_panel_edit(x1,y,h,b,column_width){
+function draw_panel_edit(x1,y,h,b,column_width,statecount,has_params,has_ui){
+	draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui);
+
 	var i,cx,cy,r;
-	var block_colour = blocks.get("blocks["+b+"]::space::colour");
-	block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
-	var block_darkest = shadeRGB(block_colour, bg_dark_ratio);
-	var x2 = x1 + column_width;
-	lcd_main.message("font",mainfont,fontsmall);
-	lcd_main.message("paintrect",x1,18+y*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,block_darkest);
-	lcd_main.message("moveto",fontheight*0.2+x1,18+y*fontheight+fontheight*1.5);
-	lcd_main.message("frgb", 255, 255, 255);
-	lcd_main.message("write", blocks.get("blocks["+b+"]::label"));
-	cy = 18+y*fontheight+1.5*fontheight + column_width / 6;
+	cy = 18+y*fontheight+1.5*fontheight;// + column_width / 6;
 	for(i=0;i<3;i++){
-		cx = x1 + (i + 0.5) *column_width / 3;
-		r = column_width /8;
-		lcd_main.message("paintoval", cx-r,cy-r,cx+r,cy+r, menucolour[2],menucolour[1],menucolour[0]);
+		cx = x1 + column_width + fontheight * (i-3.5);
+		r = fontheight*0.48;
+		lcd_main.message("paintoval", cx-r,cy-r,cx+r,cy+r, menucolour[0],menucolour[1],menucolour[2]);
 		click_oval(cx-r,cy-r,cx+r,cy+r, mouse_index,1);
 		r = 0.8*r;
 		lcd_main.message("paintoval", cx-r,cy-r,cx+r,cy+r, 0,0,0);
 		r = 0.8*r;
 		if(i==0){
-			lcd_main.message("frgb", menucolour[2],menucolour[1],menucolour[0]);	
+			lcd_main.message("frgb", menucolour[0],menucolour[1],menucolour[2]);	
 			lcd_main.message("paintpoly",cx-r,cy,cx,cy-r,cx+r,cy,cx-r,cy);
 			mouse_click_actions[mouse_index] = panel_edit_button;
 			mouse_click_parameters[mouse_index] = b;
@@ -347,14 +340,14 @@ function draw_panel_edit(x1,y,h,b,column_width){
 			mouse_click_actions[mouse_index] = panel_edit_button;
 			mouse_click_parameters[mouse_index] = b;
 			mouse_click_values[mouse_index] = "down";
-			lcd_main.message("frgb", menucolour[2],menucolour[1],menucolour[0]);	
-			lcd_main.message("paintpoly",cx-r,cy,cx,cy+r,cx+r,cy,cx-r,cy, menucolour[2],menucolour[1],menucolour[0]);
+			lcd_main.message("frgb", menucolour[0],menucolour[1],menucolour[2]);	
+			lcd_main.message("paintpoly",cx-r,cy,cx,cy+r,cx+r,cy,cx-r,cy, menucolour[0],menucolour[1],menucolour[2]);
 		}else{
 			mouse_click_actions[mouse_index] = panel_edit_button;
 			mouse_click_parameters[mouse_index] = b;
 			mouse_click_values[mouse_index] = "hide";
-			lcd_main.message("moveto",cx-r,cy+fontheight*0.3);
-			lcd_main.message("frgb", menucolour[2],menucolour[1],menucolour[0]);	
+			lcd_main.message("moveto",cx-0.9*r,cy+fontheight*0.1);
+			lcd_main.message("frgb", menucolour[0],menucolour[1],menucolour[2]);	
 			lcd_main.message("write","hide");	
 		}
 		mouse_index++;
@@ -837,8 +830,8 @@ function update_custom(){
 }
 
 function update_custom_panels(){
-	for(var i=0;i<panels_custom.length;i++){
-		ui_poly.message("setvalue",  panels_custom[i]+1, "update");
+	for(var i=0;i<panels.custom.length;i++){
+		ui_poly.message("setvalue",  panels.custom[i]+1, "update");
 	}
 }
 
@@ -2260,7 +2253,7 @@ function draw_topbar(){
 			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,menucolour );
 			lcd_main.message("frgb", 0,0,0);
 		}else if(displaymode == "panels_edit"){
-			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,menucolour[2],menucolour[1], menucolour[0] );
+			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.3), 9+fontheight,menucolour );
 			lcd_main.message("frgb", 0,0,0);
 			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
 			lcd_main.message("write", "edit");

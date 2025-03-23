@@ -420,8 +420,11 @@ var wirecolour = [1,1,1,1];
 
 var meter_positions = [[],[]];
 
-var panels_custom = [];
-var panels_order = [];
+var panels = {
+	custom : [],
+	order : [],
+	editting : -1
+};
 
 var blocks_page = {
 	new_block_click_pos : [0,0],
@@ -430,11 +433,6 @@ var blocks_page = {
 	highest :0,
 	lowest: 0
 }	
-
-
-
-var touch_click=0;
-var stored_click = [];
 
 var menucolour, menudark, menudarkest;
 var greycolour, greydark, greydarkest;
@@ -801,7 +799,7 @@ function diagnostics(){
 	post("\nnblock selected",selected.block);
 	if(voicemap.contains(selected.block.indexOf(1))) post("- its voices: ",voicemap.get(selected.block.indexOf(1)));
 	post("\nwire selected",selected.wire);
-	post("\npanels list: ",panels_order);
+	post("\npanels list: ",panels.order);
 	post("\nnote patcherlist: \n",note_patcherlist,"\n loaded note patcherlist: \n",loaded_note_patcherlist,"\n audio patcherlist: \n",audio_patcherlist,"\n loaded audio patcherlist: \n",loaded_audio_patcherlist,"\n upsampling list: \n",audio_upsamplelist,"\n ui patcherlist: \n",ui_patcherlist,"\n loaded ui patcherlist: \n",loaded_ui_patcherlist,"\n vst list:\n",vst_list,"\n\n");
 	post("\nNumber of items in the waves polybuffer:", waves_polybuffer.count); 
 	post("\nMemory used in the waves polybuffer:", waves_polybuffer.size/1048576, " megabytes"); 
