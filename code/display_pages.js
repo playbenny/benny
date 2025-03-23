@@ -2063,6 +2063,11 @@ function set_sidebar_mode(mode){
 			audio_to_data_poly.message("setvalue", 0,"vis_scope",0);
 			sidebar.scopes.midi = -1;
 			sidebar.scopes.voice = -1;
+			if(sidebar.mode=="wire"){
+				sidebar.connection.default_out_applied = 0;
+				sidebar.connection.default_in_applied = 0;	
+				// post("\ncleared default flag");		
+			}
 		}
 		sidebar.mode = mode;
 		if(mode=="file_menu"){

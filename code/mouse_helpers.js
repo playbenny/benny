@@ -3765,12 +3765,17 @@ function fold_menus(){
 
 function clear_or_close(){
 	var s = selected.wire.indexOf(1);
-	//post("\n\n\n\nclear or close,",s);
-	if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
-		remove_connection(s);
-	}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
-		remove_connection(s);
+	// post("\n\n\n\nclear or close,",s);
+	if(s>-1){
+		if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
+			remove_connection(s);
+		}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
+			remove_connection(s);
+		}
 	}
+	sidebar.connection.default_out_applied = 0;
+	sidebar.connection.default_in_applied = 0;
+	clear_blocks_selection();
 	set_sidebar_mode("none");
 }
 
