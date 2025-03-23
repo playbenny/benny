@@ -1137,13 +1137,13 @@ function block_and_wire_colours(){ //for selection and mute etc
 			if(selected.wire[i]){
 				draw_wire(i); //because it may have moved fwd/back
 				for(var ii=0;ii<wires_scale[i].length;ii++){
-					wires_scale[i][ii][1] = 2 * wire_dia;
+					wires_scale[i][ii][0] = 2 * wire_dia;
 				}
 				if(bulgingwire==i)bulgeamount=1;
 			}else{
 				if(mov)draw_wire(i);
 				for(var ii=0;ii<wires_scale[i].length;ii++){
-					wires_scale[i][ii][1] = wire_dia;
+					wires_scale[i][ii][0] = wire_dia;
 				}		
 			}
 			tmc=0.3;
@@ -1753,18 +1753,6 @@ function draw_wire(connection_number){
 					segment=draw_bezier(connection_number, segment, segments_to_use*0.5, bez_prep, cmute);	
 				}
 			}
-			/*if(Array.isArray(wires_position[connection_number])){
-				if(segments_to_use<wires_position[connection_number].length){
-					//remove wires
-					for(var sr = wires_position[connection_number].length-1;sr>=segment;sr--){
-						wires_position[connection_number].pop();
-						wires_rotatexyz[connection_number].pop();
-						wires_scale[connection_number].pop();
-						wires_colour[connection_number].pop();
-					}
-					redraw_flag.matrices |= 1;
-				}
-			}*/
 			return 1;
 		}
 	}
@@ -1807,6 +1795,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
 	var seglength = 0;
+	var rotX, rotY, rotZ;
 	for(var t=0;t<3;t++){
 		avg_pos[t] = (from_pos[t] + to_pos[t])/2;
 		pos_dif[t] = (to_pos[t] - from_pos[t]);
@@ -1817,21 +1806,18 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 		//return;
 		seglength=0.01;
 		rotY=0;
-		rotz=0;
+		rotZ=0;
 	}else{
 		seglength = Math.sqrt(seglength);
-		var rotY = (7.853981633974-Math.acos(pos_dif[2]/seglength)) % 6.283185307179586476;
-		var rotZ = Math.atan(pos_dif[1]/pos_dif[0]);
-	
-		if(from_pos[0]<=to_pos[0]) rotY	= -rotY;
-		//if(usermouse.caps) post("\nroty",rotY,"rotz",rotZ);
+		rotX = -((Math.asin(pos_dif[2]/seglength)) % 6.283185307179586476);
+		rotZ = -Math.atan(pos_dif[0]/pos_dif[1]);
 		rotZ *= 57.2957795130823; //180/Math.PI;
-		rotY *= 57.2957795130823; //180/Math.PI;
+		rotX *= 57.2957795130823; //180/Math.PI;
 	}
 
-	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ];
-	wires_scale[connection_number][segment] = [seglength*0.52, wire_dia*(1+selected.wire[connection_number]),1];
-	wires_rotatexyz[connection_number][segment] = [0, rotY, rotZ];
+	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] + pos_dif[2]*0.5 ];
+	wires_scale[connection_number][segment] = [wire_dia*(1+selected.wire[connection_number]),seglength*0.52, 1];
+	wires_rotatexyz[connection_number][segment] = [rotX, 0, rotZ];
 	var tmc=0.4;
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
