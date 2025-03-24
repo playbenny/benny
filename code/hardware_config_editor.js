@@ -354,6 +354,44 @@ function render_controls(){
 					}
 				}
 				y_pos+=unit.row;
+
+				//choose as default for control.auto or default for mixer.bus
+				controls[ii] = this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", "use as default for core.input.control.auto");
+				controls[ii].presentation(1);
+				controls[ii].presentation_position(30,y_pos);
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "controller_defaults.control_auto."+ii);
+				if(configfile.contains("io::controller_defaults::control_auto")){
+					controls[ii].message("set", (configfile.get("io::controller_defaults::control_auto")==cdk[p]));
+				}else{
+					controls[ii].message("set", 0);
+				}
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+				values[ii] = [cdk[p]];
+				y_pos+=unit.row;
+				ii++;
+
+				controls[ii] = this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", "use as default for mixer.bus");
+				controls[ii].presentation(1);
+				controls[ii].presentation_position(30,y_pos);
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "controller_defaults.mixer_bus."+ii);
+				if(configfile.contains("io::controller_defaults::mixer_bus")){
+					controls[ii].message("set", (configfile.get("io::controller_defaults::mixer_bus")==cdk[p]));
+				}else{
+					controls[ii].message("set", 0);
+				}
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+				values[ii] = [cdk[p]];
+				y_pos+=unit.row*2;
+				ii++;
+
 				//"outputs" : 16,
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "number of outputs");
@@ -1990,6 +2028,23 @@ function keybcallback(data){
 		var v = values[id[2]];
 		dontredraw = 1;
 		configfile.replace("io::controllers::"+v[0]+"::"+id[1],data.value);
+	}else if(id[0]=="controller_defaults"){
+		post("\nhandling default selection:",id);
+		var v = values[id[2]];
+		if(Array.isArray(v)) v = v[0];
+		post("v is",v);
+		if(configfile.contains("io::controller_defaults")){
+			var okd = configfile.get("io::controller_defaults");
+			var ok = okd.getkeys();
+			for(ik = 0;ik<ok.length;ik++){
+				post("\n ok",ok[ik],"value",configfile.get("io::controller_defaults::"+ok[ik]));
+				if((ok[ik]!=id[1])&&(configfile.get("io::controller_defaults::"+ok[ik])==v)){
+					configfile.remove("io::controller_defaults::"+ok[ik]);
+					post("REMOVED");
+				}
+			}
+		}
+		configfile.replace("io::controller_defaults::"+id[1],v);
 	}else if(id[0]=="controllersubkey"){
 		var v = values[id[3]];
 		dontredraw = 1;

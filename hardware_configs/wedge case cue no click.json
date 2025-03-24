@@ -153,7 +153,12 @@
 			"soundcard" : "/Users/James/Documents/GitHub/benny/hardware_configs/drivers/soundcard_mixer/rme_totalmix.maxpat"
 		}
 ,
-		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat"
+		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat",
+		"controller_defaults" : 		{
+			"control_auto" : "Midi Fighter Twister",
+			"mixer_bus" : "LPD8 mk2"
+		}
+
 	}
 ,
 	"hardware" : 	{
