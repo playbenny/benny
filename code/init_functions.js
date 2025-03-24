@@ -512,7 +512,8 @@ function import_hardware(v){
 	var output_blocks=[]; //output blocks are in pairs, eg #1 is ch's 1+2. so, for every output channel you find ("in" to a block, mind), 
 																		//you math.floor((x-1)/2) and set that element of this array
 	for(i=0;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks[i] = "clip_dither";
-
+	var dc_block_enabled_list = [];
+	var input_gate_enabled_list = [];
 	for(i = 0; i < keys.length; i++){
 		post("\n  "+keys[i]);
 		blocktypes.set(keys[i],d.get(keys[i]));
@@ -585,6 +586,19 @@ function import_hardware(v){
 				input_used[ch[t]-1]=1;
 				if(ch[t]>MAX_USED_AUDIO_INPUTS) MAX_USED_AUDIO_INPUTS = ch[t];
 			}
+			if(d.contains(keys[i]+"::connections::out::dc_block")){
+				var dcl=d.get(keys[i]+"::connections::out::dc_block");
+				for(t=0;t<ch.length;t++) dc_block_enabled_list[ch[t]-1]  = dcl[t];
+			}else{
+				for(t=0;t<ch.length;t++) dc_block_enabled_list[ch[t]-1] = 1;
+			}
+			if(d.contains(keys[i]+"::connections::out::input_gate")){
+				var dcl=d.get(keys[i]+"::connections::out::input_gate");
+				for(t=0;t<ch.length;t++) input_gate_enabled_list[ch[t]-1]  = dcl[t];
+			}else{
+				for(t=0;t<ch.length;t++) input_gate_enabled_list[ch[t]-1] = 1;
+			}
+
 		}
 	}
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
@@ -628,15 +642,32 @@ function import_hardware(v){
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
 	this.patcher.remove(old_adc);
+	var old_ip = this.patcher.getnamed("input_processing");
+	if(old_ip!=null) this.patcher.remove(old_ip);
+	
 	new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);
 	new_adc.message("sendbox", "varname", "audio_inputs");
+	var ipprocessing = this.patcher.newdefault(654,527, "mc.gen~", "input_processing", "@chans", audioiolists[0].length);
+	ipprocessing.message("sendbox", "varname", "input_processing");
 	new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);
+	
+	var dc_sorted = [];
+	var ip_sorted = []; //these are only for the console notification but it's useful to have that as a reminder..
+	for(var i=0;i<audioiolists[0].length;i++){
+		ipprocessing.message("setvalue",i,"hp", dc_block_enabled_list[audioiolists[0][i]-1]);
+		ipprocessing.message("setvalue",i,"gate", input_gate_enabled_list[audioiolists[0][i]-1]);
+		dc_sorted.push(dc_block_enabled_list[audioiolists[0][i]-1]);
+		ip_sorted.push(input_gate_enabled_list[audioiolists[0][i]-1]);
+	}
+	post("\ninput processing: dc block",dc_sorted,"cpu saving gate",ip_sorted);
 	new_dac.message("sendbox", "varname", "audio_outputs");
 	var opinterleave = this.patcher.getnamed("op_interleave");
 	var ipcombine = this.patcher.getnamed("ip_combine");
 	var openbut = this.patcher.getnamed("openbutton");
 	this.patcher.connect(opinterleave, 0, new_dac, 0);
-	this.patcher.connect(new_adc,0,ipcombine,1);
+	//this.patcher.connect(new_adc,0,ipcombine,1);
+	this.patcher.connect(new_adc,0,ipprocessing,0);
+	this.patcher.connect(ipprocessing,0,ipcombine,1);
 	this.patcher.connect(openbut,0,new_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
 	if(config.get("ENABLE_RECORD_HARDWARE")==1){

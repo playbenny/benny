@@ -1,3 +1,6 @@
+24/03/25:
+- input processing: enabled by default but can be disabled per-input in the hardware config editor, there's dc blocking (which you would want to switch off if you're bringing control voltages in from eg a modular into benny, but is otherwise useful) and a gate, which is (only) designed to switch inaudible signals off to help save cpu. (there are no controls, if you want that use the utility.gate block).
+
 23/03/25:
 - big improvement to panels page layout edit - ctrl-click the titlebar of any panel to bring up the panel parameters assign mode of the sidebar as well as the reorder/hide buttons.
 
@@ -8,7 +11,7 @@
 - new mixer channel types. there are now stereo input and mono input variants of 3 different mixer channels, each designed for performable control of one aspect of the sound:
     - .basic - is the original channel, with eq shape and stereo width set by choosing a preset 'voicing'. amount and freq controls allow fine-tuning, but these are designed to work well together. the mono channel has a very simple sidechain compressor input designed for ducking/negative space.
     - .comp - based around a luke abbott multiband compressor design for versatile and live-show-safe dynamic control. can smooth transients or solidify them. the mono version has an optional sidechain in that automatically turns on if you connect something to it. the stereo version works slightly more on the mid channel than the sides.
-    - .tape - *still under development* has a pre and post emphasis eq around airwindows' totape6. with positive amounts it's a boost into the tape saturation and a smaller cut after, leaving a bump with extra harmonic energy. with amount negative the opposite happens, a shallow wide dip turns into a wide dip with a clean boost in the middle of it that works well for solid clean weight on a part's fundamental. the stereo version works in mid-side and again the mono version of this has a sidechain compressor input.
+    - .tape - has a pre and post emphasis eq around airwindows' totape6. with positive amounts it's a boost into the tape saturation and a smaller cut after, leaving a bump with extra harmonic energy. with amount negative the opposite happens, a shallow wide dip turns into a wide dip with a clean boost in the middle of it that works well for solid clean weight on a part's fundamental. the stereo version works in mid-side and again the mono version of this has a sidechain compressor input.
 - all the mixer blocks are named more logically now (but old songs will adapt automatically).
 
 10/03/25:

@@ -1323,6 +1323,7 @@ function render_controls(){
 					var hwl,hwc,mc;
 					hwl = cd.get(cdk[p]+"::connections::in::hardware");
 					hwc = cd.get(cdk[p]+"::connections::in::hardware_channels");
+					
 					if(matrix_ext!="none"){
 						mc = cd.get(cdk[p]+"::connections::in::matrix_channels");
 					}
@@ -1553,6 +1554,20 @@ function render_controls(){
 					var hwl,hwc,mc;
 					hwl = cd.get(cdk[p]+"::connections::out::hardware");
 					hwc = cd.get(cdk[p]+"::connections::out::hardware_channels");
+					var dcb,ipgate;
+					if(cd.contains(cdk[p]+"::connections::out::dc_block")){
+						dcb = cd.get(cdk[p]+"::connections::out::dc_block");
+					}else{
+						dcb = [];
+						for(var dci=0;dci<hwc.length;dci++) dcb.push(1);
+					}
+					if(cd.contains(cdk[p]+"::connections::out::input_gate")){
+						ipgate = cd.get(cdk[p]+"::connections::out::input_gate");
+					}else{
+						ipgate = [];
+						for(var dci=0;dci<hwc.length;dci++) ipgate.push(1);
+					}
+
 					if(matrix_ext!="none"){
 						mc = cd.get(cdk[p]+"::connections::out::matrix_channels");
 					}
@@ -1621,6 +1636,36 @@ function render_controls(){
 						controls[ii].message("list", hwc[i]);
 						this.patcher.connect(controls[ii],0,controls[ii-1],0);
 						ii++;
+						y_pos+=unit.row;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "dc block");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.out.dcblock."+ii);
+						controls[ii].message("set", dcb[i]);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+						values[ii] = [cdk[p],i];
+						ii++;
+						y_pos += unit.row;
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "gate (saves cpu by switching off silent inputs)");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "hardware.out.inputgate."+ii);
+						controls[ii].message("set", ipgate[i]);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+						values[ii] = [cdk[p],i];
+						ii++;
+						y_pos += unit.row*2;
+
+
 						y_pos+=22+unit.header;
 						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.out.channel."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -2011,6 +2056,30 @@ function keybcallback(data){
 				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels",tarr);
 				//configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::matrix_channels["+values[id[3]][1]+"]",data.value);
 				//controls[t+2].message("list", data.value);
+			}else if(id[2]=="dcblock"){
+				var t=+id[3];
+				var tarr = [];
+				if(!configfile.contains("hardware::"+values[t][0]+"::connections::out::dc_block")){
+					configfile.replace("hardware::"+values[t][0]+"::connections::out::dc_block","*");
+					for(var tt=configfile.getsize("hardware::"+values[t][0]+"::connections::out::hardware");tt>0;tt--) tarr.push(1);
+				}else{
+					tarr = configfile.get("hardware::"+values[t][0]+"::connections::out::dc_block");
+					if(!Array.isArray(tarr)) tarr = [tarr];
+				}
+				tarr[values[t][1]] = data.value;
+				configfile.replace("hardware::"+values[t][0]+"::connections::out::dc_block",tarr);
+			}else if(id[2]=="inputgate"){
+				var t=+id[3];
+				var tarr = [];
+				if(!configfile.contains("hardware::"+values[id[3]][0]+"::connections::out::input_gate")){
+					configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::input_gate","*");
+					for(var tt=configfile.getsize("hardware::"+values[id[3]][0]+"::connections::out::hardware");tt>0;tt--) tarr.push(1);
+				}else{
+					tarr = configfile.get("hardware::"+values[id[3]][0]+"::connections::out::input_gate");
+					if(!Array.isArray(tarr)) tarr = [tarr];
+				}
+				tarr[values[id[3]][1]] = data.value;
+				configfile.replace("hardware::"+values[id[3]][0]+"::connections::out::input_gate",tarr);
 			}
 		}else if(id[1]=="midi"){
 			if(id[2]=="inport"){

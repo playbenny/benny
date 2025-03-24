@@ -96,7 +96,9 @@
 				"out" : 				{
 					"hardware" : [ "hp out", "bp out", "lp out" ],
 					"hardware_channels" : [ 3, 4, 5 ],
-					"matrix_channels" : [ 3, 4, 5 ]
+					"matrix_channels" : [ 3, 4, 5 ],
+					"input_gate" : [ 1, 1, 1 ],
+					"dc_block" : [ 1, 1, 1 ]
 				}
 
 			}
@@ -122,7 +124,9 @@
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 6 ],
-					"matrix_channels" : [ 6 ]
+					"matrix_channels" : [ 6 ],
+					"dc_block" : [ 0 ],
+					"input_gate" : [ 1 ]
 				}
 
 			}
@@ -148,7 +152,9 @@
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 7 ],
-					"matrix_channels" : [ 7 ]
+					"matrix_channels" : [ 7 ],
+					"dc_block" : [ 0 ],
+					"input_gate" : [ 1 ]
 				}
 
 			}
@@ -327,7 +333,8 @@
 ,
 				"out" : 				{
 					"hardware" : [ "position", "pressure (via maths2)" ],
-					"hardware_channels" : [ 16, 7 ]
+					"hardware_channels" : [ 16, 7 ],
+					"dc_block" : [ 1, 0 ]
 				}
 
 			}
