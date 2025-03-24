@@ -3443,8 +3443,7 @@ function draw_sidebar(){
 				//sidebar.dropdown = null;
 				audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
 				remove_midi_scope();
-				redraw_flag.targets=[];
-				redraw_flag.targets[0]=0;
+				redraw_flag.targets=[0];
 				if(sidebar.mode == "block"){
 					//get scope info together, turn on scopes
 					if(block_type=="audio"){

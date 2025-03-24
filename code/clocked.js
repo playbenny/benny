@@ -265,19 +265,19 @@ function prep_meter_updatelist(){
 }
 
 function check_changed_queue(){
-	var i=0,t;
+	// var i=0;
 	var b,p;
-	t= changed_queue.peek(0,changed_queue_pointer);
+	var t= changed_queue.peek(0,changed_queue_pointer);
 	while(t>0){
-		i+=1;
+		// i+=1;
 		t-=1;
 		b = Math.floor(t/MAX_PARAMETERS);
 		p = Math.floor(t - b*MAX_PARAMETERS);
 		if(b==sidebar.selected){
-			if(!is_empty(paramslider_details[p /*i*/])){
+			// if(!is_empty(paramslider_details[p])){
 				redraw_flag.targets[p] |= 1;
 				redraw_flag.flag |= 1;														
-			}
+			// }
 		}
 		if(displaymode == "panels"){
 			if(panelslider_visible[b][p]){
