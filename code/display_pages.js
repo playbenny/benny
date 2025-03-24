@@ -1580,14 +1580,7 @@ function draw_wire(connection_number){
 			meanvector[2] = 0;			
 			from_anglevector = [from_anglevector[0],from_anglevector[1]*(2+0.25*mvl+Math.min(1,Math.max(0,meanvector[1]-1))),from_anglevector[2]/* - bp2*/];
 			to_anglevector = [to_anglevector[0],to_anglevector[1]*(2+0.25*mvl+Math.min(1,Math.max(0,meanvector[1]-1))),to_anglevector[2]/* + bp2*/];
-			// var yclip = from_pos[1]-to_pos[1]-0.5;
-			// if((yclip<=0)||(cfrom==cto)){
-			// 	yclip=1000;
-			// }else{
-			// 	yclip = Math.max(0,yclip)+Math.max(0,Math.abs(meanvector[0])-1);
-			// }
-			// from_anglevector[1]=Math.min(yclip,Math.max(-yclip,from_anglevector[1]));
-			// to_anglevector[1]=Math.min(yclip,Math.max(-yclip,to_anglevector[1]));
+
 			if(cfrom==cto){
 				from_anglevector[1] *= 1.3;
 				to_anglevector[1] *= 1.3;
@@ -1597,7 +1590,7 @@ function draw_wire(connection_number){
 				blob_position[2] = from_pos[2];
 				meanvector[0] = 0;
 				meanvector[1] *= 3;
-			}else if((from_pos[1]<=(to_pos[1]))){//&&(cfrom!=cto)){
+			}else if((from_pos[1]<=(to_pos[1]))){
 				var yd = to_pos[1]+0.5 - from_pos[1];
 				yd = 5* Math.max(0.2,Math.min(yd,2));
 				meanvector[0] *= 0.1;
@@ -1720,7 +1713,7 @@ function draw_wire(connection_number){
 				}else{
 					from_pos[0] += 0.5 * (from_list[0]-1)/from_subvoices + 0.4 * fconx + 0.55;
 				}
-				// if(from_pos[1]>(to_pos[1]))short=1;
+				if(from_pos[1]>(to_pos[1]))short=1;
 				if(short){
 					for(t=0;t<3;t++){
 						bez_prep[0][t] = from_pos[t];
@@ -1791,6 +1784,42 @@ function draw_bezier(connection_number, segment, num_segments, bez_prep, cmute){
 	}
 }
 
+function draw_short_bezier(connection_number, segment, num_segments, bez_prep, cmute){
+	//this one has a sag in the z dimension that isn't a bezier, it's just a cos(x)-1 where x from 0 to 2pi
+	//if(connection_number == wires_potential_connection) post("\nbez:",connection_number, segment, num_segments, "\nfrom:",bez_prep[0], bez_prep[1], "\nto",bez_prep[2], bez_prep[3], bez_prep[4], bez_prep[5], cmute, visible)
+	
+	num_segments = Math.max(1,Math.floor(num_segments));
+	if(num_segments <= 1){
+		draw_cylinder(connection_number,segment,bez_prep[0],bez_prep[3],cmute,bez_prep[4]);
+		segment++;
+		return segment;
+	}else{
+		var t, tt=0, tp=0, ott;
+		var p = [];
+		var iseg = 1 / num_segments;
+		var zpm = 6.283 * iseg;
+		for(t=0;t<=num_segments;t++){
+			tt+=iseg;
+			ott=1- tt;
+			p[t] = [];
+			p[t][0] = ott*ott*ott*bez_prep[0][0] + 3*ott*ott*tt*bez_prep[1][0] + 3*ott*tt*tt*bez_prep[2][0] + tt*tt*tt*bez_prep[3][0];
+			p[t][1] = ott*ott*ott*bez_prep[0][1] + 3*ott*ott*tt*bez_prep[1][1] + 3*ott*tt*tt*bez_prep[2][1] + tt*tt*tt*bez_prep[3][1];
+			p[t][2] = bez_prep[0][2] + (1 - Math.cos(tp));
+			tp+=zpm;
+		}
+		var col = [bez_prep[4][0], bez_prep[4][1], bez_prep[4][2]];
+		var cold = [(bez_prep[5][0]-bez_prep[4][0])*iseg, (bez_prep[5][1]-bez_prep[4][1])*iseg, (bez_prep[5][2]-bez_prep[4][2])*iseg];
+		for(t=0;t<num_segments;t++){
+			draw_cylinder(connection_number,segment, p[t], p[t+1], cmute, col);
+			col[0]+=cold[0];
+			col[1]+=cold[1];
+			col[2]+=cold[2];
+			segment++;
+		}
+		return segment;
+	}
+}
+
 function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var avg_pos = Array(3);
 	var pos_dif = Array(3);
@@ -1809,20 +1838,11 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 		rotZ=0;
 	}else{
 		seglength = Math.sqrt(seglength);
-		rotY = -((Math.asin(pos_dif[2]/seglength)));// % 6.283185307179586476);
-		// post("\n",segment,"-",2*(pos_dif[1]<0)+(pos_dif[0]<0));
+		rotY = -((Math.asin(pos_dif[2]/seglength)));
 		rotY *= 57.2957795130823; //180/Math.PI;
-		if((pos_dif[1]>=0)&&(pos_dif[0]<0)){
-			// if(usermouse.caps){
-				rotY = -rotY;
-			// }else{
-				// rotY = ((180 + rotY) % 360)-180;
-			// }
-			// post("\nin q1",segment);
-		}
-		// post("\n",segment," y ",rotY);
 		rotZ = Math.atan2(pos_dif[1],pos_dif[0]);
-		rotZ *= 57.2957795130823; //180/Math.PI;
+		rotZ *= 57.2957795130823; 
+		if(pos_dif[0]<0) rotY = -rotY;
 	}
 
 	wires_position[connection_number][segment] = [ avg_pos[0], avg_pos[1], avg_pos[2] ]; // + pos_dif[2]*0.5
