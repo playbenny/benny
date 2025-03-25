@@ -297,6 +297,52 @@ function new_block(block_name,x,y){
 	}
 	still_checking_polys |=4;
 	//	send_ui_patcherlist();
+	if((loading.progress<=0) && (block_name.indexOf("mixer.")>-1) && (block_name!="mixer.bus")){
+		post("\ncreated block",block_name,"number",new_block_index,"now adding a mixer");
+		var bus=-1; //create a bus if mixer channels added without one.
+		for(var i=0;i<MAX_BLOCKS;i++){
+			if(blocks.contains("blocks["+i+"]::name")&& (blocks.get("blocks["+i+"]::name") == "mixer.bus")){
+				if(bus == -1){
+					bus = i;
+				}else{
+					bus = -2;
+				}
+			}
+		}
+		if(bus==-2){
+			post("\nmultiple buses here so i won't assume where you want this connecting");
+		}else{
+			if(bus==-1){
+				post("\nthere isn't a mixer bus yet so i've autocreated one");
+				bus = new_block("mixer.bus",x, y-1.25);
+				draw_block(bus);
+			}
+			draw_block(new_block_index);
+			new_connection.parse('{}');
+			new_connection.replace("conversion::mute" , 0);
+			new_connection.replace("conversion::scale", 1);
+			new_connection.replace("conversion::vector", 0);	
+			new_connection.replace("conversion::offset", 1);
+			new_connection.replace("conversion::offset2", 0.5);
+			new_connection.replace("conversion::force_unity", 1);
+			new_connection.replace("from::number",new_block_index);
+			new_connection.replace("to::number",bus);
+			new_connection.replace("to::voice","all");
+			new_connection.replace("from::voice","all");
+			new_connection.replace("to::input::number",0);
+			new_connection.replace("to::input::type","audio");
+			new_connection.replace("from::output::number",0);
+			new_connection.replace("from::output::type","audio");
+			connections.append("connections",new_connection);
+			make_connection(connections.getsize("connections")-1,0);
+			if(bottombar.block==bus){
+				bottombar.right = -1;
+				setup_bottom_bar(bus);
+			}
+			redraw_flag.flag |= 4;
+		}
+	}
+
 	rebuild_action_list = 1;
 	return new_block_index;
 }
