@@ -1157,15 +1157,6 @@ function statesbar_size(){
 	}
 }
 
-function mixer_request_bottombar_width(block,width){
-	post("\ncols report",block,width);
-	var ch = bottombar.requested_widths[block] != width;
-	bottombar.requested_widths[block] = width; //number of channels
-	if(ch&&(bottombar.block == block)){
-		setup_bottom_bar(); post("mixerreq");
-	}
-}
-
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
 		post("\nmain window : "+width+"x"+height+"px");

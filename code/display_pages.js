@@ -4,7 +4,7 @@ function set_display_mode(mode,t){
 		last_displaymode = displaymode;
 		if(bottombar.block==custom_block){
 			hide_bottom_bar();
-		}else if(bottombar.block>-1) { setup_bottom_bar(bottombar.block); post("SDM custom"); }
+		}else if(bottombar.block>-1) { setup_bottom_bar(bottombar.block); }
 		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 		var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
 		ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
@@ -135,7 +135,6 @@ function camera(){
 }
 
 function redraw(){
-	post("redraw");
 	redraw_flag.flag = 0;
 	if(displaymode == "blocks"){
 		meters_enable = 0;
@@ -144,7 +143,7 @@ function redraw(){
 		draw_topbar();
 		if(fullscreen) draw_clock();
 		draw_sidebar();
-		if(bottombar.block>-1) draw_bottom_bar();//bottombar.block);  //post("redraw"); }
+		if(bottombar.block>-1){draw_bottom_bar(); bangflag=2; }//bottombar.block);  //post("redraw"); }
 		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
@@ -155,6 +154,7 @@ function redraw(){
 		draw_topbar();
 		draw_sidebar();
 		draw_custom();
+		if(bottombar.block>-1){draw_bottom_bar(); bangflag=2; }
 	}else if((displaymode == "panels")||(displaymode == "panels_edit")){
 		meters_enable=0;
 		clear_screens();
@@ -2389,7 +2389,7 @@ function draw_topbar(){
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
-		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")){ //draw states / init / unmute all
+		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")||(displaymode == "waves")){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 5;
 			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1) || (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){
 				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
@@ -8430,16 +8430,38 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 	}
 }
 
+function mixer_request_bottombar_width(block,width){
+	// post("\ncols report",block,width);
+	var ch = bottombar.requested_widths[block] != width;
+	bottombar.requested_widths[block] = width; //number of channels
+	if(ch&&(bottombar.block == block)){
+		setup_bottom_bar();
+	}
+}
+
 function setup_bottom_bar(block){
 	if(block == null){
 		block = bottombar.block;
 	}else{
-		bottombar.block = block;
+		if((block!=-1)&&(bottombar.block!=block)){
+			bottombar.right = -1;
+			bottombar.block = block;
+			if(displaymode=="custom"){
+				if(bottombar.block != custom_block){
+					var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
+					var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
+					ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
+					redraw_flag.deferred |= 130;
+				}else{
+					bottombar.block = -1;
+				}
+			}
+		}
 	}
 	if(bottombar.block>-1){
-		post("\nsetting up bottom bar",block);
-		// var h = bottombar.height;
-		// var r = bottombar.right;
+		// post("\nsetting up bottom bar",block,"called by"+arguments.callee.caller.name);
+		var h = bottombar.height;
+		var r = bottombar.right;
 		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
 		var maxright = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
 		if(bottombar.requested_widths[bottombar.block]>0){
@@ -8458,25 +8480,31 @@ function setup_bottom_bar(block){
 		bottombar.videoplane.message("texzoom",1/tw,1/th);
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
-		// if((h!=bottombar.height)||(r!=bottombar.right)){
+		if((h!=bottombar.height)||(r!=bottombar.right)){
 			ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
-		// }
-		redraw_flag.deferred |= 4;
+			redraw_flag.deferred |= 4;
+		}else{
+			draw_bottom_bar();
+		}
 	}else{
+		bottombar.right = -1;
 		bottombar.videoplane.message("enable",0);
 	}
 }
 
 function draw_bottom_bar(){
+	bangflag = 2;
 	ui_poly.message("setvalue",  bottombar.block+1, "draw");
 }
 
 function update_bottom_bar(){
+	// bangflag = 2;
 	ui_poly.message("setvalue",  bottombar.block+1, "update");
 }
 
 function hide_bottom_bar(){
 	bottombar.block = -1;
+	bottombar.right = -1;
 	bottombar.videoplane.message("enable",0);
 	if(displaymode=="custom"){
 		set_display_mode("custom",custom_block);

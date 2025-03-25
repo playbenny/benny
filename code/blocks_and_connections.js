@@ -3093,10 +3093,11 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	if(sidebar.mode=="block"){
 		sidebar.mode="retrig";
 		remove_automaps();
-	}	
+	}
 	if(((displaymode=="custom")||(displaymode=="custom_fullscreen"))&&(custom_block==block)){
 		set_display_mode(displaymode,custom_block);
 	}else{
+		if(bottombar.block>-1) ui_poly.message("setvalue",  bottombar.block+1, "scan_for_channels");
 		redraw_flag.flag = 4;
 	}
 }

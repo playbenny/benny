@@ -307,7 +307,7 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 						preload_task.freepeer(); //pause preloading
 					//}
 					sidebar_notification("Couldn't find wave: "+wavepath+"££Please find it (or a replacement) in the file dialog that has popped up. ££ For reasons beyond our control this dialog may be behind the benny window, sorry.");
-					redraw_flag.flag=4;
+					redraw_flag.flag = 4;
 					if(fullscreen){
 						fullscreen=0;
 						world.message("fullscreen",0);					

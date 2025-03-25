@@ -933,7 +933,7 @@ function panel_edit_button(parameter,value){
 		redraw_flag.paneltargets[parameter] = 0;
 		//post("panels order is now",panels.order);
 	}
-	redraw_flag.flag=4;
+	redraw_flag.flag = 4;
 }
 
 function extend_waves_dict(newlen){
@@ -1892,7 +1892,7 @@ function editted_song_notes(){
 	set_sidebar_mode("none");
 }
 function static_mod_adjust(parameter,value){
-	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){
@@ -1928,7 +1928,6 @@ function static_mod_adjust(parameter,value){
 			redraw_flag.deferred|=16;
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
 		}
-		//if(displaymode=="custom") redraw_flag.flag=4;
 		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }
@@ -2213,7 +2212,7 @@ function store_voice_param_undo(parameter,voice,value){
 }
 
 function sidebar_parameter_knob(parameter, value){
-	//post("\nsidebar parameter knob P: ",parameter,"  V:",value);
+	// post("\nsidebar parameter knob P: ",parameter,"  V:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
 		//also: look up if this slider is set to clickset mode
@@ -2270,7 +2269,6 @@ function sidebar_parameter_knob(parameter, value){
 			redraw_flag.deferred|=16;
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]]-MAX_PARAMETERS]=1;
 		}
-		//if(displaymode=="custom") redraw_flag.flag=4;
 		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }

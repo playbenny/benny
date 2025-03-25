@@ -94,12 +94,13 @@ function setup(x1,y1,x2,y2,sw){
 	u1 = 0.1 * unit;
 	if(block>=0){
 		// post("\nmixer setup",block);
+		var ocw = cw;
 		scan_for_channels();
 		if(b_list.length==0){
 			outlet(1,"moveto",x_pos+20,y_pos+2*unit);
 			outlet(1,"write","once you connect channels they'll show here");
 		}else{
-			draw();
+			update(ocw!=cw);
 		}
 	}
 }
@@ -123,7 +124,6 @@ function update(force){
 		}
 		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
-			if(force) post("draw");
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
 				var bgc = [fgc[0]*0.15,fgc[1]*0.15,fgc[2]*0.15];
@@ -551,13 +551,13 @@ function scan_for_channels(){
 			block_darkest = [block_colour[0]*0.2, block_colour[1]*0.2, block_colour[2]*0.2];
 			for(var i=0;i<3;i++)block_colour[i] = Math.min(255,1.5*block_colour[i]);
 			outlet(3,"bang");
+			outlet(0,"mixer_request_bottombar_width",block,cols);
+			cw = (width+u1) / cols;
+			if(cw > height){
+				cw = height;
+				width = cols * cw - u1;
+			}
 		}
-		cw = (width+u1) / cols;
-		if(cw > height){
-			cw = height;
-			width = cols * cw - u1;
-		}
-		outlet(0,"mixer_request_bottombar_width",block,cols);
 	}
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];
