@@ -1645,7 +1645,8 @@ function clear_everything(){
 	states.parse('{ }');
 
 	bottombar.block=-1;
-	bottombar_size();
+	bottombar.requested_widths = [];
+	setup_bottom_bar();
 	sidebar_size();
 	wipe_midi_meters();
 	remove_all_routings();

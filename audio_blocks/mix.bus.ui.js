@@ -123,23 +123,24 @@ function update(force){
 		}
 		if(mini==2){//bottom bar view is different layout
 			// because the sliders for channels are actually static mod offsets, so it's a single opv-enabled parameter slider really.
+			if(force) post("draw");
 			for(var b=0;b<b_list.length;b++){
 				var fgc = b_colour[b];
 				var bgc = [fgc[0]*0.15,fgc[1]*0.15,fgc[2]*0.15];
 				for(var v=v_list[b].length-1;v>=0;v--){
 					level[b][v] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v]);
-					if((olevel[b][v]!=level[b][v])||force){
+					if(force||(olevel[b][v]!=level[b][v])){
 						olevel[b][v] = level[b][v];
 						outlet(0,"custom_ui_element","opv_v_slider_passthrough",x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,[fgc[0]*1.1,fgc[1]*1.1,fgc[2]*1.1],0,v_list[b][v],b_list[b]);
 						draw_slider(x_pos+(x+v)*cw+12,y_pos,x_pos+(x+v+0.5)*cw-4,y_pos+height-4*unit,fgc[0]*0.8,fgc[1]*0.8,fgc[2]*0.8,level[b][v]);
 					}
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
-					if((omute[b][v]!=mute)||force){
+					if(force||(omute[b][v]!=mute)){
 						omute[b][v] = mute;
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*11.6,x_pos+(x+v+1)*cw-8,y_pos+height-unit*8,130,130,130,5,v_list[b][v],mutemsg,b_list[b]);
 					}
 					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
-					if((osolo[b][v]!=solo)||force){
+					if(force||(osolo[b][v]!=solo)){
 						osolo[b][v] = solo;
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v+0.5)*cw,y_pos+height-unit*7.6,x_pos+(x+v+1)*cw-8,y_pos+height-4*unit,255,20,20,6,v_list[b][v],solomsg,b_list[b]);
 					}
@@ -552,6 +553,11 @@ function scan_for_channels(){
 			outlet(3,"bang");
 		}
 		cw = (width+u1) / cols;
+		if(cw > height){
+			cw = height;
+			width = cols * cw - u1;
+		}
+		outlet(0,"mixer_request_bottombar_width",block,cols);
 	}
 	var voicings_list = mcv.getkeys();
 	if(!Array.isArray(voicings_list)) voicings_list = [voicings_list];

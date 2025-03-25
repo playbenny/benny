@@ -644,7 +644,7 @@ function import_hardware(v){
 	this.patcher.remove(old_adc);
 	var old_ip = this.patcher.getnamed("input_processing");
 	if(old_ip!=null) this.patcher.remove(old_ip);
-	
+
 	new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);
 	new_adc.message("sendbox", "varname", "audio_inputs");
 	var ipprocessing = this.patcher.newdefault(654,527, "mc.gen~", "input_processing", "@chans", audioiolists[0].length);
@@ -1157,33 +1157,14 @@ function statesbar_size(){
 	}
 }
 
-function bottombar_size(){
-	if(bottombar.block>-1){
-		var h = bottombar.height;
-		var r = bottombar.right;
-		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
-		if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
-		var w=bottombar.right - 9 - fontheight;
-		var tw=w/mainwindow_width;
-		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
-		var cy = 1 - 2 * (mainwindow_height - 0.5 * (bottombar.height + 9))/mainwindow_height;
-		var th=(bottombar.height+9)/mainwindow_height;
-		bottombar.videoplane.message("scale",tw,th);
-		bottombar.videoplane.message("position",cx,cy,0);
-		bottombar.videoplane.message("texzoom",1/tw,1/th);
-		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
-		bottombar.videoplane.message("enable",1);
-		if((h!=bottombar.height)||(r!=bottombar.right)){
-			// ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
-			setup_bottom_bar(bottombar.block);
-		}
-		redraw_flag.deferred |= 4;
-	}else{
-		bottombar.videoplane.message("enable",0);
+function mixer_request_bottombar_width(block,width){
+	post("\ncols report",block,width);
+	var ch = bottombar.requested_widths[block] != width;
+	bottombar.requested_widths[block] = width; //number of channels
+	if(ch&&(bottombar.block == block)){
+		setup_bottom_bar(); post("mixerreq");
 	}
 }
-
 
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
@@ -1211,7 +1192,8 @@ function size(width,height,scale){
 		topbar_size();
 		sidebar_size();
 		topbar.videoplane.message("enable",1);
-		bottombar_size();
+		bottombar.requested_widths = [];
+		setup_bottom_bar();
 
 		sidebar.meters.startx = 9+1.1* fontheight;
 		sidebar.meters.spread = 4;

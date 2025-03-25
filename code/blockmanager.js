@@ -512,6 +512,7 @@ var bottombar = {
 	height: 200,
 	block: -1,
 	right: -1,
+	requested_widths: [],
 	available_blocks : []
 }
 

@@ -2,15 +2,16 @@ function set_display_mode(mode,t){
 	if(mode == "custom"){
 		custom_block = +t;
 		last_displaymode = displaymode;
-		if(bottombar.block==custom_block)hide_bottom_bar();
+		if(bottombar.block==custom_block){
+			hide_bottom_bar();
+		}else if(bottombar.block>-1) { setup_bottom_bar(bottombar.block); post("SDM custom"); }
 		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 		var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
-		ui_poly.message("setvalue",  custom_block+1, "setup", x1,18+fontheight*1.1, sidebar.x-9, y1,mainwindow_width);
-		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
+		ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
 		if(displaymode!="custom") last_displaymode = displaymode;
-		if(bottombar.block>-1)hide_bottom_bar();
+		if(bottombar.block>-1) hide_bottom_bar();
 		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
@@ -134,6 +135,7 @@ function camera(){
 }
 
 function redraw(){
+	post("redraw");
 	redraw_flag.flag = 0;
 	if(displaymode == "blocks"){
 		meters_enable = 0;
@@ -142,7 +144,7 @@ function redraw(){
 		draw_topbar();
 		if(fullscreen) draw_clock();
 		draw_sidebar();
-		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
+		if(bottombar.block>-1) draw_bottom_bar();//bottombar.block);  //post("redraw"); }
 		topbar.videoplane.message("enable",1);
 	}else if(displaymode == "block_menu"){
 		draw_block_menu();
@@ -160,7 +162,7 @@ function redraw(){
 		if(fullscreen) draw_clock();
 		draw_sidebar();
 		draw_panels();
-		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
+		if(bottombar.block>-1) draw_bottom_bar();//setup_bottom_bar(bottombar.block);  //post("redraw"); }
 		meters_enable=1;
 	}else if(displaymode == "custom_fullscreen"){
 		clear_screens();
@@ -180,7 +182,7 @@ function redraw(){
 		if(fullscreen) draw_clock();
 		draw_waves();
 		draw_sidebar();
-		if(bottombar.block>-1) setup_bottom_bar(bottombar.block);
+		if(bottombar.block>-1) draw_bottom_bar();//setup_bottom_bar(bottombar.block); // post("redraw"); }
 	}
 }
 
@@ -2065,7 +2067,7 @@ function set_sidebar_mode(mode){
 		sidebar.dropdown = null;
 		sidebar.scroll.position = 0;
 		sidebar.scroll.max = 0;
-		if(bottombar.block>-1)setup_bottom_bar(bottombar.block);
+		//if(bottombar.block>-1) { setup_bottom_bar(bottombar.block);  post("s sb m"); }
 		//if((sidebar.mode == "none")||(mode=="none")) center_view(1);
 		if(mode=="block"){
 			sidebar.scopes.voice = -1;//causes it to ask te right block to display a scope
@@ -2389,7 +2391,7 @@ function draw_topbar(){
 			statesbar.used_height=0;
 		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 5;
-			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1))){
+			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1) || (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){
 				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
 					var bna = blocks.get("blocks["+bottombar.available_blocks[bi]+"]::label");
 					bna = bna.split(".");
@@ -7652,14 +7654,7 @@ function draw_sidebar(){
 		sidebar.used_height=h;
 		sidebar_size();
 	}
-	if(bottombar.block>-1){
-		if(sidebar.used_height<(mainwindow_height-bottombar.height))view_changed=1;
-		if(view_changed){
-			setup_bottom_bar(bottombar.block);
-		}else{
-			update_bottom_bar();
-		} 
-	}
+	
 	view_changed = false;
 }
 
@@ -8436,15 +8431,40 @@ function do_automap(type, voice, onoff, name){ // this is called from outside
 }
 
 function setup_bottom_bar(block){
-	//post("\nsetting up bottom bar",block);
-	if((displaymode=="custom")&&custom_block==block)set_display_mode("blocks");
-	var r = bottombar.right;
-	if(bottombar.block != block) r=-1;
-	bottombar.block = block;
-	bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
-	if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
-	if(r!=bottombar.right) bottombar_size();
-	ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+	if(block == null){
+		block = bottombar.block;
+	}else{
+		bottombar.block = block;
+	}
+	if(bottombar.block>-1){
+		post("\nsetting up bottom bar",block);
+		// var h = bottombar.height;
+		// var r = bottombar.right;
+		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
+		var maxright = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
+		if(bottombar.requested_widths[bottombar.block]>0){
+			bottombar.right = Math.min(maxright, bottombar.requested_widths[bottombar.block]*bottombar.height);
+		}else{
+			bottombar.right = maxright;
+		}
+		if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
+		var w=bottombar.right - 9 - fontheight;
+		var tw=w/mainwindow_width;
+		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
+		var cy = 1 - 2 * (mainwindow_height - 0.5 * (bottombar.height + 9))/mainwindow_height;
+		var th=(bottombar.height+9)/mainwindow_height;
+		bottombar.videoplane.message("scale",tw,th);
+		bottombar.videoplane.message("position",cx,cy,0);
+		bottombar.videoplane.message("texzoom",1/tw,1/th);
+		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
+		bottombar.videoplane.message("enable",1);
+		// if((h!=bottombar.height)||(r!=bottombar.right)){
+			ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+		// }
+		redraw_flag.deferred |= 4;
+	}else{
+		bottombar.videoplane.message("enable",0);
+	}
 }
 
 function draw_bottom_bar(){

@@ -98,6 +98,7 @@ function frameclock(){
 		draw_sidebar();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
+		if(bottombar.block>-1) setup_bottom_bar();
 		if(redraw_flag.flag & 8) block_and_wire_colours();
 		bangflag=1;
 	}else{
@@ -182,19 +183,19 @@ function frameclock(){
 	}else if(displaymode == "panels"){
 		sidebar_meters();
 		update_custom_panels();
-		if(bottombar.block>-1)update_bottom_bar();
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 		bangflag=1;
 	}else if(displaymode == "waves"){
 		sidebar_meters();
 		if(waves.playheadlist.length>0) draw_playheads();
-		if(bottombar.block>-1)update_bottom_bar();
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 		bangflag=1;
 	}else if(displaymode == "custom"){
 		if(redraw_flag.flag>1){
 			draw_custom();
 		}else{
 			update_custom();
-			if(bottombar.block>-1)update_bottom_bar();
+			if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 		}
 		sidebar_meters();
 		bangflag=1;
