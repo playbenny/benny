@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -80,7 +80,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"patching_rect" : [ 920.714285714285779, 979.0, 22.0, 22.0 ],
-					"text" : "t 2"
+					"text" : "t 0"
 				}
 
 			}
@@ -405,7 +405,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 3.666666666666657, 328.0, 83.0, 22.0 ],
-					"text" : "dict"
+					"text" : "substitute"
 				}
 
 			}
@@ -417,7 +417,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 12.0, 304.0, 116.0, 22.0 ],
-					"text" : "\"Launch Control XL\""
+					"text" : "\"LPD8 mk2\""
 				}
 
 			}
