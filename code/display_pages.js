@@ -1083,7 +1083,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 						}
 					}
 					
-					if(Array.isArray(blocks_per_voice_colour_overrides[i]) && Array.isArray(blocks_per_voice_colour_overrides[i][t])){
+					if(Array.isArray(blocks_per_voice_colour_overrides[i]) && Array.isArray(blocks_per_voice_colour_overrides[i][Math.floor(t/subvoices)])){
 						block_c = blocks_per_voice_colour_overrides[i][Math.floor(t/subvoices)];
 					}else{
 						block_c = blocks.get("blocks["+i+"]::space::colour");
