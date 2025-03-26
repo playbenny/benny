@@ -14,6 +14,18 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-173",
+					"linecount" : 10,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 102.0, 900.0, 150.0, 144.0 ],
+					"text" : "this doesn't yet take into account different mixer channel types.\nthese numbers need to set the offset to the default for it all to work (? i dunno why)\nAND the mappings aren't good yet for the channels that aren't the basic ones"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-168",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -336,7 +348,7 @@
 					"patching_rect" : [ 1420.0, 1157.0, 104.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "4125already",
+						"name" : "3306already",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -882,7 +894,7 @@
 					"patching_rect" : [ 560.0, 1022.0, 169.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "4125lastinput",
+						"name" : "3306lastinput",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -914,8 +926,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 389.0, 994.0, 39.0, 22.0 ],
-					"text" : "t 0.39"
+					"patching_rect" : [ 346.5, 994.0, 32.0, 22.0 ],
+					"text" : "t 0.7"
 				}
 
 			}
@@ -926,7 +938,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 360.0, 994.0, 32.0, 22.0 ],
+					"patching_rect" : [ 385.0, 994.0, 32.0, 22.0 ],
 					"text" : "t 0.5"
 				}
 
@@ -950,7 +962,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 333.0, 994.0, 22.0, 22.0 ],
+					"patching_rect" : [ 416.0, 994.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -2042,10 +2054,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 359.5, 310.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 3"
 				}
 
@@ -2057,10 +2065,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 311.0, 310.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -2089,6 +2093,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 269.0, 310.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -2101,6 +2109,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 266.0, 61.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -4058,7 +4070,7 @@
 
 			}
  ],
-		"originid" : "pat-6042"
+		"originid" : "pat-3846"
 	}
 
 }
