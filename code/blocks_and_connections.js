@@ -316,6 +316,8 @@ function new_block(block_name,x,y){
 				post("\nthere isn't a mixer bus yet so i've autocreated one");
 				bus = new_block("mixer.bus",x, y-1.25);
 				draw_block(bus);
+			}else{
+				ui_poly.message("setvalue",bus+1,"scan_for_channels");
 			}
 			draw_block(new_block_index);
 			new_connection.parse('{}');
@@ -3135,6 +3137,13 @@ function voicecount(block, voices){     // changes the number of voices assigned
 			make_connection(handful_n[i],0);
 		}
 		rebuild_action_list=1;
+	}
+	if((block_name.indexOf("mixer.")>-1)&&(block_name!="mixer.bus")){
+		for(var i=0;i<MAX_BLOCKS;i++){
+			if(blocks.contains("blocks["+i+"]::name")&& (blocks.get("blocks["+i+"]::name") == "mixer.bus")){
+				ui_poly.message("setvalue",i+1,"scan_for_channels");
+			}
+		}
 	}
 	if(sidebar.mode=="block"){
 		sidebar.mode="retrig";
