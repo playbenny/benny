@@ -255,6 +255,7 @@ var blocks_cube_texture = [];
 var blocks_tex_sent= []; //each element is mutestate+label
 var blocks_menu_texture = [];
 var blocks_menu = []; //called menulabel-type or menublock-type
+var blocks_per_voice_colour_overrides = []; //eg if block 6 has this on some voices it'd be .._overides[6] = [0, [126,16,16], 0, etc]
 var menu = {
 	length : 10,  //endstop for the menu scroll
 	search : "",

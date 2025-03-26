@@ -1160,6 +1160,18 @@ function center_view(resetz){
 	redraw_flag.flag |= 4;	
 }
 
+function request_voice_colour(block,voiceno,r,g,b){
+	if((block<0)||(block==null)||(block>MAX_BLOCKS)){error("out of range"); return -1;}
+	if(r == -1){
+		var colour = null;
+	}else{
+		var colour = [r,g,b];
+	}
+	if(!Array.isArray(blocks_per_voice_colour_overrides[block])) blocks_per_voice_colour_overrides[block] = [];
+	blocks_per_voice_colour_overrides[block][voiceno] = colour;
+	redraw_flag.flag |= 8;
+}
+
 function request_redraw(n){
 	if(n<0){
 		n = -n;

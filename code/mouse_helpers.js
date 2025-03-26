@@ -10,7 +10,7 @@ function config_toggle_gain_display_format(ta,tb){
 function play(state){
 	if(state!=playing){
 		playing=state;
-		redraw_flag.flag = 2;
+		redraw_flag.flag |= 2;
 		if(playing&&(set_timer_start==null)){
 			var da = new Date;
 			set_timer_start = da.getTime();

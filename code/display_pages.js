@@ -1014,7 +1014,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 	}
 	var search=(sidebar.mode=="edit_state"); //if search==1 this is about highlighting blocks to the user, so dark ones are darker, mute doesn't darken so much, wires don't get the highlight
 	anymuted=0;
-	var subv=1; //
+	var subv=1; 
 	for(i=0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
 			draw_block_texture(i);
@@ -1030,7 +1030,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 				for(t=0;t<=block_v*subvoices;t++){
 					var csc=1;
 					if(typeof blocks_cube[i][t] !== "undefined"){
-						var p = blocks_cube[i][t].position;
+						//var p = blocks_cube[i][t].position;
 						if(selected.anysel){
 							if(selected.block[i]){ //
 								if((sidebar.selected_voice==-1)){
@@ -1083,11 +1083,13 @@ function block_and_wire_colours(){ //for selection and mute etc
 						}
 					}
 					
-					if(t==0){
+					if(Array.isArray(blocks_per_voice_colour_overrides[i]) && Array.isArray(blocks_per_voice_colour_overrides[i][t])){
+						block_c = blocks_per_voice_colour_overrides[i][Math.floor(t/subvoices)];
+					}else{
 						block_c = blocks.get("blocks["+i+"]::space::colour");
-						block_c[0] /= 256;
-						block_c[1] /= 256;
-						block_c[2] /= 256;
+						block_c[0] *= 0.00390625; // /256
+						block_c[1] *= 0.00390625;
+						block_c[2] *= 0.00390625;
 					}
 				}
 			}
