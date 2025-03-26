@@ -654,8 +654,9 @@ function import_hardware(v){
 	var dc_sorted = [];
 	var ip_sorted = []; //these are only for the console notification but it's useful to have that as a reminder..
 	for(var i=0;i<audioiolists[0].length;i++){
-		ipprocessing.message("setvalue",i,"hp", dc_block_enabled_list[audioiolists[0][i]-1]);
-		ipprocessing.message("setvalue",i,"gate", input_gate_enabled_list[audioiolists[0][i]-1]);
+		ipprocessing.message("setvalue",i+1,"hp", dc_block_enabled_list[audioiolists[0][i]-1]);
+		// post("\nsetvalue",i+1,"hp", dc_block_enabled_list[audioiolists[0][i]-1]);
+		ipprocessing.message("setvalue",i+1,"gate", input_gate_enabled_list[audioiolists[0][i]-1]);
 		dc_sorted.push(dc_block_enabled_list[audioiolists[0][i]-1]);
 		ip_sorted.push(input_gate_enabled_list[audioiolists[0][i]-1]);
 	}
