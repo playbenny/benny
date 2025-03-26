@@ -334,7 +334,7 @@
 				"out" : 				{
 					"hardware" : [ "position", "pressure (via maths2)" ],
 					"hardware_channels" : [ 16, 7 ],
-					"dc_block" : [ 1, 0 ]
+					"dc_block" : [ 0, 0 ]
 				}
 
 			}
