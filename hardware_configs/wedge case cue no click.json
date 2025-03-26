@@ -116,7 +116,7 @@
 ,
 			"Launch Control XL" : 			{
 				"name" : [ "Launch Control XL" ],
-				"substitute" : [  ],
+				"substitute" : [ "LPD8 mk2" ],
 				"outputs" : 32,
 				"type" : "potentiometer",
 				"channel" : 1,
@@ -156,7 +156,7 @@
 		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat",
 		"controller_defaults" : 		{
 			"control_auto" : "Midi Fighter Twister",
-			"mixer_bus" : "LPD8 mk2"
+			"mixer_bus" : "Launch Control XL"
 		}
 
 	}

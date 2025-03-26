@@ -14,12 +14,67 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-180",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1233.0, 236.0, 113.0, 22.0 ],
+					"text" : "prepend set_param"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-178",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 1197.0, 204.0, 55.0, 22.0 ],
+					"text" : "zl slice 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-175",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1177.0, 138.0, 189.0, 22.0 ],
+					"text" : "get controller_defaults::mixer_bus"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-170",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ 1177.0, 170.0, 100.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 1,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict io @legacy 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-173",
 					"linecount" : 10,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 102.0, 900.0, 150.0, 144.0 ],
+					"patching_rect" : [ 102.0, 900.0, 154.0, 144.0 ],
 					"text" : "this doesn't yet take into account different mixer channel types.\nthese numbers need to set the offset to the default for it all to work (? i dunno why)\nAND the mappings aren't good yet for the channels that aren't the basic ones"
 				}
 
@@ -348,7 +403,7 @@
 					"patching_rect" : [ 1420.0, 1157.0, 104.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3306already",
+						"name" : "3818already",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -404,8 +459,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 3.666666666666657, 328.0, 83.0, 22.0 ],
-					"text" : "substitute"
+					"patching_rect" : [ 11.5, 373.0, 83.0, 22.0 ],
+					"text" : "dict"
 				}
 
 			}
@@ -416,8 +471,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 12.0, 304.0, 116.0, 22.0 ],
-					"text" : "\"LPD8 mk2\""
+					"patching_rect" : [ 42.5, 335.0, 163.0, 22.0 ],
+					"text" : "\"Launch Control XL\""
 				}
 
 			}
@@ -894,7 +949,7 @@
 					"patching_rect" : [ 560.0, 1022.0, 169.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3306lastinput",
+						"name" : "3818lastinput",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -1944,10 +1999,10 @@
 					"id" : "obj-17",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "int" ],
-					"patching_rect" : [ 344.0, 397.0, 29.5, 22.0 ],
-					"text" : "t l 0"
+					"numoutlets" : 3,
+					"outlettype" : [ "", "int", "bang" ],
+					"patching_rect" : [ 344.0, 397.0, 40.0, 22.0 ],
+					"text" : "t l 0 b"
 				}
 
 			}
@@ -2944,6 +2999,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-175", 0 ],
+					"source" : [ "obj-17", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
 					"source" : [ "obj-17", 1 ]
 				}
@@ -2959,8 +3021,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-178", 0 ],
+					"source" : [ "obj-170", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-154", 1 ],
 					"source" : [ "obj-171", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-170", 0 ],
+					"source" : [ "obj-175", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-180", 0 ],
+					"source" : [ "obj-178", 1 ]
 				}
 
 			}
@@ -2975,6 +3058,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-66", 0 ],
 					"source" : [ "obj-18", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-108", 0 ],
+					"source" : [ "obj-180", 0 ]
 				}
 
 			}
@@ -4070,7 +4160,7 @@
 
 			}
  ],
-		"originid" : "pat-3846"
+		"originid" : "pat-5106"
 	}
 
 }

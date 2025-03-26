@@ -1,8 +1,11 @@
+26/03/25:
+- mixer channels in the blocks page now show their mute / solo status via shading.
+
 25/03/25:
 - when you add a mixer channel block it now automatically creates a bus if there isn't one. likewise new channels are automatically connected to the bus.
 
 24/03/25:
-- input processing: enabled by default but can be disabled per-input in the hardware config editor, there's dc blocking (which you would want to switch off if you're bringing control voltages in from eg a modular into benny, but is otherwise useful) and a gate, which is (only) designed to switch inaudible signals off to help save cpu. (there are no controls, if you want that use the utility.gate block).
+- input processing: enabled by default but can be disabled per-input in the hardware config editor, there's dc blocking (which you would want to switch off if you're bringing control voltages in from eg a modular into benny, but is otherwise useful) and a gate, which is (only) designed to switch inaudible (below -60db) signals off to help save cpu. (there are no controls, if you want that use the utility.gate block).
 
 23/03/25:
 - big improvement to panels page layout edit - ctrl-click the titlebar of any panel to bring up the panel parameters assign mode of the sidebar as well as the reorder/hide buttons.
