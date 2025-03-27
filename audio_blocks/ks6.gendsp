@@ -1,0 +1,215 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 5,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 54.0, 209.0, 1172.0, 600.0 ],
+		"gridsize" : [ 15.0, 15.0 ],
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1026.0, 569.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "require \"ks_functions\";\r\n\r\nHistory source(1);\r\n\r\nHistory bridge(0);\r\nHistory outt(0);\r\n\r\nHistory upda(1);\r\nHistory st1(0),st2(0),st3(0),st4(0);\r\n\r\nParam string1(0, min=0, default=0, max=22050); // sent in format samplerate/freq\r\nParam string2(0, min=0, default=0, max=22050);\r\nParam string3(0, min=0, default=0, max=22050);\r\nParam string4(0, min=0, default=0, max=22050);\r\nParam level(0, min=0, default=1, max=1);\r\n\r\nParam drone1(0, min=0, default=0, max=22050);\r\nParam drone2(0, min=0, default=0, max=22050);\r\n\r\nParam fb(0, min=0, default=0, max=1.28); //feedback\r\nParam ppos(0, min=0, default=0, max=1); //pluck position\r\nParam smod(0, min=0, default=0, max=1); //selfmod (bi, -=rectified)\r\nParam ishape(0, min=0, default=0, max=128); //impulse shape (bi, -=tri)\r\nParam damp(0, min=0, default=0, max=1); //damp\r\nParam twid(0, min=0, default=0, max=1);  //tuning width\r\nParam ptone(0, min=0, default=0, max=1); //impulse content\r\nParam param8(0, min=0, default=0, max=1); //curve\r\nParam param9(0, min=0, default=0, max=1); //accum\r\nParam param10(0, min=0, default=0, max=1); //loop\r\nParam si(0, min=0, default=0, max=10000); // 1/size\r\nParam spread(0, min=0,default=0, max=16); //if 1 then pans voices\r\n\r\nParam panic(0, min=0,default=0,max=1);\r\n\r\nsource = (ptone<64) ? 1 : sah(noise(),phasor(samplerate*0.5),0.4);\r\n\r\nenv1, state1 = pluckenv(v=(delta(string1!=0)>0)*level, shape=ishape);\r\nenv2, state2 = pluckenv(v=(delta(string2!=0)>0)*level, shape=ishape);\r\nenv3, state3 = pluckenv(v=(delta(string3!=0)>0)*level, shape=ishape);\r\nenv4, state4 = pluckenv(v=(delta(string4!=0)>0)*level, shape=ishape);\r\n\r\ns1=0;\r\nb1=0;\r\ns2=0;\r\nb2=0;\r\ns3=0;\r\nb3=0;\r\ns4=0;\r\nb4=0;\r\nst1 = (string1>0) ? string1 : st1;\r\nst2 = (string2>0) ? string2 : st2;\r\nst3 = (string3>0) ? string3 : st3;\r\nst4 = (string4>0) ? string4 : st4;\r\nif(st1>0) s1,b1 = waveguide_with_pluck_junction(env1*source,state1,bridge,in1, bridgescatter = param10, pluckscatter = param9, damping = damp, pickup_position = param8, pluck_position = ppos, length = st1, feedback = fb*(0.9+0.1*(string1>0)), selfmod=smod, detunewidth=twid);\r\nif(st2>0) s2,b2 = waveguide_with_pluck_junction(env2*source,state2,bridge,in1, bridgescatter = param10, pluckscatter = param9, damping = damp, pickup_position = param8, pluck_position = ppos, length = st2, feedback = fb*(0.9+0.1*(string2>0)), selfmod=smod, detunewidth=twid);\r\nif(st3>0) s3,b3 = waveguide_with_pluck_junction(env3*source,state3,bridge,in1, bridgescatter = param10, pluckscatter = param9, damping = damp, pickup_position = param8, pluck_position = ppos, length = st3, feedback = fb*(0.9+0.1*(string3>0)), selfmod=smod, detunewidth=twid);\r\nif(st4>0) s4,b4 = waveguide_with_pluck_junction(env4*source,state4,bridge,in1, bridgescatter = param10, pluckscatter = param9, damping = damp, pickup_position = param8, pluck_position = ppos, length = st4, feedback = fb*(0.9+0.1*(string4>0)), selfmod=smod, detunewidth=twid);\r\n//add drones\r\ns5 = 0;\r\ns6 = 0;\r\nb5 = 0;\r\nb6 = 0;\r\nif(drone1>0) s5,b5 = waveguide_with_pluck_junction(0,0,bridge,in1, bridgescatter = param10, pluckscatter = param9, damping = damp, pickup_position = param8, pluck_position = ppos, length = drone1, feedback = fb, selfmod=smod, detunewidth=twid);\r\nif(drone2>0) s6,b6 = waveguide_with_pluck_junction(0,0,bridge,in1, bridgescatter = param10, pluckscatter = param9, damping = damp, pickup_position = param8, pluck_position = ppos, length = drone2, feedback = fb, selfmod=smod, detunewidth=twid);\r\n\r\nbsum = b1+b2+b3+b4+b5+b6+in2;\r\nbridge = reson(bsum,265*si,1) + reson(bsum,375*si,1)/2.2 + reson(bsum,449*si,1.1)/1.4 + reson(bsum,465*si,0.9)/2.6 + reson(bsum,540*si,1)/1.6 + reson(bsum,1066*(1+0.1*si),4)/8;\r\nbridge = tanh(bridge);\r\nbridge *= -0.03125;\r\n\r\noutt = s1+s2+s3+s4+s5+s6;\r\n\r\nout1 = outt;\r\nout2 = bridge;\r\n",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 42.0, 48.0, 1104.0, 512.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1026.0, 10.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 573.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+ ],
+		"originid" : "pat-3904",
+		"styles" : [ 			{
+				"name" : "AudioStatus_Menu",
+				"default" : 				{
+					"bgfillcolor" : 					{
+						"angle" : 270.0,
+						"autogradient" : 0,
+						"color" : [ 0.294118, 0.313726, 0.337255, 1 ],
+						"color1" : [ 0.454902, 0.462745, 0.482353, 0.0 ],
+						"color2" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
+						"proportion" : 0.39,
+						"type" : "color"
+					}
+
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "dark-night-patch",
+				"default" : 				{
+					"accentcolor" : [ 0.952941, 0.564706, 0.098039, 1.0 ],
+					"bgfillcolor" : 					{
+						"angle" : 270.0,
+						"color" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
+						"color1" : [ 0.376471, 0.384314, 0.4, 1.0 ],
+						"color2" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
+						"proportion" : 0.39,
+						"type" : "gradient"
+					}
+,
+					"patchlinecolor" : [ 0.439216, 0.74902, 0.254902, 0.898039 ],
+					"textcolor" : [ 0.862745, 0.870588, 0.878431, 1.0 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "j2-1",
+				"default" : 				{
+					"bgcolor" : [ 0.32549, 0.345098, 0.372549, 1.0 ],
+					"bgfillcolor" : 					{
+						"angle" : 270.0,
+						"color" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
+						"color1" : [ 0.376471, 0.384314, 0.4, 1.0 ],
+						"color2" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
+						"proportion" : 0.39,
+						"type" : "gradient"
+					}
+,
+					"patchlinecolor" : [ 0.960784, 0.827451, 0.156863, 0.9 ],
+					"textcolor" : [ 0.862745, 0.870588, 0.878431, 1.0 ],
+					"textcolor_inverse" : [ 0.432961, 0.815368, 0.976471, 1.0 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "ksliderWhite",
+				"default" : 				{
+					"color" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "newobjBlue-1",
+				"default" : 				{
+					"accentcolor" : [ 0.317647, 0.654902, 0.976471, 1.0 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "newobjGreen-1",
+				"default" : 				{
+					"accentcolor" : [ 0.0, 0.533333, 0.168627, 1.0 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "newobjYellow-1",
+				"default" : 				{
+					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ],
+					"fontsize" : [ 12.059008 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+, 			{
+				"name" : "numberGold-1",
+				"default" : 				{
+					"accentcolor" : [ 0.764706, 0.592157, 0.101961, 1.0 ]
+				}
+,
+				"parentstyle" : "",
+				"multi" : 0
+			}
+ ]
+	}
+
+}

@@ -1,15 +1,15 @@
 {
-	"voice.KS6" : {
-		"patcher" : "voice.KS6",
+	"voice.ks6" : {
+		"patcher" : "voice.ks6",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "KS instrument with 6 strings in one voice. You can send pitches to them all individually. The strings all feed energy between themselves, giving the instrument a slightly more nuanced nature than the standard voice.KS.",
+		"help_text" : "KS instrument with 6 strings in one voice. You can send pitches to them all individually, or each voice has a built in round-robin allocator around its first 4 strings. The strings all feed energy between themselves, giving the instrument a slightly more nuanced nature than the standard voice.KS.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "bridge feed in", "fm" ],
-				"midi" : [ "main", "string2", "string3", "string4", "drone1", "drone2" ]
+				"midi" : [ "notes", "string1", "string2", "string3", "string4", "drone1", "drone2" ]
 			},
 			"out" : {
 				"audio" : [ "out1", "out2" ]
@@ -17,7 +17,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,2,4],
+				"contains" : [0,0,2,4,5],
 				"height" : 2
 			},
 			{ 
@@ -25,7 +25,11 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [5,6,8,10,11],
+				"contains" : [6,8,10,11],
+				"height" : 0
+			},
+			{ 
+				"contains" : [12,13],
 				"height" : 0
 			}
 		],
@@ -33,7 +37,7 @@
 			{
 				"name" : "feedback",
 				"type" : "float",
-				"values" : ["uni", 0, 1.28, "lin"],
+				"values" : ["uni", 0.5 , 1.28, "exp.1"],
 				"wrap" : 0,
 				"default" : 0.76
 			},
@@ -47,14 +51,14 @@
 			{
 				"name" : "selfmod",
 				"type" : "float",
-				"values" : ["bi", 0, 1, "lin"],
+				"values" : ["bi", -1, 1, "exp1000"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
 				"name" : "impulse shape",
 				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
+				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 1,
 				"default" : 0.5
 			},
@@ -75,7 +79,7 @@
 			{
 				"name" : "tuning width",
 				"type" : "float",
-				"values" : ["uni",0,1,"lin"],
+				"values" : ["uni",0,1,"exp100"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
@@ -96,23 +100,39 @@
 			{
 				"name" : "pluck scatter",
 				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
+				"values" : ["uni", 0,1, "exp100"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
 			{
 				"name" : "bridge scatter",
 				"type" : "float",
-				"values" : ["uni",0,1,"lin"],
+				"values" : ["uni",0,0.1,"exp100"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
 			{
 				"name" : "body size",
 				"type" : "float",
-				"values" : ["uni", 0, 100, "exp"],
+				"values" : ["uni", 0.1, 100, "exp"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "drone1_initial_pitch",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.4725,
+				"error_scale" : 0
+			},
+			{
+				"name" : "drone2_initial_pitch",
+				"type" : "note",
+				"values" : ["uni", 0, 127, "lin"],
+				"wrap" : 0,
+				"default" : 0.4725,
+				"error_scale" : 0
 			}
 		]
 	}
