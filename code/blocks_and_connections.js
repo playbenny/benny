@@ -3153,7 +3153,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 		set_display_mode(displaymode,custom_block);
 	}else{
 		if(bottombar.block>-1) ui_poly.message("setvalue",  bottombar.block+1, "scan_for_channels");
-		redraw_flag.flag = 4;
+		redraw_flag.flag |= 4;
 	}
 }
 

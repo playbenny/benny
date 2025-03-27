@@ -16,7 +16,7 @@ function set_display_mode(mode,t){
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
 			mode = "blocks"; //only show flocks if there are flocks
-			redraw_flag.flag = 4;
+			redraw_flag.flag |= 4;
 		}
 	}else if(mode == "panels") panels.editting = -1;
 	var blocks_enabled=(mode=="blocks");
@@ -90,7 +90,7 @@ function set_display_mode(mode,t){
 				displaymode = "panels_edit";
 				flock_axes(0);
 				camera();
-				redraw_flag.flag = 4;
+				redraw_flag.flag |= 4;
 			}else{
 				clear_blocks_selection();
 			}	
@@ -315,7 +315,7 @@ function draw_panels(){
 	}
 	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>2)){
 		MAX_PANEL_COLUMNS--;
-		redraw_flag.flag = 4;
+		redraw_flag.flag |= 4;
 	}
 }
 

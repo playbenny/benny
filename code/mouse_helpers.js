@@ -4,7 +4,7 @@ function config_toggle_gain_display_format(ta,tb){
 	}else{
 		config.replace("gain_display_format", "x");
 	}
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function play(state){
@@ -933,7 +933,7 @@ function panel_edit_button(parameter,value){
 		redraw_flag.paneltargets[parameter] = 0;
 		//post("panels order is now",panels.order);
 	}
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function extend_waves_dict(newlen){
@@ -2668,7 +2668,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 					recursions++;
 					if(recursions>1000){
 						usermouse.shift = 0;
-						redraw_flag.flag = 4;
+						redraw_flag.flag |= 4;
 						post("\n\n\nemergency exitting infinite-looking recursion loop. how did that happen? you should file a bug report\n\n\n")
 						return(0);
 					}else{
@@ -2796,7 +2796,7 @@ function panel_assign_click(parameter,value){
 		}
 	}
 	if(fplist!=[]) 
-	redraw_flag.flag = 4;	
+	redraw_flag.flag |= 4;	
 }
 
 function cycle_automap_offset(p,v){
@@ -2878,7 +2878,7 @@ function flock_click(parameter,value){
 	blocks.replace("blocks["+parameter[0]+"]::flock::parameters",fplist);
 	// now needs to get voicelist for the block, then store 'is_flocked' for these (up to) 3 params
 	flock_add_to_array(parameter[0],fplist[0],fplist[1],fplist[2]);
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function flock_add_to_array(block,x,y,z){
@@ -3884,7 +3884,7 @@ function type_to_search(key){
 function menu_show_all(){
 	menu.show_all_types = 1;
 	initialise_block_menu(1);
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function squash_block_menu(){

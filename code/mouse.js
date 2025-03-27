@@ -424,14 +424,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								usermouse.alt = 0; //so it actually resets rather than doing tilt
 								static_mod_adjust(pb,0);
 								usermouse.alt = 1;
-								redraw_flag.flag=2;
+								redraw_flag.flag |= 2;
 							}else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = static_mod_adjust(pb,"get");
 								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
 								static_mod_adjust(pb,pv);
-								redraw_flag.flag=2;
+								redraw_flag.flag |= 2;
 							} 
 						}else if(mouse_click_actions[usermouse.got_i]==connection_edit){
 							if(alt == 1){
@@ -666,7 +666,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											blocks.replace("blocks["+ob+"]::space::y",blocks_cube[ob][0].position[1]);
 										}
 									}									
-									redraw_flag.flag = 4;//need to redraw it (for connections only? unless you've messed anything up....)
+									redraw_flag.flag |= 4;//need to redraw it (for connections only? unless you've messed anything up....)
 								}
 								usermouse.clicked3d = -1;
 							}
@@ -721,11 +721,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								selected.wire[usermouse.ids[1]]=afters;
 								if(afters==1) sidebar.lastmode=-1; //force reassign scopes
 								//write_wires_matrix();
-								redraw_flag.flag = 4;
+								redraw_flag.flag |= 4;
 							}else{
 								selected.wire[usermouse.ids[1]]=1 - selected.wire[usermouse.ids[1]];
 								//write_wire_matrix(usermouse.ids[1]);
-								redraw_flag.flag = 4;
+								redraw_flag.flag |= 4;
 							}
 						}
 						redraw_flag.flag |= 8; //block_and_wire_colours();
