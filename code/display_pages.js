@@ -135,7 +135,6 @@ function camera(){
 }
 
 function redraw(){
-	redraw_flag.flag = 0;
 	if(displaymode == "blocks"){
 		meters_enable = 0;
 		draw_blocks();
@@ -1151,7 +1150,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 				}		
 			}
 			tmc=0.3;
-			tmc *= (1-0.8*selected.anysel*(0.3 - 1.5*cs));
+			tmc *= (0.7-0.8*selected.anysel*(0.3 - 1.8*cs));
 			if(cmute){
 				for(segment=0;segment<wires_colour[i].length;segment++){
 					wires_colour[i][segment] = [tmc*MUTEDWIRE[0],tmc*MUTEDWIRE[1],tmc*MUTEDWIRE[2]];
