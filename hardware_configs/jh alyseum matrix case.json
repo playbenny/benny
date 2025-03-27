@@ -55,7 +55,7 @@
 				"name" : [ "LPD8 mk2" ],
 				"substitute" : [  ],
 				"outputs" : 8,
-				"type" : 1,
+				"type" : "potentiometer",
 				"channel" : 1,
 				"first" : 1,
 				"scaling" : 0.125,
@@ -63,8 +63,8 @@
 				"rows" : 2,
 				"buttons" : 				{
 					"first" : 36,
-					"type" : 0,
-					"channel" : 0,
+					"type" : "note",
+					"channel" : 1,
 					"count" : 8
 				}
 

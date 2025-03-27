@@ -94,13 +94,13 @@ function setup(x1,y1,x2,y2,sw){
 	u1 = 0.1 * unit;
 	if(block>=0){
 		// post("\nmixer setup",block);
-		var ocw = cw;
+		//var ocw = cw;
 		scan_for_channels();
 		if(b_list.length==0){
 			outlet(1,"moveto",x_pos+20,y_pos+2*unit);
 			outlet(1,"write","once you connect channels they'll show here");
 		}else{
-			update(ocw!=cw);
+			update(1);//ocw!=cw);
 		}
 	}
 }
@@ -209,12 +209,12 @@ function update(force){
 				var dc = [0.4*fgc[0],0.4*fgc[1],0.4*fgc[2]];
 				for(var v=v_list[b].length-1;v>=0;v--){
 					var mute = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 5);
-					if((omute[b][v]!=mute)||force){
+					if(force||(omute[b][v]!=mute)){
 						omute[b][v] = mute;
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit*2,x_pos+(x+v+1)*cw-2,y_pos+height-unit,130,130,130,5,v_list[b][v],"mute",b_list[b]);
 					}
 					var solo = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[b][v] + 6);
-					if((osolo[b][v]!=solo)||force){
+					if(force||(osolo[b][v]!=solo)){
 						osolo[b][v] = solo;
 						outlet(0,"custom_ui_element","opv_button",x_pos+(x+v)*cw,y_pos+height-unit,x_pos+(x+v+1)*cw-2,y_pos+height,255,20,20,6,v_list[b][v],"solo",b_list[b]);
 					}

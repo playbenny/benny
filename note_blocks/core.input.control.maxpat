@@ -14,61 +14,6 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-189",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 66.0, 137.0, 113.0, 22.0 ],
-					"text" : "prepend set_param"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-196",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 30.0, 105.0, 55.0, 22.0 ],
-					"text" : "zl slice 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-200",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 10.0, 39.0, 199.0, 22.0 ],
-					"text" : "get controller_defaults::control_auto"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-202",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 5,
-					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 10.0, 71.0, 100.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0,
-						"legacy" : 1,
-						"parameter_enable" : 0,
-						"parameter_mappable" : 0
-					}
-,
-					"text" : "dict io @legacy 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-132",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -592,7 +537,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 47.0, 352.0, 163.0, 22.0 ],
-					"text" : "none"
+					"text" : "\"Midi Fighter Twister\""
 				}
 
 			}
@@ -901,7 +846,7 @@
 
 											}
  ],
-										"originid" : "pat-5036"
+										"originid" : "pat-8140"
 									}
 ,
 									"patching_rect" : [ 231.0, 209.0, 81.0, 22.0 ],
@@ -1955,7 +1900,7 @@
 
 							}
  ],
-						"originid" : "pat-5034"
+						"originid" : "pat-8138"
 					}
 ,
 					"patching_rect" : [ 1357.0, 1324.0, 86.0, 22.0 ],
@@ -2348,7 +2293,7 @@
 
 							}
  ],
-						"originid" : "pat-5038"
+						"originid" : "pat-8142"
 					}
 ,
 					"patching_rect" : [ 410.5, 318.0, 154.0, 22.0 ],
@@ -2434,7 +2379,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 28.0, 411.0, 121.0, 22.0 ],
-					"text" : "none"
+					"text" : "\"Midi Fighter Twister\""
 				}
 
 			}
@@ -2611,7 +2556,7 @@
 					"patching_rect" : [ 1377.666666666666515, 449.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3805mapwrap",
+						"name" : "4881mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -2636,7 +2581,7 @@
 					"patching_rect" : [ 691.0, 1086.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3805mapwrap",
+						"name" : "4881mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -2922,7 +2867,7 @@
 
 							}
  ],
-						"originid" : "pat-5040"
+						"originid" : "pat-8144"
 					}
 ,
 					"patching_rect" : [ 1398.0, 1140.0, 101.0, 22.0 ],
@@ -3131,7 +3076,7 @@
 
 							}
  ],
-						"originid" : "pat-5042"
+						"originid" : "pat-8146"
 					}
 ,
 					"patching_rect" : [ 1638.0, 1206.0, 101.0, 22.0 ],
@@ -3340,7 +3285,7 @@
 
 							}
  ],
-						"originid" : "pat-5044"
+						"originid" : "pat-8148"
 					}
 ,
 					"patching_rect" : [ 1063.5, 1166.0, 101.0, 22.0 ],
@@ -4902,7 +4847,7 @@
 
 							}
  ],
-						"originid" : "pat-5046"
+						"originid" : "pat-8150"
 					}
 ,
 					"patching_rect" : [ 140.199999999999989, 819.0, 97.0, 22.0 ],
@@ -5473,7 +5418,7 @@
 
 							}
  ],
-						"originid" : "pat-5048"
+						"originid" : "pat-8152"
 					}
 ,
 					"patching_rect" : [ 7.200000000000003, 819.0, 127.0, 22.0 ],
@@ -5773,7 +5718,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 871.0, 228.0, 554.0, 22.0 ],
-					"text" : "4 param  1029 0.55 4 param  1030 0.55 4 param  1031 0.366667"
+					"text" : "5 param  1280 nan 5 param  1281 0.55"
 				}
 
 			}
@@ -6110,7 +6055,7 @@
 
 							}
  ],
-						"originid" : "pat-5052"
+						"originid" : "pat-8156"
 					}
 ,
 					"patching_rect" : [ 1329.0, 748.0, 86.0, 22.0 ],
@@ -6943,7 +6888,7 @@
 
 							}
  ],
-						"originid" : "pat-5054"
+						"originid" : "pat-8158"
 					}
 ,
 					"patching_rect" : [ 1069.875, 466.0, 149.0, 22.0 ],
@@ -7884,10 +7829,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 244.0, 1294.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -7912,6 +7853,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 319.75, 0.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -8954,13 +8899,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-72", 0 ],
-					"source" : [ "obj-189", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-126", 0 ],
 					"source" : [ "obj-19", 0 ]
 				}
@@ -9019,13 +8957,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-189", 0 ],
-					"source" : [ "obj-196", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-194", 0 ],
 					"source" : [ "obj-197", 0 ]
 				}
@@ -9063,20 +8994,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-40", 0 ],
 					"source" : [ "obj-20", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-202", 0 ],
-					"source" : [ "obj-200", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-196", 0 ],
-					"source" : [ "obj-202", 1 ]
 				}
 
 			}
@@ -9177,13 +9094,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-199", 0 ],
 					"source" : [ "obj-213", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-200", 0 ],
-					"source" : [ "obj-213", 2 ]
 				}
 
 			}
@@ -10986,7 +10896,7 @@
 
 			}
  ],
-		"originid" : "pat-5032",
+		"originid" : "pat-8136",
 		"oscreceiveudpport" : 0
 	}
 

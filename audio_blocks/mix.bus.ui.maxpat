@@ -403,7 +403,7 @@
 					"patching_rect" : [ 1420.0, 1157.0, 104.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3818already",
+						"name" : "4727already",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -448,7 +448,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 427.0, 310.0, 199.0, 22.0 ],
-					"text" : "\"Launch Control XL\""
+					"text" : "\"LPD8 mk2\""
 				}
 
 			}
@@ -472,7 +472,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 42.5, 335.0, 163.0, 22.0 ],
-					"text" : "\"Launch Control XL\""
+					"text" : "\"LPD8 mk2\""
 				}
 
 			}
@@ -949,7 +949,7 @@
 					"patching_rect" : [ 560.0, 1022.0, 169.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3818lastinput",
+						"name" : "4727lastinput",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 128,
@@ -2109,6 +2109,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 359.5, 310.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 3"
 				}
 
@@ -2120,6 +2124,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 311.0, 310.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -2148,10 +2156,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 269.0, 310.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -2164,10 +2168,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 266.0, 61.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -3058,13 +3058,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-66", 0 ],
 					"source" : [ "obj-18", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-108", 0 ],
-					"source" : [ "obj-180", 0 ]
 				}
 
 			}
@@ -4160,7 +4153,7 @@
 
 			}
  ],
-		"originid" : "pat-5106"
+		"originid" : "pat-7802"
 	}
 
 }

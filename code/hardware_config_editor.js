@@ -371,7 +371,7 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
 				values[ii] = [cdk[p]];
-				y_pos+=unit.row;
+				y_pos+=unit.row*2;
 				ii++;
 
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
@@ -2027,7 +2027,16 @@ function keybcallback(data){
 	}else if(id[0]=="controller"){
 		var v = values[id[2]];
 		dontredraw = 1;
-		configfile.replace("io::controllers::"+v[0]+"::"+id[1],data.value);
+		if(id[1]=="type"){
+			dontredraw = 0;
+			if(data.value==0){
+				configfile.replace("io::controllers::"+v[0]+"::"+id[1],"encoder");
+			}else{
+				configfile.replace("io::controllers::"+v[0]+"::"+id[1],"potentiometer");
+			}
+		}else{
+			configfile.replace("io::controllers::"+v[0]+"::"+id[1],data.value);
+		}
 	}else if(id[0]=="controller_defaults"){
 		post("\nhandling default selection:",id);
 		var v = values[id[2]];
@@ -2047,9 +2056,25 @@ function keybcallback(data){
 		configfile.replace("io::controller_defaults::"+id[1],v);
 	}else if(id[0]=="controllersubkey"){
 		var v = values[id[3]];
+		var vv = data.value;
+		if(id[2]=="type"){
+			if((id[1]=="buttons")||(id[1]=="resets")||(id[1]=="value")){
+				if(vv==0){
+					vv = "note";
+				}else{
+					vv = "cc";
+				}
+			}else if((id[1]=="brightness")||(id[1]=="colour")){
+				if(vv == 0){
+					vv = "midifighter";
+				}else if(vv == 1){
+					vv = "novation launchcontrol";
+				}
+			}
+		}
 		dontredraw = 1;
 		//post("\nid4 = ",id[3],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
-		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2],data.value);
+		configfile.replace("io::controllers::"+v[0]+"::"+id[1]+"::"+id[2],vv);
 	}else if(id[0]=="controllersubkey2"){
 		var v = values[id[4]];
 		dontredraw = 1;
@@ -2238,24 +2263,24 @@ function keybcallback(data){
 				configfile.setparse("io::controllers::"+values[id[3]],"{}");
 				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
 				configfile.replace("io::controllers::"+values[id[3]]+"::type","midifighter");
-				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 1);
 			}else if(id[2]=="value"){
 				configfile.setparse("io::controllers::"+values[id[3]],"{}");
 				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
 				configfile.replace("io::controllers::"+values[id[3]]+"::type","cc");
-				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 1);
 			}else if(id[2]=="brightness"){
 				configfile.setparse("io::controllers::"+values[id[3]],"{}");
 				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
 				configfile.replace("io::controllers::"+values[id[3]]+"::type","midifighter");
-				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 1);
 				configfile.replace("io::controllers::"+values[id[3]]+"::dim", 0);
 				configfile.replace("io::controllers::"+values[id[3]]+"::bright", 127);
 			}else if(id[2]=="resets"){
 				configfile.setparse("io::controllers::"+values[id[3]],"{}");
 				configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
 				configfile.replace("io::controllers::"+values[id[3]]+"::type","cc");
-				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+				configfile.replace("io::controllers::"+values[id[3]]+"::channel", 1);
 			}else if(id[2]=="buttons"){
 				if(id[3]=="globals"){
 					configfile.setparse("io::controllers::"+values[id[4]],"{}");
@@ -2265,7 +2290,7 @@ function keybcallback(data){
 					configfile.setparse("io::controllers::"+values[id[3]],"{}");
 					configfile.replace("io::controllers::"+values[id[3]]+"::first",0);
 					configfile.replace("io::controllers::"+values[id[3]]+"::type","cc");
-					configfile.replace("io::controllers::"+values[id[3]]+"::channel", 0);
+					configfile.replace("io::controllers::"+values[id[3]]+"::channel", 1);
 				}
 			}else{
 				post("\nid2 is",id[2]);
