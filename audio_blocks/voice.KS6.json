@@ -17,65 +17,102 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3,4],
+				"contains" : [0,0,2,4],
 				"height" : 2
 			},
 			{ 
-				"contains" : [5,5,5,6],
+				"contains" : [1,3,7,9],
+				"height" : 0
+			},
+			{ 
+				"contains" : [5,6,8,10,11],
 				"height" : 0
 			}
 		],
 		"parameters" : [
 			{
-				"name" : "bass",
+				"name" : "feedback",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
+				"values" : ["uni", 0, 1.28, "lin"],
+				"wrap" : 0,
+				"default" : 0.76
+			},
+			{
+				"name" : "pluck position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "selfmod",
+				"type" : "float",
+				"values" : ["bi", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "mid",
+				"name" : "impulse shape",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "damping",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "detune",
+				"type" : "float",
+				"values" : ["bi", -24,24, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "treble",
+				"name" : "tuning width",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
+				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.05
 			},
 			{
-				"name" : "gain",
-				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
+				"name" : "pluck tone",
+				"type" : "menu_f",
+				"values" : ["impulse", "noise"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "mix",
+				"name" : "pickup position",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "mid freq",
-				"force_label" : 1,
-				"columns" : 3,
-				"type" : "menu_l",
-				"values" : ["low", "mid", "high"],
+				"values" : ["uni",0,1,"lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "sub_boost",
-				"type" : "menu_l",
-				"values" : ["sub boost off", "sub boost on"],
+				"name" : "pluck scatter",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.75
+				"default" : 0.05
+			},
+			{
+				"name" : "bridge scatter",
+				"type" : "float",
+				"values" : ["uni",0,1,"lin"],
+				"wrap" : 0,
+				"default" : 0.05
+			},
+			{
+				"name" : "body size",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}

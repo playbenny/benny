@@ -6,76 +6,116 @@
 		"help_text" : "wave guide string model with 2 filters in the feedback path.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
-		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "in" ]
+				"audio" : [ "bridge feed input", "fm" ]
 			},
 			"out" : {
-				"audio" : [ "out" ]
+				"audio" : [ "out1", "out2" ]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2,3,4],
-				"height" : 2
+				"contains" : [0,0,0,1],
+				"height" : 1
 			},
 			{ 
-				"contains" : [5,5,5,6],
+				"contains" : [2,2,3,3],
+				"height" : 0
+			},
+			{ 
+				"contains" : [9,11,10,12],
+				"height" : 0
+			},
+			{ 
+				"contains" : [5,6,7,8],
 				"height" : 0
 			}
 		],
 		"parameters" : [
 			{
-				"name" : "bass",
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin"],
+				"wrap" : 1,
+				"default" : 0.745
+			},
+			{
+				"name" : "filter topology",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "mid",
+				"name" : "f1 freq",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
+				"values" : ["uni", 100, 10000, "exp10"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.3
 			},
 			{
-				"name" : "treble",
+				"name" : "f2 freq",
 				"type" : "float",
-				"values" : ["bi", -1, 1, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
+				"values" : ["uni", 100, 10000, "exp10"],
+				"wrap" : 0.4,
+				"default" : 0
 			},
 			{
-				"name" : "gain",
+				"name" : "exciter type",
 				"type" : "float",
-				"values" : ["uni", 0,1, "lin"],
+				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "mix",
+				"name" : "exciter filter freq",
+				"type" : "float",
+				"values" : ["uni", 100, 10000, "exp10"],
+				"wrap" : 0.4,
+				"default" : 0
+			},
+			{
+				"name" : "tuning width",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0.05
 			},
 			{
-				"name" : "mid freq",
-				"force_label" : 1,
-				"columns" : 3,
-				"type" : "menu_l",
-				"values" : ["low", "mid", "high"],
+				"name" : "pitch transition time",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp10"],
 				"wrap" : 0,
-				"default" : 0.5
+				"default" : 0.05
 			},
 			{
-				"name" : "sub_boost",
-				"type" : "menu_l",
-				"values" : ["sub boost off", "sub boost on"],
-				"wrap" : 0,
-				"default" : 0.75
+				"name" : "pitch->freq1",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0.6,
+				"default" : 0
+			},
+			{
+				"name" : "pitch->freq2",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0.6,
+				"default" : 0
+			},
+			{
+				"name" : "vel->freq1",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0.6,
+				"default" : 0
+			},
+			{
+				"name" : "vel->freq2",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0.6,
+				"default" : 0
 			}
 		]
 	}
