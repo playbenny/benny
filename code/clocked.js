@@ -115,6 +115,8 @@ function frameclock(){
 		if(redraw_flag.flag & 8){
 			block_and_wire_colours(); //<<this fn always copies over the matrices
 		}else{
+			if(redraw_flag.matrices & 4) write_wires_matrix(); //this also bangs in the write fn and clears the flag
+			if(redraw_flag.matrices & 8) write_blocks_matrix();
 			if(redraw_flag.matrices & 1){
 				messnamed("wires_matrices","bang");
 			}

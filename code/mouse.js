@@ -1023,7 +1023,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//write_wire_matrix(usermouse.drag.dragging.connections[t]);
 										}
 										write_wires_matrix();
-										redraw_flag.matrices &= 253;
+										redraw_flag.matrices &= 241;
 									}
 								}
 							}	
