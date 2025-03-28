@@ -17,19 +17,22 @@
 		"groups" : [
 			{ 
 				"contains" : [0,0,0,1],
-				"height" : 1
+				"height" : 1,
+				"colour" : 20
 			},
 			{ 
 				"contains" : [2,2,3,3],
+				"height" : 0,
+				"colour" : 10
+			},
+			{ 
+				"contains" : [8,10,9,11],
 				"height" : 0
 			},
 			{ 
-				"contains" : [9,11,10,12],
-				"height" : 0
-			},
-			{ 
-				"contains" : [5,6,7,8],
-				"height" : 0
+				"contains" : [4,5,6,7],
+				"height" : 0,
+				"colour" : -10
 			}
 		],
 		"parameters" : [
@@ -69,7 +72,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "exciter filter freq",
+				"name" : "exciter filter_freq",
 				"type" : "float",
 				"values" : ["uni", 100, 10000, "exp10"],
 				"wrap" : 0.4,
@@ -83,7 +86,7 @@
 				"default" : 0.05
 			},
 			{
-				"name" : "pitch transition time",
+				"name" : "pitch transition_time",
 				"type" : "float",
 				"values" : ["uni", 0, 1000, "exp10"],
 				"wrap" : 0,
@@ -94,28 +97,28 @@
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0.6,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "pitch->freq2",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0.6,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "vel->freq1",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0.6,
-				"default" : 0
+				"default" : 0.5
 			},
 			{
 				"name" : "vel->freq2",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0.6,
-				"default" : 0
+				"default" : 0.5
 			}
 		]
 	}
