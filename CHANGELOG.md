@@ -1,3 +1,6 @@
+28/03/25:
+- ks6 block. 6 strings in one voice with energy crossfeeding between them via a body resonance, a slightly richer instrument than the basic ks.string model.
+
 26/03/25:
 - mixer channels in the blocks page now show their mute / solo status via shading.
 
