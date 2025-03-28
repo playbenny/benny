@@ -1457,16 +1457,8 @@ function draw_wire(connection_number){
 				if(blocks.contains("blocks["+cto+"]::to_subvoices")) to_subvoices = blocks.get("blocks["+cto+"]::to_subvoices");
 			}
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
-				if(WIRES_REDUCE){
-					from_multi = -1;
-					from_list = [0];
-				}else{
-					fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
-					from_multi = (fv>1);
-					for(t=0;t<fv;t++){
-						from_list[t] = t+1;
-					}
-				}
+				from_multi = -1;
+				from_list = [0];
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
 				if(Array.isArray(tl)){
@@ -1484,15 +1476,8 @@ function draw_wire(connection_number){
 			var to_multi=0;
 			if(connections.get("connections["+connection_number+"]::to::voice")=="all"){
 				tv = blocks.get("blocks["+cto+"]::poly::voices") * to_subvoices;
-				if((WIRES_REDUCE||(to_type == "midi")||(to_type == "parameters")||(to_type == "block"))/*&&(tv>1)*/){
-					to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
-					to_list = [0];
-				}else{
-					to_multi = (tv>1);
-					for(t=0;t<tv;t++){
-						to_list[t] = t+1;
-					}
-				}
+				to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
+				to_list = [0];
 			}else{
 				tl = connections.get("connections["+connection_number+"]::to::voice");
 				if(Array.isArray(tl)){
