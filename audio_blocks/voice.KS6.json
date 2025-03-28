@@ -3,8 +3,9 @@
 		"patcher" : "voice.ks6",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "KS instrument with 6 strings in one voice. You can send pitches to them all individually, or each voice has a built in round-robin allocator around its first 4 strings. The strings all feed energy between themselves, giving the instrument a slightly more nuanced nature than the standard voice.KS.",
-		"max_polyphony" : 0,
+		"help_text" : "KS instrument with 6 strings in one voice. You can send pitches to them all individually, or each voice has a built in round-robin allocator around its first 4 strings. The strings all feed energy between themselves, giving the instrument a slightly more nuanced nature than the standard voice.KS, though it uses a little more cpu and lacks the opportunities for per-voice modulation.",
+		"max_polyphony" : 1,
+		"automap_poly" : 0,
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
@@ -12,12 +13,12 @@
 				"midi" : [ "notes", "string1", "string2", "string3", "string4", "drone1", "drone2" ]
 			},
 			"out" : {
-				"audio" : [ "out1", "out2" ]
+				"audio" : [ "strings", "bridge" ]
 			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,2,4,5],
+				"contains" : [0,0,2,4,14],
 				"height" : 2
 			},
 			{ 
@@ -29,7 +30,7 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [12,13],
+				"contains" : [5,5,12,13],
 				"height" : 0
 			}
 		],
@@ -39,7 +40,7 @@
 				"type" : "float",
 				"values" : ["uni", 0.5 , 1.28, "exp.1"],
 				"wrap" : 0,
-				"default" : 0.76
+				"default" : 0.3
 			},
 			{
 				"name" : "pluck position",
@@ -107,7 +108,7 @@
 			{
 				"name" : "bridge scatter",
 				"type" : "float",
-				"values" : ["uni",0,0.1,"exp100"],
+				"values" : ["uni",0,1,"exp1000"],
 				"wrap" : 0,
 				"default" : 0.05
 			},
@@ -133,7 +134,13 @@
 				"wrap" : 0,
 				"default" : 0.4725,
 				"error_scale" : 0
-			}
-		]
+			},
+			{
+				"name" : "released note muting",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "ex10"],
+				"wrap" : 0,
+				"default" : 0.02
+			}		]
 	}
 }
