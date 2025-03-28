@@ -84,7 +84,7 @@ waveguide_with_pluck_junction(pluck,state,bridge,fm) {
 	o5 = del5.read(inv_fm * slide(l15,100,100));
 	o6 = del6.read(slide(l26,100,100));
 	o7 = del7.read(sfm * slide(l37,100,100));
-	o8 = del8.read(slide(l48-1,100,100));
+	o8 = 4*sin(0.25*del8.read(slide(l48-1,100,100)));
 
     o3b= del3.read((1-sfm) * slide(l37,100,100));
 	
