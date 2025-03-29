@@ -13,7 +13,9 @@
 				"midi" : [ "pitch/rate", "reset" ]
 			},
 			"out" : {
-				"audio" : [ "outA", "outB" ]
+				"audio" : [ "outA", "outB" ],
+				"midi" : [ "X", "Y", "Z" ],
+				"midi_watched" : [1,1,1]
 			}
 		},
 		"groups" : [
