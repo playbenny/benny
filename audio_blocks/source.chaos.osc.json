@@ -2,7 +2,8 @@
 	"source.chaos.osc" : {
 		"patcher" : "source.chaos.osc",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "source.chaos.ui",
+		"ui_in_sidebar_height" : 2,
 		"help_text" : "chaos oscillator. several different models to pick from. ££the 'initial state' settings strongly affect the behaviour of some models. a midi reset sets the model back to the inital state. behaviour also scales with oversampling, and if you want to use this block to generate musical pitches you'll need to set oversampling to 16x or more on the block settings page.££the algorithms here came from an open source m4l device a friend sent me a long time ago and i've lost the attribution, let me know if you recognise it.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
