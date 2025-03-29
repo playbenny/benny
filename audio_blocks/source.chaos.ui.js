@@ -20,6 +20,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	if(block>=0){
+		voice_is(block);
 		if(flag) outlet(1,"paintrect",x1,y1,x2,y2,0,0,0);
 		draw();
 	}
@@ -34,11 +35,12 @@ function draw(){
 function update(force){
 	var rx = width * 0.16667;
 	var ry = height * 0.5;
+	var rry = ((rx>200)&&(ry>rx)) ? rx : ry;
 	for(i=0;i<v_list.length;i++){
 		var pos = voice_data_buffer.peek(1,v_list[i]*MAX_DATA,3);
-		outlet(1,"setpixel", x_pos + rx + rx * pos[0], y_pos + ry + ry*pos[1],colour[i]);
-		outlet(1,"setpixel", x_pos + 3*rx + rx * pos[0], y_pos + ry + ry*pos[2],colour[i]);
-		outlet(1,"setpixel", x_pos + 5*rx + rx * pos[1], y_pos + ry + ry*pos[2],colour[i]);
+		outlet(1,"setpixel", x_pos + rx + rx * pos[0], y_pos + ry + rry*pos[1],colour[i]);
+		outlet(1,"setpixel", x_pos + 3*rx + rx * pos[0], y_pos + ry + rry*pos[2],colour[i]);
+		outlet(1,"setpixel", x_pos + 5*rx + rx * pos[1], y_pos + ry + rry*pos[2],colour[i]);
 	}
 }
 

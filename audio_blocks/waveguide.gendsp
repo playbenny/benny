@@ -2,42 +2,16 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
-			"major" : 8,
-			"minor" : 1,
-			"revision" : 8,
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 741.0, 177.0, 752.0, 600.0 ],
-		"bglocked" : 0,
-		"openinpresentation" : 0,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
+		"rect" : [ 415.0, 347.0, 892.0, 600.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
-		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-3",
@@ -51,16 +25,16 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "require \"filter_functions\";\r\n\r\nBuffer detuning(\"detuning\");\r\nDelay lineA(samplerate);\r\nDelay lineB(samplerate);\r\n\r\nHistory cursor(0);\r\nHistory current_delay_line(0);\r\nHistory delA(0);\r\nHistory delB(0);\r\nHistory filter2_output(0);\r\n\r\nParam pitch(0, min=0, default=110, max=22050);\r\nParam level(0, min=0, default=1, max=1);\r\n\r\nParam param0(0, min=0, default=96, max=128); //feedback\r\nParam param1(0, min=0, default=0,  max=128); //filter topology\r\nParam param2(0, min=0, default=1492, max=10000); //filter 1 freq\r\nParam param3(0, min=0, default=3232, max=10000); //filter 2 freq\r\nParam param4(0, min=0, default=0,  max=128); //exciter type\r\nParam param5(0, min=0, default=2600, max=10000); //exciter filter\r\nParam param6(0, min=0, default=12, max=128); //tuning width\r\nParam param7(0, min=0, default=16, max=128); //pitch transition time\r\nParam spread(0, min=0, default=0,  max=16); //if 1 then pans voices\r\nParam voice_num(0);\r\n\r\nParam panic(0, min=0,default=0,max=1);\r\n\r\nexc_mix = param4/128;\r\nexc_source = (1-exc_mix)*slide(clip(delta(level),0,1),0,60*level) + exc_mix*noise()*slide(level,1000,1000) + in1;\r\nexciter = twopole_lp(exc_source,cutoff=param5); //lp filter me\r\n\r\nif(delta(pitch)!=0){\r\n\tpit = pitch * (1 + (param6*param6/16384)*sample(detuning, cursor, channels = 1) + in2);\r\n\tcursor += 0.00001*noise(); \r\n\tpit = clip(pit, 0.0001, 22000);\r\n\tdel = samplerate / pit;\r\n\tif(current_delay_line==0){ //SOMETHING WRONG HERE? or in xfade\r\n\t\tdelB = del;\r\n\t}else{\r\n\t\tdelA = del;\r\n\t}\r\n\tcurrent_delay_line = 1-current_delay_line;\r\n}\r\n\r\nxfade_time = param7*param7;\r\nxfade = slide(current_delay_line, xfade_time, xfade_time);\r\n\r\nlineA_interp = lineA.read(delA); //DO ME PROPERLY W INTERP\r\nlineB_interp = lineB.read(delB);\r\ndelay_output = lineA_interp * (1 - xfade) + xfade * lineB_interp;\r\n\r\nfilter_topology = slide(abs((param1/64) - 1),1000,1000);\r\nfilter1_output = bandpass(delay_output,cutoff=param3); //DO ME TOO\r\nif(param1<64){\r\n\tfilter2_output = twopole_lp(delay_output,cutoff=param2); //LP\r\n}else{\r\n\tfilter2_output = bandpass(delay_output,cutoff=param2); //BP\r\n}\r\n\r\nfilter_output = (1 - filter_topology) * filter1_output + filter_topology*filter2_output;\r\nfilter_output -= onepole(filter_output, cutoff=30);\r\n//put a one pole HPF here\r\nnonlinearity_output = twopole_lp(slide((panic==0),10000,10)*tanh(slide((param0-64)/32,1000,1000)*filter_output),cutoff=15000);\r\n\r\nlineA.write(nonlinearity_output+exciter);\r\nlineB.write(nonlinearity_output+exciter);\r\n\r\nif(spread < 2){\r\n\tout1 = filter_output;\r\n\tout2 = exciter;//filter_output;\r\n}else{\r\n\tx = filter_output;\r\n\tp1 = int((voice_num-1)/2);\r\n\tp2 = (fract(voice_num/2)-0.25)*4;\r\n\ts = spread - 1;\r\n\tp = p2 * ((s-2*p1)/s);\r\n\tp += 1;\r\n\tp /= 2;\r\n\tout1 = x * p;\r\n\tout2 = x * (1-p);\r\n}",
+					"code" : "require \"filter_functions\";\r\n\r\nBuffer detuning(\"detuning\");\r\nDelay lineA(samplerate);\r\nDelay lineB(samplerate);\r\n\r\nHistory cursor(0);\r\nHistory current_delay_line(0);\r\nHistory delA(0);\r\nHistory delB(0);\r\nHistory filter2_output(0);\r\n\r\nParam pitch(0, min=0, default=110, max=22050);\r\nParam level(0, min=0, default=1, max=1);\r\n\r\nParam fb(0, min=-4, default=0.7, max=4); //feedback\r\nParam topo(0, min=0, default=0,  max=128); //filter topology\r\nParam f1f(0, min=0, default=1492, max=10000); //filter 1 freq\r\nParam f2f(0, min=0, default=3232, max=10000); //filter 2 freq\r\nParam ext(0, min=0, default=0,  max=128); //exciter type\r\nParam exf(0, min=0, default=2600, max=10000); //exciter filter\r\nParam tw(0, min=0, default=0.12, max=128); //tuning width\r\nParam ptt(0, min=0, default=0.16, max=128); //pitch transition time\r\nParam voice_num(0);\r\n\r\nParam pf1(0);\r\nParam pf2(0);\r\nParam vf1(0);\r\nParam vf2(0);\r\n\r\nParam panic(0, min=0,default=0,max=1);\r\n\r\nexc_mix = ext;\r\nexc_source = (1-exc_mix)*slide(clip(delta(level),0,1),0,60*level) + exc_mix*noise()*slide(level,1000,1000) + in1;\r\nexciter = twopole_lp(exc_source,cutoff=exf); //lp filter me\r\n\r\nif(delta(pitch)!=0){\r\n\tpit = pitch * (1 + (tw*tw)*sample(detuning, cursor, channels = 1) + in2);\r\n\tcursor += 0.000001; \r\n\tpit = clip(pit, 0.0001, 22000);\r\n\tdel = samplerate / pit;\r\n\tif(current_delay_line==0){ //SOMETHING WRONG HERE? or in xfade\r\n\t\tdelB = del;\r\n\t}else{\r\n\t\tdelA = del;\r\n\t}\r\n\tcurrent_delay_line = 1-current_delay_line;\r\n}\r\n\r\nxfade = slide(current_delay_line, ptt, ptt);\r\n\r\nlineA_interp = lineA.read(delA); //DO ME PROPERLY W INTERP\r\nlineB_interp = lineB.read(delB);\r\ndelay_output = lineA_interp * (1 - xfade) + xfade * lineB_interp;\r\n\r\nfilter_topology = slide(abs(topo),1000,1000);\r\nfilter1_output = bandpass(delay_output,cutoff=f2f* pow(2, 4 * vf2 * level + pf2 * pitch * 0.00005 )); //DO ME TOO\r\nif(topo<0){\r\n\tfilter2_output = twopole_lp(delay_output,cutoff=f1f * pow(2, 4 * vf1 * level + pf1 * pitch * 0.00005 )); //LP\r\n}else{\r\n\tfilter2_output = bandpass(delay_output,cutoff=f1f * pow(2, 4 * vf1 * level + pf1 * pitch * 0.00005 )); //BP\r\n}\r\n\r\nfilter_output = (1 - filter_topology) * filter1_output + filter_topology*filter2_output;\r\nfilter_output -= onepole(filter_output, cutoff=30);\r\n//put a one pole HPF here\r\nnonlinearity_output = twopole_lp(slide((panic==0),10000,10)*tanh(slide(fb,1000,1000)*filter_output),cutoff=15000);\r\n\r\nlineA.write(nonlinearity_output+exciter);\r\nlineB.write(nonlinearity_output+exciter);\r\n\r\nout1 = filter_output;\r\nout2 = exciter;//filter_output;\r\n",
 					"fontface" : 0,
-					"fontname" : "Lucida Console",
+					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-5",
 					"maxclass" : "codebox",
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 50.0, 46.0, 583.0, 512.0 ]
+					"patching_rect" : [ 50.0, 46.0, 823.0, 505.0 ]
 				}
 
 			}
@@ -128,7 +102,8 @@
 				}
 
 			}
- ]
+ ],
+		"originid" : "pat-4272"
 	}
 
 }
