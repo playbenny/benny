@@ -1858,6 +1858,165 @@ function render_controls(){
 	}
 	y_pos += unit.header;
 	
+	if(selected.section != "sync"){
+		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii].message("set", "midi clock and sync");
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(10,y_pos,1.7*unit.col+10,20);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "show", "@textoncolor", [1.000, 0.792, 0.000, 1.000], "@varname", "show.sync");
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+1.7*unit.col,y_pos,0.3*unit.col,20);
+		//values[ii] = [0,0];
+		ii++;
+		y_pos+=unit.row;
+	}else{
+		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii].message("set", "midi clock and sync");
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(10,y_pos,1.7*unit.col+10,20);
+		ii++;
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "hide", "@textoncolor", [1.000, 0.792, 0.000, 1.000], "@varname", "show.none");
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+1.7*unit.col,y_pos,0.3*unit.col,20);
+		//values[ii] = [0,0];
+		ii++;
+		y_pos+=unit.row + unit.header;
+
+		var d = configfile.get("io::sync");
+		//y_pos+=unit.header;
+		midi_interfaces.all_in = midi_interfaces.in.concat(midi_interfaces.not_present_in);
+		if(midi_interfaces.all_in.length>0){
+			controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+			controls[ii].message("set", "midi clock in");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
+			ii++;
+			y_pos+=unit.row + unit.header;
+			for(var i=0;i<midi_interfaces.all_in.length;i++){
+				var enab = 0;
+				if(configfile.contains("io::sync::midi_clock_in::"+midi_interfaces.all_in[i])) enab = d.get("midi_clock_in::"+midi_interfaces.all_in[i]+"::enable");
+				controls[ii]= this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", midi_interfaces.all_in[i]);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(40,y_pos,unit.col-20,20);
+				ii++;
+
+				controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "sync.midi_in.enable."+ii);
+				controls[ii].message("set", enab);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+				values[ii] = midi_interfaces.all_in[i];
+				ii++;
+				if(enab==1){
+					controls[ii]= this.patcher.newdefault(10, 100, "comment");
+					controls[ii].message("set", "ppqn");
+					controls[ii].presentation(1);
+					controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-80,20);
+					ii++;
+					controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "sync.midi_in.ppqn."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+					for(var pp=24;pp<385;pp*=2) controls[ii].message("append", pp);
+					controls[ii].presentation(1);
+					controls[ii].presentation_rect(40+1.5*unit.col,y_pos,0.5*unit.col-20,20);
+					pp=24;
+					if(configfile.contains("io::sync::midi_clock_in::"+midi_interfaces.all_in[i]+"::ppqn")) pp = d.get("midi_clock_in::"+midi_interfaces.all_in[i]+"::ppqn");
+					controls[ii].message("setsymbol", pp);
+					values[ii] = midi_interfaces.all_in[i];
+					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+					ii++;
+				}
+				y_pos+=unit.row;
+			}
+		}
+		y_pos+=unit.header;
+
+		midi_interfaces.all_out = midi_interfaces.out.concat(midi_interfaces.not_present_out);
+		if(midi_interfaces.all_out.length>0){
+			controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+			controls[ii].message("set", "midi clock out");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
+			ii++;
+			y_pos+=unit.row + unit.header;
+			for(var i=0;i<midi_interfaces.all_out.length;i++){
+				var enab = 0;
+				if(configfile.contains("io::sync::midi_clock_out::"+midi_interfaces.all_out[i])) enab = d.get("midi_clock_out::"+midi_interfaces.all_out[i]+"::enable");
+				controls[ii]= this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", midi_interfaces.all_out[i]);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(40,y_pos,unit.col-20,20);
+				ii++;
+
+				controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "sync.midi_out.enable."+ii);
+				controls[ii].message("set", enab);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+				values[ii] = midi_interfaces.all_out[i];
+				ii++;
+				if(enab==1){
+					controls[ii]= this.patcher.newdefault(10, 100, "comment");
+					controls[ii].message("set", "ppqn");
+					controls[ii].presentation(1);
+					controls[ii].presentation_rect(80+unit.col,y_pos,unit.col-80,20);
+					ii++;
+					controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "sync.midi_out.ppqn."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+					for(var pp=24;pp<385;pp*=2) controls[ii].message("append", pp);
+					controls[ii].presentation(1);
+					controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col-20,20);
+					pp=24;
+					if(configfile.contains("io::sync::midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn")) pp = d.get("midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn");
+					controls[ii].message("setsymbol", pp);
+					values[ii] = midi_interfaces.all_out[i];
+					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+					ii++;
+				}
+				y_pos+=unit.row;
+			}
+		}
+		y_pos+=unit.header;
+		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+		controls[ii].message("set", "clock out via audio");
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
+		ii++;
+		y_pos+=unit.header + unit.row;
+		var enab = 0;
+		if(configfile.contains("io::sync::audio_clock_out")) enab = d.get("audio_clock_out::enable");
+		controls[ii]= this.patcher.newdefault(10, 100, "comment");
+		controls[ii].message("set", "enable");
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(40,y_pos,unit.col-20,20);
+		ii++;
+
+		controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "sync.audio_clock_out.enable."+ii);
+		controls[ii].message("set", enab);
+		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+		controls[ii].presentation(1);
+		controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+		ii++;
+		if(enab){
+			controls[ii]= this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "output channel");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-80,20);
+			ii++;
+	
+			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "sync.audio_clock_out.channel", "@minimum", 0, "@maximum", 64);
+			controls[ii].message("set", configfile.get("io::sync::audio_clock_out::channel"));
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(-60+2*unit.col,y_pos,80,20);
+			ii++;
+		}	
+		y_pos+=unit.row;
+	}
+
+	y_pos+=unit.header;
+
 	if(selected.section!="advanced"){
 		controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 		controls[ii].message("set", "advanced settings");
@@ -2086,6 +2245,34 @@ function keybcallback(data){
 		//post("\nMATRIX, id",id[2]," datav",data.value,"V",v,"OR",v[data.value-1]);
 		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::matrix::"+id[1],v[data.value-1]);
+	}else if(id[0]=="sync"){
+		if(id[1]=="midi_in"){
+			if(id[2]=="enable"){
+				if(!configfile.contains("io::sync::midi_clock_in::"+values[id[3]])){
+					// configfile.setparse("io::sync","{}");
+					// configfile.setparse("io::sync::midi_clock_in","{}");
+					configfile.setparse("io::sync::midi_clock_in::"+values[id[3]],"{}");
+				}
+				configfile.replace("io::sync::midi_clock_in::"+values[id[3]]+"::enable",data.value);
+				// post("\nSYNC id",id,"value",data.value,"name",values[id[3]]);
+			}else if(id[2]=="ppqn"){
+				configfile.replace("io::sync::midi_clock_in::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);
+			}
+		}else if(id[1]=="midi_out"){
+			if(id[2]=="enable"){
+				if(!configfile.contains("io::sync::midi_clock_out::"+values[id[3]])){
+					// configfile.setparse("io::sync","{}");
+					// configfile.setparse("io::sync::midi_clock_in","{}");
+					configfile.setparse("io::sync::midi_clock_out::"+values[id[3]],"{}");
+				}
+				configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::enable",data.value);
+				// post("\nSYNC id",id,"value",data.value,"name",values[id[3]]);
+			}else if(id[2]=="ppqn"){
+				configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);
+			}
+		}else if(id[1]=="audio_clock_out"){
+			configfile.replace("io::sync::audio_clock_out::"+id[2],data.value);
+		}
 	}else if(id[0]=="hardware"){
 		dontredraw = 1;
 		if(id[1]=="in"){
