@@ -444,14 +444,16 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 	if((still_checking_polys & 7) == 0){
 		update_all_voices_mutestatus();
 	}
-	if(loading.songname=="autoload"){
-		post("\nchoosing an original tempo");
+	if(loading.temporandomise){
+		var t = Math.floor(40 + 70 * (Math.random()+Math.random()));
+		post("\nchoosing an original tempo (",t,")");
 		for(var i=0;i<MAX_BLOCKS;i++){
 			if((blocks.contains("blocks["+i+"]::name"))&&(blocks.get("blocks["+i+"]::name")=="core.clock")){
-				request_set_block_parameter(i,0,Math.floor(40 + 70 * (Math.random()+Math.random())));
+				request_set_block_parameter(i,0,t);
 				break;
 			}
 		}
+		loading.temporandomise = 0;
 	}
 	redraw_flag.flag |= 4;
 }

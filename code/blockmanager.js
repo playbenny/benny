@@ -769,7 +769,8 @@ var loading = {
 	hardware_substitutions_occured : 0, //this is set to 1 to put the warning on the save page
 	save_waitlist : [], //blocks we are waiting for them to say they've completed a 'store' command.
 	save_wait_count : 0,
-	save_type : "selected" //selected, named, save
+	save_type : "selected", //selected, named, save
+	temporandomise : 0
 }
 
 var cpu_meter = {

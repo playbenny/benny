@@ -570,6 +570,7 @@ function import_song(){
 			blocks.replace("notepad",sidebar.notification);
 			//post("\n\n\nSONG NOTES\n\n"+ sidebar.notification+"\n\n");
 		}
+		if(loading.songname=="autoload") loading.temporandomise = 1;
 		loading.conncount = songs.getsize(loading.songname+"::connections");
 		loading.progress++;
 		loading.ready_for_next_action=loading.wait;//loading.bundling;
