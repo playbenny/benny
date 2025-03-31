@@ -1346,7 +1346,7 @@ function draw_blocks(){
 	}
 	write_blocks_matrix();
 	write_wires_matrix();
-	redraw_flag.matrices &= 253;
+	redraw_flag.matrices &= 241;
 	prep_meter_updatelist();
 }
 
@@ -1457,16 +1457,8 @@ function draw_wire(connection_number){
 				if(blocks.contains("blocks["+cto+"]::to_subvoices")) to_subvoices = blocks.get("blocks["+cto+"]::to_subvoices");
 			}
 			if(connections.get("connections["+connection_number+"]::from::voice")=="all"){
-				if(WIRES_REDUCE){
-					from_multi = -1;
-					from_list = [0];
-				}else{
-					fv = blocks.get("blocks["+cfrom+"]::poly::voices") * from_subvoices;
-					from_multi = (fv>1);
-					for(t=0;t<fv;t++){
-						from_list[t] = t+1;
-					}
-				}
+				from_multi = -1;
+				from_list = [0];
 			}else{
 				tl = connections.get("connections["+connection_number+"]::from::voice");
 				if(Array.isArray(tl)){
@@ -1484,15 +1476,8 @@ function draw_wire(connection_number){
 			var to_multi=0;
 			if(connections.get("connections["+connection_number+"]::to::voice")=="all"){
 				tv = blocks.get("blocks["+cto+"]::poly::voices") * to_subvoices;
-				if((WIRES_REDUCE||(to_type == "midi")||(to_type == "parameters")||(to_type == "block"))/*&&(tv>1)*/){
-					to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
-					to_list = [0];
-				}else{
-					to_multi = (tv>1);
-					for(t=0;t<tv;t++){
-						to_list[t] = t+1;
-					}
-				}
+				to_multi = -1; // to flag that it goes to the poly input - the main square not a voice
+				to_list = [0];
 			}else{
 				tl = connections.get("connections["+connection_number+"]::to::voice");
 				if(Array.isArray(tl)){
@@ -1510,16 +1495,17 @@ function draw_wire(connection_number){
 
 			if(is_empty(wires_colours[connection_number])) wires_colours[connection_number] = [];
 			if(!Array.isArray(wires_position[connection_number])){
-				wires_position[connection_number] = [];
 				wires_scale[connection_number] = [];
 				wires_rotatexyz[connection_number] = [];
 				wires_colour[connection_number] = [];
 			}
+			wires_position[connection_number] = [];
 		
 			from_anglevector = [0, -0.5, 0];
 			to_anglevector = [0, -0.5, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
+			if(connections.getsize("connections")>70) segments_to_use = Math.max(4,segments_to_use-(connections.getsize("connections")-64)/4);
 			var short=0;
 			// old code was: if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
@@ -1554,22 +1540,30 @@ function draw_wire(connection_number){
 				}
 			}
 
-			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1))){
-				/*if((dist<3.5)&&(Math.abs(fx-tx)<0.5)){
-					//segments_to_use = 1; //flag for short wires - use less segments.
+			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1.5))){
+				short = 1;
+				if((dist<5)&&(Math.abs(fx-tx)<0.5)){
+					// segments_to_use = 1; //flag for short wires - use less segments.
+					if((to_multi!=1) && (from_multi!=1)){
+						segments_to_use = 1;
+					}else{
+						segments_to_use /= 4;
+					}
+				}else if(dist<10){
 					short=1;
-					//segments_to_use /= 4;
-				}else */if(dist<6){
-					//segments_to_use /= 2;
-					short=1;
-					//if((Math.abs(from_pos[0]-to_pos[0])<0.5) && !to_multi && !from_multi) segments_to_use = 1;
+					if((Math.abs(fx-tx)<0.51) && (to_multi!=1) && (from_multi!=1)){
+						segments_to_use = 1;
+					}else{
+						segments_to_use /= 2;
+					}
+				}else if((Math.abs(fx-tx)<2) && (to_multi!=1) && (from_multi!=1)){
+					segments_to_use /= 3;
+					short = 1;
 				}
-				// short = 1;
 			}
-			//segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
+			segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
 			//dynamic segment allocation with the new multiples system would require very careful housekeeping? at the moment enabling it just makes it go very wrong very fast
-			var bez_prep=[];
-			for(t=0;t<6;t++) bez_prep[t] = new Array(3);
+			var bez_prep=[[],[],[],[],[],[]];
 			segment=0;
 			blob_position[0] = ((fx + tx)*0.5);
 			blob_position[1] = ((from_pos[1] + to_pos[1])*0.5);
@@ -1599,7 +1593,10 @@ function draw_wire(connection_number){
 				meanvector[0] *= 0.1;
 				meanvector[1] *= yd;
 			}
-
+			if(wires_position[connection_number].length!=segments_to_use){
+				// post("\nwire changed length");
+				redraw_flag.matrices |= 4; 
+			}
 			// post("\nwire:\nfrom_av",from_anglevector,"\nto_av",to_anglevector,"\nblob",blob_position,"\nmeanvect",meanvector,"\nmvl",mvl,"to_multi",to_multi,"from_multi",from_multi,"short",short);
 			if((to_multi>0) || (from_multi>0)){
 				var i;
@@ -2027,7 +2024,7 @@ function write_wire_matrix(i){
 }
 
 function write_wires_matrix(){
-	redraw_flag.matrices &= 254;
+	redraw_flag.matrices &= 250;
 
 	matrix_wire_index=0;
 	var count=0;

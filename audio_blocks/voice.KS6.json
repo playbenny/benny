@@ -3,9 +3,10 @@
 		"patcher" : "voice.ks6",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "KS instrument with 6 strings in one voice. You can send pitches to them all individually, or each voice has a built in round-robin allocator around its first 4 strings. The strings all feed energy between themselves, giving the instrument a slightly more nuanced nature than the standard voice.KS, though it uses a little more cpu and lacks the opportunities for per-voice modulation.",
-		"max_polyphony" : 1,
+		"help_text" : "KS instrument with 6 strings in one voice. You can send pitches to them all individually, or each voice has a built in round-robin allocator around its first 4 strings. The strings all feed energy between themselves, giving the instrument a slightly more nuanced nature than the standard voice.KS, though it uses a little more cpu and lacks the opportunities for per-voice modulation. ££Unusually for benny, because the each voice of this contains more voices of its own, to make the 'notes' input work with polyphony you'll need to connect your source of notes to the voice not the block.",
+		"max_polyphony" : 0,
 		"automap_poly" : 0,
+		"automap_to" : 0,
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
@@ -19,19 +20,22 @@
 		"groups" : [
 			{ 
 				"contains" : [0,0,2,4,14],
-				"height" : 2
+				"height" : 2,
+				"colour" : 20
 			},
 			{ 
-				"contains" : [1,3,7,9],
+				"contains" : [1,8,3,7],
+				"height" : 0,
+				"colour" : 10
+			},
+			{ 
+				"contains" : [9,10,11],
 				"height" : 0
 			},
 			{ 
-				"contains" : [6,8,10,11],
-				"height" : 0
-			},
-			{ 
-				"contains" : [5,5,12,13],
-				"height" : 0
+				"contains" : [6,5,5,12,13],
+				"height" : 0,
+				"colour" : -10
 			}
 		],
 		"parameters" : [

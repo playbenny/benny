@@ -55,16 +55,9 @@ waveguide_with_pluck_junction(pluck,state,bridge,fm) {
 	Delay del7(samplerate/64);
 	Delay del8(samplerate/64);
 	
-//	History o1(0);
 	History o1o(0);
-//	History o2(0);
-//	History o3(0);
 	History o3b(0);
-//	History o4(0);
-//	History o5(0);
-//	History o6(0);
 	History o7(0);
-//	History o8(0);
 	History cursor(0);
 	
 	cursor += 4*noise();
@@ -91,12 +84,12 @@ waveguide_with_pluck_junction(pluck,state,bridge,fm) {
 	o5 = del5.read(inv_fm * slide(l15,100,100));
 	o6 = del6.read(slide(l26,100,100));
 	o7 = del7.read(sfm * slide(l37,100,100));
-	o8 = dcblock(del8.read(slide(l48-1,100,100)));
+	o8 = 4*sin(0.25*del8.read(slide(l48-1,100,100)));
 
     o3b= del3.read((1-sfm) * slide(l37,100,100));
 	
 	t = dcblock(fixdenorm(-1 * feedback * (o1 * (1 - damping) + o1o * damping)));
-	t = t - (t * t * t / 3);
+	t = t - (t * t * t * 0.333);
 	o1o = o1;
 	
 	del1.write(o2);

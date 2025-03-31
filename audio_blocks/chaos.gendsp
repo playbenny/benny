@@ -1,0 +1,108 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 5,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 134.0, 134.0, 1221.0, 701.0 ],
+		"gridsize" : [ 15.0, 15.0 ],
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 680.0, 676.0, 35.0, 22.0 ],
+					"text" : "out 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 365.0, 676.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "onepole(input){\r\n\tHistory y0(0);\r\n\r\n\tParam cutoff(1000, max=20000, min=1);\r\n\r\n\tcoeff_a = clip(sin(abs(cutoff) * 2 * PI / samplerate), 0, 1);\r\n\tmix5 = mix(y0, input, coeff_a);\r\n\ty0 = fixdenorm(mix5);\r\n\treturn mix5;\r\n}\r\n\r\n\r\n\r\n/*\r\nEquations from:\r\nhttps://www.dynamicmath.xyz/strange-attractors/\r\n*/\r\n\r\n\r\nParam var(28);\r\nParam rate(60);\r\nParam mode(0);\r\n\r\nHistory x;\r\nHistory y;\r\nHistory z;\r\nHistory outX;\r\nHistory outY;\r\nHistory outZ;\r\nHistory normScale;\r\nHistory initX(0);\r\nHistory initY(0);\r\nHistory initZ(0);\r\nHistory omode(0);\r\nParam initialX(0);\r\nParam initialY(0);\r\nParam initialZ(0);\r\n\r\nif(initialX!=initX){\r\n\tinitX=initialX;\r\n\tx=initialX;\r\n}\r\nif(initialY!=initY){\r\n\tinitY=initialY;\r\n\ty=initialY;\r\n}\r\nif(initialZ!=initZ){\r\n\tinitZ=initialZ;\r\n\tz=initialZ;\r\n}\r\nif(mode!=omode){\r\n\tomode=mode;\r\n\tx=initialX;\r\n\ty=initialY;\r\n\tz=initialZ;\r\n}\r\n\r\nnewframe = phasor(rate + in1);\r\nnewframe = delta(newframe)<0;\r\n\r\n// Run Simulation\r\nif ( delta(newframe)<0 ) {\r\n\tdx = 0;\r\n\tdy = 0;\r\n\tdz = 0;\r\n\t\r\n\t// Lorenz\r\n\tif (mode == 0) {\r\n\t\tnormScale = 0.04166666667;\r\n\t\tdt = 0.01;\r\n\t\trho = 28 * var;\r\n\t\tsigma = 10;\r\n\t\tbeta = 2.6666667;\r\n\t\tdx = sigma * (y-x);\r\n\t\tdy = x*(rho-z) - y;\r\n\t\tdz = x*y - beta*z;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale - 1;\r\n\t}\r\n\t// Rössler\r\n\telse if (mode == 1) {\r\n\t\tnormScale = 0.05;\r\n\t\tdt = 0.02;\r\n\t\ta = 0.2 * var;\r\n\t\tb = 0.2;\r\n\t\tc = 5.7;\r\n\t\tdx = -(y + z);\r\n\t\tdy = x + a*y;\r\n\t\tdz = b + x*z - c*z;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\t// Bouali\r\n\telse if (mode == 2) {\r\n\t\tnormScale = 0.25;\r\n\t\tdt = 0.006;\r\n\t\ta = 0.3 * var;\r\n\t\ts = 1;\r\n\t\tdx = x * (4-y) + a*z;\r\n\t\tdy = -y * (1 - x*x);\r\n\t\tdz = -x * (1.5 - s*z) - 0.05*z;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = (x*normScale) * 0.8;\r\n\t\toutY = (y*normScale - 1) * 0.8;\r\n\t\toutZ = (z*normScale) * 0.8;\r\n\t}\r\n\t// Thomas\r\n\telse if (mode == 3) {\r\n\t\tnormScale = 0.25;\r\n\t\tdt = 0.05;\r\n\t\tb = 0.208186 * var;\r\n\t\tdx = sin(y) - b*x;\r\n\t\tdy = sin(z) - b*y;\r\n\t\tdz = sin(x) - b*z;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\t// Aizawa\r\n\telse if (mode == 4) {\r\n\t\tnormScale = 0.666667;\r\n\t\tdt = 0.01;\r\n\t\ta = 0.95;\r\n\t\tb = 0.7 * var;\r\n\t\tc = 0.6;\r\n\t\td = 3.5;\r\n\t\tev = 0.25;\r\n\t\tf = 0.1;\r\n\t\tdx = (z-b)*x - d*y;\r\n\t\tdy = d*x + (z-b)*y;\r\n\t\tdz = c + a*z - pow(z,3)/3 - (x*x+y*y)*(1 + ev*z);\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale - 0.5;\r\n\t}\r\n\t// Chen\r\n\telse if (mode == 5) {\r\n\t\tnormScale = 0.025;\r\n\t\tdt = 0.001;\r\n\t\talpha = 5;\r\n\t\tbeta = -10;\r\n\t\tdelt = -0.38 * var;\r\n\t\tdx = alpha*x - y*z;\r\n\t\tdy = beta*y + x*z;\r\n\t\tdz = delt*z + (x*y)/3;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\t// Halvorsen\r\n\telse if (mode == 6) {\r\n\t\tnormScale = 0.1;\r\n\t\tdt = 0.004;\r\n\t\ta = 1.89 * var;\r\n\t\tdx = -a*x - 4*y - 4*z - y*y;\r\n\t\tdy = -a*y - 4*z - 4*x - z*z;\r\n\t\tdz = -a*z - 4*x - 4*y - x*x;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale + 0.25;\r\n\t\toutY = y*normScale + 0.25;\r\n\t\toutZ = z*normScale + 0.25;\r\n\t}\r\n\t// Liu-Chen\r\n\telse if (mode == 7) {\r\n\t\tnormScale = 0.125;\r\n\t\tdt = 0.001;\r\n\t\ta = 2.4 * var;\r\n\t\tb = -3.78;\r\n\t\tc = 14;\r\n\t\td = -11;\r\n\t\tev = 4;\r\n\t\tf = 5.58;\r\n\t\tg = -1;\r\n\t\tdx = a*y + b*x + c*y*z;\r\n\t\tdy = d*y - z + ev*x*z;\r\n\t\tdz = f*z + g*x*y;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale + 1;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\t// Nose Hoover\r\n\telse if (mode == 8) {\r\n\t\tnormScale = 0.25;\r\n\t\tdt = 0.009;\r\n\t\ta = 1.5 * var;\r\n\t\tdx = y;\r\n\t\tdy = -x + y*z;\r\n\t\tdz = a - y*y;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\t// Sprott\r\n\telse if (mode == 9) {\r\n\t\tnormScale = 0.75;\r\n\t\tdt = 0.01;\r\n\t\ta = 2.07;\r\n\t\tb = 1.79 * var;\r\n\t\tdx = y + a*x*y + x*z;\r\n\t\tdy = 1 - b*x*x + y*z;\r\n\t\tdz = x - x*x - y*y;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale - 0.5;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\t// Four-Wing\r\n\telse if (mode == 10) {\r\n\t\tnormScale = 0.5;\r\n\t\tdt = 0.01;\r\n\t\ta = 0.2 * var;\r\n\t\tb = 0.01;\r\n\t\tc = -0.4;\r\n\t\tdx = a*x + y*z;\r\n\t\tdy = b*x + c*y - x*z;\r\n\t\tdz = -z - x*y;\r\n\t\tx += dx * dt;\r\n\t\ty += dy * dt;\r\n\t\tz += dz * dt;\r\n\t\toutX = x*normScale;\r\n\t\toutY = y*normScale;\r\n\t\toutZ = z*normScale;\r\n\t}\r\n\tx = fixdenorm(x);\r\n\ty = fixdenorm(y);\r\n\tz = fixdenorm(z);\r\n\toutX = fixnan(clip(outX,-2,2));\r\n\toutY = fixnan(clip(outY,-2,2));\r\n\toutZ = fixnan(clip(outZ,-2,2));\r\n}\r\noX = onepole(outX, cutoff = rate);\r\noY = onepole(outY, cutoff = rate);\r\noZ = onepole(outZ, cutoff = rate);\r\n\r\nout1 = oX;\r\nout2 = oY;\r\nout3 = oZ;",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "codebox",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 50.0, 50.0, 649.0, 616.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 672.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-3", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-3", 2 ]
+				}
+
+			}
+ ],
+		"originid" : "pat-6640"
+	}
+
+}

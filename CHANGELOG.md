@@ -1,3 +1,9 @@
+28/03/25:
+(i was digging through old patches trying to recreate a particular old song waclaw zimpel and i did and found these three which i've ported to benny)
+- ks6 block. 6 strings in one voice with energy crossfeeding between them via a body resonance, a slightly richer instrument than the basic ks.string model.
+- chaos osc. makes a great lfo as it provides 3 outs that have some degree of correlation, and a pattern that comes close enough to repeating that you can use it musically.
+- wave guide block. simple wave guide model with a pair of filters in the feedback path, does a good impression of overblown woodwind.
+
 26/03/25:
 - mixer channels in the blocks page now show their mute / solo status via shading.
 

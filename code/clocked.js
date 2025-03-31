@@ -95,6 +95,7 @@ function frameclock(){
 			redraw_flag.matrices |= 1;
 		}
 	}
+	// if(redraw_flag.flag)post("\nflag",redraw_flag.flag);
 	if(redraw_flag.flag & 4){
 		bangflag=1;
 		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
@@ -115,6 +116,8 @@ function frameclock(){
 		if(redraw_flag.flag & 8){
 			block_and_wire_colours(); //<<this fn always copies over the matrices
 		}else{
+			if(redraw_flag.matrices & 4) write_wires_matrix(); //this also bangs in the write fn and clears the flag
+			if(redraw_flag.matrices & 8) write_blocks_matrix();
 			if(redraw_flag.matrices & 1){
 				messnamed("wires_matrices","bang");
 			}
