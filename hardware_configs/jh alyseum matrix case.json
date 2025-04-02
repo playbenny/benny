@@ -363,6 +363,25 @@
 			}
 
 		}
+,
+		"hardware.rme.headphones" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "output to the headphones",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 1,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "new", "new" ],
+					"hardware_channels" : [ 33, 34 ]
+				}
+
+			}
+
+		}
 
 	}
 ,

@@ -4,7 +4,7 @@ block json file reference
 json doesn't support comments, so i've listed the keys and interspersed explanations. copy them
 out into your own json files, removing all my comments.
 
-use an editor that will check the syntax of json for you, it'll save you time.
+use an editor that will check the syntax of json for you, it'll save you time. vscode is free and does the job.
 
 the whole thing is in {}, and contains one key, which is named as the block name, 
 and the json file has to be saved as the same name too. eg this example is based on utility.delay.json
@@ -110,6 +110,11 @@ and the json file has to be saved as the same name too. eg this example is based
                 //block level value is kind of obscured, but is set by the 'default' key under the parameter
             }
 		],
+        "presets" : { //optional 'factory presets' in addition to any the user saves
+            "preset name" : {
+				"values" :[ 0, 0, 0, 0, "array of parameter values" ]
+            }
+        },
 		"parameters" : [
 			{
 				"name" : "delay_samples", //must have a name
