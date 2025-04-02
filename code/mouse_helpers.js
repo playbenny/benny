@@ -2098,25 +2098,27 @@ function unscale_parameter(block, parameter, value){
 				pv = -(Math.log(-pv*999 + 1))*0.14476482//-0.001001001001001001001001001001*(Math.pow(1000, -pv) - 1);
 			}
 		}else if(p_values[3] == "exp.1"){
-			post("\nTODO function unscale_parameter doesn't invert the log-type curves yet! sorry");
 			if(pv>=0){
-				pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
+				//pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
+				pv = (Math.log(1 + (-pv*0.9))*-0.4342944819);
 			}else{
-				pv = 1.1111111111111111111111111111111*(Math.pow(0.1, -pv) - 1);
+				pv = -(Math.log(1 + (pv*0.9))*-0.4342944819);
 			}
 		}else if(p_values[3] == "exp.01"){
-			post("\nTODO function unscale_parameter doesn't invert the log-type curves yet! sorry");
 			if(pv>=0){
-				pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+				//pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+				pv = (Math.log(1 + (-pv*0.09))*-0.2171472);
 			}else{
-				pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
+				// pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
+				pv = -(Math.log(1 + (pv*0.09))*-0.2171472);
 			}
 		}else if(p_values[3] == "exp.001"){
-			post("\nTODO function unscale_parameter doesn't invert the log-type curves yet! sorry");
 			if(pv>=0){
-				pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+				// pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+				pv = (Math.log(1 + (-pv*0.009))*-0.14476482);
 			}else{
-				pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
+				// pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
+				pv = -(Math.log(1 + (pv*0.009))*-0.14476482);
 			}
 		}else if(p_values[3] == "s"){
 			pv = 0.5 - 0.5 * Math.acos(pv*PI);
