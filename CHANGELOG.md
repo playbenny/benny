@@ -1,3 +1,6 @@
+02/04/25:
+- core.tuning updated to use presets, which means it'll be easy for people to submit tunings to be included. benny can apply the tuning system selected not only to the built in oscillators, voices etc but to any vst or amxd (max for live device) that supports pitch bend input. (you need to set the pitch bend range for the vst in the vst manager, then add as many voices to the vst block as there are notes used in your scale and it will do the rest automatically.)
+
 28/03/25:
 (i was digging through old patches trying to recreate a particular old song waclaw zimpel and i did and found these three which i've ported to benny)
 - ks6 block. 6 strings in one voice with energy crossfeeding between them via a body resonance, a slightly richer instrument than the basic ks.string model.

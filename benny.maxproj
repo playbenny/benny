@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3826300598,
+	"modificationdate" : 3826457226,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1132,6 +1132,11 @@
 				"local" : 1
 			}
 ,
+			"global_transport_and_click.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"core.input.control.auto.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
@@ -1356,7 +1361,7 @@
 
 			}
 ,
-			"global_transport_and_click.maxpat" : 			{
+			"midi_clock_out.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
@@ -2727,12 +2732,7 @@
 ,
 			"vst.RatshackReverb2.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
+				"local" : 1
 			}
 ,
 			"vst.TAL-Chorus-LX-64.json" : 			{

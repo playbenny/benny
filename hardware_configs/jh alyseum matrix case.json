@@ -82,6 +82,16 @@
 		"controller_defaults" : 		{
 			"mixer_bus" : "LPD8 mk2"
 		}
+,
+		"sync" : 		{
+			"midi_clock_out" : 			{
+				"USB MS1x1 MIDI Interface" : 				{
+					"enable" : 1
+				}
+
+			}
+
+		}
 
 	}
 ,
