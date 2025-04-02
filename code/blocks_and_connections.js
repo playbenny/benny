@@ -1051,7 +1051,7 @@ function remove_connection(connection_number){
 		return -1;
 		//if it was flagged as overlapping then no connection was made and there's nothing to remove
 	}
-	//post("removing connection",connection_number,"\n");
+	// post("removing connection",connection_number,"\n");
 	var f_type = connections.get("connections["+connection_number+"]::from::output::type");
 	var t_type = connections.get("connections["+connection_number+"]::to::input::type");
 	var f_block = connections.get("connections["+connection_number+"]::from::number");
@@ -1327,14 +1327,14 @@ function remove_connection(connection_number){
 						if(found!= -1){
 							//post("FOUND",found);
 							tmod_id = found;
+							var vvv=MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+tmod_id+MAX_HARDWARE_MIDI_OUTS;
+	
+							remove_from_midi_routemap(m_index,vvv);
+							remove_from_mod_routemap(t_voice,tmod_id);
 						}else{
 							post("failed to find mod_id to remove it");
-							return 0;
+							// return 0;
 						}
-						var vvv=MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+tmod_id+MAX_HARDWARE_MIDI_OUTS;
-
-						remove_from_midi_routemap(m_index,vvv);
-						remove_from_mod_routemap(t_voice,tmod_id);
 						remove_routing(connection_number);
 						if(tidslist.length<=1){
 							//audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES), "out_value", 0);
@@ -2696,7 +2696,6 @@ function remove_block(block){
 		blocks_meter[block][i].enable = 0;
 	}*/
 	if(record_arm[block]>0) set_block_record_arm(block,0);
-	post("removing block",block,"\n");
 	var i;
 	sidebar.scopes.voice = -1;
 	// remove it from all states
