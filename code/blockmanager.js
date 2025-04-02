@@ -366,6 +366,12 @@ var wire_dia = 0.03;
 
 var param_defaults = [];
 
+var ext_sync = {
+	active : 0,
+	state : 0,
+	waiting : 0 //if the main transport is waiting for a bar on the sync transport in order to start.
+};
+
 var automap = {
 	available_c : -1,
 	voice_c : -1,

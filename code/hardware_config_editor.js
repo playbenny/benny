@@ -2003,14 +2003,31 @@ function render_controls(){
 			controls[ii]= this.patcher.newdefault(10, 100, "comment");
 			controls[ii].message("set", "output channel");
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(40+unit.col,y_pos,unit.col-80,20);
+			controls[ii].presentation_rect(80,y_pos,unit.col-80,20);
 			ii++;
 	
 			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "sync.audio_clock_out.channel", "@minimum", 0, "@maximum", 64);
 			controls[ii].message("set", configfile.get("io::sync::audio_clock_out::channel"));
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(-60+2*unit.col,y_pos,80,20);
+			controls[ii].presentation_rect(unit.col-60,y_pos,80,20);
+			ii++;
+
+			controls[ii]= this.patcher.newdefault(10, 100, "comment");
+			controls[ii].message("set", "ppqn");
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(unit.col+20,y_pos,unit.col-80,20);
+			ii++;
+
+			controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "sync.audio_clock_out.ppqn."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+			for(var pp=24;pp<385;pp*=2) controls[ii].message("append", pp);
+			controls[ii].presentation(1);
+			controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col-20,20);
+			pp=24;
+			if(configfile.contains("io::sync::audio_clock_out::ppqn")) pp = d.get("audio_clock_out::ppqn");
+			controls[ii].message("setsymbol", pp);
+			values[ii] = midi_interfaces.all_out[i];
+			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			ii++;
 		}	
 		y_pos+=unit.row;
@@ -2272,7 +2289,11 @@ function keybcallback(data){
 				configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);
 			}
 		}else if(id[1]=="audio_clock_out"){
-			configfile.replace("io::sync::audio_clock_out::"+id[2],data.value);
+			if(id[2]=="ppqn"){
+				configfile.replace("io::sync::audio_clock_out::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);
+			}else{
+				configfile.replace("io::sync::audio_clock_out::"+id[2],data.value);
+			}
 		}
 	}else if(id[0]=="hardware"){
 		dontredraw = 1;

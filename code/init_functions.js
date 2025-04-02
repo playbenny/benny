@@ -205,7 +205,6 @@ function initialise_dictionaries(hardware_file){
 
 	SOUNDCARD_HAS_MATRIX = 0;
 
-	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
 	note_poly.message("voices", MAX_NOTE_VOICES);
 	post("\n-",MAX_NOTE_VOICES," note voice slots available");
@@ -215,16 +214,13 @@ function initialise_dictionaries(hardware_file){
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		loaded_note_patcherlist[i]='_blank.note';
 	}
-	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
+	emptys="{}"; 
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
 	}
-	emptys= emptys+",{}"; //this was one line higher to make a bigger set of empty entries, which we don't need now.
-	//for(i=0;i<=MAX_WAVES;i++)	
+	emptys= emptys+",{}"; 
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
-
-	//for(i=0;i<MAX_HARDWARE_BLOCKS;i++) hardware_list[i] = "none";
 	
 	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
@@ -600,6 +596,11 @@ function import_hardware(v){
 
 		}
 	}
+	var old_audio_clock_out = this.patcher.getnamed("audio_clock_out_dac");
+	this.patcher.remove(old_audio_clock_out);
+	messnamed("ext_sync","active",0);
+	messnamed("ext_sync","stop_clocks");
+
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
 	if(output_blocks.length<MAX_AUDIO_OUTPUTS/2){
 		for(i=output_blocks.length;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks.push("clip_dither");
@@ -614,8 +615,39 @@ function import_hardware(v){
 		io_dict.set(keys[i],t);
 		if(keys[i]=="controllers"){
 			post("\n  controllers : "+t.getkeys());
-		}else if(keys[i]=="marix_switch"){
+		}else if(keys[i]=="matrix_switch"){
 			post("\n  matrix switch : ok");
+		}else if(keys[i]=="sync"){
+			if(d.contains("sync::midi_clock_out")){
+				var dm = d.get("sync::midi_clock_out");
+				var mk = dm.getkeys();
+				var outlist = [];
+				if(mk != null){
+					if(!Array.isArray(mk))mk = [mk];
+					for(var m=0;m<mk.length;m++){
+						if(dm.get(mk[m]+"::enable")==1) outlist.push(mk[m]);
+					}
+					post("\n  sync : midi clock out - "+outlist);
+					messnamed("ext_sync","midi_clock_out_poly","voices",outlist.length);
+					for(var m=0;m<outlist.length;m++){
+						messnamed("ext_sync","midi_clock_out_poly","setvalue",m+1,"output",outlist[m]);
+						messnamed("ext_sync","midi_clock_out_poly","setvalue",m+1,"ppqn",dm.get(outlist[m]+"::ppqn"));
+					}
+					ext_sync.active = 1;
+				}
+			}
+			if(d.contains("sync::audio_clock_out")){
+				if(d.get("sync::audio_clock_out::enable")==1){
+					post("\n  sync : audio clock out", d.get("sync::audio_clock_out::ppqn")+"ppqn on channel",d.get("sync::audio_clock_out::channel"));
+					ext_sync.active = 1
+					messnamed("ext_sync", "audio_clock_rate", d.get("sync::audio_clock_out::ppqn"));
+					var transportpatcher = this.patcher.getnamed("global_transport_and_click");
+					var new_audio_clock_out = this.patcher.newdefault(180,178, "dac~", d.get("sync::audio_clock_out::channel"));
+					new_audio_clock_out.message("sendbox", "varname", "audio_clock_out_dac");
+					this.patcher.connect(transportpatcher, 2, new_audio_clock_out, 0);
+				}
+			}
+			messnamed("ext_sync","active",ext_sync.active);
 		}else{
 			post("\n  "+keys[i]+" : "+t);
 		}
@@ -1293,6 +1325,7 @@ function prep_midi_indicators(){
 		this.patcher.connect(m_lim,0,m_m,0);
 		midi_indicators.status[i]=0;
 	}
+	if(ext_sync.active)midi_indicators.status.push(0);
 }
 
 function import_presets(){

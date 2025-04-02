@@ -9,12 +9,25 @@ function config_toggle_gain_display_format(ta,tb){
 
 function play(state){
 	if(state!=playing){
-		playing=state;
-		redraw_flag.flag |= 2;
-		if(playing&&(set_timer_start==null)){
-			var da = new Date;
-			set_timer_start = da.getTime();
-		} 
+		if(state == "wait"){
+			ext_sync.waiting = 1;
+			redraw_flag.flag |= 2;
+		}else{
+			playing=state;
+			ext_sync.waiting = 0;
+			redraw_flag.flag |= 2;
+			if(playing&&(set_timer_start==null)){
+				var da = new Date;
+				set_timer_start = da.getTime();
+			} 
+			if(ext_sync.active){
+				if(playing){
+					ext_sync.state = 1;
+				}else{
+	
+				}
+			}
+		}
 	}
 }
 
@@ -24,8 +37,12 @@ function play_button(){
 
 function play_button_click(){
 	if(playing == 0){
-		messnamed("play",1);
-		playflag = 1;
+		if(usermouse.ctrl){
+			stop_ext_clocks();
+		}else{
+			messnamed("play",1);
+			playflag = 1;
+		}
 	}else{playflag = 0;}
 }
 
@@ -34,6 +51,12 @@ function play_button_release(){
 		messnamed("play",0);
 	}
 	playflag = 0;
+}
+
+function stop_ext_clocks(){
+	post("\nstopping external clock");
+	ext_sync.state = 0;
+	messnamed("ext_sync","stop_clocks");
 }
 
 function resync_button(){

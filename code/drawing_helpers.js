@@ -1469,6 +1469,10 @@ function midi_indicator(number){
 	if(midi_indicators.status[number]==0) midi_indicators.flag = 1;
 	midi_indicators.status[number] = 1;
 }
+function ext_clock_indicator(){
+	number=midi_indicators.list.length;
+	midi_indicator(number);
+}
 
 function draw_clock(){
 	var cx2 = ((sidebar.mode == "none")&&!automap.lock_c &&!automap.lock_k &&!automap.lock_q) ? (mainwindow_width) : (sidebar.x);

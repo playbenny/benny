@@ -2168,8 +2168,15 @@ function draw_topbar(){
 		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, 64,64,64);
 	}
 	if(!playing){
-		lcd_main.message("frgb" , 0,0,0);
-		lcd_main.message("paintpoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+		if(!ext_sync.waiting){
+			lcd_main.message("frgb" , 0,0,0);
+			lcd_main.message("paintpoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+		}else{
+			lcd_main.message("frgb" , 0,0,0);
+			lcd_main.message("paintpoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+			lcd_main.message("frgb" , menudark[0]*1.5, menudark[1], menudark[2]);
+			lcd_main.message("framepoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
+		}
 	}else{
 		lcd_main.message("frgb" , menucolour);			
 		lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
@@ -7602,6 +7609,32 @@ function draw_sidebar(){
 				lcd_main.message("moveto",sidebar.x+fontheight*0.2,y_offset);
 				lcd_main.message("write",midi_indicators.list[i]);
 			}	
+			if(ext_sync.active){
+				y_offset += fontheight*1.1;
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+				lcd_main.message("frgb", menucolour);
+				lcd_main.message("font",mainfont,fontsmall*2);
+				lcd_main.message("write", "midi/audio clock out");
+				y_offset += fontheight*1.1;
+				lcd_main.message("moveto",sidebar.x+fontheight*0.2,fontheight*0.75+y_offset);
+				if(ext_sync.state==0){
+					lcd_main.message("frgb",menudarkest);
+					lcd_main.message("write","stopped");
+				}else if(ext_sync.state==1){
+					lcd_main.message("frgb",menucolour[0]*1.5,menucolour[1],menucolour[2]);
+					lcd_main.message("write","playing");
+					if(playing==0){
+						view_changed=true;
+						click_zone(stop_ext_clocks,null,null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+					}
+					if(ext_sync.waiting==1){
+						y_offset += fontheight*1.1;
+						lcd_main.message("moveto",sidebar.x+fontheight*1.2,fontheight*0.75+y_offset);
+						lcd_main.message("write", "main transport waiting to join");
+					}
+				}
+			}
 		}else{
 			sidebar.mode = "none";
 			//center_view(1);
