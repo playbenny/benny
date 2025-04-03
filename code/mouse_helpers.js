@@ -3746,16 +3746,16 @@ function conn_set_to_input(c,value){
 	new_connection.replace("to::input::type",ty);
 	if(sidebar.connection.default_in_applied!=0){
 		if(ty=="midi"){
-			if((new_connection.get("from::output::type")=="parameters")&&(new_connection.get("conversion::vector")==0)){
+			/*if((new_connection.get("from::output::type")=="parameters")&&(new_connection.get("conversion::vector")==0)){
 				new_connection.replace("conversion::vector",0.25);
 				new_connection.replace("conversion::offset2",1);
-			}
+			}*/
 			if(new_connection.get("conversion::offset")==0) new_connection.replace("conversion::offset",0.5);
 			if(new_connection.get("conversion::offset2")==0) new_connection.replace("conversion::offset2",0.5);
 			if(new_connection.get("conversion::offset2")==1) new_connection.replace("conversion::offset2",0.5);
 		}else{
 			if(new_connection.get("conversion::offset")==0) new_connection.replace("conversion::offset",0.5);
-			if(new_connection.get("conversion::vector")==0.25) new_connection.replace("conversion::vector",0);
+			//if(new_connection.get("conversion::vector")==0.25) new_connection.replace("conversion::vector",0);
 			if(new_connection.get("conversion::offset2")==1) new_connection.replace("conversion::offset2",0.5);
 		}
 	}
