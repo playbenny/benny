@@ -375,7 +375,11 @@ function draw_midi_indicators(){
 		if(midi_indicators.status[i]>0){
 			if(midi_indicators.status[i]>=1){
 				if(i==ci){
-					lcd_main.message("frgb", 255,190,100);// menucolour[1]*2, menucolour[0]*0.9, menucolour[2]);
+					if(ext_sync.link_enabled){
+						lcd_main.message("frgb", 0,255,0);// menucolour[1]*2, menucolour[0]*0.9, menucolour[2]);
+					}else{
+						lcd_main.message("frgb", 190,35,0);// menucolour[1]*2, menucolour[0]*0.9, menucolour[2]);
+					}
 				}else{
 					lcd_main.message("frgb", menucolour);
 				}

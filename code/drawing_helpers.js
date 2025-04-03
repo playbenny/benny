@@ -1471,7 +1471,8 @@ function midi_indicator(number){
 }
 function ext_clock_indicator(){
 	number=midi_indicators.list.length;
-	midi_indicator(number);
+	if(midi_indicators.status[number]==0) midi_indicators.flag = 1;
+	midi_indicators.status[number] = 1.3;
 }
 
 function draw_clock(){

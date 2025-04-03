@@ -7627,6 +7627,7 @@ function draw_sidebar(){
 					if(playing==0){
 						view_changed=true;
 						click_zone(stop_ext_clocks,1,1, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+						lcd_main.message("framerect",sidebar.x, y_offset, sidebar.x + fontheight*4, fontheight+y_offset);
 					}
 					if(ext_sync.waiting==1){
 						y_offset += fontheight*1.1;
@@ -7634,6 +7635,7 @@ function draw_sidebar(){
 						lcd_main.message("write", "main transport waiting to join");
 					}
 				}
+				y_offset += fontheight * 1.1;
 			}
 			if(ext_sync.link_available){
 				y_offset += fontheight*2.2;
@@ -7651,7 +7653,9 @@ function draw_sidebar(){
 					lcd_main.message("frgb",menucolour);
 					lcd_main.message("write","enabled");
 				}
-				click_zone(toggle_ableton_link,null,null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+				click_zone(toggle_ableton_link,null,null, sidebar.x, y_offset, sidebar.x + fontheight*4, fontheight+y_offset,mouse_index,1);
+				lcd_main.message("framerect",sidebar.x, y_offset, sidebar.x2, fontheight+y_offset);
+				y_offset += fontheight * 1.1;
 			}
 		}else{
 			sidebar.mode = "none";
