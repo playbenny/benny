@@ -156,7 +156,7 @@
 				"nopervoice" : 1
 			},
 			{
-				"name" : "midi and_audio clock_out_offset",
+				"name" : "midi and audio_clock out offset",
 				"type" : "float",
 				"values" : ["bi", -50, 50, "lin"],
 				"error_scale" : 0,

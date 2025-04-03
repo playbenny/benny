@@ -33,6 +33,8 @@ var selected = {
 	item : -1
 }
 
+var a_clock_out_list = [1,2,3,4,5,6,7,8,9,10,11,12,24,48,96,192];
+
 var library_hardware = this.patcher.getnamed("hardware_library");
 var library_controllers = this.patcher.getnamed("controller_library");
 var testmatrix = this.patcher.getnamed("testmatrix");
@@ -2020,7 +2022,8 @@ function render_controls(){
 			ii++;
 
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "sync.audio_clock_out.ppqn."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
-			for(var pp=24;pp<385;pp*=2) controls[ii].message("append", pp);
+			
+			for(var pp=0;pp<a_clock_out_list.length;pp++) controls[ii].message("append", a_clock_out_list[pp]);
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col-20,20);
 			pp=24;
@@ -2290,7 +2293,7 @@ function keybcallback(data){
 			}
 		}else if(id[1]=="audio_clock_out"){
 			if(id[2]=="ppqn"){
-				configfile.replace("io::sync::audio_clock_out::ppqn",Math.pow(2,data.value)*24);
+				configfile.replace("io::sync::audio_clock_out::ppqn",a_clock_out_list[data.value]);
 			}else{
 				configfile.replace("io::sync::audio_clock_out::"+id[2],data.value);
 			}

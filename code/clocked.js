@@ -367,14 +367,15 @@ function hardware_meters(){
 
 function draw_midi_indicators(){
 	var l = midi_indicators.status.length;
+	var ci = midi_indicators.list.length;
 	var yi = (fontheight-2) / Math.max(1, l - 1);
 	var y = 9;
 	midi_indicators.flag = 0;
 	for(var i = 0; i<l; i++){
 		if(midi_indicators.status[i]>0){
 			if(midi_indicators.status[i]>=1){
-				if(i==midi_indicators.list.length){
-					lcd_main.message("frgb", menucolour[0]*1.5, menucolour[1], menucolour[2]);
+				if(i==ci){
+					lcd_main.message("frgb", 255,190,100);// menucolour[1]*2, menucolour[0]*0.9, menucolour[2]);
 				}else{
 					lcd_main.message("frgb", menucolour);
 				}

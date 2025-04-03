@@ -49,6 +49,7 @@ function play_button_click(){
 function play_button_release(){
 	if((!playflag)&playing){
 		messnamed("play",0);
+		if(usermouse.ctrl && ext_sync.state == 1) stop_ext_clocks();
 	}
 	playflag = 0;
 }
