@@ -335,7 +335,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1188.5, 818.0, 32.0, 22.0 ],
+					"patching_rect" : [ 1188.5, 830.0, 32.0, 22.0 ],
 					"text" : "gate"
 				}
 
