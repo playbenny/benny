@@ -7626,7 +7626,7 @@ function draw_sidebar(){
 					lcd_main.message("write","playing");
 					if(playing==0){
 						view_changed=true;
-						click_zone(stop_ext_clocks,null,null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
+						click_zone(stop_ext_clocks,1,1, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
 					}
 					if(ext_sync.waiting==1){
 						y_offset += fontheight*1.1;
@@ -7634,6 +7634,24 @@ function draw_sidebar(){
 						lcd_main.message("write", "main transport waiting to join");
 					}
 				}
+			}
+			if(ext_sync.link_available){
+				y_offset += fontheight*2.2;
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
+				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+				lcd_main.message("frgb", menucolour);
+				lcd_main.message("font",mainfont,fontsmall*2);
+				lcd_main.message("write", "ableton link");
+				y_offset += fontheight*1.1;
+				lcd_main.message("moveto",sidebar.x+fontheight*0.2,fontheight*0.75+y_offset);
+				if(ext_sync.link_enabled==0){
+					lcd_main.message("frgb",menudarkest);
+					lcd_main.message("write","disabled");
+				}else{
+					lcd_main.message("frgb",menucolour);
+					lcd_main.message("write","enabled");
+				}
+				click_zone(toggle_ableton_link,null,null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
 			}
 		}else{
 			sidebar.mode = "none";

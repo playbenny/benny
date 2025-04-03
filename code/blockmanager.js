@@ -369,7 +369,9 @@ var param_defaults = [];
 var ext_sync = {
 	active : 0,
 	state : 0,
-	waiting : 0 //if the main transport is waiting for a bar on the sync transport in order to start.
+	waiting : 0, //if the main transport is waiting for a bar on the sync transport in order to start.
+	link_available : 0,
+	link_enabled : 0
 };
 
 var automap = {

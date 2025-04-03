@@ -60,6 +60,15 @@ function stop_ext_clocks(){
 	messnamed("ext_sync","stop_clocks");
 }
 
+function link_available(){
+	ext_sync.link_available = 1;
+	if(sidebar.mode=="midi_indicators") redraw_flag.flag |= 2;
+}
+function toggle_ableton_link(){
+	ext_sync.link_enabled = 1 - ext_sync.link_enabled;
+	redraw_flag.flag |= 2;
+}
+
 function resync_button(){
 	messnamed("resync","bang");
 }
