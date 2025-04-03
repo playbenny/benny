@@ -188,7 +188,7 @@ function redraw(){
 
 function get_hw_meter_positions(){
 	var x=0;
-	if(midi_indicators.list.length>0) x = 2;
+	if((midi_indicators.list.length>0)||(ext_sync.active || ext_sync.link_available)) x = 2;
 	var inlist = []; var outlist = [];
 	meter_positions = [];
 	var positions = []; //hw input meter positions
@@ -2188,7 +2188,7 @@ function draw_topbar(){
 		mouse_click_values[mouse_index] = "";
 		mouse_index++;
 		
-		if(midi_indicators.list.length>0) click_zone(hw_meter_click, 0, "midi", 10+fontheight,0,10+fontheight+sidebar.meters.spread,fontheight+9, mouse_index, 1);
+		if((midi_indicators.list.length>0)||ext_sync.active||ext_sync.link_available) click_zone(hw_meter_click, 0, "midi", 10+fontheight,0,10+fontheight+sidebar.meters.spread,fontheight+9, mouse_index, 1);
 		for(i=0;i<meter_positions[0][2].length;i++){
 			click_rectangle( meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
 			//post("\nmeter click_rectangle",meter_positions[0][2][i][0], meter_positions[0][2][i][1], meter_positions[0][2][i][0]+3, meter_positions[0][2][i][2], mouse_index, 1);
