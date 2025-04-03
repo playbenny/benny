@@ -1997,26 +1997,26 @@ function render_controls(){
 		controls[ii].message("set", enab);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
-		controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+		controls[ii].presentation_rect(90,y_pos,20,20);
 		ii++;
 		if(enab){
 			controls[ii]= this.patcher.newdefault(10, 100, "comment");
 			controls[ii].message("set", "output channel");
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(80,y_pos,unit.col-80,20);
+			controls[ii].presentation_rect(unit.col - 100,y_pos,unit.col,20);
 			ii++;
 	
 			controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "sync.audio_clock_out.channel", "@minimum", 0, "@maximum", 64);
 			controls[ii].message("set", configfile.get("io::sync::audio_clock_out::channel"));
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(unit.col-60,y_pos,80,20);
+			controls[ii].presentation_rect(unit.col,y_pos,40,20);
 			ii++;
 
 			controls[ii]= this.patcher.newdefault(10, 100, "comment");
 			controls[ii].message("set", "ppqn");
 			controls[ii].presentation(1);
-			controls[ii].presentation_rect(unit.col+20,y_pos,unit.col-80,20);
+			controls[ii].presentation_rect(unit.col+80,y_pos,unit.col-100,20);
 			ii++;
 
 			controls[ii] = this.patcher.newdefault(10, 100, "umenu", "@varname", "sync.audio_clock_out.ppqn."+ii);//, "@bgcolor", [1.000, 0.792, 0.000, 1.000], "@textcolor", [0,0,0,1]);
@@ -2290,7 +2290,7 @@ function keybcallback(data){
 			}
 		}else if(id[1]=="audio_clock_out"){
 			if(id[2]=="ppqn"){
-				configfile.replace("io::sync::audio_clock_out::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);
+				configfile.replace("io::sync::audio_clock_out::ppqn",Math.pow(2,data.value)*24);
 			}else{
 				configfile.replace("io::sync::audio_clock_out::"+id[2],data.value);
 			}

@@ -47,8 +47,13 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [1,2,3,11],
+				"contains" : [1,2,3],
 				"colour" : 15,
+				"height" : 0
+			},
+			{ 
+				"contains" : [11,12],
+				"colour" : 25,
 				"height" : 0
 			}
 		],
@@ -145,6 +150,15 @@
 				"name" : "click_offset",
 				"type" : "float",
 				"values" : ["bi", -10, 10, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5,
+				"nopervoice" : 1
+			},
+			{
+				"name" : "midi and_audio clock_out_offset",
+				"type" : "float",
+				"values" : ["bi", -50, 50, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.5,

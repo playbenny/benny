@@ -1,3 +1,6 @@
+03/04/25:
+- midi clock out, audio clock out. benny's midi/audio clock out is based around the idea of a session that may be continuing even when benny itself stops. when you start the music the external clock starts in sync, but when you stop benny the external clock does not stop. ctrl-click on the play button to stop the external clocks. there is an external clock out indicator at the bottom of the midi in indicators (next to the play button). if the external clock is running and you start benny then benny will wait until the next downbeat before starting. you can configure outputs and ppqn values in the hardware manager. this has only been tested with a very limited range of hardware so far so please do get in touch if you find problems!
+
 02/04/25:
 - core.tuning updated to use presets, which means it'll be easy for people to submit tunings to be included. benny can apply the tuning system selected not only to the built in oscillators, voices etc but to any vst or amxd (max for live device) that supports pitch bend input. (you need to set the pitch bend range for the vst in the vst manager, then add as many voices to the vst block as there are notes used in your scale and it will do the rest automatically.)
 
