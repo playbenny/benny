@@ -66,6 +66,7 @@ function link_available(){
 }
 function toggle_ableton_link(){
 	ext_sync.link_enabled = 1 - ext_sync.link_enabled;
+	messnamed("link_enable",ext_sync.link_enabled);
 	redraw_flag.flag |= 2;
 }
 

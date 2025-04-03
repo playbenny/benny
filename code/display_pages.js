@@ -7624,7 +7624,7 @@ function draw_sidebar(){
 				}else if(ext_sync.state==1){
 					lcd_main.message("frgb",menucolour[0]*1.5,menucolour[1],menucolour[2]);
 					lcd_main.message("write","playing");
-					if(playing==0){
+					if((playing==0)&&(ext_sync.link_enabled==0)){
 						view_changed=true;
 						click_zone(stop_ext_clocks,1,1, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1);
 						lcd_main.message("framerect",sidebar.x, y_offset, sidebar.x + fontheight*4, fontheight+y_offset);
