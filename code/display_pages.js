@@ -5591,7 +5591,13 @@ function draw_sidebar(){
 										var ttt=t_type;
 										if(ttt=="matrix")ttt="hardware";
 										var f_o_name = blocktypes.get(f_name+"::connections::out::"+ftt+"["+f_o_no+"]");
-										if(t_type=="parameters"){
+										if(t_i_no<0){
+											if(t_i_no<-1){
+												t_i_name = "mute";
+											}else{
+												var t_i_name = "mute toggle";
+											}
+										}else if(t_type=="parameters"){
 											var t_i_name = blocktypes.get(t_name+"::parameters["+t_i_no+"]::name");
 										}else{
 											var t_i_name = blocktypes.get(t_name+"::connections::in::"+ttt+"["+t_i_no+"]");

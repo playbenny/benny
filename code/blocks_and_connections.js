@@ -1873,7 +1873,8 @@ function make_connection(cno,existing){
 					if(t_type == "midi"){
 						set_routing(f_voices[i],f_o_no, enab,4,1,t_block,t_i_no,1,scale,offn*256-128,offv*256-128,cno,0);
 					}else{
-						set_routing(f_voices[i],f_o_no, enab,4,1,t_block,-(1+t_i_no),1,scale,offn*256-128,offv*256-128,cno,0);
+						offv = (scale<0) | 0 ;
+						set_routing(f_voices[i],f_o_no, enab,5,1,t_block,-(1+t_i_no),1,scale,offv,offv,cno,0);
 					}
 				}else if(f_type == "audio"){//audio to midi (polyrouter)
 					audio_to_data_poly.message("setvalue", (f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
@@ -1885,7 +1886,7 @@ function make_connection(cno,existing){
 					if(t_type == "midi"){
 						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}else{
-						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,5,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}
 				}else if(f_type == "parameters"){//param to midi (polyrouter)
 					//audio_to_data_poly.message("setvalue", (f_voices[i]+1+f_o_no*MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
@@ -1897,7 +1898,7 @@ function make_connection(cno,existing){
 					if(t_type == "midi"){
 						set_routing(f_voices[i],f_o_no, enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}else{
-						set_routing(f_voices[i],f_o_no, enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+						set_routing(f_voices[i],f_o_no, enab,5,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}
 				}
 				if(((f_type=="parameters")||(f_type=="midi"))&&(blocktypes.contains(f_name+"::connections::out::midi_watched"))){
@@ -1998,7 +1999,7 @@ function make_connection(cno,existing){
 							var offv = conversion.get("offset2");
 							var vect = conversion.get("vector");
 							//i had this commented out for fear of a crash? set_conversion(c_ind,enab,2,scale,offn,offv,vect,-(1+t_i_no));
-							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
+							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,5,1,t_block,-(1+t_i_no),scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 						}else if(t_type == "parameters"){
 							if(f_type == "hardware") f_voice += MAX_NOTE_VOICES-1;
 							audio_to_data_poly.message("setvalue", (f_voice+1+f_o_no * MAX_AUDIO_VOICES-MAX_NOTE_VOICES), "out_value", 1);
@@ -2143,7 +2144,7 @@ function make_connection(cno,existing){
 							}else{
 								set_routing(f_voice,f_o_no,enab,4,3,t_voice-MAX_NOTE_VOICES,t_i_no,1,scale,offn*256-128,offv*256-128,cno,v);
 							}
-						}else if(t_type == "block"){
+						}/*else if(t_type == "block"){
 							//this is a midi-block control connection for a single voice
 							//post("fv",f_voice,"f_o",f_o_no);
 							//m_index = (f_voice)*128+f_o_no;
@@ -2156,7 +2157,7 @@ function make_connection(cno,existing){
 							var vect = conversion.get("vector");
 							var m_index_mult = MAX_MOD_IDS * m_index;
 							//set_conversion(m_index_mult + t_voice,enab,4,scale,offn,offv,vect,-(1+t_i_no));
-						}else if(t_type == "parameters"){
+						}*/else if(t_type == "parameters"){
 							// parameter connections are just like midi ones really
 							m_index = (f_voice)*128+f_o_no; 
 							t_voice += NO_IO_PER_BLOCK * MAX_AUDIO_VOICES + MAX_AUDIO_OUTPUTS;
@@ -2287,19 +2288,17 @@ function make_connection(cno,existing){
 							}else{
 								set_routing(f_voice,f_o_no,enab,2,3,t_voice-MAX_NOTE_VOICES,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 							}
-						}else if(t_type == "block"){
+						}/*else if(t_type == "block"){
 							//this is a midi-block control connection for a single voice
-							//post("fv",f_voice,"f_o",f_o_no);
-							//m_index = (f_voice)*128+f_o_no;
-							//add_to_midi_routemap(m_index,t_voice);
+							//not supported yet and this never gets called
 							enab = 1-conversion.get("mute");
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
 							var vect = conversion.get("vector");
 							var m_index_mult = MAX_MOD_IDS * m_index;
-							set_conversion(m_index_mult + t_voice,enab,2,scale,offn,offv,vect,-(1+t_i_no));
-						}else if(t_type == "parameters"){
+							//set_conversion(m_index_mult + t_voice,enab,2,scale,offn,offv,vect,-(1+t_i_no));
+						}*/else if(t_type == "parameters"){
 							// parameter connections are just like midi ones really
 							m_index = (f_voice)*128+f_o_no; 
 							t_voice += NO_IO_PER_BLOCK * MAX_AUDIO_VOICES + MAX_AUDIO_OUTPUTS;
