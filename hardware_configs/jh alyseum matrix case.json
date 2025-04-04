@@ -97,6 +97,10 @@
 				"channel" : 3,
 				"ppqn" : 24
 			}
+,
+			"midi_clock_in" : 			{
+				"selected" : "USB MS1x1 MIDI Interface"
+			}
 
 		}
 

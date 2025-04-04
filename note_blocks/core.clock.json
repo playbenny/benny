@@ -3,7 +3,7 @@
 		"patcher" : "core.clock",
 		"type" : "note",
 		"block_ui_patcher" : "core.clock.ui",
-		"help_text" : "Control tempo, swing, and microtiming settings for multiple free but synchronised clock sources. 1 voice = 1 clock. when you merge in another song that contains a clock, it won't adjust the global tempo until you unmute it. it shares timing sync ids with the first clock - ie voice one of every clock block is the same 'virtual player'. Click offset is measured in multiples of vector size, so it should stay consistent if you change vs in future.££there's a hidden parameter that's available for midi mapping called 'tempo bend', if you map eg a pitchbend controller to this you can do dj-style tempo bends.",
+		"help_text" : "Control tempo, swing, and microtiming settings for multiple free but synchronised clock sources. 1 voice = 1 clock. The clocks are synchronised using a discrete time kuramoto algorithm which mirrors many naturally occuring synchronisation and alignment processes. ££When you merge-load in another song that contains a clock, it won't adjust the global tempo until you unmute the new clock. ££Headphone click offset is measured in multiples of vector size, so it should stay consistent if you change vs in future. ££There's a hidden parameter that's available for midi mapping called **tempo bend**, if you map eg a pitchbend controller to this you can do dj-style tempo bends.££If you want to synchronise external gear via midi clock out or a gate clock over audio you can configure these in the hardware manager.££To enable ableton link support, you need to install the ableton link package for max. To do this, open a new max window, go file / package manager and search for ableton link. Install the package and restart benny. Then click on the midi indicators right of the play button. In the sidebar page that appears there's an option to enable link.",
 		"max_polyphony" : 0,
 		"no_edit" : 1,
 		"ui_in_sidebar_height" : 2,		
@@ -52,7 +52,7 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [11,12],
+				"contains" : [11,12,13],
 				"colour" : 25,
 				"height" : 0
 			}
@@ -157,6 +157,15 @@
 			},
 			{
 				"name" : "midi and audio_clock out offset",
+				"type" : "float",
+				"values" : ["bi", -50, 50, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5,
+				"nopervoice" : 1
+			},
+			{
+				"name" : "ableton link_offset",
 				"type" : "float",
 				"values" : ["bi", -50, 50, "lin"],
 				"error_scale" : 0,

@@ -449,7 +449,6 @@ function stop_world(){
 
 function import_hardware(v){
 	post("\n\ninit stage 3 : import hardware\n---------------------------------------");
-	var d2 = new Dict;
 	var d = new Dict;
 	var d3 = new Dict;
 	var t;
@@ -470,27 +469,27 @@ function import_hardware(v){
 	}
 
 	post("\nreading hardware database");
-	d2.import_json(v);
+	hardwareconfig.import_json(v);
 	
-	d = d2.get("hardware");
-	if(d2.contains("io::matrix::external")){
-		var drv = d2.get("io::matrix::external");
+	d = hardwareconfig.get("hardware");
+	if(hardwareconfig.contains("io::matrix::external")){
+		var drv = hardwareconfig.get("io::matrix::external");
 		if(drv != "none"){
 			post("\nfound external matrix, loading driver",drv);
 			messnamed("drivers_poly","setvalue",1,"patchername",drv);
 			EXTERNAL_MATRIX_PRESENT = 1; 
 		}
 	}
-	if(d2.contains("io::matrix::soundcard")){
-		var drv = d2.get("io::matrix::soundcard");
+	if(hardwareconfig.contains("io::matrix::soundcard")){
+		var drv = hardwareconfig.get("io::matrix::soundcard");
 		if(drv != "none"){
 			post("\nfound soundcard matrix, loading driver",drv);
 			messnamed("drivers_poly","setvalue",2,"patchername",drv);
 			SOUNDCARD_HAS_MATRIX = 1;
 		}
 	}
-	if(d2.contains("io::special_controller")){
-		var drv = d2.get("io::special_controller");
+	if(hardwareconfig.contains("io::special_controller")){
+		var drv = hardwareconfig.get("io::special_controller");
 		if(drv != "none"){
 			post("\nfound special controller, loading driver",drv);
 			messnamed("drivers_poly","setvalue",3,"patchername",drv);
@@ -498,9 +497,9 @@ function import_hardware(v){
 	}
 	
 	var keys = d.getkeys();
-	if(d2.contains("measured_latency")){
+	if(hardwareconfig.contains("measured_latency")){
 		post("\nlatency measurement found, copied to config for blocks to access if they want");
-		config.replace("measured_latency",d2.get("measured_latency"));
+		config.replace("measured_latency",hardwareconfig.get("measured_latency"));
 	}
 	for(i=0;i<MAX_AUDIO_INPUTS+2;i++) input_used[i]=0;
 	for(i=0;i<MAX_AUDIO_OUTPUTS+2;i++) output_used[i]=0;
@@ -608,7 +607,7 @@ function import_hardware(v){
 		output_blocks.splice(MAX_AUDIO_OUTPUTS);
 	}
 	post("\nreading midi io config");
-	d = d2.get("io");
+	d = hardwareconfig.get("io");
 	var keys = d.getkeys();
 	for(i = 0; i < keys.length; i++){
 		t = d.get(keys[i]);

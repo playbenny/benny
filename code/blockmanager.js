@@ -621,6 +621,9 @@ var userconfig = new Dict;
 userconfig.name = "userconfig";
 userconfig.filechanged = function(){};
 
+var hardwareconfig = new Dict;
+hardwareconfig.name = "hardwareconfig";
+
 var userpresets = new Dict;
 userpresets.name = "userpresets";
 userpresets.filechanged = function(){};
