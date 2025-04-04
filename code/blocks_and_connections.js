@@ -2536,12 +2536,19 @@ function build_new_connection_menu(from, to, fromv,tov){
 	if(d.contains("connections::in::midi")){
 		if((!sidebar.connection.default_in_applied)&&(sidebar.connection.default_out_applied==1)){
 			sidebar.connection.default_in_applied = 1;
+			new_connection.replace("to::input::type","midi");
 			if(d.contains("connections::in::default")){
-				new_connection.replace("to::input::number",d.get("connections::in::default"));
+				var defa = d.get("connections::in::default");
+				var midicount = d.get("connections::in::midi").length;
+				if(midicount> defa){
+					new_connection.replace("to::input::number",defa);
+				}else{ //if the default no is > than the number of midi connections then you meant a parameter one.
+					new_connection.replace("to::input::number",defa-midicount);
+					new_connection.replace("to::input::type","parameters");
+				}
 			}else{
 				new_connection.replace("to::input::number",0);
 			}
-			new_connection.replace("to::input::type","midi");
 			new_connection.replace("conversion::offset", 0.5);
 			new_connection.replace("conversion::offset2", 0.5);
 		}else if((!sidebar.connection.default_in_applied)&&(sidebar.connection.default_out_applied==2)){
