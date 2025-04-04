@@ -91,8 +91,7 @@ function frameclock(){
 				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
 			if(bulgeamount==0) bulgingwire=-1;			
-			write_wire_matrix(bulgingwire);
-			redraw_flag.matrices |= 1;
+			write_wire_scale_matrix(bulgingwire);
 		}
 	}
 	// if(redraw_flag.flag)post("\nflag",redraw_flag.flag);
@@ -116,6 +115,11 @@ function frameclock(){
 		if(redraw_flag.flag & 8){
 			block_and_wire_colours(); //<<this fn always copies over the matrices
 		}else{
+			if(redraw_flag.matrices == 16){//just bulge, nothing else.
+				messnamed("wires_scale_matrix","bang");
+			}else if(redraw_flag.matrices & 16) {
+				redraw_flag.matrices |= 1;
+			}
 			if(redraw_flag.matrices & 4) write_wires_matrix(); //this also bangs in the write fn and clears the flag
 			if(redraw_flag.matrices & 8) write_blocks_matrix();
 			if(redraw_flag.matrices & 1){

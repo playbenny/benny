@@ -94,7 +94,7 @@ function picker_hover_and_special(id){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						wires_scale[bulgingwire][i][1] = wire_dia;
 					}					
-					write_wire_matrix(bulgingwire);
+					write_wire_scale_matrix(bulgingwire);
 				}
 			}
 			bulgingwire = thov[1];
@@ -104,7 +104,7 @@ function picker_hover_and_special(id){
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
-			write_wire_matrix(bulgingwire);
+			write_wire_scale_matrix(bulgingwire);
 		}else if(thov[0]!="background"){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
@@ -113,7 +113,7 @@ function picker_hover_and_special(id){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						wires_scale[bulgingwire][i][1] = wire_dia;
 					}
-					write_wire_matrix(bulgingwire);
+					write_wire_scale_matrix(bulgingwire);
 				}
 				bulgingwire = -1;
 				usermouse.wiretouch.x=-9999;

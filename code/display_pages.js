@@ -1362,15 +1362,9 @@ function draw_wire(connection_number){
 			post("\n\n\n\n\nERROR connection NOT FOUND");
 			return -1;
 		} 
-
-		var drawme=1;
-		if(!is_empty(wire_ends[connection_number])){
-			if((blocks_cube[cfrom][0].position[0]==wire_ends[connection_number][0])&&(blocks_cube[cfrom][0].position[1]==wire_ends[connection_number][1])&&(blocks_cube[cfrom][0].position[2]==wire_ends[connection_number][2])&&(blocks_cube[cto][0].position[0]==wire_ends[connection_number][3])&&(blocks_cube[cto][0].position[1]==wire_ends[connection_number][4])&&(blocks_cube[cto][0].position[2]==wire_ends[connection_number][5])){
-				drawme =0;
-				// post("\nskipped draw",connection_number,"\n  frompos",blocks_cube[cfrom][0].position,"\n    topos",blocks_cube[cto][0].position,"\n wireends",wire_ends[connection_number]);
-			}
-		}
-		if(drawme){
+		
+		if(is_empty(wire_ends[connection_number])||(blocks_cube[cfrom][0].position[0]!=wire_ends[connection_number][0])||(blocks_cube[cfrom][0].position[1]!=wire_ends[connection_number][1])||(blocks_cube[cfrom][0].position[2]!=wire_ends[connection_number][2])||(blocks_cube[cto][0].position[0]!=wire_ends[connection_number][3])||(blocks_cube[cto][0].position[1]!=wire_ends[connection_number][4])||(blocks_cube[cto][0].position[2]!=wire_ends[connection_number][5])){
+			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			var cmute = connections.get("connections["+connection_number+"]::conversion::mute");
 			var from_number = connections.get("connections["+connection_number+"]::from::output::number");
 			var to_number = connections.get("connections["+connection_number+"]::to::input::number");
@@ -1412,7 +1406,6 @@ function draw_wire(connection_number){
 			var fconx = 0;
 			var tconx = 0; //offset x based on input number/no inputs (or outputs etc)
 			
-			wire_ends[connection_number]=[blocks_cube[cfrom][0].position[0],blocks_cube[cfrom][0].position[1],blocks_cube[cfrom][0].position[2],blocks_cube[cto][0].position[0],blocks_cube[cto][0].position[1],blocks_cube[cto][0].position[2]];
 			if((from_type=="audio")){// || (from_type=="hardware") || (from_type=="matrix")){
 				fconx = ((from_number+0.5)/(NO_IO_PER_BLOCK)) ;
 				from_pos = [ (blocks_cube[cfrom][0].position[0]), blocks_cube[cfrom][0].position[1] - 0.44, blocks_cube[cfrom][0].position[2] ];
@@ -1505,7 +1498,7 @@ function draw_wire(connection_number){
 			to_anglevector = [0, -0.5, 0];
 
 			var segments_to_use = MAX_BEZIER_SEGMENTS;
-			if(connections.getsize("connections")>70) segments_to_use = Math.max(4,segments_to_use-(connections.getsize("connections")-64)/4);
+			if(connections.getsize("connections")>70) segments_to_use = Math.max(4,segments_to_use-(connections.getsize("connections")-64)*0.25);
 			var short=0;
 			// old code was: if either to_multi or from_multi are 1 then we have to draw connections too and from a 'blob'. if not, we just draw a single bezier
 			// if there are blobs then the blobs are either at one of the corners or in the middle.
@@ -1547,17 +1540,17 @@ function draw_wire(connection_number){
 					if((to_multi!=1) && (from_multi!=1)){
 						segments_to_use = 1;
 					}else{
-						segments_to_use /= 4;
+						segments_to_use *= 0.25;
 					}
 				}else if(dist<10){
 					short=1;
 					if((Math.abs(fx-tx)<0.51) && (to_multi!=1) && (from_multi!=1)){
 						segments_to_use = 1;
 					}else{
-						segments_to_use /= 2;
+						segments_to_use *= 0.5;
 					}
 				}else if((Math.abs(fx-tx)<2) && (to_multi!=1) && (from_multi!=1)){
-					segments_to_use /= 3;
+					segments_to_use *= 0.3333;
 					short = 1;
 				}
 			}
@@ -1589,7 +1582,7 @@ function draw_wire(connection_number){
 				meanvector[1] *= 3;
 			}else if((from_pos[1]<=(to_pos[1]))){
 				var yd = to_pos[1]+0.5 - from_pos[1];
-				yd = 5* Math.max(0.2,Math.min(yd,2));
+				yd = Math.max(1,3*Math.min(yd,2));
 				meanvector[0] *= 0.1;
 				meanvector[1] *= yd;
 			}
@@ -2008,6 +2001,16 @@ function write_blocks_matrix(){
 	messnamed("meters_matrices","bang");
 }
 
+function write_wire_scale_matrix(i){
+	matrix_wire_index = wires_startindex[i];
+	if(Array.isArray(wires_position[i])){
+		for(var ii=0;ii<wires_position[i].length;ii++){
+			matrix_wire_scale.setcell(matrix_wire_index,0,"val",wires_scale[i][ii]);
+			matrix_wire_index++;
+		}	
+	}
+	redraw_flag.matrices |= 16;
+}
 
 function write_wire_matrix(i){
 	matrix_wire_index = wires_startindex[i];
