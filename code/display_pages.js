@@ -1482,7 +1482,6 @@ function draw_wire(connection_number){
 				}else {
 					tv=1;
 					to_list = [tl];
-					//to_pos[0] += 0.5*(tl-1)/to_subvoices;
 				}
 			}
 
@@ -1515,7 +1514,6 @@ function draw_wire(connection_number){
 				if(from_multi==-1){
 					fx += -0.4 + 0.8 * fconx;
 				}else{
-					//if(!Array.isArray(from_list))from_list = [fv];
 					fx += 0.5*(from_list[0]-1)/from_subvoices + 0.4*fconx + 0.55;
 				}
 
@@ -1528,7 +1526,6 @@ function draw_wire(connection_number){
 				if(to_multi==-1){
 					tx += -0.4 + 0.8 * tconx;
 				}else{
-					//if(!Array.isArray(to_list))to_list = [tv];
 					tx += 0.5*(to_list[0]-1)/to_subvoices + 0.4*tconx + 0.55;
 				}
 			}
@@ -1554,8 +1551,7 @@ function draw_wire(connection_number){
 					short = 1;
 				}
 			}
-			segments_to_use = Math.ceil(segments_to_use);// 4*(Math.max(1,Math.round(segments_to_use/4)));
-			//dynamic segment allocation with the new multiples system would require very careful housekeeping? at the moment enabling it just makes it go very wrong very fast
+			segments_to_use = Math.ceil(segments_to_use);
 			var bez_prep=[[],[],[],[],[],[]];
 			segment=0;
 			blob_position[0] = ((fx + tx)*0.5);
@@ -2034,6 +2030,8 @@ function write_wires_matrix(){
 	for(var i=0;i<wires_position.length;i++){
 		if(Array.isArray(wires_position[i])) count+=wires_position[i].length;
 	}
+	messnamed("wires_multiple","enable",(count!=0));
+	
 	matrix_wire_position.dim = [count,1];
 	matrix_wire_scale.dim = [count,1];
 	matrix_wire_rotatexyz.dim = [count,1];
