@@ -2286,7 +2286,11 @@ function keybcallback(data){
 					// configfile.setparse("io::sync::midi_clock_in","{}");
 					configfile.setparse("io::sync::midi_clock_out::"+values[id[3]],"{}");
 				}
-				configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::enable",data.value);
+				if(data.value == 0){
+					configfile.remove("io::sync::midi_clock_out::"+values[id[3]]);
+				}else{
+					configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::enable",data.value);
+				}
 				// post("\nSYNC id",id,"value",data.value,"name",values[id[3]]);
 			}else if(id[2]=="ppqn"){
 				configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);

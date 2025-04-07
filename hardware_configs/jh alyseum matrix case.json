@@ -85,21 +85,17 @@
 ,
 		"sync" : 		{
 			"midi_clock_out" : 			{
-				"USB MS1x1 MIDI Interface" : 				{
-					"enable" : 1,
-					"ppqn" : 24
-				}
 
 			}
 ,
 			"audio_clock_out" : 			{
-				"enable" : 1,
+				"enable" : 0,
 				"channel" : 3,
 				"ppqn" : 24
 			}
 ,
 			"midi_clock_in" : 			{
-				"selected" : "USB MS1x1 MIDI Interface"
+				"selected" : "none"
 			}
 
 		}
