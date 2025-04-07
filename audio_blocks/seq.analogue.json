@@ -320,131 +320,131 @@
 			},
 			{
 				"name" : "on",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
 				"name" : "",
-				"type" : "menu_i",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			}
 		]
 	}

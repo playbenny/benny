@@ -2,42 +2,16 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
-			"major" : 8,
-			"minor" : 6,
-			"revision" : 1,
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 59.0, 82.0, 705.0, 588.0 ],
-		"bglocked" : 0,
-		"openinpresentation" : 0,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
+		"rect" : [ 665.0, 228.0, 705.0, 588.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
-		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-7",
@@ -96,7 +70,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer voice_parameter_buffer(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\nParam pointer;\r\nHistory o_p;\r\n\r\nHistory slow, st, le, mi;\r\n\r\nif(slow<=0){\r\n\tslow = vectorsize+324;\r\n\tst = 16*peek(voice_parameter_buffer,voice_offset,0);\r\n \tle = 16*peek(voice_parameter_buffer,voice_offset+1,0);\t\r\n\tmi = peek(voice_parameter_buffer,voice_offset+2,0)>0.5;\r\n}\r\nslow-=1;\r\n\r\nif(pointer!=o_p){\r\n\to_p = pointer;\r\n}\r\n\r\npo = floor(pointer + (2+in1) * le);\r\npo += st;\r\npo = po % le;\r\n\r\n\r\nno = peek(voice_parameter_buffer,voice_offset+3+po,0);\r\nve = peek(voice_parameter_buffer,voice_offset+19+po,0);\r\n\r\nout1 = no*2-1;\r\nout2 = ve;\r\nout3 = po;\r\nout4 = (delta(po*mi)!=0);",
+					"code" : "Buffer voice_parameter_buffer(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\nParam pointer;\r\nHistory o_p(-1), o_po(0);\r\n\r\nHistory slow(300), st(0), le(15), mi(1);\r\nHistory no(0),ve(0),on(0);\r\n\r\nmo = 0;\r\npo = floor(pointer + (in1 * le));\r\nif(o_p != po){\r\n\to_p = po;\r\n\tpo += st + le + le;\r\n\tpo = po % le;\r\n\to_po = po;\r\n\tno = peek(voice_parameter_buffer,voice_offset+3+po,0);\r\n\tve = peek(voice_parameter_buffer,voice_offset+19+po,0);\r\n\ton = peek(voice_parameter_buffer,voice_offset+35+po,0)>0.5;\r\n\tmo = ((mi>0)*(on>0));\r\n}\r\n\t\r\nslow-=1;\r\nif(slow<=0){\r\n\tslow = vectorsize+324;\r\n\tst = floor(16*peek(voice_parameter_buffer,voice_offset,0));\r\n \tle = 1 + floor(15*peek(voice_parameter_buffer,voice_offset+1,0));\t\r\n\tmi = peek(voice_parameter_buffer,voice_offset+2,0)>0.5;\r\n}\r\n\r\nout1 = no*2-1;\r\nout2 = ve;\r\nout3 = o_po;\r\nout4 = mo;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -156,7 +130,8 @@
 				}
 
 			}
- ]
+ ],
+		"originid" : "pat-4038"
 	}
 
 }
