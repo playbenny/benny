@@ -82,6 +82,8 @@ function draw_block_texture(block){
 					lcd_block_textures.message("textface","bold");		
 				}
 			}
+			lcd_block_textures.message("frgb",block_colour);
+			lcd_block_textures.message("framerect",0,0,128,128); //hacky fix for the sloping texture edges on the block menu when text overflows
 			lcd_block_textures.message("bang");
 		}
 	}
