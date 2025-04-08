@@ -22,6 +22,7 @@ and the json file has to be saved as the same name too. eg this example is based
         // build your block a UI in a separate max window rather than inside benny if you prefer.
 		//ui keys:
         "ui_in_sidebar_height" : 1, //if this key is present it draws the ui in the sidebar above the parameters, using this many rows of space. your ui can adjust to proportions if you want it to...
+        "ui_in_sidebar_expands" : 1,
         "ui_to_bottom_panel" : 1, //let this be sent to the bottom panel. the 5th setup param (x,y,x,y,M) is called with a '2' so you know to render a long thin view. very much only for a particular kind of block - like mix bus, pattern sequencer, etc.
         "no_ui_in_panel" : 1,//this key prevents it displaying the ui in the panels page of benny
 		"no_edit" : 1,//this key prevents the ui being popped open from the sidebar/panels - it can't be made the main focus of the window ever.

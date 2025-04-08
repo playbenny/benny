@@ -3,9 +3,10 @@
 		"patcher" : "seq.analogue",
 		"type" : "audio",
 		"block_ui_patcher" : "example.mini.ui",
-		"ui_in_sidebar_height" : 1,
+		"ui_in_sidebar_height" : 0.1,
+		"ui_in_sidebar_expands" : 0.1,
 		"no_edit" : 1,
-		"help_text" : "A simple 'analogue-style' step sequencer. Each step has note, vel, and on/off. ££Unlike many other sequencers in benny, adding more voices adds more playheads traversing the same sequence. ££You can clock this sequencer from midi or from audio pulses, or you can use an audio signal to set the playhead position, enabling audio-rate scanning of the sequence.",
+		"help_text" : "A simple 'analogue-style' step sequencer. Each step has note, vel, and on/off. ££Adding more voices adds more playheads traversing the same sequence. ££You can clock this sequencer from midi or from audio pulses, or you can use an audio signal to set the playhead position, enabling audio-rate scanning of the sequence.",
 		"max_polyphony" : 0,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
@@ -20,14 +21,10 @@
 			},
 			"out" : {
 				"audio" : [ "note value", "vel value"],
-				"midi" : [ "notes" , "slide notes", "position", "step out 1","step out 2","step out 3","step out 4","step out 5","step out 6","step out 7","step out 8","step out 9","step out 10","step out 11","step out 12","step out 13","step out 14","step out 15","step out 16"]
+				"midi" : [ "notes" , "position", "step out 1","step out 2","step out 3","step out 4","step out 5","step out 6","step out 7","step out 8","step out 9","step out 10","step out 11","step out 12","step out 13","step out 14","step out 15","step out 16"]
 			}
 		},
 		"groups" : [
-			{ 
-				"contains" : [  0,1,2 ],
-				"height" : 0
-			},
 			{ 
 				"contains" : [3,4,5, 6,7,8,9, 10,11,12,13, 14,15,16,17, 18],
 				"colour" : 5,
@@ -45,9 +42,13 @@
 			{ 
 				"contains" : [35,36,37, 38,39,40,41, 42,43,44,45, 46,47,48,49,50],
 				"colour" : 14,
-				"height" : 1.5,
-				"header" : "on / off / slide",
+				"height" : 1,
+				"header" : "on / off",
 				"nolabel" : 1				
+			},
+			{ 
+				"contains" : [  0,1,2 ],
+				"height" : 0
 			}		
 		],
 		"parameters" : [
@@ -70,6 +71,7 @@
 				"type" : "menu_b",
 				"values" : ["midi_out_off", "midi_out_on"],
 				"wrap" : 1,
+				"nopervoice" : 1,
 				"default" : 0.99 
 			},
 			{
@@ -329,129 +331,129 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "gate/slide 1",
+				"name" : "gate 1",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 2",
+				"name" : "gate 2",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 3",
+				"name" : "gate 3",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 4",
+				"name" : "gate 4",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 5",
+				"name" : "gate 5",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 6",
+				"name" : "gate 6",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 7",
+				"name" : "gate 7",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 8",
+				"name" : "gate 8",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 9",
+				"name" : "gate 9",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 10",
+				"name" : "gate 10",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 11",
+				"name" : "gate 11",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 12",
+				"name" : "gate 12",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 13",
+				"name" : "gate 13",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 14",
+				"name" : "gate 14",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 15",
+				"name" : "gate 15",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
 			},
 			{
-				"name" : "gate/slide 16",
+				"name" : "gate 16",
 				"type" : "menu_l",
-				"values" : ["0", "1"," ͡ "],
+				"values" : ["0", "1"],
 				"wrap" : 1,
 				"nopervoice" : 1,
 				"default" : 0.1
