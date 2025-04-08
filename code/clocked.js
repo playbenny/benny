@@ -372,7 +372,7 @@ function hardware_meters(){
 function draw_midi_indicators(){
 	var l = midi_indicators.status.length;
 	var ci = midi_indicators.list.length;
-	var yi = (fontheight-2) / Math.max(1, l - 1);
+	var yi = (fontheight-3) / Math.max(1, l - 1);
 	var y = 9;
 	midi_indicators.flag = 0;
 	for(var i = 0; i<l; i++){

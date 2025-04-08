@@ -196,7 +196,7 @@ function get_hw_meter_positions(){
 	for(i=0;i<MAX_USED_AUDIO_INPUTS;i++){
 		if(input_used[i]) {
 			inlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,7+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
 			//post("\ninput meter",i,"position",positions[positions.length-1]);
 			x++;
 			c++;
@@ -209,7 +209,7 @@ function get_hw_meter_positions(){
 	for(i=0;i<MAX_USED_AUDIO_OUTPUTS;i++){
 		if(output_used[i]){
 			outlist.push(i+1);
-			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,8+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
+			positions[positions.length] = [sidebar.meters.startx + x * sidebar.meters.spread,9,7+fontheight,1+(MAX_AUDIO_VOICES*NO_IO_PER_BLOCK + c)];
 			//post("\noutput meter",i,"position",positions[positions.length-1]);
 			c++;
 			x++;
