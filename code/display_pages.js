@@ -5810,7 +5810,7 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 			}
 			if(blocktypes.contains(block_name+"::help_text")){
-				if((sidebar.mode == "help")||(sidebar.show_help&&((y_offset+fontheight*2)<mainwindow_height))){
+				if((sidebar.mode == "help")||((sidebar.mode == "block")&&sidebar.show_help&&((y_offset+fontheight)<mainwindow_height))){
 					if(sidebar.mode == "help"){
 						click_zone(set_sidebar_mode,"block", null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
 						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour);
@@ -5843,6 +5843,7 @@ function draw_sidebar(){
 					get_io_name_and_description("hardware","out");
 					get_io_name_and_description("audio","out");
 					get_io_name_and_description("midi","out");
+					get_io_name_and_description("parameters","out");
 					long_sidebar_text(hint);
 				}else{
 					click_zone(set_sidebar_mode,"help",null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );

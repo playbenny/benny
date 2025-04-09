@@ -475,7 +475,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow 1?",usermouse.hover[1],num);
 								var type = blocks_menu[num].name;
-								sidebar.show_help = 1;
+								if(sidebar.show_help==0) sidebar.show_help = 1;
 								
 								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 								end_of_frame_fn = function(){
