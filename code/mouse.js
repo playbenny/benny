@@ -562,7 +562,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						}
 					}
 					if(usermouse.ids[0] == "background"){
-						post("\nbackground");
 						if(usermouse.drag.distance<20){
 							if(usermouse.alt){
 								center_view(1);
