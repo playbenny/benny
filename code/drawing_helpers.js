@@ -1546,6 +1546,7 @@ function long_sidebar_text(textcontent,size) {
 		var sliced = textcontent.slice(rowstart, rowend);
 		if (!sameline) {
 			lcd_main.message("moveto", sidebar.x + fontheight * 0.2, y_offset + fontheight * (0.75 + 0.4 * ri * size));
+			if((y_offset + fontheight * (0.75 + 0.4 * ri * size))>mainwindow_height) break;
 		} else {
 			ri--;
 		}

@@ -5810,13 +5810,15 @@ function draw_sidebar(){
 				y_offset += 1.1* fontheight;
 			}
 			if(blocktypes.contains(block_name+"::help_text")){
-				if(sidebar.mode == "help"){
-					click_zone(set_sidebar_mode,"block", null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
-					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour);
-					lcd_main.message("frgb", 0,0,0 );
-					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-					lcd_main.message("write", "help");
-					y_offset += 1.1* fontheight;
+				if((sidebar.mode == "help")||(sidebar.show_help&&((y_offset+fontheight*2)<mainwindow_height))){
+					if(sidebar.mode == "help"){
+						click_zone(set_sidebar_mode,"block", null, sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,mouse_index,1 );
+						lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,block_colour);
+						lcd_main.message("frgb", 0,0,0 );
+						lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
+						lcd_main.message("write", "help");
+						y_offset += 1.1* fontheight;
+					}
 					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,block_darkest);
 					lcd_main.message("frgb", block_colour);
 					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
