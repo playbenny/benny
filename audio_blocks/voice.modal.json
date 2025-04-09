@@ -2,8 +2,9 @@
 	"voice.modal" : {
 		"patcher" : "voice.modal",
 		"type" : "audio",
+		"synonyms" : ["resonator","xylophone","marimba","physical","string","membrane"],
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Simple voice made around a bank of resonators and a selection of model algorithms for setting the frequencies, amplitudes and bandwidths of those resonators. Works as a voice you can play with midi input but also as an effect, and can be used to model body resonances for physical modelling patches.££Models come from an article by Nathan Ho apart from the two measured violin body resonances which come from a paper by Holm & Välimäki and some measurements taken from a bell in a post online, links in the patcher.££-Elements string££-Piano stiff string££-Free Beam (eg xylophone)££-Cantilever Beam (eg mbira)££-Rectangular Membrane££-Rectangular clamped plate££-Tubular bell££-Free Plate££-Good vilin££-Bad violin",
+		"help_text" : "Simple voice made around a bank of resonators and a selection of model algorithms for setting the frequencies, amplitudes and bandwidths of those resonators. Works as a voice you can play with midi input but also as an effect, and can be used to model body resonances for physical modelling patches.££Models come from an article by Nathan Ho apart from the two measured violin body resonances which come from a paper by Holm & Välimäki and some measurements taken from a bell in a post online, links in the patcher.££-Elements string££-Piano stiff string££-Free Beam (eg xylophone)££-Cantilever Beam (eg mbira)££-Rectangular Membrane££-Rectangular clamped plate££-Tubular bell££-Free Plate££-Good violin££-Bad violin££-Measured bell",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
