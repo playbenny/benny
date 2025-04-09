@@ -1267,6 +1267,7 @@ function draw_menu_hint(){
 		get_io_name_and_description("hardware","out");
 		get_io_name_and_description("audio","out");
 		get_io_name_and_description("midi","out");	
+		get_io_name_and_description("parameters","out");	
 		hint = hint+"                       ";
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
 		lcd_main.message("paintrect", sidebar.x,9+(topspace+1.1)*fontheight,sidebar.x2,9+fontheight*(2.1+topspace),cod);
