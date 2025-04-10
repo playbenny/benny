@@ -366,7 +366,7 @@
 
 							}
  ],
-						"originid" : "pat-740"
+						"originid" : "pat-752"
 					}
 ,
 					"patching_rect" : [ 1123.0, 46.0, 112.0, 22.0 ],
@@ -536,7 +536,7 @@
 
 							}
  ],
-						"originid" : "pat-742"
+						"originid" : "pat-754"
 					}
 ,
 					"patching_rect" : [ 276.0, 41.25, 55.0, 22.0 ],
@@ -701,7 +701,7 @@
 
 							}
  ],
-						"originid" : "pat-756"
+						"originid" : "pat-768"
 					}
 ,
 					"patching_rect" : [ 314.5, 242.0, 102.0, 22.0 ],
@@ -936,7 +936,7 @@
 
 							}
  ],
-						"originid" : "pat-758"
+						"originid" : "pat-770"
 					}
 ,
 					"patching_rect" : [ 725.0, 48.25, 117.0, 22.0 ],
@@ -1156,7 +1156,7 @@
 
 							}
  ],
-						"originid" : "pat-760"
+						"originid" : "pat-772"
 					}
 ,
 					"patching_rect" : [ 556.0, 527.0, 69.0, 22.0 ],
@@ -2062,7 +2062,7 @@
 
 							}
  ],
-						"originid" : "pat-762"
+						"originid" : "pat-774"
 					}
 ,
 					"patching_rect" : [ 397.0, 167.25, 100.0, 22.0 ],
@@ -2401,7 +2401,7 @@
 
 							}
  ],
-						"originid" : "pat-764"
+						"originid" : "pat-776"
 					}
 ,
 					"patching_rect" : [ 742.0, 660.0, 123.0, 22.0 ],
@@ -3105,7 +3105,7 @@
 
 							}
  ],
-						"originid" : "pat-766"
+						"originid" : "pat-778"
 					}
 ,
 					"patching_rect" : [ 659.0, 132.25, 113.0, 22.0 ],
@@ -3198,8 +3198,8 @@
 					"id" : "obj-193",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "signal" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "", "signal", "signal" ],
 					"patching_rect" : [ 30.0, 174.0, 151.0, 22.0 ],
 					"text" : "global_transport_and_click",
 					"varname" : "global_transport_and_click"
@@ -4132,7 +4132,7 @@
 
 							}
  ],
-						"originid" : "pat-796"
+						"originid" : "pat-810"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 12.25, 43.0, 22.0 ],
@@ -4627,7 +4627,7 @@
 
 							}
  ],
-						"originid" : "pat-798"
+						"originid" : "pat-812"
 					}
 ,
 					"patching_rect" : [ 850.5, 388.0, 85.0, 22.0 ],
@@ -5059,7 +5059,7 @@
 
 											}
  ],
-										"originid" : "pat-802"
+										"originid" : "pat-816"
 									}
 ,
 									"patching_rect" : [ 305.0, 329.0, 69.0, 22.0 ],
@@ -6988,7 +6988,7 @@
 
 							}
  ],
-						"originid" : "pat-800"
+						"originid" : "pat-814"
 					}
 ,
 					"patching_rect" : [ 110.75, 587.0, 298.0, 22.0 ],
@@ -8113,7 +8113,7 @@
 
 											}
  ],
-										"originid" : "pat-812"
+										"originid" : "pat-826"
 									}
 ,
 									"patching_rect" : [ 30.0, 463.0, 129.0, 22.0 ],
@@ -8988,7 +8988,7 @@
 
 							}
  ],
-						"originid" : "pat-810",
+						"originid" : "pat-824",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -10831,7 +10831,7 @@
 
 							}
  ],
-						"originid" : "pat-816",
+						"originid" : "pat-830",
 						"styles" : [ 							{
 								"name" : "AudioStatus_Menu",
 								"default" : 								{
@@ -11128,8 +11128,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "bang" ],
-									"patching_rect" : [ 160.25, 27.75, 48.0, 22.0 ],
-									"text" : "del 300"
+									"patching_rect" : [ 160.25, 27.75, 41.0, 22.0 ],
+									"text" : "del 10"
 								}
 
 							}
@@ -11140,8 +11140,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "bang" ],
-									"patching_rect" : [ 269.25, 27.75, 55.0, 22.0 ],
-									"text" : "del 2345"
+									"patching_rect" : [ 269.25, 27.75, 41.0, 22.0 ],
+									"text" : "del 10"
 								}
 
 							}
@@ -11869,7 +11869,7 @@
 
 											}
  ],
-										"originid" : "pat-822"
+										"originid" : "pat-836"
 									}
 ,
 									"patching_rect" : [ 540.0, 18.0, 89.0, 22.0 ],
@@ -12877,7 +12877,7 @@
 
 							}
  ],
-						"originid" : "pat-820"
+						"originid" : "pat-834"
 					}
 ,
 					"patching_rect" : [ 205.399999999999977, 41.25, 67.0, 22.0 ],
@@ -14248,7 +14248,7 @@
 
 			}
  ],
-		"originid" : "pat-736",
+		"originid" : "pat-748",
 		"dependency_cache" : [ 			{
 				"name" : "ar.cliponly~.mxe64",
 				"type" : "mx64"
@@ -14256,13 +14256,6 @@
 , 			{
 				"name" : "ar.tapedither~.mxe64",
 				"type" : "mx64"
-			}
-, 			{
-				"name" : "audio-to-data.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
 			}
 , 			{
 				"name" : "audio-to-data.maxpat",
@@ -14403,17 +14396,18 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "midimonitor.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
+				"name" : "link.beat.mxe64",
+				"type" : "mx64"
 			}
 , 			{
-				"name" : "midirouter.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
+				"name" : "link.session.mxe64",
+				"type" : "mx64"
+			}
+, 			{
+				"name" : "midi_clock_out.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
@@ -14438,20 +14432,6 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "output_queue_watcher.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "parameters_and_modulation.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "ui_wrap.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
@@ -14459,24 +14439,10 @@
 				"implicit" : 1
 			}
 , 			{
-				"name" : "voicealloc.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "voicealloc.maxpat",
 				"bootpath" : "~/Documents/GitHub/benny/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "whitegaussnoise.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny/code",
-				"patcherrelativepath" : "../code",
-				"type" : "gDSP",
 				"implicit" : 1
 			}
  ],

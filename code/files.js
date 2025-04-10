@@ -449,7 +449,13 @@ function buffer_loaded(number,path,name,buffername){
 }
 
 function load_next_song(slow){
-	if(loading.progress!=0) return 0;
+	if(loading.object_target=="saving"){
+		post("\nstill saving please wait");
+		return 0;
+	}else if(loading.progress!=0){
+		post("\nalready loading");
+		return 0;
+	} 
 	var oc = usermouse.ctrl;
 	usermouse.ctrl = slow;
 	currentsong++;
@@ -461,6 +467,10 @@ function load_next_song(slow){
 }
 
 function load_song(){
+	if(loading.object_target=="saving"){
+		post("\nstill saving please wait");
+		return 0;
+	}
 	if(currentsong<0) return -1;
 	loading.songpath = SONGS_FOLDER;
 	if(playing) play_button();
@@ -1241,6 +1251,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	var store = [];
 	var per_v = [];
 	if(states.contains("states::current")) states.remove("states::current");
+	loading.object_target = "saving";
 	for(b=0;b<MAX_BLOCKS;b++){
 		store[b] = [];
 		per_v[b] = [];
