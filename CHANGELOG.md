@@ -1,3 +1,8 @@
+10/04/25:
+- comparator block
+- fixed a bug in the integrator saw used in the basic/dual oscs and voices that caused dc offset and reduced level for notes in higher octaves.
+- blocks' help text is shown by default now, rather than needing a click to expand that section of sidebar. by default this turns on after you add a block to the set, as if you haven't added a block we assume you're playing a live set and don't need extra distracting info on screen. this behaviour can be changed in the ui preferences.
+
 03/04/25:
 - midi clock out, audio clock out. benny's midi/audio clock out is based around the idea of a session that may be continuing even when benny itself stops. when you start the music the external clock starts in sync, but when you stop benny the external clock does not stop. ctrl-click on the play button to stop the external clocks. there is an external clock out indicator at the bottom of the midi in indicators (next to the play button). if the external clock is running and you start benny then benny will wait until the next downbeat before starting. you can configure outputs and ppqn values in the hardware manager. this has only been tested with a very limited range of hardware so far so please do get in touch if you find problems!
 - tempo bend - you can map a controller to bend tempo _like a dj_, useful for shifting phase if you're manually synchronising benny to something else.
