@@ -150,7 +150,7 @@ integrator_saw(rectin, pitch, pw, sync){
 		pws=clip(pws,.005,.995);
 		
 		offset=(2*pws-1);
-		scale=-pitch/ (pws*(pws-1)*samplerate); //,0,0.5);
+		scale=-pitch/ (pws*(pws-1)*samplerate);
 		integ=clip(integ+(rectin+offset)*scale,-1,1);
 	}
 	
