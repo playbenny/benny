@@ -1272,7 +1272,8 @@ function draw_menu_hint(){
 		var hintrows = 0.4+ hint.length / 27+hint.split("£").length-1;
 		lcd_main.message("paintrect", sidebar.x,9+(topspace+1.1)*fontheight,sidebar.x2,9+fontheight*(2.1+topspace),cod);
 		
-		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.2),sidebar.x2,9+fontheight*(4.1+topspace+0.45*hintrows),cod);
+		sidebar.used_height = 9+fontheight*(4.1+topspace+0.45*hintrows);
+		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace+2.2),sidebar.x2,sidebar.used_height ,cod);
 		lcd_main.message("frgb",col);
 		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.75));
 		var rowstart=0;
@@ -1334,6 +1335,7 @@ function draw_menu_hint(){
 		if(!bold) lcd_main.message("textface", "bold");
 	}
 	lcd_main.message("bang");
+	sidebar_size();
 }
 	
 

@@ -855,7 +855,8 @@ function reinitialise_block_menu(){
 }
 
 function initialise_block_menu(visible){	
-	visible |= 0;	
+	visible |= 0;
+	if(visible) sidebar.videoplane.message("enable",0);
 	var i; // draw cubes distributed on the xz plane, rotated 90 degrees about the x axis, y = -110
 	var t;
 	var z = -5;
@@ -901,7 +902,7 @@ function initialise_block_menu(visible){
 		messnamed("menu_multiple","enable",visible);
 	}else{
 		post("\ninitialising block menu");
-		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
+		var w = ((   (4 - (Math.max(-1,Math.min(3,((mainwindow_height/mainwindow_width)-0.5)*8))))  *2) |0 ) *0.5;
 		for(var typ in type_order){
 			z++;
 			z+=0.5;
