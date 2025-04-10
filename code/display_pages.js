@@ -934,6 +934,9 @@ function initialise_block_menu(visible){
 								lcd_block_textures.message("font",mainfont,27);
 							}
 						}
+						//lcd_block_textures.message("frgb",col);
+						lcd_block_textures.message("framerect",0,0,128,128,col); //hacky fix for the sloping texture edges on the block menu when text overflows
+			
 						lcd_block_textures.message("bang");
 						
 						if(x>w){
@@ -5820,7 +5823,7 @@ function draw_sidebar(){
 						y_offset += 1.1* fontheight;
 					}
 					lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,block_darkest);
-					lcd_main.message("frgb", block_colour);
+					lcd_main.message("frgb", block_dark);
 					lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 					lcd_main.message("font",mainfont,fontsmall);
 					lcd_main.message("textface", "normal");
