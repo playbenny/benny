@@ -3,7 +3,7 @@
 		"patcher" : "voice.basic",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Basic single oscillator through a VCA driven by an ASR envelope. Shape fades from sine through triangle saw rectangle square triangle and back to sine. Accepts MIDI and CV, works in LFO and audio ranges. The rectangle portion of this oscillator uses code from Yofiel.com. ",
+		"help_text" : "a single oscillator with an ASR envelope on its amplitude. the shape control fades from sine through triangle saw rectangle square triangle and back to sine. accepts MIDI and CV, works in LFO and audio ranges and over fairly long timescales. ££the envelope can loop, including decay bouncing ball type loops, and features 'accumulation' - when retriggered before the envelope has decayed to silence the remaining level is added to the new target level, so fast sections can be set to build up by themselves, or down. ££if you're playing near the top of the keyboard range (above C7) turn on oversampling in settings for a clearer tone, particularly on the saw.  ££the rectangle portion of this oscillator uses EPTR code from yofiel.com, the saw/tri is made by integrating this. sine was invented by 2nd century BC egyptian people.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"latching_enable" : 1,
@@ -88,7 +88,8 @@
 				"type" : "menu_l",
 				"values" : ["lin fm" , "exp fm", "sync" , "sync&fm"],
 				"error_scale" : 0,
-				"wrap" : 1,
+				"nopervoice" : 1,
+ 				"wrap" : 1,
 				"default" : 0.3
 			},
 			{
