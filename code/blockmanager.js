@@ -595,6 +595,18 @@ var sidebar = {
 	show_help : 0 //once you add a block to a song this turns on and it always shows help
 }
 
+var patternpage = { // info to help draw pattern page fast
+	enable : 0, //turned on when it loads a block with patterns
+	column_block : [], //block no
+	block_split : [], //if it's split into voices, then the number of voices. checked on switch mode. stored by block not by columnno
+	block_statelist : [], //states that include this block
+	column_type : [], //0 =state,
+					// 1 = pattern ?? (wave scan? etc) if a block has both it gets one of each.
+	usedstates : 0, //how many states are used
+	max_rows : 0, //maximum of usedstates and number of patterns. actually it will display more than that, as one column could be up and one down? maybe?
+	direction : 1 //toptobottom
+}
+
 var y_offset;
 
 var mutemap = new Buffer("mutemap");

@@ -28,19 +28,20 @@
 			{ 
 				"contains" : [2],
 				"onepervoice" : 1,
-				"height":1
+				"height":0
 			},
 			{ 
 				"contains" : [3],
 				"colour" : 10,
 				"onepervoice" : 1,
-				"height":1
+				"height":0
 			},
 			{ 
 				"contains" : [7],
 				"colour" : -10,
 				"onepervoice" :1,
-				"height" : 0 
+				"height" : 0,
+				"patterncontrols" : 1
 			},
 			{ 
 				"contains" : [1],
@@ -54,6 +55,11 @@
 				"colour" : 25
 			}
 		],
+		"patterns" : {
+			"parameter" : 7,
+			"pattern_storage" : "data",
+			"playhead_offset" : 0 
+		},
 		"voice_data" : {
 			"defaults" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		},
@@ -114,7 +120,7 @@
 			{
 				"name" : "pattern",
 				"type" : "int",
-				"values" : ["uni", 0, 15, "lin"],
+				"values" : ["uni", 1, 16, "lin"],
 				"error_scale" : 0,
 				"default" : 0.03125,
 				"wrap" : 1

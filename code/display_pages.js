@@ -43,9 +43,10 @@ function set_display_mode(mode,t){
 				automap.mapped_c=-1;
 				note_poly.message("setvalue", automap.available_c, "automapped", 0);					
 			}
-		}
-		if(mode=="waves"){
+		}else if(mode=="waves"){
 			draw_wave= [];
+		}else if(mode=="patterns"){
+			populate_pattern_page();
 		}
 		displaymode=mode;
 		if(mode == "block_menu"){
@@ -161,7 +162,7 @@ function redraw(){
 		if(fullscreen) draw_clock();
 		draw_sidebar();
 		draw_panels();
-		if(bottombar.block>-1) draw_bottom_bar();//setup_bottom_bar(bottombar.block);  //post("redraw"); }
+		if(bottombar.block>-1) draw_bottom_bar();
 		meters_enable=1;
 	}else if(displaymode == "custom_fullscreen"){
 		clear_screens();
@@ -181,7 +182,16 @@ function redraw(){
 		if(fullscreen) draw_clock();
 		draw_waves();
 		draw_sidebar();
-		if(bottombar.block>-1) draw_bottom_bar();//setup_bottom_bar(bottombar.block); // post("redraw"); }
+		if(bottombar.block>-1) draw_bottom_bar();
+	}else if(displaymode == "patterns"){
+		meters_enable=0;
+		clear_screens();
+		draw_topbar();
+		if(fullscreen) draw_clock();
+		draw_sidebar();
+		draw_patterns();
+		if(bottombar.block>-1) draw_bottom_bar();
+		meters_enable=1;
 	}
 }
 
@@ -220,6 +230,65 @@ function get_hw_meter_positions(){
 	meter_positions[1] = [menucolour,menudarkest,positions];
 	return [inlist,outlist];
 }
+
+function draw_patterns(){ //patterns page, in edit space or fullscreen. i think drawing it in the bottom bar will be different?
+	var pagebottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
+	if(patternpage.column_block.length==0) populate_pattern_page();
+	var cols = patternpage.column_block.length;
+	if(cols>0){
+		var cw = (sidebar.x - 18 - fontheight)/cols;
+		var ob=-1;
+		for(var c=0;c<cols;c++){
+			//draw labels
+			//TODO, if a merged song, also label which columns are from which song? or just the old ones?
+			var b = patternpage.column_block[c];
+			var co = blocks.get("blocks["+b+"]::space::colour");
+			lcd_main.message("frgb",co);
+			if(b!=ob){
+				var bn = blocks.get("blocks["+b+"]::name");
+				var bl = bn;
+				if(blocks.contains("blocks["+b+"]::label")) bl = blocks.get("blocks["+b+"]::label");
+				lcd_main.message("moveto",9+fontheight+cw*c,9+1.5*fontheight);
+				lcd_main.message("write",blocks.get("blocks["+b+"]::name"));
+				ob = b;
+			}
+			if(patternpage.column_type[c]==0){//states
+				
+			}else if(patternpage.column_type[c]==1){//patterns
+				
+			}
+		}
+	}
+}
+
+function populate_pattern_page(){ //goes through and checks all blocks for states and for patterns
+	patternpage.column_block = [];
+	patternpage.column_type = [];
+	patternpage.block_statelist = [];
+	patternpage.usedstates = states.getsize("states");
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::name")){
+			var bnam = blocks.get("blocks["+b+"]::name");
+			statecount = 0;
+			patternpage.block_statelist[b] = [];
+			for(var state=0;state<MAX_STATES;state++){
+				if(states.contains("states::"+state+"::"+b)){
+					statecount++;
+					patternpage.block_statelist[b].push(state);
+				}
+			}
+			if(statecount>0){
+				patternpage.column_block.push(b);
+				patternpage.column_type.push(0);
+			} 
+			if(blocktypes.contains(bnam+"::patterns")){
+				patternpage.column_block.push(b);
+				patternpage.column_type.push(1);
+			}
+		}
+	}
+}
+
 
 function draw_panels(){
 	//deferred_diag.push("draw panels "+mouse_index);
@@ -2338,6 +2407,25 @@ function draw_topbar(){
 		mouse_index++;
 		x_o+=1.3;
 	
+		if(patternpage.enable){
+			if(view_changed===true) click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,mouse_index,1 );
+			mouse_click_actions[mouse_index] = set_display_mode;
+			mouse_click_parameters[mouse_index] = "patterns";		
+			if((displaymode == "patterns")||(usermouse.clicked2d==mouse_index)){
+				// if(displaymode == "waves") mouse_click_parameters[mouse_index] = "blocks";
+				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,menucolour );
+				lcd_main.message("frgb", 0,0,0);
+			}else{
+				lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.5), 9+fontheight,menudarkest );
+				lcd_main.message("frgb", menucolour);
+			}
+			lcd_main.message("moveto", 9 + fontheight*(x_o+0.15), 9+fontheight*0.75);
+			lcd_main.message("write", "patterns");
+			mouse_click_values[mouse_index] = "";
+			mouse_index++;
+			x_o+=1.6;
+		}
+	
 		if(view_changed===true) click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.1), 9+fontheight,mouse_index,1 );
 		mouse_click_actions[mouse_index] = set_sidebar_mode;
 		if(sidebar.mode == "file_menu"){
@@ -2399,7 +2487,7 @@ function draw_topbar(){
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
-		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")||(displaymode == "waves")){ //draw states / init / unmute all
+		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")||(displaymode == "waves")||(displaymode == "patterns")){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 5;
 			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1) || (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){
 				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
@@ -2431,6 +2519,7 @@ function draw_topbar(){
 				y_o -= 1.1*fontheight;
 				var cll = config.getsize("palette::gamut");
 				var c = new Array(3);
+				patternpage.usedstates=0;
 				// draw a button for each possible state
 				for(i=MAX_STATES-1;i>=-1;i--){
 					var statecontents;
@@ -2440,6 +2529,7 @@ function draw_topbar(){
 						statecontents = states.contains("states::"+i);
 					}
 					if(statecontents){
+						patternpage.usedstates++;
 						if((state_fade.position>-1) && (state_fade.selected ==i)){
 							state_fade.y = y_o;
 							state_fade.index = mouse_index;
@@ -2542,7 +2632,7 @@ function draw_sidebar(){
 		if(sidebar.mode == "param_number_entry") return 0; // just bail!
 		clear_sidebar_paramslider_details();
 		if(sidebar.lastmode!="recalculate"){
-			if(automap.assignmode)turn_off_controller_assign_mode();
+			if(automap.assignmode) turn_off_controller_assign_mode();
 			sidebar.scroll.position = 0;
 		}
 		if((automap.mapped_c==-0.5)&&(sidebar.mode!="wire")&&(sidebar.mode!="wires")){
@@ -4425,6 +4515,45 @@ function draw_sidebar(){
 	
 							}
 							y_offset=namelabely+fontheight*0.2;
+						}
+						if(groups[i].contains("patterncontrols")){ //SPECIAL CONTROLS FOR PATTERNS
+							if(blocks.contains("blocks["+block+"]::patterns::names")){
+								var pn = blocks.get("blocks["+block+"]::patterns::names");
+							}else{
+								var pn = [];
+								for(var pni=0;pni<15;pni++)pn.push("");
+								blocks.replace("blocks["+block+"]::patterns::names",pn);
+							}
+
+							var sv = sidebar.selected_voice;
+							if(sv == -1) sv=0;
+							var bvs = voicemap.get(block);
+							if(!Array.isArray(bvs)) bvs = [bvs];
+							var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[sv]+blocks.get("blocks["+block+"]::patterns::parameter"))); //TODO check actual number of patterns
+							post("\npatterns, pv",pv,"or",voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[sv]+blocks.get("blocks["+block+"]::patterns::parameter")),"from",block,block*MAX_PARAMETERS,"param",blocks.get("blocks["+block+"]::patterns::parameter"));
+							click_zone(rename_pattern,pv,block,sidebar.x,y_offset,sidebar.x2-fontheight*2.5,y_offset+fontheight*0.6,mouse_index,1);
+							click_zone(copy_pattern,pv,block,sidebar.x2-fontheight*2.5,y_offset,sidebar.x2-fontheight,y_offset+fontheight*0.6,mouse_index,1);
+							click_zone(clear_pattern,pv,block,sidebar.x2-fontheight,y_offset,sidebar.x2,y_offset+fontheight*0.6,mouse_index,1);
+							
+							lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2-fontheight*2.5,y_offset+fontheight*0.6,block_darkest );
+							lcd_main.message("paintrect",sidebar.x2-fontheight*2.4,y_offset,sidebar.x2-fontheight*1.1,y_offset+fontheight*0.6,block_dark );
+							lcd_main.message("paintrect",sidebar.x2-fontheight,y_offset,sidebar.x2,y_offset+fontheight*0.6,block_dark );
+							lcd_main.message("frgb",block_colour);
+							lcd_main.message("paintpoly", sidebar.x2 - 15*fo1, y_offset + 2.5*fo1, sidebar.x2 - 12*fo1, y_offset + 2.5*fo1, sidebar.x2 - 13.5*fo1, y_offset + 4*fo1, sidebar.x2 - 15*fo1, y_offset + 2.5*fo1);				
+					
+							lcd_main.message("moveto",sidebar.x+0.1*fontheight,y_offset+fontheight*0.45);
+							lcd_main.message("write",(1+pv)+": "+pn[pv]);
+							lcd_main.message("moveto",sidebar.x2-2.3*fontheight,y_offset+fontheight*0.45);
+							lcd_main.message("write","copy");
+							lcd_main.message("moveto",sidebar.x2-0.9*fontheight,y_offset+fontheight*0.45);
+							lcd_main.message("write","clear");
+							if(pn[pv]==""){
+								lcd_main.message("frgb",block_dark);
+								lcd_main.message("moveto",sidebar.x+0.6*fontheight,y_offset+fontheight*0.45);
+								lcd_main.message("write","click to name");	
+							}
+							
+							y_offset+=fontheight*0.7; 
 						}
 						if((automap.mapped_c==block)){ //(automap.offset_range_c>0)&&(automap.mouse_follow)&&
 							automap.sidebar_row_ys[i+1] = y_offset;

@@ -4368,3 +4368,13 @@ function automap_direct_to_core(knob,value){
 		note_poly.message("setvalue", automap.available_c, "automapped", 0);
 	}
 }
+
+function rename_pattern(p,v){
+	post("\nrename pattern",p,v);
+}
+function copy_pattern(p,v){
+	post("\ncopy pattern",p,v);
+}
+function clear_pattern(p,v){
+	post("\nclear pattern",p,v);
+}

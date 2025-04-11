@@ -127,7 +127,7 @@
 			{
 				"name" : "pattern",
 				"type" : "int",
-				"values" : ["uni", 0, 15, "lin"],
+				"values" : ["uni", 1, 16, "lin"],
 				"wrap" : 1,
 				"default" : 0.03125
 			},
