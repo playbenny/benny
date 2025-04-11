@@ -707,6 +707,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										selected.wire[ti]=0;
 									}
 									selected.wire_count=0;
+									sidebar.connection.show_from_outputs = 0;
+									sidebar.connection.default_out_applied = 0;
+									sidebar.connection.show_to_inputs = 0;
+									sidebar.connection.default_in_applied = 0;
 								}
 								if(selected.wire_count>1){
 									//and if lots of things are selected (and one of them was clicked) you clear selection but keep that one selected

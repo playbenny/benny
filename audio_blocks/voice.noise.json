@@ -3,7 +3,7 @@
 		"patcher" : "voice.noise",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "noise source + VCA + ENV. midi to the 'damp' input causes the envelope to close quickly.",
+		"help_text" : "noise source that can fade between different colours and types of noise, with a looping, accumulating ASR envelope controlling amplitude. midi in to the 'damp' input causes the envelope to close quickly.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"latching_enable" : 1,

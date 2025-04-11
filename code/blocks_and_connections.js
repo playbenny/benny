@@ -2420,7 +2420,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	sidebar.connection.default_out_applied = 0;
 	sidebar.connection.default_in_applied = 0;
 	var spreadwide = 0;
-	
+	var is_explicitly_not_notes = 0;
 	var d = new Dict;
 	d = blocktypes.get(fromname);
 	if(d.contains("connections::out::default")){
@@ -2435,6 +2435,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 			if(def<s_m){
 				sidebar.connection.default_out_applied = 1;
 				new_connection.replace("from::output::type","parameters");
+				is_explicitly_not_notes = 1;
 			}else{
 				def -= s_m;
 				sidebar.connection.default_out_applied = 2;
@@ -2592,7 +2593,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	if(blocktypes.contains(fromname+"::connections::out::force_unity")){
 		new_connection.replace("conversion::force_unity" , 1);
 	} 
-	if((new_connection.get("from::output::type")=="parameters")&&(t_type=="midi")){
+	if((is_explicitly_not_notes==0)&&(t_type=="midi")&&(new_connection.get("from::output::type")=="parameters")){
 		var tcn =blocktypes.get(toname+"::connections::in::midi");
 		if(!Array.isArray(tcn)) tcn=[tcn];
 		var inname = tcn[new_connection.get("from::output::number")];
