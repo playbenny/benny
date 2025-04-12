@@ -1,6 +1,6 @@
 function click_clear(index,type){
 	if(usermouse.left_button) return 1;
-	//post("\nwiping click matrix");
+	post("\nwiping click matrix");
 	view_changed = true;
 	click_rectangle(0,0,mainwindow_width,mainwindow_height,index,type); // wipe click matrix
 }

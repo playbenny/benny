@@ -903,7 +903,6 @@ function screentoworld(x,y){
 }
 
 function select_block(parameter,value){
-	post("\nsel b",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
 		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
 		if((ui!="blank.ui")&&(ui!="self")){
@@ -4395,5 +4394,9 @@ function clear_pattern(p,v){
 }
 
 function pattern_click(b,p){
-	post("\nclicked ",b,p);
+	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
+	post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p/16);
+	request_set_block_parameter(b[0],param,p/16);
+	// redraw_flag.flag |= 4;
+	redraw_flag.deferred |= 4;
 }

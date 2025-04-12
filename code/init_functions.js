@@ -148,7 +148,6 @@ function initialise_dictionaries(hardware_file){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
 	// get config first because a lot of things depend on it.
-	load_config_colours(); //separate fn so it can be called by core.space block
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
 	click_b_s = config.get("click_buffer_scaledown");
@@ -202,6 +201,7 @@ function initialise_dictionaries(hardware_file){
 	sidebar.width = fontheight*sidebar.width_in_units;
 	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
 	sidebar.x = sidebar.x2 -sidebar.width;
+	load_config_colours(); //separate fn so it can be called by core.space block
 
 	SOUNDCARD_HAS_MATRIX = 0;
 

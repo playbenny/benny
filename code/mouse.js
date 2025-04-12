@@ -253,8 +253,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			if(id!=null) id = picker_hover_and_special(id);
 		}
 	}
-	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
 	if(usermouse.last.left_button!=usermouse.left_button){
+		// deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
 		// ##################################################
 		if(usermouse.left_button){	// CLICK
 			if((usermouse.got_i==0) && (usermouse.got_t==0)){	//nothing on the 2d layer, open it up for 3d clicks
