@@ -31,7 +31,14 @@
         "edit_channel_name" : {
             "-6" : ["del","edit_delete"],
             "-7" : ["delete","edit_delete"],
-            "-4" : ["enter" , "edited_channel_name"],
+            "-4" : ["enter" , "edited_channel_name", "ok"],
+            "-3" : ["ESC", "set_sidebar_mode","block"],
+            "all" : ["all","edit_typing_with_spaces"]
+        },
+        "edit_pattern_name" : {
+            "-6" : ["del","edit_delete"],
+            "-7" : ["delete","edit_delete"],
+            "-4" : ["enter" , "edit_pattern_name", "ok"],
             "-3" : ["ESC", "set_sidebar_mode","block"],
             "all" : ["all","edit_typing_with_spaces"]
         },

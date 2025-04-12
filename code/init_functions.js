@@ -870,6 +870,7 @@ function load_config_colours(){
 	redraw_flag.flag |= 4;
 	var c = config.get("palette::muted");
 	MUTEDWIRE = [c[0]/128,c[1]/128,c[2]/128,1];
+	calculate_states_colours();
 }
 
 function process_userconfig(){
@@ -1140,6 +1141,13 @@ function deferred_diagnostics(){
 		}
 		deferred_diag = [];
 		deferred_diag[0] = doo;
+	}
+}
+
+function calculate_states_colours(){
+	var cll = config.getsize("palette::gamut");
+	for(var i=0;i<MAX_STATES;i++){
+		statesbar.colours[i] = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
 	}
 }
 

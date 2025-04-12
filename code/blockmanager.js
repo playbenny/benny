@@ -135,7 +135,9 @@ var topbar = {
 var statesbar = {
 	lcd: null,
 	videoplane: null,
-	used_height:0
+	used_height:0,
+	colours : [],
+	y_pos : []
 }
 
 var statesfadebar = {
@@ -604,6 +606,7 @@ var patternpage = { // info to help draw pattern page fast
 					// 1 = pattern ?? (wave scan? etc) if a block has both it gets one of each.
 	usedstates : 0, //how many states are used
 	max_rows : 0, //maximum of usedstates and number of patterns. actually it will display more than that, as one column could be up and one down? maybe?
+	patternbeingnamed : -1, //just a place to hold the number of this to save 
 	direction : 1 //toptobottom
 }
 

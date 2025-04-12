@@ -1569,8 +1569,7 @@ function fire_whole_state_btn(state,value){
 		fire_whole_state(state);
 	}
 	if(state>-1){
-		var cll = config.getsize("palette::gamut");
-		state_fade.lastcolour = config.get("palette::gamut["+Math.floor(state*cll/MAX_STATES)+"]::colour");
+		state_fade.lastcolour = statesbar.colours[state];
 	}else{
 		state_fade.lastcolour = [0,0,0];
 	}
@@ -1753,8 +1752,7 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			if(parameter=="current"){
 				state_fade.lastcolour = [0,0,0];
 			}else{
-				var cll = config.getsize("palette::gamut");
-				state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
+				state_fade.lastcolour = statesbar.colours[parameter];
 			}
 			
 			set_sidebar_mode("block");
@@ -1836,6 +1834,18 @@ function scroll_waves(parameter,value){
 	}else{
 		waves.scroll_position = Math.min(Math.max(0,-value*5000),mainwindow_height*(MAX_WAVES+2)/6-0.01);
 		redraw_flag.flag |= 4;
+	}
+}
+
+function edit_pattern_name(parameter,value){
+	if(parameter == "ok"){
+		if(patternpage.patternbeingnamed[0]>-1){
+			if((sidebar.text_being_edited!="")){
+				blocks.replace("blocks["+patternpage.patternbeingnamed[0]+"]::patterns::names["+patternpage.patternbeingnamed[1]+"]",sidebar.text_being_edited);
+				set_sidebar_mode("block");
+				redraw_flag.flag |= 4;
+			}	
+		}		
 	}
 }
 
@@ -4372,10 +4382,18 @@ function automap_direct_to_core(knob,value){
 
 function rename_pattern(p,v){
 	post("\nrename pattern",p,v);
+	patternpage.patternbeingnamed = [p,v];
+	sidebar.text_being_edited = blocks.get("blocks["+p+"]::patterns::names["+v+"]");
+	set_sidebar_mode("edit_pattern_name");
 }
+
 function copy_pattern(p,v){
 	post("\ncopy pattern",p,v);
 }
 function clear_pattern(p,v){
 	post("\nclear pattern",p,v);
+}
+
+function pattern_click(b,p){
+	post("\nclicked ",b,p);
 }

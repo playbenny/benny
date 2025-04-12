@@ -108,6 +108,7 @@ function frameclock(){
 		if(displaymode=="waves") draw_waves();
 		draw_sidebar();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
+		if(displaymode=="patterns") draw_patterns();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
 		if(bottombar.block>-1){ setup_bottom_bar(); bangflag = 2; }
 		if(redraw_flag.flag & 8) block_and_wire_colours();
@@ -230,7 +231,7 @@ function frameclock(){
 		bangflag=1;
 	}else if(displaymode == "patterns"){
 		sidebar_meters();
-		//draw_patterns();
+		update_patterns();
 		bangflag=1;
 		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}
