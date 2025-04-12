@@ -228,6 +228,11 @@ function frameclock(){
 		sidebar_meters();
 		move_flock_blocks();
 		bangflag=1;
+	}else if(displaymode == "patterns"){
+		sidebar_meters();
+		//draw_patterns();
+		bangflag=1;
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}
 	if(bangflag==1) {
 		lcd_main.message("bang");

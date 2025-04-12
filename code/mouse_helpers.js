@@ -903,6 +903,7 @@ function screentoworld(x,y){
 }
 
 function select_block(parameter,value){
+	post("\nsel b",value);
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
 		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
 		if((ui!="blank.ui")&&(ui!="self")){

@@ -234,29 +234,47 @@ function get_hw_meter_positions(){
 function draw_patterns(){ //patterns page, in edit space or fullscreen. i think drawing it in the bottom bar will be different?
 	var pagebottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
 	if(patternpage.column_block.length==0) populate_pattern_page();
+	var pagew = (sidebar.mode=="none") ? mainwindow_width-27-1.1*fontheight : sidebar.x - 27 - 1.1*fontheight;
+	var rowh = (pagebottom - 18 - fontheight) / patternpage.max_rows;
 	var cols = patternpage.column_block.length;
 	if(cols>0){
-		var cw = (sidebar.x - 18 - fontheight)/cols;
+		var cw = pagew/cols;
 		var ob=-1;
+		var cll = config.getsize("palette::gamut");
+		var colx = 14+fontheight;
 		for(var c=0;c<cols;c++){
+			var y_o = 9+1.5*fontheight;
 			//draw labels
 			//TODO, if a merged song, also label which columns are from which song? or just the old ones?
 			var b = patternpage.column_block[c];
 			var co = blocks.get("blocks["+b+"]::space::colour");
+			lcd_main.message("paintrect",colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,shadeRGB(co,0.5));
+			click_zone(select_block,b,b,colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,mouse_index,1);
 			lcd_main.message("frgb",co);
 			if(b!=ob){
 				var bn = blocks.get("blocks["+b+"]::name");
 				var bl = bn;
 				if(blocks.contains("blocks["+b+"]::label")) bl = blocks.get("blocks["+b+"]::label");
-				lcd_main.message("moveto",9+fontheight+cw*c,9+1.5*fontheight);
+				lcd_main.message("moveto",2*fo1+colx,y_o + 0.4*fontheight);
 				lcd_main.message("write",blocks.get("blocks["+b+"]::name"));
 				ob = b;
 			}
 			if(patternpage.column_type[c]==0){//states
-				
+				for(var s=0;s<MAX_STATES;s++){
+					y_o+=rowh;
+					if(patternpage.block_statelist[b][s]==1){
+						lcd_main.message("framerect",colx,y_o,colx+cw-fo1,y_o+rowh-fo1,config.get("palette::gamut["+Math.floor(s*cll/MAX_STATES)+"]::colour"));
+					}
+				}
 			}else if(patternpage.column_type[c]==1){//patterns
-				
+				for(var p=0;p<patternpage.max_rows;p++){
+					y_o+=rowh;
+					lcd_main.message("framerect",colx,y_o,colx+cw-fo1,y_o+rowh-fo1,menudark);
+					lcd_main.message("moveto",colx+fo1*2,y_o+fo1*4);
+					lcd_main.message("write",(p+1)+": "+blocks.get("blocks["+b+"]::patterns::names["+p+"]"));
+				}
 			}
+			colx += cw;
 		}
 	}
 }
@@ -274,7 +292,7 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 			for(var state=0;state<MAX_STATES;state++){
 				if(states.contains("states::"+state+"::"+b)){
 					statecount++;
-					patternpage.block_statelist[b].push(state);
+					patternpage.block_statelist[b][state]=1;
 				}
 			}
 			if(statecount>0){
@@ -287,6 +305,7 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 			}
 		}
 	}
+	patternpage.max_rows = 1+Math.max(16,patternpage.usedstates); //eventually, max patterncount
 }
 
 
@@ -4530,7 +4549,6 @@ function draw_sidebar(){
 							var bvs = voicemap.get(block);
 							if(!Array.isArray(bvs)) bvs = [bvs];
 							var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[sv]+blocks.get("blocks["+block+"]::patterns::parameter"))); //TODO check actual number of patterns
-							post("\npatterns, pv",pv,"or",voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[sv]+blocks.get("blocks["+block+"]::patterns::parameter")),"from",block,block*MAX_PARAMETERS,"param",blocks.get("blocks["+block+"]::patterns::parameter"));
 							click_zone(rename_pattern,pv,block,sidebar.x,y_offset,sidebar.x2-fontheight*2.5,y_offset+fontheight*0.6,mouse_index,1);
 							click_zone(copy_pattern,pv,block,sidebar.x2-fontheight*2.5,y_offset,sidebar.x2-fontheight,y_offset+fontheight*0.6,mouse_index,1);
 							click_zone(clear_pattern,pv,block,sidebar.x2-fontheight,y_offset,sidebar.x2,y_offset+fontheight*0.6,mouse_index,1);

@@ -1178,6 +1178,14 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			}
 		}
 	}
+	if(blocktypes.contains(block_name+"::patterns")){
+		patternpage.enable = 1;
+		post("\nthis block has a pattern select control");
+		if(!blocks.contains("blocks["+block_index+"]::patterns::parameter")){
+			post("\ncopying in default pattern control info from legacy save");
+			blocks.replace("blocks["+block_index+"]::patterns",blocktypes.get(block_name+"::patterns"));
+		}
+	}
 	if(type=="audio"){ 
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);

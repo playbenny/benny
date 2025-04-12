@@ -142,9 +142,7 @@ function new_block(block_name,x,y){
 	}else{
 		blocks.replace("blocks["+new_block_index+"]::panel::enable",0);
 	}
-	post("\nchecking for patterns");
 	if(details.contains("patterns")){
-		post("FOUND");
 		patternpage.enable = 1;
 		blocks.replace("blocks["+new_block_index+"]::patterns",details.get("patterns"));
 	}

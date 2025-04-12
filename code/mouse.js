@@ -308,7 +308,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				usermouse.last.got_i = usermouse.got_i;
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
-				//post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
+				// post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
 				if(usermouse.got_t==1){
 					if((mouse_click_actions[usermouse.got_i]==send_button_message)||(mouse_click_actions[usermouse.got_i]==send_button_message_dropdown)){
 						var ov = parameter_value_buffer.peek(1,mouse_click_values[usermouse.last.got_i][2]);
