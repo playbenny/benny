@@ -4392,21 +4392,82 @@ function rename_pattern(p,v){
 	}
 }
 
-function copy_pattern(p,v){
-	post("\ncopy pattern",p,v);
+function copy_pattern(p,target){
+	post("\ncopy pattern",p,",",target);
 	sidebar.dropdown = null;
 	redraw_flag.flag |= 2;
 	patternpage.column_block = [];
+	if(blocks.contains("blocks["+p[0]+"]::patterns")){
+		var type = blocks.get("blocks["+p[0]+"]::patterns::pattern_storage");
+		// post("type",type);
+		if(type=="data"){
+			var x = blocks.get("blocks["+p[0]+"]::patterns::pattern_start");
+			var size = blocks.get("blocks["+p[0]+"]::patterns::pattern_size");
+			
+			// post("start",x,"size",size);
+			var bvs = voicemap.get(p[0]);
+			if(!Array.isArray(bvs)) bvs = [bvs];
+			// post("voices",bvs);
+			for(var v=0;v<bvs.length;v++){
+				var copydata = voice_data_buffer.peek(1, MAX_DATA*bvs[v]+x+size*p[1],size);
+				// post("\ncopydata from",MAX_DATA*bvs[v]+x+size*p[1],"length",copydata.length,"\n",copydata);
+				// post("\npoke target,",MAX_DATA*bvs[v]+x+size*target);
+				voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
+			}
+		}else if(type=="dict"){
+			post("\nTODO copying not implemented for this block");
+		}
+		var nam=blocks.get("blocks["+p[0]+"]::patterns::names["+p[1]+"]");
+		var ns = nam.slice(-1);
+		// post("\nnam",nam,"ns",ns);
+		if("0123456789".indexOf(ns)!=-1){
+			ns++;
+			nam = nam.slice(0,-1)+ns;
+		}else{
+			nam = nam + "2";
+		}
+		// post("now nam",nam);
+		
+		blocks.replace("blocks["+p[0]+"]::patterns::names["+target+"]",nam);
+
+		var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
+		request_set_block_parameter(p[0],param,target);
+		
+		redraw_flag.deferred |= 4;
+	}
 }
+
 function clear_pattern(p,v){
 	sidebar.dropdown = null;
 	if(v == danger_button){
 		post("\nclear pattern",p,v);
+		var target = p[1];
 		patternpage.column_block = [];
 		danger_button = -1;
+		if(blocks.contains("blocks["+p[0]+"]::patterns")){
+			var type = blocks.get("blocks["+p[0]+"]::patterns::pattern_storage");
+			// post("type",type);
+			if(type=="data"){
+				var x = blocks.get("blocks["+p[0]+"]::patterns::pattern_start");
+				var size = blocks.get("blocks["+p[0]+"]::patterns::pattern_size");
+				
+				// post("start",x,"size",size);
+				var bvs = voicemap.get(p[0]);
+				if(!Array.isArray(bvs)) bvs = [bvs];
+				// post("voices",bvs);
+				var copydata = [];
+				for(var v=0;v<size;v++)copydata.push(0);
+				for(var v=0;v<bvs.length;v++){
+					// post("\npoke target,",MAX_DATA*bvs[v]+x+size*target);
+					voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
+				}
+			}else if(type=="dict"){
+				post("\nTODO clearing not implemented for this block");
+			}
+		}
 	}else{
 		danger_button = v;
-		post("\ndanger",v,"(",p,")");
+		// post("\ndanger",v,"(",p,")");
 	}
 	redraw_flag.flag |= 2;
 }
@@ -4415,7 +4476,7 @@ function pattern_click(b,p){
 	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
 	// post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
 	if(!Array.isArray(b[1])) b[1] = [b[1]];
-	for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p+1);
+	for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
 	// request_set_block_parameter(b[0],param,p+1);
 	// redraw_flag.flag |= 4;
 	redraw_flag.deferred |= 4;
@@ -4423,11 +4484,14 @@ function pattern_click(b,p){
 
 function scroll_pattern(p,v){
 	// post("\nscroll pattern",p,",",v,"BUT",usermouse.left_button);
-	
-	var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
-	var d = (v > 0) ? 1 : -1;
-	
-	request_set_block_parameter(p[0],param,p[1]+d+1);
-	
-	redraw_flag.deferred |= 4;
+	if(usermouse.left_button){
+		redraw_flag.flag |= 4;
+	}else{
+		var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
+		var d = (v > 0) ? 1 : -1;
+		
+		request_set_block_parameter(p[0],param,p[1]+d);
+		
+		redraw_flag.deferred |= 4;
+	}
 }

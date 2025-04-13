@@ -1,3 +1,7 @@
+13/04/25:
+- pattern naming, nicer pattern selector for the sidebar, pattern copy/clear. for seq values/ 
+- new 'recall' page. shows a grid of all stored states (per block) and all available (for now this is just ones with names) patterns
+
 10/04/25:
 - comparator block
 - fixed a bug in the integrator saw used in the basic/dual oscs and voices that caused dc offset and reduced level for notes in higher octaves.
