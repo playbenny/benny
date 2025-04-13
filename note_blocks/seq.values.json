@@ -37,9 +37,9 @@
 				"height":0
 			},
 			{ 
-				"contains" : [7],
+				"header" : "pattern",
+				"contains" : [],
 				"colour" : -10,
-				"onepervoice" :1,
 				"height" : 0,
 				"patterncontrols" : 1
 			},

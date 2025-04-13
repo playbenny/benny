@@ -4380,23 +4380,54 @@ function automap_direct_to_core(knob,value){
 }
 
 function rename_pattern(p,v){
-	post("\nrename pattern",p,v);
-	patternpage.patternbeingnamed = [p,v];
-	sidebar.text_being_edited = blocks.get("blocks["+p+"]::patterns::names["+v+"]");
-	set_sidebar_mode("edit_pattern_name");
+	if(v=="name"){
+		patternpage.column_block = [];
+		post("\nrename pattern",p,v);
+		patternpage.patternbeingnamed = p;//[p,v];
+		sidebar.text_being_edited = blocks.get("blocks["+p[0]+"]::patterns::names["+p[1]+"]");
+		set_sidebar_mode("edit_pattern_name");
+	}else{
+		scroll_pattern(p,v);
+		// post("\nscroll pattern",p,",",v);
+	}
 }
 
 function copy_pattern(p,v){
 	post("\ncopy pattern",p,v);
+	sidebar.dropdown = null;
+	redraw_flag.flag |= 2;
+	patternpage.column_block = [];
 }
 function clear_pattern(p,v){
-	post("\nclear pattern",p,v);
+	sidebar.dropdown = null;
+	if(v == danger_button){
+		post("\nclear pattern",p,v);
+		patternpage.column_block = [];
+		danger_button = -1;
+	}else{
+		danger_button = v;
+		post("\ndanger",v,"(",p,")");
+	}
+	redraw_flag.flag |= 2;
 }
 
 function pattern_click(b,p){
 	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
-	post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p/16);
-	request_set_block_parameter(b[0],param,p/16);
+	post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
+	if(!Array.isArray(b[1])) b[1] = [b[1]];
+	for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p+1);
+	// request_set_block_parameter(b[0],param,p+1);
 	// redraw_flag.flag |= 4;
+	redraw_flag.deferred |= 4;
+}
+
+function scroll_pattern(p,v){
+	post("\nscroll pattern",p,",",v,"BUT",usermouse.left_button);
+	
+	var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
+	var d = (v > 0) ? 1 : -1;
+	
+	request_set_block_parameter(p[0],param,p[1]+d+1);
+	
 	redraw_flag.deferred |= 4;
 }

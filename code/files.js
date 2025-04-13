@@ -1500,6 +1500,7 @@ function select_recent_folder(name,blank){
 	preload_list = [];
 	currentsong = -1;
 	read_songs_folder("songs");
+	set_sidebar_mode("file_menu");
 }
 
 function add_path_to_recent_folders(folderstr){
