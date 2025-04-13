@@ -314,7 +314,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 					}
 					y_o = bot;
 					var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[v]+blocks.get("blocks["+b+"]::patterns::parameter")));
-					for(var p=Math.max(pv,patternpage.last_pattern[b]);p>=0;p--){
+					for(var p=1+Math.max(pv,patternpage.last_pattern[b]);p>=0;p--){
 						y_o-= fontheight*1.1;
 						var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
 						var shape = (usermouse.clicked2d == mouse_index)? "paintrect" : "framerect";
@@ -335,24 +335,33 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			}
 			//draw labels
 			//TODO, if a merged song, also label which columns are from which song? or just the old ones?
-			y_o = fontheight+18;
-			lcd_main.message("paintrect",colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,bco);
-			click_zone(select_block,b,b, colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,mouse_index,1);
+			
 			if(bot+fontheight*0.6<mainwindow_height){
 				lcd_main.message("paintrect",colx,bot,colx+cw-fo1,mainwindow_height-9,bco);
 				click_zone(select_block,b,b, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
+				y_o = bot + 0.4 * fontheight;
+			}else{
+				y_o = fontheight+18;
+				lcd_main.message("paintrect",colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,bco);
+				click_zone(select_block,b,b, colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,mouse_index,1);
+				y_o = 18.4 * fontheight;
 			}
 			if(b!=ob){
 				var bl = bn;
 				if(blocks.contains("blocks["+b+"]::label")) bl = blocks.get("blocks["+b+"]::label");
 				lcd_main.message("frgb",co);
-				lcd_main.message("moveto",2*fo1+colx,y_o + 0.4*fontheight);
-				lcd_main.message("write",bl);
-				ob = b;
-				if(bot+fontheight*0.6<mainwindow_height){
-					lcd_main.message("moveto",2*fo1+colx,bot + 0.4*fontheight);
-					lcd_main.message("write",bl);
+				var bl2 = bl.split(".");
+				var rx=11;
+				for(var r=0;r<bl2.length;r++){
+					rx+=1+bl2[r].length;
+					if(rx>10){
+						lcd_main.message("moveto",2*fo1+colx,y_o);
+						y_o+=fontheight*0.3;
+						rx=0;
+					}
+					lcd_main.message("write",bl2[r]);
 				}
+				ob = b;
 			}
 			colx += cw;
 		}
@@ -2530,7 +2539,7 @@ function draw_topbar(){
 				lcd_main.message("frgb", menucolour);
 			}
 			lcd_main.message("moveto", 9 + fontheight*(x_o+0.15), 9+fontheight*0.75);
-			lcd_main.message("write", "patterns");
+			lcd_main.message("write", "recall");
 			mouse_click_values[mouse_index] = "";
 			mouse_index++;
 			x_o+=1.6;
@@ -2567,13 +2576,13 @@ function draw_topbar(){
 			mouse_click_parameters[mouse_index] = "previous";
 			mouse_click_values[mouse_index] = 0;
 			mouse_index++;
-			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.4), 9+fontheight,menudarkest );
+			lcd_main.message("paintrect", 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.7), 9+fontheight,menudarkest );
 			lcd_main.message("frgb", menucolour);		
 			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.5);
 			lcd_main.message("write", "select");
 			lcd_main.message("moveto", 9 + fontheight*(x_o+0.2), 9+fontheight*0.75);
 			lcd_main.message("write", "previous");
-			x_o+=1.6;
+			x_o+=1.8;
 			click_rectangle( 9 + fontheight*x_o, 9, 9+fontheight*(x_o+1.6), 9+fontheight,mouse_index,1 );
 			mouse_click_actions[mouse_index] = song_select_button;
 			mouse_click_parameters[mouse_index] = "current";
@@ -2712,6 +2721,7 @@ function draw_topbar(){
 					statesfadebar.videoplane.message("enable",0);
 				}
 			}
+			if(patternpage.usedstates>0)patternpage.enable=1;
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful

@@ -31,7 +31,14 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [ 0, 1, 2, 3, 4],
+				"header" : "pattern",
+				"contains" : [],
+				"colour" : -10,
+				"height" : 0,
+				"patterncontrols" : 1
+			},
+			{ 
+				"contains" : [ 1, 2, 3, 4],
 				"colour" : 0
 			},
 			{
@@ -40,6 +47,11 @@
 				"colour" : -10
 			}
 		],
+		"patterns" : {
+			"parameter" : 0,
+			"pattern_storage" : "dict",
+			"playhead_offset" : 0 
+		},
 		"parameters" : [
 			{
 				"name" : "pattern",

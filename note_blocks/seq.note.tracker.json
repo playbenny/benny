@@ -27,8 +27,15 @@
 				"contains" : [ 0, 1, 2, 4],
 				"colour" : 0
 			},
+			{ 
+				"header" : "pattern",
+				"contains" : [],
+				"colour" : -10,
+				"height" : 0,
+				"patterncontrols" : 1
+			},
 			{
-				"contains" : [9,9,9,3,3,5,12,12],
+				"contains" : [3,3,5,12,12],
 				"height" : 0,
 				"colour" : -10
 			},
@@ -45,6 +52,11 @@
 				"height" : 0
 			}
 		],
+		"patterns" : {
+			"parameter" : 9,
+			"pattern_storage" : "data",
+			"playhead_offset" : 0 
+		},
 		"voice_data" : {},
 		"parameters" : [
 			{

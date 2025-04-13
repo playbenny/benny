@@ -4413,7 +4413,7 @@ function clear_pattern(p,v){
 
 function pattern_click(b,p){
 	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
-	post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
+	// post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
 	if(!Array.isArray(b[1])) b[1] = [b[1]];
 	for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p+1);
 	// request_set_block_parameter(b[0],param,p+1);
@@ -4422,7 +4422,7 @@ function pattern_click(b,p){
 }
 
 function scroll_pattern(p,v){
-	post("\nscroll pattern",p,",",v,"BUT",usermouse.left_button);
+	// post("\nscroll pattern",p,",",v,"BUT",usermouse.left_button);
 	
 	var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
 	var d = (v > 0) ? 1 : -1;
