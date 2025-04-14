@@ -265,7 +265,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			}
 		}
 		if(bot==-1){
-			bot = mainwindow_height-9;
+			bot = mainwindow_height-9-fontheight*1.1;
 		}else{
 			bot += fontheight* 1.1;	
 		}
