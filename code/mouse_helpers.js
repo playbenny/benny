@@ -4535,8 +4535,13 @@ function scroll_pattern(p,v){
 	}else{
 		var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
 		var d = (v > 0) ? 1 : -1;
-		
-		request_set_block_parameter(p[0],param,p[1]+d);
+		post("\nrequest:",p[1]+d);
+		var bvs=voicemap.get(p[0]);
+		if(!Array.isArray(bvs))bvs = [bvs];
+		for(var i=0;i<bvs.length;i++){
+			request_set_voice_parameter(p[0],bvs[i],param,p[1]+d);
+		}
+		// request_set_block_parameter(p[0],param,p[1]+d);
 		
 		redraw_flag.deferred |= 4;
 	}

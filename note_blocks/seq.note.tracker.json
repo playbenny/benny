@@ -28,10 +28,7 @@
 				"colour" : 0
 			},
 			{ 
-				"header" : "pattern",
 				"contains" : [],
-				"colour" : -10,
-				"height" : 0,
 				"patterncontrols" : 1
 			},
 			{
@@ -55,7 +52,9 @@
 		"patterns" : {
 			"parameter" : 9,
 			"pattern_storage" : "data",
-			"playhead_offset" : 0 
+			"playhead_offset" : 0,
+			"pattern_size" : 1020,
+			"pattern_start" : 1
 		},
 		"voice_data" : {},
 		"parameters" : [

@@ -24,27 +24,24 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [ 0, 1, 2, 4],
-				"colour" : 0
+				"contains" : [],
+				"patterncontrols" : 1
 			},
 			{ 
-				"header" : "pattern",
-				"contains" : [],
-				"colour" : -10,
-				"height" : 0,
-				"patterncontrols" : 1
+				"contains" : [ 0, 1, 2, 4],
+				"colour" : 0
 			},
 			{
 				"contains" : [3,12],
 				"height" : 0,
-				"colour" : -10
+				"colour" : -5
 			},
 			{
 				"contains" : [13],
 				"height" : 0.6,
 				"header" : "reset playhead on pattern change",
 				"nolabel" : 1,
-				"colour" : -15
+				"colour" : 0
 			},
 			{
 				"contains" : [6,7,8],
@@ -53,7 +50,7 @@
 			},
 			{
 				"contains" : [11,10,10,5],
-				"colour" : -30,
+				"colour" : -10,
 				"height" : 1,
 				"header" : "note entry defaults"
 			}
@@ -61,7 +58,9 @@
 		"patterns" : {
 			"parameter" : 9,
 			"pattern_storage" : "data",
-			"playhead_offset" : 0 
+			"playhead_offset" : 0,
+			"pattern_size" : 1020,
+			"pattern_start" : 1
 		},
 		"voice_data" : {},
 		"parameters" : [

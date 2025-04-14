@@ -31,10 +31,7 @@
 		},
 		"groups" : [
 			{ 
-				"header" : "pattern",
 				"contains" : [],
-				"colour" : -10,
-				"height" : 0,
 				"patterncontrols" : 1
 			},
 			{ 
@@ -50,7 +47,7 @@
 		"patterns" : {
 			"parameter" : 0,
 			"pattern_storage" : "dict",
-			"playhead_offset" : 0 
+			"playhead_offset" : 0
 		},
 		"parameters" : [
 			{

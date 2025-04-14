@@ -24,23 +24,20 @@
 		},
 		"groups" : [
 			{ 
+				"contains" : [],
+				"patterncontrols" : 1
+			},
+			{ 
 				"contains" : [0,1,2,4],
 				"colour" : 0
 			},
-			{ 
-				"header" : "pattern",
-				"contains" : [],
-				"colour" : -10,
-				"height" : 0,
-				"patterncontrols" : 1
+			{
+				"contains" : [6,7,13,14]
 			},
 			{
 				"contains" : [3,5,12],
 				"height" : 0,
 				"colour" : -10
-			},
-			{
-				"contains" : [6,7,13,14]
 			},
 			{
 				"contains" : [8,9,10],
@@ -51,7 +48,9 @@
 		"patterns" : {
 			"parameter" : 11,
 			"pattern_storage" : "data",
-			"playhead_offset" : 0 
+			"playhead_offset" : 0,
+			"pattern_size" : 768,
+			"pattern_start" : 1
 		},
 		"voice_data" : {},
 		"parameters" : [
