@@ -2385,7 +2385,6 @@ function draw_topbar(){
 		}else{
 			lcd_main.message("frgb" , menucolour);			
 		}
-		lcd_main.message("frgb" , menucolour[0]*0.2,menucolour[1]*1.1,menucolour[2]*0.3);			
 		lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
 	}	
 	if(view_changed===true){
