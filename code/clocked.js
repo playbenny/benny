@@ -764,7 +764,7 @@ function waves_playhead(voice, block, enable){
 }
 
 function queue_quantised_notification(func,arg1,arg2){
-	post("\nqueued event",func.name,arg1,arg2);
+	// post("\nqueued event",func.name,arg1,arg2);
 	quantised_event_list.push([func,arg1,arg2]);
 	messnamed("request_quantised_notification",pattern_recall_timing_quantise);
 }
@@ -775,5 +775,5 @@ function quantised_notification(){
 		f = e[0];
 		f(e[1],e[2]);
     }
-	post("\nfired quantised event");
+	// post("\nfired quantised event");
 }

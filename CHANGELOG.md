@@ -1,6 +1,7 @@
 13/04/25:
 - pattern naming, nicer pattern selector for the sidebar, pattern copy/clear. implemented for: seq values/(more next) 
 - new 'recall' page. shows a grid of all stored states (per block) and all available (for now this is just ones with names) patterns
+- hold shift when clicking a state button (in the left sidebar or on the recall page), or a pattern (on the recall page) to quantise firing it to the next bar. if shift is still held when the bar comes around it waits for the next one, etc.
 
 10/04/25:
 - comparator block
