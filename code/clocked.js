@@ -770,10 +770,14 @@ function queue_quantised_notification(func,arg1,arg2){
 }
 
 function quantised_notification(){
-	while(quantised_event_list.length>0){
-		var e = quantised_event_list.pop();
-		f = e[0];
-		f(e[1],e[2]);
-    }
+	if(usermouse.shift){
+		messnamed("request_quantised_notification",pattern_recall_timing_quantise);
+	}else{
+		while(quantised_event_list.length>0){
+			var e = quantised_event_list.pop();
+			f = e[0];
+			f(e[1],e[2]);
+		}
+	}
 	// post("\nfired quantised event");
 }
