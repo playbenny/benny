@@ -66,7 +66,7 @@ function fulldraw(){
 	var i,c,r,ph;
 	cw = (width)/(maxl - 0.1);
 	i = Math.max(2 - mini,v_list.length);
-	rh = height / i;
+	rh = height / (i-0.1);
 	sx = 0;
 	for(r=0;r<v_list.length;r++){
 		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		

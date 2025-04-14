@@ -44,7 +44,7 @@ function setup(x1,y1,x2,y2,sw){
 function draw(){
 	headpos = 0;
 	ohp = 0;
-	outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,menudarkest);
+	outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,0,0,0);//menudarkest);
 }
 function times(value,voice){
 	if(headpos>63) draw();

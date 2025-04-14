@@ -234,6 +234,7 @@ function parameter_menu_l(p){
 			vc = valcol[bl];
 		}
 		if(bl==pv2){
+			vc = [0.7*vc[0], 0.7*vc[1], 0.7*vc[2]];
 		}else{
 			vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
 		}
@@ -287,10 +288,7 @@ function parameter_menu_d(p){
 		}else{
 			vc = valcol[bl];
 		}
-		if(bl==pv2){
-		}else{
-			vc = [0.3*vc[0], 0.3*vc[1], 0.3*vc[2]];
-		}
+		vc = [0.5*vc[0], 0.5*vc[1], 0.5*vc[2]];
 		draw_button(paramslider_details[p][0]+bx*bw,paramslider_details[p][1]+by*ys,paramslider_details[p][0]+((bx+1)*bw)-fo1,paramslider_details[p][1]+(by+1)*ys-fo1,vc[0],vc[1],vc[2],mi, paramslider_details[p][17][bl],0);
 		mouse_click_actions[mi] = open_dropdown;
 		mouse_click_parameters[mi] = "param."+p;
@@ -1172,6 +1170,27 @@ function request_voice_colour(block,voiceno,r,g,b){
 	if(!Array.isArray(blocks_per_voice_colour_overrides[block])) blocks_per_voice_colour_overrides[block] = [];
 	blocks_per_voice_colour_overrides[block][voiceno] = colour;
 	redraw_flag.flag |= 8;
+}
+
+function wrap_dot_text(text,width_in_px){ // returns line wrapped array with spaces when concattenating two words into one line
+	var thresh = 6 * width_in_px / fontheight;
+	var bl2 = text.split(".");
+	var rx=1;
+	var out = [];
+	var temp = "";
+	for(var r=0;r<bl2.length;r++){
+		rx+=1+bl2[r].length;
+		// var rx2 = rx;
+		//if(r+1<bl2.length) rx2 += bl2[r+1].length;
+		if(rx>=thresh){
+			if(temp!="") out.push(temp);
+			temp = "";
+			rx=0;
+		}
+		temp = temp + bl2[r]+" ";
+	}
+	if(temp!="") out.push(temp);
+	return out;
 }
 
 function request_redraw(n){

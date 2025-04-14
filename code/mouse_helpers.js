@@ -218,6 +218,7 @@ function blocks_paste(outside_connections,target){
 						if(v2[pc]!=vals[pc]) same = 0;
 					}
 					// i can't be bothered to compare settings who is ever going to do that
+					// WHAT ABOUT DATA THO
 				}
 			}
 			if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
@@ -264,6 +265,13 @@ function blocks_paste(outside_connections,target){
 						tkeys = tdd.getkeys();
 						for(var t=0;t<tkeys.length;t++){
 							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						if(td.contains(copied_blocks[0]+"::patterns")){
+							tdd = td.get(copied_blocks[0]+"::patterns");
+							tkeys = tdd.getkeys();
+							for(var t=0;t<tkeys.length;t++){
+								blocks.replace("blocks["+i+"]::patterns::"+tkeys[t],tdd.get(tkeys[t]));
+							}
 						}
 						if(target.contains("block_data::"+copied_blocks[0])){
 							var vl = voicemap.get(i);
@@ -361,6 +369,13 @@ function blocks_paste(outside_connections,target){
 						tkeys = tdd.getkeys();
 						for(var t=0;t<tkeys.length;t++){
 							blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						if(td.contains(copied_blocks[0]+"::patterns")){
+							tdd = td.get(copied_blocks[0]+"::patterns");
+							tkeys = tdd.getkeys();
+							for(var t=0;t<tkeys.length;t++){
+								blocks.replace("blocks["+new_block_index+"]::patterns::"+tkeys[t],tdd.get(tkeys[t]));
+							}
 						}
 						var vl = voicemap.get(new_block_index);
 						if(!Array.isArray(vl)) vl=[vl];
@@ -508,6 +523,9 @@ function copy_block(block,target){
 	target.setparse("blocks::"+block,"{}");
 	target.replace("blocks::"+block,tb);
 	target.setparse("block_params::"+block,"{}");
+	if(tb.contains("patterns")){
+		target.setparse("patterns::"+tb.get("patterns"));
+	}
 	var name=tb.get("name");
 	var paramcount = blocktypes.getsize(name+"::parameters");
 	var vals = parameter_value_buffer.peek(1, block*MAX_PARAMETERS, paramcount);
