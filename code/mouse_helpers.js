@@ -920,6 +920,14 @@ function screentoworld(x,y){
 	return [x,y,0];//real;
 }
 
+function click_patterns_column_header(parameter,value){
+	if(usermouse.ctrl){
+		mute_particular_block(parameter,-1);
+	}else{
+		select_block(parameter,value);
+	}
+}
+
 function select_block(parameter,value){
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
 		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
@@ -1461,27 +1469,31 @@ function delete_state(state,block){
 function fire_block_state(state, block){
 	if(usermouse.ctrl && (state!=-1)){
 		sidebar.selected = state;
-		set_sidebar_mode("edit_stete");
+		set_sidebar_mode("edit_state");
 	}else{
-		var pv=[];
-		if(state==-1) state = "current";
-		pv = states.get("states::"+state+"::"+block);
-		var m=0;
-		if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
-		mute_particular_block(block,pv[0]);
-		for(var i=1;i<pv.length;i++){
-			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
-		}
-		if(states.contains("states::"+state+"::static_mod::"+block)){
-			var td = states.get("states::"+state+"::static_mod::"+block);
-			var tk = td.getkeys();
-			var vl = voicemap.get(block);
-			if(!Array.isArray(vl)) vl = [vl];
-			for(var i=0;i<tk.length;i++){
-				parameter_static_mod.poke(1,MAX_PARAMETERS*vl[+tk[i]],states.get("states::"+state+"::static_mod::"+block+"::"+tk[i]));
+		if(usermouse.shift){
+			queue_quantised_notification(fire_block_state,state,block);
+		}else{
+			var pv=[];
+			if(state==-1) state = "current";
+			pv = states.get("states::"+state+"::"+block);
+			var m=0;
+			if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
+			mute_particular_block(block,pv[0]);
+			for(var i=1;i<pv.length;i++){
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
 			}
+			if(states.contains("states::"+state+"::static_mod::"+block)){
+				var td = states.get("states::"+state+"::static_mod::"+block);
+				var tk = td.getkeys();
+				var vl = voicemap.get(block);
+				if(!Array.isArray(vl)) vl = [vl];
+				for(var i=0;i<tk.length;i++){
+					parameter_static_mod.poke(1,MAX_PARAMETERS*vl[+tk[i]],states.get("states::"+state+"::static_mod::"+block+"::"+tk[i]));
+				}
+			}
+			if(m!=pv[0]) redraw_flag.flag |= 8;
 		}
-		if(m!=pv[0]) redraw_flag.flag |= 8;
 	}
 }
 
@@ -4494,7 +4506,11 @@ function pattern_click(b,p){
 	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
 	// post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
 	if(!Array.isArray(b[1])) b[1] = [b[1]];
-	for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
+	if(usermouse.shift){
+		queue_quantised_notification(pattern_click, b,p);
+	}else{
+		for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
+	}
 	// request_set_block_parameter(b[0],param,p+1);
 	// redraw_flag.flag |= 4;
 	redraw_flag.deferred |= 4;

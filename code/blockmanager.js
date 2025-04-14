@@ -56,6 +56,10 @@ var waves_preloading = 1;
 var MUTEDWIRE = [0.16,0.16,0.14, 1];
 var SOUNDCARD_HAS_MATRIX = 0;
 var EXTERNAL_MATRIX_PRESENT = 0;
+var pattern_recall_timing_quantise = "1n";
+
+var quantised_event_list = [];
+
 
 var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);

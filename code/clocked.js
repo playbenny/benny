@@ -104,7 +104,7 @@ function frameclock(){
 		bangflag=1;
 		clear_screens();
 		draw_topbar();
-		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")||(displaymode=="waves"))) draw_clock();
+		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")||(displaymode=="waves")||(displaymode=="patterns"))) draw_clock();
 		if(displaymode=="waves") draw_waves();
 		draw_sidebar();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
@@ -233,6 +233,7 @@ function frameclock(){
 		sidebar_meters();
 		update_patterns();
 		bangflag=1;
+		if(sidebar.panel&&!(redraw_flag.flag&6)) update_custom();
 		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}
 	if(bangflag==1) {
@@ -760,4 +761,19 @@ function waves_playhead(voice, block, enable){
 			waves.v_label[voice] = null;
 		}
 	}
+}
+
+function queue_quantised_notification(func,arg1,arg2){
+	post("\nqueued event",func.name,arg1,arg2);
+	quantised_event_list.push([func,arg1,arg2]);
+	messnamed("request_quantised_notification",pattern_recall_timing_quantise);
+}
+
+function quantised_notification(){
+	while(quantised_event_list.length>0){
+		var e = quantised_event_list.pop();
+		f = e[0];
+		f(e[1],e[2]);
+    }
+	post("\nfired quantised event");
 }

@@ -349,12 +349,12 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			
 			if(bot+fontheight*0.6<mainwindow_height){
 				lcd_main.message("paintrect",colx,bot,colx+cw-fo1,mainwindow_height-9,bco);
-				click_zone(select_block,b,b, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
+				click_zone(click_patterns_column_header,b,b, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
 				y_o = bot + 0.4 * fontheight;
 			}else{
 				y_o = fontheight+18;
 				lcd_main.message("paintrect",colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,bco);
-				click_zone(select_block,b,b, colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,mouse_index,1);
+				click_zone(click_patterns_column_header,b,b, colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,mouse_index,1);
 				y_o = 18.4 * fontheight;
 			}
 			if(b!=ob){
