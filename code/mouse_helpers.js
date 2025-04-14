@@ -62,14 +62,26 @@ function stop_ext_clocks(){
 
 function link_available(){
 	ext_sync.link_available = 1;
+	var g = blocktypes.get("core.clock::groups[5]::contains");
+	if(g.length<4){
+		g.push(15);
+		blocktypes.replace("core.clock::groups[5]::contains",g);
+	}
 	if(sidebar.mode=="midi_indicators") redraw_flag.flag |= 2;
 }
 function toggle_ableton_link(){
-	ext_sync.link_enabled = 1 - ext_sync.link_enabled;
+	set_ableton_link_enable(1 - ext_sync.link_enabled);
+}
+function set_ableton_link_enable(l){
+	ext_sync.link_enabled = l;
 	messnamed("link_enable",ext_sync.link_enabled);
 	redraw_flag.flag |= 2;
 }
-
+function clock_link_button(){
+	set_ableton_link_enable(1);
+	clear_blocks_selection();
+	set_sidebar_mode("midi_indicators");
+}
 function resync_button(){
 	messnamed("resync","bang");
 }

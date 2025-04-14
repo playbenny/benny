@@ -2357,9 +2357,15 @@ function draw_topbar(){
 	if(usermouse.clicked2d == mouse_index){
 		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menucolour);
 	}else if(!(still_checking_polys&3)){
-		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menudarkest);
+		if(ext_sync.link_enabled){
+			lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menudarkest[0]*0.4,menudarkest[1]*0.9,menudarkest[2]*0.4);
+		}else if(ext_sync.active){
+			lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menudarkest[0]*1.4,menudarkest[1]*0.8,menudarkest[2]*0.7);
+		}else{
+			lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, menudarkest);
+		}
 	}else{
-		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, 64,64,64);
+		lcd_main.message("paintrect", 9, 9, 9 + fontheight, 9+fontheight, 48,48,48);
 	}
 	if(!playing){
 		if(!ext_sync.waiting){
@@ -2372,7 +2378,14 @@ function draw_topbar(){
 			lcd_main.message("framepoly",9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
 		}
 	}else{
-		lcd_main.message("frgb" , menucolour);			
+		if(ext_sync.link_enabled){
+			lcd_main.message("frgb" , menucolour[0]*0.2,menucolour[1]*1.1,menucolour[2]*0.3);			
+		}else if(ext_sync.active){
+			lcd_main.message("frgb" , menucolour[0]*1.5,menucolour[1]*0.8,menucolour[2]*0.8);			
+		}else{
+			lcd_main.message("frgb" , menucolour);			
+		}
+		lcd_main.message("frgb" , menucolour[0]*0.2,menucolour[1]*1.1,menucolour[2]*0.3);			
 		lcd_main.message("paintpoly", 9 + fontheight*0.2, 9+ fontheight*0.2, 9 + fontheight*0.8, 9+fontheight/2, 9 + fontheight*0.2, fontheight*0.8+9, 9 + fontheight*0.2, 9+ fontheight*0.2);
 	}	
 	if(view_changed===true){
@@ -7993,18 +8006,18 @@ function draw_sidebar(){
 			}
 			if(ext_sync.link_available){
 				y_offset += fontheight*2.2;
-				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest );
+				lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menudarkest[0]*0.8,menudarkest[1]*1.8,menudarkest[2]*0.8 );
 				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
-				lcd_main.message("frgb", menucolour);
+				lcd_main.message("frgb", menucolour[0]*0.8,menucolour[1]*1.8,menucolour[2]*0.8);
 				lcd_main.message("font",mainfont,fontsmall*2);
 				lcd_main.message("write", "ableton link");
 				y_offset += fontheight*1.1;
 				lcd_main.message("moveto",sidebar.x+fontheight*0.2,fontheight*0.75+y_offset);
 				if(ext_sync.link_enabled==0){
-					lcd_main.message("frgb",menudarkest);
+					lcd_main.message("frgb",menudarkest[0]*0.8,menudarkest[1]*1.8,menudarkest[2]*0.8);
 					lcd_main.message("write","disabled");
 				}else{
-					lcd_main.message("frgb",menucolour);
+					lcd_main.message("frgb",menucolour[0]*0.8,menucolour[1]*1.8,menucolour[2]*0.8);
 					lcd_main.message("write","enabled");
 				}
 				click_zone(toggle_ableton_link,null,null, sidebar.x, y_offset, sidebar.x + fontheight*4, fontheight+y_offset,mouse_index,1);

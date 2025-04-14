@@ -1332,7 +1332,7 @@ function prep_midi_indicators(){
 		this.patcher.connect(m_lim,0,m_m,0);
 		midi_indicators.status[i]=0;
 	}
-	if(ext_sync.active)midi_indicators.status.push(0);
+	if(ext_sync.active||ext_sync.link_enabled)midi_indicators.status.push(0);
 }
 
 function import_presets(){

@@ -181,6 +181,12 @@
 				"wrap" : 0,
 				"default" : 0.5,
 				"nopervoice" : 1
+			},
+			{
+				"name" : "ableton link_enable",
+				"type" : "button",
+				"values" : ["core", "enable_ableton_link", "clock_link_button"],
+				"nopervoice" : 1
 			}
 		]
 	}
