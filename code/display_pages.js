@@ -382,7 +382,6 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 	patternpage.last_pattern = []; //perblock
 	for(var b=0;b<MAX_BLOCKS;b++){
 		if(blocks.contains("blocks["+b+"]::name")){
-			var bnam = blocks.get("blocks["+b+"]::name");
 			statecount = 0;
 			patternpage.block_statelist[b] = [];
 			for(var state=0;state<MAX_STATES;state++){
@@ -395,6 +394,11 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 				patternpage.column_block.push(b);
 				patternpage.column_type.push(0);
 			} 
+		}
+	}
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::name")){
+			var bnam = blocks.get("blocks["+b+"]::name");
 			if(blocktypes.contains(bnam+"::patterns")){
 				patternpage.column_block.push(b);
 				patternpage.column_type.push(1);
