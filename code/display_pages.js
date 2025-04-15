@@ -46,7 +46,11 @@ function set_display_mode(mode,t){
 		}else if(mode=="waves"){
 			draw_wave= [];
 		}else if(mode=="patterns"){
-			populate_pattern_page();
+			if(patternpage.enable){
+				populate_pattern_page();
+			}else{
+				mode==blocks;
+			}
 		}
 		displaymode=mode;
 		if(mode == "block_menu"){
@@ -383,8 +387,9 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			//draw labels
 			//TODO, if a merged song, also label which columns are from which song? or just the old ones?
 			
+			if(patternpage.held_pattern_fires[b] == -1) bco = [20,20,20];
 			lcd_main.message("paintrect",colx,bot,colx+cw-fo1,mainwindow_height-9,selected.block[b]? co:bco);
-			click_zone(click_patterns_column_header,b,b, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
+			click_zone(click_patterns_column_header,b,c, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
 			y_o = bot + 0.4 * fontheight;
 			if(b!=ob){
 				var bl = bn;
@@ -2716,7 +2721,11 @@ function draw_topbar(){
 						// lcd_main.message("moveto",9+fo1*7,mainwindow_height-5-fo1*5);
 						// lcd_main.message("lineto",9+fo1*8,mainwindow_height-5-fo1*4);
 						// lcd_main.message("lineto",9+fo1*7,mainwindow_height-5-fo1*3);
-						click_zone(setup_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
+						if(displaymode == "patterns"){
+							click_zone(select_block,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
+						}else{
+							click_zone(setup_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
+						}
 					}
 				}
 			}

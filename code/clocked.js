@@ -209,7 +209,6 @@ function frameclock(){
 		bangflag=1;
 		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}else if(displaymode == "custom"){
-		bangflag=1;
 		if(redraw_flag.flag>1){
 			draw_custom();
 		}else{
@@ -217,6 +216,7 @@ function frameclock(){
 			if((bottombar.block>-1)&&!(redraw_flag.flag&6)){update_bottom_bar(); }//bangflag=2; }
 		}
 		sidebar_meters();
+		bangflag=1;
 	}else if(displaymode == "custom_fullscreen"){
 		if(redraw_flag.flag>1){
 			draw_custom();

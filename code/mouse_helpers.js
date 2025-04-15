@@ -92,6 +92,7 @@ function panic_button(){
 	sigouts.message("setvalue", 0,0); //clears midi-audio sig~
 	//for(var i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
+
 function count_selected_blocks_and_wires(){
 	selected.block_count =0;
 	selected.wire_count = 0;
@@ -934,9 +935,18 @@ function screentoworld(x,y){
 
 function click_patterns_column_header(parameter,value){
 	if(usermouse.ctrl){
-		mute_particular_block(parameter,-1);
+		if(usermouse.shift){
+			queue_quantised_notification(mute_particular_block, parameter,-1);
+			if(patternpage.column_type[value]==1){
+				patternpage.held_pattern_fires[parameter] = -1;
+			}else{
+				patternpage.held_state_fires[parameter] = -1;
+			}
+		}else{
+			mute_particular_block(parameter,-1);
+		}
 	}else{
-		select_block(parameter,value);
+		select_block(parameter,parameter);
 	}
 }
 
@@ -2699,6 +2709,8 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 }
 
 function mute_particular_block(block,av){ // i=block, av=value, av=-1 means toggle
+	patternpage.held_pattern_fires[block]=null;
+	patternpage.held_state_fires[block]=null;
 	if(block == "static_mod"){
 		post("\n\n\nERROR mute was passed : ",block);
 		return -1; 
@@ -4540,7 +4552,7 @@ function pattern_click(b,p){
 		queue_quantised_notification(pattern_click, b,p);
 		patternpage.held_pattern_fires[b[0]] = p;
 	}else{
-		patternpage.held_pattern_fires[b[0]] = -1;
+		patternpage.held_pattern_fires[b[0]] = null;
 		for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
 	}
 	// request_set_block_parameter(b[0],param,p+1);
