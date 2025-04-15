@@ -4433,7 +4433,18 @@ function rename_pattern(p,v){
 		// post("\nscroll pattern",p,",",v);
 	}
 }
-
+function copy_pattern_dict(p,target){
+	//at the moment the only dict based storage is piano roll, and it's per-block only. 
+	// TODO if i want to store per-voice dicts i'll need to add a key to select between
+	var key = blocks.get("blocks["+p[0]+"]::patterns::dict_key");
+	if(blocks.get("blocks["+p[0]+"]::patterns::dict_mode")=="block"){
+		var copydata = blocks.get("blocks["+p[0]+"]::"+key+"::"+p[1]);
+		post("\nblock mode copy");
+		blocks.replace("blocks["+p[0]+"]::"+key+"::"+target,copydata);
+	}else{
+		error("voice mode copy not implemented");
+	}
+}
 function copy_pattern(p,target){
 	post("\ncopy pattern",p,",",target);
 	sidebar.dropdown = null;
@@ -4457,7 +4468,8 @@ function copy_pattern(p,target){
 				voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
 			}
 		}else if(type=="dict"){
-			post("\nTODO copying not implemented for this block");
+			ui_poly.message("setvalue",(1+p[0]),"copy_pattern",p[1],target);
+			post("\nrequested the block copy its pattern itself");
 		}
 		var nam=blocks.get("blocks["+p[0]+"]::patterns::names["+p[1]+"]");
 		var ns = nam.slice(-1);

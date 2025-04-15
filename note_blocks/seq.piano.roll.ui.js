@@ -924,7 +924,12 @@ function loadbang(){
 	outlet(0,"getvoice");
 }
 
-
+function copy_pattern(source,target){
+	var sk = seqdict.get(block+"::"+source);
+	seqdict.replace(block+"::"+target, sk);
+	post("\ncopy done, now storing to dict");
+	store();
+}
 function store(){
 	if(block>=0){
 		var sk = seqdict.get(block);
