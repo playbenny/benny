@@ -239,27 +239,27 @@ function update_patterns(){
 			if(patternpage.column_type[c]==1){//patterns
 				var b = patternpage.column_block[c];
 				if(patternpage.cursor_index[b]!=null){
-					
-					for(var v = 0;v<patternpage.cursor_index[b].length;v++){
-						curs = voice_data_buffer.peek(1,patternpage.cursor_index[b][v]);
-						if(curs!=patternpage.cursor_last[b][v]){
-							patternpage.cursor_last[b][v] = curs;
-							var mute = blocks.get("blocks["+b+"]::mute");
-							var co = blocks.get("blocks["+b+"]::space::colour");
-							var bco = shadeRGB(co,0.5);
-							if(mute==1){
-								var co = [10,10,10];
-								bco = shadeRGB(bco,0.2);
-								bco = [bco[0]+20,bco[1]+20,bco[2]+20];
+					var mute = blocks.get("blocks["+b+"]::mute");
+					if(mute==1){
+						lcd_main.message("frgb",20,20,20);
+						lcd_main.message("moveto",patternpage.column_ends_x[b][0],mainwindow_height-3);	
+						lcd_main.message("lineto",patternpage.column_ends_x[b][patternpage.column_ends_x[b].length],mainwindow_height-3);
+					}else{
+						var co = blocks.get("blocks["+b+"]::space::colour");
+						var bco = shadeRGB(co,0.5);
+						for(var v = 0;v<patternpage.cursor_index[b].length;v++){
+							curs = voice_data_buffer.peek(1,patternpage.cursor_index[b][v]);
+							if(curs!=patternpage.cursor_last[b][v]){
+								patternpage.cursor_last[b][v] = curs;
+								lcd_main.message("frgb",co);
+								var x1=patternpage.column_ends_x[b][v];
+								var x2=patternpage.column_ends_x[b][v+1]-fo1-2;
+								lcd_main.message("moveto",x1,mainwindow_height-3);							
+								lcd_main.message("lineto",(1-curs)*x1 + curs*x2,mainwindow_height-3);
+								lcd_main.message("frgb",bco);
+								lcd_main.message("lineto",x2,mainwindow_height-3);
+								patternpage.cursor_last[b][v]=curs;
 							}
-							lcd_main.message("frgb",co);
-							var x1=patternpage.column_ends_x[b][v];
-							var x2=patternpage.column_ends_x[b][v+1]-fo1-2;
-							lcd_main.message("moveto",x1,mainwindow_height-3);							
-							lcd_main.message("lineto",(1-curs)*x1 + curs*x2,mainwindow_height-3);
-							lcd_main.message("frgb",bco);
-							lcd_main.message("lineto",x2,mainwindow_height-3);
-							patternpage.cursor_last[b][v]=curs;
 						}
 					}
 				}
@@ -312,7 +312,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			var co = blocks.get("blocks["+b+"]::space::colour");
 			var bco = shadeRGB(co,0.5);
 			if(mute==1){
-				var co = [10,10,10];
+				var co = [20,20,20];
 				bco = shadeRGB(bco,0.2);
 				bco = [bco[0]+20,bco[1]+20,bco[2]+20];
 			}
