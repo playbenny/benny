@@ -151,9 +151,9 @@ function draw(){
 			outlet(1,"write",currentslice);
 			if(cursorx2<4) draw_wave_hint(currentwave,currentslice);
 			for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
-				cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 				l[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
 				s[c]  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
+				cursors[c] = Math.floor((l[c]+s[c])*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 				l_on[c] = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3)
 				pattern[c] = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+11)*15.999);
 				outlet(1,"moveto", 3+sx+cw*(c-display_col_offset)+x_pos, rh*2.15+y_pos);
@@ -192,9 +192,10 @@ function update(){
 	}
 	var c,o;
 	for(c=display_col_offset;c<v_list.length;c++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		var tl  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2)*127.999)+1;
 		var ts  = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1)*127.999);
+		var e = tl+ts;
+		ph = Math.floor(e*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		var to = voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3);
 		var tp = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+11)*15.999);
 		var d=0;
