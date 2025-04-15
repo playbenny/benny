@@ -611,7 +611,12 @@ var patternpage = { // info to help draw pattern page fast
 	usedstates : 0, //how many states are used
 	max_rows : 0, //maximum of usedstates and number of patterns. actually it will display more than that, as one column could be up and one down? maybe?
 	patternbeingnamed : -1, //just a place to hold the number of this to save 
-	direction : 1 //toptobottom
+	cursor_index : [], //by column, pointer index or list of indexes
+	cursor_last : [],
+	cursor_divisor : [], // 1/length;
+	column_ends_x : [], //list of ends (start, end of voice 1, .. ,end of last voice) - so v+1 entries.
+	held_state_fires : [],
+	held_pattern_fires: [] //to indicate when a pattern etc is held via shift key..
 }
 
 var y_offset;

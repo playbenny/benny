@@ -232,11 +232,37 @@ function get_hw_meter_positions(){
 }
 function update_patterns(){
 	//if(usermouse.clicked2d>1) draw_patterns();
+	if(usermouse.left_button&&usermouse.got_i)redraw_flag.deferred|=2;
 	var cols = patternpage.column_block.length;
 	if(cols>0){
 		for(var c=0;c<cols;c++){
 			if(patternpage.column_type[c]==1){//patterns
-
+				var b = patternpage.column_block[c];
+				if(patternpage.cursor_index[b]!=null){
+					
+					for(var v = 0;v<patternpage.cursor_index[b].length;v++){
+						curs = voice_data_buffer.peek(1,patternpage.cursor_index[b][v]);
+						if(curs!=patternpage.cursor_last[b][v]){
+							patternpage.cursor_last[b][v] = curs;
+							var mute = blocks.get("blocks["+b+"]::mute");
+							var co = blocks.get("blocks["+b+"]::space::colour");
+							var bco = shadeRGB(co,0.5);
+							if(mute==1){
+								var co = [10,10,10];
+								bco = shadeRGB(bco,0.2);
+								bco = [bco[0]+20,bco[1]+20,bco[2]+20];
+							}
+							lcd_main.message("frgb",co);
+							var x1=patternpage.column_ends_x[b][v];
+							var x2=patternpage.column_ends_x[b][v+1]-fo1-2;
+							lcd_main.message("moveto",x1,mainwindow_height-3);							
+							lcd_main.message("lineto",(1-curs)*x1 + curs*x2,mainwindow_height-3);
+							lcd_main.message("frgb",bco);
+							lcd_main.message("lineto",x2,mainwindow_height-3);
+							patternpage.cursor_last[b][v]=curs;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -297,7 +323,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 				for(var s=0;s<MAX_STATES;s++){
 					if(patternpage.block_statelist[b][s]==1){
 						y_o=statesbar.y_pos[s];
-						lcd_main.message((usermouse.clicked2d==mouse_index)?"paintrect":"framerect",colx,y_o,colx+fixedw-fo1,y_o+fontheight,statesbar.colours[s]);
+						lcd_main.message(((patternpage.held_state_fires[b]==s)||(usermouse.clicked2d==mouse_index))?"paintrect":"framerect",colx,y_o,colx+fixedw-fo1,y_o+fontheight,statesbar.colours[s]);
 						click_zone(fire_block_state,s,b, colx,y_o,colx+fixedw-fo1,y_o+fontheight,mouse_index,1);
 
 						if(states.contains("names::"+s)){
@@ -319,6 +345,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 				var split = (1+(patternpage.block_split[b]|0));
 				var ccw = fcw / split;
 				var colx2 = colx;
+				patternpage.column_ends_x[b] = [colx2];
 				for(var v=0;v<split;v++){
 					if(split==1){
 						vv=bvs.concat();
@@ -330,7 +357,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 					for(var p=1+Math.max(pv,patternpage.last_pattern[b]);p>=0;p--){
 						y_o-= fontheight*1.1;
 						var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
-						var shape = (usermouse.clicked2d == mouse_index)? "paintrect" : "framerect";
+						var shape = ((patternpage.held_pattern_fires[b]==p)||(usermouse.clicked2d == mouse_index))? "paintrect" : "framerect";
 						if((p==pv)||(n!=null)&&(n!="")){
 							lcd_main.message(shape,colx2,y_o,colx2+ccw-fo1,y_o+fontheight,(p==pv)? shadeRGB(co,2): co);
 							click_zone(pattern_click,[b,vv],p, colx2,y_o,colx2+ccw-fo1,y_o+fontheight,mouse_index,1);
@@ -350,6 +377,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 						}
 					}
 					colx2 += ccw;
+					patternpage.column_ends_x[b].push(colx2);
 				}
 			}
 			//draw labels
@@ -406,11 +434,24 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 				patternpage.last_pattern[b] = 1;
 				if(blocks.contains("blocks["+b+"]::patterns::names")){
 					var n = blocks.get("blocks["+b+"]::patterns::names");
+					patternpage.cursor_index[b] = null;
 					if(blocks.get("blocks["+b+"]::patterns::pattern_storage")=="data"){ //scans to see if patterns have contents
 						var s = blocks.get("blocks["+b+"]::patterns::pattern_start");
 						var z = blocks.get("blocks["+b+"]::patterns::pattern_size");
 						var bvs = voicemap.get(b);
 						if(!Array.isArray(bvs))bvs=[bvs];
+						if(blocks.contains("blocks["+b+"]::patterns::playhead_offset")){
+							patternpage.cursor_index[b] = [];
+							patternpage.cursor_last[b] = [];
+ 							
+							var offs = blocks.get("blocks["+b+"]::patterns::playhead_offset");
+							
+							
+							for(var v=0;v<bvs.length;v++){
+								patternpage.cursor_index[b].push(bvs[v]*MAX_DATA+offs);
+								patternpage.cursor_last[b].push(0);
+							}
+						}
 						for(var p = 0;p<n.length;p++){
 							if((n[p]==null)||(n[p]=="")){
 								for(v=0;v<bvs.length;v++){
@@ -420,7 +461,7 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 										if(voice_data_buffer.peek(1,MAX_DATA*bvs[v]+x)!=0){
 											v=99999;
 											x=99999;
-											n[p] = (1+p);
+											n[p] = (1+p).toString();
 											blocks.replace("blocks["+b+"]::patterns::names",n);
 											post("\nfound content in unnamed pattern",p);
 										}

@@ -70,7 +70,7 @@ function fulldraw(){
 	rh = height / (i-0.1);
 	sx = 0;
 	for(r=0;r<v_list.length;r++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		
+		ph = Math.floor(l[r]*voice_data_buffer.peek(1, MAX_DATA*v_list[r]));		
 		cursors[r]=ph;
 		for(c=maxl-1;c>=0;c--){		
 			var shade = (c==ph) ? 3 : (0.4+0.6*((c>=s[r])&&(c<s[r]+l[r])));	
@@ -95,10 +95,12 @@ function fulldraw(){
 	change = 0;
 	if(nonempty.indexOf(1)>-1){
 		var n = blocks.get("blocks["+block+"]::patterns::names");
-		for(r=0;r<v_list.length;r++){
-			if(nonempty[r]&&((n[p[r]]==null)||(n[p[r]]==""))) { n[p[r]] = (1+p[r]); post("yes"+p[r]); }
+		if(n!=null){
+			for(r=0;r<v_list.length;r++){
+				if(nonempty[r]&&((n[p[r]]==null)||(n[p[r]]==""))) n[p[r]] = (1+p[r]);
+			}
+			blocks.replace("blocks["+block+"]::patterns::names",n);
 		}
-		blocks.replace("blocks["+block+"]::patterns::names",n);
 	}
 }
 
@@ -133,7 +135,7 @@ function update(){
 		}
 		// post("update");		
 		for(r=0;r<v_list.length;r++){
-			ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
+			ph = Math.floor(l[r]*voice_data_buffer.peek(1, MAX_DATA*v_list[r]));
 			if(cursors[r]!=ph){
 				//redraw slider that was old cursor
 				if((cursors[r]>=0)&&(cursors[r]<maxl)){

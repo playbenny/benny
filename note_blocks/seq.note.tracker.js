@@ -128,10 +128,10 @@ function draw(){
 		}
 		for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
 			if(!Array.isArray(rcol[c])) rcol[c] = [];
-			cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			start[c]  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 			lstart[c] = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
 			end[c]  = lstart[c] + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+			cursors[c] = Math.floor(end[c]*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			lon[c] = Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 			pattern_offs[c] = pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 			divs[c] =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
@@ -235,10 +235,10 @@ function update(){
 			draw();
 			return 2;
 		}
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 		t_lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
 		t_end  = t_lstart + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		ph = Math.floor(t_end*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 		t_p_offs =  pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 		t_divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));

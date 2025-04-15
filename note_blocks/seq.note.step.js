@@ -223,11 +223,11 @@ function draw(){
 		}
 		outlet(1,"font",mainfont,unit*0.4);
 		for(c=0;c<v_list.length;c++){
-			cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			start[c]  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 			lstart[c] = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
 			end[c]  = lstart[c] + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
 			lon[c] = Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
+			cursors[c] = Math.floor(end[c]*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			pattern_offs[c] = pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 			divs[c] =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
 			for(r=view_x;r<view_x2;r++) drawcell(c,r);
@@ -269,10 +269,10 @@ function update(){
 		return 0;
 	}
 	for(c=0;c<v_list.length;c++){
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 		t_lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
 		t_end  = t_lstart + 1 + Math.floor(511*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		ph = Math.floor(t_end*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 		t_p_offs =  pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 		t_divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));

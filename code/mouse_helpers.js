@@ -1485,7 +1485,9 @@ function fire_block_state(state, block){
 	}else{
 		if(usermouse.shift){
 			queue_quantised_notification(fire_block_state,state,block);
+			patternpage.held_state_fires[block] = state;
 		}else{
+			patternpage.held_state_fires[block] = -1;
 			var pv=[];
 			if(state==-1) state = "current";
 			pv = states.get("states::"+state+"::"+block);
@@ -1507,6 +1509,7 @@ function fire_block_state(state, block){
 			if(m!=pv[0]) redraw_flag.flag |= 8;
 		}
 	}
+	redraw_flag.flag |= 4;
 }
 
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
@@ -4518,6 +4521,9 @@ function clear_pattern(p,v){
 			}else if(type=="dict"){
 				post("\nTODO clearing not implemented for this block");
 			}
+			var n = blocks.get("blocks["+p[0]+"]::patterns::names");
+			n[target] = "";
+			blocks.replace("blocks["+p[0]+"]::patterns::names",n);
 		}
 	}else{
 		danger_button = v;
@@ -4532,7 +4538,9 @@ function pattern_click(b,p){
 	if(!Array.isArray(b[1])) b[1] = [b[1]];
 	if(usermouse.shift){
 		queue_quantised_notification(pattern_click, b,p);
+		patternpage.held_pattern_fires[b[0]] = p;
 	}else{
+		patternpage.held_pattern_fires[b[0]] = -1;
 		for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
 	}
 	// request_set_block_parameter(b[0],param,p+1);
