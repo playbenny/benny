@@ -232,6 +232,14 @@ function get_hw_meter_positions(){
 }
 function update_patterns(){
 	//if(usermouse.clicked2d>1) draw_patterns();
+	var cols = patternpage.column_block.length;
+	if(cols>0){
+		for(var c=0;c<cols;c++){
+			if(patternpage.column_type[c]==1){//patterns
+
+			}
+		}
+	}
 }
 function draw_patterns(){ //patterns page, in edit space or fullscreen. i think drawing it in the bottom bar will be different?
 //	var pagebottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
@@ -347,21 +355,14 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			//draw labels
 			//TODO, if a merged song, also label which columns are from which song? or just the old ones?
 			
-			if(bot+fontheight*0.6<mainwindow_height){
-				lcd_main.message("paintrect",colx,bot,colx+cw-fo1,mainwindow_height-9,bco);
-				click_zone(click_patterns_column_header,b,b, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
-				y_o = bot + 0.4 * fontheight;
-			}else{
-				y_o = fontheight+18;
-				lcd_main.message("paintrect",colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,bco);
-				click_zone(click_patterns_column_header,b,b, colx,y_o,colx+cw-fo1,y_o+0.6*fontheight,mouse_index,1);
-				y_o = 18.4 * fontheight;
-			}
+			lcd_main.message("paintrect",colx,bot,colx+cw-fo1,mainwindow_height-9,selected.block[b]? co:bco);
+			click_zone(click_patterns_column_header,b,b, colx,bot,colx+cw-fo1,mainwindow_height-9,mouse_index,1);
+			y_o = bot + 0.4 * fontheight;
 			if(b!=ob){
 				var bl = bn;
 				if(blocks.contains("blocks["+b+"]::label")) bl = blocks.get("blocks["+b+"]::label");
 				var lab = wrap_dot_text(bl,cw-fo1*2);
-				lcd_main.message("frgb",co);
+				lcd_main.message("frgb",selected.block[b] ? bco:co);
 				for(var i=0;i<lab.length;i++){
 			 		lcd_main.message("moveto",fo1+colx,y_o);
 					y_o+=fontheight*0.3;
@@ -404,7 +405,30 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 				patternpage.column_type.push(1);
 				patternpage.last_pattern[b] = 1;
 				if(blocks.contains("blocks["+b+"]::patterns::names")){
-					var n = blocks.get("blocks["+b+"]::patterns::names")
+					var n = blocks.get("blocks["+b+"]::patterns::names");
+					if(blocks.get("blocks["+b+"]::patterns::pattern_storage")=="data"){ //scans to see if patterns have contents
+						var s = blocks.get("blocks["+b+"]::patterns::pattern_start");
+						var z = blocks.get("blocks["+b+"]::patterns::pattern_size");
+						var bvs = voicemap.get(b);
+						if(!Array.isArray(bvs))bvs=[bvs];
+						for(var p = 0;p<n.length;p++){
+							if((n[p]==null)||(n[p]=="")){
+								for(v=0;v<bvs.length;v++){
+									var x = s+p*z;
+									for(var t = 0;t<z;t++){
+										x++;
+										if(voice_data_buffer.peek(1,MAX_DATA*bvs[v]+x)!=0){
+											v=99999;
+											x=99999;
+											n[p] = (1+p);
+											blocks.replace("blocks["+b+"]::patterns::names",n);
+											post("\nfound content in unnamed pattern",p);
+										}
+									}
+								}
+							} 
+						}	
+					}
 					for(var p =0;p<n.length;p++){
 						if((n[p]!=null)&&(n[p]!="")) patternpage.last_pattern[b]=p;
 					}
@@ -2657,6 +2681,7 @@ function draw_topbar(){
 			if((displaymode=="custom") && !(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))){
 				//skip the next bit
 			}else{
+				if((displaymode=="patterns")&&(y_o==(mainwindow_height - 5))) y_o -= 1.1*fontheight;
 				y_o -= 1.1*fontheight;
 				var c = new Array(3);
 				patternpage.usedstates=0;
