@@ -1705,7 +1705,7 @@ function clear_everything(){
 	send_ui_patcherlist(1);
 
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
-	
+	patternpage.column_block = [];
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
 

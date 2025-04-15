@@ -348,7 +348,7 @@ function new_block(block_name,x,y){
 			redraw_flag.flag |= 4;
 		}
 	}
-
+	patternpage.column_block = [];
 	rebuild_action_list = 1;
 	return new_block_index;
 }

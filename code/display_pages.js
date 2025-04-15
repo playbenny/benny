@@ -247,7 +247,7 @@ function update_patterns(){
 					}else{
 						var co = blocks.get("blocks["+b+"]::space::colour");
 						var bco = shadeRGB(co,0.5);
-						for(var v = 0;v<patternpage.cursor_index[b].length;v++){
+						for(var v = 0;v<(patternpage.column_ends_x[b].length-1);v++){
 							curs = voice_data_buffer.peek(1,patternpage.cursor_index[b][v]);
 							if(curs!=patternpage.cursor_last[b][v]){
 								patternpage.cursor_last[b][v] = curs;
@@ -404,6 +404,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 }
 
 function populate_pattern_page(){ //goes through and checks all blocks for states and for patterns
+	post("\npopulate");
 	patternpage.column_block = [];
 	patternpage.column_type = [];
 	patternpage.block_statelist = [];
@@ -432,47 +433,47 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 				patternpage.column_block.push(b);
 				patternpage.column_type.push(1);
 				patternpage.last_pattern[b] = 1;
-				if(blocks.contains("blocks["+b+"]::patterns::names")){
-					var n = blocks.get("blocks["+b+"]::patterns::names");
-					patternpage.cursor_index[b] = null;
-					if(blocks.get("blocks["+b+"]::patterns::pattern_storage")=="data"){ //scans to see if patterns have contents
-						var s = blocks.get("blocks["+b+"]::patterns::pattern_start");
-						var z = blocks.get("blocks["+b+"]::patterns::pattern_size");
-						var bvs = voicemap.get(b);
-						if(!Array.isArray(bvs))bvs=[bvs];
-						if(blocks.contains("blocks["+b+"]::patterns::playhead_offset")){
-							patternpage.cursor_index[b] = [];
-							patternpage.cursor_last[b] = [];
- 							
-							var offs = blocks.get("blocks["+b+"]::patterns::playhead_offset");
-							
-							
-							for(var v=0;v<bvs.length;v++){
-								patternpage.cursor_index[b].push(bvs[v]*MAX_DATA+offs);
-								patternpage.cursor_last[b].push(0);
-							}
+				var n = [];
+				if(blocks.contains("blocks["+b+"]::patterns::names")) n = blocks.get("blocks["+b+"]::patterns::names");
+				patternpage.cursor_index[b] = null;
+				if(blocks.get("blocks["+b+"]::patterns::pattern_storage")=="data"){ //scans to see if patterns have contents
+					var s = blocks.get("blocks["+b+"]::patterns::pattern_start");
+					var z = blocks.get("blocks["+b+"]::patterns::pattern_size");
+					var bvs = voicemap.get(b);
+					if(!Array.isArray(bvs))bvs=[bvs];
+					if(blocks.contains("blocks["+b+"]::patterns::playhead_offset")){
+						patternpage.cursor_index[b] = [];
+						patternpage.cursor_last[b] = [];
+						
+						var offs = blocks.get("blocks["+b+"]::patterns::playhead_offset");
+						
+						
+						for(var v=0;v<bvs.length;v++){
+							patternpage.cursor_index[b].push(bvs[v]*MAX_DATA+offs);
+							patternpage.cursor_last[b].push(0);
+							post("\npatternpage cursors ",b,v,"index",patternpage.cursor_index[b][v]);
 						}
-						for(var p = 0;p<n.length;p++){
-							if((n[p]==null)||(n[p]=="")){
-								for(v=0;v<bvs.length;v++){
-									var x = s+p*z;
-									for(var t = 0;t<z;t++){
-										x++;
-										if(voice_data_buffer.peek(1,MAX_DATA*bvs[v]+x)!=0){
-											v=99999;
-											x=99999;
-											n[p] = (1+p).toString();
-											blocks.replace("blocks["+b+"]::patterns::names",n);
-											post("\nfound content in unnamed pattern",p);
-										}
+					}
+					for(var p = 0;p<n.length;p++){
+						if((n[p]==null)||(n[p]=="")){
+							for(v=0;v<bvs.length;v++){
+								var x = s+p*z;
+								for(var t = 0;t<z;t++){
+									x++;
+									if(voice_data_buffer.peek(1,MAX_DATA*bvs[v]+x)!=0){
+										n[p] = (1+p).toString();
+										blocks.replace("blocks["+b+"]::patterns::names",n);
+										post("\nfound content in unnamed pattern",p,"block",b,v);
+										v=99999;
+										t=99999;
 									}
 								}
-							} 
-						}	
-					}
-					for(var p =0;p<n.length;p++){
-						if((n[p]!=null)&&(n[p]!="")) patternpage.last_pattern[b]=p;
-					}
+							}
+						} 
+					}	
+				}
+				for(var p =0;p<n.length;p++){
+					if((n[p]!=null)&&(n[p]!="")) patternpage.last_pattern[b]=p;
 				}
 			}
 		}
