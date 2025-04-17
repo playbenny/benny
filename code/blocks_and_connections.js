@@ -2356,7 +2356,7 @@ function make_connection(cno,existing){
 								var offv = offs[1];
 							}
 							var vect = conversion.get("vector");
-							set_routing(f_voice,f_o_no,enab,1 ,6,tmod_id,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
+							set_routing(f_voice,f_o_no,enab,1 ,6,tmod_id,t_i_no,scale/*Math.sin(Math.PI*vect*2)*/,scale/*Math.cos(Math.PI*vect*2)*/,offn*256-128,offv*256-128,cno,v);
 						}		
 					}
 					if(((f_type=="parameters")||(f_type=="midi"))&&(blocktypes.contains(f_name+"::connections::out::midi_watched"))){
