@@ -97,7 +97,7 @@ function fulldraw(){
 		var n = blocks.get("blocks["+block+"]::patterns::names");
 		if(n!=null){
 			for(r=0;r<v_list.length;r++){
-				if(nonempty[r]&&((n[p[r]]==null)||(n[p[r]]==""))) n[p[r]] = (1+p[r]);
+				if(nonempty[r]&&((n[p[r]]==null)||(n[p[r]]==""))) n[p[r]] = (1+p[r]).toString();
 			}
 			blocks.replace("blocks["+block+"]::patterns::names",n);
 		}
