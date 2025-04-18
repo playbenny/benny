@@ -26,7 +26,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 6, 10],
+				"contains" : [0, 0, 6, 10,16],
 				"colour" : 20,
 				"height" : 0
 			},
@@ -186,6 +186,12 @@
 				"name" : "ableton link_enable",
 				"type" : "button",
 				"values" : ["core", "enable_ableton_link", "clock_link_button"],
+				"nopervoice" : 1
+			},
+			{
+				"name" : "tap tempo",
+				"type" : "button",
+				"values" : ["firstvoice", "tap_tempo", "tap"],
 				"nopervoice" : 1
 			}
 		]
