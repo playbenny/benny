@@ -1,7 +1,9 @@
+18/04/25:
+- new 'recall' page. shows a grid of all stored states (per block) and all available (for now this is just ones with names) patterns. rough beta, in progress still, i'm up for hearing feedback in the github discussions page or discord.
+- hold shift when clicking a state button (in the left sidebar or on the recall page), or a pattern (on the recall page) to quantise firing it to the next bar. if shift is still held when the bar comes around it waits for the next one, etc. this also applies to ctrl-clicking the column labels to mute blocks.
+- pattern naming, nicer pattern selector for the sidebar, pattern copy/clear. implemented for: seq values/note step/note tracker/piano roll/sample tracker (not relevant for any of the other sequencers - as seq analog/rene store their sequence in parameters, so patterns for these can be stored and recalled in states)
+
 13/04/25:
-- pattern naming, nicer pattern selector for the sidebar, pattern copy/clear. implemented for: seq values/(more next) 
-- new 'recall' page. shows a grid of all stored states (per block) and all available (for now this is just ones with names) patterns
-- hold shift when clicking a state button (in the left sidebar or on the recall page), or a pattern (on the recall page) to quantise firing it to the next bar. if shift is still held when the bar comes around it waits for the next one, etc.
 - better indicators for ableton link - if it's installed an enable button is in the clock block sidebar as well as the midi indicators sidebar, and the play button changes colour depending on sync status. i've put a note about installing link in the manual too.
 
 10/04/25:
