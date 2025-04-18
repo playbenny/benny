@@ -5,6 +5,7 @@
 
 13/04/25:
 - better indicators for ableton link - if it's installed an enable button is in the clock block sidebar as well as the midi indicators sidebar, and the play button changes colour depending on sync status. i've put a note about installing link in the manual too.
+- tap tempo (in clock block sidebar)
 
 10/04/25:
 - comparator block
