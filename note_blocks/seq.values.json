@@ -3,7 +3,7 @@
 		"patcher" : "seq.values",
 		"type" : "note",
 		"block_ui_patcher" : "seq.values.ui",
-		"help_text" : "a simple step sequencer for one dimensional values. the 'notes out' uses the value as a note, and the velocity from the incoming trigger. the 'values out' sends it as a value, which you can rotate to map to any combination of velocity or pitch if you want to send it to a midi destination.££add voices to the block to add more sequencer rows.",
+		"help_text" : "a simple step sequencer for one dimensional values. the 'notes out' uses the value as a note, and the velocity from the incoming trigger. the 'values out' sends it as a value, which you can rotate to map to any combination of velocity or pitch if you want to send it to a midi destination.££add voices to the block to add more sequencer rows.££on this sequencer the record mode is step recording which disables the trigger input until you turn it off, and stores either incoming notes or incoming velocities, depending on the toggle switch setting.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"ui_in_sidebar_expands" : 1,
@@ -15,7 +15,9 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "backwards step", "note->position", "reset" ]
+				"midi" : [ "trigger", "backwards step", "note->position", "reset", "step record in" ],
+				"default" : 0, 
+				"automap_to" : 4
 			},
 			"out" : {
 				"midi" : [ "notes out" ],
@@ -47,9 +49,14 @@
 				"height" : 0 
 			},
 			{
-				"contains" : [5,6,4,4,4,4,4],
+				"contains" : [5,6,9,8,8,8,8],
 				"height" : 0,
 				"colour" : 5
+			},
+			{
+				"contains" : [4],
+				"height" : 0.9,
+				"colour" : 9
 			}
 		],
 		"patterns" : {
@@ -102,7 +109,7 @@
 				"default" : 0.25
 			},
 			{
-				"name" : "< back",
+				"name" : "<_back",
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
@@ -110,7 +117,7 @@
 				"values" : ["voices","< back",-1]
 			},
 			{
-				"name" : "fwd >",
+				"name" : "fwd_>",
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
@@ -124,6 +131,23 @@
 				"error_scale" : 0,
 				"default" : 0.03125,
 				"wrap" : 1
+			},
+			{
+				"name" : "step record",
+				"type" : "menu_b",
+				"default" : 0.25,
+				"error_scale" : 0,
+				"wrap" : 1,
+				"colours" : [0,[160,40,40],[150,100,80]],
+				"values" : ["step_record_off","step_record_notes","step_record_velocities"]
+			},
+			{
+				"name" : "|< to start",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","|<_to_start", 0]
 			}
 		]
 	}
