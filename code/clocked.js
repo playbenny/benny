@@ -106,6 +106,7 @@ function frameclock(){
 		draw_topbar();
 		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")||(displaymode=="waves")||(displaymode=="patterns"))) draw_clock();
 		if(displaymode=="waves") draw_waves();
+		if(displaymode=="custom") draw_custom();
 		draw_sidebar();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
 		if(displaymode=="patterns") draw_patterns();
@@ -209,12 +210,14 @@ function frameclock(){
 		bangflag=1;
 		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}else if(displaymode == "custom"){
-		if(redraw_flag.flag>1){
-			draw_custom();
-		}else{
-			update_custom();
-			if((bottombar.block>-1)&&!(redraw_flag.flag&6)){update_bottom_bar(); }//bangflag=2; }
+		if(!(redraw_flag.flag&6)){
+			if(redraw_flag.flag>1){
+				draw_custom();
+			}else{
+				update_custom();
+			}
 		}
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6)){update_bottom_bar(); }//bangflag=2; }
 		sidebar_meters();
 		bangflag=1;
 	}else if(displaymode == "custom_fullscreen"){
