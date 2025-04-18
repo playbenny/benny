@@ -4849,13 +4849,30 @@ function draw_sidebar(){
 								lcd_main.message("write","copy to");
 								var sx = sidebar.x+1.5*fontheight;
 								var dx = (sidebar.x2 - sx + fontheight*0.1)/16;
+								
 								for(var i=0;i<16;i++){
-									lcd_main.message("paintrect",sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,(usermouse.clicked2d==mouse_index)? block_colour : block_darkest);
-									click_zone(copy_pattern,[block,pv],i,sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,mouse_index,1);
-									lcd_main.message("frgb",block_dark);
-									lcd_main.message("moveto",sx+fontheight*0.1,y_offset+fontheight*0.45);
-									lcd_main.message("write",(i+1));
-									sx+=dx;
+									if(i == pv){
+										//grey
+										lcd_main.message("paintrect",sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,40,40,40);
+										lcd_main.message("frgb",block_darkest);
+										lcd_main.message("moveto",sx+fontheight*0.1,y_offset+fontheight*0.45);
+										lcd_main.message("write",(i+1));
+										sx+=dx;
+									}else if((pn[i]!=null)&&(pn[i]!="")){
+										lcd_main.message("paintrect",sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,(usermouse.clicked2d==mouse_index)? [255,20,20] : [120,20,20]);
+										click_zone(copy_pattern,[block,pv],i,sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,mouse_index,1);
+										lcd_main.message("frgb",block_darkest);
+										lcd_main.message("moveto",sx+fontheight*0.1,y_offset+fontheight*0.45);
+										lcd_main.message("write",(i+1));
+										sx+=dx;
+									}else{
+										lcd_main.message("paintrect",sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,(usermouse.clicked2d==mouse_index)? block_colour : block_darkest);
+										click_zone(copy_pattern,[block,pv],i,sx,y_offset,sx+dx-fontheight*0.1,y_offset+0.6*fontheight,mouse_index,1);
+										lcd_main.message("frgb",block_dark);
+										lcd_main.message("moveto",sx+fontheight*0.1,y_offset+fontheight*0.45);
+										lcd_main.message("write",(i+1));
+										sx+=dx;
+									}
 								}
 							}
 							
