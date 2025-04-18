@@ -6,27 +6,27 @@
 - added step record facility to seq.values. you can take input from either note or velocity of your controller keyboard for the recording.
 
 13/04/25:
-- better indicators for ableton link - if it's installed an enable button is in the clock block sidebar as well as the midi indicators sidebar, and the play button changes colour depending on sync status. i've put a note about installing link in the manual too.
+- better indicators for **ableton link** - if it's installed an enable button is in the clock block sidebar as well as the midi indicators sidebar, and the play button changes colour depending on sync status. i've put a note about installing link in the manual too.
 - tap tempo (in clock block sidebar)
 
 10/04/25:
-- comparator block
+- **comparator** block
 - fixed a bug in the integrator saw used in the basic/dual oscs and voices that caused dc offset and reduced level for notes in higher octaves.
 - blocks' help text is shown by default now, rather than needing a click to expand that section of sidebar. by default this turns on after you add a block to the set, as if you haven't added a block we assume you're playing a live set and don't need extra distracting info on screen. this behaviour can be changed in the ui preferences.
 
 03/04/25:
-- midi clock out, audio clock out. benny's midi/audio clock out is based around the idea of a session that may be continuing even when benny itself stops. when you start the music the external clock starts in sync, but when you stop benny the external clock does not stop. ctrl-click on the play button to stop the external clocks. there is an external clock out indicator at the bottom of the midi in indicators (next to the play button). if the external clock is running and you start benny then benny will wait until the next downbeat before starting. you can configure outputs and ppqn values in the hardware manager. this has only been tested with a very limited range of hardware so far so please do get in touch if you find problems!
-- tempo bend - you can map a controller to bend tempo _like a dj_, useful for shifting phase if you're manually synchronising benny to something else.
-- ableton link support (experimental) to make this work you need to install the ableton link package in max yourself. in a max window look under file/package manager. once installed you can find the enable button in the midi indicators sidebar page for now (click the midi indicators right of the play button).
+- **midi clock out**, audio clock out. benny's midi/audio clock out is based around the idea of a session that may be continuing even when benny itself stops. when you start the music the external clock starts in sync, but when you stop benny the external clock does not stop. ctrl-click on the play button to stop the external clocks. there is an external clock out indicator at the bottom of the midi in indicators (next to the play button). if the external clock is running and you start benny then benny will wait until the next downbeat before starting. you can configure outputs and ppqn values in the hardware manager. this has only been tested with a very limited range of hardware so far so please do get in touch if you find problems!
+- **tempo bend** - you can map a controller to bend tempo _like a dj_, useful for shifting phase if you're manually synchronising benny to something else.
+- **ableton link** support (experimental) to make this work you need to install the ableton link package in max yourself. in a max window look under file/package manager. once installed you can find the enable button in the midi indicators sidebar page for now (click the midi indicators right of the play button).
 
 02/04/25:
-- core.tuning updated to use presets, which means it'll be easy for people to submit tunings to be included. benny can apply the tuning system selected not only to the built in oscillators, voices etc but to any vst or amxd (max for live device) that supports pitch bend input. (you need to set the pitch bend range for the vst in the vst manager, then add as many voices to the vst block as there are notes used in your scale and it will do the rest automatically.)
+- **core.tuning** updated to use presets, which means it'll be easy for people to submit tunings to be included. benny can apply the tuning system selected not only to the built in oscillators, voices etc but to any vst or amxd (max for live device) that supports pitch bend input. (you need to set the pitch bend range for the vst in the vst manager, then add as many voices to the vst block as there are notes used in your scale and it will do the rest automatically.)
 
 28/03/25:
 (i was digging through old patches trying to recreate a particular old song waclaw zimpel and i did and found these three which i've ported to benny)
-- ks6 block. 6 strings in one voice with energy crossfeeding between them via a body resonance, a slightly richer instrument than the basic ks.string model.
-- chaos osc. makes a great lfo as it provides 3 outs that have some degree of correlation, and a pattern that comes close enough to repeating that you can use it musically.
-- wave guide block. simple wave guide model with a pair of filters in the feedback path, does a good impression of overblown woodwind.
+- **ks6** block. 6 strings in one voice with energy crossfeeding between them via a body resonance, a slightly richer instrument than the basic ks.string model.
+- **chaos osc**. makes a great lfo as it provides 3 outs that have some degree of correlation, and a pattern that comes close enough to repeating that you can use it musically.
+- **wave guide** block. simple wave guide model with a pair of filters in the feedback path, does a good impression of overblown woodwind.
 
 26/03/25:
 - mixer channels in the blocks page now show their mute / solo status via shading.
@@ -38,13 +38,13 @@
 - input processing: enabled by default but can be disabled per-input in the hardware config editor, there's dc blocking (which you would want to switch off if you're bringing control voltages in from eg a modular into benny, but is otherwise useful) and a gate, which is (only) designed to switch inaudible (below -60db) signals off to help save cpu. (there are no controls, if you want that use the utility.gate block).
 
 23/03/25:
-- big improvement to panels page layout edit - ctrl-click the titlebar of any panel to bring up the panel parameters assign mode of the sidebar as well as the reorder/hide buttons.
+- big improvement to **panels** page layout edit - ctrl-click the titlebar of any panel to bring up the panel parameters assign mode of the sidebar as well as the reorder/hide buttons.
 
 15/03/25:
 - on startup the tempo is set to a random value to protect users from accidentally starting a song at 120bpm.
 
 11/03/25:
-- new mixer channel types. there are now stereo input and mono input variants of 3 different mixer channels, each designed for performable control of one aspect of the sound:
+- new **mixer** channel types. there are now stereo input and mono input variants of 3 different mixer channels, each designed for performable control of one aspect of the sound:
     - .basic - is the original channel, with eq shape and stereo width set by choosing a preset 'voicing'. amount and freq controls allow fine-tuning, but these are designed to work well together. the mono channel has a very simple sidechain compressor input designed for ducking/negative space.
     - .comp - based around a luke abbott multiband compressor design for versatile and live-show-safe dynamic control. can smooth transients or solidify them. the mono version has an optional sidechain in that automatically turns on if you connect something to it. the stereo version works slightly more on the mid channel than the sides.
     - .tape - has a pre and post emphasis eq around airwindows' totape6. with positive amounts it's a boost into the tape saturation and a smaller cut after, leaving a bump with extra harmonic energy. with amount negative the opposite happens, a shallow wide dip turns into a wide dip with a clean boost in the middle of it that works well for solid clean weight on a part's fundamental. the stereo version works in mid-side and again the mono version of this has a sidechain compressor input.
