@@ -859,6 +859,7 @@ function import_song(){
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
+		if(displaymode=="blocks") blocks_enable(1);
 		redraw_flag.flag|=12;
 		rebuild_action_list=1;
 		messnamed("output_queue_pointer_reset","bang");
