@@ -23,7 +23,7 @@
 				"midi" : [ "notes out" ],
 				"parameters" : [ "value out", "playhead_position" ],
 				"dontdefaultall" : 1,
-				"default" : 1
+				"default" : 0
 			}
 		},
 		"groups" : [
