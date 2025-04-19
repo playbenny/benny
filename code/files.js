@@ -1544,6 +1544,7 @@ function folder_select(folderstr){
 			userconfig.replace("SONGS_FOLDER",folderstr);
 			write_userconfig();
 			read_songs_folder("songs");
+			set_sidebar_mode("file_menu");
 		}else if(folder_target == "record"){
 			post("\nselected new record folder:",folderstr);
 			config.replace("RECORD_FOLDER",folderstr);

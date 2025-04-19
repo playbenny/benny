@@ -3685,42 +3685,41 @@ function draw_sidebar(){
 		lcd_main.message("frgb",greycolour);
 		lcd_main.message("write", "<<");
 		y_offset+=1.1*fontheight;
+
+		// song notes
+		click_zone(set_sidebar_mode, "edit_song_notes","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,mouse_index,1 );
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,greydarkest);
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("frgb",greycolour);
+		lcd_main.message("write", "edit song notes");
+		y_offset+=1.7*fontheight;
+
+
 		//browse for file:
-		click_zone(load_elsewhere_choose, "","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
-		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
+		click_zone(load_elsewhere_choose, "","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,mouse_index,1 );
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,greydarkest);
 		lcd_main.message("frgb",greycolour);
 		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
 		lcd_main.message("write", "browse for songfile");
-
-		//clear all: 
-		if(danger_button == mouse_index){
-			lcd_main.message("paintrect", sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,120,0,0);
-			lcd_main.message("frgb", 255,50,50);
-		}else{
-			lcd_main.message("paintrect", sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,greydarkest);
-			lcd_main.message("frgb",greycolour);
-		}
-		click_zone(clear_everything_btn, 0,mouse_index, sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset, mouse_index,1 );
-		lcd_main.message("moveto", sidebar.x2-fontheight*5.8, 9+fontheight*0.75+y_offset);
-		lcd_main.message("write", "clear everything");
-		y_offset+=1.7*fontheight;
+		y_offset+=1.6*fontheight;
 
 		//collect all and save:
 		if(0){
-			//click_zone(collect_all_and_save, "","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
-			lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
+			//click_zone(collect_all_and_save, "","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,mouse_index,1 );
+			lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,greydarkest);
 			lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
 			lcd_main.message("frgb",greycolour);
 			lcd_main.message("write", "collect all and save");
 			y_offset+=1.7*fontheight;
 		}
 
-		click_zone(set_sidebar_mode, "edit_song_notes","", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,mouse_index,1 );
-		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6, 9+fontheight+y_offset,greydarkest);
-		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		//browse for set folder:
+		click_zone(select_folder, "song", null, file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,mouse_index,1 );
+		lcd_main.message("paintrect", file_menu_x, 9+y_offset, file_menu_x+fontheight*6.5, 9+fontheight+y_offset,greydarkest);
 		lcd_main.message("frgb",greycolour);
-		lcd_main.message("write", "edit song notes");
-		y_offset+=1.7*fontheight;
+		lcd_main.message("moveto", file_menu_x + fontheight*0.2, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", "browse for set folder");
+		y_offset+=1.6*fontheight;
 
 		//songs folder
 		lcd_main.message("font",mainfont,fontsmall);
@@ -3756,6 +3755,20 @@ function draw_sidebar(){
 		lcd_main.message("write", config.get("RECORD_FOLDER"));
 		click_zone(select_folder, "record", null, file_menu_x, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,mouse_index,1 );
 		y_offset+=2.2*fontheight;
+
+		//clear all: 
+		lcd_main.message("font",mainfont,fontsmall*2);
+		if(danger_button == mouse_index){
+			lcd_main.message("paintrect", sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,120,0,0);
+			lcd_main.message("frgb", 255,50,50);
+		}else{
+			lcd_main.message("paintrect", sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset,greydarkest);
+			lcd_main.message("frgb",greycolour);
+		}
+		click_zone(clear_everything_btn, 0,mouse_index, sidebar.x2-fontheight*6, 9+y_offset, sidebar.x2, 9+fontheight+y_offset, mouse_index,1 );
+		lcd_main.message("moveto", sidebar.x2-fontheight*5.8, 9+fontheight*0.75+y_offset);
+		lcd_main.message("write", "clear everything");
+		// y_offset+=1.7*fontheight;
 
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		draw_resource_monitor_page();
