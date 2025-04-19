@@ -4822,7 +4822,7 @@ function draw_sidebar(){
 							if(!Array.isArray(bvs)) bvs = [bvs];
 							var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[sv]+blocks.get("blocks["+block+"]::patterns::parameter"))); //TODO check actual number of patterns
 							click_zone(rename_pattern,[block,pv],"name",sidebar.x+fontheight*2.8,y_offset,sidebar.x2-fontheight*2.5,y_offset+fontheight*0.6,mouse_index,7);
-							click_zone(scroll_pattern,[block,pv],-1,sidebar.x+fontheight*1.4.x,y_offset,sidebar.x+fontheight*2.1,y_offset+fontheight*0.6,mouse_index,7);
+							click_zone(scroll_pattern,[block,pv],-1,sidebar.x+fontheight*1.4,y_offset,sidebar.x+fontheight*2.1,y_offset+fontheight*0.6,mouse_index,7);
 							click_zone(scroll_pattern,[block,pv], 1,sidebar.x+fontheight*2.1,y_offset,sidebar.x+fontheight*2.8,y_offset+fontheight*0.6,mouse_index,7);
 							lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x+fontheight*1.3,y_offset+fontheight*0.6,block_darkest );
 							lcd_main.message("paintrect",sidebar.x+fontheight*1.4,y_offset,sidebar.x+fontheight*2.0,y_offset+fontheight*0.6,block_darkest );
