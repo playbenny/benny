@@ -3737,7 +3737,7 @@ function draw_sidebar(){
 			lcd_main.message("write","recent folders:");
 			recent_folders=userconfig.get("RECENT_SONGS_FOLDERS");
 			for(var rf=0;rf<recent_folders.length;rf++){
-				if((typeof recent_folders[rf]!= "string")||(recent_folders[rf].length<3)||(recent_folders[rf]===undefined)){
+				if((typeof recent_folders[rf]!= "string")||(recent_folders[rf].length<3)||(recent_folders[rf]=="<undefined>")){
 					post("\n looks wrong, removed from list",recent_folders[rf]);
 					recent_folders.splice(rf,1);
 				}
