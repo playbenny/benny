@@ -153,7 +153,7 @@ function update(){
 					if(!mini){
 						outlet(1,"moveto",sx+cursors[r]*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.5);
 						outlet(1,"write",cursors[r]);
-						i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+128*p[r]+1+cursors[r])*127.99);
+						i=Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[r]+128*p[r]+1+cursors[r])*128);
 						if(i>0){
 							i--;
 							outlet(1,"frgb",menucolour);
