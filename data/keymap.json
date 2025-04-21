@@ -145,6 +145,7 @@
         "-5" : ["tab" , "set_display_mode", "blocks"],
         "109" : ["M", "mute_selected_block", -1],
         "47" : ["/" , "set_sidebar_mode", "block_search"],
+        "2026" : ["ALT-F6", "open_patcher"],
         "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "patterns" : {
@@ -156,6 +157,7 @@
         "-5" : ["tab" , "set_display_mode", "blocks"],
         "109" : ["M", "mute_selected_block", -1],
         "47" : ["/" , "set_sidebar_mode", "block_search"],
+        "2026" : ["ALT-F6", "open_patcher"],
         "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "flocks" : {

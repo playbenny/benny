@@ -47,7 +47,7 @@
 		"patterns" : {
 			"parameter" : 0,
 			"pattern_storage" : "dict",
-			"playhead_offset" : 0
+			"playhead_offset" : 1
 		},
 		"parameters" : [
 			{

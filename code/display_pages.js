@@ -441,24 +441,24 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 				var n = [];
 				if(blocks.contains("blocks["+b+"]::patterns::names")) n = blocks.get("blocks["+b+"]::patterns::names");
 				patternpage.cursor_index[b] = null;
+				var bvs = voicemap.get(b);
+				if(!Array.isArray(bvs))bvs=[bvs];
+				if(blocks.contains("blocks["+b+"]::patterns::playhead_offset")){
+					patternpage.cursor_index[b] = [];
+					patternpage.cursor_last[b] = [];
+					
+					var offs = blocks.get("blocks["+b+"]::patterns::playhead_offset");
+					
+					
+					for(var v=0;v<bvs.length;v++){
+						patternpage.cursor_index[b].push(bvs[v]*MAX_DATA+offs);
+						patternpage.cursor_last[b].push(0);
+						post("\npatternpage cursors ",b,v,"index",patternpage.cursor_index[b][v]);
+					}
+				}
 				if(blocks.get("blocks["+b+"]::patterns::pattern_storage")=="data"){ //scans to see if patterns have contents
 					var s = blocks.get("blocks["+b+"]::patterns::pattern_start");
 					var z = blocks.get("blocks["+b+"]::patterns::pattern_size");
-					var bvs = voicemap.get(b);
-					if(!Array.isArray(bvs))bvs=[bvs];
-					if(blocks.contains("blocks["+b+"]::patterns::playhead_offset")){
-						patternpage.cursor_index[b] = [];
-						patternpage.cursor_last[b] = [];
-						
-						var offs = blocks.get("blocks["+b+"]::patterns::playhead_offset");
-						
-						
-						for(var v=0;v<bvs.length;v++){
-							patternpage.cursor_index[b].push(bvs[v]*MAX_DATA+offs);
-							patternpage.cursor_last[b].push(0);
-							post("\npatternpage cursors ",b,v,"index",patternpage.cursor_index[b][v]);
-						}
-					}
 					for(var p = 0;p<n.length;p++){
 						if((n[p]==null)||(n[p]=="")){
 							for(v=0;v<bvs.length;v++){

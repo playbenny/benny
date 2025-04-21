@@ -3626,7 +3626,7 @@ function key_escape(){
 		waves.selected = -1;
 		redraw_flag.flag |= 4;
 	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
-		if((last_displaymode!="blocks")&&(last_displaymode!="panels")){
+		if((last_displaymode!="blocks")&&(last_displaymode!="panels")&&(last_displaymode!="patterns")&&(last_displaymode!="waves")){
 			post("\ndon't want to return to:",last_displaymode,"mode so i'm going to blocks instead");
 			last_displaymode="blocks";
 		}
@@ -4531,7 +4531,8 @@ function clear_pattern(p,v){
 					voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
 				}
 			}else if(type=="dict"){
-				post("\nTODO clearing not implemented for this block");
+				ui_poly.message("setvalue",(1+p[0]),"clear_pattern",p[1]);
+				// post("\nTODO clearing not implemented for this block");
 			}
 			var n = blocks.get("blocks["+p[0]+"]::patterns::names");
 			n[target] = "";
@@ -4552,8 +4553,17 @@ function pattern_click(b,p){
 		queue_quantised_notification(pattern_click, b,p);
 		patternpage.held_pattern_fires[b[0]] = p;
 	}else{
+		if(usermouse.ctrl){
+			var v = Math.floor(b[1]);
+			if(v<MAX_NOTE_VOICES){
+				note_poly.message("setvalue",(1+v),"resync");
+			}else{
+				audio_poly.message("setvalue",(1+v-MAX_NOTE_VOICES),"resync");
+			}
+		}
 		patternpage.held_pattern_fires[b[0]] = null;
 		for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
+		mute_particular_block(b[0],0);
 	}
 	// request_set_block_parameter(b[0],param,p+1);
 	// redraw_flag.flag |= 4;

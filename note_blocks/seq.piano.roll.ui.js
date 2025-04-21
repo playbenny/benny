@@ -99,10 +99,6 @@ var metatype_params = [["chance/every"], ["range"], ["range"], ["division"], ["c
 // randomise velocity
 var metatype_defaults = [ [-127], [64], [64], [2], [-127,2], [-127,2], [-127,1], [-127,1], [-127,1], [-127,0] ];
 var metatype_ranges = [ ["bi"] , ["uni"], ["uni"], [32], ["bi",4], ["bi",4], ["bi",24], ["bi",24], ["bi",24], [2]];
-function playhead(p){
-	playheadpos = p;
-	drawflag = 1;
-}
 
 function playing(p){
 	playstate = p;
@@ -167,6 +163,8 @@ function convert_to_lengths(){
 
 function setup(x1,y1,x2,y2,sw){ 
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	MAX_DATA = config.get("MAX_DATA");
+
 	var csize = config.getsize("palette::gamut");
 	var cstep = Math.ceil(csize/16);
 	for(var i=0;i<16;i++){
@@ -239,6 +237,11 @@ function draw(){
 	if(sd == null) return 0;
 	k = sd.getkeys();
 	if(k == null) return 0;
+	if(voice_data_buffer.peek(1,MAX_DATA*voice)!=playheadpos){
+		playheadpos = voice_data_buffer.peek(1,MAX_DATA*voice);
+		drawflag=1;
+	}
+
 	if(mini){
 		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
 		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
@@ -802,6 +805,10 @@ function get_note_range() {
 }
 
 function update(){
+	if(voice_data_buffer.peek(1,MAX_DATA*voice)!=playheadpos){
+		playheadpos = voice_data_buffer.peek(1,MAX_DATA*voice);
+		drawflag=1;
+	}
 	if((block>=0) && drawflag){
 		draw();
 	}
@@ -1481,6 +1488,8 @@ function create_event(event) {
 	push_to_undo_stack("create");
 	copytoseq();
 	drawflag |= 1 + (event[1]==0);
+	var nam = blocks.get("blocks["+block+"]::patterns::names["+pattern+"]");
+	if((nam == null)||(nam == "")) blocks.replace("blocks["+block+"]::patterns::names["+pattern+"]",(1+pattern).toString());
 	return ind;
 }
 
@@ -1746,6 +1755,27 @@ function keydown(key){
 		}
 	}else{
 		post("\nkey",key);
+	}
+}
+
+function clear_pattern(pno){
+	if(pno!=pattern){
+		error("doesn't look right, pno =",pno,"pattern=",pattern);
+		return 0;
+	}else{
+		undo.clear();
+		var rem=0;
+		for(i=1;i<k.length;i++){
+			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
+			undo.replace(k[i],event);
+			rem=1;
+			seqdict.remove(block+"::"+pattern+"::"+k[i]);
+		}
+		if(rem){
+			drawflag = 1;
+			copytoseq();
+			push_to_undo_stack("delete");
+		}	
 	}
 }
 
