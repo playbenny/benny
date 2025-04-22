@@ -39,6 +39,7 @@ function set_display_mode(mode,t){
 			if(displaymode == "flocks"){
 				draw_blocks();
 			}
+			redraw_flag.flag |= 8;
 			if(automap.mapped_c==-0.5){
 				automap.mapped_c=-1;
 				note_poly.message("setvalue", automap.available_c, "automapped", 0);					

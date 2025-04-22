@@ -100,7 +100,6 @@ function block_texture_is(i,tex){
 
 function menu_block_texture_is(i,tex){
 	blocks_menu_texture[i] = tex;
-	//messnamed("menu_multiple","texture",blocks_menu_texture);
 }
 
 function gain_display(gain){
