@@ -2691,7 +2691,7 @@ function draw_topbar(){
 			x_o+=1.6;
 		}
 
-		if(displaymode == "custom_fullscreen"){
+		if((displaymode == "custom_fullscreen")){
 			lcd_main.message("paintrect", mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,(usermouse.clicked2d==mouse_index)?menucolour:menudarkest);
 			lcd_main.message("frgb", (usermouse.clicked2d==mouse_index)?menudark:menucolour);
 			lcd_main.message("moveto",mainwindow_width-9-fo1*2,9+fo1*6);
@@ -2700,7 +2700,7 @@ function draw_topbar(){
 			click_zone(set_display_mode,"custom",custom_block,mainwindow_width-9-fontheight,9,mainwindow_width-9,9+fontheight,mouse_index,1);
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
-		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")||(displaymode == "waves")||(displaymode == "patterns")){ //draw states / init / unmute all
+		}else if((displaymode == "blocks")||(displaymode == "panels")||(displaymode == "custom")||(displaymode == "patterns")){ //draw states / init / unmute all
 			var y_o = mainwindow_height - 5;
 			if((bottombar.available_blocks.length>0)&&((displaymode != "custom") || (bottombar.block>-1) || (blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view")))){
 				for(var bi=0;bi<bottombar.available_blocks.length;bi++){						
@@ -2821,6 +2821,9 @@ function draw_topbar(){
 				}
 			}
 			if(patternpage.usedstates>0)patternpage.enable=1;
+		}else if(displaymode == "waves"){
+			statesbar.videoplane.message("enable",0);
+			statesbar.used_height=0;
 		}
 	}else if(loading.progress>0){
 		mouse_click_parameters[mouse_index] = "none"; // todo - make progress bar more meaningful
