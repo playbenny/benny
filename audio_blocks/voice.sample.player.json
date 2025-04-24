@@ -3,7 +3,7 @@
 		"patcher" : "voice.sample.player",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "sample player with slices, offset, timestretch",
+		"help_text" : "sample player with slices, offset, timestretch. ££i don't think the max/msp sample playback objects do anti-aliasing so if you're pitching samples up turn on oversampling for this block.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
