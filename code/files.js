@@ -1743,16 +1743,6 @@ function clear_everything(){
 	messnamed("blocks_matrices","bang");
 	wire_ends = [];
 	blocks_tex_sent=[];
-	/*background_cube.shape = "cube";
-	background_cube.scale = [10000, 10000, 1 ];
-	background_cube.position = [0, 0, -200];
-	background_cube.name = "background";
-	background_cube.color = [0, 0, 0, 1];*/
-	/*menu_background_cube.shape = "cube";
-	menu_background_cube.scale = [1000, 1, 1000 ];
-	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block-menu-background";
-	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	bottombar.available_blocks=[];
 	bottombar.block=-1;

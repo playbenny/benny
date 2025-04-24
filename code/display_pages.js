@@ -454,7 +454,7 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 					for(var v=0;v<bvs.length;v++){
 						patternpage.cursor_index[b].push(bvs[v]*MAX_DATA+offs);
 						patternpage.cursor_last[b].push(0);
-						post("\npatternpage cursors ",b,v,"index",patternpage.cursor_index[b][v]);
+						// post("\npatternpage cursors ",b,v,"index",patternpage.cursor_index[b][v]);
 					}
 				}
 				if(blocks.get("blocks["+b+"]::patterns::pattern_storage")=="data"){ //scans to see if patterns have contents
@@ -2821,7 +2821,7 @@ function draw_topbar(){
 				}
 			}
 			if(patternpage.usedstates>0)patternpage.enable=1;
-		}else if(displaymode == "waves"){
+		}else if((displaymode == "waves")||(displaymode == "patterns")){
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
 		}
