@@ -1,4 +1,4 @@
-function new_block(block_name,x,y){
+function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting or undoing
 	//post("new block");
 	var details = new Dict;
 	var new_voice = -1;
@@ -301,7 +301,7 @@ function new_block(block_name,x,y){
 	}
 	still_checking_polys |=4;
 	//	send_ui_patcherlist();
-	if((loading.progress<=0) && (block_name.indexOf("mixer.")>-1) && (block_name!="mixer.bus")){
+	if((loading.progress <= 0) && (no_smart_stuff != 1) && (block_name != "mixer.bus") && (block_name.indexOf("mixer.")>-1)){
 		post("\ncreated block",block_name,"number",new_block_index,"now adding a mixer");
 		var bus=-1; //create a bus if mixer channels added without one.
 		for(var i=0;i<MAX_BLOCKS;i++){

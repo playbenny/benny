@@ -334,7 +334,7 @@ function blocks_paste(outside_connections,target){
 								}
 							}
 						}
-						new_block_index = new_block(name,px,py);
+						new_block_index = new_block(name,px,py,1);
 					}
 					if(new_block_index==-1){
 						if(excl!=2)post("\nerror pasting, "+name+" not found");

@@ -13,6 +13,8 @@ function set_display_mode(mode,t){
 		if(displaymode!="custom") last_displaymode = displaymode;
 		if(bottombar.block>-1) hide_bottom_bar();
 		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
+	}else if(mode == "patterns"){
+		if(bottombar.block>-1) hide_bottom_bar();
 	}else if(mode == "flocks"){
 		if(is_empty(flocklist)){
 			mode = "blocks"; //only show flocks if there are flocks
@@ -2717,7 +2719,7 @@ function draw_topbar(){
 						lcd_main.message("moveto",9+fo1*8,y_o+fo1*(1+3*(bna.length)));
 						lcd_main.message("lineto",9+fo1*7,y_o+fo1*(0+3*(bna.length)));
 						lcd_main.message("lineto",9+fo1*8,y_o+fo1*(-1+3*(bna.length)));
-						click_zone(hide_bottom_bar,bottombar.available_blocks[bi],bottombar.available_blocks[bi], 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
+						click_zone(hide_bottom_bar,0,0, 5,y_o, 9+fontheight, fo1*(6+3*(bna.length-1)) + y_o,mouse_index,1);
 					}else{
 						// lcd_main.message("moveto",9+fo1*7,mainwindow_height-5-fo1*5);
 						// lcd_main.message("lineto",9+fo1*8,mainwindow_height-5-fo1*4);
@@ -2821,7 +2823,7 @@ function draw_topbar(){
 				}
 			}
 			if(patternpage.usedstates>0)patternpage.enable=1;
-		}else if((displaymode == "waves")||(displaymode == "patterns")){
+		}else if((displaymode == "waves")){
 			statesbar.videoplane.message("enable",0);
 			statesbar.used_height=0;
 		}
