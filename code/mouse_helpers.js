@@ -940,7 +940,7 @@ function click_patterns_column_header(parameter,value){
 			if(patternpage.column_type[value]==1){
 				patternpage.held_pattern_fires[parameter] = -1;
 			}else{
-				patternpage.held_state_fires[parameter] = -1;
+				patternpage.held_state_fires[parameter] = null;
 			}
 		}else{
 			mute_particular_block(parameter,-1);
@@ -1494,10 +1494,12 @@ function fire_block_state(state, block){
 		set_sidebar_mode("edit_state");
 	}else{
 		if(usermouse.shift){
+			if(state=="current") state = -1;//lol
 			queue_quantised_notification(fire_block_state,state,block);
 			patternpage.held_state_fires[block] = state;
+			if(sidebar.selected==block) redraw_flag.flag |= 2; 
 		}else{
-			patternpage.held_state_fires[block] = -1;
+			patternpage.held_state_fires[block] = null;
 			var pv=[];
 			if(state==-1) state = "current";
 			pv = states.get("states::"+state+"::"+block);
@@ -1524,10 +1526,12 @@ function fire_block_state(state, block){
 
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
 	//post("whole state btn click",state);
-	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
-	state_fade.selected = state;
-	state_fade.position = -1;
-	if(state>=-1) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
+	if(!usermouse.shift){
+		if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
+		state_fade.selected = state;
+		state_fade.position = -1;
+		if(state>=-1) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
+	}
 }
 
 function create_whole_state_xfade_slider(state,value){
@@ -1631,7 +1635,6 @@ function fire_whole_state_btn(state,value){
 
 
 function fire_whole_state(state, value){
-	//post("\nfire whole state",state);
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);

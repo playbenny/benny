@@ -325,7 +325,7 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 			}
 			var cw = fcw;
 			var bn = blocks.get("blocks["+b+"]::name");
-
+			var hasinit = states.contains("states::current");
 			if(patternpage.column_type[c]==0){//states
 				for(var s=0;s<MAX_STATES;s++){
 					if(patternpage.block_statelist[b][s]==1){
@@ -343,6 +343,22 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 							// lcd_main.message("moveto",colx+fo1*2,y_o+fo1*4);
 							// lcd_main.message("write",states.get("names::"+s).split(".").join(" "));
 						}
+					}
+				}
+				if(hasinit){
+					y_o=statesbar.y_pos[MAX_STATES];
+					lcd_main.message(((patternpage.held_state_fires[b]==-1)||(usermouse.clicked2d==mouse_index))?"paintrect":"framerect",colx,y_o,colx+fixedw-fo1,y_o+fontheight,menucolour);
+					click_zone(fire_block_state,-1,b, colx,y_o,colx+fixedw-fo1,y_o+fontheight,mouse_index,1);
+
+					if(states.contains("names::"+s)){
+						lcd_main.message("frgb",menucolour);
+						var lab = wrap_dot_text(states.get("names::"+s),fixedw-2*fo1);
+						for(var i=0;i<lab.length;i++){
+							lcd_main.message("moveto",fo1+colx,y_o+fo1*(4+3*i));
+							lcd_main.message("write",lab[i]);
+						}
+						// lcd_main.message("moveto",colx+fo1*2,y_o+fo1*4);
+						// lcd_main.message("write",states.get("names::"+s).split(".").join(" "));
 					}
 				}
 				cw = fixedw;
@@ -711,7 +727,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 				}else{
 					c = statesbar.colours[state-1];
 				}
-				lcd_main.message("paintrect",x1+(st/(statecount+1))*column_width,18+(y+2)*fontheight,x1+((st+1)/(statecount+1))*column_width,18+(y+2.9)*fontheight,c[0],c[1],c[2]);
+				lcd_main.message(((patternpage.held_state_fires[b]==(state-1))||(usermouse.clicked2d==mouse_index))?"framerect":"paintrect",x1+(st/(statecount+1))*column_width,18+(y+2)*fontheight,x1+((st+1)/(statecount+1))*column_width,18+(y+2.9)*fontheight,c[0],c[1],c[2]);
 				click_rectangle(x1+(st/(statecount+1))*column_width,18+(y+2)*fontheight,x1+((st+1)/(statecount+1))*column_width,18+(y+2.9)*fontheight,mouse_index,1);
 				mouse_click_actions[mouse_index] = fire_block_state;
 				if(state==0){
@@ -2759,6 +2775,7 @@ function draw_topbar(){
 							}else{
 								c=[255,255,255];
 							}
+							statesbar.y_pos[MAX_STATES] = y_o;
 							lcd_main.message("framerect", 5, y_o, 9+fontheight, fontheight + y_o,c );
 							if(usermouse.alt){
 								lcd_main.message("moveto",5 + fontheight*0.2, y_o+fontheight*0.45);
@@ -3257,7 +3274,8 @@ function draw_sidebar(){
 		var statex=0;
 		// draw a button for each possible state
 		if(states.contains("states::current")) sc=-1;
-		var x_inc=8 / (MAX_STATES-sc);
+		var x_inc=sidebar.width_in_units / (MAX_STATES-sc);
+		while(x_inc<0.8) x_inc *= 2;
 		for(;sc<MAX_STATES;sc++){
 			var statecontents;
 			if(sc==-1){
@@ -3279,7 +3297,7 @@ function draw_sidebar(){
 					sn = "init";
 					c = [0,0,0];
 				}else{
-					c = sc;
+					c = statesbar.colours[sc];
 				}
 				if(states.contains("names::"+sc)){
 					sn=states.get("names::"+sc);
@@ -3299,7 +3317,7 @@ function draw_sidebar(){
 				}	
 			}
 			statex+=x_inc;
-			if(statex>7){
+			if(statex>=sidebar.width_in_units){
 				y_offset += 1* fontheight;
 				statex=0;
 			}
@@ -5433,7 +5451,7 @@ function draw_sidebar(){
 					}
 					if(usermouse.clicked2d == mouse_index) c = [255,255,255];
 					if(slotfilled){
-						lcd_main.message("paintrect", sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,c );							
+						lcd_main.message((patternpage.held_state_fires[block]==sc)?"framerect":"paintrect", sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,c );							
 						click_zone(fire_block_state,sc,block, sidebar.x+fontheight*1.5 +scw*statex, y_offset+fontheight*0.2, sidebar.x+fontheight*1.5 +scw*(statex+0.9), fontheight*0.8+y_offset,mouse_index,1 );							
 						statex+=1.2;
 					}else{
