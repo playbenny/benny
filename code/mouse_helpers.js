@@ -2067,9 +2067,12 @@ function static_mod_adjust_custom(parameter,value){
 }
 
 function static_mod_adjust_custom_opv_button(parameter,value){ // this version has the 'toggle all' fn.
-	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index,"ctrl",usermouse.ctrl);
+	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index,"ctrl",usermouse.ctrl);
 	//parameter holds paramno, blockno, voiceno
-	
+	if(usermouse.shift&&(!usermouse.ctrl)){ //EXPERIMENTAL: shift defers this kind of button push to quantised trigger on next bar.
+		queue_quantised_notification(static_mod_adjust_custom_opv_button, parameter, value);
+		return 0;
+	}
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){
 		return parameter_static_mod.peek(1,addr);
