@@ -544,7 +544,7 @@ function scan_for_channels(){
 
 				cols += vl.length;
 				for(var tv=0;tv<vl.length;tv++) col_to_chan.push([b,tv]);
-				// post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
+				post("\nadded mixer channel, block ",b,"voices",vl.length," : ",vl,"type",nam);
 			}
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
 			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];

@@ -506,6 +506,7 @@ function process_deferred_matrix(){
 	while(deferred_matrix.length){
 		matrix.message(deferred_matrix.pop());
 	}
+	messnamed("audio_load_complete","bang");
 }
 
 function send_ui_patcherlist(do_all){
