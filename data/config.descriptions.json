@@ -11,7 +11,6 @@
 	"glow" : "post processing ui glow effect amount",
 	"monofont" : "monospaced font",
 	"mainfont" : "main font",
-	"BLOCK_MENU_CLICK_ACTION" : "what mouse action opens the new block menu",
 	"MAX_BEZIER_SEGMENTS" : "maximum number of segments to make a wire out of (raising this seems to make the gpu work hard)",
 	"BLOCKS_GRID" : "size of grid snap for block movement",
 	"MAX_BLOCKS" : "number of blocks available.",

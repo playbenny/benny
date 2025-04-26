@@ -18,7 +18,6 @@
 	"LONG_PRESS_TIME" : 800,
 	"DOUBLE_CLICK_TIME" : 8,
 	"SELF_CONNECT_THRESHOLD" : 600,
-	"BLOCK_MENU_CLICK_ACTION" : "double_click",
 	"AUTO_INCREMENT_SAVE_KEY" : 0,
 	"monofont" : "Consolas",
 	"mainfont" : "Arial",

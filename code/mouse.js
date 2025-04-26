@@ -281,10 +281,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.drag.last_y = usermouse.y;
 						usermouse.ids[1]=-3;
 						usermouse.hover=[-1,-1,-1];
-						if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-							usermouse.long_press_function = show_new_block_menu;
-							usermouse.timer=-1;
-						}
 					}else{
 						usermouse.clicked3d = usermouse.ids[1];
 						usermouse.hover = [].concat(usermouse.ids);
@@ -518,12 +514,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					
 								var f_no= connections.get("connections["+cno+"]::from::number");
 								var t_no = connections.get("connections["+cno+"]::to::number");
-		
+								
 								var avx = blocks.get("blocks["+f_no+"]::space::x");
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
-								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
-								if(dy<1.2) make_space(avx,avy,0.65);
-								var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
+								if(f_no==t_no){
+									avx += 1;
+									avy += 0.5;
+								}else{
+									var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
+									if(dy<1.2) make_space(avx,avy,0.65);
+									avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
+								}
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow 3?",usermouse.hover[1],num);
 								var newb = blocks_menu[num].name;
@@ -568,38 +569,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
 								usermouse.clicked3d = -1;
-								if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
-									usermouse.timer = 0;
-									usermouse.long_press_function = null;
-								}
 							}else{
 								var showmenu =0;
 								//there are options for how to bring up the menu, so we go through and see if they're true for the various modes, then decide whether to trigger the menu (1)
-								if(BLOCK_MENU_CLICK_ACTION=="click"){
-									showmenu = 0;
-								}else if(BLOCK_MENU_CLICK_ACTION=="double_click"){
-									var tp = screentoworld(usermouse.x,usermouse.y);
-									if(usermouse.timer>0){
-										if((Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1]))<400){
-											showmenu = 1;
-										}else{
-											post("\ndouble click too wide",(Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1])));
-										}
+								var tp = screentoworld(usermouse.x,usermouse.y);
+								if(usermouse.timer>0){
+									if((Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1]))<400){
+										showmenu = 1;
 									}else{
-										usermouse.timer = DOUBLE_CLICK_TIME;
-										blocks_page.new_block_click_pos = tp;
+										post("\ndouble click too wide",(Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1])));
 									}
-								}else if(BLOCK_MENU_CLICK_ACTION=="ctrl_click"){
-									if(usermouse.ctrl) showmenu = 1;
-								}else if(BLOCK_MENU_CLICK_ACTION=="alt_click"){
-									if(usermouse.alt) showmenu = 1;
-								}else if(BLOCK_MENU_CLICK_ACTION=="shift_click"){
-									if(usermouse.shift) showmenu = 1;
-								}else if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
-									usermouse.timer = 0;
-									usermouse.long_press_function = null;
+								}else{
+									usermouse.timer = DOUBLE_CLICK_TIME;
+									blocks_page.new_block_click_pos = tp;
 								}
 								if(showmenu){
 									show_new_block_menu();

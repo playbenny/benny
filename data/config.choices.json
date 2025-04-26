@@ -3,7 +3,6 @@
 	"AUTOMAP_MOUSE_FOLLOW" : "TOGGLE",
 	"SHOW_CONTROL_AUTO_DURING_SONG_LOAD" : "TOGGLE",
 	"gain_display_format" : ["x","dB"],
-	"BLOCK_MENU_CLICK_ACTION" : [ "click", "long_click", "double_click", "ctrl_click", "alt_click" ],
 	"monofont" : "FONT",
 	"mainfont" : "FONT",
 	"sidebar_scrollbar_width" : ["int", 4, 80],
