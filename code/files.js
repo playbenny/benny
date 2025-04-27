@@ -574,6 +574,7 @@ function import_song(){
 		if(current_x_max>-999){
 			loading.xoffset = current_x_max + 4 - new_x_min;
 		}
+		sidebar.notification = null;
 		if(songs.contains(loading.songname+"::notepad")){ 
 			sidebar.notification = songs.get(loading.songname+"::notepad");
 			set_sidebar_mode("notification");
@@ -659,10 +660,12 @@ function import_song(){
 						menu.camera_scroll=0;
 						menu.mode = 3;
 						initialise_block_menu(1);
+						sidebar.mode="none";
 						//set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
 						menu.search="";
 						displaymode="block_menu";
 						camera();
+						draw_menu_hint();
 						return -1;
 					}else{
 						post("loading selected susbstitute",menu.swap_block_target);
@@ -725,6 +728,7 @@ function import_song(){
 		meters_updatelist.hardware = [];
 		meters_updatelist.meters = [];
 		meters_enable = 0;
+		if(sidebar.notification != null) set_sidebar_mode("notification");
 		center_view(1);
 		loading.ready_for_next_action=loading.wait;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length){

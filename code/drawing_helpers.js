@@ -1229,7 +1229,7 @@ function draw_menu_hint(){
 	}else if(menu.mode == 0){
 		lcd_main.message("write", "add new block:");
 	}else if(menu.mode == 3){
-		lcd_main.message("write", "substitute for "); 
+		lcd_main.message("write", "please choose a substitute for "); 
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.75+1.1*(loading.progress!=0)));
 		lcd_main.message("write", menu.swap_block_target);
 	}
@@ -1252,16 +1252,18 @@ function draw_menu_hint(){
 	}
 	var type = blocks_menu[num].name;
 	var col = menucolour;
+	var cod;
 	if(blocktypes.contains(type+"::colour")){
 		col = blocktypes.get(type+"::colour");
-		col = shadeRGB(col, 1.2);
+		cod = shadeRGB(col, bg_dark_ratio);
+		var av = 420/(col[0]+col[1]+col[2]*0.4+0.1);
+		col = shadeRGB(col, av);
 		if(automap.mapped_c == -0.5){
 			mapcolours = [col[0], col[1], col[2]];
 			for(var i=0;i<(automap.c_cols*automap.c_rows - 1);i++)mapcolours.push(-1);
 			note_poly.message("setvalue", automap.available_c,"mapcolour",mapcolours);
 		}
-	}
-	var cod = shadeRGB(col, bg_dark_ratio);
+	}else{ cod = shadeRGB(col, bg_dark_ratio); }
 
 	if(blocktypes.contains(type+"::help_text")){
 		var block_name = type;
