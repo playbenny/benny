@@ -512,19 +512,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var cno = menu.connection_number;
 								if(Array.isArray(menu.connection_number)) cno = menu.connection_number[0];
 					
-								var f_no= connections.get("connections["+cno+"]::from::number");
-								var t_no = connections.get("connections["+cno+"]::to::number");
-								
+								var f_no = connections.get("connections["+cno+"]::from::number")|0;
+								var t_no = connections.get("connections["+cno+"]::to::number")|0;
 								var avx = blocks.get("blocks["+f_no+"]::space::x");
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
-								if(f_no==t_no){
-									avx += 1;
-									avy += 0.5;
-								}else{
-									var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
-									if(dy<1.2) make_space(avx,avy,0.65);
-									avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
-								}
+								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
+								if(dy<1.2) make_space(avx,avy,0.65);
+								avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow 3?",usermouse.hover[1],num);
 								var newb = blocks_menu[num].name;

@@ -731,9 +731,13 @@ function insert_menu_button(cno){
 	menu.connection_number = cno;
 	var fr=block_position(connections.get("connections["+cno+"]::from::number"));
 	var tt=block_position(connections.get("connections["+cno+"]::to::number"));
-	blocks_page.new_block_click_pos = [0.5*(fr[0]+tt[0]),0.5*(fr[1]+tt[1])];
-	if((fr[1]-tt[1])<2){
-		make_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.5);
+	if((fr[0] == tt[0])&&(fr[1] == tt[1])){
+		blocks_page.new_block_click_pos = [fr[0]+1,fr[1]];
+	}else{
+		blocks_page.new_block_click_pos = [0.5*(fr[0]+tt[0]),0.5*(fr[1]+tt[1])];
+		if((fr[1]-tt[1])<2){
+			make_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.5);
+		}
 	}
 	set_display_mode("block_menu");
 }
