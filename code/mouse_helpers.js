@@ -1531,6 +1531,9 @@ function fire_block_state(state, block){
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
 	//post("whole state btn click",state);
 	if(!usermouse.shift){
+		usermouse.drag.starting_x = usermouse.x;
+		usermouse.drag.starting_y = usermouse.y;
+		usermouse.drag.distance = 0;
 		if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
 		state_fade.selected = state;
 		state_fade.position = -1;

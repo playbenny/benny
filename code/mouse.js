@@ -334,9 +334,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.drag.starting_value_y = -1;
 						}
 					}
-				}else if(usermouse.got_t==6){
-					var f = mouse_click_actions[usermouse.got_i];
-					f = f[0];
+				}else if(usermouse.got_t == 6){
+					var f = mouse_click_actions[usermouse.got_i][0];
+					// f = f[0];
 					var p = mouse_click_parameters[usermouse.got_i];
 					var v = mouse_click_values[usermouse.got_i];
 					f(p,v);
@@ -594,10 +594,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 					}
-					if(usermouse.timer<0){ // reset background longpress
-						usermouse.timer = 0;
-						usermouse.long_press_function = null;
-					}
+					// if(usermouse.timer<0){ // reset background longpress
+					// 	usermouse.timer = 0;
+					// 	usermouse.long_press_function = null;
+					// }
 					usermouse.drag.starting_x = 0;
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
@@ -751,7 +751,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else{
 			var xdist=usermouse.x-usermouse.drag.starting_x;
 			var ydist=usermouse.drag.starting_y-usermouse.y;
-			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);	
+			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);
+			if((usermouse.last.got_t == 6) && (usermouse.drag.distance > STATE_FADE_DRAG_THRESHOLD)){
+				state_fade.position=0;//1;
+				redraw_flag.flag |= 2;
+				usermouse.last.got_t = 2;
+				usermouse.long_press_function = null;
+				whole_state_xfade_create_task.cancel();
+				mouse_click_actions[usermouse.last.got_i] = whole_state_xfade;
+				p = state_fade.selected;
+				v = 0;
+			}	
 			if((usermouse.clicked2d != -1) && (usermouse.last.got_t>=2 && usermouse.last.got_t<=4)){ 
 				// #### 2D DRAG ###########################################################################################################
 				var f = mouse_click_actions[usermouse.last.got_i];
