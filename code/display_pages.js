@@ -3317,7 +3317,7 @@ function draw_sidebar(){
 				}	
 			}
 			statex+=x_inc;
-			if(statex>=sidebar.width_in_units){
+			if(statex>=sidebar.width_in_units-1){
 				y_offset += 1* fontheight;
 				statex=0;
 			}
@@ -3329,6 +3329,7 @@ function draw_sidebar(){
 		lcd_main.message("frgb" , 255,60,60);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*5.2, fontheight*0.75+y_offset);
 		lcd_main.message("write", "delete state");
+		y_offset+=fontheight*1.1;
 	}else if(sidebar.mode == "notification"){
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,menucolour);
 		lcd_main.message("frgb", 0,0,0 );
