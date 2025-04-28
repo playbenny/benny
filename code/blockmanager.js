@@ -56,7 +56,7 @@ var MUTEDWIRE = [0.16,0.16,0.14, 1];
 var SOUNDCARD_HAS_MATRIX = 0;
 var EXTERNAL_MATRIX_PRESENT = 0;
 var pattern_recall_timing_quantise = "1n";
-var STATE_FADE_DRAG_THRESHOLD = 10; // number of px of drag before state button converts into a slider
+var STATE_FADE_DRAG_THRESHOLD = 20; // number of px of drag before state button converts into a slider
 
 var quantised_event_list = [];
 

@@ -2415,7 +2415,8 @@ function clear_screens(){
 function draw_state_xfade(){
 	if((state_fade.position>-1) && (state_fade.selected > -2)){
 		var c = state_fade.lastcolour;
-		lcd_main.message("paintrect",9,state_fade.y, sidebar.x - 9, fontheight+state_fade.y,menudarkest )
+		lcd_main.message("framerect",3,state_fade.y-2, sidebar.x - 7, fontheight+state_fade.y+2,menucolour );
+		lcd_main.message("paintrect",5,state_fade.y, sidebar.x - 9, fontheight+state_fade.y,menudarkest );
 		var c2 = [0,0,0];
 		if(state_fade.selected>=0) c2 = statesbar.colours[state_fade.selected];
 		state_fade.colour = [c2[0]*(state_fade.position)+c[0]*(1- state_fade.position),c2[1]*(state_fade.position)+c[1]*(1- state_fade.position),c2[2]*(state_fade.position)+c[2]*(1- state_fade.position)];
@@ -2428,7 +2429,7 @@ function draw_state_xfade(){
 		statesfadebar.videoplane.message("enable",1);
 		var tw=(sidebar.x)/mainwindow_width;
 		var th1=(state_fade.y+fontheight*0.5)/mainwindow_height;
-		var th2=(fontheight+10)/mainwindow_height;
+		var th2=(fontheight+10+4)/mainwindow_height;
 		statesfadebar.shown = 1;
 		statesfadebar.videoplane.message("scale",tw,th2);
 		statesfadebar.videoplane.message("position",-1+tw,1-2*th1,0);
