@@ -1,3 +1,6 @@
+28/4/25:
+- improved the feel of the state fade sliders - you can make them pop up by dragging the state buttons in the left bar.
+
 18/04/25:
 - new **recall** page. shows a grid of all stored states (per block) and all available patterns. beta, in progress still, i'm up for hearing feedback in the github discussions page or discord.
 - hold shift when clicking a state button (in the left sidebar or on the recall page), or a pattern (on the recall page) to quantise firing it to the next bar. if shift is still held when the bar comes around it waits for the next one, etc. ctrl-clicking the column labels mutes blocks.
