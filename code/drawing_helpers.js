@@ -1256,7 +1256,7 @@ function draw_menu_hint(){
 	if(blocktypes.contains(type+"::colour")){
 		col = blocktypes.get(type+"::colour");
 		cod = shadeRGB(col, bg_dark_ratio);
-		var av = 420/(col[0]+col[1]+col[2]*0.4+0.1);
+		var av = 420/(col[0]+col[1]+col[2]*0.7+0.1);
 		col = shadeRGB(col, av);
 		if(automap.mapped_c == -0.5){
 			mapcolours = [col[0], col[1], col[2]];

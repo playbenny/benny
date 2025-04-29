@@ -78,9 +78,10 @@ function update(force){
 			for(x=0;x<cols;x++){
 				var knobno = x+y*cols;
 				var readindex=(MAX_DATA*v_list+knobno+1)|0;
-				r=voice_parameter_buffer.peek(1,(MAX_PARAMETERS*v_list+knobno+2)|0)*1.05;
-				r=((12.6 - (r*r*r))%1) * gamutl;
-				r|=0;
+				r = voice_parameter_buffer.peek(1,(MAX_PARAMETERS*v_list+knobno+2)|0) * gamutl;
+				// r=voice_parameter_buffer.peek(1,(MAX_PARAMETERS*v_list+knobno+2)|0)*1.05;
+				// r=((12.6 - (r*r*r))%1) * gamutl;
+				r |= 0;
 				//post("\nC is",readindex,r,i,t);
 				cc=config.get("palette::gamut["+r+"]::colour"); 
 				c = cc;
