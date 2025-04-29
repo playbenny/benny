@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3826457226,
+	"modificationdate" : 3828720066,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1137,6 +1137,11 @@
 				"local" : 1
 			}
 ,
+			"midi_clock_out.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
 			"core.input.control.auto.ui.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
@@ -1361,12 +1366,12 @@
 
 			}
 ,
-			"midi_clock_out.maxpat" : 			{
+			"generic_midi_driver.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/patchers",
-					"projectrelativepath" : "./patchers"
+					"bootpath" : "~/Documents/GitHub/benny/note_blocks/controller_drivers",
+					"projectrelativepath" : "./note_blocks/controller_drivers"
 				}
 
 			}
@@ -1622,21 +1627,6 @@
 				"local" : 1
 			}
 ,
-			"midirouter.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"output_queue_watcher.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"whitegaussnoise.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"core.input.control.auto.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
@@ -1679,6 +1669,21 @@
 ,
 			"benny_ui_settings_editor.js" : 			{
 				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"midirouter.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"output_queue_watcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"whitegaussnoise.gendsp" : 			{
+				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
@@ -2732,7 +2737,12 @@
 ,
 			"vst.RatshackReverb2.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+					"projectrelativepath" : "./audio_blocks"
+				}
+
 			}
 ,
 			"vst.TAL-Chorus-LX-64.json" : 			{
