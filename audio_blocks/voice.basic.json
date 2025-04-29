@@ -23,7 +23,7 @@
 				"colour" : 4
 			},
 			{
-				"contains" : [2,3,13,5],
+				"contains" : [2,3,13,5,5],
 				"height" : 0,
 				"colour" : -2
 			},
@@ -89,6 +89,7 @@
 				"values" : ["lin fm" , "exp fm", "sync" , "sync&fm"],
 				"error_scale" : 0,
 				"nopervoice" : 1,
+				"columns" : 2,
  				"wrap" : 1,
 				"default" : 0.3
 			},
