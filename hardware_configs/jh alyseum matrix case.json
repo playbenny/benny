@@ -316,8 +316,8 @@
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "cvX", "cvY", "mix" ],
-					"hardware_channels" : [ 3, 4, 6, 19 ],
+					"hardware" : [ "in", "cvX", "cvY" ],
+					"hardware_channels" : [ 3, 4, 6 ],
 					"matrix_channels" : [ 1, 2, 4 ]
 				}
 ,
@@ -394,6 +394,31 @@
 				"in" : 				{
 					"hardware" : [ "new", "new" ],
 					"hardware_channels" : [ 33, 34 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.sto" : 		{
+			"type" : "hardware",
+			"substitute" : 102,
+			"max_polyphony" : 1,
+			"help_text" : "oscilator for tuner tests",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "1v/oct in" ],
+					"hardware_channels" : [ 19 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "osc" ],
+					"hardware_channels" : [ 9 ],
+					"dc_block" : [ 0 ]
 				}
 
 			}
