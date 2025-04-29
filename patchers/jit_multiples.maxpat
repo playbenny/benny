@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1221.0, 701.0 ],
+		"rect" : [ 134.0, 134.0, 1221.0, 701.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -137,13 +137,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-71",
-					"linecount" : 2,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_gl_texture", "" ],
-					"patching_rect" : [ 15.85365891456604, 887.804899215698242, 255.0, 36.0 ],
-					"text" : "jit.gl.camera benny @cull_face 1 @antialias 1 @smooth_shading 1 @fsaa 1"
+					"patching_rect" : [ 16.0, 887.804899215698242, 491.0, 22.0 ],
+					"text" : "jit.gl.camera benny @cull_face 1 @antialias 1 @smooth_shading 1 @fsaa 1 @far_clip 500"
 				}
 
 			}
@@ -1900,7 +1899,7 @@
 
 			}
  ],
-		"originid" : "pat-750"
+		"originid" : "pat-760"
 	}
 
 }
