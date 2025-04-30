@@ -3118,14 +3118,12 @@ function block_edit(parameter,value){
 function automap_default(a,b){
 	if(sidebar.selected != -1){
 		if(a<0){
-			//post("\nI THINK THIS IS STATIC MOD RESET",a,b);
+			//post("\nTHIS IS STATIC MOD RESET",a,b);
 			parameter_static_mod.poke(1,-a,0);
-			note_poly.message("setvalue", b+1, "refresh");
-			//note_poly.message("setvalue", automap.available_c,"refresh");
+			note_poly.message("setvalue", automap.available_c,"refresh");
 		}else{
 			parameter_value_buffer.poke(1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
-			note_poly.message("setvalue", b+1,"refresh");
-			//note_poly.message("setvalue", automap.available_c,"refresh");
+			note_poly.message("setvalue", automap.available_c,"refresh");
 		}
 	}
 }
