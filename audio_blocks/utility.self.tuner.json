@@ -18,7 +18,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1]
+				"contains" : [2,2,0,1]
 			}
 		],
 		"parameters" : [
@@ -35,6 +35,13 @@
 				"values" : ["firstvoice", "calculate_slope", "calculate_slope"],
 				"wrap" : 0,
 				"default" : 0.2
+			},
+			{
+				"name" : "slope",
+				"type" : "float",
+				"values" : ["uni", 0.2, 0.9, "lin"],
+				"default" : 3.889,
+				"wrap" : 0
 			}
 		]
 	}

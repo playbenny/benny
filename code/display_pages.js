@@ -3805,7 +3805,7 @@ function draw_sidebar(){
 		click_zone(clear_everything_btn, 0,mouse_index, sidebar.x2-fontheight*5.1, 9+y_offset, sidebar.x2, 9+fontheight+y_offset, mouse_index,1 );
 		lcd_main.message("moveto", sidebar.x2-fontheight*4.9, 9+fontheight*0.75+y_offset);
 		lcd_main.message("write", "clear everything");
-		// y_offset+=1.7*fontheight;
+		y_offset+=1.7*fontheight;
 
 	}else if(sidebar.mode == "cpu"){//todo, clicking the active blocks list should open patchers etc, maybe mouseover tells you what things are
 		draw_resource_monitor_page();
