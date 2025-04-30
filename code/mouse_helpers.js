@@ -3115,7 +3115,7 @@ function block_edit(parameter,value){
 	}
 }
 
-function automap_default(a,b){
+function automap_default(a){
 	if(sidebar.selected != -1){
 		if(a<0){
 			//post("\nTHIS IS STATIC MOD RESET",a,b);

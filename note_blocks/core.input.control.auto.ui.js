@@ -30,7 +30,7 @@ var clicked = 0;
 var conn_no = [];
 var conn_target = [];
 var conn_inlet = [];
-
+var controllername;
 
 function setup(x1,y1,x2,y2,sw){ 
 	// not done - needs to work out which controller it is, get row and column count from config
@@ -129,7 +129,7 @@ function voice_is(v){
 	if(block>=0){
 		v_list = map.get(block);
 		if(typeof v_list!="number") v_list = v_list[0];
-		var controllername = blocks.get("blocks["+block+"]::selected_controller");
+		controllername = blocks.get("blocks["+block+"]::selected_controller");
 		if(io.contains("controllers::"+controllername)){
 			post("\ngetting controller info for ui");
 			rows = io.get("controllers::"+controllername+"::rows");
@@ -205,6 +205,7 @@ function store(){
 function enabled(){}
 
 function get_connections_list(){
+	if(controllername != blocks.get("blocks["+block+"]::selected_controller")) voice_is(block);
 	conn_no = [];
 	conn_target = [];
 	conn_inlet = [];

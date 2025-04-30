@@ -116,7 +116,8 @@
 			}
 ,
 			"Launch Control XL" : 			{
-				"name" : [ "Launch Control XL" ],
+				"name" : "Launch Control XL",
+				"driver" : "Launch Control XL",
 				"substitute" : [ "LPD8 mk2" ],
 				"outputs" : 32,
 				"type" : "potentiometer",
@@ -147,7 +148,17 @@
 				}
 
 			}
-
+,
+			"Monome Arc 4" : 			{
+				"name" : "monome arc 4",
+				"driver" : "monome arc 4",
+				"substitute" : [ "Midi Fighter Twister", "JAMES_16e" ],
+				"outputs" : 4,
+				"scaling" : 0.01,
+				"type" : "encoder",
+				"columns" : 4,
+				"rows" : 1
+			}
 		}
 ,
 		"matrix" : 		{
