@@ -44,9 +44,9 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	fullscreen = (width > sw * 0.34);
+	if(block>=0)get_connections_list();
 	w4=width/cols;
 	h4=height/(rows+fullscreen*btnhgt);
-	if(block>=0)get_connections_list();
 	draw();
 }
 function draw(){

@@ -10,9 +10,93 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-48",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1344.0, 256.0, 87.0, 22.0 ],
+					"text" : "prepend target"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-47",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1344.0, 305.0, 103.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"filename" : "monome_arc.js",
+						"parameter_enable" : 0
+					}
+,
+					"text" : "js monome_arc.js"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-41",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "list" ],
+					"patching_rect" : [ 1344.0, 211.0, 66.0, 22.0 ],
+					"text" : "listfunnel 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-32",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 1414.0, 65.0, 55.0, 22.0 ],
+					"text" : "zl slice 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-31",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ 1403.0, 33.0, 63.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict config"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-30",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1403.0, 1.0, 198.0, 22.0 ],
+					"text" : "loadmess get MAX_PARAMETERS"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-29",
 					"maxclass" : "newobj",
@@ -20,7 +104,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"patching_rect" : [ 1634.0, 292.5, 29.5, 22.0 ],
-					"text" : "* 5"
+					"text" : "* 3"
 				}
 
 			}
@@ -77,12 +161,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-14",
+					"linecount" : 4,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1516.0, 226.0, 50.0, 22.0 ],
-					"text" : "1"
+					"patching_rect" : [ 1516.0, 226.0, 50.0, 64.0 ],
+					"text" : "1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0"
 				}
 
 			}
@@ -94,7 +179,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1481.0, 143.0, 79.0, 22.0 ],
-					"presentation_linecount" : 3,
 					"text" : "brightnesslist"
 				}
 
@@ -625,8 +709,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1313.0, 226.0, 29.5, 22.0 ],
-					"text" : "="
+					"patching_rect" : [ 1222.0, 187.0, 118.0, 22.0 ],
+					"text" : "1282 1283 1293 -1"
 				}
 
 			}
@@ -637,8 +721,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1303.0, 143.0, 37.0, 22.0 ],
-					"text" : "block"
+					"patching_rect" : [ 1231.0, 143.0, 84.0, 22.0 ],
+					"text" : "paramindexes"
 				}
 
 			}
@@ -851,7 +935,7 @@
 
 							}
  ],
-						"originid" : "pat-4723"
+						"originid" : "pat-4870"
 					}
 ,
 					"patching_rect" : [ 1018.0, 226.0, 79.0, 22.0 ],
@@ -1221,7 +1305,30 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-31", 0 ],
+					"source" : [ "obj-30", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-32", 0 ],
+					"source" : [ "obj-31", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-27", 1 ],
+					"order" : 1,
+					"source" : [ "obj-313", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-41", 0 ],
+					"order" : 0,
 					"source" : [ "obj-313", 0 ]
 				}
 
@@ -1305,6 +1412,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-48", 0 ],
+					"source" : [ "obj-41", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-45", 0 ]
 				}
@@ -1312,8 +1426,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"source" : [ "obj-48", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-103", 0 ],
 					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-16", 0 ],
+					"source" : [ "obj-5", 3 ]
 				}
 
 			}
@@ -1497,23 +1625,7 @@
 
 			}
  ],
-		"originid" : "pat-4703",
-		"dependency_cache" : [ 			{
-				"name" : "monome-device.js",
-				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
-				"patcherrelativepath" : "../../../../../Max 9/Packages/monome/patchers",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "monome-device.maxpat",
-				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
-				"patcherrelativepath" : "../../../../../Max 9/Packages/monome/patchers",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+		"originid" : "pat-4850"
 	}
 
 }
