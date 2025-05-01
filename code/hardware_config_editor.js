@@ -394,6 +394,24 @@ function render_controls(){
 				y_pos+=unit.row*2;
 				ii++;
 
+				controls[ii] = this.patcher.newdefault(10, 100, "comment");
+				controls[ii].message("set", "use as default for grid input");
+				controls[ii].presentation(1);
+				controls[ii].presentation_position(30,y_pos);
+				ii++;
+				controls[ii] = this.patcher.newdefault(10, 100, "toggle" , "@varname", "controller_defaults.grid."+ii);
+				if(configfile.contains("io::controller_defaults::grid")){
+					controls[ii].message("set", (configfile.get("io::controller_defaults::grid")==cdk[p]));
+				}else{
+					controls[ii].message("set", 0);
+				}
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,20,20);
+				values[ii] = [cdk[p]];
+				y_pos+=unit.row*2;
+				ii++;
+
 				//"outputs" : 16,
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "number of outputs");

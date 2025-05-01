@@ -10,9 +10,80 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-33",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1441.0, 247.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-51",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1020.0, 255.0, 121.0, 22.0 ],
+					"text" : "r #0num_params"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-47",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 998.0, 332.0, 51.0, 22.0 ],
+					"text" : "zl group"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-41",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 998.0, 300.0, 36.0, 22.0 ],
+					"text" : "t -0.1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-38",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "bang", "int" ],
+					"patching_rect" : [ 974.0, 255.0, 43.0, 22.0 ],
+					"text" : "Uzi 16"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-26",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 772.0, 621.0, 123.0, 22.0 ],
+					"text" : "prepend automapped"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-24",
 					"maxclass" : "newobj",
@@ -31,7 +102,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1180.0, 338.0, 131.0, 22.0 ],
+					"patching_rect" : [ 1180.0, 419.0, 131.0, 22.0 ],
 					"text" : "prepend paramindexes"
 				}
 
@@ -638,7 +709,7 @@
 
 							}
  ],
-						"originid" : "pat-4660"
+						"originid" : "pat-4806"
 					}
 ,
 					"patching_rect" : [ 679.0, 586.0, 74.0, 22.0 ],
@@ -1097,7 +1168,7 @@
 
 											}
  ],
-										"originid" : "pat-4664"
+										"originid" : "pat-4810"
 									}
 ,
 									"patching_rect" : [ 145.0, 465.0, 97.0, 22.0 ],
@@ -1626,7 +1697,7 @@
 
 							}
  ],
-						"originid" : "pat-4662"
+						"originid" : "pat-4808"
 					}
 ,
 					"patching_rect" : [ 606.0, 586.0, 57.0, 22.0 ],
@@ -1919,7 +1990,7 @@
 
 							}
  ],
-						"originid" : "pat-4666"
+						"originid" : "pat-4812"
 					}
 ,
 					"patching_rect" : [ 293.0, 631.0, 101.0, 22.0 ],
@@ -2328,7 +2399,7 @@
 
 							}
  ],
-						"originid" : "pat-4668"
+						"originid" : "pat-4814"
 					}
 ,
 					"patching_rect" : [ 1611.0, 376.0, 167.0, 22.0 ],
@@ -2562,12 +2633,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-244",
-					"linecount" : 3,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1170.0, 32.0, 391.5, 48.0 ],
-					"text" : "maplist: positive values are param value buffer locations, -1 is disabled, other negative numbers are per-voice. -0.5 is the automap-to-core mode that just passes raw encoder values back for eg file menu"
+					"patching_rect" : [ 1170.0, 32.0, 391.5, 75.0 ],
+					"text" : "maplist: positive values are param value buffer locations, -1 is disabled, other negative numbers are per-voice. -0.5 is the automap-to-core mode that just passes raw encoder values back for eg file menu\n-0.1 just switches off display when not automapped for self-updating ones like monome arc"
 				}
 
 			}
@@ -2736,7 +2807,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 48.5, 259.0, 163.0, 22.0 ],
-					"text" : "\"Monome Arc 4\""
+					"text" : "\"LPMiniMK3 MIDI\""
 				}
 
 			}
@@ -2986,7 +3057,7 @@
 
 											}
  ],
-										"originid" : "pat-4682"
+										"originid" : "pat-4828"
 									}
 ,
 									"patching_rect" : [ 231.0, 209.0, 81.0, 22.0 ],
@@ -4040,7 +4111,7 @@
 
 							}
  ],
-						"originid" : "pat-4680"
+						"originid" : "pat-4826"
 					}
 ,
 					"patching_rect" : [ 590.0, 951.0, 86.0, 22.0 ],
@@ -4378,7 +4449,7 @@
 
 							}
  ],
-						"originid" : "pat-4684"
+						"originid" : "pat-4830"
 					}
 ,
 					"patching_rect" : [ 505.5, 277.0, 154.0, 22.0 ],
@@ -4453,7 +4524,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 225.5, 312.0, 121.0, 22.0 ],
-					"text" : "\"Monome Arc 4\""
+					"text" : "\"LPMiniMK3 MIDI\""
 				}
 
 			}
@@ -4631,7 +4702,7 @@
 					"patching_rect" : [ 1639.0, 338.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3677mapwrap",
+						"name" : "3581mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -4656,7 +4727,7 @@
 					"patching_rect" : [ 816.0, 1072.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3677mapwrap",
+						"name" : "3581mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -5392,7 +5463,7 @@
 
 							}
  ],
-						"originid" : "pat-4688"
+						"originid" : "pat-4834"
 					}
 ,
 					"patching_rect" : [ 1406.0, 638.0, 86.0, 22.0 ],
@@ -7205,6 +7276,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-189", 1 ],
+					"source" : [ "obj-26", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-263", 0 ],
 					"source" : [ "obj-260", 0 ]
 				}
@@ -7707,7 +7785,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-41", 0 ],
+					"source" : [ "obj-38", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"source" : [ "obj-38", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-104", 0 ],
+					"order" : 0,
 					"source" : [ "obj-39", 0 ]
 				}
 
@@ -7774,9 +7867,24 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-26", 0 ],
+					"order" : 1,
+					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-30", 0 ],
 					"order" : 0,
 					"source" : [ "obj-39", 6 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 1 ],
+					"source" : [ "obj-39", 5 ]
 				}
 
 			}
@@ -7827,8 +7935,24 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-73", 0 ],
+					"destination" : [ "obj-38", 0 ],
+					"order" : 1,
 					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-73", 0 ],
+					"order" : 0,
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"source" : [ "obj-41", 0 ]
 				}
 
 			}
@@ -7887,6 +8011,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-29", 0 ],
 					"source" : [ "obj-48", 1 ]
 				}
@@ -7940,6 +8071,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-223", 0 ],
 					"source" : [ "obj-50", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-38", 1 ],
+					"source" : [ "obj-51", 0 ]
 				}
 
 			}
@@ -8393,7 +8531,7 @@
 
 			}
  ],
-		"originid" : "pat-4658",
+		"originid" : "pat-4804",
 		"oscreceiveudpport" : 0
 	}
 

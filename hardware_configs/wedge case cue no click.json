@@ -159,6 +159,31 @@
 				"columns" : 4,
 				"rows" : 1
 			}
+,
+			"LPMiniMK3 MIDI" : 			{
+				"name" : [ "LPMiniMK3 MIDI" ],
+				"substitute" : [  ],
+				"outputs" : 0,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 0,
+				"scaling" : 0.125,
+				"columns" : 8,
+				"rows" : 8,
+				"buttons" : 				{
+					"first" : 36,
+					"type" : "note",
+					"channel" : 1,
+					"count" : 64,
+					"globals" : 					{
+						"automap_toggle" : 0,
+						"automap_page" : 1
+					}
+
+				}
+
+			}
+
 		}
 ,
 		"matrix" : 		{
@@ -168,7 +193,8 @@
 		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat",
 		"controller_defaults" : 		{
 			"control_auto" : "Midi Fighter Twister",
-			"mixer_bus" : "Launch Control XL"
+			"mixer_bus" : "Launch Control XL",
+			"grid" : "LPMiniMK3 MIDI"
 		}
 
 	}
