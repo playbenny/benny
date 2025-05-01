@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3828720066,
+	"modificationdate" : 3828980174,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -172,6 +172,11 @@
 			}
 ,
 			"core.input.control.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"generic_midi_driver.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -1366,12 +1371,12 @@
 
 			}
 ,
-			"generic_midi_driver.maxpat" : 			{
+			"LPMiniMK3 MIDI.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/note_blocks/controller_drivers",
-					"projectrelativepath" : "./note_blocks/controller_drivers"
+					"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/controller_drivers",
+					"projectrelativepath" : "./hardware_configs/drivers/controller_drivers"
 				}
 
 			}
