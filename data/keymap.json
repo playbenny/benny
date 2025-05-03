@@ -121,7 +121,7 @@
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
         "2037" : ["alt-left arrow", "back_button"],
         "2036" : ["alt-right arrow", "fwd_button"],
-        "-4" : ["enter", "set_display_mode","block_menu"],
+        "-4" : ["enter", "blocks_page_enter","block_menu"],
         "-5" : ["tab", "set_display_mode","panels"],
         "-9" : ["UP", "move_selected_blocks", 0,1],
         "-10" : ["DOWN", "move_selected_blocks", 0, -1],

@@ -602,8 +602,6 @@ function import_hardware(v){
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
 	if(output_blocks.length<MAX_AUDIO_OUTPUTS/2){
 		for(i=output_blocks.length;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks.push("clip_dither");
-	}else{
-		output_blocks.splice(MAX_AUDIO_OUTPUTS);
 	}
 	post("\nreading midi io config");
 	d = hardwareconfig.get("io");
@@ -652,8 +650,6 @@ function import_hardware(v){
 	}
 	//messnamed("to_ext_matrix","read_config");
 	transfer_input_lists();
-	post("\nsetting output blocks to:",output_blocks);
-	output_blocks_poly.patchername(output_blocks); 
 	post("\n\ninit stage 4 : start graphic and audio engines\n------------------------------------------");
 
 	initialise_graphics();
@@ -793,7 +789,12 @@ function import_hardware(v){
 	sigouts.chans(matrixouts);
 	this.patcher.getnamed("mc_separate").chans(MAX_AUDIO_VOICES,MAX_AUDIO_VOICES);
 	matrix.numouts(matrixouts);
-	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
+	var ol = ((MAX_AUDIO_OUTPUTS+1)/2)|0;
+	output_blocks.splice(ol);
+	output_blocks_poly.voices(ol);
+	post("\nsetting output blocks to:",output_blocks);
+	output_blocks_poly.patchername(output_blocks); 
+	
 	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
 	audio_to_data_poly.message("down",((+config.get("AUDIO_TO_DATA_DOWNSAMPLE"))|0));
 	post("\nset audio_to_data poly downsampling to ",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));

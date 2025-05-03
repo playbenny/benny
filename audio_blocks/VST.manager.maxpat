@@ -2,43 +2,194 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
-			"major" : 8,
-			"minor" : 6,
-			"revision" : 4,
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
-		"bglocked" : 0,
+		"rect" : [ 34.0, 76.0, 1221.0, 701.0 ],
 		"openinpresentation" : 1,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
 		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
-		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patcher" : 					{
+						"fileversion" : 1,
+						"appversion" : 						{
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
+							"architecture" : "x64",
+							"modernui" : 1
+						}
+,
+						"classnamespace" : "box",
+						"rect" : [ 0.0, 0.0, 902.999999999999886, 649.600000000000023 ],
+						"gridsize" : [ 15.0, 15.0 ],
+						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-11",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "int" ],
+									"patching_rect" : [ 122.0, 172.0, 29.5, 22.0 ],
+									"text" : "< 4"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-195",
+									"maxclass" : "newobj",
+									"numinlets" : 3,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 77.0, 215.75, 64.0, 22.0 ],
+									"text" : "pack 0 0 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-188",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "int" ],
+									"patching_rect" : [ 77.0, 154.75, 29.5, 22.0 ],
+									"text" : "/ 4"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-185",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 3,
+									"outlettype" : [ "bang", "bang", "int" ],
+									"patching_rect" : [ 50.0, 100.0, 46.0, 22.0 ],
+									"text" : "Uzi 1 0"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"comment" : "",
+									"id" : "obj-12",
+									"index" : 1,
+									"maxclass" : "inlet",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "bang" ],
+									"patching_rect" : [ 50.0, 40.0, 30.0, 30.0 ]
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"comment" : "",
+									"id" : "obj-14",
+									"index" : 2,
+									"maxclass" : "inlet",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "int" ],
+									"patching_rect" : [ 85.0, 40.0, 30.0, 30.0 ]
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"comment" : "",
+									"id" : "obj-16",
+									"index" : 1,
+									"maxclass" : "outlet",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 77.0, 297.75, 30.0, 30.0 ]
+								}
+
+							}
+ ],
+						"lines" : [ 							{
+								"patchline" : 								{
+									"destination" : [ "obj-195", 2 ],
+									"source" : [ "obj-11", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-185", 0 ],
+									"source" : [ "obj-12", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-185", 1 ],
+									"source" : [ "obj-14", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-188", 0 ],
+									"order" : 1,
+									"source" : [ "obj-185", 2 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-195", 1 ],
+									"order" : 0,
+									"source" : [ "obj-185", 2 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-11", 0 ],
+									"order" : 0,
+									"source" : [ "obj-188", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-195", 0 ],
+									"order" : 1,
+									"source" : [ "obj-188", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-16", 0 ],
+									"source" : [ "obj-195", 0 ]
+								}
+
+							}
+ ],
+						"originid" : "pat-5440"
+					}
+,
+					"patching_rect" : [ 61.0, 803.0, 80.0, 22.0 ],
+					"text" : "p defaultrows"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-15",
 					"maxclass" : "newobj",
@@ -99,42 +250,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-181",
@@ -251,17 +376,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5422"
 					}
 ,
 					"patching_rect" : [ -1.0, 473.0, 101.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p get_amxd_path"
 				}
 
@@ -288,42 +407,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-1",
@@ -1032,17 +1125,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5424"
 					}
 ,
 					"patching_rect" : [ 545.5, 585.0, 97.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p get_amxd_info"
 				}
 
@@ -1280,42 +1367,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 0.0, 0.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-66",
@@ -1458,17 +1519,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5426"
 					}
 ,
 					"patching_rect" : [ 763.0, 364.0, 88.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p format_types"
 				}
 
@@ -1477,7 +1532,7 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-216",
-					"items" : [ "vst", "Pressure464", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "ToTape664", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaRoom" ],
+					"items" : [ "vst", "Capacitor264", ",", "vst", "DC1A2", ",", "vst", "DeRez264", ",", "vst", "DPiano-E", ",", "vst", "Elation64", ",", "vst", "Focus64", ",", "vst", "Mojo64", ",", "vst", "Pressure464", ",", "vst", "TAL-Chorus-LX-64", ",", "vst", "ToTape664", ",", "vst", "ValhallaFreqEcho_x64", ",", "vst", "ZBandpass264", ",", "vst", "ZHighpass264", ",", "vst", "ZLowpass264", ",", "vst", "ZNotch264", ",", "vst", "ZRegion264", ",", "vst3", "TAL-NoiseMaker", ",", "vst3", "ValhallaDelay", ",", "vst3", "ValhallaPlate", ",", "vst3", "ValhallaRoom", ",", "vst3", "ValhallaSpaceModulator", ",", "vst3", "ValhallaUberMod", ",", "vst3", "ValhallaVintageVerb" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -1523,42 +1578,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-1",
@@ -1746,17 +1775,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5428"
 					}
 ,
 					"patching_rect" : [ 863.0, 364.0, 88.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p format_types"
 				}
 
@@ -1807,42 +1830,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 84.0, 132.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-71",
@@ -1954,17 +1951,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5430"
 					}
 ,
 					"patching_rect" : [ 236.5, 625.0, 90.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p cleanup64etc"
 				}
 
@@ -2555,53 +2546,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-198",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 70.0, 773.0, 150.0, 20.0 ],
-					"text" : "default"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-195",
-					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 43.0, 823.0, 64.0, 22.0 ],
-					"text" : "pack 0 0 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-188",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 43.0, 791.0, 87.0, 22.0 ],
-					"text" : "expr ($i1/4)%4"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-185",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 3,
-					"outlettype" : [ "bang", "bang", "int" ],
-					"patching_rect" : [ 16.0, 758.0, 46.0, 22.0 ],
-					"text" : "Uzi 1 0"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-51",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -2631,7 +2575,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "clear" ],
-					"patching_rect" : [ -59.0, 790.0, 51.0, 22.0 ],
+					"patching_rect" : [ 58.0, 759.0, 51.0, 22.0 ],
 					"text" : "t 1 clear"
 				}
 
@@ -2643,7 +2587,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ -59.0, 758.0, 61.0, 22.0 ],
+					"patching_rect" : [ 58.0, 727.0, 61.0, 22.0 ],
 					"text" : "savebang"
 				}
 
@@ -2808,7 +2752,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 64.0, 939.0, 29.5, 22.0 ],
+					"patching_rect" : [ 109.0, 939.0, 29.5, 22.0 ],
 					"text" : "t i i"
 				}
 
@@ -3331,42 +3275,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-219",
@@ -3681,17 +3599,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5432"
 					}
 ,
 					"patching_rect" : [ 1585.0, 790.356079000000022, 91.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p colourhandler"
 				}
 
@@ -3756,42 +3668,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-219",
@@ -4106,17 +3992,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5434"
 					}
 ,
 					"patching_rect" : [ 1386.0, 789.356079000000022, 91.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p colourhandler"
 				}
 
@@ -4181,42 +4061,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-219",
@@ -4531,17 +4385,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5436"
 					}
 ,
 					"patching_rect" : [ 1190.0, 788.356079000000022, 91.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p colourhandler"
 				}
 
@@ -4704,42 +4552,16 @@
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
-							"major" : 8,
-							"minor" : 6,
-							"revision" : 4,
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
-						"bglocked" : 0,
-						"openinpresentation" : 0,
-						"default_fontsize" : 12.0,
-						"default_fontface" : 0,
-						"default_fontname" : "Arial",
-						"gridonopen" : 1,
 						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
-						"objectsnaponopen" : 1,
-						"statusbarvisible" : 2,
-						"toolbarvisible" : 1,
-						"lefttoolbarpinned" : 0,
-						"toptoolbarpinned" : 0,
-						"righttoolbarpinned" : 0,
-						"bottomtoolbarpinned" : 0,
-						"toolbars_unpinned_last_save" : 0,
-						"tallnewobj" : 0,
-						"boxanimatetime" : 200,
-						"enablehscroll" : 1,
-						"enablevscroll" : 1,
-						"devicewidth" : 0.0,
-						"description" : "",
-						"digest" : "",
-						"tags" : "",
-						"style" : "",
-						"subpatcher_template" : "",
-						"assistshowspatchername" : 0,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-219",
@@ -5054,17 +4876,11 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-5438"
 					}
 ,
 					"patching_rect" : [ 982.0, 788.356079000000022, 91.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"description" : "",
-						"digest" : "",
-						"globalpatchername" : "",
-						"tags" : ""
-					}
-,
 					"text" : "p colourhandler"
 				}
 
@@ -5417,7 +5233,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 909.0, 1444.5, 105.0, 22.0 ],
-					"text" : "8"
+					"text" : "-1"
 				}
 
 			}
@@ -5429,7 +5245,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 898.5, 1406.5, 105.0, 22.0 ],
-					"text" : "4 5 6 7"
+					"text" : "-1"
 				}
 
 			}
@@ -5441,7 +5257,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 888.0, 1377.5, 105.0, 22.0 ],
-					"text" : "0 1 2 3"
+					"text" : "0"
 				}
 
 			}
@@ -5489,7 +5305,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 611.0, 1444.5, 280.0, 22.0 ],
-					"text" : "Bypass"
+					"text" : "-"
 				}
 
 			}
@@ -5501,7 +5317,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 600.5, 1406.5, 280.0, 22.0 ],
-					"text" : "HPF LPF AGC Oversampling"
+					"text" : "-"
 				}
 
 			}
@@ -5625,7 +5441,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 64.0, 902.5, 41.0, 22.0 ],
+					"patching_rect" : [ 109.0, 903.0, 41.0, 22.0 ],
 					"text" : "unjoin"
 				}
 
@@ -5637,7 +5453,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 64.0, 973.5, 81.0, 22.0 ],
+					"patching_rect" : [ 109.0, 974.0, 81.0, 22.0 ],
 					"text" : "getcolumn $1"
 				}
 
@@ -5650,7 +5466,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 592.0, 1377.5, 278.0, 22.0 ],
-					"text" : "Bypass Input Output Model"
+					"text" : "Boost"
 				}
 
 			}
@@ -5662,7 +5478,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ -27.0, 825.75, 175.0, 166.0 ],
+					"patching_rect" : [ -105.376348733901978, 967.0, 175.0, 166.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
 					"presentation_rect" : [ 13.0, 109.0, 679.0, 54.0 ],
@@ -5909,7 +5725,7 @@
 					"one/row" : 1,
 					"outlettype" : [ "list", "list" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 148.0, 839.0, 66.0, 18.0 ],
+					"patching_rect" : [ 148.0, 869.0, 66.0, 18.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 13.0, 184.0, 66.0, 18.0 ],
 					"rows" : 1,
@@ -6021,6 +5837,7 @@
 , 			{
 				"box" : 				{
 					"bgcolor" : [ 0.2, 0.2, 0.2, 0.0 ],
+					"drawoffcolor" : 1,
 					"elementcolor" : [ 0.349019607843137, 0.349019607843137, 0.349019607843137, 0.0 ],
 					"floatoutput" : 1,
 					"id" : "obj-67",
@@ -6066,7 +5883,6 @@
 			}
 , 			{
 				"box" : 				{
-					"autosave" : 1,
 					"bgmode" : 0,
 					"border" : 0,
 					"clickthrough" : 0,
@@ -6078,17 +5894,6 @@
 					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
 					"patching_rect" : [ 489.0, 653.0, 92.5, 22.0 ],
 					"save" : [ "#N", "vst~", "loaduniqueid", 0, ";" ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_invisible" : 1,
-							"parameter_longname" : "vst~",
-							"parameter_modmode" : 0,
-							"parameter_shortname" : "vst~",
-							"parameter_type" : 3
-						}
-
-					}
-,
 					"saved_object_attributes" : 					{
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
@@ -6104,14 +5909,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "PreBOX.vst3info",
-							"plugindisplayname" : "PreBOX",
-							"pluginsavedname" : "C74_VST3:/PreBOX",
-							"pluginsaveduniqueid" : 1371247375,
+							"pluginname" : "PodcastDeluxe64.vstinfo",
+							"plugindisplayname" : "airwindows PodcastDeluxe",
+							"pluginsavedname" : "",
+							"pluginsaveduniqueid" : 0,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "239.VMjLgXN....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCNt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKq7jKt3hKt3hKt3hKt3hKt3hKt3hK2rhKt3hKt3BOujzPu0Fbu4VYtQmO7jTQjkFcC8lazI2arwVYx4CLtvyKIUDYoQ2Pu4Fcx8FarUlb9vyKVMEUy.Ea0cVZtMEcgQWY9.."
+							"blob" : "64.CMlaKA....fQPMDZ....A.2ajQF...P......PTYlEVcrQG................................A....+."
 						}
 ,
 						"snapshotlist" : 						{
@@ -6121,27 +5926,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "Dexed",
-									"origin" : "PreBOX.vst3info",
-									"type" : "VST3",
+									"origin" : "PodcastDeluxe64.vstinfo",
+									"type" : "VST",
 									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "PreBOX.vst3info",
-										"plugindisplayname" : "PreBOX",
-										"pluginsavedname" : "C74_VST3:/PreBOX",
-										"pluginsaveduniqueid" : 1371247375,
+										"pluginname" : "PodcastDeluxe64.vstinfo",
+										"plugindisplayname" : "airwindows PodcastDeluxe",
+										"pluginsavedname" : "",
+										"pluginsaveduniqueid" : 0,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "239.VMjLgXN....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCNt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKq7jKt3hKt3hKt3hKt3hKt3hKt3hK2rhKt3hKt3BOujzPu0Fbu4VYtQmO7jTQjkFcC8lazI2arwVYx4CLtvyKIUDYoQ2Pu4Fcx8FarUlb9vyKVMEUy.Ea0cVZtMEcgQWY9.."
-									}
-,
-									"fileref" : 									{
-										"name" : "Dexed",
-										"filename" : "Dexed.maxsnap",
-										"filepath" : "~/Documents/james music/rhizome 5/data",
-										"filepos" : -1,
-										"snapshotfileid" : "b70194d14f32b3504a08b4730e0f928b"
+										"blob" : "64.CMlaKA....fQPMDZ....A.2ajQF...P......PTYlEVcrQG................................A....+."
 									}
 
 								}
@@ -6209,7 +6006,7 @@
 				"box" : 				{
 					"fontsize" : 13.9,
 					"id" : "obj-54",
-					"items" : [ "vst", "AR TG Mastering Live Mono", ",", "vst", "AR TG Mastering Live Stereo", ",", "vst", "AR TG Mastering Mono", ",", "vst", "AR TG Mastering Stereo", ",", "vst", "AR TG Meter Bridge Mono", ",", "vst", "AR TG Meter Bridge Stereo", ",", "vst", "CLA-2A Mono", ",", "vst", "CLA-2A Stereo", ",", "vst", "Console7Buss64", ",", "vst", "Console7Cascade64", ",", "vst", "Console7Channel64", ",", "vst", "CStrip64", ",", "vst", "FabFilter Pro-C 2", ",", "vst", "MaxxBass Mono", ",", "vst", "MaxxBass Stereo", ",", "vst", "Organ3 64", ",", "vst", "TB_ReelBus_v3", ",", "vst", "TENSjr", ",", "vst", "ToTape764", ",", "vst", "ValhallaDelay_x64", ",", "vst", "ValhallaRoom_x64", ",", "vst", "ValhallaShimmer_x64", ",", "vst", "ValhallaUberMod_x64", ",", "vst", "ValhallaVintageVerb_x64", ",", "vst3", "Ampeg SVTVR Classic", ",", "vst3", "AR TG Mastering Live Mono", ",", "vst3", "AR TG Mastering Live Stereo", ",", "vst3", "AR TG Mastering Mono", ",", "vst3", "AR TG Mastering Stereo", ",", "vst3", "AR TG Meter Bridge Mono", ",", "vst3", "AR TG Meter Bridge Stereo", ",", "vst3", "Black Box Analog Design HG-2", ",", "vst3", "bx_cleansweep V2", ",", "vst3", "bx_console Focusrite SC", ",", "vst3", "bx_masterdesk", ",", "vst3", "bx_oberhausen", ",", "vst3", "bx_rockrack V3 Player", ",", "vst3", "bx_solo", ",", "vst3", "CHOWTapeModel", ",", "vst3", "CLA-2A Mono", ",", "vst3", "CLA-2A Stereo", ",", "vst3", "Diva", ",", "vst3", "elysia niveau filter", ",", "vst3", "FabFilter Pro-C 2", ",", "vst3", "MAXBAX", ",", "vst3", "MaxxBass Mono", ",", "vst3", "MaxxBass Stereo", ",", "vst3", "PreBOX", ",", "vst3", "Pro-Q 3", ",", "vst3", "Shadow Hills Mastering Compressor", ",", "vst3", "SmartPedal", ",", "vst3", "SPL Free Ranger", ",", "vst3", "Surge", ",", "vst3", "SurgeEffectsBank", ",", "vst3", "TAL-NoiseMaker", ",", "vst3", "TENSjr", ",", "vst3", "ValhallaSupermassive", ",", "vst3", "ValhallaVintageVerb", ",", "vst3", "Wires" ],
+					"items" : [ "vst", "Acceleration264", ",", "vst", "Acceleration64", ",", "vst", "ADClip764", ",", "vst", "ADT64", ",", "vst", "Air264", ",", "vst", "Air64", ",", "vst", "Apicolypse64", ",", "vst", "AQuickVoiceClip64", ",", "vst", "AtmosphereBuss64", ",", "vst", "AtmosphereChannel64", ",", "vst", "Aura64", ",", "vst", "AutoPan64", ",", "vst", "Average64", ",", "vst", "AverMatrix64", ",", "vst", "Balanced64", ",", "vst", "BassAmp64", ",", "vst", "BassDrive64", ",", "vst", "BassKit64", ",", "vst", "Baxandall264", ",", "vst", "Baxandall64", ",", "vst", "Beam64", ",", "vst", "BigAmp64", ",", "vst", "Biquad264", ",", "vst", "Biquad64", ",", "vst", "BiquadDouble64", ",", "vst", "BiquadOneHalf64", ",", "vst", "BiquadPlus64", ",", "vst", "BiquadTriple64", ",", "vst", "Bite64", ",", "vst", "BitGlitter64", ",", "vst", "BitShiftGain64", ",", "vst", "BitShiftPan64", ",", "vst", "BlockParty64", ",", "vst", "BrassRider64", ",", "vst", "BrightAmbience264", ",", "vst", "BrightAmbience364", ",", "vst", "BrightAmbience64", ",", "vst", "BuildATPDF64", ",", "vst", "BussColors464", ",", "vst", "ButterComp264", ",", "vst", "ButterComp64", ",", "vst", "C5RawBuss64", ",", "vst", "C5RawChannel64", ",", "vst", "Cabs64", ",", "vst", "Calibre64", ",", "vst", "Capacitor64", ",", "vst", "Chamber264", ",", "vst", "Chamber64", ",", "vst", "Channel464", ",", "vst", "Channel564", ",", "vst", "Channel664", ",", "vst", "Channel764", ",", "vst", "Channel864", ",", "vst", "Channel964", ",", "vst", "Chorus64", ",", "vst", "ChorusEnsemble64", ",", "vst", "ChromeOxide64", ",", "vst", "Cider64", ",", "vst", "ClipOnly264", ",", "vst", "ClipOnly64", ",", "vst", "ClipSoftly64", ",", "vst", "Coils264", ",", "vst", "Coils64", ",", "vst", "Cojones64", ",", "vst", "Compresaturator64", ",", "vst", "Console0Buss64", ",", "vst", "Console0Channel64", ",", "vst", "Console4Buss64", ",", "vst", "Console4Channel64", ",", "vst", "Console5Buss64", ",", "vst", "Console5Channel64", ",", "vst", "Console5DarkCh64", ",", "vst", "Console6Buss64", ",", "vst", "Console6Channel64", ",", "vst", "Console7Buss64", ",", "vst", "Console7Cascade64", ",", "vst", "Console7Channel64", ",", "vst", "Console7Crunch64", ",", "vst", "Console8BussHype64", ",", "vst", "Console8BussIn64", ",", "vst", "Console8BussOut64", ",", "vst", "Console8ChannelHype64", ",", "vst", "Console8ChannelIn64", ",", "vst", "Console8ChannelOut64", ",", "vst", "Console8LiteBuss64", ",", "vst", "Console8LiteChannel64", ",", "vst", "Console8SubHype64", ",", "vst", "Console8SubIn64", ",", "vst", "Console8SubOut64", ",", "vst", "Creature64", ",", "vst", "CrunchyGrooveWear64", ",", "vst", "Crystal64", ",", "vst", "CStrip264", ",", "vst", "CStrip64", ",", "vst", "curve64", ",", "vst", "Dark64", ",", "vst", "DarkNoise64", ",", "vst", "DCVoltage64", ",", "vst", "DeBess64", ",", "vst", "Deckwrecka64", ",", "vst", "DeEss64", ",", "vst", "DeHiss64", ",", "vst", "Density264", ",", "vst", "Density64", ",", "vst", "DeRez64", ",", "vst", "Desk464", ",", "vst", "Desk64", ",", "vst", "DigitalBlack64", ",", "vst", "Dirt64", ",", "vst", "Distance264", ",", "vst", "Distance64", ",", "vst", "Distortion64", ",", "vst", "Ditherbox64", ",", "vst", "DitherFloat64", ",", "vst", "DitherMeDiskers64", ",", "vst", "DitherMeTimbers64", ",", "vst", "Doublelay64", ",", "vst", "DoublePaul64", ",", "vst", "Drive64", ",", "vst", "DrumSlam64", ",", "vst", "DubCenter64", ",", "vst", "Dubly64", ",", "vst", "DubSub64", ",", "vst", "DustBunny64", ",", "vst", "Dynamics64", ",", "vst", "Dyno64", ",", "vst", "Edge64", ",", "vst", "EdIsDim64", ",", "vst", "ElectroHat64", ",", "vst", "Energy264", ",", "vst", "Energy64", ",", "vst", "Ensemble64", ",", "vst", "EQ64", ",", "vst", "EveryConsole64", ",", "vst", "EverySlew64", ",", "vst", "EveryTrim64", ",", "vst", "Exciter64", ",", "vst", "Facet64", ",", "vst", "FathomFive64", ",", "vst", "FireAmp64", ",", "vst", "Flipity64", ",", "vst", "Floor64", ",", "vst", "Flutter64", ",", "vst", "Fracture264", ",", "vst", "Fracture64", ",", "vst", "FromTape64", ",", "vst", "Galactic264", ",", "vst", "Galactic64", ",", "vst", "GalacticVibe64", ",", "vst", "Gatelope64", ",", "vst", "GlitchShifter64", ",", "vst", "GoldenSlew64", ",", "vst", "Golem64", ",", "vst", "GrindAmp64", ",", "vst", "Gringer64", ",", "vst", "GrooveWear64", ",", "vst", "GuitarConditioner64", ",", "vst", "HardVacuum64", ",", "vst", "Hermepass64", ",", "vst", "HermeTrim64", ",", "vst", "HighGlossDither64", ",", "vst", "HighImpact64", ",", "vst", "Highpass264", ",", "vst", "Highpass64", ",", "vst", "Holt264", ",", "vst", "Holt64", ",", "vst", "Hombre64", ",", "vst", "Huge64", ",", "vst", "Hull64", ",", "vst", "Hype64", ",", "vst", "Hypersonic64", ",", "vst", "HypersonX64", ",", "vst", "Infinity264", ",", "vst", "Infinity64", ",", "vst", "Inflamer64", ",", "vst", "Infrasonic64", ",", "vst", "Interstage64", ",", "vst", "IronOxide564", ",", "vst", "IronOxideClassic264", ",", "vst", "IronOxideClassic64", ",", "vst", "Isolator264", ",", "vst", "Isolator64", ",", "vst", "kChamberAR64", ",", "vst", "kPlateA64", ",", "vst", "kPlateB64", ",", "vst", "kPlateC64", ",", "vst", "kPlateD64", ",", "vst", "LeadAmp64", ",", "vst", "LeftoMono64", ",", "vst", "LilAmp64", ",", "vst", "Logical464", ",", "vst", "Loud64", ",", "vst", "Lowpass264", ",", "vst", "Lowpass64", ",", "vst", "LRFlipTimer64", ",", "vst", "Luxor64", ",", "vst", "MackEQ64", ",", "vst", "Mackity64", ",", "vst", "MatrixVerb64", ",", "vst", "Melt64", ",", "vst", "MidAmp64", ",", "vst", "MidSide64", ",", "vst", "Monitoring264", ",", "vst", "Monitoring364", ",", "vst", "Monitoring64", ",", "vst", "MoNoam64", ",", "vst", "MultiBandDistortion64", ",", "vst", "MV264", ",", "vst", "MV64", ",", "vst", "NaturalizeDither64", ",", "vst", "NC-1764", ",", "vst", "Neverland64", ",", "vst", "Nikola64", ",", "vst", "NodeDither64", ",", "vst", "Noise64", ",", "vst", "NonlinearSpace64", ",", "vst", "NotJustAnotherCD64", ",", "vst", "NotJustAnotherDither64", ",", "vst", "OneCornerClip64", ",", "vst", "OrbitKick64", ",", "vst", "Pafnuty264", ",", "vst", "Pafnuty64", ",", "vst", "PaulDither64", ",", "vst", "PaulWide64", ",", "vst", "PDBuss64", ",", "vst", "PDChannel64", ",", "vst", "PeaksOnly64", ",", "vst", "Pear64", ",", "vst", "PhaseNudge64", ",", "vst", "PitchDelay64", ",", "vst", "PitchNasty64", ",", "vst", "PlatinumSlew64", ",", "vst", "PocketVerbs64", ",", "vst", "Pockey264", ",", "vst", "Pockey64", ",", "vst", "Podcast64", ",", "vst", "PodcastDeluxe64", ",", "vst", "Point64", ",", "vst", "Pop264", ",", "vst", "Pop64", ",", "vst", "PowerSag264", ",", "vst", "PowerSag64", ",", "vst", "Precious64", ",", "vst", "Preponderant64", ",", "vst", "Pressure564", ",", "vst", "PurestAir64", ",", "vst", "PurestConsole2Buss64", ",", "vst", "PurestConsole2Channel64", ",", "vst", "PurestConsole3Buss64", ",", "vst", "PurestConsole3Channel64", ",", "vst", "PurestConsoleBuss64", ",", "vst", "PurestConsoleChannel64", ",", "vst", "PurestDrive64", ",", "vst", "PurestEcho64", ",", "vst", "PurestFade64", ",", "vst", "PurestGain64", ",", "vst", "PurestSquish64", ",", "vst", "PurestWarm264", ",", "vst", "PurestWarm64", ",", "vst", "Pyewacket64", ",", "vst", "RawGlitters64", ",", "vst", "RawTimbers64", ",", "vst", "Recurve64", ",", "vst", "Remap64", ",", "vst", "ResEQ64", ",", "vst", "Reverb64", ",", "vst", "Righteous464", ",", "vst", "RightoMono64", ",", "vst", "SampleDelay64", ",", "vst", "Shape64", ",", "vst", "SideDull64", ",", "vst", "Sidepass64", ",", "vst", "Silhouette64", ",", "vst", "SingleEndedTriode64", ",", "vst", "Slew264", ",", "vst", "Slew364", ",", "vst", "Slew64", ",", "vst", "SlewOnly64", ",", "vst", "SlewSonic64", ",", "vst", "Smooth64", ",", "vst", "SoftGate64", ",", "vst", "SpatializeDither64", ",", "vst", "Spiral264", ",", "vst", "Spiral64", ",", "vst", "Srsly264", ",", "vst", "Srsly64", ",", "vst", "StarChild264", ",", "vst", "StarChild64", ",", "vst", "StereoChorus64", ",", "vst", "StereoDoubler64", ",", "vst", "StereoEnsemble64", ",", "vst", "StereoFX64", ",", "vst", "StudioTan64", ",", "vst", "SubsOnly64", ",", "vst", "Surge64", ",", "vst", "SurgeTide64", ",", "vst", "Sweeten64", ",", "vst", "Swell64", ",", "vst", "Tape64", ",", "vst", "TapeDelay264", ",", "vst", "TapeDelay64", ",", "vst", "TapeDither64", ",", "vst", "TapeDust64", ",", "vst", "TapeFat64", ",", "vst", "Texturize64", ",", "vst", "TexturizeMS64", ",", "vst", "Thunder64", ",", "vst", "ToneSlant64", ",", "vst", "ToTape564", ",", "vst", "ToVinyl464", ",", "vst", "TPDFDither64", ",", "vst", "TPDFWide64", ",", "vst", "TransDesk64", ",", "vst", "Tremolo64", ",", "vst", "TremoSquare64", ",", "vst", "TripleSpread64", ",", "vst", "Tube264", ",", "vst", "Tube64", ",", "vst", "TubeDesk64", ",", "vst", "uLawDecode64", ",", "vst", "uLawEncode64", ",", "vst", "Ultrasonic64", ",", "vst", "UltrasonicLite64", ",", "vst", "UltrasonicMed64", ",", "vst", "UltrasonX64", ",", "vst", "UnBox64", ",", "vst", "ValhallaDelay_x64", ",", "vst", "ValhallaPlate_x64", ",", "vst", "ValhallaRoom_x64", ",", "vst", "ValhallaShimmer_x64", ",", "vst", "ValhallaSpaceModulator_x64", ",", "vst", "ValhallaUberMod_x64", ",", "vst", "ValhallaVintageVerb_x64", ",", "vst", "VariMu64", ",", "vst", "Verbity264", ",", "vst", "Verbity64", ",", "vst", "Vibrato64", ",", "vst", "VinylDither64", ",", "vst", "VoiceOfTheStarship64", ",", "vst", "VoiceTrick64", ",", "vst", "Weight64", ",", "vst", "Wider64", ",", "vst", "XBandpass64", ",", "vst", "XHighpass64", ",", "vst", "XLowpass64", ",", "vst", "XNotch64", ",", "vst", "XRegion64", ",", "vst", "YBandpass64", ",", "vst", "YHighpass64", ",", "vst", "YLowpass64", ",", "vst", "YNotch64", ",", "vst", "ZBandpass64", ",", "vst", "ZHighpass64", ",", "vst", "ZLowpass64", ",", "vst", "ZNotch64", ",", "vst", "ZRegion64", ",", "vst3", "ValhallaFreqEcho", ",", "vst3", "ValhallaShimmer" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -7117,6 +6914,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-88", 0 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
 					"source" : [ "obj-170", 0 ]
 				}
@@ -7324,31 +7128,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-188", 0 ],
-					"order" : 1,
-					"source" : [ "obj-185", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-195", 1 ],
-					"order" : 0,
-					"source" : [ "obj-185", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-184", 0 ],
 					"source" : [ "obj-186", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-195", 0 ],
-					"source" : [ "obj-188", 0 ]
 				}
 
 			}
@@ -7393,13 +7174,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-196", 0 ],
 					"source" : [ "obj-194", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-88", 0 ],
-					"source" : [ "obj-195", 0 ]
 				}
 
 			}
@@ -8457,14 +8231,14 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-185", 1 ],
+					"destination" : [ "obj-17", 1 ],
 					"source" : [ "obj-51", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-185", 0 ],
+					"destination" : [ "obj-17", 0 ],
 					"source" : [ "obj-51", 0 ]
 				}
 
@@ -9013,9 +8787,9 @@
 
 			}
  ],
+		"originid" : "pat-5420",
 		"parameters" : 		{
 			"obj-264::obj-10" : [ "amxd~[1]", "amxd~[1]", 0 ],
-			"obj-70" : [ "vst~", "vst~", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
