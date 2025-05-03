@@ -4119,7 +4119,7 @@ function blocks_page_enter(){
 function blocks_menu_enter(){
 	var count=0,sel=-1;
 	for(var i=0;i<menu.cubecount;i++){
-		if(blocks_menu[i].enable){
+		if((blocks_menu[i]!=undefined) && (blocks_menu[i].enable)){
 			count++;
 			sel=i;
 		}
