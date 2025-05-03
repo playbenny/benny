@@ -4110,6 +4110,12 @@ function block_search_typing(key){
 	}
 	redraw_flag.flag |=2;
 }
+function blocks_page_enter(){
+	clear_blocks_selection();
+	post("\nstored mouse position = ",screentoworld(usermouse.x,usermouse.y));
+	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
+	set_display_mode("block_menu");
+}
 
 function blocks_menu_enter(){
 	var count=0,sel=-1;

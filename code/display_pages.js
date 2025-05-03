@@ -1176,8 +1176,14 @@ function initialise_block_menu(visible){
 						}
 					}
 				}
-				blocks_menu[i].enable = vis;
-				blocks_menu[i].position = menu.original_position[i];
+				try{
+					blocks_menu[i].enable = vis;
+					blocks_menu[i].position = menu.original_position[i];
+				}catch(err){
+					error("problem drawing menu, index:",i,"cubecount",menu.cubecount);
+					error(err.name,err.message);
+					return 0;
+				}
 			}
 		}
 		if(menu.mode == 1) squash_block_menu();
@@ -1186,6 +1192,7 @@ function initialise_block_menu(visible){
 	}else{
 		post("\ninitialising block menu");
 		var w = ((   (4 - (Math.max(-1,Math.min(3,((mainwindow_height/mainwindow_width)-0.5)*8))))  *2) |0 ) *0.5;
+		for(i=0;i<menu.cubecount;i++) blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:0 };
 		for(var typ in type_order){
 			z++;
 			z+=0.5;
@@ -1196,7 +1203,6 @@ function initialise_block_menu(visible){
 					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
-						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:0 };
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];
 						blocks_menu[i].position = [1000, 1000, 1000];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
