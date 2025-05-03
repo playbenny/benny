@@ -4112,7 +4112,6 @@ function block_search_typing(key){
 }
 function blocks_page_enter(){
 	clear_blocks_selection();
-	post("\nstored mouse position = ",screentoworld(usermouse.x,usermouse.y));
 	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
 	set_display_mode("block_menu");
 }

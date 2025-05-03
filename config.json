@@ -53,7 +53,7 @@
 	"MAX_STATES" : 18,
 	"SONGS_FOLDER" : "",
 	"RECORD_FOLDER" : "",
-	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mix", "vst", "amxd" ],
+	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mixer", "vst", "amxd" ],
 	"RECYCLING" : 1,
 	"ENABLE_RECORD_HARDWARE" : 1,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
