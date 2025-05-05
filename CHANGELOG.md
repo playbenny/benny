@@ -1,3 +1,6 @@
+04/05/25:
+- on windows, when using MME drivers, if an audio device (eg bluetooth headphones) disconnects then the max scheduler stops and as a result benny's ui stops too. this is a max/windows issue that i can't fix, but as a workaround if it happens you can scroll down on the launcher window and there's now an emergency save button which will save the contents of your song even if the ui and/or max scheduler have stopped.
+
 28/4/25:
 - improved the feel of the state fade sliders - you can make them pop up by dragging the state buttons in the left bar.
 
