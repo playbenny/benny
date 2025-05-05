@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3828980174,
+	"modificationdate" : 3829324429,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -1380,6 +1380,16 @@
 				}
 
 			}
+,
+			"global_buttons.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
+			}
 
 		}
 ,
@@ -1632,6 +1642,21 @@
 				"local" : 1
 			}
 ,
+			"midirouter.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"output_queue_watcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"whitegaussnoise.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
 			"core.input.control.auto.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
@@ -1674,21 +1699,6 @@
 ,
 			"benny_ui_settings_editor.js" : 			{
 				"kind" : "javascript",
-				"local" : 1
-			}
-,
-			"midirouter.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"output_queue_watcher.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"whitegaussnoise.gendsp" : 			{
-				"kind" : "gendsp",
 				"local" : 1
 			}
 ,

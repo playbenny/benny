@@ -1130,6 +1130,70 @@ function render_controls(){
 						values[ii] = [cdk[p]];
 						y_pos+=unit.row+unit.header;
 						ii++;
+						//		"unmute all" : 3
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "unmute all");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(50,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.unmute_all."+ii, "@minimum", -1, "@maximum", 127);
+						tv = cd.get(cdk[p]+"::buttons::globals::unmute_all");
+						if(tv==null)tv=-1;
+						controls[ii].message("set", tv);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
+						values[ii] = [cdk[p]];
+						y_pos+=unit.row+unit.header;
+						ii++;
+						//		"capture keyboard loop" : 3
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "capture keyboard loop");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(50,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.capture_keyboard_loop."+ii, "@minimum", -1, "@maximum", 127);
+						tv = cd.get(cdk[p]+"::buttons::globals::capture_keyboard_loop");
+						if(tv==null)tv=-1;
+						controls[ii].message("set", tv);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
+						values[ii] = [cdk[p]];
+						y_pos+=unit.row+unit.header;
+						ii++;
+						//		"capture controller loop" : 3
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "capture controller loop");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(50,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.capture_controller_loop."+ii, "@minimum", -1, "@maximum", 127);
+						tv = cd.get(cdk[p]+"::buttons::globals::capture_controller_loop");
+						if(tv==null)tv=-1;
+						controls[ii].message("set", tv);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
+						values[ii] = [cdk[p]];
+						y_pos+=unit.row+unit.header;
+						ii++;
+						//		"hold_to_quantise" : 3
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "quantise-and-hold mute/state/pattern triggers");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(50,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "controllersubkey2.buttons.globals.quantise_and_hold."+ii, "@minimum", -1, "@maximum", 127);
+						tv = cd.get(cdk[p]+"::buttons::globals::quantise_and_hold");
+						if(tv==null)tv=-1;
+						controls[ii].message("set", tv);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(50+unit.col,y_pos,unit.col-30,20);
+						values[ii] = [cdk[p]];
+						y_pos+=unit.row+unit.header;
+						ii++;
 					}else{
 						//add key button
 						controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);

@@ -1704,6 +1704,7 @@ function clear_everything(){
 		record_arm[i]=0;
 	}
 	selected.anysel = 0;
+	patternpage.quantise_and_hold = 0;
 	still_checking_polys = 0;//7;
 	loading.songname = "#reset#";
 	send_note_patcherlist(1);

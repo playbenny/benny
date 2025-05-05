@@ -88,6 +88,7 @@ function resync_button(){
 
 function panic_button(){
 	messnamed("panic","bang");
+	patternpage.quantise_and_hold = 0;
 	build_mod_sum_action_list();
 	sigouts.message("setvalue", 0,0); //clears midi-audio sig~
 	//for(var i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
@@ -939,7 +940,7 @@ function screentoworld(x,y){
 
 function click_patterns_column_header(parameter,value){
 	if(usermouse.ctrl){
-		if(usermouse.shift){
+		if(usermouse.shift || patternpage.quantise_and_hold){
 			queue_quantised_notification(mute_particular_block, parameter,-1);
 			if(patternpage.column_type[value]==1){
 				patternpage.held_pattern_fires[parameter] = -1;
@@ -1497,7 +1498,7 @@ function fire_block_state(state, block){
 		sidebar.selected = state;
 		set_sidebar_mode("edit_state");
 	}else{
-		if(usermouse.shift){
+		if(usermouse.shift || patternpage.quantise_and_hold){
 			if(state=="current") state = -1;//lol
 			queue_quantised_notification(fire_block_state,state,block);
 			patternpage.held_state_fires[block] = state;
@@ -3115,6 +3116,19 @@ function block_edit(parameter,value){
 	}
 }
 
+function quantise_and_hold_button(state){
+	patternpage.quantise_and_hold = state;
+}
+
+function capture_controller_loop_button(state){
+
+}
+
+function capture_controller_loop_button(state){
+	
+}
+
+
 function automap_default(a){
 	if(sidebar.selected != -1){
 		if(a<0){
@@ -4565,7 +4579,7 @@ function pattern_click(b,p){
 	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
 	// post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
 	if(!Array.isArray(b[1])) b[1] = [b[1]];
-	if(usermouse.shift){
+	if(usermouse.shift || patternpage.quantise_and_hold){
 		queue_quantised_notification(pattern_click, b,p);
 		patternpage.held_pattern_fires[b[0]] = p;
 	}else{

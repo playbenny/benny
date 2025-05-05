@@ -616,7 +616,8 @@ var patternpage = { // info to help draw pattern page fast
 	cursor_divisor : [], // 1/length;
 	column_ends_x : [], //list of ends (start, end of voice 1, .. ,end of last voice) - so v+1 entries.
 	held_state_fires : [],
-	held_pattern_fires: [] //to indicate when a pattern etc is held via shift key..
+	held_pattern_fires: [], //to indicate when a pattern etc is held via shift key..
+	quantise_and_hold: 0 //or by midi, flagged here.
 }
 
 var y_offset;
