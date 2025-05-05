@@ -16,6 +16,79 @@
 		"toolbars_unpinned_last_save" : 7,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-111",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 697.0, 771.0, 150.0, 34.0 ],
+					"text" : "the controller part of this is deprecated"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-123",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 287.5, 563.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-121",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 360.0, 555.0, 58.0, 22.0 ],
+					"text" : "loadbang"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-120",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 321.0, 563.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-116",
+					"linecount" : 3,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 321.0, 624.0, 50.0, 50.0 ],
+					"text" : "\"monome arc 4\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-110",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 6,
+					"outlettype" : [ "", "int", "", "", "", "" ],
+					"patching_rect" : [ 307.0, 593.0, 94.0, 22.0 ],
+					"text" : "monome-device"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-108",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -482,7 +555,7 @@
 
 							}
  ],
-						"originid" : "pat-11742"
+						"originid" : "pat-3406"
 					}
 ,
 					"patching_rect" : [ 774.0, 133.0, 124.0, 22.0 ],
@@ -610,7 +683,7 @@
 
 							}
  ],
-						"originid" : "pat-11744"
+						"originid" : "pat-3408"
 					}
 ,
 					"patching_rect" : [ 509.0, 53.0, 91.0, 22.0 ],
@@ -964,7 +1037,7 @@
 
 							}
  ],
-						"originid" : "pat-11748"
+						"originid" : "pat-3412"
 					}
 ,
 					"patching_rect" : [ 623.0, 119.0, 116.0, 22.0 ],
@@ -1302,18 +1375,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 481.0, 762.5, 192.0, 22.0 ],
 					"text" : "append add hardware from library:"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-77",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 638.0, 816.0, 158.0, 22.0 ],
-					"text" : "add controller from library:"
 				}
 
 			}
@@ -1852,7 +1913,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 397.100000000000023, 388.0, 101.0, 22.0 ],
+					"patching_rect" : [ 418.100000000000023, 356.0, 101.0, 22.0 ],
 					"text" : "prepend midiouts"
 				}
 
@@ -2158,6 +2219,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-116", 1 ],
+					"order" : 1,
+					"source" : [ "obj-110", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-20", 0 ],
+					"order" : 0,
+					"source" : [ "obj-110", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"order" : 0,
 					"source" : [ "obj-1110", 0 ]
@@ -2192,6 +2269,44 @@
 				"patchline" : 				{
 					"destination" : [ "obj-13", 0 ],
 					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-110", 1 ],
+					"source" : [ "obj-120", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-110", 1 ],
+					"order" : 0,
+					"source" : [ "obj-121", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-120", 0 ],
+					"order" : 1,
+					"source" : [ "obj-121", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-123", 0 ],
+					"order" : 2,
+					"source" : [ "obj-121", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-120", 0 ],
+					"source" : [ "obj-123", 0 ]
 				}
 
 			}
@@ -2806,13 +2921,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-77", 1 ],
-					"source" : [ "obj-67", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-67", 0 ],
 					"source" : [ "obj-68", 0 ]
 				}
@@ -3103,7 +3211,7 @@
 
 			}
  ],
-		"originid" : "pat-11740",
+		"originid" : "pat-3404",
 		"dependency_cache" : [ 			{
 				"name" : "hardware_config_editor.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
@@ -3116,6 +3224,20 @@
 				"bootpath" : "~/Documents/GitHub/benny/code",
 				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "monome-device.js",
+				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
+				"patcherrelativepath" : "../../../Max 9/Packages/monome/patchers",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "monome-device.maxpat",
+				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
+				"patcherrelativepath" : "../../../Max 9/Packages/monome/patchers",
+				"type" : "JSON",
 				"implicit" : 1
 			}
  ],

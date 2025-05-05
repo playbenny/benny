@@ -1,6 +1,7 @@
 {
 	"Midi Fighter Twister" : 			{
 		"name" : "Midi Fighter Twister",
+		"driver" : "Midi Fighter Twister",
 		"substitute" : [ "JAMES_16e" ],
 		"outputs" : 16,
 		"scaling" : 1,

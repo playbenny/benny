@@ -43,6 +43,8 @@ var latency_test_button = this.patcher.getnamed("latency_test_button");
 var latency_test_time = this.patcher.getnamed("latency_test_time");
 var latency_test_text = this.patcher.getnamed("latency_test_text");
 
+var controller_presets_available = [];
+
 function loadbang(){
 	configfile.parse("{}");
 	post("\nhardware editor starting");
@@ -56,6 +58,7 @@ function loadbang(){
 	outlet(0,"library","read",filepath+"/data/hardware_library.json");
 	post("\ninterfaces list:\nins:",midi_interfaces.in,"\nouts:",midi_interfaces.out);
 	import_blocktypes("audio_blocks");
+	get_preset_list();
 }
 
 function import_blocktypes(v)
@@ -75,6 +78,22 @@ function import_blocktypes(v)
 				keys = keys.toString();
 				blocktypes.set(keys,d.get(keys));
 			}
+		}
+		f.next();
+	}
+	f.close();
+}
+
+function get_preset_list(){
+	post("\nreading list of available controller preset setups");
+	var f = new Folder(filepath+"/hardware_configs/drivers/controller_drivers");
+	//var d = new Dict;
+	f.reset();
+	controller_presets_available = [];
+	while(!f.end){
+		if(f.extension == ".json"){
+			post("\n  "+f.filename);
+			controller_presets_available.push(f.filename);
 		}
 		f.next();
 	}
@@ -293,13 +312,25 @@ function render_controls(){
 				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove controller", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.controller."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
-				controls[ii].presentation_rect(20,y_pos,unit.col-100,20);
+				controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col,20);
 				values[ii] = [cdk[p]];
 				ii++;
 	
 				add_midimonitors(cdk[p]);
 				y_pos+=unit.row;
 	
+				for(i = 0;i < controller_presets_available.length; i++){
+					if(cdk[p]+".json.applied" == controller_presets_available[i]){
+						controls[ii]= this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.694, 0.549, 0.000, 1.000], "@textcolor", [0,0,0,1]);
+						controls[ii].message("set", "preset configuration found and loaded, you probably don't need to adjust the values below.");
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20,y_pos,1.7*unit.col,20);
+						ii++;
+
+						y_pos+=unit.row*2;
+					}
+				}
+
 				//now all the general controller settings:
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "substitutes");
@@ -1157,9 +1188,6 @@ function render_controls(){
 				y_pos+=unit.row;
 			}
 		}
-		y_pos += unit.header;
-		library_controllers.presentation(1);
-		library_controllers.presentation_rect(20,y_pos,2*unit.col,20);
 		y_pos+=unit.row;
 	}
 
@@ -2527,17 +2555,55 @@ function keybcallback(data){
 					configfile.replace("io::controllers::"+values[id[3]]+"::channel", 1);
 				}
 			}else{
-				post("\nid2 is",id[2]);
-				configfile.setparse("io::controllers::"+values[id[2]],"{}");
-				configfile.replace("io::controllers::"+values[id[2]]+"::name", values[id[2]]);
-				configfile.replace("io::controllers::"+values[id[2]]+"::substitute" , []);
-				configfile.replace("io::controllers::"+values[id[2]]+"::outputs" , 16);
-				configfile.replace("io::controllers::"+values[id[2]]+"::type" , "encoder");
-				configfile.replace("io::controllers::"+values[id[2]]+"::channel", 1);
-				configfile.replace("io::controllers::"+values[id[2]]+"::first",  0);
-				configfile.replace("io::controllers::"+values[id[2]]+"::scaling", 0.125);
-				configfile.replace("io::controllers::"+values[id[2]]+"::columns", 4);
-				configfile.replace("io::controllers::"+values[id[2]]+"::rows", 4);
+				post("\nid2 is",id[2],"writing new key for ",values[id[2]]);
+
+				var presetvalues = new Dict;
+				//var controllerdriver = "generic_midi_driver";
+				var found = 0;
+				for(i = 0;i < controller_presets_available.length; i++){
+					if(values[id[2]]+".json" == controller_presets_available[i]){
+						post("\nFOUND PRESET FILE FOR THIS CONTROLLER, APPLYING.",i,controller_presets_available[i]);
+						found = 1;
+						//controllerdriver = controller_presets_available[i].split(".json")[0];
+						var d = new Dict;
+						d.import_json(filepath+"/hardware_configs/drivers/controller_drivers/"+controller_presets_available[i]);
+						var topkey = d.getkeys();
+						var presetvalues = d.get(topkey);
+						//if(presetvalues.contains("driver")) controllerdriver = presetvalues.get("driver");
+						var pk = presetvalues.getkeys();
+						post("\npresetvalues keys",pk);
+						post("\ncopying values");
+						for(k=0;k<pk.length;k++){
+							post("\n ",pk[k]);
+							d = presetvalues.get(pk[k]);
+							post(" -> ",d,typeof d);
+							if(typeof d == Object){
+								configfile.setparse("io::controllers::"+values[id[2]]+"::"+pk[k],d);
+							}else{
+								configfile.replace("io::controllers::"+values[id[2]]+"::"+pk[k],d);
+							}
+						}
+						controller_presets_available[i] = controller_presets_available[i]+".applied";
+						break;
+					}
+				}
+				if(!found){
+					configfile.setparse("io::controllers::"+values[id[2]],"{}");
+					configfile.replace("io::controllers::"+values[id[2]]+"::name", values[id[2]]);
+					configfile.replace("io::controllers::"+values[id[2]]+"::substitute" , []);
+					configfile.replace("io::controllers::"+values[id[2]]+"::outputs" , 16);
+					configfile.replace("io::controllers::"+values[id[2]]+"::type" , "encoder");
+					configfile.replace("io::controllers::"+values[id[2]]+"::channel", 1);
+					configfile.replace("io::controllers::"+values[id[2]]+"::first",  0);
+					configfile.replace("io::controllers::"+values[id[2]]+"::scaling", 0.125);
+					configfile.replace("io::controllers::"+values[id[2]]+"::columns", 4);
+					configfile.replace("io::controllers::"+values[id[2]]+"::rows", 4);
+				}
+				var cd = configfile.get("io::controllers");
+				var cdk;
+				if(cd!=null) cdk = cd.getkeys();
+				if(cdk==null) cdk=[];
+				for(r =0;r<cdk.length;r++) if(values[id[2]]==cdk[r])selected.item = r;
 			}
 		}else if(id[1] == "hardware"){
 			post("\nadd hw ch",id,"vvv",values[id[4]]);
