@@ -1152,7 +1152,7 @@ function render_controls(){
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20,y_pos,2*unit.col,20);
-				values[ii] = [midi_interfaces.not_used_in[i]];
+				values[ii] = midi_interfaces.not_used_in[i];
 				ii++;			
 				y_pos+=unit.row;
 			}

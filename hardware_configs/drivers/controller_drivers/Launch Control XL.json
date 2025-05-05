@@ -1,6 +1,6 @@
 {
 	"Launch Control XL" : 			{
-		"name" : [ "Launch Control XL" ],
+		"name" :  "Launch Control XL" ,
 		"substitute" : [ "LPD8 mk2" ],
 		"outputs" : 32,
 		"type" : "potentiometer",

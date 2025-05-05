@@ -1,16 +1,10 @@
 {
 	"io" : 	{
 		"keyboards" : [ "Xkey37", "Xkey25", "MIDIIN2 (MIDIMATE II)" ],
-		"matrix_switch" : 		{
-			"midi_out" : "MIDIMATE II",
-			"matrix_out" : 12,
-			"midi_control_channel" : 3,
-			"midi_control_cc" : 25
-		}
-,
 		"controllers" : 		{
 			"JAMES_16e" : 			{
 				"name" : "JAMES_16e",
+				"driver" : "Midi Fighter Twister",
 				"substitute" : "Midi Fighter Twister",
 				"outputs" : 16,
 				"type" : "encoder",
@@ -161,7 +155,7 @@
 			}
 ,
 			"LPMiniMK3 MIDI" : 			{
-				"name" : [ "LPMiniMK3 MIDI" ],
+				"name" :  "LPMiniMK3 MIDI",
 				"driver" : "LPMiniMK3 MIDI",
 				"substitute" : [  ],
 				"outputs" : 0,
