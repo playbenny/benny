@@ -3121,13 +3121,50 @@ function quantise_and_hold_button(state){
 }
 
 function capture_controller_loop_button(state){
+	if(state != 0 ){
+		capture.controller = 1;
+		var capturetask = new Task(capture_button, this, 0);
+		capturetask.schedule(200);
+	}else{
+		if(capture.controller){
+			capture.controller = 0;
+			capturetask.cancel();
+			capturetask.freepeer();
+			post("\n//short press, send the message to the controller that it should loop the last bar");
+		}else{
+			post("\n//it's already recording, stop it");
 
+		}
+	}
 }
 
 function capture_controller_loop_button(state){
-	
+	if(state != 0 ){
+		capture.keyboard = 1;
+		var capturetask2 = new Task(capture_button, this, 0);
+		capturetask2.schedule(200);
+	}else{
+		if(capture.keyboard){
+			capture.keyboard = 0;
+			capturetask2.cancel();
+			capturetask2.freepeer();
+			post("\n//short press, send the message to the controller that it should loop the last bar");
+		}else{
+			post("\n//it's already recording, stop it");
+
+		}
+	}
 }
 
+function capture_button(){
+	if(capture.controller){
+		capture.controller = 0;
+		post("\n// start recording, from 200ms ago");
+	}else if(capture.keyboard){
+		capture.keyboard = 0;
+		post("\n// start recording, from 200ms ago");
+	}
+}
 
 function automap_default(a){
 	if(sidebar.selected != -1){

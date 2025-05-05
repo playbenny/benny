@@ -620,6 +620,11 @@ var patternpage = { // info to help draw pattern page fast
 	quantise_and_hold: 0 //or by midi, flagged here.
 }
 
+var capture = {
+	keyboard : 0,
+	controller : 0
+}
+
 var y_offset;
 
 var mutemap = new Buffer("mutemap");

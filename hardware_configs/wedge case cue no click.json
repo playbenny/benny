@@ -62,7 +62,13 @@
 					"type" : "cc",
 					"globals" : 					{
 						"automap_toggle" : 0,
-						"automap_page" : 3
+						"automap_page" : -1,
+						"capture_controller_loop" : 2,
+						"capture_keyboard_loop" : 5,
+						"unmute_all" : 3,
+						"quantise_and_hold" : -1,
+						"lock_automap_control" : 1,
+						"lock_automap_keyboard" : 4
 					}
 ,
 					"channel" : 4,
@@ -155,7 +161,7 @@
 			}
 ,
 			"LPMiniMK3 MIDI" : 			{
-				"name" :  "LPMiniMK3 MIDI",
+				"name" : "LPMiniMK3 MIDI",
 				"driver" : "LPMiniMK3 MIDI",
 				"substitute" : [  ],
 				"outputs" : 0,
