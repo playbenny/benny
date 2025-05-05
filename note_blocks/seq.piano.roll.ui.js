@@ -802,7 +802,7 @@ function get_note_range() {
 	if(Array.isArray(k) && k.length>1){
 		for (var i = 1; i < k.length; i++) { //[0] is the looppoints
 			var event = seqdict.get(block + "::" + pattern + "::" + k[i]);
-			if ((event[1] == 0) && (event[0] > zoom_start) && (event[0] < zoom_end)) {
+			if ((event[1] == 0) && (event[0]+event[4] >= zoom_start) && (event[0] <= zoom_end)) {
 				if (event[2] > nhighestnote) nhighestnote = event[2];
 				if (event[2] < nlowestnote) nlowestnote = event[2];
 			}
