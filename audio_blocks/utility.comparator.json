@@ -1,0 +1,47 @@
+{
+	"utility.comparator" : {
+		"patcher" : "utility.comparator",
+		"type" : "audio",
+		"help_text" : "Comparator - tells you if one input is bigger than the other. Can also send out midi events when this changes, in one direction or other. The 'distance' output is high when the inputs are close and low when they're not, and makes a rounder sound when processing audio waveforms.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in A", "in B" ]
+			},
+			"out" : {
+				"audio" : [ "A>B" , "distance" ],
+				"midi" : [ "A>B", "A becomes > B", "A becomes < B"],
+				"midi_watched" : [ 1,1,1 ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1,2]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "A offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "A offset",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "input smoothing",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp1000"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

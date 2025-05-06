@@ -91,6 +91,7 @@ function systemtypeis(type){
 		config.replace("consolevsts::channel", "Console7Channel");
 		config.replace("consolevsts::cascade", "Console7Cascade");
 		config.replace("consolevsts::crunch", "Console7Crunch");
+		config.replace("consolevsts::tape", "totape6");
 	}
 }
 
@@ -147,7 +148,6 @@ function initialise_dictionaries(hardware_file){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
 	// get config first because a lot of things depend on it.
-	load_config_colours(); //separate fn so it can be called by core.space block
 	UPSAMPLING = config.get("UPSAMPLING");
 	RECYCLING = config.get("RECYCLING");
 	click_b_s = config.get("click_buffer_scaledown");
@@ -156,7 +156,6 @@ function initialise_dictionaries(hardware_file){
 	messnamed("bloom_amt",glow_amount);
 	mainfont = config.get("mainfont");
 	monofont = config.get("monofont");
-	BLOCK_MENU_CLICK_ACTION = config.get("BLOCK_MENU_CLICK_ACTION");
 	MAX_BLOCKS = config.get("MAX_BLOCKS");
 	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
@@ -189,23 +188,22 @@ function initialise_dictionaries(hardware_file){
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
-	WIRES_REDUCE = config.get("WIRES_REDUCE");
 	TARGET_FPS = config.get("TARGET_FPS");
 	METER_TINT = config.get("METER_TINT");
 	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
 	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
 	sidebar.scopes.midinames= config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
-	
+	sidebar.show_help = config.get("SIDEBAR_ALWAYS_SHOW_HELP");
 	automap.mouse_follow = config.get("AUTOMAP_MOUSE_FOLLOW");
 	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
 	sidebar.width_in_units = config.get("sidebar_width_in_units");
 	sidebar.width = fontheight*sidebar.width_in_units;
 	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
 	sidebar.x = sidebar.x2 -sidebar.width;
+	load_config_colours(); //separate fn so it can be called by core.space block
 
 	SOUNDCARD_HAS_MATRIX = 0;
 
-	//for(i=0;i<MAX_PARAMETERS*MAX_BLOCKS;i++) is_flocked[i]=0;
 	post("\ninitialising polys");//this primes these arrays so that it doesn't think it needs to load the blank patches twice.
 	note_poly.message("voices", MAX_NOTE_VOICES);
 	post("\n-",MAX_NOTE_VOICES," note voice slots available");
@@ -215,16 +213,13 @@ function initialise_dictionaries(hardware_file){
 	for(i=0;i<MAX_NOTE_VOICES;i++) {
 		loaded_note_patcherlist[i]='_blank.note';
 	}
-	emptys="{}"; //experimental - i'm not wiping the waves polybuffer on reset
+	emptys="{}"; 
 	for(i=0;i<MAX_WAVES;i++){
 		waves.remapping[i]=i;
 		waves.age[i]=0;
 	}
-	emptys= emptys+",{}"; //this was one line higher to make a bigger set of empty entries, which we don't need now.
-	//for(i=0;i<=MAX_WAVES;i++)	
+	emptys= emptys+",{}"; 
 	waves_dict.parse('{ "waves" : ['+emptys+'] }');
-
-	//for(i=0;i<MAX_HARDWARE_BLOCKS;i++) hardware_list[i] = "none";
 	
 	i = 1+MAX_PARAMETERS*(MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_BLOCKS);
 	is_flocked=[];
@@ -453,7 +448,6 @@ function stop_world(){
 
 function import_hardware(v){
 	post("\n\ninit stage 3 : import hardware\n---------------------------------------");
-	var d2 = new Dict;
 	var d = new Dict;
 	var d3 = new Dict;
 	var t;
@@ -474,27 +468,27 @@ function import_hardware(v){
 	}
 
 	post("\nreading hardware database");
-	d2.import_json(v);
+	hardwareconfig.import_json(v);
 	
-	d = d2.get("hardware");
-	if(d2.contains("io::matrix::external")){
-		var drv = d2.get("io::matrix::external");
+	d = hardwareconfig.get("hardware");
+	if(hardwareconfig.contains("io::matrix::external")){
+		var drv = hardwareconfig.get("io::matrix::external");
 		if(drv != "none"){
 			post("\nfound external matrix, loading driver",drv);
 			messnamed("drivers_poly","setvalue",1,"patchername",drv);
 			EXTERNAL_MATRIX_PRESENT = 1; 
 		}
 	}
-	if(d2.contains("io::matrix::soundcard")){
-		var drv = d2.get("io::matrix::soundcard");
+	if(hardwareconfig.contains("io::matrix::soundcard")){
+		var drv = hardwareconfig.get("io::matrix::soundcard");
 		if(drv != "none"){
 			post("\nfound soundcard matrix, loading driver",drv);
 			messnamed("drivers_poly","setvalue",2,"patchername",drv);
 			SOUNDCARD_HAS_MATRIX = 1;
 		}
 	}
-	if(d2.contains("io::special_controller")){
-		var drv = d2.get("io::special_controller");
+	if(hardwareconfig.contains("io::special_controller")){
+		var drv = hardwareconfig.get("io::special_controller");
 		if(drv != "none"){
 			post("\nfound special controller, loading driver",drv);
 			messnamed("drivers_poly","setvalue",3,"patchername",drv);
@@ -502,16 +496,17 @@ function import_hardware(v){
 	}
 	
 	var keys = d.getkeys();
-	if(d2.contains("measured_latency")){
+	if(hardwareconfig.contains("measured_latency")){
 		post("\nlatency measurement found, copied to config for blocks to access if they want");
-		config.replace("measured_latency",d2.get("measured_latency"));
+		config.replace("measured_latency",hardwareconfig.get("measured_latency"));
 	}
 	for(i=0;i<MAX_AUDIO_INPUTS+2;i++) input_used[i]=0;
 	for(i=0;i<MAX_AUDIO_OUTPUTS+2;i++) output_used[i]=0;
 	var output_blocks=[]; //output blocks are in pairs, eg #1 is ch's 1+2. so, for every output channel you find ("in" to a block, mind), 
 																		//you math.floor((x-1)/2) and set that element of this array
 	for(i=0;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks[i] = "clip_dither";
-
+	var dc_block_enabled_list = [];
+	var input_gate_enabled_list = [];
 	for(i = 0; i < keys.length; i++){
 		post("\n  "+keys[i]);
 		blocktypes.set(keys[i],d.get(keys[i]));
@@ -584,32 +579,77 @@ function import_hardware(v){
 				input_used[ch[t]-1]=1;
 				if(ch[t]>MAX_USED_AUDIO_INPUTS) MAX_USED_AUDIO_INPUTS = ch[t];
 			}
+			if(d.contains(keys[i]+"::connections::out::dc_block")){
+				var dcl=d.get(keys[i]+"::connections::out::dc_block");
+				for(t=0;t<ch.length;t++) dc_block_enabled_list[ch[t]-1]  = dcl[t];
+			}else{
+				for(t=0;t<ch.length;t++) dc_block_enabled_list[ch[t]-1] = 1;
+			}
+			if(d.contains(keys[i]+"::connections::out::input_gate")){
+				var dcl=d.get(keys[i]+"::connections::out::input_gate");
+				for(t=0;t<ch.length;t++) input_gate_enabled_list[ch[t]-1]  = dcl[t];
+			}else{
+				for(t=0;t<ch.length;t++) input_gate_enabled_list[ch[t]-1] = 1;
+			}
+
 		}
 	}
+	var old_audio_clock_out = this.patcher.getnamed("audio_clock_out_dac");
+	this.patcher.remove(old_audio_clock_out);
+	messnamed("ext_sync","active",0);
+	messnamed("ext_sync","stop_clocks");
+
 	post("\nlast input:",MAX_USED_AUDIO_INPUTS,"last output:",MAX_USED_AUDIO_OUTPUTS);
 	if(output_blocks.length<MAX_AUDIO_OUTPUTS/2){
 		for(i=output_blocks.length;i<MAX_AUDIO_OUTPUTS/2;i++) output_blocks.push("clip_dither");
-	}else{
-		output_blocks.splice(MAX_AUDIO_OUTPUTS);
 	}
 	post("\nreading midi io config");
-	d = d2.get("io");
+	d = hardwareconfig.get("io");
 	var keys = d.getkeys();
 	for(i = 0; i < keys.length; i++){
 		t = d.get(keys[i]);
 		io_dict.set(keys[i],t);
 		if(keys[i]=="controllers"){
 			post("\n  controllers : "+t.getkeys());
-		}else if(keys[i]=="marix_switch"){
+		}else if(keys[i]=="matrix_switch"){
 			post("\n  matrix switch : ok");
+		}else if(keys[i]=="sync"){
+			if(d.contains("sync::midi_clock_out")){
+				var dm = d.get("sync::midi_clock_out");
+				var mk = dm.getkeys();
+				var outlist = [];
+				if(mk != null){
+					if(!Array.isArray(mk))mk = [mk];
+					for(var m=0;m<mk.length;m++){
+						if(dm.get(mk[m]+"::enable")==1) outlist.push(mk[m]);
+					}
+					post("\n  sync : midi clock out - "+outlist);
+					messnamed("ext_sync","midi_clock_out_poly","voices",outlist.length);
+					for(var m=0;m<outlist.length;m++){
+						messnamed("ext_sync","midi_clock_out_poly","setvalue",m+1,"output",outlist[m]);
+						messnamed("ext_sync","midi_clock_out_poly","setvalue",m+1,"ppqn",dm.get(outlist[m]+"::ppqn"));
+					}
+					ext_sync.active = 1;
+				}
+			}
+			if(d.contains("sync::audio_clock_out")){
+				if(d.get("sync::audio_clock_out::enable")==1){
+					post("\n  sync : audio clock out", d.get("sync::audio_clock_out::ppqn")+"ppqn on channel",d.get("sync::audio_clock_out::channel"));
+					ext_sync.active = 1
+					messnamed("ext_sync", "audio_clock_rate", d.get("sync::audio_clock_out::ppqn"));
+					var transportpatcher = this.patcher.getnamed("global_transport_and_click");
+					var new_audio_clock_out = this.patcher.newdefault(180,178, "dac~", d.get("sync::audio_clock_out::channel"));
+					new_audio_clock_out.message("sendbox", "varname", "audio_clock_out_dac");
+					this.patcher.connect(transportpatcher, 2, new_audio_clock_out, 0);
+				}
+			}
+			messnamed("ext_sync","active",ext_sync.active);
 		}else{
 			post("\n  "+keys[i]+" : "+t);
 		}
 	}
 	//messnamed("to_ext_matrix","read_config");
 	transfer_input_lists();
-	post("\nsetting output blocks to:",output_blocks);
-	output_blocks_poly.patchername(output_blocks); 
 	post("\n\ninit stage 4 : start graphic and audio engines\n------------------------------------------");
 
 	initialise_graphics();
@@ -627,15 +667,32 @@ function import_hardware(v){
 	var old_adc = this.patcher.getnamed("audio_inputs");
 	this.patcher.remove(old_dac);
 	this.patcher.remove(old_adc);
+	var old_ip = this.patcher.getnamed("input_processing");
+	if(old_ip!=null) this.patcher.remove(old_ip);
+
 	new_adc = this.patcher.newdefault(654,497, "mc.adc~", audioiolists[0]);
 	new_adc.message("sendbox", "varname", "audio_inputs");
+	var ipprocessing = this.patcher.newdefault(654,527, "mc.gen~", "input_processing", "@chans", audioiolists[0].length);
+	ipprocessing.message("sendbox", "varname", "input_processing");
 	new_dac = this.patcher.newdefault(667,882, "mc.dac~", audioiolists[1]);
+	
+	var dc_sorted = [];
+	var ip_sorted = []; //these are only for the console notification but it's useful to have that as a reminder..
+	for(var i=0;i<audioiolists[0].length;i++){
+		ipprocessing.message("setvalue",i+1,"hp", dc_block_enabled_list[audioiolists[0][i]-1]);
+		ipprocessing.message("setvalue",i+1,"gate", input_gate_enabled_list[audioiolists[0][i]-1]);
+		dc_sorted.push(dc_block_enabled_list[audioiolists[0][i]-1]);
+		ip_sorted.push(input_gate_enabled_list[audioiolists[0][i]-1]);
+	}
+	post("\ninput processing: dc block",dc_sorted,"cpu saving gate",ip_sorted);
 	new_dac.message("sendbox", "varname", "audio_outputs");
 	var opinterleave = this.patcher.getnamed("op_interleave");
 	var ipcombine = this.patcher.getnamed("ip_combine");
 	var openbut = this.patcher.getnamed("openbutton");
 	this.patcher.connect(opinterleave, 0, new_dac, 0);
-	this.patcher.connect(new_adc,0,ipcombine,1);
+	//this.patcher.connect(new_adc,0,ipcombine,1);
+	this.patcher.connect(new_adc,0,ipprocessing,0);
+	this.patcher.connect(ipprocessing,0,ipcombine,1);
 	this.patcher.connect(openbut,0,new_dac,0);
 	post("\noutput list",audioiolists[1],"\ninput list",audioiolists[0]);
 	if(config.get("ENABLE_RECORD_HARDWARE")==1){
@@ -732,7 +789,12 @@ function import_hardware(v){
 	sigouts.chans(matrixouts);
 	this.patcher.getnamed("mc_separate").chans(MAX_AUDIO_VOICES,MAX_AUDIO_VOICES);
 	matrix.numouts(matrixouts);
-	output_blocks_poly.voices(((MAX_AUDIO_OUTPUTS+1)/2)|0);
+	var ol = ((MAX_AUDIO_OUTPUTS+1)/2)|0;
+	output_blocks.splice(ol);
+	output_blocks_poly.voices(ol);
+	post("\nsetting output blocks to:",output_blocks);
+	output_blocks_poly.patchername(output_blocks); 
+	
 	audio_to_data_poly.voices(MAX_AUDIO_INPUTS + MAX_AUDIO_OUTPUTS + NO_IO_PER_BLOCK * MAX_AUDIO_VOICES);
 	audio_to_data_poly.message("down",((+config.get("AUDIO_TO_DATA_DOWNSAMPLE"))|0));
 	post("\nset audio_to_data poly downsampling to ",config.get("AUDIO_TO_DATA_DOWNSAMPLE"));
@@ -808,6 +870,7 @@ function load_config_colours(){
 	redraw_flag.flag |= 4;
 	var c = config.get("palette::muted");
 	MUTEDWIRE = [c[0]/128,c[1]/128,c[2]/128,1];
+	calculate_states_colours();
 }
 
 function process_userconfig(){
@@ -1081,6 +1144,13 @@ function deferred_diagnostics(){
 	}
 }
 
+function calculate_states_colours(){
+	var cll = config.getsize("palette::gamut");
+	for(var i=0;i<MAX_STATES;i++){
+		statesbar.colours[i] = config.get("palette::gamut["+Math.floor(i*cll/MAX_STATES)+"]::colour");
+	}
+}
+
 function topbar_size(){
 	var w=(topbar.used_length>0)? topbar.used_length:sidebar.x;
 	var tw=(w+3)/mainwindow_width;
@@ -1112,7 +1182,7 @@ function sidebar_size(){
 
 function statesbar_size(){
 	var h=(statesbar.used_height>0)? statesbar.used_height:0;
-	if(h==0){
+	if((h==0)||(displaymode=="block_menu")||(sidebar.mode == "file_menu")){
 		statesbar.videoplane.message("enable",0);
 	}else{
 		statesbar.videoplane.message("enable",1);
@@ -1124,34 +1194,6 @@ function statesbar_size(){
 		statesbar.videoplane.message("texanchor",0.5*tw,0.5*th);
 	}
 }
-
-function bottombar_size(){
-	if(bottombar.block>-1){
-		var h = bottombar.height;
-		var r = bottombar.right;
-		bottombar.height = config.get("BOTTOMBAR_HEIGHT") * fontheight;
-		bottombar.right = ((sidebar.mode=="none")||(sidebar.used_height<(mainwindow_height-bottombar.height))) ? (mainwindow_width-5) : (sidebar.x - 5);
-		if(sidebar.mode=="file_menu") bottombar.right = sidebar.x2 - fontheight * 15 -5;
-		var w=bottombar.right - 9 - fontheight;
-		var tw=w/mainwindow_width;
-		var cx = -1 + 2 * (9+ fontheight + 0.5*w ) / mainwindow_width;
-		var cy = 1 - 2 * (mainwindow_height - 0.5 * (bottombar.height + 9))/mainwindow_height;
-		var th=(bottombar.height+9)/mainwindow_height;
-		bottombar.videoplane.message("scale",tw,th);
-		bottombar.videoplane.message("position",cx,cy,0);
-		bottombar.videoplane.message("texzoom",1/tw,1/th);
-		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
-		bottombar.videoplane.message("enable",1);
-		if((h!=bottombar.height)||(r!=bottombar.right)){
-			// ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
-			setup_bottom_bar(bottombar.block);
-		}
-		redraw_flag.deferred |= 4;
-	}else{
-		bottombar.videoplane.message("enable",0);
-	}
-}
-
 
 function size(width,height,scale){
 	if(mainwindow_width!=width || mainwindow_height!=height){
@@ -1170,6 +1212,7 @@ function size(width,height,scale){
 		}
 		fontheight = (mainwindow_height-24) / 18;
 		fontsmall = fontheight / 3.2;
+		config.replace("fontsmall",fontsmall);
 		fo1 = fontheight * 0.1;
 		sidebar.width = fontheight*sidebar.width_in_units;
 		sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
@@ -1178,7 +1221,8 @@ function size(width,height,scale){
 		topbar_size();
 		sidebar_size();
 		topbar.videoplane.message("enable",1);
-		bottombar_size();
+		bottombar.requested_widths = [];
+		setup_bottom_bar();
 
 		sidebar.meters.startx = 9+1.1* fontheight;
 		sidebar.meters.spread = 4;
@@ -1288,6 +1332,7 @@ function prep_midi_indicators(){
 		this.patcher.connect(m_lim,0,m_m,0);
 		midi_indicators.status[i]=0;
 	}
+	if(ext_sync.active||ext_sync.link_enabled)midi_indicators.status.push(0);
 }
 
 function import_presets(){

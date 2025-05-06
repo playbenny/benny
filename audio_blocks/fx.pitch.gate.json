@@ -2,7 +2,8 @@
 	"fx.pitch.gate" : {
 		"patcher" : "fx.pitch.gate",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "utility.gate.ui",
+		"ui_in_sidebar_height" : 1,
 		"help_text" : "pitch detecting gate, based on an idea Waclaw Zimpel had. the idea is to separate different pitches to different outputs. only works with monophonic input audio, results may vary depending on the source. Waclaw was using the m4l version of this with a mic inside the barrel of his clarinet, which gives a very clean signal that works well.££in single voice mode output 1 is the 'selected notes' and output 2 is the 'unselected notes'. ££if multiple voices are instantiated then each voice only selects / unselects one note from the list of available ones.££as with the fx.pitch.retune block you set the notes you want either using a scale (defined in the core.scales.shapes block) or midi input.££the midi outputs give you (on 1) the detected pitch and (on 2) the gate status of the voice, which you could use to drive an envelope, for example.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
@@ -23,6 +24,7 @@
 			},
 			{
 				"contains" : [2],
+				"header" : "latency",
 				"height" : 0
 			}
 		],

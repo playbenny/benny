@@ -3,7 +3,7 @@
 		"patcher" : "voice.sample.player",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "sample player with slices, offset, timestretch",
+		"help_text" : "sample player with slices, offset, timestretch. ££i don't think the max/msp sample playback objects do anti-aliasing so if you're pitching samples up turn on oversampling for this block.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
@@ -74,8 +74,8 @@
 			},
 			{
 				"name" : "attack",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
 				"error_scale" : 2,
 				"default" : 0.05
@@ -90,8 +90,8 @@
 			},
 			{
 				"name" : "release",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
 				"error_scale" : 4,
 				"default" : 0.15

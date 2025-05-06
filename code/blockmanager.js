@@ -37,14 +37,12 @@ var LONG_PRESS_TIME = 800;
 var SLIDER_CLICK_SET = 0;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var SHOW_STATES_ON_PANELS = 1;
-var WIRES_REDUCE = 1; //if on then to 'all' or from 'all' connections always go to/from the block as a single wire rather than loads of wires
 var BLOCK_TEXTURE_SIZE = 128;
 var UPSAMPLING = 1;
 var RECYCLING = 1;
 var MODULATION_IN_PARAMETERS_VIEW = 1;
 var AUTOZOOM_ON_SELECT = 1;
 var BLOCKS_GRID = [100, 0.01];
-var BLOCK_MENU_CLICK_ACTION = "click";
 var CTRL_VOICE_SEL_MOMENTARY = 1;
 var SHOW_STATES_ON_PANELS = 1;
 var TARGET_FPS = [30, 5];
@@ -57,6 +55,11 @@ var waves_preloading = 1;
 var MUTEDWIRE = [0.16,0.16,0.14, 1];
 var SOUNDCARD_HAS_MATRIX = 0;
 var EXTERNAL_MATRIX_PRESENT = 0;
+var pattern_recall_timing_quantise = "1n";
+var STATE_FADE_DRAG_THRESHOLD = 20; // number of px of drag before state button converts into a slider
+
+var quantised_event_list = [];
+
 
 var panelslider_index;
 var panelslider_visible = new Array(MAX_BLOCKS);
@@ -136,7 +139,9 @@ var topbar = {
 var statesbar = {
 	lcd: null,
 	videoplane: null,
-	used_height:0
+	used_height:0,
+	colours : [],
+	y_pos : []
 }
 
 var statesfadebar = {
@@ -255,6 +260,7 @@ var blocks_cube_texture = [];
 var blocks_tex_sent= []; //each element is mutestate+label
 var blocks_menu_texture = [];
 var blocks_menu = []; //called menulabel-type or menublock-type
+var blocks_per_voice_colour_overrides = []; //eg if block 6 has this on some voices it'd be .._overides[6] = [0, [126,16,16], 0, etc]
 var menu = {
 	length : 10,  //endstop for the menu scroll
 	search : "",
@@ -364,9 +370,15 @@ var wire_ends = [];
 
 var wire_dia = 0.03;
 
-var cur_font_size = 0;
-
 var param_defaults = [];
+
+var ext_sync = {
+	active : 0,
+	state : 0,
+	waiting : 0, //if the main transport is waiting for a bar on the sync transport in order to start.
+	link_available : 0,
+	link_enabled : 0
+};
 
 var automap = {
 	available_c : -1,
@@ -422,8 +434,11 @@ var wirecolour = [1,1,1,1];
 
 var meter_positions = [[],[]];
 
-var panels_custom = [];
-var panels_order = [];
+var panels = {
+	custom : [],
+	order : [],
+	editting : -1
+};
 
 var blocks_page = {
 	new_block_click_pos : [0,0],
@@ -432,11 +447,6 @@ var blocks_page = {
 	highest :0,
 	lowest: 0
 }	
-
-
-
-var touch_click=0;
-var stored_click = [];
 
 var menucolour, menudark, menudarkest;
 var greycolour, greydark, greydarkest;
@@ -491,6 +501,10 @@ var usermouse = {
 	scroll_accumulator : 0,
 	sidebar_scrolling: null,
 	long_press_function : null,
+	wiretouch : {
+		x : -1,
+		y : -1
+	},
 	drag : {
 		starting_x : 0,
 		starting_y : 0,
@@ -512,6 +526,7 @@ var bottombar = {
 	height: 200,
 	block: -1,
 	right: -1,
+	requested_widths: [],
 	available_blocks : []
 }
 
@@ -582,7 +597,26 @@ var sidebar = {
 	notification : "",
 	text_being_edited : "",
 	channelnaming : ["block","channel"], //set when you bring up the edit channel name mode
-	dropdown : null
+	dropdown : null,
+	show_help : 0 //once you add a block to a song this turns on and it always shows help
+}
+
+var patternpage = { // info to help draw pattern page fast
+	enable : 0, //turned on when it loads a block with patterns
+	column_block : [], //block no
+	block_split : [], //if it's split into voices, then the number of voices. checked on switch mode. stored by block not by columnno
+	block_statelist : [], //states that include this block
+	column_type : [], //0 =state,
+					// 1 = pattern ?? (wave scan? etc) if a block has both it gets one of each.
+	usedstates : 0, //how many states are used
+	max_rows : 0, //maximum of usedstates and number of patterns. actually it will display more than that, as one column could be up and one down? maybe?
+	patternbeingnamed : -1, //just a place to hold the number of this to save 
+	cursor_index : [], //by column, pointer index or list of indexes
+	cursor_last : [],
+	cursor_divisor : [], // 1/length;
+	column_ends_x : [], //list of ends (start, end of voice 1, .. ,end of last voice) - so v+1 entries.
+	held_state_fires : [],
+	held_pattern_fires: [] //to indicate when a pattern etc is held via shift key..
 }
 
 var y_offset;
@@ -611,6 +645,9 @@ config.name = "config";
 var userconfig = new Dict;
 userconfig.name = "userconfig";
 userconfig.filechanged = function(){};
+
+var hardwareconfig = new Dict;
+hardwareconfig.name = "hardwareconfig";
 
 var userpresets = new Dict;
 userpresets.name = "userpresets";
@@ -767,7 +804,8 @@ var loading = {
 	hardware_substitutions_occured : 0, //this is set to 1 to put the warning on the save page
 	save_waitlist : [], //blocks we are waiting for them to say they've completed a 'store' command.
 	save_wait_count : 0,
-	save_type : "selected" //selected, named, save
+	save_type : "selected", //selected, named, save
+	temporandomise : 0
 }
 
 var cpu_meter = {
@@ -799,7 +837,7 @@ function diagnostics(){
 	post("\nnblock selected",selected.block);
 	if(voicemap.contains(selected.block.indexOf(1))) post("- its voices: ",voicemap.get(selected.block.indexOf(1)));
 	post("\nwire selected",selected.wire);
-	post("\npanels list: ",panels_order);
+	post("\npanels list: ",panels.order);
 	post("\nnote patcherlist: \n",note_patcherlist,"\n loaded note patcherlist: \n",loaded_note_patcherlist,"\n audio patcherlist: \n",audio_patcherlist,"\n loaded audio patcherlist: \n",loaded_audio_patcherlist,"\n upsampling list: \n",audio_upsamplelist,"\n ui patcherlist: \n",ui_patcherlist,"\n loaded ui patcherlist: \n",loaded_ui_patcherlist,"\n vst list:\n",vst_list,"\n\n");
 	post("\nNumber of items in the waves polybuffer:", waves_polybuffer.count); 
 	post("\nMemory used in the waves polybuffer:", waves_polybuffer.size/1048576, " megabytes"); 

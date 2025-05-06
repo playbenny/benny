@@ -122,6 +122,38 @@ function block(bn){
                 selected_in_dict = null;
                 selected = "none";
             }
+            if((selection_type == "notfound")||(selection_type == "notfoundindict")){
+                var default_controller = null;
+                if((blockname == "mixer.bus")&&(io.contains("controller_defaults::mixer_bus"))){
+                    default_controller = io.get("controller_defaults::mixer_bus");
+                }else if((blockname == "core.input.control.auto")&&(io.contains("controller_defaults::control_auto"))){
+                    default_controller = io.get("controller_defaults::control_auto");
+                }
+                if(default_controller!=null){
+                    is = ispresent(default_controller);
+                    if(is>-1){
+                        //default is present, however first we need to check it's not in use already elsewhere
+                        for(var ib=0;ib<MAX_BLOCKS;ib++){
+                            if(blocks.contains("blocks["+ib+"]::selected_controller")){
+                                var sc = blocks.get("blocks["+ib+"]::selected_controller");
+                                if(sc == default_controller){
+                                    if(verbose) post("\na potential substitute ("+default_controller+") is present but is already in use by block "+ib+" ("+blocks.get("blocks["+ib+"]::name")+")");
+                                    ib = MAX_BLOCKS;
+                                    is = -1;
+                                }
+                            }
+                        }
+                        if(is>-1){
+                            if(verbose) post("\na default is present:",default_controller);
+                            selected = default_controller;
+                            selection_type = "default";
+                            set_param(default_controller);
+                        }
+                    }else{
+                        if(verbose) post("\n ",default_controller,"also not available");
+                    }
+                }
+            }
             if(verbose) post("\ninitialisation complete:",selected_in_dict,selection_type,selected,blockname);
         }
         outlet(3, blockname);

@@ -41,6 +41,7 @@ var rcol = []; //row colour. per column arrays (ironically probably more storage
 //explainer: if a row is 'grouped' into a round robin then the colour sequence doesn't advance, to keep it making sense.
 var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 var discont_x,discont_x2,bh;
+var mainfont;
 //data format: for each voice the buffer holds:
 // 0 - playhead position (updated by player voice)
 // 1-16383 data values, split over a flexible number of columns (6) and patterns (16)
@@ -58,6 +59,8 @@ function setup(x1,y1,x2,y2,sw){
 	max_rows = Math.floor((MAX_DATA-1)/(UNIVERSAL_COLUMNS*UNIVERSAL_PATTERNS));
 	pattsize = max_rows*UNIVERSAL_COLUMNS;
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	mainfont = config.get("mainfont");
+
 	mini=0;
 	width = x2-x1;
 	height = y2-y1;
@@ -107,7 +110,7 @@ function draw(){
 		i= showcols;
 		outlet(1,"paintrect",x_pos,y_pos,width+x_pos,height+y_pos,blockcolour[0]*0.1,blockcolour[1]*0.1,blockcolour[2]*0.1);
 		if(!mini){
-			outlet(0,"setfontsize",rh*0.8);
+			outlet(1,"font",mainfont,rh*0.8);
 			outlet(1,"frgb",blockcolour);
 			outlet(1,"moveto",sx+(cursorx-display_col_offset+(cursorx2*3+(cursorx2>0))/(2+3*(UNIVERSAL_COLUMNS-1)))*cw+3+x_pos,rh*2.6+y_pos);
 			if(cursorx2==0){
@@ -125,10 +128,10 @@ function draw(){
 		}
 		for(c=display_col_offset;c<Math.min(display_col_offset+showcols,v_list.length);c++){
 			if(!Array.isArray(rcol[c])) rcol[c] = [];
-			cursors[c] = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			start[c]  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 			lstart[c] = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
 			end[c]  = lstart[c] + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+			cursors[c] = Math.floor(end[c]*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 			lon[c] = Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 			pattern_offs[c] = pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 			divs[c] =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));
@@ -232,10 +235,10 @@ function update(){
 			draw();
 			return 2;
 		}
-		ph = Math.floor(voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_start  = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c],1));
 		t_lstart = Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+1,1));
 		t_end  = t_lstart + Math.floor(512*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+2,1));
+		ph = Math.floor(t_end*voice_data_buffer.peek(1, MAX_DATA*v_list[c]));
 		t_lon =  Math.floor(2*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+3,1));
 		t_p_offs =  pattsize * Math.floor(UNIVERSAL_PATTERNS*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+9,1));
 		t_divs =  Math.floor(2 + 14*voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[c]+5,1));

@@ -4,17 +4,30 @@ function config_toggle_gain_display_format(ta,tb){
 	}else{
 		config.replace("gain_display_format", "x");
 	}
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function play(state){
 	if(state!=playing){
-		playing=state;
-		redraw_flag.flag = 2;
-		if(playing&&(set_timer_start==null)){
-			var da = new Date;
-			set_timer_start = da.getTime();
-		} 
+		if(state == "wait"){
+			ext_sync.waiting = 1;
+			redraw_flag.flag |= 2;
+		}else{
+			playing=state;
+			ext_sync.waiting = 0;
+			redraw_flag.flag |= 2;
+			if(playing&&(set_timer_start==null)){
+				var da = new Date;
+				set_timer_start = da.getTime();
+			} 
+			if(ext_sync.active){
+				if(playing){
+					ext_sync.state = 1;
+				}else{
+	
+				}
+			}
+		}
 	}
 }
 
@@ -24,18 +37,51 @@ function play_button(){
 
 function play_button_click(){
 	if(playing == 0){
-		messnamed("play",1);
-		playflag = 1;
+		if(usermouse.ctrl){
+			stop_ext_clocks();
+		}else{
+			messnamed("play",1);
+			playflag = 1;
+		}
 	}else{playflag = 0;}
 }
 
 function play_button_release(){
 	if((!playflag)&playing){
 		messnamed("play",0);
+		if(usermouse.ctrl && ext_sync.state == 1) stop_ext_clocks();
 	}
 	playflag = 0;
 }
 
+function stop_ext_clocks(){
+	post("\nstopping external clock");
+	ext_sync.state = 0;
+	messnamed("ext_sync","stop_clocks");
+}
+
+function link_available(){
+	ext_sync.link_available = 1;
+	var g = blocktypes.get("core.clock::groups[5]::contains");
+	if(g.length<4){
+		g.push(15);
+		blocktypes.replace("core.clock::groups[5]::contains",g);
+	}
+	if(sidebar.mode=="midi_indicators") redraw_flag.flag |= 2;
+}
+function toggle_ableton_link(){
+	set_ableton_link_enable(1 - ext_sync.link_enabled);
+}
+function set_ableton_link_enable(l){
+	ext_sync.link_enabled = l;
+	messnamed("link_enable",ext_sync.link_enabled);
+	redraw_flag.flag |= 2;
+}
+function clock_link_button(){
+	set_ableton_link_enable(1);
+	clear_blocks_selection();
+	set_sidebar_mode("midi_indicators");
+}
 function resync_button(){
 	messnamed("resync","bang");
 }
@@ -46,6 +92,7 @@ function panic_button(){
 	sigouts.message("setvalue", 0,0); //clears midi-audio sig~
 	//for(var i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
+
 function count_selected_blocks_and_wires(){
 	selected.block_count =0;
 	selected.wire_count = 0;
@@ -184,6 +231,7 @@ function blocks_paste(outside_connections,target){
 						if(v2[pc]!=vals[pc]) same = 0;
 					}
 					// i can't be bothered to compare settings who is ever going to do that
+					// WHAT ABOUT DATA THO
 				}
 			}
 			if((same==0)&&(selected.block_count>0)&&(copied_blocks.length == 1)&&(!outside_connections)){
@@ -230,6 +278,13 @@ function blocks_paste(outside_connections,target){
 						tkeys = tdd.getkeys();
 						for(var t=0;t<tkeys.length;t++){
 							blocks.replace("blocks["+i+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						if(td.contains(copied_blocks[0]+"::patterns")){
+							tdd = td.get(copied_blocks[0]+"::patterns");
+							tkeys = tdd.getkeys();
+							for(var t=0;t<tkeys.length;t++){
+								blocks.replace("blocks["+i+"]::patterns::"+tkeys[t],tdd.get(tkeys[t]));
+							}
 						}
 						if(target.contains("block_data::"+copied_blocks[0])){
 							var vl = voicemap.get(i);
@@ -279,7 +334,7 @@ function blocks_paste(outside_connections,target){
 								}
 							}
 						}
-						new_block_index = new_block(name,px,py);
+						new_block_index = new_block(name,px,py,1);
 					}
 					if(new_block_index==-1){
 						if(excl!=2)post("\nerror pasting, "+name+" not found");
@@ -327,6 +382,13 @@ function blocks_paste(outside_connections,target){
 						tkeys = tdd.getkeys();
 						for(var t=0;t<tkeys.length;t++){
 							blocks.replace("blocks["+new_block_index+"]::flock::"+tkeys[t],tdd.get(tkeys[t]));
+						}
+						if(td.contains(copied_blocks[0]+"::patterns")){
+							tdd = td.get(copied_blocks[0]+"::patterns");
+							tkeys = tdd.getkeys();
+							for(var t=0;t<tkeys.length;t++){
+								blocks.replace("blocks["+new_block_index+"]::patterns::"+tkeys[t],tdd.get(tkeys[t]));
+							}
 						}
 						var vl = voicemap.get(new_block_index);
 						if(!Array.isArray(vl)) vl=[vl];
@@ -474,6 +536,9 @@ function copy_block(block,target){
 	target.setparse("blocks::"+block,"{}");
 	target.replace("blocks::"+block,tb);
 	target.setparse("block_params::"+block,"{}");
+	if(tb.contains("patterns")){
+		target.setparse("patterns::"+tb.get("patterns"));
+	}
 	var name=tb.get("name");
 	var paramcount = blocktypes.getsize(name+"::parameters");
 	var vals = parameter_value_buffer.peek(1, block*MAX_PARAMETERS, paramcount);
@@ -666,9 +731,13 @@ function insert_menu_button(cno){
 	menu.connection_number = cno;
 	var fr=block_position(connections.get("connections["+cno+"]::from::number"));
 	var tt=block_position(connections.get("connections["+cno+"]::to::number"));
-	blocks_page.new_block_click_pos = [0.5*(fr[0]+tt[0]),0.5*(fr[1]+tt[1])];
-	if((fr[1]-tt[1])<2){
-		make_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.5);
+	if((fr[0] == tt[0])&&(fr[1] == tt[1])){
+		blocks_page.new_block_click_pos = [fr[0]+1,fr[1]];
+	}else{
+		blocks_page.new_block_click_pos = [0.5*(fr[0]+tt[0]),0.5*(fr[1]+tt[1])];
+		if((fr[1]-tt[1])<2){
+			make_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.5);
+		}
 	}
 	set_display_mode("block_menu");
 }
@@ -868,6 +937,23 @@ function screentoworld(x,y){
 	return [x,y,0];//real;
 }
 
+function click_patterns_column_header(parameter,value){
+	if(usermouse.ctrl){
+		if(usermouse.shift){
+			queue_quantised_notification(mute_particular_block, parameter,-1);
+			if(patternpage.column_type[value]==1){
+				patternpage.held_pattern_fires[parameter] = -1;
+			}else{
+				patternpage.held_state_fires[parameter] = null;
+			}
+		}else{
+			mute_particular_block(parameter,-1);
+		}
+	}else{
+		select_block(parameter,parameter);
+	}
+}
+
 function select_block(parameter,value){
 	if((selected.block[value]==1)&&(selected.block_count==1)&&(displaymode == "panels")&&(usermouse.timer>0)){
 		var ui = blocktypes.get(blocks.get("blocks["+value+"]::name")+"::block_ui_patcher");
@@ -894,8 +980,14 @@ function select_block(parameter,value){
 		selected.wire_count = 0;
 		redraw_flag.flag |= 2;
 		if(displaymode == "blocks") redraw_flag.flag |= 8;
-		if(usermouse.ctrl && (displaymode == "panels")){
-			set_sidebar_mode("edit_label");
+		if(displaymode == "panels"){
+			if(usermouse.ctrl){
+				panels.editting = value;
+				set_sidebar_mode("panel_assign");
+			}else{
+				set_sidebar_mode("none");
+				panels.editting = -1;
+			}
 		}
 	}
 }
@@ -908,26 +1000,26 @@ function panels_bg_click(){
 function panel_edit_button(parameter,value){
 	post("panel edit",parameter,value);
 	if(value=="up"){
-		for(var i=1;i<panels_order.length;i++){
-			if(panels_order[i]==parameter){
-				panels_order[i] = panels_order[i-1];
-				panels_order[i-1] = parameter;
+		for(var i=1;i<panels.order.length;i++){
+			if(panels.order[i]==parameter){
+				panels.order[i] = panels.order[i-1];
+				panels.order[i-1] = parameter;
 			}
 		}
 	}else if(value=="down"){
-		for(var i=panels_order.length-1;i>=0;i--){
-			if(panels_order[i]==parameter){
-				panels_order[i] = panels_order[i+1];
-				panels_order[i+1] = parameter;
+		for(var i=panels.order.length-1;i>=0;i--){
+			if(panels.order[i]==parameter){
+				panels.order[i] = panels.order[i+1];
+				panels.order[i+1] = parameter;
 			}
 		}
 	}else if(value=="hide"){
 		blocks.replace("blocks["+parameter+"]::panel::enable",0);
-		panels_order.splice(panels_order.indexOf(parameter),1);
+		panels.order.splice(panels.order.indexOf(parameter),1);
 		redraw_flag.paneltargets[parameter] = 0;
-		//post("panels order is now",panels_order);
+		//post("panels order is now",panels.order);
 	}
-	redraw_flag.flag=4;
+	redraw_flag.flag |= 4;
 }
 
 function extend_waves_dict(newlen){
@@ -1022,7 +1114,7 @@ function select_folder(parameter,value){
 }
 
 function open_core_control_auto(){
-	post("\nlooking");
+	// post("\nlooking");
 	for(var i=0;i<MAX_BLOCKS;i++){
 		if((blocks.contains("blocks["+i+"]::name"))&&(blocks.get("blocks["+i+"]::name")=="core.input.control.auto")){
 			var show=0;
@@ -1403,36 +1495,50 @@ function delete_state(state,block){
 function fire_block_state(state, block){
 	if(usermouse.ctrl && (state!=-1)){
 		sidebar.selected = state;
-		set_sidebar_mode("edit_stete");
+		set_sidebar_mode("edit_state");
 	}else{
-		var pv=[];
-		if(state==-1) state = "current";
-		pv = states.get("states::"+state+"::"+block);
-		var m=0;
-		if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
-		mute_particular_block(block,pv[0]);
-		for(var i=1;i<pv.length;i++){
-			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
-		}
-		if(states.contains("states::"+state+"::static_mod::"+block)){
-			var td = states.get("states::"+state+"::static_mod::"+block);
-			var tk = td.getkeys();
-			var vl = voicemap.get(block);
-			if(!Array.isArray(vl)) vl = [vl];
-			for(var i=0;i<tk.length;i++){
-				parameter_static_mod.poke(1,MAX_PARAMETERS*vl[+tk[i]],states.get("states::"+state+"::static_mod::"+block+"::"+tk[i]));
+		if(usermouse.shift){
+			if(state=="current") state = -1;//lol
+			queue_quantised_notification(fire_block_state,state,block);
+			patternpage.held_state_fires[block] = state;
+			if(sidebar.selected==block) redraw_flag.flag |= 2; 
+		}else{
+			patternpage.held_state_fires[block] = null;
+			var pv=[];
+			if(state==-1) state = "current";
+			pv = states.get("states::"+state+"::"+block);
+			var m=0;
+			if(blocks.contains("blocks["+block+"]::mute")) m=blocks.get("blocks["+block+"]::mute");
+			mute_particular_block(block,pv[0]);
+			for(var i=1;i<pv.length;i++){
+				parameter_value_buffer.poke(1, MAX_PARAMETERS*block+i-1, pv[i]);
 			}
+			if(states.contains("states::"+state+"::static_mod::"+block)){
+				var td = states.get("states::"+state+"::static_mod::"+block);
+				var tk = td.getkeys();
+				var vl = voicemap.get(block);
+				if(!Array.isArray(vl)) vl = [vl];
+				for(var i=0;i<tk.length;i++){
+					parameter_static_mod.poke(1,MAX_PARAMETERS*vl[+tk[i]],states.get("states::"+state+"::static_mod::"+block+"::"+tk[i]));
+				}
+			}
+			if(m!=pv[0]) redraw_flag.flag |= 8;
 		}
-		if(m!=pv[0]) redraw_flag.flag |= 8;
 	}
+	redraw_flag.flag |= 4;
 }
 
 function fire_whole_state_btn_click(state,value){ //start timer, after a moment a slider appears
 	//post("whole state btn click",state);
-	if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
-	state_fade.selected = state;
-	state_fade.position = -1;
-	if(state>=-1) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
+	if(!usermouse.shift){
+		usermouse.drag.starting_x = usermouse.x;
+		usermouse.drag.starting_y = usermouse.y;
+		usermouse.drag.distance = 0;
+		if((state_fade.selected>-2)&&(state_fade.last == -2)) state_fade.last = state_fade.selected;
+		state_fade.selected = state;
+		state_fade.position = -1;
+		if(state>=-1) whole_state_xfade_create_task.schedule(LONG_PRESS_TIME);
+	}
 }
 
 function create_whole_state_xfade_slider(state,value){
@@ -1528,8 +1634,7 @@ function fire_whole_state_btn(state,value){
 		fire_whole_state(state);
 	}
 	if(state>-1){
-		var cll = config.getsize("palette::gamut");
-		state_fade.lastcolour = config.get("palette::gamut["+Math.floor(state*cll/MAX_STATES)+"]::colour");
+		state_fade.lastcolour = statesbar.colours[state];
 	}else{
 		state_fade.lastcolour = [0,0,0];
 	}
@@ -1537,7 +1642,6 @@ function fire_whole_state_btn(state,value){
 
 
 function fire_whole_state(state, value){
-	//post("\nfire whole state",state);
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
@@ -1712,8 +1816,7 @@ function add_to_state(parameter,block){ //if block==-1 all states, -2 all select
 			if(parameter=="current"){
 				state_fade.lastcolour = [0,0,0];
 			}else{
-				var cll = config.getsize("palette::gamut");
-				state_fade.lastcolour = config.get("palette::gamut["+Math.floor(parameter*cll/MAX_STATES)+"]::colour");
+				state_fade.lastcolour = statesbar.colours[parameter];
 			}
 			
 			set_sidebar_mode("block");
@@ -1795,6 +1898,18 @@ function scroll_waves(parameter,value){
 	}else{
 		waves.scroll_position = Math.min(Math.max(0,-value*5000),mainwindow_height*(MAX_WAVES+2)/6-0.01);
 		redraw_flag.flag |= 4;
+	}
+}
+
+function edit_pattern_name(parameter,value){
+	if(parameter == "ok"){
+		if(patternpage.patternbeingnamed[0]>-1){
+			if((sidebar.text_being_edited!="")){
+				blocks.replace("blocks["+patternpage.patternbeingnamed[0]+"]::patterns::names["+patternpage.patternbeingnamed[1]+"]",sidebar.text_being_edited);
+				set_sidebar_mode("block");
+				redraw_flag.flag |= 4;
+			}	
+		}		
 	}
 }
 
@@ -1886,7 +2001,7 @@ function editted_song_notes(){
 	set_sidebar_mode("none");
 }
 function static_mod_adjust(parameter,value){
-	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
+	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index);
 	//parameter holds paramno, blockno, voiceno
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){
@@ -1922,7 +2037,6 @@ function static_mod_adjust(parameter,value){
 			redraw_flag.deferred|=16;
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][parameter[0]]-MAX_PARAMETERS]=1;
 		}
-		//if(displaymode=="custom") redraw_flag.flag=4;
 		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }
@@ -1960,9 +2074,12 @@ function static_mod_adjust_custom(parameter,value){
 }
 
 function static_mod_adjust_custom_opv_button(parameter,value){ // this version has the 'toggle all' fn.
-	// post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index,"ctrl",usermouse.ctrl);
+	//post("\nstatic mod adj",parameter[0],parameter[1],parameter[2],value,mouse_index,"ctrl",usermouse.ctrl);
 	//parameter holds paramno, blockno, voiceno
-	
+	if(usermouse.shift&&(!usermouse.ctrl)){ //EXPERIMENTAL: shift defers this kind of button push to quantised trigger on next bar.
+		queue_quantised_notification(static_mod_adjust_custom_opv_button, parameter, value);
+		return 0;
+	}
 	var addr = parameter[2] * MAX_PARAMETERS + parameter[0];
 	if(value=="get"){
 		return parameter_static_mod.peek(1,addr);
@@ -1974,7 +2091,7 @@ function static_mod_adjust_custom_opv_button(parameter,value){ // this version h
 			for(var i=0;i<vl.length;i++){
 				var ov = parameter_static_mod.peek(1,vl[i]*MAX_PARAMETERS+parameter[0]);
 				if(vl[i]!=parameter[2]){
-					if(ov!=0) parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],0);
+					if(ov>=0.5) parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],0);
 				}else{
 					parameter_static_mod.poke(1,vl[i]*MAX_PARAMETERS+parameter[0],((ov<0.5)|0)*0.99);
 				}
@@ -2082,33 +2199,38 @@ function unscale_parameter(block, parameter, value){
 			}
 		}else if(p_values[3] == "exp100"){
 			if(pv>=0){
-				pv = (Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
+				pv = (Math.log(pv*99 + 1))*0.2171472// /Math.log(100); //(Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
 			}else{
-				pv = -0.01010101010101010101010101010101*(Math.pow(100, -pv) - 1);
+				pv = -(Math.log(-pv*99 + 1))*0.2171472//-0.01010101010101010101010101010101*(Math.pow(100, -pv) - 1);
 			}
 		}else if(p_values[3] == "exp1000"){
 			if(pv>=0){
-				pv = (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
+				pv = (Math.log(pv*999 + 1))*0.14476482// (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
 			}else{
-				pv = -0.001001001001001001001001001001*(Math.pow(1000, -pv) - 1);
+				pv = -(Math.log(-pv*999 + 1))*0.14476482//-0.001001001001001001001001001001*(Math.pow(1000, -pv) - 1);
 			}
 		}else if(p_values[3] == "exp.1"){
 			if(pv>=0){
-				pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
+				//pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
+				pv = (Math.log(1 + (-pv*0.9))*-0.4342944819);
 			}else{
-				pv = 1.1111111111111111111111111111111*(Math.pow(0.1, -pv) - 1);
+				pv = -(Math.log(1 + (pv*0.9))*-0.4342944819);
 			}
 		}else if(p_values[3] == "exp.01"){
 			if(pv>=0){
-				pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+				//pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
+				pv = (Math.log(1 + (-pv*0.09))*-0.2171472);
 			}else{
-				pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
+				// pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
+				pv = -(Math.log(1 + (pv*0.09))*-0.2171472);
 			}
 		}else if(p_values[3] == "exp.001"){
 			if(pv>=0){
-				pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+				// pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
+				pv = (Math.log(1 + (-pv*0.009))*-0.14476482);
 			}else{
-				pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
+				// pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
+				pv = -(Math.log(1 + (pv*0.009))*-0.14476482);
 			}
 		}else if(p_values[3] == "s"){
 			pv = 0.5 - 0.5 * Math.acos(pv*PI);
@@ -2207,7 +2329,7 @@ function store_voice_param_undo(parameter,voice,value){
 }
 
 function sidebar_parameter_knob(parameter, value){
-	//post("\nsidebar parameter knob P: ",parameter,"  V:",value);
+	// post("\nsidebar parameter knob P: ",parameter,"  V:",value);
 	// post("bufferpos",MAX_PARAMETERS*parameter[1]+parameter[0]);
 	if(value=="get"){
 		//also: look up if this slider is set to clickset mode
@@ -2264,7 +2386,6 @@ function sidebar_parameter_knob(parameter, value){
 			redraw_flag.deferred|=16;
 			redraw_flag.paneltargets[panelslider_visible[parameter[1]][paramslider_details[parameter[0]][9]]-MAX_PARAMETERS]=1;
 		}
-		//if(displaymode=="custom") redraw_flag.flag=4;
 		if(sidebar.selected==automap.mapped_c) note_poly.message("setvalue", automap.available_c,"refresh");
 	}
 }
@@ -2601,6 +2722,8 @@ function bypass_particular_block(block,av){ // i=block, av=value, av=-1 means to
 }
 
 function mute_particular_block(block,av){ // i=block, av=value, av=-1 means toggle
+	patternpage.held_pattern_fires[block]=null;
+	patternpage.held_state_fires[block]=null;
 	if(block == "static_mod"){
 		post("\n\n\nERROR mute was passed : ",block);
 		return -1; 
@@ -2664,7 +2787,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 					recursions++;
 					if(recursions>1000){
 						usermouse.shift = 0;
-						redraw_flag.flag = 4;
+						redraw_flag.flag |= 4;
 						post("\n\n\nemergency exitting infinite-looking recursion loop. how did that happen? you should file a bug report\n\n\n")
 						return(0);
 					}else{
@@ -2792,7 +2915,7 @@ function panel_assign_click(parameter,value){
 		}
 	}
 	if(fplist!=[]) 
-	redraw_flag.flag = 4;	
+	redraw_flag.flag |= 4;	
 }
 
 function cycle_automap_offset(p,v){
@@ -2874,7 +2997,7 @@ function flock_click(parameter,value){
 	blocks.replace("blocks["+parameter[0]+"]::flock::parameters",fplist);
 	// now needs to get voicelist for the block, then store 'is_flocked' for these (up to) 3 params
 	flock_add_to_array(parameter[0],fplist[0],fplist[1],fplist[2]);
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function flock_add_to_array(block,x,y,z){
@@ -2995,14 +3118,12 @@ function block_edit(parameter,value){
 function automap_default(a,b){
 	if(sidebar.selected != -1){
 		if(a<0){
-			//post("\nI THINK THIS IS STATIC MOD RESET",a,b);
+			//post("\nTHIS IS STATIC MOD RESET",a,b);
 			parameter_static_mod.poke(1,-a,0);
-			note_poly.message("setvalue", b+1, "refresh");
-			//note_poly.message("setvalue", automap.available_c,"refresh");
+			note_poly.message("setvalue", automap.available_c,"refresh");
 		}else{
 			parameter_value_buffer.poke(1,a,param_defaults[sidebar.selected][a-MAX_PARAMETERS*sidebar.selected]);
-			note_poly.message("setvalue", b+1,"refresh");
-			//note_poly.message("setvalue", automap.available_c,"refresh");
+			note_poly.message("setvalue", automap.available_c,"refresh");
 		}
 	}
 }
@@ -3501,6 +3622,7 @@ function key_escape(){
 	if(displaymode=="panels"){
 		if((sidebar.mode=="flock")||(sidebar.mode=="panel_assign")||(sidebar.mode=="cpu")){
 			set_sidebar_mode("block");
+			panels.editting = -1;
 		}else if(sidebar.mode!="none"){
 			clear_blocks_selection();
 			if(sidebar.mode == "file_menu"){
@@ -3515,7 +3637,7 @@ function key_escape(){
 		waves.selected = -1;
 		redraw_flag.flag |= 4;
 	}else if((displaymode=="custom")||(displaymode=="custom_fullscreen")){
-		if((last_displaymode!="blocks")&&(last_displaymode!="panels")){
+		if((last_displaymode!="blocks")&&(last_displaymode!="panels")&&(last_displaymode!="patterns")&&(last_displaymode!="waves")){
 			post("\ndon't want to return to:",last_displaymode,"mode so i'm going to blocks instead");
 			last_displaymode="blocks";
 		}
@@ -3523,8 +3645,8 @@ function key_escape(){
 	}else{
 		if((displaymode=="blocks")&&(usermouse.clicked3d>-1)){
 			usermouse.clicked3d=-1;
+			if(wires_potential_connection>-1) clear_or_close();
 			draw_blocks();
-			//post("\nabort 3d drag!!",usermouse.drag.dragging.voices[0],blocks.get("blocks["+usermouse.drag.dragging.voices[0][0]+"]::space::x"));
 		}else if((displaymode=="block_menu")&&(menu.mode==3)){
 			if(menu.search!=""){
 				menu.search="";
@@ -3546,6 +3668,8 @@ function key_escape(){
 					set_sidebar_mode("none");
 					center_view(1);
 				}
+			}else if(bottombar.block>-1){
+				hide_bottom_bar();	
 			}else{
 				center_view(1);
 			}
@@ -3700,16 +3824,16 @@ function conn_set_to_input(c,value){
 	new_connection.replace("to::input::type",ty);
 	if(sidebar.connection.default_in_applied!=0){
 		if(ty=="midi"){
-			if((new_connection.get("from::output::type")=="parameters")&&(new_connection.get("conversion::vector")==0)){
+			/*if((new_connection.get("from::output::type")=="parameters")&&(new_connection.get("conversion::vector")==0)){
 				new_connection.replace("conversion::vector",0.25);
 				new_connection.replace("conversion::offset2",1);
-			}
+			}*/
 			if(new_connection.get("conversion::offset")==0) new_connection.replace("conversion::offset",0.5);
 			if(new_connection.get("conversion::offset2")==0) new_connection.replace("conversion::offset2",0.5);
 			if(new_connection.get("conversion::offset2")==1) new_connection.replace("conversion::offset2",0.5);
 		}else{
 			if(new_connection.get("conversion::offset")==0) new_connection.replace("conversion::offset",0.5);
-			if(new_connection.get("conversion::vector")==0.25) new_connection.replace("conversion::vector",0);
+			//if(new_connection.get("conversion::vector")==0.25) new_connection.replace("conversion::vector",0);
 			if(new_connection.get("conversion::offset2")==1) new_connection.replace("conversion::offset2",0.5);
 		}
 	}
@@ -3763,12 +3887,17 @@ function fold_menus(){
 
 function clear_or_close(){
 	var s = selected.wire.indexOf(1);
-	//post("\n\n\n\nclear or close,",s);
-	if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
-		remove_connection(s);
-	}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
-		remove_connection(s);
+	// post("\n\n\n\nclear or close,",s);
+	if(s>-1){
+		if((connections.get("connections["+s+"]::from::output::type")=="potential")||(connections.get("connections["+s+"]::to::input::type")=="potential")){
+			remove_connection(s);
+		}else if(sidebar.connection.default_in_applied && sidebar.connection.default_out_applied){
+			remove_connection(s);
+		}
 	}
+	sidebar.connection.default_out_applied = 0;
+	sidebar.connection.default_in_applied = 0;
+	clear_blocks_selection();
 	set_sidebar_mode("none");
 }
 
@@ -3872,7 +4001,7 @@ function type_to_search(key){
 function menu_show_all(){
 	menu.show_all_types = 1;
 	initialise_block_menu(1);
-	redraw_flag.flag = 4;
+	redraw_flag.flag |= 4;
 }
 
 function squash_block_menu(){
@@ -3949,7 +4078,7 @@ function draw_number_entry(pno,number){
 	lcd_main.message("paintrect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,0,0,0);
 	lcd_main.message("framerect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,paramslider_details[pno][4],paramslider_details[pno][5],paramslider_details[pno][6]);
 	lcd_main.message("moveto",paramslider_details[pno][0]+4,y+fontheight*0.8);
-	setfontsize(fontsmall*2);
+	lcd_main.message("font",mainfont,fontsmall*2);
 	lcd_main.message("write",number);
 }
 
@@ -3981,11 +4110,16 @@ function block_search_typing(key){
 	}
 	redraw_flag.flag |=2;
 }
+function blocks_page_enter(){
+	clear_blocks_selection();
+	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
+	set_display_mode("block_menu");
+}
 
 function blocks_menu_enter(){
 	var count=0,sel=-1;
 	for(var i=0;i<menu.cubecount;i++){
-		if(blocks_menu[i].enable){
+		if((blocks_menu[i]!=undefined) && (blocks_menu[i].enable)){
 			count++;
 			sel=i;
 		}
@@ -4315,5 +4449,157 @@ function automap_direct_to_core(knob,value){
 		post("\nreceived ",knob,value," but in ",sidebar.mode," i have nothing assigned to that");
 		post("\ndisabling automap direct mode");
 		note_poly.message("setvalue", automap.available_c, "automapped", 0);
+	}
+}
+
+function rename_pattern(p,v){
+	if(v=="name"){
+		patternpage.column_block = [];
+		post("\nrename pattern",p,v);
+		patternpage.patternbeingnamed = p;//[p,v];
+		sidebar.text_being_edited = blocks.get("blocks["+p[0]+"]::patterns::names["+p[1]+"]");
+		set_sidebar_mode("edit_pattern_name");
+	}else{
+		scroll_pattern(p,v);
+		// post("\nscroll pattern",p,",",v);
+	}
+}
+function copy_pattern_dict(p,target){
+	//at the moment the only dict based storage is piano roll, and it's per-block only. 
+	// TODO if i want to store per-voice dicts i'll need to add a key to select between
+	var key = blocks.get("blocks["+p[0]+"]::patterns::dict_key");
+	if(blocks.get("blocks["+p[0]+"]::patterns::dict_mode")=="block"){
+		var copydata = blocks.get("blocks["+p[0]+"]::"+key+"::"+p[1]);
+		post("\nblock mode copy");
+		blocks.replace("blocks["+p[0]+"]::"+key+"::"+target,copydata);
+	}else{
+		error("voice mode copy not implemented");
+	}
+}
+function copy_pattern(p,target){
+	post("\ncopy pattern",p,",",target);
+	sidebar.dropdown = null;
+	redraw_flag.flag |= 2;
+	patternpage.column_block = [];
+	if(blocks.contains("blocks["+p[0]+"]::patterns")){
+		var type = blocks.get("blocks["+p[0]+"]::patterns::pattern_storage");
+		// post("type",type);
+		if(type=="data"){
+			var x = blocks.get("blocks["+p[0]+"]::patterns::pattern_start");
+			var size = blocks.get("blocks["+p[0]+"]::patterns::pattern_size");
+			
+			// post("start",x,"size",size);
+			var bvs = voicemap.get(p[0]);
+			if(!Array.isArray(bvs)) bvs = [bvs];
+			// post("voices",bvs);
+			for(var v=0;v<bvs.length;v++){
+				var copydata = voice_data_buffer.peek(1, MAX_DATA*bvs[v]+x+size*p[1],size);
+				// post("\ncopydata from",MAX_DATA*bvs[v]+x+size*p[1],"length",copydata.length,"\n",copydata);
+				// post("\npoke target,",MAX_DATA*bvs[v]+x+size*target);
+				voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
+			}
+		}else if(type=="dict"){
+			ui_poly.message("setvalue",(1+p[0]),"copy_pattern",p[1],target);
+			post("\nrequested the block copy its pattern itself");
+		}
+		var nam=blocks.get("blocks["+p[0]+"]::patterns::names["+p[1]+"]");
+		var ns = nam.slice(-1);
+		// post("\nnam",nam,"ns",ns);
+		if("0123456789".indexOf(ns)!=-1){
+			ns++;
+			nam = nam.slice(0,-1)+ns;
+		}else{
+			nam = nam + "2";
+		}
+		// post("now nam",nam);
+		
+		blocks.replace("blocks["+p[0]+"]::patterns::names["+target+"]",nam);
+
+		var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
+		request_set_block_parameter(p[0],param,target);
+		
+		redraw_flag.deferred |= 4;
+	}
+}
+
+function clear_pattern(p,v){
+	sidebar.dropdown = null;
+	if(v == danger_button){
+		post("\nclear pattern",p,v);
+		var target = p[1];
+		patternpage.column_block = [];
+		danger_button = -1;
+		if(blocks.contains("blocks["+p[0]+"]::patterns")){
+			var type = blocks.get("blocks["+p[0]+"]::patterns::pattern_storage");
+			// post("type",type);
+			if(type=="data"){
+				var x = blocks.get("blocks["+p[0]+"]::patterns::pattern_start");
+				var size = blocks.get("blocks["+p[0]+"]::patterns::pattern_size");
+				
+				// post("start",x,"size",size);
+				var bvs = voicemap.get(p[0]);
+				if(!Array.isArray(bvs)) bvs = [bvs];
+				// post("voices",bvs);
+				var copydata = [];
+				for(var v=0;v<size;v++)copydata.push(0);
+				for(var v=0;v<bvs.length;v++){
+					// post("\npoke target,",MAX_DATA*bvs[v]+x+size*target);
+					voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
+				}
+			}else if(type=="dict"){
+				ui_poly.message("setvalue",(1+p[0]),"clear_pattern",p[1]);
+				// post("\nTODO clearing not implemented for this block");
+			}
+			var n = blocks.get("blocks["+p[0]+"]::patterns::names");
+			n[target] = "";
+			blocks.replace("blocks["+p[0]+"]::patterns::names",n);
+		}
+	}else{
+		danger_button = v;
+		// post("\ndanger",v,"(",p,")");
+	}
+	redraw_flag.flag |= 2;
+}
+
+function pattern_click(b,p){
+	var param = blocks.get("blocks["+b[0]+"]::patterns::parameter");
+	// post("\nclicked block",b[0],"voice",b[1],"pattern",p,"param",param,p);
+	if(!Array.isArray(b[1])) b[1] = [b[1]];
+	if(usermouse.shift){
+		queue_quantised_notification(pattern_click, b,p);
+		patternpage.held_pattern_fires[b[0]] = p;
+	}else{
+		if(usermouse.ctrl){
+			var v = Math.floor(b[1]);
+			if(v<MAX_NOTE_VOICES){
+				note_poly.message("setvalue",(1+v),"resync");
+			}else{
+				audio_poly.message("setvalue",(1+v-MAX_NOTE_VOICES),"resync");
+			}
+		}
+		patternpage.held_pattern_fires[b[0]] = null;
+		for(var i =0;i<b[1].length;i++)	request_set_voice_parameter(b[0],b[1][i],param,p);
+		mute_particular_block(b[0],0);
+	}
+	// request_set_block_parameter(b[0],param,p+1);
+	// redraw_flag.flag |= 4;
+	redraw_flag.deferred |= 4;
+}
+
+function scroll_pattern(p,v){
+	// post("\nscroll pattern",p,",",v,"BUT",usermouse.left_button);
+	if(usermouse.left_button){
+		redraw_flag.flag |= 4;
+	}else{
+		var param = blocks.get("blocks["+p[0]+"]::patterns::parameter");
+		var d = (v > 0) ? 1 : -1;
+		var bvs=voicemap.get(p[0]);
+		if(!Array.isArray(bvs))bvs = [bvs];
+		for(var i=0;i<bvs.length;i++){
+			request_set_voice_parameter(p[0],bvs[i],param,p[1]+d);
+		}
+		// request_set_block_parameter(p[0],param,p[1]+d);
+		
+		redraw_flag.deferred |= 4;
 	}
 }

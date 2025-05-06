@@ -63,7 +63,7 @@ eptr_rect2(fc, fm, pulsewidth, sync){ // modified to have sync and fm inputs
 	inc2 = interp(inc,z1,z2,z3,z4,mode="spline");
 
 	r2 = r1 *.5 + .5;	// ramp rescaled to 0-1 for EPTR calcs
-//	ret=0; //so far you can have one or other but not both HELP
+	ret=0; //so far you can have one or other but not both HELP
 //	if (inc2<.125){		// if Fc<sr/16 (2756Hz @441000 sr)
 //		d1 = inc * 2; 	// width of phase transition region (4*fc/sr)
 //		ret = eptr(r2, d1, w1);
@@ -142,21 +142,16 @@ eptr_rect(fc,fm,pulsewidth){
 
 integrator_saw(rectin, pitch, pw, sync){
 	History integ(0);
-	History decay(0.99999);
-	
+
 	if(sync){
 		integ = 0;
 	}else{
 		pws=scale(pw,0,1,.005,.995); //mirroring what eptr does
 		pws=clip(pws,.005,.995);
-		offset=(2*pws-1);
-		scale=clip(-pitch/(pws*(pws-1)*samplerate),0,0.1);
-		integ=(decay*integ+(rectin+offset)*scale);
 		
-		if(abs(integ)>=1){
-			integ=clip(integ,-1,1);
-			if(decay>0.00001) decay=decay-0.00001;
-		}else if(decay<0.99999) decay=decay+0.00001;
+		offset=(2*pws-1);
+		scale=-pitch/ (pws*(pws-1)*samplerate);
+		integ=clip(integ+(rectin+offset)*scale,-1,1);
 	}
 	
 	return integ;

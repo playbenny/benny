@@ -4,10 +4,11 @@
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "ADHD for a controller. refuses to sit on one value for too long, once it gets bored takes a brownian hop to a nearby value. for example, put it between a midi controller and the parameter you want to control.",
-		"max_polyphony" : 1,
+		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "vel to value", "force fidget", "force return" ]
+				"midi" : [ "vel to value", "force fidget", "force return" ],
+				"automap_poly" : 0
 			},
 			"out" : {
 				"parameters" : [ "value" ]

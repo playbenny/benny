@@ -3,7 +3,8 @@
 		"patcher" : "midi.rhythmes.alpes",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Switches between subdivisions of a clock, inspired by the mechanical proto-drummachine used by the wonderful french group 'Catherine Ribiero & Alpes'.",
+		"help_text" : "Fades / switches between subdivisions of a clock, inspired by the mechanical proto-drummachine used by the wonderful french group 'Catherine Ribiero & Alpes'.££The controls let you choose which divisions are emphasised and whether it's just a single division or a combination of several.",
+		"synonyms" : ["divider"],
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {

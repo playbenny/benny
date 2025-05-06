@@ -3,22 +3,31 @@
 		"patcher" : "core.tuning",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "global tuning controller, affects all blocks that have a midi-pitch function (eg oscillators). the tilt and nonlin controls simulate inaccurate tuning in analogue synths and eg pianos - with tilt stretching the tuning across the whole range, which is common in pianos badly tuned by ear, and nonlin introducing slight brownian deviations as you'd see from slightly nonlinear midi-cv conversion in an analogue synth. offset lets you tune to the nearest churchbells or the hum of the mains in your town or 432Hz if you believe in that sort of thing. the scale and root sliders let you select between the common western 12TET tuning, which only sounds good for certain types of melody and harmony, with 3rds sounding particularly rough, and a few other options - just intonation and a couple of scales used in iranian music, rast and segah. all these non-12TET scales are based around a chosen root key, and they generally share the property of some intervals sounding really good and some sounding extra inharmonious. still TODO: more cultural and technical context for each scale, more scales and import of scale files. ",
+		"help_text" : "global tuning controller. ££affects all of benny's source and voice blocks, and can be applied to any vst or amxd (max for live device) instrument that supports pitchbend. ££you can tune each note pitch individually, enabling various tunings of 12 tones or less. internally benny's tuning system would support everything a scala file contains, but scala import isn't yet implemented. ££the tilt and nonlin controls simulate inaccurate tuning in analogue synths and eg pianos - with tilt stretching the tuning across the whole range, which is common in pianos badly tuned by ear, and nonlin introducing slight brownian deviations as you'd see from slightly nonlinear midi-cv conversion in an analogue synth. this is calculated per-voice, so increasing it increases tuning spread of polysynths. these detunings are in addition to any detuning controls in benny blocks. offset lets you tune to the nearest churchbells or the hum of the mains in your town or 432Hz if you believe in that sort of thing.££if you create presets for more scales please do submit them (eg by github discussion forum post)",
 		"exclusive" : 1,
 		"max_polyphony" : 1,
 		"connections" : {
-			"in" : {
-				"midi" : [ "hermode in" ]
-			}
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 1, 2, 3, 4]
+				"contains" : [0, 1, 2, 4]
 			},
 			{ 
 				"contains" : [5,6,7,8,9,10,11,12,13,14,15,16]
 			}			
 		],
+		"presets" : 		{
+			"12 tone even temperament" : {
+				"values" : [ 0.5, 0.0, 0.5, 0, 0.000000032285854, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 ]
+			},
+			"just intonation" : {
+				"values" : [ 0.5, 0.0, 0.5, 0, 0.000000032285854, 0.5, 0.558650016784668, 0.519550025463104, 0.578199982643127, 0.431549996137619, 0.490200012922287, 0.412550002336502, 0.509800016880035, 0.568449974060059, 0.42179998755455, 0.480450004339218, 0.441350013017654 ]
+			},
+			"rast" : {
+				"values" : [ 0.5, 0.0, 0.5, 0, 0.000000032285854, 0.5, 0.5, 0.5, 0.75, 0.25, 0.5, 0.5, 0.5, 0.5, 0.5, 0.75, 0.25 ]
+			}
+
+		},
 		"parameters" : [
 			{
 				"name" : "tilt",
@@ -44,7 +53,7 @@
 			{
 				"name" : "scale",
 				"type" : "menu_i",
-				"values" : ["free", "12tet", "just", "rast", "segah", "chahargah"],
+				"values" : [ "deprecated"],
 				"wrap" : 0,
 				"default" : 0
 			},

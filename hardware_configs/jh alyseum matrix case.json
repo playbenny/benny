@@ -50,6 +50,25 @@
 				}
 
 			}
+,
+			"LPD8 mk2" : 			{
+				"name" : [ "LPD8 mk2" ],
+				"substitute" : [  ],
+				"outputs" : 8,
+				"type" : "potentiometer",
+				"channel" : 1,
+				"first" : 1,
+				"scaling" : 0.125,
+				"columns" : 4,
+				"rows" : 2,
+				"buttons" : 				{
+					"first" : 36,
+					"type" : "note",
+					"channel" : 1,
+					"count" : 8
+				}
+
+			}
 
 		}
 ,
@@ -59,7 +78,28 @@
 			"external_midi_out" : "USB MS1x1 MIDI Interface"
 		}
 ,
-		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat"
+		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat",
+		"controller_defaults" : 		{
+			"mixer_bus" : "LPD8 mk2"
+		}
+,
+		"sync" : 		{
+			"midi_clock_out" : 			{
+
+			}
+,
+			"audio_clock_out" : 			{
+				"enable" : 0,
+				"channel" : 3,
+				"ppqn" : 24
+			}
+,
+			"midi_clock_in" : 			{
+				"selected" : "none"
+			}
+
+		}
+
 	}
 ,
 	"hardware" : 	{
@@ -96,7 +136,9 @@
 				"out" : 				{
 					"hardware" : [ "hp out", "bp out", "lp out" ],
 					"hardware_channels" : [ 3, 4, 5 ],
-					"matrix_channels" : [ 3, 4, 5 ]
+					"matrix_channels" : [ 3, 4, 5 ],
+					"input_gate" : [ 1, 1, 1 ],
+					"dc_block" : [ 1, 1, 1 ]
 				}
 
 			}
@@ -122,7 +164,9 @@
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 6 ],
-					"matrix_channels" : [ 6 ]
+					"matrix_channels" : [ 6 ],
+					"dc_block" : [ 0 ],
+					"input_gate" : [ 1 ]
 				}
 
 			}
@@ -148,7 +192,9 @@
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 7 ],
-					"matrix_channels" : [ 7 ]
+					"matrix_channels" : [ 7 ],
+					"dc_block" : [ 0 ],
+					"input_gate" : [ 1 ]
 				}
 
 			}
@@ -327,7 +373,27 @@
 ,
 				"out" : 				{
 					"hardware" : [ "position", "pressure (via maths2)" ],
-					"hardware_channels" : [ 16, 7 ]
+					"hardware_channels" : [ 16, 7 ],
+					"dc_block" : [ 0, 0 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.rme.headphones" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "output to the headphones",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 1,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "new", "new" ],
+					"hardware_channels" : [ 33, 34 ]
 				}
 
 			}

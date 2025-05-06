@@ -1,0 +1,59 @@
+{
+	"midi.ext.clock" : {
+		"patcher" : "midi.ext.clock",
+		"type" : "note",
+		"help_text" : "Receives midi clock from the input you've set up in hardware manager, and divides it to whatever rate you'd like. If your incoming clock is 24ppqn the fastest division is 32nd note triplet. ££Can optionally also attempt to synchronise the global transport.",
+		"max_polyphony" : 0,
+    	"connections" : {
+			"out" : {
+				"midi" : [ "clock" ],
+				"midi_scopes_types" : [2],
+				"midi_scopes_height" : 0.2,
+				"midi_scopes_shade" : 0.7,
+				"dontdefaultall" : 1,
+				"descriptions" : {
+					"midi" : [ "notes at the rate selected"]
+				}
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"colour" : 20,
+				"height" : 0,
+				"onepervoice" : 1
+			},
+			{
+				"contains" : [1,1,1,2],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "division",
+				"type" : "menu_i",
+				"width" : 3,
+				"values" : ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.6
+			},
+            {
+                "name" : "synchonise_global_transport",
+				"type" : "menu_b",
+				"values" : ["global transport sync off", "attempting to sync global transport"],
+				"error_scale" : 0,
+                "nopervoice" : 1,
+				"wrap" : 0,
+				"default" : 0.2
+            },
+			{
+				"name" : "velocity_humanisation",
+				"type" : "float",
+				"values" : ["uni", 0, 3, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}

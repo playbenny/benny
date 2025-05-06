@@ -3,7 +3,7 @@
 		"patcher" : "seq.values",
 		"type" : "note",
 		"block_ui_patcher" : "seq.values.ui",
-		"help_text" : "A step sequencer for values. One voice = one sequencer row. The 'notes out' uses the value as a note, and the velocity from the incoming trigger. The 'values out' sends it as a value, which you can rotate to map to any combination of velocity or pitch if you want to send it to a midi destination.",
+		"help_text" : "a simple step sequencer for one dimensional values. the 'notes out' uses the value as a note, and the velocity from the incoming trigger. the 'values out' sends it as a value, which you can rotate to map to any combination of velocity or pitch if you want to send it to a midi destination.££add voices to the block to add more sequencer rows.££on this sequencer the record mode is step recording which disables the trigger input until you turn it off, and stores either incoming notes or incoming velocities, depending on the toggle switch setting.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"ui_in_sidebar_expands" : 1,
@@ -15,45 +15,57 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "trigger", "backwards step", "note->position", "reset" ]
+				"midi" : [ "trigger", "backwards step", "note->position", "reset", "step record in" ],
+				"default" : 0, 
+				"automap_to" : 4
 			},
 			"out" : {
 				"midi" : [ "notes out" ],
 				"parameters" : [ "value out", "playhead_position" ],
 				"dontdefaultall" : 1,
-				"default" : 1
+				"default" : 0
 			}
 		},
 		"groups" : [
 			{ 
+				"contains" : [],
+				"patterncontrols" : 1
+			},
+			{ 
 				"contains" : [2],
 				"onepervoice" : 1,
-				"height":1
+				"height":0
 			},
 			{ 
 				"contains" : [3],
 				"colour" : 10,
 				"onepervoice" : 1,
-				"height":1
-			},
-			{ 
-				"contains" : [7],
-				"colour" : -10,
-				"onepervoice" :1,
-				"height" : 0 
+				"height":0
 			},
 			{ 
 				"contains" : [1],
-				"colour" : 20,
+				"colour" : 13,
 				"onepervoice" :1,
 				"height" : 0 
 			},
 			{
-				"contains" : [4,4,4,5,6],
+				"contains" : [5,6,9,8,8,8,8],
 				"height" : 0,
-				"colour" : 25
+				"colour" : 5
+			},
+			{
+				"contains" : [4],
+				"height" : 0.9,
+				"colour" : 9
 			}
 		],
+		"patterns" : {
+			"parameter" : 7,
+			"pattern_storage" : "data",
+			"playhead_offset" : 0,
+			"pattern_size" : 128,
+			"pattern_start" : 1
+		},
 		"voice_data" : {
 			"defaults" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		},
@@ -89,9 +101,10 @@
 				"default" : 0.125
 			},
 			{
-				"name" : "trig velocity sense",
-				"type" : "menu_l",
-				"values" : [ "trigger only", "trig vel -> output value" ],
+				"name" : "use trigger velocity",
+				"force_label" : 1,
+				"type" : "menu_d",
+				"values" : [ "off - triggers just advance the sequence", "on - trigger velocity goes to note out velocity" ],
 				"wrap" : 1,
 				"default" : 0.25
 			},
@@ -101,15 +114,15 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["voices","<_back",-1]
+				"values" : ["voices","< back",-1]
 			},
 			{
-				"name" : ">_fwd",
+				"name" : "fwd_>",
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["voices",">_fwd", 1]
+				"values" : ["voices","fwd >", 1]
 			},
 			{
 				"name" : "pattern",
@@ -118,6 +131,23 @@
 				"error_scale" : 0,
 				"default" : 0.03125,
 				"wrap" : 1
+			},
+			{
+				"name" : "step record",
+				"type" : "menu_b",
+				"default" : 0.25,
+				"error_scale" : 0,
+				"wrap" : 1,
+				"colours" : [0,[160,40,40],[150,100,80]],
+				"values" : ["step_record_off","step_record_notes","step_record_velocities"]
+			},
+			{
+				"name" : "|< to start",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","|<_to_start", 0]
 			}
 		]
 	}

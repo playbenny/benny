@@ -67,7 +67,7 @@
 				"wrap" : 1,
 				"default" : 0.75
 			},{
-				"name" : "mode",
+				"name" : "looper record mode",
 				"type" : "menu_l",
 				"values" : ["listening", "looping","loop + overdub"],
 				"error_scale" : 0,

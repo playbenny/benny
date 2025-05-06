@@ -1,18 +1,17 @@
 {
-	"mix.channel" : {
-		"patcher" : "mix.channel",
+	"mixer.stereo.comp" : {
+		"patcher" : "mixer.stereo.ms.comp.abb",
 		"type" : "audio",
-		"block_ui_patcher" : "mix.channel.ui",
+		"block_ui_patcher" : "mixer.comp.ui",
 		"ui_in_sidebar_height" : 1,
-		"no_ui_in_panel" : 1,
 		"no_edit" : 1,
-		"help_text" : "mixer channel. borrows the mix concept from worrng modules, uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mix.bus BLOCK.££IMPORTANT this block will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed.",
+		"help_text" : "stereo mixer channel. ££based around a mid-side modification of luke abbott's 'abb.boff' multiband channel compressor with tilt control. ££uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mixer.bus BLOCK.££IMPORTANT the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without them it defaults to normal digital summing.",
 		"max_polyphony" : 0,
 		"upsample" : 2,
-		"from_subvoices" : 2,
+		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "audio in", "sidechain in" ],
+				"audio" : [ "audio in" ],
 				"midi" : ["channel mute toggle", "channel solo toggle"]
 			},
 			"out" : {
@@ -27,12 +26,6 @@
 				"height" : 2.5
 			},
 			{ 
-				"contains" : [1],
-				"onepervoice" : 1,
-				"height" : 0.999,
-				"colour" : 10
-			},
-			{ 
 				"contains" : [5], 
 				"onepervoice" : 1,
 				"height" : 0.6
@@ -43,24 +36,34 @@
 				"height" : 0.6
 			},
 			{ 
-				"contains" : [3],
-				"header" : "voicing",
+				"contains" : [2],
 				"onepervoice" : 1,
 				"height" : 0,
-				"colour" : 26
+				"colour" : 21
+			},
+			{ 
+				"contains" : [3],
+				"onepervoice" : 1,
+				"height" : 0.999,
+				"colour" : 6
 			},
 			{ 
 				"contains" : [4], 
 				"onepervoice" : 1,
-				"height" : 0,
-				"colour" : 31
+				"height" : 0.999,
+				"colour" : 4
 			},
 			{ 
-				"contains" : [2],
-				"nolabel" : 1,
+				"contains" : [8],
 				"onepervoice" : 1,
-				"height" : 0.6,
-				"colour" : 37
+				"height" : 0.999,
+				"colour" : 16
+			},
+			{ 
+				"contains" : [1],
+				"onepervoice" : 1,
+				"height" : 0.999,
+				"colour" : -10
 			},
 			{ 
 				"contains" : [7], 
@@ -78,30 +81,30 @@
 				"default" : 0.7
 			},
 			{
-				"name" : "pan",
+				"name" : "balance",
 				"type" : "float",
 				"values" : ["bi", -1,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
 			{
-				"name" : "voicing",
-				"type" : "menu_i",
-				"values" : ["clean", "sub", "kick", "body", "mid", "hi-mid", "high"],
+				"name" : "compress",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			},
 			{
-				"name" : "amount",
+				"name" : "rise",
 				"type" : "float",
 				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
-				"default" : 0.25
+				"default" : 0
 			},
 			{
-				"name" : "sweep",
+				"name" : "fall",
 				"type" : "float",
-				"values" : ["bi", -1,1, "lin"],
+				"values" : ["uni", 0,1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
 			},
@@ -129,6 +132,13 @@
 				"wrap" : 1,
 				"default" : 0.1,
 				"colours" : [0, 20, 40]
+			},
+			{
+				"name" : "tilt",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}

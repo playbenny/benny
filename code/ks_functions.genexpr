@@ -1,0 +1,125 @@
+pluckenv (v) {
+	History ov(0);
+	History state(0); //0 = off, 1=attack, 2=decay
+	History target(0);
+	History env(0);
+	History attrate(1);
+	History decrate(1);
+	
+	//Param v(0);
+	Param shape(64);
+	
+	if((v!=ov) && (v>0)){
+		state = 1;
+		ov = v;
+		target = v;
+		attrate = 2 / ((clip( (64 - shape), 1, 64))*(clip( (64 - shape), 1, 64)));
+		decrate = 2 / ((shape - 64)*(shape - 64));
+	}
+	if(state == 1){
+		env += attrate * clip((target-env),0.1,1);
+		if(env>=target){
+			target = 0;
+			state = 2;
+		}
+	}else if(state==2){
+		env -= decrate*clip(env,0.1,1);
+		if(env<=0){
+			env=0;
+			state=0;
+		}
+	}
+	
+	return env,slide(state>0,100,100);
+}
+
+waveguide_with_pluck_junction(pluck,state,bridge,fm) {
+	Buffer detuning("detuning");
+	
+	Param length(2,min=0,default=2,max=22000);
+	Param feedback(0.999,min=0,default=0.999,max=4);
+	Param damping(0.5,min=0,default=0.5,max=0.5);
+	Param bridgescatter(0);
+	Param pluckscatter(0);
+	Param selfmod(0,min=-99,default=0,max=99);
+	Param pickup_position(0.6,min=0.2,default=0.6,max=1);
+	Param pluck_position(0.3,min=0.1,default=0.3,max=0.9);
+	Param detunewidth(0,min=0,default=0,max=1);
+	
+	Delay del1(samplerate/64);
+	Delay del2(samplerate/64);
+	Delay del3(samplerate/64);
+	Delay del4(samplerate/64);
+	Delay del5(samplerate/64);
+	Delay del6(samplerate/64);
+	Delay del7(samplerate/64);
+	Delay del8(samplerate/64);
+	
+	History o1o(0);
+	History o3b(0);
+	History o7(0);
+	History cursor(0);
+	
+	cursor += 4*noise();
+	lfinal = length / (1 + detunewidth*sample(detuning, cursor, channels = 1));
+	
+	l15 = length * (1 - pickup_position);
+	l26 = length * abs(pickup_position - pluck_position);
+	l37 = length * (pluck_position);
+	l48 = l37;
+	
+    inv_fm = 1 / (1 + fm);	
+	sfm=1;
+		
+	if(selfmod<0){
+		sfm = 1/ ( 1 - clip(o7-o3b,0,1) * selfmod);
+	}else if(selfmod>0){
+		sfm = 1/ (1 + o7 * selfmod);
+	}
+	
+	o1 = del1.read(inv_fm * slide(l15,100,100));
+	o2 = del2.read(slide(l26,100,100));
+	o3 = del3.read(sfm * slide(l37,100,100));
+	o4 = del4.read(slide(l48,100,100));
+	o5 = del5.read(inv_fm * slide(l15,100,100));
+	o6 = del6.read(slide(l26,100,100));
+	o7 = del7.read(sfm * slide(l37,100,100));
+	o8 = 4*sin(0.25*del8.read(slide(l48-1,100,100)));
+
+    o3b= del3.read((1-sfm) * slide(l37,100,100));
+	
+	t = dcblock(fixdenorm(-1 * feedback * (o1 * (1 - damping) + o1o * damping)));
+	t = t - (t * t * t * 0.333);
+	o1o = o1;
+	
+	del1.write(o2);
+	del2.write(o3+o4+pluck-o6*pluckscatter*state);
+	del3.write(-1 * o7 * (1 - bridgescatter));
+	del4.write(-bridge);//bridge input
+	del5.write(t);
+	del6.write(o5);
+	del7.write((o6+pluck)*(1-pluckscatter*state)-(o3+o4)*pluckscatter*state);
+	del8.write(o6+pluck);//bridge output perhaps try without pluck
+		
+	return (o2+o5), o8 * bridgescatter; //o8 //audio, signal to bridge
+
+}
+
+reson(x, freq, bandwidth) {
+	History y2(0);
+	History y1(0);
+	// convert to radians per sample:
+	freq_rps = freq * twopi/samplerate;
+	// using abs() to ensure it doesn't blow up with negative bandwidth:
+	bw_rps = abs(bandwidth) * twopi/samplerate;
+	// calculate coefficients:
+	b = 2 * cos(freq_rps) * exp(bw_rps * -0.5);
+	c = -exp(-bw_rps);
+	a = 1 - ((c + b));
+	// compute next y:
+	y = a*x + b*y1 + c*y2;
+	// store in histories:
+	y2 = y1;
+	y1 = y;
+	return y;
+}

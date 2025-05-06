@@ -2,8 +2,11 @@
 	"seq.analogue" : {
 		"patcher" : "seq.analogue",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
-		"help_text" : "A simple 'analogue-style' step sequencer. Each step has note, vel, and on/off. ££Unlike many other sequencers in benny, adding more voices adds more playheads traversing the same sequence. ££You can clock this sequencer from midi or from audio pulses, or you can use an audio signal to set the playhead position, enabling audio-rate scanning of the sequence.",
+		"block_ui_patcher" : "example.mini.ui",
+		"ui_in_sidebar_height" : 0.1,
+		"ui_in_sidebar_expands" : 0.1,
+		"no_edit" : 1,
+		"help_text" : "A simple 'analogue-style' step sequencer. Each step has note, vel, and on/off. ££Adding more voices adds more playheads traversing the same sequence. ££You can clock this sequencer from midi or from audio pulses, or you can use an audio signal to set the playhead position, enabling audio-rate scanning of the sequence.",
 		"max_polyphony" : 0,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
@@ -14,7 +17,7 @@
 		"connections" : {
 			"in" : {
 				"audio" : [ "clock pulse", "set position"],
-				"midi" : [ "advance", "set position" ]
+				"midi" : [ "forwards", "reverse", "set position" ]
 			},
 			"out" : {
 				"audio" : [ "note value", "vel value"],
@@ -23,21 +26,29 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [  0,1,2 ]
-			},
-			{ 
 				"contains" : [3,4,5, 6,7,8,9, 10,11,12,13, 14,15,16,17, 18],
-				"colour" : 3
+				"colour" : 5,
+				"height" : 2,
+				"header" : "notes",
+				"nolabel" : 1
 			},
 			{ 
 				"contains" : [19,20,21, 22,23,24,25, 26,27,28,29, 30,31,32,33,34],
-				"colour" : 6,
-				"height" : 2
+				"colour" : 9,
+				"height" : 0,
+				"header" : "velocities",
+				"nolabel" : 1
 			},
 			{ 
 				"contains" : [35,36,37, 38,39,40,41, 42,43,44,45, 46,47,48,49,50],
-				"colour" : 9,
-				"height" : 0				
+				"colour" : 14,
+				"height" : 1,
+				"header" : "on / off",
+				"nolabel" : 1				
+			},
+			{ 
+				"contains" : [  0,1,2 ],
+				"height" : 0
 			}		
 		],
 		"parameters" : [
@@ -60,10 +71,11 @@
 				"type" : "menu_b",
 				"values" : ["midi_out_off", "midi_out_on"],
 				"wrap" : 1,
+				"nopervoice" : 1,
 				"default" : 0.99 
 			},
 			{
-				"name" : "note",
+				"name" : "note 1",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -71,7 +83,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 2",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -79,7 +91,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 3",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -87,7 +99,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 4",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -95,7 +107,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 5",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -103,7 +115,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 6",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -111,7 +123,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 7",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -119,7 +131,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 8",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -127,7 +139,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 9",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -135,7 +147,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 10",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -143,7 +155,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 11",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -151,7 +163,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 12",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -159,7 +171,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 13",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -167,7 +179,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 14",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -175,7 +187,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 15",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -183,7 +195,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "note 16",
 				"type" : "int",
 				"values" : ["uni", 0, 24, "lin"],
 				"wrap" : 0,
@@ -191,7 +203,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "vel",
+				"name" : "velocity 1",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -199,7 +211,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 2",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -207,7 +219,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 3",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -215,7 +227,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 4",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -223,7 +235,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 5",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -231,7 +243,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 6",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -239,7 +251,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 7",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -247,7 +259,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 8",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -255,7 +267,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 9",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -263,7 +275,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 10",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -271,7 +283,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 11",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -279,7 +291,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 12",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -287,7 +299,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 13",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -295,7 +307,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 14",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -303,7 +315,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 15",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -311,7 +323,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "",
+				"name" : "velocity 16",
 				"type" : "int",
 				"values" : ["uni", 0, 127, "lin"],
 				"wrap" : 0,
@@ -319,132 +331,132 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "on",
-				"type" : "menu_i",
+				"name" : "gate 1",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 2",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 3",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 4",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 5",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 6",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 7",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 8",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 9",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 10",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 11",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 12",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 13",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 14",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 15",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			},
 			{
-				"name" : "",
-				"type" : "menu_i",
+				"name" : "gate 16",
+				"type" : "menu_l",
 				"values" : ["0", "1"],
-				"wrap" : 0,
-				"click_set" : 1,
-				"default" : 1
+				"wrap" : 1,
+				"nopervoice" : 1,
+				"default" : 0.1
 			}
 		]
 	}

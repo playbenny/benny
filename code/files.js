@@ -307,7 +307,7 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 						preload_task.freepeer(); //pause preloading
 					//}
 					sidebar_notification("Couldn't find wave: "+wavepath+"££Please find it (or a replacement) in the file dialog that has popped up. ££ For reasons beyond our control this dialog may be behind the benny window, sorry.");
-					redraw_flag.flag=4;
+					redraw_flag.flag |= 4;
 					if(fullscreen){
 						fullscreen=0;
 						world.message("fullscreen",0);					
@@ -449,7 +449,13 @@ function buffer_loaded(number,path,name,buffername){
 }
 
 function load_next_song(slow){
-	if(loading.progress!=0) return 0;
+	if(loading.object_target=="saving"){
+		post("\nstill saving please wait");
+		return 0;
+	}else if(loading.progress!=0){
+		post("\nalready loading");
+		return 0;
+	} 
 	var oc = usermouse.ctrl;
 	usermouse.ctrl = slow;
 	currentsong++;
@@ -461,6 +467,10 @@ function load_next_song(slow){
 }
 
 function load_song(){
+	if(loading.object_target=="saving"){
+		post("\nstill saving please wait");
+		return 0;
+	}
 	if(currentsong<0) return -1;
 	loading.songpath = SONGS_FOLDER;
 	if(playing) play_button();
@@ -564,13 +574,14 @@ function import_song(){
 		if(current_x_max>-999){
 			loading.xoffset = current_x_max + 4 - new_x_min;
 		}
-		if(songs.contains(loading.songname+"::notepad")){ //TODO - it should swap topbar for progress meter, clear the songlist and write out the notes in its place
+		sidebar.notification = null;
+		if(songs.contains(loading.songname+"::notepad")){ 
 			sidebar.notification = songs.get(loading.songname+"::notepad");
 			set_sidebar_mode("notification");
-			// draw_sidebar();
-			// lcd_main.message("bang");
-			post("\n\n\nSONG NOTES\n\n"+ sidebar.notification+"\n\n");
+			blocks.replace("notepad",sidebar.notification);
+			//post("\n\n\nSONG NOTES\n\n"+ sidebar.notification+"\n\n");
 		}
+		if(loading.songname=="autoload") loading.temporandomise = 1;
 		loading.conncount = songs.getsize(loading.songname+"::connections");
 		loading.progress++;
 		loading.ready_for_next_action=loading.wait;//loading.bundling;
@@ -649,10 +660,12 @@ function import_song(){
 						menu.camera_scroll=0;
 						menu.mode = 3;
 						initialise_block_menu(1);
+						sidebar.mode="none";
 						//set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
 						menu.search="";
 						displaymode="block_menu";
 						camera();
+						draw_menu_hint();
 						return -1;
 					}else{
 						post("loading selected susbstitute",menu.swap_block_target);
@@ -715,6 +728,7 @@ function import_song(){
 		meters_updatelist.hardware = [];
 		meters_updatelist.meters = [];
 		meters_enable = 0;
+		if(sidebar.notification != null) set_sidebar_mode("notification");
 		center_view(1);
 		loading.ready_for_next_action=loading.wait;
 	}else if(loading.progress<MAX_BLOCKS+loading.mapping.length){
@@ -831,7 +845,7 @@ function import_song(){
 			var po = songs.get(loading.songname+"::panels_order");
 			post("\nloading panels order: ",po);
 			for(i=0;i<po.length;i++){
-				panels_order[panels_order.length]=loading.mapping[po[i]];
+				panels.order.push(loading.mapping[po[i]]);
 			}
 			if(songs.contains(loading.songname+"::MAX_PANEL_COLUMNS")){
 				MAX_PANEL_COLUMNS = 0 | songs.get(loading.songname+"::MAX_PANEL_COLUMNS");
@@ -841,6 +855,7 @@ function import_song(){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
 		messnamed("update_wave_colls","bang");
+		post("\nmarker");
 		if((still_checking_polys&7)==0){
 			update_all_voices_mutestatus();
 		}
@@ -848,11 +863,11 @@ function import_song(){
 		loading.mutelist=[];
 		loading.ready_for_next_action = 0;
 		loading.progress = 0;
+		if(displaymode=="blocks") blocks_enable(1);
 		redraw_flag.flag|=12;
 		rebuild_action_list=1;
 		messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
-		
 		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){post("\nerror rescheduling preload task");} //if you interupted preloading waves, just restart it in 5secs
 	}
 }
@@ -1168,6 +1183,14 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			}
 		}
 	}
+	if(blocktypes.contains(block_name+"::patterns")){
+		patternpage.enable = 1;
+		post("\nthis block has a pattern select control");
+		if(!blocks.contains("blocks["+block_index+"]::patterns::parameter")){
+			post("\ncopying in default pattern control info from legacy save");
+			blocks.replace("blocks["+block_index+"]::patterns",blocktypes.get(block_name+"::patterns"));
+		}
+	}
 	if(type=="audio"){ 
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_meter", 1);
 		audio_to_data_poly.message("setvalue", (new_voice+1), "vis_scope", 0);
@@ -1241,6 +1264,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	var store = [];
 	var per_v = [];
 	if(states.contains("states::current")) states.remove("states::current");
+	loading.object_target = "saving";
 	for(b=0;b<MAX_BLOCKS;b++){
 		store[b] = [];
 		per_v[b] = [];
@@ -1295,8 +1319,8 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
 	}
 	post("current state stored");
-	if(panels_order.length){
-		blocks.replace("panels_order",panels_order);
+	if(panels.order.length){
+		blocks.replace("panels_order",panels.order);
 		blocks.replace("MAX_PANEL_COLUMNS",MAX_PANEL_COLUMNS);
 	}
 	if(fullscreen && saveas){
@@ -1481,6 +1505,7 @@ function select_recent_folder(name,blank){
 	preload_list = [];
 	currentsong = -1;
 	read_songs_folder("songs");
+	set_sidebar_mode("file_menu");
 }
 
 function add_path_to_recent_folders(folderstr){
@@ -1524,6 +1549,7 @@ function folder_select(folderstr){
 			userconfig.replace("SONGS_FOLDER",folderstr);
 			write_userconfig();
 			read_songs_folder("songs");
+			set_sidebar_mode("file_menu");
 		}else if(folder_target == "record"){
 			post("\nselected new record folder:",folderstr);
 			config.replace("RECORD_FOLDER",folderstr);
@@ -1646,7 +1672,8 @@ function clear_everything(){
 	states.parse('{ }');
 
 	bottombar.block=-1;
-	bottombar_size();
+	bottombar.requested_widths = [];
+	setup_bottom_bar();
 	sidebar_size();
 	wipe_midi_meters();
 	remove_all_routings();
@@ -1678,12 +1705,13 @@ function clear_everything(){
 	}
 	selected.anysel = 0;
 	still_checking_polys = 0;//7;
+	loading.songname = "#reset#";
 	send_note_patcherlist(1);
 	send_audio_patcherlist(1);
 	send_ui_patcherlist(1);
 
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
-	
+	patternpage.column_block = [];
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
 
@@ -1692,7 +1720,7 @@ function clear_everything(){
 		quantpool.poke(1, i, i);
 		indexpool.poke(1, i, i);
 	}
-	panels_order=[];
+	panels.order=[];
 	
 	for(i=MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+1;i<1+MAX_AUDIO_VOICES * NO_IO_PER_BLOCK+MAX_AUDIO_INPUTS+MAX_AUDIO_OUTPUTS;i++){
 		audio_to_data_poly.message("setvalue", i, "vis_meter", 1);
@@ -1719,16 +1747,6 @@ function clear_everything(){
 	messnamed("blocks_matrices","bang");
 	wire_ends = [];
 	blocks_tex_sent=[];
-	/*background_cube.shape = "cube";
-	background_cube.scale = [10000, 10000, 1 ];
-	background_cube.position = [0, 0, -200];
-	background_cube.name = "background";
-	background_cube.color = [0, 0, 0, 1];*/
-	/*menu_background_cube.shape = "cube";
-	menu_background_cube.scale = [1000, 1, 1000 ];
-	menu_background_cube.position = [0, -200, 0];
-	menu_background_cube.name = "block-menu-background";
-	menu_background_cube.color = [0, 0, 0, 1];*/
 
 	bottombar.available_blocks=[];
 	bottombar.block=-1;

@@ -4,7 +4,7 @@
 		"type" : "audio",
 		"synonyms" : "melotron",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "multisample player with slices, offset, timestretch, and a set of loose emulations of melotron mechanics - pitch wobble, motor drag (proportional to the number of notes held down), and a finite limit set on rewind speed. ££this voice expects you to load a wave with an ascending scale, evenly spaced, with the slices set.££motor drag only works when an actual connection has been made - it won't work when auto-assign keyboard is played into the block.",
+		"help_text" : "multisample player with slices, offset, timestretch, and a set of loose emulations of melotron mechanics - pitch wobble, motor drag (proportional to the number of notes held down), and a finite limit set on rewind speed. ££this voice expects you to load a wave with an ascending scale, evenly spaced, with the slices set.££motor drag only works when an actual connection has been made - it won't work when auto-assign keyboard is played into the block. ££i don't think the max/msp sample playback objects do anti-aliasing so if you're pitching samples up turn on oversampling for this block.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"subvoices" : 2,
@@ -88,8 +88,8 @@
 			},
 			{
 				"name" : "attack",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
 				"error_scale" : 2,
 				"default" : 0.05
@@ -104,8 +104,8 @@
 			},
 			{
 				"name" : "release",
-				"type" : "float4",
-				"values" : ["uni", 0.01, 1000, "exp" ],
+				"type" : "float",
+				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
 				"error_scale" : 4,
 				"default" : 0.15

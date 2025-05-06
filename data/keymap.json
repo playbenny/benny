@@ -31,7 +31,14 @@
         "edit_channel_name" : {
             "-6" : ["del","edit_delete"],
             "-7" : ["delete","edit_delete"],
-            "-4" : ["enter" , "edited_channel_name"],
+            "-4" : ["enter" , "edited_channel_name", "ok"],
+            "-3" : ["ESC", "set_sidebar_mode","block"],
+            "all" : ["all","edit_typing_with_spaces"]
+        },
+        "edit_pattern_name" : {
+            "-6" : ["del","edit_delete"],
+            "-7" : ["delete","edit_delete"],
+            "-4" : ["enter" , "edit_pattern_name", "ok"],
             "-3" : ["ESC", "set_sidebar_mode","block"],
             "all" : ["all","edit_typing_with_spaces"]
         },
@@ -62,32 +69,33 @@
         "254" : ["ctrl-space","load_next_song", 0],
         "371" : ["ctrl-S","save_hotkey"],
         "-2" : ["space", "play_button"],
-        "-494" : ["ctrl-F2?" , "set_display_mode","flocks"],
+        "238" : ["ctrl-F2" , "set_display_mode","flocks"],
+        "494" : ["shift-F2" , "selected_block_custom_mode", "custom_fullscreen" ],
         "-17" : ["F1" , "set_display_mode","panels"],
-        "-18" : ["F2" , "blocks_and", "block" ],
         "-19" : ["F3" , "set_display_mode","waves"],
+        "-20" : ["F4" , "set_display_mode","patterns"],
         "-22" : ["F6" , "set_sidebar_mode","settings"],
         "-23" : ["F7" , "blocks_and","connections"],
         "-24" : ["F8" , "blocks_and","file_menu"],
         "232" : ["ctrl-F8" , "blocks_and","file_more"],
         "-25" : ["F9" , "messnamed" ,"core.input.keyboard", "toggle_loop"],
         "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
-        "-26" : ["F10", "open_core_control_auto"],
+        "-28" : ["F12", "open_core_control_auto"],
         "-27" : ["F11", "toggle_fullscreen"],
-        "-28" : ["F12" , "set_sidebar_mode","cpu"]
+        "228" : ["ctrl-F12" , "set_sidebar_mode","cpu"]
     },
     "custom_fullscreen" : {
-        "-20" : ["F4", "selected_block_custom_mode", "custom" ],
+        "-18" : ["F2", "blocks_and", "block" ],
         "-3" : ["ESC", "key_escape"],
         "all" : ["all", "custom_key_passthrough"]
     },
     "custom" : {
-        "-20" : ["F4", "selected_block_custom_mode", "custom_fullscreen" ],
+        "-18" : ["F2", "blocks_and", "block" ],
         "-3" : ["ESC", "key_escape"],
         "all" : ["all", "custom_key_passthrough"]
     },
     "blocks" : {
-        "-20" : ["F4", "selected_block_custom_mode", "custom" ],
+        "-18" : ["F2", "selected_block_custom_mode", "custom" ],
         "-15" : ["home" , "center_view", 1],
         "-13" : ["PGUP", "blocks_zoom_key", 0.25],
         "-14" : ["PGDN", "blocks_zoom_key", -0.25],
@@ -113,7 +121,7 @@
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
         "2037" : ["alt-left arrow", "back_button"],
         "2036" : ["alt-right arrow", "fwd_button"],
-        "-4" : ["enter", "set_display_mode","block_menu"],
+        "-4" : ["enter", "blocks_page_enter","block_menu"],
         "-5" : ["tab", "set_display_mode","panels"],
         "-9" : ["UP", "move_selected_blocks", 0,1],
         "-10" : ["DOWN", "move_selected_blocks", 0, -1],
@@ -129,7 +137,7 @@
         "all" : ["all", "show_and_search_new_block_menu"]
     },
     "panels" : {
-        "-20" : ["F4", "selected_block_custom_mode", "custom" ],
+        "-18" : ["F2", "blocks_and", "block" ],
         "45" : ["-", "poly_key" , -1],
         "43" : ["-", "poly_key" , 1],
         "573" : ["-", "poly_key" , 1],
@@ -137,23 +145,40 @@
         "-5" : ["tab" , "set_display_mode", "blocks"],
         "109" : ["M", "mute_selected_block", -1],
         "47" : ["/" , "set_sidebar_mode", "block_search"],
+        "2026" : ["ALT-F6", "open_patcher"],
+        "365" : ["ctrl-M", "mute_selected_block", -1]
+    },
+    "patterns" : {
+        "-18" : ["F2", "blocks_and", "block" ],
+        "45" : ["-", "poly_key" , -1],
+        "43" : ["-", "poly_key" , 1],
+        "573" : ["-", "poly_key" , 1],
+        "353" : ["ctrl-A", "select_all"],
+        "-5" : ["tab" , "set_display_mode", "blocks"],
+        "109" : ["M", "mute_selected_block", -1],
+        "47" : ["/" , "set_sidebar_mode", "block_search"],
+        "2026" : ["ALT-F6", "open_patcher"],
         "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "flocks" : {
+        "-18" : ["F2", "blocks_and", "block" ],
         "45" : ["-", "poly_key" , -1],
         "43" : ["-", "poly_key" , 1],
         "573" : ["-", "poly_key" , 1]
     },
     "waves" : {
+        "-18" : ["F2", "blocks_and", "block" ],
         "-15" : ["home" , "zoom_waves", "all","all"]
     },
     "sidebar" : {
         "file_menu" : {
+            "-18" : ["F2", "blocks_and", "block" ],
             "-4" : ["enter", "file_menu_enter"],
             "-9" : ["up","file_menu_arrows", -1],
             "-10" : ["down","file_menu_arrows", 1]
         },
         "wire" : {
+            "-18" : ["F2", "blocks_and", "block" ],
             "-4" : ["enter", "fold_menus"],
             "-3" : ["ESC", "clear_or_close"],
             "-8" : ["INS", "insert_menu_button", -1],

@@ -5,6 +5,7 @@
     "utility.midi.fidget" : "midi.fidget",
     "utility.midi.delay" : "midi.utility.delay",
     "utility.midi.smooth" : "midi.smooth",
+    "midi.autodamp" : "midi.chord.hold",
     "mix.channel" : "mixer.mono.basic",
     "mix.stereo.channel" : "mixer.stereo.basic",
     "mix.bus" : "mixer.bus"

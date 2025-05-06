@@ -2,7 +2,8 @@
 	"utility.gate" : {
 		"patcher" : "utility.gate",
 		"type" : "audio",
-		"block_ui_patcher" : "blank.ui",
+		"block_ui_patcher" : "utility.gate.ui",
+		"ui_in_sidebar_height" : 1,
 		"help_text" : "very basic gate",
 		"max_polyphony" : 0,
 		"upsample" : 1,

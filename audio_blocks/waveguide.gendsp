@@ -1,0 +1,109 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 5,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 415.0, 347.0, 892.0, 600.0 ],
+		"gridsize" : [ 15.0, 15.0 ],
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 614.0, 573.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "require \"filter_functions\";\r\n\r\nBuffer detuning(\"detuning\");\r\nDelay lineA(samplerate);\r\nDelay lineB(samplerate);\r\n\r\nHistory cursor(0);\r\nHistory current_delay_line(0);\r\nHistory delA(0);\r\nHistory delB(0);\r\nHistory filter2_output(0);\r\n\r\nParam pitch(0, min=0, default=110, max=22050);\r\nParam level(0, min=0, default=1, max=1);\r\n\r\nParam fb(0, min=-4, default=0.7, max=4); //feedback\r\nParam topo(0, min=0, default=0,  max=128); //filter topology\r\nParam f1f(0, min=0, default=1492, max=10000); //filter 1 freq\r\nParam f2f(0, min=0, default=3232, max=10000); //filter 2 freq\r\nParam ext(0, min=0, default=0,  max=128); //exciter type\r\nParam exf(0, min=0, default=2600, max=10000); //exciter filter\r\nParam tw(0, min=0, default=0.12, max=128); //tuning width\r\nParam ptt(0, min=0, default=0.16, max=128); //pitch transition time\r\nParam voice_num(0);\r\n\r\nParam pf1(0);\r\nParam pf2(0);\r\nParam vf1(0);\r\nParam vf2(0);\r\n\r\nParam panic(0, min=0,default=0,max=1);\r\n\r\nexc_mix = ext;\r\nexc_source = (1-exc_mix)*slide(clip(delta(level),0,1),0,60*level) + exc_mix*noise()*slide(level,1000,1000) + in1;\r\nexciter = twopole_lp(exc_source,cutoff=exf); //lp filter me\r\n\r\nif(delta(pitch)!=0){\r\n\tpit = pitch * (1 + (tw*tw)*sample(detuning, cursor, channels = 1) + in2);\r\n\tcursor += 0.000001; \r\n\tpit = clip(pit, 0.0001, 22000);\r\n\tdel = samplerate / pit;\r\n\tif(current_delay_line==0){ //SOMETHING WRONG HERE? or in xfade\r\n\t\tdelB = del;\r\n\t}else{\r\n\t\tdelA = del;\r\n\t}\r\n\tcurrent_delay_line = 1-current_delay_line;\r\n}\r\n\r\nxfade = slide(current_delay_line, ptt, ptt);\r\n\r\nlineA_interp = lineA.read(delA); //DO ME PROPERLY W INTERP\r\nlineB_interp = lineB.read(delB);\r\ndelay_output = lineA_interp * (1 - xfade) + xfade * lineB_interp;\r\n\r\nfilter_topology = slide(abs(topo),1000,1000);\r\nfilter1_output = bandpass(delay_output,cutoff=f2f* pow(2, 4 * vf2 * level + pf2 * pitch * 0.00005 )); //DO ME TOO\r\nif(topo<0){\r\n\tfilter2_output = twopole_lp(delay_output,cutoff=f1f * pow(2, 4 * vf1 * level + pf1 * pitch * 0.00005 )); //LP\r\n}else{\r\n\tfilter2_output = bandpass(delay_output,cutoff=f1f * pow(2, 4 * vf1 * level + pf1 * pitch * 0.00005 )); //BP\r\n}\r\n\r\nfilter_output = (1 - filter_topology) * filter1_output + filter_topology*filter2_output;\r\nfilter_output -= onepole(filter_output, cutoff=30);\r\n//put a one pole HPF here\r\nnonlinearity_output = twopole_lp(slide((panic==0),10000,10)*tanh(slide(fb,1000,1000)*filter_output),cutoff=15000);\r\n\r\nlineA.write(nonlinearity_output+exciter);\r\nlineB.write(nonlinearity_output+exciter);\r\n\r\nout1 = filter_output;\r\nout2 = exciter;//filter_output;\r\n",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 50.0, 46.0, 823.0, 505.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 614.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 46.5, 573.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+ ],
+		"originid" : "pat-4272"
+	}
+
+}

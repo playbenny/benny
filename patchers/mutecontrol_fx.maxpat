@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 1,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -38,25 +38,13 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-3",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 252.0, 151.0, 73.0, 22.0 ],
-					"text" : "loadmess 0."
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-9",
 					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 252.0, 115.0, 150.0, 34.0 ],
-					"text" : "this magic number is\n0.00000005, a bit at 24 bit"
+					"patching_rect" : [ 147.0, 218.0, 150.0, 34.0 ],
+					"text" : "this magic number was\n0.0000001, 2 bits at 24 bit"
 				}
 
 			}
@@ -175,7 +163,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 50.0, 264.0, 74.0, 22.0 ],
+					"patching_rect" : [ 50.0, 285.0, 74.0, 22.0 ],
 					"text" : "zl stream 15"
 				}
 
@@ -187,8 +175,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 50.0, 221.0, 29.5, 22.0 ],
-					"text" : "> 0."
+					"patching_rect" : [ 50.0, 230.0, 62.0, 22.0 ],
+					"text" : "> 0.00001"
 				}
 
 			}
@@ -199,7 +187,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 50.0, 134.0, 94.0, 22.0 ],
+					"patching_rect" : [ 50.0, 115.0, 94.0, 22.0 ],
 					"text" : "snapshot~ 1200"
 				}
 
@@ -281,13 +269,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-2", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-46", 1 ],
-					"source" : [ "obj-3", 0 ]
 				}
 
 			}
@@ -397,7 +378,7 @@
 
 			}
  ],
-		"originid" : "pat-3786"
+		"originid" : "pat-4278"
 	}
 
 }

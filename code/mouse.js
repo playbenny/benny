@@ -77,11 +77,12 @@ function picker_lookups(id){
 		thov[1] = wires_lookup[thov[1]];
 		id = "wires_"+thov[1]+"_0";
 	}
+	// deferred_diag.push("lookups returns "+id);
 	return id;
 }
 
 function picker_hover_and_special(id){
-//	post("\nid",id,"incoming hov",usermouse.hover);
+	// post("\nid",id,"incoming hov",usermouse.hover);
 	if(usermouse.oid!=id){ //if id has changed
 		//deferred_diag.push("hover - "+id);
 		var ohov=usermouse.hover[1];
@@ -93,16 +94,17 @@ function picker_hover_and_special(id){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						wires_scale[bulgingwire][i][1] = wire_dia;
 					}					
-					write_wire_matrix(bulgingwire);
+					write_wire_scale_matrix(bulgingwire);
 				}
 			}
 			bulgingwire = thov[1];
 			bulgeamount=1;
+			usermouse.wiretouch.x = usermouse.x; usermouse.wiretouch.y = usermouse.y;
 			if(!Array.isArray(wires_scale[bulgingwire])) wires_scale[bulgingwire]=[];
 			for(var i=0;i<wires_scale[bulgingwire].length;i++){
 				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
-			write_wire_matrix(bulgingwire);
+			write_wire_scale_matrix(bulgingwire);
 		}else if(thov[0]!="background"){
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
 			if((bulgeamount>0) && !(selected.wire[bulgingwire])){
@@ -111,9 +113,10 @@ function picker_hover_and_special(id){
 					for(var i=0;i<wires_scale[bulgingwire].length;i++){
 						wires_scale[bulgingwire][i][1] = wire_dia;
 					}
-					write_wire_matrix(bulgingwire);
+					write_wire_scale_matrix(bulgingwire);
 				}
 				bulgingwire = -1;
+				usermouse.wiretouch.x=-9999;
 			}
 		}else{
 			if(thov[0]!="wires") usermouse.hover = thov.concat();
@@ -123,7 +126,7 @@ function picker_hover_and_special(id){
 			draw_menu_hint();
 		}	
 	}
-//	post(" - - hover is",usermouse.hover,"returning id",id);
+	// deferred_diag.push(" - - hover is"+usermouse.hover+"returning id"+id);
 	return id;
 }
 // usermouse. left_button, shift, ctrl, alt, x, y, got_i, got_t  <-- all the latest values. got_i , _t = 2d click index and type
@@ -172,6 +175,33 @@ function phys_picker(id,leftbutton){
 	}
 }
 
+function manual_hit_detection(){
+	var id = null;
+	var stw = screentoworld(usermouse.x,usermouse.y);
+	for(var i=0;i<MAX_BLOCKS;i++){
+		if(blocks.contains("blocks["+i+"]::space::x")){
+			var by = Math.abs(blocks.get("blocks["+i+"]::space::y")-stw[1]);
+			if(by<0.5){
+				var bx = blocks.get("blocks["+i+"]::space::x")-stw[0];
+				var bv = blocks.get("blocks["+i+"]::poly::voices");
+				if((bx<0.5)&&(bx>-0.5*(1+bv))){
+					//post("\nITS THIS BLOCK!",i,blocks.get("blocks["+i+"]::name"));
+					if(bx>-0.5){
+						//post(" - the block itself");
+						id="block_"+i+"_"+0;
+					}else{
+						bv = Math.floor(bx*-2);
+						//post(" - voice",bv);
+						id="block_"+i+"_"+bv;
+					}
+					i=MAX_BLOCKS;
+				}
+			}
+		}
+	}
+	return id;
+}
+
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(!am_foreground&&leftbutton) other_window_active(0); // you got a mouse event, so you should make sure you're foreground? but only after a click
 
@@ -215,32 +245,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//i do manual hit detection while dragging a block because i couldn't work out how to make phys picker see things under the dragged block..
-			if((displaymode=="blocks") && (usermouse.last.left_button)){
-				var stw = screentoworld(usermouse.x,usermouse.y);
-				for(var i=0;i<MAX_BLOCKS;i++){
-					if(blocks.contains("blocks["+i+"]::space::x")){
-						var by = Math.abs(blocks.get("blocks["+i+"]::space::y")-stw[1]);
-						if(by<0.5){
-							var bx = blocks.get("blocks["+i+"]::space::x")-stw[0];
-							var bv = blocks.get("blocks["+i+"]::poly::voices");
-							if((bx<0.5)&&(bx>-0.5*(1+bv))){
-								//post("\nITS THIS BLOCK!",i,blocks.get("blocks["+i+"]::name"));
-								if(bx>-0.5){
-									//post(" - the block itself");
-									id="block_"+i+"_"+0;
-								}else{
-									bv = Math.floor(bx*-2);
-									//post(" - voice",bv);
-									id="block_"+i+"_"+bv;
-								}
-								//phys_picker_id = null;
-								//post("\n\nset id to",id);
-								i=MAX_BLOCKS;
-							}
-						}
-					}
-				}
-			}
+			if((displaymode=="blocks") && (usermouse.last.left_button)) id = manual_hit_detection();
 			if(id==null) id = picker_lookups(phys_picker_id);
 			if(id!=null) id = picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
@@ -248,8 +253,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			if(id!=null) id = picker_hover_and_special(id);
 		}
 	}
-	//deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
 	if(usermouse.last.left_button!=usermouse.left_button){
+		// deferred_diag.push(["omouse ",x,y+"[[  "+leftbutton+"  ]]"+usermouse.got_i,usermouse.got_t]);
 		// ##################################################
 		if(usermouse.left_button){	// CLICK
 			if((usermouse.got_i==0) && (usermouse.got_t==0)){	//nothing on the 2d layer, open it up for 3d clicks
@@ -261,7 +266,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.last_y = usermouse.y;
 					usermouse.drag.distance=0;
 					usermouse.clicked2d=-1;
+					if(id=="background"){
+						var t = manual_hit_detection();
+						if(t!=null) id = t;
+						// deferred_diag.push("used manual hit detect and got something that physics didnt");
+					}
 					usermouse.ids = id.split('_');
+					// deferred_diag.push("mouse id"+usermouse.ids+" button "+leftbutton);
 					if(id=="background" || id=="block-menu-background"){
 						usermouse.clicked3d = "background";
 						usermouse.drag.starting_x = -1; // flag waiting for the first mouse message of a drag, because the initial click may be at wrong location with touch messages. usermouse.x;
@@ -270,10 +281,6 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						usermouse.drag.last_y = usermouse.y;
 						usermouse.ids[1]=-3;
 						usermouse.hover=[-1,-1,-1];
-						if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-							usermouse.long_press_function = show_new_block_menu;
-							usermouse.timer=-1;
-						}
 					}else{
 						usermouse.clicked3d = usermouse.ids[1];
 						usermouse.hover = [].concat(usermouse.ids);
@@ -297,7 +304,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				usermouse.last.got_i = usermouse.got_i;
 				usermouse.last.got_t = usermouse.got_t;
 				usermouse.drag.distance = 0;
-				//post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
+				// post("\nclick",usermouse.last.got_i,usermouse.last.got_t);
 				if(usermouse.got_t==1){
 					if((mouse_click_actions[usermouse.got_i]==send_button_message)||(mouse_click_actions[usermouse.got_i]==send_button_message_dropdown)){
 						var ov = parameter_value_buffer.peek(1,mouse_click_values[usermouse.last.got_i][2]);
@@ -327,9 +334,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							usermouse.drag.starting_value_y = -1;
 						}
 					}
-				}else if(usermouse.got_t==6){
-					var f = mouse_click_actions[usermouse.got_i];
-					f = f[0];
+				}else if(usermouse.got_t == 6){
+					var f = mouse_click_actions[usermouse.got_i][0];
+					// f = f[0];
 					var p = mouse_click_parameters[usermouse.got_i];
 					var v = mouse_click_values[usermouse.got_i];
 					f(p,v);
@@ -413,14 +420,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								usermouse.alt = 0; //so it actually resets rather than doing tilt
 								static_mod_adjust(pb,0);
 								usermouse.alt = 1;
-								redraw_flag.flag=2;
+								redraw_flag.flag |= 2;
 							}else if(mouse_click_values[usermouse.got_i]!=""){//CHECK IF ITS A MENU ONE, JUMP TO NEXT VALUE
 								var pnumber = mouse_click_values[usermouse.last.got_i] - 1;
 								var p_values= blocktypes.get(paramslider_details[pnumber][15]+"::parameters["+paramslider_details[pnumber][9]+"]::values");
 								var pv = static_mod_adjust(pb,"get");
 								if(p_values.length>0) pv = (pv + 1.01/p_values.length) % 1;
 								static_mod_adjust(pb,pv);
-								redraw_flag.flag=2;
+								redraw_flag.flag |= 2;
 							} 
 						}else if(mouse_click_actions[usermouse.got_i]==connection_edit){
 							if(alt == 1){
@@ -464,6 +471,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow 1?",usermouse.hover[1],num);
 								var type = blocks_menu[num].name;
+								if(sidebar.show_help==0) sidebar.show_help = 1;
 								
 								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 								end_of_frame_fn = function(){
@@ -504,14 +512,13 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var cno = menu.connection_number;
 								if(Array.isArray(menu.connection_number)) cno = menu.connection_number[0];
 					
-								var f_no= connections.get("connections["+cno+"]::from::number");
-								var t_no = connections.get("connections["+cno+"]::to::number");
-		
+								var f_no = connections.get("connections["+cno+"]::from::number")|0;
+								var t_no = connections.get("connections["+cno+"]::to::number")|0;
 								var avx = blocks.get("blocks["+f_no+"]::space::x");
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
 								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
 								if(dy<1.2) make_space(avx,avy,0.65);
-								var avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
+								avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow 3?",usermouse.hover[1],num);
 								var newb = blocks_menu[num].name;
@@ -543,8 +550,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					}
 				}else if((displaymode == "blocks")||(displaymode == "flocks")){
 					if((usermouse.ids[0] == "background") && (bulgeamount>0.5) && (bulgeamount<1)){
-						usermouse.ids = ["wires", bulgingwire, 0];
-						// post("\nset to last wire not background");
+						var d = (usermouse.x-usermouse.wiretouch.x) * (usermouse.x-usermouse.wiretouch.x) + (usermouse.y-usermouse.wiretouch.y)*(usermouse.y-usermouse.wiretouch.y);
+						if(d<100){
+							usermouse.ids = ["wires", bulgingwire, 0];
+							// post("\nset to last wire not background");
+						}
 					}
 					if(usermouse.ids[0] == "background"){
 						if(usermouse.drag.distance<20){
@@ -553,38 +563,19 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}else if((selected.block.indexOf(1)>-1) || (selected.wire.indexOf(1)>-1)){ //either clear selection or bring up new block menu
 								clear_blocks_selection();
 								usermouse.clicked3d = -1;
-								if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
-									usermouse.timer = 0;
-									usermouse.long_press_function = null;
-								}
 							}else{
 								var showmenu =0;
 								//there are options for how to bring up the menu, so we go through and see if they're true for the various modes, then decide whether to trigger the menu (1)
-								if(BLOCK_MENU_CLICK_ACTION=="click"){
-									showmenu = 0;
-								}else if(BLOCK_MENU_CLICK_ACTION=="double_click"){
-									var tp = screentoworld(usermouse.x,usermouse.y);
-									if(usermouse.timer>0){
-										if((Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1]))<400){
-											showmenu = 1;
-										}else{
-											post("\ndouble click too wide",(Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1])));
-										}
+								var tp = screentoworld(usermouse.x,usermouse.y);
+								if(usermouse.timer>0){
+									if((Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1]))<400){
+										showmenu = 1;
 									}else{
-										usermouse.timer = DOUBLE_CLICK_TIME;
-										blocks_page.new_block_click_pos = tp;
+										post("\ndouble click too wide",(Math.abs(blocks_page.new_block_click_pos[0]-tp[0])+Math.abs(blocks_page.new_block_click_pos[1]-tp[1])));
 									}
-								}else if(BLOCK_MENU_CLICK_ACTION=="ctrl_click"){
-									if(usermouse.ctrl) showmenu = 1;
-								}else if(BLOCK_MENU_CLICK_ACTION=="alt_click"){
-									if(usermouse.alt) showmenu = 1;
-								}else if(BLOCK_MENU_CLICK_ACTION=="shift_click"){
-									if(usermouse.shift) showmenu = 1;
-								}else if(BLOCK_MENU_CLICK_ACTION=="long_click"){
-									if((usermouse.timer<-LONG_PRESS_TIME/66)&&(usermouse.long_press_function!=null)) usermouse.long_press_function();
-									usermouse.timer = 0;
-									usermouse.long_press_function = null;
+								}else{
+									usermouse.timer = DOUBLE_CLICK_TIME;
+									blocks_page.new_block_click_pos = tp;
 								}
 								if(showmenu){
 									show_new_block_menu();
@@ -603,10 +594,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							}
 						}
 					}
-					if(usermouse.timer<0){ // reset background longpress
-						usermouse.timer = 0;
-						usermouse.long_press_function = null;
-					}
+					// if(usermouse.timer<0){ // reset background longpress
+					// 	usermouse.timer = 0;
+					// 	usermouse.long_press_function = null;
+					// }
 					usermouse.drag.starting_x = 0;
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
@@ -624,7 +615,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
 											makewire=0;
-											sidebar_notification("This block can only be connected to a mix.bus block");
+											sidebar_notification("This block can only be connected to a mixer.bus block");
 										}
 									}
 									if(makewire){
@@ -652,7 +643,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											blocks.replace("blocks["+ob+"]::space::y",blocks_cube[ob][0].position[1]);
 										}
 									}									
-									redraw_flag.flag=4;//need to redraw it (for connections only? unless you've messed anything up....)
+									redraw_flag.flag |= 4;//need to redraw it (for connections only? unless you've messed anything up....)
 								}
 								usermouse.clicked3d = -1;
 							}
@@ -660,12 +651,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
-									post("\nself connect,",usermouse.ids,"fname",fname);
+									// post("\nself connect,",usermouse.ids,"fname",fname);
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
 											makewire=0;
-											sidebar_notification("This block can only be connected to a mix.bus block");
+											sidebar_notification("This block can only be connected to a mixer.bus block");
 										}
 									}
 									if(makewire){
@@ -692,6 +683,10 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										selected.wire[ti]=0;
 									}
 									selected.wire_count=0;
+									sidebar.connection.show_from_outputs = 0;
+									sidebar.connection.default_out_applied = 0;
+									sidebar.connection.show_to_inputs = 0;
+									sidebar.connection.default_in_applied = 0;
 								}
 								if(selected.wire_count>1){
 									//and if lots of things are selected (and one of them was clicked) you clear selection but keep that one selected
@@ -707,11 +702,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								selected.wire[usermouse.ids[1]]=afters;
 								if(afters==1) sidebar.lastmode=-1; //force reassign scopes
 								//write_wires_matrix();
-								redraw_flag.flag=4;
+								redraw_flag.flag |= 4;
 							}else{
 								selected.wire[usermouse.ids[1]]=1 - selected.wire[usermouse.ids[1]];
 								//write_wire_matrix(usermouse.ids[1]);
-								redraw_flag.flag=4;
+								redraw_flag.flag |= 4;
 							}
 						}
 						redraw_flag.flag |= 8; //block_and_wire_colours();
@@ -756,7 +751,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else{
 			var xdist=usermouse.x-usermouse.drag.starting_x;
 			var ydist=usermouse.drag.starting_y-usermouse.y;
-			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);	
+			usermouse.drag.distance += Math.abs(xdist) + Math.abs(ydist);
+			if((usermouse.last.got_t == 6) && (usermouse.drag.distance > STATE_FADE_DRAG_THRESHOLD)){
+				state_fade.position=0;//1;
+				redraw_flag.flag |= 2;
+				usermouse.last.got_t = 2;
+				usermouse.long_press_function = null;
+				whole_state_xfade_create_task.cancel();
+				mouse_click_actions[usermouse.last.got_i] = whole_state_xfade;
+				p = state_fade.selected;
+				v = 0;
+			}	
 			if((usermouse.clicked2d != -1) && (usermouse.last.got_t>=2 && usermouse.last.got_t<=4)){ 
 				// #### 2D DRAG ###########################################################################################################
 				var f = mouse_click_actions[usermouse.last.got_i];
@@ -955,7 +960,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
 											drawwire=0;
-											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mix.bus block");
+											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mixer.bus block");
 										}else{
 											if(sidebar.mode=="notification") set_sidebar_mode("none");
 										}
@@ -991,12 +996,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											// post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
 										}
-										//if((sidebar.mode=="none")||((sidebar.mode=="block")&&(selected.block[usermouse.ids[1]]))){
 										set_sidebar_mode("potential_wire");
-										//}
-										// post("\ndrawing wire from",usermouse.ids[1],"to",usermouse.hover[1],usermouse.hover[2]);
-										//draw_wire(wires_potential_connection);
-										//post("\ndrew");
 									
 										var drawnlist = [];
 										for(var t=0;t<usermouse.drag.dragging.voices.length;t++){
@@ -1014,7 +1014,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											//write_wire_matrix(usermouse.drag.dragging.connections[t]);
 										}
 										write_wires_matrix();
-										redraw_flag.matrices &= 253;
+										redraw_flag.matrices &= 241;
 									}
 								}
 							}	
@@ -1192,9 +1192,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			if((!usermouse.ctrl)&&(!usermouse.shift)&&(!usermouse.alt)){
 				var xx = (2 * x / mainwindow_width) - 1;
 				var yy = (2 * y / mainwindow_height) - 1;
-				
-				camera_position[2] = camera_position[2]-20*scroll;
-				if(camera_position[2]<1.5)camera_position[2]=1.6;
+				camera_position[2] = Math.max(3,Math.min(500,camera_position[2]-20*scroll));				
 				camera_position[0] += xx*scroll*7;
 				camera_position[1] -= yy*scroll*7;//*0.5;
 				messnamed("camera_control","position",  camera_position);
@@ -1404,13 +1402,13 @@ function keydown(key){
 	if(keymap.contains("sidebar::"+sidebar.mode+"::"+key)){
 		var action = keymap.get("sidebar::"+sidebar.mode+"::"+key);
 		var paras = action.slice(2,99);
-		//post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
+		// post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;
 	}else if(keymap.contains("global::"+key)){
 		var action = keymap.get("global::"+key);
 		var paras = action.slice(2,99);
-		//post("\nfound in keymap", action[0],action[1], "paras",paras);
+		// post("\nfound in global keymap", action[0],action[1], "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}else if(keymap.contains(displaymode+"::"+key)){

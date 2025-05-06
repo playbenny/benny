@@ -22,10 +22,19 @@ function slowclock(){
 		deferred_diag=[];
 	}
 	draw_cpu_meter(); //is this the right place for this?
+	if((fullscreen && ((displaymode=="blocks")||(displaymode=="panels")))&&(Math.random()<0.05)) draw_clock();
 }
 
+var bangflag=0;
+
 function frameclock(){
-	var bangflag=0;
+	// if(redraw_flag.flag!=0) post("\nframeclock",redraw_flag.flag);
+	if(bangflag){ //if it's got behind itself
+		lcd_main.message("bang");
+		post("\n**collision**");
+		bangflag = 0;
+		// return 0;
+	}
 	var i,t;
 	if(usermouse.queue.length>0){
 		//deferred_diag.push("mouse queue length "+usermouse.queue.length+" count is "+usermouse.qcount+" qlb is "+usermouse.qlb);
@@ -79,32 +88,42 @@ function frameclock(){
 		if(Array.isArray(wires_position[bulgingwire])){
 			var ll = wires_position[bulgingwire].length;
 			for(var i=0;i<ll;i++){
-				var ta = wires_scale[bulgingwire][i];
-				ta[1] = wire_dia * (1 + bulgeamount);
-				wires_scale[bulgingwire][i] = [ta[0],ta[1],ta[2]];
+				wires_scale[bulgingwire][i][1] = wire_dia * (1 + bulgeamount);
 			}
 			if(bulgeamount==0) bulgingwire=-1;			
-			write_wire_matrix(bulgingwire);
-			redraw_flag.matrices |= 1;
+			write_wire_scale_matrix(bulgingwire);
 		}
 	}
+	// if(redraw_flag.flag)post("\nflag",redraw_flag.flag);
 	if(redraw_flag.flag & 4){
-		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
 		bangflag=1;
+		redraw(); //redraw does everything 2 does + blocks, panels or custom or whatever
+		if(redraw_flag.flag & 8) block_and_wire_colours();
+		redraw_flag.flag = 0;
 	}else if(redraw_flag.flag & 2){
+		bangflag=1;
 		clear_screens();
 		draw_topbar();
-		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")||(displaymode=="waves"))) draw_clock();
+		if(fullscreen && ((displaymode=="blocks")||(displaymode=="panels")||(displaymode=="waves")||(displaymode=="patterns"))) draw_clock();
 		if(displaymode=="waves") draw_waves();
+		if(displaymode=="custom") draw_custom();
 		draw_sidebar();
 		if((displaymode=="panels")||(displaymode=="panels_edit")) draw_panels();
+		if(displaymode=="patterns") draw_patterns();
 		if((state_fade.position>-1) && (state_fade.selected > -2)) draw_state_xfade();
+		if(bottombar.block>-1){ setup_bottom_bar(); bangflag = 2; }
 		if(redraw_flag.flag & 8) block_and_wire_colours();
-		bangflag=1;
 	}else{
 		if(redraw_flag.flag & 8){
 			block_and_wire_colours(); //<<this fn always copies over the matrices
 		}else{
+			if(redraw_flag.matrices == 16){//just bulge, nothing else.
+				messnamed("wires_scale_matrix","bang");
+			}else if(redraw_flag.matrices & 16) {
+				redraw_flag.matrices |= 1;
+			}
+			if(redraw_flag.matrices & 4) write_wires_matrix(); //this also bangs in the write fn and clears the flag
+			if(redraw_flag.matrices & 8) write_blocks_matrix();
 			if(redraw_flag.matrices & 1){
 				messnamed("wires_matrices","bang");
 			}
@@ -183,18 +202,22 @@ function frameclock(){
 	}else if(displaymode == "panels"){
 		sidebar_meters();
 		update_custom_panels();
-		if(bottombar.block>-1)update_bottom_bar();
 		bangflag=1;
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}else if(displaymode == "waves"){
 		sidebar_meters();
 		if(waves.playheadlist.length>0) draw_playheads();
 		bangflag=1;
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}else if(displaymode == "custom"){
-		if(redraw_flag.flag>1){
-			draw_custom();
-		}else{
-			update_custom();
+		if(!(redraw_flag.flag&6)){
+			if(redraw_flag.flag>1){
+				draw_custom();
+			}else{
+				update_custom();
+			}
 		}
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6)){update_bottom_bar(); }//bangflag=2; }
 		sidebar_meters();
 		bangflag=1;
 	}else if(displaymode == "custom_fullscreen"){
@@ -209,10 +232,20 @@ function frameclock(){
 		sidebar_meters();
 		move_flock_blocks();
 		bangflag=1;
+	}else if(displaymode == "patterns"){
+		sidebar_meters();
+		update_patterns();
+		bangflag=1;
+		if(sidebar.panel&&!(redraw_flag.flag&6)) update_custom();
+		if((bottombar.block>-1)&&!(redraw_flag.flag&6))update_bottom_bar();
 	}
-	if(bangflag) {
+	if(bangflag==1) {
 		lcd_main.message("bang");
+		bangflag = 0;
+	}else if(bangflag == 2){
+		messnamed("to_blockmanager","bang_yourself");
 	}
+	
 	redraw_flag.flag = 0;
 	if(redraw_flag.deferred!=0){ //.deferred = skip a frame, |=128 makes it skip 2 frames
 		redraw_flag.flag = redraw_flag.deferred;
@@ -222,6 +255,12 @@ function frameclock(){
 		end_of_frame_fn();
 		end_of_frame_fn = null;
 	}
+}
+
+function bang_yourself(){
+	bangflag = 0;
+	lcd_main.message("bang");
+	post("\nselfbang");
 }
 
 function prep_meter_updatelist(){
@@ -264,19 +303,19 @@ function prep_meter_updatelist(){
 }
 
 function check_changed_queue(){
-	var i=0,t;
+	// var i=0;
 	var b,p;
-	t= changed_queue.peek(0,changed_queue_pointer);
+	var t= changed_queue.peek(0,changed_queue_pointer);
 	while(t>0){
-		i+=1;
+		// i+=1;
 		t-=1;
 		b = Math.floor(t/MAX_PARAMETERS);
 		p = Math.floor(t - b*MAX_PARAMETERS);
 		if(b==sidebar.selected){
-			if(!is_empty(paramslider_details[p /*i*/])){
+			// if(!is_empty(paramslider_details[p])){
 				redraw_flag.targets[p] |= 1;
 				redraw_flag.flag |= 1;														
-			}
+			// }
 		}
 		if(displaymode == "panels"){
 			if(panelslider_visible[b][p]){
@@ -341,14 +380,23 @@ function hardware_meters(){
 }
 
 function draw_midi_indicators(){
-	var l = midi_indicators.list.length;
-	var yi = (fontheight-2) / Math.max(1, l - 1);
+	var l = midi_indicators.status.length;
+	var ci = midi_indicators.list.length;
+	var yi = (fontheight-3) / Math.max(1, l - 1);
 	var y = 9;
 	midi_indicators.flag = 0;
 	for(var i = 0; i<l; i++){
 		if(midi_indicators.status[i]>0){
-			if(midi_indicators.status[i]==1){
-				lcd_main.message("frgb", menucolour);
+			if(midi_indicators.status[i]>=1){
+				if(i==ci){
+					if(ext_sync.link_enabled){
+						lcd_main.message("frgb", 0,255,0);// menucolour[1]*2, menucolour[0]*0.9, menucolour[2]);
+					}else{
+						lcd_main.message("frgb", 190,35,0);// menucolour[1]*2, menucolour[0]*0.9, menucolour[2]);
+					}
+				}else{
+					lcd_main.message("frgb", menucolour);
+				}
 				lcd_main.message("moveto", sidebar.meters.startx, y);
 				lcd_main.message("lineto", sidebar.meters.startx, y+1);
 				if(sidebar.mode == "midi_indicators") redraw_flag.deferred |= 2;
@@ -479,7 +527,7 @@ function sidebar_midi_scope(){
 			}
 		}
 		if(cha>0){
-			if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)) setfontsize(fontsmall);
+			if((sidebar.scopes.midiouttypes[outp]==0)&&(sidebar.scopes.midinames == 1)) lcd_main.message("font",mainfont,fontsmall);
 			lcd_main.message("paintrect" , x1-2,y1,x2,y2+2,sidebar.scopes.bg);
 			if((sidebar.scopes.midiouttypes[outp]<2)){
 				lcd_main.message("frgb",sidebar.scopes.fg);
@@ -529,6 +577,7 @@ function sidebar_midi_scope(){
 		y2 = sidebar.scopes.midi_routing.endy;
 		x1 = sidebar.x + 2;
 		sy = (y2-y1-2)/128;
+		sx = (x2-x1-12)/128;
 		y2-=2;
 		r =0;
 		cha = 0;
@@ -715,4 +764,23 @@ function waves_playhead(voice, block, enable){
 			waves.v_label[voice] = null;
 		}
 	}
+}
+
+function queue_quantised_notification(func,arg1,arg2){
+	// post("\nqueued event",func.name,arg1,arg2);
+	quantised_event_list.push([func,arg1,arg2]);
+	messnamed("request_quantised_notification",pattern_recall_timing_quantise);
+}
+
+function quantised_notification(){
+	if(usermouse.shift){
+		messnamed("request_quantised_notification",pattern_recall_timing_quantise);
+	}else{
+		while(quantised_event_list.length>0){
+			var e = quantised_event_list.pop();
+			f = e[0];
+			f(e[1],e[2]);
+		}
+	}
+	// post("\nfired quantised event");
 }

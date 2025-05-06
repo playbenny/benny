@@ -1,0 +1,126 @@
+{
+	"voice.wave.guide" : {
+		"patcher" : "voice.wave.guide",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "simple wave guide model with 2 filters in the feedback path. ££the sustained noise exciter type is useful for flutey tones. with a modulation source like per-key aftertouch mapped to the filter frequencies this model does nice performable overblown wind harmonics.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "bridge feed input", "fm" ],
+				"midi" : [ "note" ]
+			},
+			"out" : {
+				"audio" : [ "out1", "out2" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,1],
+				"height" : 1,
+				"colour" : 20
+			},
+			{ 
+				"contains" : [2,2,3,3],
+				"height" : 0,
+				"colour" : 10
+			},
+			{ 
+				"contains" : [8,10,9,11],
+				"height" : 0
+			},
+			{ 
+				"contains" : [4,5,6,7],
+				"height" : 0,
+				"colour" : -10
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "feedback",
+				"type" : "float",
+				"values" : ["bi", -2, 2, "lin"],
+				"wrap" : 1,
+				"default" : 0.745
+			},
+			{
+				"name" : "filter topology",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "f1 freq",
+				"type" : "float",
+				"values" : ["uni", 100, 10000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "f2 freq",
+				"type" : "float",
+				"values" : ["uni", 100, 10000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.4
+			},
+			{
+				"name" : "exciter type",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "exciter filter_freq",
+				"type" : "float",
+				"values" : ["uni", 100, 10000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.4
+			},
+			{
+				"name" : "tuning width",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.05
+			},
+			{
+				"name" : "pitch transition_time",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.05
+			},
+			{
+				"name" : "pitch->freq1",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.6
+			},
+			{
+				"name" : "pitch->freq2",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vel->freq1",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "vel->freq2",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

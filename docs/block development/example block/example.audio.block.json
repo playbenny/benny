@@ -14,13 +14,14 @@
 				"midi" : [ "as many", "midi ins", "as you like", "(within reason)", "up to 128" ],
 				"default" : 1,
 				"automap_to" : 0,
-				"audio" : ["in1", "in2"]
+				"audio" : ["in1", "in2"],
+				"audio_watched" : [0,1]
 			},
 			"out" : {
 				"audio" : [ "main out", "other out"],
 				"midi" : [ "likewise", "as many", "midi outs" ],
 				"parameters" : [ "but", "1 dimensional" , "'parameter' out", "like a midi cc", "is often more useful"],
-				"midi_watched" : [0,1,1, "OPTIONAL a list, as long as the list of midi outs. a 1 means that when this output is connected or disconnected a message is sent to the voice to tell it to enable or disable the out. useful for outputs that put out a lot of midi data. see utility.env.asr for usage."]
+				"midi_watched" : [0,1,1, "OPTIONAL a list, as long as the list of midi + param outs. a 1 means that when this output is connected or disconnected a message is sent to the voice to tell it to enable or disable the out. useful for outputs that put out a lot of midi data. see utility.env.asr for usage."]
 			}
 		},
 		"groups" : [

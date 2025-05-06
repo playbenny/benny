@@ -120,8 +120,8 @@ function update(force){
 				c=225*cell[r]+30;
 				outlet(1,"paintrect",w4*i+x_pos,h4*t+y_pos,w4*(i+0.95)+x_pos,h4*(t+0.95)+y_pos,c,c,c);
 				
-				outlet(0,"custom_ui_element","param_v_scroll",w4*(i+0.05)+x_pos,h4*(t+0.05)+y_pos,w4*(i+0.65)+x_pos,h4*(t+0.9)+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block,5+r);
-				outlet(0,"custom_ui_element","param_v_scroll",w4*(i+0.75)+x_pos,h4*(t+0.30)+y_pos,w4*(i+0.9)+x_pos,h4*(t+0.9)+y_pos,blockcolour[0],blockcolour[1],blockcolour[2],block,21+r);
+				outlet(0,"custom_ui_element","param_v_scroll",w4*(i+0.05)+x_pos,h4*(t+0.05)+y_pos,w4*(i+0.65)+x_pos,h4*(t+0.9)+y_pos,blockcolour[0]*1,blockcolour[1]*0.6,blockcolour[2]*0.4,block,5+r);
+				outlet(0,"custom_ui_element","param_v_scroll",w4*(i+0.75)+x_pos,h4*(t+0.30)+y_pos,w4*(i+0.9)+x_pos,h4*(t+0.9)+y_pos,blockcolour[0]*1,blockcolour[1]*1.2,blockcolour[2]*0.4,block,21+r);
 				outlet(0,"custom_ui_element","param_toggle",w4*(i+0.75)+x_pos,h4*(t+0.05)+y_pos,w4*(i+0.9)+x_pos,h4*(t+0.20)+y_pos,menucolour[0],menucolour[1],menucolour[2],block,37+r);
 
 			}

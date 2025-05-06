@@ -4,7 +4,7 @@ block json file reference
 json doesn't support comments, so i've listed the keys and interspersed explanations. copy them
 out into your own json files, removing all my comments.
 
-use an editor that will check the syntax of json for you, it'll save you time.
+use an editor that will check the syntax of json for you, it'll save you time. vscode is free and does the job.
 
 the whole thing is in {}, and contains one key, which is named as the block name, 
 and the json file has to be saved as the same name too. eg this example is based on utility.delay.json
@@ -22,6 +22,7 @@ and the json file has to be saved as the same name too. eg this example is based
         // build your block a UI in a separate max window rather than inside benny if you prefer.
 		//ui keys:
         "ui_in_sidebar_height" : 1, //if this key is present it draws the ui in the sidebar above the parameters, using this many rows of space. your ui can adjust to proportions if you want it to...
+        "ui_in_sidebar_expands" : 1,
         "ui_to_bottom_panel" : 1, //let this be sent to the bottom panel. the 5th setup param (x,y,x,y,M) is called with a '2' so you know to render a long thin view. very much only for a particular kind of block - like mix bus, pattern sequencer, etc.
         "no_ui_in_panel" : 1,//this key prevents it displaying the ui in the panels page of benny
 		"no_edit" : 1,//this key prevents the ui being popped open from the sidebar/panels - it can't be made the main focus of the window ever.
@@ -70,6 +71,7 @@ and the json file has to be saved as the same name too. eg this example is based
                         "parameters" : [ "bar counter" ],
                         "audio" : ["main output", "this out has a very special set of functions described here"]
                     },
+                    "midi_watched" : [1,1,1], //if it is something possibly high density that gets turned on and off by the core remotely (ie you need to listen for a message and have gates, see env.asr)
                     "midi_scopes_types" : [ 0,0,0,1,3] //array, one per midi, parameter out, type and size of midi scope. 0 = notes, 1 = thin notes, 2 = values,3=thin values
                 }
             },
@@ -110,6 +112,11 @@ and the json file has to be saved as the same name too. eg this example is based
                 //block level value is kind of obscured, but is set by the 'default' key under the parameter
             }
 		],
+        "presets" : { //optional 'factory presets' in addition to any the user saves
+            "preset name" : {
+				"values" :[ 0, 0, 0, 0, "array of parameter values" ]
+            }
+        },
 		"parameters" : [
 			{
 				"name" : "delay_samples", //must have a name

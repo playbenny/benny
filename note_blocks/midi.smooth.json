@@ -7,7 +7,8 @@
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "vel sets value" ]
+				"midi" : [ "vel sets value" ],
+				"default" : 1
 			},
 			"out" : {
 				"parameters" : [ "smoothed" ]
