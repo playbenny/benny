@@ -3150,10 +3150,10 @@ function capture_keyboard_loop_button(state){
 			capturetask2.cancel();
 			capturetask2.freepeer();
 			post("\n//short press, send the message to the keyboard that it should loop the last bar");
-			note_poly.message("setvalue",automap.available_k, "toggle_loop");
+			note_poly.message("setvalue",automap.available_k, "loop_on");
 		}else{
 			post("\n//it's already recording, stop it");
-			note_poly.message("setvalue",automap.available_k, "toggle_loop");
+			note_poly.message("setvalue",automap.available_k, "loop_end");
 		}
 	}
 }
