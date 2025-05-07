@@ -70,7 +70,7 @@ function target(arc,index){
 		if(!Array.isArray(vl))vl = [vl];
 		ovv[arc] = [];
 		for(var i =0;i<vl.length;i++) vl[i] = MAX_PARAMETERS*vl[i]+t_param;
-		post("\narc",arc," map to block ",t_block," param ",t_param," type ", btype, "param type",ptype, "pvals",pvalues,"voices",vl);
+		// post("\narc",arc," map to block ",t_block," param ",t_param," type ", btype, "param type",ptype, "pvals",pvalues,"voices",vl);
 		arc_voices[arc]=vl;
 		if((ptype == "int")||(ptype == "float")||(ptype == "float4")){
 			arc_pol[arc] = (pvalues[0] == "bi");
@@ -93,7 +93,7 @@ function target(arc,index){
 		vl = [vl[arc]];
 		ovv[arc] = [];
 		for(var i =0;i<vl.length;i++) vl[i] = MAX_PARAMETERS*vl[i]+t_param;
-		post("\narc",arc," map to block ",t_block," param ",t_param," type ", btype, "param type",ptype, "pvals",pvalues,"voices",vl);
+		// post("\narc",arc," map to block ",t_block," param ",t_param," type ", btype, "param type",ptype, "pvals",pvalues,"voices",vl);
 		arc_voices[arc]=vl;
 		if((ptype == "int")||(ptype == "float")||(ptype == "float4")){
 			arc_pol[arc] = (pvalues[0] == "bi");
