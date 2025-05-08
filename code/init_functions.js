@@ -1211,6 +1211,8 @@ function size(width,height,scale){
 			click_b_w++;
 		}
 		fontheight = (mainwindow_height-24) / 18;
+		config.replace("fontheight", fontheight);
+		config.replace("window",width,height);
 		fontsmall = fontheight / 3.2;
 		config.replace("fontsmall",fontsmall);
 		fo1 = fontheight * 0.1;

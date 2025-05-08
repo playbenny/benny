@@ -26,7 +26,7 @@ var gamutl;
 var v_list = [];
 var fullscreen = 0;
 var endreturns_enabled = 1;
-var menucolour,menudark;
+var menucolour,menudark,menumid;
 var btnhgt = 0.75;
 var clicked = 0;
 
@@ -38,12 +38,15 @@ var controllername;
 var editmode = 0;
 var edittarget = 0; //target dial
 var corners = [];
+var fontheight = 20;
 
 function setup(x1,y1,x2,y2,sw){ 
 	// not done - needs to work out which controller it is, get row and column count from config
 	menucolour = config.get("palette::menu");
 	menudark = [menucolour[0]*0.2, menucolour[1]*0.2, menucolour[2]*0.2];
+	menumid = [menucolour[0]*0.5, menucolour[1]*0.5, menucolour[2]*0.5];
 	gamutl = config.getsize("palette::gamut");
+	fontheight = config.get("fontheight");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
@@ -53,7 +56,7 @@ function setup(x1,y1,x2,y2,sw){
 	fullscreen = (width > sw * 0.34);
 	if(block>=0)get_connections_list();
 	w4=width/cols;
-	h4=height/(rows+btnhgt);
+	h4=(height - fontheight)/(rows);//+btnhgt);
 	draw();
 }
 function draw(){
@@ -65,31 +68,31 @@ function draw(){
 
 function drawbuttons() {
 	outlet(0, "custom_ui_element", "mouse_passthrough", x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0, block, 0);
-	var colour = (clicked == 1) ? menucolour : menudark;
-	outlet(1, "framerect", width * 0.01 + x_pos, h4 * (rows + 0.05) + y_pos, width * 0.249 + x_pos, height + y_pos - h4 * 0.05, colour);
-	outlet(1, "moveto", x_pos + width * 0.03, y_pos + h4 * (rows + btnhgt - 0.2));
+	var colour = (clicked == 1) ? menucolour : (editmode) ? menudark : menumid;
+	outlet(1, "framerect", x_pos, height - 0.95 * fontheight + y_pos, width * 0.248 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	outlet(1, "moveto", x_pos + width * 0.03, y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "zero all");
-	var colour = (clicked == 2) ? menucolour : menudark;
-	outlet(1, "framerect", width * 0.251 + x_pos, h4 * (rows + 0.05) + y_pos, width * 0.499 + x_pos, height + y_pos - h4 * 0.05, colour);
-	outlet(1, "moveto", x_pos + width * 0.28, y_pos + h4 * (rows + btnhgt - 0.4));
+	var colour = (clicked == 2) ? menucolour : (editmode) ? menudark : menumid;
+	outlet(1, "framerect", width * 0.252 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.498 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	outlet(1, "moveto", x_pos + width * 0.28, y_pos + height - 0.6*fontheight);
 	outlet(1, "write", "return to");
-	outlet(1, "moveto", x_pos + width * 0.28, y_pos + h4 * (rows + btnhgt - 0.2));
+	outlet(1, "moveto", x_pos + width * 0.28, y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "initial");
-	var colour = (clicked == 3) ? menucolour : menudark;
-	outlet(1, "framerect", width * 0.501 + x_pos, h4 * (rows + 0.05) + y_pos, width * 0.749 + x_pos, height + y_pos - h4 * 0.05, colour);
-	outlet(1, "moveto", x_pos + width * 0.53, y_pos + h4 * (rows + btnhgt - 0.4));
+	var colour = (clicked == 3) ? menucolour : (editmode) ? menudark : menumid;
+	outlet(1, "framerect", width * 0.502 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.748 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
 	outlet(1, "write", "store");
-	outlet(1, "moveto", x_pos + width * 0.53, y_pos + h4 * (rows + btnhgt - 0.2));
+	outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "initial");
 	if(editmode){
-		var colour = (clicked == 4) ? menucolour : menudark;
-		outlet(1, "paintrect", width * 0.751 + x_pos, h4 * (rows + 0.05) + y_pos, width * 0.999 + x_pos, height + y_pos - h4 * 0.05, colour);
+		var colour = (clicked == 4) ? menucolour : menumid;
+		outlet(1, "paintrect", width * 0.752 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
 		outlet(1, "frgb", (clicked != 4) ? menucolour : menudark);
 	}else{
-		var colour = (clicked == 4) ? menucolour : menudark;
-		outlet(1, "framerect", width * 0.751 + x_pos, h4 * (rows + 0.05) + y_pos, width * 0.999 + x_pos, height + y_pos - h4 * 0.05, colour);
+		var colour = (clicked == 4) ? menucolour : menumid;
+		outlet(1, "framerect", width * 0.752 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
 	}
-	outlet(1, "moveto", x_pos + width * 0.78, y_pos + h4 * (rows + btnhgt - 0.2));
+	outlet(1, "moveto", x_pos + width * 0.78,y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "edit mode");
 }
 
@@ -164,70 +167,86 @@ function update(force){
 			}else{
 				corners = [x_pos + (tx+0.1 - cols*0.5)*w4, y_pos+0.1*h4, x_pos + (tx-0.1)*w4, h4*(rows-0.1)+y_pos ];
 			}
-			outlet(0, "custom_ui_element", "mouse_passthrough", corners, 0, 0, 0, block, 0);
 			r = voice_data_buffer.peek(1,(readindex + 2*paramcount)|0) * gamutl;
 			r |= 0;
 			r %= gamutl;
 			cc=config.get("palette::gamut["+r+"]::colour"); 
 			outlet(1,"paintrect",corners,0,0,0);
 			outlet(1,"framerect",corners,cc);
-			var y_o = corners[1]+h4*0.3;
+			var y_o = corners[1]+0.5*fontheight;
 			outlet(1,"moveto", corners[0]+w4*0.1, y_o);
-			outlet(1,"frgb",menucolour);
-			outlet(1,"write","number: " + edittarget);
-			y_o += h4 * 0.3;
+			outlet(1,"frgb",menumid);
+			outlet(1,"write","number: "+edittarget);
+			y_o += 0.5*fontheight;
 			outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+			outlet(1,"frgb",menumid);
+			var val = voice_data_buffer.peek(1,readindex);
+			outlet(1,"write","value: ");
 			outlet(1,"frgb",menucolour);
-			outlet(1,"write","value: " + voice_data_buffer.peek(1,readindex).toPrecision(3));
-			outlet(1, "framerect" , corners[0] + w4*0.9,y_o-h4*0.2,corners[2]-w4*0.1,y_o+h4*0.1,(clicked==5)? menucolour : menudark);
+			outlet(1,"write",(val*128).toPrecision(3));
+			outlet(1, "framerect" , corners[0] + w4*0.9,y_o-fontheight*0.3,corners[2]-w4*0.1,y_o+fontheight*0.1,(clicked==5)? menucolour : menudark);
 			outlet(1,"moveto", corners[0]+w4*0.97, y_o);
-			outlet(1,"frgb",menucolour);
+			outlet(1,"frgb",menumid);
 			outlet(1,"write","store initial");
-			y_o += h4 * 0.3;
+			y_o += 0.5*fontheight;
 			outlet(1,"moveto", corners[0]+w4*0.1, y_o);
 			outlet(1,"frgb",cc);
 			outlet(1,"write","colour:");
-			y_o += h4 * 0.3;
+			y_o += 0.5*fontheight;
 			var cs = 2*gamutl/(w4*1.8);
 			c=0;
 			for(var x1= Math.floor(corners[0]+w4*0.1); x1<corners[2]-w4*0.1; x1+=2){
 				outlet(1,"frgb",config.get("palette::gamut["+Math.floor(c)+"]::colour"));
 				c+=cs;
 				outlet(1,"moveto",x1,y_o);
-				outlet(1,"lineto",x1,y_o-h4*0.2);
+				outlet(1,"lineto",x1,y_o-fontheight*0.4);
 			}
-			if(endreturns_enabled){
-				y_o += h4 * 0.3;
-				outlet(1,"moveto", corners[0]+w4*0.1, y_o);
-				outlet(1,"frgb",menucolour);
-				outlet(1,"write","end zones:");
-				c = menucolour;
-				y_o += h4 * 0.1;
-				outlet(0,"custom_ui_element","data_h_scroll",corners[0]+w4*0.2,y_o,corners[2]-w4*0.2,y_o + h4*0.06,c[0],c[1],c[2],readindex+3*paramcount);
-				outlet(0,"custom_ui_element","data_h_scroll",corners[0]+w4*0.2,y_o+h4*0.94,corners[2]-w4*0.2,y_o + h4*1,c[0],c[1],c[2],readindex+5*paramcount);
-				y_o += h4 * 0.1;
-				outlet(0,"custom_ui_element","data_v_scroll",corners[0]+w4*0.1,y_o,corners[0]+w4*0.16,y_o + h4*0.8,c[0],c[1],c[2],readindex+4*paramcount);
-				outlet(0,"custom_ui_element","data_v_scroll",corners[2]-w4*0.16,y_o,corners[2]-w4*0.1,y_o + h4*0.8,c[0],c[1],c[2],readindex+6*paramcount);
-				outlet(1,"framerect",corners[0]+w4*0.2,y_o,corners[2]-w4*0.2,y_o+h4*0.8,menudark);
-				outlet(1,"moveto",corners[0]+w4*0.2,y_o+h4*0.4);
-				outlet(1,"lineto",corners[2]-w4*0.2-2,y_o+h4*0.4);
-				outlet(1,"frgb",menucolour);
-				outlet(1,"moveto",corners[0]+w4*0.2,y_o+h4*0.8*(1-voice_data_buffer.peek(1,readindex+4*paramcount)));
-				outlet(1,"lineto",corners[0]+w4*0.8,y_o+h4*0.4);
-				outlet(1,"lineto",corners[2]-w4*0.6,y_o+h4*0.4);
-				outlet(1,"lineto",corners[2]-w4*0.2-2,y_o+h4*0.8*(1-voice_data_buffer.peek(1,readindex+6*paramcount)));
-				
-				y_o += h4*0.8;
+			outlet(0, "custom_ui_element", "mouse_passthrough", corners[0],corners[1],corners[2],y_o, 0, 0, 0, block, 0);
 
+			if(endreturns_enabled){
+				y_o += 0.5*fontheight;
+				outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+				outlet(1,"frgb",menumid);
+				outlet(1,"write","end zone forces:");
+				c = menucolour;
+				y_o += fontheight * 0.1;
+				outlet(0,"custom_ui_element","data_h_scroll",corners[0]+w4*0.2,y_o,corners[2]-w4*0.2,y_o + w4*0.06,c[0],c[1],c[2],readindex+3*paramcount);
+				outlet(0,"custom_ui_element","data_h_scroll",corners[0]+w4*0.2,y_o+w4*0.94,corners[2]-w4*0.2,y_o + w4*1,c[0],c[1],c[2],readindex+5*paramcount);
+				var x1 = voice_data_buffer.peek(1,readindex+3*paramcount);
+				var x2 = voice_data_buffer.peek(1,readindex+5*paramcount);
+				y_o += w4 * 0.1;
+				outlet(0,"custom_ui_element","data_v_scroll",corners[0]+w4*0.1,y_o,corners[0]+w4*0.16,y_o + w4*0.8,c[0],c[1],c[2],readindex+4*paramcount);
+				outlet(0,"custom_ui_element","data_v_scroll",corners[2]-w4*0.16,y_o,corners[2]-w4*0.1,y_o + w4*0.8,c[0],c[1],c[2],readindex+6*paramcount);
+				outlet(1,"framerect",corners[0]+w4*0.2,y_o,corners[2]-w4*0.2,y_o+w4*0.8,menudark);
+				outlet(1,"moveto",corners[0]+w4*0.2,y_o+w4*0.4);
+				outlet(1,"lineto",corners[2]-w4*0.2-2,y_o+w4*0.4);
+				outlet(1,"frgb",menucolour);
+				var y1 = (1-voice_data_buffer.peek(1,readindex+4*paramcount));
+				var y2 = (1-voice_data_buffer.peek(1,readindex+6*paramcount));
+				outlet(1,"moveto",corners[0]+w4*0.2,y_o+w4*0.8*y1);
+				if(x1<=x2){
+					outlet(1,"lineto",corners[0]+x1*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o+w4*0.4);
+					outlet(1,"lineto",corners[0]+x2*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o+w4*0.4);
+				}else{
+					//the first line has the same gradient as the first one above, but stops at x2's position instead of at x1 (where it hits the axis).
+					//eg from y1 to 0.5, but we're taking x2/x1 so y = y1 * (1 - x1/x2) + 0.5 * x1/x2
+					outlet(1,"lineto",corners[0]+x2*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o+w4*0.8*(y1 * (1 - x2/x1) + 0.5 * x2/x1));
+					outlet(1,"lineto",corners[0]+x1*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o+w4*0.8*(y2 * (1 - (1-x1)/(1-x2)) + 0.5 * (1-x1)/(1-x2)));
+				}
+				outlet(1,"lineto",corners[2]-w4*0.2-2,y_o+w4*0.8*y2);
+				outlet(1,"frgb",cc);
+				outlet(1,"moveto",corners[0]+val*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o);
+				outlet(1,"lineto",corners[0]+val*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o+w4*0.8);
+				y_o += w4*0.8;
 			}
 			if(Array.isArray(conn_target[edittarget])){
-				y_o += h4 * 0.3;
+				y_o += 0.5*fontheight;
 				outlet(1,"moveto", corners[0]+w4*0.1, y_o);
 				outlet(1,"frgb",menucolour);
 				outlet(1,"write","connections:");
 				outlet(1,"frgb",cc[0]*1.2,cc[1]*1.2,cc[2]*1.2);
 				for(var i=0;i<conn_target[edittarget].length;i++){
-					y_o += h4 * 0.3;
+					y_o += 0.5*fontheight;
 					if(y_o>corners[3])break;
 					outlet(1,"moveto",corners[0]+w4*0.1,y_o);
 					outlet(1,"write", conn_target[edittarget][i] + " | " + conn_inlet[edittarget][i]);
@@ -250,21 +269,32 @@ function voice_is(v){
 			rows = io.get("controllers::"+controllername+"::rows");
 			cols = io.get("controllers::"+controllername+"::columns");
 			paramcount = rows * cols;
-			if(states.contains("states::current::"+block)){
-				var stored=states.get("states::current::"+block); //legacy colour data is always 131 long
-				if(stored.length == 131){
-					post("\ncopying legacy led colours");
-					for(var i=0;i<paramcount;i++){
-						var x = stored[i+3]*1.05;
-						x = x*x*x;
-						x = (12.6 - x)%1;
-						voice_data_buffer.poke(1,MAX_DATA*v_list+1+paramcount*2+i,x);
-						post(x);
-					}
-				}
+			var s = MAX_DATA*v_list+1+paramcount*3;
+			for(var i=0;i<paramcount;i++){
+				voice_data_buffer.poke(1,s+i,0.1);
+				voice_data_buffer.poke(1,s+i+paramcount,0.5);
+				voice_data_buffer.poke(1,s+i+paramcount*2,0.9);
+				voice_data_buffer.poke(1,s+i+paramcount*3,0.5);
 			}
+			check_for_legacy_colours();
 		}
 		get_connections_list();
+	}
+}
+
+function check_for_legacy_colours(){
+	if(states.contains("states::current::"+block)){
+		var stored=states.get("states::current::"+block); //legacy colour data is always 131 long
+		if(stored.length == 131){
+			post("\ncopying legacy led colours");
+			for(var i=0;i<paramcount;i++){
+				var x = stored[i+3]*1.05;
+				x = x*x*x;
+				x = (12.63 - x)%1;
+				voice_data_buffer.poke(1,MAX_DATA*v_list+1+paramcount*2+i,x);
+				post(x);
+			}
+		}
 	}
 }
 
@@ -332,15 +362,15 @@ function mouse(x,y,l,s,a,c,scr){
 	}else{
 		ty = (y-y_pos)/h4;
 		post("\nedit?",ty,x);
-		if(ty>0.48){
-			if(ty<0.9){
+		if(ty>0.31){
+			if(ty<0.62){
 				if(l){
 					clicked = 5;
 				}else{
 					var readindex=(MAX_DATA*v_list+edittarget+1)|0;
 					blocks.replace("blocks["+block+"]::voice_data::0["+edittarget+1+"]",voice_data_buffer.peek(1,readindex));
 				}
-			}else if(ty<1.4){
+			}else if(ty<1.02){
 				var nc = Math.max(0,Math.min(1,(x - corners[0] - w4*0.1) / (w4 * 1.8)));
 				voice_data_buffer.poke(1,MAX_DATA*v_list + 1 + paramcount*2 + edittarget,nc);
 				// post("\ncolour",nc,"to",paramcount*2 + edittarget,paramcount*2 , edittarget);
