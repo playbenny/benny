@@ -14,6 +14,8 @@ var map = new Dict;
 map.name = "voicemap";
 var blocks = new Dict;
 blocks.name = "blocks";
+var states = new Dict;
+states.name = "states";
 var blocktypes = new Dict;
 blocktypes.name = "blocktypes";
 var connections = new Dict;
@@ -248,19 +250,18 @@ function voice_is(v){
 			rows = io.get("controllers::"+controllername+"::rows");
 			cols = io.get("controllers::"+controllername+"::columns");
 			paramcount = rows * cols;
-			var t=0;
-			var stored=voice_data_buffer.peek(1,MAX_DATA*v_list+1+paramcount*2,paramcount);
-			for(var i=0;i<paramcount;i++){
-				t += stored[i];
-			}
-			post("\ntotal colours",t);
-			if(t==0){
-				stored=[];
-				for(var i=0;i<paramcount;i++){
-					stored.push(voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list+2));
+			if(states.contains("states::current::"+block)){
+				var stored=states.get("states::current::"+block); //legacy colour data is always 131 long
+				if(stored.length == 131){
+					post("\ncopying legacy led colours");
+					for(var i=0;i<paramcount;i++){
+						var x = stored[i+3]*1.05;
+						x = x*x*x;
+						x = (12.6 - x)%1;
+						voice_data_buffer.poke(1,MAX_DATA*v_list+1+paramcount*2+i,x);
+						post(x);
+					}
 				}
-				post("\nwriting param colours into data:",stored);
-				voice_data_buffer.poke(1,MAX_DATA*v_list+1+paramcount*2,stored);
 			}
 		}
 		get_connections_list();
