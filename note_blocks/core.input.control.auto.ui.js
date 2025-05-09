@@ -25,7 +25,7 @@ io.name = "io";
 var gamutl;
 var v_list = [];
 var fullscreen = 0;
-var endreturns_enabled = 1;
+var endreturns_enabled = 0;
 var menucolour,menudark,menumid;
 var btnhgt = 0.75;
 var clicked = 0;
@@ -98,7 +98,7 @@ function drawbuttons() {
 
 function update(force){
 	var r,b,y,x,c,cc;
-	var w = 0.9 - 0.3 * (endreturns_enabled&&fullscreen);
+	var w = 0.9;
 	var changed = Math.floor(voice_data_buffer.peek(1,MAX_DATA*v_list));
 	if(force || changed ){
 		if(changed>0){
@@ -131,22 +131,14 @@ function update(force){
 					c[2] = (cc[2] * b) | 0;
 				}
 				outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,c[0],c[1],c[2]);
-				outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
-				// if(endreturns_enabled){
-				// 	if(fullscreen == 2){
-				// 		outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.1)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+2*rows*cols);
-				// 		outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.2)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.2)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+3*rows*cols);
-				// 		outlet(0,"custom_ui_element","data_v_scroll",w4*(x+w+0.3)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w+0.3)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex+4*rows*cols);	
-				// 	} 
-				// 	outlet(1,"frgb", 255,255,255);
-				// 	var ty = h4*(y+0.1+0.8*voice_data_buffer.peek(1,readindex+2*rows*cols))+y_pos;
-				// 	outlet(1,"moveto",w4*(x+0.1)+x_pos,ty);
-				// 	outlet(1,"lineto",w4*(x+w + 0.1*fullscreen)+x_pos,ty);
-				// 	var ty = h4*(y+0.1+0.8*voice_data_buffer.peek(1,readindex+2*rows*cols))+y_pos;
-				// 	outlet(1,"moveto",w4*(x+0.1)+x_pos,ty);
-				// 	outlet(1,"lineto",w4*(x+w + 0.2*fullscreen)+x_pos,ty);
-				// 	// if end returns enabled, also draw horizontal lines indicating their meaning.TODO
-				// }
+				if(!editmode){
+					outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
+				}else{
+					var tx = edittarget % cols;
+					if((tx == x) || ((tx==0)&&(x==3)) || (((tx == 3) || (tx == 1))&&(x==0)) || ((tx == 2)&&(x==3))){
+						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
+					}
+				}
 				if(fullscreen && !editmode && Array.isArray(conn_target[knobno])){
 					outlet(1,"frgb",cc[0]*1.2,cc[1]*1.2,cc[2]*1.2);
 					for(var i=0;i<conn_target[knobno].length;i++){
@@ -237,7 +229,7 @@ function update(force){
 				outlet(1,"frgb",cc);
 				outlet(1,"moveto",corners[0]+val*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o);
 				outlet(1,"lineto",corners[0]+val*(corners[2]-corners[0]-w4*0.4)+w4*0.2,y_o+w4*0.8);
-				y_o += w4*0.8;
+				y_o += w4*0.8 + fontheight * 0.5;
 			}
 			if(Array.isArray(conn_target[edittarget])){
 				y_o += 0.5*fontheight;
@@ -250,7 +242,7 @@ function update(force){
 					if(y_o>corners[3])break;
 					outlet(1,"moveto",corners[0]+w4*0.1,y_o);
 					outlet(1,"write", conn_target[edittarget][i] + " | " + conn_inlet[edittarget][i]);
-					outlet(0,"custom_ui_element","select_connection",corners[0]+w4*0.1,y_o-h4*0.2,corners[2],y_o+h4*0.1,conn_no[edittarget][i]);
+					outlet(0,"custom_ui_element","select_connection",corners[0]+w4*0.1,y_o-fontheight*0.3,corners[2],y_o+fontheight*0.2,conn_no[edittarget][i]);
 				}
 			}
 		}
@@ -268,6 +260,10 @@ function voice_is(v){
 			post("\ngetting controller info for ui");
 			rows = io.get("controllers::"+controllername+"::rows");
 			cols = io.get("controllers::"+controllername+"::columns");
+			var type = io.get("controllers::"+controllername+"::type");
+			endreturns_enabled = 0;
+			if((type == "encoder")||(io.contains("controllers::"+controllername+"::value"))) endreturns_enabled = 1;
+			messnamed("to_polys","note","setvalue",v_list+1,"endreturns_enabled",endreturns_enabled);
 			paramcount = rows * cols;
 			var s = MAX_DATA*v_list+1+paramcount*3;
 			for(var i=0;i<paramcount;i++){

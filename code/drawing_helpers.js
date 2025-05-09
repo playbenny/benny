@@ -1548,6 +1548,7 @@ function draw_clock(){
 		lcd_main.message("write", h + ":" +m);			
 		if(view_changed)click_zone(toggle_show_timer,1,1,cx,0,cx2,9+fontheight,mouse_index,1);
 	}
+	lcd_main.message("font",mainfont,fontsmall);
 }
 
 function long_sidebar_text(textcontent,size) {
