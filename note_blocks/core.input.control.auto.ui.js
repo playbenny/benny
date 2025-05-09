@@ -135,7 +135,7 @@ function update(force){
 					outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
 				}else{
 					var tx = edittarget % cols;
-					if((tx == x) || ((tx==0)&&(x==3)) || (((tx == 3) || (tx == 1))&&(x==0)) || ((tx == 2)&&(x==3))){
+					if((tx == x) || ((tx<cols*0.5)&&((x<tx)||(x>tx+cols*0.5))) || ((tx>=cols*0.5)&&((x>tx)||(x<tx-cols*0.5)))){
 						outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
 					}
 				}
@@ -166,28 +166,28 @@ function update(force){
 			outlet(1,"paintrect",corners,0,0,0);
 			outlet(1,"framerect",corners,cc);
 			var y_o = corners[1]+0.5*fontheight;
-			outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+			outlet(1,"moveto", corners[0]+fontheight*0.1, y_o);
 			outlet(1,"frgb",menumid);
 			outlet(1,"write","number: "+edittarget);
 			y_o += 0.5*fontheight;
-			outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+			outlet(1,"moveto", corners[0]+fontheight*0.1, y_o);
 			outlet(1,"frgb",menumid);
 			var val = voice_data_buffer.peek(1,readindex);
 			outlet(1,"write","value: ");
 			outlet(1,"frgb",menucolour);
 			outlet(1,"write",(val*128).toPrecision(3));
-			outlet(1, "framerect" , corners[0] + w4*0.9,y_o-fontheight*0.3,corners[2]-w4*0.1,y_o+fontheight*0.1,(clicked==5)? menucolour : menudark);
-			outlet(1,"moveto", corners[0]+w4*0.97, y_o);
+			outlet(1, "framerect" , corners[0] * 0.5 + corners[2] * 0.5 ,y_o-fontheight*0.3,corners[2]-fontheight*0.1,y_o+fontheight*0.1,(clicked==5)? menucolour : menudark);
+			outlet(1,"moveto", corners[0]*0.5+corners[2]*0.5+ fontheight*0.1, y_o);
 			outlet(1,"frgb",menumid);
 			outlet(1,"write","store initial");
 			y_o += 0.5*fontheight;
-			outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+			outlet(1,"moveto", corners[0]+ fontheight*0.1, y_o);
 			outlet(1,"frgb",cc);
 			outlet(1,"write","colour:");
 			y_o += 0.5*fontheight;
-			var cs = 2*gamutl/(w4*1.8);
+			var cs = 2*gamutl/(corners[2]-corners[0]- fontheight*0.2);
 			c=0;
-			for(var x1= Math.floor(corners[0]+w4*0.1); x1<corners[2]-w4*0.1; x1+=2){
+			for(var x1= Math.floor(corners[0]+fontheight*0.1); x1<corners[2]-fontheight*0.1; x1+=2){
 				outlet(1,"frgb",config.get("palette::gamut["+Math.floor(c)+"]::colour"));
 				c+=cs;
 				outlet(1,"moveto",x1,y_o);
@@ -197,7 +197,7 @@ function update(force){
 
 			if(endreturns_enabled){
 				y_o += 0.5*fontheight;
-				outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+				outlet(1,"moveto", corners[0]+fontheight*0.1, y_o);
 				outlet(1,"frgb",menumid);
 				outlet(1,"write","end zone forces:");
 				c = menucolour;
@@ -233,16 +233,16 @@ function update(force){
 			}
 			if(Array.isArray(conn_target[edittarget])){
 				y_o += 0.5*fontheight;
-				outlet(1,"moveto", corners[0]+w4*0.1, y_o);
+				outlet(1,"moveto", corners[0]+ fontheight*0.1, y_o);
 				outlet(1,"frgb",menucolour);
 				outlet(1,"write","connections:");
 				outlet(1,"frgb",cc[0]*1.2,cc[1]*1.2,cc[2]*1.2);
 				for(var i=0;i<conn_target[edittarget].length;i++){
 					y_o += 0.5*fontheight;
 					if(y_o>corners[3])break;
-					outlet(1,"moveto",corners[0]+w4*0.1,y_o);
+					outlet(1,"moveto",corners[0]+ fontheight*0.1,y_o);
 					outlet(1,"write", conn_target[edittarget][i] + " | " + conn_inlet[edittarget][i]);
-					outlet(0,"custom_ui_element","select_connection",corners[0]+w4*0.1,y_o-fontheight*0.3,corners[2],y_o+fontheight*0.2,conn_no[edittarget][i]);
+					outlet(0,"custom_ui_element","select_connection",corners[0]+ fontheight*0.1,y_o-fontheight*0.3,corners[2],y_o+fontheight*0.2,conn_no[edittarget][i]);
 				}
 			}
 		}

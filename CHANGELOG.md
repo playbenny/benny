@@ -1,7 +1,10 @@
 05/05/25:
-- hardware manager now supports readymade configurations for common controllers. if benny recognises a controller when you add it in hardware manager the settings will be autofilled and you'll be notified. **breaking change** if you already had a launch control xl, or midi fighter twister configured you should remove it from your hardware profile(s) and re-add.
-- controllers are handled better internally, as communication is abstracted out into a driver subpatch. this enables more advanced controller features.
+- hardware manager now supports readymade configurations for common controllers. if benny recognises a controller when you add it in hardware manager the settings will be autofilled and you'll be notified. 
+- important: **breaking change** if you already had a launch control xl, or midi fighter twister configured you should remove it from your hardware profile(s) and re-add.
 - monome arc support, including displaying both the type of the control (eg unipolar, bipolar, stepped menu item) and the individual voice parameter values for polyphonic blocks.
+- improved controller ui, colour assignments and storing initial values are easier with the new edit mode
+- end zone forces : for controllers with encoders or motorised controls, you can specify zones at either end of the range that either attract or repel. this is useful for example when mapping to delay feedback controls, which are nice to turn up for a moment but bad if you forget and leave them there too long.
+- smart jumpless soft pickup implemented for controllers with potentiometer outputs. you can disable this in the preferences. smart soft pickup remaps the fader curve to take into account differences between the controller position and the actual value. this means there are no jumps, no dead zones, and increasing the fader value always increases the output value (and the converse).
 
 04/05/25:
 - on windows, when using MME drivers, if an audio device (eg bluetooth headphones) disconnects then the max scheduler stops and as a result benny's ui stops too. this is a max/windows issue that i can't fix, but as a workaround if it happens you can scroll down on the launcher window and there's now an emergency save button which will save the contents of your song even if the ui and/or max scheduler have stopped.

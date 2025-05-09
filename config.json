@@ -58,6 +58,7 @@
 	"ENABLE_RECORD_HARDWARE" : 1,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
 	"BOTTOMBAR_HEIGHT" : 3.5,
+	"smart_soft_pickup" : 1,
 	"pattern_recall_timing_quantise" : "1n",
 	"waves_preloading" : 1,
 	"consolevsts" : {
