@@ -3130,10 +3130,10 @@ function capture_controller_loop_button(state){
 			capture.controller = 0;
 			capturetask.cancel();
 			capturetask.freepeer();
-			post("\n//short press, send the message to the controller that it should loop the last bar");
+			post("\n//[c] short press, send the message to the controller that it should loop the last bar");
 			note_poly.message("setvalue",automap.available_c,"loop_on");
 		}else{
-			post("\n//it's already recording, stop it");
+			post("\n//[c] it's already recording, stop it");
 			note_poly.message("setvalue",automap.available_c,"loop_end");
 		}
 	}
@@ -3149,10 +3149,10 @@ function capture_keyboard_loop_button(state){
 			capture.keyboard = 0;
 			capturetask2.cancel();
 			capturetask2.freepeer();
-			post("\n//short press, send the message to the keyboard that it should loop the last bar");
+			post("\n//[k] short press, send the message to the keyboard that it should loop the last bar");
 			note_poly.message("setvalue",automap.available_k, "loop_on");
 		}else{
-			post("\n//it's already recording, stop it");
+			post("\n//[k] it's already recording, stop it");
 			note_poly.message("setvalue",automap.available_k, "loop_end");
 		}
 	}
@@ -3161,11 +3161,11 @@ function capture_keyboard_loop_button(state){
 function capture_button(){
 	if(capture.controller){
 		capture.controller = 0;
-		post("\n// start recording, from 200ms ago");
+		post("\n//[c] start recording, from 200ms ago");
 		note_poly.message("setvalue",automap.available_c,"loop_start");
 	}else if(capture.keyboard){
 		capture.keyboard = 0;
-		post("\n// start recording, from 200ms ago");
+		post("\n//[k] start recording, from 200ms ago");
 		note_poly.message("setvalue",automap.available_k,"loop_start");
 	}
 }

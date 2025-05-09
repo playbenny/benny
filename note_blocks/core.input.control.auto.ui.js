@@ -356,17 +356,17 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 		}
 	}else{
-		ty = (y-y_pos)/h4;
+		ty = (y-corners[1])/fontheight;
 		post("\nedit?",ty,x);
-		if(ty>0.31){
-			if(ty<0.62){
+		if(ty>0.6){
+			if(ty<1.1){
 				if(l){
 					clicked = 5;
 				}else{
 					var readindex=(MAX_DATA*v_list+edittarget+1)|0;
 					blocks.replace("blocks["+block+"]::voice_data::0["+edittarget+1+"]",voice_data_buffer.peek(1,readindex));
 				}
-			}else if(ty<1.02){
+			}else if(ty<2.02){
 				var nc = Math.max(0,Math.min(1,(x - corners[0] - w4*0.1) / (w4 * 1.8)));
 				voice_data_buffer.poke(1,MAX_DATA*v_list + 1 + paramcount*2 + edittarget,nc);
 				// post("\ncolour",nc,"to",paramcount*2 + edittarget,paramcount*2 , edittarget);

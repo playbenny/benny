@@ -475,7 +475,7 @@
 
 											}
  ],
-										"originid" : "pat-3844"
+										"originid" : "pat-4996"
 									}
 ,
 									"patching_rect" : [ 54.5, 100.0, 177.0, 22.0 ],
@@ -801,7 +801,7 @@
 
 							}
  ],
-						"originid" : "pat-3842"
+						"originid" : "pat-4994"
 					}
 ,
 					"patching_rect" : [ 189.0, 168.0, 216.0, 22.0 ],
@@ -2216,7 +2216,7 @@
 
 											}
  ],
-										"originid" : "pat-3848"
+										"originid" : "pat-5000"
 									}
 ,
 									"patching_rect" : [ 553.0, 257.0, 109.0, 22.0 ],
@@ -2547,7 +2547,7 @@
 							}
 , 							{
 								"box" : 								{
-									"comment" : "",
+									"comment" : "looplength",
 									"id" : "obj-51",
 									"index" : 2,
 									"maxclass" : "inlet",
@@ -2560,7 +2560,7 @@
 							}
 , 							{
 								"box" : 								{
-									"comment" : "",
+									"comment" : "age",
 									"id" : "obj-68",
 									"index" : 3,
 									"maxclass" : "inlet",
@@ -2573,7 +2573,7 @@
 							}
 , 							{
 								"box" : 								{
-									"comment" : "",
+									"comment" : "recmode",
 									"id" : "obj-98",
 									"index" : 4,
 									"maxclass" : "inlet",
@@ -2586,7 +2586,7 @@
 							}
 , 							{
 								"box" : 								{
-									"comment" : "",
+									"comment" : "notes and ccs",
 									"id" : "obj-101",
 									"index" : 5,
 									"maxclass" : "inlet",
@@ -3873,7 +3873,7 @@
 
 							}
  ],
-						"originid" : "pat-3846"
+						"originid" : "pat-4998"
 					}
 ,
 					"patching_rect" : [ 59.0, 533.0, 94.0, 22.0 ],
@@ -5012,7 +5012,7 @@
 
 											}
  ],
-										"originid" : "pat-3854"
+										"originid" : "pat-5006"
 									}
 ,
 									"patching_rect" : [ 148.0, 70.0, 81.0, 22.0 ],
@@ -5377,7 +5377,7 @@
 
 							}
  ],
-						"originid" : "pat-3852"
+						"originid" : "pat-5004"
 					}
 ,
 					"patching_rect" : [ 209.0, 268.0, 91.0, 22.0 ],
@@ -5500,6 +5500,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 156.0, 654.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -5524,10 +5528,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 339.0, 26.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -6413,7 +6413,7 @@
 
 			}
  ],
-		"originid" : "pat-3840"
+		"originid" : "pat-4992"
 	}
 
 }
