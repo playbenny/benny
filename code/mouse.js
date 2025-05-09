@@ -1185,6 +1185,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
 		id = picker_lookups(phys_picker_id);
 		if(id!=null) picker_hover_and_special(id);
+		if(displaymode == "block_menu") draw_menu_hint();
 	}	
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
