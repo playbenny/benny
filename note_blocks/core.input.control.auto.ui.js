@@ -35,10 +35,18 @@ var conn_target = [];
 var conn_inlet = [];
 var controllername;
 
+var looping = 0;
+var loopinglist = [];
+
+
 var editmode = 0;
 var edittarget = 0; //target dial
 var corners = [];
 var fontheight = 20;
+
+var forceupdate = 0;
+var playing = 0;
+
 
 function setup(x1,y1,x2,y2,sw){ 
 	// not done - needs to work out which controller it is, get row and column count from config
@@ -68,43 +76,61 @@ function draw(){
 
 function drawbuttons() {
 	outlet(0, "custom_ui_element", "mouse_passthrough", x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0, block, 0);
+	outlet(1, "paintrect", x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0);
 	var colour = (clicked == 1) ? menucolour : (editmode) ? menudark : menumid;
-	outlet(1, "framerect", x_pos, height - 0.95 * fontheight + y_pos, width * 0.248 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	outlet(1, "framerect", x_pos, height - 0.95 * fontheight + y_pos, width * 0.198 + x_pos, height + y_pos - fontheight * 0.1, colour);
 	outlet(1, "moveto", x_pos + width * 0.03, y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "zero all");
+
 	var colour = (clicked == 2) ? menucolour : (editmode) ? menudark : menumid;
-	outlet(1, "framerect", width * 0.252 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.498 + x_pos, height + y_pos - fontheight * 0.1, colour);
-	outlet(1, "moveto", x_pos + width * 0.28, y_pos + height - 0.6*fontheight);
+	outlet(1, "framerect", width * 0.202 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.398 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.6*fontheight);
 	outlet(1, "write", "return to");
-	outlet(1, "moveto", x_pos + width * 0.28, y_pos + height - 0.3*fontheight);
+	outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "initial");
+
 	var colour = (clicked == 3) ? menucolour : (editmode) ? menudark : menumid;
-	outlet(1, "framerect", width * 0.502 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.748 + x_pos, height + y_pos - fontheight * 0.1, colour);
-	outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
+	outlet(1, "framerect", width * 0.402 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.598 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	outlet(1, "moveto", x_pos + width * 0.43, y_pos + height - 0.6*fontheight);
 	outlet(1, "write", "store");
-	outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.3*fontheight);
+	outlet(1, "moveto", x_pos + width * 0.43, y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "initial");
+
+	if(playing){
+		var colour = (clicked == 4) ? [menucolour[1],menucolour[0],menucolour[2]] : (looping) ? menucolour : menumid;
+		outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	}else{
+		outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, menudark[0], menudark[0], menudark[0]);
+	}
+	// outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
+	// outlet(1, "write", "store");
+	outlet(1, "moveto", x_pos + width * 0.63, y_pos + height - 0.3*fontheight);
+	outlet(1, "write", (clicked == 4) ? "capturing" : (looping ? "looping" : "loop"));
+
 	if(editmode){
-		var colour = (clicked == 4) ? menucolour : menumid;
-		outlet(1, "paintrect", width * 0.752 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
+		var colour = (clicked == 5) ? menucolour : menumid;
+		outlet(1, "paintrect", width * 0.802 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
 		outlet(1, "frgb", (clicked != 4) ? menucolour : menudark);
 	}else{
-		var colour = (clicked == 4) ? menucolour : menumid;
-		outlet(1, "framerect", width * 0.752 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
+		var colour = (clicked == 5) ? menucolour : menumid;
+		outlet(1, "framerect", width * 0.802 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
 	}
-	outlet(1, "moveto", x_pos + width * 0.78,y_pos + height - 0.3*fontheight);
+	outlet(1, "moveto", x_pos + width * 0.83,y_pos + height - 0.3*fontheight);
 	outlet(1, "write", "edit mode");
 }
 
 function update(force){
+	forceupdate |= force;
 	var r,b,y,x,c,cc;
 	var w = 0.9;
 	var changed = Math.floor(voice_data_buffer.peek(1,MAX_DATA*v_list));
-	if(force || changed ){
+	if(forceupdate || changed ){
 		if(changed>0){
 			if(edittarget != changed -1) outlet(1,"paintrect",x_pos,y_pos,x_pos+width,h4 * rows + y_pos, 0,0,0);
 			edittarget = changed - 1;
 		}
+		if(forceupdate && !force)drawbuttons();
+		forceupdate = 0;
 		for(y=0;y<rows;y++){
 			for(x=0;x<cols;x++){
 				var knobno = x+y*cols;
@@ -130,7 +156,11 @@ function update(force){
 					c[1] = (cc[1] * b) | 0;
 					c[2] = (cc[2] * b) | 0;
 				}
-				outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,c[0],c[1],c[2]);
+				if(looping && (loopinglist[knobno])){
+					outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,menucolour);
+				}else{
+					outlet(1,"paintrect",w4*(x+0.05)+x_pos,h4*(y+0.05)+y_pos,w4*(x+0.95)+x_pos,h4*(y+0.95)+y_pos,c[0],c[1],c[2]);
+				}
 				if(!editmode){
 					outlet(0,"custom_ui_element","data_v_scroll",w4*(x+0.1)+x_pos,h4*(y+0.1)+y_pos,w4*(x+w)+x_pos,h4*(y+0.9)+y_pos,c[0],c[1],c[2],readindex);
 				}else{
@@ -247,6 +277,7 @@ function update(force){
 			}
 		}
 		voice_data_buffer.poke(1,MAX_DATA*v_list,0);
+		changed = 0;
 	}
 }
 
@@ -304,8 +335,9 @@ function keydown(){}
 function mouse(x,y,l,s,a,c,scr){
 	clicked = 0;
 	if(y>rows*h4+y_pos){
-		var x2 = (x - x_pos)*(4/width);
-		if(x2<1){//x_pos+0.5*width){
+		var x2 = (x - x_pos)*(5/width);
+		forceupdate = 1;
+		if(x2<1){
 			if(l==1){
 				clicked = 1;
 			}else{
@@ -346,8 +378,17 @@ function mouse(x,y,l,s,a,c,scr){
 				blocks.replace("blocks["+block+"]::voice_data::0", transf_arr);
 			}
 		}else if(x2<4){
+			if(looping){
+				messnamed("to_polys","note","setvalue",v_list+1,"loop_stop");
+			}else{
+				messnamed("to_blockmanager","capture_controller_loop_button",l);
+			}
 			if(l==1){
 				clicked = 4;
+			}
+		}else if(x2<5){
+			if(l==1){
+				clicked = 5;
 			}else{
 				editmode = 1 - editmode;
 				if(editmode == 1){
@@ -433,4 +474,23 @@ function get_connections_list(){
 			}
 		}
 	}
+}
+
+function play(p){
+	playing = p;
+	forceupdate = 1;
+}
+
+function looping_params(){
+	var list = arrayfromargs(arguments);
+	if(list == "clear"){
+		looping = 0;
+		loopinglist = [];
+	}else{
+		looping = 1;
+		for(l in list){
+			loopinglist[list[l]] = 1;
+		}
+	}
+	forceupdate = 1;
 }
