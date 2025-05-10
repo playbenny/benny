@@ -3120,10 +3120,11 @@ function quantise_and_hold_button(state){
 	patternpage.quantise_and_hold = state;
 }
 
+var capturetask, capturetask2;
 function capture_controller_loop_button(state){
 	if(state != 0 ){
 		capture.controller = 1;
-		var capturetask = new Task(capture_button, this, 0);
+		capturetask = new Task(capture_button, this, 0);
 		capturetask.schedule(200);
 	}else{
 		if(capture.controller){
@@ -3142,7 +3143,7 @@ function capture_controller_loop_button(state){
 function capture_keyboard_loop_button(state){
 	if(state != 0 ){
 		capture.keyboard = 1;
-		var capturetask2 = new Task(capture_button, this, 0);
+		capturetask2 = new Task(capture_button, this, 0);
 		capturetask2.schedule(200);
 	}else{
 		if(capture.keyboard){

@@ -3421,9 +3421,9 @@ function draw_sidebar(){
 						// check if we need to trim the list of midi outs / param outs / available colours
 						var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
 						
-						param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
-						button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
-						post("core input", param_count,button_count);
+						if(io_dict.contains("controllers::"+cnam+"::outputs")) param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+						if(io_dict.contains("controllers::"+cnam+"::buttons::count")) button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+							// post("core input", param_count,button_count);
 					}
 				}
 
@@ -6562,8 +6562,8 @@ function draw_sidebar(){
 					// check if we need to trim the list of midi outs / param outs / available colours
 					var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
 					
-					param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
-					button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+					if(io_dict.contains("controllers::"+cnam+"::outputs")) param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+					if(io_dict.contains("controllers::"+cnam+"::buttons::count")) button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
 				}
 				// turn a knob to map it functionality here - also applies to core.input.keyboard (and core.input.arc when it's done)
 				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
