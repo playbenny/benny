@@ -37,7 +37,7 @@ var controllername;
 
 var looping = 0;
 var loopinglist = [];
-
+var loopinglist_b = [];
 
 var editmode = 0;
 var edittarget = 0; //target dial
@@ -77,46 +77,83 @@ function draw(){
 function drawbuttons() {
 	outlet(0, "custom_ui_element", "mouse_passthrough", x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0, block, 0);
 	outlet(1, "paintrect", x_pos, h4 * rows + y_pos, width + x_pos, height + y_pos, 0, 0, 0);
-	var colour = (clicked == 1) ? menucolour : (editmode) ? menudark : menumid;
-	outlet(1, "framerect", x_pos, height - 0.95 * fontheight + y_pos, width * 0.198 + x_pos, height + y_pos - fontheight * 0.1, colour);
-	outlet(1, "moveto", x_pos + width * 0.03, y_pos + height - 0.3*fontheight);
-	outlet(1, "write", "zero all");
 
-	var colour = (clicked == 2) ? menucolour : (editmode) ? menudark : menumid;
-	outlet(1, "framerect", width * 0.202 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.398 + x_pos, height + y_pos - fontheight * 0.1, colour);
-	outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.6*fontheight);
-	outlet(1, "write", "return to");
-	outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.3*fontheight);
-	outlet(1, "write", "initial");
-
-	var colour = (clicked == 3) ? menucolour : (editmode) ? menudark : menumid;
-	outlet(1, "framerect", width * 0.402 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.598 + x_pos, height + y_pos - fontheight * 0.1, colour);
-	outlet(1, "moveto", x_pos + width * 0.43, y_pos + height - 0.6*fontheight);
-	outlet(1, "write", "store");
-	outlet(1, "moveto", x_pos + width * 0.43, y_pos + height - 0.3*fontheight);
-	outlet(1, "write", "initial");
-
-	if(playing){
-		var colour = (clicked == 4) ? [menucolour[1],menucolour[0],menucolour[2]] : (looping) ? menucolour : menumid;
-		outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, colour);
+	if(!looping){
+		var colour = (clicked == 1) ? menucolour : (editmode) ? menudark : menumid;
+		outlet(1, "framerect", x_pos, height - 0.95 * fontheight + y_pos, width * 0.198 + x_pos, height + y_pos - fontheight * 0.1, colour);
+		outlet(1, "moveto", x_pos + width * 0.03, y_pos + height - 0.3*fontheight);
+		outlet(1, "write", "zero all");
+	
+		colour = (clicked == 2) ? menucolour : (editmode) ? menudark : menumid;
+		outlet(1, "framerect", width * 0.202 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.398 + x_pos, height + y_pos - fontheight * 0.1, colour);
+		outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.6*fontheight);
+		outlet(1, "write", "return to");
+		outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.3*fontheight);
+		outlet(1, "write", "initial");
+	
+		colour = (clicked == 3) ? menucolour : (editmode) ? menudark : menumid;
+		outlet(1, "framerect", width * 0.402 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.598 + x_pos, height + y_pos - fontheight * 0.1, colour);
+		outlet(1, "moveto", x_pos + width * 0.43, y_pos + height - 0.6*fontheight);
+		outlet(1, "write", "store");
+		outlet(1, "moveto", x_pos + width * 0.43, y_pos + height - 0.3*fontheight);
+		outlet(1, "write", "initial");
+	
+		if(playing){
+			colour = (clicked == 4) ? [menucolour[1],menucolour[0],menucolour[2]] : (looping) ? menucolour : menumid;
+			outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, colour);
+		}else{
+			outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, menudark[0], menudark[0], menudark[0]);
+		}
+		// outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
+		// outlet(1, "write", "store");
+		outlet(1, "moveto", x_pos + width * 0.63, y_pos + height - 0.3*fontheight);
+		outlet(1, "write", (clicked == 4) ? "capturing" : (looping ? "looping" : "loop"));
+	
+		if(editmode){
+			colour = (clicked == 5) ? menucolour : menumid;
+			outlet(1, "paintrect", width * 0.802 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
+			outlet(1, "frgb", (clicked != 4) ? menucolour : menudark);
+		}else{
+			colour = (clicked == 5) ? menucolour : menumid;
+			outlet(1, "framerect", width * 0.802 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
+		}
+		outlet(1, "moveto", x_pos + width * 0.83,y_pos + height - 0.3*fontheight);
+		outlet(1, "write", "edit mode");
 	}else{
-		outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, menudark[0], menudark[0], menudark[0]);
-	}
-	// outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
-	// outlet(1, "write", "store");
-	outlet(1, "moveto", x_pos + width * 0.63, y_pos + height - 0.3*fontheight);
-	outlet(1, "write", (clicked == 4) ? "capturing" : (looping ? "looping" : "loop"));
+		var colour = (clicked == 1) ? menucolour : menumid;
+		outlet(1, "framerect", x_pos, height - 0.95 * fontheight + y_pos, width * 0.198 + x_pos, height + y_pos - fontheight * 0.1, colour);
+		outlet(1, "moveto", x_pos + width * 0.03, y_pos + height - 0.3*fontheight);
+		outlet(1, "write", "stop");
 
-	if(editmode){
-		var colour = (clicked == 5) ? menucolour : menumid;
-		outlet(1, "paintrect", width * 0.802 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
-		outlet(1, "frgb", (clicked != 4) ? menucolour : menudark);
-	}else{
-		var colour = (clicked == 5) ? menucolour : menumid;
+		//colour = (clicked == 2) ? menucolour : menudark;
+		//outlet(1, "framerect", width * 0.202 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, menucolour);
+		outlet(1, "frgb", menucolour);
+		outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.6*fontheight);
+		outlet(1, "write", "looping");
+		outlet(1, "moveto", x_pos + width * 0.23, y_pos + height - 0.3*fontheight);
+		outlet(1, "frgb", menumid);
+		if((loopinglist_b[0]>rows*cols)){
+			outlet(1, "write", (loopinglist_b.length|0)+" automap parameters");
+		}else{
+			outlet(1, "write", (loopinglist_b.length|0)+" parameters");
+		}
+
+		if(playing){
+			colour = (clicked == 4) ? [menucolour[1],menucolour[0],menucolour[2]] : (looping) ? menucolour : menumid;
+			outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, colour);
+		}else{
+			outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, menudark[0], menudark[0], menudark[0]);
+		}
+		// outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
+		// outlet(1, "write", "store");
+		outlet(1, "moveto", x_pos + width * 0.63, y_pos + height - 0.3*fontheight);
+		outlet(1, "write", (clicked == 4) ? "capturing" : (looping ? "looping" : "loop"));
+
+		colour = (clicked == 5) ? menucolour : menumid;
 		outlet(1, "framerect", width * 0.802 + x_pos, height - 0.95 * fontheight + y_pos, width + x_pos, height + y_pos  - fontheight * 0.1, colour);
+		outlet(1, "moveto", x_pos + width * 0.83,y_pos + height - 0.3*fontheight);
+		outlet(1, "write", "grab");
 	}
-	outlet(1, "moveto", x_pos + width * 0.83,y_pos + height - 0.3*fontheight);
-	outlet(1, "write", "edit mode");
 }
 
 function update(force){
@@ -341,12 +378,17 @@ function mouse(x,y,l,s,a,c,scr){
 			if(l==1){
 				clicked = 1;
 			}else{
-				//zero all
-				//post(" zero");
-				for(var i=0;i<rows*cols;i++){
-					voice_data_buffer.poke(1,MAX_DATA*v_list+i+1,0);
+				if(looping){
+					//stop
+					messnamed("to_polys","note","setvalue",v_list+1,"loop_stop");
+				}else{
+					//zero all
+					//post(" zero");
+					for(var i=0;i<rows*cols;i++){
+						voice_data_buffer.poke(1,MAX_DATA*v_list+i+1,0);
+					}
+					voice_data_buffer.poke(1,MAX_DATA*v_list,1);
 				}
-				voice_data_buffer.poke(1,MAX_DATA*v_list,1);
 			}
 		}else if(x2<2){
 			if(l==1){
@@ -390,9 +432,14 @@ function mouse(x,y,l,s,a,c,scr){
 			if(l==1){
 				clicked = 5;
 			}else{
-				editmode = 1 - editmode;
-				if(editmode == 1){
-					voice_data_buffer.poke(1,MAX_DATA*v_list,edittarget+1); // forces a redraw
+				if(looping){
+					//spawn
+					post("\nspawn not yet implemented");
+				}else{
+					editmode = 1 - editmode;
+					if(editmode == 1){
+						voice_data_buffer.poke(1,MAX_DATA*v_list,edittarget+1); // forces a redraw
+					}
 				}
 			}
 		}
@@ -483,12 +530,17 @@ function play(p){
 
 function looping_params(){
 	var list = arrayfromargs(arguments);
-	if(list == "clear"){
-		looping = 0;
+	loopinglist_b = list.concat();
+	if((list == "clear")||(list[0] == "clear")||(list[0] == "bang")){
+		if(looping) messnamed("to_polys","note","setvalue",v_list+1,"loop_stop");
 		loopinglist = [];
+		loopinglist_b = [];
+		looping = 0;
 	}else{
 		looping = 1;
+		loopinglist = [];
 		for(l in list){
+			post("\nadding ",list[l]);
 			loopinglist[list[l]] = 1;
 		}
 	}
