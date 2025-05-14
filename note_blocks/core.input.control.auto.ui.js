@@ -390,7 +390,7 @@ function mouse(x,y,l,s,a,c,scr){
 					voice_data_buffer.poke(1,MAX_DATA*v_list,1);
 				}
 			}
-		}else if(x2<2){
+		}else if((x2<2)&&(!looping)){
 			if(l==1){
 				clicked = 2;
 			}else{
@@ -402,7 +402,7 @@ function mouse(x,y,l,s,a,c,scr){
 					voice_data_buffer.poke(1, MAX_DATA*v_list, tra2);
 				}
 			}
-		}else if(x2<3){
+		}else if((x2<3)&&(!looping)){
 			if(l==1){
 				clicked = 3;
 			}else{
