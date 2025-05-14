@@ -407,6 +407,8 @@ var automap = {
 	lock_c : 0,
 	lock_k : 0,
 	lock_q : 0,
+	looping_c : 0,
+	looping_k : 0,
 	colours_c : {
 		darkest : [],
 		dark : [],

@@ -434,7 +434,8 @@ function mouse(x,y,l,s,a,c,scr){
 			}else{
 				if(looping){
 					//spawn
-					post("\nspawn not yet implemented");
+					messnamed("to_polys","note","setvalue",v_list+1,"spawn_player");
+					// messnamed("to_blockmanager","spawn_player", block, 0);
 				}else{
 					editmode = 1 - editmode;
 					if(editmode == 1){
@@ -540,7 +541,7 @@ function looping_params(){
 		looping = 1;
 		loopinglist = [];
 		for(l in list){
-			post("\nadding ",list[l]);
+			// post("\nadding ",list[l]);
 			loopinglist[list[l]] = 1;
 		}
 	}

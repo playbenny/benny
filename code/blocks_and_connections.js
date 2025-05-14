@@ -3826,9 +3826,13 @@ function spawn_player(keyblock,auto){
 	//   work out which lanes relevant
 	//   copy over to new block
 	//stop n wipe
+	// new layer of complication, the controller / grid / etc blocks will also call this fn.
+	var type = "keyboard";
+	if(keyblock==automap.available_c) type = "control";
+
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
-	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block.");
+	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block for the "+type+" loop.");
 	if(auto==0){
 		clear_blocks_selection();
 		var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];

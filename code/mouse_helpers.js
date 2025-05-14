@@ -3140,6 +3140,33 @@ function capture_controller_loop_button(state){
 	}
 }
 
+function controller_looper_button(p,v){
+	capture_controller_loop_button(usermouse.left_button);
+}
+
+function controller_stop_loop(p,v){
+	note_poly.message("setvalue",automap.available_c,"loop_stop");
+}
+
+function loopstatus(type,state){
+	if(type=="controller"){
+		if(automap.looping_c != state) redraw_flag.flag |= 2;
+		automap.looping_c = state;
+	}else if(type=="keyboard"){
+		if(automap.looping_k != state) redraw_flag.flag |= 2;
+		automap.looping_k = state;
+	}
+}
+function request_spawn_player(block,auto){
+	note_poly.message("setvalue",block,"spawn_player");
+}
+
+function controller_spawned_loop_targets(){
+	var targets = arrayfromargs(arguments);
+	automap.targetslist = targets.concat();
+	post("\nspawn mapping targets list received:",targets);
+}
+
 function capture_keyboard_loop_button(state){
 	if(state != 0 ){
 		capture.keyboard = 1;
