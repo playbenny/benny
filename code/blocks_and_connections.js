@@ -3957,7 +3957,7 @@ function spawn_player(keyblock,auto){
 					}else if(event[1] == 0){//OR it's 1 and o==0? it's automapk so you know o =0,1
 						proll.replace(playerblock+"::0::"+k[i],event);
 					}
-					post(".."+k[i]);
+					post("\n.."+k[i]+" : "+event);
 				}
 			}							
 		}

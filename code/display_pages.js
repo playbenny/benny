@@ -8835,7 +8835,7 @@ function draw_automap_headers(sx, block) {
 			}
 			if(playing){
 				if(automap.looping_c){
-					var bw2 = 1.3 * fontheight;
+					var bw2 = 1.4 * fontheight;
 					var ex = sx + bw2 - fo1;		
 					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.dark : menucolour);
 					click_zone(controller_stop_loop, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);

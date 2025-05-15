@@ -547,3 +547,32 @@ function looping_params(){
 	}
 	forceupdate = 1;
 }
+
+function playhead(p){
+	playheadpos = p;
+}
+
+function convert_to_lengths(){ //this is a trimmed copy of the keyboard equivalent, which did convert to lengths, this doesn't have to.
+	var seqdict = new Dict;
+	seqdict.name = "core-keyb-loop-xfer";
+	// move these two to global if you want to display sequences in the input.control ui (you don't, imo);
+	var sd = seqdict.get(block);
+	var k = sd.getkeys();
+	post("\nconvert to lengths,",block,": k is ",k);
+	if(k==null){
+		forceupdate = 1;
+		return -1;
+	}
+	ccpresent = 0;
+	for(var i=0;i<k.length;i++){
+		if(k[i]!="looppoints"){
+			var event = seqdict.get(block+"::"+k[i]); //[time,type,note,vel]
+			if(event == null){
+			}else if(event[1]>1){
+				ccpresent = 1;
+				event.push(0);
+			}
+		}
+	}
+	forceupdate = 1;
+}
