@@ -3,7 +3,7 @@
 		"patcher" : "seq.piano.roll",
 		"type" : "note",
 		"block_ui_patcher" : "seq.piano.roll.ui",
-		"help_text" : "Classic piano roll sequencer. £Unlike many other benny sequencers this one has an internal clock linked to the global clock and doesn't need a clock in. (It does follow timing drift from the kuramoto section of the clock if that's enabled.)££ctrl-click to create events, ctrl drag to create many events (in a values lane). scroll adjusts velocity or cc levels, drag or arrow keys to move events, ctrl+scroll, drag or arrow keys to adjust lengths. ££scroll or shift+scroll on the time ruler for zoom/pan. or drag on the ruler, or shift-drag on the background. £alt+drag copies selected events.££press 3 to put the ruler into triplet divisions of beats when zoomed in.££press q to time quantise the selected notes or events to the current grid.££l makes the selected notes legato.££At the moment only scroll over the loop start / length etc numbers works to adjust those, and longer sequences than 256 beats can't yet be created in the ui here. More soon.",
+		"help_text" : "Classic piano roll sequencer. £Unlike many other benny sequencers this one has an internal clock linked to the global clock and doesn't need a clock in. (It does follow timing drift from the kuramoto section of the clock if that's enabled.)££ctrl-click to create events, ctrl drag to create many events (in a values lane). scroll adjusts velocity or cc levels, drag or arrow keys to move events, ctrl+scroll, drag or arrow keys to adjust lengths. ££scroll or shift+scroll on the time ruler for zoom/pan. or drag on the ruler, or drag on the background. ££shift+drag for a selection rectangle, alt+drag copies selected events.££press 3 to put the ruler into triplet divisions of beats when zoomed in.££press q to time quantise the selected notes or events to the current grid.££l makes the selected notes legato.££drag the loop handles or scroll over the loop start / length etc numbers.",
 		"max_polyphony" : 1,
 		"ui_in_sidebar_height" : 4,
 		"default_polymode" : 	{
@@ -14,10 +14,9 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "record notes in", "trigger in", "jump forwards", "jump backwards", "reset", "modifiers in" ],
-				"parameters" : [ "record cc in 1", "record cc in 2", "record cc in 3", "record cc in 4", "record cc in 5", "record cc in 6", "record cc in 7", "record cc in 8"],
+				"midi" : [ "record notes in", "trigger in", "jump forwards", "jump backwards", "reset", "modifiers in", "record cc in 1", "record cc in 2", "record cc in 3", "record cc in 4", "record cc in 5", "record cc in 6", "record cc in 7", "record cc in 8"],
 				"descriptions" : {
-					"midi" : [ "", "clock input not yet implemented", "jump not yet implmented", "jump not yet implemented", "", "vel maps to the 2nd parameter if present, note selects (C=skip,C#=vel rand,D=cc rand,D#=divide,E=oct up,F=oct down,F#,G,G# chromatic transpose,A output select)"]
+					"midi" : [ "", "clock input not yet implemented", "jump not yet implmented", "jump not yet implemented", "", "vel maps to the 2nd parameter if present, note selects (C=skip,C#=vel rand,D=cc rand,D#=divide,E=oct up,F=oct down,F#,G,G# chromatic transpose,A output select)", "expects to record the velocity of this midi", "expects to record the velocity of this midi", "expects to record the velocity of this midi", "expects to record the velocity of this midi"]
 				}
 			},
 			"out" : {

@@ -42,7 +42,7 @@ function convert_to_lengths(){
 			if(event == null){
 			}else if(event[1]>1){
 				ccpresent = 1;
-				event.push(0);
+				event = [ event[0], event[1], 0 , event[2], 0 ];
 				seqdict.replace(block+"::"+k[i],event);
 			}else if(event[3]>0){ //noteon, find its length
 				if(event[2]<lowestnote) lowestnote = event[2];
@@ -80,9 +80,9 @@ function convert_to_lengths(){
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(block+"::"+k[i]);
 			if(event==null){
-			}else if(event[3]==0){
+			}else if((event[1]<2) && (event[3]==0)){
 				seqdict.remove(block+"::"+k[i]);
-				post("\nremoved ",k[i],":",event);
+				// post("\nremoved ",k[i],":",event);
 			}
 		}
 	}

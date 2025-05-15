@@ -3828,8 +3828,8 @@ function spawn_player(keyblock,auto){
 	//stop n wipe
 	// new layer of complication, the controller / grid / etc blocks will also call this fn.
 	var type = "keyboard";
-	if(keyblock==automap.available_c) type = "control";
-
+	if(keyblock==automap.available_c-1) type = "control";
+	post("\n keyblock",keyblock," control",automap.available_c);
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
 	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block for the "+type+" loop.");
@@ -3858,12 +3858,14 @@ function spawn_player(keyblock,auto){
 					//now, look through connections, find the first connection from this output
 					var conn_count = 0;
 					var playerblock = -1;
-					post("\nlooking for connections on lane ",o);
+					var co = o;
+					if(type == "control") co -= 2;
+					post("\nlooking for connections on lane ",co);
 					for(var c = connections.getsize("connections")-1;c>=0;c--){
-						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==o))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
+						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==co))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
 							if(conn_count==0){
 								//insert a player block in it
-								post("\nspawning a player for output ",o,"connection",c);
+								post("\nspawning a player for output ",co,"connection",c);
 								menu.connection_number = c; 
 								var to = (connections.get("connections["+c+"]::to::number"));
 								var tx = blocks.get("blocks["+to+"]::space::x");
@@ -3882,7 +3884,7 @@ function spawn_player(keyblock,auto){
 										}else if((event[1] == o)){//||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
 											proll.replace(playerblock+"::0::"+k[i],event);
 										}
-										post(".."+k[i]);
+										post("\n--"+k[i]);
 									}
 								}							
 								draw_block(playerblock);
@@ -3954,13 +3956,14 @@ function spawn_player(keyblock,auto){
 				if(event != null){
 					if(k[i]=="looppoints"){
 						proll.replace(playerblock+"::0::looppoints",[event[2], 0,0, event[2]]);
-					}else if(event[1] == 0){//OR it's 1 and o==0? it's automapk so you know o =0,1
+					}else if(event[1] != 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
 						proll.replace(playerblock+"::0::"+k[i],event);
 					}
 					post("\n.."+k[i]+" : "+event);
 				}
 			}							
 		}
+		post("\ncopy complete, proll gk",proll.get(playerblock+"::0"));
 		draw_block(playerblock);
 		connections.append("connections", new_connection);
 		make_connection(connections.getsize("connections")-1,0);

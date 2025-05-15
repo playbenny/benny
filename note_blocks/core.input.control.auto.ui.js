@@ -446,7 +446,6 @@ function mouse(x,y,l,s,a,c,scr){
 		}
 	}else{
 		ty = (y-corners[1])/fontheight;
-		post("\nedit?",ty,x);
 		if(ty>0.6){
 			if(ty<1.1){
 				if(l){
@@ -456,11 +455,11 @@ function mouse(x,y,l,s,a,c,scr){
 					blocks.replace("blocks["+block+"]::voice_data::0["+edittarget+1+"]",voice_data_buffer.peek(1,readindex));
 				}
 			}else if(ty<2.02){
-				var nc = Math.max(0,Math.min(1,(x - corners[0] - w4*0.1) / (w4 * 1.8)));
+				var nc = Math.max(0,Math.min(1,(x - corners[0] - fontheight*0.1) / (corners[2]-corners[0]-fontheight*0.2)));
 				voice_data_buffer.poke(1,MAX_DATA*v_list + 1 + paramcount*2 + edittarget,nc);
 				// post("\ncolour",nc,"to",paramcount*2 + edittarget,paramcount*2 , edittarget);
-			}
-		}
+			}else post("\nedit?",ty,x);
+		}else post("\nedit?",ty,x);
 	}
 }
 	
@@ -570,7 +569,8 @@ function convert_to_lengths(){ //this is a trimmed copy of the keyboard equivale
 			if(event == null){
 			}else if(event[1]>1){
 				ccpresent = 1;
-				event.push(0);
+				event = [ event[0], event[1], 0 , event[2], 0 ];
+				seqdict.replace(block+"::"+k[i],event);
 			}
 		}
 	}

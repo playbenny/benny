@@ -8767,7 +8767,7 @@ function draw_automap_headers(sx, block) {
 				sx = sidebar.x;
 				y_offset+=0.6*fontheight;
 			}else if(sx+chw+chw_q>sidebar.x2){
-				sx = sidebar.x2 - chw;  //if the q wont fit, line up the c with the right edge
+				sx = sidebar.x2 - chw + fo1;  //if the q wont fit, line up the c with the right edge
 			}else if(chw_q!=0){
 				var rightmost_sx = sidebar.x2 - chw - chw_q;
 				sx = 0.5 * (sx + rightmost_sx);
