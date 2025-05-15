@@ -567,7 +567,7 @@ function convert_to_lengths(){ //this is a trimmed copy of the keyboard equivale
 		if(k[i]!="looppoints"){
 			var event = seqdict.get(block+"::"+k[i]); //[time,type,note,vel]
 			if(event == null){
-			}else if(event[1]>1){
+			}else if(event[1]>0){
 				ccpresent = 1;
 				event = [ event[0], event[1], 0 , event[2], 0 ];
 				seqdict.replace(block+"::"+k[i],event);

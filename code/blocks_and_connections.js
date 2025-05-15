@@ -3259,9 +3259,9 @@ function swap_connection_destination(cno,newblock,newblockname,newvoice){
 		post("matching input type not found, next best chosen");
 	}
 	// so what i'm calling i_no and o_no are actually type number, not output number. 
-	var defaultpos=0;
-	var ftt = ((f_type == "hardware") || (f_type == "matrix")) ? "audio" : f_type;
-	var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
+	// var defaultpos=0;
+	// var ftt = ((f_type == "hardware") || (f_type == "matrix")) ? "audio" : f_type;
+	// var ttt = ((t_type == "hardware") || (t_type == "matrix")) ? "audio" : t_type;
 	//if((ftt != intypes[i_no])&&(outtypes[o_no]==ttt))defaultpos = 1;
 	//if((ftt == intypes[i_no])&&(outtypes[o_no]!=ttt))defaultpos = 2;
 	new_connection.parse('{}');
@@ -3859,7 +3859,6 @@ function spawn_player(keyblock,auto){
 					var conn_count = 0;
 					var playerblock = -1;
 					var co = o;
-					if(type == "control") co -= 2;
 					post("\nlooking for connections on lane ",co);
 					for(var c = connections.getsize("connections")-1;c>=0;c--){
 						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==co))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
@@ -3888,7 +3887,21 @@ function spawn_player(keyblock,auto){
 									}
 								}							
 								draw_block(playerblock);
-								insert_block_in_connection("seq.piano.roll",playerblock);
+								if(type == "control"){
+									error("\nit shouldnt insert in conn, it should make a new parallel conn");
+									new_connection = connections.get("connections["+c+"]");
+									new_connection.replace("from::number",playerblock);
+									new_connection.replace("from::output::number",0);
+									new_connection.replace("from::voice","all");
+									new_connection.replace("to::input::number",automap.targetslist[0]);
+									new_connection.replace("to::input::type","parameter");
+									connections.append("connections",new_connection);
+									make_connection(connections.getsize("connections")-1,0);
+									redraw_flag.flag |= 4;	
+									//insert_block_in_connection("seq.piano.roll",playerblock);
+								}else{
+									insert_block_in_connection("seq.piano.roll",playerblock);
+								}
 								v = voicemap.get(playerblock);
 								if(Array.isArray(v)) v = v[0];
 								post("prompting the new block in voice ",v);
@@ -3915,8 +3928,11 @@ function spawn_player(keyblock,auto){
 					}
 				}
 			}
-			//now delete the sequence from the keyboard block
-			request_set_block_parameter(keyblock,5,0);
+			if(type=="control"){//delete loop from control block
+			}else{
+				//now delete the sequence from the keyboard block
+				request_set_block_parameter(keyblock,5,0);
+			}
 		}
 	}else{
 		//it was automapped: look up where the automap went and make a new connection
@@ -3928,15 +3944,21 @@ function spawn_player(keyblock,auto){
 		new_connection.replace("from::output::number",0);
 		new_connection.replace("from::voice","all");
 		new_connection.replace("to::voice","all");
-		new_connection.replace("from::output::type","midi");
-		new_connection.replace("to::input::number",automap.inputno_k);
-		new_connection.replace("to::input::type","midi");
-		
+		new_connection.replace("from::output::type",(type=="control") ? "parameters" : "midi");
+
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
 		new_connection.replace("conversion::offset", 0.5);	
 		new_connection.replace("conversion::offset2", 0.5);	
+
+		if(type=="control"){
+			new_connection.replace("to::input::number",automap.targetslist[0] - MAX_PARAMETERS * to);
+			new_connection.replace("to::input::type","parameters");
+		}else{
+			new_connection.replace("to::input::number",automap.inputno_k);
+			new_connection.replace("to::input::type","midi");
+		}
 		
 		var tx = blocks.get("blocks["+to+"]::space::x");
 		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
@@ -3956,14 +3978,14 @@ function spawn_player(keyblock,auto){
 				if(event != null){
 					if(k[i]=="looppoints"){
 						proll.replace(playerblock+"::0::looppoints",[event[2], 0,0, event[2]]);
-					}else if(event[1] != 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
+					}else{// if(event[1] != 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
 						proll.replace(playerblock+"::0::"+k[i],event);
 					}
 					post("\n.."+k[i]+" : "+event);
 				}
 			}							
 		}
-		post("\ncopy complete, proll gk",proll.get(playerblock+"::0"));
+		post("\ncopy complete");
 		draw_block(playerblock);
 		connections.append("connections", new_connection);
 		make_connection(connections.getsize("connections")-1,0);
