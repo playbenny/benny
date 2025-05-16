@@ -3827,8 +3827,8 @@ function spawn_player(keyblock,auto){
 	//   copy over to new block
 	//stop n wipe
 	// new layer of complication, the controller / grid / etc blocks will also call this fn.
-	var type = "keyboard";
-	if(keyblock==automap.available_c-1) type = "control";
+	var type = "control";
+	if(blocks.get("blocks["+keyblock+"]::name")=="core.keyboard.input") type = "keyboard";
 	// post("\n keyblock",keyblock," control",automap.available_c);
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
