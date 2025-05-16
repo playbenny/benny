@@ -562,7 +562,7 @@ function convert_to_lengths(){ //this is a trimmed copy of the keyboard equivale
 	// move these two to global if you want to display sequences in the input.control ui (you don't, imo);
 	var sd = seqdict.get(block);
 	var k = sd.getkeys();
-	post("\nconvert to lengths,",block,": k is ",k);
+	// post("\nconvert to lengths,",block,": k is ",k);
 	if(k==null){
 		forceupdate = 1;
 		return -1;

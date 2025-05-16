@@ -3829,10 +3829,10 @@ function spawn_player(keyblock,auto){
 	// new layer of complication, the controller / grid / etc blocks will also call this fn.
 	var type = "keyboard";
 	if(keyblock==automap.available_c-1) type = "control";
-	post("\n keyblock",keyblock," control",automap.available_c);
+	// post("\n keyblock",keyblock," control",automap.available_c);
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
-	post("\nwas"+((auto==0)? "n't":"")+" automapped. spawning a player block for the "+type+" loop.");
+	post("\ngrabbing "+type+" loop. was"+((auto==0)? "n't":"")+" automapped.");
 	if(auto==0){
 		clear_blocks_selection();
 		var usedouts = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -3884,7 +3884,7 @@ function spawn_player(keyblock,auto){
 										}else if((event[1] == o)){//||((o==0) && (event[1] == 1))){//OR it's 1 and o==0?
 											proll.replace(playerblock+"::0::"+k[i],event);
 										}
-										post("\n--"+k[i]);
+										// post("\n--"+k[i]);
 									}
 								}							
 								draw_block(playerblock);
@@ -3927,6 +3927,7 @@ function spawn_player(keyblock,auto){
 				}
 			}
 			if(type=="control"){//delete loop from control block
+				//this happens in the looper in the control block
 			}else{
 				//now delete the sequence from the keyboard block
 				request_set_block_parameter(keyblock,5,0);
@@ -3934,12 +3935,11 @@ function spawn_player(keyblock,auto){
 		}
 	}else{
 		//it was automapped: look up where the automap went and make a new connection
-		post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
+		// post("\nautomapped to:",automap.mapped_k,automap.inputno_k);
 		var to = automap.mapped_k;
 		
 		new_connection.parse('{}');
 		new_connection.replace("to::number", +to);
-		new_connection.replace("from::output::number",0);
 		new_connection.replace("from::voice","all");
 		new_connection.replace("to::voice","all");
 		new_connection.replace("from::output::type",(type=="control") ? "parameters" : "midi");
@@ -3949,14 +3949,6 @@ function spawn_player(keyblock,auto){
 		new_connection.replace("conversion::vector", 0);	
 		new_connection.replace("conversion::offset", 0.5);	
 		new_connection.replace("conversion::offset2", 0.5);	
-
-		if(type=="control"){
-			new_connection.replace("to::input::number",automap.targetslist[0] - MAX_PARAMETERS * to);
-			new_connection.replace("to::input::type","parameters");
-		}else{
-			new_connection.replace("to::input::number",automap.inputno_k);
-			new_connection.replace("to::input::type","midi");
-		}
 		
 		var tx = blocks.get("blocks["+to+"]::space::x");
 		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
@@ -3964,6 +3956,7 @@ function spawn_player(keyblock,auto){
 		clear_blocks_selection();
 		var playerblock = new_block("seq.piano.roll",tx,ty);
 		new_connection.replace("from::number", +playerblock);
+
 		//copy the relevant bit of sequence into the new block
 		if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
 		if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
@@ -3979,14 +3972,29 @@ function spawn_player(keyblock,auto){
 					}else{// if(event[1] != 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
 						proll.replace(playerblock+"::0::"+k[i],event);
 					}
-					post("\n.."+k[i]+" : "+event);
+					// post("\n.."+k[i]+" : "+event);
 				}
 			}							
 		}
 		post("\ncopy complete");
 		draw_block(playerblock);
-		connections.append("connections", new_connection);
-		make_connection(connections.getsize("connections")-1,0);
+
+		if(type=="control"){
+			for(var co=0;co<automap.targetslist.length;co++){
+				new_connection.replace("from::output::number",co);
+				new_connection.replace("to::input::number",automap.targetslist[co] - MAX_PARAMETERS * to);
+				new_connection.replace("to::input::type","parameters");
+				connections.append("connections", new_connection);
+				make_connection(connections.getsize("connections")-1,0);
+			}
+		}else{
+			new_connection.replace("from::output::number",0);
+			new_connection.replace("to::input::number",automap.inputno_k);
+			new_connection.replace("to::input::type","midi");
+			connections.append("connections", new_connection);
+			make_connection(connections.getsize("connections")-1,0);
+		}
+		
 		v = voicemap.get(playerblock);
 		if(Array.isArray(v)) v = v[0];
 		post("prompting the new block in voice ",v);
