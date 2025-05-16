@@ -422,9 +422,9 @@ function mouse(x,y,l,s,a,c,scr){
 			}
 		}else if(x2<4){
 			if(looping){
-				messnamed("to_polys","note","setvalue",v_list+1,"loop_stop");
+				if(l==0) messnamed("to_polys","note","setvalue",v_list+1,"loop_stop");
 			}else{
-				messnamed("to_blockmanager","capture_controller_loop_button",l);
+				messnamed("to_blockmanager","capture_controller_loop_button",l,v_list+1);
 			}
 			if(l==1){
 				clicked = 4;

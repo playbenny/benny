@@ -624,7 +624,8 @@ var patternpage = { // info to help draw pattern page fast
 
 var capture = {
 	keyboard : 0,
-	controller : 0
+	controller : 0,
+	target : null //which controller
 }
 
 var y_offset;

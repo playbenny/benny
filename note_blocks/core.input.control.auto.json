@@ -17,7 +17,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1],
+				"contains" : [0,0,1],
 				"height" : 0
 			}		
 		],
@@ -36,7 +36,7 @@
 			},{
 				"name" : "auto assign",
 				"type" : "menu_l",
-				"values" : ["auto assign OFF","auto assign ON"],
+				"values" : ["automap OFF","automap ON"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.9
