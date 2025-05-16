@@ -3859,6 +3859,7 @@ function spawn_player(keyblock,auto){
 					var conn_count = 0;
 					var playerblock = -1;
 					var co = o;
+					if(type == "control") co = automap.targetslist[o-1];
 					post("\nlooking for connections on lane ",co);
 					for(var c = connections.getsize("connections")-1;c>=0;c--){
 						if((connections.contains("connections["+c+"]::from"))&&(connections.get("connections["+c+"]::from::number")==keyblock)&&((connections.get("connections["+c+"]::from::output::number")==co))&&(blocks.get("blocks["+(connections.get("connections["+c+"]::to::number"))+"]::name")!="seq.piano.roll")){
@@ -3888,13 +3889,10 @@ function spawn_player(keyblock,auto){
 								}							
 								draw_block(playerblock);
 								if(type == "control"){
-									error("\nit shouldnt insert in conn, it should make a new parallel conn");
 									new_connection = connections.get("connections["+c+"]");
 									new_connection.replace("from::number",playerblock);
 									new_connection.replace("from::output::number",0);
 									new_connection.replace("from::voice","all");
-									new_connection.replace("to::input::number",automap.targetslist[0]);
-									new_connection.replace("to::input::type","parameter");
 									connections.append("connections",new_connection);
 									make_connection(connections.getsize("connections")-1,0);
 									redraw_flag.flag |= 4;	

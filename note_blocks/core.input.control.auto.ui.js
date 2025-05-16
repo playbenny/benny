@@ -325,12 +325,13 @@ function voice_is(v){
 		if(typeof v_list!="number") v_list = v_list[0];
 		controllername = blocks.get("blocks["+block+"]::selected_controller");
 		if(io.contains("controllers::"+controllername)){
-			post("\ngetting controller info for ui");
+			post("\ngetting controller '"+controllername+"' info for ui");
 			rows = io.get("controllers::"+controllername+"::rows");
 			cols = io.get("controllers::"+controllername+"::columns");
 			var type = io.get("controllers::"+controllername+"::type");
 			endreturns_enabled = 0;
 			if((type == "encoder")||(io.contains("controllers::"+controllername+"::value"))) endreturns_enabled = 1;
+			if(endreturns_enabled) post(" end returns enabled");
 			messnamed("to_polys","note","setvalue",v_list+1,"endreturns_enabled",endreturns_enabled);
 			paramcount = rows * cols;
 			var s = MAX_DATA*v_list+1+paramcount*3;
@@ -464,21 +465,25 @@ function mouse(x,y,l,s,a,c,scr){
 }
 	
 function store(){
-	/*
+	// data: 1 <- change flag? playhead?
+	// +paramcount <- initial values
+	// +2*  		<- if currently connected (bright/dim)
+	// +3* 		<-colour
+	// 4,5,6,7 <- end forces
 	messnamed("to_blockmanager","store_wait_for_me",block);
 	//store needs to store some of the data, but not all!
 	var transf_arr = [];
-	transf_arr = voice_data_buffer(1, MAX_DATA*v_list + 1+paramcount*2, 5*paramcount);
+	transf_arr = voice_data_buffer.peek(1, MAX_DATA*v_list, 1+ 7*paramcount);
 	if(blocks.contains("blocks["+block+"]::voice_data::0")){ //copy existing section of data to retain it
 		var tra2 = [];
 		tra2=blocks.get("blocks["+block+"]::voice_data::0");
 		for(var i=1;i<=paramcount;i++) transf_arr[i]=tra2[i];
 	}else{
-		for(var i=1;i<=rows*cols;i++) transf_arr[i]=0;
+		for(var i=1;i<=paramcount;i++) transf_arr[i]=0;
 	}
 	transf_arr[0] = 1;
 	blocks.replace("blocks["+block+"]::voice_data::0", transf_arr);
-	messnamed("to_blockmanager","store_ok_done",block);*/
+	messnamed("to_blockmanager","store_ok_done",block);
 }
 
 
