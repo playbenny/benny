@@ -3122,10 +3122,11 @@ function quantise_and_hold_button(state){
 
 var capturetask, capturetask2;
 function capture_controller_loop_button(state,block){
+	post("\ncapture controller loop, state:",state,"for block",block);
 	if(block == null){
 		capture.target = automap.available_c;
 	}else{
-		capture.target = block;
+		capture.target = block+1;
 	}
 	if(state != 0 ){
 		capture.controller = 1;
