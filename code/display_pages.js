@@ -8726,14 +8726,16 @@ function draw_automap_headers(sx, block) {
 				lcd_main.message("write", "loop");
 				sx += bw2;		
 			}
-			var bw2 = fo1 * 15;
-			var ex = sx + bw2 - fo1;		
-			lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-			click_zone(reify_automap_k, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-			//lcd_main.message("frgb", automap.colours_k.dark);
-			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", "connect");
-			sx += bw2;	
+			if(SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON){
+				var bw2 = fo1 * 15;
+				var ex = sx + bw2 - fo1;		
+				lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+				click_zone(reify_automap_k, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
+				//lcd_main.message("frgb", automap.colours_k.dark);
+				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", "connect");
+				sx += bw2;	
+			}
 			if(linewrap) sx = sidebar.x2;
 		}
 	}

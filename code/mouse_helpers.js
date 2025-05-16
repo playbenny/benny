@@ -3147,7 +3147,7 @@ function capture_controller_loop_button(state,block){
 }
 
 function controller_looper_button(p,v){
-	capture_controller_loop_button(usermouse.left_button,automap.available_c);
+	capture_controller_loop_button(usermouse.left_button,automap.available_c-1);
 }
 
 function controller_stop_loop(p,v){
