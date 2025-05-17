@@ -51,8 +51,8 @@ var metalane=[];
 
 var laneslist = [];
 var lanetype = [];
-var laneused      = [1,1,0,0,0,0,0,0,0,0,0];
-var maximisedlist = [1,0,0,0,0,0,0,0,0,0,0];
+var laneused = [0,0,0,0,0,0,0,0,0,0,0];
+var maximisedlist = [0,0,0,0,0,0,0,0,0,0,0];
 var noteshade = [1,0.75,1,0.75,1,1,0.75,1,0.75,1,0.75,1];
 var laney = [];
 var playheadpos = 0;
@@ -305,7 +305,7 @@ function draw(){
 		}
 	}else{
 		if(laney.length==0) laneheights();
-		laneused=[1,0,0,0,0,0,0,0,0,0];
+		laneused=[0,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
 		outlet(1,"paintrect",x_pos,y_pos,x_pos+width*0.07-2,y_pos+height*0.024,blockcolour[0]*0.23,blockcolour[1]*0.23,blockcolour[2]*0.23);
 		outlet(1,"paintrect",x_pos+0.07*width+2,y_pos,x_pos+width*0.19-2,y_pos+height*0.024,blockcolour[0]*0.23,blockcolour[1]*0.23,blockcolour[2]*0.23);
@@ -343,7 +343,7 @@ function draw(){
 					var rr = laney[l];
 					for(var yy = highestnote - lowestnote; yy >= 0; yy--){
 						var nr = rr + r;
-						var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
+						var s = (0.5*((maximisedlist[ll]>0)|0))+noteshade[(yy  + lowestnote) % 12];
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
 						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
@@ -351,7 +351,7 @@ function draw(){
 							if((r>(0.4*unit))||([0,5].indexOf((yy+lowestnote)%12)>-1)){
 								outlet(1,"frgb",0,0,0);
 								outlet(1,"moveto", x_pos+9,nr-0.2*r);
-								outlet(1,"write",notenames[(yy+lowestnote)%12]+"-"+(Math.floor((yy+lowestnote)/12)-2));
+								outlet(1,"write",nn[(yy+lowestnote)]);
 							}
 						}
 						rr=nr;
@@ -361,7 +361,7 @@ function draw(){
 					var rr = laney[l];
 					for(var yy = metatypes.length; yy > 0; yy--){
 						var nr = rr + r;
-						var s = (0.5*maximisedlist[ll])+(((yy%2)+1)*0.5);
+						var s = (0.5*((maximisedlist[ll]>0)|0))+(((yy%2)+1)*0.5);
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
 						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
@@ -484,7 +484,7 @@ function draw(){
 
 		for(var l=0; l<laney.length-1; l++){
 			if(laney[l]!=laney[l+1]){
-				var s = ((maximisedlist[l]==1) + 0.45);
+				var s = ((maximisedlist[l]>=1) + 0.45);
 				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
 				outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
 				//outlet(1,"write", "lane "+laneslist[l]);
@@ -496,7 +496,7 @@ function draw(){
 					outlet(1,"write", "cc "+(laneslist[l]));
 				}else if(lanetype[l]==2){
 					outlet(1,"write", "modifier");
-					if(maximisedlist[l]==1){
+					if(maximisedlist[l]>=1){
 						outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
 						r = (laney[l+1]-laney[l]-4)/(metatypes.length);
 						rr = laney[l]-0.2*r;
@@ -574,7 +574,7 @@ function draw(){
 					}
 					outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
 					//post("\nmeta rectangle",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-					if((maximisedlist[10] == 1)){
+					if((maximisedlist[10] >= 1)){
 						//post("label",metatype_params[event[2]]);
 						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 						outlet(1,"frgb",0,0,0);
@@ -683,7 +683,7 @@ function draw(){
 							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 						}
 						outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-						if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
+						if((maximisedlist[notelane[ll]] >= 1) && (labelled[event[2]]!=1)){
 							labelled[event[2]] = 1;
 							outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 							outlet(1,"frgb",0,0,0);
@@ -917,20 +917,27 @@ function laneheights(){
 	var used=0;
 	var unused;
 	for(var i=0;i<laneslist.length;i++) used += (laneused[i]|0)*(1+(i==0));
+	if(used==0){
+		laneused[0]=1;
+		// laneused[1]=1;
+		used=3;
+	}
 	unused = laneslist.length - used;
-	if(used==0) return -1;
 	var maximised = 0;
 	for(var i=0; i<laneslist.length; i++) {
-		maximised += ((maximisedlist[i]|0)==1);
+		maximised += (((maximisedlist[i]>0)|0)==1);
 	}
 	//post("\nmaximised",maximised,"used",used,"unused",unused);
-	maximised = 8 * maximised + used + 0.1*unused + 3*((maximisedlist[0]!=1)+(maximisedlist[laneslist.length-1]!=1))+ 2*(maximisedlist[1]!=1);
-	maximised = height * 0.9/maximised;
+	var rowmin = height / 30;
+	var h2 = height - rowmin * laneslist.length;
+	if(h2<0) error("layout algorithm collapse");
+	maximised = 8 * maximised + used + 0.1*unused + 3*((maximisedlist[0]==0)+(maximisedlist[laneslist.length-1]==0))+ 2*(maximisedlist[1]==0);
+	maximised = h2 * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
 		var ii=i-2;
-		if(ii<0)ii=0;
-		laney[i] = laney[i-1] + (7.9 * (maximisedlist[i-1]|0) + 0.1 + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]!=1)) + 2*((i==2)&&(maximisedlist[1]!=1))) * maximised;
+		if(ii<0) ii=0;
+		laney[i] = laney[i-1] + rowmin + (7.9 * ((maximisedlist[i-1]>0)|0) + 0.1 + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]==0)) + 2*((i==2)&&(maximisedlist[1]==0))) * maximised;
 	}
 	//post("\nlaney",laney);
 	//post("\nscreen",y_pos+height);
@@ -1464,6 +1471,16 @@ function mouse(x,y,l,s,a,c,scr){
 				}else{ //select nothing
 					selected_event_count=0;
 					selected_events=[];
+					if((laneused[mouse_lane]==0)){
+						if(maximisedlist[mouse_lane]==0){
+							for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
+							maximisedlist[mouse_lane]=1;
+							laneheights();
+						}else{
+							maximisedlist[mouse_lane]=0;
+							laneheights();
+						}
+					}
 					drawflag|=1;
 				}
 			}
@@ -1471,8 +1488,8 @@ function mouse(x,y,l,s,a,c,scr){
 		if(moved){
 			for(var i=0;i<laney.length-1;i++){
 				if((y>laney[i])&&(y<laney[i+1])){
-					if(!s && maximisedlist[i]==0){
-						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
+					if(!s && (maximisedlist[i]==0) &&(laneused[Math.max(0,i-1)]>0)){
+						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 2*((maximisedlist[ii]>=2)|0);
 						maximisedlist[i]=1;
 						//post("\nmaximised lane:",i);
 						laneheights();
