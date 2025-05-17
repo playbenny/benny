@@ -3122,7 +3122,7 @@ function quantise_and_hold_button(state){
 
 var capturetask, capturetask2;
 function capture_controller_loop_button(state,block){
-	post("\ncapture controller loop, state:",state,"for block",block);
+	//post("\ncapture controller loop, state:",state,"for block",block);
 	if(block == null){
 		capture.target = automap.available_c;
 	}else{
@@ -3144,6 +3144,7 @@ function capture_controller_loop_button(state,block){
 			note_poly.message("setvalue",capture.target,"loop_end");
 		}
 	}
+	redraw_flag.flag |= 2;
 }
 
 function controller_looper_button(p,v){

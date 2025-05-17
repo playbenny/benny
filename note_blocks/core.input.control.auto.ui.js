@@ -39,6 +39,8 @@ var looping = 0;
 var loopinglist = [];
 var loopinglist_b = [];
 
+var loop_button_state = 0;
+
 var editmode = 0;
 var edittarget = 0; //target dial
 var corners = [];
@@ -99,15 +101,13 @@ function drawbuttons() {
 		outlet(1, "write", "initial");
 	
 		if(playing){
-			colour = (clicked == 4) ? [menucolour[1],menucolour[0],menucolour[2]] : (looping) ? menucolour : menumid;
+			colour = ((loop_button_state>0)||(clicked == 4)) ? [menucolour[1],menucolour[0],menucolour[2]] : (looping) ? menucolour : menumid;
 			outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, colour);
 		}else{
 			outlet(1, "framerect", width * 0.602 + x_pos, height - 0.95 * fontheight + y_pos, width * 0.798 + x_pos, height + y_pos - fontheight * 0.1, menudark[0], menudark[0], menudark[0]);
 		}
-		// outlet(1, "moveto", x_pos + width * 0.53, y_pos + height - 0.6*fontheight);
-		// outlet(1, "write", "store");
 		outlet(1, "moveto", x_pos + width * 0.63, y_pos + height - 0.3*fontheight);
-		outlet(1, "write", (clicked == 4) ? "capturing" : (looping ? "looping" : "loop"));
+		outlet(1, "write", ((loop_button_state>0)||(clicked == 4)) ? "capturing" : (looping ? "looping" : "loop"));
 	
 		if(editmode){
 			colour = (clicked == 5) ? menucolour : menumid;
@@ -554,6 +554,11 @@ function looping_params(){
 
 function playhead(p){
 	playheadpos = p;
+}
+
+function loop_button(state){
+	loop_button_state = state && playing;
+	forceupdate = 1;
 }
 
 function convert_to_lengths(){ //this is a trimmed copy of the keyboard equivalent, which did convert to lengths, this doesn't have to.
