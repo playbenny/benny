@@ -282,7 +282,7 @@ function draw(){
 			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
 				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
-				var col = pal[(event[1]-1)];
+				var col = pal[(event[1]+4)%pal.length];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex1,by);
@@ -305,7 +305,7 @@ function draw(){
 		}
 	}else{
 		if(laney.length==0) laneheights();
-		laneused=[0,0,0,0,0,0,0,0,0,0];
+		laneused=[0,0,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
 		outlet(1,"paintrect",x_pos,y_pos,x_pos+width*0.07-2,y_pos+height*0.024,blockcolour[0]*0.23,blockcolour[1]*0.23,blockcolour[2]*0.23);
 		outlet(1,"paintrect",x_pos+0.07*width+2,y_pos,x_pos+width*0.19-2,y_pos+height*0.024,blockcolour[0]*0.23,blockcolour[1]*0.23,blockcolour[2]*0.23);
@@ -691,7 +691,7 @@ function draw(){
 						}
 					}else{
 						if(ll>0){
-							col = pal[(event[1]-1)];
+							col = pal[(event[1]+4)%pal.length];
 						}else{
 							col = blockcolour;
 						}
@@ -919,7 +919,6 @@ function laneheights(){
 	for(var i=0;i<laneslist.length;i++) used += (laneused[i]|0)*(1+(i==0));
 	if(used==0){
 		laneused[0]=1;
-		// laneused[1]=1;
 		used=3;
 	}
 	unused = laneslist.length - used;
@@ -927,22 +926,17 @@ function laneheights(){
 	for(var i=0; i<laneslist.length; i++) {
 		maximised += (((maximisedlist[i]>0)|0)==1);
 	}
-	//post("\nmaximised",maximised,"used",used,"unused",unused);
-	var rowmin = height / 30;
+	var rowmin = height / 40;
 	var h2 = height - rowmin * laneslist.length;
 	if(h2<0) error("layout algorithm collapse");
-	maximised = 8 * maximised + used + 0.1*unused + 3*((maximisedlist[0]==0)+(maximisedlist[laneslist.length-1]==0))+ 2*(maximisedlist[1]==0);
+	maximised = 8 * maximised + used /*+ 0.1*unused*/ + 3*((maximisedlist[0]==0)+(maximisedlist[laneslist.length-1]==0))+ 2*(maximisedlist[1]==0);
 	maximised = h2 * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
 		var ii=i-2;
 		if(ii<0) ii=0;
-		laney[i] = laney[i-1] + rowmin + (7.9 * ((maximisedlist[i-1]>0)|0) + 0.1 + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]==0)) + 2*((i==2)&&(maximisedlist[1]==0))) * maximised;
+		laney[i] = laney[i-1] + rowmin + (7.9 * ((maximisedlist[i-1]>0)|0) /*+ 0.1*/ + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]==0)) + 2*((i==2)&&(maximisedlist[1]==0))) * maximised;
 	}
-	//post("\nlaney",laney);
-	//post("\nscreen",y_pos+height);
-	//post("\nmaximisedlist",maximisedlist);
-	//post("\nusedlist",laneused);
 }
 
 function voice_offset(){}
@@ -1474,7 +1468,7 @@ function mouse(x,y,l,s,a,c,scr){
 					if((laneused[mouse_lane]==0)){
 						if(maximisedlist[mouse_lane]==0){
 							for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
-							maximisedlist[mouse_lane]=1;
+							maximisedlist[mouse_lane]=2;
 							laneheights();
 						}else{
 							maximisedlist[mouse_lane]=0;
@@ -1489,12 +1483,11 @@ function mouse(x,y,l,s,a,c,scr){
 			for(var i=0;i<laney.length-1;i++){
 				if((y>laney[i])&&(y<laney[i+1])){
 					if(!s && (maximisedlist[i]==0) &&(laneused[Math.max(0,i-1)]>0)){
-						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 2*((maximisedlist[ii]>=2)|0);
-						maximisedlist[i]=1;
+						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] &= 2;
+						maximisedlist[i] |= 1;
 						//post("\nmaximised lane:",i);
 						laneheights();
 						drawflag |= 1;
-						//post("calced new heights",laney,"maxl",maximisedlist);
 					}else{
 						drawflag |= 1; //so all movement in the maximised lane causes a draw
 						// there's a possibility to optimise this - either by storing a short list
