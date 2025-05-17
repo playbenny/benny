@@ -8856,7 +8856,6 @@ function draw_automap_headers(sx, block) {
 				}else{
 					var bw2 = fontheight;
 					var ex = sx + bw2 - fo1;		
-					post("redraw, capture = ",capture.controller);
 					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, ((capture.controller>0)||(usermouse.clicked2d == mouse_index))? automap.colours_c.colour : automap.colours_c.dark);
 					click_zone([controller_looper_button,controller_looper_button], null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 6);
 					//lcd_main.message("frgb", automap.colours_k.dark);
