@@ -40,7 +40,9 @@
 			"type" : "cc",
 			"globals" : 					{
 				"automap_toggle" : 0,
-				"automap_page" : 3
+				"automap_page" : 1,
+				"capture_controller_loop" : 2,
+				"capture_keyboard_loop" : 5
 			}
 ,
 			"channel" : 4,

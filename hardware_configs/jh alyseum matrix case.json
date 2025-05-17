@@ -21,6 +21,17 @@
 
 			}
 ,
+			"monome arc 4" : 			{
+				"name" : "monome arc 4",
+				"driver" : "monome arc",
+				"substitute" : [ "Midi Fighter Twister", "JAMES_16e" ],
+				"outputs" : 4,
+				"scaling" : 0.125,
+				"type" : "encoder",
+				"columns" : 4,
+				"rows" : 1
+			}
+,
 			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
 				"driver" : "Midi Fighter Twister",
@@ -62,24 +73,15 @@
 					"type" : "cc",
 					"globals" : 					{
 						"automap_toggle" : 0,
-						"automap_page" : 3
+						"automap_page" : 1,
+						"capture_controller_loop" : 2,
+						"capture_keyboard_loop" : 5
 					}
 ,
 					"channel" : 4,
 					"first" : 8
 				}
 
-			}
-,
-			"monome arc 4" : 			{
-				"name" : "monome arc 4",
-				"driver" : "monome arc",
-				"substitute" : [ "Midi Fighter Twister", "JAMES_16e" ],
-				"outputs" : 4,
-				"scaling" : 0.125,
-				"type" : "encoder",
-				"columns" : 4,
-				"rows" : 1
 			}
 
 		}
