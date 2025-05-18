@@ -243,10 +243,10 @@ function draw(){
 	}
 
 	if(mini){
-		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
-		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
+		var st = (width-2)*((start/seql)/*-zoom_start*/);//*zoom_scale;
+		var ls = (width-2)*((loopstart/seql)/*-zoom_start*/);//*zoom_scale;
 		var ls2 = Math.max(0,ls);
-		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
+		var le = Math.min(width-2, ls + (width-2)*(looplength/seql));//*zoom_scale);
 		var yp2 = y_pos+height*0.15;
 		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,yp2,0,0,0,block,1);
 		if(le<(width-2)){
@@ -272,16 +272,16 @@ function draw(){
 		outlet(1,"moveto", x_pos + st , yp2);
 		outlet(1,"lineto", x_pos + st , y_pos+height - 2);
 		outlet(1,"frgb", blockcolour[0]*0.3,blockcolour[1]*0.3,blockcolour[2]*0.3);
-		outlet(1,"moveto", x_pos + (width - 2) * (playheadpos-zoom_start) * zoom_scale, yp2);
-		outlet(1,"lineto", x_pos + (width - 2) * (playheadpos-zoom_start) * zoom_scale, y_pos+height - 2);
+		outlet(1,"moveto", x_pos + (width - 2) * (playheadpos/*-zoom_start*/)/* * zoom_scale*/, yp2);
+		outlet(1,"lineto", x_pos + (width - 2) * (playheadpos/*-zoom_start*/)/* * zoom_scale*/, y_pos+height - 2);
 		var by = y_pos+height - 2;
 		var sy = (height*0.85-3)/129;
 		for(var i=1;i<k.length;i++){
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-			if((event == null)||(event[0]<zoom_start)||(event[0]>zoom_end)){
+			if((event == null)||(event[0]<0/*zoom_start*/)||(event[0]>1/*zoom_end*/ )){
 			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
-				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
+				var ex1 = x_pos + (event[0]/*-zoom_start*/)*(width-2)/*zoom_scale*/;
 				var col = pal[(event[1]+4)%pal.length];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
