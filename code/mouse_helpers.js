@@ -1660,6 +1660,10 @@ function fade_state(){
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
+	if(stat==null){
+		error("tried to fade non-existent state");
+		return 0;
+	}
 	var sc_list = stat.getkeys();
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
 	//var mf=0;
