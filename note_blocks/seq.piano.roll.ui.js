@@ -544,8 +544,8 @@ function draw(){
 					laneused[9] = 1;
 					if(ll2!=9){
 						ll2 = 9;
-						by2 = laney[1+metalane[ll2]] - 4;
-						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(metatypes.length);
+						by2 = laney[1+metalane[9]] - 4;
+						sy2 = (laney[1+metalane[9]] - laney[metalane[9]] - 4)/(metatypes.length);
 					}
 					var ey = by2 - (metatypes.length - 1 - event[2])*sy2;
 					var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
@@ -929,13 +929,13 @@ function laneheights(){
 	var rowmin = height / 40;
 	var h2 = height - rowmin * laneslist.length;
 	if(h2<0) error("layout algorithm collapse");
-	maximised = 8 * maximised + used /*+ 0.1*unused*/ + 3*((maximisedlist[0]==0)/*+(maximisedlist[laneslist.length-1]==0)*/)+ 2*(maximisedlist[1]==0);
+	maximised = 8 * maximised + used + 3*((maximisedlist[0]==0)/*+(maximisedlist[laneslist.length-1]==0)*/)+ 2*(maximisedlist[1]==0);
 	maximised = h2 * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
 		var ii=i-2;
 		if(ii<0) ii=0;
-		laney[i] = laney[i-1] + rowmin + (7.9 * ((maximisedlist[i-1]>0)|0) /*+ 0.1*/ + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||((i==laneslist.length)&&laneused[ii]))&&(maximisedlist[i-1]==0)) + 2*((i==2)&&(maximisedlist[1]==0))) * maximised;
+		laney[i] = laney[i-1] + rowmin + (7.9 * ((maximisedlist[i-1]>0)|0) + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||((i==laneslist.length)&&laneused[ii]&&0))&&(maximisedlist[i-1]==0)) + 2*((i==2)&&(maximisedlist[1]==0))) * maximised;
 	}
 }
 
