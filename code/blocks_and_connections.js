@@ -3828,8 +3828,7 @@ function spawn_player(keyblock,auto){
 	//stop n wipe
 	// new layer of complication, the controller / grid / etc blocks will also call this fn.
 	var type = "control";
-	if(blocks.get("blocks["+keyblock+"]::name")=="core.keyboard.input") type = "keyboard";
-	// post("\n keyblock",keyblock," control",automap.available_c);
+	if(blocks.get("blocks["+keyblock+"]::name")=="core.input.keyboard") type = "keyboard";
 	var xfer = new Dict;
 	xfer.name = "core-keyb-loop-xfer";
 	post("\ngrabbing "+type+" loop. was"+((auto==0)? "n't":"")+" automapped.");
@@ -3872,6 +3871,17 @@ function spawn_player(keyblock,auto){
 								var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
 								make_space(tx,ty,1.2);
 								var playerblock = new_block("seq.piano.roll",tx,ty);
+								var lbl=blocks.get("blocks["+to+"]::label");
+								if(lbl==blocks.get("blocks["+to+"]::name")){
+									lbl = blocks.get("blocks["+to+"]::label").split(".");
+									lbl.splice(0,1);
+									lbl.join(".");
+								}
+								if(type=="control"){
+									blocks.replace("blocks["+playerblock+"]::label", "mod to."+lbl);
+								}else{
+									blocks.replace("blocks["+playerblock+"]::label", "keys to."+lbl);
+								}
 								//copy the relevant bit of sequence into the new block
 								if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
 								if(!proll.contains(playerblock+"::0")) proll.setparse(playerblock+"::0", "{}");
@@ -3955,6 +3965,18 @@ function spawn_player(keyblock,auto){
 		make_space(tx,ty,1.2);
 		clear_blocks_selection();
 		var playerblock = new_block("seq.piano.roll",tx,ty);
+		if(type=="control"){
+			blocks.replace("blocks["+playerblock+"]::label", "mod to."+blocktypes.get(blocks.get("blocks["+to+"]::name")+"::parameters["+(automap.targetslist[0] - MAX_PARAMETERS * to)+"]::name"));
+		}else{
+			var lbl=blocks.get("blocks["+to+"]::label");
+			if(lbl==blocks.get("blocks["+to+"]::name")){
+				lbl = blocks.get("blocks["+to+"]::label").split(".");
+				lbl.splice(0,1);
+				lbl.join(".");
+			}
+			post("\nlbl",lbl,"-",blocks.get("blocks["+to+"]::name"));
+			blocks.replace("blocks["+playerblock+"]::label", "keys to."+lbl);
+		}
 		new_connection.replace("from::number", +playerblock);
 
 		//copy the relevant bit of sequence into the new block
@@ -3989,7 +4011,7 @@ function spawn_player(keyblock,auto){
 			}
 		}else{
 			new_connection.replace("from::output::number",0);
-			new_connection.replace("to::input::number",automap.inputno_k);
+			new_connection.replace("to::input::number",automap.inputno_k|0);
 			new_connection.replace("to::input::type","midi");
 			connections.append("connections", new_connection);
 			make_connection(connections.getsize("connections")-1,0);
