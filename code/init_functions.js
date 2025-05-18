@@ -287,6 +287,8 @@ function initialise_dictionaries(hardware_file){
 	send_audio_patcherlist();
 
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
+	var seqdict = new Dict;
+	seqdict.name = "core-keyb-loop-xfer";
 	seqdict.parse('{}');
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');

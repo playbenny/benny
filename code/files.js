@@ -1715,6 +1715,8 @@ function clear_everything(){
 	patternpage.column_block = [];
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
+	var seqdict = new Dict;
+	seqdict.name = "core-keyb-loop-xfer";
 	seqdict.parse('{}');
 	
 	draw_wave = [];
