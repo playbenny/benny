@@ -1154,6 +1154,8 @@ function mouse(x,y,l,s,a,c,scr){
 				if(s) clicked = -1; //select
 				if(c) clicked = -2; //create
 			} //default click drag is pan/zoom, shift is select, ctrl is create. was: shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
+			if(c && (lanetype[mouse_lane]==1)) clicked = -2; //create
+			
 			drag_start_x = x;
 			drag_start_y = y;
 			drag_dist = 0;
@@ -1188,7 +1190,7 @@ function mouse(x,y,l,s,a,c,scr){
 					selected_event_count=0;
 					selected_events=[];
 				}
-				if((hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
+				if(!c && (hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
 					selected_event_count=1;
 					selected_events=[];
 					selected_events[hovered_event]=1;
