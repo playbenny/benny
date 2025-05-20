@@ -4,15 +4,39 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 576.0, 405.0, 48.0, 22.0 ],
+					"text" : "del 100"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 5,
+					"outlettype" : [ "", "", "", "", "" ],
+					"patching_rect" : [ 492.5, 362.0, 124.0, 22.0 ],
+					"text" : "regexp \"monome arc\""
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-42",
 					"maxclass" : "newobj",
@@ -105,17 +129,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 111.0, 201.0, 55.0, 22.0 ],
 					"text" : "0, 1, 2, 3"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-108",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 81.0, 382.0, 102.0, 22.0 ],
-					"text" : "s 3426tolocalhost"
 				}
 
 			}
@@ -388,7 +401,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 613.0, 405.0, 60.0, 22.0 ],
+					"patching_rect" : [ 576.0, 434.0, 60.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -414,18 +427,6 @@
 					"outlettype" : [ "int" ],
 					"patching_rect" : [ 545.0, 405.0, 25.0, 22.0 ],
 					"text" : "t 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-23",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 545.0, 372.0, 128.0, 22.0 ],
-					"text" : "sel \"monome arc 4\""
 				}
 
 			}
@@ -595,7 +596,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1222.0, 187.0, 52.0, 36.0 ],
+					"patching_rect" : [ 1222.0, 187.0, 53.0, 36.0 ],
 					"text" : "1536 -1 1537 -1"
 				}
 
@@ -677,7 +678,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -820,8 +821,7 @@
 								}
 
 							}
- ],
-						"originid" : "pat-4052"
+ ]
 					}
 ,
 					"patching_rect" : [ 1018.0, 226.0, 79.0, 22.0 ],
@@ -993,6 +993,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-313", 0 ],
 					"source" : [ "obj-15", 0 ]
 				}
@@ -1058,20 +1065,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-51", 0 ],
 					"source" : [ "obj-22", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-12", 0 ],
-					"source" : [ "obj-23", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-13", 0 ],
-					"source" : [ "obj-23", 0 ]
 				}
 
 			}
@@ -1371,15 +1364,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-23", 0 ],
-					"source" : [ "obj-59", 3 ]
+					"destination" : [ "obj-58", 0 ],
+					"source" : [ "obj-59", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-58", 0 ],
-					"source" : [ "obj-59", 0 ]
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-59", 3 ]
 				}
 
 			}
@@ -1443,6 +1436,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-9", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-9", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-92", 0 ],
 					"source" : [ "obj-91", 0 ]
 				}
@@ -1477,7 +1484,22 @@
 
 			}
  ],
-		"originid" : "pat-4032"
+		"dependency_cache" : [ 			{
+				"name" : "monome-device.maxpat",
+				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
+				"patcherrelativepath" : "../../../../../Max 9/Packages/monome/patchers",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "monome_arc.js",
+				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/controller_drivers",
+				"patcherrelativepath" : ".",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }
