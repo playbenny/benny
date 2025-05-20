@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -16,12 +16,37 @@
 		"toolbars_unpinned_last_save" : 7,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-113",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 384.0, 655.0, 50.0, 36.0 ],
+					"text" : "\"monome arc\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-77",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 5,
+					"outlettype" : [ "", "", "", "", "" ],
+					"patching_rect" : [ 374.100000000000023, 624.0, 124.0, 22.0 ],
+					"text" : "regexp \"monome arc\""
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-111",
 					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 697.0, 771.0, 150.0, 34.0 ],
+					"patching_rect" : [ 697.0, 771.0, 153.0, 34.0 ],
 					"text" : "the controller part of this is deprecated"
 				}
 
@@ -391,7 +416,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -554,8 +579,7 @@
 								}
 
 							}
- ],
-						"originid" : "pat-3406"
+ ]
 					}
 ,
 					"patching_rect" : [ 774.0, 133.0, 124.0, 22.0 ],
@@ -575,7 +599,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -682,8 +706,7 @@
 								}
 
 							}
- ],
-						"originid" : "pat-3408"
+ ]
 					}
 ,
 					"patching_rect" : [ 509.0, 53.0, 91.0, 22.0 ],
@@ -820,7 +843,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 6,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1036,8 +1059,7 @@
 								}
 
 							}
- ],
-						"originid" : "pat-3412"
+ ]
 					}
 ,
 					"patching_rect" : [ 623.0, 119.0, 116.0, 22.0 ],
@@ -2227,7 +2249,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-20", 0 ],
+					"destination" : [ "obj-77", 0 ],
 					"order" : 0,
 					"source" : [ "obj-110", 3 ]
 				}
@@ -3030,6 +3052,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-113", 1 ],
+					"order" : 0,
+					"source" : [ "obj-77", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-20", 0 ],
+					"source" : [ "obj-77", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-20", 0 ],
+					"order" : 1,
+					"source" : [ "obj-77", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-66", 0 ],
 					"source" : [ "obj-78", 0 ]
 				}
@@ -3211,7 +3256,6 @@
 
 			}
  ],
-		"originid" : "pat-3404",
 		"dependency_cache" : [ 			{
 				"name" : "hardware_config_editor.js",
 				"bootpath" : "~/Documents/GitHub/benny/code",
