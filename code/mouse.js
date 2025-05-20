@@ -819,11 +819,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							xdist += ydist;
 						}
 					}else{
-						f(v,usermouse.drag.starting_value_y+ydist);
+						if(!Array.isArray(f))f(v,usermouse.drag.starting_value_y+ydist);
 					}
 					//post("drag-f",f);
 					//post("or",f.name);
-					f(p,usermouse.drag.starting_value_x+xdist);					
+					if(!Array.isArray(f))f(p,usermouse.drag.starting_value_x+xdist);					
 				}
 			}else if((usermouse.clicked2d != -1) && (usermouse.last.got_t==1)){
 				//dragged off a button?
