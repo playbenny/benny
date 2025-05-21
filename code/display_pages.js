@@ -765,7 +765,6 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 							if(!Array.isArray(bvs)) bvs = [bvs];
 							vv=bvs.concat();
 							var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[0]+blocks.get("blocks["+b+"]::patterns::parameter")));
-							post("\npv",pv);
 							var pcount = [];
 							for(var p=1+Math.max(pv,patternpage.last_pattern[b]);p>=0;p--){
 								var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
