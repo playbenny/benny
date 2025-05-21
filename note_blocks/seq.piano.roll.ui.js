@@ -1537,7 +1537,7 @@ function zoom_to_pattern() {
 	var lp = seqdict.get(block + "::" + pattern + "::looppoints");
 	if(!Array.isArray(lp)) return -1;
 	var ns = Math.max(Math.min(lp[1] - 2, lp[2] - 2), 0);
-	var ne = Math.max(lp[3] + 2, lp[1] + 8);
+	var ne = Math.max(lp[1] + lp[3] + 2, lp[1] + 8);
 	ns /= lp[0];
 	ne /= lp[0];
 	zoom_start = ns;
