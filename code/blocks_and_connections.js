@@ -3848,7 +3848,7 @@ function spawn_player(keyblock,auto){
 					}
 				}else{
 					var event = seqdict.get(k[i]);
-					seqdict.replace(k[i], [ event[2], 0, 0, event[2] ]);//original pattern length (beats), start,loopstart,loopend
+					seqdict.replace(k[i], [ 256, event[0], event[1], event[2] ]);//original pattern length (beats), start,loopstart,loopend
 				}
 			}
 			post("\nrecorded data is in ",uoc," lanes");
@@ -3990,7 +3990,11 @@ function spawn_player(keyblock,auto){
 				var event = seqdict.get(k[i]);
 				if(event != null){
 					if(k[i]=="looppoints"){
-						proll.replace(playerblock+"::0::looppoints",[event[2], 0,0, event[2]]);
+						error("currently broken for keyboard")
+						// #############################################################################
+						//currently broken for keyboard, you could just swap it back to event2,0,0,event2
+						// '################################
+						proll.replace(playerblock+"::0::looppoints",[256, event[0],event[1], event[2]]);
 					}else{// if(event[1] != 1){//OR it's 1 and o==0? it's automapk so you know o =0,1
 						proll.replace(playerblock+"::0::"+k[i],event);
 					}

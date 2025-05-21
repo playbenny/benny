@@ -87,6 +87,7 @@ function convert_to_lengths(){
 		}
 	}
 	drawflag = 1;
+	messnamed("core_keyboard_xfer","lengths_done");
 }
 
 function setup(x1,y1,x2,y2,sw){ 

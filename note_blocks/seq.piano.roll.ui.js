@@ -244,8 +244,9 @@ function draw(){
 
 	if(mini){
 		var st = 0;
-		var zst = start/seql;//(width-2)*((start/seql)-zoom_start)*zoom_scale;
-		var zsc =  1/Math.max(1,((loopstart/seql)-zst)+ (looplength/seql));
+		var zst = start/seql; //seql;//(width-2)*((start/seql)-zoom_start)*zoom_scale;
+		var zsc = Math.max(1,(seql/looplength));
+		// post("\nzoom start",zst,"zoom scale",zsc,"or",zoom_start,zoom_scale);
 		var ls = (width-2)*((loopstart/seql)-zst)*zsc;
 		var ls2 = Math.max(0,ls);
 		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zsc);
@@ -1154,8 +1155,6 @@ function mouse(x,y,l,s,a,c,scr){
 				if(s) clicked = -1; //select
 				if(c) clicked = -2; //create
 			} //default click drag is pan/zoom, shift is select, ctrl is create. was: shift drag or ruler drag are pan/zoom, ctrl drag value lanes to draw values
-			if(c && (lanetype[mouse_lane]==1)) clicked = -2; //create
-			
 			drag_start_x = x;
 			drag_start_y = y;
 			drag_dist = 0;
