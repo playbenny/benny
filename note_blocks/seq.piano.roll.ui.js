@@ -244,8 +244,8 @@ function draw(){
 
 	if(mini){
 		var st = 0;
-		var zst = start/seql; //seql;//(width-2)*((start/seql)-zoom_start)*zoom_scale;
-		var zsc = Math.max(1,(seql/looplength));
+		var zst = Math.min(start,loopstart)/seql; //seql;//(width-2)*((start/seql)-zoom_start)*zoom_scale;
+		var zsc = Math.max(1,(seql/(looplength+Math.max(0,loopstart-start))));
 		// post("\nzoom start",zst,"zoom scale",zsc,"or",zoom_start,zoom_scale);
 		var ls = (width-2)*((loopstart/seql)-zst)*zsc;
 		var ls2 = Math.max(0,ls);

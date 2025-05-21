@@ -771,7 +771,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 								if((n!=null)&&(n!="")) pcount.push(p);
 							}
 							for(var pp=pcount.length-1;pp>=0;pp--){
-								var p = pcount[pp];
+								var p = pcount[pcount.length-pp-1];
 								var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
 								var shape = ((patternpage.held_pattern_fires[b]==p)||(usermouse.clicked2d == mouse_index))? "paintrect" : "framerect";
 								lcd_main.message(shape,x1+(pp/pcount.length)*column_width,y1,x1-2+((pp+1)/pcount.length)*column_width,y2,(p==pv)? shadeRGB(block_colour,1.5): block_dark);
