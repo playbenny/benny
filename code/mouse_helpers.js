@@ -980,8 +980,9 @@ function select_block(parameter,value){
 		selected.block_count = 1;
 		selected.wire_count = 0;
 		redraw_flag.flag |= 2;
-		if(displaymode == "blocks") redraw_flag.flag |= 8;
-		if(displaymode == "panels"){
+		if(displaymode == "blocks"){
+			redraw_flag.flag |= 8;
+		}else if(displaymode == "panels"){
 			if(usermouse.ctrl){
 				panels.editting = value;
 				set_sidebar_mode("panel_assign");
@@ -989,6 +990,9 @@ function select_block(parameter,value){
 				set_sidebar_mode("none");
 				panels.editting = -1;
 			}
+		}else if(displaymode == "panels_edit"){
+			panels.editting = value;
+			set_sidebar_mode("panel_assign");
 		}
 	}
 }

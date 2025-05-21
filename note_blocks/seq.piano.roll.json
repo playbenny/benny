@@ -30,7 +30,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [],
+				"contains" : [ 0 ],
 				"patterncontrols" : 1
 			},
 			{ 
@@ -43,6 +43,9 @@
 				"colour" : -10
 			}
 		],
+		"panel" : {
+			"parameters" : [0]
+		},
 		"patterns" : {
 			"parameter" : 0,
 			"pattern_storage" : "dict",

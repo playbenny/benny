@@ -98,6 +98,7 @@ function set_display_mode(mode,t){
 				displaymode = "panels_edit";
 				flock_axes(0);
 				camera();
+				if(sidebar.mode=="block")set_sidebar_mode("panel_assign");
 				redraw_flag.flag |= 4;
 			}else{
 				clear_blocks_selection();
@@ -750,6 +751,59 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 		if(!Array.isArray(params)) params = [params];
 		if(!Array.isArray(plist)) plist = [plist];
 		try{
+			var y1 = 18+(y+2+has_states)*fontheight;
+			var y2 = 18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight;
+			if(plist.length==1){
+				for(var g=0;g<glist.length;g++){
+					if(glist[g].contains("patterncontrols")){
+						var cont = glist[g].get("contains");
+						if(!Array.isArray(cont)) cont=[cont];
+						var gi = cont.indexOf(plist[0]);
+						if(gi>-1){
+							//draw pattern select buttons directly.
+							var bvs = voicemap.get(b);
+							if(!Array.isArray(bvs)) bvs = [bvs];
+							vv=bvs.concat();
+							var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[0]+blocks.get("blocks["+b+"]::patterns::parameter")));
+							post("\npv",pv);
+							var pcount = [];
+							for(var p=1+Math.max(pv,patternpage.last_pattern[b]);p>=0;p--){
+								var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
+								if((n!=null)&&(n!="")) pcount.push(p);
+							}
+							for(var pp=pcount.length-1;pp>=0;pp--){
+								var p = pcount[pp];
+								var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
+								var shape = ((patternpage.held_pattern_fires[b]==p)||(usermouse.clicked2d == mouse_index))? "paintrect" : "framerect";
+								lcd_main.message(shape,x1+(pp/pcount.length)*column_width,y1,x1-2+((pp+1)/pcount.length)*column_width,y2,(p==pv)? shadeRGB(block_colour,1.5): block_dark);
+								click_zone(pattern_click,[b,vv],p, x1+(pp/pcount.length)*column_width,y1,x1-2+((pp+1)/pcount.length)*column_width,y2,mouse_index,1);
+								//lcd_main.message("moveto", x1+(pp/pcount.length)*column_width+fo1,y1+fo1*4);
+								// lcd_main.message("frgb",co);
+								if(n==null) n="";
+								var lab = wrap_dot_text((p+1)+": "+n,column_width/pcount.length-2*fo1);
+								for(var i=0;i<lab.length;i++){
+									lcd_main.message("moveto", x1+(pp/pcount.length)*column_width+fo1,y1+fo1*(4+3*i));
+									lcd_main.message("write",lab[i]);
+								}
+							}
+							/*
+								y_o-= fontheight*1.1;
+								var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
+								var shape = ((patternpage.held_pattern_fires[b]==p)||(usermouse.clicked2d == mouse_index))? "paintrect" : "framerect";
+								if((p==pv)||(n!=null)&&(n!="")){
+									
+									// lcd_main.message("write",(p+1)+": "+n);
+									var lab = wrap_dot_text((p+1)+": "+n,ccw-2*fo1);
+									for(var i=0;i<lab.length;i++){
+										lcd_main.message("moveto",fo1+colx2,y_o+fo1*(4+3*i));
+										lcd_main.message("write",lab[i]);
+										}*/
+
+							plist = [];
+						}
+					}
+				}
+			}
 			for(var p=0;p<plist.length;p++){
 				var p_type = params[plist[p]].get("type");
 				var wrap = params[plist[p]].get("wrap");
@@ -757,7 +811,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 				var noperv = 1; //params[plist[p]].contains("nopervoice");
 				var p_values = params[plist[p]].get("values");
 				var flags = (p_values[0]=="bi") + 4*noperv;
-				if(!noperv){
+				/*if(!noperv){
 					for(var g=0;g<glist.length;g++){
 						var cont = glist[g].get("contains");
 						if(!Array.isArray(cont)) cont=[cont];
@@ -767,14 +821,12 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 						}
 					}
 					//look up what group contains this param, look up if that group has onepervoice flag
-				}			
+				}		*/	
 				//namearr = namearr.split("_");
 				var namelabely = 18+(y+2+has_states+0.4)*fontheight;
 				var h_slider = 0;
 				panelslider_visible[b][plist[p]]=panelslider_index;
 				var curp = plist[p];
-				var y1 = 18+(y+2+has_states)*fontheight;
-				var y2 = 18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight;
 				if((p_type=="menu_d")||(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length != 1))) p_type = "menu_i";
 				if(p_type=="button"){
 					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
@@ -4466,6 +4518,7 @@ function draw_sidebar(){
 						var this_group_mod_in_para=[];
 						automap.sidebar_row_ys[i] = y_offset;
 						colour=block_colour;
+						if(groups[i].contains("patterncontrols")) groups[i].replace("contains",[]);
 						if(groups[i].contains("colour")){
 							colour = groups[i].get("colour");
 						}

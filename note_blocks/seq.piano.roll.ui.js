@@ -1294,7 +1294,7 @@ function mouse(x,y,l,s,a,c,scr){
 					}else{
 						var l = (zoom_end - zoom_start);
 						var xx = (x-x_pos)/width;
-						dy*=0.01;
+						dy*=-0.01;
 						zoom_start += l*xx*dy;
 						zoom_end -= l*(1-xx)*dy;
 						zoom_end = Math.max(zoom_start+0.00001,zoom_end);
