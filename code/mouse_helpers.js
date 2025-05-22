@@ -2932,6 +2932,9 @@ function cycle_automap_offset(p,v){
 		if(p>0){
 			automap.offset_c++;
 			if(automap.offset_c > automap.offset_range_c) automap.offset_c = 0;
+		}else if(p<0){
+			automap.offset_c--;
+			if(automap.offset_c < 0) automap.offset_c = automap.offset_range_c;
 		}else{
 			automap.offset_c=0;
 			automap.mapped_c=-1;
