@@ -37,8 +37,8 @@
 				"name" : "2",
 				"type" : "float",
 				"values" : ["uni", 0, 127, "lin" ],
-				"wrap" : 1,
-				"default" : 0.45,
+				"wrap" : 0,
+				"default" : 0,
 				"cc_channel" : 1,
 				"cc_number" : 1
 			},
