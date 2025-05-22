@@ -245,6 +245,7 @@ function draw(){
 	if(mini){
 		var st = 0;
 		var zst = Math.min(start,loopstart)/seql; //seql;//(width-2)*((start/seql)-zoom_start)*zoom_scale;
+		var ze = (loopstart + looplength)/seql;
 		var zsc = Math.max(1,(seql/(looplength+Math.max(0,loopstart-start))));
 		// post("\nzoom start",zst,"zoom scale",zsc,"or",zoom_start,zoom_scale);
 		var ls = (width-2)*((loopstart/seql)-zst)*zsc;
@@ -281,7 +282,7 @@ function draw(){
 		var sy = (height*0.85-3)/129;
 		for(var i=1;i<k.length;i++){
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-			if((event == null)||(event[0]<zst)||(event[0]>zoom_end)){
+			if((event == null)||(event[0]<zst)||(event[0]>ze)){
 			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
 				var ex1 = x_pos + (event[0]-zst)*(width-2)*zsc;
@@ -299,8 +300,8 @@ function draw(){
 					ey = by - (event[2])*(height-3)/metatypes.length;
 					col = pal[(8+(event[2]|0))% 16];
 				}
-				var ex1 = x_pos + (event[0]-zst)*(width-2)*zoom_scale;
-				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zsc),x_pos+width-2);
+				var ex1 = x_pos + (event[0]-zst)*(width-2)*zsc;
+				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zsc),x_pos+width-4);
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex2,ey);
