@@ -3142,7 +3142,7 @@ function capture_controller_loop_button(state,block){
 	if(state != 0 ){
 		capture.controller = 1;
 		capturetask = new Task(capture_button, this, 0);
-		capturetask.schedule(200);
+		capturetask.schedule(400);
 	}else{
 		if(capture.controller){
 			capture.controller = 0;
@@ -3161,9 +3161,15 @@ function capture_controller_loop_button(state,block){
 function controller_looper_button(p,v){
 	capture_controller_loop_button(usermouse.left_button,automap.available_c-1);
 }
+function keyboard_looper_button(p,v){
+	capture_keyboard_loop_button(usermouse.left_button,automap.available_k-1);
+}
 
 function controller_stop_loop(p,v){
 	note_poly.message("setvalue",capture.target,"loop_stop");
+}
+function keyboard_stop_loop(p,v){
+	note_poly.message("setvalue",automap.available_k,"loop_stop");
 }
 
 function loopstatus(type,state){

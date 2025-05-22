@@ -8782,14 +8782,45 @@ function draw_automap_headers(sx, block) {
 				sx += bw2;		
 			}
 			if(playing){
+				/*
 				var bw2 = fo1 * 10;
 				var ex = sx + bw2 - fo1;		
 				lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-				click_zone(start_keyboard_looper, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-				//lcd_main.message("frgb", automap.colours_k.dark);
+				click_zone(/*start_keyboard_looper*//*[controller_looper_button,controller_looper_button], null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 6 /*2*//*);
 				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
 				lcd_main.message("write", "loop");
-				sx += bw2;		
+				sx += bw2;	
+				*/
+
+				if(automap.looping_k){
+					var bw2 = 1.4 * fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.dark : menucolour);
+					click_zone(keyboard_stop_loop, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "looping");
+					sx += bw2;
+					bw2 = fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.colour : automap.colours_c.dark);
+					click_zone(request_spawn_player, automap.available_k, 1, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "grab");
+					sx += bw2;			
+				}else{
+					var bw2 = fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, ((capture.controller>0)||(usermouse.clicked2d == mouse_index))? automap.colours_c.colour : automap.colours_c.dark);
+					click_zone([keyboard_looper_button,keyboard_looper_button], null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 6);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "loop");
+					sx += bw2;		
+				}
+			
+
 			}
 			if(SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON){
 				var bw2 = fo1 * 15;
