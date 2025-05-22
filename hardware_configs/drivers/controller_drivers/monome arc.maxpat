@@ -4,15 +4,27 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 6,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1428.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-28",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 1547.0, 220.0, 55.0, 22.0 ],
+					"text" : "zl slice 4"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-14",
 					"maxclass" : "newobj",
@@ -139,7 +151,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1547.0, 211.0, 111.0, 22.0 ],
+					"patching_rect" : [ 1547.0, 265.0, 111.0, 22.0 ],
 					"text" : "prepend brightness"
 				}
 
@@ -596,8 +608,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1222.0, 187.0, 53.0, 36.0 ],
-					"text" : "1536 -1 1537 -1"
+					"patching_rect" : [ 1222.0, 187.0, 57.0, 36.0 ],
+					"text" : "-0.1 -0.1 -0.1 -0.1"
 				}
 
 			}
@@ -678,7 +690,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 6,
+							"revision" : 7,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1049,7 +1061,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-96", 0 ],
+					"destination" : [ "obj-28", 0 ],
 					"source" : [ "obj-20", 0 ]
 				}
 
@@ -1093,6 +1105,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-41", 0 ],
 					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-96", 0 ],
+					"source" : [ "obj-28", 0 ]
 				}
 
 			}
@@ -1483,23 +1502,7 @@
 				}
 
 			}
- ],
-		"dependency_cache" : [ 			{
-				"name" : "monome-device.maxpat",
-				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
-				"patcherrelativepath" : "../../../../../Max 9/Packages/monome/patchers",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "monome_arc.js",
-				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/controller_drivers",
-				"patcherrelativepath" : ".",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }
