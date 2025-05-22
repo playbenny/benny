@@ -36,7 +36,6 @@ var selected = {
 var a_clock_out_list = [1,2,3,4,5,6,7,8,9,10,11,12,24,48,96,192];
 
 var library_hardware = this.patcher.getnamed("hardware_library");
-var library_controllers = this.patcher.getnamed("controller_library");
 var testmatrix = this.patcher.getnamed("testmatrix");
 var latency_test_list = this.patcher.getnamed("latency_test_list");
 var latency_test_button = this.patcher.getnamed("latency_test_button");
@@ -55,7 +54,7 @@ function loadbang(){
 	dropdown.message("prefix", filepath+"/hardware_configs");
 	post("\n path is",filepath);
 	outlet(0,"getmidi","bang");
-	outlet(0,"library","read",filepath+"/data/hardware_library.json");
+	outlet(0,"library",filepath+"/hardware_configs/hardware_library");
 	post("\ninterfaces list:\nins:",midi_interfaces.in,"\nouts:",midi_interfaces.out);
 	import_blocktypes("audio_blocks");
 	get_preset_list();
@@ -1571,7 +1570,7 @@ function render_controls(){
 				ii++;			
 				y_pos+=unit.row+unit.header;
 
-				if(cd.contains(cdk[p]+"::connections::in::midi")){
+				if((cd.contains(cdk[p]+"::connections::in::midi")||(cd.contains(cdk[p]+"::parameters")))){
 					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "midi in (to hardware, from benny)");
 					controls[ii].presentation(1);
@@ -1579,8 +1578,8 @@ function render_controls(){
 					y_pos+=unit.row+unit.header;
 					ii++;
 		
-					controls[ii] = this.patcher.newdefault(10, 100, "comment");
-					controls[ii].message("set", "choose midi port");
+					controls[ii] = this.patcher.newdefault(10, unit.col-20, "comment");
+					controls[ii].message("set", "choose midi port (from benny)");
 					controls[ii].presentation(1);
 					controls[ii].presentation_position(40,y_pos);
 					ii++;
@@ -1602,8 +1601,9 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 					y_pos+=unit.row+unit.header;
-					ii++;			
-		
+					ii++;
+				}
+				if(cd.contains(cdk[p]+"::connections::in::midi")){	
 					hwl = cd.get(cdk[p]+"::connections::in::midi");
 					hwc = cd.get(cdk[p]+"::connections::in::midi_channels");
 					hwr = cd.get(cdk[p]+"::connections::in::midi_ranges");
@@ -2827,7 +2827,6 @@ function deleteall(){
 	controls=[];
 	values=[];
 	library_hardware.presentation(0);
-	library_controllers.presentation(0);
 	latency_test_list.presentation(0);
 	latency_test_button.presentation(0);
 	latency_test_time.presentation(0); 
