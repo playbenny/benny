@@ -6625,7 +6625,8 @@ function draw_sidebar(){
 					//it's either core.input.control.auto or .basic so
 					// check if we need to trim the list of midi outs / param outs / available colours
 					var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
-					
+					button_count = 0;
+					param_count = 0;
 					if(io_dict.contains("controllers::"+cnam+"::outputs")) param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
 					if(io_dict.contains("controllers::"+cnam+"::buttons::count")) button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
 				}
