@@ -4295,6 +4295,7 @@ function set_automap_lock(type,value){
 	}else if(type == "cue"){
 		automap.lock_q = value;
 	}
+	sidebar.mode = "redraw";
 	redraw_flag.flag |= 4;
 }
 
