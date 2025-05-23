@@ -288,6 +288,8 @@ function initialise_dictionaries(hardware_file){
 
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
 	var seqdict = new Dict;
+	seqdict.name = "seq-piano-roll";
+	seqdict.parse('{}');
 	seqdict.name = "core-keyb-loop-xfer";
 	seqdict.parse('{}');
 	undo_stack.parse('{ "history" : [ {}, {} ] }');

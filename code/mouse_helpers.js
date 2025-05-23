@@ -391,6 +391,13 @@ function blocks_paste(outside_connections,target){
 								blocks.replace("blocks["+new_block_index+"]::patterns::"+tkeys[t],tdd.get(tkeys[t]));
 							}
 						}
+						if(td.contains(copied_blocks[0]+"::stored_piano_roll")){
+							tdd = td.get(copied_blocks[0]+"::stored_piano_roll");
+							tkeys = tdd.getkeys();
+							for(var t=0;t<tkeys.length;t++){
+								blocks.replace("blocks["+new_block_index+"]::stored_piano_roll::"+tkeys[t],tdd.get(tkeys[t]));
+							}
+						}
 						var vl = voicemap.get(new_block_index);
 						if(!Array.isArray(vl)) vl=[vl];
 						if(target.contains("block_data::"+copied_blocks[b])){
