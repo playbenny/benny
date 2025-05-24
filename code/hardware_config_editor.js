@@ -1609,7 +1609,7 @@ function render_controls(){
 					hwr = cd.get(cdk[p]+"::connections::in::midi_ranges");
 					for(var i = 0; i< hwc.length;i++){
 						controls[ii] = this.patcher.newdefault(10, 100, "comment");
-						controls[ii].message("set", "input name");
+						controls[ii].message("set", "note input name");
 						controls[ii].presentation(1);
 						controls[ii].presentation_position(40,y_pos);
 						ii++;
@@ -1677,7 +1677,7 @@ function render_controls(){
 						values[ii] = [cdk[p],i];
 						y_pos+=unit.row;
 						ii++;
-						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove midi input", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.midi.in.channel."+ii);
+						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove midi note input channel", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.midi.in.channel."+ii);
 						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 						controls[ii].presentation(1);
 						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
@@ -1686,7 +1686,9 @@ function render_controls(){
 						y_pos+=unit.row+unit.header;
 					}
 				}
-				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a midi input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.midi.in.channel."+ii);
+
+				
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a midi note input channel", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.midi.in.channel."+ii);
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
@@ -1694,6 +1696,72 @@ function render_controls(){
 				ii++;			
 				y_pos+=unit.row+unit.header;
 		
+				if(cd.contains(cdk[p]+"::parameters")){	
+					plist = cd.get(cdk[p]+"::parameters");
+					if(!Array.isArray(plist)) plist = [plist];
+					for(var i = 0; i< plist.length;i++){
+						controls[ii] = this.patcher.newdefault(10, unit.col*1.8, "comment");
+						controls[ii].message("set", "parameter (midi cc) input name");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "textedit", "@border", 0, "@rounded", 0  ,"@keymode", 1,  "@varname", "hardware.midi.parameter.name."+ii);
+						
+						controls[ii].message("set",plist[i].get("name"));
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,22);
+						values[ii] = [cdk[p],i];
+						ii++;
+					
+						y_pos+=unit.row;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "midi channel");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.parameter.channel."+ii, "@minimum", 1, "@maximum", 16);
+						controls[ii].message("set", plist[i].get("cc_channel"));
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
+						values[ii] = [cdk[p],i];
+						ii++;	
+						y_pos+=unit.row;
+
+						controls[ii] = this.patcher.newdefault(10, 100, "comment");
+						controls[ii].message("set", "midi cc number");
+						controls[ii].presentation(1);
+						controls[ii].presentation_position(40,y_pos);
+						ii++;						
+						controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.midi.parameter.cc."+ii, "@minimum", 0, "@maximum", 127);
+						controls[ii].message("set", plist[i].get("cc_number"));
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,60,20);
+						values[ii] = [cdk[p],i];
+						ii++;	
+						y_pos+=unit.row;
+						controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "remove parameter", "@textoncolor", [1.000, 0.2, 0.200, 1.000], "@varname", "remove.hardware.midi.parameter."+ii);
+						controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+						controls[ii].presentation(1);
+						controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+						values[ii] = [cdk[p],i];
+						ii++;			
+						y_pos+=unit.row+unit.header;
+					}
+				}
+
+				controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add a parameter (midi cc input)", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.midi.parameter."+ii);
+				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
+				controls[ii].presentation(1);
+				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
+				values[ii] = [cdk[p],"parameters"];
+				ii++;			
+				y_pos+=unit.row+unit.header;
+				
 				if(cd.contains(cdk[p]+"::connections::out::hardware")){
 					controls[ii] = this.patcher.newdefault(10, 100, "comment", "@bgcolor", [0.594, 0.449, 0.000, 1.000], "@textcolor", [0,0,0,1]);
 					controls[ii].message("set", "out (from hardware, to benny)");
@@ -2494,6 +2562,14 @@ function keybcallback(data){
 			}else if(id[2]=="outport"){
 				post("\nwrite outport",values[id[3]][0],values[id[3]][1][data.value]);
 				configfile.replace("hardware::"+values[id[3]][0]+"::midi_out",values[id[3]][1][data.value]);
+			}else if(id[2]=="parameter"){
+				if(id[3]=="name"){
+					configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+values[id[4]][1]+"]::name",data.value);
+				}else if(id[3]=="channel"){
+					configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+values[id[4]][1]+"]::cc_channel",data.value);
+				}else if(id[3]=="cc"){
+					configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+values[id[4]][1]+"]::cc_number",data.value);
+				}
 			}else{
 				if(id[3]=="channel"){
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::"+id[2]+"::midi_channels["+values[id[4]][1]+"]",data.value);
@@ -2700,30 +2776,55 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",[0]);
 				}
 			}else if(id[2]=="midi"){
-				post("\nadd midi",id); 
-				post(values[id[5]]);
-				var d = id[3];
-				if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections")) configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d,"{ }");
-				if(configfile.contains("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi")){
-					var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi");
-					var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels");
-					var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges");
-					tn.push("new");
-					tc.push(0);
-					tr.push([0,127]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",tn);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",tc);
-					var tra=[];
-					for(var trt=0;trt<tr.length;trt++) tra.push("*");
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",tra);
-					for(var trt=0;trt<tr.length;trt++) configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges["+trt+"]",tr[trt]);
+				post("\nadd midi");//,id); 
+				//post("hw name is",values[id[5]]);
+				if(id[3]=="parameter"){
+					post(" cc (parameter)",id);
+					id[5]=id[4];
+					var d = 0;//values[id[4]][1];
+					if(!configfile.contains("hardware::"+values[id[4]][0]+"::parameters")){
+						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters" , [ '*' ]);
+					}else{
+						var t = configfile.get("hardware::"+values[id[4]][0]+"::parameters");
+						if(!Array.isArray(t)) t=[t];
+						d = t.length;
+					}
+					if(configfile.contains("hardware::"+values[id[4]][0]+"::parameters["+d+"]")){
+						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters["+d+"]" , "{ }");
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name",["new"]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_channels",[0]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_cc",[0]);
+					}else{
+						configfile.append("hardware::"+values[id[4]][0]+"::parameters","*");
+						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters["+d+"]" , "{ }");
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name",["new"]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_channels",[0]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_cc",[0]);
+					}
 				}else{
-					if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
-					configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi" , "{ }");
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",["new"]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",[0]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",["*"]);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges[0]",[0,127]);
+					var d = id[3];
+					if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections")) configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d,"{ }");
+					if(configfile.contains("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi")){
+						var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi");
+						var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels");
+						var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges");
+						tn.push("new");
+						tc.push(0);
+						tr.push([0,127]);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",tn);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",tc);
+						var tra=[];
+						for(var trt=0;trt<tr.length;trt++) tra.push("*");
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",tra);
+						for(var trt=0;trt<tr.length;trt++) configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges["+trt+"]",tr[trt]);
+					}else{
+						if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
+						configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi" , "{ }");
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",["new"]);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",[0]);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",["*"]);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges[0]",[0,127]);
+					}
 				}
 				if(!configfile.contains("hardware::"+values[id[5]][0]+"::midi_handler")){
 					configfile.replace("hardware::"+values[id[5]][0]+"::midi_handler","generic.hardware.midi.handler");
@@ -2787,20 +2888,28 @@ function keybcallback(data){
 					configfile.replace("hardware::"+values[id[4]][0]+"::connections::out::hardware_channels",tc);
 				}
 			}else if(id[2]=="midi"){
-				var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
-				var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
-				var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi");
-				tc.splice(values[id[5]][1],1);
-				tn.splice(values[id[5]][1],1);
-				tr.splice(values[id[5]][1],1);
-				if(tc.length==0){
-					configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi");
-					configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
-					configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
+				if(id[3]=="parameter"){
+					post("\nremoving param number ",values[id[4]][1]);
+					configfile.remove("hardware::"+values[id[4]][0]+"::parameters["+values[id[4]][1]+"]");
+					// var plist = configfile.get("hardware::"+values[id[4]][0]+"::parameters");
+					// plist.splice(values[id[4]][1],1);
+					// configfile.replace("hardware::"+values[id[4]][0]+"::parameters",plist);
 				}else{
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi",tn);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels",tc);
-					configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges",tr);
+					var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
+					var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
+					var tn = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi");
+					tc.splice(values[id[5]][1],1);
+					tn.splice(values[id[5]][1],1);
+					tr.splice(values[id[5]][1],1);
+					if(tc.length==0){
+						configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi");
+						configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
+						configfile.remove("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
+					}else{
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi",tn);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels",tc);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges",tr);
+					}
 				}
 			}else if(id[2]=="block"){
 				configfile.remove("hardware::"+values[id[3]][0]);
