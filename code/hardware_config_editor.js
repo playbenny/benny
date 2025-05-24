@@ -2791,15 +2791,19 @@ function keybcallback(data){
 					}
 					if(configfile.contains("hardware::"+values[id[4]][0]+"::parameters["+d+"]")){
 						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters["+d+"]" , "{ }");
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name",["new"]);
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_channels",[0]);
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_cc",[0]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name","new");
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_channel",0);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_number",0);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::values",["uni",0,127,"lin"]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::type","int");
 					}else{
 						configfile.append("hardware::"+values[id[4]][0]+"::parameters","*");
 						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters["+d+"]" , "{ }");
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name",["new"]);
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_channels",[0]);
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::midi_cc",[0]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name","new");
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_channel",0);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_number",0);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::values",["uni",0,127,"lin"]);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::type","int");
 					}
 				}else{
 					var d = id[3];
@@ -2891,9 +2895,6 @@ function keybcallback(data){
 				if(id[3]=="parameter"){
 					post("\nremoving param number ",values[id[4]][1]);
 					configfile.remove("hardware::"+values[id[4]][0]+"::parameters["+values[id[4]][1]+"]");
-					// var plist = configfile.get("hardware::"+values[id[4]][0]+"::parameters");
-					// plist.splice(values[id[4]][1],1);
-					// configfile.replace("hardware::"+values[id[4]][0]+"::parameters",plist);
 				}else{
 					var tr = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_ranges");
 					var tc = configfile.get("hardware::"+values[id[5]][0]+"::connections::"+id[3]+"::midi_channels");
