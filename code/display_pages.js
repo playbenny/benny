@@ -3960,14 +3960,15 @@ function draw_sidebar(){
 					}else if(block_type=="hardware"){
 						var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 						sidebar.scopes.voicelist = [];
+						var ts = [];
 						if(blocktypes.contains(block_name+"::connections::out")){
 							ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
 						}else if(blocktypes.contains(block_name+"::connections::in")){
 							ts = blocktypes.get(block_name+"::connections::in::hardware_channels");	
 							voffset += MAX_AUDIO_INPUTS;
 						}
-						//post("setting up hardware scopes",ts);
 						if(!Array.isArray(ts)) ts= [ts];
+						//post("setting up hardware scopes",ts,"empty",!is_empty(ts));
 						if(!is_empty(ts)){
 							if(ts[0] != sidebar.scopes.voice){
 								for(tii=0;tii<ts.length;tii++){
@@ -4300,14 +4301,16 @@ function draw_sidebar(){
 						mouse_click_parameters[mouse_index] = "-1";
 						mouse_click_values[mouse_index] = "";	
 						mouse_index++;
+						y_offset = sidebar.scopes.endy + fo1;			
 					}else{
-						for(i=0;i<sidebar.scopes.voicelist.length;i++){
-							// lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
-							click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+						if(sidebar.scopes.voicelist.length>0){
+							for(i=0;i<sidebar.scopes.voicelist.length;i++){
+								// lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+								click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+							}
+							y_offset = sidebar.scopes.endy + fo1;			
 						}
-					}
-					
-					y_offset = sidebar.scopes.endy + fo1;					
+					}						
 				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::midi"))){
 					y_offset = sidebar.scopes.endy + fo1;
 					var sc = 0;
