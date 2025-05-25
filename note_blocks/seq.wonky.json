@@ -21,7 +21,8 @@
 			"out" : {
 				"parameters" : [ "values" ],
 				"dontdefaultall" : 1,
-				"midi" : [ "pitches", "clock" ]
+				"midi" : [ "pitches", "clock", "rhythm step number", "values step number" ],
+				"midi_scopes_types" : [ 0,3,3,3,2]
 			}
 		},
 		"groups" : [
