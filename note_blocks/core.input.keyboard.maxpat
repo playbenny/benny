@@ -872,7 +872,6 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 1012.0, 738.0, 299.0, 36.0 ],
-									"presentation_linecount" : 2,
 									"text" : ";\r\nto_blockmanager request_set_block_parameter $2 5 0"
 								}
 
@@ -886,7 +885,6 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 1052.0, 692.0, 299.0, 36.0 ],
-									"presentation_linecount" : 2,
 									"text" : ";\r\nto_blockmanager request_set_block_parameter $2 5 1"
 								}
 
@@ -1054,7 +1052,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 1046.0, 335.0, 50.0, 48.0 ],
+									"patching_rect" : [ 1046.0, 335.0, 53.0, 48.0 ],
 									"text" : "bang for start of loop"
 								}
 
@@ -3757,6 +3755,15 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-145", 0 ],
+									"order" : 0,
+									"source" : [ "obj-147", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-78", 1 ],
+									"order" : 1,
 									"source" : [ "obj-147", 0 ]
 								}
 
@@ -3821,6 +3828,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-170", 0 ],
+									"order" : 0,
 									"source" : [ "obj-150", 5 ]
 								}
 
@@ -3829,6 +3837,14 @@
 								"patchline" : 								{
 									"destination" : [ "obj-57", 0 ],
 									"source" : [ "obj-150", 6 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-78", 1 ],
+									"order" : 1,
+									"source" : [ "obj-150", 5 ]
 								}
 
 							}
@@ -6643,6 +6659,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 156.0, 654.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -6667,10 +6687,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 339.0, 26.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
