@@ -4,7 +4,10 @@
 		"controllers" : 		{
 			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
+				"driver" : "Midi Fighter Twister",
+				"substitute" : [ "JAMES_16e" ],
 				"outputs" : 16,
+				"scaling" : 1,
 				"type" : "encoder",
 				"channel" : 1,
 				"first" : 0,
@@ -37,19 +40,21 @@
 				}
 ,
 				"buttons" : 				{
-					"first" : 8,
 					"type" : "cc",
-					"channel" : 4,
-					"count" : 6,
 					"globals" : 					{
 						"automap_toggle" : 0,
-						"automap_page" : 1,
-						"lock_automap_control" : 2
+						"automap_page" : 3
 					}
-
+,
+					"channel" : 4,
+					"first" : 8
 				}
 
 			}
+
+		}
+,
+		"matrix" : 		{
 
 		}
 
@@ -65,6 +70,7 @@
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 1, 2 ]
 				}
+
 			}
 
 		}
@@ -78,6 +84,7 @@
 					"hardware" : [ "in" ],
 					"hardware_channels" : [ 1, 2 ]
 				}
+
 			}
 
 		}

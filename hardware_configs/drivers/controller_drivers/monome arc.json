@@ -1,0 +1,12 @@
+{		
+    "monome arc 4" : 			{
+        "name" : "monome arc 4",
+        "driver" : "monome arc",
+        "substitute" : [ "Midi Fighter Twister", "JAMES_16e" ],
+        "outputs" : 4,
+        "scaling" : 0.125,
+        "type" : "encoder",
+        "columns" : 4,
+        "rows" : 1
+    }
+}

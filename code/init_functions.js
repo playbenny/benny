@@ -188,6 +188,7 @@ function initialise_dictionaries(hardware_file){
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
+	SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON = config.get("SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON");
 	TARGET_FPS = config.get("TARGET_FPS");
 	METER_TINT = config.get("METER_TINT");
 	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
@@ -286,7 +287,11 @@ function initialise_dictionaries(hardware_file){
 	send_audio_patcherlist();
 
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
-
+	var seqdict = new Dict;
+	seqdict.name = "seq-piano-roll";
+	seqdict.parse('{}');
+	seqdict.name = "core-keyb-loop-xfer";
+	seqdict.parse('{}');
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
 	
@@ -1211,6 +1216,8 @@ function size(width,height,scale){
 			click_b_w++;
 		}
 		fontheight = (mainwindow_height-24) / 18;
+		config.replace("fontheight", fontheight);
+		config.replace("window",width,height);
 		fontsmall = fontheight / 3.2;
 		config.replace("fontsmall",fontsmall);
 		fo1 = fontheight * 0.1;

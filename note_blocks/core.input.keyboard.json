@@ -93,7 +93,7 @@
 			{
 				"name" : "spawn_player",
 				"type" : "button",
-				"values" : ["firstvoice","spawn","spawn"],
+				"values" : ["firstvoice","grab &_spawn","spawn"],
 				"default" : 0
 			},
 			{

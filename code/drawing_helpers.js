@@ -1256,7 +1256,7 @@ function draw_menu_hint(){
 	if(blocktypes.contains(type+"::colour")){
 		col = blocktypes.get(type+"::colour");
 		cod = shadeRGB(col, bg_dark_ratio);
-		var av = 420/(col[0]+col[1]+col[2]*0.4+0.1);
+		var av = 420/(col[0]+col[1]+col[2]*0.7+0.1);
 		col = shadeRGB(col, av);
 		if(automap.mapped_c == -0.5){
 			mapcolours = [col[0], col[1], col[2]];
@@ -1548,6 +1548,7 @@ function draw_clock(){
 		lcd_main.message("write", h + ":" +m);			
 		if(view_changed)click_zone(toggle_show_timer,1,1,cx,0,cx2,9+fontheight,mouse_index,1);
 	}
+	lcd_main.message("font",mainfont,fontsmall);
 }
 
 function long_sidebar_text(textcontent,size) {

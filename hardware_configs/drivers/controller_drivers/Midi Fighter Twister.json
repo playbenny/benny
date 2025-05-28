@@ -1,0 +1,53 @@
+{
+	"Midi Fighter Twister" : 			{
+		"name" : "Midi Fighter Twister",
+		"driver" : "Midi Fighter Twister",
+		"substitute" : [ "JAMES_16e" ],
+		"outputs" : 16,
+		"scaling" : 1,
+		"type" : "encoder",
+		"channel" : 1,
+		"first" : 0,
+		"columns" : 4,
+		"rows" : 4,
+		"colour" : 				{
+			"type" : "midifighter",
+			"channel" : 2,
+			"first" : 0
+		}
+,
+		"brightness" : 				{
+			"type" : "midifighter",
+			"channel" : 3,
+			"first" : 0,
+			"dim" : 19,
+			"bright" : 48
+		}
+,
+		"value" : 				{
+			"type" : "cc",
+			"channel" : 1,
+			"first" : 0
+		}
+,
+		"resets" : 				{
+			"type" : "cc",
+			"channel" : 2,
+			"first" : 0
+		}
+,
+		"buttons" : 				{
+			"type" : "cc",
+			"globals" : 					{
+				"automap_toggle" : 0,
+				"automap_page" : 1,
+				"capture_controller_loop" : 2,
+				"capture_keyboard_loop" : 5
+			}
+,
+			"channel" : 4,
+			"first" : 8
+		}
+
+	}
+}

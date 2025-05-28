@@ -37,6 +37,7 @@ var LONG_PRESS_TIME = 800;
 var SLIDER_CLICK_SET = 0;
 var SCOPE_DEFAULT_ZOOM = 0.65;
 var SHOW_STATES_ON_PANELS = 1;
+var SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON = 0;
 var BLOCK_TEXTURE_SIZE = 128;
 var UPSAMPLING = 1;
 var RECYCLING = 1;
@@ -407,6 +408,8 @@ var automap = {
 	lock_c : 0,
 	lock_k : 0,
 	lock_q : 0,
+	looping_c : 0,
+	looping_k : 0,
 	colours_c : {
 		darkest : [],
 		dark : [],
@@ -616,7 +619,14 @@ var patternpage = { // info to help draw pattern page fast
 	cursor_divisor : [], // 1/length;
 	column_ends_x : [], //list of ends (start, end of voice 1, .. ,end of last voice) - so v+1 entries.
 	held_state_fires : [],
-	held_pattern_fires: [] //to indicate when a pattern etc is held via shift key..
+	held_pattern_fires: [], //to indicate when a pattern etc is held via shift key..
+	quantise_and_hold: 0 //or by midi, flagged here.
+}
+
+var capture = {
+	keyboard : 0,
+	controller : 0,
+	target : null //which controller
 }
 
 var y_offset;

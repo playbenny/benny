@@ -1,4 +1,4 @@
-outlets = 4;
+outlets = 5;
 inlets = 1;
 var verbose = false;
 
@@ -156,6 +156,16 @@ function block(bn){
             }
             if(verbose) post("\ninitialisation complete:",selected_in_dict,selection_type,selected,blockname);
         }
+        var driver = "generic_midi_driver";
+        if(selected!="none"){
+            post("\nchecking if there's a driver for '"+selected+"'");
+            if(io.contains("controllers::"+selected+"::driver")){
+                post("YES");
+                driver = io.get("controllers::"+selected+"::driver");
+                post(":",driver);
+            }
+        }
+        outlet(4, "patchername", driver);
         outlet(3, blockname);
         outlet(2, selected);
         outlet(1, selection_type);
@@ -180,6 +190,16 @@ function param(value){
                 selected = selected_in_dict;
                 selection_type = "dict";
                 if(verbose) post("\nslider selection:",controllerslist[value],"storing to dictionary");
+                var driver = "generic_midi_driver";
+                if(selected!="none"){
+                    post("\nchecking if there's a driver for '"+selected+"'");
+                    if(io.contains("controllers::"+selected+"::driver")){
+                        post("YES");
+                        driver = io.get("controllers::"+selected+"::driver");
+                        post(":",driver);
+                    }
+                }
+                outlet(4, "patchername", driver);
                 outlet(3, blockname);
                 outlet(2, selected);
                 outlet(1, selection_type);

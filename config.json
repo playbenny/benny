@@ -50,6 +50,7 @@
 	"MAX_HARDWARE_BLOCKS" : 64,
 	"MAX_CONNECTIONS_PER_OUTPUT" : 32,
 	"MAX_OUTPUTS_PER_VOICE" : 128,
+	"SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON" : 0,
 	"MAX_STATES" : 18,
 	"SONGS_FOLDER" : "",
 	"RECORD_FOLDER" : "",
@@ -58,6 +59,7 @@
 	"ENABLE_RECORD_HARDWARE" : 1,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
 	"BOTTOMBAR_HEIGHT" : 3.5,
+	"smart_soft_pickup" : 1,
 	"pattern_recall_timing_quantise" : "1n",
 	"waves_preloading" : 1,
 	"consolevsts" : {

@@ -1704,6 +1704,7 @@ function clear_everything(){
 		record_arm[i]=0;
 	}
 	selected.anysel = 0;
+	patternpage.quantise_and_hold = 0;
 	still_checking_polys = 0;//7;
 	loading.songname = "#reset#";
 	send_note_patcherlist(1);
@@ -1714,7 +1715,10 @@ function clear_everything(){
 	patternpage.column_block = [];
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
-
+	var seqdict = new Dict;
+	seqdict.name = "core-keyb-loop-xfer";
+	seqdict.parse('{}');
+	
 	draw_wave = [];
 	for(i=0;i<128;i++){
 		quantpool.poke(1, i, i);

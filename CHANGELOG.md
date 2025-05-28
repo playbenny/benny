@@ -1,3 +1,15 @@
+05/05/25:
+- important: **breaking change** if you already had a launch control xl, or midi fighter twister configured you should remove it from your hardware profile(s) and re-add. this will make it use the new midi controller drivers written specially for these controllers.
+- hardware manager now supports readymade configurations for common controllers. if benny recognises a controller when you add it in hardware manager the settings will be autofilled and you'll be notified. 
+- monome arc support, including displaying both the type of the control (eg unipolar, bipolar, stepped menu item) and the individual voice parameter values for polyphonic blocks.
+- improved controller ui, colour assignments and storing initial values are easier with the new edit mode
+- end zone forces : for controllers with encoders or motorised controls, you can specify zones at either end of the range that either attract or repel. this is useful for example when mapping to delay feedback controls, which are nice to turn up for a moment but bad if you forget and leave them there too long.
+- smart jumpless soft pickup implemented for controllers with potentiometer outputs. you can disable this in the preferences. smart soft pickup remaps the fader curve to take into account differences between the controller position and the actual value. this means there are no jumps, no dead zones, and increasing the fader value always increases the output value (and the converse).
+- controller looper. there's a button in the ui marked loop, or you can assign a midi button. while held, it captures all controller moves, when released it loops them - the loop length is set by the duration of the press. if you just tap the button it loops the preceding bar. moving any of the looped controls again stops the loop. once you have something looped you can click the 'grab' button to turn that loop into a permanent copy in a new piano roll player block.
+- the keyboard looper has been improved to match the controller one, though the short-tap default loop is 8 bars, and you can adjust the loop capture range in the keyboard block before spawning a piano roll block if you want. both loopers copy a bit of performance prior to the loop into the piano roll when you spawn it, in case the previous take was better.
+- improved piano roll ui - you can click to open / fold lanes, and the automatic focus only expands used lanes.
+- on the panels page, if a block has patterns and the pattern selector is the only parameter assigned to its panel then it displays pattern trigger buttons - one button per available non-empty pattern.
+
 04/05/25:
 - on windows, when using MME drivers, if an audio device (eg bluetooth headphones) disconnects then the max scheduler stops and as a result benny's ui stops too. this is a max/windows issue that i can't fix, but as a workaround if it happens you can scroll down on the launcher window and there's now an emergency save button which will save the contents of your song even if the ui and/or max scheduler have stopped.
 

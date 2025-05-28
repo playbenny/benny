@@ -2,9 +2,42 @@
 	"io" : 	{
 		"keyboards" : [ "Xkey37", "Xkey25" ],
 		"controllers" : 		{
+			"LPD8 mk2" : 			{
+				"name" : [ "LPD8 mk2" ],
+				"substitute" : [  ],
+				"outputs" : 8,
+				"type" : "potentiometer",
+				"channel" : 1,
+				"first" : 1,
+				"scaling" : 0.125,
+				"columns" : 4,
+				"rows" : 2,
+				"buttons" : 				{
+					"first" : 36,
+					"type" : "note",
+					"channel" : 1,
+					"count" : 8
+				}
+
+			}
+,
+			"monome arc 4" : 			{
+				"name" : "monome arc 4",
+				"driver" : "monome arc",
+				"substitute" : [ "Midi Fighter Twister", "JAMES_16e" ],
+				"outputs" : 4,
+				"scaling" : 0.125,
+				"type" : "encoder",
+				"columns" : 4,
+				"rows" : 1
+			}
+,
 			"Midi Fighter Twister" : 			{
 				"name" : "Midi Fighter Twister",
+				"driver" : "Midi Fighter Twister",
+				"substitute" : [ "JAMES_16e" ],
 				"outputs" : 16,
+				"scaling" : 1,
 				"type" : "encoder",
 				"channel" : 1,
 				"first" : 0,
@@ -37,35 +70,16 @@
 				}
 ,
 				"buttons" : 				{
-					"first" : 8,
 					"type" : "cc",
-					"channel" : 4,
-					"count" : 6,
 					"globals" : 					{
 						"automap_toggle" : 0,
 						"automap_page" : 1,
-						"lock_automap_control" : 2
+						"capture_controller_loop" : 2,
+						"capture_keyboard_loop" : 5
 					}
-
-				}
-
-			}
 ,
-			"LPD8 mk2" : 			{
-				"name" : [ "LPD8 mk2" ],
-				"substitute" : [  ],
-				"outputs" : 8,
-				"type" : "potentiometer",
-				"channel" : 1,
-				"first" : 1,
-				"scaling" : 0.125,
-				"columns" : 4,
-				"rows" : 2,
-				"buttons" : 				{
-					"first" : 36,
-					"type" : "note",
-					"channel" : 1,
-					"count" : 8
+					"channel" : 4,
+					"first" : 8
 				}
 
 			}
@@ -316,8 +330,8 @@
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "cvX", "cvY", "mix" ],
-					"hardware_channels" : [ 3, 4, 6, 19 ],
+					"hardware" : [ "in", "cvX", "cvY" ],
+					"hardware_channels" : [ 3, 4, 6 ],
 					"matrix_channels" : [ 1, 2, 4 ]
 				}
 ,
@@ -394,6 +408,31 @@
 				"in" : 				{
 					"hardware" : [ "new", "new" ],
 					"hardware_channels" : [ 33, 34 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.sto" : 		{
+			"type" : "hardware",
+			"substitute" : 102,
+			"max_polyphony" : 1,
+			"help_text" : "oscilator for tuner tests",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "1v/oct in" ],
+					"hardware_channels" : [ 19 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "osc" ],
+					"hardware_channels" : [ 9 ],
+					"dc_block" : [ 0 ]
 				}
 
 			}
