@@ -276,8 +276,10 @@ function draw(){
 		outlet(1,"moveto", x_pos + st , yp2);
 		outlet(1,"lineto", x_pos + st , y_pos+height - 2);
 		outlet(1,"frgb", blockcolour[0]*0.3,blockcolour[1]*0.3,blockcolour[2]*0.3);
-		outlet(1,"moveto", x_pos + (width - 2) * (playheadpos-zst) * zsc, yp2);
-		outlet(1,"lineto", x_pos + (width - 2) * (playheadpos-zst) * zsc, y_pos+height - 2);
+		if((playheadpos>=zst) && ((playheadpos-zst)*zsc<=1)){
+			outlet(1,"moveto", x_pos + (width - 2) * (playheadpos-zst) * zsc, yp2);
+			outlet(1,"lineto", x_pos + (width - 2) * (playheadpos-zst) * zsc, y_pos+height - 2);
+		}
 		var by = y_pos+height - 2;
 		var sy = (height*0.85-3)/129;
 		for(var i=1;i<k.length;i++){

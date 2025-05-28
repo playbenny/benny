@@ -3871,6 +3871,11 @@ function spawn_player(keyblock,auto){
 								var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
 								make_space(tx,ty,1.2);
 								var playerblock = new_block("seq.piano.roll",tx,ty);
+								if(!blocks.contains("blocks["+playerblock+"]::patterns::names")){
+									var pn = [];
+									for(var pni=0;pni<16;pni++)pn.push("");
+									blocks.replace("blocks["+playerblock+"]::patterns::names",pn);
+								}
 								var lbl=blocks.get("blocks["+to+"]::label");
 								if(lbl==blocks.get("blocks["+to+"]::name")){
 									lbl = blocks.get("blocks["+to+"]::label").split(".");
@@ -3879,8 +3884,10 @@ function spawn_player(keyblock,auto){
 								}
 								if(type=="control"){
 									blocks.replace("blocks["+playerblock+"]::label", "mod to."+lbl);
+									blocks.replace("blocks["+playerblock+"]::patterns::names[0]", "rec mod");
 								}else{
 									blocks.replace("blocks["+playerblock+"]::label", "keys to."+lbl);
+									blocks.replace("blocks["+playerblock+"]::patterns::names[0]", "rec keys");
 								}
 								//copy the relevant bit of sequence into the new block
 								if(!proll.contains(playerblock)) proll.setparse(playerblock, "{}");
@@ -3965,8 +3972,14 @@ function spawn_player(keyblock,auto){
 		make_space(tx,ty,1.2);
 		clear_blocks_selection();
 		var playerblock = new_block("seq.piano.roll",tx,ty);
+		if(!blocks.contains("blocks["+playerblock+"]::patterns::names")){
+			var pn = [];
+			for(var pni=0;pni<16;pni++)pn.push("");
+			blocks.replace("blocks["+playerblock+"]::patterns::names",pn);
+		}
 		if(type=="control"){
 			blocks.replace("blocks["+playerblock+"]::label", "mod to."+blocktypes.get(blocks.get("blocks["+to+"]::name")+"::parameters["+(automap.targetslist[0] - MAX_PARAMETERS * to)+"]::name"));
+			blocks.replace("blocks["+playerblock+"]::patterns::names[0]", "rec mod");
 		}else{
 			var lbl=blocks.get("blocks["+to+"]::label");
 			if(lbl==blocks.get("blocks["+to+"]::name")){
@@ -3974,8 +3987,8 @@ function spawn_player(keyblock,auto){
 				lbl.splice(0,1);
 				lbl.join(".");
 			}
-			post("\nlbl",lbl,"-",blocks.get("blocks["+to+"]::name"));
 			blocks.replace("blocks["+playerblock+"]::label", "keys to."+lbl);
+			blocks.replace("blocks["+playerblock+"]::patterns::names[0]", "rec keys");
 		}
 		new_connection.replace("from::number", +playerblock);
 
