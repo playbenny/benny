@@ -8,7 +8,7 @@
 		"upsample" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "in" ]
+				"audio" : [ "in", "drive mod" ]
 			},
 			"out" : {
 				"audio" : [ "out" ]
@@ -21,11 +21,18 @@
 			},
 			{
 				"contains" : [1,2,2,2,3],
-				"height" : 0
+				"height" : 0,
+				"colour" : -20
 			},
 			{
-				"contains" : [4],
-				"height" : 0
+				"contains" : [4,5,6],
+				"height" : 0,
+				"colour" : 10
+			},
+			{
+				"contains" : [7,8,9],
+				"height" : 0,
+				"colour" : 20
 			}
 		],
 		"parameters" : [
@@ -34,7 +41,7 @@
 				"type" : "wave",
 				"values" : ["wave",0,256],
 				"error_scale" : 0,
-				"wrap" : 0,
+				"wrap" : 1,
 				"default" : 0
 			},
 			{
@@ -58,15 +65,55 @@
 				"type" : "int",
 				"values" : ["uni", 1, 4096, "exp1000"],
 				"wrap" : 0,
-				"default" : 0.3
+				"default" : 0.4
 			},
 			{
 				"name" : "drive",
 				"type" : "float",
-				"values" : [" bi", -24, 24, "lin"],
+				"values" : ["bi", -24, 24, "lin"],
 				"error_scale" : 0,
-				"wrap" : 1,
+				"wrap" : 0,
 				"default" : 0.25
+			},
+			{
+				"name" : "signal to_selector fn",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1		
+			},
+			{
+				"name" : "env to_selector fn",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "env_attack_time",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "env_release_time",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "lowpass on_selector fn",
+				"type" : "float",
+				"values" : ["uni", 100, 24000, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1	
 			}
 		]
 	}
