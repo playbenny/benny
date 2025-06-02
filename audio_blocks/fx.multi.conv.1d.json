@@ -11,7 +11,7 @@
 				"audio" : [ "in", "drive mod" ]
 			},
 			"out" : {
-				"audio" : [ "out" ]
+				"audio" : [ "out", "selectorfn" ]
 			}
 		},
 		"groups" : [
@@ -20,17 +20,22 @@
 				"height" : 0
 			},
 			{
-				"contains" : [1,2,2,2,3],
+				"contains" : [1,1,1,2],
 				"height" : 0,
 				"colour" : -20
 			},
 			{
-				"contains" : [4,5,6],
+				"contains" : [3,9],
 				"height" : 0,
 				"colour" : 10
 			},
 			{
-				"contains" : [7,8,9],
+				"contains" : [4,5,10],
+				"height" : 0,
+				"colour" : 15
+			},
+			{
+				"contains" : [6,7,8,11,12],
 				"height" : 0,
 				"colour" : 20
 			}
@@ -45,16 +50,9 @@
 				"default" : 0
 			},
 			{
-				"name" : "channel",
-				"type" : "int",
-				"values" : ["uni", 1, 2, "lin"],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0.25
-			},
-			{
 				"name" : "impulse_recorded_length",
 				"type" : "menu_d",
+				"force_label" : 1,
 				"values" : [32, 64, 128, 256, 512, 1024, 2048, 4096],
 				"error_scale" : 0,
 				"wrap" : 0,
@@ -114,6 +112,38 @@
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 1	
+			},
+			{
+				"name" : "out trim (db)",
+				"type" : "float",
+				"values" : ["bi", -48, 48, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "slow env to_selector fn",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "slow env_attack_time",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "slow env_release_time",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
 			}
 		]
 	}

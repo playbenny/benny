@@ -14,6 +14,18 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 769.0, 4.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
@@ -26,15 +38,15 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "onepole(input){\r\n\tHistory y0(0);\r\n\r\n\tParam cutoff(1000, max=20000, min=1);\r\n\r\n\tcoeff_a = clip(sin(abs(cutoff) * 2 * PI / samplerate), 0, 1);\r\n\tmix5 = mix(y0, input, coeff_a);\r\n\ty0 = fixdenorm(mix5);\r\n\treturn mix5;\r\n}\r\n\r\nParam steps(128);\r\nParam impulselength(400);\r\nParam uselength(128);\r\nParam drive(1);\r\nParam env_att(1000);\r\nParam env_rel(1000);\r\nParam sig_to_sel(1);\r\nParam env_to_sel(0);\r\nParam sel_filt(24000);\r\n\r\nBuffer ir(\"waves.1\");\r\n\r\nData partialsums(5000);\r\n\r\nHistory pointer(0);\r\n\r\nsigdrv = in1*0.125*slide(drive,1000,1000);\t // todo: investigate doing 'sag' like airwindows\r\nx = sigdrv;//* sig_to_sel + env_to_sel * slide(abs(sigdrv),env_att,env_rel);  //env follow instead of direct for the selector fn\r\nif(sel_filt<23000){\r\n\tx = onepole(x, cutoff = sel_filt);\r\n\tif(sel_filt<12000){\r\n\t\tx = onepole(x, cutoff = 24000 - (12000 - sel_filt)*2);\r\n\t}\r\n}\r\nx = clip(x,-1,1);\r\n\r\n//selector function\r\nsc = ((x+1) * steps);\r\ns = floor(sc);\r\nsf = sc - s;\r\nsfb = 1 - sf;  // interp factors\r\n\r\nsp = s * impulselength; //pointers to the two impulses in the buffer\r\nspb = sp + impulselength;\r\n\r\nsf *= 0.125*in1;\r\nsfb *= 0.125*in1;\r\n\r\n//now add the whole impulse to the partial sums\r\nfor(i=0;i<uselength;i+=1){\r\n\tptw = i + pointer;\r\n\tptw -= (ptw>=impulselength)? impulselength : 0;\r\n\tex = peek(partialsums, ptw, 0);\r\n\tex += (sfb * peek(ir, sp+i, 0) + sf * peek(ir, spb+i,0));\r\n\tpoke(partialsums, ex, ptw, 0);\r\n}\r\n\r\nout1 = peek(partialsums, pointer, 0);\r\n\r\npoke(partialsums, 0, pointer, 0);\r\npointer += 1;\r\nif(pointer>=impulselength) pointer = 0;\r\n",
+					"code" : "onepole(input){\r\n\tHistory y0(0);\r\n\r\n\tParam cutoff(1000, max=20000, min=1);\r\n\r\n\tcoeff_a = clip(sin(abs(cutoff) * 2 * PI / samplerate), 0, 1);\r\n\tmix5 = mix(y0, input, coeff_a);\r\n\ty0 = fixdenorm(mix5);\r\n\treturn mix5;\r\n}\r\n\r\nParam steps(128);\r\nParam impulselength(400);\r\nParam uselength(128);\r\nParam drive(1);\r\nParam env_att(1000);\r\nParam env_rel(1000);\r\nParam sig_to_sel(1);\r\nParam env_to_sel(0);\r\nParam sel_filt(24000);\r\nParam trim(1);\r\nParam slow_env_att(1000);\r\nParam slow_env_rel(1000);\r\nParam slow_to_sel(0);\r\n\r\nBuffer ir(\"waves.1\");\r\n\r\nData partialsums(5000);\r\n\r\nHistory pointer(0);\r\n\r\nsigdrv = in1*0.125*slide(drive,1000,1000);\t // todo: investigate doing 'sag' like airwindows\r\nx = sigdrv * sig_to_sel + in2 + env_to_sel * slide(abs(sigdrv),env_att,env_rel);  //env follow instead of direct for the selector fn\r\nx += slow_to_sel * sqrt(slide(sigdrv*sigdrv,slow_env_att,slow_env_rel));\r\nif(sel_filt<23000){\r\n\tx = onepole(x, cutoff = sel_filt);\r\n\tif(sel_filt<12000){\r\n\t\tx = onepole(x, cutoff = 24000 - (12000 - sel_filt)*2);\r\n\t}\r\n}\r\nx = clip(x,-1,1);\r\nout2 = x;\r\n//selector function\r\nsc = ((x+1) * steps);\r\ns = floor(sc);\r\nsf = sc - s;\r\nsfb = 1 - sf;  // interp factors\r\n\r\nsp = s * impulselength; //pointers to the two impulses in the buffer\r\nspb = sp + impulselength;\r\n\r\nsf *= trim*in1;\r\nsfb *= trim*in1;\r\n\r\n//now add the whole impulse to the partial sums\r\nfor(i=0;i<uselength;i+=1){\r\n\tptw = i + pointer;\r\n\tptw -= (ptw>=impulselength)? impulselength : 0;\r\n\tex = peek(partialsums, ptw, 0);\r\n\tex += (sfb * peek(ir, sp+i, 0) + sf * peek(ir, spb+i,0));\r\n\tpoke(partialsums, ex, ptw, 0);\r\n}\r\n\r\nout1 = peek(partialsums, pointer, 0);\r\n\r\npoke(partialsums, 0, pointer, 0);\r\npointer += 1;\r\nif(pointer>=impulselength) pointer = 0;\r\n",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-3",
 					"maxclass" : "codebox",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 3.0, 32.0, 790.0, 592.0 ]
 				}
 
@@ -55,6 +67,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 1 ],
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
