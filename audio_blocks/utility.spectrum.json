@@ -1,0 +1,32 @@
+{
+	"utility.spectrum" : {
+		"patcher" : "utility.spectrum",
+		"block_ui_patcher" : "self",
+		"type" : "audio",
+		"help_text" : "pops open a window with a spectrum view. todo: draw it in benny instead.",
+		"max_polyphony" : 1,
+		"upsample" : 0,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in"]
+			},
+			"out" : {
+				"audio" : [ "testtone" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "test tone freq",
+				"type" : "float",
+				"values" : ["uni", 1, 22000, "exp10"],
+				"wrap" : 0,
+				"default" : 0.4
+			}
+		]
+	}
+}
