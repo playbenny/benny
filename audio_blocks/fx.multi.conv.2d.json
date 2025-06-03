@@ -1,0 +1,191 @@
+{
+	"fx.multi.conv.2d" : {
+		"patcher" : "fx.multi.conv.2d",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Experimental, likely to change. Like convolution, but working with a set of impulse responses taken at many different signal levels. Surprisingly pleasant way of modelling 'weakly nonlinear' hardware saturation.££The default is to look up (and interpolate between) impulse levels based on the current sample value, but using an envelope here also sounds good. There's a second, very slow, rms env follower that you can feed in here too to add character.££As opposed to the multi.conv.1d block, this one loads a pair of impulses and lets you fade between them manually or driven by the signal or envelopes.  ££This block supports oversampling, which is recommended if you're getting more overdriven tones out of it.",
+		"max_polyphony" : 0,
+		"upsample" : 4,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in", "drive mod" ]
+			},
+			"out" : {
+				"audio" : [ "out", "selectorfn" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0],
+				"height" : 0
+			},
+			{ 
+				"contains" : [12],
+				"height" : 0
+			},
+			{
+				"contains" : [13,3,8],
+				"height" : 0,
+				"colour" : 10
+			},
+			{
+				"contains" : [4,5,9],
+				"height" : 0,
+				"colour" : 15
+			},
+			{
+				"contains" : [14,15,16],
+				"height" : 0,
+				"colour" : 30
+			},
+			{
+				"contains" : [6,7,10,11],
+				"height" : 0,
+				"colour" : 20
+			},
+			{
+				"contains" : [1,1,1,2],
+				"height" : 0,
+				"colour" : -20
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "impulses wave file (a)",
+				"type" : "wave",
+				"values" : ["wave",0,256],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "impulse_recorded_length",
+				"type" : "menu_d",
+				"force_label" : 1,
+				"values" : [32, 64, 128, 256, 512, 1024, 2048, 4096],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5125
+			},
+			{
+				"name" : "impulse_use_length",
+				"type" : "int",
+				"values" : ["uni", 1, 4096, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.4
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "signal to_selector fn",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 1		
+			},
+			{
+				"name" : "env to_selector fn",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "env_attack_(samples)",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "env_release_(samples)",
+				"type" : "float",
+				"values" : ["uni", 0, 10000, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "out trim (db)",
+				"type" : "float",
+				"values" : ["bi", -48, 48, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "slow env to_selector fn",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "slow env_attack_(s)",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "slow env_release_(s)",
+				"type" : "float",
+				"values" : ["uni", 0, 100, "exp100"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "impulses wave file (b)",
+				"type" : "wave",
+				"values" : ["wave",0,256],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "a-b fade",
+				"type" : "float",
+				"values" : ["uni", 0,1 , "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "signal to_a-b fade",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5		
+			},
+			{
+				"name" : "env to_a-b fade",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			},
+			{
+				"name" : "slow env to_a-b fade",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5					
+			}
+		]
+	}
+}
