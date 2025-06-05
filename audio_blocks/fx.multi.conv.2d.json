@@ -62,7 +62,7 @@
 				"name" : "impulse_recorded_length",
 				"type" : "menu_d",
 				"force_label" : 1,
-				"values" : [32, 64, 128, 256, 512, 1024, 2048, 4096],
+				"values" : [116, 32, 48, 64, 128, 256, 512, 1024, 2048, 4096],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.5125
