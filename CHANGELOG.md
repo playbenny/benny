@@ -1,5 +1,6 @@
 3/6/25:
 - utility.spectrum block added - outputs a test tone, shows the spectrum of its input in a pop up window.
+
 28/5/25:
 - important: **breaking change** if you already had a launch control xl, or midi fighter twister configured you should remove it from your hardware profile(s) and re-add. this will make it use the new midi controller drivers written specially for these controllers.
 - hardware manager now supports readymade configurations for common controllers. if benny recognises a controller when you add it in hardware manager the settings will be autofilled and you'll be notified. 
