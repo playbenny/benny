@@ -3918,6 +3918,13 @@ function conn_set_from_output(c,value){
 	sidebar.connection.show_from_outputs = 0;
 	new_connection = connections.get("connections["+c+"]");
 	new_connection.replace("from::output::number",o);
+	var otype = new_connection.get("from::output::type");
+	if(ty!=otype){//type change, sense check default offsets
+		if(ty=="midi"){
+			new_connection.replace("conversion::offset", 0.5);
+			new_connection.replace("conversion::offset2", 0.5);			
+		}	
+	}
 	new_connection.replace("from::output::type",ty);
 	remove_connection(c);
 	connections.replace("connections["+c+"]",new_connection);

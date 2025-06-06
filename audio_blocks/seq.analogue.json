@@ -21,7 +21,8 @@
 			},
 			"out" : {
 				"audio" : [ "note value", "vel value"],
-				"midi" : [ "notes" , "position", "step out 1","step out 2","step out 3","step out 4","step out 5","step out 6","step out 7","step out 8","step out 9","step out 10","step out 11","step out 12","step out 13","step out 14","step out 15","step out 16"]
+				"midi" : [ "notes" , "position", "step out 1","step out 2","step out 3","step out 4","step out 5","step out 6","step out 7","step out 8","step out 9","step out 10","step out 11","step out 12","step out 13","step out 14","step out 15","step out 16"],
+				"default" : 0
 			}
 		},
 		"groups" : [
