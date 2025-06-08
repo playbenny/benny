@@ -1,3 +1,6 @@
+8/6/25:
+- fx.metal.box - hardware preamp/circuit colour replication, based on multi-level impulses sampled from recording equipment in my studio. 
+
 3/6/25:
 - utility.spectrum block added - outputs a test tone, shows the spectrum of its input in a pop up window.
 

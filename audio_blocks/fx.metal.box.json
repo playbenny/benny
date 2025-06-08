@@ -3,7 +3,7 @@
 		"patcher" : "fx.metal.box",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Gentle saturation models. Based on multi-sampled impulses from studio hardware. Best in the subtle ranges, but you can push them harder - there's plenty of headroom in the samples. If you drive them you should turn upsampling on for the block, 4x works well usually.",
+		"help_text" : "Gentle saturation models. Based on multi-sampled impulses from studio hardware. Best in the subtle ranges, and particularly work well for gelling sounds together with subtle intermodulation. But you can push them harder - there's plenty of headroom in the samples. If you drive them you should turn upsampling on for the block, 4x works well usually. The bite control adjusts the dynamic behaviour of the saturation, as you turn it up more of the transients are allowed through.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -43,7 +43,7 @@
 				"default" : 0.25
 			},
 			{
-				"name" : "speed",
+				"name" : "bite",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"error_scale" : 0,
