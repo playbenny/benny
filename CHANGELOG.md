@@ -1,5 +1,6 @@
 8/6/25:
 - fx.metal.box - hardware preamp/circuit colour replication, based on multi-level impulses sampled from recording equipment in my studio. works great on the end of an instrument's signal chain to gently glue it together, push up the level and round off the edges. the whole development of this was inspired by the process of helping my friend christopher duffin (xam duo) mix some tunes, and noticing that a lot of his parts (from things like a dx7 or juno or a rhodes recorded hot) didn't need much mix processing because the pushy, squared off output stages of all the gear involved had done half the job for us.
+- fx.convolve - general purpose efficient convolution processor. you need to install the HISStools package in max package manager then you can convolve incoming audio with impulses stored in the waves page of benny. (also works well with samples that aren't reverb impulses).
 
 3/6/25:
 - utility.spectrum block added - outputs a test tone, shows the spectrum of its input in a pop up window.
