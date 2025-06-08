@@ -324,7 +324,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5,	
+				"default" : 0,	
 				"error_scale" : 0.3
 			},
 			{
@@ -332,7 +332,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5,	
+				"default" : 1,	
 				"error_scale" : 0.3
 			},	
 			{
