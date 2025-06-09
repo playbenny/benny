@@ -2,10 +2,14 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 	//clears, builds the list for this specific folder, and updates the songs dict
 
 	if(folder_name_or_path=="songs"){
+		preload_note_voice_list = [];
+		preload_audio_voice_list = [];
 		var f = new Folder(SONGS_FOLDER);
 		var df = 0;
 		post("\nreading songs from folder: ",SONGS_FOLDER);
 	}else if(folder_name_or_path=="templates"){
+		preload_note_voice_list = [];
+		preload_audio_voice_list = [];
 		var f = new Folder(projectpath+"templates");
 		var df = 1;
 		post("\nreading songs from folder: ",projectpath+"templates");
@@ -1329,7 +1333,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 //copy blocks and connections and states and properties into one dict
 	loading.save_wait_count = 0;
-	if(loading.songpath==undefined) loading.songpath="";
+	if(loading.songpath==undefined) loading.songpath=SONGS_FOLDER;
 	if(selectedonly){
 		//post("\nsaving selection only");
 		loading.save_type = "selected";
@@ -1490,6 +1494,8 @@ function file_written(fname){//called when max reports successfully saving the c
 	}else{
 		loading.object_target = fname;
 		loading.songname = fname.split("/").pop();
+		loading.songpath = fname.split(loading.songname)[0];
+		post("\nfname returned from max is",fname,"so songname is ",loading.songname,"and path is",loading.songpath);
 	}
 	post("\nsave as set obj target to",loading.object_target);
 }

@@ -98,7 +98,12 @@ function systemtypeis(type){
 function initialise_reset(hardware_file){
 	post("\n\nreset stage 1 : resets\n------------------");
 	thispatcherstuff();
-	messnamed("getpath","bang");
+		var path = this.patcher.filepath;
+	projectpath = path.split("patchers/");
+	projectpath = projectpath[0];
+	post("\npath is",projectpath);
+
+//	messnamed("getpath","bang");
 	config.parse('{ }');
 	config.import_json("config.json");
 	userconfig.parse('{ }');
@@ -299,6 +304,8 @@ function initialise_dictionaries(hardware_file){
 	if((projectpath!="")&&(SONGS_FOLDER.indexOf("/")==-1)){
 		SONGS_FOLDER = projectpath + SONGS_FOLDER;
 		post("\songs folder is ",SONGS_FOLDER);
+	}else{
+		post("\nsongs folder is ",SONGS_FOLDER, "project path is",projectpath,"and debug number is",SONGS_FOLDER.indexOf("/"));
 	}	
 	read_songs_folder("songs");
 	if(startup_loadfile=="autoload") read_songs_folder("templates");

@@ -3416,7 +3416,7 @@ function draw_sidebar(){
 		lcd_main.message("frgb", menucolour);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("textface", "normal");
-		post("\nsidebar notification is:\n",sidebar.notification);
+		post("\nsidebar notification is: ",sidebar.notification);
 		long_sidebar_text(sidebar.notification,2);
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
 	}else if(sidebar.mode == "edit_song_notes"){
