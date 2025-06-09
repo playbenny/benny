@@ -118,6 +118,7 @@
         "374" : ["ctrl-V", "blocks_paste", 0],
         "377" : ["ctrl-Y", "redo_button"],
         "378" : ["ctrl-Z", "undo_button"],
+        "356" : ["ctrl-D", "duplicate_selection"],
         "628" : ["shift-T", "select_tree_key"],
         "2420" : ["ctrl-alt-T", "reset_set_timer"],
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
