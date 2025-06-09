@@ -624,6 +624,11 @@ function copy_selection(target){
 	}
 }
 
+function duplicate_selection() {
+    copy_selection();
+    blocks_paste(0);
+}
+
 function change_upsampling(b,u){ // send block, -1 to just set it for all voices.
 	if(u>-1){
 		blocks.replace("blocks["+b+"]::upsample",u);
