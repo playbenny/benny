@@ -1359,11 +1359,11 @@ function check_its_safe_to_save(){
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
 		if(loading.save_type=="selected"){
-			post(" selected");
+			post("selected");
 			messnamed("trigger_save_selected", "bang");
 			timed_sidebar_notification("saved as "+loading.songname,2000);
 		}else if(loading.save_type=="named"){
-			post(" as:",loading.songpath+loading.songname);
+			post("as:",loading.songpath+loading.songname);
 			messnamed("save_named",loading.songpath+loading.songname);
 			timed_sidebar_notification("saved as "+loading.songname,2000);
 			for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
@@ -1483,10 +1483,17 @@ function write_userconfig(){
 }
 
 function file_written(fname){//called when max reports successfully saving the current song dict so we have the filename
-	loading.object_target = fname;
-	loading.songname = fname.split("/").pop();
+	if((fname.indexOf("/")<0)){ // the max dict object reports full filename & path for a save as, but if the file exists it just reports the name.. this is workaround for that 
+		//don't update loading.object_target, it's just a save not a saveas
+		loading.object_target = loading.songpath+fname;
+		post("\nobj target is still",loading.object_target);
+	}else{
+		loading.object_target = fname;
+		loading.songname = fname.split("/").pop();
+	}
 	post("\nsave as set obj target to",loading.object_target);
 }
+
 function select_recent_folder(name,blank){
 	SONGS_FOLDER = name;
 	var recent_folders=[];
