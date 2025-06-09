@@ -1362,6 +1362,9 @@ function check_its_safe_to_save(){
 	}
 	if(loading.save_waitlist.length == 0){
 		post("\nall store routines complete, finalising save");
+		if(loading.songpath.slice(-1)!="/")loading.songpath=loading.songpath+"/";
+		post("\nsongpath:",loading.songpath);
+		post("\nsongname:",loading.songname);
 		if(loading.save_type=="selected"){
 			post("selected");
 			messnamed("trigger_save_selected", "bang");
