@@ -1,14 +1,12 @@
 function read_songs_folder(folder_name_or_path){ //also loads all song json files, and constructs the wave preload list.
 	//clears, builds the list for this specific folder, and updates the songs dict
-
+	var getpreloadlists=0;
 	if(folder_name_or_path=="songs"){
-		preload_note_voice_list = [];
-		preload_audio_voice_list = [];
 		var f = new Folder(SONGS_FOLDER);
 		var df = 0;
 		post("\nreading songs from folder: ",SONGS_FOLDER);
 	}else if(folder_name_or_path=="templates"){
-		preload_note_voice_list = [];
+		if(preload_note_voice_list == []) getpreloadlists=1;
 		preload_audio_voice_list = [];
 		var f = new Folder(projectpath+"templates");
 		var df = 1;
@@ -103,34 +101,36 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				}
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
-			var td = blocktypes_count_this.get("note");
-			if(td!=null){
-				var tdk = td.getkeys();
-				for(var t=0;t<tdk.length;t++){
-					var c = td.get(tdk[t]);
-					var e = 0;
-					if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
-					if(c>e){
-						blocktypes_count_cumulative.replace("note::"+tdk[t],c);
-						for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+			if(getpreloadlists){
+				var td = blocktypes_count_this.get("note");
+				if(td!=null){
+					var tdk = td.getkeys();
+					for(var t=0;t<tdk.length;t++){
+						var c = td.get(tdk[t]);
+						var e = 0;
+						if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
+						if(c>e){
+							blocktypes_count_cumulative.replace("note::"+tdk[t],c);
+							for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+						}
 					}
 				}
-			}
-			var td = blocktypes_count_this.get("audio");
-			if(td!=null){
-				var tdk = td.getkeys();
-				for(var t=0;t<tdk.length;t++){
-					var c = td.get(tdk[t]);
-					var e = 0;
-					if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
-					if(c>e){
-						blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
-						for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+				var td = blocktypes_count_this.get("audio");
+				if(td!=null){
+					var tdk = td.getkeys();
+					for(var t=0;t<tdk.length;t++){
+						var c = td.get(tdk[t]);
+						var e = 0;
+						if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
+						if(c>e){
+							blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
+							for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+						}
 					}
 				}
 			}
 		}
-		post("\npreload lists prepared: ",preload_note_voice_list.length,"note blocks and",preload_audio_voice_list.length,"audio blocks.");
+		if(getpreloadlists) post("\npreload lists prepared: ",preload_note_voice_list.length,"note blocks and",preload_audio_voice_list.length,"audio blocks.");
 		//note_patcherlist = preload_note_voice_list.slice(0,MAX_NOTE_VOICES);
 		//audio_patcherlist = preload_audio_voice_list.slice(0,MAX_AUDIO_VOICES);
 		//still_checking_polys |= 3;
@@ -1361,10 +1361,10 @@ function check_its_safe_to_save(){
 		loading.save_waitlist=[];
 	}
 	if(loading.save_waitlist.length == 0){
-		post("\nall store routines complete, finalising save");
 		if(loading.songpath.slice(-1)!="/")loading.songpath=loading.songpath+"/";
 		post("\nsongpath:",loading.songpath);
 		post("\nsongname:",loading.songname);
+		post("\nall store routines complete, finalising save");
 		if(loading.save_type=="selected"){
 			post("selected");
 			messnamed("trigger_save_selected", "bang");
@@ -1493,14 +1493,14 @@ function file_written(fname){//called when max reports successfully saving the c
 	if((fname.indexOf("/")<0)){ // the max dict object reports full filename & path for a save as, but if the file exists it just reports the name.. this is workaround for that 
 		//don't update loading.object_target, it's just a save not a saveas
 		loading.object_target = loading.songpath+fname;
-		post("\nobj target is still",loading.object_target);
+		// post("\nobj target is still",loading.object_target);
 	}else{
 		loading.object_target = fname;
 		loading.songname = fname.split("/").pop();
 		loading.songpath = fname.split(loading.songname)[0];
-		post("\nfname returned from max is",fname,"so songname is ",loading.songname,"and path is",loading.songpath);
+		// post("\nfname returned from max is",fname,"so songname is ",loading.songname,"and path is",loading.songpath);
 	}
-	post("\nsave as set obj target to",loading.object_target);
+	// post("\nsave as set obj target to",loading.object_target);
 }
 
 function select_recent_folder(name,blank){
