@@ -20,7 +20,7 @@
 		"groups" : [
 			{ 
 				"contains" : [0, 0, 0, 0, 2],
-				"height" : 2
+				"height" : 0
 			},
 			{
 				"contains" : [1],
@@ -40,6 +40,7 @@
 				"name" : "quality",
 				"type" : "menu_l",
 				"values" : ["basic", "good", "better", "best"],
+				"columns" : 4,
 				"wrap" : 0,
 				"default" : 0.3
 			},

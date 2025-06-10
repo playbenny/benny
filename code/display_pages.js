@@ -4815,7 +4815,12 @@ function draw_sidebar(){
 										}
 									}else if((p_type=="scale")){
 										var h_s=1.5;
-										var poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+										var count = p_values.length;
+										if(count < 9){
+											var poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
+										}else{
+											var poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+										}
 										var cp = menudarkest;
 										if(poolno>0) cp = config.get("palette::gamut["+(((poolno-1)* config.getsize("palette::gamut")/8)|0)+"]::colour");
 										paramslider_details[curp]=[x1,y1,x1*0.75+0.25*x2-fontheight*0.1,y2,cp[0]/2,cp[1]/2,cp[2]/2,mouse_index,block,curp,flags,["scale"],namelabely,"scale",1,block_name,0,0,0];

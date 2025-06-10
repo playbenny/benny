@@ -973,11 +973,12 @@ function find_scales_block(){
 				y = 2+blocks.get("blocks["+sidebar.selected+"]::space::y");
 			}
 		}
-		clear_blocks_selection();
+		//clear_blocks_selection();
 		scalesblock = new_block("core.scales.shapes",x,y);
-		draw_block(scalesblock);
+		draw_blocks();//scalesblock);
+		selected.block[ss]=1;
 		sidebar.selected = ss;
-		redraw_flag.flag |= 4;
+		//redraw_flag.deferred |= 2;
 	}
 }
 

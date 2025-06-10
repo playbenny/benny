@@ -20,7 +20,7 @@
 			},			
 			{ 
 				"contains" : [1, 2,3,4],
-				"height" : 0
+				"height" : 2
 			}			
 		],
 		"parameters" : [
@@ -33,7 +33,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "start_note",
+				"name" : "start note",
 				"type" : "note",
 				"values" : ["uni", 0, 127, "lin"],
 				"error_scale" : 0,
