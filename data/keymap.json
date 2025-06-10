@@ -82,6 +82,7 @@
         "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
         "-28" : ["F12", "open_core_control_auto"],
         "-27" : ["F11", "toggle_fullscreen"],
+        "358" : ["cmd-F", "toggle_fullscreen"],
         "228" : ["ctrl-F12" , "set_sidebar_mode","cpu"],
         "93" : ["]", "cycle_automap_offset", 1],
         "91" : ["[", "cycle_automap_offset", -1]
