@@ -24,7 +24,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [],
+				"contains" : [11],
 				"patterncontrols" : 1
 			},
 			{ 
@@ -51,6 +51,9 @@
 			"playhead_offset" : 0,
 			"pattern_size" : 768,
 			"pattern_start" : 1
+		},
+		"panel" : {
+			"parameters" : [11]
 		},
 		"voice_data" : {},
 		"parameters" : [
