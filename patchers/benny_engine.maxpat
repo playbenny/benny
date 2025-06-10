@@ -8912,6 +8912,14 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-25", 0 ],
+									"order" : 22,
+									"source" : [ "obj-35", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-27", 0 ],
 									"order" : 13,
 									"source" : [ "obj-35", 0 ]
@@ -8962,6 +8970,14 @@
 								"patchline" : 								{
 									"destination" : [ "obj-4", 0 ],
 									"order" : 8,
+									"source" : [ "obj-35", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-40", 0 ],
+									"order" : 21,
 									"source" : [ "obj-35", 0 ]
 								}
 
@@ -9150,7 +9166,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 325.0, 123.0, 1557.0, 480.0 ],
+						"rect" : [ 325.0, 123.0, 1557.0, 662.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{

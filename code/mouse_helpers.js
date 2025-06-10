@@ -1455,11 +1455,32 @@ function request_edit_wave(block){
 
 function jump_to_scales_shapes(){
 	//first see if it has been added
+	if(scalesblock>-1){
+		clear_blocks_selection();
+		var v = 0;
+		if((sidebar.selected>-1)&&blocks.contains("blocks["+sidebar.selected+"]::name")){
+			var params = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::parameters");
+			if(!Array.isArray(params))params = [params];
+			for(var p=0;p<params.length;p++){
+				if(params[p].get("type")=="scale"){
+					var siz=params[p].get("values").length;
+					v = (siz==8) + Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*sidebar.selected+p)*(siz-0.01));
+					post("\nfound scale parameter in current block. scale is:",v,"size is",siz,"param is",p,"sel",sidebar.selected,"peek",parameter_value_buffer.peek(1,MAX_PARAMETERS*scalesblock+p));
+				}
+			}
+		}
+		select_block_and_voice(scalesblock,v-1);
+		return 1;
+	}
 	for(var i =0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
 			if(blocks.get("blocks["+i+"]::name")=="core.scales.shapes"){
 				clear_blocks_selection();
-				select_block(i);
+				scalesblock = i;
+				select_block(i,i);
+				redraw_flag.flag |= 4;
+
+				post("\njumping to ",i);
 				return 1;
 			}
 		}
