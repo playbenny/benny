@@ -3,7 +3,7 @@
 		"patcher" : "midi.scale.quantise",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Quantises notes to the scales defined in the core.scales.shapes module. ££This block works efficiently for fast note streams (including if you patch an audio signal to the note in) but there is also a utility.audio.scale.quantise which works all the way up to audio rate.",
+		"help_text" : "Quantises notes to scales. ££In quantise mode the first note in the scale below the incoming one is picked, in index mode the note number of the input is used as the index in the list of notes in the scale. For example if the scale was CEG and you played C0,C#0,F0 into it in quantise mode you'd get C0,C0,E0, in index mode you'd get C0,E0,G1. ££Scales are saved and can be dynamically set by incoming midi in the core.scales.shapes block, so this will be loaded automatically. ££This block works efficiently for fast note streams (including if you patch an audio signal to the note in) but there is also a utility.audio.scale.quantise which works all the way up to audio rate.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -16,17 +16,21 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 3, 1,2, 4]
+				"contains" : [0,0,0,0,3],
+				"height" : 0
+			},{
+				"contains" :  [ 1, 2, 4],
+				"height" : 2
 			}		
 		],
 		"parameters" : [
 			{
 				"name" : "scale",
-				"type" : "menu_i",
+				"type" : "scale",
 				"values" : ["chromatic","1","2","3","4","5","6","7","8"],
 				"wrap" : 1,
 				"error_scale" : 0,
-				"default" : 0
+				"default" : 0.05
 			},
 			{
 				"name" : "mode",
@@ -34,7 +38,8 @@
 				"values" : ["quantise", "index"],
 				"wrap" : 1,
 				"error_scale" : 0,
-				"default" : 0
+				"default" : 0,
+				"force_label" : 1
 			},
 			{
 				"name" : "pre shift",
@@ -46,16 +51,17 @@
 			{
 				"name" : "edit_scales",
 				"type" : "button",
-				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"values" : ["core","jump to_scales_block","jump_to_scales_shapes"],
 				"default" : 0
 			},
 			{
 				"name" : "output",
 				"type" : "menu_l",
-				"values" : [ "on_every_note in", "only_on_change" ],
+				"values" : [ "on every_note in", "also on_scale change" ],
 				"wrap" : 1,
 				"error_scale" : 0,
-				"default" : 0.1
+				"default" : 0.1,
+				"force_label" : 1
 			}
 		]
 	}

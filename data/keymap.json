@@ -150,6 +150,8 @@
         "109" : ["M", "mute_selected_block", -1],
         "47" : ["/" , "set_sidebar_mode", "block_search"],
         "2026" : ["ALT-F6", "open_patcher"],
+        "2037" : ["alt-left arrow", "back_button"],
+        "2036" : ["alt-right arrow", "fwd_button"],
         "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "patterns" : {
