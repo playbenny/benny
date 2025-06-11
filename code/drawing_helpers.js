@@ -999,11 +999,9 @@ function draw_keyboard(x1,y1,x2,y2,poolno,cp){
 		v_list = voicemap.get(scalesblock);
 		if(!Array.isArray(v_list))v_list=[v_list];
 	}
-	post("\ndrawing keyb",poolno,scalesblock,v_list);
-	if(poolno==0){
-		//for(i=0;i<24;i++)pool_notes.push(i);
-	}else{
-		for(i=0;t<48;i++){
+	// post("\ndrawing keyb",poolno,scalesblock,v_list);
+	if(poolno!=0){ //chromatic is just grey keys
+ 		for(i=0;t<48;i++){
 			var nt = indexpool_buffer.peek(poolno+1,i);
 			if(t==nt){
 				t=99
