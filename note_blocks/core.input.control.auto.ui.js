@@ -334,13 +334,6 @@ function voice_is(v){
 			if(endreturns_enabled) post(" end returns enabled");
 			messnamed("to_polys","note","setvalue",v_list+1,"endreturns_enabled",endreturns_enabled);
 			paramcount = rows * cols;
-			var s = MAX_DATA*v_list+1+paramcount*3;
-			for(var i=0;i<paramcount;i++){
-				voice_data_buffer.poke(1,s+i,0.1);
-				voice_data_buffer.poke(1,s+i+paramcount,0.5);
-				voice_data_buffer.poke(1,s+i+paramcount*2,0.9);
-				voice_data_buffer.poke(1,s+i+paramcount*3,0.5);
-			}
 			check_for_legacy_colours();
 		}
 		get_connections_list();
@@ -358,6 +351,14 @@ function check_for_legacy_colours(){
 				x = (12.63 - x)%1;
 				voice_data_buffer.poke(1,MAX_DATA*v_list+1+paramcount*2+i,x);
 				post(x);
+			}
+			post("\nand making sure end forces are set to defaults")
+			var s = MAX_DATA*v_list+1+paramcount*3;
+			for(var i=0;i<paramcount;i++){
+				voice_data_buffer.poke(1,s+i,0.1);
+				voice_data_buffer.poke(1,s+i+paramcount,0.5);
+				voice_data_buffer.poke(1,s+i+paramcount*2,0.9);
+				voice_data_buffer.poke(1,s+i+paramcount*3,0.5);
 			}
 		}
 	}
