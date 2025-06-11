@@ -37,8 +37,13 @@
 				"colour" : -35
 			},
 			{
-				"contains" : [16,17,18,19],
+				"contains" : [16,17,18],
 				"colour" : -45,
+				"height" : 0
+			},		
+			{
+				"contains" : [19,19,19,19,20],
+				"colour" : -55,
 				"height" : 0
 			}		
 		],
@@ -194,10 +199,16 @@
 			},
 			{
 				"name" : "scale",
-				"type" : "menu_i",
+				"type" : "scale",
 				"values" : ["chromatic","1","2","3","4","5","6","7","8"],
 				"wrap" : 1,
 				"error_scale" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "edit_scales",
+				"type" : "button",
+				"values" : ["core","jump to_scales_block","jump_to_scales_shapes"],
 				"default" : 0
 			}
 		]

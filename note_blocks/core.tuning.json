@@ -51,7 +51,7 @@
 				"default" : 0.5
 			},
 			{
-				"name" : "scale",
+				"name" : "deprecated",
 				"type" : "menu_i",
 				"values" : [ "deprecated"],
 				"wrap" : 0,
