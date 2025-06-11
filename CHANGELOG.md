@@ -1,5 +1,5 @@
 11/06/25:
-- improved scales handling - every block that uses scales - like midi.scale.quantise or fx.retune or fx.pitch.gate or midi.note.select or... - now has a much nicer scale selector. you can see the selected scale, and edit it with the mouse. the scales are still stored in a core.scales.shapes block but this gets loaded automatically for you if you load a block that needs it.
+- improved scales handling - every block that uses scales (like midi.scale.quantise or fx.retune or fx.pitch.gate or midi.note.select or...) now has a much nicer scale selector. you can see the selected scale, and edit it with the mouse. the scales are still stored in a core.scales.shapes block but this gets loaded automatically for you if you load a block that needs it.
 - lots of workflow improvements, macos compatibility improvements and bugfixes, many thanks to everyone trying benny out and contributing feedback and fixes!
 
 8/6/25:

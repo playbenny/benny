@@ -4815,11 +4815,20 @@ function draw_sidebar(){
 										}
 									}else if((p_type=="scale")){
 										var h_s=1.5;
+										var poolno=-1;
 										var count = p_values.length;
 										if(count < 9){
-											var poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
+											if(sidebar.selected_voice==-1){
+												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
+											}else{
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*7.99)+1;
+											}
 										}else{
-											var poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+											if(sidebar.selected_voice==-1){
+												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+											}else{
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*8.99);
+											}
 										}
 										var cp = menudarkest;
 										if(poolno>0) cp = config.get("palette::gamut["+(((poolno-1)* config.getsize("palette::gamut")/8)|0)+"]::colour");
