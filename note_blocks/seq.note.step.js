@@ -57,7 +57,7 @@ var mainfont;
 // - delay (in ms?)
 // - probability (0=blank, 100%, positive = ratchet, negative = probability)
 // - grouping (if 0 step is ungrouped. if negative then this step + that number = the first step of the group, where the current loop counter is stored as a positive number - 1=1st step.)
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_DATA = config.get("MAX_DATA");
 	UNIVERSAL_COLUMNS = config.get("UNIVERSAL_COLUMNS");
 	UNIVERSAL_PATTERNS = config.get("UNIVERSAL_PATTERNS");
@@ -72,7 +72,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	if(width<sw*0.6){ 
+	if(mode=="mini"){ 
 		mini=1;
 		if(block>=0) generate_extended_v_list();
 		set_zoom_show_all();

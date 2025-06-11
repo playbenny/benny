@@ -32,16 +32,14 @@ var amount = [];
 var oleft = 0;
 var channelnames = [];
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	if(width<sw*0.54){ 
-		mini=1;
-	}
+	mini=(mode=="mini")|0;
 	unit = height / (mini?10:18);
 	u1 = 0.1 * unit;
 	if(block>=0){

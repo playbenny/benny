@@ -50,7 +50,7 @@ var forceupdate = 0;
 var playing = 0;
 
 
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	// not done - needs to work out which controller it is, get row and column count from config
 	menucolour = config.get("palette::menu");
 	menudark = [menucolour[0]*0.2, menucolour[1]*0.2, menucolour[2]*0.2];

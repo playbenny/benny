@@ -90,7 +90,7 @@ function convert_to_lengths(){
 	messnamed("core_keyboard_xfer","lengths_done");
 }
 
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	mini=0;
 	width = x2-x1;
@@ -98,9 +98,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	if(width<sw*0.6){ 
-		mini=1;
-	}
+	mini=(mode=="mini")|0;
 	draw();
 }
 

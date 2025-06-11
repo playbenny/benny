@@ -20,7 +20,7 @@ var blockcolour = [64,64,64];
 var o_hl=new Array(100);
 var o_w=-1;
 
-function setup(x1,y1,x2,y2,sw){ //has screen width too so it can plot a little fx/waveform hint window bottom right
+function setup(x1,y1,x2,y2,sw,mode){ //has screen width too so it can plot a little fx/waveform hint window bottom right
 //	post("drawing sequencers");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	MAX_WAVES = config.get("MAX_WAVES");
