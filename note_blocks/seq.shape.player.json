@@ -26,6 +26,7 @@
 				"colour": -5
 			},
 			{ 
+				"header" : "ornaments",
 				"contains" : [4,4,4,15,16,2],
 				"height" : 0,
 				"colour" : -10

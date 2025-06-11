@@ -4188,15 +4188,15 @@ function show_and_search_new_block_menu(key){
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
-	}else if((sidebar.mode == "block")&&(key>=48)&&(key<58)&&(usermouse.caps==0)){ //numbers do direct entry on values.
-		if((usermouse.got_t>=2) && (usermouse.got_t<=4) && (usermouse.got_i) && (usermouse.x > sidebar.x)){
+	}else if((((key>=-42)&&(key<-32))||((key>=48)&&(key<58)))&&(usermouse.caps==0)){ //numbers do direct entry on values.	
+		if((sidebar.mode == "block")&&(usermouse.got_t>=2) && (usermouse.got_t<=4) && (usermouse.got_i) && (usermouse.x > sidebar.x)){
 			var pno = mouse_click_parameters[usermouse.got_i][0];
 			//0-3 coords, 456 colour, 8 is the block (we know that already) 9 is the param no
 			sidebar.mode = "param_number_entry";
 			sidebar.param_number_entry = String.fromCharCode(key);
 			sidebar.param_number = pno;
 			draw_number_entry(pno, sidebar.param_number_entry);
-		}
+		}//else (panels, custom, waves)
 	}else{post("\nkeycode",key);}
 }
 

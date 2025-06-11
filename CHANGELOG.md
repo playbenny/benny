@@ -1,3 +1,7 @@
+11/06/25:
+- improved scales handling - every block that uses scales - like midi.scale.quantise or fx.retune or fx.pitch.gate or midi.note.select or... - now has a much nicer scale selector. you can see the selected scale, and edit it with the mouse. the scales are still stored in a core.scales.shapes block but this gets loaded automatically for you if you load a block that needs it.
+- lots of workflow improvements, macos compatibility improvements and bugfixes, many thanks to everyone trying benny out and contributing feedback and fixes!
+
 8/6/25:
 - fx.metal.box - hardware preamp/circuit colour replication, based on multi-level impulses sampled from recording equipment in my studio. works great on the end of an instrument's signal chain to gently glue it together, push up the level and round off the edges. the whole development of this was inspired by the process of helping my friend christopher duffin (xam duo) mix some tunes, and noticing that a lot of his parts (from things like a dx7 or juno or a rhodes recorded hot) didn't need much mix processing because the pushy, squared off output stages of all the gear involved had done half the job for us.
 - fx.convolve - general purpose efficient convolution processor. you need to install the HISStools package in max package manager then you can convolve incoming audio with impulses stored in the waves page of benny. (also works well with samples that aren't reverb impulses).
