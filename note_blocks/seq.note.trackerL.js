@@ -31,7 +31,7 @@ var cursors = new Array(128); //holds last drawn position of playheads (per row)
 // 1 - length (*128+1)
 // 2 - playhead position (updated by player voice)
 // 3-131? data values
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	//	post("drawing sequencers");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
@@ -39,7 +39,7 @@ function setup(x1,y1,x2,y2,sw){
 	mainfont = config.get("mainfont");
 	mini=0;
 	width = x2-x1;
-	if(width<500){ mini=1;}
+	mini=(mode=="mini")|0;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;

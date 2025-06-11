@@ -67,7 +67,7 @@ var mous = {
 
 var mainfont,fontsmall;
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	//block_colour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
@@ -83,9 +83,9 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	if(sw==-1){
+	if(mode=="bottom"){
 		mini=2;
-	}else if(width<sw*0.54){ 
+	}else if(mode=="mini"){ 
 		mini=1;
 	}else{
 		mini=0;

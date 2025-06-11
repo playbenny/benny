@@ -29,7 +29,7 @@ var rs = []; //copies of params
 var mini = 0;
 var note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	//	post("drawing sequencers");
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
@@ -40,7 +40,7 @@ function setup(x1,y1,x2,y2,sw){
 	y_pos = y1;
 	w4=width/3.95;
 	h4=height/3.95;
-	mini = (width<sw*0.5);
+	mini=(mode=="mini")|0;
 	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];

@@ -17,7 +17,7 @@ var ometer = [];
 var oleft = 0;
 var channelnames = [];
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	MAX_DATA = config.get("MAX_DATA");
 	width = x2-x1;
 	height = y2-y1;

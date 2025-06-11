@@ -11,7 +11,7 @@ map.name = "voicemap";
 var v_list = [];
 var colour = [];
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	MAX_DATA = config.get("MAX_DATA");
 	width = x2-x1;
 	height = y2-y1;

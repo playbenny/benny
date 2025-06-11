@@ -20,7 +20,7 @@ var center = 0;
 var ccol=128;
 var beats_per_bar = 4; //TODO fetch timesig
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	var blocktypes = new Dict;
 	blocktypes.name = "blocktypes";
 	var config = new Dict;

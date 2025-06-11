@@ -25,7 +25,7 @@ var bright = [];
 var offs = [];
 var textslow = 0;
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	outlet(0,"getvoice");
 	menucolour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
@@ -36,7 +36,7 @@ function setup(x1,y1,x2,y2,sw){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	if(width<sw*0.6){ 
+	if(mode=="mini"){ 
 		mini=1;
 		gx=x1;
 		gy=y1;

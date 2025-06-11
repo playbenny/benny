@@ -7,12 +7,12 @@ function set_display_mode(mode,t){
 		}else if(bottombar.block>-1) { setup_bottom_bar(bottombar.block); }
 		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 		var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
-		ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
+		ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width, "big");
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
 		if(displaymode!="custom") last_displaymode = displaymode;
 		if(bottombar.block>-1) hide_bottom_bar();
-		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
+		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width,"big");
 	}else if(mode == "patterns"){
 		if(bottombar.block>-1) hide_bottom_bar();
 	}else if(mode == "flocks"){
@@ -929,7 +929,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui,has_trigg
 			mouse_click_values[mouse_index] = b;
 			mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 		}
-		ui_poly.message("setvalue",  b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
+		ui_poly.message("setvalue",  b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width,"mini");
 	}
 }
 
@@ -4393,7 +4393,7 @@ function draw_sidebar(){
 							click_zone(set_display_mode, "custom", block, sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mouse_index,1);
 							//if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 						}
-						ui_poly.message("setvalue",  block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width);
+						ui_poly.message("setvalue",  block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width,"mini");
 						custom_block = block;
 						y_offset += ui_h + fo1;
 					}
@@ -9154,7 +9154,7 @@ function setup_bottom_bar(block){
 				if(bottombar.block != custom_block){
 					var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 					var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
-					ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
+					ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width,"bottom");
 					redraw_flag.deferred |= 130;
 				}else{
 					bottombar.block = -1;
@@ -9185,7 +9185,7 @@ function setup_bottom_bar(block){
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
 		if((h!=bottombar.height)||(r!=bottombar.right)){
-			ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+			ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1,"bottom");
 			redraw_flag.deferred |= 4;
 		}else{
 			draw_bottom_bar();

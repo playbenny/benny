@@ -24,7 +24,7 @@ var cursors = []; //holds last drawn position of playheads (per row)
 var notelist = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var menucolour,menudark,block_colour=[0,255,0];
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 //	post("drawing sequencers");
 	menucolour = config.get("palette::menu");
 	MAX_DATA = config.get("MAX_DATA");
@@ -32,7 +32,7 @@ function setup(x1,y1,x2,y2,sw){
 	menudark = [menucolour[0]*0.2,menucolour[1]*0.2,menucolour[2]*0.2];
 	width = x2-x1;
 	mini=0;
-	if(width<sw*0.6){ mini=1;}
+	mini=(mode=="mini")|0;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;

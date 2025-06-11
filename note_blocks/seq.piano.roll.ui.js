@@ -161,7 +161,7 @@ function convert_to_lengths(){
 	drawflag = 1;
 }
 
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	MAX_DATA = config.get("MAX_DATA");
 
@@ -177,9 +177,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	if(width<sw*0.5){ 
-		mini=1;
-	}
+	mini=(mode=="mini")|0;
 	if(block>-1){
 		laneheights();
 		zoom_to_pattern();

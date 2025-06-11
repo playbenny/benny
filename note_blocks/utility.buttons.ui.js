@@ -17,7 +17,7 @@ var ov=[0,0,0];
 
 var /*note=[],*/vel=[-1,-1,-1],yv=[],mode=[-1,-1,-1];
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	menucolour = config.get("palette::menu");
 	width = x2-x1;
 	height = y2-y1;
