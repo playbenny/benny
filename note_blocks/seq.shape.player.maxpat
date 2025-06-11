@@ -19,7 +19,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 54.0, 296.0, 54.0, 22.0 ],
+					"patching_rect" : [ 54.0, 301.0, 54.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -5633,7 +5633,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 54.0, 232.0, 154.0, 22.0 ],
+					"patching_rect" : [ 54.0, 216.0, 154.0, 22.0 ],
 					"text" : "r NOTEPOOLS_UPDATED"
 				}
 
@@ -5723,6 +5723,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 175.0, 765.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -5759,10 +5763,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 266.5, 24.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
