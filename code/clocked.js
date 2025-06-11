@@ -313,7 +313,7 @@ function check_changed_queue(){
 		p = Math.floor(t - b*MAX_PARAMETERS);
 		if(b==sidebar.selected){
 			// if(!is_empty(paramslider_details[p])){
-				redraw_flag.targets[p] |= 1;
+				redraw_flag.targets[p] = 2;
 				redraw_flag.flag |= 1;														
 			// }
 		}
