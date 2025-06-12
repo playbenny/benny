@@ -359,7 +359,7 @@ function write_parameter_info_buffer(p_values, p_type, index) {
 	var p_max = p_values[2];
 	var p_curve = p_values[3];
 	var p_steps = 0;
-	if ((p_type == "menu_i") || (p_type == "menu_b") || (p_type == "menu_l") || (p_type == "menu_d")) {
+	if ((p_type == "menu_i") || (p_type == "menu_b") || (p_type == "menu_l") || (p_type == "menu_d") || (p_type == "scale")) {
 		p_min = 0;
 		p_steps = p_values.length; //details.getsize("parameters["+i+"]::values");
 		p_max = p_steps - 1;

@@ -189,7 +189,7 @@ var changed_queue = new Buffer("changed_queue"); //params that have changed for 
 //var output_queue_pointer = 0;
 var changed_queue_pointer = 0;
 var mtoa_buffer = new Buffer("mtoa_sigs"); //eventually i think this could be only accessed from a gen output queue checker but for now it's in clocked js
-
+var indexpool_buffer = new Buffer("INDEXPOOL"); // for scale lookup
 var parameter_error_spread_buffer = new Buffer("parameter_error_spread_buffer"); //indexed by MAX_PARAMETERS * voice + paramno, this is the random spread values added to each voice's params
 var routing_buffer = new Buffer("routing"); //replaces conversion buffer
 	//index of this is 9 *( index + max_connections_per_output * (outputno + voiceno * max_outputs_per_voice ) )
@@ -380,6 +380,8 @@ var ext_sync = {
 	link_available : 0,
 	link_enabled : 0
 };
+
+var scalesblock = -1;
 
 var automap = {
 	available_c : -1,

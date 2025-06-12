@@ -19,14 +19,18 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 2, 1],
-				"height" : 2
+				"contains" : [0, 0, 0, 0, 2],
+				"height" : 0
+			},
+			{
+				"contains" : [1],
+				"height" : 0
 			}
 		],
 		"parameters" : [
 			{
 				"name" : "scale",
-				"type" : "menu_i",
+				"type" : "scale",
 				"values" : ["chromatic", "1", "2", "3", "4", "5" ,"6" , "7" ,"8"],
 				"error_scale" : 0,
 				"wrap" : 0,
@@ -36,13 +40,14 @@
 				"name" : "quality",
 				"type" : "menu_l",
 				"values" : ["basic", "good", "better", "best"],
+				"columns" : 4,
 				"wrap" : 0,
 				"default" : 0.3
 			},
 			{
 				"name" : "edit_scales",
 				"type" : "button",
-				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"values" : ["core","jump to_scales_block","jump_to_scales_shapes"],
 				"default" : 0
 			}
 		]

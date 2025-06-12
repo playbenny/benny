@@ -17,7 +17,7 @@
 		"groups" : [
 			{
 				"header" : "scale",
-				"contains" : [0,0,0,0,0,0,0,17],
+				"contains" : [0,0,0,0,17],
 				"height" : 0
 			},
 			{ 
@@ -26,6 +26,7 @@
 				"colour": -5
 			},
 			{ 
+				"header" : "ornaments",
 				"contains" : [4,4,4,15,16,2],
 				"height" : 0,
 				"colour" : -10
@@ -42,7 +43,7 @@
 		"parameters" : [
 			{
 				"name" : "scale",
-				"type" : "menu_l",
+				"type" : "scale",
 				"values" : ["1", "2", "3", "4", "5", "6", "7", "8"],
 				"wrap" : 0,
 				"columns" : 8,
@@ -168,7 +169,7 @@
 			{
 				"name" : "edit_scales",
 				"type" : "button",
-				"values" : ["core","edit_scales","jump_to_scales_shapes"],
+				"values" : ["core","jump to_scales_block","jump_to_scales_shapes"],
 				"default" : 0
 			}
 		]

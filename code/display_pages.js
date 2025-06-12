@@ -4813,6 +4813,41 @@ function draw_sidebar(){
 											lcd_main.message("frgb",colour);
 											lcd_main.message("write",params[curp].get("name"));
 										}
+									}else if((p_type=="scale")){
+										var h_s=1.5;
+										var poolno=-1;
+										var count = p_values.length;
+										if(count < 9){
+											if(sidebar.selected_voice==-1){
+												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
+											}else{
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*7.99)+1;
+											}
+										}else{
+											if(sidebar.selected_voice==-1){
+												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+											}else{
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*8.99);
+											}
+										}
+										var cp = menudarkest;
+										if(poolno>0) cp = config.get("palette::gamut["+(((poolno-1)* config.getsize("palette::gamut")/8)|0)+"]::colour");
+										paramslider_details[curp]=[x1,y1,x1*0.75+0.25*x2-fontheight*0.1,y2,cp[0]/2,cp[1]/2,cp[2]/2,mouse_index,block,curp,flags,["scale"],namelabely,"scale",1,block_name,0,0,0];
+										namelabely = labelled_parameter_v_slider(curp);
+										paramslider_details[curp][17]=namelabely;
+										//paramslider_details is used for quick redraw of a single slider. index is curp
+										//ie is mouse_click_parameters[index][0]
+										mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+										mouse_click_parameters[mouse_index] = [curp, block,wrap];	
+										mouse_click_values[mouse_index] = curp+1;
+										mouse_index++;
+										//mouse_index = parameter_menu_l(curp);
+										draw_keyboard(x1*0.75+0.25*x2,y1,x2,y2,poolno,cp);
+										
+										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+											//but it's so much easier just to call this fn
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+										}
 									}else{
 										if(nolabel){
 											namearr="";

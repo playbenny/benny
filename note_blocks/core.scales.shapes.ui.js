@@ -95,7 +95,9 @@ function draw_keyboard(x1,y1,x2,y2,poolno){
 		if(keyby[i%12]==1){
 			c=[40,40,40];
 			for(t=0;t<pool_notes[poolno].length;t++){
-				if(pool_notes[poolno][t]==i+24) c = colours[poolno];
+				if(pool_notes[poolno][t]==i+24){
+					c = colours[poolno];
+				}
 			}
 			x = 7*(i>11) + keybx[i%12];
 			outlet(1,"paintrect",x1+xunit*x,y1,x1+xunit*(x+0.9),y1*0.3+0.7*y2,c);

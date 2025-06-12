@@ -1226,11 +1226,12 @@ function custom_direct_mouse_passthrough(parameter,value){
 	}
 }
 function custom_direct_mouse_button(parameter,value){
-	//post("\n\ncustom mouse button",parameter,"----",value);
+	// post("\n\ncustom mouse button",parameter,"----",value);
 	if(value[0] == "output"){
 		//post("output block button",parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES);
 		output_blocks_poly.message("setvalue", parameter-MAX_AUDIO_VOICES-MAX_NOTE_VOICES,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "note"){
+		// post("\nmessage is:","setvalue", parameter,value[2],usermouse.left_button,value[3],value[4]);
 		note_poly.message("setvalue", parameter,value[2],usermouse.left_button,value[3],value[4]);
 	}else if(value[0] == "audio"){
 		audio_poly.message("setvalue", parameter,value[2],usermouse.left_button,value[3],value[4]);
@@ -1454,11 +1455,32 @@ function request_edit_wave(block){
 
 function jump_to_scales_shapes(){
 	//first see if it has been added
+	if(scalesblock>-1){
+		clear_blocks_selection();
+		var v = 0;
+		if((sidebar.selected>-1)&&blocks.contains("blocks["+sidebar.selected+"]::name")){
+			var params = blocktypes.get(blocks.get("blocks["+sidebar.selected+"]::name")+"::parameters");
+			if(!Array.isArray(params))params = [params];
+			for(var p=0;p<params.length;p++){
+				if(params[p].get("type")=="scale"){
+					var siz=params[p].get("values").length;
+					v = (siz==8) + Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*sidebar.selected+p)*(siz-0.01));
+					post("\nfound scale parameter in current block. scale is:",v,"size is",siz,"param is",p,"sel",sidebar.selected,"peek",parameter_value_buffer.peek(1,MAX_PARAMETERS*scalesblock+p));
+				}
+			}
+		}
+		select_block_and_voice(scalesblock,v-1);
+		return 1;
+	}
 	for(var i =0;i<MAX_BLOCKS;i++){
 		if(blocks.contains("blocks["+i+"]::name")){
 			if(blocks.get("blocks["+i+"]::name")=="core.scales.shapes"){
 				clear_blocks_selection();
-				select_block(i);
+				scalesblock = i;
+				select_block(i,i);
+				redraw_flag.flag |= 4;
+
+				post("\njumping to ",i);
 				return 1;
 			}
 		}
@@ -4166,15 +4188,18 @@ function show_and_search_new_block_menu(key){
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
-	}else if((sidebar.mode == "block")&&(key>=48)&&(key<58)&&(usermouse.caps==0)){ //numbers do direct entry on values.
-		if((usermouse.got_t>=2) && (usermouse.got_t<=4) && (usermouse.got_i) && (usermouse.x > sidebar.x)){
+	}else if((((key>=-42)&&(key<-32))||((key>=48)&&(key<58)))&&(usermouse.caps==0)){ //numbers do direct entry on values.	
+		if((sidebar.mode == "block")&&(usermouse.got_t>=2) && (usermouse.got_t<=4) && (usermouse.got_i) && (usermouse.x > sidebar.x)){
 			var pno = mouse_click_parameters[usermouse.got_i][0];
 			//0-3 coords, 456 colour, 8 is the block (we know that already) 9 is the param no
 			sidebar.mode = "param_number_entry";
+			if(((key>=-42)&&(key<-32))){
+				key = -key + 15;
+			}
 			sidebar.param_number_entry = String.fromCharCode(key);
 			sidebar.param_number = pno;
 			draw_number_entry(pno, sidebar.param_number_entry);
-		}
+		}//else (panels, custom, waves)
 	}else{post("\nkeycode",key);}
 }
 
