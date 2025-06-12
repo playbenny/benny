@@ -611,11 +611,17 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}else{
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
+									var ifu = blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity");
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
-										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+										if(!ifu){
 											makewire=0;
 											sidebar_notification("This block can only be connected to a mixer.bus block");
+										}
+									}else{
+										if(ifu){
+											makewire=0;
+											sidebar_notification("You can only connect mixer.channel blocks into a mixer.bus");
 										}
 									}
 									if(makewire){
@@ -962,10 +968,18 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 									}
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
 									if(!blocktypes.contains(fname +"::connections::out")) drawwire=0; //no outputs!
+									var ifu = blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity");
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
-										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
+										if(!ifu){
 											drawwire=0;
 											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can only be connected to a mixer.bus block");
+										}else{
+											if(sidebar.mode=="notification") set_sidebar_mode("none");
+										}
+									}else{
+										if(ifu){
+											drawwire=0;
+											if(usermouse.hover[1]!=usermouse.ids[1]) sidebar_notification("The "+fname+" block can't be connected to a mixer.bus block directly, you need to connect a mixer.channel block to the bus first.");
 										}else{
 											if(sidebar.mode=="notification") set_sidebar_mode("none");
 										}
