@@ -4212,7 +4212,8 @@ function number_entry(key){
 		sidebar.param_number_entry = "";
 		sidebar.mode = "block";
 		redraw_flag.flag |= 2;
-	}else if(((key>=48)&&(key<58))||(key==46)){
+	}else if(((key>=48)&&(key<58))||(key==46)||((key>=-42)&&(key<-32))){
+		if(((key>=-42)&&(key<-32))) key = -key + 15;
 		sidebar.param_number_entry = sidebar.param_number_entry.concat(String.fromCharCode(key));
 		draw_number_entry(sidebar.param_number,sidebar.param_number_entry);
 	}else if((key==-6)||(key==-7)){
