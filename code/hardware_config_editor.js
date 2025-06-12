@@ -111,6 +111,7 @@ function configloaded(path){
 	selected.item = -1;
 	var d = configfile.get("io::controllers");
 	var k = d.getkeys();
+	if(!Array.isArray(k))k=[k];
 	for(var i=0;i<k.length;i++){
 		in_list.push(d.get(k[i]+"::name"));
 	}
