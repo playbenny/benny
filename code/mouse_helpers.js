@@ -4193,6 +4193,9 @@ function show_and_search_new_block_menu(key){
 			var pno = mouse_click_parameters[usermouse.got_i][0];
 			//0-3 coords, 456 colour, 8 is the block (we know that already) 9 is the param no
 			sidebar.mode = "param_number_entry";
+			if(((key>=-42)&&(key<-32))){
+				key = -key + 15;
+			}
 			sidebar.param_number_entry = String.fromCharCode(key);
 			sidebar.param_number = pno;
 			draw_number_entry(pno, sidebar.param_number_entry);
