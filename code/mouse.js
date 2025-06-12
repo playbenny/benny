@@ -738,6 +738,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 			usermouse.drag.starting_value_x = camera_position[0];
 			if(usermouse.ctrl){//set up zoom
 				usermouse.drag.starting_value_y = camera_position[2];
+				usermouse.drag.starting_value_x = 0; //keeps track of distance dragged, so we can do the x/y for 'zoom in around a point'
 			}else if(usermouse.shift){//(set up )select rectangle)
 				
 			}else{//set up normal background drag
@@ -850,11 +851,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.ids[0] == "background"){
 								if(usermouse.ctrl){
 									//zoom in or out on drag
-									//xdist = usermouse.x - usermouse.last_x;
-									camera_position[2] = usermouse.drag.starting_value_y + ydist*0.1;
-									messnamed("camera_control", "rotatexyz" , 0, 0, 0);
+									var xx = (2 * usermouse.drag.starting_x / mainwindow_width) - 1;
+									var yy = (2 * usermouse.drag.starting_y / mainwindow_height) - 1;
+									var scroll = usermouse.drag.starting_value_x - ydist*0.1;
+
+									usermouse.drag.starting_value_x = ydist*0.1;
+									camera_position[2] = Math.max(3,Math.min(500,camera_position[2]-scroll));				
+									camera_position[0] += xx*scroll*0.3;
+									camera_position[1] -= yy*scroll*0.3;//*0.5;
 									messnamed("camera_control","position",  camera_position);
-									messnamed("camera_control", "lookat", Math.max(Math.min(camera_position[0],blocks_page.rightmost), blocks_page.leftmost), Math.max(Math.min(camera_position[1],blocks_page.highest),blocks_page.lowest), -1);
 								}else if(usermouse.shift){
 									var sts = screentoworld(usermouse.drag.starting_x,usermouse.drag.starting_y);
 									var stw = screentoworld(usermouse.x,usermouse.y);
