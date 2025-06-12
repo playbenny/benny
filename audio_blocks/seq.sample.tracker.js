@@ -820,9 +820,9 @@ function keydown(key){
 			break;
 		case -8:
 			//insert
-			for(i=MAX_PATTERN_LENGTH;i>cursory;i--){
+			for(i=MAX_PATTERN_LENGTH-1;i>cursory;i--){
 				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i-1+MAX_PATTERN_LENGTH*pattern[cursorx]),6);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
+							    voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 			}
 			var rowvalues=[0,0,0,0,0,0];
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
