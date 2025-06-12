@@ -13,12 +13,12 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,2,3,4,5,6,7],
-				"height" : 0,
+				"height" : 2,
 				"colour" : [180,40,40]
 			},
 			{ 
-				"contains" : [8,9,10,11],
-				"height" : 0,
+				"contains" : [8,9,10,11,12,13,14,15],
+				"height" : 2,
 				"colour" : [160,60,60]
 			}
 		],
@@ -35,7 +35,7 @@
 			{
 				"name" : "Mix Type",
 				"type" : "int",
-				"values" : ["uni", 0, 127, "lin" ],
+				"values" : ["uni", 0, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
@@ -48,7 +48,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 17
+				"cc_number" : 19
 			},
 			{
 				"name" : "Trans B",
@@ -57,7 +57,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 18
+				"cc_number" : 20
 			},
 			{
 				"name" : "AFX1",
@@ -66,7 +66,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 2
+				"cc_number" : 4
 			},
 			{
 				"name" : "AFX2",
@@ -75,7 +75,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 3
+				"cc_number" : 5
 			},
 			{
 				"name" : "AFX3",
@@ -84,7 +84,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 4
+				"cc_number" : 6
 			},
 			{
 				"name" : "AFX4",
@@ -93,7 +93,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 6
+				"cc_number" : 8
 			},
 			{
 				"name" : "BFX1",
@@ -102,7 +102,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 7
+				"cc_number" : 9
 			},
 			{
 				"name" : "BFX2",
@@ -111,7 +111,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 8
+				"cc_number" : 10
 			},
 			{
 				"name" : "BFX3",
@@ -120,7 +120,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 9
+				"cc_number" : 11
 			},
 			{
 				"name" : "BFX4",
@@ -129,7 +129,43 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 11
+				"cc_number" : 13
+			},
+			{
+				"name" : "15",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 14
+			},
+			{
+				"name" : "16",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 15
+			},
+			{
+				"name" : "18",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 17
+			},
+			{
+				"name" : "19",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 18
 			}
 		]
 	}
