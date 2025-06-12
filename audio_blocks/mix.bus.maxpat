@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -13,6 +13,61 @@
 		"rect" : [ 783.0, 257.0, 978.0, 717.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-30",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 175.0, 327.0, 90.0, 22.0 ],
+					"text" : "loadmess none"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-34",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 296.5, 424.0, 26.0, 22.0 ],
+					"text" : "t -1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-33",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 361.0, 481.0, 501.0, 22.0 ],
+					"text" : "replace mixer.bus::parameters[1]::values[0] \"AIRWINDOWS CONSOLE VSTS NOT FOUND\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ 361.0, 513.0, 87.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict blocktypes"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-60",
 					"maxclass" : "newobj",
@@ -78,8 +133,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 122.5, 424.0, 29.5, 22.0 ],
-					"text" : "1 0"
+					"patching_rect" : [ 122.5, 424.0, 35.0, 22.0 ],
+					"text" : "1 1.1"
 				}
 
 			}
@@ -485,6 +540,7 @@
 			}
 , 			{
 				"box" : 				{
+					"autosave" : 1,
 					"bgmode" : 0,
 					"border" : 0,
 					"clickthrough" : 0,
@@ -496,6 +552,17 @@
 					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
 					"patching_rect" : [ 330.0, 326.0, 92.5, 22.0 ],
 					"save" : [ "#N", "vst~", "loaduniqueid", 0, 2, ";" ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_invisible" : 1,
+							"parameter_longname" : "vst~[1]",
+							"parameter_modmode" : 0,
+							"parameter_shortname" : "vst~",
+							"parameter_type" : 3
+						}
+
+					}
+,
 					"saved_object_attributes" : 					{
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
@@ -511,14 +578,7 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "console7buss64.vstinfo",
-							"plugindisplayname" : "airwindows Console7Buss",
-							"pluginsavedname" : "",
-							"pluginsaveduniqueid" : 1668247154,
-							"version" : 1,
-							"isbank" : 0,
-							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atIG...P......PTYlEVcrQG................................A...f+."
+
 						}
 ,
 						"snapshotlist" : 						{
@@ -528,19 +588,12 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "airwindows Console7Buss",
-									"origin" : "console7buss64.vstinfo",
+									"origin" : "",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "console7buss64.vstinfo",
-										"plugindisplayname" : "airwindows Console7Buss",
-										"pluginsavedname" : "",
-										"pluginsaveduniqueid" : 1668247154,
-										"version" : 1,
-										"isbank" : 0,
-										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atIG...P......PTYlEVcrQG................................A...f+."
+
 									}
 ,
 									"fileref" : 									{
@@ -548,7 +601,7 @@
 										"filename" : "airwindows Console7Buss_20250217.maxsnap",
 										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "a068358fc4f27def1aeb4c67f0583e38"
+										"snapshotfileid" : "94fae023204f06d247a32eb541ca25e5"
 									}
 
 								}
@@ -955,8 +1008,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-51", 1 ],
+					"source" : [ "obj-30", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-41", 0 ],
 					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"source" : [ "obj-33", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-41", 1 ],
+					"source" : [ "obj-34", 0 ]
 				}
 
 			}
@@ -1087,7 +1161,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-56", 0 ],
+					"destination" : [ "obj-33", 0 ],
 					"order" : 0,
 					"source" : [ "obj-53", 0 ]
 				}
@@ -1095,8 +1169,24 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-57", 0 ],
+					"destination" : [ "obj-34", 0 ],
 					"order" : 1,
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-56", 0 ],
+					"order" : 2,
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-57", 0 ],
+					"order" : 3,
 					"source" : [ "obj-53", 0 ]
 				}
 
@@ -1157,8 +1247,7 @@
 				}
 
 			}
- ],
-		"originid" : "pat-4788"
+ ]
 	}
 
 }

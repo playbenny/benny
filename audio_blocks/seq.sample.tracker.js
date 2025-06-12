@@ -818,11 +818,11 @@ function keydown(key){
 			delete_selection();
 			drawflag=1;
 			break;
-		case -8:
-			//insert
-			for(i=MAX_PATTERN_LENGTH;i>cursory;i--){
+		case -8: //insert
+		case 361: //ctrl-i
+			for(i=MAX_PATTERN_LENGTH-1;i>cursory;i--){
 				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+1+6*(i-1+MAX_PATTERN_LENGTH*pattern[cursorx]),6);
-				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
+							    voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(i+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
 			}
 			var rowvalues=[0,0,0,0,0,0];
 			voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+1+6*(cursory+MAX_PATTERN_LENGTH*pattern[cursorx]),rowvalues);
@@ -846,7 +846,7 @@ function keydown(key){
 			sel_ey=127;
 			drawflag=1;
 			break;
-		case 361: //ctl-I (interpolate)
+		case 370: //ctl-r (interpolate ramp)
 			if((sel_sy!=sel_ey)&&(sel_ey>-1)){
 				var v1 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_sx]+1+6*(sel_sy+MAX_PATTERN_LENGTH*pattern[cursorx])+sel_sx2);
 				var v2 = voice_data_buffer.peek(1, MAX_DATA*v_list[sel_ex]+1+6*(sel_ey+MAX_PATTERN_LENGTH*pattern[cursorx])+sel_ex2);
