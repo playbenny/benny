@@ -1364,7 +1364,7 @@ function render_controls(){
 				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
-				//	"max_polyphony" : 1,
+				/*//	"max_polyphony" : 1,
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "max polyphony");
 				controls[ii].presentation(1);
@@ -1377,7 +1377,7 @@ function render_controls(){
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
-				ii++;
+				ii++;*/
 				//	"substitute" : "fx.filter.2pole",
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "substitute");
