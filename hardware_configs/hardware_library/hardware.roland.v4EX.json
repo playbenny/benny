@@ -1,0 +1,136 @@
+{
+	"hardware.roland.v4EX" : {
+		"type" : "hardware",
+		"substitute" : [  ],
+		"max_polyphony" : 1,
+		"help_text" : "Roland V4-EX midi controls",
+		"exclusive" : 0,
+		"click_out" : 0,
+		"cue_out" : 0,
+		"talk_in" : 0,
+		"midi_handler" : "generic.hardware.midi.handler",
+		"midi_in" : "none",
+		"groups" : [
+			{ 
+				"contains" : [0,1,2,3,4,5,6,7],
+				"height" : 0,
+				"colour" : [180,40,40]
+			},
+			{ 
+				"contains" : [8,9,10,11],
+				"height" : 0,
+				"colour" : [160,60,60]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "T-bar",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 10
+			},
+			{
+				"name" : "Mix Type",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 16
+			},
+			{
+				"name" : "Tran A",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 17
+			},
+			{
+				"name" : "Trans B",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 18
+			},
+			{
+				"name" : "AFX1",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 2
+			},
+			{
+				"name" : "AFX2",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 3
+			},
+			{
+				"name" : "AFX3",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 4
+			},
+			{
+				"name" : "AFX4",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 6
+			},
+			{
+				"name" : "BFX1",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 7
+			},
+			{
+				"name" : "BFX2",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 8
+			},
+			{
+				"name" : "BFX3",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 9
+			},
+			{
+				"name" : "BFX4",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 11
+			}
+		]
+	}
+}

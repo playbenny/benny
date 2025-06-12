@@ -70,7 +70,7 @@ var sel_sx,sel_sx2,sel_sy,sel_ex=-1,sel_ex2,sel_ey=-1;
 // 1 - length (*128+1)
 // 2 - playhead position (updated by player voice)
 // 3-131? data values
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
@@ -78,7 +78,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	showcols=Math.floor(2*width/height);
-	if(width<sw*0.5){ 
+	if(mode=="mini"){ 
 		mini=1;
 		showcols = v_list.length;		
 	}else{

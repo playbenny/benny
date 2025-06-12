@@ -1,0 +1,35 @@
+{
+	"fx.convolve" : {
+		"patcher" : "fx.convolve",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Simple wrapper for the HISStools max convolution object, uses benny's wave storage for the impulses. You can convolve all sorts of things together, not just reverbs.££IMPORTANT - to make this work you need to open max package manager (from the file menu) and find and install HISStools.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "impulse",
+				"type" : "wave",
+				"values" : ["wave",0,256 ],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			}
+		]
+	}
+}

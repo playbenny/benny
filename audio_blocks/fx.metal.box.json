@@ -1,0 +1,63 @@
+{
+	"fx.metal.box" : {
+		"patcher" : "fx.metal.box",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Gentle saturation models. Based on multi-sampled impulses from studio hardware. Best in the subtle ranges, and particularly work well for gelling sounds together with subtle intermodulation. But you can push them harder - there's plenty of headroom in the samples. If you drive them you should turn upsampling on for the block, 4x works well usually. The bite control adjusts the dynamic behaviour of the saturation, as you turn it up more of the transients are allowed through.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0],
+				"height" : 0
+			},
+			{
+				"contains" : [1,2,3],
+				"height" : 0,
+				"colour" : -20
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "model",
+				"type" : "menu_d",
+				"values" : ["capi","chandler little devil hpf", "chandler little devil", "chroma, A mode", "chroma, N mode", "neumann", "colours 15ips 32.wav","colours air5k 32.wav","colours brit console 32.wav","colours discrete sat 32.wav","colours germanium 16.wav","colours germanium 32.wav","colours mass driver 16.wav","colours mass driver 32.wav","colours royal blue 16.wav","colours royal blue 32.wav","colours royal blue top boost 32.wav","colours superfilter 32.wav","colours th79 16.wav","colours toneloc 16.wav","colours toneloc 32.wav","drawmer 16.wav","drawmer 32.wav","eurorack bard ivan 16.wav","eurorack bard ivan 32.wav","", "", "","","","" ],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "bite",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0					
+			},
+			{
+				"name" : "out trim (db)",
+				"type" : "float",
+				"values" : ["bi", -48, 48, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

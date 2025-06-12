@@ -51,8 +51,8 @@ var metalane=[];
 
 var laneslist = [];
 var lanetype = [];
-var laneused      = [1,1,0,0,0,0,0,0,0,0,0];
-var maximisedlist = [1,0,0,0,0,0,0,0,0,0,0];
+var laneused = [0,0,0,0,0,0,0,0,0,0,0];
+var maximisedlist = [0,0,0,0,0,0,0,0,0,0,0];
 var noteshade = [1,0.75,1,0.75,1,1,0.75,1,0.75,1,0.75,1];
 var laney = [];
 var playheadpos = 0;
@@ -161,7 +161,7 @@ function convert_to_lengths(){
 	drawflag = 1;
 }
 
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	MAX_DATA = config.get("MAX_DATA");
 
@@ -177,9 +177,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	if(width<sw*0.5){ 
-		mini=1;
-	}
+	mini=(mode=="mini")|0;
 	if(block>-1){
 		laneheights();
 		zoom_to_pattern();
@@ -243,10 +241,14 @@ function draw(){
 	}
 
 	if(mini){
-		var st = (width-2)*((start/seql)-zoom_start)*zoom_scale;
-		var ls = (width-2)*((loopstart/seql)-zoom_start)*zoom_scale;
+		var st = 0;
+		var zst = Math.min(start,loopstart)/seql; //seql;//(width-2)*((start/seql)-zoom_start)*zoom_scale;
+		var ze = (loopstart + looplength)/seql;
+		var zsc = Math.max(1,(seql/(looplength+Math.max(0,loopstart-start))));
+		// post("\nzoom start",zst,"zoom scale",zsc,"or",zoom_start,zoom_scale);
+		var ls = (width-2)*((loopstart/seql)-zst)*zsc;
 		var ls2 = Math.max(0,ls);
-		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zoom_scale);
+		var le = Math.min(width-2, ls + (width-2)*(looplength/seql)*zsc);
 		var yp2 = y_pos+height*0.15;
 		outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,yp2,0,0,0,block,1);
 		if(le<(width-2)){
@@ -272,17 +274,19 @@ function draw(){
 		outlet(1,"moveto", x_pos + st , yp2);
 		outlet(1,"lineto", x_pos + st , y_pos+height - 2);
 		outlet(1,"frgb", blockcolour[0]*0.3,blockcolour[1]*0.3,blockcolour[2]*0.3);
-		outlet(1,"moveto", x_pos + (width - 2) * (playheadpos-zoom_start) * zoom_scale, yp2);
-		outlet(1,"lineto", x_pos + (width - 2) * (playheadpos-zoom_start) * zoom_scale, y_pos+height - 2);
+		if((playheadpos>=zst) && ((playheadpos-zst)*zsc<=1)){
+			outlet(1,"moveto", x_pos + (width - 2) * (playheadpos-zst) * zsc, yp2);
+			outlet(1,"lineto", x_pos + (width - 2) * (playheadpos-zst) * zsc, y_pos+height - 2);
+		}
 		var by = y_pos+height - 2;
 		var sy = (height*0.85-3)/129;
 		for(var i=1;i<k.length;i++){
 			var event = seqdict.get(block+"::"+pattern+"::"+k[i]);
-			if((event == null)||(event[0]<zoom_start)||(event[0]>zoom_end)){
+			if((event == null)||(event[0]<zst)||(event[0]>ze)){
 			}else if((event[1]>0)&&(event[1]!=9)){
 				var ey = by - Math.abs(event[3])*sy;
-				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
-				var col = pal[(event[1]-1)];
+				var ex1 = x_pos + (event[0]-zst)*(width-2)*zsc;
+				var col = pal[(event[1]+4)%pal.length];
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex1,by);
@@ -296,8 +300,8 @@ function draw(){
 					ey = by - (event[2])*(height-3)/metatypes.length;
 					col = pal[(8+(event[2]|0))% 16];
 				}
-				var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
-				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zoom_scale),x_pos+width-2);
+				var ex1 = x_pos + (event[0]-zst)*(width-2)*zsc;
+				var ex2 = Math.min(ex1+Math.max(1,event[4]*(width-2)*zsc),x_pos+width-4);
 				outlet(1,"frgb",col);
 				outlet(1,"moveto",ex1,ey);
 				outlet(1,"lineto",ex2,ey);
@@ -305,7 +309,7 @@ function draw(){
 		}
 	}else{
 		if(laney.length==0) laneheights();
-		laneused=[1,0,0,0,0,0,0,0,0,0];
+		laneused=[0,0,0,0,0,0,0,0,0,0,0];
 		outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height*0.05,0,0,0);
 		outlet(1,"paintrect",x_pos,y_pos,x_pos+width*0.07-2,y_pos+height*0.024,blockcolour[0]*0.23,blockcolour[1]*0.23,blockcolour[2]*0.23);
 		outlet(1,"paintrect",x_pos+0.07*width+2,y_pos,x_pos+width*0.19-2,y_pos+height*0.024,blockcolour[0]*0.23,blockcolour[1]*0.23,blockcolour[2]*0.23);
@@ -343,7 +347,7 @@ function draw(){
 					var rr = laney[l];
 					for(var yy = highestnote - lowestnote; yy >= 0; yy--){
 						var nr = rr + r;
-						var s = (0.5*maximisedlist[ll])+noteshade[(yy  + lowestnote) % 12];
+						var s = (0.5*((maximisedlist[ll]>0)|0))+noteshade[(yy  + lowestnote) % 12];
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
 						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
@@ -351,7 +355,7 @@ function draw(){
 							if((r>(0.4*unit))||([0,5].indexOf((yy+lowestnote)%12)>-1)){
 								outlet(1,"frgb",0,0,0);
 								outlet(1,"moveto", x_pos+9,nr-0.2*r);
-								outlet(1,"write",notenames[(yy+lowestnote)%12]+"-"+(Math.floor((yy+lowestnote)/12)-2));
+								outlet(1,"write",nn[(yy+lowestnote)]);
 							}
 						}
 						rr=nr;
@@ -361,7 +365,7 @@ function draw(){
 					var rr = laney[l];
 					for(var yy = metatypes.length; yy > 0; yy--){
 						var nr = rr + r;
-						var s = (0.5*maximisedlist[ll])+(((yy%2)+1)*0.5);
+						var s = (0.5*((maximisedlist[ll]>0)|0))+(((yy%2)+1)*0.5);
 						if(ls>0) outlet(1,"paintrect",x_pos,rr,ls+x_pos,nr,blockcolour[0]*0.05*s,blockcolour[1]*0.05*s,blockcolour[2]*0.05*s);
 						outlet(1,"paintrect",x_pos+ls2,rr,le+x_pos,nr,blockcolour[0]*0.1*s,blockcolour[1]*0.1*s,blockcolour[2]*0.1*s);
 						if(le<(width-2)) outlet(1,"paintrect",x_pos+le,rr,width+x_pos,nr,blockcolour[0]*0.03*s,blockcolour[1]*0.03*s,blockcolour[2]*0.03*s);
@@ -484,7 +488,7 @@ function draw(){
 
 		for(var l=0; l<laney.length-1; l++){
 			if(laney[l]!=laney[l+1]){
-				var s = ((maximisedlist[l]==1) + 0.45);
+				var s = ((maximisedlist[l]>=1) + 0.45);
 				outlet(1,"frgb", blockcolour[0]*s,blockcolour[1]*s,blockcolour[2]*s);
 				outlet(1,"moveto", x_pos+9,laney[l]+12);//Math.max(12,r*0.8));
 				//outlet(1,"write", "lane "+laneslist[l]);
@@ -496,7 +500,7 @@ function draw(){
 					outlet(1,"write", "cc "+(laneslist[l]));
 				}else if(lanetype[l]==2){
 					outlet(1,"write", "modifier");
-					if(maximisedlist[l]==1){
+					if(maximisedlist[l]>=1){
 						outlet(1,"frgb",blockcolour[0]*0.4,blockcolour[1]*0.4,blockcolour[2]*0.4);
 						r = (laney[l+1]-laney[l]-4)/(metatypes.length);
 						rr = laney[l]-0.2*r;
@@ -544,8 +548,8 @@ function draw(){
 					laneused[9] = 1;
 					if(ll2!=9){
 						ll2 = 9;
-						by2 = laney[1+metalane[ll2]] - 4;
-						sy2 = (laney[1+metalane[ll2]] - laney[metalane[ll2]] - 4)/(metatypes.length);
+						by2 = laney[1+metalane[9]] - 4;
+						sy2 = (laney[1+metalane[9]] - laney[metalane[9]] - 4)/(metatypes.length);
 					}
 					var ey = by2 - (metatypes.length - 1 - event[2])*sy2;
 					var ex1 = x_pos + (event[0]-zoom_start)*(width-2)*zoom_scale;
@@ -574,7 +578,7 @@ function draw(){
 					}
 					outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
 					//post("\nmeta rectangle",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-					if((maximisedlist[10] == 1)){
+					if((maximisedlist[10] >= 1)){
 						//post("label",metatype_params[event[2]]);
 						outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 						outlet(1,"frgb",0,0,0);
@@ -683,7 +687,7 @@ function draw(){
 							col = [blockcolour[0]*c,blockcolour[1]*c,blockcolour[2]*c];
 						}
 						outlet(1,"paintrect",ex1,ey-Math.max(1,sy2),ex2,ey,col);
-						if((maximisedlist[notelane[ll]] == 1) && (labelled[event[2]]!=1)){
+						if((maximisedlist[notelane[ll]] >= 1) && (labelled[event[2]]!=1)){
 							labelled[event[2]] = 1;
 							outlet(1,"moveto",ex1+4,ey-sy2*0.1);
 							outlet(1,"frgb",0,0,0);
@@ -691,7 +695,7 @@ function draw(){
 						}
 					}else{
 						if(ll>0){
-							col = pal[(event[1]-1)];
+							col = pal[(event[1]+4)%pal.length];
 						}else{
 							col = blockcolour;
 						}
@@ -802,7 +806,7 @@ function get_note_range() {
 	if(Array.isArray(k) && k.length>1){
 		for (var i = 1; i < k.length; i++) { //[0] is the looppoints
 			var event = seqdict.get(block + "::" + pattern + "::" + k[i]);
-			if ((event[1] == 0) && (event[0] > zoom_start) && (event[0] < zoom_end)) {
+			if ((event[1] == 0) && (event[0]+event[4] >= zoom_start) && (event[0] <= zoom_end)) {
 				if (event[2] > nhighestnote) nhighestnote = event[2];
 				if (event[2] < nlowestnote) nlowestnote = event[2];
 			}
@@ -917,25 +921,26 @@ function laneheights(){
 	var used=0;
 	var unused;
 	for(var i=0;i<laneslist.length;i++) used += (laneused[i]|0)*(1+(i==0));
+	if(used==0){
+		laneused[0]=1;
+		used=3;
+	}
 	unused = laneslist.length - used;
-	if(used==0) return -1;
 	var maximised = 0;
 	for(var i=0; i<laneslist.length; i++) {
-		maximised += ((maximisedlist[i]|0)==1);
+		maximised += (((maximisedlist[i]>0)|0)==1);
 	}
-	//post("\nmaximised",maximised,"used",used,"unused",unused);
-	maximised = 8 * maximised + used + 0.1*unused + 3*((maximisedlist[0]!=1)+(maximisedlist[laneslist.length-1]!=1))+ 2*(maximisedlist[1]!=1);
-	maximised = height * 0.9/maximised;
+	var rowmin = height / 40;
+	var h2 = height - rowmin * laneslist.length;
+	if(h2<0) error("layout algorithm collapse");
+	maximised = 8 * maximised + used + 3*((maximisedlist[0]==0)/*+(maximisedlist[laneslist.length-1]==0)*/)+ 2*(maximisedlist[1]==0);
+	maximised = h2 * 0.9/maximised;
 	laney[0] = y_pos + height * 0.1;
 	for(var i=1; i<=laneslist.length; i++){
 		var ii=i-2;
-		if(ii<0)ii=0;
-		laney[i] = laney[i-1] + (7.9 * (maximisedlist[i-1]|0) + 0.1 + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||(i==laneslist.length))&&(maximisedlist[i-1]!=1)) + 2*((i==2)&&(maximisedlist[1]!=1))) * maximised;
+		if(ii<0) ii=0;
+		laney[i] = laney[i-1] + rowmin + (7.9 * ((maximisedlist[i-1]>0)|0) + 0.9 * ((laneused[ii])|0) + 3*(((i==1)||((i==laneslist.length)&&laneused[ii]&&0))&&(maximisedlist[i-1]==0)) + 2*((i==2)&&(maximisedlist[1]==0))) * maximised;
 	}
-	//post("\nlaney",laney);
-	//post("\nscreen",y_pos+height);
-	//post("\nmaximisedlist",maximisedlist);
-	//post("\nusedlist",laneused);
 }
 
 function voice_offset(){}
@@ -1185,7 +1190,7 @@ function mouse(x,y,l,s,a,c,scr){
 					selected_event_count=0;
 					selected_events=[];
 				}
-				if((hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
+				if(!c && (hovered_event>-1) && ((selected_events[hovered_event]|0)==0)){
 					selected_event_count=1;
 					selected_events=[];
 					selected_events[hovered_event]=1;
@@ -1290,7 +1295,7 @@ function mouse(x,y,l,s,a,c,scr){
 					}else{
 						var l = (zoom_end - zoom_start);
 						var xx = (x-x_pos)/width;
-						dy*=0.01;
+						dy*=-0.01;
 						zoom_start += l*xx*dy;
 						zoom_end -= l*(1-xx)*dy;
 						zoom_start = Math.max(zoom_start,0);
@@ -1462,6 +1467,16 @@ function mouse(x,y,l,s,a,c,scr){
 				}else{ //select nothing
 					selected_event_count=0;
 					selected_events=[];
+					if((laneused[mouse_lane]==0)){
+						if(maximisedlist[mouse_lane]==0){
+							for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
+							maximisedlist[mouse_lane]=2;
+							laneheights();
+						}else{
+							maximisedlist[mouse_lane]=0;
+							laneheights();
+						}
+					}
 					drawflag|=1;
 				}
 			}
@@ -1469,13 +1484,12 @@ function mouse(x,y,l,s,a,c,scr){
 		if(moved){
 			for(var i=0;i<laney.length-1;i++){
 				if((y>laney[i])&&(y<laney[i+1])){
-					if(!s && maximisedlist[i]==0){
-						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] = 0;
-						maximisedlist[i]=1;
+					if(!s && (maximisedlist[i]==0) &&(laneused[Math.max(0,i-1)]>0)){
+						for(var ii=0;ii<maximisedlist.length;ii++)maximisedlist[ii] &= 2;
+						maximisedlist[i] |= 1;
 						//post("\nmaximised lane:",i);
 						laneheights();
 						drawflag |= 1;
-						//post("calced new heights",laney,"maxl",maximisedlist);
 					}else{
 						drawflag |= 1; //so all movement in the maximised lane causes a draw
 						// there's a possibility to optimise this - either by storing a short list
@@ -1522,7 +1536,7 @@ function zoom_to_pattern() {
 	var lp = seqdict.get(block + "::" + pattern + "::looppoints");
 	if(!Array.isArray(lp)) return -1;
 	var ns = Math.max(Math.min(lp[1] - 2, lp[2] - 2), 0);
-	var ne = Math.max(lp[3] + 2, lp[1] + 8);
+	var ne = Math.max(lp[1] + lp[3] + 2, lp[1] + 8);
 	ns /= lp[0];
 	ne /= lp[0];
 	zoom_start = ns;

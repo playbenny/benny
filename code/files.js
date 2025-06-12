@@ -1,11 +1,13 @@
 function read_songs_folder(folder_name_or_path){ //also loads all song json files, and constructs the wave preload list.
 	//clears, builds the list for this specific folder, and updates the songs dict
-
+	var getpreloadlists=0;
 	if(folder_name_or_path=="songs"){
 		var f = new Folder(SONGS_FOLDER);
 		var df = 0;
 		post("\nreading songs from folder: ",SONGS_FOLDER);
 	}else if(folder_name_or_path=="templates"){
+		if(preload_note_voice_list == []) getpreloadlists=1;
+		preload_audio_voice_list = [];
 		var f = new Folder(projectpath+"templates");
 		var df = 1;
 		post("\nreading songs from folder: ",projectpath+"templates");
@@ -99,34 +101,36 @@ function read_songs_folder(folder_name_or_path){ //also loads all song json file
 				}
 			}
 			songs_info[i]=[bc,vc_n,vc_a,vc_h];
-			var td = blocktypes_count_this.get("note");
-			if(td!=null){
-				var tdk = td.getkeys();
-				for(var t=0;t<tdk.length;t++){
-					var c = td.get(tdk[t]);
-					var e = 0;
-					if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
-					if(c>e){
-						blocktypes_count_cumulative.replace("note::"+tdk[t],c);
-						for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+			if(getpreloadlists){
+				var td = blocktypes_count_this.get("note");
+				if(td!=null){
+					var tdk = td.getkeys();
+					for(var t=0;t<tdk.length;t++){
+						var c = td.get(tdk[t]);
+						var e = 0;
+						if(blocktypes_count_cumulative.contains("note::"+tdk[t]))e = blocktypes_count_cumulative.get("note::"+tdk[t]);
+						if(c>e){
+							blocktypes_count_cumulative.replace("note::"+tdk[t],c);
+							for(tt=e;tt<c;tt++) preload_note_voice_list.push(tdk[t]);
+						}
 					}
 				}
-			}
-			var td = blocktypes_count_this.get("audio");
-			if(td!=null){
-				var tdk = td.getkeys();
-				for(var t=0;t<tdk.length;t++){
-					var c = td.get(tdk[t]);
-					var e = 0;
-					if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
-					if(c>e){
-						blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
-						for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+				var td = blocktypes_count_this.get("audio");
+				if(td!=null){
+					var tdk = td.getkeys();
+					for(var t=0;t<tdk.length;t++){
+						var c = td.get(tdk[t]);
+						var e = 0;
+						if(blocktypes_count_cumulative.contains("audio::"+tdk[t]))e = blocktypes_count_cumulative.get("audio::"+tdk[t]);
+						if(c>e){
+							blocktypes_count_cumulative.replace("audio::"+tdk[t],c);
+							for(tt=e;tt<c;tt++) preload_audio_voice_list.push(tdk[t]);
+						}
 					}
 				}
 			}
 		}
-		post("\npreload lists prepared: ",preload_note_voice_list.length,"note blocks and",preload_audio_voice_list.length,"audio blocks.");
+		if(getpreloadlists) post("\npreload lists prepared: ",preload_note_voice_list.length,"note blocks and",preload_audio_voice_list.length,"audio blocks.");
 		//note_patcherlist = preload_note_voice_list.slice(0,MAX_NOTE_VOICES);
 		//audio_patcherlist = preload_audio_voice_list.slice(0,MAX_AUDIO_VOICES);
 		//still_checking_polys |= 3;
@@ -1329,7 +1333,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 //copy blocks and connections and states and properties into one dict
 	loading.save_wait_count = 0;
-	if(loading.songpath==undefined) loading.songpath="";
+	if(loading.songpath==undefined) loading.songpath=SONGS_FOLDER;
 	if(selectedonly){
 		//post("\nsaving selection only");
 		loading.save_type = "selected";
@@ -1357,13 +1361,16 @@ function check_its_safe_to_save(){
 		loading.save_waitlist=[];
 	}
 	if(loading.save_waitlist.length == 0){
+		if(loading.songpath.slice(-1)!="/")loading.songpath=loading.songpath+"/";
+		post("\nsongpath:",loading.songpath);
+		post("\nsongname:",loading.songname);
 		post("\nall store routines complete, finalising save");
 		if(loading.save_type=="selected"){
-			post(" selected");
+			post("selected");
 			messnamed("trigger_save_selected", "bang");
 			timed_sidebar_notification("saved as "+loading.songname,2000);
 		}else if(loading.save_type=="named"){
-			post(" as:",loading.songpath+loading.songname);
+			post("as:",loading.songpath+loading.songname);
 			messnamed("save_named",loading.songpath+loading.songname);
 			timed_sidebar_notification("saved as "+loading.songname,2000);
 			for(var i =0;i<MAX_BLOCKS;i++) if(record_arm[i]) send_record_arm_messages(i); //update filenames of audio recorders
@@ -1483,10 +1490,19 @@ function write_userconfig(){
 }
 
 function file_written(fname){//called when max reports successfully saving the current song dict so we have the filename
-	loading.object_target = fname;
-	loading.songname = fname.split("/").pop();
-	post("\nsave as set obj target to",loading.object_target);
+	if((fname.indexOf("/")<0)){ // the max dict object reports full filename & path for a save as, but if the file exists it just reports the name.. this is workaround for that 
+		//don't update loading.object_target, it's just a save not a saveas
+		loading.object_target = loading.songpath+fname;
+		// post("\nobj target is still",loading.object_target);
+	}else{
+		loading.object_target = fname;
+		loading.songname = fname.split("/").pop();
+		loading.songpath = fname.split(loading.songname)[0];
+		// post("\nfname returned from max is",fname,"so songname is ",loading.songname,"and path is",loading.songpath);
+	}
+	// post("\nsave as set obj target to",loading.object_target);
 }
+
 function select_recent_folder(name,blank){
 	SONGS_FOLDER = name;
 	var recent_folders=[];
@@ -1704,6 +1720,7 @@ function clear_everything(){
 		record_arm[i]=0;
 	}
 	selected.anysel = 0;
+	patternpage.quantise_and_hold = 0;
 	still_checking_polys = 0;//7;
 	loading.songname = "#reset#";
 	send_note_patcherlist(1);
@@ -1714,7 +1731,10 @@ function clear_everything(){
 	patternpage.column_block = [];
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
-
+	var seqdict = new Dict;
+	seqdict.name = "core-keyb-loop-xfer";
+	seqdict.parse('{}');
+	
 	draw_wave = [];
 	for(i=0;i<128;i++){
 		quantpool.poke(1, i, i);

@@ -42,6 +42,8 @@ function convert_to_lengths(){
 			if(event == null){
 			}else if(event[1]>1){
 				ccpresent = 1;
+				event = [ event[0], event[1], 0 , event[2], 0 ];
+				seqdict.replace(block+"::"+k[i],event);
 			}else if(event[3]>0){ //noteon, find its length
 				if(event[2]<lowestnote) lowestnote = event[2];
 				if(event[2]>highestnote) highestnote = event[2];
@@ -76,15 +78,19 @@ function convert_to_lengths(){
 	}
 	for(var i=0;i<k.length;i++){
 		if(k[i]!="looppoints"){
-			var event = seqdict.get(block+"::"+k[i]); //[time,note,vel]
+			var event = seqdict.get(block+"::"+k[i]);
 			if(event==null){
-			}else if(event[3]==0) seqdict.remove(block+"::"+k[i]);
+			}else if((event[1]<2) && (event[3]==0)){
+				seqdict.remove(block+"::"+k[i]);
+				// post("\nremoved ",k[i],":",event);
+			}
 		}
 	}
 	drawflag = 1;
+	messnamed("core_keyboard_xfer","lengths_done");
 }
 
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	mini=0;
 	width = x2-x1;
@@ -92,9 +98,7 @@ function setup(x1,y1,x2,y2,sw){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
-	if(width<sw*0.6){ 
-		mini=1;
-	}
+	mini=(mode=="mini")|0;
 	draw();
 }
 

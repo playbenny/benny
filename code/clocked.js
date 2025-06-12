@@ -1,7 +1,7 @@
 function polycheck(){
-	if(still_checking_polys&4){ send_ui_patcherlist(); }
-	if(still_checking_polys&2){ send_audio_patcherlist(); }
     if(still_checking_polys&1){ send_note_patcherlist(); }
+	if(still_checking_polys&2){ send_audio_patcherlist(); }
+	if((still_checking_polys&4)&&!(still_checking_polys&3)){ send_ui_patcherlist(); } //experimental, delays ui loading until after the rest has loaded, as usually it doesn't matter
 }
 
 function slowclock(){
@@ -148,10 +148,10 @@ function frameclock(){
 						}else if(paramslider_details[i][13] == "button"){
 							parameter_button(i);
 						}else if(paramslider_details[i][13] == "menu_d"){
-							redraw_flag.deferred|=2;//parameter_menu_l(i);
-						}else if((redraw_flag.targets[i]==1)&&((paramslider_details[i][16]|0)!=0)&&(automap.mapped_c!=sidebar.selected)){
-							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
-						}else if((paramslider_details[i][12]|0)!=0){
+							redraw_flag.deferred|=2;//parameter_menu_l(i); 
+//						}else if((redraw_flag.targets[i]==1)&&((paramslider_details[i][16]|0)!=0)&&(automap.mapped_c!=sidebar.selected)){ //checking height != 0, ie no text over slider
+//							parameter_v_slider(paramslider_details[i][0], paramslider_details[i][1], paramslider_details[i][2], paramslider_details[i][3],paramslider_details[i][4], paramslider_details[i][5], paramslider_details[i][6], paramslider_details[i][7],paramslider_details[i][8], paramslider_details[i][9], paramslider_details[i][10]);
+						}else if((paramslider_details[i][12]|0)!=0){ //if it 
 							lcd_main.message("paintrect", paramslider_details[i][0], paramslider_details[i][3], paramslider_details[i][2], paramslider_details[i][17],backgroundcolour_current);
 							labelled_parameter_v_slider(i);
 						}

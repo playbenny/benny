@@ -98,7 +98,12 @@ function systemtypeis(type){
 function initialise_reset(hardware_file){
 	post("\n\nreset stage 1 : resets\n------------------");
 	thispatcherstuff();
-	messnamed("getpath","bang");
+		var path = this.patcher.filepath;
+	projectpath = path.split("patchers/");
+	projectpath = projectpath[0];
+	post("\npath is",projectpath);
+
+//	messnamed("getpath","bang");
 	config.parse('{ }');
 	config.import_json("config.json");
 	userconfig.parse('{ }');
@@ -188,6 +193,7 @@ function initialise_dictionaries(hardware_file){
 	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
 	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
 	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
+	SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON = config.get("SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON");
 	TARGET_FPS = config.get("TARGET_FPS");
 	METER_TINT = config.get("METER_TINT");
 	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
@@ -286,7 +292,11 @@ function initialise_dictionaries(hardware_file){
 	send_audio_patcherlist();
 
 	scope_zoom(0,SCOPE_DEFAULT_ZOOM);
-
+	var seqdict = new Dict;
+	seqdict.name = "seq-piano-roll";
+	seqdict.parse('{}');
+	seqdict.name = "core-keyb-loop-xfer";
+	seqdict.parse('{}');
 	undo_stack.parse('{ "history" : [ {}, {} ] }');
 	redo_stack.parse('{ "history" : [ {}, {} ] }');
 	
@@ -294,6 +304,8 @@ function initialise_dictionaries(hardware_file){
 	if((projectpath!="")&&(SONGS_FOLDER.indexOf("/")==-1)){
 		SONGS_FOLDER = projectpath + SONGS_FOLDER;
 		post("\songs folder is ",SONGS_FOLDER);
+	}else{
+		post("\nsongs folder is ",SONGS_FOLDER, "project path is",projectpath,"and debug number is",SONGS_FOLDER.indexOf("/"));
 	}	
 	read_songs_folder("songs");
 	if(startup_loadfile=="autoload") read_songs_folder("templates");
@@ -1211,6 +1223,8 @@ function size(width,height,scale){
 			click_b_w++;
 		}
 		fontheight = (mainwindow_height-24) / 18;
+		config.replace("fontheight", fontheight);
+		config.replace("window",width,height);
 		fontsmall = fontheight / 3.2;
 		config.replace("fontsmall",fontsmall);
 		fo1 = fontheight * 0.1;

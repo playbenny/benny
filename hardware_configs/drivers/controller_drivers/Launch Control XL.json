@@ -1,0 +1,35 @@
+{
+	"Launch Control XL" : 			{
+		"name" :  "Launch Control XL" ,
+		"driver" :  "Launch Control XL" ,
+		"substitute" : [ "LPD8 mk2" ],
+		"outputs" : 32,
+		"type" : "potentiometer",
+		"channel" : 1,
+		"first" : 1,
+		"scaling" : 1,
+		"columns" : 8,
+		"rows" : 4,
+		"buttons" : 				{
+			"first" : 0,
+			"type" : "note",
+			"channel" : 1,
+			"count" : 24,
+			"globals" : 					{
+				"automap_toggle" : 20,
+				"automap_page" : 21,
+				"lock_automap_control" : 16,
+				"lock_automap_keyboard" : 17,
+				"lock_automap_cue" : 18
+			}
+,
+			"values" : 					{
+				"type" : "note",
+				"channel" : 1,
+				"first" : 0
+			}
+
+		}
+
+	}
+}

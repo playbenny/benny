@@ -24,7 +24,7 @@ var wavestripe_onepx = 1;
 
 var redraw = 2;
 
-function setup(x1,y1,x2,y2,sw){
+function setup(x1,y1,x2,y2,sw,mode){
 	menucolour = config.get("palette::menu");
 	width = Math.floor(x2-x1);
 	height = Math.floor(y2-y1);

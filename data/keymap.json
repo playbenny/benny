@@ -82,7 +82,10 @@
         "231" : ["ctrl-F9" , "messnamed", "core.input.keyboard", "spawn_player"],
         "-28" : ["F12", "open_core_control_auto"],
         "-27" : ["F11", "toggle_fullscreen"],
-        "228" : ["ctrl-F12" , "set_sidebar_mode","cpu"]
+        "358" : ["cmd-F", "toggle_fullscreen"],
+        "228" : ["ctrl-F12" , "set_sidebar_mode","cpu"],
+        "93" : ["]", "cycle_automap_offset", 1],
+        "91" : ["[", "cycle_automap_offset", -1]
     },
     "custom_fullscreen" : {
         "-18" : ["F2", "blocks_and", "block" ],
@@ -106,16 +109,18 @@
         "573" : ["+", "poly_key" , 1],
         "353" : ["ctrl-A", "select_all"],
         "-6" : ["del","delete_selection"],
-        "506" : ["shift-del", "delete_tree"],
-        "-7" : ["delete","delete_selection"],
+        "-7" : ["backspace","delete_selection"],
         "370" : ["ctrl-R", "arm_selected_blocks"],
         "372" : ["ctrl-T", "toggle_show_timer"],
         "365" : ["ctrl-M", "mute_selection", -1],
         "355" : ["ctrl-C", "copy_selection"],
+        "356" : ["ctrl-D", "duplicate_selection"],
         "376" : ["ctrl-X", "cut_selection"],
         "374" : ["ctrl-V", "blocks_paste", 0],
         "377" : ["ctrl-Y", "redo_button"],
         "378" : ["ctrl-Z", "undo_button"],
+        "505" : ["shift-backspace", "delete_tree"],
+        "506" : ["shift-del", "delete_tree"],
         "628" : ["shift-T", "select_tree_key"],
         "2420" : ["ctrl-alt-T", "reset_set_timer"],
         "2422" : ["ctrl-alt-V", "blocks_paste", 1],
@@ -132,6 +137,7 @@
         "501" : ["LEFT", "move_selected_blocks", -0.2, 0 ],
         "500" : ["RIGHT", "move_selected_blocks", 0.2 , 0],
         "559" : ["?", "set_sidebar_mode", "help"],
+        "575" : ["? (mac)", "set_sidebar_mode", "help"],
         "2026" : ["ALT-F6", "open_patcher"],
         "47" : ["/" , "set_sidebar_mode", "block_search"],
         "all" : ["all", "show_and_search_new_block_menu"]
@@ -146,6 +152,8 @@
         "109" : ["M", "mute_selected_block", -1],
         "47" : ["/" , "set_sidebar_mode", "block_search"],
         "2026" : ["ALT-F6", "open_patcher"],
+        "2037" : ["alt-left arrow", "back_button"],
+        "2036" : ["alt-right arrow", "fwd_button"],
         "365" : ["ctrl-M", "mute_selected_block", -1]
     },
     "patterns" : {

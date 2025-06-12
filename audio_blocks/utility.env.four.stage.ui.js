@@ -36,18 +36,14 @@ var opxs = [], opxf = [];
 var tf;
 var midpt = [], rng = [];
 
-function setup(x1,y1,x2,y2,sw){ 
+function setup(x1,y1,x2,y2,sw,mode){ 
 	MAX_DATA = config.get("MAX_DATA");
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	if(width<sw*0.5){ 
-		mini=1;
-	}else{
-		mini=0;
-	}
+	mini=(mode=="mini")|0;
 	if(block>=0){
 		voice_is(block);
 		rh = Math.floor(height / v_list.length);

@@ -819,11 +819,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							xdist += ydist;
 						}
 					}else{
-						f(v,usermouse.drag.starting_value_y+ydist);
+						if(!Array.isArray(f))f(v,usermouse.drag.starting_value_y+ydist);
 					}
 					//post("drag-f",f);
 					//post("or",f.name);
-					f(p,usermouse.drag.starting_value_x+xdist);					
+					if(!Array.isArray(f))f(p,usermouse.drag.starting_value_x+xdist);					
 				}
 			}else if((usermouse.clicked2d != -1) && (usermouse.last.got_t==1)){
 				//dragged off a button?
@@ -1185,6 +1185,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	if((displaymode=="blocks")||(displaymode=="block_menu")){
 		id = picker_lookups(phys_picker_id);
 		if(id!=null) picker_hover_and_special(id);
+		if(displaymode == "block_menu") draw_menu_hint();
 	}	
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead

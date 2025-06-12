@@ -7,12 +7,12 @@ function set_display_mode(mode,t){
 		}else if(bottombar.block>-1) { setup_bottom_bar(bottombar.block); }
 		var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 		var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
-		ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
+		ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width, "big");
 	}else if(mode == "custom_fullscreen"){
 		custom_block = +t;
 		if(displaymode!="custom") last_displaymode = displaymode;
 		if(bottombar.block>-1) hide_bottom_bar();
-		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width);
+		ui_poly.message("setvalue",  custom_block+1, "setup", 9,18+fontheight*1.1, mainwindow_width-9, mainwindow_height-9,mainwindow_width,"big");
 	}else if(mode == "patterns"){
 		if(bottombar.block>-1) hide_bottom_bar();
 	}else if(mode == "flocks"){
@@ -98,6 +98,7 @@ function set_display_mode(mode,t){
 				displaymode = "panels_edit";
 				flock_axes(0);
 				camera();
+				if(sidebar.mode=="block")set_sidebar_mode("panel_assign");
 				redraw_flag.flag |= 4;
 			}else{
 				clear_blocks_selection();
@@ -515,6 +516,7 @@ function draw_panels(){
 	var block_is_in_custom_order=[];
 	view_changed=true;
 	get_hw_meter_positions();
+	populate_pattern_page();
 	panelslider_index=MAX_PARAMETERS+1;
 	redraw_flag.paneltargets=[];
 	var seen=[];
@@ -561,8 +563,29 @@ function draw_panels(){
 		if(blocks.contains("blocks["+b+"]::panel::parameters")){
 			h+=2; //if it has panelparams
 			has_params = 1;
-		} 
-		
+		}
+		var has_triggerbuttons = 0;
+		if(has_params){
+			var plist = blocks.get("blocks["+b+"]::panel::parameters");
+			var glist = blocktypes.get(blocks.get("blocks["+b+"]::name")+"::groups");
+			// currently only checks first group for triggerbuttons
+			if(glist[0].contains("patterncontrols")){
+				var cont = glist[0].get("contains[0]");
+				if(plist.indexOf(cont)>-1){
+					var pcount =0;
+					for(var p=1+patternpage.last_pattern[b];p>=0;p--){
+						var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
+						pcount += ((n!=null)&&(n!=""))|0;
+					}
+					if(pcount){
+						has_triggerbuttons = 1;
+						h+=Math.ceil(pcount/5);
+					}
+					if(plist.length==1) h -= 1.5;
+				}
+			}
+		}
+
 		var has_ui = 0;
 		var ui = blocktypes.get(block_name+"::block_ui_patcher");
 		if((ui!="blank.ui")&&(ui!="self")&&((ui!=null))){
@@ -588,9 +611,9 @@ function draw_panels(){
 		}
 		var x1 = 18 + fontheight*1.1 + x * column_width;
 		if((displaymode=="panels_edit")||(panels.editting == b)){
-			draw_panel_edit(x1,y,h,b,column_width-9,statecount,has_params,has_ui);
+			draw_panel_edit(x1,y,h,b,column_width-9,statecount,has_params,has_ui,has_triggerbuttons);
 		}else{
-			draw_panel(x1,y,h,b,column_width-9,statecount,has_params,has_ui);
+			draw_panel(x1,y,h,b,column_width-9,statecount,has_params,has_ui,has_triggerbuttons);
 		}
 	
 		y+=h+0.1;
@@ -598,12 +621,12 @@ function draw_panels(){
 	}
 	if((x<MAX_PANEL_COLUMNS-1)&&(MAX_PANEL_COLUMNS>2)){
 		MAX_PANEL_COLUMNS--;
-		redraw_flag.flag |= 4;
+		redraw_flag.deferred = 4;
 	}
 }
 
-function draw_panel_edit(x1,y,h,b,column_width,statecount,has_params,has_ui){
-	draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui);
+function draw_panel_edit(x1,y,h,b,column_width,statecount,has_params,has_ui,has_triggerbuttons){
+	draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui,has_triggerbuttons);
 
 	var i,cx,cy,r;
 	cy = 18+y*fontheight+1.5*fontheight;// + column_width / 6;
@@ -639,7 +662,7 @@ function draw_panel_edit(x1,y,h,b,column_width,statecount,has_params,has_ui){
 	}
 }
 
-function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
+function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui,has_triggerbuttons){
 	var has_states = (statecount > 0);
 	var i;
 	var block_name=blocks.get("blocks["+b+"]::name");
@@ -749,6 +772,52 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 		var params = blocktypes.get(block_name+"::parameters");
 		if(!Array.isArray(params)) params = [params];
 		if(!Array.isArray(plist)) plist = [plist];
+		var y1 = 18+(y+2+has_states)*fontheight;
+		var y2 = 18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight;
+		if(has_triggerbuttons==1){ //draw pattern select buttons directly. // theoretically other trigger buttons could go here too - cue points? delay times?
+			var y1b = y1 + 0.9 * fontheight;
+			var bvs = voicemap.get(b);
+			if(!Array.isArray(bvs)) bvs = [bvs];
+			vv=bvs.concat();
+			var pv = Math.floor(16*voice_parameter_buffer.peek(1,MAX_PARAMETERS*bvs[0]+blocks.get("blocks["+b+"]::patterns::parameter")));
+			var pcount = [];
+			for(var p=1+patternpage.last_pattern[b];p>=0;p--){
+				var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
+				if((n!=null)&&(n!="")) pcount.push(p);
+			}
+			var pcols = pcount.length;
+			if(pcols>5){
+				if(pcols<11){
+					pcols = Math.round(pcols*0.51);
+				}else if(pcols<16){
+					pcols = Math.round(pcols*0.34);
+				}else{
+					pcols = Math.round(pcols*0.25);
+				}
+			}
+			var px=0;
+			for(var pp=pcount.length-1;pp>=0;pp--){
+				var p = pcount[pp];//pcount.length-pp-1];
+				var n = blocks.get("blocks["+b+"]::patterns::names["+p+"]");
+				var shape = ((patternpage.held_pattern_fires[b]==p)||(usermouse.clicked2d == mouse_index))? "paintrect" : "framerect";
+				lcd_main.message(shape,x1+(px/pcols)*column_width,y1,x1-2+((px+1)/pcols)*column_width,y1b,(p==pv)? shadeRGB(block_colour,1.5): block_dark);
+				click_zone(pattern_click,[b,vv],p, x1+(px/pcols)*column_width,y1,x1-2+((px+1)/pcols)*column_width,y1b,mouse_index,1);
+				if(n==null) n="";
+				var lab = wrap_dot_text((p+1)+": "+n,column_width/pcount.length-2*fo1);
+				for(var i=0;i<lab.length;i++){
+					lcd_main.message("moveto", x1+(px/pcols)*column_width+2*fo1,y1+fo1*(4+3*i));
+					lcd_main.message("write",lab[i]);
+				}
+				px++;
+				if((pp==0) || (px>=pcols)){
+					px-=pcols;
+					y1 += fontheight;
+					y1b += fontheight;
+					y2 += fontheight;
+				}
+			}
+			plist.splice(plist.indexOf(glist[0].get("contains[0]")),1);
+		}
 		try{
 			for(var p=0;p<plist.length;p++){
 				var p_type = params[plist[p]].get("type");
@@ -757,7 +826,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 				var noperv = 1; //params[plist[p]].contains("nopervoice");
 				var p_values = params[plist[p]].get("values");
 				var flags = (p_values[0]=="bi") + 4*noperv;
-				if(!noperv){
+				/*if(!noperv){
 					for(var g=0;g<glist.length;g++){
 						var cont = glist[g].get("contains");
 						if(!Array.isArray(cont)) cont=[cont];
@@ -767,14 +836,12 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 						}
 					}
 					//look up what group contains this param, look up if that group has onepervoice flag
-				}			
+				}		*/	
 				//namearr = namearr.split("_");
-				var namelabely = 18+(y+2+has_states+0.4)*fontheight;
+				var namelabely = y1 + 4*fo1;//18+(y+2+has_states+0.4)*fontheight;
 				var h_slider = 0;
 				panelslider_visible[b][plist[p]]=panelslider_index;
 				var curp = plist[p];
-				var y1 = 18+(y+2+has_states)*fontheight;
-				var y2 = 18+(y+3.9-0.5*(has_ui>0)+has_states)*fontheight;
 				if((p_type=="menu_d")||(((p_type=="menu_b")||(p_type=="menu_l")) && (vl.length != 1))) p_type = "menu_i";
 				if(p_type=="button"){
 					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,vl[0],namelabely,p_type,wrap,block_name,h_slider,p_values];
@@ -833,11 +900,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 					namearr = namearr.split("_");
 					var click_to_set = 0;
 					if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
-					if(h_slider<1){
-						paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
-					}else{
-						paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0],block_colour[1],block_colour[2],mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
-					}
+					paramslider_details[panelslider_index]=[x1+(p/plist.length)*column_width,y1,x1-2+((p+1)/plist.length)*column_width,y2,block_colour[0]/2,block_colour[1]/2,block_colour[2]/2,mouse_index,b,curp,flags,namearr,namelabely,p_type,wrap,block_name,h_slider,0,click_to_set];
 					namelabely = labelled_parameter_v_slider(panelslider_index);
 					paramslider_details[panelslider_index][17]=namelabely;
 					//paramslider_details is used for quick redraw of a single slider. index is curp
@@ -866,7 +929,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui){
 			mouse_click_values[mouse_index] = b;
 			mouse_index++; //if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 		}
-		ui_poly.message("setvalue",  b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width);
+		ui_poly.message("setvalue",  b+1, "setup", x1,18+(y+h-has_ui)*fontheight+fontheight,x2,18+(y+h)*fontheight+fontheight*0.9,mainwindow_width,"mini");
 	}
 }
 
@@ -3353,7 +3416,7 @@ function draw_sidebar(){
 		lcd_main.message("frgb", menucolour);
 		lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);
 		lcd_main.message("textface", "normal");
-		post("\nsidebar notification is:\n",sidebar.notification);
+		post("\nsidebar notification is: ",sidebar.notification);
 		long_sidebar_text(sidebar.notification,2);
 		lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, mainwindow_height-9,0,0,0);
 	}else if(sidebar.mode == "edit_song_notes"){
@@ -3421,9 +3484,9 @@ function draw_sidebar(){
 						// check if we need to trim the list of midi outs / param outs / available colours
 						var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
 						
-						param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
-						button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
-						post("core input", param_count,button_count);
+						if(io_dict.contains("controllers::"+cnam+"::outputs")) param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+						if(io_dict.contains("controllers::"+cnam+"::buttons::count")) button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+							// post("core input", param_count,button_count);
 					}
 				}
 
@@ -3868,7 +3931,7 @@ function draw_sidebar(){
 				//sidebar.dropdown = null;
 				audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
 				remove_midi_scope();
-				redraw_flag.targets=[0];
+				redraw_flag.targets=[];
 				if(sidebar.mode == "block"){
 					//get scope info together, turn on scopes
 					if(block_type=="audio"){
@@ -3897,14 +3960,15 @@ function draw_sidebar(){
 					}else if(block_type=="hardware"){
 						var voffset=MAX_AUDIO_VOICES+MAX_NOTE_VOICES;
 						sidebar.scopes.voicelist = [];
+						var ts = [];
 						if(blocktypes.contains(block_name+"::connections::out")){
 							ts = blocktypes.get(block_name+"::connections::out::hardware_channels");
 						}else if(blocktypes.contains(block_name+"::connections::in")){
 							ts = blocktypes.get(block_name+"::connections::in::hardware_channels");	
 							voffset += MAX_AUDIO_INPUTS;
 						}
-						//post("setting up hardware scopes",ts);
 						if(!Array.isArray(ts)) ts= [ts];
+						//post("setting up hardware scopes",ts,"empty",!is_empty(ts));
 						if(!is_empty(ts)){
 							if(ts[0] != sidebar.scopes.voice){
 								for(tii=0;tii<ts.length;tii++){
@@ -4237,14 +4301,16 @@ function draw_sidebar(){
 						mouse_click_parameters[mouse_index] = "-1";
 						mouse_click_values[mouse_index] = "";	
 						mouse_index++;
+						y_offset = sidebar.scopes.endy + fo1;			
 					}else{
-						for(i=0;i<sidebar.scopes.voicelist.length;i++){
-							// lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
-							click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+						if(sidebar.scopes.voicelist.length>0){
+							for(i=0;i<sidebar.scopes.voicelist.length;i++){
+								// lcd_main.message("paintrect", sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,block_darkest);
+								click_zone(scope_zoom, Math.floor(i>>1), null, sidebar.x+i*sidebar.scopes.width,sidebar.scopes.starty,sidebar.x+(i+1)*sidebar.scopes.width-fo1,sidebar.scopes.endy,mouse_index,2);
+							}
+							y_offset = sidebar.scopes.endy + fo1;			
 						}
-					}
-					
-					y_offset = sidebar.scopes.endy + fo1;					
+					}						
 				}else if((block_name.indexOf("core.input.control")==-1) && (blocktypes.contains(block_name+"::connections::out::midi"))){
 					y_offset = sidebar.scopes.endy + fo1;
 					var sc = 0;
@@ -4327,7 +4393,7 @@ function draw_sidebar(){
 							click_zone(set_display_mode, "custom", block, sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mouse_index,1);
 							//if the ui patcher doesn't make the area clickable, it clicks through to the full size ui
 						}
-						ui_poly.message("setvalue",  block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width);
+						ui_poly.message("setvalue",  block+1, "setup", sidebar.x,y_offset,sidebar.x2,y_offset+ui_h,mainwindow_width,"mini");
 						custom_block = block;
 						y_offset += ui_h + fo1;
 					}
@@ -4466,6 +4532,7 @@ function draw_sidebar(){
 						var this_group_mod_in_para=[];
 						automap.sidebar_row_ys[i] = y_offset;
 						colour=block_colour;
+						if(groups[i].contains("patterncontrols")) groups[i].replace("contains",[]);
 						if(groups[i].contains("colour")){
 							colour = groups[i].get("colour");
 						}
@@ -4746,6 +4813,41 @@ function draw_sidebar(){
 											lcd_main.message("frgb",colour);
 											lcd_main.message("write",params[curp].get("name"));
 										}
+									}else if((p_type=="scale")){
+										var h_s=1.5;
+										var poolno=-1;
+										var count = p_values.length;
+										if(count < 9){
+											if(sidebar.selected_voice==-1){
+												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
+											}else{
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*7.99)+1;
+											}
+										}else{
+											if(sidebar.selected_voice==-1){
+												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+											}else{
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*8.99);
+											}
+										}
+										var cp = menudarkest;
+										if(poolno>0) cp = config.get("palette::gamut["+(((poolno-1)* config.getsize("palette::gamut")/8)|0)+"]::colour");
+										paramslider_details[curp]=[x1,y1,x1*0.75+0.25*x2-fontheight*0.1,y2,cp[0]/2,cp[1]/2,cp[2]/2,mouse_index,block,curp,flags,["scale"],namelabely,"scale",1,block_name,0,0,0];
+										namelabely = labelled_parameter_v_slider(curp);
+										paramslider_details[curp][17]=namelabely;
+										//paramslider_details is used for quick redraw of a single slider. index is curp
+										//ie is mouse_click_parameters[index][0]
+										mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+										mouse_click_parameters[mouse_index] = [curp, block,wrap];	
+										mouse_click_values[mouse_index] = curp+1;
+										mouse_index++;
+										//mouse_index = parameter_menu_l(curp);
+										draw_keyboard(x1*0.75+0.25*x2,y1,x2,y2,poolno,cp);
+										
+										if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+											//but it's so much easier just to call this fn
+											buttonmaplist.push(block, "param","",MAX_PARAMETERS*block+curp, ((ppv2+1.1) % statecount)/statecount);
+										}
 									}else{
 										if(nolabel){
 											namearr="";
@@ -4979,7 +5081,7 @@ function draw_sidebar(){
 								map_y++;
 							}
 						}
-						automap.offset_range_c = Math.max(0,map_y - automap.c_rows + automap.offset_c);
+						automap.offset_range_c = Math.max(0,map_y - automap.c_rows);// + automap.offset_c);
 						note_poly.message("setvalue", automap.available_c, "automapped", 1);
 						note_poly.message("setvalue", automap.available_c, "automap_offset", automap.offset_c);
 						note_poly.message("setvalue", automap.available_c,"maplistopv",maplistopv);
@@ -6561,9 +6663,10 @@ function draw_sidebar(){
 					//it's either core.input.control.auto or .basic so
 					// check if we need to trim the list of midi outs / param outs / available colours
 					var cnam = blocks.get("blocks["+f_number+"]::selected_controller");
-					
-					param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
-					button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
+					button_count = 0;
+					param_count = 0;
+					if(io_dict.contains("controllers::"+cnam+"::outputs")) param_count = io_dict.get("controllers::"+cnam+"::outputs") |0;
+					if(io_dict.contains("controllers::"+cnam+"::buttons::count")) button_count = io_dict.get("controllers::"+cnam+"::buttons::count") |0;
 				}
 				// turn a knob to map it functionality here - also applies to core.input.keyboard (and core.input.arc when it's done)
 				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
@@ -8717,23 +8820,56 @@ function draw_automap_headers(sx, block) {
 				sx += bw2;		
 			}
 			if(playing){
+				/*
 				var bw2 = fo1 * 10;
 				var ex = sx + bw2 - fo1;		
 				lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-				click_zone(start_keyboard_looper, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-				//lcd_main.message("frgb", automap.colours_k.dark);
+				click_zone(/*start_keyboard_looper*//*[controller_looper_button,controller_looper_button], null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 6 /*2*//*);
 				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
 				lcd_main.message("write", "loop");
-				sx += bw2;		
+				sx += bw2;	
+				*/
+
+				if(automap.looping_k){
+					var bw2 = 1.4 * fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.dark : menucolour);
+					click_zone(keyboard_stop_loop, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "looping");
+					sx += bw2;
+					bw2 = fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.colour : automap.colours_c.dark);
+					click_zone(request_spawn_player, automap.available_k, 1, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "grab");
+					sx += bw2;			
+				}else{
+					var bw2 = fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, ((capture.controller>0)||(usermouse.clicked2d == mouse_index))? automap.colours_c.colour : automap.colours_c.dark);
+					click_zone([keyboard_looper_button,keyboard_looper_button], null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 6);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "loop");
+					sx += bw2;		
+				}
+			
+
 			}
-			var bw2 = fo1 * 15;
-			var ex = sx + bw2 - fo1;		
-			lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
-			click_zone(reify_automap_k, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
-			//lcd_main.message("frgb", automap.colours_k.dark);
-			lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", "connect");
-			sx += bw2;	
+			if(SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON){
+				var bw2 = fo1 * 15;
+				var ex = sx + bw2 - fo1;		
+				lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, automap.colours_k.dark);
+				click_zone(reify_automap_k, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 2);
+				//lcd_main.message("frgb", automap.colours_k.dark);
+				lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", "connect");
+				sx += bw2;	
+			}
 			if(linewrap) sx = sidebar.x2;
 		}
 	}
@@ -8758,7 +8894,7 @@ function draw_automap_headers(sx, block) {
 	}
 	if((automap.available_c != -1) || ((automap.voice_c>-1)&&(sidebar.selected!=-1)&&(blocks.get("blocks["+sidebar.selected+"]::name")!="core.input.control.auto"))){
 		if(sx!=sidebar.x){
-			var chw = 26 + 4 + fontheight * (0.8 + 0.4 * (automap.mapped_c == -1));// * 1.2;
+			var chw = 26 + 4 + fontheight * (0.8*(automap.offset_range_c>0) + 0.4 * (automap.mapped_c == -1)) + (playing * (1 + 1.3 * automap.looping_c) * fontheight);// * 1.2;
 			if(automap.lock_c && (block != automap.mapped_c) && (automap.mapped_c >= 0)) {
 				var labl = blocks.get("blocks[" + automap.mapped_c + "]::label");
 				if(labl!=null) chw += (0.1 + labl.length * 0.18) * fontheight;
@@ -8767,7 +8903,7 @@ function draw_automap_headers(sx, block) {
 				sx = sidebar.x;
 				y_offset+=0.6*fontheight;
 			}else if(sx+chw+chw_q>sidebar.x2){
-				sx = sidebar.x2 - chw;  //if the q wont fit, line up the c with the right edge
+				sx = sidebar.x2 - chw + fo1;  //if the q wont fit, line up the c with the right edge
 			}else if(chw_q!=0){
 				var rightmost_sx = sidebar.x2 - chw - chw_q;
 				sx = 0.5 * (sx + rightmost_sx);
@@ -8823,14 +8959,45 @@ function draw_automap_headers(sx, block) {
 				sx += (0.1 + labl.length * 0.18) * fontheight;
 				click_zone(select_block, null, automap.mapped_c, osx - 2, y_offset, sx, y_offset + fontheight * 0.5, mouse_index, 1);
 			}
-			lcd_main.message("frgb", automap.colours_c.dark);
-			lcd_main.message("moveto", sx, y_offset + 0.2 * fontheight);
-			lcd_main.message("write", "rows");
-			lcd_main.message("frgb", automap.colours_c.colour);
-			lcd_main.message("moveto", sx, y_offset + 0.4 * fontheight);
-			lcd_main.message("write", automap.offset_c + 1, "-", automap.offset_c + automap.c_rows);
-			click_zone(cycle_automap_offset, 1, null, sx - 2, y_offset, sidebar.x2, y_offset + 0.5 * fontheight, mouse_index, 1);
-			sx += fontheight * 0.8;// * 1.2;
+			if(automap.offset_range_c>0){
+				lcd_main.message("frgb", automap.colours_c.dark);
+				lcd_main.message("moveto", sx, y_offset + 0.2 * fontheight);
+				lcd_main.message("write", "rows");
+				lcd_main.message("frgb", automap.colours_c.colour);
+				lcd_main.message("moveto", sx, y_offset + 0.4 * fontheight);
+				lcd_main.message("write", automap.offset_c + 1, "-", automap.offset_c + automap.c_rows);
+				click_zone(cycle_automap_offset, 1, null, sx - 2, y_offset, sidebar.x2, y_offset + 0.5 * fontheight, mouse_index, 1);
+				sx += fontheight * 0.8;// * 1.2;
+			}
+			if(playing){
+				if(automap.looping_c){
+					var bw2 = 1.4 * fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.dark : menucolour);
+					click_zone(controller_stop_loop, null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "looping");
+					sx += bw2;
+					bw2 = fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, (usermouse.clicked2d == mouse_index)? automap.colours_c.colour : automap.colours_c.dark);
+					click_zone(request_spawn_player, automap.available_c, 1, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 1);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "grab");
+					sx += bw2;			
+				}else{
+					var bw2 = fontheight;
+					var ex = sx + bw2 - fo1;		
+					lcd_main.message("framerect", sx, y_offset, ex, y_offset + fontheight * 0.5, ((capture.controller>0)||(usermouse.clicked2d == mouse_index))? automap.colours_c.colour : automap.colours_c.dark);
+					click_zone([controller_looper_button,controller_looper_button], null, null, sx, y_offset, ex, y_offset + fontheight * 0.5, mouse_index, 6);
+					//lcd_main.message("frgb", automap.colours_k.dark);
+					lcd_main.message("moveto", sx + fo1, y_offset + 0.4 * fontheight);
+					lcd_main.message("write", "loop");
+					sx += bw2;		
+				}
+			}
 		}
 	}
 
@@ -9022,7 +9189,7 @@ function setup_bottom_bar(block){
 				if(bottombar.block != custom_block){
 					var x1 = ((custom_block!=NaN)&&(blocktypes.contains(blocks.get("blocks["+(custom_block|0)+"]::name")+"::show_states_on_custom_view"))) ? 18+fontheight : 9;
 					var y1 = (bottombar.block>-1) ? (mainwindow_height - bottombar.height-9) : (mainwindow_height-9);
-					ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width);
+					ui_poly.message("setvalue",  custom_block+1, "setup", x1, 18+fontheight*1.1, sidebar.x-9, y1, mainwindow_width,"bottom");
 					redraw_flag.deferred |= 130;
 				}else{
 					bottombar.block = -1;
@@ -9053,7 +9220,7 @@ function setup_bottom_bar(block){
 		bottombar.videoplane.message("texanchor",0.5*tw+(9+fontheight)/mainwindow_width,0.5*th);
 		bottombar.videoplane.message("enable",1);
 		if((h!=bottombar.height)||(r!=bottombar.right)){
-			ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1);
+			ui_poly.message("setvalue",  bottombar.block+1, "setup", 9 + 1.1*fontheight, mainwindow_height - bottombar.height-5, bottombar.right, mainwindow_height-5,-1,"bottom");
 			redraw_flag.deferred |= 4;
 		}else{
 			draw_bottom_bar();
