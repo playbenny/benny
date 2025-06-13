@@ -67,7 +67,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 395.25, 140.0, 29.5, 22.0 ],
+					"patching_rect" : [ 425.75, 140.0, 29.5, 22.0 ],
 					"text" : "+ 0."
 				}
 
@@ -79,7 +79,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "float" ],
-					"patching_rect" : [ 395.25, 108.0, 29.5, 22.0 ],
+					"patching_rect" : [ 437.0, 103.0, 29.5, 22.0 ],
 					"text" : "t b f"
 				}
 
@@ -283,103 +283,103 @@
 						"count" : 25,
 						"data" : [ 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 12.699999999999999 ]
+								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 22 ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, 0, -18.32 ]
+								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, 9 ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -10.01 ]
+								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, 9 ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, 0, 9.4 ]
+								"value" : [ "chroma A (unprocessed) 32.wav", 32, -5, 9 ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, 0, 12.800000000000001 ]
+								"value" : [ "chroma N (unprocessed) 32.wav", 32, -18, 8 ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, 0, -8.5 ]
+								"value" : [ "neumann 32.wav", 32, -5, 5 ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, 0, 10.5 ]
+								"value" : [ "colours 15ips 32.wav", 32, -18, 26 ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, 0, 14.5 ]
+								"value" : [ "colours air5k 32.wav", 32, -12, 35 ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, 0, 9.5 ]
+								"value" : [ "colours brit console 32.wav", 32, -14, 24 ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, 0, 10.0 ]
+								"value" : [ "colours discrete sat 32.wav", 32, -14, 22 ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, 0, 26.0 ]
+								"value" : [ "colours germanium 16.wav", 16, -18, 18 ]
 							}
 , 							{
 								"key" : 12,
-								"value" : [ "colours germanium 32.wav", 32, 0, 11.615278999999999 ]
+								"value" : [ "colours germanium 32.wav", 32, -18, 28 ]
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, 0, 15.25615 ]
+								"value" : [ "colours mass driver 16.wav", 16, -36, 24 ]
 							}
 , 							{
 								"key" : 14,
-								"value" : [ "colours mass driver 32.wav", 32, 0, 15.725014 ]
+								"value" : [ "colours mass driver 32.wav", 32, -42, 46 ]
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -12, 45.123148 ]
+								"value" : [ "colours royal blue 16.wav", 16, -35, 32 ]
 							}
 , 							{
 								"key" : 16,
-								"value" : [ "colours royal blue 32.wav", 32, 0, 11.361865999999999 ]
+								"value" : [ "colours royal blue 32.wav", 32, -24, 29 ]
 							}
 , 							{
 								"key" : 17,
-								"value" : [ "colours royal blue top boost 32.wav", 32, 0, 26.689133000000002 ]
+								"value" : [ "colours royal blue top boost 32.wav", 32, -36, 30 ]
 							}
 , 							{
 								"key" : 18,
-								"value" : [ "colours superfilter 32.wav", 32, 0, 14.147625 ]
+								"value" : [ "colours superfilter 32.wav", 32, -24, 28 ]
 							}
 , 							{
 								"key" : 19,
-								"value" : [ "colours th79 16.wav", 16, 0, 32.544375000000002 ]
+								"value" : [ "colours th79 16.wav", 16, -24, 14 ]
 							}
 , 							{
 								"key" : 20,
-								"value" : [ "colours toneloc 16.wav", 16, 0, 16.501899000000002 ]
+								"value" : [ "colours toneloc 16.wav", 16, -12, 7 ]
 							}
 , 							{
 								"key" : 21,
-								"value" : [ "colours toneloc 32.wav", 32, 0, 9.542973 ]
+								"value" : [ "colours toneloc 32.wav", 32, -24, 47 ]
 							}
 , 							{
 								"key" : 22,
-								"value" : [ "drawmer 16.wav", 16, 0, 12.618667 ]
+								"value" : [ "drawmer 16.wav", 16, -24, 0 ]
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -12, 17.310209 ]
+								"value" : [ "drawmer 32.wav", 32, -36, 24 ]
 							}
 , 							{
 								"key" : 24,
-								"value" : [ "eurorack bard ivan 16.wav", 16, 0, 4.275391 ]
+								"value" : [ "eurorack bard ivan 16.wav", 16, -24, 22 ]
 							}
 , 							{
 								"key" : 25,
-								"value" : [ "eurorack bard ivan 32.wav", 32, 0, 4.580641 ]
+								"value" : [ "eurorack bard ivan 32.wav", 32, -24, 46 ]
 							}
  ]
 					}
@@ -413,24 +413,12 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-25",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "float" ],
-					"patching_rect" : [ 448.0, 148.0, 47.0, 22.0 ],
-					"text" : "* 0.125"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-12",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 448.0, 187.0, 76.0, 22.0 ],
+					"patching_rect" : [ 425.75, 237.0, 76.0, 22.0 ],
 					"text" : "prepend trim"
 				}
 
@@ -444,7 +432,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 448.0, 108.0, 50.0, 22.0 ]
+					"patching_rect" : [ 425.75, 202.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -455,7 +443,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 448.0, 76.0, 52.0, 22.0 ],
+					"patching_rect" : [ 425.75, 170.0, 52.0, 22.0 ],
 					"text" : "dbtoa 0."
 				}
 
@@ -564,6 +552,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 198.0, 415.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -599,6 +591,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 146.0, 68.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -622,10 +618,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 139.0, 315.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -638,10 +630,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 139.0, 197.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -653,10 +641,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 37.0, 315.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -669,10 +653,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 37.0, 197.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -685,10 +665,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 162.0, 2.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -755,7 +731,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
+					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-15", 0 ]
 				}
 
@@ -815,13 +791,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-45", 0 ],
 					"source" : [ "obj-23", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-12", 0 ],
-					"source" : [ "obj-25", 0 ]
 				}
 
 			}
