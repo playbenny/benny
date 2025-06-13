@@ -1,5 +1,6 @@
 13/06/25:
 - source.sacred.waves.osc is a new dual+sub oscillator core by Luke Abbott based on wavetables sampled from a few synths at my studio (sacred walls) - a prophet 600 and a mono/poly. it gets the essential tone of those two surprisingly nicely and adds a versatile set of modulation options.
+- you can now drag a block onto a wire while holding ctrl-shift (cmd-shift) to insert it into that wire. thanks to user 'gullygully'
 
 11/06/25:
 - improved scales handling - every block that uses scales (like midi.scale.quantise or fx.retune or fx.pitch.gate or midi.note.select or...) now has a much nicer scale selector. you can see the selected scale, and edit it with the mouse. the scales are still stored in a core.scales.shapes block but this gets loaded automatically for you if you load a block that needs it.
