@@ -15,6 +15,18 @@
 		"subpatcher_template" : "Untitled1_template",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-19",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 110.0, 487.0, 99.0, 22.0 ],
+					"text" : "prepend voice_is"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-41",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -1687,9 +1699,9 @@
 				"box" : 				{
 					"id" : "obj-103",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 8,
-					"outlettype" : [ "", "", "", "", "", "", "", "" ],
+					"numinlets" : 4,
+					"numoutlets" : 11,
+					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
 					"patching_rect" : [ 234.0, 66.0, 124.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -1768,6 +1780,13 @@
 					"destination" : [ "obj-13", 0 ],
 					"order" : 1,
 					"source" : [ "obj-103", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-19", 0 ],
+					"source" : [ "obj-103", 5 ]
 				}
 
 			}
@@ -1986,6 +2005,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-251", 0 ],
 					"source" : [ "obj-18", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-251", 0 ],
+					"source" : [ "obj-19", 0 ]
 				}
 
 			}
@@ -2231,15 +2257,6 @@
 
 			}
  ],
-		"dependency_cache" : [ 			{
-				"name" : "source.sacred.waves.osc.gendsp",
-				"bootpath" : "~/Dropbox/          Multitudes/Multitudes/benny/audio_blocks",
-				"patcherrelativepath" : ".",
-				"type" : "gDSP",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0,
 		"bgcolor" : [ 0.203921568627451, 0.203921568627451, 0.196078431372549, 1.0 ],
 		"editing_bgcolor" : [ 0.203921568627451, 0.203921568627451, 0.196078431372549, 1.0 ]
 	}
