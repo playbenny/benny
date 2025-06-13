@@ -3468,7 +3468,6 @@ function insert_block_in_connection(newblockname,newblock){
 	new_connection.clear();
 	//click_clear(0,0);
 	//outlet(8,"bang");
-	set_display_mode("blocks");
 	var usz=undo_stack.getsize("history")|0;
 	undo_stack.append("history",'{}');
 	undo_stack.setparse("history["+usz+"]", '{ "connections" : { } }');

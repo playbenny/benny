@@ -522,7 +522,8 @@ var usermouse = {
 		dragging : {
 			connections : [],
 			voices : []
-		}
+		},
+		target_wire_for_insertion: -1
 	}
 }
 
