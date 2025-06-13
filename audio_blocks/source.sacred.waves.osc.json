@@ -5,7 +5,7 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Dual osciallator using Prophet 600 or MonoPoly synth waveforms (switchable) from Sacred Walls.  With crossmod and sub osc.  Made by Luke Abbott.",
 		"max_polyphony" : 0,
-		"upsample" : 2,
+		"upsample" : 4,
 		"connections" : {
 			"in" : { 
 				"midi" : [ "note in"]
