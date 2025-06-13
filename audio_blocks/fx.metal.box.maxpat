@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -283,47 +283,47 @@
 						"count" : 25,
 						"data" : [ 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 12.794292 ]
+								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 12.699999999999999 ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, 0, -18.312601999999998 ]
+								"value" : [ "chandler little devil (bright cut) 64.wav", 64, 0, -18.32 ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -10.066300999999999 ]
+								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -10.01 ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, 0, 9.416245 ]
+								"value" : [ "chroma A (unprocessed) 32.wav", 32, 0, 9.4 ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, 0, 12.889977999999999 ]
+								"value" : [ "chroma N (unprocessed) 32.wav", 32, 0, 12.800000000000001 ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, 0, -8.532829 ]
+								"value" : [ "neumann 32.wav", 32, 0, -8.5 ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, 0, 10.505630999999999 ]
+								"value" : [ "colours 15ips 32.wav", 32, 0, 10.5 ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, 0, 14.580363 ]
+								"value" : [ "colours air5k 32.wav", 32, 0, 14.5 ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, 0, 9.022375 ]
+								"value" : [ "colours brit console 32.wav", 32, 0, 9.5 ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, 0, 10.010068 ]
+								"value" : [ "colours discrete sat 32.wav", 32, 0, 10.0 ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, 0, 26.099229999999999 ]
+								"value" : [ "colours germanium 16.wav", 16, 0, 26.0 ]
 							}
 , 							{
 								"key" : 12,
@@ -371,7 +371,7 @@
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -12, 17.310208994679531 ]
+								"value" : [ "drawmer 32.wav", 32, -12, 17.310209 ]
 							}
 , 							{
 								"key" : 24,
@@ -585,8 +585,8 @@
 					"id" : "obj-16",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
+					"numoutlets" : 2,
+					"outlettype" : [ "signal", "signal" ],
 					"patching_rect" : [ 37.0, 269.0, 104.0, 22.0 ],
 					"text" : "gen~ fx.metal.box"
 				}
