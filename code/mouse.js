@@ -202,6 +202,39 @@ function manual_hit_detection(){
 	return id;
 }
 
+function manual_wire_hit_detection() {
+    function distSq(p, q) {
+        var dx = p[0] - q[0];
+        var dy = p[1] - q[1];
+        return dx * dx + dy * dy;
+    }
+
+    function distToSegmentSquared(p, v, w) {
+        var l2 = distSq(v, w);
+        if (l2 == 0) return distSq(p, v);
+        var t = ((p[0] - v[0]) * (w[0] - v[0]) + (p[1] - v[1]) * (w[1] - v[1])) / l2;
+        t = Math.max(0, Math.min(1, t));
+        return distSq(p, [v[0] + t * (w[0] - v[0]), v[1] + t * (w[1] - v[1])]);
+    }
+
+    var stw = screentoworld(usermouse.x, usermouse.y);
+    var p = [stw[0], stw[1]];
+    var threshold = 0.25; // in world coordinates, squared. 0.5^2
+
+    for (var i = 0; i < connections.getsize("connections"); i++) {
+        if (connections.contains("connections[" + i + "]::from::number") && wires_position[i] && wires_position[i].length > 1) {
+            for (var j = 0; j < wires_position[i].length - 1; j++) {
+                var v = wires_position[i][j];
+                var w = wires_position[i][j+1];
+                if (distToSegmentSquared(p, v, w) < threshold) {
+                    return i;
+                }
+            }
+        }
+    }
+    return null;
+}
+
 function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(!am_foreground&&leftbutton) other_window_active(0); // you got a mouse event, so you should make sure you're foreground? but only after a click
 
@@ -602,10 +635,41 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					usermouse.drag.starting_y = 0;
 					if((usermouse.ids[0] != "background")&&(displaymode=="blocks")){
 						if (usermouse.ids[0] == "block"){
+							// a block drag has finished, update its position first
 							var displaypos = [blocks_cube[usermouse.ids[1]][0].position[0] , blocks_cube[usermouse.ids[1]][0].position[1]];
 							var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
-							if((usermouse.hover[1] != usermouse.ids[1]) && (usermouse.hover[0] != "background")){
-								//############# CONNECT BLOCKS ########################## based on hover and ids which are set in picker not this fn
+
+							for(var t = 0; t<usermouse.drag.dragging.voices.length; t++){//resets the dragged blocks Z pos
+								blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[2] = 0;
+								write_block_matrix(usermouse.drag.dragging.voices[t][0]);
+							}
+							if(usermouse.drag.dragging.voices.length>0){
+								messnamed("voices_matrices","bang");
+								messnamed("blocks_matrices","bang");
+							}
+							if((displaypos[0] != dictpos[0]) || (displaypos[1] != dictpos[1])){
+								var ob=-1;
+								for(var t = 0; t<usermouse.drag.dragging.voices.length; t++){
+									if(usermouse.drag.dragging.voices[t][0]!=ob){
+										ob=usermouse.drag.dragging.voices[t][0];
+										blocks.replace("blocks["+ob+"]::space::x",blocks_cube[ob][0].position[0]);
+										blocks.replace("blocks["+ob+"]::space::y",blocks_cube[ob][0].position[1]);
+									}
+								}									
+								redraw_flag.flag |= 4;
+							}
+
+							// now check for actions
+							if (usermouse.drag.target_wire_for_insertion > -1) {
+								// insert into wire
+								menu.connection_number = usermouse.drag.target_wire_for_insertion;
+								var dragged_block_number = usermouse.ids[1];
+								var dragged_block_name = blocks.get("blocks[" + dragged_block_number + "]::name");
+								insert_block_in_connection(dragged_block_name, dragged_block_number);
+								usermouse.drag.target_wire_for_insertion = -1;
+
+							} else if ((usermouse.hover[1] != usermouse.ids[1]) && (usermouse.hover[0] != "background")) {
+								// connect to another block
 								if(usermouse.hover[1]==-1){
 									post("\nERROR hover was -1\n");
 								}else{
@@ -619,39 +683,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 									}
 									if(makewire){
-										//post("new connection, drag dist was",usermouse.drag.distance,"ids",usermouse.ids[0],usermouse.ids[1],usermouse.ids[2],"hover",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2]);
 										build_new_connection_menu(usermouse.ids[1],usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									}
-									usermouse.clicked3d=-1;
 								}
-							}else{ // ############## END OF DRAG MOVE BLOCKS ################
-								// MOVE BLOCK: - stores the dragged pos in the dict
-								for(t = 0; t<usermouse.drag.dragging.voices.length; t++){//resets the dragged blocks Z pos
-									blocks_cube[usermouse.drag.dragging.voices[t][0]][usermouse.drag.dragging.voices[t][1]].position[2] = 0;
-									write_block_matrix(usermouse.drag.dragging.voices[t][0]);
-								}
-								if(usermouse.drag.dragging.voices.length>0){
-									messnamed("voices_matrices","bang");
-									messnamed("blocks_matrices","bang");
-								}
-								if((displaypos[0] != dictpos[0]) || (displaypos[1] != dictpos[1])){
-									ob=-1;
-									for(t = 0; t<usermouse.drag.dragging.voices.length; t++){
-										if(usermouse.drag.dragging.voices[t][0]!=ob){
-											ob=usermouse.drag.dragging.voices[t][0];
-											blocks.replace("blocks["+ob+"]::space::x",blocks_cube[ob][0].position[0]);
-											blocks.replace("blocks["+ob+"]::space::y",blocks_cube[ob][0].position[1]);
-										}
-									}									
-									redraw_flag.flag |= 4;//need to redraw it (for connections only? unless you've messed anything up....)
-								}
-								usermouse.clicked3d = -1;
-							}
-							if((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))){
-								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // ###################### CONNECT TO SELF
+							} else if ((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))) {
+								// dropped on self
+								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // connect to self
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
-									// post("\nself connect,",usermouse.ids,"fname",fname);
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
 									if(blocktypes.contains(fname+"::connections::out::force_unity")){
 										if(!blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity")){
@@ -663,10 +702,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										post("you connected it to itself, dist: " + usermouse.drag.distance +" ids "+ usermouse.ids[1] + " hover "+usermouse.hover[1]);
 										build_new_connection_menu(usermouse.ids[1], usermouse.hover[1],usermouse.ids[2]-1,usermouse.hover[2]-1);
 									}
-								}else{ // ################### A BUNCH OF MUNDANE TOGGLING SELECtiON - you released on a thing, no drag:
+								}else{ // just a click
 									mouse_released_on_a_thing_no_drag();
 									usermouse.ids=['done',-1,-1];
 								}
+							}
+
+							// tidy up
+							if (usermouse.ids[0] != 'done') {
+								usermouse.clicked3d = -1;
 							}
 						}else if(usermouse.ids[0]=='wires'){
 							//	post("you clicked this wire2 \n");
@@ -949,6 +993,28 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											}
 										}
 										if(sidebar.mode=="notification") set_sidebar_mode("none");
+									}
+									var hovered_wire = manual_wire_hit_detection();
+									if (hovered_wire !== null && usermouse.shift && usermouse.ctrl) {
+										usermouse.drag.target_wire_for_insertion = hovered_wire;
+										if (bulgingwire != hovered_wire) {
+											if (bulgingwire != -1 && Array.isArray(wires_scale[bulgingwire]) && !selected.wire[bulgingwire]) {
+												for (var k = 0; k < wires_scale[bulgingwire].length; k++) { wires_scale[bulgingwire][k][1] = wire_dia; }
+												write_wire_scale_matrix(bulgingwire);
+											}
+											bulgingwire = hovered_wire;
+										}
+										bulgeamount = 2; // make it bigger
+										if (!Array.isArray(wires_scale[bulgingwire])) wires_scale[bulgingwire] = [];
+										for (var k = 0; k < wires_scale[bulgingwire].length; k++) { wires_scale[bulgingwire][k][1] = wire_dia * (1 + bulgeamount); }
+										write_wire_scale_matrix(bulgingwire);
+									} else if (usermouse.drag.target_wire_for_insertion != -1) {
+										if (bulgingwire != -1 && Array.isArray(wires_scale[bulgingwire]) && !selected.wire[bulgingwire]) {
+											bulgeamount = 0;
+											for (var k = 0; k < wires_scale[bulgingwire].length; k++) { wires_scale[bulgingwire][k][1] = wire_dia; }
+											write_wire_scale_matrix(bulgingwire);
+										}
+										usermouse.drag.target_wire_for_insertion = -1;
 									}
 								}else if(((usermouse.hover[0]=="block"))&&(selected.block_count<=1)){
 									//post("\nhovering over:",usermouse.hover[0],usermouse.hover[1],usermouse.hover[2],"ids",usermouse.ids,"wpc",wires_potential_connection);
