@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -287,7 +287,7 @@
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, 9 ]
+								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, -3 ]
 							}
 , 							{
 								"key" : 3,
@@ -331,7 +331,7 @@
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, -36, 24 ]
+								"value" : [ "colours mass driver 16.wav", 16, -42, 14 ]
 							}
 , 							{
 								"key" : 14,
@@ -339,7 +339,7 @@
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -35, 32 ]
+								"value" : [ "colours royal blue 16.wav", 16, -42, 50 ]
 							}
 , 							{
 								"key" : 16,
@@ -552,10 +552,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 198.0, 415.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -577,8 +573,8 @@
 					"id" : "obj-16",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "signal", "signal" ],
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 37.0, 269.0, 104.0, 22.0 ],
 					"text" : "gen~ fx.metal.box"
 				}
@@ -591,10 +587,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 146.0, 68.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -618,6 +610,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 139.0, 315.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -630,6 +626,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 139.0, 197.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -641,6 +641,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 37.0, 315.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -653,6 +657,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 37.0, 197.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -665,6 +673,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 162.0, 2.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
