@@ -3,7 +3,7 @@
 		"type" : "hardware",
 		"substitute" : [  ],
 		"max_polyphony" : 1,
-		"help_text" : "Roland V4-EX midi controls",
+		"help_text" : "Roland V4-EX midi controls, V4EX Midi Settings : (STD) Note Ctrl Mode = ON / low key 24h / upkey 54h / cc 3h,4h,5h,7h = Afx / cc 8h,9h,Ah, Ch = Bfx / cc Bh = video fader assign / cc 11h = transition assign / cc 12h = transform A / cc 13h = transform B",
 		"exclusive" : 0,
 		"click_out" : 0,
 		"cue_out" : 0,
@@ -30,7 +30,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 10
+				"cc_number" : 11
 			},
 			{
 				"name" : "Mix Type",
@@ -39,7 +39,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 16
+				"cc_number" : 17
 			},
 			{
 				"name" : "Tran A",
@@ -48,7 +48,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 19
+				"cc_number" : 20
 			},
 			{
 				"name" : "Trans B",
@@ -57,7 +57,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 20
+				"cc_number" : 21
 			},
 			{
 				"name" : "AFX1",
@@ -66,7 +66,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 4
+				"cc_number" : 5
 			},
 			{
 				"name" : "AFX2",
@@ -75,7 +75,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 5
+				"cc_number" : 6
 			},
 			{
 				"name" : "AFX3",
@@ -84,7 +84,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 6
+				"cc_number" : 7
 			},
 			{
 				"name" : "AFX4",
@@ -93,7 +93,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 8
+				"cc_number" : 9
 			},
 			{
 				"name" : "BFX1",
@@ -102,7 +102,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 9
+				"cc_number" : 10
 			},
 			{
 				"name" : "BFX2",
@@ -111,7 +111,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 10
+				"cc_number" : 11
 			},
 			{
 				"name" : "BFX3",
@@ -120,7 +120,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 11
+				"cc_number" : 12
 			},
 			{
 				"name" : "BFX4",
@@ -129,7 +129,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 13
+				"cc_number" : 14
 			},
 			{
 				"name" : "15",
@@ -138,7 +138,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 14
+				"cc_number" : 15
 			},
 			{
 				"name" : "16",
@@ -147,7 +147,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 15
+				"cc_number" : 16
 			},
 			{
 				"name" : "18",
@@ -156,7 +156,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 17
+				"cc_number" : 18
 			},
 			{
 				"name" : "19",
@@ -165,7 +165,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 18
+				"cc_number" : 19
 			}
 		]
 	}
