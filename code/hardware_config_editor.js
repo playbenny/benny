@@ -1364,20 +1364,20 @@ function render_controls(){
 				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
 				ii++;
-				/*//	"max_polyphony" : 1,
+				//	"max_polyphony" : 1,
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
-				controls[ii].message("set", "max polyphony");
+				controls[ii].message("set", "show as this many voices");
 				controls[ii].presentation(1);
-				controls[ii].presentation_position(30,y_pos);
+				controls[ii].presentation_position(30,y_pos,unit.col,20);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.max_polyphony."+ii, "@minimum", 0, "@maximum", 128);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.max_polyphony."+ii, "@minimum", 1, "@maximum", 128);
 				controls[ii].message("set", cd.get(cdk[p]+"::max_polyphony"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(20+unit.col,y_pos,unit.col,20);
 				values[ii] = [cdk[p]];
 				y_pos+=unit.row;
-				ii++;*/
+				ii++;
 				//	"substitute" : "fx.filter.2pole",
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
 				controls[ii].message("set", "substitute");
