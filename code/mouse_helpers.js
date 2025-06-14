@@ -4075,8 +4075,9 @@ function type_to_search(key){
 		var types = blocktypes.getkeys();
 		var results = [];
 		var found =0;
+		var showdep = config.contains("show_deprecated") && (config.get("show_deprecated")==1);
 		for(var i=0;i<menu.cubecount;i++){
-			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			if(!showdep&&(blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 			}else{
 				var str = types[i];
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
@@ -4094,7 +4095,7 @@ function type_to_search(key){
 		}
 		
 		for(var i=0;i<menu.cubecount;i++){
-			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			if(!showdep&&(blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 			}else{
 				var str = types[i];
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");

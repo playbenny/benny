@@ -64,5 +64,6 @@
 	"sidebar_width_in_units" : "DONT",
 	"consolevsts" : "DONT",
 	"maxmsp" : "DONT",
-	"palette" : "DONT"
+	"palette" : "DONT",
+	"show_deprecated" : "TOGGLE"
 }

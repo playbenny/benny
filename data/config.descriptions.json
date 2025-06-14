@@ -60,5 +60,6 @@
 	"AUTOMAP_MOUSE_FOLLOW" : "if enabled, when using the controller automap feature, if a block has more rows of parameters than fit on the controller, then hovering the mouse over a row of controls sets the offset so that that row is accessible on the controller.",
 	"ENABLE_RECORD_HARDWARE" : "tiny cpu penalty, enables recording directly from hardware blocks.",
 	"sidebar_scrollbar_width" : "how many pixels the scrollbar area at the right of the sidebar is",
-	"sidebar_width_in_units" : "how wide the sidebar is. adjusting may break various bits of ui? untested."
+	"sidebar_width_in_units" : "how wide the sidebar is. adjusting may break various bits of ui? untested.",
+	"show_deprecated" : "if on, shows blocks that are flagged as old, removed, in-progress etc, in the menu. for developer use."
 }

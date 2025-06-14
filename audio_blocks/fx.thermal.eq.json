@@ -1,14 +1,15 @@
 {
-	"fx.multi.conv.2d" : {
-		"patcher" : "fx.multi.conv.2d",
+	"fx.thermal.eq" : {
+		"patcher" : "fx.thermal.eq",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Experimental, likely to change. Like convolution, but working with a set of impulse responses taken at many different signal levels. Surprisingly pleasant way of modelling 'weakly nonlinear' hardware saturation.££The default is to look up (and interpolate between) impulse levels based on the current sample value, but using an envelope here also sounds good. There's a second, very slow, rms env follower that you can feed in here too to add character.££As opposed to the multi.conv.1d block, this one loads a pair of impulses and lets you fade between them manually or driven by the signal or envelopes.  ££This block supports oversampling, which is recommended if you're getting more overdriven tones out of it.",
+		"help_text" : "Experimental, likely to change. This one uses a set of multi level convolutions from a british tube eq i have. Like convolution, but working with a set of impulse responses taken at many different signal levels. Surprisingly pleasant way of modelling 'weakly nonlinear' hardware saturation.££The default is to look up (and interpolate between) impulse levels based on the current sample value, but using an envelope here also sounds good. There's a second, very slow, rms env follower that you can feed in here too to add character.££As opposed to the multi.conv.1d block, this one loads a pair of impulses and lets you fade between them manually or driven by the signal or envelopes.  ££This block supports oversampling, which is recommended if you're getting more overdriven tones out of it.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
+		"deprecated" : 1,
 		"connections" : {
 			"in" : { 
-				"audio" : [ "in", "drive mod" ]
+				"audio" : [ "in", "mod" ]
 			},
 			"out" : {
 				"audio" : [ "out", "selectorfn" ]
@@ -16,15 +17,11 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0],
+				"contains" : [3,8,0,0],
 				"height" : 0
 			},
 			{ 
-				"contains" : [12],
-				"height" : 0
-			},
-			{
-				"contains" : [13,3,8],
+				"contains" : [2,2,1,1],
 				"height" : 0,
 				"colour" : 10
 			},
@@ -34,7 +31,7 @@
 				"colour" : 15
 			},
 			{
-				"contains" : [14,15,16],
+				"contains" : [12,13,14],
 				"height" : 0,
 				"colour" : 30
 			},
@@ -44,35 +41,36 @@
 				"colour" : 20
 			},
 			{
-				"contains" : [1,1,1,2],
-				"height" : 0,
-				"colour" : -20
+				"contains":[15]
 			}
 		],
 		"parameters" : [
 			{
-				"name" : "impulses wave file (a)",
-				"type" : "wave",
-				"values" : ["wave",0,256],
+				"name" : "highpass frequency",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["40Hz","100Hz","800Hz"],
 				"error_scale" : 0,
+				"columns" : 3,
 				"wrap" : 1,
-				"default" : 0
+				"default" : 0.1
 			},
 			{
-				"name" : "impulse_recorded_length",
-				"type" : "menu_d",
+				"name" : "emphasis frequency",
+				"type" : "menu_l",
 				"force_label" : 1,
-				"values" : [116, 32, 48, 64, 128, 256, 512, 1024, 2048, 4096],
+				"columns" : 4,
+				"values" : ["bass","800Hz","2.5kHz","top"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.5125
 			},
 			{
-				"name" : "impulse_use_length",
-				"type" : "int",
-				"values" : ["uni", 1, 4096, "exp1000"],
+				"name" : "emphasis_amount",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.4
+				"default" : 0
 			},
 			{
 				"name" : "drive",
@@ -147,23 +145,7 @@
 				"default" : 0.5					
 			},
 			{
-				"name" : "impulses wave file (b)",
-				"type" : "wave",
-				"values" : ["wave",0,256],
-				"error_scale" : 0,
-				"wrap" : 1,
-				"default" : 0
-			},
-			{
-				"name" : "a-b fade",
-				"type" : "float",
-				"values" : ["uni", 0,1 , "lin"],
-				"error_scale" : 0,
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "signal to_a-b fade",
+				"name" : "signal to_amount",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"error_scale" : 0,
@@ -171,7 +153,7 @@
 				"default" : 0.5		
 			},
 			{
-				"name" : "env to_a-b fade",
+				"name" : "env to_amount",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"error_scale" : 0,
@@ -179,12 +161,21 @@
 				"default" : 0.5					
 			},
 			{
-				"name" : "slow env to_a-b fade",
+				"name" : "slow env to_amount",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"error_scale" : 0,
 				"wrap" : 0,
 				"default" : 0.5					
+			},
+			{
+				"name" : "impulse length",
+				"type" : "menu_d",
+				"values" : ["32","64"],
+				"default" : 0.25,
+				"wrap" : 1,
+				"error_scale" : 0,
+				"force_label" : 1
 			}
 		]
 	}
