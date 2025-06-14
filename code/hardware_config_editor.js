@@ -2606,6 +2606,7 @@ function keybcallback(data){
 		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]-1);
 	}else if(id[0]=="hardwarename"){
 		var newname = data.value.toString();
+		if(newname.indexOf("hardware.")!=0) newname = "hardware."+newname;
 		post("\nrename?");
 		if(newname!=values[id[1]]){
 			post("\nrenaming ",values[id[1]]," to ",newname);
