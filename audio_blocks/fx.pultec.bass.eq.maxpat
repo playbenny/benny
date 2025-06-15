@@ -14,13 +14,37 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-18",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 812.0, 455.0, 29.5, 22.0 ],
+					"text" : "128"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 531.0, 217.0, 22.0, 22.0 ],
+					"text" : "t 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-5",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 426.0, 105.5, 33.0, 22.0 ],
-					"text" : "- 18."
+					"patching_rect" : [ 426.0, 105.5, 29.5, 22.0 ],
+					"text" : "- 6."
 				}
 
 			}
@@ -50,24 +74,12 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-93",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"patching_rect" : [ 897.0, 435.0, 37.0, 22.0 ],
-					"text" : "* 256"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-91",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 686.0, 551.0, 54.0, 22.0 ],
+					"patching_rect" : [ 601.0, 486.0, 54.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -80,7 +92,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 686.0, 521.0, 24.0, 24.0 ]
+					"patching_rect" : [ 601.0, 456.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -91,7 +103,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 890.0, 551.0, 54.0, 22.0 ],
+					"patching_rect" : [ 742.0, 476.0, 54.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -104,7 +116,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 890.0, 527.0, 24.0, 24.0 ]
+					"patching_rect" : [ 742.0, 441.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -115,7 +127,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 913.0, 489.0, 58.0, 22.0 ],
+					"patching_rect" : [ 829.0, 476.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -127,7 +139,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 800.0, 443.0, 80.0, 22.0 ],
+					"patching_rect" : [ 652.0, 362.0, 80.0, 22.0 ],
 					"text" : "prepend read"
 				}
 
@@ -139,7 +151,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "float", "bang" ],
-					"patching_rect" : [ 800.0, 489.0, 109.0, 22.0 ],
+					"patching_rect" : [ 652.0, 408.0, 109.0, 22.0 ],
 					"text" : "buffer~ #0irbuff2"
 				}
 
@@ -151,20 +163,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 800.0, 522.0, 85.0, 22.0 ],
+					"patching_rect" : [ 742.0, 509.0, 85.0, 22.0 ],
 					"text" : "ir2 #0irbuff2"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-69",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 897.0, 410.0, 90.0, 22.0 ],
-					"text" : "expr $i1*32+32"
 				}
 
 			}
@@ -175,7 +175,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 603.0, 441.0, 80.0, 22.0 ],
+					"patching_rect" : [ 518.0, 376.0, 80.0, 22.0 ],
 					"text" : "prepend read"
 				}
 
@@ -187,7 +187,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "float", "bang" ],
-					"patching_rect" : [ 603.0, 487.0, 102.0, 22.0 ],
+					"patching_rect" : [ 518.0, 422.0, 102.0, 22.0 ],
 					"text" : "buffer~ #0irbuff"
 				}
 
@@ -199,7 +199,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 603.0, 520.0, 72.0, 22.0 ],
+					"patching_rect" : [ 518.0, 455.0, 72.0, 22.0 ],
 					"text" : "ir #0irbuff"
 				}
 
@@ -211,8 +211,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 897.0, 460.0, 91.0, 22.0 ],
-					"text" : "sizeinsamps $1"
+					"patching_rect" : [ 812.0, 422.0, 111.0, 22.0 ],
+					"text" : "sizeinsamps 32768"
 				}
 
 			}
@@ -223,7 +223,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 737.0, 316.0, 38.0, 22.0 ],
+					"patching_rect" : [ 652.0, 251.0, 38.0, 22.0 ],
 					"text" : "zl reg"
 				}
 
@@ -235,7 +235,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 737.0, 283.0, 31.0, 22.0 ],
+					"patching_rect" : [ 652.0, 218.0, 31.0, 22.0 ],
 					"text" : "t b s"
 				}
 
@@ -247,20 +247,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 737.0, 346.0, 370.0, 22.0 ],
+					"patching_rect" : [ 652.0, 281.0, 370.0, 22.0 ],
 					"text" : "sprintf symout %saudio_blocks/multi-irs/eqs/thermionic-earlybird/%s"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-49",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 603.0, 346.0, 38.0, 22.0 ],
-					"text" : "zl reg"
 				}
 
 			}
@@ -270,9 +258,9 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
-					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 603.0, 290.0, 31.0, 22.0 ],
-					"text" : "t b s"
+					"outlettype" : [ "", "bang" ],
+					"patching_rect" : [ 519.0, 184.0, 31.0, 22.0 ],
+					"text" : "t s b"
 				}
 
 			}
@@ -283,8 +271,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 603.0, 381.0, 370.0, 22.0 ],
-					"text" : "sprintf symout %saudio_blocks/multi-irs/eqs/thermionic-earlybird/%s"
+					"patching_rect" : [ 518.0, 316.0, 354.0, 22.0 ],
+					"text" : "sprintf symout %saudio_blocks/multi-irs/eqs/pulteq-clone-128/%s"
 				}
 
 			}
@@ -295,7 +283,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 737.0, 252.0, 77.0, 22.0 ],
+					"patching_rect" : [ 652.0, 187.0, 77.0, 22.0 ],
 					"text" : "route symbol"
 				}
 
@@ -303,126 +291,34 @@
 , 			{
 				"box" : 				{
 					"coll_data" : 					{
-						"count" : 30,
+						"count" : 7,
 						"data" : [ 							{
 								"key" : 0,
-								"value" : [ "/32/thermionic hpf40hz 32.wav" ]
+								"value" : [ "/pultec clone flat 128.wav" ]
 							}
 , 							{
 								"key" : 1,
-								"value" : [ "/32/thermionic hpf40hz + bass 32.wav" ]
+								"value" : [ "/pultec clone bass 30Hz boost only 128.wav" ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "/32/thermionic hpf40hz + 800 32.wav" ]
+								"value" : [ "/pultec clone bass 30Hz boost and atten 128.wav" ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "/32/thermionic hpf40hz + 2.5k 32.wav" ]
+								"value" : [ "/pultec clone bass 60Hz boost only 128.wav" ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "/32/thermionic hpf40hz + top 32.wav" ]
+								"value" : [ "/pultec clone bass 60Hz boost and atten 128.wav" ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "/32/thermionic hpf100hz 32.wav" ]
+								"value" : [ "/pultec clone bass 100Hz boost only 128.wav" ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "/32/thermionic hpf100hz + bass 32.wav" ]
-							}
-, 							{
-								"key" : 7,
-								"value" : [ "/32/thermionic hpf100hz + 800 32.wav" ]
-							}
-, 							{
-								"key" : 8,
-								"value" : [ "/32/thermionic hpf100hz + 2.5k 32.wav" ]
-							}
-, 							{
-								"key" : 9,
-								"value" : [ "/32/thermionic hpf100hz + top 32.wav" ]
-							}
-, 							{
-								"key" : 10,
-								"value" : [ "/32/thermionic hpf800hz 32.wav" ]
-							}
-, 							{
-								"key" : 11,
-								"value" : [ "/32/thermionic hpf800hz + bass 32.wav" ]
-							}
-, 							{
-								"key" : 12,
-								"value" : [ "/32/thermionic hpf800hz + 800 32.wav" ]
-							}
-, 							{
-								"key" : 13,
-								"value" : [ "/32/thermionic hpf800hz + 2.5k 32.wav" ]
-							}
-, 							{
-								"key" : 14,
-								"value" : [ "/32/thermionic hpf800hz + top 32.wav" ]
-							}
-, 							{
-								"key" : 15,
-								"value" : [ "/64/thermionic hpf40hz 64.wav" ]
-							}
-, 							{
-								"key" : 16,
-								"value" : [ "/64/thermionic hpf40hz + bass 64.wav" ]
-							}
-, 							{
-								"key" : 17,
-								"value" : [ "/64/thermionic hpf40hz + 800 64.wav" ]
-							}
-, 							{
-								"key" : 18,
-								"value" : [ "/64/thermionic hpf40hz + 2.5k 64.wav" ]
-							}
-, 							{
-								"key" : 19,
-								"value" : [ "/64/thermionic hpf40hz + top 64.wav" ]
-							}
-, 							{
-								"key" : 20,
-								"value" : [ "/64/thermionic hpf100hz 64.wav" ]
-							}
-, 							{
-								"key" : 21,
-								"value" : [ "/64/thermionic hpf100hz + bass 64.wav" ]
-							}
-, 							{
-								"key" : 22,
-								"value" : [ "/64/thermionic hpf100hz + 800 64.wav" ]
-							}
-, 							{
-								"key" : 23,
-								"value" : [ "/64/thermionic hpf100hz + 2.5k 64.wav" ]
-							}
-, 							{
-								"key" : 24,
-								"value" : [ "/64/thermionic hpf100hz + top 64.wav" ]
-							}
-, 							{
-								"key" : 25,
-								"value" : [ "/64/thermionic hpf800hz 64.wav" ]
-							}
-, 							{
-								"key" : 26,
-								"value" : [ "/64/thermionic hpf800hz + bass 64.wav" ]
-							}
-, 							{
-								"key" : 27,
-								"value" : [ "/64/thermionic hpf800hz + 800 64.wav" ]
-							}
-, 							{
-								"key" : 28,
-								"value" : [ "/64/thermionic hpf800hz + 2.5k 64.wav" ]
-							}
-, 							{
-								"key" : 29,
-								"value" : [ "/64/thermionic hpf800hz + top 64.wav" ]
+								"value" : [ "/pultec clone bass 100Hz boost and atten 128.wav" ]
 							}
  ]
 					}
@@ -432,7 +328,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 737.0, 230.0, 77.0, 22.0 ],
+					"patching_rect" : [ 652.0, 152.0, 77.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 1,
 						"precision" : 6
@@ -449,7 +345,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 603.0, 252.0, 77.0, 22.0 ],
+					"patching_rect" : [ 531.0, 281.0, 77.0, 22.0 ],
 					"text" : "route symbol"
 				}
 
@@ -457,126 +353,34 @@
 , 			{
 				"box" : 				{
 					"coll_data" : 					{
-						"count" : 30,
+						"count" : 7,
 						"data" : [ 							{
 								"key" : 0,
-								"value" : [ "/32/thermionic hpf40hz 32.wav" ]
+								"value" : [ "/pultec clone flat 128.wav" ]
 							}
 , 							{
 								"key" : 1,
-								"value" : [ "/32/thermionic hpf40hz + bass 32.wav" ]
+								"value" : [ "/pultec clone bass 30Hz boost only 128.wav" ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "/32/thermionic hpf40hz + 800 32.wav" ]
+								"value" : [ "/pultec clone bass 30Hz boost and atten 128.wav" ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "/32/thermionic hpf40hz + 2.5k 32.wav" ]
+								"value" : [ "/pultec clone bass 60Hz boost only 128.wav" ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "/32/thermionic hpf40hz + top 32.wav" ]
+								"value" : [ "/pultec clone bass 60Hz boost and atten 128.wav" ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "/32/thermionic hpf100hz 32.wav" ]
+								"value" : [ "/pultec clone bass 100Hz boost only 128.wav" ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "/32/thermionic hpf100hz + bass 32.wav" ]
-							}
-, 							{
-								"key" : 7,
-								"value" : [ "/32/thermionic hpf100hz + 800 32.wav" ]
-							}
-, 							{
-								"key" : 8,
-								"value" : [ "/32/thermionic hpf100hz + 2.5k 32.wav" ]
-							}
-, 							{
-								"key" : 9,
-								"value" : [ "/32/thermionic hpf100hz + top 32.wav" ]
-							}
-, 							{
-								"key" : 10,
-								"value" : [ "/32/thermionic hpf800hz 32.wav" ]
-							}
-, 							{
-								"key" : 11,
-								"value" : [ "/32/thermionic hpf800hz + bass 32.wav" ]
-							}
-, 							{
-								"key" : 12,
-								"value" : [ "/32/thermionic hpf800hz + 800 32.wav" ]
-							}
-, 							{
-								"key" : 13,
-								"value" : [ "/32/thermionic hpf800hz + 2.5k 32.wav" ]
-							}
-, 							{
-								"key" : 14,
-								"value" : [ "/32/thermionic hpf800hz + top 32.wav" ]
-							}
-, 							{
-								"key" : 15,
-								"value" : [ "/64/thermionic hpf40hz 64.wav" ]
-							}
-, 							{
-								"key" : 16,
-								"value" : [ "/64/thermionic hpf40hz + bass 64.wav" ]
-							}
-, 							{
-								"key" : 17,
-								"value" : [ "/64/thermionic hpf40hz + 800 64.wav" ]
-							}
-, 							{
-								"key" : 18,
-								"value" : [ "/64/thermionic hpf40hz + 2.5k 64.wav" ]
-							}
-, 							{
-								"key" : 19,
-								"value" : [ "/64/thermionic hpf40hz + top 64.wav" ]
-							}
-, 							{
-								"key" : 20,
-								"value" : [ "/64/thermionic hpf100hz 64.wav" ]
-							}
-, 							{
-								"key" : 21,
-								"value" : [ "/64/thermionic hpf100hz + bass 64.wav" ]
-							}
-, 							{
-								"key" : 22,
-								"value" : [ "/64/thermionic hpf100hz + 800 64.wav" ]
-							}
-, 							{
-								"key" : 23,
-								"value" : [ "/64/thermionic hpf100hz + 2.5k 64.wav" ]
-							}
-, 							{
-								"key" : 24,
-								"value" : [ "/64/thermionic hpf100hz + top 64.wav" ]
-							}
-, 							{
-								"key" : 25,
-								"value" : [ "/64/thermionic hpf800hz 64.wav" ]
-							}
-, 							{
-								"key" : 26,
-								"value" : [ "/64/thermionic hpf800hz + bass 64.wav" ]
-							}
-, 							{
-								"key" : 27,
-								"value" : [ "/64/thermionic hpf800hz + 800 64.wav" ]
-							}
-, 							{
-								"key" : 28,
-								"value" : [ "/64/thermionic hpf800hz + 2.5k 64.wav" ]
-							}
-, 							{
-								"key" : 29,
-								"value" : [ "/64/thermionic hpf800hz + top 64.wav" ]
+								"value" : [ "/pultec clone bass 100Hz boost and atten 128.wav" ]
 							}
  ]
 					}
@@ -586,7 +390,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 603.0, 230.0, 77.0, 22.0 ],
+					"patching_rect" : [ 531.0, 249.0, 77.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 1,
 						"precision" : 6
@@ -598,25 +402,13 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-31",
-					"maxclass" : "number",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 603.0, 194.0, 50.0, 22.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-29",
 					"maxclass" : "number",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 737.0, 194.0, 50.0, 22.0 ]
+					"patching_rect" : [ 652.0, 116.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -624,23 +416,11 @@
 				"box" : 				{
 					"id" : "obj-26",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 737.0, 162.0, 160.0, 22.0 ],
-					"text" : "expr $i1*5 + $i3*15 + 1 + $i2"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-25",
-					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 603.0, 162.0, 110.0, 22.0 ],
-					"text" : "expr $i1*5 + $i3*15"
+					"patching_rect" : [ 652.0, 84.0, 113.0, 22.0 ],
+					"text" : "expr $i1*2 + 1 + $i2"
 				}
 
 			}
@@ -648,11 +428,11 @@
 				"box" : 				{
 					"id" : "obj-19",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 698.0, 123.0, 58.0, 22.0 ],
-					"text" : "pak 0 0 0"
+					"patching_rect" : [ 652.0, 47.0, 48.0, 22.0 ],
+					"text" : "pak 0 0"
 				}
 
 			}
@@ -663,7 +443,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 1005.0, 260.0, 116.0, 22.0 ],
+					"patching_rect" : [ 880.0, 137.0, 116.0, 22.0 ],
 					"text" : "regexp (.+)patchers/"
 				}
 
@@ -675,7 +455,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 957.0, 156.0, 58.0, 22.0 ],
+					"patching_rect" : [ 832.0, 33.0, 58.0, 22.0 ],
 					"text" : "loadbang"
 				}
 
@@ -687,7 +467,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 957.0, 188.0, 32.0, 22.0 ],
+					"patching_rect" : [ 832.0, 65.0, 32.0, 22.0 ],
 					"text" : "path"
 				}
 
@@ -699,7 +479,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 957.0, 220.0, 67.0, 22.0 ],
+					"patching_rect" : [ 832.0, 97.0, 67.0, 22.0 ],
 					"save" : [ "#N", "thispatcher", ";", "#Q", "end", ";" ],
 					"text" : "thispatcher"
 				}
@@ -968,6 +748,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-34", 0 ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-11", 0 ]
 				}
@@ -1019,16 +806,14 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
-					"order" : 1,
-					"source" : [ "obj-19", 0 ]
+					"destination" : [ "obj-46", 0 ],
+					"source" : [ "obj-18", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-26", 0 ],
-					"order" : 0,
 					"source" : [ "obj-19", 0 ]
 				}
 
@@ -1044,13 +829,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-24", 0 ],
 					"source" : [ "obj-22", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-31", 0 ],
-					"source" : [ "obj-25", 0 ]
 				}
 
 			}
@@ -1093,21 +871,14 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-34", 0 ],
-					"source" : [ "obj-31", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-53", 0 ],
+					"destination" : [ "obj-54", 1 ],
 					"source" : [ "obj-32", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-53", 0 ],
+					"destination" : [ "obj-54", 1 ],
 					"source" : [ "obj-32", 0 ]
 				}
 
@@ -1156,13 +927,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-54", 0 ],
-					"source" : [ "obj-49", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-17", 0 ],
 					"source" : [ "obj-5", 0 ]
 				}
@@ -1177,15 +941,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-49", 0 ],
-					"source" : [ "obj-53", 0 ]
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-53", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-54", 1 ],
-					"source" : [ "obj-53", 1 ]
+					"destination" : [ "obj-54", 0 ],
+					"source" : [ "obj-53", 0 ]
 				}
 
 			}
@@ -1219,14 +983,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-19", 2 ],
-					"order" : 1,
-					"source" : [ "obj-6", 6 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-19", 1 ],
 					"source" : [ "obj-6", 1 ]
 				}
@@ -1243,14 +999,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-5", 0 ],
 					"source" : [ "obj-6", 4 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-69", 0 ],
-					"order" : 0,
-					"source" : [ "obj-6", 6 ]
 				}
 
 			}
@@ -1277,7 +1025,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-49", 1 ],
+					"destination" : [ "obj-53", 0 ],
 					"order" : 1,
 					"source" : [ "obj-60", 1 ]
 				}
@@ -1309,22 +1057,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-86", 0 ],
 					"source" : [ "obj-62", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-46", 0 ],
-					"order" : 1,
-					"source" : [ "obj-69", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-93", 0 ],
-					"order" : 0,
-					"source" : [ "obj-69", 0 ]
 				}
 
 			}
@@ -1409,7 +1141,23 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-18", 0 ],
+					"order" : 0,
+					"source" : [ "obj-85", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-80", 0 ],
+					"order" : 3,
+					"source" : [ "obj-85", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-81", 0 ],
 					"order" : 1,
 					"source" : [ "obj-85", 0 ]
 				}
@@ -1418,7 +1166,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-88", 0 ],
-					"order" : 0,
+					"order" : 2,
 					"source" : [ "obj-85", 0 ]
 				}
 
@@ -1455,13 +1203,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-91", 0 ],
 					"source" : [ "obj-92", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-81", 0 ],
-					"source" : [ "obj-93", 0 ]
 				}
 
 			}
