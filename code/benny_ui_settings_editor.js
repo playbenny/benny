@@ -222,4 +222,7 @@ function reset_callback(data){
 function save_userconfig(){
 	userconfig.writeagain();//(filepath+"/userconfig.json");
 	post("\nsaving userconfig.json");
+	messnamed("to_blockmanager","process_userconfig");
+	messnamed("to_blockmanager","read_settings_from_config");
+	messnamed("to_blockmanager","request_redraw",4);
 }

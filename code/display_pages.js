@@ -4907,37 +4907,39 @@ function draw_sidebar(){
 								for(var ip=mod_in_para[curp].length;ip>0;ip--){
 									var conn_index = mod_in_para[curp][ip-1];
 									var from_type = connections.get("connections["+conn_index+"]::from::output::type");
-									var has_offset = (from_type != "audio") && (from_type != "hardware") && (from_type != "matrix") && (from_type != "potential");
+									var has_offset = (MODULATION_IN_PARAMETERS_VIEW-1) * (((from_type != "audio") && (from_type != "hardware") && (from_type != "matrix") && (from_type != "potential"))|0);
+									// will be 0, no offset, 1, offset inline, 2, offset on a newline
 									var namelabelyo = namelabely;
 									
 									var thisco;
 									if(connections.get("connections["+conn_index+"]::conversion::mute")==1){
 										thisco = [120,120,120];
 									}else{
-										thisco = [colour[0],colour[1],colour[2]];
+										thisco = shadeRGB(colour,0.6+0.1*(usermouse.x>sidebar.x)); //[colour[0],colour[1],colour[2]];
 									}
 
 									// --- define vertical layout ---
-									var slider_height = fontheight * 0.4;
-									var vertical_padding = fo1 * 3;
+									var slider_height = fontheight * 0.2;
+									var vertical_padding = fo1 ;
 									var label_x_pos = sidebar.x + 0.6 * fo1;
 									var slider_x_start = sidebar.x + (sidebar.x2 - sidebar.x) * 0.45;
-									
+									var slider_x_end = (has_offset==1) ? (slider_x_start + (sidebar.x2-slider_x_start)*0.66) : sidebar.x2;
+
 									// --- gain slider ---
 									var gain_y1 = namelabelyo + vertical_padding;
 									var gain_y2 = gain_y1 + slider_height;
 
 									var scale = connections.get("connections["+conn_index+"]::conversion::scale");
-									draw_h_slider(slider_x_start, gain_y1, sidebar.x2, gain_y2, thisco[0],thisco[1],thisco[2],mouse_index,scale);
+									draw_h_slider(slider_x_start, gain_y1, slider_x_end, gain_y2, thisco[0],thisco[1],thisco[2],mouse_index,scale);
 									mouse_click_actions[mouse_index] = connection_edit;
 									mouse_click_parameters[mouse_index] = "connections["+conn_index+"]::conversion::scale";
 									mouse_click_values[mouse_index] = 0;
 									mouse_index++;
 
 									// gain label (the long one)
-									var gain_label_y_center = gain_y1 + (slider_height / 2) + (fontheight * 0.15);
-									lcd_main.message("moveto", label_x_pos, gain_label_y_center);
-									lcd_main.message("frgb",0.6*thisco[0],0.6*thisco[1],0.6*thisco[2]);
+									//var gain_label_y_center = gain_y1 + (slider_height / 2) + (fontheight * 0.15);
+									lcd_main.message("moveto", label_x_pos, gain_y2);//label_y_center);
+									lcd_main.message("frgb",shadeRGB(thisco,0.5));
 									var fromn = blocks.get("blocks["+connections.get("connections["+conn_index+"]::from::number")+"]::name");
 									var froml = blocks.get("blocks["+connections.get("connections["+conn_index+"]::from::number")+"]::label");
 									var ftype = connections.get("connections["+conn_index+"]::from::output::type");
@@ -4953,20 +4955,28 @@ function draw_sidebar(){
 
 									// --- offset slider ---
 									if(has_offset){
-										var offset_y1 = gain_y2 + vertical_padding;
-										var offset_y2 = offset_y1 + slider_height;
+										if(has_offset==1){//inline version
+											var offset_y1 = gain_y1;
+											var offset_y2 = gain_y2;
+											slider_x_start = slider_x_end+fo1;
+											var offset_label_x = slider_x_start+fo1;
+										}else{ //2 line version
+											var offset_label_x = slider_x_start-fontheight;
+											var offset_y1 = gain_y2 + vertical_padding;
+											var offset_y2 = offset_y1 + slider_height;
+										}
 
 										var offset = connections.get("connections["+conn_index+"]::conversion::offset");
-										draw_h_slider(slider_x_start, offset_y1, sidebar.x2, offset_y2, thisco[0]*0.8,thisco[1]*0.8,thisco[2]*0.8,mouse_index, 2*offset-1);
+										draw_h_slider(slider_x_start, offset_y1, sidebar.x2, offset_y2, thisco[0]*0.9,thisco[1]*0.9,thisco[2]*0.9,mouse_index, 2*offset-1);
 										mouse_click_actions[mouse_index] = connection_edit;
 										mouse_click_parameters[mouse_index] = "connections["+conn_index+"]::conversion::offset";
 										mouse_click_values[mouse_index] = 0;
 										mouse_index++;
 										
 										// offset label (+/-)
-										var offset_label_y_center = offset_y1 + (slider_height / 2) + (fontheight * 0.15);
-										lcd_main.message("moveto", slider_x_start - fontheight, offset_label_y_center);
-										lcd_main.message("frgb",0.7*thisco[0],0.7*thisco[1],0.7*thisco[2]);
+										//var offset_label_y_center = offset_y1 + (slider_height / 2) + (fontheight * 0.15);
+										lcd_main.message("moveto", offset_label_x, offset_y2);
+										lcd_main.message("frgb",shadeRGB(thisco,0.4));
 										lcd_main.message("write", "+/-");
 										namelabely = offset_y2 + vertical_padding;
 									} else {
