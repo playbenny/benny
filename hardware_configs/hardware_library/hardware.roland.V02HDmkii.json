@@ -13,12 +13,12 @@
 		"groups" : [
 			{ 
 				"contains" : [0,1,2,3,4,5,6,7],
-				"height" : 0,
+				"height" : 2,
 				"colour" : [180,40,40]
 			},
 			{ 
-				"contains" : [8,9,10],
-				"height" : 0,
+				"contains" : [8,9,10,11,12,13,14,15],
+				"height" : 2,
 				"colour" : [160,60,60]
 			}
 		],
@@ -30,16 +30,16 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 9
+				"cc_number" : 10
 			},
 			{
 				"name" : "Trans Type",
 				"type" : "int",
-				"values" : ["uni", 0, 127, "lin" ],
+				"values" : ["uni", 0, 3, "lin" ],
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 10
+				"cc_number" : 11
 			},
 			{
 				"name" : "OUT Fade L",
@@ -48,7 +48,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 25
+				"cc_number" : 26
 			},
 			{
 				"name" : "OUT Fade R",
@@ -57,16 +57,16 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 26
+				"cc_number" : 27
 			},
 			{
 				"name" : "Key Source",
 				"type" : "int",
-				"values" : ["uni", 0, 127, "lin" ],
+				"values" : ["uni", 0, 2, "lin" ],
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 18
+				"cc_number" : 19
 			},
 			{
 				"name" : "Key Level",
@@ -75,7 +75,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 19
+				"cc_number" : 20
 			},
 			{
 				"name" : "Key Gain",
@@ -84,7 +84,7 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 20
+				"cc_number" : 21
 			},
 			{
 				"name" : "Key Mix",
@@ -93,25 +93,25 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 21
+				"cc_number" : 22
 			},
 			{
 				"name" : "FX ON/OFF",
 				"type" : "int",
-				"values" : ["uni", 0, 127, "lin" ],
-				"wrap" : 0,
-				"default" : 0,
-				"cc_channel" : 1,
-				"cc_number" : 22
-			},
-			{
-				"name" : "FX Type",
-				"type" : "int",
-				"values" : ["uni", 0, 127, "lin" ],
+				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
 				"cc_number" : 23
+			},
+			{
+				"name" : "FX Type",
+				"type" : "int",
+				"values" : ["uni", 0, 15, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 24
 			},
 			{
 				"name" : "FX Mix",
@@ -120,7 +120,52 @@
 				"wrap" : 0,
 				"default" : 0,
 				"cc_channel" : 1,
-				"cc_number" : 24
+				"cc_number" : 25
+			},
+			{
+				"name" : "12",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 26
+			},
+			{
+				"name" : "13",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 12
+			},
+			{
+				"name" : "14",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 13
+			},
+			{
+				"name" : "15",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 14
+			},
+			{
+				"name" : "16",
+				"type" : "int",
+				"values" : ["uni", 0, 127, "lin" ],
+				"wrap" : 0,
+				"default" : 0,
+				"cc_channel" : 1,
+				"cc_number" : 15
 			}
 		]
 	}

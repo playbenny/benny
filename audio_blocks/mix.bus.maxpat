@@ -4,16 +4,244 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
+<<<<<<< HEAD
 			"revision" : 4,
+=======
+			"revision" : 7,
+>>>>>>> main
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 783.0, 257.0, 978.0, 717.0 ],
+		"rect" : [ 35.0, 83.0, 574.0, 693.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+<<<<<<< HEAD
+=======
+					"id" : "obj-36",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 245.0, 244.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-30",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 215.0, 352.0, 35.0, 22.0 ],
+					"text" : "none"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-34",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 296.5, 424.0, 26.0, 22.0 ],
+					"text" : "t -1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-33",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 361.0, 481.0, 501.0, 22.0 ],
+					"text" : "replace mixer.bus::parameters[1]::values[0] \"AIRWINDOWS CONSOLE VSTS NOT FOUND\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 5,
+					"outlettype" : [ "dictionary", "", "", "", "" ],
+					"patching_rect" : [ 361.0, 513.0, 87.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"embed" : 0,
+						"legacy" : 0,
+						"parameter_enable" : 0,
+						"parameter_mappable" : 0
+					}
+,
+					"text" : "dict blocktypes"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-60",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 189.75, 98.0, 41.0, 22.0 ],
+					"text" : "unjoin"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-74",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 42.0, 388.0, 41.0, 22.0 ],
+					"text" : "set $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-69",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 42.0, 424.0, 67.0, 22.0 ],
+					"text" : "prepend -1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-67",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 42.0, 486.0, 110.0, 22.0 ],
+					"text" : "s to_blockmanager"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-66",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 42.0, 457.0, 215.0, 22.0 ],
+					"text" : "prepend request_set_block_parameter"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-57",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 122.5, 424.0, 35.0, 22.0 ],
+					"text" : "1 1.1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-56",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 267.0, 448.0, 440.0, 22.0 ],
+					"text" : "airwindows console vsts not found, so neutral digital summing is enabled instead."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-54",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 267.0, 481.0, 85.0, 22.0 ],
+					"text" : "print MIX.BUS"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-53",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "" ],
+					"patching_rect" : [ 267.0, 394.0, 54.0, 22.0 ],
+					"text" : "sel none"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-52",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 267.0, 326.0, 55.0, 22.0 ],
+					"text" : "del 1000"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-51",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 267.0, 362.0, 35.0, 22.0 ],
+					"text" : "none"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-49",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "params" ],
+					"patching_rect" : [ 245.0, 278.0, 55.0, 22.0 ],
+					"text" : "t params"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-45",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "" ],
+					"patching_rect" : [ 318.5, 210.0, 29.5, 22.0 ],
+					"text" : "t b l"
+				}
+
+			}
+, 			{
+				"box" : 				{
+>>>>>>> main
 					"id" : "obj-21",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -351,9 +579,14 @@
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_invisible" : 1,
+<<<<<<< HEAD
 							"parameter_longname" : "vst~",
 							"parameter_modmode" : 0,
 							"parameter_osc_name" : "<default>",
+=======
+							"parameter_longname" : "vst~[1]",
+							"parameter_modmode" : 0,
+>>>>>>> main
 							"parameter_shortname" : "vst~",
 							"parameter_type" : 3
 						}
@@ -379,10 +612,12 @@
 							"pluginname" : "console7buss64.vstinfo",
 							"plugindisplayname" : "airwindows Console7Buss",
 							"pluginsavedname" : "",
-							"pluginsaveduniqueid" : 1668247154,
+							"pluginsaveduniqueid" : 0,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
+							"sliderorder" : [  ],
+							"slidervisibility" : [ 1 ],
 							"blob" : "64.CMlaKA....fQPMDZ....AL1atIG...P......PTYlEVcrQG................................A...f+."
 						}
 ,
@@ -401,10 +636,12 @@
 										"pluginname" : "console7buss64.vstinfo",
 										"plugindisplayname" : "airwindows Console7Buss",
 										"pluginsavedname" : "",
-										"pluginsaveduniqueid" : 1668247154,
+										"pluginsaveduniqueid" : 0,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
+										"sliderorder" : [  ],
+										"slidervisibility" : [ 1 ],
 										"blob" : "64.CMlaKA....fQPMDZ....AL1atIG...P......PTYlEVcrQG................................A...f+."
 									}
 ,
@@ -413,7 +650,7 @@
 										"filename" : "airwindows Console7Buss_20250217.maxsnap",
 										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "a068358fc4f27def1aeb4c67f0583e38"
+										"snapshotfileid" : "d86da9d220bffd426fef5cc69a5f86ed"
 									}
 
 								}
@@ -564,7 +801,11 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
+<<<<<<< HEAD
 					"patching_rect" : [ 316.5, 395.0, 42.0, 22.0 ],
+=======
+					"patching_rect" : [ 330.0, 394.0, 42.0, 22.0 ],
+>>>>>>> main
 					"saved_object_attributes" : 					{
 						"attr_comment" : ""
 					}
@@ -829,8 +1070,36 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-51", 1 ],
+					"source" : [ "obj-30", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-41", 0 ],
 					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"source" : [ "obj-33", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-41", 1 ],
+					"source" : [ "obj-34", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-49", 0 ],
+					"source" : [ "obj-36", 0 ]
 				}
 
 			}
@@ -910,6 +1179,69 @@
 			}
 , 			{
 				"patchline" : 				{
+<<<<<<< HEAD
+=======
+					"destination" : [ "obj-53", 0 ],
+					"source" : [ "obj-51", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-51", 0 ],
+					"source" : [ "obj-52", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 0 ],
+					"order" : 0,
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-34", 0 ],
+					"order" : 1,
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-56", 0 ],
+					"order" : 2,
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-57", 0 ],
+					"order" : 3,
+					"source" : [ "obj-53", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-54", 0 ],
+					"source" : [ "obj-56", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-69", 0 ],
+					"source" : [ "obj-57", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+>>>>>>> main
 					"destination" : [ "obj-23", 0 ],
 					"source" : [ "obj-6", 0 ]
 				}
@@ -922,8 +1254,12 @@
 				}
 
 			}
+<<<<<<< HEAD
  ],
 		"originid" : "pat-4060"
+=======
+ ]
+>>>>>>> main
 	}
 
 }

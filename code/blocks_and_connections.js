@@ -2802,7 +2802,7 @@ function voicecount(block, voices){     // changes the number of voices assigned
 	}
 	if(voices>max_v) {
 		voices=max_v;
-		post("max polyphony = "+max_v+"\n");
+		post("\nmax polyphony = "+max_v+" but "+voices+" were requested. things may go wrong now. sorry.");
 	}
 	//if((details.get("patcher")=="vst.loader") && (max_v>0)) vst=1;
 	if(voices == v) return 1;
@@ -3468,7 +3468,6 @@ function insert_block_in_connection(newblockname,newblock){
 	new_connection.clear();
 	//click_clear(0,0);
 	//outlet(8,"bang");
-	set_display_mode("blocks");
 	var usz=undo_stack.getsize("history")|0;
 	undo_stack.append("history",'{}');
 	undo_stack.setparse("history["+usz+"]", '{ "connections" : { } }');

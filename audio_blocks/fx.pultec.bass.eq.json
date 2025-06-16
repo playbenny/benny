@@ -1,0 +1,82 @@
+{
+	"fx.pultec.bass.eq" : {
+		"patcher" : "fx.pultec.bass.eq",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Simple bass EQ. You can choose a frequency position and a whether to only boost or also attenuate (the two don't quite line up, and the result is often useful). ££This block is built from a set of modified multi-level impulses taken through a cheap 500-rack pultec clone I have in my studio, along with the 'bite' control from fx.metal.box. This piece of hardware ended up needing quite long impulses so it uses more cpu than the other multi-impulse models in benny.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in", "mod" ]
+			},
+			"out" : {
+				"audio" : [ "out", "selectorfn" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [2,2,1,1],
+				"height" : 2,
+				"header" : "emphasis"
+			},
+			{ 
+				"contains" : [0,0,3,4,5],
+				"height" : 0,
+				"colour" : 10
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["30Hz","60Hz","100Hz"],
+				"error_scale" : 0,
+				"columns" : 3,
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "type",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["boost","boost and attenuate"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5125
+			},
+			{
+				"name" : "emphasis_amount",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "out trim (db)",
+				"type" : "float",
+				"values" : ["bi", -48, 48, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "bite",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0				
+			}
+		]
+	}
+}

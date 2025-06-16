@@ -1802,7 +1802,7 @@ function clear_everything(){
 function write_blockipedia(){
 	var k = blocktypes.getkeys();
 	var type_order = config.get("type_order");
-	var blocki = new File("C:/Users/jhold/Documents/GitHub/BennyDocs/docs/blockipedia.md", "write"); 
+	var blocki = new File("C:/Users/jhold/Documents/GitHub/benny_manual/docs/blockipedia.md", "write"); 
 	blocki.open();
 	blocki.writeline("# Blockipedia");
 	blocki.writeline("");

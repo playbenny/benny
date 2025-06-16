@@ -4075,8 +4075,9 @@ function type_to_search(key){
 		var types = blocktypes.getkeys();
 		var results = [];
 		var found =0;
+		var showdep = config.contains("show_deprecated") && (config.get("show_deprecated")==1);
 		for(var i=0;i<menu.cubecount;i++){
-			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			if(!showdep&&(blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 			}else{
 				var str = types[i];
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
@@ -4094,7 +4095,7 @@ function type_to_search(key){
 		}
 		
 		for(var i=0;i<menu.cubecount;i++){
-			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			if(!showdep&&(blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 			}else{
 				var str = types[i];
 				if(blocktypes.contains(types[i]+"::synonyms")) str = str + blocktypes.get(types[i]+"::synonyms");
@@ -4212,7 +4213,8 @@ function number_entry(key){
 		sidebar.param_number_entry = "";
 		sidebar.mode = "block";
 		redraw_flag.flag |= 2;
-	}else if(((key>=48)&&(key<58))||(key==46)){
+	}else if(((key>=48)&&(key<58))||(key==46)||((key>=-42)&&(key<-32))){
+		if(((key>=-42)&&(key<-32))) key = -key + 15;
 		sidebar.param_number_entry = sidebar.param_number_entry.concat(String.fromCharCode(key));
 		draw_number_entry(sidebar.param_number,sidebar.param_number_entry);
 	}else if((key==-6)||(key==-7)){

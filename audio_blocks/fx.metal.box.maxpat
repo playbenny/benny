@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -67,7 +67,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 395.25, 140.0, 29.5, 22.0 ],
+					"patching_rect" : [ 425.75, 140.0, 29.5, 22.0 ],
 					"text" : "+ 0."
 				}
 
@@ -79,7 +79,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "float" ],
-					"patching_rect" : [ 395.25, 108.0, 29.5, 22.0 ],
+					"patching_rect" : [ 437.0, 103.0, 29.5, 22.0 ],
 					"text" : "t b f"
 				}
 
@@ -195,18 +195,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-55",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "float" ],
-					"patching_rect" : [ 240.0, 164.0, 47.0, 22.0 ],
-					"text" : "* 0.125"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-51",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -283,103 +271,103 @@
 						"count" : 25,
 						"data" : [ 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 12.794292 ]
+								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 0 ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, 0, -18.312601999999998 ]
+								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, -35 ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -10.066300999999999 ]
+								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -24 ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, 0, 9.416245 ]
+								"value" : [ "chroma A (unprocessed) 32.wav", 32, -5, -4 ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, 0, 12.889977999999999 ]
+								"value" : [ "chroma N (unprocessed) 32.wav", 32, -18, -1 ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, 0, -8.532829 ]
+								"value" : [ "neumann 32.wav", 32, -5, -21 ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, 0, 10.505630999999999 ]
+								"value" : [ "colours 15ips 32.wav", 32, -18, -2 ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, 0, 14.580363 ]
+								"value" : [ "colours air5k 32.wav", 32, -12, 0 ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, 0, 9.022375 ]
+								"value" : [ "colours brit console 32.wav", 32, -14, -4 ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, 0, 10.010068 ]
+								"value" : [ "colours discrete sat 32.wav", 32, -14, -4 ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, 0, 26.099229999999999 ]
+								"value" : [ "colours germanium 16.wav", 16, -18, -2 ]
 							}
 , 							{
 								"key" : 12,
-								"value" : [ "colours germanium 32.wav", 32, 0, 11.615278999999999 ]
+								"value" : [ "colours germanium 32.wav", 32, -18, -2 ]
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, 0, 15.25615 ]
+								"value" : [ "colours mass driver 16.wav", 16, -42, 3 ]
 							}
 , 							{
 								"key" : 14,
-								"value" : [ "colours mass driver 32.wav", 32, 0, 15.725014 ]
+								"value" : [ "colours mass driver 32.wav", 32, -42, -4 ]
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -12, 45.123148 ]
+								"value" : [ "colours royal blue 16.wav", 16, -42, 14 ]
 							}
 , 							{
 								"key" : 16,
-								"value" : [ "colours royal blue 32.wav", 32, 0, 11.361865999999999 ]
+								"value" : [ "colours royal blue 32.wav", 32, -24, -2 ]
 							}
 , 							{
 								"key" : 17,
-								"value" : [ "colours royal blue top boost 32.wav", 32, 0, 26.689133000000002 ]
+								"value" : [ "colours royal blue top boost 32.wav", 32, -36, 3 ]
 							}
 , 							{
 								"key" : 18,
-								"value" : [ "colours superfilter 32.wav", 32, 0, 14.147625 ]
+								"value" : [ "colours superfilter 32.wav", 32, -24, 8 ]
 							}
 , 							{
 								"key" : 19,
-								"value" : [ "colours th79 16.wav", 16, 0, 32.544375000000002 ]
+								"value" : [ "colours th79 16.wav", 16, -24, 0 ]
 							}
 , 							{
 								"key" : 20,
-								"value" : [ "colours toneloc 16.wav", 16, 0, 16.501899000000002 ]
+								"value" : [ "colours toneloc 16.wav", 16, -12, -4 ]
 							}
 , 							{
 								"key" : 21,
-								"value" : [ "colours toneloc 32.wav", 32, 0, 9.542973 ]
+								"value" : [ "colours toneloc 32.wav", 32, -24, -3 ]
 							}
 , 							{
 								"key" : 22,
-								"value" : [ "drawmer 16.wav", 16, 0, 12.618667 ]
+								"value" : [ "drawmer 16.wav", 16, -24, -5 ]
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -12, 17.310208994679531 ]
+								"value" : [ "drawmer 32.wav", 32, -36, 0 ]
 							}
 , 							{
 								"key" : 24,
-								"value" : [ "eurorack bard ivan 16.wav", 16, 0, 4.275391 ]
+								"value" : [ "eurorack bard ivan 16.wav", 16, -24, -11 ]
 							}
 , 							{
 								"key" : 25,
-								"value" : [ "eurorack bard ivan 32.wav", 32, 0, 4.580641 ]
+								"value" : [ "eurorack bard ivan 32.wav", 32, -24, -11 ]
 							}
  ]
 					}
@@ -413,24 +401,12 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-25",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "float" ],
-					"patching_rect" : [ 448.0, 148.0, 47.0, 22.0 ],
-					"text" : "* 0.125"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-12",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 448.0, 187.0, 76.0, 22.0 ],
+					"patching_rect" : [ 425.75, 237.0, 76.0, 22.0 ],
 					"text" : "prepend trim"
 				}
 
@@ -444,7 +420,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 448.0, 108.0, 50.0, 22.0 ]
+					"patching_rect" : [ 425.75, 202.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -455,7 +431,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 448.0, 76.0, 52.0, 22.0 ],
+					"patching_rect" : [ 425.75, 170.0, 52.0, 22.0 ],
 					"text" : "dbtoa 0."
 				}
 
@@ -498,25 +474,12 @@
 			}
 , 			{
 				"box" : 				{
-					"format" : 6,
-					"id" : "obj-31",
-					"maxclass" : "flonum",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 240.0, 132.0, 50.0, 22.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-27",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 240.0, 98.0, 52.0, 22.0 ],
+					"patching_rect" : [ 243.0, 154.0, 52.0, 22.0 ],
 					"text" : "dbtoa 0."
 				}
 
@@ -564,6 +527,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 198.0, 415.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -599,6 +566,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 146.0, 68.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -622,27 +593,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 139.0, 315.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-5",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 139.0, 197.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
-					"text" : "in~ 2"
 				}
 
 			}
@@ -653,10 +604,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 37.0, 315.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -669,10 +616,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 37.0, 197.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -685,10 +628,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 162.0, 2.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -755,7 +694,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
+					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-15", 0 ]
 				}
 
@@ -820,14 +759,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-12", 0 ],
-					"source" : [ "obj-25", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-31", 0 ],
+					"destination" : [ "obj-52", 0 ],
 					"source" : [ "obj-27", 0 ]
 				}
 
@@ -845,13 +777,6 @@
 					"destination" : [ "obj-22", 0 ],
 					"order" : 1,
 					"source" : [ "obj-3", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-55", 0 ],
-					"source" : [ "obj-31", 0 ]
 				}
 
 			}
@@ -966,13 +891,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-52", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-52", 0 ],
-					"source" : [ "obj-55", 0 ]
 				}
 
 			}
@@ -1111,7 +1029,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-40", 0 ],
+					"destination" : [ "obj-35", 0 ],
 					"source" : [ "obj-78", 0 ]
 				}
 

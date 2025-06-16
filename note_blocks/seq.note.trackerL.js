@@ -310,8 +310,8 @@ function keydown(key){
 			}
 			draw();
 			break;
-		case -8:
-			//insert
+		case -8: //insert
+		case 361: //ctrl-i
 			for(i=511;i>cursory;i--){
 				var rowvalues = voice_data_buffer.peek(1, MAX_DATA*v_list[cursorx]+3+2*(i-1),2);
 				voice_data_buffer.poke(1, MAX_DATA*v_list[cursorx]+3+2*i,rowvalues);

@@ -2,9 +2,15 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
+<<<<<<< HEAD
 			"major" : 8,
 			"minor" : 6,
 			"revision" : 5,
+=======
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 7,
+>>>>>>> main
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -749,7 +755,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 349.0, 158.0, 123.0, 22.0 ],
-					"text" : "scale 0. 1. 10000. 50."
+					"text" : "scale 0. 1. 10000. 10."
 				}
 
 			}

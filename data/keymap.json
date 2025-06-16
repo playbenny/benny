@@ -67,6 +67,7 @@
         "-3" : ["ESC", "key_escape"],
         "96" : ["`", "messnamed","panic","bang" ],
         "254" : ["ctrl-space","load_next_song", 0],
+        "2046" : ["opt-space","load_next_song", 0],
         "371" : ["ctrl-S","save_hotkey"],
         "-2" : ["space", "play_button"],
         "238" : ["ctrl-F2" , "set_display_mode","flocks"],
@@ -100,6 +101,7 @@
     "blocks" : {
         "-18" : ["F2", "selected_block_custom_mode", "custom" ],
         "-15" : ["home" , "center_view", 1],
+        "304" : ["ctrl-0" , "center_view", 1],
         "-13" : ["PGUP", "blocks_zoom_key", 0.25],
         "-14" : ["PGDN", "blocks_zoom_key", -0.25],
         "45" : ["-", "poly_key" , -1],
@@ -190,6 +192,7 @@
             "-4" : ["enter", "fold_menus"],
             "-3" : ["ESC", "clear_or_close"],
             "-8" : ["INS", "insert_menu_button", -1],
+            "361" : ["ctrl-i", "insert_menu_button", -1],
             "2039" : ["alt+up" , "jump_to_block_at_connection_end" , 0],
             "2038" : ["alt+down" , "jump_to_block_at_connection_end", 1],
             "559" : ["?", "toggle_connection_help"],

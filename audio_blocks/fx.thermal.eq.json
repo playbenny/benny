@@ -1,0 +1,95 @@
+{
+	"fx.thermal.eq" : {
+		"patcher" : "fx.thermal.eq",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Simple EQ. Great at the end of an instrument or part. You can choose a highpass position and a single area of the spectrum to emphasise. The emphasis pushes into the drive in a lovely way.££This block is built from a set of modified multi-level impulses taken through a british-made tube preamp/eq I have in my studio, along with the 'bite' control from fx.metal.box.££If you're running low on cpu the impulse length control set to 32 uses half as much, but in some cases doesn't quite make the same spectral changes.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in", "mod" ]
+			},
+			"out" : {
+				"audio" : [ "out", "selectorfn" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [2,2,1,1],
+				"height" : 2,
+				"header" : "emphasis"
+			},
+			{ 
+				"contains" : [0,0,3,4,5],
+				"height" : 0,
+				"colour" : 10
+			},
+			{
+				"contains":[6],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "highpass frequency",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["40Hz","100Hz","800Hz"],
+				"error_scale" : 0,
+				"columns" : 3,
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "emphasis frequency",
+				"type" : "menu_l",
+				"force_label" : 1,
+				"values" : ["bass","800Hz","2.5kHz","top"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5125
+			},
+			{
+				"name" : "emphasis_amount",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.25
+			},
+			{
+				"name" : "out trim (db)",
+				"type" : "float",
+				"values" : ["bi", -48, 48, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "bite",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0				
+			},
+			{
+				"name" : "impulse length",
+				"type" : "menu_d",
+				"values" : ["32","64"],
+				"default" : 0.75,
+				"wrap" : 1,
+				"error_scale" : 0,
+				"force_label" : 1
+			}
+		]
+	}
+}

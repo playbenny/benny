@@ -6,7 +6,7 @@
 		"help_text" : "Experimental, likely to change. Like convolution, but working with a set of impulse responses taken at many different signal levels. Surprisingly pleasant way of modelling 'weakly nonlinear' hardware saturation.££The default is to look up (and interpolate between) impulse levels based on the current sample value, but using an envelope here also sounds good. There's a second, very slow, rms env follower that you can feed in here too to add character. ££This block supports oversampling, which is recommended if you're getting more overdriven tones out of it.",
 		"max_polyphony" : 0,
 		"deprecated" : 1,
-		"upsample" : 4,
+		"upsample" : 2,
 		"connections" : {
 			"in" : { 
 				"audio" : [ "in", "drive mod" ]

@@ -1213,6 +1213,7 @@ function initialise_block_menu(visible){
 	var ts,swpt=0;
 	var col;
 	var vis=0;
+	var showdep = config.contains("show_deprecated") && (config.get("show_deprecated")==1);
 	if(typeof blocks_menu[0] !== "undefined"){ //we've already done the work here, just need to dim used blocks
 		//post("\nA showing block menu",visible);
 		if(menu.mode == 1){
@@ -1220,7 +1221,7 @@ function initialise_block_menu(visible){
 			if(swpt=="hardware") swpt = "audio";
 		}
 		for(i=0;i<menu.cubecount;i++){
-			if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+			if(!showdep && (blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 				//skip this one
 				//				post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 			}else{
@@ -1263,7 +1264,7 @@ function initialise_block_menu(visible){
 			for(i=0;i<menu.cubecount;i++){
 				ts=types[i].split('.');
 				if(ts[0]==type_order[typ]){
-					if((blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
+					if(!showdep && (blocktypes.contains(types[i]+"::deprecated") && blocktypes.get(types[i]+"::deprecated")==1)){
 						//skip this one
 						//	post("\n\n",types[i]," is deprecated",blocktypes.get(types[i]+"::deprecated"));
 						blocks_menu[i].color = [1,1,1,1]; //[col[0]/256,col[1]/256,col[2]/256,1];

@@ -1366,11 +1366,11 @@ function render_controls(){
 				ii++;
 				//	"max_polyphony" : 1,
 				controls[ii] = this.patcher.newdefault(10, 100, "comment");
-				controls[ii].message("set", "max polyphony");
+				controls[ii].message("set", "show as this many voices");
 				controls[ii].presentation(1);
-				controls[ii].presentation_position(30,y_pos);
+				controls[ii].presentation_position(30,y_pos,unit.col,20);
 				ii++;
-				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.max_polyphony."+ii, "@minimum", 0, "@maximum", 128);
+				controls[ii] = this.patcher.newdefault(10, 100, "number" , "@varname", "hardware.max_polyphony."+ii, "@minimum", 1, "@maximum", 128);
 				controls[ii].message("set", cd.get(cdk[p]+"::max_polyphony"));
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 				controls[ii].presentation(1);
@@ -2606,6 +2606,7 @@ function keybcallback(data){
 		if(data.value>0) for(var oo=0;oo<32;oo++) testmatrix.message(data.value-1,oo,oo==values[id[1]][1]-1);
 	}else if(id[0]=="hardwarename"){
 		var newname = data.value.toString();
+		if(newname.indexOf("hardware.")!=0) newname = "hardware."+newname;
 		post("\nrename?");
 		if(newname!=values[id[1]]){
 			post("\nrenaming ",values[id[1]]," to ",newname);
