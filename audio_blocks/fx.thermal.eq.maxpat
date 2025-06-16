@@ -10,9 +10,33 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 762.0, 134.0, 36.0, 22.0 ],
+					"text" : "defer"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-18",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 603.0, 129.0, 36.0, 22.0 ],
+					"text" : "defer"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-13",
 					"maxclass" : "newobj",
@@ -681,7 +705,7 @@
 				"box" : 				{
 					"id" : "obj-14",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 188.0, 315.0, 87.0, 22.0 ],
@@ -790,9 +814,9 @@
 				"box" : 				{
 					"id" : "obj-72",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
-					"numoutlets" : 11,
-					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
+					"numinlets" : 1,
+					"numoutlets" : 4,
+					"outlettype" : [ "", "", "", "" ],
 					"patching_rect" : [ 162.0, 34.0, 124.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -805,10 +829,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 198.0, 415.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -844,10 +864,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 146.0, 68.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -871,6 +887,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 139.0, 315.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -882,6 +902,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 37.0, 315.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -894,6 +918,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 37.0, 197.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -906,6 +934,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 162.0, 2.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -991,6 +1023,13 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-25", 0 ],
+					"source" : [ "obj-18", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-18", 0 ],
 					"order" : 1,
 					"source" : [ "obj-19", 0 ]
 				}
@@ -998,7 +1037,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-26", 0 ],
+					"destination" : [ "obj-20", 0 ],
 					"order" : 0,
 					"source" : [ "obj-19", 0 ]
 				}
@@ -1008,6 +1047,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-26", 0 ],
+					"source" : [ "obj-20", 0 ]
 				}
 
 			}
@@ -1458,7 +1504,16 @@
 				}
 
 			}
- ]
+ ],
+		"dependency_cache" : [ 			{
+				"name" : "fx.multi.conv.eq.gendsp",
+				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+				"patcherrelativepath" : ".",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }

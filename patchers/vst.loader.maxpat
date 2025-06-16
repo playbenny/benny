@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -580,9 +580,94 @@
 				"box" : 				{
 					"id" : "obj-8",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 3,
-					"outlettype" : [ "float", "float", "float" ],
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patcher" : 					{
+						"fileversion" : 1,
+						"appversion" : 						{
+							"major" : 9,
+							"minor" : 0,
+							"revision" : 7,
+							"architecture" : "x64",
+							"modernui" : 1
+						}
+,
+						"classnamespace" : "dsp.gen",
+						"rect" : [ 0.0, 0.0, 600.0, 450.0 ],
+						"gridsize" : [ 15.0, 15.0 ],
+						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-1",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+									"text" : "in 1"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-2",
+									"maxclass" : "newobj",
+									"numinlets" : 0,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 305.0, 14.0, 28.0, 22.0 ],
+									"text" : "in 2"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-3",
+									"maxclass" : "newobj",
+									"numinlets" : 2,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 176.0, 149.0, 29.5, 22.0 ],
+									"text" : "+"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"id" : "obj-4",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 176.0, 418.0, 35.0, 22.0 ],
+									"text" : "out 1"
+								}
+
+							}
+ ],
+						"lines" : [ 							{
+								"patchline" : 								{
+									"destination" : [ "obj-3", 0 ],
+									"source" : [ "obj-1", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-3", 1 ],
+									"source" : [ "obj-2", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-4", 0 ],
+									"source" : [ "obj-3", 0 ]
+								}
+
+							}
+ ]
+					}
+,
 					"patching_rect" : [ 723.0, 324.0, 96.0, 22.0 ],
 					"text" : "gen vst_watcher"
 				}
@@ -715,6 +800,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 400.0, 544.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -791,7 +880,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 7,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -800,6 +889,18 @@
 						"rect" : [ 59.0, 107.0, 640.0, 480.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-5",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 300.0, 50.0, 36.0, 22.0 ],
+									"text" : "defer"
+								}
+
+							}
+, 							{
 								"box" : 								{
 									"id" : "obj-2",
 									"maxclass" : "newobj",
@@ -953,7 +1054,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 96.0, 68.0, 119.0, 22.0 ],
+									"patching_rect" : [ 96.0, 72.0, 119.0, 22.0 ],
 									"text" : "sprintf get blocks[%i]"
 								}
 
@@ -986,7 +1087,7 @@
 									"numinlets" : 0,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 96.0, 13.0, 30.0, 30.0 ]
+									"patching_rect" : [ 300.0, 20.0, 30.0, 30.0 ]
 								}
 
 							}
@@ -1068,6 +1169,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-64", 0 ],
+									"source" : [ "obj-5", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-31", 0 ],
 									"source" : [ "obj-50", 1 ]
 								}
@@ -1103,13 +1211,12 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-64", 0 ],
+									"destination" : [ "obj-5", 0 ],
 									"source" : [ "obj-73", 0 ]
 								}
 
 							}
- ],
-						"originid" : "pat-3980"
+ ]
 					}
 ,
 					"patching_rect" : [ 441.5, 73.0, 128.0, 22.0 ],
@@ -1179,6 +1286,7 @@
 			}
 , 			{
 				"box" : 				{
+					"autosave" : 1,
 					"bgmode" : 0,
 					"border" : 0,
 					"clickthrough" : 0,
@@ -1190,10 +1298,63 @@
 					"outlettype" : [ "signal", "signal", "", "list", "int", "", "", "" ],
 					"patching_rect" : [ 580.0, 362.0, 92.5, 22.0 ],
 					"save" : [ "#N", "vst~", "loaduniqueid", 0, ";" ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_invisible" : 1,
+							"parameter_longname" : "vst~",
+							"parameter_modmode" : 0,
+							"parameter_shortname" : "vst~",
+							"parameter_type" : 3
+						}
+
+					}
+,
 					"saved_object_attributes" : 					{
 						"floateditorwindow" : 1,
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
+					}
+,
+					"snapshot" : 					{
+						"filetype" : "C74Snapshot",
+						"version" : 2,
+						"minorversion" : 0,
+						"name" : "snapshotlist",
+						"origin" : "vst~",
+						"type" : "list",
+						"subtype" : "Undefined",
+						"embed" : 1,
+						"snapshot" : 						{
+
+						}
+,
+						"snapshotlist" : 						{
+							"current_snapshot" : 0,
+							"entries" : [ 								{
+									"filetype" : "C74Snapshot",
+									"version" : 2,
+									"minorversion" : 0,
+									"name" : "",
+									"origin" : "",
+									"type" : "AudioUnit",
+									"subtype" : "AudioEffect",
+									"embed" : 0,
+									"snapshot" : 									{
+
+									}
+,
+									"fileref" : 									{
+										"name" : "",
+										"filename" : ".maxsnap",
+										"filepath" : "~/Documents/Max 9/Snapshots",
+										"filepos" : -1,
+										"snapshotfileid" : "08c9ef841604ef1feb1a6e704a3ceb64"
+									}
+
+								}
+ ]
+						}
+
 					}
 ,
 					"text" : "vst~",
@@ -1270,10 +1431,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 368.0, 7.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1285,6 +1442,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 344.0, 544.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1308,10 +1469,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 626.0, 416.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -1324,10 +1481,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 654.0, 328.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -1339,10 +1492,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 580.0, 416.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -1355,10 +1504,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 580.0, 328.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -2146,20 +2291,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-73", 0 ],
-					"source" : [ "obj-8", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-82", 1 ],
-					"source" : [ "obj-8", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-82", 0 ],
 					"source" : [ "obj-8", 0 ]
 				}
@@ -2236,7 +2367,43 @@
 
 			}
  ],
-		"originid" : "pat-3972"
+		"parameters" : 		{
+			"obj-67" : [ "vst~", "vst~", 0 ],
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
+		"dependency_cache" : [ 			{
+				"name" : ".maxsnap",
+				"bootpath" : "~/Documents/Max 9/Snapshots",
+				"patcherrelativepath" : "../../../Max 9/Snapshots",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "mutecontrol.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "voiceheader.maxpat",
+				"bootpath" : "~/Documents/GitHub/benny/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }

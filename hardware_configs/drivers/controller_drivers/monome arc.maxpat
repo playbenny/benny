@@ -700,6 +700,18 @@
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{
+									"id" : "obj-1",
+									"maxclass" : "newobj",
+									"numinlets" : 1,
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
+									"patching_rect" : [ 50.0, 74.0, 36.0, 22.0 ],
+									"text" : "defer"
+								}
+
+							}
+, 							{
+								"box" : 								{
 									"id" : "obj-24",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
@@ -793,6 +805,13 @@
  ],
 						"lines" : [ 							{
 								"patchline" : 								{
+									"destination" : [ "obj-22", 0 ],
+									"source" : [ "obj-1", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-10", 0 ],
 									"source" : [ "obj-107", 0 ]
 								}
@@ -828,7 +847,7 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-22", 0 ],
+									"destination" : [ "obj-1", 0 ],
 									"source" : [ "obj-8", 0 ]
 								}
 
@@ -1502,7 +1521,30 @@
 				}
 
 			}
- ]
+ ],
+		"dependency_cache" : [ 			{
+				"name" : "monome-device.js",
+				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
+				"patcherrelativepath" : "../../../../../Max 9/Packages/monome/patchers",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "monome-device.maxpat",
+				"bootpath" : "~/Documents/Max 9/Packages/monome/patchers",
+				"patcherrelativepath" : "../../../../../Max 9/Packages/monome/patchers",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "monome_arc.js",
+				"bootpath" : "~/Documents/GitHub/benny/hardware_configs/drivers/controller_drivers",
+				"patcherrelativepath" : ".",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }

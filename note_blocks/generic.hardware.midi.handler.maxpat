@@ -14,6 +14,18 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-104",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 952.0, 182.5, 36.0, 22.0 ],
+					"text" : "defer"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-120",
 					"linecount" : 2,
 					"maxclass" : "comment",
@@ -1346,9 +1358,9 @@
 				"box" : 				{
 					"id" : "obj-27",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
-					"numoutlets" : 11,
-					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
+					"numinlets" : 1,
+					"numoutlets" : 8,
+					"outlettype" : [ "", "", "", "", "", "", "", "" ],
 					"patching_rect" : [ 11.0, 145.0, 960.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -1373,6 +1385,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 18.5, 765.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1397,10 +1413,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 6.0, 87.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -1457,6 +1469,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-99", 0 ],
 					"source" : [ "obj-103", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-21", 0 ],
+					"source" : [ "obj-104", 0 ]
 				}
 
 			}
@@ -1723,16 +1742,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-13", 0 ],
-					"order" : 1,
-					"source" : [ "obj-27", 2 ]
+					"destination" : [ "obj-104", 0 ],
+					"source" : [ "obj-27", 7 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-21", 0 ],
-					"source" : [ "obj-27", 7 ]
+					"destination" : [ "obj-13", 0 ],
+					"order" : 1,
+					"source" : [ "obj-27", 2 ]
 				}
 
 			}
@@ -2470,6 +2489,8 @@
 
 			}
  ],
+		"dependency_cache" : [  ],
+		"autosave" : 0,
 		"oscreceiveudpport" : 0
 	}
 
