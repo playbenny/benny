@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -339,106 +339,126 @@
 , 			{
 				"box" : 				{
 					"coll_data" : 					{
-						"count" : 25,
+						"count" : 30,
 						"data" : [ 							{
+								"key" : 0,
+								"value" : [ "/32/thermionic hpf40hz 32.wav" ]
+							}
+, 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 0 ]
+								"value" : [ "/32/thermionic hpf40hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, -35 ]
+								"value" : [ "/32/thermionic hpf40hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -24 ]
+								"value" : [ "/32/thermionic hpf40hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, -5, -4 ]
+								"value" : [ "/32/thermionic hpf40hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, -18, -1 ]
+								"value" : [ "/32/thermionic hpf100hz 32.wav" ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, -5, -21 ]
+								"value" : [ "/32/thermionic hpf100hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf100hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, -12, 0 ]
+								"value" : [ "/32/thermionic hpf100hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf100hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf800hz 32.wav" ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 12,
-								"value" : [ "colours germanium 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, -42, 3 ]
+								"value" : [ "/32/thermionic hpf800hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 14,
-								"value" : [ "colours mass driver 32.wav", 32, -42, -4 ]
+								"value" : [ "/32/thermionic hpf800hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -42, 14 ]
+								"value" : [ "/64/thermionic hpf40hz 64.wav" ]
 							}
 , 							{
 								"key" : 16,
-								"value" : [ "colours royal blue 32.wav", 32, -24, -2 ]
+								"value" : [ "/64/thermionic hpf40hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 17,
-								"value" : [ "colours royal blue top boost 32.wav", 32, -36, 3 ]
+								"value" : [ "/64/thermionic hpf40hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 18,
-								"value" : [ "colours superfilter 32.wav", 32, -24, 8 ]
+								"value" : [ "/64/thermionic hpf40hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 19,
-								"value" : [ "colours th79 16.wav", 16, -24, 0 ]
+								"value" : [ "/64/thermionic hpf40hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 20,
-								"value" : [ "colours toneloc 16.wav", 16, -12, -4 ]
+								"value" : [ "/64/thermionic hpf100hz 64.wav" ]
 							}
 , 							{
 								"key" : 21,
-								"value" : [ "colours toneloc 32.wav", 32, -24, -3 ]
+								"value" : [ "/64/thermionic hpf100hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 22,
-								"value" : [ "drawmer 16.wav", 16, -24, -5 ]
+								"value" : [ "/64/thermionic hpf100hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -36, 0 ]
+								"value" : [ "/64/thermionic hpf100hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 24,
-								"value" : [ "eurorack bard ivan 16.wav", 16, -24, -11 ]
+								"value" : [ "/64/thermionic hpf100hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 25,
-								"value" : [ "eurorack bard ivan 32.wav", 32, -24, -11 ]
+								"value" : [ "/64/thermionic hpf800hz 64.wav" ]
+							}
+, 							{
+								"key" : 26,
+								"value" : [ "/64/thermionic hpf800hz + bass 64.wav" ]
+							}
+, 							{
+								"key" : 27,
+								"value" : [ "/64/thermionic hpf800hz + 800 64.wav" ]
+							}
+, 							{
+								"key" : 28,
+								"value" : [ "/64/thermionic hpf800hz + 2.5k 64.wav" ]
+							}
+, 							{
+								"key" : 29,
+								"value" : [ "/64/thermionic hpf800hz + top 64.wav" ]
 							}
  ]
 					}
@@ -448,13 +468,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 1095.0, 449.0, 77.0, 22.0 ],
+					"patching_rect" : [ 1095.0, 449.0, 144.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 1,
 						"precision" : 6
 					}
 ,
-					"text" : "coll impulses"
+					"text" : "coll thermal_eq_impulses"
 				}
 
 			}
@@ -473,106 +493,126 @@
 , 			{
 				"box" : 				{
 					"coll_data" : 					{
-						"count" : 25,
+						"count" : 30,
 						"data" : [ 							{
+								"key" : 0,
+								"value" : [ "/32/thermionic hpf40hz 32.wav" ]
+							}
+, 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 0 ]
+								"value" : [ "/32/thermionic hpf40hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, -35 ]
+								"value" : [ "/32/thermionic hpf40hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -24 ]
+								"value" : [ "/32/thermionic hpf40hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, -5, -4 ]
+								"value" : [ "/32/thermionic hpf40hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, -18, -1 ]
+								"value" : [ "/32/thermionic hpf100hz 32.wav" ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, -5, -21 ]
+								"value" : [ "/32/thermionic hpf100hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf100hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, -12, 0 ]
+								"value" : [ "/32/thermionic hpf100hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf100hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf800hz 32.wav" ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 12,
-								"value" : [ "colours germanium 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, -42, 3 ]
+								"value" : [ "/32/thermionic hpf800hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 14,
-								"value" : [ "colours mass driver 32.wav", 32, -42, -4 ]
+								"value" : [ "/32/thermionic hpf800hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -42, 14 ]
+								"value" : [ "/64/thermionic hpf40hz 64.wav" ]
 							}
 , 							{
 								"key" : 16,
-								"value" : [ "colours royal blue 32.wav", 32, -24, -2 ]
+								"value" : [ "/64/thermionic hpf40hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 17,
-								"value" : [ "colours royal blue top boost 32.wav", 32, -36, 3 ]
+								"value" : [ "/64/thermionic hpf40hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 18,
-								"value" : [ "colours superfilter 32.wav", 32, -24, 8 ]
+								"value" : [ "/64/thermionic hpf40hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 19,
-								"value" : [ "colours th79 16.wav", 16, -24, 0 ]
+								"value" : [ "/64/thermionic hpf40hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 20,
-								"value" : [ "colours toneloc 16.wav", 16, -12, -4 ]
+								"value" : [ "/64/thermionic hpf100hz 64.wav" ]
 							}
 , 							{
 								"key" : 21,
-								"value" : [ "colours toneloc 32.wav", 32, -24, -3 ]
+								"value" : [ "/64/thermionic hpf100hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 22,
-								"value" : [ "drawmer 16.wav", 16, -24, -5 ]
+								"value" : [ "/64/thermionic hpf100hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -36, 0 ]
+								"value" : [ "/64/thermionic hpf100hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 24,
-								"value" : [ "eurorack bard ivan 16.wav", 16, -24, -11 ]
+								"value" : [ "/64/thermionic hpf100hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 25,
-								"value" : [ "eurorack bard ivan 32.wav", 32, -24, -11 ]
+								"value" : [ "/64/thermionic hpf800hz 64.wav" ]
+							}
+, 							{
+								"key" : 26,
+								"value" : [ "/64/thermionic hpf800hz + bass 64.wav" ]
+							}
+, 							{
+								"key" : 27,
+								"value" : [ "/64/thermionic hpf800hz + 800 64.wav" ]
+							}
+, 							{
+								"key" : 28,
+								"value" : [ "/64/thermionic hpf800hz + 2.5k 64.wav" ]
+							}
+, 							{
+								"key" : 29,
+								"value" : [ "/64/thermionic hpf800hz + top 64.wav" ]
 							}
  ]
 					}
@@ -582,13 +622,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 961.0, 449.0, 77.0, 22.0 ],
+					"patching_rect" : [ 961.0, 449.0, 144.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 1,
 						"precision" : 6
 					}
 ,
-					"text" : "coll impulses"
+					"text" : "coll thermal_eq_impulses"
 				}
 
 			}
@@ -805,7 +845,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 665.0, 617.0, 121.0, 22.0 ],
+					"patching_rect" : [ 518.0, 670.0, 121.0, 22.0 ],
 					"text" : "gen~ fx.multi.conv.eq"
 				}
 
@@ -986,7 +1026,7 @@
 									"maxclass" : "inlet",
 									"numinlets" : 0,
 									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
+									"outlettype" : [ "" ],
 									"patching_rect" : [ 135.882500273840719, 40.0, 30.0, 30.0 ]
 								}
 
@@ -1084,7 +1124,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 655.0, 116.0, 50.0, 22.0 ]
+					"patching_rect" : [ 655.0, 116.0, 50.0, 22.0 ],
+					"text" : "store"
 				}
 
 			}
@@ -2134,9 +2175,9 @@
 				"box" : 				{
 					"id" : "obj-53",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
+					"numinlets" : 3,
 					"numoutlets" : 11,
-					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
+					"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "" ],
 					"patching_rect" : [ 250.75, 154.0, 113.5, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -3058,7 +3099,7 @@
 				"box" : 				{
 					"id" : "obj-97",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 58.0, 740.0, 87.0, 22.0 ],
@@ -3228,78 +3269,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-69",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 457.563093066215515, 677.0, 29.5, 22.0 ],
-					"text" : "*~"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-71",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 397.563093066215515, 677.0, 29.5, 22.0 ],
-					"text" : "*~"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-72",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "signal", "bang" ],
-					"patching_rect" : [ 457.563093066215515, 630.0, 54.0, 22.0 ],
-					"text" : "line~ 0.5"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-73",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 457.563093066215515, 598.0, 49.0, 22.0 ],
-					"text" : "$1 100."
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-74",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "signal", "bang" ],
-					"patching_rect" : [ 397.563093066215515, 630.0, 54.0, 22.0 ],
-					"text" : "line~ 0.5"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-75",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 397.563093066215515, 598.0, 49.0, 22.0 ],
-					"text" : "$1 100."
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-22",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -3447,7 +3416,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 2,
 					"numoutlets" : 2,
-					"outlettype" : [ "signal", "signal" ],
+					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 237.75, 729.0, 69.0, 22.0 ],
 					"text" : "ar.cliponly~"
 				}
@@ -3505,14 +3474,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-							"pluginname" : "console7cascade64.vstinfo",
-							"plugindisplayname" : "airwindows Console7Cascade",
+							"pluginname" : "Console7Channel64.vstinfo",
+							"plugindisplayname" : "airwindows Console7Channel",
 							"pluginsavedname" : "",
-							"pluginsaveduniqueid" : 1668247155,
+							"pluginsaveduniqueid" : 1668247153,
 							"version" : 1,
 							"isbank" : 0,
 							"isbase64" : 1,
-							"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AbP7w9."
+							"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................A......"
 						}
 ,
 						"snapshotlist" : 						{
@@ -3522,19 +3491,19 @@
 									"version" : 2,
 									"minorversion" : 0,
 									"name" : "airwindows Console7Channel",
-									"origin" : "console7cascade64.vstinfo",
+									"origin" : "Console7Channel64.vstinfo",
 									"type" : "VST",
 									"subtype" : "AudioEffect",
 									"embed" : 1,
 									"snapshot" : 									{
-										"pluginname" : "console7cascade64.vstinfo",
-										"plugindisplayname" : "airwindows Console7Cascade",
+										"pluginname" : "Console7Channel64.vstinfo",
+										"plugindisplayname" : "airwindows Console7Channel",
 										"pluginsavedname" : "",
-										"pluginsaveduniqueid" : 1668247155,
+										"pluginsaveduniqueid" : 1668247153,
 										"version" : 1,
 										"isbank" : 0,
 										"isbase64" : 1,
-										"blob" : "64.CMlaKA....fQPMDZ....AL1atMG...P......PTYlEVcrQG................................AbP7w9."
+										"blob" : "64.CMlaKA....fQPMDZ....AL1atEG...P......PTYlEVcrQG................................A......"
 									}
 ,
 									"fileref" : 									{
@@ -3542,7 +3511,7 @@
 										"filename" : "airwindows Console7Channel_20250216.maxsnap",
 										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "21972f78b35cf52f60fb4cdd3bd5eeb4"
+										"snapshotfileid" : "a3ed179b6f06d102a6e9e8cda194ff29"
 									}
 
 								}
@@ -3862,16 +3831,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-118", 0 ],
-					"order" : 0,
-					"source" : [ "obj-120", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-29", 0 ],
-					"order" : 1,
 					"source" : [ "obj-120", 0 ]
 				}
 
@@ -4107,16 +4067,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-69", 1 ],
-					"order" : 0,
-					"source" : [ "obj-29", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-71", 1 ],
-					"order" : 1,
+					"destination" : [ "obj-118", 0 ],
 					"source" : [ "obj-29", 0 ]
 				}
 
@@ -4197,16 +4148,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-75", 0 ],
-					"order" : 0,
-					"source" : [ "obj-39", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-79", 0 ],
-					"order" : 1,
 					"source" : [ "obj-39", 0 ]
 				}
 
@@ -4259,16 +4201,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-73", 0 ],
-					"order" : 0,
-					"source" : [ "obj-44", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-82", 0 ],
-					"order" : 1,
 					"source" : [ "obj-44", 0 ]
 				}
 
@@ -4553,50 +4486,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-1", 1 ],
-					"source" : [ "obj-69", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-48", 0 ],
 					"source" : [ "obj-70", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-71", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-69", 0 ],
-					"source" : [ "obj-72", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-72", 0 ],
-					"source" : [ "obj-73", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-71", 0 ],
-					"source" : [ "obj-74", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-74", 0 ],
-					"source" : [ "obj-75", 0 ]
 				}
 
 			}
@@ -4790,7 +4681,44 @@
 				}
 
 			}
- ]
+ ],
+		"parameters" : 		{
+			"obj-23" : [ "vst~", "vst~", 0 ],
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
+		"dependency_cache" : [ 			{
+				"name" : "airwindows Console7Channel_20250216.maxsnap",
+				"bootpath" : "~/Documents/GitHub/benny/data",
+				"patcherrelativepath" : "../data",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "fx.multi.conv.eq.gendsp",
+				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+				"patcherrelativepath" : ".",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "mix.channel.gendsp",
+				"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
+				"patcherrelativepath" : ".",
+				"type" : "gDSP",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }
