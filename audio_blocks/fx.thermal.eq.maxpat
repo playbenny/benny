@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1428.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -339,106 +339,126 @@
 , 			{
 				"box" : 				{
 					"coll_data" : 					{
-						"count" : 25,
+						"count" : 30,
 						"data" : [ 							{
+								"key" : 0,
+								"value" : [ "/32/thermionic hpf40hz 32.wav" ]
+							}
+, 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 0 ]
+								"value" : [ "/32/thermionic hpf40hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, -35 ]
+								"value" : [ "/32/thermionic hpf40hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -24 ]
+								"value" : [ "/32/thermionic hpf40hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, -5, -4 ]
+								"value" : [ "/32/thermionic hpf40hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, -18, -1 ]
+								"value" : [ "/32/thermionic hpf100hz 32.wav" ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, -5, -21 ]
+								"value" : [ "/32/thermionic hpf100hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf100hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, -12, 0 ]
+								"value" : [ "/32/thermionic hpf100hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf100hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf800hz 32.wav" ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 12,
-								"value" : [ "colours germanium 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, -42, 3 ]
+								"value" : [ "/32/thermionic hpf800hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 14,
-								"value" : [ "colours mass driver 32.wav", 32, -42, -4 ]
+								"value" : [ "/32/thermionic hpf800hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -42, 14 ]
+								"value" : [ "/64/thermionic hpf40hz 64.wav" ]
 							}
 , 							{
 								"key" : 16,
-								"value" : [ "colours royal blue 32.wav", 32, -24, -2 ]
+								"value" : [ "/64/thermionic hpf40hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 17,
-								"value" : [ "colours royal blue top boost 32.wav", 32, -36, 3 ]
+								"value" : [ "/64/thermionic hpf40hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 18,
-								"value" : [ "colours superfilter 32.wav", 32, -24, 8 ]
+								"value" : [ "/64/thermionic hpf40hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 19,
-								"value" : [ "colours th79 16.wav", 16, -24, 0 ]
+								"value" : [ "/64/thermionic hpf40hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 20,
-								"value" : [ "colours toneloc 16.wav", 16, -12, -4 ]
+								"value" : [ "/64/thermionic hpf100hz 64.wav" ]
 							}
 , 							{
 								"key" : 21,
-								"value" : [ "colours toneloc 32.wav", 32, -24, -3 ]
+								"value" : [ "/64/thermionic hpf100hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 22,
-								"value" : [ "drawmer 16.wav", 16, -24, -5 ]
+								"value" : [ "/64/thermionic hpf100hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -36, 0 ]
+								"value" : [ "/64/thermionic hpf100hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 24,
-								"value" : [ "eurorack bard ivan 16.wav", 16, -24, -11 ]
+								"value" : [ "/64/thermionic hpf100hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 25,
-								"value" : [ "eurorack bard ivan 32.wav", 32, -24, -11 ]
+								"value" : [ "/64/thermionic hpf800hz 64.wav" ]
+							}
+, 							{
+								"key" : 26,
+								"value" : [ "/64/thermionic hpf800hz + bass 64.wav" ]
+							}
+, 							{
+								"key" : 27,
+								"value" : [ "/64/thermionic hpf800hz + 800 64.wav" ]
+							}
+, 							{
+								"key" : 28,
+								"value" : [ "/64/thermionic hpf800hz + 2.5k 64.wav" ]
+							}
+, 							{
+								"key" : 29,
+								"value" : [ "/64/thermionic hpf800hz + top 64.wav" ]
 							}
  ]
 					}
@@ -448,13 +468,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 737.0, 230.0, 77.0, 22.0 ],
+					"patching_rect" : [ 737.0, 230.0, 144.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 1,
 						"precision" : 6
 					}
 ,
-					"text" : "coll impulses"
+					"text" : "coll thermal_eq_impulses"
 				}
 
 			}
@@ -473,106 +493,126 @@
 , 			{
 				"box" : 				{
 					"coll_data" : 					{
-						"count" : 25,
+						"count" : 30,
 						"data" : [ 							{
+								"key" : 0,
+								"value" : [ "/32/thermionic hpf40hz 32.wav" ]
+							}
+, 							{
 								"key" : 1,
-								"value" : [ "capi (w exotic op amps) nofilter 32.wav", 32, 0, 0 ]
+								"value" : [ "/32/thermionic hpf40hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 2,
-								"value" : [ "chandler little devil (bright cut) 64.wav", 64, -24, -35 ]
+								"value" : [ "/32/thermionic hpf40hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 3,
-								"value" : [ "chandler little devil (bright no cut) 32.wav", 32, 0, -24 ]
+								"value" : [ "/32/thermionic hpf40hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 4,
-								"value" : [ "chroma A (unprocessed) 32.wav", 32, -5, -4 ]
+								"value" : [ "/32/thermionic hpf40hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 5,
-								"value" : [ "chroma N (unprocessed) 32.wav", 32, -18, -1 ]
+								"value" : [ "/32/thermionic hpf100hz 32.wav" ]
 							}
 , 							{
 								"key" : 6,
-								"value" : [ "neumann 32.wav", 32, -5, -21 ]
+								"value" : [ "/32/thermionic hpf100hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 7,
-								"value" : [ "colours 15ips 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf100hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 8,
-								"value" : [ "colours air5k 32.wav", 32, -12, 0 ]
+								"value" : [ "/32/thermionic hpf100hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 9,
-								"value" : [ "colours brit console 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf100hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 10,
-								"value" : [ "colours discrete sat 32.wav", 32, -14, -4 ]
+								"value" : [ "/32/thermionic hpf800hz 32.wav" ]
 							}
 , 							{
 								"key" : 11,
-								"value" : [ "colours germanium 16.wav", 16, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + bass 32.wav" ]
 							}
 , 							{
 								"key" : 12,
-								"value" : [ "colours germanium 32.wav", 32, -18, -2 ]
+								"value" : [ "/32/thermionic hpf800hz + 800 32.wav" ]
 							}
 , 							{
 								"key" : 13,
-								"value" : [ "colours mass driver 16.wav", 16, -42, 3 ]
+								"value" : [ "/32/thermionic hpf800hz + 2.5k 32.wav" ]
 							}
 , 							{
 								"key" : 14,
-								"value" : [ "colours mass driver 32.wav", 32, -42, -4 ]
+								"value" : [ "/32/thermionic hpf800hz + top 32.wav" ]
 							}
 , 							{
 								"key" : 15,
-								"value" : [ "colours royal blue 16.wav", 16, -42, 14 ]
+								"value" : [ "/64/thermionic hpf40hz 64.wav" ]
 							}
 , 							{
 								"key" : 16,
-								"value" : [ "colours royal blue 32.wav", 32, -24, -2 ]
+								"value" : [ "/64/thermionic hpf40hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 17,
-								"value" : [ "colours royal blue top boost 32.wav", 32, -36, 3 ]
+								"value" : [ "/64/thermionic hpf40hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 18,
-								"value" : [ "colours superfilter 32.wav", 32, -24, 8 ]
+								"value" : [ "/64/thermionic hpf40hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 19,
-								"value" : [ "colours th79 16.wav", 16, -24, 0 ]
+								"value" : [ "/64/thermionic hpf40hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 20,
-								"value" : [ "colours toneloc 16.wav", 16, -12, -4 ]
+								"value" : [ "/64/thermionic hpf100hz 64.wav" ]
 							}
 , 							{
 								"key" : 21,
-								"value" : [ "colours toneloc 32.wav", 32, -24, -3 ]
+								"value" : [ "/64/thermionic hpf100hz + bass 64.wav" ]
 							}
 , 							{
 								"key" : 22,
-								"value" : [ "drawmer 16.wav", 16, -24, -5 ]
+								"value" : [ "/64/thermionic hpf100hz + 800 64.wav" ]
 							}
 , 							{
 								"key" : 23,
-								"value" : [ "drawmer 32.wav", 32, -36, 0 ]
+								"value" : [ "/64/thermionic hpf100hz + 2.5k 64.wav" ]
 							}
 , 							{
 								"key" : 24,
-								"value" : [ "eurorack bard ivan 16.wav", 16, -24, -11 ]
+								"value" : [ "/64/thermionic hpf100hz + top 64.wav" ]
 							}
 , 							{
 								"key" : 25,
-								"value" : [ "eurorack bard ivan 32.wav", 32, -24, -11 ]
+								"value" : [ "/64/thermionic hpf800hz 64.wav" ]
+							}
+, 							{
+								"key" : 26,
+								"value" : [ "/64/thermionic hpf800hz + bass 64.wav" ]
+							}
+, 							{
+								"key" : 27,
+								"value" : [ "/64/thermionic hpf800hz + 800 64.wav" ]
+							}
+, 							{
+								"key" : 28,
+								"value" : [ "/64/thermionic hpf800hz + 2.5k 64.wav" ]
+							}
+, 							{
+								"key" : 29,
+								"value" : [ "/64/thermionic hpf800hz + top 64.wav" ]
 							}
  ]
 					}
@@ -582,13 +622,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "", "", "" ],
-					"patching_rect" : [ 603.0, 230.0, 77.0, 22.0 ],
+					"patching_rect" : [ 603.0, 230.0, 144.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 1,
 						"precision" : 6
 					}
 ,
-					"text" : "coll impulses"
+					"text" : "coll thermal_eq_impulses"
 				}
 
 			}
@@ -829,6 +869,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 198.0, 415.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -864,6 +908,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 146.0, 68.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -887,10 +935,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 139.0, 315.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 2"
 				}
 
@@ -902,10 +946,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 37.0, 315.0, 42.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out~ 1"
 				}
 
@@ -918,10 +958,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 37.0, 197.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 1"
 				}
 
@@ -934,10 +970,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 162.0, 2.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
