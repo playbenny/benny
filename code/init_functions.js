@@ -153,56 +153,7 @@ function initialise_dictionaries(hardware_file){
 		note_names[i] = namelist[i%12]+(Math.floor(i/12)-2);
 	}
 	// get config first because a lot of things depend on it.
-	UPSAMPLING = config.get("UPSAMPLING");
-	RECYCLING = config.get("RECYCLING");
-	click_b_s = config.get("click_buffer_scaledown");
-	wire_dia = config.get("wire_dia");
-	glow_amount = config.get("glow");
-	messnamed("bloom_amt",glow_amount);
-	mainfont = config.get("mainfont");
-	monofont = config.get("monofont");
-	MAX_BLOCKS = config.get("MAX_BLOCKS");
-	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
-	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
-	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
-	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
-	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
-	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS");//24; //must be a multiple of 4
-	BLOCKS_GRID = config.get("BLOCKS_GRID");
-	BLOCKS_GRID = [BLOCKS_GRID, 1/BLOCKS_GRID];
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
-	MAX_CONNECTIONS_PER_OUTPUT = config.get("MAX_CONNECTIONS_PER_OUTPUT");
-	MAX_OUTPUTS_PER_VOICE = config.get("MAX_OUTPUTS_PER_VOICE");
-	MAX_DATA = config.get("MAX_DATA");
-	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
-	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
-	MAX_WAVES = config.get("MAX_WAVES");
-	draw_wave.length = MAX_WAVES;
-	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
-	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
-	MAX_STATES = config.get("MAX_STATES");
-	MERGE_PURGE = config.get("MERGE_PURGE");
-	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
-	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
-	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
-	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
-	CTRL_VOICE_SEL_MOMENTARY = config.get("CTRL_VOICE_SEL_MOMENTARY");
-	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
-	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
-	waves_preloading = config.get("waves_preloading");
-	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
-	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
-	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
-	SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON = config.get("SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON");
-	TARGET_FPS = config.get("TARGET_FPS");
-	METER_TINT = config.get("METER_TINT");
-	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
-	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
-	sidebar.scopes.midinames= config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
-	sidebar.show_help = config.get("SIDEBAR_ALWAYS_SHOW_HELP");
-	automap.mouse_follow = config.get("AUTOMAP_MOUSE_FOLLOW");
-	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
-	sidebar.width_in_units = config.get("sidebar_width_in_units");
+	read_settings_from_config();
 	sidebar.width = fontheight*sidebar.width_in_units;
 	sidebar.x2 = mainwindow_width - sidebar.scrollbar_width;
 	sidebar.x = sidebar.x2 -sidebar.width;
@@ -319,6 +270,59 @@ function initialise_dictionaries(hardware_file){
 		post("\nall essential data loaded, please choose a hardware configuration and press start.");
 		messnamed("ready_to_start","bang");
 	}
+}
+
+function read_settings_from_config() {
+	UPSAMPLING = config.get("UPSAMPLING");
+	RECYCLING = config.get("RECYCLING");
+	click_b_s = config.get("click_buffer_scaledown");
+	wire_dia = config.get("wire_dia");
+	glow_amount = config.get("glow");
+	messnamed("bloom_amt", glow_amount);
+	mainfont = config.get("mainfont");
+	monofont = config.get("monofont");
+	MAX_BLOCKS = config.get("MAX_BLOCKS");
+	MAX_NOTE_VOICES = config.get("MAX_NOTE_VOICES");
+	MAX_AUDIO_VOICES = config.get("MAX_AUDIO_VOICES");
+	MAX_AUDIO_INPUTS = config.get("MAX_AUDIO_INPUTS");
+	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
+	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
+	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS"); //24; //must be a multiple of 4
+	BLOCKS_GRID = config.get("BLOCKS_GRID");
+	BLOCKS_GRID = [BLOCKS_GRID, 1 / BLOCKS_GRID];
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+	MAX_CONNECTIONS_PER_OUTPUT = config.get("MAX_CONNECTIONS_PER_OUTPUT");
+	MAX_OUTPUTS_PER_VOICE = config.get("MAX_OUTPUTS_PER_VOICE");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_MOD_IDS = config.get("MAX_MOD_IDS");
+	MAX_WAVES_SLICES = config.get("MAX_WAVES_SLICES");
+	MAX_WAVES = config.get("MAX_WAVES");
+	draw_wave.length = MAX_WAVES;
+	MAX_HARDWARE_MIDI_OUTS = config.get("MAX_HARDWARE_MIDI_OUTS");
+	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
+	MAX_STATES = config.get("MAX_STATES");
+	MERGE_PURGE = config.get("MERGE_PURGE");
+	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
+	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
+	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
+	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
+	CTRL_VOICE_SEL_MOMENTARY = config.get("CTRL_VOICE_SEL_MOMENTARY");
+	SLIDER_CLICK_SET = config.get("SLIDER_CLICK_SET");
+	SCOPE_DEFAULT_ZOOM = config.get("SCOPE_DEFAULT_ZOOM");
+	waves_preloading = config.get("waves_preloading");
+	MODULATION_IN_PARAMETERS_VIEW = config.get("MODULATION_IN_PARAMETERS_VIEW");
+	AUTOZOOM_ON_SELECT = config.get("AUTOZOOM_ON_SELECT");
+	SHOW_STATES_ON_PANELS = config.get("SHOW_STATES_ON_PANELS");
+	SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON = config.get("SHOW_KEYBOARD_AUTOMAP_CONNECT_BUTTON");
+	TARGET_FPS = config.get("TARGET_FPS");
+	METER_TINT = config.get("METER_TINT");
+	SELECTED_BLOCK_Z_MOVE = config.get("SELECTED_BLOCK_Z_MOVE");
+	SELECTED_BLOCK_DEPENDENTS_Z_MOVE = config.get("SELECTED_BLOCK_DEPENDENTS_Z_MOVE");
+	sidebar.scopes.midinames = config.get("SIDEBAR_MIDI_SCOPE_NOTE_NAMES");
+	sidebar.show_help = config.get("SIDEBAR_ALWAYS_SHOW_HELP");
+	automap.mouse_follow = config.get("AUTOMAP_MOUSE_FOLLOW");
+	sidebar.scrollbar_width = config.get("sidebar_scrollbar_width");
+	sidebar.width_in_units = config.get("sidebar_width_in_units");
 }
 
 function initialise_graphics() {

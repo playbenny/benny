@@ -1,3 +1,7 @@
+15/06/25:
+- in the sidebar parameters view, the modulation amount sliders for connected mod sources now (optionally) display the offset as well as the amount for that modulation.
+- the ui prefs editor now updates preferences instantly, without a restart of benny.
+
 13/06/25:
 - source.sacred.waves.osc is a new dual+sub oscillator core by Luke Abbott based on wavetables sampled from a few synths at my studio (sacred walls) - a prophet 600 and a mono/poly. it gets the essential tone of those two surprisingly nicely and adds a versatile set of modulation options.
 - you can now drag a block onto a wire while holding ctrl-shift (cmd-shift) to insert it into that wire. thanks to user 'gullygully'
