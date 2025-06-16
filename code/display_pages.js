@@ -4958,16 +4958,17 @@ function draw_sidebar(){
 										if(has_offset==1){//inline version
 											var offset_y1 = gain_y1;
 											var offset_y2 = gain_y2;
-											slider_x_start = slider_x_end+fo1;
-											var offset_label_x = slider_x_start+fo1;
+											var slider_x_start2 = slider_x_end+fo1;
+											var offset_label_x = slider_x_start2+fo1;
 										}else{ //2 line version
+											var slider_x_start2 = slider_x_start;
 											var offset_label_x = slider_x_start-fontheight;
 											var offset_y1 = gain_y2 + vertical_padding;
 											var offset_y2 = offset_y1 + slider_height;
 										}
 
 										var offset = connections.get("connections["+conn_index+"]::conversion::offset");
-										draw_h_slider(slider_x_start, offset_y1, sidebar.x2, offset_y2, thisco[0]*0.9,thisco[1]*0.9,thisco[2]*0.9,mouse_index, 2*offset-1);
+										draw_h_slider(slider_x_start2, offset_y1, sidebar.x2, offset_y2, thisco[0]*0.9,thisco[1]*0.9,thisco[2]*0.9,mouse_index, 2*offset-1);
 										mouse_click_actions[mouse_index] = connection_edit;
 										mouse_click_parameters[mouse_index] = "connections["+conn_index+"]::conversion::offset";
 										mouse_click_values[mouse_index] = 0;
@@ -4983,7 +4984,7 @@ function draw_sidebar(){
 										namelabely = gain_y2 + vertical_padding;
 									}
 
-									click_zone(sidebar_select_connection,conn_index,1,sidebar.x,namelabelyo,(sidebar.x*0.4+0.6*sidebar.x2),namelabely,mouse_index,1);
+									click_zone(sidebar_select_connection,conn_index,1,sidebar.x,namelabelyo,slider_x_start,namelabely,mouse_index,1);
 								}
 							}
 							y_offset=namelabely+fontheight*0.2;
