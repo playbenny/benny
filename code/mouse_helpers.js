@@ -3825,7 +3825,7 @@ function blocks_and(side){
 }
 
 function toggle_show_sidebar_para_mod(){
-	MODULATION_IN_PARAMETERS_VIEW = 1 - MODULATION_IN_PARAMETERS_VIEW;
+	MODULATION_IN_PARAMETERS_VIEW = (MODULATION_IN_PARAMETERS_VIEW+1)%4;
 	redraw_flag.flag |= 2;
 }
 

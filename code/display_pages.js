@@ -4906,28 +4906,45 @@ function draw_sidebar(){
 							for(var cu=this_group_mod_in_para.length;cu>0;cu--){
 								var curp = this_group_mod_in_para[cu-1];
 								for(var ip=mod_in_para[curp].length;ip>0;ip--){
+									var conn_index = mod_in_para[curp][ip-1];
+									var from_type = connections.get("connections["+conn_index+"]::from::output::type");
+									var has_offset = (MODULATION_IN_PARAMETERS_VIEW-1) * (((from_type != "audio") && (from_type != "hardware") && (from_type != "matrix") && (from_type != "potential"))|0);
+									// will be 0, no offset, 1, offset inline, 2, offset on a newline
 									var namelabelyo = namelabely;
-									namelabely+=fontheight*0.3;
-									var scale = connections.get("connections["+mod_in_para[curp][ip-1]+"]::conversion::scale");
+									
 									var thisco;
-									if(connections.get("connections["+mod_in_para[curp][ip-1]+"]::conversion::mute")==1){
+									if(connections.get("connections["+conn_index+"]::conversion::mute")==1){
 										thisco = [120,120,120];
 									}else{
-										thisco = [colour[0],colour[1],colour[2]];
+										thisco = shadeRGB(colour,0.6+0.1*(usermouse.x>sidebar.x)); //[colour[0],colour[1],colour[2]];
 									}
-									draw_h_slider((sidebar.x*0.4+0.6*sidebar.x2), namelabelyo+fo1, sidebar.x2, namelabely,thisco[0],thisco[1],thisco[2],mouse_index,scale);
+
+									// --- define vertical layout ---
+									var slider_height = fontheight * 0.2;
+									var vertical_padding = fo1 ;
+									var label_x_pos = sidebar.x + 0.6 * fo1;
+									var slider_x_start = sidebar.x + (sidebar.x2 - sidebar.x) * 0.45;
+									var slider_x_end = (has_offset==1) ? (slider_x_start + (sidebar.x2-slider_x_start)*0.66) : sidebar.x2;
+
+									// --- gain slider ---
+									var gain_y1 = namelabelyo + vertical_padding;
+									var gain_y2 = gain_y1 + slider_height;
+
+									var scale = connections.get("connections["+conn_index+"]::conversion::scale");
+									draw_h_slider(slider_x_start, gain_y1, slider_x_end, gain_y2, thisco[0],thisco[1],thisco[2],mouse_index,scale);
 									mouse_click_actions[mouse_index] = connection_edit;
-									mouse_click_parameters[mouse_index] = "connections["+mod_in_para[curp][ip-1]+"]::conversion::scale";
-									//post("\ndraw modulation connection",mod_in_para[curp][ip-1],mouse_click_parameters[mouse_index],scale);
+									mouse_click_parameters[mouse_index] = "connections["+conn_index+"]::conversion::scale";
 									mouse_click_values[mouse_index] = 0;
 									mouse_index++;
-					
-									lcd_main.message("moveto",sidebar.x+0.6*fo1,namelabely);
-									lcd_main.message("frgb",0.6*thisco[0],0.6*thisco[1],0.6*thisco[2]);
-									var fromn = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::name");
-									var froml = blocks.get("blocks["+connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::number")+"]::label");
-									var ftype = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::type");
-									var fnum = connections.get("connections["+mod_in_para[curp][ip-1]+"]::from::output::number");
+
+									// gain label (the long one)
+									//var gain_label_y_center = gain_y1 + (slider_height / 2) + (fontheight * 0.15);
+									lcd_main.message("moveto", label_x_pos, gain_y2);//label_y_center);
+									lcd_main.message("frgb",shadeRGB(thisco,0.5));
+									var fromn = blocks.get("blocks["+connections.get("connections["+conn_index+"]::from::number")+"]::name");
+									var froml = blocks.get("blocks["+connections.get("connections["+conn_index+"]::from::number")+"]::label");
+									var ftype = connections.get("connections["+conn_index+"]::from::output::type");
+									var fnum = connections.get("connections["+conn_index+"]::from::output::number");
 									var fromn2 = blocktypes.get(fromn+"::connections::out::"+ftype+"["+fnum+"]");
 									froml = froml.split(".");
 									fromn = froml.pop();
@@ -4935,10 +4952,41 @@ function draw_sidebar(){
 									fromn = fromn+"/"+fromn2;
 									var pnam = params[curp].get("name");
 									pnam = pnam.replace("_"," ");
-									lcd_main.message("write", fromn+" → "+pnam +"/"+ connections.get("connections["+mod_in_para[curp][ip-1]+"]::to::voice"));
-									click_zone(sidebar_select_connection,mod_in_para[curp][ip-1],1,sidebar.x,namelabelyo,(sidebar.x*0.4+0.6*sidebar.x2),namelabely,mouse_index,1);
+									lcd_main.message("write", fromn+" → "+pnam +"/"+ connections.get("connections["+conn_index+"]::to::voice"));
+
+									// --- offset slider ---
+									if(has_offset){
+										if(has_offset==1){//inline version
+											var offset_y1 = gain_y1;
+											var offset_y2 = gain_y2;
+											var slider_x_start2 = slider_x_end+fo1;
+											var offset_label_x = slider_x_start2+fo1;
+										}else{ //2 line version
+											var slider_x_start2 = slider_x_start;
+											var offset_label_x = slider_x_start-fontheight;
+											var offset_y1 = gain_y2 + vertical_padding;
+											var offset_y2 = offset_y1 + slider_height;
+										}
+
+										var offset = connections.get("connections["+conn_index+"]::conversion::offset");
+										draw_h_slider(slider_x_start2, offset_y1, sidebar.x2, offset_y2, thisco[0],thisco[1],thisco[2],mouse_index, 2*offset-1);
+										mouse_click_actions[mouse_index] = connection_edit;
+										mouse_click_parameters[mouse_index] = "connections["+conn_index+"]::conversion::offset";
+										mouse_click_values[mouse_index] = 0;
+										mouse_index++;
+										
+										// offset label (+/-)
+										//var offset_label_y_center = offset_y1 + (slider_height / 2) + (fontheight * 0.15);
+										lcd_main.message("moveto", offset_label_x, offset_y2);
+										lcd_main.message("frgb",shadeRGB(thisco,0.6));
+										lcd_main.message("write", "+/-");
+										namelabely = offset_y2 + vertical_padding;
+									} else {
+										namelabely = gain_y2 + vertical_padding;
+									}
+
+									click_zone(sidebar_select_connection,conn_index,1,sidebar.x,namelabelyo,slider_x_start,namelabely,mouse_index,1);
 								}
-	
 							}
 							y_offset=namelabely+fontheight*0.2;
 						}
