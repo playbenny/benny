@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -71,7 +71,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Data times(8);\r\nData intervals(4);\r\n\r\nBuffer quant(\"QUANTPOOL\");\r\nBuffer values(\"voice_parameter_buffer\");\r\n\r\nParam voiceoffset(0);\r\n\r\nHistory irt(1);\r\nHistory t_p(0), v_p(0); //pointers for the 2 seqs (time, value)\r\nHistory since(0); //counter since last \r\nHistory lastlen(0); //length of last\r\nHistory inc(0); //per-sample increment of projected line\r\nHistory stop(0); //point where it stops\r\nHistory phase(0); //internal phasor, 0-1=loop.\r\nHistory incount(0); //in clock counter\r\nHistory tl(1), vl(1), cv(0), qp(0);\r\n\r\nHistory next_step(0);\r\nHistory next_wait(0);\r\n\r\nHistory click(0);\r\n\r\nHistory interval_p(0), interval_sum(0);\r\nHistory diag(0);\r\n\r\n\r\nif(in2!=0){ //recalculate - lays out the times from 0-1\r\n\trt = 0;\r\n\ttl = floor(1+7.99*peek(values, 16 + voiceoffset, 0));\r\n\tvl = floor(1+7.99*peek(values, 17 + voiceoffset, 0));\r\n\tfor(i=0;i<tl;i+=1) rt += (0.0001+peek(values, i+voiceoffset,0));\r\n\tdiag = rt;\r\n\trt += (rt==0);\r\n\tirt = 1 / rt;\r\n\trt2 = 0;\r\n\tss=0;\r\n\tfor(i=0;i<tl;i+=1){\r\n\t\ttimes.poke(rt2,i);\r\n\t\tss = (0.0001+peek(values, i + voiceoffset,0));\r\n\t\trt2 +=  irt * ss;\r\n\t}\r\n\tirt = ss; //to stop compiler bug?\r\n}\r\n\r\nclick=0;\r\nsince+=(phase!=-1);\r\nphase+=inc;\r\nif(phase>=stop) inc = 0;\r\n\r\n\r\nif(in1 != 0){ //clock\r\n\tincount += 1;\r\n\tinlen = floor(1+127*peek(values, 18 + voiceoffset, 0));\r\n\tincount = incount % inlen;\r\n\tphase = stop;\r\n\tif(phase>=1){\r\n\t\tphase-=1;\r\n\t\tnext_wait = 0;\r\n\t}\r\n\tif(incount>0){\r\n\t\tstop = incount / inlen;\r\n\t}else{\r\n\t\tstop = 1;\r\n\t\r\n\t}\r\n\tif(since>vectorsize*2){\r\n\t\t\tlastlen = since;\r\n\t}\r\n\tinc = 1 / (inlen * lastlen);\r\n\tsince = 0;\r\n}\r\n\r\n\r\n\r\nif((phase>=next_step)&&(!next_wait)){\r\n\tt_p += 1;\r\n\tv_p += 1;\r\n\tt_p = t_p % tl;\r\n\tv_p = v_p % vl;\r\n\tcv = 128*peek(values, 8 + voiceoffset + v_p, 0);\r\n\tif(qp>0) cv = peek(quant, cv, qp-1);\r\n\tclick = 1;\r\n\tnext_step = peek(times, t_p, 0);\r\n\tif(next_step< phase) next_wait = 1;\r\n}\r\n\r\nif(in2 == -1){//reset\r\n\tnext_step=0;\r\n\tt_p=-1;\r\n\tv_p=-1;\r\n\tsince = 0;\r\n\tinc = 0;\r\n\tphase = -1;\r\n\tstop = 0;\r\n\tincount = 0;\r\n\tclick=0;\r\n\tnext_wait = 0;\r\n}\r\n\r\n\r\nout1 = t_p;\r\nout2 = cv;\r\nout3 = click;\r\nout4 = v_p;//phase;\r\n",
+					"code" : "Data times(8);\r\nData intervals(4);\r\n\r\nBuffer quant(\"QUANTPOOL\");\r\nBuffer values(\"voice_parameter_buffer\");\r\n\r\nParam voiceoffset(0);\r\n\r\nHistory irt(1);\r\nHistory t_p(0), v_p(0); //pointers for the 2 seqs (time, value)\r\nHistory since(0); //counter since last \r\nHistory lastlen(0); //length of last\r\nHistory inc(0); //per-sample increment of projected line\r\nHistory stop(0); //point where it stops\r\nHistory phase(0); //internal phasor, 0-1=loop.\r\nHistory incount(0); //in clock counter\r\nHistory tl(1), vl(1), cv(0), qp(2);\r\n\r\nHistory next_step(0);\r\nHistory next_wait(0);\r\n\r\nHistory click(0);\r\n\r\nHistory interval_p(0), interval_sum(0);\r\nHistory diag(0);\r\n\r\n\r\nif(in2!=0){ //recalculate - lays out the times from 0-1\r\n\trt = 0;\r\n\ttl = floor(1+7.99*peek(values, 16 + voiceoffset, 0));\r\n\tvl = floor(1+7.99*peek(values, 17 + voiceoffset, 0));\r\n\tqp = floor(8.99*peek(values, 19 + voiceoffset, 0));\r\n\tfor(i=0;i<tl;i+=1) rt += (0.0001+peek(values, i+voiceoffset,0));\r\n\tdiag = rt;\r\n\trt += (rt==0);\r\n\tirt = 1 / rt;\r\n\trt2 = 0;\r\n\tss=0;\r\n\tfor(i=0;i<tl;i+=1){\r\n\t\ttimes.poke(rt2,i);\r\n\t\tss = (0.0001+peek(values, i + voiceoffset,0));\r\n\t\trt2 +=  irt * ss;\r\n\t}\r\n\tirt = ss; //to stop compiler bug?\r\n}\r\n\r\nclick=0;\r\nsince+=(phase!=-1);\r\nphase+=inc;\r\nif(phase>=stop) inc = 0;\r\n\r\n\r\nif(in1 != 0){ //clock\r\n\tincount += 1;\r\n\tinlen = floor(1+127*peek(values, 18 + voiceoffset, 0));\r\n\tincount = incount % inlen;\r\n\tphase = stop;\r\n\tif(phase>=1){\r\n\t\tphase-=1;\r\n\t\tnext_wait = 0;\r\n\t}\r\n\tif(incount>0){\r\n\t\tstop = incount / inlen;\r\n\t}else{\r\n\t\tstop = 1;\r\n\t\r\n\t}\r\n\tif(since>vectorsize*2){\r\n\t\t\tlastlen = since;\r\n\t}\r\n\tinc = 1 / (inlen * lastlen);\r\n\tsince = 0;\r\n}\r\n\r\n\r\n\r\nif((phase>=next_step)&&(!next_wait)){\r\n\tt_p += 1;\r\n\tv_p += 1;\r\n\tt_p = t_p % tl;\r\n\tv_p = v_p % vl;\r\n\tcv = 128*peek(values, 8 + voiceoffset + v_p, 0);\r\n\tif(qp>0) cv = peek(quant, cv, qp);\r\n\tclick = 1;\r\n\tnext_step = peek(times, t_p, 0);\r\n\tif(next_step< phase) next_wait = 1;\r\n}\r\n\r\nif(in2 == -1){//reset\r\n\tnext_step=0;\r\n\tt_p=-1;\r\n\tv_p=-1;\r\n\tsince = 0;\r\n\tinc = 0;\r\n\tphase = -1;\r\n\tstop = 0;\r\n\tincount = 0;\r\n\tclick=0;\r\n\tnext_wait = 0;\r\n}\r\n\r\n\r\nout1 = t_p;\r\nout2 = cv;\r\nout3 = click;\r\nout4 = v_p;//phase;\r\n",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -138,8 +138,7 @@
 				}
 
 			}
- ],
-		"originid" : "pat-4398"
+ ]
 	}
 
 }
