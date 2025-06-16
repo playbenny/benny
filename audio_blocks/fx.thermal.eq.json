@@ -3,7 +3,7 @@
 		"patcher" : "fx.thermal.eq",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Simple EQ. Great at the end of an instrument or part. You can choose a highpass position and a single area of the spectrum to emphasise. The emphasis pushes into the drive in a lovely way.££This block is built from a set of modified multi-level impulses taken through a british-made tube preamp/eq I have in my studio, along with the 'bite' control from fx.metal.box.",
+		"help_text" : "Simple EQ. Great at the end of an instrument or part. You can choose a highpass position and a single area of the spectrum to emphasise. The emphasis pushes into the drive in a lovely way.££This block is built from a set of modified multi-level impulses taken through a british-made tube preamp/eq I have in my studio, along with the 'bite' control from fx.metal.box.££If you're running low on cpu the impulse length control set to 32 uses half as much, but in some cases doesn't quite make the same spectral changes.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {
@@ -85,7 +85,7 @@
 				"name" : "impulse length",
 				"type" : "menu_d",
 				"values" : ["32","64"],
-				"default" : 0.25,
+				"default" : 0.75,
 				"wrap" : 1,
 				"error_scale" : 0,
 				"force_label" : 1
