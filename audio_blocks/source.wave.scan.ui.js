@@ -50,7 +50,7 @@ function draw(){
 }
 
 function mouse(x,y,l,s,a,c,scr){
-	post("\nmouse",x,y,l,s,a,c,scr);
+	//post("\nmouse",x,y,l,s,a,c,scr);
 	if((x>=x_pos)&&(x<=x_pos+width)){
 		if((y>=y_pos)&&(y<=y_pos+height)){
 			var tx=x-x_pos;
