@@ -352,15 +352,25 @@ function check_for_legacy_colours(){
 				voice_data_buffer.poke(1,MAX_DATA*v_list+1+paramcount*2+i,x);
 				post(x);
 			}
-			post("\nand making sure end forces are set to defaults")
-			var s = MAX_DATA*v_list+1+paramcount*3;
-			for(var i=0;i<paramcount;i++){
-				voice_data_buffer.poke(1,s+i,0.1);
-				voice_data_buffer.poke(1,s+i+paramcount,0.5);
-				voice_data_buffer.poke(1,s+i+paramcount*2,0.9);
-				voice_data_buffer.poke(1,s+i+paramcount*3,0.5);
-			}
+			set_forces_to_defaults();
+			return;
 		}
+	}
+	// otherwise check - if end force data is 0,0,0,0 then it's not been set so default it
+	var s = MAX_DATA * v_list + 1 + paramcount * 3;
+	var t = 0;
+	for (var i = 0; i < paramcount*4; i++) t += voice_data_buffer.peek(1, s + i);
+	if(t == 0) set_forces_to_defaults();
+}
+
+function set_forces_to_defaults() {
+	post("\nmaking sure end forces are set to defaults")
+	var s = MAX_DATA * v_list + 1 + paramcount * 3;
+	for (var i = 0; i < paramcount; i++) {
+		voice_data_buffer.poke(1, s + i, 0.1);
+		voice_data_buffer.poke(1, s + i + paramcount, 0.5);
+		voice_data_buffer.poke(1, s + i + paramcount * 2, 0.9);
+		voice_data_buffer.poke(1, s + i + paramcount * 3, 0.5);
 	}
 }
 
