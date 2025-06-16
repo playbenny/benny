@@ -4968,7 +4968,7 @@ function draw_sidebar(){
 										}
 
 										var offset = connections.get("connections["+conn_index+"]::conversion::offset");
-										draw_h_slider(slider_x_start2, offset_y1, sidebar.x2, offset_y2, thisco[0]*0.9,thisco[1]*0.9,thisco[2]*0.9,mouse_index, 2*offset-1);
+										draw_h_slider(slider_x_start2, offset_y1, sidebar.x2, offset_y2, thisco[0],thisco[1],thisco[2],mouse_index, 2*offset-1);
 										mouse_click_actions[mouse_index] = connection_edit;
 										mouse_click_parameters[mouse_index] = "connections["+conn_index+"]::conversion::offset";
 										mouse_click_values[mouse_index] = 0;
@@ -4977,7 +4977,7 @@ function draw_sidebar(){
 										// offset label (+/-)
 										//var offset_label_y_center = offset_y1 + (slider_height / 2) + (fontheight * 0.15);
 										lcd_main.message("moveto", offset_label_x, offset_y2);
-										lcd_main.message("frgb",shadeRGB(thisco,0.4));
+										lcd_main.message("frgb",shadeRGB(thisco,0.6));
 										lcd_main.message("write", "+/-");
 										namelabely = offset_y2 + vertical_padding;
 									} else {
