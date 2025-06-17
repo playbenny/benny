@@ -15,12 +15,24 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "int" ],
+					"patching_rect" : [ 720.5, 1469.0, 32.0, 22.0 ],
+					"text" : "t b 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-177",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 601.0, 1677.0, 22.0, 22.0 ],
+					"patching_rect" : [ 706.0, 1544.0, 22.0, 22.0 ],
 					"text" : "t 0"
 				}
 
@@ -29,11 +41,11 @@
 				"box" : 				{
 					"id" : "obj-176",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 567.0, 1670.0, 29.5, 22.0 ],
-					"text" : "sel"
+					"numinlets" : 3,
+					"numoutlets" : 3,
+					"outlettype" : [ "bang", "bang", "" ],
+					"patching_rect" : [ 706.0, 1437.0, 48.0, 22.0 ],
+					"text" : "sel -1 1"
 				}
 
 			}
@@ -56,8 +68,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 217.0, 1366.0, 273.0, 22.0 ],
-					"text" : "regexp 512.aif @substitute 128.wav @tosymbol 1"
+					"patching_rect" : [ 217.0, 1366.0, 266.0, 22.0 ],
+					"text" : "regexp 512.aif @substitute 64.wav @tosymbol 1"
 				}
 
 			}
@@ -174,10 +186,10 @@
 					"id" : "obj-142",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"patching_rect" : [ 515.0, 1640.0, 22.0, 22.0 ],
-					"text" : "t 0"
+					"numoutlets" : 2,
+					"outlettype" : [ "int", "int" ],
+					"patching_rect" : [ 515.0, 1640.0, 36.0, 22.0 ],
+					"text" : "t 0 -1"
 				}
 
 			}
@@ -264,7 +276,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 417.0, 1613.0, 24.0, 24.0 ]
+					"patching_rect" : [ 417.0, 1607.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -283,16 +295,16 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-110",
-					"linecount" : 2,
+					"linecount" : 3,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 280.25, 1726.0, 324.0, 36.0 ],
+					"patching_rect" : [ 280.25, 1726.0, 324.0, 50.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 37.0, 1777.0, 324.0, 36.0 ],
-					"text" : "\"C:/Users/james/Documents/GitHub/multi-ir-capture/irs/trimmed/eqs/pulteq-clone/pultec clone flat 512.aif\""
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 37.0, 1777.0, 324.0, 50.0 ],
+					"text" : "\"C:/Users/james/Documents/GitHub/benny/audio_blocks/multi-irs/eqs/thermionic-earlybird/thermionic hpf40hz + 2.5k 512.aif\""
 				}
 
 			}
@@ -421,11 +433,11 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 841.0, 1221.5, 150.0, 75.0 ],
+					"patching_rect" : [ 841.0, 1221.5, 153.0, 75.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
 					"presentation_rect" : [ 274.0, 703.0, 592.0, 34.0 ],
-					"text" : "C:/Users/james/Documents/GitHub/multi-ir-capture/irs/trimmed/eqs/pulteq-clone/pultec clone bass 100Hz boost only 512.aif"
+					"text" : "C:/Users/james/Documents/GitHub/benny/audio_blocks/multi-irs/eqs/thermionic-earlybird/thermionic hpf800hz 512.aif"
 				}
 
 			}
@@ -1320,7 +1332,7 @@
 				"box" : 				{
 					"id" : "obj-133",
 					"maxclass" : "number",
-					"maximum" : 128,
+					"maximum" : 64,
 					"minimum" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
@@ -2527,7 +2539,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 217.0, 1334.0, 676.0, 22.0 ],
-					"text" : "\"C:/Users/james/Documents/GitHub/multi-ir-capture/irs/trimmed/eqs/pulteq-clone/pultec clone bass 100Hz boost only 512.aif\""
+					"text" : "\"C:/Users/james/Documents/GitHub/benny/audio_blocks/multi-irs/eqs/thermionic-earlybird/thermionic hpf800hz 512.aif\""
 				}
 
 			}
@@ -2565,15 +2577,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-105", 0 ],
-					"order" : 1,
-					"source" : [ "obj-103", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-176", 1 ],
-					"order" : 0,
 					"source" : [ "obj-103", 0 ]
 				}
 
@@ -2867,8 +2870,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-176", 1 ],
+					"source" : [ "obj-14", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-141", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-176", 1 ],
+					"source" : [ "obj-142", 1 ]
 				}
 
 			}
@@ -3110,6 +3127,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-106", 0 ],
 					"source" : [ "obj-173", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-176", 1 ]
 				}
 
 			}
