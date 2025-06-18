@@ -944,8 +944,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var oldpos = blocks_cube[usermouse.ids[1]][0].position;
 								var t = 0;
 								var stw = screentoworld(usermouse.x,usermouse.y);
-								var block_x = BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
-								var block_y = BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
+								var block_x = stw[0]; //BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
+								var block_y = stw[1]; //BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
 								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&(usermouse.hover[0]=="block"))))){ //i think hover can't get set to wires
 									if(wires_potential_connection>-1) remove_potential_wire();

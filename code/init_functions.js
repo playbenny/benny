@@ -288,8 +288,6 @@ function read_settings_from_config() {
 	MAX_AUDIO_OUTPUTS = config.get("MAX_AUDIO_OUTPUTS");
 	NO_IO_PER_BLOCK = config.get("NO_IO_PER_BLOCK");
 	MAX_BEZIER_SEGMENTS = config.get("MAX_BEZIER_SEGMENTS"); //24; //must be a multiple of 4
-	BLOCKS_GRID = config.get("BLOCKS_GRID");
-	BLOCKS_GRID = [BLOCKS_GRID, 1 / BLOCKS_GRID];
 	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	MAX_CONNECTIONS_PER_OUTPUT = config.get("MAX_CONNECTIONS_PER_OUTPUT");
 	MAX_OUTPUTS_PER_VOICE = config.get("MAX_OUTPUTS_PER_VOICE");

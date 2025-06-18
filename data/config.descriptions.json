@@ -12,7 +12,6 @@
 	"monofont" : "monospaced font",
 	"mainfont" : "main font",
 	"MAX_BEZIER_SEGMENTS" : "maximum number of segments to make a wire out of (raising this seems to make the gpu work hard)",
-	"BLOCKS_GRID" : "size of grid snap for block movement",
 	"MAX_BLOCKS" : "number of blocks available.",
 	"MAX_NOTE_VOICES" : "number of note voices available",
 	"MAX_AUDIO_VOICES" : "number of audio voice available. has a big effect on baseline cpu usage (the matrix mixer that connects all the audio voices internally is the cause of this). 64 is fine on mid range systems, to keep a laptop from getting too hot for simple patches on the sofa you can set this to 16",

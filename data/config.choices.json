@@ -15,7 +15,6 @@
 	"SELECTED_BLOCK_Z_MOVE" : ["float", 0, 5],
 	"SELECTED_BLOCK_DEPENDENTS_Z_MOVE" : ["float", 0, 5],
 	"MAX_BEZIER_SEGMENTS" : ["int",4,64],
-	"BLOCKS_GRID" : ["int",1,50],
 	"MAX_BLOCKS" : ["int", 16, 1024],
 	"MAX_NOTE_VOICES" : ["int", 32, 1024],
 	"MAX_AUDIO_VOICES" : ["int", 4, 512],
