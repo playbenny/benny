@@ -1,0 +1,151 @@
+{
+	"mixer.mono.thermal" : {
+		"patcher" : "mixer.mono.thermal",
+		"type" : "audio",
+		"block_ui_patcher" : "mixer.thermal.ui",
+		"ui_in_sidebar_height" : 1,
+		"no_ui_in_panel" : 1,
+		"no_edit" : 1,
+		"help_text" : "mono mixer channel using the multi-convolution recordings of a british tube eq that are also in the fx.thermal.eq block.££the sidechain compression input feeds into the model in interesting ways, removing peak detail as well as the normal sidechain ducking. ££Like the other mixer blocks this uses airwindows console7 for nice summing and drive. ££MUST BE ALL ROUTED FROM THIS BLOCK INTO A mixer.bus BLOCK.££IMPORTANT the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without them it defaults to normal digital summing.",
+		"max_polyphony" : 0,
+		"upsample" : 2,
+		"from_subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "audio in", "sidechain in" ],
+				"audio_watched" : [0,1],
+				"midi" : ["channel mute toggle", "channel solo toggle"]
+			},
+			"out" : {
+				"audio" : [ "out to bus" ],
+				"force_unity" : 1
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"onepervoice" : 1,
+				"height" : 2.5
+			},
+
+			{ 
+				"contains" : [5], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			}	,
+			{ 
+				"contains" : [6], 
+				"onepervoice" : 1,
+				"height" : 0.6
+			},
+			{ 
+				"contains" : [2],
+				"header" : "emphasis",
+				"onepervoice" : 1,
+				"nolabel" : 1,
+				"height" : 0.6,
+				"colour" : 11
+			},
+			{ 
+				"contains" : [3], 
+				"onepervoice" : 1,
+				"height" : 0,
+				"colour" : 16
+			},
+			{ 
+				"contains" : [4],
+				"onepervoice" : 1,
+				"height" : 0,
+				"colour" : 26
+			},
+			{ 
+				"contains" : [8],
+				"header" : "highpass",
+				"onepervoice" : 1,
+				"height" : 0.8,
+				"colour" : 11
+			},
+			{ 
+				"contains" : [1],
+				"onepervoice" : 1,
+				"height" : 0.999,
+				"colour" : -10
+			},
+			{ 
+				"contains" : [7], 
+				"onepervoice" : 1,
+				"height" : 0.6,
+				"header" : "console model"
+			}		
+		],
+		"parameters" : [
+			{
+				"name" : "level",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.7
+			},
+			{
+				"name" : "pan",
+				"type" : "float",
+				"values" : ["bi", -1,1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "frequency",
+				"type" : "menu_i",
+				"values" : ["bass", "800", "2500", "top"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "amount",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "mute",
+				"type" : "menu_b",
+				"values" : ["mute_off", "mute_on"],
+				"colours" : [[90,90,90], [130,130,130]],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "solo",
+				"type" : "menu_b",
+				"values" : ["solo_off", "solo_on"],
+				"colours" : [[128,20,20], [255,20,20]],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "type",
+				"nomap" : 1,
+				"type" : "menu_b",
+				"values" : ["channel","cascade","crunch"],
+				"wrap" : 1,
+				"default" : 0.1,
+				"colours" : [0, 20, 40]
+			},
+			{
+				"name" : "hpf",
+				"type" : "menu_i",
+				"values" : ["40", "100", "800"],
+				"wrap" : 0,
+				"default" : 0.2
+			}
+		]
+	}
+}

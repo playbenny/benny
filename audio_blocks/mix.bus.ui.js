@@ -170,6 +170,7 @@ function update(force){
 							draw_slider(x_pos+(x+v+0.8)*cw,y_pos,x_pos+(x+v+1)*cw-8,y_pos+hh,fgc[0],fgc[1],fgc[2],shape[b][v]);
 							oshape[b][v] = shape[b][v]; oamount[b][v] = amount[b][v]; osweep[b][v] = sweep[b][v];
 						}
+					}else if((v_type[b][v]=="mixer.mono.thermal")||(v_type[b][v]=="mixer.stereo.thermal")){
 					}else{ post("unknown channel",v_type[b][v]);}
 					if(force){
 						outlet(1,"frgb",fgc);
