@@ -1,12 +1,17 @@
-15/06/25:
+18/6/25:
+- removed invisible layout grid, feels smoother
+- fx.thermal.eq is a new eq block based on multi-level impulses taken from a british tube eq i have. it has a highpass and a single band of boost which pushes into the saturation nicely. a bite control lets transients through the drive a little.
+- mixer.mono.thermal & mixer.stereo.thermal are a pair of mixer channels based on the same code. the mono one has a sidechain compressor input where the compression reduces transient detail as well as ducking the signal. the stereo one has a mid-side option with separate controls for the side channel.
+
+15/6/25:
 - in the sidebar parameters view, the modulation amount sliders for connected mod sources now (optionally) display the offset as well as the amount for that modulation.
 - the ui prefs editor now updates preferences instantly, without a restart of benny.
 
-13/06/25:
+13/6/25:
 - source.sacred.waves.osc is a new dual+sub oscillator core by Luke Abbott based on wavetables sampled from a few synths at my studio (sacred walls) - a prophet 600 and a mono/poly. it gets the essential tone of those two surprisingly nicely and adds a versatile set of modulation options.
 - you can now drag a block onto a wire while holding ctrl-shift (cmd-shift) to insert it into that wire. thanks to user 'gullygully'
 
-11/06/25:
+11/6/25:
 - improved scales handling - every block that uses scales (like midi.scale.quantise or fx.retune or fx.pitch.gate or midi.note.select or...) now has a much nicer scale selector. you can see the selected scale, and edit it with the mouse. the scales are still stored in a core.scales.shapes block but this gets loaded automatically for you if you load a block that needs it.
 - lots of workflow improvements, macos compatibility improvements and bugfixes, many thanks to everyone trying benny out and contributing feedback and fixes!
 - midi.lfo **breaking change** the maximum rate has been increased slightly. when loading old songs using this block you may need to make a small adjustment to the rate slider. 
