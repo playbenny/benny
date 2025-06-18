@@ -51,7 +51,7 @@ function setup(x1,y1,x2,y2,sw,mode){
 
 function draw(){
 	if(block>=0){
-		outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
+		//outlet(0, "custom_ui_element", "mouse_passthrough", x_pos,y_pos,x_pos+width,y_pos+height,0,0,0,block,0);
 		update(1);
 	}
 }
@@ -59,12 +59,13 @@ function draw(){
 function update(force){
 	if((check_params_for_changes()==1)||force){
 		var x=0;
-		for(var v=0;v<v_list.length;v++){
-			draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,block_colour,block_darkest);
-			oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
-			x+=cw;
-		}
-		x=0;
+		outlet(1,"paintrect",x_pos,y_pos,x_pos+width,y_pos+height,0,0,0);
+		// for(var v=0;v<v_list.length;v++){
+		// 	draw_eq_curve_basic(shape[v],amount[v],sweep[v],x_pos+x,y_pos,x_pos+x+cw-2,y_pos+height,block_colour,block_darkest);
+		// 	oshape[v] = shape[v]; oamount[v] = amount[v]; osweep[v] = sweep[v];
+		// 	x+=cw;
+		// }
+		// x=0;
 		outlet(1,"frgb",255,255,255);
 		for(var v=0;v<v_list.length;v++){
 			outlet(1,"moveto", x_pos+x+4, y_pos + 4+height*0.3);
