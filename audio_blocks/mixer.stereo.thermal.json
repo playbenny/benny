@@ -1,6 +1,6 @@
 {
-	"mixer.mono.thermal" : {
-		"patcher" : "mixer.mono.thermal",
+	"mixer.stereo.thermal" : {
+		"patcher" : "mixer.stereo.thermal",
 		"type" : "audio",
 		"block_ui_patcher" : "mixer.thermal.ui",
 		"ui_in_sidebar_height" : 1,
@@ -41,6 +41,7 @@
 				"contains" : [2],
 				"header" : "emphasis",
 				"onepervoice" : 1,
+				"nolabel" : 1,
 				"height" : 0.6,
 				"colour" : 11
 			},
@@ -68,6 +69,32 @@
 				"onepervoice" : 1,
 				"height" : 0.999,
 				"colour" : -10
+			},
+			{
+				"contains" : [9],
+				"height" : 0.6,
+				"onepervoice" : 1
+			},
+			{	
+				"header" : "side channel controls",
+				"contains" : [10],
+				"height" : 0,
+				"onepervoice" : 1
+			},
+			{
+				"contains" : [11],
+				"height" : 0,
+				"onepervoice" : 1
+			},
+			{
+				"contains" : [12],
+				"height" : 0,
+				"onepervoice" : 1
+			},
+			{
+				"contains" : [13],
+				"height" : 0,
+				"onepervoice" : 1
 			},
 			{ 
 				"contains" : [7], 
@@ -136,6 +163,41 @@
 				"wrap" : 1,
 				"default" : 0.1,
 				"colours" : [0, 20, 40]
+			},
+			{
+				"name" : "hpf",
+				"type" : "menu_i",
+				"values" : ["40", "100", "800"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "mode",
+				"type" : "menu_b",
+				"values" : ["stereo","mid-side"],
+				"wrap" : 1,
+				"default" : 0.3
+			},
+			{
+				"name" : "frequency",
+				"type" : "menu_i",
+				"values" : ["bass", "800", "2500", "top"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "amount",
+				"type" : "float",
+				"values" : ["uni", 0,1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			},
 			{
 				"name" : "hpf",

@@ -42,6 +42,7 @@
 				"contains" : [2],
 				"header" : "emphasis",
 				"onepervoice" : 1,
+				"nolabel" : 1,
 				"height" : 0.6,
 				"colour" : 11
 			},
