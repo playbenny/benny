@@ -48,20 +48,20 @@
 			{ 
 				"contains" : [3], 
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.8,
 				"colour" : 16
 			},
 			{ 
 				"contains" : [4],
 				"onepervoice" : 1,
-				"height" : 0,
+				"height" : 0.8,
 				"colour" : 26
 			},
 			{ 
 				"contains" : [8],
 				"header" : "highpass",
 				"onepervoice" : 1,
-				"height" : 0.8,
+				"height" : 0.6,
 				"colour" : 11
 			},
 			{ 
@@ -78,22 +78,22 @@
 			{	
 				"header" : "side channel controls",
 				"contains" : [10],
-				"height" : 0,
+				"height" : 0.6,
 				"onepervoice" : 1
 			},
 			{
 				"contains" : [11],
-				"height" : 0,
+				"height" : 0.8,
 				"onepervoice" : 1
 			},
 			{
 				"contains" : [12],
-				"height" : 0,
+				"height" : 0.8,
 				"onepervoice" : 1
 			},
 			{
 				"contains" : [13],
-				"height" : 0,
+				"height" : 0.6,
 				"onepervoice" : 1
 			},
 			{ 
@@ -120,7 +120,7 @@
 			},
 			{
 				"name" : "frequency",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["bass", "800", "2500", "top"],
 				"wrap" : 0,
 				"default" : 0
@@ -166,7 +166,7 @@
 			},
 			{
 				"name" : "hpf",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["40", "100", "800"],
 				"wrap" : 0,
 				"default" : 0.2
@@ -180,7 +180,7 @@
 			},
 			{
 				"name" : "frequency",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["bass", "800", "2500", "top"],
 				"wrap" : 0,
 				"default" : 0
@@ -201,7 +201,7 @@
 			},
 			{
 				"name" : "hpf",
-				"type" : "menu_i",
+				"type" : "menu_b",
 				"values" : ["40", "100", "800"],
 				"wrap" : 0,
 				"default" : 0.2

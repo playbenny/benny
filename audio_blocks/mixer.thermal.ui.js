@@ -77,6 +77,7 @@ function update(force){
 
 
 function check_params_for_changes(){
+	return 0;
 	var dr=0;
 	for(var v=0;v<v_list.length;v++){
 		shape[v] = voice_parameter_buffer.peek(1,MAX_PARAMETERS*v_list[v]+2);
