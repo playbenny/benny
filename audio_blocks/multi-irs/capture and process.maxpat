@@ -15,8 +15,6 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
-<<<<<<< Updated upstream
-=======
 					"id" : "obj-114",
 					"linecount" : 5,
 					"maxclass" : "comment",
@@ -106,7 +104,6 @@
 			}
 , 			{
 				"box" : 				{
->>>>>>> Stashed changes
 					"id" : "obj-177",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -513,18 +510,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-<<<<<<< Updated upstream
-					"patching_rect" : [ 841.0, 1221.5, 150.0, 75.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 274.0, 703.0, 592.0, 34.0 ],
-					"text" : "C:/Users/james/Documents/GitHub/multi-ir-capture/irs/trimmed/eqs/pulteq-clone/pultec clone bass 100Hz boost only 512.aif"
-=======
 					"patching_rect" : [ 841.0, 1221.5, 153.0, 34.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 274.0, 703.0, 592.0, 20.0 ],
 					"text" : "C:/Users/James/Desktop/impulse pultec test.aif"
->>>>>>> Stashed changes
 				}
 
 			}
@@ -1419,11 +1408,7 @@
 				"box" : 				{
 					"id" : "obj-133",
 					"maxclass" : "number",
-<<<<<<< Updated upstream
-					"maximum" : 128,
-=======
 					"maximum" : 512,
->>>>>>> Stashed changes
 					"minimum" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
