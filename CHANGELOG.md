@@ -1,3 +1,6 @@
+23/6/25:
+- Luke Abbott's utility.vca.env.adsr is an ADSR envelope with VCA built in. The VCA can saturate the signal with a nice asymmetric drive with tone control and has a drone-facilitating offset control so you can leave it open the whole time.
+
 18/6/25:
 - removed invisible layout grid, feels smoother
 - fx.thermal.eq is a new eq block based on multi-level impulses taken from a british tube eq i have. it has a highpass and a single band of boost which pushes into the saturation nicely. a bite control lets transients through the drive a little.
