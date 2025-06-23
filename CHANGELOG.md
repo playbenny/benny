@@ -1,5 +1,5 @@
 23/6/25:
-- Luke Abbott's utility.vca.env.adsr is an ADSR envelope with VCA built in. The VCA can saturate the signal with a nice asymmetric drive with tone control and has a drone-facilitating offset control so you can leave it open the whole time.
+- Luke Abbott's utility.vca.env.adsr is an ADSR envelope with VCA built in. It can also saturate the signal with a nice asymmetric drive with tone control and has a drone-facilitating offset control so you can leave it open the whole time.
 
 18/6/25:
 - removed invisible layout grid, feels smoother
