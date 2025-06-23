@@ -8,5 +8,6 @@
     "midi.autodamp" : "midi.chord.hold",
     "mix.channel" : "mixer.mono.basic",
     "mix.stereo.channel" : "mixer.stereo.basic",
-    "mix.bus" : "mixer.bus"
+    "mix.bus" : "mixer.bus",
+    "utility.vca.env" : "utility.vca.env.asr"
 }
