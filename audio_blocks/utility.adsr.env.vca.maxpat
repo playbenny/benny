@@ -14,6 +14,30 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-30",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 197.0, 438.235285758972168, 22.0, 22.0 ],
+					"text" : "t 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-105",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 197.0, 404.235285758972168, 45.0, 22.0 ],
+					"text" : "r panic"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-5",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -31,7 +55,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 1020.823509216308594, 324.176471710205078, 36.0, 22.0 ],
+					"patching_rect" : [ 1058.823509216308594, 325.705883502960205, 36.0, 22.0 ],
 					"text" : "+ 0.5"
 				}
 
@@ -174,28 +198,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-151",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 269.367641925811768, 394.117639541625977, 71.0, 34.0 ],
-					"text" : "audio in\n"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-150",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 83.823527812957764, 394.117639541625977, 71.0, 34.0 ],
-					"text" : "velocity in\n"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-146",
 					"maxclass" : "newobj",
 					"numinlets" : 6,
@@ -203,35 +205,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 135.29411506652832, 501.470578670501709, 97.0, 22.0 ],
 					"text" : "scale 0 127 0. 1."
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-144",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 1058.823509216308594, 276.117648601531982, 81.470588684082031, 54.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_initial" : [ 0.5 ],
-							"parameter_initial_enable" : 1,
-							"parameter_longname" : "live.dial[7]",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "drive tone",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"triangle" : 1,
-					"varname" : "live.dial[4]"
 				}
 
 			}
@@ -599,32 +572,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-47",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 947.058805465698242, 279.117648601531982, 41.0, 48.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial[6]",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "drive",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"varname" : "live.dial[6]"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-46",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -632,34 +579,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 969.117628574371338, 360.0, 82.0, 22.0 ],
 					"text" : "prepend drive"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-39",
-					"maxclass" : "live.tab",
-					"num_lines_patching" : 1,
-					"num_lines_presentation" : 0,
-					"numinlets" : 1,
-					"numoutlets" : 3,
-					"outlettype" : [ "", "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 829.411748886108398, 317.352941989898682, 112.0, 20.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_enum" : [ "short", "normal", "long" ],
-							"parameter_longname" : "live.tab",
-							"parameter_mmax" : 2,
-							"parameter_modmode" : 0,
-							"parameter_shortname" : "live.tab",
-							"parameter_type" : 2,
-							"parameter_unitstyle" : 9
-						}
-
-					}
-,
-					"varname" : "live.tab"
 				}
 
 			}
@@ -919,32 +838,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-25",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 1198.529388904571533, 298.176471710205078, 72.0, 48.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial[5]",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "vca floor",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"varname" : "live.dial[5]"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-10",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -1017,110 +910,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-17",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 646.542620420455933, 293.823530673980713, 41.0, 48.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial[3]",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "R",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"varname" : "live.dial[3]"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-43",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 548.013210535049438, 293.823530673980713, 41.0, 48.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial[2]",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "S",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"varname" : "live.dial[2]"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-14",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 445.072036027908325, 298.235295295715332, 41.0, 48.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial[1]",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "D",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"varname" : "live.dial[1]"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-11",
-					"maxclass" : "live.dial",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "float" ],
-					"parameter_enable" : 1,
-					"patching_rect" : [ 346.542626142501831, 299.705883502960205, 41.0, 48.0 ],
-					"saved_attribute_attributes" : 					{
-						"valueof" : 						{
-							"parameter_longname" : "live.dial",
-							"parameter_mmax" : 1.0,
-							"parameter_modmax" : 255.0,
-							"parameter_modmode" : 4,
-							"parameter_shortname" : "A",
-							"parameter_type" : 0,
-							"parameter_unitstyle" : 1
-						}
-
-					}
-,
-					"varname" : "live.dial"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -1187,7 +976,7 @@
 							}
 , 							{
 								"box" : 								{
-									"code" : "fun_curve(xin, drive)\r\n{\r\n\taudio = xin * 0.1;\r\n\taudio = audio * (drive * 30 + 1);\r\n\taudio = audio / (audio + exp(- audio));\r\n\taudio = audio / (drive * 30 + 1);\r\n\taudio = audio * (10 + (drive * drive));\r\n\taudio = audio + (audio * (drive * 2));\r\n\treturn audio;\r\n}\r\nHistory T0(0);\r\nHistory T1(0);\r\nParam attack(0);\r\nParam decay(0);\r\nParam sustain(0);\r\nParam release(0);\r\nParam velocity(0);\r\nParam vca_floor(0);\r\nParam time_scale(0);\r\nParam drive(0);\r\n\r\nslug = mstosamps(10);\r\ntime = (time_scale == 2) ? 32 : (time_scale == 0) ? 2 : 8;\r\nrise = scale(attack, 0, 1, 0.001, time, 8);\r\ndecay_ = scale(decay, 0, 1, 0.01, time, 2);\r\nrelease_ = scale(release, 0, 1, 0.01, time, 2);\r\nsustain_ = scale(sustain, 0, 1, 0, 1, 2);\r\n\r\ngate = (velocity > 0) ? 1 : 0;\r\nfall = (gate == 1) ? decay_ : release_;\r\nreset = (delta(gate) == T1);\r\nT1 = fixdenorm(delta(gate));\r\nend = sah(sustain_, reset, 0);\r\nnew = ((reset == 0) == 1 && gate == 1) ? 1 : 0;\r\noutput_level = sah(velocity, new, 0);\r\nT0 = (new == 1) ? (T0 + 0.0001) : T0;\r\nend = (new == 1) ? 1 : end;\r\nhold = (delta(T0) < 0.0000000000001) ? end : 1;\r\nhold = (T0 > 0.98) ? end : hold;\r\ntarget = (gate == 1) ? hold : 0;\r\ndir = target > T0;\r\nswitch = dir ? rise : fall;\r\nfeed = t60(switch * samplerate);\r\nmixed = mix(target, T0, feed);\r\nT0 = fixdenorm(mixed);\r\nenv_out = fixdenorm(mixed  * output_level);\r\nout2 = env_out;\r\nfloor = scale(slide(vca_floor, slug, slug), 0, 1, 0, 1, 2);\r\nenv_out = scale(env_out, 0, 1, floor, 1);\r\naudio = 0.5 * in2;\r\nod = 1 + scale(drive, 0, 1, 0, 100, 4);\r\noutput = fun_curve(audio * env_out * od);\r\noutput = (output * 2) / od;\r\nout1 = output;\r\n\r\n\r\n\r\n",
+									"code" : "fun_curve(xin, drive)\r\n{\r\n\taudio = xin * 0.1;\r\n\taudio = audio * (drive * 30 + 1);\r\n\taudio = audio / (audio + exp(- audio));\r\n\taudio = audio / (drive * 30 + 1);\r\n\taudio = audio * (10 + (drive * drive));\r\n\taudio = audio + (audio * (drive * 2));\r\n\treturn audio;\r\n}\r\nHistory T0(0);\r\nHistory T1(0);\r\nParam attack(0);\r\nParam decay(0);\r\nParam sustain(0);\r\nParam release(0);\r\nParam velocity(0);\r\nParam vca_floor(0);\r\nParam time_scale(0);\r\nParam drive(0);\r\n\r\nslug = mstosamps(10);\r\ntime = (time_scale == 2) ? 32 : (time_scale == 0) ? 2 : 8;\r\nrise = scale(attack, 0, 1, 0.001, time, 8);\r\ndecay_ = scale(decay, 0, 1, 0.01, time, 2);\r\nrelease_ = scale(release, 0, 1, 0.01, time, 2);\r\nsustain_ = scale(sustain, 0, 1, 0, 1, 2);\r\n\r\ngate = (velocity > 0) ? 1 : 0;\r\nfall = (gate == 1) ? decay_ : release_;\r\nreset = (delta(gate) == T1);\r\nT1 = fixdenorm(delta(gate));\r\nend = sah(sustain_, reset, 0);\r\nnew = ((reset == 0) == 1 && gate == 1) ? 1 : 0;\r\noutput_level = sah(velocity, new, 0);\r\nT0 = (new == 1) ? (T0 + 0.0001) : T0;\r\nend = (new == 1) ? 1 : end;\r\nhold = (delta(T0) < 0.0000000000001) ? end : 1;\r\nhold = (T0 > 0.98) ? end : hold;\r\ntarget = (gate == 1) ? hold : 0;\r\ndir = target > T0;\r\nswitch = dir ? rise : fall;\r\nfeed = t60(switch * samplerate);\r\nmixed = mix(target, T0, feed);\r\nT0 = fixdenorm(mixed);\r\nenv_out = fixdenorm(mixed  * output_level);\r\nout2 = env_out;\r\nfloor = scale(slide(vca_floor, slug, slug), 0, 1, 0, 1, 2);\r\nenv_out = scale(env_out, 0, 1, floor, 1);\r\naudio = 0.5 * in2;\r\nod = 1 + scale(drive, 0, 1, 0, 100, 4);\r\noutput = fun_curve(audio * env_out * od);\r\noutput = (output * 2) / od;\r\nout1 = output;\r\n\r\n\r\n\r\n\r\n",
 									"fontface" : 0,
 									"fontname" : "<Monospaced>",
 									"fontsize" : 12.0,
@@ -1307,6 +1096,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-30", 0 ],
+					"source" : [ "obj-105", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-108", 1 ]
 				}
@@ -1358,13 +1154,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-108", 3 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-18", 0 ],
-					"source" : [ "obj-11", 1 ]
 				}
 
 			}
@@ -1426,20 +1215,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-16", 0 ],
-					"source" : [ "obj-14", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-139", 0 ],
-					"source" : [ "obj-144", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
 					"source" : [ "obj-146", 0 ]
 				}
@@ -1449,13 +1224,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-16", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-9", 0 ],
-					"source" : [ "obj-17", 1 ]
 				}
 
 			}
@@ -1482,15 +1250,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-34", 0 ],
-					"source" : [ "obj-25", 0 ]
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-28", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-10", 0 ],
-					"source" : [ "obj-28", 0 ]
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-30", 0 ]
 				}
 
 			}
@@ -1524,13 +1292,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-35", 0 ],
-					"source" : [ "obj-39", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-139", 0 ],
 					"source" : [ "obj-4", 0 ]
 				}
@@ -1538,22 +1299,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-20", 0 ],
-					"source" : [ "obj-43", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-46", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-46", 0 ],
-					"source" : [ "obj-47", 1 ]
 				}
 
 			}
