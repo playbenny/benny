@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 7,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -140,6 +140,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 269.117641925811768, 404.235285758972168, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -151,6 +155,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 500.5, 632.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -162,6 +170,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 426.0, 666.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -185,10 +197,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 122.0, 168.0, 37.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -209,9 +217,9 @@
 				"box" : 				{
 					"id" : "obj-103",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 4,
-					"outlettype" : [ "", "", "", "" ],
+					"numinlets" : 4,
+					"numoutlets" : 11,
+					"outlettype" : [ "", "bang", "", "", "", "", "", "", "int", "", "" ],
 					"patching_rect" : [ 234.0, 66.0, 124.0, 22.0 ],
 					"text" : "voiceheader"
 				}
@@ -224,10 +232,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 45.0, 105.0, 37.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -252,6 +256,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 234.0, 25.0, 29.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -280,7 +288,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 7,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -573,7 +581,8 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-3732"
 					}
 ,
 					"patching_rect" : [ 659.0, 287.0, 133.0, 22.0 ],
@@ -677,7 +686,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 7,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -886,7 +895,8 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-3738"
 					}
 ,
 					"patching_rect" : [ 83.823527812957764, 438.235285758972168, 94.0, 22.0 ],
@@ -978,7 +988,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 7,
+							"revision" : 5,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1034,7 +1044,7 @@
 							}
 , 							{
 								"box" : 								{
-									"code" : "fun_curve(xin, drive)\r\n{\r\n\taudio = xin * 0.1;\r\n\taudio = audio * (drive * 30 + 1);\r\n\taudio = audio / (audio + exp(- audio));\r\n\taudio = audio / (drive * 30 + 1);\r\n\taudio = audio * (10 + (drive * drive));\r\n\taudio = audio + (audio * (drive * 2));\r\n\treturn audio;\r\n}\r\nHistory T0(0);\r\nHistory T1(0);\r\nHistory z0(0), z1(0);\r\nParam attack(0);\r\nParam decay(0);\r\nParam sustain(0);\r\nParam release(0);\r\nParam velocity(0);\r\nParam vca_floor(0);\r\nParam time_scale(0);\r\nParam drive(0);\r\n\r\nParam cutoff(0);\r\nParam resonance(0);\r\nParam filter_shape(0);\r\nParam cf_env_mod(0);\r\nParam env_mod_res(0);\r\n\r\nslug = mstosamps(10);\r\ntime = (time_scale == 2) ? 32 : (time_scale == 0) ? 2 : 8;\r\nrise = scale(attack, 0, 1, 0.001, time, 8);\r\ndecay_ = scale(decay, 0, 1, 0.01, time, 2);\r\nrelease_ = scale(release, 0, 1, 0.01, time, 2);\r\nsustain_ = scale(sustain, 0, 1, 0, 1, 2);\r\n\r\ngate = (velocity > 0) ? 1 : 0;\r\nfall = (gate == 1) ? decay_ : release_;\r\nreset = (delta(gate) == T1);\r\nT1 = fixdenorm(delta(gate));\r\nend = sah(sustain_, reset, 0);\r\nnew = ((reset == 0) == 1 && gate == 1) ? 1 : 0;\r\noutput_level = sah(velocity, new, 0);\r\nT0 = (new == 1) ? (T0 + 0.0001) : T0;\r\nend = (new == 1) ? 1 : end;\r\nhold = (delta(T0) < 0.0000000000001) ? end : 1;\r\nhold = (T0 > 0.98) ? end : hold;\r\ntarget = (gate == 1) ? hold : 0;\r\ndir = target > T0;\r\nswitch = dir ? rise : fall;\r\nfeed = t60(switch * samplerate);\r\nmixed = mix(target, T0, feed);\r\nT0 = fixdenorm(mixed);\r\nenv_out = fixdenorm(mixed  * output_level);\r\nMODENV = env_out;\r\nout2 = env_out;\r\nfloor = scale(slide(vca_floor, slug, slug), 0, 1, 0, 1, 2);\r\nenv_out = scale(env_out, 0, 1, floor, 1);\r\naudio = 0.5 * in2;\r\nod = 1 + scale(drive, 0, 1, 0, 100, 4);\r\noutput = fun_curve(audio * env_out * od);\r\noutput = (output * 2) / od;\r\n\r\ncut = slide(cutoff, slug, slug);\r\nres = resonance;\r\ncf_em = cf_env_mod;\r\ncf = mtof(clamp(cut + (127 * (cf_em * MODENV)), 0, 135));\r\nq_env_mod =  env_mod_res;\r\nq = clip(res + (MODENV * q_env_mod), 0, 1) * 20 + 0.5;\r\n\r\nT = 1 / samplerate;\nTdiv2 = T / 2;\ntwo_div_T = 2 / T;\nwd = fixdenorm(twopi * cf);\nwa = fixdenorm(two_div_T * tan(wd * Tdiv2));\ng = wa * Tdiv2;\ng2 = g * g;\nR = fixdenorm(1 / (2 * q));\nhp = fixdenorm((output - (2 * R + g) * z0 - z1) / (1 + (2 * R * g) + g2));\nbp = g * hp + z0;\nlp = g * bp + z1;\nz0 =  g * hp + bp;\nz1 =  g * bp + lp;\r\n\r\nfilt_shape = slide(filter_shape, slug, slug);\r\nfiltered = (filt_shape > 0.5) ? mix((bp * 2), hp, (filt_shape - 0.5) * 2) : mix(lp, (bp * 2), filt_shape * 2);\r\n\r\nout1 = filtered;\r\n",
+									"code" : "fun_curve(xin, drive)\r\n{\r\n\taudio = xin * 0.1;\r\n\taudio = audio * (drive * 30 + 1);\r\n\taudio = audio / (audio + exp(- audio));\r\n\taudio = audio / (drive * 30 + 1);\r\n\taudio = audio * (10 + (drive * drive));\r\n\taudio = audio + (audio * (drive * 2));\r\n\treturn audio;\r\n}\r\nHistory T0(0);\r\nHistory T1(0);\r\nHistory z0(0), z1(0);\r\nParam attack(0);\r\nParam decay(0);\r\nParam sustain(0);\r\nParam release(0);\r\nParam velocity(0);\r\nParam vca_floor(0);\r\nParam time_scale(0);\r\nParam drive(0);\r\n\r\nParam cutoff(0);\r\nParam resonance(0);\r\nParam filter_shape(0);\r\nParam cf_env_mod(0);\r\nParam env_mod_res(0);\r\n\r\nslug = mstosamps(10);\r\ntime = (time_scale == 2) ? 32 : (time_scale == 0) ? 2 : 8;\r\nrise = scale(attack, 0, 1, 0.001, time, 8);\r\ndecay_ = scale(decay, 0, 1, 0.01, time, 2);\r\nrelease_ = scale(release, 0, 1, 0.01, time, 2);\r\nsustain_ = scale(sustain, 0, 1, 0, 1, 2);\r\n\r\ngate = (velocity > 0) ? 1 : 0;\r\nfall = (gate == 1) ? decay_ : release_;\r\nreset = (delta(gate) == T1);\r\nT1 = fixdenorm(delta(gate));\r\nend = sah(sustain_, reset, 0);\r\nnew = ((reset == 0) == 1 && gate == 1) ? 1 : 0;\r\noutput_level = sah(velocity, new, 0);\r\nT0 = (new == 1) ? (T0 + 0.0001) : T0;\r\nend = (new == 1) ? 1 : end;\r\nhold = (delta(T0) < 0.0000000000001) ? end : 1;\r\nhold = (T0 > 0.98) ? end : hold;\r\ntarget = (gate == 1) ? hold : 0;\r\ndir = target > T0;\r\nswitch = dir ? rise : fall;\r\nfeed = t60(switch * samplerate);\r\nmixed = mix(target, T0, feed);\r\nT0 = fixdenorm(mixed);\r\nenv_out = fixdenorm(mixed  * output_level);\r\nMODENV = env_out;\r\nout2 = env_out;\r\nfloor = scale(slide(vca_floor, slug, slug), 0, 1, 0, 1, 2);\r\nenv_out = scale(env_out, 0, 1, floor, 1);\r\naudio = 0.5 * in2;\r\nod = 1 + scale(drive, 0, 1, 0, 100, 4);\r\noutput = fun_curve(audio * env_out * od);\r\noutput = (output * 2) / od;\r\n\r\ncut = slide(cutoff, slug, slug);\r\nres = scale(resonance, 0, 1, 0, 1, 4);\r\ncf_em = cf_env_mod;\r\ncf = mtof(clamp(cut + (127 * (cf_em * MODENV)), 0, 135));\r\nq_env_mod =  env_mod_res;\r\nq = clip(res + (MODENV * q_env_mod), 0, 1) * 20 + 0.5;\r\n\r\nT = 1 / samplerate;\nTdiv2 = T / 2;\ntwo_div_T = 2 / T;\nwd = fixdenorm(twopi * cf);\nwa = fixdenorm(two_div_T * tan(wd * Tdiv2));\ng = wa * Tdiv2;\ng2 = g * g;\nR = fixdenorm(1 / (2 * q));\nhp = fixdenorm((output - (2 * R + g) * z0 - z1) / (1 + (2 * R * g) + g2));\nbp = g * hp + z0;\nlp = g * bp + z1;\nz0 =  g * hp + bp;\nz1 =  g * bp + lp;\r\n\r\nfilt_shape = slide(filter_shape, slug, slug);\r\nfiltered = (filt_shape > 0.5) ? mix((bp * 2), hp, (filt_shape - 0.5) * 2) : mix(lp, (bp * 2), filt_shape * 2);\r\n\r\nout1 = filtered;\r\n",
 									"fontface" : 0,
 									"fontname" : "<Monospaced>",
 									"fontsize" : 12.0,
@@ -1076,7 +1086,8 @@
 								}
 
 							}
- ]
+ ],
+						"originid" : "pat-3740"
 					}
 ,
 					"patching_rect" : [ 425.5, 552.173917651176453, 94.0, 22.0 ],
@@ -1540,8 +1551,7 @@
 
 			}
  ],
-		"dependency_cache" : [  ],
-		"autosave" : 0
+		"originid" : "pat-3728"
 	}
 
 }
