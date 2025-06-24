@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -70,7 +70,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer voice_parameter_buffer(\"voice_parameter_buffer\");\r\n\r\nParam voice_offset(0);\r\nParam pointer;\r\nHistory o_p(-1), o_po(0);\r\n\r\nHistory slow(300), st(0), le(15), mi(1);\r\nHistory no(0),ve(0),on(0);\r\n\r\nmo = 0;\r\npo = floor(pointer + (in1 * le));\r\nti = 0;\r\nif(o_p != po){\r\n\to_p = po;\r\n\tpo += st + le + le;\r\n\tpo = po % le;\r\n\to_po = po;\r\n\tno = peek(voice_parameter_buffer,voice_offset+3+po,0);\r\n\tve = peek(voice_parameter_buffer,voice_offset+19+po,0);\r\n\ton = peek(voice_parameter_buffer,voice_offset+35+po,0)>0.5;\r\n\tti = (mi>0);\r\n\tmo = (ti*(on>0));\r\n}\r\n\t\r\nslow-=1;\r\nif(slow<=0){\r\n\tslow = vectorsize+324;\r\n\tst = floor(16*peek(voice_parameter_buffer,voice_offset,0));\r\n \tle = 1 + floor(15.9999*peek(voice_parameter_buffer,voice_offset+1,0));\t\r\n\tmi = peek(voice_parameter_buffer,voice_offset+2,0)>0.5;\r\n}\r\n\r\nout1 = no*2-1;\r\nout2 = ve;\r\nout3 = o_po;\r\nout4 = mo;\r\nout5 = ti;",
+					"code" : "Buffer voice_parameter_buffer(\"voice_parameter_buffer\");\r\nBuffer changed_flags(\"changed_flags\");\r\nParam voice_is(0);\r\nParam voice_offset(0);\r\nParam pointer;\r\nHistory o_p(-1), o_po(0);\r\n\r\nHistory slow(300), st(0), le(15), mi(1);\r\nHistory no(0),ve(0),on(0);\r\n\r\nmo = 0;\r\npo = floor(pointer + (in1 * le));\r\nti = 0;\r\nif(o_p != po){\r\n\to_p = po;\r\n\tpo += st + le + le;\r\n\tpo = po % le;\r\n\to_po = po;\r\n\tno = peek(voice_parameter_buffer,voice_offset+3+po,0);\r\n\tve = peek(voice_parameter_buffer,voice_offset+19+po,0);\r\n\ton = peek(voice_parameter_buffer,voice_offset+35+po,0)>0.5;\r\n\tti = (mi>0);\r\n\tmo = (ti*(on>0));\r\n}\r\n\t\r\nslow-=1;\r\nif(slow<=0){\r\n\tslow = vectorsize+324;\r\n\tif(peek(changed_flags,voice_is,0)>0){\r\n\t\tchanged_flags.poke(0,voice_is);\r\n\t\tst = floor(16*peek(voice_parameter_buffer,voice_offset,0));\r\n \t\tle = 1 + floor(15.9999*peek(voice_parameter_buffer,voice_offset+1,0));\t\r\n\t\tmi = peek(voice_parameter_buffer,voice_offset+2,0)>0.5;\r\n\t}\r\n}\r\n\r\nout1 = no*2-1;\r\nout2 = ve;\r\nout3 = o_po;\r\nout4 = mo;\r\nout5 = ti;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -137,8 +137,7 @@
 				}
 
 			}
- ],
-		"originid" : "pat-5202"
+ ]
 	}
 
 }
