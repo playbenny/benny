@@ -3,7 +3,7 @@
 		"patcher" : "utility.sacred.chanel",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "ADSR envelope generator and saturating vca.  VCA floor can be raised with 'Open VCA' parameter to be used as a saturation effect.  Output fitler is 12db shape morphing filter similar to a SEM.  Made by Luke Abbott.",
+		"help_text" : "A synth voice minus the oscillators - a morphing filter and a saturdating vca driven by an ADSR envelope generator.  VCA floor can be raised with 'Open VCA' parameter to be used as a saturation effect.  Output filter is 12db shape morphing filter similar to a SEM.  Made by Luke Abbott.",
 		"max_polyphony" : 0,
 		"upsample" : 4,
 		"connections" : {
