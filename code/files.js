@@ -625,107 +625,108 @@ function import_song(){
 		}
 		for(b=loading.progress;b<MAX_BLOCKS;b++){
 			//post("\ntrying block",b,"loading.songname is",loading.songname);
-			thisblock = songs.get(loading.songname+"::blocks["+b+"]");
-			//post("\n",b,"type",typeof thisblock, thisblock.toString());
-			if(thisblock.contains("name")){
-				block_name = thisblock.get("name");
-				var oname = block_name;
-				if(loading.wait>1) post("\nloading block "+b+" : "+block_name);
-				if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
-					if(aliases.contains(block_name)){
-						block_name = aliases.get(block_name);
-						var ty = blocktypes.get(block_name+"::type");
-						thisblock.replace("name",block_name);
-						thisblock.replace("type",ty);
-					}else if(thisblock.contains("substitute")&&blocktypes.contains(thisblock.get("substitute"))){
-						//use that then
-						block_name = thisblock.get("substitute");
-						post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
-						var oty = thisblock.get("type");
-						var ty = blocktypes.get(block_name+"::type");
-						thisblock.replace("name",block_name);
-						thisblock.replace("type",ty);
-						loading.hardware_substitutions_occured = 1;
-						swap_block_check_connections(b,oname,oty,block_name,ty);
-					}else if(loading.recent_substitutions.contains(block_name)){
-						loading.hardware_substitutions_occured = 1;
-						block_name = loading.recent_substitutions.get(block_name);
-						post("\n",oname," is not available in this hardware configuration but you already picked ",block_name," as a replacement");
-						var oty = thisblock.get("type");
-						var ty = blocktypes.get(block_name+"::type");
-						thisblock.replace("name",block_name);
-						thisblock.replace("type",ty);
-						swap_block_check_connections(b,oname,oty,block_name,ty);
-					}else if(menu.swap_block_target == -1){
-						post("\n",block_name,"was not found and no automatic substitution is known. please choose a substitue");
-						loading.hardware_substitutions_occured = 1;
-						menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
-						loading.progress = b;
-						menu.camera_scroll=0;
-						menu.mode = 3;
-						initialise_block_menu(1);
-						sidebar.mode="none";
-						//set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
-						menu.search="";
-						displaymode="block_menu";
-						camera();
-						draw_menu_hint();
-						return -1;
-					}else{
-						post("loading selected susbstitute",menu.swap_block_target);
-						loading.hardware_substitutions_occured = 1;
-						block_name = menu.swap_block_target;
-						menu.swap_block_target = -1;
-						var oty = thisblock.get("type");
-						var ty = blocktypes.get(block_name+"::type");
-						thisblock.replace("name",block_name);
-						thisblock.replace("type",ty);
-						swap_block_check_connections(b,oname,oty,block_name,ty);
-					}
-					if((loading.hardware_substitutions_occured)&&(thisblock.contains("panel::parameters"))){
-						post("\nclearing panel parameter selection because of substitution");
-						thisblock.remove("panel::parameters");
-					}
-				}
-				t=0;
-				var excl = blocktypes.contains(block_name+"::exclusive");
-				//var type = blocktypes.get(block_name+"::type");
-				if(excl){
-					if(loading.wait>1) post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
-					for(i=0;i<MAX_BLOCKS;i++){
-						if(blocks.get("blocks["+i+"]::name") == block_name){
-							post("found:",i)
-							t= 1;
-							loading.mapping[b] = i; //this next line stops orphaned bits of clock being left behind
-							if(thisblock.get("poly::voices")<blocks.get("blocks["+i+"]::poly::voices")) thisblock.replace("poly::voices",blocks.get("blocks["+i+"]::poly::voices"));
-							i=MAX_BLOCKS;
+			if(songs.contains(loading.songname+"::blocks["+b+"]::name")){
+				thisblock = songs.get(loading.songname+"::blocks["+b+"]");
+				if((thisblock != null) && (typeof thisblock == "object") && thisblock.contains("name")){
+					block_name = thisblock.get("name");
+					var oname = block_name;
+					if(loading.wait>1) post("\nloading block "+b+" : "+block_name);
+					if(!blocktypes.contains(block_name+"::type")){//this block doesn't exist in this installation/hardware config!
+						if(aliases.contains(block_name)){
+							block_name = aliases.get(block_name);
+							var ty = blocktypes.get(block_name+"::type");
+							thisblock.replace("name",block_name);
+							thisblock.replace("type",ty);
+						}else if(thisblock.contains("substitute")&&blocktypes.contains(thisblock.get("substitute"))){
+							//use that then
+							block_name = thisblock.get("substitute");
+							post("\n",oname,"is not available in this hardware configuration. substituting:",block_name);
+							var oty = thisblock.get("type");
+							var ty = blocktypes.get(block_name+"::type");
+							thisblock.replace("name",block_name);
+							thisblock.replace("type",ty);
+							loading.hardware_substitutions_occured = 1;
+							swap_block_check_connections(b,oname,oty,block_name,ty);
+						}else if(loading.recent_substitutions.contains(block_name)){
+							loading.hardware_substitutions_occured = 1;
+							block_name = loading.recent_substitutions.get(block_name);
+							post("\n",oname," is not available in this hardware configuration but you already picked ",block_name," as a replacement");
+							var oty = thisblock.get("type");
+							var ty = blocktypes.get(block_name+"::type");
+							thisblock.replace("name",block_name);
+							thisblock.replace("type",ty);
+							swap_block_check_connections(b,oname,oty,block_name,ty);
+						}else if(menu.swap_block_target == -1){
+							post("\n",block_name,"was not found and no automatic substitution is known. please choose a substitue");
+							loading.hardware_substitutions_occured = 1;
+							menu.swap_block_target = block_name; //this isn't how it's used for swap, remember to set back to -1 when done.
+							loading.progress = b;
+							menu.camera_scroll=0;
+							menu.mode = 3;
+							initialise_block_menu(1);
+							sidebar.mode="none";
+							//set_display_mode("block_menu"); //clicking a block on this page (the only option!) will send it back here with the answer, somehow
+							menu.search="";
+							displaymode="block_menu";
+							camera();
+							draw_menu_hint();
+							return -1;
+						}else{
+							post("loading selected susbstitute",menu.swap_block_target);
+							loading.hardware_substitutions_occured = 1;
+							block_name = menu.swap_block_target;
+							menu.swap_block_target = -1;
+							var oty = thisblock.get("type");
+							var ty = blocktypes.get(block_name+"::type");
+							thisblock.replace("name",block_name);
+							thisblock.replace("type",ty);
+							swap_block_check_connections(b,oname,oty,block_name,ty);
+						}
+						if((loading.hardware_substitutions_occured)&&(thisblock.contains("panel::parameters"))){
+							post("\nclearing panel parameter selection because of substitution");
+							thisblock.remove("panel::parameters");
 						}
 					}
-				}
-				/*var ui = blocktypes.get(block_name+"::block_ui_patcher");
-				if((t == 0) && (ui != "blank.ui") && (ui != "self")){
-					for(i=0;i<MAX_BLOCKS;i++){
-						if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
-							post("\nrecycling ui and block number:",i,ui);
-							t= 1;
-							loading.mapping[b] = i;
-							//ui_patcherlist[i] = ui; //something muteouts 0? - if there's a mechanism to disable ui patchers then here you should enable..
-							i=MAX_BLOCKS;
+					t=0;
+					var excl = blocktypes.contains(block_name+"::exclusive");
+					//var type = blocktypes.get(block_name+"::type");
+					if(excl){
+						if(loading.wait>1) post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
+						for(i=0;i<MAX_BLOCKS;i++){
+							if(blocks.get("blocks["+i+"]::name") == block_name){
+								post("found:",i)
+								t= 1;
+								loading.mapping[b] = i; //this next line stops orphaned bits of clock being left behind
+								if(thisblock.get("poly::voices")<blocks.get("blocks["+i+"]::poly::voices")) thisblock.replace("poly::voices",blocks.get("blocks["+i+"]::poly::voices"));
+								i=MAX_BLOCKS;
+							}
 						}
 					}
-				}*/
-				if(t==0){
-					loading.mapping[b] = next_free_block(block_name);
+					/*var ui = blocktypes.get(block_name+"::block_ui_patcher");
+					if((t == 0) && (ui != "blank.ui") && (ui != "self")){
+						for(i=0;i<MAX_BLOCKS;i++){
+							if((loaded_ui_patcherlist[i] == ui) && (ui_patcherlist[i] == "recycling")){
+								post("\nrecycling ui and block number:",i,ui);
+								t= 1;
+								loading.mapping[b] = i;
+								//ui_patcherlist[i] = ui; //something muteouts 0? - if there's a mechanism to disable ui patchers then here you should enable..
+								i=MAX_BLOCKS;
+							}
+						}
+					}*/
+					if(t==0){
+						loading.mapping[b] = next_free_block(block_name);
+					}
+					if(!excl){
+						song_select.current_blocks.push(loading.mapping[b]);
+						// exclusive blocks aren't added to the 'select merged song' button
+					}
+					blocks.replace("blocks["+loading.mapping[b]+"]",thisblock);
+					tx = blocks.get("blocks["+loading.mapping[b]+"]::space::x");
+					blocks.replace("blocks["+loading.mapping[b]+"]::space::x",tx+loading.xoffset);
+					if(!blocks.contains("blocks["+loading.mapping[b]+"]::label")) blocks.replace("blocks["+loading.mapping[b]+"]::label", block_name);
+					load_block(block_name,loading.mapping[b],songs.get(loading.songname+"::states::current::"+b)||[],excl);
 				}
-				if(!excl){
-					song_select.current_blocks.push(loading.mapping[b]);
-					// exclusive blocks aren't added to the 'select merged song' button
-				}
-				blocks.replace("blocks["+loading.mapping[b]+"]",thisblock);
-				tx = blocks.get("blocks["+loading.mapping[b]+"]::space::x");
-				blocks.replace("blocks["+loading.mapping[b]+"]::space::x",tx+loading.xoffset);
-				if(!blocks.contains("blocks["+loading.mapping[b]+"]::label")) blocks.replace("blocks["+loading.mapping[b]+"]::label", block_name);
-				load_block(block_name,loading.mapping[b],songs.get(loading.songname+"::states::current::"+b)||[],excl);
 			}
 		}
 		loading.progress=MAX_BLOCKS;
@@ -757,8 +758,8 @@ function import_song(){
 		i=loading.bundling;
 		do{ 
 			b=loading.progress-MAX_BLOCKS-loading.mapping.length;
-			if(loading.wait>1) post("\nloading connection number",b);
-			if(songs.contains(loading.songname+"::connections["+b+"]::from")){
+			if(1 || loading.wait>1) post("\nloading connection number",b);
+			if(songs.contains(loading.songname+"::connections["+b+"]::from::number")&&songs.contains(loading.songname+"::connections["+b+"]::conversion::mute")){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
 				new_connection.replace("from::number", loading.mapping[new_connection.get("from::number")]);
 				new_connection.replace("to::number", loading.mapping[new_connection.get("to::number")]);
