@@ -131,11 +131,11 @@
 			{
 				"name" : "Pre/Post",
 				"type" : "menu_l",
-				"values" : ["Pre", "Post"],
+				"values" : ["Pre", "Post", "Post-Post"],
                 "force_map" : 1,
                 "nopervoice" : 1,
 				"wrap" : 1,
-				"default" : 0.25
+				"default" : 0.2
 			}
 		]
 	}
