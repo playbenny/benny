@@ -25,7 +25,7 @@
 			},
             {
                 "header" : "VCA",
-				"contains" : [4, 5, 6, 7],
+				"contains" : [4, 5, 6, 12, 7],
                 "colour" : -10,
 				"height" : 1
 			},
@@ -127,6 +127,15 @@
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
 				"default" : 0.5
+			},
+			{
+				"name" : "Pre/Post",
+				"type" : "menu_l",
+				"values" : ["Pre", "Post"],
+                "force_map" : 1,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0.25
 			}
 		]
 	}
