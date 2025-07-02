@@ -2,42 +2,16 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
-			"major" : 8,
-			"minor" : 6,
-			"revision" : 1,
+			"major" : 9,
+			"minor" : 0,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "dsp.gen",
 		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
-		"bglocked" : 0,
-		"openinpresentation" : 0,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
 		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
-		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-3",
@@ -51,7 +25,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "//require \"sm_sallenkey_functions\";\r\nlinpeak(v0,cut,res,gain){//,drive,selfmod){\r\n\tParam drive(0.05);\r\n\tParam selfmod(0);\r\n\tHistory ic1eq(0),ic2eq(0),v1(0),g,k,a1,a2,idr(1),ocut(-1),ores(-1);\r\n\tcut2 = ((selfmod!=0)&&(gain>1)) ? cut * (1 - clip(selfmod*v1,0,0.9)) : cut;\r\n\tif((cut2!=ocut)||(ores!=res)){\r\n\t\tg = tan(PI * cut2);\r\n\t\tk = 2 - 2 * res;\r\n\t\ta1 = 1 / (1 + g * (g+k));\r\n\t\ta2 = g*a1;\r\n\t\tocut=cut2;\r\n\t\tores=res;\r\n\t}\r\n\tidr=1/drive;\r\n\tv1 = a1 * ic1eq + a2 * (v0 - ic2eq);\r\n\tv2 = ic2eq + g * v1;\r\n\tic1eq = 2 * v1 - ic1eq;\r\n\tic2eq = 2 * v2 - ic2eq;\r\n\tnotch = v0 - k*v1;\r\n\tpeak = 2*v2 - notch;\r\n\t//if(drive>0.1){\r\n\t\tif(gain>1){\r\n\t\t\tgg=slide(clip(1-(gain-1),0,1),1000,1000);\r\n\t\t\t//return peak*(gain-1) + v0*gg;\r\n\t\t\treturn idr*asin(clip(sin(clip(drive*v1 * slide(clip(gain-2,0,999),1000,1000),-1.5,1.5)) + sin(clip(drive*(v0+peak*(1-gg)),-1.5,1.5)),-0.99,0.99));\r\n\t\t}else{\r\n\t\t\t//return idr*asin(clip(sin(clip(drive*notch * (1-gain),-1.5,1.5)) + sin(clip(drive*gain * v0,-1.5,1.5)),-0.99,0.99));\r\n \t\t\treturn notch * (1-gain) + gain * v0;\r\n\t\t}\r\n\t//}else{\r\n\t//\treturn (gain>=1) ? peak * gain + v0 : notch * (1-gain) + gain * v0;\r\n\t//}\r\n\t//\treturn (gain>=1)? peak * gain + v0 : notch * (1-gain) + gain * v0;\r\n}\t\r\nBuffer prm(\"voice_parameter_buffer\");\r\nParam voice_offset(0);\r\nParam p(0);\r\n\r\nHistory c,c2,gsl(1),gsr(1),c2o,sm, cut,res,drv,ll,lr,upda(0);\r\n\r\nif(upda<=0){\r\n\tupda = vectorsize+5;\r\n\tc = peek(prm,voice_offset, 0, channels=1);\r\n\tres = clip(peek(prm,1+voice_offset, 0, channels=1),0,0.99);\r\n\tgain = -1+2*peek(prm,2+voice_offset, 0, channels=1);\r\n\tpan = -2+ 4 * peek(prm,3+voice_offset, 0, channels=1);\r\n\tdrv = 0.05 + 1.95*peek(prm,4+voice_offset,0,channels=1);\r\n\tsm = peek(prm,5+voice_offset,0,channels=1);\r\n\tif(gain>0){\r\n\t\tgain = (pow(10,gain)-1)*0.1111111111111111;\r\n\t}else{\r\n\t\tgain = -(pow(10,-gain)-1)*0.1111111111111111;\r\n\t}\t\t\r\n\tgain *= 36;\r\n\tc = pow(10,c)-1;\r\n\tc *= 0.11111111111111111111111111111111;\r\n\tc += 0.001;\r\n\tc *= 8000/samplerate;\r\n\tc2o += 0.01;\r\n\tc2 = c*(1+0.1*cos(c2o));\r\n\tp2 = clip(pan,-1,1);\r\n\tp3 = pan-p2;\r\n\tgain = dbtoa(gain)-1;\r\n\tgain = gain*(1-0.5*abs(p2));\r\n\tgg = (gain == -1) ? 0 : 1-(1/(1+gain));\r\n\tll = 1 + (1-p2)*gain -clip(p3,0,1)*gg;\r\n\tlr = 1 + (1+p2)*gain -clip(-p3,0,1)*gg;\r\n\tgsl=1;\r\n\tgsr=1;\r\n\tif(ll>2) gsl = fastpow((ll-1),-0.5);\r\n\tif(lr>2) gsr = fastpow((lr-1),-0.5);\r\n}\r\nupda-=1;\r\ncut = slide(c,1000,1000);\r\ncut2 = slide(c2,1000,1000);\r\nr2 = slide(res,1000,1000);\r\n\r\nout1 = slide(gsl,1000,1000)*linpeak(in1,cut,r2,slide(ll,1000,1000),drive=drv,selfmod = sm*-4);\r\nout2 = slide(gsr,1000,1000)*linpeak(in2,cut2,r2,slide(lr,1000,1000),drive=drv,selfmod = sm*4);",
+					"code" : "//require \"sm_sallenkey_functions\";\r\nlinpeak(v0,cut,res,gain){//,drive,selfmod){\r\n\tParam drive(0.05);\r\n\tParam selfmod(0);\r\n\tHistory ic1eq(0),ic2eq(0),v1(0),g,k,a1,a2,idr(1),ocut(-1),ores(-1);\r\n\tcut2 = ((selfmod!=0)&&(gain>1)) ? cut * (1 - clip(selfmod*v1,0,0.9)) : cut;\r\n\tif((cut2!=ocut)||(ores!=res)){\r\n\t\tg = tan(PI * cut2);\r\n\t\tk = 2 - 2 * res;\r\n\t\ta1 = 1 / (1 + g * (g+k));\r\n\t\ta2 = g*a1;\r\n\t\tocut=cut2;\r\n\t\tores=res;\r\n\t}\r\n\tidr=1/drive;\r\n\tv1 = a1 * ic1eq + a2 * (v0 - ic2eq);\r\n\tv2 = ic2eq + g * v1;\r\n\tic1eq = 2 * v1 - ic1eq;\r\n\tic2eq = 2 * v2 - ic2eq;\r\n\tnotch = v0 - k*v1;\r\n\tpeak = 2*v2 - notch;\r\n\t//if(drive>0.1){\r\n\t\tif(gain>1){\r\n\t\t\tgg=slide(clip(1-(gain-1),0,1),1000,1000);\r\n\t\t\t//return peak*(gain-1) + v0*gg;\r\n\t\t\treturn idr*asin(clip(sin(clip(drive*v1 * slide(clip(gain-2,0,999),1000,1000),-1.5,1.5)) + sin(clip(drive*(v0+peak*(1-gg)),-1.5,1.5)),-0.99,0.99));\r\n\t\t}else{\r\n\t\t\t//return idr*asin(clip(sin(clip(drive*notch * (1-gain),-1.5,1.5)) + sin(clip(drive*gain * v0,-1.5,1.5)),-0.99,0.99));\r\n \t\t\treturn notch * (1-gain) + gain * v0;\r\n\t\t}\r\n\t//}else{\r\n\t//\treturn (gain>=1) ? peak * gain + v0 : notch * (1-gain) + gain * v0;\r\n\t//}\r\n\t//\treturn (gain>=1)? peak * gain + v0 : notch * (1-gain) + gain * v0;\r\n}\t\r\nBuffer prm(\"voice_parameter_buffer\");\r\nBuffer changed_flags(\"changed_flags\");\r\nParam voice_offset(0);\r\nParam voice_is(0);\r\nParam p(0);\r\n\r\nHistory c,c2,gsl(1),gsr(1),c2o,sm, cut,res,drv,ll,lr,upda(0);\r\n\r\nif(upda<=0){\r\n\tupda = vectorsize+5;\r\n\tif(peek(changed_flags,voice_is,0)>0){\r\n\t\tchanged_flags.poke(0,voice_is);\r\n\t\tc = peek(prm,voice_offset, 0, channels=1);\r\n\t\tres = clip(peek(prm,1+voice_offset, 0, channels=1),0,0.99);\r\n\t\tgain = -1+2*peek(prm,2+voice_offset, 0, channels=1);\r\n\t\tpan = -2+ 4 * peek(prm,3+voice_offset, 0, channels=1);\r\n\t\tdrv = 0.05 + 1.95*peek(prm,4+voice_offset,0,channels=1);\r\n\t\tsm = peek(prm,5+voice_offset,0,channels=1);\r\n\t\tif(gain>0){\r\n\t\t\tgain = (pow(10,gain)-1)*0.1111111111111111;\r\n\t\t}else{\r\n\t\t\tgain = -(pow(10,-gain)-1)*0.1111111111111111;\r\n\t\t}\t\t\r\n\t\tgain *= 36;\r\n\t\tc = pow(10,c)-1;\r\n\t\tc *= 0.11111111111111111111111111111111;\r\n\t\tc += 0.001;\r\n\t\tc *= 8000/samplerate;\r\n\t\tc2o += 0.01;\r\n\t\tc2 = c*(1+0.1*cos(c2o));\r\n\t\tp2 = clip(pan,-1,1);\r\n\t\tp3 = pan-p2;\r\n\t\tgain = dbtoa(gain)-1;\r\n\t\tgain = gain*(1-0.5*abs(p2));\r\n\t\tgg = (gain == -1) ? 0 : 1-(1/(1+gain));\r\n\t\tll = 1 + (1-p2)*gain -clip(p3,0,1)*gg;\r\n\t\tlr = 1 + (1+p2)*gain -clip(-p3,0,1)*gg;\r\n\t\tgsl=1;\r\n\t\tgsr=1;\r\n\t\tif(ll>2) gsl = fastpow((ll-1),-0.5);\r\n\t\tif(lr>2) gsr = fastpow((lr-1),-0.5);\r\n\t}\r\n}\r\nupda-=1;\r\ncut = slide(c,1000,1000);\r\ncut2 = slide(c2,1000,1000);\r\nr2 = slide(res,1000,1000);\r\n\r\nout1 = slide(gsl,1000,1000)*linpeak(in1,cut,r2,slide(ll,1000,1000),drive=drv,selfmod = sm*-4);\r\nout2 = slide(gsr,1000,1000)*linpeak(in2,cut2,r2,slide(lr,1000,1000),drive=drv,selfmod = sm*4);",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,

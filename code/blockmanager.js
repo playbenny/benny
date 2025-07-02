@@ -187,6 +187,7 @@ var output_queue = new Buffer("output_queue"); //this is a list of things for th
 var changed_queue = new Buffer("changed_queue"); //params that have changed for ui updates
 //var output_queue_pointer = 0;
 var changed_queue_pointer = 0;
+//var changed_flags = new Buffer("changed_flags"); //flags per voice for param changes
 var mtoa_buffer = new Buffer("mtoa_sigs"); //eventually i think this could be only accessed from a gen output queue checker but for now it's in clocked js
 var indexpool_buffer = new Buffer("INDEXPOOL"); // for scale lookup
 var parameter_error_spread_buffer = new Buffer("parameter_error_spread_buffer"); //indexed by MAX_PARAMETERS * voice + paramno, this is the random spread values added to each voice's params

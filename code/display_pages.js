@@ -8604,7 +8604,7 @@ function draw_resource_monitor_page() {
 	lcd_main.message("write", "resource monitor");
 	y_offset += 1.1 * fontheight;
 	lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, 4 * fontheight + y_offset, menudarkest);
-	var p = (cpu_meter.pointer + 1) & 255;
+	var p = (cpu_meter.pointer + 1) & 127;
 	var st = (sidebar.x2 - sidebar.x) / 128;
 	var tx = sidebar.x, ty = 0, tyy;
 	lcd_main.message("frgb", menucolour);
@@ -8631,13 +8631,15 @@ function draw_resource_monitor_page() {
 	wm = (sidebar.width - 18) / 15;
 	tx = sidebar.x;
 	y_offset += 5.1 * fontheight;
-	lcd_main.message("moveto", sidebar.x, y_offset - 0.5 * fontheight);
 	lcd_main.message("frgb", menucolour);
 	if(cpu_meter.midi_message_rate>0){
-		lcd_main.message("write", "message rate: " + cpu_meter.midi_message_rate +" /s" );
-		y_offset += fontheight;
 		lcd_main.message("moveto", sidebar.x, y_offset - 0.5 * fontheight);
+		lcd_main.message("write", "message rate: " + cpu_meter.midi_message_rate +" /s" );
 	}
+	lcd_main.message("moveto", (sidebar.x+sidebar.x2)*0.5, y_offset - 0.5 * fontheight);
+	lcd_main.message("write", "CPU average: " + cpu_meter.avg[cpu_meter.pointer] +"   CPU peak: "+cpu_meter.peak[cpu_meter.pointer] );
+	y_offset += fontheight;
+	lcd_main.message("moveto", sidebar.x, y_offset - 0.5 * fontheight);
 	lcd_main.message("write", "blocks");
 	var bfree = MAX_BLOCKS;
 	var oy = y_offset - 0.5 * fontheight;

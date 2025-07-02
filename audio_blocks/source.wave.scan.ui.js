@@ -3,6 +3,7 @@ var MAX_PARAMETERS = 256;
 var MAX_WAVES = 16;
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer"); 
 var parameter_value_buffer = new Buffer("parameter_value_buffer");
+var changed_flags = new Buffer("changed_flags");
 outlets = 3;
 var config = new Dict;
 config.name = "config";
@@ -62,6 +63,7 @@ function mouse(x,y,l,s,a,c,scr){
 			if(rx!=0) post("\ncurrent diff is:",rx,"you want",tx,"so i'll set it to",tx-rx);
 			parameter_value_buffer.poke(1, MAX_PARAMETERS*block+7,Math.min(1,Math.max(0,tx-rx)));
 			voice_parameter_buffer.poke(1, MAX_PARAMETERS*v_list[0]+7,tx);
+			changed_flags.poke(1, v_list[0], 1);
 		}
 	}
 }

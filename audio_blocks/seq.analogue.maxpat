@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 7,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -13,6 +13,18 @@
 		"rect" : [ 134.0, 134.0, 1080.0, 841.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 227.0, 423.0, 99.0, 22.0 ],
+					"text" : "prepend voice_is"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-6",
 					"maxclass" : "newobj",
@@ -44,7 +56,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 853.0, 310.0, 174.0, 409.0 ],
+					"patching_rect" : [ 853.0, 310.0, 175.0, 409.0 ],
 					"text" : "colours 94 0 8 183 69 55 104 24 9 182 30 0 168 43 0 114 42 0 127 55 0 135 0 29 106 0 12 125 0 4 135 52 33 200 49 11 155 74 45 153 58 0 137 60 0 157 0 31 197 52 51 177 0 13 154 18 0 187 66 32 164 55 0 172 80 30 116 57 6 151 57 54 206 37 35 173 77 60 195 57 26 110 25 0 136 49 0 139 69 29 134 72 22 199 0 38 212 0 24 140 9 0 183 70 41 131 30 0 167 83 39 107 45 0 157 90 25 157 0 31 197 52 51 177 0 13 154 18 0 187 66 32 164 55 0 172 80 30 116 57 6 189 61 67 94 0 8 183 69 55 104 24 9 182 30 0 168 43 0 114 42 0 127 55 0 206 33 59 199 0 38 212 0 24 140 9 0 183 70 41 131 30 0 167 83 39 107 45 0 165 0 43 151 57 54 206 37 35 173 77 60 195 57 26 110 25 0 136 49 0 139 69 29 113 15 32 157 0 31 197 52 51 177 0 13 154 18 0 187 66 32 164 55 0 172 80 30 182 67 77 135 0 29 106 0 12 125 0 4 135 52 33 200 49 11 155"
 				}
 
@@ -92,6 +104,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 213.777777777777771, 147.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 2"
 				}
 
@@ -319,10 +335,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 470.0, 160.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in~ 2"
 				}
 
@@ -370,6 +382,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 354.0, 535.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -381,6 +397,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 275.0, 530.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -465,6 +485,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 385.0, 51.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -477,6 +501,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 183.0, 36.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -613,7 +641,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 7,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -855,8 +883,7 @@
 								}
 
 							}
- ],
-						"originid" : "pat-5231"
+ ]
 					}
 ,
 					"patching_rect" : [ 253.0, 322.0, 54.0, 22.0 ],
@@ -919,6 +946,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 377.0, 664.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1032,6 +1063,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-14", 0 ]
 				}
 
 			}
@@ -1221,6 +1259,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-10", 0 ],
 					"source" : [ "obj-5", 5 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-5", 4 ]
 				}
 
 			}
@@ -1457,8 +1502,7 @@
 				}
 
 			}
- ],
-		"originid" : "pat-5227"
+ ]
 	}
 
 }
