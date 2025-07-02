@@ -623,7 +623,7 @@ function import_song(){
 				notepools_dict.replace("notepools", songs.get(loading.songname+"::notepools"));
 			}
 		}
-		for(b=loading.progress;b<MAX_BLOCKS;b++){
+		for(b=loading.progress;b<Math.min(MAX_BLOCKS,songs.getsize(loading.songname+"::blocks"));b++){
 			//post("\ntrying block",b,"loading.songname is",loading.songname);
 			if(songs.contains(loading.songname+"::blocks["+b+"]::name")){
 				thisblock = songs.get(loading.songname+"::blocks["+b+"]");
