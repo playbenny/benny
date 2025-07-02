@@ -1,0 +1,149 @@
+{
+	"utility.sacred.channel" : {
+		"patcher" : "utility.sacred.channel",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "A synth voice minus the oscillators - a morphing filter and a saturdating vca driven by an ADSR envelope generator.  VCA floor can be raised with 'Open VCA' parameter to be used as a saturation effect.  Output filter is 12db shape morphing filter similar to a SEM.  Made by Luke Abbott.",
+		"max_polyphony" : 0,
+		"upsample" : 4,
+		"connections" : {
+			"in" : { 
+				"midi" : [ "midi velocity in"],
+                "audio": ["audio input"]
+			},
+			"out" : {
+				"midi" : ["midi thru"],
+				"audio" : [ "audio out", "envelope out"]
+			}
+		},
+		"groups" : [
+			{ 
+                "header" : "ADSR",
+				"contains" : [0,0, 1,1, 2,2, 3,3, 4],
+                "colour" : 0,
+				"height" : 1
+			},
+            {
+                "header" : "VCA",
+				"contains" : [5, 6, 12, 7, 13],
+                "colour" : -10,
+				"height" : 1
+			},
+            {
+                "header" : "Filter",
+				"contains" : [8, 9, 10, 11],
+                "colour" : -20,
+				"height" : 1
+			}
+
+			
+		],
+		"panel" : {
+			"parameters" : [ 0, 1, 2, 3]
+		},
+		"parameters" : [
+			{
+				"name" : "Attack",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+            {
+				"name" : "Decay",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+            {
+				"name" : "Sustain",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "Release",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+            {
+				"name" : "Env Type",
+				"type" : "menu_l",
+				"values" : ["Lin", "Exp"],
+                "force_map" : 1,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0.75
+			},
+            {
+				"name" : "Drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "Drive Tone",
+				"type" : "float",
+				"values" : ["bi", -0.5, 0.5, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "Open VCA",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "LP/BP/HP",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "Cutoff",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+            {
+				"name" : "Resonance",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "Env Mod",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Pre/Post",
+				"type" : "menu_l",
+				"values" : ["Pre VCA", "Post VCA", "Post VCF"],
+                "force_map" : 1,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0.5
+			}, 
+			{
+				"name" : "Output Trim",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}

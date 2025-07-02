@@ -1,12 +1,12 @@
-24/6/25:
-- improvements to the internal parameter & modulation system have reduced CPU usage significantly.
+2/7/25:
+- **utility.sacred.channel** - is a synth channel minus the oscillators: a SEM-like 12dB morphing filter and a saturating VCA driven by an ADSR envelope. a VCA floor parameter allows you to let a drone through.
 
-23/6/25:
-- Luke Abbott's utility.vca.env.adsr is an ADSR envelope with VCA built in. It can also saturate the signal with a nice asymmetric drive with tone control and has a drone-facilitating offset control so you can leave it open the whole time.
+28/6/25:
+- big overhaul to how modulation and parameters get distributed to voices which has reduced cpu usage dramatically.
 
 18/6/25:
 - removed invisible layout grid, feels smoother
-- fx.thermal.eq is a new eq block based on multi-level impulses taken from a british tube eq i have. it has a highpass and a single band of boost which pushes into the saturation nicely. a bite control lets transients through the drive a little.
+- **fx.thermal.eq** is a new eq block based on multi-level impulses taken from a british tube eq i have. it has a highpass and a single band of boost which pushes into the saturation nicely. a bite control lets transients through the drive a little.
 - mixer.mono.thermal & mixer.stereo.thermal are a pair of mixer channels based on the same code. the mono one has a sidechain compressor input where the compression reduces transient detail as well as ducking the signal. the stereo one has a mid-side option with separate controls for the side channel.
 
 15/6/25:
@@ -14,7 +14,7 @@
 - the ui prefs editor now updates preferences instantly, without a restart of benny.
 
 13/6/25:
-- source.sacred.waves.osc is a new dual+sub oscillator core by Luke Abbott based on wavetables sampled from a few synths at my studio (sacred walls) - a prophet 600 and a mono/poly. it gets the essential tone of those two surprisingly nicely and adds a versatile set of modulation options.
+- **source.sacred.waves.osc** is a new dual+sub oscillator core by Luke Abbott based on wavetables sampled from a few synths at my studio (sacred walls) - a prophet 600 and a mono/poly. it gets the essential tone of those two surprisingly nicely and adds a versatile set of modulation options.
 - you can now drag a block onto a wire while holding ctrl-shift (cmd-shift) to insert it into that wire. thanks to user 'gullygully'
 
 11/6/25:
@@ -23,8 +23,8 @@
 - midi.lfo **breaking change** the maximum rate has been increased slightly. when loading old songs using this block you may need to make a small adjustment to the rate slider. 
 
 8/6/25:
-- fx.metal.box - hardware preamp/circuit colour replication, based on multi-level impulses sampled from recording equipment in my studio. works great on the end of an instrument's signal chain to gently glue it together, push up the level and round off the edges. the whole development of this was inspired by the process of helping my friend christopher duffin (xam duo) mix some tunes, and noticing that a lot of his parts (from things like a dx7 or juno or a rhodes recorded hot) didn't need much mix processing because the pushy, squared off output stages of all the gear involved had done half the job for us.
-- fx.convolve - general purpose efficient convolution processor. you need to install the HISStools package in max package manager then you can convolve incoming audio with impulses stored in the waves page of benny. (also works well with samples that aren't reverb impulses).
+- **fx.metal.box** - hardware preamp/circuit colour replication, based on multi-level impulses sampled from recording equipment in my studio. works great on the end of an instrument's signal chain to gently glue it together, push up the level and round off the edges. the whole development of this was inspired by the process of helping my friend christopher duffin (xam duo) mix some tunes, and noticing that a lot of his parts (from things like a dx7 or juno or a rhodes recorded hot) didn't need much mix processing because the pushy, squared off output stages of all the gear involved had done half the job for us.
+- **fx.convolve** - general purpose efficient convolution processor. you need to install the HISStools package in max package manager then you can convolve incoming audio with impulses stored in the waves page of benny. (also works well with samples that aren't reverb impulses).
 
 3/6/25:
 - utility.spectrum block added - outputs a test tone, shows the spectrum of its input in a pop up window.
