@@ -19,13 +19,13 @@
 		"groups" : [
 			{ 
                 "header" : "ADSR",
-				"contains" : [0, 1, 2, 3],
+				"contains" : [0,0, 1,1, 2,2, 3,3, 4],
                 "colour" : 0,
 				"height" : 1
 			},
             {
                 "header" : "VCA",
-				"contains" : [4, 5, 6, 12, 7],
+				"contains" : [5, 6, 12, 7, 13],
                 "colour" : -10,
 				"height" : 1
 			},
@@ -131,11 +131,18 @@
 			{
 				"name" : "Pre/Post",
 				"type" : "menu_l",
-				"values" : ["Pre", "Post", "Post-Post"],
+				"values" : ["Pre VCA", "Post VCA", "Post VCF"],
                 "force_map" : 1,
                 "nopervoice" : 1,
 				"wrap" : 1,
 				"default" : 0.2
+			}, 
+			{
+				"name" : "Output Trim",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}
