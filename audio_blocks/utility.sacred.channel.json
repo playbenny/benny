@@ -135,7 +135,7 @@
                 "force_map" : 1,
                 "nopervoice" : 1,
 				"wrap" : 1,
-				"default" : 0.2
+				"default" : 0.5
 			}, 
 			{
 				"name" : "Output Trim",
