@@ -27,6 +27,7 @@ maxmin.name = "parameter_maxmin";
 
 var pbendr = 2;
 var ups = 1;
+var compat = 0;
 
 function grp_colour(group,r,g,b){
 	group_colours[group]=[r,g,b];
@@ -42,7 +43,9 @@ function pbendrange(r){
 function oversample(r){
 	ups = Math.pow(2,r);
 }
-
+function compatibility(r){
+	compat = r;
+}
 function group_contents(g){
 	var a = arrayfromargs(messagename, arguments);
 	var cont = new Array();
@@ -225,6 +228,7 @@ function transfer_params_and_defaults(){
 	new_blockfile.replace(block_name + "::plugin_name",plugin_name);
 	new_blockfile.replace(block_name + "::plugin_type",plugin_type);
 	new_blockfile.replace(block_name + "::pitchbend_range",pbendr);
+	new_blockfile.replace(block_name + "::compatibility_mode",compat);
 	new_blockfile.replace(block_name + "::upsample", ups);
 	var conns = new Dict;
 	if(orthogonal==0){
