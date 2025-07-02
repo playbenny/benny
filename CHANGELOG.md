@@ -1,3 +1,9 @@
+2/7/25:
+- utility.sacred.channel - is a synth channel minus the oscillators: a SEM-like 12dB morphing filter and a saturating VCA driven by an ADSR envelope. a VCA floor parameter allows you to let a drone through.
+
+28/6/25:
+- big overhaul to how modulation and parameters get distributed to voices which has reduced cpu usage dramatically.
+
 18/6/25:
 - removed invisible layout grid, feels smoother
 - fx.thermal.eq is a new eq block based on multi-level impulses taken from a british tube eq i have. it has a highpass and a single band of boost which pushes into the saturation nicely. a bite control lets transients through the drive a little.
