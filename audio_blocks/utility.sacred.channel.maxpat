@@ -14,99 +14,49 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-					"id" : "obj-36",
-=======
 					"id" : "obj-24",
->>>>>>> Stashed changes
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< Updated upstream
-					"patching_rect" : [ 624.0, 172.0, 101.0, 22.0 ],
-=======
 					"patching_rect" : [ 392.0, 374.0, 101.0, 22.0 ],
->>>>>>> Stashed changes
 					"text" : "prepend keytrack"
 				}
 
 			}
 , 			{
 				"box" : 				{
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 					"id" : "obj-35",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
-<<<<<<< Updated upstream
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 50.323527812957764, 560.0, 58.0, 22.0 ],
 					"text" : "loadbang"
-=======
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 225.0, 352.0, 79.0, 22.0 ],
-					"text" : "prepend note"
->>>>>>> Stashed changes
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-31",
-<<<<<<< Updated upstream
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 202.0, 604.0, 149.0, 22.0 ],
 					"text" : "rise_curve #0rise_curve"
-=======
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "int", "int" ],
-					"patching_rect" : [ 197.0, 321.0, 47.0, 22.0 ],
-					"text" : "unpack"
->>>>>>> Stashed changes
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-26",
-<<<<<<< Updated upstream
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 48.823527812957764, 604.0, 141.0, 22.0 ],
 					"text" : "fall_curve #0fall_curve"
-=======
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 170.0, 283.0, 46.0, 22.0 ],
-					"text" : "route 0"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-24",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 170.0, 253.0, 37.0, 22.0 ],
-					"text" : "zl rev"
->>>>>>> Stashed changes
 				}
 
 			}
@@ -589,7 +539,7 @@
 							}
 , 							{
 								"box" : 								{
-									"addpoints_with_curve" : [ 0.0, 0.5, 0, 0.0, 1.0, 1.0, 0, 0.0 ],
+									"addpoints_with_curve" : [ 0.0, 0.5, 0, 0.0, 1.0, 1.0, 0, -0.5 ],
 									"classic_curve" : 1,
 									"domain" : 1.0,
 									"id" : "obj-4",
@@ -605,7 +555,7 @@
 							}
 , 							{
 								"box" : 								{
-									"addpoints_with_curve" : [ 0.0, 0.0, 0, 0.0, 1.0, 0.5, 0, 0.0 ],
+									"addpoints_with_curve" : [ 0.0, 0.0, 0, 0.0, 1.0, 0.5, 0, 0.5 ],
 									"classic_curve" : 1,
 									"domain" : 1.0,
 									"id" : "obj-3",
@@ -645,7 +595,7 @@
 							}
 , 							{
 								"box" : 								{
-									"addpoints_with_curve" : [ 0.0, 0.0, 0, 0.0, 1.0, 1.0, 0, 0.0 ],
+									"addpoints_with_curve" : [ 0.0, 0.0, 0, 0.0, 1.0, 1.0, 0, -0.5 ],
 									"classic_curve" : 1,
 									"domain" : 1.0,
 									"id" : "obj-135",
@@ -759,7 +709,7 @@
 							}
 , 							{
 								"box" : 								{
-									"addpoints_with_curve" : [ 0.0, 1.0, 0, 0.0, 1.0, 0.0, 0, 0.0 ],
+									"addpoints_with_curve" : [ 0.0, 1.0, 0, 0.0, 1.0, 0.0, 0, -0.5 ],
 									"classic_curve" : 1,
 									"domain" : 1.0,
 									"id" : "obj-102",
@@ -2298,14 +2248,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-2", 0 ],
-					"order" : 2,
-					"source" : [ "obj-103", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-24", 0 ],
 					"order" : 1,
 					"source" : [ "obj-103", 2 ]
 				}
@@ -2399,13 +2341,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-34", 0 ],
 					"source" : [ "obj-108", 7 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-36", 0 ],
-					"source" : [ "obj-108", 14 ]
 				}
 
 			}
@@ -2600,13 +2535,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-26", 0 ],
-					"source" : [ "obj-24", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-83", 0 ],
 					"source" : [ "obj-24", 0 ]
 				}
@@ -2621,13 +2549,8 @@
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< Updated upstream
 					"destination" : [ "obj-83", 0 ],
 					"source" : [ "obj-26", 0 ]
-=======
-					"destination" : [ "obj-31", 0 ],
-					"source" : [ "obj-26", 1 ]
->>>>>>> Stashed changes
 				}
 
 			}
@@ -2654,13 +2577,8 @@
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< Updated upstream
 					"destination" : [ "obj-83", 0 ],
 					"source" : [ "obj-31", 0 ]
-=======
-					"destination" : [ "obj-35", 0 ],
-					"source" : [ "obj-31", 1 ]
->>>>>>> Stashed changes
 				}
 
 			}
@@ -2687,26 +2605,17 @@
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< Updated upstream
 					"destination" : [ "obj-26", 0 ],
 					"order" : 1,
-=======
-					"destination" : [ "obj-83", 0 ],
->>>>>>> Stashed changes
 					"source" : [ "obj-35", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< Updated upstream
 					"destination" : [ "obj-31", 0 ],
 					"order" : 0,
 					"source" : [ "obj-35", 0 ]
-=======
-					"destination" : [ "obj-83", 0 ],
-					"source" : [ "obj-36", 0 ]
->>>>>>> Stashed changes
 				}
 
 			}
