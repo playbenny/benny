@@ -581,8 +581,10 @@ function poly_loaded(type,number){
 	var t = still_checking_polys>0;
 	//post("poly loaded voice successfully",type,number,"\n");
 	if(type=="audio"){
+		changed_flags.poke(1,number+MAX_NOTE_VOICES,1);
 		if(still_checking_polys&2){ send_audio_patcherlist(); }
 	}else if(type=="note"){
+		changed_flags.poke(1,number,1);
 		if(still_checking_polys&1){ send_note_patcherlist(); }
 		//	send_note_patcherlist();
 	}else if(type=="ui"){
