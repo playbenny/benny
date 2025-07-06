@@ -2794,7 +2794,7 @@ function keybcallback(data){
 					if(configfile.contains("hardware::"+values[id[4]][0]+"::parameters["+d+"]")){
 						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters["+d+"]" , "{ }");
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name","new");
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_channel",0);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_channel",1);
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_number",0);
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::values",["uni",0,127,"lin"]);
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::type","int");
@@ -2802,7 +2802,7 @@ function keybcallback(data){
 						configfile.append("hardware::"+values[id[4]][0]+"::parameters","*");
 						configfile.setparse("hardware::"+values[id[4]][0]+"::parameters["+d+"]" , "{ }");
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::name","new");
-						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_channel",0);
+						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_channel",1);
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::cc_number",0);
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::values",["uni",0,127,"lin"]);
 						configfile.replace("hardware::"+values[id[4]][0]+"::parameters["+d+"]::type","int");
@@ -2827,7 +2827,7 @@ function keybcallback(data){
 						if(!configfile.contains("hardware::"+values[id[5]][0]+"::connections"+d))	configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d , "{ }");
 						configfile.setparse("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi" , "{ }");
 						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi",["new"]);
-						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",[0]);
+						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_channels",[1]);
 						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges",["*"]);
 						configfile.replace("hardware::"+values[id[5]][0]+"::connections::"+d+"::midi_ranges[0]",[0,127]);
 					}
