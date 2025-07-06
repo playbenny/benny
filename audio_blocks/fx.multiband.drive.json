@@ -1,0 +1,97 @@
+{
+	"fx.multiband.drive" : {
+		"patcher" : "fx.multiband.drive",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Multiband drive, with isolator outputs.  Based on multilayer transfer curves sampled from hardware processors.  Made by Luke Abbott.",
+		"max_polyphony" : 0,
+		"upsample" : 4,
+		"connections" : {
+			"in" : { 
+                "audio": ["audio input"]
+			},
+			"out" : {
+				"audio" : [ "audio out"]
+			}
+		},
+		"groups" : [
+			{ 
+                "header" : "DRIVE",
+				"contains" : [0, 1, 2],
+                "colour" : 0,
+				"height" : 2
+			},
+            {
+                "header" : "Crossover / Output",
+				"contains" : [6, 7, 4, 5, 3],
+                "colour" : -10,
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [ 0, 1, 2]
+		},
+		"parameters" : [
+			{
+				"name" : "Low Drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "Mid Drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "High Drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+            {
+				"name" : "Output",
+				"type" : "menu_l",
+				"values" : ["MAIN", "Low", "Mid", "High", "Bypass"],
+                "force_map" : 1,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0
+			},
+            {
+				"name" : "Dry/Wet",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			 {
+				"name" : "Type",
+				"type" : "menu_l",
+				"values" : ["Crush", "Plump"],
+                "force_map" : 1,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0.75
+			},
+            {
+				"name" : "Low/Mid",
+				"type" : "float",
+				"values" : ["uni", 0, 1000, "exp100"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Mid/High",
+				"type" : "float",
+				"values" : ["uni", 1000, 10000, "exp100"],
+				"wrap" : 0,
+				"default" : 0.5
+			}
+		]
+	}
+}
