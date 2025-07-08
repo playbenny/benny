@@ -808,6 +808,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				redraw_flag.flag |= 2;
 				usermouse.last.got_t = 2;
 				usermouse.long_press_function = null;
+				create_whole_state_xfade_slider();
 				whole_state_xfade_create_task.cancel();
 				mouse_click_actions[usermouse.last.got_i] = whole_state_xfade;
 				p = state_fade.selected;
