@@ -2106,7 +2106,11 @@ function render_controls(){
 				controls[ii].presentation(1);
 				controls[ii].presentation_rect(40+1.5*unit.col,y_pos,0.5*unit.col-20,20);
 				pp=24;
-				if(configfile.contains("io::sync::midi_clock_in::ppqn")) pp = d.get("midi_clock_in::ppqn");
+				if(configfile.contains("io::sync::midi_clock_in::ppqn")){
+					pp = d.get("midi_clock_in::ppqn");
+				}else{
+					configfile.replace("io::sync::midi_clock_in::ppqn",24);
+				}
 				controls[ii].message("setsymbol", pp);
 				values[ii] = midi_interfaces.all_in[i];
 				controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -2150,7 +2154,11 @@ function render_controls(){
 					controls[ii].presentation(1);
 					controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col-20,20);
 					pp=24;
-					if(configfile.contains("io::sync::midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn")) pp = d.get("midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn");
+					if(configfile.contains("io::sync::midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn")){
+						pp = d.get("midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn");
+					}else{
+						configfile.replace("io::sync::midi_clock_out::"+midi_interfaces.all_out[i]+"::ppqn",24);
+					}
 					controls[ii].message("setsymbol", pp);
 					values[ii] = midi_interfaces.all_out[i];
 					controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -2206,7 +2214,11 @@ function render_controls(){
 			controls[ii].presentation(1);
 			controls[ii].presentation_rect(20+1.5*unit.col,y_pos,0.5*unit.col-20,20);
 			pp=24;
-			if(configfile.contains("io::sync::audio_clock_out::ppqn")) pp = d.get("audio_clock_out::ppqn");
+			if(configfile.contains("io::sync::audio_clock_out::ppqn")){
+				pp = d.get("audio_clock_out::ppqn");
+			}else{
+				configfile.replace("io::sync::audio_clock_out::ppqn",24);
+			}
 			controls[ii].message("setsymbol", pp);
 			values[ii] = midi_interfaces.all_out[i];
 			controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
@@ -2442,35 +2454,27 @@ function keybcallback(data){
 	}else if(id[0]=="matrix"){
 		var v = values[id[2]];
 		dontredraw = 1;
-		//post("\nMATRIX, id",id[2]," datav",data.value,"V",v,"OR",v[data.value-1]);
-		//post("\nid4 = ",id[4],"v = ",v,"\n replace","io::controllers::"+v[0]+"::"+id[1]+"::"+id[2]+"::"+id[3],data.value);
 		configfile.replace("io::matrix::"+id[1],v[data.value-1]);
 	}else if(id[0]=="sync"){
 		if(id[1]=="midi_in"){
 			if(id[2]=="selected"){
 				if(!configfile.contains("io::sync::midi_clock_in")){
-					// configfile.setparse("io::sync","{}");
-					// configfile.setparse("io::sync::midi_clock_in","{}");
-					configfile.setparse("io::sync","{ 'midi_clock_in' : '{}' }");
+					configfile.replace("io::sync","{ 'midi_clock_in' : '{}' }");
 				}
 				configfile.replace("io::sync::midi_clock_in::selected",values[id[3]][data.value]);
-				//  post("\nSYNC id",id,"answer",values[id[3]][data.value],"value",data.value,"name",values[id[3]]);
 			}else if(id[2]=="ppqn"){
 				configfile.replace("io::sync::midi_clock_in::ppqn",Math.pow(2,data.value)*24);
 			}
 		}else if(id[1]=="midi_out"){
 			if(id[2]=="enable"){
-				if(!configfile.contains("io::sync::midi_clock_out::"+values[id[3]])){
-					// configfile.setparse("io::sync","{}");
-					// configfile.setparse("io::sync::midi_clock_in","{}");
-					configfile.setparse("io::sync::midi_clock_out::"+values[id[3]],"{}");
+				if(!configfile.contains("io::sync") || !configfile.contains("io::sync::midi_clock_out::"+values[id[3]])){
+					configfile.replace("io::sync::midi_clock_out::"+values[id[3]],"{}");
 				}
 				if(data.value == 0){
 					configfile.remove("io::sync::midi_clock_out::"+values[id[3]]);
 				}else{
 					configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::enable",data.value);
 				}
-				// post("\nSYNC id",id,"value",data.value,"name",values[id[3]]);
 			}else if(id[2]=="ppqn"){
 				configfile.replace("io::sync::midi_clock_out::"+values[id[3]]+"::ppqn",Math.pow(2,data.value)*24);
 			}
