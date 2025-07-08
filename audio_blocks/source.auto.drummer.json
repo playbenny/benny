@@ -97,7 +97,8 @@
                 "force_map" : 1,
                 "nopervoice" : 1,
 				"wrap" : 1,
-				"default" : 0.25
+				"default" : 0.25,
+				"colours" : [ [255,0,0], [255,0,0]]
 			}
             
 		]
