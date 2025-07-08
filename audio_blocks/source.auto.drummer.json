@@ -3,12 +3,12 @@
 		"patcher" : "source.auto.drummer",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Pattern based drum machine, with DR110 samples.  Intentionally simple, intended as a quick source of drums as a writing aid.  Made by Luke Abbott.",
+		"help_text" : "Pattern based drum machine, with DR110 samples.  Intentionally simple, intended as a quick source of drums as a writing aid.  Possibly the greatest drum machine you'll ever encounter.  Made by Luke Abbott.",
 		"max_polyphony" : 0,
 		"upsample" : 4,
 		"connections" : {
 				"in" : { 
-				"midi" : [ "note in"]
+				"midi" : [ "clock in"]
 			},
 			"out" : {
 				"audio" : [ "audio out"]
