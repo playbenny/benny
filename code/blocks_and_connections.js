@@ -3475,6 +3475,7 @@ function insert_block_in_connection(newblockname,newblock){
 	undo_stack.replace("history["+usz+"]::connections::"+menu.connection_number,connections.get("connections["+menu.connection_number+"]"));
 	remove_connection(menu.connection_number);
 	selected.block[newblock]=1;
+	set_display_mode("blocks");
 	redraw_flag.flag |= 4;	
 }
 
