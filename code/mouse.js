@@ -694,7 +694,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 							} else if ((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))) {
 								// dropped on self
-								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // connect to self
+								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD) && (usermouse.shift || !SELF_CONNECT_REQUIRES_SHIFT)){ // connect to self
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
