@@ -1,5 +1,6 @@
 9/7/25:
 - two new blocks from Luke Abbott - **fx.multiband.drive** is a 3 band transfer-curve based saturator and **source.auto.drummer** is a super-simple preset beatbox - intended as a songwriting aid - based around dr110 samples. waltz! polka! rock.
+- a change to dragging behaviour. now, to connect a block to itself you need to hold shift. you can switch back to the old behaviour in preferences if you prefer.
 
 2/7/25:
 - **utility.sacred.channel** - is a synth channel minus the oscillators: a SEM-like 12dB morphing filter and a saturating VCA driven by an ADSR envelope. a VCA floor parameter allows you to let a drone through.
