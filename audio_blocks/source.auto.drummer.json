@@ -1,0 +1,106 @@
+{
+	"source.auto.drummer" : {
+		"patcher" : "source.auto.drummer",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Pattern based drum machine, with DR110 samples.  Intentionally simple, intended as a quick source of drums as a writing aid.  Possibly the greatest drum machine you'll ever encounter.  Made by Luke Abbott.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"midi" : [ "clock in", "reset in"]
+			},
+			"out" : {
+				"audio" : [ "audio out"]
+			}
+		},
+		"groups" : [
+			{ 
+                "header" : "Pattern",
+				"contains" : [0,0,0,0, 7],
+                "colour" : 0,
+				"height" : 2
+			},
+            {
+                "header" : "Level",
+				"contains" : [1, 2, 3],
+                "colour" : -10,
+				"height" : 2
+			},
+            {
+                "header" : "Tuning",
+				"contains" : [4, 5, 6],
+                "colour" : 210,
+				"height" : 2
+			}
+		],
+		"panel" : {
+			"parameters" : [1, 2, 3]
+		},
+		"parameters" : [
+            {
+				"name" : "Rhythm",
+				"type" : "menu_l",
+				"values" : ["Rock", "Disco", "Pop", "Funk 1", "BossaNova", "Waltz", "Shuffle", "March", "R&B", "Funk 2", "House", "Blues", "Two Step", "Ska", "Breakbeat", "Polka"],
+                "force_map" : 1,
+				"columns" : 4,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+				"name" : "Kick Level",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+            {
+				"name" : "Snare Level",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+            {
+				"name" : "Hat Level",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "Kick Tune",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "Snare Tune",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+            {
+				"name" : "Hat Tune",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "Fill",
+				"type" : "menu_b",
+				"values" : ["FILL", "Fill"],
+                "force_map" : 1,
+                "nopervoice" : 1,
+				"wrap" : 1,
+				"default" : 0.25,
+				"colours" : [ [255,0,0], [255,0,0]]
+			}
+            
+		]
+	}
+}
