@@ -18,6 +18,7 @@
 	"LONG_PRESS_TIME" : 800,
 	"DOUBLE_CLICK_TIME" : 8,
 	"SELF_CONNECT_THRESHOLD" : 600,
+	"SELF_CONNECT_REQUIRES_SHIFT" : 1,
 	"AUTO_INCREMENT_SAVE_KEY" : 0,
 	"monofont" : "Consolas",
 	"mainfont" : "Arial",

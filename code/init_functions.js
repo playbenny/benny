@@ -302,6 +302,7 @@ function read_settings_from_config() {
 	MERGE_PURGE = config.get("MERGE_PURGE");
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
 	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
+	SELF_CONNECT_REQUIRES_SHIFT = config.get("SELF_CONNECT_REQUIRES_SHIFT");
 	DOUBLE_CLICK_TIME = config.get("DOUBLE_CLICK_TIME");
 	LONG_PRESS_TIME = config.get("LONG_PRESS_TIME");
 	CTRL_VOICE_SEL_MOMENTARY = config.get("CTRL_VOICE_SEL_MOMENTARY");

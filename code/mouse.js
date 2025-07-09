@@ -694,7 +694,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								}
 							} else if ((usermouse.hover[1] == usermouse.ids[1]) && (Math.round(displaypos[0]) == Math.round(dictpos[0])) && (Math.round(displaypos[1]) == Math.round(dictpos[1]))) {
 								// dropped on self
-								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD)){ // connect to self
+								if((usermouse.drag.distance>SELF_CONNECT_THRESHOLD) && (usermouse.shift || (SELF_CONNECT_REQUIRES_SHIFT==0))){ // connect to self
+									
 									var makewire=1;
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
 									if(!blocktypes.contains(fname +"::connections::out")) makewire=0; //no outputs!
@@ -948,7 +949,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var block_x = stw[0]; //BLOCKS_GRID[1]*Math.round(stw[0]*BLOCKS_GRID[0]); 
 								var block_y = stw[1]; //BLOCKS_GRID[1]*Math.round(stw[1]*BLOCKS_GRID[0]);
 								var dictpos = [ blocks.get("blocks["+usermouse.ids[1]+"]::space::x"), blocks.get("blocks["+usermouse.ids[1]+"]::space::y")];
-								if((usermouse.hover=="background") || (((Math.round(block_x)!=Math.round(dictpos[0]))||(Math.round(block_y)!=Math.round(dictpos[1]))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&(usermouse.hover[0]=="block"))))){ //i think hover can't get set to wires
+								if((usermouse.hover=="background") || ((!(!SELF_CONNECT_REQUIRES_SHIFT || (usermouse.shift&&!usermouse.ctrl&&!usermouse.alt))||((Math.abs(block_x-dictpos[0])+Math.abs(block_y-dictpos[1]))>(0.5+2*SELF_CONNECT_REQUIRES_SHIFT))||(usermouse.drag.distance<=SELF_CONNECT_THRESHOLD))&&(((usermouse.hover[1]==usermouse.ids[1])&&(usermouse.hover[0]=="block"))))){ //i think hover can't get set to wires
 									if(wires_potential_connection>-1) remove_potential_wire();
 									if((block_x!=oldpos[0])||(block_y!=oldpos[1])){
 										var dx = Math.abs(block_x-usermouse.drag.starting_value_x);
@@ -1033,6 +1034,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 											drawwire = 0;	
 										}
 									}
+									if(SELF_CONNECT_REQUIRES_SHIFT && !usermouse.shift && (usermouse.hover[1] == usermouse.ids[1])) drawwire = 0; //prohibit self-con
 									var fname = blocks.get("blocks["+usermouse.ids[1]+"]::name");
 									if(!blocktypes.contains(fname +"::connections::out")) drawwire=0; //no outputs!
 									var ifu = blocktypes.contains(blocks.get("blocks["+usermouse.hover[1]+"]::name")+"::connections::in::force_unity");
