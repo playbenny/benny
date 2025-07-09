@@ -5,10 +5,10 @@
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "Pattern based drum machine, with DR110 samples.  Intentionally simple, intended as a quick source of drums as a writing aid.  Possibly the greatest drum machine you'll ever encounter.  Made by Luke Abbott.",
 		"max_polyphony" : 0,
-		"upsample" : 4,
+		"upsample" : 1,
 		"connections" : {
-				"in" : { 
-				"midi" : [ "clock in"]
+			"in" : { 
+				"midi" : [ "clock in", "reset in"]
 			},
 			"out" : {
 				"audio" : [ "audio out"]
