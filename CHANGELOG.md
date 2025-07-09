@@ -1,3 +1,6 @@
+9/7/25:
+- two new blocks from Luke Abbott - **fx.multiband.drive** is a 3 band transfer-curve based saturator and **source.auto.drummer** is a super-simple preset beatbox - intended as a songwriting aid - based around dr110 samples. waltz! polka! rock.
+
 2/7/25:
 - **utility.sacred.channel** - is a synth channel minus the oscillators: a SEM-like 12dB morphing filter and a saturating VCA driven by an ADSR envelope. a VCA floor parameter allows you to let a drone through.
 
@@ -27,7 +30,7 @@
 - **fx.convolve** - general purpose efficient convolution processor. you need to install the HISStools package in max package manager then you can convolve incoming audio with impulses stored in the waves page of benny. (also works well with samples that aren't reverb impulses).
 
 3/6/25:
-- utility.spectrum block added - outputs a test tone, shows the spectrum of its input in a pop up window.
+- **utility.spectrum** block added - outputs a test tone, shows the spectrum of its input in a pop up window.
 
 28/5/25:
 - important: **breaking change** if you already had a launch control xl, or midi fighter twister configured you should remove it from your hardware profile(s) and re-add. this will make it use the new midi controller drivers written specially for these controllers.
