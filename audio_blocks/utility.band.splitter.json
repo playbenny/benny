@@ -1,0 +1,41 @@
+{
+	"utility.band.splitter" : {
+		"patcher" : "utility.band.splitter",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "crossover, splits a signal into two frequency bands.",
+		"max_polyphony" : 0,
+		"synonyms" : [ "crossover" , "xover" ],
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "below", "above" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "frequency",
+				"type" : "int",
+				"values" : ["uni",40,16000, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"error_scale" : 0.5,
+				"name" : "slope",
+				"type" : "menu_b",
+				"values" : ["6dB/oct","12dB/oct","18dB/oct","24dB/oct"],
+				"wrap" : 0,
+				"default" : 0.125
+			}
+		]
+	}
+}

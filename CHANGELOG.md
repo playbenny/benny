@@ -1,3 +1,6 @@
+10/7/25:
+- two new utilities for splitting signals so you can process parts of them differently: **utility.band.split** is a classic crossover for splitting a signal into frequency bands. you can stack them up for more bands. **utility.transient.split** splits a signal into 'transient' and 'body' portions. you can use this for simple transient enhancement as well as for applying different processing to the two parts.
+
 9/7/25:
 - two new blocks from Luke Abbott - **fx.multiband.drive** is a 3 band transfer-curve based saturator and **source.auto.drummer** is a super-simple preset beatbox - intended as a songwriting aid - based around dr110 samples. waltz! polka! rock.
 - a change to dragging behaviour. now, to connect a block to itself you need to hold shift. you can switch back to the old behaviour in preferences if you prefer.
