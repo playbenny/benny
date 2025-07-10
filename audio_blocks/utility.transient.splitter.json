@@ -1,0 +1,40 @@
+{
+	"utility.transient.splitter" : {
+		"patcher" : "utility.transient.splitter",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "detects transients, and outputs them from the first output, and absolutely everything thats left comes out of the other output. if you mix them back together you get your original sound back, but the suggested use is to process one part of the sound separately from the other.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "transients", "body" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,1]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "attack",
+				"type" : "menu_f",
+				"values" : ["snappy", "clean"],
+				"error_scale" : 0.5,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "decay",
+				"type" : "menu_f",
+				"values" : ["short","long"],
+				"wrap" : 0,
+				"default" : 0.25
+			}
+		]
+	}
+}
