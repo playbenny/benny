@@ -40,6 +40,7 @@ function setup(x1,y1,x2,y2,sw,mode){
 	x_pos = x1;
 	y_pos = y1;
 	unit = height / 18;
+	typedMessage = "";
 	if(block>=0){
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
 		v_list = voicemap.get(block);
@@ -173,6 +174,15 @@ function update(){
 			}
 		}
 	}
+	if(typedMessage!=""){
+		var r = typingRow;
+		outlet(1,"paintrect",sx + unit * 2, r*rh+y_pos + rh*0.3 , sx+width - unit*2,r*rh+y_pos+rh*0.3+unit*4,0,0,0);
+		outlet(1,"framerect",sx + unit * 2.1, r*rh+y_pos + rh*0.3 + unit*0.1 , sx+width - unit*2.1,r*rh+y_pos+rh*0.3+unit*3.9,menucolour);
+		outlet(1,"moveto",sx+ unit*2.2, r*rh+y_pos+ rh*0.3 + unit * 0.5);
+		outlet(1,"write","type a list of numbers or midi note names (eg C#4) separated by commas. blank entries ,, make gaps.");
+		outlet(1,"moveto",sx+ unit*2.2, r*rh+y_pos + rh*0.3 + unit * 1.5);
+		outlet(1,"write",typedMessage+"_");
+	}
 }
 
 function voice_is(v){
@@ -211,7 +221,62 @@ function store(){
 	messnamed("to_blockmanager","store_ok_done",block);
 }
 
-function keydown(key){
-	
+var typedMessage = "";
+var typingRow = -1;
+
+function keydown(key,x,y){
+	if(key == -4){//enter
+		parseTypedMessage();
+	}else if(key == -3){//esc
+		typedMessage="";
+	}else if((key==-6)||(key==-7)){
+		typedMessage = typedMessage.slice(0, -1);
+	}else{
+		if(typedMessage == ""){
+			typingRow = Math.floor(v_list.length * y / height);
+		}
+		typedMessage = typedMessage.concat(String.fromCharCode(key));
+	}
+	fulldraw();
 }
+function parseTypedMessage(){
+	var list = typedMessage.split(" ").join(",").split(",");
+	if(!Array.isArray(list)) list = [list];
+	for(var i=0;i<list.length;i++){
+		var note = parseMidiNote(list[i]);
+		if(!note) note = parseInt(list[i]);
+		if(note >= 0){
+			note += 1;
+		}else{note = 0;}
+		voice_data_buffer.poke(1, MAX_DATA*v_list[typingRow]+1+i, note/128);		
+		// post("\npoked",MAX_DATA*v_list[typingRow]+1+i,note/128);
+	}
+	post("\nrequest set length:",block,typingRow,list.length);
+	outlet(0,"request_set_voice_parameter",block,typingRow,3,list.length);
+	typedMessage = "";
+}
+
+function parseMidiNote(note) {
+    const midiNotePattern = /([A-Ga-g][#b]?)(\d+)/;
+    const match = note.match(midiNotePattern);
+
+    if (match) {
+        const noteName = match[1].toUpperCase(); // Normalize to uppercase
+        const octave = parseInt(match[2], 10);
+
+        // Mapping of note names to MIDI note numbers
+        const noteToNumber = {
+            'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4,
+            'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9,
+            'A#': 10, 'B': 11
+        };
+
+        const noteNumber = (noteToNumber[noteName] + (octave + 1) * 12) % 128; // MIDI note number
+
+        return noteNumber;
+    } else {
+        return null; // No valid note found
+    }
+}
+
 function enabled(){}
