@@ -1437,6 +1437,12 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}
 }
 
+function keydown_not_needed_by_panel(key){
+	sidebar.panel = 0;
+	keydown(key);
+	sidebar.panel = 1;
+}
+
 function keydown(key){
 	if(!am_foreground) return 0;
 	if(keymap.contains("modal::"+sidebar.mode)){

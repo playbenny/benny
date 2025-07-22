@@ -232,11 +232,13 @@ function keydown(key,x,y){
 	}else if((key==-6)||(key==-7)){
 		typedMessage = typedMessage.slice(0, -1);
 	}else{
+		post("\nKEY: - i need to only use the correct ones, return any others to core.",key);
 		if(typedMessage == ""){
-			typingRow = Math.floor(v_list.length * y / height);
+			typingRow = Math.floor(v_list.length * (y-y_pos) / height);
 		}
 		typedMessage = typedMessage.concat(String.fromCharCode(key));
 	}
+	//else{ outlet(0,"keydown_not_needed_by_panel",key); }
 	fulldraw();
 }
 function parseTypedMessage(){
@@ -251,7 +253,7 @@ function parseTypedMessage(){
 		voice_data_buffer.poke(1, MAX_DATA*v_list[typingRow]+1+i, note/128);		
 		// post("\npoked",MAX_DATA*v_list[typingRow]+1+i,note/128);
 	}
-	post("\nrequest set length:",block,typingRow,list.length);
+	post("\nrequest set length:",block,typingRow,v_list[typingRow],list.length);
 	outlet(0,"request_set_voice_parameter",block,v_list[typingRow],3,list.length);
 	typedMessage = "";
 }
