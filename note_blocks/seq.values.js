@@ -176,11 +176,11 @@ function update(){
 	}
 	if(typedMessage!=""){
 		var r = typingRow;
-		outlet(1,"paintrect",sx + unit * 2, r*rh+y_pos + rh*0.3 , sx+width - unit*2,r*rh+y_pos+rh*0.3+unit*4,0,0,0);
-		outlet(1,"framerect",sx + unit * 2.1, r*rh+y_pos + rh*0.3 + unit*0.1 , sx+width - unit*2.1,r*rh+y_pos+rh*0.3+unit*3.9,menucolour);
-		outlet(1,"moveto",sx+ unit*2.2, r*rh+y_pos+ rh*0.3 + unit * 0.5);
-		outlet(1,"write","type a list of numbers or midi note names (eg C#4) separated by commas. blank entries ,, make gaps.");
-		outlet(1,"moveto",sx+ unit*2.2, r*rh+y_pos + rh*0.3 + unit * 1.5);
+		outlet(1,"paintrect",x_pos + unit * 1, r*rh+y_pos + rh*0.3 , x_pos+width - unit*1,r*rh+y_pos+rh*0.3+unit*3,0,0,0);
+		outlet(1,"framerect",x_pos + unit * 1.1, r*rh+y_pos + rh*0.3 + unit*0.1 , x_pos+width - unit*1.1,r*rh+y_pos+rh*0.3+unit*2.9,menucolour);
+		outlet(1,"moveto",x_pos+ unit*1.4, r*rh+y_pos+ rh*0.3 + unit * 0.5);
+		outlet(1,"write","type a list of numbers or midi note names (eg C#4) separated by commas.")
+		outlet(1,"moveto",x_pos+ unit*1.4, r*rh+y_pos + rh*0.3 + unit * 1.5);
 		outlet(1,"write",typedMessage+"_");
 	}
 }

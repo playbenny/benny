@@ -1437,7 +1437,6 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 	}
 }
 
-
 function keydown(key){
 	if(!am_foreground) return 0;
 	if(keymap.contains("modal::"+sidebar.mode)){
@@ -1455,6 +1454,13 @@ function keydown(key){
 			//post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
 			return 1;		
+		}
+	}
+	if((sidebar.panel)){ //some sidebar panels capture keypresses
+		if((usermouse.x>sidebar.x) && (usermouse.y>sidebar.panel_y_range[0]) && (usermouse.y<sidebar.panel_y_range[1])){
+			post("\n sending keypress to sidebar ui instead ");
+			ui_poly.message("setvalue",  custom_block+1, "keydown", key, usermouse.x, usermouse.y);
+			return 1;
 		}
 	}
 	if(keymap.contains("modal::"+displaymode)){
