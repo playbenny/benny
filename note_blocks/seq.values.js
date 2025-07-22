@@ -252,7 +252,7 @@ function parseTypedMessage(){
 		// post("\npoked",MAX_DATA*v_list[typingRow]+1+i,note/128);
 	}
 	post("\nrequest set length:",block,typingRow,list.length);
-	outlet(0,"request_set_voice_parameter",block,typingRow,3,list.length);
+	outlet(0,"request_set_voice_parameter",block,v_list[typingRow],3,list.length);
 	typedMessage = "";
 }
 
