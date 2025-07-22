@@ -4388,6 +4388,8 @@ function draw_sidebar(){
 
 					if(ui_h>0){
 						sidebar.panel = 1;
+						sidebar.panel_keycapture = blocktypes.get(block_name+"::ui_in_sidebar_gets_keypresses");
+						sidebar.panel_y_range = [y_offset,y_offset+ui_h*fontheight];
 						ui_h *= fontheight;
 						//draw the panelui for this block here
 						if(!blocktypes.contains(block_name+"::no_edit")){

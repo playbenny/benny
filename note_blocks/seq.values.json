@@ -7,6 +7,7 @@
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"ui_in_sidebar_expands" : 1,
+		"ui_in_sidebar_gets_keypresses" : 1,
 		"default_polymode" : 	{
 				"stack_mode" : "unison all",
 				"choose_mode" : "blind cycle",
