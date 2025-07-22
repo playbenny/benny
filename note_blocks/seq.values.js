@@ -271,7 +271,7 @@ function parseMidiNote(note) {
             'A#': 10, 'B': 11
         };
 
-        const noteNumber = (noteToNumber[noteName] + (octave + 1) * 12) % 128; // MIDI note number
+        const noteNumber = (noteToNumber[noteName] + (octave) * 12) % 128; // MIDI note number
 
         return noteNumber;
     } else {
