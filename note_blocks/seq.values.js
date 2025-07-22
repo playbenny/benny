@@ -176,12 +176,13 @@ function update(){
 	}
 	if(typedMessage!=""){
 		var r = typingRow;
-		outlet(1,"paintrect",x_pos + unit * 1, r*rh+y_pos + rh*0.3 , x_pos+width - unit*1,r*rh+y_pos+rh*0.3+unit*3,0,0,0);
-		outlet(1,"framerect",x_pos + unit * 1.1, r*rh+y_pos + rh*0.3 + unit*0.1 , x_pos+width - unit*1.1,r*rh+y_pos+rh*0.3+unit*2.9,menucolour);
-		outlet(1,"moveto",x_pos+ unit*1.4, r*rh+y_pos+ rh*0.3 + unit * 0.5);
-		outlet(1,"write","type a list of numbers or midi note names (eg C#4) separated by commas.")
-		outlet(1,"moveto",x_pos+ unit*1.4, r*rh+y_pos + rh*0.3 + unit * 1.5);
+		outlet(1,"paintrect",x_pos + unit * 1, r*rh+y_pos + rh*0.3 , x_pos+width - unit*1,r*rh+y_pos+rh*0.3+unit*4,0,0,0);
+		outlet(1,"framerect",x_pos + unit * 1.1, r*rh+y_pos + rh*0.3 + unit*0.1 , x_pos+width - unit*1.1,r*rh+y_pos+rh*0.3+unit*3.9,menucolour);
+		outlet(1,"moveto",x_pos+ unit*1.4, r*rh+y_pos + rh*0.3 + unit * 2.5);
 		outlet(1,"write",typedMessage+"_");
+		outlet(1,"moveto",x_pos+ unit*1.4, r*rh+y_pos+ rh*0.3 + unit * 1.2);
+		outlet(1, "frgb" , menudark);
+		outlet(1,"write","numbers or midi note names (eg C#4) separated by commas")
 	}
 }
 
@@ -232,13 +233,16 @@ function keydown(key,x,y){
 	}else if((key==-6)||(key==-7)){
 		typedMessage = typedMessage.slice(0, -1);
 	}else{
-		post("\nKEY: - i need to only use the correct ones, return any others to core.",key);
-		if(typedMessage == ""){
-			typingRow = Math.floor(v_list.length * (y-y_pos) / height);
+		var s = String.fromCharCode(key);
+		if("ABCDEFGabcdefg#0123456789,.".indexOf(s)>-1){
+			if(typedMessage == ""){
+				typingRow = Math.floor(v_list.length * (y-y_pos) / height);
+			}
+			typedMessage = typedMessage.concat(s);
+		}else{
+			outlet(0,"keydown_not_needed_by_panel",key);
 		}
-		typedMessage = typedMessage.concat(String.fromCharCode(key));
 	}
-	//else{ outlet(0,"keydown_not_needed_by_panel",key); }
 	fulldraw();
 }
 function parseTypedMessage(){
@@ -253,7 +257,7 @@ function parseTypedMessage(){
 		voice_data_buffer.poke(1, MAX_DATA*v_list[typingRow]+1+i, note/128);		
 		// post("\npoked",MAX_DATA*v_list[typingRow]+1+i,note/128);
 	}
-	post("\nrequest set length:",block,typingRow,v_list[typingRow],list.length);
+	// post("\nrequest set length:",block,typingRow,v_list[typingRow],list.length);
 	outlet(0,"request_set_voice_parameter",block,v_list[typingRow],3,list.length);
 	typedMessage = "";
 }
