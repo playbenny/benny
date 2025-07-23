@@ -1735,7 +1735,7 @@ function make_connection(cno,existing){
 		max_poly = blocktypes.get(f_name+"::max_polyphony");
 		varr = blocktypes.get(f_name+"::connections::out::hardware_channels");
 		//post("\navailable hw voice out channels:", varr, "max poly", max_poly, "f_voice_list",f_voice_list);
-		hw_mute = blocks.get("blocks["+f_block+"]::mute");
+		hw_mute |= blocks.get("blocks["+f_block+"]::mute");
 		if(!Array.isArray(varr)) varr = [varr];
 		if(max_poly>1){
 			if(f_voice_list == "all"){
@@ -1813,6 +1813,7 @@ function make_connection(cno,existing){
 	}else if(t_type == "hardware"){ // work out which polyvoices/matrix slots correspond
 		max_poly = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::max_polyphony");
 		varr = blocktypes.get(blocks.get("blocks["+t_block+"]::name")+"::connections::in::hardware_channels");
+		hw_mute |= blocks.get("blocks["+t_block+"]::mute");
 		if(!Array.isArray(varr)) varr = [varr];
 		if(max_poly>1){
 			if(t_voice_list == "all"){

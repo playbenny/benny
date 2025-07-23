@@ -2800,6 +2800,7 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 		}
 	}else if(type == "hardware"){
 		//actually needs to mute or unmute the audio/midi connections for hw blocks
+		// first the signal from the hardware to benny
 		for(var t=0;t<connections.getsize("connections");t++){
 			if(connections.contains("connections["+t+"]::from") && (connections.get("connections["+t+"]::from::number") == block)){
 				// then mute it or unmute it (if the connection itself is not muted)
@@ -2808,6 +2809,19 @@ function mute_particular_block(block,av){ // i=block, av=value, av=-1 means togg
 				}
 			}
 		}
+		// and if the block doesn't have hw->benny, mute the signals the other way
+		if(!blocktypes.contains(blocks.get("blocks["+block+"]::name")+"::connections::out::hardware")){
+			// post("\nthis block is just an output, right?");
+			for(var t=0;t<connections.getsize("connections");t++){
+				if(connections.contains("connections["+t+"]::to") && (connections.get("connections["+t+"]::to::number") == block)){
+					// then mute it or unmute it (if the connection itself is not muted)
+					if((connections.get("connections["+t+"]::conversion::mute")==0) && (connections.get("connections["+t+"]::to::input::type") == "hardware")){
+						make_connection(t,1);
+					}
+				}
+			}
+		}
+
 		//and also if the block has a generic midi handler (or whatever) loaded in a note slot, send that a mute message
 		list = voicemap.get(block);
 		if(list === null){
