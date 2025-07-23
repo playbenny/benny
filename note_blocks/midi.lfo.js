@@ -156,8 +156,9 @@ function voice_is(v){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
 	}
+	var ps = config.getsize("palette::gamut");
 	for(var i = 0; i<v_list.length;i++){
-		vcol[i] = config.get("palette::gamut["+i*20+"]::colour");
+		vcol[i] = config.get("palette::gamut["+((i*20)%ps)+"]::colour");
 		bright[i] = 1;
 	}
 }
