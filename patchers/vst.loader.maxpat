@@ -580,94 +580,9 @@
 				"box" : 				{
 					"id" : "obj-8",
 					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "float" ],
-					"patcher" : 					{
-						"fileversion" : 1,
-						"appversion" : 						{
-							"major" : 9,
-							"minor" : 0,
-							"revision" : 7,
-							"architecture" : "x64",
-							"modernui" : 1
-						}
-,
-						"classnamespace" : "dsp.gen",
-						"rect" : [ 0.0, 0.0, 600.0, 450.0 ],
-						"gridsize" : [ 15.0, 15.0 ],
-						"boxes" : [ 							{
-								"box" : 								{
-									"id" : "obj-1",
-									"maxclass" : "newobj",
-									"numinlets" : 0,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
-									"text" : "in 1"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-2",
-									"maxclass" : "newobj",
-									"numinlets" : 0,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 305.0, 14.0, 28.0, 22.0 ],
-									"text" : "in 2"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-3",
-									"maxclass" : "newobj",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "" ],
-									"patching_rect" : [ 176.0, 149.0, 29.5, 22.0 ],
-									"text" : "+"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-4",
-									"maxclass" : "newobj",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 176.0, 418.0, 35.0, 22.0 ],
-									"text" : "out 1"
-								}
-
-							}
- ],
-						"lines" : [ 							{
-								"patchline" : 								{
-									"destination" : [ "obj-3", 0 ],
-									"source" : [ "obj-1", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-3", 1 ],
-									"source" : [ "obj-2", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
-									"destination" : [ "obj-4", 0 ],
-									"source" : [ "obj-3", 0 ]
-								}
-
-							}
- ]
-					}
-,
+					"numinlets" : 3,
+					"numoutlets" : 3,
+					"outlettype" : [ "float", "float", "float" ],
 					"patching_rect" : [ 723.0, 324.0, 96.0, 22.0 ],
 					"text" : "gen vst_watcher"
 				}
@@ -800,10 +715,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 400.0, 544.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -1325,7 +1236,14 @@
 						"subtype" : "Undefined",
 						"embed" : 1,
 						"snapshot" : 						{
-
+							"pluginname" : "ValhallaVintageVerb.vst3info",
+							"plugindisplayname" : "ValhallaVintageVerb",
+							"pluginsavedname" : "",
+							"pluginsaveduniqueid" : 526997559,
+							"version" : 1,
+							"isbank" : 0,
+							"isbase64" : 1,
+							"blob" : "1131.VMjLgHFA...O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9biMz3hUMczXWEjKt3hYt3hKt.kKt3hKt3BS5gEcyQjKtfjKzXTR5AkaA4hKtfjYisVUwvjKP4hKE4hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKBYmZUMTRSgzQH4hKtXWdOMCLFElYXcUV30zUZUGMV8DZDk1R1gjPHsFMwfUcQYkVzMlUOgFUEUkQvHjSncSZOYlcoU0Y2YjVmcmQgcVVUoEcQcEVsUEaUsVRsgkYtbTXvLlUZQWVUkEdMckV0QiUOgFTosjcyHUSn4hPhgWUwH1ZQ01TmAiUYgCRBE0ZYYEVvbmQiglKRM0amc0SnQTZKYGRBgDTIcUVDUkQgc1ZW8DZtj1R3QUZHYFTTkUZEYEY3fjPLQGTowjcPMjS1wzTLYmZSwTLpMDS1gUZHYFSUoUMUY0SnQTZKYGRBgTPQczXm0TLZgCRBwDcTkFRlgDUXkWSWMEL2YzX3fjPLQGVowTdtjGSyHVZMMiXo0zLLMES1QUZHYFRTgUdMcjU0k0UYgGLogjcyfGSyPzPLECTS4DLDMTS2o1PNkmK4wDZtHjTuMlQZM0YVkkbYY0Sn4RZKYGRBgDRqESVtkkZhsVQW8DZtj1RvfjPHUTQrIlbqcTTukEaYASSWoUczX0SnQTZKYGRBgDSEYzXqEEUZwVVVMVdqESXzASZHc2LBwDZtH0T0EEaTcVTWkENHIDSzgzPMACTS0jdTkVS5g0TNYGUC4DMpkFRlomdgoVTTkkcQcjV3fjPLQGS40DMpMkSzn1TNACR4wzcXkFSy.UZHYlYToUamECTvD0UOglKosDLpMDSvvzPNMCUS4TdXkWS4I1PLECRBgDS3DyXCU0QigCRBwDctjFRlwjdgIGNrIVS3XTVqASZHY2L3wTdLkGS4wTdLoGSowTLhMTS54xPNglKnQ0ZYcUV3kjUSUWTVkENHIDSz4xPMcGVo0TLXkVSxn1PLMCT4wjcDkFRlomUZMyc5EVZyY0Sn4RZHYFUWo0UqYTV5clUOglZ4wDLHIDRvrlQRs1ZwjkaQc0SnAUdLACR3sTNt3hKt3hKt3hKt3hKtQUUCUEQTg2ZrM1YQcUVDUjQicVPP4RPHQEY1UTLhkWPP4RPL4hKi4hKt3hKt3hKtXlTU0DUQAURWoULEYzXqEEUXoWQFwyKIMzasA2atUlaz4COuX0TTMCTrU2Yo41TzEFck4C."
 						}
 ,
 						"snapshotlist" : 						{
@@ -1334,21 +1252,28 @@
 									"filetype" : "C74Snapshot",
 									"version" : 2,
 									"minorversion" : 0,
-									"name" : "",
-									"origin" : "",
-									"type" : "AudioUnit",
+									"name" : "ValhallaVintageVerb",
+									"origin" : "ValhallaVintageVerb.vst3info",
+									"type" : "VST3",
 									"subtype" : "AudioEffect",
-									"embed" : 0,
+									"embed" : 1,
 									"snapshot" : 									{
-
+										"pluginname" : "ValhallaVintageVerb.vst3info",
+										"plugindisplayname" : "ValhallaVintageVerb",
+										"pluginsavedname" : "",
+										"pluginsaveduniqueid" : 526997559,
+										"version" : 1,
+										"isbank" : 0,
+										"isbase64" : 1,
+										"blob" : "1131.VMjLgHFA...O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9biMz3hUMczXWEjKt3hYt3hKt.kKt3hKt3BS5gEcyQjKtfjKzXTR5AkaA4hKtfjYisVUwvjKP4hKE4hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKBYmZUMTRSgzQH4hKtXWdOMCLFElYXcUV30zUZUGMV8DZDk1R1gjPHsFMwfUcQYkVzMlUOgFUEUkQvHjSncSZOYlcoU0Y2YjVmcmQgcVVUoEcQcEVsUEaUsVRsgkYtbTXvLlUZQWVUkEdMckV0QiUOgFTosjcyHUSn4hPhgWUwH1ZQ01TmAiUYgCRBE0ZYYEVvbmQiglKRM0amc0SnQTZKYGRBgDTIcUVDUkQgc1ZW8DZtj1R3QUZHYFTTkUZEYEY3fjPLQGTowjcPMjS1wzTLYmZSwTLpMDS1gUZHYFSUoUMUY0SnQTZKYGRBgTPQczXm0TLZgCRBwDcTkFRlgDUXkWSWMEL2YzX3fjPLQGVowTdtjGSyHVZMMiXo0zLLMES1QUZHYFRTgUdMcjU0k0UYgGLogjcyfGSyPzPLECTS4DLDMTS2o1PNkmK4wDZtHjTuMlQZM0YVkkbYY0Sn4RZKYGRBgDRqESVtkkZhsVQW8DZtj1RvfjPHUTQrIlbqcTTukEaYASSWoUczX0SnQTZKYGRBgDSEYzXqEEUZwVVVMVdqESXzASZHc2LBwDZtH0T0EEaTcVTWkENHIDSzgzPMACTS0jdTkVS5g0TNYGUC4DMpkFRlomdgoVTTkkcQcjV3fjPLQGS40DMpMkSzn1TNACR4wzcXkFSy.UZHYlYToUamECTvD0UOglKosDLpMDSvvzPNMCUS4TdXkWS4I1PLECRBgDS3DyXCU0QigCRBwDctjFRlwjdgIGNrIVS3XTVqASZHY2L3wTdLkGS4wTdLoGSowTLhMTS54xPNglKnQ0ZYcUV3kjUSUWTVkENHIDSz4xPMcGVo0TLXkVSxn1PLMCT4wjcDkFRlomUZMyc5EVZyY0Sn4RZHYFUWo0UqYTV5clUOglZ4wDLHIDRvrlQRs1ZwjkaQc0SnAUdLACR3sTNt3hKt3hKt3hKt3hKtQUUCUEQTg2ZrM1YQcUVDUjQicVPP4RPHQEY1UTLhkWPP4RPL4hKi4hKt3hKt3hKtXlTU0DUQAURWoULEYzXqEEUXoWQFwyKIMzasA2atUlaz4COuX0TTMCTrU2Yo41TzEFck4C."
 									}
 ,
 									"fileref" : 									{
-										"name" : "",
-										"filename" : ".maxsnap",
-										"filepath" : "~/Documents/Max 9/Snapshots",
+										"name" : "ValhallaVintageVerb",
+										"filename" : "ValhallaVintageVerb.maxsnap",
+										"filepath" : "~/Documents/GitHub/benny/data",
 										"filepos" : -1,
-										"snapshotfileid" : "08c9ef841604ef1feb1a6e704a3ceb64"
+										"snapshotfileid" : "ba61d2bec0c18028c5674272f79c95cd"
 									}
 
 								}
@@ -1431,6 +1356,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 368.0, 7.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 
@@ -1442,10 +1371,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 344.0, 544.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -1469,6 +1394,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 626.0, 416.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -1481,6 +1410,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 654.0, 328.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -1492,6 +1425,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 580.0, 416.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -1504,6 +1441,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 580.0, 328.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -2291,6 +2232,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-73", 0 ],
+					"source" : [ "obj-8", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-82", 1 ],
+					"source" : [ "obj-8", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-82", 0 ],
 					"source" : [ "obj-8", 0 ]
 				}
@@ -2366,44 +2321,7 @@
 				}
 
 			}
- ],
-		"parameters" : 		{
-			"obj-67" : [ "vst~", "vst~", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
-		"dependency_cache" : [ 			{
-				"name" : ".maxsnap",
-				"bootpath" : "~/Documents/Max 9/Snapshots",
-				"patcherrelativepath" : "../../../Max 9/Snapshots",
-				"type" : "mx@s",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "mutecontrol.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "voiceheader.maxpat",
-				"bootpath" : "~/Documents/GitHub/benny/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }

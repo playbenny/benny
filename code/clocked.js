@@ -2,6 +2,7 @@ function polycheck(){
     if(still_checking_polys&1){ send_note_patcherlist(); }
 	if(still_checking_polys&2){ send_audio_patcherlist(); }
 	if((still_checking_polys&4)&&!(still_checking_polys&3)){ send_ui_patcherlist(); } //experimental, delays ui loading until after the rest has loaded, as usually it doesn't matter
+	flag_all_changed();
 }
 
 function slowclock(){

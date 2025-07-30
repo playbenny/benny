@@ -1138,11 +1138,14 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			
 			if(i+1<paramvalues.length){
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,paramvalues[i+1]);
+				voice_parameter_buffer.poke(1, MAX_PARAMETERS*new_voice +i,paramvalues[i+1]);
 				param_defaults[block_index][i] = paramvalues[i+1]; //p_default; << new blocks the default is the default, when you load a song the default is the startup value of that param in the song instead.
 			}else{ // in the rare case that you've added some paramters to a block it should still load saves without errors.
 				parameter_value_buffer.poke(1, MAX_PARAMETERS*block_index +i,p_default);
+				voice_parameter_buffer.poke(1, MAX_PARAMETERS*new_voice +i,p_default);
 				param_defaults[block_index][i] = p_default;
 			}
+			changed_flags.poke(1,new_voice,1);
 			write_parameter_info_buffer(p_values,p_type,MAX_PARAMETERS*block_index+i);
 		}		
 	}

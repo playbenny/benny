@@ -4441,3 +4441,7 @@ function encapsulate_selection(name){
 	selected.block[new_encapsulated_blockno] = 1;
 	redraw_flag.flag |= 4;
 }
+
+function flag_all_changed(){
+	for(var i=0;i<MAX_AUDIO_VOICES+MAX_NOTE_VOICES;i++) changed_flags.poke(1,i,1);
+} 

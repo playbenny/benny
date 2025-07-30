@@ -67,8 +67,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 492.5, 461.0, 174.0, 22.0 ],
-					"text" : "expr 1. + ($f1-32.)*($f2-0.5)/16."
+					"patching_rect" : [ 492.5, 457.0, 174.0, 22.0 ],
+					"text" : "expr 1. + ($f1-64.)*($f2-0.5)/16."
 				}
 
 			}
@@ -103,7 +103,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 448.75, 446.0, 29.5, 22.0 ],
+					"patching_rect" : [ 448.75, 445.0, 29.5, 22.0 ],
 					"text" : "* 1."
 				}
 
@@ -427,10 +427,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 239.0, 618.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -479,6 +475,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 528.0, 23.0, 28.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in 1"
 				}
 

@@ -90,6 +90,7 @@ function panic_button(){
 	messnamed("panic","bang");
 	patternpage.quantise_and_hold = 0;
 	build_mod_sum_action_list();
+	flag_all_changed();
 	sigouts.message("setvalue", 0,0); //clears midi-audio sig~
 	//for(var i=0;i<param_error_lockup.length;i++) param_error_lockup[i]=0; //frees any voice panel lockups
 }
