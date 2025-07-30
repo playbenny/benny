@@ -758,7 +758,7 @@ function import_song(){
 		i=loading.bundling;
 		do{ 
 			b=loading.progress-MAX_BLOCKS-loading.mapping.length;
-			if(1 || loading.wait>1) post("\nloading connection number",b);
+			if(loading.wait>1) post("\nloading connection number",b);
 			if(songs.contains(loading.songname+"::connections["+b+"]::from::number")&&songs.contains(loading.songname+"::connections["+b+"]::conversion::mute")){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
 				new_connection.replace("from::number", loading.mapping[new_connection.get("from::number")]);
