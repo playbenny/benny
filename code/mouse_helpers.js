@@ -3863,7 +3863,7 @@ function selected_block_custom_mode(mode){
 }
 
 function custom_key_passthrough(key){
-	ui_poly.message("setvalue",  custom_block+1, "keydown", key);
+	ui_poly.message("setvalue",  custom_block+1, "keydown", key, usermouse.x, usermouse.y);
 }
 
 function qwertymidi(key,vel){

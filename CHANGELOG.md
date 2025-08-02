@@ -1,3 +1,6 @@
+22/7/25:
+- seq.values now lets you type lists of values in directly. hover your mouse over the lane you want to type into, then type, separating values by commas. eg c4,c#4,36,37,,,,2,3,127 followed by enter.
+
 10/7/25:
 - two new utilities for splitting signals so you can process parts of them differently: **utility.band.split** is a classic crossover for splitting a signal into frequency bands. you can stack them up for more bands. **utility.transient.split** splits a signal into 'transient' and 'body' portions. you can use this for simple transient enhancement as well as for applying different processing to the two parts.
 
