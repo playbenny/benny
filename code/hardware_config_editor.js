@@ -2024,12 +2024,19 @@ function render_controls(){
 			}
 		}
 		y_pos+=unit.header;
-	
-		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add another hardware block", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware.newblock."+ii);
+
+		var nam = 'newblock'
+		for(var num=1;num<999;num++){
+			if(!configfile.contains("hardware::hardware."+nam)){
+				break;
+			}
+			nam = 'newblock'+num;
+		}
+		controls[ii] = this.patcher.newdefault(10, 100, "textbutton" , "@text",  "add another hardware block", "@textoncolor", [0, 1.0,0, 1.000], "@varname", "add.hardware."+nam+"."+ii);
 		controls[ii].listener = new MaxobjListener(controls[ii], keybcallback);
 		controls[ii].presentation(1);
 		controls[ii].presentation_rect(20,y_pos,unit.col*2,20);
-		values[ii] = ["hardware.newblock", cdk.length];
+		values[ii] = ["hardware."+nam, cdk.length];
 		ii++;			
 		y_pos+=unit.row + unit.header;
 	
@@ -2359,7 +2366,7 @@ function render_controls(){
 
 function keybcallback(data){
 	//post("\nvalue",data.value);
-	if(data.maxobject==null){post("\nnot a max object", data.value, data); return -1;}
+	if(data.maxobject==null){/*post("\nnot a max object", data.value, data);*/ return -1;}
 	//post(" - object",data.maxobject.varname);
 	var id = data.maxobject.varname.split('.');
 	var dontredraw=0;
@@ -2611,10 +2618,11 @@ function keybcallback(data){
 	}else if(id[0]=="hardwarename"){
 		var newname = data.value.toString();
 		if(newname.indexOf("hardware.")!=0) newname = "hardware."+newname;
-		post("\nrename?");
+		// post("\nrename?");
 		if(newname!=values[id[1]]){
 			post("\nrenaming ",values[id[1]]," to ",newname);
-			var ohw = configfile.get("hardware");
+			var ohw = new Dict;
+			ohw = configfile.get("hardware");
 			var ohwk = ohw.getkeys();
 			configfile.setparse("hardware","{}");
 			for(var o=0;o<ohwk.length;o++){
@@ -2633,8 +2641,20 @@ function keybcallback(data){
 					if(ck==null)ck=[];
 					for(var tc=0;tc<ck.length;tc++){
 						if(ck[tc]!=="connections"){
-							configfile.replace("hardware::"+targ+"::"+ck[tc].toString(),cd.get(ck[tc]));
-							post("\nreplace ","hardware::"+targ+"::"+ck[tc].toString(),cd.get(ck[tc]));
+							var got = cd.get(ck[tc]);
+							if(Array.isArray(got)){
+								// post("\n"+ck[tc]+" is an array of :",typeof got[0]," :> ",got);
+								configfile.setparse("hardware::"+targ+"::"+ck[tc].toString(),'[]');
+								for(var ga=0;ga<got.length;ga++){
+									configfile.append("hardware::"+targ+"::"+ck[tc].toString(),got[ga]);
+								}
+							}else if(typeof got == 'object'){ //HAMSTERS
+								// post("\ncopying",ck[tc],"..got object here:",got.stringify());
+								configfile.setparse("hardware::"+targ+"::"+ck[tc].toString(),got.stringify());						
+							}else{
+								configfile.replace("hardware::"+targ+"::"+ck[tc].toString(),got);
+								// post("\nreplace ","hardware::"+targ+"::"+ck[tc].toString(),got);
+							}
 						}
 					}
 					configfile.setparse("hardware::"+targ+"::connections","{}");
@@ -2645,8 +2665,17 @@ function keybcallback(data){
 							var ck = cd.getkeys();
 							if(ck==null)ck=[];
 							for(var tc=0;tc<ck.length;tc++){
-								configfile.replace("hardware::"+targ+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
-								post("\nreplace ","hardware::"+targ+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+								var got = cd.get(ck[tc]);
+								if(Array.isArray(got)){
+									configfile.setparse("hardware::"+targ+"::connections::in::"+ck[tc].toString(),'[]');
+									for(var ga=0;ga<got.length;ga++){
+										configfile.append("hardware::"+targ+"::connections::in::"+ck[tc].toString(),got[ga]);
+										// post("\nappend ","hardware::"+targ+"::connections::in::"+ck[tc].toString(),got[ga]);
+									}
+								}else{
+									configfile.replace("hardware::"+targ+"::connections::in::"+ck[tc].toString(),got);
+									// post("\nreplace ","hardware::"+targ+"::connections::in::"+ck[tc].toString(),cd.get(ck[tc]));
+								}
 							}
 						}
 					}
@@ -2657,8 +2686,16 @@ function keybcallback(data){
 							var ck = cd.getkeys();
 							if(ck==null)ck=[];
 							for(var tc=0;tc<ck.length;tc++){
-								configfile.replace("hardware::"+targ+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
-								post("\nreplace ","hardware::"+targ+"::connections::out::"+ck[tc].toString(),cd.get(ck[tc]));
+								var got = cd.get(ck[tc]);
+								if(Array.isArray(got)){
+									configfile.setparse("hardware::"+targ+"::connections::out::"+ck[tc].toString(),'[]');
+									for(var ga=0;ga<got.length;ga++){
+										configfile.append("hardware::"+targ+"::connections::out::"+ck[tc].toString(),got[ga]);
+									}
+								}else{
+									configfile.replace("hardware::"+targ+"::connections::out::"+ck[tc].toString(),got);
+									// post("\nreplace ","hardware::"+targ+"::connections::out::"+ck[tc].toString(),got);
+								}
 							}
 						}
 					}
