@@ -54,6 +54,8 @@ function set_display_mode(mode,t){
 			}else{
 				mode==blocks;
 			}
+		}else if(mode == "panels"){
+			populate_pattern_page();
 		}
 		displaymode=mode;
 		if(mode == "block_menu"){
@@ -429,7 +431,6 @@ function draw_patterns(){ //patterns page, in edit space or fullscreen. i think 
 }
 
 function populate_pattern_page(){ //goes through and checks all blocks for states and for patterns
-	post("\npopulate");
 	patternpage.column_block = [];
 	patternpage.column_type = [];
 	patternpage.block_statelist = [];
@@ -516,7 +517,6 @@ function draw_panels(){
 	var block_is_in_custom_order=[];
 	view_changed=true;
 	get_hw_meter_positions();
-	populate_pattern_page();
 	panelslider_index=MAX_PARAMETERS+1;
 	redraw_flag.paneltargets=[];
 	var seen=[];
