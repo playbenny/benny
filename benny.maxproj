@@ -2,7 +2,7 @@
 	"name" : "benny",
 	"version" : 1,
 	"creationdate" : 3738749649,
-	"modificationdate" : 3829324429,
+	"modificationdate" : 3837498648,
 	"viewrect" : [ 36.0, 65.0, 244.0, 611.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 1,
@@ -177,6 +177,11 @@
 			}
 ,
 			"generic_midi_driver.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"global_buttons.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -1380,16 +1385,6 @@
 				}
 
 			}
-,
-			"global_buttons.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/patchers",
-					"projectrelativepath" : "./patchers"
-				}
-
-			}
 
 		}
 ,
@@ -1577,11 +1572,6 @@
 				"local" : 1
 			}
 ,
-			"utility.vca.env.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"voice.dual.gendsp" : 			{
 				"kind" : "gendsp",
 				"local" : 1
@@ -1642,21 +1632,6 @@
 				"local" : 1
 			}
 ,
-			"midirouter.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"output_queue_watcher.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
-			"whitegaussnoise.gendsp" : 			{
-				"kind" : "gendsp",
-				"local" : 1
-			}
-,
 			"core.input.control.auto.ui.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
@@ -1699,6 +1674,26 @@
 ,
 			"benny_ui_settings_editor.js" : 			{
 				"kind" : "javascript",
+				"local" : 1
+			}
+,
+			"utility.vca.env.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"midirouter.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"output_queue_watcher.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1
+			}
+,
+			"whitegaussnoise.gendsp" : 			{
+				"kind" : "gendsp",
 				"local" : 1
 			}
 ,
@@ -1863,6 +1858,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
 					"projectrelativepath" : "./audio_blocks"
+				}
+
+			}
+,
+			"smoothsig.gendsp" : 			{
+				"kind" : "gendsp",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny-xp/benny/code",
+					"projectrelativepath" : "../benny-xp/benny/code"
 				}
 
 			}
@@ -2052,7 +2057,12 @@
 ,
 			"midi.fold.json" : 			{
 				"kind" : "json",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/benny/code",
+					"projectrelativepath" : "./code"
+				}
+
 			}
 ,
 			"midi.holes.json" : 			{
@@ -2752,12 +2762,7 @@
 ,
 			"vst.RatshackReverb2.json" : 			{
 				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/benny/audio_blocks",
-					"projectrelativepath" : "./audio_blocks"
-				}
-
+				"local" : 1
 			}
 ,
 			"vst.TAL-Chorus-LX-64.json" : 			{

@@ -1407,7 +1407,8 @@ function remove_connection(connection_number){
 						mod_buffer.poke(1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
 						remove_routing(connection_number);
-						sigouts.message("setvalue", tvv+1,0);
+						// sigouts.message("setvalue", tvv+1,0);
+						mtoa_buffer.poke(1,tvv,0);
 					}else if((t_type == "midi") || (t_type == "block")){
 						//this is a midi-midi connection for a single voice
 						remove_routing(connection_number);
@@ -1480,7 +1481,8 @@ function remove_connection(connection_number){
 						mod_buffer.poke(1, tmod_id, 0);
 						remove_from_mod_routemap(tvv,tmod_id); 
 						remove_routing(connection_number);
-						sigouts.message("setvalue", tvv+1,0);
+						// sigouts.message("setvalue", tvv+1,0);
+						mtoa_buffer.poke(1,tvv,0);
 					}else if((t_type == "midi") || (t_type == "block")){
 						//this is a midi-midi connection for a single voice
 						remove_routing(connection_number);
@@ -3799,10 +3801,10 @@ function build_mod_sum_action_list(){
 	mod_sum_action_list.poke(3,list_pointer,-1);
 	mod_sum_action_list.poke(4,list_pointer,-1);
 	list_pointer++;	
-	output_queue.poke(1,0,0);
+	// output_queue.poke(1,0,0);
 	//ttt = new Date().getTime() - ttt;
 	//post("\nMSA LIST MADE IN ",ttt);
-	messnamed("output_queue_pointer_reset","bang");
+	// messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0; 
 	messnamed("modulation_processor", "pause", 0); //this message gets deferred (in the max patch) otherwise the gen doesn't get a frame to realise that pause has changed to 1 and back

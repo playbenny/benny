@@ -114,7 +114,7 @@ function initialise_reset(hardware_file){
 
 	matrix.message("clear"); //clears the audio matrix
 	
-	sigouts.message("setvalue", 0,0); // clear sigs
+	// sigouts.message("setvalue", 0,0); // clear sigs
 
 	//wipe all the buffers
 	messnamed("clear_all_buffers","bang");
