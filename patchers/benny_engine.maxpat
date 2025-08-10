@@ -6761,7 +6761,6 @@
 						"classnamespace" : "box",
 						"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-31",
@@ -14113,8 +14112,8 @@
 			}
 , 			{
 				"name" : "benny logo 1.png",
-				"bootpath" : "C:/Users/jhold/Documents/james music/benny misc",
-				"patcherrelativepath" : "../../../../../jhold/Documents/james music/benny misc",
+				"bootpath" : "~/Documents/james music/benny misc",
+				"patcherrelativepath" : "../../../james music/benny misc",
 				"type" : "PNG",
 				"implicit" : 1
 			}
@@ -14294,8 +14293,8 @@
 			}
 , 			{
 				"name" : "smoothsig.gendsp",
-				"bootpath" : "~/Documents/GitHub/benny-xp/benny/code",
-				"patcherrelativepath" : "../../benny-xp/benny/code",
+				"bootpath" : "~/Documents/GitHub/benny/code",
+				"patcherrelativepath" : "../code",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
