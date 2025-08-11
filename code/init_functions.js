@@ -300,6 +300,7 @@ function read_settings_from_config() {
 	MAX_HARDWARE_BLOCKS = config.get("MAX_HARDWARE_BLOCKS");
 	MAX_STATES = config.get("MAX_STATES");
 	MERGE_PURGE = config.get("MERGE_PURGE");
+	STATE_FADE_DRAG_THRESHOLD = config.get("STATE_FADE_DRAG_THRESHOLD");
 	MAX_PANEL_COLUMNS = config.get("MAX_PANEL_COLUMNS");
 	SELF_CONNECT_THRESHOLD = config.get("SELF_CONNECT_THRESHOLD"); //when dragging a block back onto itself
 	SELF_CONNECT_REQUIRES_SHIFT = config.get("SELF_CONNECT_REQUIRES_SHIFT");

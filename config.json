@@ -1,6 +1,7 @@
 {
 	"START_FULLSCREEN" : 0,
 	"glow" : 0.2,
+	"STATE_FADE_DRAG_THRESHOLD" : 50,
 	"gain_display_format" : "x",
 	"AUTOMAP_MOUSE_FOLLOW" : 1,
 	"SHOW_CONTROL_AUTO_DURING_SONG_LOAD" : 0,
