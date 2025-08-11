@@ -156,7 +156,7 @@ function thispatcherstuff(){
 	note_poly = this.patcher.getnamed("note_poly");
 	audio_poly = this.patcher.getnamed("audio_poly");
 	audio_to_data_poly = this.patcher.getnamed("audio_to_data_poly");
-	sigouts = this.patcher.getnamed("sigouts");
+	sigouts = this.patcher.getnamed("smoothsigouts");
 	matrix = this.patcher.getnamed("matrix");
 	world = this.patcher.getnamed("world");
 	lcd_main = this.patcher.getnamed("lcd_main");
@@ -183,7 +183,7 @@ var mod_buffer = new Buffer("mod_buffer"); //filled according to 'id' which just
 var parameter_static_mod = new Buffer("voice_static_mod_buffer"); //holds per voice tweaks to parameter values
 var mod_sum_action_list = new Buffer("mod_sum_action_list"); //this is a list of things to add up and where they go, for modulation. the list is redone every time it might've changed, eg blocks added, flocks changed, connections added/removed
 var rebuild_action_list = 0;
-var output_queue = new Buffer("output_queue"); //this is a list of things for the js to do that the gen code updates - hw midi out, sigs
+// var output_queue = new Buffer("output_queue"); //this is a list of things for the js to do that the gen code updates - hw midi out, sigs
 var changed_queue = new Buffer("changed_queue"); //params that have changed for ui updates
 //var output_queue_pointer = 0;
 var changed_queue_pointer = 0;

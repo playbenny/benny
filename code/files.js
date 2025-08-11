@@ -871,7 +871,7 @@ function import_song(){
 		if(displaymode=="blocks") blocks_enable(1);
 		redraw_flag.flag|=12;
 		rebuild_action_list=1;
-		messnamed("output_queue_pointer_reset","bang");
+		// messnamed("output_queue_pointer_reset","bang");
 		changed_queue_pointer = 0;
 		if(preload_list.length>0) try{preload_task.schedule(5000);}catch(err){post("\nerror rescheduling preload task");} //if you interupted preloading waves, just restart it in 5secs
 	}
@@ -1669,8 +1669,8 @@ function clear_everything(){
 	messnamed("pause_mod_processing",1);
 	//messnamed("clear_all_buffers","bang"); 
 	//you don't need to do this, everything that gets loaded or created will overwrite these buffers
-	output_queue.poke(1,0,0);
-	messnamed("output_queue_pointer_reset","bang");
+	// output_queue.poke(1,0,0);
+	// messnamed("output_queue_pointer_reset","bang");
 	changed_queue.poke(1,0,0);
 	changed_queue_pointer = 0;
 	redraw_flag.paneltargets = [];
@@ -1785,7 +1785,7 @@ function clear_everything(){
 	//messnamed("update_midi_routemap","bang");
 	messnamed("MAX_NOTE_VOICES",MAX_NOTE_VOICES);
 
-	sigouts.message("setvalue", 0,0); // clear sigs
+	messnamed("clear_mtoa","bang");
 	song_select.previous_name="";
 	song_select.previous_blocks=[];
 	song_select.current_blocks=[];
