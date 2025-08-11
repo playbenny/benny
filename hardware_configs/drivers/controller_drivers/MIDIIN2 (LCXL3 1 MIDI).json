@@ -1,0 +1,33 @@
+{
+	"MIDIIN2 (LCXL3 1 MIDI)" : 			{
+		"name" :  "MIDIIN2 (LCXL3 1 MIDI)" ,
+		"driver" :  "MIDIIN2 (LCXL3 1 MIDI)" ,
+		"substitute" : [ "LPD8 mk2" ],
+		"outputs" : 32,
+		"type" : "encoder",
+		"channel" : 16,
+		"first" : 77,
+		"scaling" : 1,
+		"columns" : 8,
+		"rows" : 3,
+		"buttons" : 				{
+			"first" : 37,
+			"type" : "cc",
+			"channel" : 1,
+			"count" : 16,
+			"globals" : 					{
+				"automap_toggle" : 20,
+				"automap_page" : 21,
+				"lock_automap_control" : 16,
+				"lock_automap_keyboard" : 17,
+				"lock_automap_cue" : 18
+			}
+,
+			"values" : 					{
+				"type" : "cc",
+				"channel" : 1,
+				"first" : 37
+			}
+		}
+	}
+}

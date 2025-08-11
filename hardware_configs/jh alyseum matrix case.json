@@ -83,6 +83,40 @@
 				}
 
 			}
+,
+			"MIDIIN2 (LCXL3 1 MIDI)" : 			{
+				"name" : "MIDIIN2 (LCXL3 1 MIDI)",
+				"driver" : "MIDIIN2 (LCXL3 1 MIDI)",
+				"substitute" : [ "LPD8 mk2" ],
+				"outputs" : 32,
+				"type" : "encoder",
+				"channel" : 16,
+				"first" : 77,
+				"scaling" : 1,
+				"columns" : 8,
+				"rows" : 3,
+				"buttons" : 				{
+					"first" : 37,
+					"type" : "note",
+					"channel" : 1,
+					"count" : 16,
+					"globals" : 					{
+						"automap_toggle" : 20,
+						"automap_page" : 21,
+						"lock_automap_control" : 16,
+						"lock_automap_keyboard" : 17,
+						"lock_automap_cue" : 18
+					}
+,
+					"values" : 					{
+						"type" : "note",
+						"channel" : 1,
+						"first" : 0
+					}
+
+				}
+
+			}
 
 		}
 ,
@@ -94,7 +128,8 @@
 ,
 		"special_controller" : "/Users/james/Documents/GitHub/benny/hardware_configs/drivers/special_controller/jh_single_jogwheel.maxpat",
 		"controller_defaults" : 		{
-			"mixer_bus" : "LPD8 mk2"
+			"mixer_bus" : "LPD8 mk2",
+			"control_auto" : "MIDIIN2 (LCXL3 1 MIDI)"
 		}
 ,
 		"sync" : 		{
