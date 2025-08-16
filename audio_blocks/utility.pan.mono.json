@@ -3,7 +3,7 @@
 		"patcher" : "utility.pan.mono",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "takes a mono input, lets you adjust pan. has audio-rate control input.",
+		"help_text" : "takes a mono input, lets you adjust pan. has audio-rate control input. note: hard pan is +-1, going past that it feeds an inverted signal to the silent side, pushing the pan out past the speakers. think about your audience's playback equipment and listening position when doing this!",
 		"max_polyphony" : 2,
 		"upsample" : 1,
 		"from_subvoices" : 2,

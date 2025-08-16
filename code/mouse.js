@@ -500,28 +500,31 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						if(usermouse.ids[0]=="block-menu-background"){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
-							if(usermouse.clicked3d!="background_dragged"){
+							if(usermouse.clicked3d!="background_dragged" &&  blocks_menu[num]){
 								var num = matrix_menu_index[usermouse.hover[1]];
-								if(num == undefined) error("\nhow 1?",usermouse.hover[1],num);
-								var type = blocks_menu[num].name;
-								if(sidebar.show_help==0) sidebar.show_help = 1;
-								
-								//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
-								end_of_frame_fn = function(){
-									var r = new_block(type, Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
-									draw_block(r);
-									var bpw = (blocks_page.rightmost - blocks_page.leftmost);
-									var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
-									if(d > 0){
-										camera_position[0] += 1.5*d*bpw;
-										camera();
+								if(num != undefined){
+									// error("\nhow 1?",usermouse.hover[1],num);
+								// } else {										
+									var type = blocks_menu[num].name;
+									if(sidebar.show_help==0) sidebar.show_help = 1;
+									
+									//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
+									end_of_frame_fn = function(){
+										var r = new_block(type, Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+										draw_block(r);
+										var bpw = (blocks_page.rightmost - blocks_page.leftmost);
+										var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
+										if(d > 0){
+											camera_position[0] += 1.5*d*bpw;
+											camera();
+										}
+										selected.block[r] = 1;
+										sidebar.scopes.voice = -1;
+										sidebar.selected_voice = -1;
+										redraw_flag.flag |= 8;
 									}
-									selected.block[r] = 1;
-									sidebar.scopes.voice = -1;
-									sidebar.selected_voice = -1;
-									redraw_flag.flag |= 8;
+									set_display_mode("blocks");
 								}
-								set_display_mode("blocks");
 							}
 						}
 						usermouse.clicked3d = -1;
