@@ -2427,7 +2427,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	
 	sidebar.connection.default_out_applied = 0;
 	sidebar.connection.default_in_applied = 0;
-	var spreadwide = 0;
+	var defaultSpread = 0;
 	var is_explicitly_not_notes = 0;
 	var d = new Dict;
 	d = blocktypes.get(fromname);
@@ -2494,15 +2494,14 @@ function build_new_connection_menu(from, to, fromv,tov){
 		}else{
 			new_connection.replace("from::voice", "all" );
 			if(tov==-1){
-				if(fpoly*f_subvoices==tpoly*t_subvoices) spreadwide = 1;
-				//post("\nspreadW",spreadwide);
+				if(fpoly==tpoly) defaultSpread = 1;
 			}
 		}
 	}else{
 		new_connection.replace("from::voice", fromv + 1 );
 	}
-	if(spreadwide){
-		if((fpoly==1)||(tpoly==1)) spreadwide = 0;
+	if(defaultSpread){
+		if((fpoly==1)||(tpoly==1)) defaultSpread = 0;
 	}
 	sidebar.connection.default_in_applied = 0;
 	d = blocktypes.get(toname);
@@ -2516,7 +2515,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 					new_connection.replace("to::input::number",0);
 				}
 				new_connection.replace("to::input::type","hardware");
-				new_connection.replace("conversion::offset", spreadwide);
+				new_connection.replace("conversion::offset", defaultSpread);
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
@@ -2533,7 +2532,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 					new_connection.replace("to::input::number",0);
 				}
 				new_connection.replace("to::input::type","audio");
-				new_connection.replace("conversion::offset", spreadwide);
+				new_connection.replace("conversion::offset", defaultSpread);
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
