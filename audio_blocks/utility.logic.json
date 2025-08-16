@@ -1,0 +1,49 @@
+{
+	"utility.logic" : {
+		"patcher" : "utility.logic",
+		"type" : "audio",
+		"help_text" : "Logic block, all the classic logic functions available all the way up to audio rate.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in A", "in B" ]
+			},
+			"out" : {
+				"audio" : [ "out" ],
+				"midi" : [ "out", "NOT out" ],
+				"midi_watched" : [ 1 ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,0,0,1,2]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"columns" : 4,
+				"values" : ["AND", "OR", "XOR", "NAND" ],
+				"wrap" : 0,
+				"default" : 0.1
+			},
+			{
+				"name" : "threshold",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.01,
+				"error_scale" : 0
+			},
+			{
+				"name" : "input smoothing",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "exp1000"],
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
+	}
+}
