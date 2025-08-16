@@ -500,7 +500,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 						if(usermouse.ids[0]=="block-menu-background"){
 							if(usermouse.clicked3d!="background_dragged") set_display_mode("blocks");
 						}else{
-							if(usermouse.clicked3d!="background_dragged" &&  blocks_menu[num]){
+							if(usermouse.clicked3d!="background_dragged" &&  blocks_menu[matrix_menu_index[usermouse.hover[1]]]){
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num != undefined){
 									// error("\nhow 1?",usermouse.hover[1],num);
