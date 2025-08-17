@@ -61,10 +61,10 @@
 			},
 			{
 				"name" : "smooth",
-				"type" : "menu_l",
-				"values" : ["digital", "smooth" ],
+				"type" : "float",
+				"values" : ["uni", 1, 0.000001, "exp.001" ],
 				"wrap" : 0,
-				"default" : 0.1
+				"default" : 0.04
 			}
 		]
 	}

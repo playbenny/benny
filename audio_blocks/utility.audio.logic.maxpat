@@ -19,32 +19,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 314.5, 240.0, 81.0, 22.0 ],
-					"text" : "smooth 0.001"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-23",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 302.0, 208.0, 58.0, 22.0 ],
-					"text" : "smooth 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-17",
-					"maxclass" : "newobj",
-					"numinlets" : 3,
-					"numoutlets" : 3,
-					"outlettype" : [ "bang", "bang", "" ],
-					"patching_rect" : [ 302.0, 176.0, 44.0, 22.0 ],
-					"text" : "sel 0 1"
+					"patching_rect" : [ 314.5, 240.0, 65.0, 22.0 ],
+					"text" : "smooth $1"
 				}
 
 			}
@@ -146,7 +122,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Param mode(0);\r\nParam threshA(0);\r\nParam threshB(0);\r\nParam ips(0);\r\nParam sc(1);\r\nParam offs(0);\r\nParam smooth(1);\r\n\r\nHistory oo(0);\r\nHistory c(-1);\r\nHistory d(0);\r\n\r\na = (slide(in1,ips,ips))>threshA;\r\nb = (slide(in2,ips,ips))>threshB;\r\nannd = a && b;\r\norr = a || b;\r\n\r\nnewout = offs + sc * selector(mode, annd, orr, 1-annd, 1-orr);\r\n\r\nif(oo!=newout){ //smoothing not done\r\n\tif(c>=-1){\r\n\t\tif(c >= 1){\r\n\t\t\tc=-2;\r\n\t\t\too = newout;\r\n\t\t}\r\n\t\tc+=smooth;\r\n\t}else{\r\n\t\td = (newout-oo)*0.5;\r\n\t\tc=-1;\r\n\t}\r\n\tsmoo = oo + d*(1+c- 0.333*c*c*c);\r\n}else{\r\n\tsmoo = newout;\r\n}\r\n\r\nout1 = smoo;\r\n\t",
+					"code" : "Param mode(0);\r\nParam threshA(0);\r\nParam threshB(0);\r\nParam ips(0);\r\nParam sc(1);\r\nParam offs(0);\r\nParam smooth(1);\r\n\r\nHistory oo(0);\r\nHistory ono(0);\r\nHistory c(-1);\r\nHistory d(0);\r\n\r\na = (slide(in1,ips,ips))>threshA;\r\nb = (slide(in2,ips,ips))>threshB;\r\nannd = a && b;\r\norr = a || b;\r\n\r\nnewout = offs + sc * selector(mode, annd, orr, 1-annd, 1-orr);\r\nsmoo =0;\r\nif(oo!=ono){\r\n\tif(c >= 1){\r\n\t\tc = -2;\r\n\t\too = ono;\r\n\t\tsmoo = oo;\r\n\t}else if(c>=-1){\t\r\n\t\tc += smooth;\r\n\t\tsmoo = oo + d*(0.6666666+c- 0.3333333*c*c*c);\r\n\t}else{\r\n\t\td = (newout-oo)*0.75;\r\n\t\tc=-1;\r\n\t\tsmoo = oo;\r\n\t\tono = newout;\r\n\t}\r\n}else{\r\n\tsmoo = oo;\r\n\tono = newout;\r\n}\r\n\r\nout1 = smoo;\r\n\t",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -651,20 +627,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-23", 0 ],
-					"source" : [ "obj-17", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-26", 0 ],
-					"source" : [ "obj-17", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-11", 0 ],
 					"source" : [ "obj-19", 0 ]
 				}
@@ -723,13 +685,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-21", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-11", 0 ],
-					"source" : [ "obj-23", 0 ]
 				}
 
 			}
@@ -798,15 +753,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-17", 0 ],
-					"source" : [ "obj-29", 5 ]
+					"destination" : [ "obj-25", 0 ],
+					"source" : [ "obj-29", 4 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
-					"source" : [ "obj-29", 4 ]
+					"destination" : [ "obj-26", 0 ],
+					"source" : [ "obj-29", 5 ]
 				}
 
 			}
