@@ -10,23 +10,8 @@
 				"midi" : [ "in A", "in B" ]
 			},
 			"out" : {
-				"midi" : [ "out", "NOT out" ]
+				"midi" : [ "AND", "OR", "XOR", "NAND" ]
 			}
-		},
-		"groups" : [
-			{ 
-				"contains" : [0]
-			}
-		],
-		"parameters" : [
-			{
-				"name" : "mode",
-				"type" : "menu_l",
-				"columns" : 4,
-				"values" : ["AND", "OR", "XOR", "NAND" ],
-				"wrap" : 0,
-				"default" : 0.1
-			}
-		]
+		}
 	}
 }
