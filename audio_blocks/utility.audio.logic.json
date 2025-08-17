@@ -17,24 +17,32 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,0,0,0,1,2]
+				"contains" : [0,0,1,2,3,4,5,5]
 			}
 		],
 		"parameters" : [
 			{
 				"name" : "mode",
 				"type" : "menu_l",
-				"columns" : 4,
+				"columns" : 1,
 				"values" : ["AND", "OR", "XOR", "NAND" ],
 				"wrap" : 0,
 				"default" : 0.1
 			},
 			{
-				"name" : "threshold",
+				"name" : "A threshold",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.01,
+				"default" : 0.5,
+				"error_scale" : 0
+			},
+			{
+				"name" : "B threshold",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5,
 				"error_scale" : 0
 			},
 			{
@@ -43,6 +51,20 @@
 				"values" : ["uni", 0, 1, "exp1000"],
 				"wrap" : 0,
 				"default" : 0
+			},
+			{
+				"name" : "output",
+				"type" : "menu_l",
+				"values" : ["uni", "bi" ],
+				"wrap" : 0,
+				"default" : 0.6
+			},
+			{
+				"name" : "smooth",
+				"type" : "menu_l",
+				"values" : ["digital", "smooth" ],
+				"wrap" : 0,
+				"default" : 0.1
 			}
 		]
 	}
