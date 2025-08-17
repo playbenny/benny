@@ -122,7 +122,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "Param mode(0);\r\nParam threshA(0);\r\nParam threshB(0);\r\nParam ips(0);\r\nParam sc(1);\r\nParam offs(0);\r\nParam smooth(1);\r\n\r\nHistory oo(0);\r\nHistory ono(0);\r\nHistory c(-1);\r\nHistory d(0);\r\n\r\na = (slide(in1,ips,ips))>threshA;\r\nb = (slide(in2,ips,ips))>threshB;\r\nannd = a && b;\r\norr = a || b;\r\n\r\nnewout = offs + sc * selector(mode, annd, orr, 1-annd, 1-orr);\r\nsmoo =0;\r\nif(oo!=ono){\r\n\tif(c >= 1){\r\n\t\tc = -2;\r\n\t\too = ono;\r\n\t\tsmoo = oo;\r\n\t}else if(c>=-1){\t\r\n\t\tc += smooth;\r\n\t\tsmoo = oo + d*(0.6666666+c- 0.3333333*c*c*c);\r\n\t}else{\r\n\t\td = (newout-oo)*0.75;\r\n\t\tc=-1;\r\n\t\tsmoo = oo;\r\n\t\tono = newout;\r\n\t}\r\n}else{\r\n\tsmoo = oo;\r\n\tono = newout;\r\n}\r\n\r\nout1 = smoo;\r\n\t",
+					"code" : "Param mode(0);\r\nParam threshA(0);\r\nParam threshB(0);\r\nParam ips(0);\r\nParam sc(1);\r\nParam offs(0);\r\nParam smooth(1);\r\n\r\nHistory oo(0);\r\nHistory ono(0);\r\nHistory c(-1);\r\nHistory d(0);\r\n\r\na = (slide(in1,ips,ips))>threshA;\r\nb = (slide(in2,ips,ips))>threshB;\r\nannd = a && b;\r\norr = a || b;\r\n\r\nnewout = offs + sc * selector(mode, annd, orr, orr && (1-annd), 1-orr);\r\nsmoo =0;\r\nif(oo!=ono){\r\n\tif(c >= 1){\r\n\t\tc = -2;\r\n\t\too = ono;\r\n\t\tsmoo = oo;\r\n\t}else if(c>=-1){\t\r\n\t\tc += smooth;\r\n\t\tsmoo = oo + d*(0.6666666+c- 0.3333333*c*c*c);\r\n\t}else{\r\n\t\td = (newout-oo)*0.75;\r\n\t\tc=-1;\r\n\t\tsmoo = oo;\r\n\t\tono = newout;\r\n\t}\r\n}else{\r\n\tsmoo = oo;\r\n\tono = newout;\r\n}\r\n\r\nout1 = smoo;\r\n\t",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -299,10 +299,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 162.0, 725.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 1"
 				}
 
@@ -446,10 +442,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 42.0, 267.0, 35.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "out 2"
 				}
 
@@ -473,6 +465,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 883.0, 461.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 2"
 				}
 
@@ -485,6 +481,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 721.0, 244.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 2"
 				}
 
@@ -496,6 +496,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 193.0, 546.0, 42.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out~ 1"
 				}
 
@@ -508,6 +512,10 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 192.0, 240.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "in~ 1"
 				}
 
@@ -519,6 +527,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 71.0, 167.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -543,10 +555,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 71.0, 108.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
