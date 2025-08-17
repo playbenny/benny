@@ -7,7 +7,8 @@
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "sort me by note", "sort me by velocity" ]
+				"midi" : [ "sort me by note", "sort me by velocity" ],
+				"automap_poly" : 0
 			},
 			"out" : {
 				"midi_scopes_types" : [ 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,

@@ -2,7 +2,7 @@
 	"utility.audio.logic" : {
 		"patcher" : "utility.audio.logic",
 		"type" : "audio",
-		"help_text" : "Logic block, all the classic logic functions! works on audio/cv signals, use midi.logic if you're processing midi.",
+		"help_text" : "Logic block, all the classic logic functions! works on audio/cv signals, use midi.logic if you're processing midi. the smoothing control prevents the aliasing you get with on/off signals in digital, and works as a crude octave divider at extreme amounts.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {

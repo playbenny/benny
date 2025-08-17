@@ -1,3 +1,7 @@
+17/8/25:
+- new **midi.logic** and **utility.audio.logic** are blocks that perform all the classic logic functions.
+- **utility.spray** is a block that routes incoming notes to different outlets indexed by either note or velocity. useful for example, for turning a sequencer/clock progress counter into events at particular steps.
+
 2/8/25:
 - **seq.values** now lets you type lists of values in directly. hover your mouse over the lane you want to type into, then type, separating values by commas. eg c4,c#4,36,37,,,,2,3,127 followed by enter.
 
