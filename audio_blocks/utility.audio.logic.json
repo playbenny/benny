@@ -1,8 +1,8 @@
 {
-	"utility.logic" : {
-		"patcher" : "utility.logic",
+	"utility.audio.logic" : {
+		"patcher" : "utility.audio.logic",
 		"type" : "audio",
-		"help_text" : "Logic block, all the classic logic functions available all the way up to audio rate.",
+		"help_text" : "Logic block, all the classic logic functions! works on audio/cv signals, use midi.logic if you're processing midi.",
 		"max_polyphony" : 0,
 		"upsample" : 1,
 		"connections" : {

@@ -1,0 +1,32 @@
+{
+	"midi.logic" : {
+		"patcher" : "midi.logic",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "Logic block, all the classic logic functions! Designed for midi, use utility.audio.logic for an audio rate version of this block",
+		"max_polyphony" : 0,
+	"connections" : {
+			"in" : { 
+				"midi" : [ "in A", "in B" ]
+			},
+			"out" : {
+				"midi" : [ "out", "NOT out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0]
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "mode",
+				"type" : "menu_l",
+				"columns" : 4,
+				"values" : ["AND", "OR", "XOR", "NAND" ],
+				"wrap" : 0,
+				"default" : 0.1
+			}
+		]
+	}
+}

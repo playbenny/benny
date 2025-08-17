@@ -1,15 +1,23 @@
 {
-	"utility.note.funnel" : {
-		"patcher" : "utility.note.funnel",
+	"utility.spray" : {
+		"patcher" : "utility.spray",
 		"type" : "note",
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Routes each incoming note number to a different output.",
+		"help_text" : "Routes each incoming note to a different output, using either its note or its velocity as an index. Useful for getting an event on a specific step of a sequence using its position output. Want to do this with (monophonic) audio? try the pitch.gate block",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in" ]
+				"midi" : [ "sort me by note", "sort me by velocity" ]
 			},
 			"out" : {
+				"midi_scopes_types" : [ 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+					3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3 ],
 				"midi": [
 					"0 - C-2",
 					"1 - C#-2",
