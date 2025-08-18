@@ -4318,11 +4318,13 @@ function draw_sidebar(){
 					for(var t=0;t<sidebar.scopes.midiouttypes.length;t++) sc += !(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12;
 					if(sc>0){
 						var sw = (sidebar.width+fo1) / sc;
+						
 						x1 = sidebar.x;
+						var gap = sc < 32 ? fo1 : 1;
 						for(var t=0;t<sidebar.scopes.midiouttypes.length;t++){
 							var tw = sw * (!(sidebar.scopes.midiouttypes[t]&1) ? 1 : 0.12);
-							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,sidebar.scopes.bg);
-							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-fo1,sidebar.scopes.endy,mouse_index,1);
+							lcd_main.message("paintrect", x1, sidebar.scopes.starty,x1+tw-gap,sidebar.scopes.endy,sidebar.scopes.bg);
+							click_zone(scope_midinames, t,(sidebar.scopes.midiouttypes[t]==0),  x1, sidebar.scopes.starty,x1+tw-gap,sidebar.scopes.endy,mouse_index,1);
 							if(sidebar.scopes.midinames== 2 + t){
 								var ms = blocktypes.getsize(block_name+"::connections::out::midi");
 								var nam = "";
