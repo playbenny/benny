@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 6,
+			"revision" : 8,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -170,7 +170,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"patching_rect" : [ 692.0, 595.0, 29.5, 22.0 ],
-					"text" : "-"
+					"text" : "+"
 				}
 
 			}
@@ -404,8 +404,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 267.0, 359.259765625, 29.5, 22.0 ],
-					"text" : "i"
+					"patching_rect" : [ 267.5, 359.259765625, 29.5, 22.0 ],
+					"text" : "i -1"
 				}
 
 			}
@@ -802,7 +802,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-16", 0 ],
+					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-10", 14 ]
 				}
 
