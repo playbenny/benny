@@ -278,7 +278,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 	if(usermouse.got_t==0){
 		if((displaymode=="blocks")||(displaymode=="block_menu")){
 			//i do manual hit detection while dragging a block because i couldn't work out how to make phys picker see things under the dragged block..
-			if((displaymode=="blocks") && (usermouse.last.left_button)) id = manual_hit_detection();
+			if((displaymode=="blocks") /*&& (usermouse.last.left_button)*/) id = manual_hit_detection();
 			if(id==null) id = picker_lookups(phys_picker_id);
 			if(id!=null) id = picker_hover_and_special(id);
 		}else if(displaymode=="flocks"){
