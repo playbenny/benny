@@ -10,25 +10,22 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 718.0, 701.0 ],
+		"rect" : [ 134.0, 134.0, 718.0, 701.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
-					"code" : "// this gets the number of the last entry \r\n// in the seq dict, so that overdub \r\n// adds not replaces\r\noutlets = 1;\r\nvar seqs = new Dict;\r\nseqs.name = 'seq-piano-roll';\r\n\r\nfunction getsize(block,seq){\r\n\tvar sqs = seqs.get(block);\r\n\tvar sq = sqs.get(seq);\r\n\tvar size = parseInt(sq.getkeys().pop());\r\n\toutlet(0, size);\r\n}",
-					"filename" : "none",
-					"fontface" : 0,
-					"fontname" : "<Monospaced>",
-					"fontsize" : 12.0,
 					"id" : "obj-90",
-					"maxclass" : "v8.codebox",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1253.0, 448.0, 340.0, 200.0 ],
+					"patching_rect" : [ 858.0, 544.0, 86.0, 22.0 ],
 					"saved_object_attributes" : 					{
+						"filename" : "get-seq-size",
 						"parameter_enable" : 0
 					}
-
+,
+					"text" : "js get-seq-size"
 				}
 
 			}
