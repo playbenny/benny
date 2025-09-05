@@ -1311,7 +1311,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				} //todo? ctrl-scroll a block
 			}else if((usermouse.shift)&&(usermouse.alt)){
 				var stw = screentoworld(usermouse.x,usermouse.y);
-				make_space(stw[0],stw[1],-4*scroll);
+				make_space(stw[0],stw[1],-1*scroll);
 			}
 		}else if(displaymode=="block_menu"){
 			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));

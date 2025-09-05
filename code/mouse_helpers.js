@@ -4470,7 +4470,7 @@ function make_space(x,y,r){
 			var dy = by-y;
 			var dd = Math.sqrt(dx*dx+dy*dy);
 			if((dd>1.4)||(r>0)){
-				dd = r/dd;
+				dd = r;
 				dx *= dd;
 				dy *= dd; //now normalised to a r-long vector.
 				bx += dx; 

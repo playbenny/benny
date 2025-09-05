@@ -1,5 +1,6 @@
 5/9/25:
 - adjusted project settings for faster initial load
+- improved 'make space' function: alt+shift + scroll to spread out all the blocks on the blocks page
 
 17/8/25:
 - new **midi.logic** and **utility.audio.logic** are blocks that perform all the classic logic functions: OR, AND, XOR, NAND.
