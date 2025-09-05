@@ -16,6 +16,7 @@ function loadbang(){
 	projectpath = path.split("patchers/");
 	projectpath = projectpath[0];
 	post("\npath is",projectpath);
+	messnamed("filepath","set",projectpath,1);
 	post("\nlooking for userconfig:",projectpath+"userconfig.json");
 	var userconfigfile = new File(projectpath+"userconfig.json");
 	if(userconfigfile.isopen){
