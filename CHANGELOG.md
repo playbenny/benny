@@ -1,3 +1,6 @@
+5/9/25:
+- adjusted project settings for faster initial load
+
 17/8/25:
 - new **midi.logic** and **utility.audio.logic** are blocks that perform all the classic logic functions: OR, AND, XOR, NAND.
 - **utility.spray** is a block that routes incoming notes to different outlets indexed by either note or velocity. useful for example, for turning a sequencer/clock progress counter into events at particular steps.
