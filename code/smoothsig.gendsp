@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 7,
+			"revision" : 8,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -19,14 +19,14 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"patching_rect" : [ 179.5, 63.0, 28.0, 22.0 ],
 					"text" : "in 1"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"code" : "Buffer mtoa(\"mtoa_sigs\");\r\n\r\nou = peek(mtoa, mc_channel);\r\n\r\nout1 = slide(ou,1000,1000);",
+					"code" : "Buffer mtoa(\"mtoa_sigs\");\r\n\r\nou = peek(mtoa, mc_channel);\r\n\r\nout1 = ou;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -65,7 +65,8 @@
 				}
 
 			}
- ]
+ ],
+		"autosave" : 0
 	}
 
 }
