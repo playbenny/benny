@@ -16,6 +16,11 @@
 			}
 		},
 		"groups" : [
+			{
+				"contains" : [12,13,14,15,16],
+				"height" : 0,
+				"colour" : 30
+			},
 			{ 
 				"contains" : [0,0,0,1,10,11],
 				"height" : 0
@@ -73,7 +78,7 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0.6
 			},
 			{
 				"name" : "loop_enable",
@@ -123,7 +128,47 @@
 				"type" : "button",
 				"values" : ["core","edit_wave","request_edit_wave"],
 				"default" : 0
-			}	
+			},
+			{
+				"name" : "1b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","1b","length 1"]
+			},
+			{
+				"name" : "2b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","2b","length 2"]
+			},
+			{
+				"name" : "4b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","4b","length 4"]
+			},
+			{
+				"name" : "6b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","6b","length 6"]
+			},
+			{
+				"name" : "8b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","8b","length 8"]
+			}
 		]
 	}
 }
