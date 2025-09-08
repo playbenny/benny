@@ -4299,20 +4299,19 @@ function blocks_menu_enter(){
 			set_display_mode("blocks");
 			end_of_frame_fn = function(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
-				draw_block(r);
+				selected.block[r] = 1;
+				sidebar.scopes.voice = -1;
+				sidebar.selected_voice = -1;
+				var t = draw_block(r);
+				block_cubes++;
+				voice_cubes+=t[0];
+				write_blocks_matrix();
 				var bpw = (blocks_page.rightmost - blocks_page.leftmost);
 				var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
 				if(d > 0){
 					camera_position[0] += 1.5*d*bpw;
 					camera();
 				}
-				write_block_matrix(r);
-				messnamed("voices_matrices","bang");
-				messnamed("blocks_matrices","bang");	
-				redraw_flag.matrices &= 253;
-				selected.block[r] = 1;
-				sidebar.scopes.voice = -1;
-				sidebar.selected_voice = -1;
 				redraw_flag.flag |= 8;
 			}
 		}else if(menu.mode == 1){
