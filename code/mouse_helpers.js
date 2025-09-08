@@ -4295,7 +4295,7 @@ function blocks_menu_enter(){
 	if(count==1){
 		var types = blocktypes.getkeys();
 		if(menu.mode == 0){
-			post("\nnew block",sel,types[sel]);
+			// post("\nnew block",sel,types[sel]);
 			set_display_mode("blocks");
 			end_of_frame_fn = function(){
 				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));

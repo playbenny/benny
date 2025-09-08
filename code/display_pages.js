@@ -1,5 +1,5 @@
 function set_display_mode(mode,t){
-	post("\nset display mode",mode,t);
+	// post("\nset display mode",mode,t);
 	if(mode == "custom"){
 		custom_block = +t;
 		last_displaymode = displaymode;
@@ -1526,7 +1526,7 @@ function block_and_wire_colours(){ //for selection and mute etc
 
 
 function draw_block(i){ //i is the blockno, we've checked it exists before this point
-	post("\ndrawing block",i);
+	// post("\ndrawing block",i);
 	var vc=0; var bc=0; var mc=0;
 	draw_block_texture(i);
 	block_x = blocks.get("blocks["+i+"]::space::x");
@@ -1678,7 +1678,7 @@ function draw_block(i){ //i is the blockno, we've checked it exists before this 
 }
 
 function draw_blocks(){
-	post("draw blocks");
+	// post("draw blocks");
 	var i;
 	blocks_page.leftmost=0;
 	blocks_page.rightmost=0;
@@ -2210,7 +2210,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 }
 
 function write_block_matrix(b){	
-	post("write block matrix",b);
+	// post("write block matrix",b);
 	if(Array.isArray(blocks_cube[b])){
 		var bc=matrix_block_index[b];
 		matrix_block_position.setcell(bc,0,"val",blocks_cube[b][0].position[0],blocks_cube[b][0].position[1],blocks_cube[b][0].position[2]);
@@ -2305,7 +2305,7 @@ function move_flock_blocks(){
 }	
 
 function write_blocks_matrix(){
-	post("\nwrite blocks matrix",redraw_flag.matrices,block_cubes,voice_cubes);
+	// post("\nwrite blocks matrix",redraw_flag.matrices,block_cubes,voice_cubes);
 	redraw_flag.matrices &= 253;
 	matrix_voice_position.dim = [voice_cubes,1];
 	matrix_voice_colour.dim = [voice_cubes,1];
