@@ -21,12 +21,13 @@
 				"height" : 0,
 				"colour" : 30
 			},
-			{ 
-				"contains" : [0,0,0,1,10,11],
-				"height" : 0
+			{
+				"contains" : [17,18,19],
+				"height" : 0,
+				"colour" : 15
 			},
 			{
-				"contains" : [2,2,2,6,6,7,7],
+				"contains" : [2,2,6,7],
 				"height" : 4
 			},
 			{
@@ -35,6 +36,10 @@
 			},
 			{
 				"contains" : [8,9],
+				"height" : 0
+			},
+			{ 
+				"contains" : [0,0,0,1,10,11],
 				"height" : 0
 			}
 		],
@@ -168,6 +173,30 @@
 				"error_scale" : 0,
 				"wrap" : 0,
 				"values" : ["firstvoice","8b","length 8"]
+			},
+			{
+				"name" : "double",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","double","rate double"]
+			},
+			{
+				"name" : "half",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","half","rate half"]
+			},
+			{
+				"name" : "rev",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","rev","rate rev"]
 			}
 		]
 	}

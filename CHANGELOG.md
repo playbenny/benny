@@ -1,3 +1,6 @@
+8/9/25:
+- **varispeed looper** adjusted, now with shortcut buttons to set length and change rate in useful ways, both of which make it easier to use as a basic looper.
+
 5/9/25:
 - adjusted project settings for faster initial load
 - improved 'make space' function: alt+shift + scroll to spread out all the blocks on the blocks page
