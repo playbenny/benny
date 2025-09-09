@@ -54,7 +54,7 @@
 				"values" : ["uni", 0.01, 1000, "exp" ],
 				"wrap" : 0,
 				"error_scale" : 2,
-				"default" : 0.05
+				"default" : 0
 			},
 			{
 				"name" : "sustain",
