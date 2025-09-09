@@ -1,3 +1,7 @@
+9/9/25:
+- on blocks that have buttons that set a value - eg buckets delay has a row of time buttons - these are able to be applied to just one voice if you select it before pressing the button.
+- main window opens at a more useable size by default.
+
 8/9/25:
 - **varispeed looper** adjusted, now with shortcut buttons to set length and change rate in useful ways, both of which make it easier to use as a basic looper.
 

@@ -60,7 +60,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","write_1","write 1"]
+				"values" : ["voices","write_1","write 1"]
 			},
 			{
 				"name" : "write 0",
@@ -68,7 +68,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","write_0","write 0"]
+				"values" : ["voices","write_0","write 0"]
 			},
 			{
         "name" : "volts 1",

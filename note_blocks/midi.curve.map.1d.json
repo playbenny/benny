@@ -79,7 +79,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp++",10]
+				"values" : ["voices","exp++",10]
 			},
 			{
 				"name" : "up_e1",
@@ -87,7 +87,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp+",11]
+				"values" : ["voices","exp+",11]
 			},
 			{
 				"name" : "up_e",
@@ -95,7 +95,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp",12]
+				"values" : ["voices","exp",12]
 			},
 			{
 				"name" : "up_S",
@@ -103,7 +103,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","S",13]
+				"values" : ["voices","S",13]
 			},	
 			{
 				"name" : "up_l",
@@ -111,7 +111,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",14]
+				"values" : ["voices","log",14]
 			},
 			{
 				"name" : "up_l1",
@@ -119,7 +119,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",15]
+				"values" : ["voices","log",15]
 			},
 			{
 				"name" : "up_l2",
@@ -127,7 +127,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",16]
+				"values" : ["voices","log",16]
 			},
 			{
 				"name" : "down_e2",
@@ -135,7 +135,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp++",20]
+				"values" : ["voices","exp++",20]
 			},
 			{
 				"name" : "down_e1",
@@ -143,7 +143,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp+",21]
+				"values" : ["voices","exp+",21]
 			},
 			{
 				"name" : "down_e",
@@ -151,7 +151,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp",22]
+				"values" : ["voices","exp",22]
 			},
 			{
 				"name" : "down_S",
@@ -159,7 +159,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","S",23]
+				"values" : ["voices","S",23]
 			},	
 			{
 				"name" : "down_l",
@@ -167,7 +167,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",24]
+				"values" : ["voices","log",24]
 			},
 			{
 				"name" : "down_l1",
@@ -175,7 +175,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",25]
+				"values" : ["voices","log",25]
 			},
 			{
 				"name" : "down_l2",
@@ -183,7 +183,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",26]
+				"values" : ["voices","log",26]
 			},
 			{
 				"name" : "up_down_e2",
@@ -191,7 +191,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp++",30]
+				"values" : ["voices","exp++",30]
 			},
 			{
 				"name" : "up_down_e1",
@@ -199,7 +199,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp+",31]
+				"values" : ["voices","exp+",31]
 			},
 			{
 				"name" : "up_down_e",
@@ -207,7 +207,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp",32]
+				"values" : ["voices","exp",32]
 			},
 			{
 				"name" : "up_down_S",
@@ -215,7 +215,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","S",33]
+				"values" : ["voices","S",33]
 			},	
 			{
 				"name" : "up_down_l",
@@ -223,7 +223,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",34]
+				"values" : ["voices","log",34]
 			},
 			{
 				"name" : "up_down_l1",
@@ -231,7 +231,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",35]
+				"values" : ["voices","log",35]
 			},
 			{
 				"name" : "up_down_l2",
@@ -239,7 +239,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",36]
+				"values" : ["voices","log",36]
 			},
 			{
 				"name" : "down_up_e2",
@@ -247,7 +247,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp++",40]
+				"values" : ["voices","exp++",40]
 			},
 			{
 				"name" : "down_up_e1",
@@ -255,7 +255,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp+",41]
+				"values" : ["voices","exp+",41]
 			},
 			{
 				"name" : "down_up_e",
@@ -263,7 +263,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","exp",42]
+				"values" : ["voices","exp",42]
 			},
 			{
 				"name" : "down_up_S",
@@ -271,7 +271,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","S",43]
+				"values" : ["voices","S",43]
 			},	
 			{
 				"name" : "down_up_l",
@@ -279,7 +279,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",44]
+				"values" : ["voices","log",44]
 			},
 			{
 				"name" : "down_up_l1",
@@ -287,7 +287,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",45]
+				"values" : ["voices","log",45]
 			},
 			{
 				"name" : "down_up_l2",
@@ -295,7 +295,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","log",46]
+				"values" : ["voices","log",46]
 			}						
 		]
 	}
