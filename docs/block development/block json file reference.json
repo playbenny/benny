@@ -180,7 +180,7 @@ and the json file has to be saved as the same name too. eg this example is based
 				"error_scale" : 0,
 				"wrap" : 0,
 				"values" : ["firstvoice","8",8] // a list, in groups of 3 as follows:
-                //"firstvoice","voices" - all voices,"block" - to the ui patcher,"core" - run a fn in the core js.. (advanced..)
+                //"firstvoice","voices" - all selected voices,"block" - to the ui patcher,"core" - run a fn in the core js.. (advanced..)
                 //"8" < this is the label on the button
                 //8 <- this can be a number or a "string like this" and it gets sent to the max patcher you specified (in1 - it'll come out the last output of the voiceheader subpatcher) 
             },

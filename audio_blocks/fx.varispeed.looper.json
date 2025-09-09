@@ -140,7 +140,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","1b","length 1"]
+				"values" : ["voices","1b","length 1"]
 			},
 			{
 				"name" : "2b",
@@ -148,7 +148,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","2b","length 2"]
+				"values" : ["voices","2b","length 2"]
 			},
 			{
 				"name" : "4b",
@@ -156,7 +156,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","4b","length 4"]
+				"values" : ["voices","4b","length 4"]
 			},
 			{
 				"name" : "6b",
@@ -164,7 +164,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","6b","length 6"]
+				"values" : ["voices","6b","length 6"]
 			},
 			{
 				"name" : "8b",
@@ -172,7 +172,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","8b","length 8"]
+				"values" : ["voices","8b","length 8"]
 			},
 			{
 				"name" : "double",
@@ -180,7 +180,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","double","rate double"]
+				"values" : ["voices","double","rate double"]
 			},
 			{
 				"name" : "half",
@@ -188,7 +188,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","half","rate half"]
+				"values" : ["voices","half","rate half"]
 			},
 			{
 				"name" : "rev",
@@ -196,7 +196,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","rev","rate rev"]
+				"values" : ["voices","rev","rate rev"]
 			}
 		]
 	}

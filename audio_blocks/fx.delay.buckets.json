@@ -142,7 +142,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","16",16]
+				"values" : ["voices","16",16]
 			},
 			{
 				"name" : "8 T",
@@ -150,7 +150,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","8T",12]
+				"values" : ["voices","8T",12]
 			},
 			{
 				"name" : "8th",
@@ -158,7 +158,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","8",8]
+				"values" : ["voices","8",8]
 			},
 			{
 				"name" : "4 T",
@@ -166,7 +166,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","4T",6]
+				"values" : ["voices","4T",6]
 			},
 			{
 				"name" : "3 16th",
@@ -174,7 +174,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","3/16",316]
+				"values" : ["voices","3/16",316]
 			},
 			{
 				"name" : "beat",
@@ -182,7 +182,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","beat",4]
+				"values" : ["voices","beat",4]
 			},
 			{
 				"name" : "1.5xbeat",
@@ -190,7 +190,7 @@
 				"default" : 0,
 				"error_scale" : 0,
 				"wrap" : 0,
-				"values" : ["firstvoice","1.5x",3]
+				"values" : ["voices","1.5x",3]
 			},
 			{
 				"name" : "delayline_input gain",
