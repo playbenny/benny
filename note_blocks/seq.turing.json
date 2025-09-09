@@ -1,0 +1,103 @@
+{
+	"seq.turing" : {
+		"patcher" : "seq.turing",
+		"type" : "note",
+		"block_ui_patcher" : "seq.turing.ui",
+		"ui_in_sidebar_height" : 1,		
+		"no_edit" : 1,
+		"help_text" : "Implementation of the famous music thing turing machine",
+		"max_polyphony" : 1,
+		"connections" : {
+			"in" : {
+				"midi" : [ "clock in" ],
+				"automap_poly" : 0
+			},
+			"out" : {
+				"midi" : [ "main pulse 0", "pulses 1", "pulses 1&2", "pulses 2", "pulses 2&4", "pulses 3", "pulses 4", "pulses 5", "pulses 4&7", "pulses 6", "pulses 1&2&4&7", "pulses 7" ],
+				"parameters" : [ "out", "volts out" ],
+				"midi_scopes_types" : [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+				"dontdefaultall" : 1
+			}
+		},
+		"groups" : [
+
+			{ 
+				"contains" : [0, 0, 1, 2, 3]
+			},
+			{ 
+				"contains" : [4, 5, 6, 7, 8],
+				"header"	: "volts"
+			}
+		],
+		"panel" : {
+			"parameters" : [0, 1, 2, 3]
+		},
+		"parameters" : [
+			{
+        "name" : "random",
+				"type"	: "menu_f",
+				"values" : ["random", "unstable", "stable", "double"],
+				"wrap" : 1,
+				"default" : 0
+			},
+			{
+        "name" : "length",
+				"type"	: "menu_i",
+				"values" : ["2", "3", "4", "5", "6", "8", "12", "16" ],
+				"wrap" : 1,
+				"default" : 0.5
+			},
+			{
+				"name" : "write 1",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","1","write 1"]
+			},
+			{
+				"name" : "write 0",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["firstvoice","0","write 0"]
+			},
+			{
+        "name" : "volts 1",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.99
+			},
+			{
+        "name" : "volts 2",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.99
+			},
+			{
+        "name" : "volts 3",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.99
+			},
+			{
+        "name" : "volts 4",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.99
+			},
+			{
+        "name" : "volts 5",
+				"type"	: "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.99
+			}
+		]
+	}
+}
