@@ -920,6 +920,12 @@ function outputfx(type, number, value){
 	}
 }
 
+var screenDimensions = { x : 1200, y: 800 };
+function screensize(x,y){
+	screenDimensions.x = x;
+	screenDimensions.y = y;
+}
+
 function send_globals(){
 	messnamed("MAX_DATA",MAX_DATA);
 	messnamed("MAX_BLOCKS",MAX_BLOCKS);

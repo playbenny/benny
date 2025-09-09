@@ -342,6 +342,8 @@ function initialise_graphics() {
 	if(config.contains("START_FULLSCREEN")&&(config.get("START_FULLSCREEN")==1)){
 		fullscreen = 1;
 		world.message("fullscreen",1);
+	}else{
+		world.message("rect", screenDimensions.x * 0.03, screenDimensions.y*0.08, screenDimensions.x*0.97,screenDimensions.y * 0.92);
 	}
 	world.getsize(); //world.message( "getsize"); //get ui window ready
 

@@ -1294,6 +1294,9 @@ function send_button_message(parameter, value){
 	}else if(value[0] == "voices"){
 		var vl=voicemap.get(parameter);
 		if(!Array.isArray(vl)) vl=[vl];
+		if(sidebar.selected == parameter && sidebar.selected_voice>-1){
+			vl = [vl[sidebar.selected_voice]];
+		}
 		for(var t=vl.length;t--;){
 			if(vl[t]<MAX_NOTE_VOICES){
 				note_poly.message("setvalue", vl[t]+1,value[1]);
