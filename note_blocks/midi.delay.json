@@ -31,9 +31,7 @@
 				"colour" : -4
 			}			
 		],
-		"panel" : {
-			"parameters" : [0, 1]
-		},
+
 		"parameters" : [
 			{
 				"name" : "time",

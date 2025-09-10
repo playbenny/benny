@@ -27,9 +27,6 @@
 				"height" : 2
 			}
 		],
-		"panel" : {
-			"parameters" : [0]
-		},
 		"parameters" : [
 			{
 				"name" : "meta",

@@ -19,9 +19,6 @@
 				"contains" : [0,1,2]
 			}
 		],
-		"panel" : {
-			"parameters" : [1,2]
-		},
 		"parameters" : [
 			{
 				"name" : "shape",

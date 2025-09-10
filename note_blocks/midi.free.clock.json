@@ -22,9 +22,6 @@
 				"height":0
 			}		
 		],
-		"panel" : {
-			"parameters" : [0, 2]
-		},
 		"parameters" : [
 			{
 				"name" : "tempo",

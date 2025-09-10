@@ -40,9 +40,6 @@
 				"height" : 0
 			}
 		],
-		"panel" : {
-			"parameters" : [1, 2, 3]
-		},
 		"parameters" : [
 			{
 				"name" : "mode",

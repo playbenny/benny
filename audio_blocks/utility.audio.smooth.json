@@ -18,9 +18,6 @@
 				"contains" : [0,  1]
 			}
 		],
-		"panel" : {
-			"parameters" : [0]
-		},
 		"parameters" : [
 			{
 				"name" : "smoothing_filter_cutoff",

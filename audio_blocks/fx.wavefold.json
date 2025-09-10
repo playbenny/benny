@@ -19,9 +19,6 @@
 				"contains" : [0,1,2,3]
 			}
 		],
-		"panel" : {
-			"parameters" : [0, 1,2]
-		},
 		"parameters" : [
 			{
 				"name" : "multiplier",

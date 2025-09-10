@@ -46,9 +46,6 @@
 			}
 			
 		],
-		"panel" : {
-			"parameters" : [ 0, 1, 3]
-		},
 		"parameters" : [
 			{
 				"name" : "Octave",
