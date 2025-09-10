@@ -14,6 +14,18 @@
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-43",
+					"maxclass" : "number",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 188.0, 550.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-38",
 					"linecount" : 2,
 					"maxclass" : "message",
@@ -21,7 +33,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 78.0, 631.0, 50.0, 36.0 ],
-					"text" : "1 0 0 1 0 0 0 0"
+					"text" : "0 1 0 1 0 0 0 0"
 				}
 
 			}
@@ -1568,6 +1580,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-28", 0 ],
 					"order" : 0,
+					"source" : [ "obj-31", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-43", 0 ],
+					"order" : 8,
 					"source" : [ "obj-31", 0 ]
 				}
 
