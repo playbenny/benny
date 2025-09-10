@@ -27,7 +27,7 @@
 			{ 
 				"contains" : [4, 5, 6, 7, 8],
 				"header"	: "volts",
-				"height" : 0
+				"click_set" : 1
 			}
 		],
 		"panel" : {
@@ -58,6 +58,7 @@
 			},
 			{
 				"name" : "write 0",
+				""
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
