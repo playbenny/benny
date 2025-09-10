@@ -13,9 +13,9 @@
 				"automap_poly" : 0
 			},
 			"out" : {
-				"midi" : [ "main pulse 0", "pulses 1", "pulses 1&2", "pulses 2", "pulses 2&4", "pulses 3", "pulses 4", "pulses 5", "pulses 4&7", "pulses 6", "pulses 1&2&4&7", "pulses 7" ],
+				"midi" : [ "main pulse 1", "pulses 1&2", "pulses 2", "pulses 2&4", "pulses 3", "pulses 4", "pulses 5", "pulses 4&7", "pulses 6", "pulses 1&2&4&7", "pulses 7" ],
 				"parameters" : [ "out", "volts out" ],
-				"midi_scopes_types" : [3,3,3,3,3,3,3,3,3,3,3,3, 2,2],
+				"midi_scopes_types" : [3,3,3,3,3,3,3,3,3,3,3, 2,2],
 				"dontdefaultall" : 1
 			}
 		},
