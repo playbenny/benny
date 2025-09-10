@@ -22,11 +22,12 @@
 		"groups" : [
 
 			{ 
-				"contains" : [0, 0, 1, 2, 3, 4]
+				"contains" : [0, 0, 1, 2, 3]
 			},
 			{ 
-				"contains" : [5, 6, 7, 8, 9],
-				"header"	: "volts"
+				"contains" : [4, 5, 6, 7, 8],
+				"header"	: "volts",
+				"height" : 0
 			}
 		],
 		"panel" : {
@@ -36,23 +37,16 @@
 			{
         "name" : "random",
 				"type"	: "menu_f",
-				"values" : ["stable", "random"],
+				"values" : ["stable", "random", "stable moebius"],
 				"wrap" : 0,
-				"default" : 1
+				"default" : 0
 			},
 			{
         "name" : "length",
 				"type"	: "menu_i",
 				"values" : ["2", "3", "4", "5", "6", "8", "12", "16" ],
 				"wrap" : 1,
-				"default" : 0.5
-			},
-			{
-        "name" : "double",
-				"type"	: "menu_b",
-				"values" : ["off", "on" ],
-				"wrap" : 1,
-				"default" : 0.24
+				"default" : 0.65
 			},
 			{
 				"name" : "write 1",
@@ -76,7 +70,7 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"click_set" : 1,
 				"wrap" : 0,
-				"default" : 0.99
+				"default" : 0.5
 			},
 			{
         "name" : "volts 2",
@@ -84,7 +78,7 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"click_set" : 1,
 				"wrap" : 0,
-				"default" : 0.99
+				"default" : 0.5
 			},
 			{
         "name" : "volts 3",
@@ -92,7 +86,7 @@
 				"values" : ["uni", 0, 1, "lin"],
 				"click_set" : 1,
 				"wrap" : 0,
-				"default" : 0.99
+				"default" : 0.5
 			},
 			{
         "name" : "volts 4",
@@ -100,7 +94,7 @@
 				"click_set" : 1,
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.99
+				"default" : 0.5
 			},
 			{
         "name" : "volts 5",
@@ -108,7 +102,7 @@
 				"click_set" : 1,
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.99
+				"default" : 0.5
 			}
 		]
 	}
