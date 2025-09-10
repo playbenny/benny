@@ -4311,6 +4311,15 @@ function blocks_menu_enter(){
 				sidebar.scopes.voice = -1;
 				sidebar.selected_voice = -1;
 				var t = draw_block(r);
+				if(usermouse.shift && blocks_page.was_selected!=null){
+					getWiresPotentialConnection();
+					if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
+						build_new_connection_menu(r,blocks_page.was_selected,-1,-1);
+					}else{
+						build_new_connection_menu(blocks_page.was_selected,r,-1,-1);
+					}
+				} 
+				blocks_page.was_selected = null;
 				block_cubes++;
 				voice_cubes+=t[0];
 				write_blocks_matrix();

@@ -56,6 +56,7 @@
         "block_menu" : {
             "-3" : ["ESC", "key_escape"],
             "-4" : ["enter", "blocks_menu_enter"],
+            "508": ["shift+enter", "blocks_menu_enter"],
             "96" : ["`", "messnamed","panic","bang" ],
             "all" : ["all","type_to_search"]
         },

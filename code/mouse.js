@@ -503,14 +503,8 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							if(usermouse.clicked3d!="background_dragged" &&  blocks_menu[matrix_menu_index[usermouse.hover[1]]]){
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num != undefined){
-									// error("\nhow 1?",usermouse.hover[1],num);
-								// } else {										
 									var type = blocks_menu[num].name;
 									if(sidebar.show_help==0) sidebar.show_help = 1;
-									if(blocks_page.was_selected!=null){
-										post("\nI SHOULD CONNECT THIS NEW BLOCK TO:",blocks_page.was_selected);
-									} 
-									//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 									set_display_mode("blocks");
 									end_of_frame_fn = function(){
 										var r = new_block(type, Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
@@ -522,6 +516,15 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 										selected.block[r] = 1;
 										var t = draw_block(r);
+										if(usermouse.shift && blocks_page.was_selected!=null){
+											getWiresPotentialConnection();
+											if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
+												build_new_connection_menu(r,locks_page.was_selected,-1,-1);
+											}else{
+												build_new_connection_menu(blocks_page.was_selected,r,-1,-1);
+											}
+										} 
+										blocks_page.was_selected = null;
 										block_cubes++;
 										voice_cubes+=t[0];
 										write_blocks_matrix();
@@ -1072,22 +1075,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										potential_connection.replace("from::voice",tempfromvoice);
 										if(Array.isArray(wire_ends[wires_potential_connection]))wire_ends[wires_potential_connection][3] = -99.94;
 										if(wires_potential_connection==-1){
-											var csize = connections.getsize("connections");
-											var w=1;
-											for(var i=1;i<csize;i++){ //look for an empty slot
-												if(!connections.contains("connections["+i+"]::to::number")){
-													//post("\nfound an empty slot,",i," to use for potential connection wire");
-													connections.replace("connections["+i+"]",potential_connection);
-													wires_potential_connection = i;
-													w=0;
-													i=csize;
-												}
-											}
-											if(w==1){
-												connections.append("connections",potential_connection);
-												wires_potential_connection = connections.getsize("connections")-1;
-												// post("\nappended, number is",wires_potential_connection);
-											}
+											getWiresPotentialConnection(); //find a free slot in the connections dict
 										}else{
 											// post("\nreplaced", wires_potential_connection);
 											connections.replace("connections["+wires_potential_connection+"]",potential_connection);
@@ -1175,6 +1163,25 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 				custom_mouse_passthrough(mouse_click_parameters[usermouse.got_i],1);
 			}
 		}
+	}
+}
+
+function getWiresPotentialConnection() {
+	var csize = connections.getsize("connections");
+	var w = 1;
+	for (var i = 1; i < csize; i++) { //look for an empty slot
+		if (!connections.contains("connections[" + i + "]::to::number")) {
+			//post("\nfound an empty slot,",i," to use for potential connection wire");
+			connections.replace("connections[" + i + "]", potential_connection);
+			wires_potential_connection = i;
+			w = 0;
+			i = csize;
+		}
+	}
+	if (w == 1) {
+		connections.append("connections", potential_connection);
+		wires_potential_connection = connections.getsize("connections") - 1;
+		// post("\nappended, number is",wires_potential_connection);
 	}
 }
 

@@ -1,3 +1,6 @@
+10/9/25:
+- if a block is selected and you enter the block menu by typing the name of a new block and hold shift when you click / hit enter to create it, then the new block will be wired to/from the one that was selected, depending on whether you were above or below it
+
 9/9/25:
 - on blocks that have buttons that set a value - eg buckets delay has a row of time buttons - these are able to be applied to just one voice if you select it before pressing the button.
 - main window opens at a more useable size by default.
