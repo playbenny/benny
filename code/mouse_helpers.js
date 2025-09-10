@@ -930,6 +930,11 @@ function show_new_block_menu(){
 	if(selected.block.indexOf(1)>-1){
 		post("\nsomething was selected, you can hold shift to connect to/from it");
 		blocks_page.was_selected = selected.block.indexOf(1);
+		if(sidebar.selected_voice>-1){
+			blocks_page.was_selected_voice = sidebar.selected_voice;
+		} else {
+			blocks_page.was_selected_voice = null;
+		}
 	} 
 	clear_blocks_selection();
 	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
@@ -4311,12 +4316,12 @@ function blocks_menu_enter(){
 				sidebar.scopes.voice = -1;
 				sidebar.selected_voice = -1;
 				var t = draw_block(r);
-				if(usermouse.shift && blocks_page.was_selected!=null){
+				if(blocks_page.was_selected!=null && (usermouse.shift || config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
 					getWiresPotentialConnection();
 					if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
-						build_new_connection_menu(r,blocks_page.was_selected,-1,-1);
+						build_new_connection_menu(r,blocks_page.was_selected,-1,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1);
 					}else{
-						build_new_connection_menu(blocks_page.was_selected,r,-1,-1);
+						build_new_connection_menu(blocks_page.was_selected,r,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1, -1);
 					}
 				} 
 				blocks_page.was_selected = null;

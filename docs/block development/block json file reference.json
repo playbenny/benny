@@ -51,6 +51,9 @@ and the json file has to be saved as the same name too. eg this example is based
                 //"audio" : [ "in" , "one or two audio ins"], //[AUDIO BLOCKS ONLY]
                 "midi" : ["notes in", "aux trigger", "transpose in"],
                 "default" : 0, //optional, tell it the default input that connections go to
+                 "dontdefaultall" : 1,//normally connections to a block with many voices assume
+                    //you're connecting to the poly alloc. some blocks it's always going to be an individual voice
+                    //which is what this key is for. saves a click..
 				"automap_to" : 1, //optional, tell it the default target for midi keyboard automap
                 "automap_poly" : 0 //optional, if set 0 it automaps to the first voice instead of to the block polyallocator
                      //useful for blocks where the individual voices work with polyphonic midi input - for example

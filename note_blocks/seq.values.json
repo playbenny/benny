@@ -18,6 +18,8 @@
 			"in" : {
 				"midi" : [ "trigger", "backwards step", "note->position", "reset", "step record in" ],
 				"default" : 0, 
+				"dontdefaultall" : 1,
+				"automap_poly" : 0,
 				"automap_to" : 4
 			},
 			"out" : {

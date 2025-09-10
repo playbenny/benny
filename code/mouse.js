@@ -516,12 +516,12 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 										selected.block[r] = 1;
 										var t = draw_block(r);
-										if(usermouse.shift && blocks_page.was_selected!=null){
+										if(blocks_page.was_selected!=null && (usermouse.shift || config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
 											getWiresPotentialConnection();
 											if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
-												build_new_connection_menu(r,locks_page.was_selected,-1,-1);
+												build_new_connection_menu(r,locks_page.was_selected,-1,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1);
 											}else{
-												build_new_connection_menu(blocks_page.was_selected,r,-1,-1);
+												build_new_connection_menu(blocks_page.was_selected,r,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1,-1);
 											}
 										} 
 										blocks_page.was_selected = null;

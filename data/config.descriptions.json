@@ -12,6 +12,7 @@
 	"monofont" : "monospaced font",
 	"mainfont" : "main font",
 	"SELF_CONNECT_REQUIRES_SHIFT" : "if enabled you need to hold shift to connect a block to itself.",
+	"ALWAYS_AUTOCONNECT_IF_YOU_CAN" : "if on, then if you make a new block (via type-to-search) and you had a block selected already then the new block will be automatically connected to it",
 	"STATE_FADE_DRAG_THRESHOLD" : "distance you have to drag from a state button before it turns into a fader",
 	"MAX_BEZIER_SEGMENTS" : "maximum number of segments to make a wire out of (raising this seems to make the gpu work hard)",
 	"MAX_BLOCKS" : "number of blocks available.",
