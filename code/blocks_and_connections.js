@@ -3871,7 +3871,7 @@ function spawn_player(keyblock,auto){
 								var to = (connections.get("connections["+c+"]::to::number"));
 								var tx = blocks.get("blocks["+to+"]::space::x");
 								var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
-								make_space(tx,ty,1.2);
+								make_fisheye_space(tx,ty,0.8);
 								var playerblock = new_block("seq.piano.roll",tx,ty);
 								if(!blocks.contains("blocks["+playerblock+"]::patterns::names")){
 									var pn = [];
@@ -3971,7 +3971,7 @@ function spawn_player(keyblock,auto){
 		
 		var tx = blocks.get("blocks["+to+"]::space::x");
 		var ty = blocks.get("blocks["+to+"]::space::y")+0.5;
-		make_space(tx,ty,1.2);
+		make_fisheye_space(tx,ty,0.8);
 		clear_blocks_selection();
 		var playerblock = new_block("seq.piano.roll",tx,ty);
 		if(!blocks.contains("blocks["+playerblock+"]::patterns::names")){

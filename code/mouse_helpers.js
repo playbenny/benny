@@ -750,7 +750,7 @@ function insert_menu_button(cno){
 	}else{
 		blocks_page.new_block_click_pos = [0.5*(fr[0]+tt[0]),0.5*(fr[1]+tt[1])];
 		if((fr[1]-tt[1])<2){
-			make_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.5);
+			make_fisheye_space(blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1],1.1);
 		}
 	}
 	set_display_mode("block_menu");
@@ -926,6 +926,11 @@ function show_new_block_menu(){
 	}else{
 		store_back([sidebar.mode,sidebar.selected, sidebar.selected_voice,sidebar.scroll.position]);
 	}
+	blocks_page.was_selected = null;
+	if(selected.block.indexOf(1)>-1){
+		post("\nsomething was selected, you can hold shift to connect to/from it");
+		blocks_page.was_selected = selected.block.indexOf(1);
+	} 
 	clear_blocks_selection();
 	blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);
 	usermouse.clicked3d=-1;
@@ -4484,6 +4489,38 @@ function make_space(x,y,r){
 	}
 	redraw_flag.flag |= 4;
 }
+
+function make_fisheye_space(x,y,r){
+	//move all blocks a distance r along a line from their x,y to the specified x,y.
+	var usz=undo_stack.getsize("history")|0;
+	if(undo_stack.contains("history["+(usz-1)+"]::actions::make_space")){
+		usz=-1;
+	}else{
+		undo_stack.append("history","{}");
+		undo_stack.setparse("history["+usz+"]", '{ "actions" : { "make_space" : {} } }');
+	}
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::space")){
+			var bx = blocks.get("blocks["+b+"]::space::x");
+			var by = blocks.get("blocks["+b+"]::space::y");
+			if(usz!=-1) undo_stack.setparse("history["+usz+"]::actions::make_space::"+b, '{ "x" : '+bx+', "y" : '+by+'}');	
+			var dx = bx-x;
+			var dy = by-y;
+			var dd = Math.sqrt(dx*dx+dy*dy);
+			if((dd>1.4)||(r>0)){
+				dd = r/dd;
+				dx *= dd;
+				dy *= dd; //now normalised to a r-long vector.
+				bx += dx; 
+				by += dy;
+				blocks.replace("blocks["+b+"]::space::x",bx);
+				blocks.replace("blocks["+b+"]::space::y",by);
+			}
+		}
+	}
+	redraw_flag.flag |= 4;
+}
+
 
 function reify_automap_k(){
 	// makes new connection out of automap k connection, turns off automap_k

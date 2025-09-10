@@ -507,7 +507,9 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								// } else {										
 									var type = blocks_menu[num].name;
 									if(sidebar.show_help==0) sidebar.show_help = 1;
-									
+									if(blocks_page.was_selected!=null){
+										post("\nI SHOULD CONNECT THIS NEW BLOCK TO:",blocks_page.was_selected);
+									} 
 									//post("menu click c3d="+usermouse.clicked3d+" ids1 = "+usermouse.ids[1]+" oid "+usermouse.oid+" hover "+usermouse.hover);
 									set_display_mode("blocks");
 									end_of_frame_fn = function(){
@@ -556,7 +558,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 								var avx = blocks.get("blocks["+f_no+"]::space::x");
 								var avy = blocks.get("blocks["+f_no+"]::space::y") - 0.5;
 								var dy = blocks.get("blocks["+t_no+"]::space::y")-blocks.get("blocks["+f_no+"]::space::y");
-								if(dy<1.2) make_space(avx,avy,0.65);
+								if(dy<1.2) make_fisheye_space(avx,avy,0.55);
 								avy = blocks.get("blocks["+f_no+"]::space::y") - 1.25;
 								var num = matrix_menu_index[usermouse.hover[1]];
 								if(num == undefined) error("\nhow 3?",usermouse.hover[1],num);
