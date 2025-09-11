@@ -911,6 +911,7 @@ function select_voice(parameter,value){
 }
 
 function sidebar_select_connection(num,val){
+	post("\nSSC");
 	if(usermouse.ctrl){
 		if(!connections.contains("connections["+num+"]::conversion")) post("\n?????",num);
 		var m = !connections.get("connections["+num+"]::conversion::mute");
