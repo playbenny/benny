@@ -21,7 +21,7 @@
 				"height" : 0
 			},
 			{ 
-				"contains" : [3, 1],
+				"contains" : [3,3, 1, 18, 19, 20],
 				"height" : 0,
 				"colour": -5
 			},
@@ -53,7 +53,7 @@
 			{
 				"name" : "shape",
 				"type" : "menu_d",
-				"values" : ["same as scale", "1", "2", "3", "4", "5", "6", "7", "8"],
+				"values" : ["same", "1", "2", "3", "4", "5", "6", "7", "8"],
 				"error_scale" : 0,
 				"force_label" : 1,
 				"wrap" : 0,
@@ -171,6 +171,31 @@
 				"type" : "button",
 				"values" : ["core","jump to_scales_block","jump_to_scales_shapes"],
 				"default" : 0
+			},
+			{
+				"name" : "post_transpose",
+				"type" : "int",
+				"values" : ["bi", -63, 63, "lin"],
+				"error_scale" : 0.3,
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "out of_range_notes",
+				"type" : "menu_i",
+				"values" : ["mute", "fold 1", "fold 2", "fold 3"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"force_label": 1,
+				"default" : 0.27
+			},
+			{
+				"name" : "first note_is root",
+				"type" : "menu_b",
+				"values" : ["rootless", "first_note is_root"],
+				"error_scale" : 0,
+				"wrap" : 1,
+				"default" : 0.27
 			}
 		]
 	}
