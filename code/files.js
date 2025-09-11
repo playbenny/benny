@@ -201,7 +201,7 @@ function create_blank_wave_buffer(number,length, channels,name){
 	get_polybuffer_info();
 	var buffername = "waves."+polybuffer_names.length;
 	waves_buffer[number]= new Buffer(buffername);
-	post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name,buffername);
+	// post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name,buffername);
 	var d = new Dict;
 	d.name = "temp";
 	if(number>=waves_dict.getsize("waves")) extend_waves_dict(number+1);
