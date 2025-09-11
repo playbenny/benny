@@ -4137,12 +4137,14 @@ function draw_sidebar(){
 								//see if there's a default automap target input stored
 								if(blocks.contains("blocks["+block+"]::automap_to")){
 									automap.inputno_k = blocks.get("blocks["+block+"]::automap_to");
-								}else if(blocktypes.contains(block_name+"::connections::in::automap_to")){
-									automap.inputno_k = blocktypes.get(block_name+"::connections::in::automap_to");
 								}else{
-									automap.inputno_k = 0;
+									if(blocktypes.contains(block_name+"::connections::in::automap_to")){
+										automap.inputno_k = blocktypes.get(block_name+"::connections::in::automap_to");
+									}else{
+										automap.inputno_k = 0;
+									}
+									blocks.replace("blocks["+block+"]::automap_to",automap.inputno_k);
 								}
-								blocks.replace("blocks["+block+"]::automap_to",automap.inputno_k);
 							}
 							automap.mapped_k = block;
 							automap.colours_k.colour = block_colour;

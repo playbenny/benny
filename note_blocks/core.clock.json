@@ -9,7 +9,8 @@
 		"ui_in_sidebar_height" : 2,		
 		"connections" : {
 			"in" : {
-				"midi" : [ "play" ]
+				"midi" : [ "play", "tap tempo" ],
+				"automap_to" : 1
 			},
 			"out" : {
 				"midi" : [ "clock" ],

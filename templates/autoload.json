@@ -105,7 +105,7 @@
 			}
 ,
 			"mute" : 0,
-			"automap_to" : 0
+			"automap_to" : 1
 		}
 , 		{
 			"patcher" : "core.input.control.auto",
