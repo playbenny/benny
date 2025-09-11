@@ -19,16 +19,20 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,2],
-				"colour" : 10
+				"contains" : [0,1,2,6],
+				"colour" : 15
 			},
 			{ 
-				"contains" : [3,4,5,6,7],
-				"colour" : 5,
+				"contains" : [3,4,5,7],
+				"colour" : -8,
 				"height" : 0
 			},
 			{
-				"contains" : [9,8,11,12,10,10],
+				"contains" : [9,8,11],
+				"height" : 0
+			},
+			{
+				"contains" : [12,10,10],
 				"height" : 0
 			}
 		],
@@ -71,14 +75,14 @@
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.02 
+				"default" : 0.05 
 			},
 			{
 				"name" : "selfmod",
 				"type" : "float",
 				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0.5 
+				"default" : 0.54
 			},
 			{
 				"name" : "detune",
@@ -98,7 +102,7 @@
 				"name" : "pluck_tone",
 				"type" : "menu_f",
 				"values" : ["impulse" , "noise" , "saw"],
-				"error_scale" : 0.2,
+				"error_scale" : 0.7,
 				"wrap" : 1
 			},
 			{
@@ -107,7 +111,7 @@
 				"values" : ["rev", "soft", "pluck" ],
 				"wrap" : 0,
 				"error_scale" : 1,
-				"default" : 0.99
+				"default" : 0.99999
 			},
 			{
 				"name" : "gain",

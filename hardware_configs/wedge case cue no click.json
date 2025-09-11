@@ -204,7 +204,6 @@
 		"hardware.out.1+2" : 		{
 			"type" : "hardware",
 			"help_text" : "main stereo outs",
-			"output_block" : "output_reverb",
 			"max_polyphony" : 2,
 			"exclusive" : 1,
 			"connections" : 			{
