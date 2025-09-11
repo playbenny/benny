@@ -112,7 +112,7 @@
 				"type" : "float",
 				"values" : ["uni", 0.01, 60000, "exp1000" ],
 				"wrap" : 0,
-				"default" : 0.15
+				"default" : 0.3
 			},
 			{
 				"name" : "curve",
