@@ -58,7 +58,6 @@
 			},
 			{
 				"name" : "write 0",
-				""
 				"type" : "button",
 				"default" : 0,
 				"error_scale" : 0,
