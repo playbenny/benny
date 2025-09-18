@@ -20,6 +20,7 @@ function msg_dictionary(a){
     currentChain = 0;
     chains = [];
     calculate_chains();
+    findMinimalHittingSet();
     draw();
 	}
 	//post(JSON.stringify(a));
@@ -30,6 +31,7 @@ function build_graph(){
   incount = [];
   outcount = []; //index by vertice number = block number
   edges = [];
+
   blocks.forEach((b,i) => {
     if(b.name){
       vertices.push(i);
@@ -37,14 +39,25 @@ function build_graph(){
       outcount[i] = 0;
     }
   });
-  connections.forEach((c,i) => {
+    // it needs the connections in order of lowest voice# (eg 1, 2, [3,4,5], [7,8], "all") so do this as 2 passes
+    // for each block, look at all the connections that go from it, store connectionno / lowestvoice as pairs
+  connections.forEach((c) => {
     if(c.from){
-      edges.push([c.from.number , c.to.number]);
+      let lv;
+      if(c.from.voice == "all"){
+        lv = -1;
+      }else if(Array.isArray(c.from.voice)){
+        lv = Math.min(...c.from.voice);
+      }else{
+        lv = c.from.voice;
+      }
+      edges.push([c.from.number , c.to.number, lv]);
       outcount[c.from.number]++;
       incount[c.to.number]++;
-      // post("\nconnection:",i,": [",c.from.number,",",c.to.number,"]");
+      // post("\nconnection:",i,": [",c.from.number,",",c.to.number,"]");    
     }
   });
+  //edges.sort((a,b) => a[2] - b[2]);
 }
 
 let level = 0;
@@ -208,13 +221,13 @@ function getChain(v){
   //returns all the chains vertex v is in.
   // post("\ngetchain for block",v,blocks[v].name);
   let ret = [];
-  /*if(0 && Array.isArray(chains[v]) && chains[v].length>1){
+  if(0 && Array.isArray(chains[v]) && chains[v].length>1){
     ret = [...chains[v]];
     if(ret.indexOf(currentChain)==-1) ret.push(currentChain);
-    // post("stopping at",v,"chain is",...ret);
+    post("stopping at",v,"chain is",...ret);
     chains[v] = [...ret];
     return ret;
-  }else{*/
+  }else{
     let first = 1;
     edges.forEach((e,i) => {
       if(e[1] == v){
@@ -234,7 +247,7 @@ function getChain(v){
     // post("chain for",v,"is",...ret);
     chains[v] = [...ret];
     return ret;
-  //}
+  }
 }
 
 // todo:
@@ -248,30 +261,32 @@ function getChain(v){
 // = union of all sets; find the next element of X than can be removed; then make two recursive calls,
 //  one where this element is removed, and one where this element is marked as "don't remove"."
 //implement scroll through rows - the selected row is in the center of the screen.
-function draw(){
-  let maxlev;
-  
-  let hitting = findMinimalHittingSet();
+function draw(scroll){
+  if(scroll == null) scroll = 0;
 
-  //legacy
-  rowlist=[];
-  for(let v = 0;v<blocks.length;v++){
-    if(Array.isArray(blocklevel[v]) && Array.isArray(chains[v])) rowlist.push(chains[v][0]);
-  }
+  let maxlev;
 
   for(let v = 0;v<blocks.length;v++){
     if(Array.isArray(blocklevel[v])){
       maxlev = 900; //minlev = 0;
       blocklevel[v].forEach(l => {
-        maxlev = /*Math.max(maxlev, l);
+        maxlev = Math.min(maxlev, l);
         // minlev =*/ Math.min(maxlev, l);
       });
       blocks[v].space.y = maxlev * -1.25;
       blocks[v].space.experiment_x = maxlev;
       post("\nblock",v,blocks[v].name,"level",maxlev,"levelblocks[]",levelblocks[maxlev],"chains",chains[v]);
       if(Array.isArray(chains[v])){
-        blocks[v].space.x = (chains[v][0]) * 2;
-        blocks[v].space.experiment_y = rowlist.indexOf(chains[v][0]);
+        let dist = 999;
+        let closest;
+        chains[v].forEach(x => {
+          if(Math.abs(x-scroll)<dist){
+            dist = Math.abs(x-scroll);
+            closest = x;
+          }
+        })
+        blocks[v].space.x = (closest) * 2.5;
+        blocks[v].space.experiment_y = closest;
       }else{
         blocks[v].space.x = -2;
       }
@@ -332,7 +347,11 @@ function findMinimalHittingSet(){
     return 1;
   }
   function cleanChain(v){
-    chains[v].filter((x) => hitting.indexOf(x)>-1);
+    if(!Array.isArray(chains[v])) chains[v]=[];
+    chains[v].forEach((t,i)=> {
+      chains[v][i] = hitting.indexOf(chains[v][i]);
+    });
+    chains[v] = chains[v].filter((x) => x>-1);
   }
 }
   // post("\nio counts:");
