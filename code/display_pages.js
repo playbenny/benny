@@ -509,6 +509,76 @@ function populate_pattern_page(){ //goes through and checks all blocks for state
 
 
 function draw_panels(){
+	//experimental renderer!
+	var max_x = 0;
+	var max_y = 0;
+	
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::space")){
+			var x = blocks.get("blocks["+b+"]::space::experiment_x");
+			var y = blocks.get("blocks["+b+"]::space::experiment_y");
+			if(x>max_x)max_x=x;
+			if(y>max_y)max_y=y;
+		}
+	}
+	var column_width;
+	if(sidebar.mode != "none"){
+		column_width = (sidebar.x-18 - fontheight*1.1) / (max_x + 1);
+	}else{
+		column_width = (mainwindow_width-18 - fontheight*1.1)/(max_x + 1);
+	}
+	var row_height = (mainwindow_height-18 - fontheight*1.1)/(max_y + 1);
+	var cw1=column_width*0.1;
+	var rh1=row_height*0.1;
+	var po=0;
+	for(var c=0;c<connections.getsize("connections");c++){
+		po+=2;
+		if(po>=8)po=-6;
+		if(connections.contains("connections["+c+"]::from")){
+			var fb = connections.get("connections["+c+"]::from::number");
+			var tb = connections.get("connections["+c+"]::to::number");
+			if(blocks.contains("blocks["+fb+"]::space") && blocks.contains("blocks["+tb+"]::space")){
+				var fx = po+fontheight*1.1 + column_width * blocks.get("blocks["+fb+"]::space::experiment_x");
+				var fy = po+mainwindow_height - row_height * (1 + blocks.get("blocks["+fb+"]::space::experiment_y"));
+				var tx = po+fontheight*1.1 + column_width * blocks.get("blocks["+tb+"]::space::experiment_x");
+				var ty = po+mainwindow_height - row_height * (1 + blocks.get("blocks["+tb+"]::space::experiment_y"));
+				var po2=po+8;
+				lcd_main.message("frgb", 127*(((po2)&2) + 1),127*(((po2)&4) + 1),127*(((po2)&8) + 1) );
+				lcd_main.message("moveto",fx+column_width*0.5,fy+row_height*0.5);
+				lcd_main.message("lineto",fx+column_width,fy+row_height*0.5);
+				if(fy!=ty || fb==tb || tx<=fx){
+					var o = 0.5*(fy<ty)+0.5-0.5*(ty<fy);
+					o *= row_height;
+					lcd_main.message("lineto",fx+column_width,fy+o);
+					lcd_main.message("lineto",tx,fy+o);
+					lcd_main.message("lineto",tx,ty+(row_height-o));
+				}
+				lcd_main.message("lineto",tx,ty+row_height*0.5);
+				lcd_main.message("lineto",tx+column_width*0.5,ty+row_height*0.5);
+			}
+		}
+	}
+	for(var b=0;b<MAX_BLOCKS;b++){
+		if(blocks.contains("blocks["+b+"]::space")){
+			var x = fontheight*1.1 + column_width * blocks.get("blocks["+b+"]::space::experiment_x");
+			var y = mainwindow_height - row_height * (1 + blocks.get("blocks["+b+"]::space::experiment_y"));
+			lcd_main.message("paintrect",x+cw1,y+rh1,x+column_width-cw1,y+row_height-rh1,blocks.get("blocks["+b+"]::space::colour"));
+			lcd_main.message("frgb",0,0,0);
+			var label;
+			if(blocks.contains("blocks["+b+"]::label")){
+				label = blocks.get("blocks["+b+"]::label").split('.');
+			}else{
+				label = blocks.get("blocks["+b+"]::name").split('.');
+			}  
+			for(l=0;l<label.length;l++){
+				lcd_main.message("moveto",x+2*cw1,y+(3+2*l)*rh1);
+				lcd_main.message("write",label[l]);
+			}
+		}
+	}
+}
+
+function ole_draw_panels(){
 	//deferred_diag.push("draw panels "+mouse_index);
 	var panelsbottom = (bottombar.block==-1) ? mainwindow_height : mainwindow_height - bottombar.height - 9;
 	panels.custom = [];

@@ -52,12 +52,17 @@ function build_graph(){
         lv = c.from.voice;
       }
       edges.push([c.from.number , c.to.number, lv]);
-      outcount[c.from.number]++;
-      incount[c.to.number]++;
       // post("\nconnection:",i,": [",c.from.number,",",c.to.number,"]");    
     }
   });
-  //edges.sort((a,b) => a[2] - b[2]);
+  // post("\nconnections pre sort:\n\n",JSON.stringify(edges));
+  edges.sort((a,b) => a[2] - b[2]);
+  edges.forEach((e) => {
+    outcount[e[0]]++;
+    incount[e[1]]++;
+    let dummy = e.pop();}
+  );
+  // post("\n\nconnections after sort:\n\n",JSON.stringify(edges));
 }
 
 let level = 0;
@@ -136,7 +141,7 @@ function removeMostDifferent() {
 function removeALayerOfSinks(){
   let queue = [];
   vertices.forEach((v) => {
-    if(outcount[v]==0) queue.push(v);
+    if(outcount[v]==0 && blocks[v].name.split('.')[0] != 'core') queue.push(v);
   });
   if(queue.length){
     post("\nremoving a layer of sinks, level",-level,":",...queue);
@@ -205,49 +210,53 @@ function storeBlockLevel(v,l){
 let currentChain = 0;
 let chains = [];
 function calculate_chains(){
-  // this should run down the trees, assigining things a y coordinate (x in old benny)
+  // this should run down the trees, assigning things a y coordinate (x in old benny)
   currentChain = 0;
   const startinglist = levelblocks.slice(-1)[0];
   post("\nchainfinding: start from blocks in last row:", startinglist);
   startinglist.forEach(v => { //for each thing in the last row:
     // post("\nSTART:",v);
-    chains[v] = [currentChain];
-    chains[v].push(...getChain(v));
+    getChain(v, [v]);
     currentChain++;
   });
 }
 
-function getChain(v){
+function getChain(v, visited){
   //returns all the chains vertex v is in.
-  // post("\ngetchain for block",v,blocks[v].name);
-  let ret = [];
-  if(0 && Array.isArray(chains[v]) && chains[v].length>1){
-    ret = [...chains[v]];
-    if(ret.indexOf(currentChain)==-1) ret.push(currentChain);
-    post("stopping at",v,"chain is",...ret);
-    chains[v] = [...ret];
-    return ret;
-  }else{
-    let first = 1;
-    edges.forEach((e,i) => {
+  visited.push(v);
+  if(currentChain>59)return currentChain;
+  post("\n-->",v,blocks[v].name,"level",blocklevel[v],"chains",JSON.stringify(chains[v]));
+  let ret = chains[v];
+  if(!Array.isArray(ret))ret=[];
+  let queue = [];
+  if(blocklevel[v]>0){
+    edges.forEach((e) => {
       if(e[1] == v){
-        if(e[0] != v && (parseInt(blocklevel[e[0]]) < parseInt(blocklevel[e[1]]))){
-          if(!first){
-            currentChain++;
-          } else{
-            first = 0;
+        if(e[0] != v){
+          if((parseInt(blocklevel[e[0]]) > parseInt(blocklevel[e[1]])) && Array.isArray(chains[e[1]]) && chains[e[1]].length>0){
+            post("\nfeedback loop, stopped recursion",parseInt(blocklevel[e[0]]),parseInt(blocklevel[e[1]]));
+          }else if(queue.indexOf(e[0]) == -1 && visited.indexOf(e[0]) == -1){
+            queue.push(e[0]);
           }
-          // post("recursing to",e[0]);
-          ret.push(...getChain(e[0]));
-          if(ret.indexOf(currentChain)==-1) ret.push(currentChain);
         }
       }
     });
-    if(ret.length == 0) ret.push(currentChain);
-    // post("chain for",v,"is",...ret);
-    chains[v] = [...ret];
-    return ret;
+    post("\nfrom block",v,"queue created is:",queue);
+    queue.forEach((t,i) => {
+      if(i>0){
+        currentChain++;
+      }
+      post("->",t);
+      let r = [...getChain(t,visited)];
+      r.forEach((i) => {
+        if(ret.indexOf(i)==-1) ret.push(i); 
+      });
+    });
   }
+  if(ret.indexOf(currentChain)==-1) ret.push(currentChain);
+  chains[v] = [...ret];
+  post("\nblock",v,"is now in these chains:",...ret);
+  return ret;
 }
 
 // todo:
@@ -262,7 +271,7 @@ function getChain(v){
 //  one where this element is removed, and one where this element is marked as "don't remove"."
 //implement scroll through rows - the selected row is in the center of the screen.
 function draw(scroll){
-  if(scroll == null) scroll = 0;
+  if(scroll == null) scroll = 10;
 
   let maxlev;
 
@@ -347,7 +356,10 @@ function findMinimalHittingSet(){
     return 1;
   }
   function cleanChain(v){
-    if(!Array.isArray(chains[v])) chains[v]=[];
+    if(!Array.isArray(chains[v])){
+      post("\nFAULT: chain was empty?",v,chains[v], typeof chains[v]);
+      chains[v]=[chains[v]];
+    }      
     chains[v].forEach((t,i)=> {
       chains[v][i] = hitting.indexOf(chains[v][i]);
     });

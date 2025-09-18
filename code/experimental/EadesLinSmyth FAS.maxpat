@@ -39,13 +39,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-4",
-					"linecount" : 3,
+					"linecount" : 4,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 21.0, 329.0, 174.0, 50.0 ],
-					"text" : ";\r\nto_blockmanager draw_blocks;\r\nto_blockmanager center_view"
+					"patching_rect" : [ 21.0, 329.0, 239.0, 64.0 ],
+					"text" : ";\r\nto_blockmanager draw_blocks;\r\nto_blockmanager center_view;\r\nto_blockmanager set_display_mode panels"
 				}
 
 			}
@@ -56,7 +56,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 31.0, 384.0, 61.0, 22.0 ],
+					"patching_rect" : [ 20.0, 408.0, 61.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -195,7 +195,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"order" : 1,
+					"order" : 2,
 					"source" : [ "obj-8", 0 ]
 				}
 
@@ -203,7 +203,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
-					"order" : 2,
+					"order" : 1,
 					"source" : [ "obj-8", 0 ]
 				}
 
