@@ -1,8 +1,9 @@
 let blocks, connections;
 let vertices, edges;
 
-let s1 = [];
-let s2 = [];
+let listSources = [];
+let listLoops = [];
+let listSinks = [];
 
 function msg_dictionary(a){
 	if(a.blocks){
@@ -55,20 +56,25 @@ function calculate_levels(){
   levelblocks = [];
   endlevelblocks = [];
   let reps = 0;
-  level = -1;
+  let minlevel = -1;
+  let maxlevel = 0;
+
   while(vertices.length && reps++<999){
+    level = minlevel;
     while(removeALayerOfSinks()){
       level--;
     }
-  }
-  let minlevel = level;
-  level = 0;
-  reps = 0;
-  while(vertices.length && reps++<999){
+    minlevel = level;
+    level = maxlevel;
     while(removeALayerOfSources()){
       level++;
     }
+    maxlevel = level;
+    while(removeMostDifferent()){
+      level++;
+    }
   }
+  post("\ncompleted ordering in",reps,"steps");
   let middleoffset = level - minlevel - 1;
   blocklevel.forEach((bl,b) => {
     bl.forEach((l,i) => {
@@ -78,7 +84,40 @@ function calculate_levels(){
   endlevelblocks.forEach((lb,i)=>{
     if(lb.length) levelblocks[middleoffset-i] = [...endlevelblocks[i]];
   });
-  levelblocks.forEach((l,i) => {post("\nlevelblocks:",i," is ",...l)});
+  // levelblocks.forEach((l,i) => {post("\nlevelblocks:",i," is ",...l)});
+}
+
+function removeMostDifferent() {
+  let maxd = -1;
+  let mdi = null;
+  vertices.forEach((v, i) => {
+    let d = outcount[v] - incount[v];
+    // post("\nvertex",v,"d",d);
+    if (d > maxd) {
+      // post("MAX");
+      maxd = d;
+      mdi = i;
+    }
+  });
+  if (mdi != null) {
+    post("\nremove most different - ",vertices[mdi]);
+    storeBlockLevel(vertices[mdi],level);
+    listLoops.push(vertices[mdi]);
+    for (let e = 0; e < edges.length;) {
+      if (edges[e][0] == vertices[mdi]) {
+        incount[edges[e][1]]--;
+        edges.splice(e, 1);
+      } else if (edges[e][1] == vertices[mdi]) {
+        outcount[edges[e][0]]--;
+        edges.splice(e, 1);
+      } else {
+        e++;
+      }
+    }
+    vertices.splice(mdi, 1);
+    return 1;
+  }
+  return 0;
 }
 
 function removeALayerOfSinks(){
@@ -126,7 +165,7 @@ function removeSink(v){
     }
   }
   storeBlockLevel(v,level);
-  s2.unshift(v);
+  listSinks.unshift(v);
   vertices.splice(vertices.indexOf(v), 1);
 }
 
@@ -140,7 +179,7 @@ function removeSource(v){
     }
   }
   storeBlockLevel(v,level);
-  s1.push(v);
+  listSources.push(v);
   vertices.splice(vertices.indexOf(v), 1);
 }
 
@@ -156,9 +195,9 @@ function calculate_chains(){
   // this should run down the trees, assigining things a y coordinate (x in old benny)
   currentChain = 0;
   const startinglist = levelblocks.slice(-1)[0];
-  post("\n\nchainfinding: start from blocks in last row:", startinglist);
+  post("\nchainfinding: start from blocks in last row:", startinglist);
   startinglist.forEach(v => { //for each thing in the last row:
-    post("\nSTART:",v);
+    // post("\nSTART:",v);
     chains[v] = [currentChain];
     chains[v].push(...getChain(v));
     currentChain++;
@@ -167,15 +206,15 @@ function calculate_chains(){
 
 function getChain(v){
   //returns all the chains vertex v is in.
-  post("\ngetchain for block",v,blocks[v].name);
+  // post("\ngetchain for block",v,blocks[v].name);
   let ret = [];
-  if(0 && Array.isArray(chains[v]) && chains[v].length>1){
+  /*if(0 && Array.isArray(chains[v]) && chains[v].length>1){
     ret = [...chains[v]];
     if(ret.indexOf(currentChain)==-1) ret.push(currentChain);
-    post("stopping at",v,"chain is",...ret);
+    // post("stopping at",v,"chain is",...ret);
     chains[v] = [...ret];
     return ret;
-  }else{
+  }else{*/
     let first = 1;
     edges.forEach((e,i) => {
       if(e[1] == v){
@@ -185,17 +224,17 @@ function getChain(v){
           } else{
             first = 0;
           }
-          post("recursing to",e[0]);
+          // post("recursing to",e[0]);
           ret.push(...getChain(e[0]));
           if(ret.indexOf(currentChain)==-1) ret.push(currentChain);
         }
       }
     });
     if(ret.length == 0) ret.push(currentChain);
-    post("chain for",v,"is",...ret);
+    // post("chain for",v,"is",...ret);
     chains[v] = [...ret];
     return ret;
-  }
+  //}
 }
 
 // todo:
@@ -211,10 +250,15 @@ function getChain(v){
 //implement scroll through rows - the selected row is in the center of the screen.
 function draw(){
   let maxlev;
+  
+  let hitting = findMinimalHittingSet();
+
+  //legacy
   rowlist=[];
   for(let v = 0;v<blocks.length;v++){
     if(Array.isArray(blocklevel[v]) && Array.isArray(chains[v])) rowlist.push(chains[v][0]);
   }
+
   for(let v = 0;v<blocks.length;v++){
     if(Array.isArray(blocklevel[v])){
       maxlev = 900; //minlev = 0;
@@ -223,9 +267,11 @@ function draw(){
         // minlev =*/ Math.min(maxlev, l);
       });
       blocks[v].space.y = maxlev * -1.25;
+      blocks[v].space.experiment_x = maxlev;
       post("\nblock",v,blocks[v].name,"level",maxlev,"levelblocks[]",levelblocks[maxlev],"chains",chains[v]);
       if(Array.isArray(chains[v])){
-        blocks[v].space.x = rowlist.indexOf(chains[v][0]) * 2;
+        blocks[v].space.x = (chains[v][0]) * 2;
+        blocks[v].space.experiment_y = rowlist.indexOf(chains[v][0]);
       }else{
         blocks[v].space.x = -2;
       }
@@ -235,6 +281,60 @@ function draw(){
   outlet_dictionary(0, od);
 }
 
+function findMinimalHittingSet(){
+  //looking for the minimum set that intersects with every single block's "chains" array.
+  // algorithm goes: initialise with the union of all, 
+  let hitting = [];
+  for(let i=0;i<currentChain;i++) hitting.push(i);
+  // then iterate, for each chain number, 
+  
+  let shortest = 999;
+  let reps = 0;
+  removeAndTest(0, hitting);
+  hitting = hitting.filter((v) => v!=-1);
+  post("\n\nminimalhittingset", ...hitting);
+  for(i=0;i<chains.length;i++) cleanChain(i);
+  return hitting;
+  // 2 branches, one with it removed and one with it kept.
+  // test fn takes (where_you_re_up_to, [array of not removed things])
+  function removeAndTest(step, testme){
+    if(reps++ > 9999) return -1;
+    // post("\nremoveandtest",step,">>",...testme);
+    if(step < testme.length && testIntersections(testme)){
+      let newtest = [...testme];
+      newtest[step] = -1;
+      removeAndTest(step+1,newtest);
+      removeAndTest(step+1,testme);
+    }
+    let count = testme.length;
+    testme.forEach(t => {if(t==-1)count--;});
+    // post("\nlength:",count);
+    if(count<shortest){
+      post("\nSTORED:",count);//...testme);
+      shortest = count;
+      hitting = [...testme];
+    }
+  }
+  function testIntersections(testme){
+    for(let v = 0;v<blocks.length;v++){
+      if(Array.isArray(chains[v])){
+        let found = 0;
+        for(var i=0; i<chains[v].length; i++){
+          l = chains[v][i];
+          if(testme.indexOf(l)!=-1){
+            found = 1;
+            i = 9999999999;
+          }
+        }
+        if(found == 0 )return 0;
+      }
+    }
+    return 1;
+  }
+  function cleanChain(v){
+    chains[v].filter((x) => hitting.indexOf(x)>-1);
+  }
+}
   // post("\nio counts:");
   /*for(i=0;i<vertices.length;){
     v = vertices[i];
