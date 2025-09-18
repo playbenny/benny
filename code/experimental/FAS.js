@@ -271,7 +271,7 @@ function getChain(v, visited){
 //  one where this element is removed, and one where this element is marked as "don't remove"."
 //implement scroll through rows - the selected row is in the center of the screen.
 function draw(scroll){
-  if(scroll == null) scroll = 10;
+  if(scroll == null) scroll = 1;
 
   let maxlev;
 
