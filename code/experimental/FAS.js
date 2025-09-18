@@ -198,6 +198,17 @@ function getChain(v){
   }
 }
 
+// todo:
+// remove the items that are in a loop. (via the 'remove most different' thing) and flag them as such!
+//   - use a new array s3 for the loopy ones.
+// use connections dict instead of edges so that you can do the recursion in order of the voice things
+// are connected to.
+// check it's not adding too many rows by mistake?
+// find a way to get the minimal set that intersects all of these? ('minimal hitting set')
+// "If you want to enumerate all minimal sets X then you can do it this way: start with X 
+// = union of all sets; find the next element of X than can be removed; then make two recursive calls,
+//  one where this element is removed, and one where this element is marked as "don't remove"."
+//implement scroll through rows - the selected row is in the center of the screen.
 function draw(){
   let maxlev;
   rowlist=[];
