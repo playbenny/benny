@@ -1,3 +1,6 @@
+19/09/25:
+- **utility.midi.to_cv** (fka utility.self.tuner) has been fixed and updated. to improve the slope calibration to match your interface/oscilators you can press the 'calibrate slope' button and then send it a low note and then a high note a second or more apart. the slope will be stored. it assumes a linear relationship between voltage and pitch, so only works with well behaved v/oct oscillators (at the moment).
+
 10/9/25:
 - new 'autoconnect' feature: when creating a new block you can have it automatically connect to the block that was selected when you enter the menu. this happens if your hold shift while clicking your selected new block / while hitting enter to pick, or there's a config option that makes this happen even without shift held. also works if a single voice is selected.
 - when you drag to make a new connection, if you hold ctrl as you release the new connection starts off muted. useful for live patching..

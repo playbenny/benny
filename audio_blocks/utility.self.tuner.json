@@ -1,5 +1,5 @@
 {
-	"utility.self.tuner" : {
+	"utility.midi.to_cv" : {
 		"patcher" : "utility.self.tuner",
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
