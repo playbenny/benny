@@ -18,12 +18,12 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [2,2,0,1]
+				"contains" : [2,2,0,1,3,3]
 			}
 		],
 		"parameters" : [
 			{
-				"name" : "default_slope",
+				"name" : "reset",
 				"type" : "button",
 				"values" : ["firstvoice", "default_slope", "default_slope"],
 				"wrap" : 0,
@@ -42,6 +42,14 @@
 				"values" : ["uni", 0.2, 0.9, "lin"],
 				"default" : 3.889,
 				"wrap" : 0
+			},
+			{
+				"name" : "continuous_adjustment",
+				"type" : "menu_b",
+				"values" : ["continuous_adjustment_off", "continuous_adjustment_on" ],
+				"default" : 0.78,
+				"wrap" : 1,
+				"error_scale" : 0
 			}
 		]
 	}
