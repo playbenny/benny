@@ -1,3 +1,6 @@
+20/09/25:
+- **voice.filter.env** the voice basic osc and env with the sm devices 2pole filter (with its own env) added. lots of modulation options including self-modulation.
+
 19/09/25:
 - **utility.midi.to_cv** (fka utility.self.tuner) has been fixed and updated. to improve the slope calibration to match your interface/oscilators you can press the 'calibrate slope' button and then send it a low note and then a high note a second or more apart. the slope will be stored. it assumes a linear relationship between voltage and pitch, so only works with well behaved v/oct oscillators (at the moment).
 
