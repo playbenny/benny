@@ -4745,6 +4745,11 @@ function copy_pattern(p,target){
 	}
 }
 
+function clear_pattern_external(block,pattern){
+	danger_button = 99;
+	clear_pattern([block,pattern],99);
+}
+
 function clear_pattern(p,v){
 	sidebar.dropdown = null;
 	if(v == danger_button){
