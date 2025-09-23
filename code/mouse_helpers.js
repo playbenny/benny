@@ -4750,6 +4750,27 @@ function clear_pattern_external(block,pattern){
 	clear_pattern([block,pattern],99);
 }
 
+function clear_voice_pattern(block,voiceno,pattern){
+	sidebar.dropdown = null;
+	post("\nclear pattern",block,voiceno,pattern);
+	patternpage.column_block = [];
+	danger_button = -1;
+	if(blocks.contains("blocks["+block+"]::patterns")){
+		var type = blocks.get("blocks["+block+"]::patterns::pattern_storage");
+		if(type=="data"){
+			var x = blocks.get("blocks["+block+"]::patterns::pattern_start");
+			var size = blocks.get("blocks["+block+"]::patterns::pattern_size");
+			var bvs = voicemap.get(block);
+			if(!Array.isArray(bvs)) bvs = [bvs];
+			var copydata = [];
+			for(var v=0;v<size;v++)copydata.push(0);
+			voice_data_buffer.poke(1, MAX_DATA*bvs[voiceno]+x+size*pattern,copydata);
+		}else if(type=="dict"){
+			post("\ncan't do per-pattern clear for this type sorry");
+		}
+	}
+}
+
 function clear_pattern(p,v){
 	sidebar.dropdown = null;
 	if(v == danger_button){
@@ -4759,24 +4780,18 @@ function clear_pattern(p,v){
 		danger_button = -1;
 		if(blocks.contains("blocks["+p[0]+"]::patterns")){
 			var type = blocks.get("blocks["+p[0]+"]::patterns::pattern_storage");
-			// post("type",type);
 			if(type=="data"){
 				var x = blocks.get("blocks["+p[0]+"]::patterns::pattern_start");
 				var size = blocks.get("blocks["+p[0]+"]::patterns::pattern_size");
-				
-				// post("start",x,"size",size);
 				var bvs = voicemap.get(p[0]);
 				if(!Array.isArray(bvs)) bvs = [bvs];
-				// post("voices",bvs);
 				var copydata = [];
 				for(var v=0;v<size;v++)copydata.push(0);
 				for(var v=0;v<bvs.length;v++){
-					// post("\npoke target,",MAX_DATA*bvs[v]+x+size*target);
 					voice_data_buffer.poke(1, MAX_DATA*bvs[v]+x+size*target,copydata);
 				}
 			}else if(type=="dict"){
 				ui_poly.message("setvalue",(1+p[0]),"clear_pattern",p[1]);
-				// post("\nTODO clearing not implemented for this block");
 			}
 			var n = blocks.get("blocks["+p[0]+"]::patterns::names");
 			n[target] = "";
