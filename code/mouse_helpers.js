@@ -929,8 +929,12 @@ function show_new_block_menu(){
 	}
 	blocks_page.was_selected = null;
 	if(selected.block.indexOf(1)>-1){
-		post("\nsomething was selected, you can hold shift to connect to/from it");
+		// post("\nsomething was selected, you can hold shift to connect to/from it");
 		blocks_page.was_selected = selected.block.indexOf(1);
+		if(blocks.get("blocks["+blocks_page.was_selected+"]::name").split('.')[0]="mixer"){
+			blocks_page.was_selected = null;
+			// post("\nmixer blocks are excluded from autoconnect because they have their own connection algo");
+		}
 		if(sidebar.selected_voice>-1){
 			blocks_page.was_selected_voice = sidebar.selected_voice;
 		} else {
