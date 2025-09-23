@@ -4745,7 +4745,7 @@ function copy_pattern(p,target){
 	}
 }
 
-function clear_pattern_external(block,pattern){
+function clear_block_pattern(block,pattern){
 	danger_button = 99;
 	clear_pattern([block,pattern],99);
 }
