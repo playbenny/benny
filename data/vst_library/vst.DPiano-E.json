@@ -13,7 +13,8 @@
 		"connections" : 		{
 			"in" : 			{
 				"audio" : [ "audio in" ],
-				"midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ]
+				"midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ],
+				"automap_poly" : 0
 			}
 ,
 			"out" : 			{
