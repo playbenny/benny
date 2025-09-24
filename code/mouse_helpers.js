@@ -2281,18 +2281,18 @@ function unscale_parameter(block, parameter, value){
 		}else if(p_values[3] == "exp.01"){
 			if(pv>=0){
 				//pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
-				pv = (Math.log(1 + (-pv*0.09))*-0.2171472);
+				pv = (Math.log(1 + (-pv*0.99))*-0.2171472);
 			}else{
 				// pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
-				pv = -(Math.log(1 + (pv*0.09))*-0.2171472);
+				pv = -(Math.log(1 + (pv*0.99))*-0.2171472);
 			}
 		}else if(p_values[3] == "exp.001"){
 			if(pv>=0){
 				// pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
-				pv = (Math.log(1 + (-pv*0.009))*-0.14476482);
+				pv = (Math.log(1 + (-pv*0.999))*-0.14476482);
 			}else{
 				// pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
-				pv = -(Math.log(1 + (pv*0.009))*-0.14476482);
+				pv = -(Math.log(1 + (pv*0.999))*-0.14476482);
 			}
 		}else if(p_values[3] == "s"){
 			pv = 0.5 - 0.5 * Math.acos(pv*PI);
