@@ -3,7 +3,7 @@
 		"patcher" : "midi.lfo",
 		"type" : "note",
 		"block_ui_patcher" : "midi.lfo.ui",
-		"help_text" : "A midi LFO, if you add more voices they're linked, so you can build eg quadrature lfos from this.",
+		"help_text" : "A midi LFO, if you add more voices they're linked, so you can build eg quadrature lfos from this.££the set phase input resets the lfo phase, using the note to select where in the cycle to start from. the tap tempo input sets the lfo rate based on the time between the last two notes it receives, and the both input does both of these things in one.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 4,
 		"default_polymode" : 	{
@@ -14,7 +14,7 @@
 		},
 		"connections" : {
 			"in" : {
-				"midi" : [ "reset" ]
+				"midi" : [ "set phase", "tap tempo", "both" ]
 			},
 			"out" : {
 				"parameters" : [ "out" ]
@@ -22,12 +22,23 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0,1,3,4]
+				"contains" : [0,0,1,1,1,3,3,4,4]
 			},
 			{ 
 				"contains" : [2],
 				"colour" : 3,
-				"onepervoice" : 1
+				"onepervoice" : 1,
+				"height" : 0
+			},
+			{
+				"contains" : [5,6],
+				"height" : 0.6,
+				"colour":-3
+			},
+			{
+				"contains" : [7,8,9,10,11,12,13],
+				"height" : 0.6,
+				"colour":5
 			}
 		],
 		"parameters" : [
@@ -39,9 +50,9 @@
 				"default" : 0
 			},
 			{
-				"name" : "rate",
+				"name" : "period (seconds)",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "exp.001"],
+				"values" : ["uni", 420, 0.1, "exp.001"],
 				"error_scale" : 0,
 				"default" : 0.26
 			},
@@ -66,6 +77,78 @@
 				"values" : ["run_always", "follow_global_transport"],
 				"wrap" : 0,
 				"default" : 0.25
+			},
+			{
+				"name" : "2x slower",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","2x slower","slow2"]
+			},
+			{
+				"name" : "2x faster",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","2x faster","fast2"]
+			},
+			{
+				"name" : "1n",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","1n",1]
+			},
+			{
+				"name" : "2n",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","2n",2]
+			},
+			{
+				"name" : "3n",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","3n",3]
+			},
+			{
+				"name" : "1b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","1b",4]
+			},
+			{
+				"name" : "2b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","2b",8]
+			},
+			{
+				"name" : "3b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","3b",12]
+			},
+			{
+				"name" : "4b",
+				"type" : "button",
+				"default" : 0,
+				"error_scale" : 0,
+				"wrap" : 0,
+				"values" : ["voices","4b",16]
 			}
 		]
 	}

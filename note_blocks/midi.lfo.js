@@ -78,75 +78,42 @@ function draw(){
 function drawcurves(){
 	if(block>=0){
 		outlet(1, "paintrect", gx,gy,gx+gw+1,gy+gh+2,0,0.2,0);
-		outlet(1, "moveto", gx+20,gy);
-		outlet(1, "frgb", menucolour);
-		outlet(1, "lineto", gx+20,gy+gh);
 		for(var v=0;v<v_list.length;v++){
-			var sh=Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v])*4096);
-			var shp=[shape_buffer.peek(1, sh),shape_buffer.peek(2, sh),shape_buffer.peek(3, sh),shape_buffer.peek(4, sh)];
-			var ra=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+1);
-			ra = -1.001001001001001001001001001001*(Math.pow(0.001, ra) - 1);
-			ra = 1/(10000 - 9950*ra);
-			var wa=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+3);
-			if(wa<0.5){
-				wa = 8 - 14*wa;
+			var ptr =  MAX_DATA*v_list[v];
+			var p = voice_data_buffer.peek(1,ptr);
+			p = ((p + 1) - (p>=512)*511)|0;
+			var val = voice_data_buffer.peek(1,ptr+p);
+			if(val<1){
+				post("\nval",val,"p",p);
 			}else{
-				wa = 2 - 2*wa;
-			}
-			var ph=voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[v]+2);
-			cu=voice_data_buffer.peek(1, MAX_DATA*v_list[0]);
-			offs[v] = voice_data_buffer.peek(1, MAX_DATA*v_list[v] + 1);
-			var stx=cu-100; //5 ticks per pixel, 20 pixels gap at the front
-			var x=gx;
-			var p = (cu * ra + ph + offs[v]) % 1;
-			bright[v] = shp[0]*(1-Math.cos(p*6.283))*0.5;
-			if(p<shp[3]){
-				bright[v] += shp[1]*(p/shp[3]);
-			}else{
-				bright[v] += shp[1]*(1- (p-shp[3])/(1-shp[3])); //tri
-				bright[v] += shp[2]; //sq
-			}
-			bright[v] = Math.pow(bright[v], wa);
-			if(bright[v]<0) bright[v] = 0;
-			if(bright[v]>1) bright[v] = 1;
-			bright[v] = 0.7*bright[v] + 0.3;
-			//post("\n bright ",bright[v], "p",p);
-			for(var i=0;i<gw;i+=2){
-				p = (stx * ra + ph + offs[v]) % 1;
-				y=shp[0]*(1-Math.cos(p* 6.283))*0.5;
-				if(p<shp[3]){
-					y += shp[1]*(p/shp[3]);
-				}else{
-					y += shp[1]*(1- (p-shp[3])/(1-shp[3])); //tri
-					y += shp[2]; //sq
+				var x = gx;
+				var y = gy + gh*(2-val);
+				bright[v] = 0.5*(val-1) + 0.7;
+				outlet(1,"moveto",x,y)
+				outlet(1,"frgb",vcol[v][0]*bright[v],vcol[v][1]*bright[v],vcol[v][2]*bright[v]);
+				for(var i=2;i<gw;i+=3){
+					p = (p + 1) |0;
+					p -= (p>=512)*511;
+					val = voice_data_buffer.peek(1,ptr + p);
+					if(val>=1){
+						y = (2 - val) * gh + gy;
+						outlet(1,"lineto",x,y);
+					}else{
+						i=99999;
+					}
+					x+=3;
 				}
-				y = 1 - Math.pow(y, wa);
-				if(y<0) y=0;
-				if(y>1) y=1;
-				y *= gh;
-				y += gy;
-				if(i==0){
-					outlet(1,"moveto",x,y)
-					outlet(1,"frgb",vcol[v][0]*bright[v],vcol[v][1]*bright[v],vcol[v][2]*bright[v]);
-				}else{
-					outlet(1,"lineto",x,y);
-				}
-				x+=2;
-				stx += 10;				
 			}
 		}
 	}
 }
 
 function update(){
-	var ocu=cu;
-	if((voice_data_buffer.peek(1, MAX_DATA*v_list[0])-ocu)>2){
-		if(textslow++>30){
-			draw();
-			textslow=0;
-		}else{
-			drawcurves();
-		}
+	if(textslow++>30){
+		draw();
+		textslow=0;
+	}else{
+		drawcurves();
 	}
 }
 
