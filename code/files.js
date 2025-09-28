@@ -579,6 +579,11 @@ function import_song(){
 			loading.xoffset = current_x_max + 4 - new_x_min;
 		}
 		sidebar.notification = null;
+		if(songs.contains(loading.songname+"::version")){
+			version = songs.get(loading.songname+"::version");
+		}else{
+			version = 0;
+		}
 		if(songs.contains(loading.songname+"::notepad")){ 
 			sidebar.notification = songs.get(loading.songname+"::notepad");
 			set_sidebar_mode("notification");

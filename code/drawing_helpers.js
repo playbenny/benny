@@ -918,14 +918,15 @@ function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 }
 
 function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
-	if((v1==1)&&(v2==1)) return;
+	if((v2==1)&&(v1==1)) return;
+	if(version<0.555) vector = -vector;
 	var cx,cy,l;
-	var ux = (x2-x1)/v1;
-	var uy = (y2-y1)/v2;
+	var ux = (x2-x1)/v2;
+	var uy = (y2-y1)/v1;
 	var minl=99,maxl=-99;
-	for(cx=v1-1;cx>=0;cx--){
-		for(cy=0;cy<v2;cy++){
-			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v1, v2);
+	for(cx=v2-1;cx>=0;cx--){
+		for(cy=0;cy<v1;cy++){
+			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v2, v1);
 			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;
@@ -937,9 +938,9 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 			//lcd_main.message("font",mainfont, Math.min(uy,ux)*0.4);
 			if(Math.min(uy,ux)*0.4>=fontsmall){
 				lcd_main.message("frgb", menucolour);
-				for(cx=v1-1;cx>=0;cx--){
-					for(cy=0;cy<v2;cy++){
-						l = scale*spread_level(cx, cy, offset,vector, v1, v2);
+				for(cx=v2-1;cx>=0;cx--){
+					for(cy=0;cy<v1;cy++){
+						l = scale*spread_level(cx, cy, offset,vector, v2, v1);
 						lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*uy);
 						lcd_main.message("write",l.toPrecision(2));				
 					}
@@ -1056,6 +1057,7 @@ function wipe_midi_meters(){
 
 
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
+	if(version<0.555) angle = -angle;
 	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
 	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
@@ -1068,15 +1070,29 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
 	var w = r1*0.1;
 	var i=0;
 	var col=[r,g,b];
-	for(i=0;i<v1;i++){
-		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*i/v1)),(cy-w-r1*Math.cos(6.28*i/v1)),(cx+w+r1*Math.sin(6.28*i/v1)),(cy+w-r1*Math.cos(6.28*i/v1)),col);
+	for(i=0;i<v2;i++){ // destinations
+		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*i/v2)),(cy-w-r1*Math.cos(6.28*i/v2)),(cx+w+r1*Math.sin(6.28*i/v2)),(cy+w-r1*Math.cos(6.28*i/v2)),col);
 		if(i==0) col = [r/2,g/2,b/2];
+	}
+	col=[r*1.5,g*1.5,b*1.5];
+	for(i=0;i<v2;i++){ // labels 
+		lcd_main.message("moveto",(cx-w+((i<10)*2 - 0.33)*fo1+r1*Math.sin(6.28*i/v2)),(cy+w-1.3*fo1-r1*Math.cos(6.28*i/v2)));
+		lcd_main.message("frgb", col);
+		lcd_main.message("write",i+1);
+		if(i==0) col = [0,0,0];
 	}
 	r1 -= t;
 	col=[r,g,b];
-	for(i=0;i<v2;i++){
-		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v2))),(cy-w-r1*Math.cos(6.28*(angle + i/v2))),(cx+w+r1*Math.sin(6.28*(angle + i/v2))),(cy+w-r1*Math.cos(6.28*(angle + i/v2))),col);
+	for(i=0;i<v1;i++){ // sources
+		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v1))),(cy-w-r1*Math.cos(6.28*(angle + i/v1))),(cx+w+r1*Math.sin(6.28*(angle + i/v1))),(cy+w-r1*Math.cos(6.28*(angle + i/v1))),col);
 		if(i==0) col = [r/2,g/2,b/2];
+	}
+	col=[r*1.5,g*1.5,b*1.5];
+	for(i=0;i<v1;i++){ // labels
+		lcd_main.message("moveto",(cx-w+((i<10)*2 - 0.33)*fo1+r1*Math.sin(6.28*(angle + i/v1))),(cy+w-1.3*fo1-r1*Math.cos(6.28*(angle + i/v1))));
+		lcd_main.message("frgb", col);
+		lcd_main.message("write",i+1);
+		if(i==0) col = [0,0,0];
 	}
 }
 
