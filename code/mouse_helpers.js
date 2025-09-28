@@ -929,9 +929,9 @@ function show_new_block_menu(){
 	}
 	blocks_page.was_selected = null;
 	if(selected.block.indexOf(1)>-1){
-		// post("\nsomething was selected, you can hold shift to connect to/from it");
 		blocks_page.was_selected = selected.block.indexOf(1);
-		if(blocks.get("blocks["+blocks_page.was_selected+"]::name").split('.')[0]="mixer"){
+		// post("\nsomething was selected, you can hold shift to connect to/from it",blocks_page.was_selected);
+		if(blocks.get("blocks["+blocks_page.was_selected+"]::name").split('.')[0]=="mixer"){
 			blocks_page.was_selected = null;
 			// post("\nmixer blocks are excluded from autoconnect because they have their own connection algo");
 		}
