@@ -1501,11 +1501,11 @@ function block_and_wire_colours(){ //for selection and mute etc
 					wires_scale[i][ii][1] = 2 * wire_dia;
 				}
 				if(bulgingwire==i)bulgeamount=1;
-			}else{
+			}else if(Array.isArray(wires_scale[i])){
 				if(mov)draw_wire(i);
 				for(var ii=0;ii<wires_scale[i].length;ii++){
 					wires_scale[i][ii][1] = wire_dia;
-				}		
+				}
 			}
 			tmc=0.3;
 			tmc *= (0.7-0.8*selected.anysel*(0.3 - 1.8*cs));
@@ -1726,12 +1726,12 @@ function draw_wire(connection_number){
 			var cmute = connections.get("connections["+connection_number+"]::conversion::mute");
 			var from_number = connections.get("connections["+connection_number+"]::from::output::number");
 			var to_number = connections.get("connections["+connection_number+"]::to::input::number");
+			var from_type = connections.get("connections["+connection_number+"]::from::output::type");
+			var to_type = connections.get("connections["+connection_number+"]::to::input::type");
 			if(connections.contains("connections["+connection_number+"]::overlap")){
 				from_type = "potential";
 				to_type = "potential";
 			}
-			var from_type = connections.get("connections["+connection_number+"]::from::output::type");
-			var to_type = connections.get("connections["+connection_number+"]::to::input::type");
 			var from_name = blocks.get("blocks["+cfrom+"]::name");
 			var ftt = from_type;
 			if(ftt=="matrix") ftt="matrix_channels";
