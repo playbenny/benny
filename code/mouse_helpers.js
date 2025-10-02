@@ -1703,6 +1703,7 @@ function fire_whole_state(state, value){
 	if(state==-1) state="current";
 	var stat = new Dict();
 	stat = states.get("states::"+state);
+	if(stat == null) return -1;
 	var sc_list = stat.getkeys();
 	if(!Array.isArray(sc_list)) sc_list=[+sc_list];
 	for(var i=0;i<sc_list.length;i++){
