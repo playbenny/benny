@@ -8,7 +8,7 @@ seqs.name = 'seq-piano-roll';
 function getsize(block,seq){
 	var sqs = seqs.get(block);
 	if(sqs == null){
-		post("\ncouldn't get size for null sequence",block,seq);
+		//post("\ncouldn't get size for null sequence",block,seq);
 		return -1;
 	}
 	var sq = sqs.get(seq);
