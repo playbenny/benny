@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 7,
+			"revision" : 9,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -13,6 +13,34 @@
 		"rect" : [ 134.0, 134.0, 1061.0, 595.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 727.0, 554.0, 46.0, 22.0 ],
+					"text" : "route 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"attr" : "notebase",
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 13.0,
+					"id" : "obj-10",
+					"maxclass" : "attrui",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 822.0, 538.0, 153.0, 23.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-9",
 					"maxclass" : "newobj",
@@ -320,8 +348,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 619.75, 590.0, 130.0, 50.0 ],
-					"text" : "notelist 0 100 200 300 400 500 600 700 800 900 1000 1100"
+					"patching_rect" : [ 616.0, 624.0, 130.0, 50.0 ],
+					"text" : "notelist 100 200 300 400 500 600 700 800 900 1000 1100"
 				}
 
 			}
@@ -345,7 +373,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 727.0, 554.0, 94.0, 22.0 ],
+					"patching_rect" : [ 727.0, 590.0, 94.0, 22.0 ],
 					"text" : "prepend notelist"
 				}
 
@@ -410,7 +438,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 285.0, 559.0, 128.0, 22.0 ],
+					"patching_rect" : [ 285.0, 566.5, 128.0, 22.0 ],
 					"text" : "prepend enablednotes"
 				}
 
@@ -656,7 +684,7 @@
 					"outlettype" : [ "signal", "signal", "signal", "signal", "list" ],
 					"patching_rect" : [ 88.0, 454.0, 149.0, 22.0 ],
 					"saved_object_attributes" : 					{
-						"enablednotes" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ],
+						"enablednotes" : [ 2 ],
 						"notebase" : 0,
 						"notelist" : [ 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100 ],
 						"pitchdetection" : 1,
@@ -731,6 +759,27 @@
 				"patchline" : 				{
 					"destination" : [ "obj-29", 0 ],
 					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-54", 0 ],
+					"source" : [ "obj-11", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-54", 0 ],
+					"source" : [ "obj-11", 0 ]
 				}
 
 			}
@@ -1041,7 +1090,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-54", 0 ],
+					"destination" : [ "obj-11", 0 ],
 					"source" : [ "obj-53", 0 ]
 				}
 
@@ -1071,7 +1120,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-54", 0 ],
+					"destination" : [ "obj-11", 0 ],
 					"source" : [ "obj-59", 0 ]
 				}
 
