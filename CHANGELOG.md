@@ -1,3 +1,6 @@
+1/10/25:
+- new block **utility.env.ping** is an envelope inspired by the 4ms PEG. the overall envelope time (attack+decay) is set by tap tempo, a 'time division' slider and a 'mult' slider then that time is split between attack and release by another slider. very fun envelope and mod source with a lot of surprising possibilities. thanks to [El Chico Fuendre](https://elchicofuendre.bandcamp.com/album/ragas-for-city-dwellers) for coding this one.  
+
 24/9/25:
 - big update to **midi.lfo**, including tap tempo input, midi input to set phase, buttons for quantised time periods, extended range, new visualisation
 

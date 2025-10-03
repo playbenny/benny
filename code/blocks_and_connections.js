@@ -581,17 +581,17 @@ function poly_loaded(type,number){
 	var t = still_checking_polys>0;
 	//post("poly loaded voice successfully",type,number,"\n");
 	if(type=="audio"){
-		changed_flags.poke(1,number+MAX_NOTE_VOICES,1);
 		if(still_checking_polys&2){ send_audio_patcherlist(); }
+		changed_flags.poke(1,number+MAX_NOTE_VOICES,1);
 	}else if(type=="note"){
-		changed_flags.poke(1,number,1);
 		if(still_checking_polys&1){ send_note_patcherlist(); }
-		//	send_note_patcherlist();
+		changed_flags.poke(1,number,1);
 	}else if(type=="ui"){
 		if(still_checking_polys&4){ send_ui_patcherlist(); }	
-		//	send_ui_patcherlist();
 	}
-	if(t&&(!still_checking_polys)) update_all_voices_mutestatus();
+	if(t&&(!still_checking_polys)){
+		update_all_voices_mutestatus();
+	}
 }
 
 function find_audio_voice_to_recycle(pa,up){ //ideally needs to match up upsampling values as well as patchers when recycling, but it doesnt at the moment
