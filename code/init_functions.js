@@ -1075,7 +1075,12 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 		//r2=radius of inner circle
 		//d = angle difference
 		var max_chans = Math.max(no_in_channels,no_out_channels);
-		var min_chans = Math.max(Math.min(max_chans,2)-r2,Math.min(no_in_channels,no_out_channels));
+		var min_chans = Math.min(no_in_channels,no_out_channels);
+		if(min_chans<2){
+			min_chans = 2;
+			max_chans -= r2;
+			//max_chans *= 0.5;
+		}
 			//implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
 		post("\nmin_chans,",min_chans,"max_chans",max_chans);
 		var inputangle = in_no / no_in_channels;
