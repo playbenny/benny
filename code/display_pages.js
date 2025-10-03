@@ -6298,7 +6298,9 @@ function draw_sidebar(){
 										}
 										//lcd_main.message("moveto" ,sidebar.x+fontheight*0.95, 1.8*fontheight+y_offset);
 										//lcd_main.message("write", t_i_v);
-										
+										var from_colour = blocks.get("blocks["+f_number+"]::space::colour");
+										var to_colour = blocks.get("blocks["+t_number+"]::space::colour");
+
 										var mute = connections.get("connections["+i+"]::conversion::mute");
 										var scale = connections.get("connections["+i+"]::conversion::scale");
 										var vector = connections.get("connections["+i+"]::conversion::vector");
@@ -6353,7 +6355,7 @@ function draw_sidebar(){
 												var nv2 = connections.get("connections["+i+"]::to::voice");
 												if(!Array.isArray(nv2))nv2=[nv2];
 												v2 = nv2.length;
-												draw_spread(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2);	
+												draw_spread(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);	
 												draw_spread_levels(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,scale);	
 												mouse_click_actions[mouse_index] = connection_edit;
 												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
@@ -6386,7 +6388,7 @@ function draw_sidebar(){
 												var nv2 = connections.get("connections["+i+"]::to::voice");
 												if(!Array.isArray(nv2)) nv2=[nv2];
 												var v2 = nv2.length;	
-												draw_spread(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2);				
+												draw_spread(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
 												draw_spread_levels(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector,offset,v1,v2,scale);				
 												mouse_click_actions[mouse_index] = connection_edit;
 												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
@@ -6599,6 +6601,7 @@ function draw_sidebar(){
 			var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 			var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
 
+			var from_colour, to_colour;
 			var section_colour,section_colour_dark,section_colour_darkest;
 			var type_colour,type_colour_dark,type_colour_darkest;
 			
@@ -6618,8 +6621,11 @@ function draw_sidebar(){
 			}
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
-			section_colour = blocks.get("blocks["+f_number+"]::space::colour");
-			section_colour = [section_colour[0]*1.2,section_colour[1]*1.2,section_colour[2]*1.2];
+
+			from_colour = blocks.get("blocks["+f_number+"]::space::colour");
+			to_colour = blocks.get("blocks["+t_number+"]::space::colour");
+
+			section_colour = [from_colour[0]*1.2,from_colour[1]*1.2,from_colour[2]*1.2];
 			section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
 			section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
 
@@ -7112,7 +7118,7 @@ function draw_sidebar(){
 						y_offset+=22*fo1;
 						sidebar.connection.defaults.vector = 0;
 						sidebar.connection.defaults.offset = 1;
-						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.5, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2);				
+						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.5, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
 						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.5, y_offset, sidebar.x2, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
@@ -7210,7 +7216,7 @@ function draw_sidebar(){
 						lcd_main.message("write","spread",offset.toPrecision(2));
 						y_offset+=22*fo1;
 	
-						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.5, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2);				
+						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.5, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
 						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.5, y_offset, sidebar.x2, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
@@ -7467,8 +7473,7 @@ function draw_sidebar(){
 				note_poly.message("setvalue", automap.available_c, "buttonmaplist",-1);
 			}
 
-			section_colour = blocks.get("blocks["+t_number+"]::space::colour");
-			section_colour = [section_colour[0]*1.2,section_colour[1]*1.2,section_colour[2]*1.2];
+			section_colour = [to_colour[0]*1.2,to_colour[1]*1.2,to_colour[2]*1.2];
 			section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
 			section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
 
