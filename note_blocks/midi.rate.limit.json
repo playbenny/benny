@@ -1,0 +1,35 @@
+{
+	"midi.rate.limit" : {
+		"patcher" : "midi.rate.limit",
+		"type" : "note",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "time quantised rate limiting, automatically in sync with the global transport (including clock timing looseness).££benny has natural speed limits on parameter / modulation connections but midi notes are completely unlimited, and some chains may generate a lot of midi notes. this block can be useful for taming this.",
+		"max_polyphony" : 0,
+		"connections" : {
+			"in" : {
+				"midi" : [ "notes in" ]
+			},
+			"out" : {
+				"midi" : [ "notes out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0]
+			}		
+		],
+		"panel" : {
+			"parameters" : [0]
+		},
+		"parameters" : [
+			{
+				"name" : "rate limit",
+				"type" : "menu_i",
+				"values" : ["off","128n","64n", "32nt", "32n", "16nt", "16n", "8nt", "8n", "4nt", "4n", "2nt", "2n", "1n"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0.47
+			}
+		]
+	}
+}
