@@ -1079,9 +1079,8 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 		if(min_chans<2){
 			min_chans = 2;
 			max_chans -= r2;
-			//max_chans *= 0.5;
-		}
 			//implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
+		}
 		var inputangle = in_no / no_in_channels;
 		var outputangle = out_no / no_out_channels;
 		var d;
@@ -1100,7 +1099,6 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 		d = (((rotation+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
 		d = Math.abs(d);
 		var l = Math.max(1 - r2 * d * min_chans,0) / tl;
-		//post("\ntl",tl,"l",l);
 		return l;
 	}else{
 		return spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_channels);
