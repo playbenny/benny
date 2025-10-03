@@ -1082,7 +1082,6 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 			//max_chans *= 0.5;
 		}
 			//implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
-		post("\nmin_chans,",min_chans,"max_chans",max_chans);
 		var inputangle = in_no / no_in_channels;
 		var outputangle = out_no / no_out_channels;
 		var d;
