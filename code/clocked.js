@@ -168,7 +168,7 @@ function frameclock(){
 				view_changed = false;
 				var ll = redraw_flag.paneltargets.length;
 				for(t=0;t<ll;t++){
-					if(redraw_flag.paneltargets[t]){
+					if(redraw_flag.paneltargets[t] && Array.isArray(paramslider_details[MAX_PARAMETERS + t])){
 						bangflag=1;
 						i = MAX_PARAMETERS + t;
 						if(paramslider_details[i][13]=="menu_l"){
