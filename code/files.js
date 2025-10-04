@@ -1326,8 +1326,10 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 			if(blocks.contains("blocks["+b+"]::mute")) store[b][0] = blocks.get("blocks["+b+"]::mute");
 		}
 	}
-	songs.replace(loading.songname+"::MAX_WAVES",MAX_WAVES);
-	songs.replace(loading.songname+"::version",bennyversion);
+	var songsettings = new Dict;
+	songsettings.name = "songsettings";
+	songsettings.parse('{ "MAX_WAVES": '+MAX_WAVES+', "version":'+bennyversion+'}');
+	post("\nstored version : ",'{ "MAX_WAVES": '+MAX_WAVES+', "version":'+bennyversion+'}');
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
 		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);

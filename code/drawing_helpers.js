@@ -919,7 +919,7 @@ function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 
 function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	if((v2==1)&&(v1==1)) return;
-	if(version<0.555) vector = -vector;
+	if(bennyversion < 0.555) vector = -vector;
 	var cx,cy,l;
 	var ux = (x2-x1)/v2;
 	var uy = (y2-y1)/v1;
@@ -1054,7 +1054,7 @@ function wipe_midi_meters(){
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2,fcol,tcol){
 	if(fcol==null)fcol=[r,g,b];
 	if(tcol==null)tcol=[r,g,b];
-	if(version<0.555) angle = -angle;
+	if(bennyversion < 0.555) angle = -angle;
 	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
 	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
