@@ -4829,13 +4829,15 @@ function draw_sidebar(){
 										var count = p_values.length;
 										if(count < 9){
 											if(sidebar.selected_voice==-1){
-												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[0]+curp)*8.99);
+												// poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
 											}else{
 												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*7.99)+1;
 											}
 										}else{
 											if(sidebar.selected_voice==-1){
-												poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+												// poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*8.99);
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[0]+curp)*8.99);
 											}else{
 												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*8.99);
 											}
