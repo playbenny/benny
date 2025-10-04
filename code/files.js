@@ -580,9 +580,9 @@ function import_song(){
 		}
 		sidebar.notification = null;
 		if(songs.contains(loading.songname+"::version")){
-			version = songs.get(loading.songname+"::version");
+			bennyversion = songs.get(loading.songname+"::version");
 		}else{
-			version = 0;
+			bennyversion = 0;
 		}
 		if(songs.contains(loading.songname+"::notepad")){ 
 			sidebar.notification = songs.get(loading.songname+"::notepad");
@@ -1327,6 +1327,7 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 		}
 	}
 	songs.replace(loading.songname+"::MAX_WAVES",MAX_WAVES);
+	songs.replace(loading.songname+"::version",bennyversion);
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
 		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
