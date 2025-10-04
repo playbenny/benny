@@ -1497,6 +1497,10 @@ function file_written(fname){//called when max reports successfully saving the c
 	if((fname.indexOf("/")<0)){ // the max dict object reports full filename & path for a save as, but if the file exists it just reports the name.. this is workaround for that 
 		//don't update loading.object_target, it's just a save not a saveas
 		loading.object_target = loading.songpath+fname;
+		if(loading.songname != fname){
+			post("\nnew filename:",fname);
+			loading.songname = fname;
+		}
 		// post("\nobj target is still",loading.object_target);
 	}else{
 		loading.object_target = fname;
