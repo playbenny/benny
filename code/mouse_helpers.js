@@ -4105,7 +4105,8 @@ function type_to_search(key){
 		//menu.search = menu.search.replace(" ","");
 	}
 	if(menu.search!=""){
-		var osel = menu.shown_order.indexOf[menu.selected] | 0;
+		var osel = menu.shown_order.indexOf(menu.selected);
+		if(osel<0) osel = 0;
 		post("\nosel is",osel);
 		var type_order = config.get("type_order");
 		var types = blocktypes.getkeys();
