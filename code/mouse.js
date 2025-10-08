@@ -124,7 +124,6 @@ function picker_hover_and_special(id){
 		}
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
 			var num = usermouse.hover[1];
-			post("\nhoev",num,matrix_menu_index[num],menu.selected);
 			if( matrix_menu_index[num] !== undefined  && matrix_menu_index[num] != menu.selected){
 				menu.selected =  matrix_menu_index[num];
 				type_to_search(-9);
@@ -1514,6 +1513,13 @@ function keydown(key){
 			var paras = action.slice(2,99);
 			//post("\nfound in keymap modal", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
+
+			if(keyrepeat_task.running==0){
+				keyrepeat_task = new Task(keydown, this, key);
+				keyrepeat_task.interval= 150;
+				keyrepeat_task.repeat(-1,300);			
+			}
+
 			return 1;		
 		}else if(keymap.contains("modal::"+displaymode+"::all")){
 			var action = keymap.get("modal::"+displaymode+"::all");
@@ -1522,6 +1528,13 @@ function keydown(key){
 			paras.push(key);
 			//post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
+
+			if(keyrepeat_task.running==0){
+				keyrepeat_task = new Task(keydown, this, key);
+				keyrepeat_task.interval= 150;
+				keyrepeat_task.repeat(-1,300);			
+			}
+
 			return 1;		
 		}
 	}

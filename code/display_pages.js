@@ -1251,7 +1251,8 @@ function initialise_block_menu(visible){
 				}
 			}
 		}
-		if(menu.mode == 1) squash_block_menu();
+		//if(menu.mode == 1) 
+		squash_block_menu();
 		write_menu_matrix();
 		messnamed("menu_multiple","enable",visible);
 	}else{

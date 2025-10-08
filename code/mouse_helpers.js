@@ -4160,7 +4160,7 @@ function type_to_search(key){
 				for(var ii = 0;ii<results[i].length;ii++){
 					f=1;
 					menu.shown_order.push(results[i][ii]);
-					blocks_menu[results[i][ii]].position = [x,-110.5+(results[i][ii]==menu.selected),z];
+					blocks_menu[results[i][ii]].position = [x,-110.5,z];
 					x++;
 					if(x>w){
 						z++;
@@ -4178,6 +4178,7 @@ function type_to_search(key){
 			matrix_menu_index=[];
 		}
 		menu.selected = menu.shown_order[osel];
+		blocks_menu[menu.selected].position[1] += 1;
 		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
@@ -4188,12 +4189,14 @@ function type_to_search(key){
 
 function menu_show_all(){
 	menu.show_all_types = 1;
+	menu.selected = 0;
 	initialise_block_menu(1);
 	redraw_flag.flag |= 4;
 }
 
 function squash_block_menu(){
 	//squashes the block menu to only show visible blocks
+	menu.shown_order = [];
 	var type_order = config.get("type_order");
 	var types = blocktypes.getkeys();
 	var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
@@ -4311,6 +4314,7 @@ function blocks_page_enter(){
 
 function blocks_menu_up_down(dir){
 	var n = menu.shown_order.indexOf(menu.selected) + dir;
+	var y = blocks_menu[menu.selected].position[2];
 	while(matrix_menu_index.indexOf(menu.shown_order[n])<0 && n>=0 && n<=menu.shown_order.length){
 		n+=dir;
 	}
@@ -4318,79 +4322,65 @@ function blocks_menu_up_down(dir){
 	if(n<0)n=0;
 	menu.selected = menu.shown_order[n];
 	type_to_search(-9);
-	menu.camera_scroll = blocks_menu[menu.selected].position[2] + 3;
-	messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
-/*	var n = menu.shown_order.indexOf(menu.selected) + dir;
-	while(!matrix_menu_index[menu.shown_order[n]] && n>=0 && n<=menu.shown_order.length){
-		n += dir;
-	}
-	if(n<0 || n>matrix_menu_index.length){
+	y-=blocks_menu[menu.selected].position[2];
+	if(y<-4 || y>4){
+		menu.camera_scroll = blocks_menu[menu.selected].position[2] + 3;
 	}else{
-		menu.selected = matrix_menu_index[menu.shown_order[n]];
-		type_to_search(-9);
-	}*/
+		menu.camera_scroll = menu.camera_scroll - y;
+	}
+	messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
 }
 
 function blocks_menu_enter(){
-	// var count=0,sel=-1;
-	// for(var i=0;i<menu.cubecount;i++){
-	// 	if((blocks_menu[i]!=undefined) && (blocks_menu[i].enable)){
-	// 		count++;
-	// 		sel=i;
-	// 	}
-	// }
-	// if(count==1){
-	if(1){
-		var sel = menu.selected;
-		var types = blocktypes.getkeys();
-		if(menu.mode == 0){
-			// post("\nnew block",sel,types[sel]);
-			set_display_mode("blocks");
-			end_of_frame_fn = function(){
-				var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
-				selected.block[r] = 1;
-				sidebar.scopes.voice = -1;
-				sidebar.selected_voice = -1;
-				var t = draw_block(r);
-				if(blocks_page.was_selected!=null && (!usermouse.shift != /*XOR*/ !config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
-					getWiresPotentialConnection();
-					if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
-						build_new_connection_menu(r,blocks_page.was_selected,-1,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1);
-					}else{
-						build_new_connection_menu(blocks_page.was_selected,r,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1, -1);
-					}
-				} 
-				blocks_page.was_selected = null;
-				block_cubes++;
-				voice_cubes+=t[0];
-				write_blocks_matrix();
-				var bpw = (blocks_page.rightmost - blocks_page.leftmost);
-				var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
-				if(d > 0){
-					camera_position[0] += 1.5*d*bpw;
-					camera();
+	var sel = menu.selected;
+	var types = blocktypes.getkeys();
+	if(menu.mode == 0){
+		// post("\nnew block",sel,types[sel]);
+		set_display_mode("blocks");
+		end_of_frame_fn = function(){
+			var r = new_block(types[sel], Math.round(blocks_page.new_block_click_pos[0]), Math.round(blocks_page.new_block_click_pos[1]));
+			selected.block[r] = 1;
+			sidebar.scopes.voice = -1;
+			sidebar.selected_voice = -1;
+			var t = draw_block(r);
+			if(blocks_page.was_selected!=null && (!usermouse.shift != /*XOR*/ !config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
+				getWiresPotentialConnection();
+				if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
+					build_new_connection_menu(r,blocks_page.was_selected,-1,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1);
+				}else{
+					build_new_connection_menu(blocks_page.was_selected,r,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1, -1);
 				}
-				redraw_flag.flag |= 8;
+			} 
+			blocks_page.was_selected = null;
+			block_cubes++;
+			voice_cubes+=t[0];
+			write_blocks_matrix();
+			var bpw = (blocks_page.rightmost - blocks_page.leftmost);
+			var d = ((blocks_page.new_block_click_pos[0]-blocks_page.leftmost)/bpw)-(sidebar.x/mainwindow_width);
+			if(d > 0){
+				camera_position[0] += 1.5*d*bpw;
+				camera();
 			}
-		}else if(menu.mode == 1){
-			swap_block(types[sel]);
-			set_display_mode("blocks");
-		}else if(menu.mode == 2){
-			var r = new_block(types[sel], blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1]);
-			if(blocktypes.get(types[sel]+"::type")=="audio") send_audio_patcherlist(1);
-			draw_block(r);
-			write_block_matrix(r);
-			insert_block_in_connection(types[sel],r);							
-			redraw_flag.flag |= 4;
-		}else if(menu.mode == 3){
-			post("substitution found!!"+types[sel]);
-			loading.recent_substitutions.replace(menu.swap_block_target, types[sel]);
-			menu.swap_block_target = types[sel];
-			set_display_mode("blocks");
-			import_song();
-			//swap_block(usermouse.ids[1]);
-			//set_display_mode("blocks");
+			redraw_flag.flag |= 8;
 		}
+	}else if(menu.mode == 1){
+		swap_block(types[sel]);
+		set_display_mode("blocks");
+	}else if(menu.mode == 2){
+		var r = new_block(types[sel], blocks_page.new_block_click_pos[0],blocks_page.new_block_click_pos[1]);
+		if(blocktypes.get(types[sel]+"::type")=="audio") send_audio_patcherlist(1);
+		draw_block(r);
+		write_block_matrix(r);
+		insert_block_in_connection(types[sel],r);							
+		redraw_flag.flag |= 4;
+	}else if(menu.mode == 3){
+		post("substitution found!!"+types[sel]);
+		loading.recent_substitutions.replace(menu.swap_block_target, types[sel]);
+		menu.swap_block_target = types[sel];
+		set_display_mode("blocks");
+		import_song();
+		//swap_block(usermouse.ids[1]);
+		//set_display_mode("blocks");
 	}
 }
 
@@ -4676,7 +4666,8 @@ function automap_direct_to_core(knob,value){
 			usermouse.shift=os;*/
 		}
 	}else if(displaymode == "block_menu"){
-		mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
+		blocks_menu_up_down(value);
+		//mousewheel(usermouse.x,usermouse.y,0,usermouse.ctrl,usermouse.shift,usermouse.caps,usermouse.alt,0,0,-0.1*value);
 	}else if(sidebar.mode=="file_menu"){
 		automap.scroll_accumulator += value*0.25;
 		if(Math.abs(automap.scroll_accumulator)>=1){
