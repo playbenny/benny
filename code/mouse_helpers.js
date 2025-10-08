@@ -4107,7 +4107,6 @@ function type_to_search(key){
 	if(menu.search!=""){
 		var osel = menu.shown_order.indexOf(menu.selected);
 		if(osel<0) osel = 0;
-		post("\nosel is",osel);
 		var type_order = config.get("type_order");
 		var types = blocktypes.getkeys();
 		var results = [];
@@ -4179,7 +4178,6 @@ function type_to_search(key){
 			matrix_menu_index=[];
 		}
 		menu.selected = menu.shown_order[osel];
-		post("\nnow selected is",menu.selected,"\norder",menu.shown_order);
 		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
