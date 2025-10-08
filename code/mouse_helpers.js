@@ -4093,7 +4093,7 @@ function type_to_search(key){
 		menu.search = menu.search.slice(0, -1);
 	}else if(key==-6){
 		menu.search = "";
-	}else if(key==-2){
+	}else if(key==-2 || key==-9 || key == -10 || key ==503 || key == 502){
 	}else{
 		if(menu.search == ""){
 			menu.camera_scroll=0;
@@ -4105,6 +4105,8 @@ function type_to_search(key){
 		//menu.search = menu.search.replace(" ","");
 	}
 	if(menu.search!=""){
+		var osel = menu.shown_order.indexOf[menu.selected] | 0;
+		post("\nosel is",osel);
 		var type_order = config.get("type_order");
 		var types = blocktypes.getkeys();
 		var results = [];
@@ -4151,12 +4153,14 @@ function type_to_search(key){
 		}
 		var w = 4 - (Math.max(0,Math.min(3,((mainwindow_height/mainwindow_width)-0.4)*5)) |0 );
 		var z=-3.5; var x=-w;
+		menu.shown_order = [];
 		for(var i =0;i<results.length;i++){
 			var f=0;
 			if(Array.isArray(results[i])){
 				for(var ii = 0;ii<results[i].length;ii++){
 					f=1;
-					blocks_menu[results[i][ii]].position = [x,-110,z];
+					menu.shown_order.push(results[i][ii]);
+					blocks_menu[results[i][ii]].position = [x,-110.5+(results[i][ii]==menu.selected),z];
 					x++;
 					if(x>w){
 						z++;
@@ -4173,6 +4177,8 @@ function type_to_search(key){
 		if((x==-w)&&(z==-3.5)){
 			matrix_menu_index=[];
 		}
+		menu.selected = menu.shown_order[osel];
+		post("\nnow selected is",menu.selected,"\norder",menu.shown_order);
 		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
@@ -4200,7 +4206,8 @@ function squash_block_menu(){
 			if(ts[0] == type_order[t]){
 				if(blocks_menu[i].enable){
 					f=1;
-					blocks_menu[i].position = [x,-110,z];
+					menu.shown_order.push(i);
+					blocks_menu[i].position = [x,-110.5+(i==menu.selected),z];
 					x++;
 					if(x>w){
 						z++;
@@ -4303,15 +4310,39 @@ function blocks_page_enter(){
 	set_display_mode("block_menu");
 }
 
-function blocks_menu_enter(){
-	var count=0,sel=-1;
-	for(var i=0;i<menu.cubecount;i++){
-		if((blocks_menu[i]!=undefined) && (blocks_menu[i].enable)){
-			count++;
-			sel=i;
-		}
+function blocks_menu_up_down(dir){
+	var n = menu.shown_order.indexOf(menu.selected) + dir;
+	while(matrix_menu_index.indexOf(menu.shown_order[n])<0 && n>=0 && n<=menu.shown_order.length){
+		n+=dir;
 	}
-	if(count==1){
+	if(n>=menu.shown_order.length) n = menu.shown_order.length - 1;
+	if(n<0)n=0;
+	menu.selected = menu.shown_order[n];
+	type_to_search(-9);
+	menu.camera_scroll = blocks_menu[menu.selected].position[2] + 3;
+	messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
+/*	var n = menu.shown_order.indexOf(menu.selected) + dir;
+	while(!matrix_menu_index[menu.shown_order[n]] && n>=0 && n<=menu.shown_order.length){
+		n += dir;
+	}
+	if(n<0 || n>matrix_menu_index.length){
+	}else{
+		menu.selected = matrix_menu_index[menu.shown_order[n]];
+		type_to_search(-9);
+	}*/
+}
+
+function blocks_menu_enter(){
+	// var count=0,sel=-1;
+	// for(var i=0;i<menu.cubecount;i++){
+	// 	if((blocks_menu[i]!=undefined) && (blocks_menu[i].enable)){
+	// 		count++;
+	// 		sel=i;
+	// 	}
+	// }
+	// if(count==1){
+	if(1){
+		var sel = menu.selected;
 		var types = blocktypes.getkeys();
 		if(menu.mode == 0){
 			// post("\nnew block",sel,types[sel]);
@@ -4322,7 +4353,7 @@ function blocks_menu_enter(){
 				sidebar.scopes.voice = -1;
 				sidebar.selected_voice = -1;
 				var t = draw_block(r);
-				if(blocks_page.was_selected!=null && (usermouse.shift || config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
+				if(blocks_page.was_selected!=null && (!usermouse.shift != /*XOR*/ !config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
 					getWiresPotentialConnection();
 					if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
 						build_new_connection_menu(r,blocks_page.was_selected,-1,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1);

@@ -58,6 +58,10 @@
             "-4" : ["enter", "blocks_menu_enter"],
             "508": ["shift+enter", "blocks_menu_enter"],
             "96" : ["`", "messnamed","panic","bang" ],
+            "-9" : ["UP", "blocks_menu_up_down", -1],
+            "-10" : ["DOWN", "blocks_menu_up_down", 1],
+            "503" : ["UP", "blocks_menu_up_down", -1],
+            "502" : ["DOWN", "blocks_menu_up_down", 1],
             "all" : ["all","type_to_search"]
         },
         "param_number_entry" : {

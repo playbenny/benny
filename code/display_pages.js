@@ -1243,7 +1243,7 @@ function initialise_block_menu(visible){
 				}
 				try{
 					blocks_menu[i].enable = vis;
-					blocks_menu[i].position = menu.original_position[i];
+					blocks_menu[i].position = [menu.original_position[i][0],menu.original_position[i][1]+(i==menu.selected),menu.original_position[i][2]];
 				}catch(err){
 					error("problem drawing menu, index:",i,"cubecount",menu.cubecount);
 					error(err.name,err.message);
@@ -1258,6 +1258,7 @@ function initialise_block_menu(visible){
 		post("\ninitialising block menu");
 		var w = ((   (4 - (Math.max(-1,Math.min(3,((mainwindow_height/mainwindow_width)-0.5)*8))))  *2) |0 ) *0.5;
 		for(i=0;i<menu.cubecount;i++) blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:0 };
+		menu.shown_order = [];
 		for(var typ in type_order){
 			z++;
 			z+=0.5;
@@ -1300,10 +1301,11 @@ function initialise_block_menu(visible){
 						}
 						blocks_menu[i]={ color:[],position:[],scale:[],name:"",enable:1 };
 						blocks_menu[i].color = [1,1,1,1];
-						blocks_menu[i].position = [x, -110, z];
-						menu.original_position[i]=[x,-110,z];
+						blocks_menu[i].position = [x, -110.5, z];
+						menu.original_position[i]=[x,-110.5,z];
 						blocks_menu[i].scale = [0.45, 0.45, 0.45];
 						blocks_menu[i].name = types[i];
+						menu.shown_order.push(i);
 						x++;					
 					}
 				}
@@ -6629,10 +6631,10 @@ function draw_sidebar(){
 			section_colour_dark = [section_colour[0]*0.5,section_colour[1]*0.5,section_colour[2]*0.5];
 			section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
 
-			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset,type_colour_dark );
+			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight+y_offset, type_colour_darkest );
 			lcd_main.message("moveto" ,sidebar.x+fo1+fo1, fontheight*0.75+y_offset);
 			lcd_main.message("font",mainfont,fontsmall*2);
-			lcd_main.message("frgb",type_colour);
+			lcd_main.message("frgb",type_colour_dark);
 			if((f_type=="potential")||(t_type=="potential")){
 				lcd_main.message("write", "new connection");
 			}else{
@@ -7478,6 +7480,83 @@ function draw_sidebar(){
 			section_colour_darkest = [section_colour[0]*bg_dark_ratio,section_colour[1]*bg_dark_ratio,section_colour[2]*bg_dark_ratio];
 
 
+			//output scope here
+			paramslider_details=[];
+			if(t_type=="audio"){
+				//no audio output scopes because i don't have A2D converters on the outputs of the matrix
+			}else if(t_type=="midi"){
+				//tell the routing patch to monitor this connection:
+				//a special routing, a special imaginary connection, and a special destination voice no? desttype controls the gate in the routing patch,
+				//so a simple solution is a new type that then goes direct into the monitor slot. 
+				//index = routing_index[cno][destvoiceno][sourcevoice]; <- you can use this to find the existing connection and just copy the values out!
+				sidebar.scopes.midi_routing.starty = y_offset;
+				sidebar.scopes.midi_routing.endy = y_offset + fontheight*2;
+				sidebar.scopes.midi_routing.bg = section_colour_darkest;
+				sidebar.scopes.midi_routing.fg = section_colour;
+				if(sidebar.scopes.midi_routing.number != i){
+					remove_routing(0);
+					sidebar.scopes.midi_routing.number = i;
+					make_connection(i,1);
+				}
+				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
+				y_offset += fo1*21;
+			}else if(t_type=="parameters"){
+				var params=blocktypes.get(t_name+"::parameters");
+				curp = t_i_no;
+				var p_values = params[curp].get("values");
+				var wrap = params[curp].get("wrap");
+				var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
+				var namelabely=y_offset+fontheight*(0.4+2);
+				var namearr = params[curp].get("name").split("_");
+				var flags = (p_values[0]=="bi");
+				var opvf=0;//do i need to fetch this here or is it never relevant?
+				if(opvf){
+					flags |= 2;
+				}else if(params[curp].contains("nopervoice")){
+					flags &= 61;
+					flags |= 4; //removes 2 flag, adds 4 flag
+				}
+		
+				if(p_type=="button"){
+					paramslider_details[curp]=null;
+					var statecount = (p_values.length - 1) / 2;
+					var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
+					draw_button(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index, p_values[pv2],pv);
+					mouse_click_actions[mouse_index] = send_button_message;
+					mouse_click_parameters[mouse_index] = block;
+					mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
+					if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
+						//but it's so much easier just to call this fn
+						buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
+					}
+					mouse_index++;
+					y_offset+=2.1*fontheight;
+				}else{
+					var click_to_set = 0;
+					if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
+					if(h_slider<1){
+						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3/*height*/,0,click_to_set];
+					}else{
+						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour[0],section_colour[1],section_colour[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3,0,click_to_set];
+					}
+					parameter_v_slider(sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,click_to_set);
+					sidebar.selected = t_number;
+					//paramslider_details is used for quick redraw of a single slider. index is curp
+					//ie is mouse_click_parameters[index][0]
+					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
+					mouse_click_parameters[mouse_index] = [curp, t_number,wrap];
+					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="menu_d")){
+						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
+						mouse_click_values[mouse_index] = curp+1;
+					}else{
+						mouse_click_values[mouse_index] = "";
+					}								
+					mouse_index++;
+					y_offset+=3.1*fontheight;
+				}
+			}
+
+
 			//TO BLOCK, INPUT, VOICE labels/menus
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,section_colour_darkest );
 			click_zone(jump_to_block_at_connection_end,1,1,sidebar.x, y_offset, sidebar.x2, fo1*6+y_offset,mouse_index,1);
@@ -7629,81 +7708,6 @@ function draw_sidebar(){
 				draw_sidebar_polyphony_options(t_number,section_colour,section_colour_dark,section_colour_darkest,t_name);
 			}
 
-			//output scope here
-			paramslider_details=[];
-			if(t_type=="audio"){
-				//no audio output scopes because i don't have A2D converters on the outputs of the matrix
-			}else if(t_type=="midi"){
-				//tell the routing patch to monitor this connection:
-				//a special routing, a special imaginary connection, and a special destination voice no? desttype controls the gate in the routing patch,
-				//so a simple solution is a new type that then goes direct into the monitor slot. 
-				//index = routing_index[cno][destvoiceno][sourcevoice]; <- you can use this to find the existing connection and just copy the values out!
-				sidebar.scopes.midi_routing.starty = y_offset;
-				sidebar.scopes.midi_routing.endy = y_offset + fontheight*2;
-				sidebar.scopes.midi_routing.bg = section_colour_darkest;
-				sidebar.scopes.midi_routing.fg = section_colour;
-				if(sidebar.scopes.midi_routing.number != i){
-					remove_routing(0);
-					sidebar.scopes.midi_routing.number = i;
-					make_connection(i,1);
-				}
-				lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_darkest);
-				y_offset += fo1*21;
-			}else if(t_type=="parameters"){
-				var params=blocktypes.get(t_name+"::parameters");
-				curp = t_i_no;
-				var p_values = params[curp].get("values");
-				var wrap = params[curp].get("wrap");
-				var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
-				var namelabely=y_offset+fontheight*(0.4+2);
-				var namearr = params[curp].get("name").split("_");
-				var flags = (p_values[0]=="bi");
-				var opvf=0;//do i need to fetch this here or is it never relevant?
-				if(opvf){
-					flags |= 2;
-				}else if(params[curp].contains("nopervoice")){
-					flags &= 61;
-					flags |= 4; //removes 2 flag, adds 4 flag
-				}
-		
-				if(p_type=="button"){
-					paramslider_details[curp]=null;
-					var statecount = (p_values.length - 1) / 2;
-					var pv2 = Math.floor(pv * statecount * 0.99999) * 2  + 1;
-					draw_button(sidebar.x,y_offset,sidebar.x2,y_offset+2*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index, p_values[pv2],pv);
-					mouse_click_actions[mouse_index] = send_button_message;
-					mouse_click_parameters[mouse_index] = block;
-					mouse_click_values[mouse_index] = [p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1];
-					if(getmap!=0){ //so ideally buttons should be something that if possible happens in max, for low latency
-						//but it's so much easier just to call this fn
-						buttonmaplist.push(block, p_values[0],p_values[pv2+1],MAX_PARAMETERS*block+curp, (pv+(1/statecount)) % 1);											
-					}
-					mouse_index++;
-					y_offset+=2.1*fontheight;
-				}else{
-					var click_to_set = 0;
-					if(params[curp].contains("click_set")) click_to_set = params[curp].get("click_set");
-					if(h_slider<1){
-						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3/*height*/,0,click_to_set];
-					}else{
-						paramslider_details[curp]=[sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour[0],section_colour[1],section_colour[2],mouse_index,t_number,curp,flags,namearr,namelabely,p_type,wrap,t_name,3,0,click_to_set];
-					}
-					parameter_v_slider(sidebar.x,y_offset,sidebar.x2,y_offset+3*fontheight,section_colour_dark[0],section_colour_dark[1],section_colour_dark[2],mouse_index,t_number,curp,flags,click_to_set);
-					sidebar.selected = t_number;
-					//paramslider_details is used for quick redraw of a single slider. index is curp
-					//ie is mouse_click_parameters[index][0]
-					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-					mouse_click_parameters[mouse_index] = [curp, t_number,wrap];
-					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="menu_d")){
-						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
-						mouse_click_values[mouse_index] = curp+1;
-					}else{
-						mouse_click_values[mouse_index] = "";
-					}								
-					mouse_index++;
-					y_offset+=3.1*fontheight;
-				}
-			}
 
 			if((blocktypes.contains(f_name+"::connections::out::matrix_channels")) && (to_has_matrix = 1)){
 				if((f_type=="matrix")&&(t_type=="matrix")){

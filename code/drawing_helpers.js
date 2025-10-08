@@ -1302,6 +1302,14 @@ function request_redraw(n){
 	}
 }
 
+function getBlockName(b){
+	if(blocks.contains("blocks["+b+"]::label")){
+		return blocks.get("blocks["+b+"]::label");
+	}else{
+		return blocks.get("blocks["+b+"]::name");
+	}
+}
+
 function draw_menu_hint(){
 	var topspace=(menu.mode == 3)+1.1*(loading.progress!=0);
 	lcd_main.message("clear");
@@ -1332,6 +1340,7 @@ function draw_menu_hint(){
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.75+1.1*(loading.progress!=0)));
 		lcd_main.message("write", menu.swap_block_target);
 	}
+
 	if(menu.search!=""){
 		topspace += 1.1;
 		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),menucolour);
@@ -1340,16 +1349,34 @@ function draw_menu_hint(){
 		lcd_main.message("write","search: "+menu.search);
 	}
 
-	var num = matrix_menu_index[usermouse.hover[1]];
-	if((num == undefined)||(num == -1)){
-		if((menu.search!="")&&(matrix_menu_index[0]!==undefined)){
-			num = matrix_menu_index[0];
-		}else{
-			lcd_main.message("bang");
-			return 0;
-		}
+	if(blocks_page.was_selected!=null && (!usermouse.shift != /*XOR*/ !config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
+		topspace += 1.1;
+		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+0.5),menudark);
+		lcd_main.message("frgb",menucolour);
+		lcd_main.message("font",mainfont,fontheight/2.5);
+				lcd_main.message("textface", "normal");
+
+		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.35));
+		var ft="from";
+		if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")) ft = "to";
+		lcd_main.message("write","will connect automatically",ft,":",getBlockName(blocks_page.was_selected));
+		lcd_main.message("font",mainfont,fontheight);
+		lcd_main.message("textface", "bold");
+		topspace -= 0.5;
 	}
-	var type = blocks_menu[num].name;
+
+	// if((matrix_menu_index[num] == undefined)||(num == -1)){
+	// 	if((menu.search!="")&&(matrix_menu_index[0]!==undefined)){
+	// 		num = matrix_menu_index[0];
+	// 	// }else{
+	// 	// 	lcd_main.message("bang");
+	// 	// 	return 0;
+	// 	}
+	// }
+	// menu.selected = num;
+	if(menu.selected==undefined && (matrix_menu_index[0]!==undefined) ) menu.selected = matrix_menu_index[0];
+	
+	var type = blocks_menu[menu.selected].name;
 	var col = menucolour;
 	var cod;
 	if(blocktypes.contains(type+"::colour")){
