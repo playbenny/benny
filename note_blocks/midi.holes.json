@@ -2,8 +2,9 @@
 	"midi.holes" : {
 		"patcher" : "midi.holes",
 		"type" : "note",
+		"synonyms" : ["divider"],
 		"block_ui_patcher" : "blank.ui",
-		"help_text" : "Forgets some midi events, randomly",
+		"help_text" : "Forgets some midi events, randomly or regularly. Works as a clock divider if you set 'skip every' to eg 0.5.",
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
