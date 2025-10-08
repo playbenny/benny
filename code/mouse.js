@@ -123,7 +123,12 @@ function picker_hover_and_special(id){
 			if((bulgeamount==1) && !(selected.wire[bulgingwire])) bulgeamount = 0.999;
 		}
 		if((displaymode=="block_menu")&&(ohov!=usermouse.hover[1])){
-			draw_menu_hint();
+			var num = usermouse.hover[1];
+			if( matrix_menu_index[num] !== undefined  && matrix_menu_index[num] != menu.selected){
+				menu.selected =  matrix_menu_index[num];
+				type_to_search(-9);
+			}
+			// draw_menu_hint();
 		}	
 	}
 	// deferred_diag.push(" - - hover is"+usermouse.hover+"returning id"+id);
@@ -516,7 +521,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 										}
 										selected.block[r] = 1;
 										var t = draw_block(r);
-										if(blocks_page.was_selected!=null && (usermouse.shift || config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
+										if(blocks_page.was_selected!=null && (!usermouse.shift != /*XOR*/ !config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
 											getWiresPotentialConnection();
 											if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")){
 												build_new_connection_menu(r,blocks_page.was_selected,-1,(blocks_page.was_selected_voice!=null) ? blocks_page.was_selected_voice : -1);
@@ -1285,10 +1290,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 		d=tcell >> 12;
 	}
 
-	if((displaymode=="blocks")||(displaymode=="block_menu")){
+	if((displaymode=="blocks")){//||(displaymode=="block_menu")){
 		id = picker_lookups(phys_picker_id);
 		if(id!=null) picker_hover_and_special(id);
-		if(displaymode == "block_menu") draw_menu_hint();
+		//if(displaymode == "block_menu") draw_menu_hint();
 	}	
 //	post("\nbcd",b,c,d,mouse_index);
 	if((b==0)&&(c==0)&&(d==0)){ //nothing to see here, zoom the 3d camera instead
@@ -1326,8 +1331,20 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				make_space(stw[0],stw[1],-1*scroll);
 			}
 		}else if(displaymode=="block_menu"){
+			// usermouse.scroll_accumulator += scroll * 10;
+			// if(parseInt(usermouse.scroll_accumulator)!=0){
+			// 	if(usermouse.scroll_accumulator<0){
+			// 		blocks_menu_up_down(-1);
+			// 	}else{
+			// 		blocks_menu_up_down(1);
+			// 	}
+			// 	usermouse.scroll_accumulator = 0;
+			// }
 			menu.camera_scroll = Math.max(-3,Math.min(menu.length+3,menu.camera_scroll-3*scroll));
 			messnamed("camera_control","position", 2 , -93, menu.camera_scroll);
+			id = picker_lookups(phys_picker_id);
+			if(id!=null) picker_hover_and_special(id);
+			draw_menu_hint();
 		}
 	}else if((d>=2) && (d<=4)){
 		var f = mouse_click_actions[b];
@@ -1496,6 +1513,13 @@ function keydown(key){
 			var paras = action.slice(2,99);
 			//post("\nfound in keymap modal", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
+
+			if(keyrepeat_task.running==0){
+				keyrepeat_task = new Task(keydown, this, key);
+				keyrepeat_task.interval= 150;
+				keyrepeat_task.repeat(-1,300);			
+			}
+
 			return 1;		
 		}else if(keymap.contains("modal::"+displaymode+"::all")){
 			var action = keymap.get("modal::"+displaymode+"::all");
@@ -1504,6 +1528,13 @@ function keydown(key){
 			paras.push(key);
 			//post("\nfound in keymap modal all", action[0],action[1], "paras",paras);
 			(eval(action[1])).apply(this,paras);
+
+			if(keyrepeat_task.running==0){
+				keyrepeat_task = new Task(keydown, this, key);
+				keyrepeat_task.interval= 150;
+				keyrepeat_task.repeat(-1,300);			
+			}
+
 			return 1;		
 		}
 	}

@@ -1071,11 +1071,46 @@ function mulberry32(){
 }
 
 function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels){
+	if(bennyversion >= 0.555){
+		//r2=radius of inner circle
+		//d = angle difference
+		var max_chans = Math.max(no_in_channels,no_out_channels);
+		var min_chans = Math.min(no_in_channels,no_out_channels);
+		if(min_chans<2){
+			min_chans = 2;
+			max_chans -= r2;
+			//implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
+		}
+		var inputangle = in_no / no_in_channels;
+		var outputangle = out_no / no_out_channels;
+		var d;
+		var tl=0;
+		rotation = -rotation;
+		for(var i=0;i<no_out_channels;i++){
+			for(var ii=0;ii<no_in_channels;ii++){
+				d = ((((i/no_out_channels)+(ii/no_in_channels)+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
+				d = Math.abs(d);
+				tl += Math.max(1 - d * r2 * min_chans /*no_out_channels*/,0);
+			}
+		} // first sum up a kind of hypothetical total level and get a scaling factor:
+		tl = Math.min(1,Math.pow(max_chans*no_in_channels,0.666) / tl);
+
+		// then the particular one
+		d = (((rotation+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
+		d = Math.abs(d);
+		var l = Math.max(1 - r2 * d * min_chans,0) * tl;
+		return l;
+	}else{
+		return spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_channels);
+	}
+}
+
+function spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_channels){
 	//r2=radius of inner circle
 	//d = angle difference
 	var max_chans = Math.max(no_in_channels,no_out_channels);
 	var min_chans = Math.max(Math.min(max_chans,2)-r2,Math.min(no_in_channels,no_out_channels));
-	  //implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
+		//implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
 	var inputangle = in_no / no_in_channels;
 	var outputangle = out_no / no_out_channels;
 	var d;

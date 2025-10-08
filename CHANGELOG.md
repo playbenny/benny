@@ -1,3 +1,9 @@
+8/10/25:
+- **version 0.555**
+- breaking change: the spread/rotate formula has been tweaked - spread works properly on stereo destinations and the polyphonic gain autocompensation is much less aggressive. old songfiles will use the old formula, any songs you start in this version will use the new one. if you've made a custom 'autoload.json' file you'll need to make it again from the one bundled with this version. 
+- the spread rotate ui has also been improved, hopefully it now explains what's happening better.
+- you can use arrow keys to move through the new block menu
+
 1/10/25:
 - new block **utility.env.ping** is an envelope inspired by the 4ms PEG. the overall envelope time (attack+decay) is set by tap tempo, a 'time division' slider and a 'mult' slider then that time is split between attack and release by another slider. very fun envelope and mod source with a lot of surprising possibilities. thanks to [El Chico Fuendre](https://elchicofuendre.bandcamp.com/album/ragas-for-city-dwellers) for coding this one.  
 

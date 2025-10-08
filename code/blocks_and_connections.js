@@ -1943,9 +1943,12 @@ function make_connection(cno,existing){
 								post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
 								outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 								outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
-								var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
-								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
-								post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute")));
+								if(outmsg[2]!=0){
+									var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
+									outmsg[2] *= spread_l;
+								}
+								//post(">>  "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 								messnamed("drivers_poly","setvalue",2,"set",outmsg);
 								connections.replace("connections["+cno+"]::conversion::soundcard", 1);
 								use_max_matrix = 0;
@@ -1973,10 +1976,13 @@ function make_connection(cno,existing){
 									//if(a==0) post("\nskipped a connection in force unity:",outmsg);
 									//if(a!=0) post("\noutmsg was,",outmsg);
 								}else{
-									var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
-									outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute"))) * spread_l;
+									outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute")));
+									if(outmsg[2]!=0){
+										var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
+										outmsg[2] *= spread_l;
+									}
 								}
-								//post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
+								// post("\nmatrix "+outmsg[0]+" "+outmsg[1]+" "+outmsg[2]);
 								if(loading.progress!=0){
 									deferred_matrix.push(outmsg);
 								}else{

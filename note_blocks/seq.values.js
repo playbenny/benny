@@ -240,7 +240,7 @@ function keydown(key,x,y){
 			}
 			typedMessage = typedMessage.concat(s);
 		}else{
-			outlet(0,"keydown_not_needed_by_panel",key);
+			// outlet(0,"keydown_not_needed_by_panel",key);
 		}
 	}
 	fulldraw();

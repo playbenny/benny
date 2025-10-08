@@ -265,6 +265,8 @@ var blocks_per_voice_colour_overrides = []; //eg if block 6 has this on some voi
 var menu = {
 	length : 10,  //endstop for the menu scroll
 	search : "",
+	selected : 0,
+	shown_order : [],
 	camera_scroll : 0,
 	original_position : [],
 	mode : 0, //0=new block,1=swap block,2=insert in connection
@@ -458,6 +460,7 @@ var blocks_page = {
 var menucolour, menudark, menudarkest;
 var greycolour, greydark, greydarkest;
 var bg_dark_ratio = 0.2;
+var bennyversion = 0;
 var fontheight,fontsmall;
 var fo1;
 var backgroundcolour;

@@ -918,14 +918,15 @@ function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 }
 
 function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
-	if((v1==1)&&(v2==1)) return;
+	if((v2==1)&&(v1==1)) return;
+	if(bennyversion < 0.555) vector = -vector;
 	var cx,cy,l;
-	var ux = (x2-x1)/v1;
-	var uy = (y2-y1)/v2;
+	var ux = (x2-x1)/v2;
+	var uy = (y2-y1)/v1;
 	var minl=99,maxl=-99;
-	for(cx=v1-1;cx>=0;cx--){
-		for(cy=0;cy<v2;cy++){
-			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v1, v2);
+	for(cx=v2-1;cx>=0;cx--){
+		for(cy=0;cy<v1;cy++){
+			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v2, v1);
 			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;
@@ -937,9 +938,9 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 			//lcd_main.message("font",mainfont, Math.min(uy,ux)*0.4);
 			if(Math.min(uy,ux)*0.4>=fontsmall){
 				lcd_main.message("frgb", menucolour);
-				for(cx=v1-1;cx>=0;cx--){
-					for(cy=0;cy<v2;cy++){
-						l = scale*spread_level(cx, cy, offset,vector, v1, v2);
+				for(cx=v2-1;cx>=0;cx--){
+					for(cy=0;cy<v1;cy++){
+						l = scale*spread_level(cx, cy, offset,vector, v2, v1);
 						lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*uy);
 						lcd_main.message("write",l.toPrecision(2));				
 					}
@@ -1043,11 +1044,6 @@ function wipe_midi_meters(){
 		var voice=meters_updatelist.midi[i][1];
 		if(blocks_meter[block][voice] !== 'undefined'){
 			var polyvoice = meters_updatelist.midi[i][2];
-			if(polyvoice === null){
-				post("\n\n\n\n unsafe poke");
-				sughstghldfjsl
-				return 0;
-			}
 			midi_meters_buffer.poke(1,polyvoice, [1,0,0,0,0,0,0]);
 		}
 	}
@@ -1055,28 +1051,45 @@ function wipe_midi_meters(){
 }
 
 
-function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2){
+function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2,fcol,tcol){
+	if(fcol==null)fcol=[r,g,b];
+	if(tcol==null)tcol=[r,g,b];
+	if(bennyversion < 0.555) angle = -angle;
 	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
 	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
-	lcd_main.message("frameoval",x1,y1,x2,y2,r/2,g/2,b/2);
-	lcd_main.message("frameoval",(x1+t),(y1+t),(x2-t),(y2-t),r,g,b);
+	lcd_main.message("frameoval",x1,y1,x2,y2,tcol);
+	lcd_main.message("frameoval",(x1+t),(y1+t),(x2-t),(y2-t),fcol);
 	if(view_changed===true) click_rectangle(x1,y1,x2,y2,index, 4);
 	var cx = (x1+x2)/2;
 	var cy = (y1+y2)/2;
 	var r1 = (x2-x1)/2;
 	var w = r1*0.1;
 	var i=0;
-	var col=[r,g,b];
-	for(i=0;i<v1;i++){
-		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*i/v1)),(cy-w-r1*Math.cos(6.28*i/v1)),(cx+w+r1*Math.sin(6.28*i/v1)),(cy+w-r1*Math.cos(6.28*i/v1)),col);
-		if(i==0) col = [r/2,g/2,b/2];
+	var col=tcol; //[r,g,b];
+	for(i=0;i<v2;i++){ // destinations
+		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*i/v2)),(cy-w-r1*Math.cos(6.28*i/v2)),(cx+w+r1*Math.sin(6.28*i/v2)),(cy+w-r1*Math.cos(6.28*i/v2)),col);
+		if(i==0) col = shadeRGB(tcol,0.5);
+	}
+	col=shadeRGB(tcol,1.5);
+	for(i=0;i<v2;i++){ // labels 
+		lcd_main.message("moveto",(cx-w+((i<10)*2 - 0.33)*fo1+r1*Math.sin(6.28*i/v2)),(cy+w-1.3*fo1-r1*Math.cos(6.28*i/v2)));
+		lcd_main.message("frgb", col);
+		lcd_main.message("write",i+1);
+		if(i==0) col = [0,0,0];
 	}
 	r1 -= t;
-	col=[r,g,b];
-	for(i=0;i<v2;i++){
-		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v2))),(cy-w-r1*Math.cos(6.28*(angle + i/v2))),(cx+w+r1*Math.sin(6.28*(angle + i/v2))),(cy+w-r1*Math.cos(6.28*(angle + i/v2))),col);
-		if(i==0) col = [r/2,g/2,b/2];
+	col=fcol;
+	for(i=0;i<v1;i++){ // sources
+		lcd_main.message("paintrect",(cx-w+r1*Math.sin(6.28*(angle + i/v1))),(cy-w-r1*Math.cos(6.28*(angle + i/v1))),(cx+w+r1*Math.sin(6.28*(angle + i/v1))),(cy+w-r1*Math.cos(6.28*(angle + i/v1))),col);
+		if(i==0) col = shadeRGB(fcol,0.5);
+	}
+	col=shadeRGB(fcol,1.5);
+	for(i=0;i<v1;i++){ // labels
+		lcd_main.message("moveto",(cx-w+((i<10)*2 - 0.33)*fo1+r1*Math.sin(6.28*(angle + i/v1))),(cy+w-1.3*fo1-r1*Math.cos(6.28*(angle + i/v1))));
+		lcd_main.message("frgb", col);
+		lcd_main.message("write",i+1);
+		if(i==0) col = [0,0,0];
 	}
 }
 
@@ -1289,6 +1302,14 @@ function request_redraw(n){
 	}
 }
 
+function getBlockName(b){
+	if(blocks.contains("blocks["+b+"]::label")){
+		return blocks.get("blocks["+b+"]::label");
+	}else{
+		return blocks.get("blocks["+b+"]::name");
+	}
+}
+
 function draw_menu_hint(){
 	var topspace=(menu.mode == 3)+1.1*(loading.progress!=0);
 	lcd_main.message("clear");
@@ -1319,6 +1340,7 @@ function draw_menu_hint(){
 		lcd_main.message("moveto", sidebar.x+fontheight*0.2,9+fontheight*(1.75+1.1*(loading.progress!=0)));
 		lcd_main.message("write", menu.swap_block_target);
 	}
+
 	if(menu.search!=""){
 		topspace += 1.1;
 		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+1),menucolour);
@@ -1327,16 +1349,34 @@ function draw_menu_hint(){
 		lcd_main.message("write","search: "+menu.search);
 	}
 
-	var num = matrix_menu_index[usermouse.hover[1]];
-	if((num == undefined)||(num == -1)){
-		if((menu.search!="")&&(matrix_menu_index[0]!==undefined)){
-			num = matrix_menu_index[0];
-		}else{
-			lcd_main.message("bang");
-			return 0;
-		}
+	if(blocks_page.was_selected!=null && (!usermouse.shift != /*XOR*/ !config.get("ALWAYS_AUTOCONNECT_IF_YOU_CAN"))){
+		topspace += 1.1;
+		lcd_main.message("paintrect",sidebar.x,9+fontheight*(topspace),sidebar.x2,9+fontheight*(topspace+0.5),menudark);
+		lcd_main.message("frgb",menucolour);
+		lcd_main.message("font",mainfont,fontheight/2.5);
+				lcd_main.message("textface", "normal");
+
+		lcd_main.message("moveto", sidebar.x+fo1*2,9+fontheight*(topspace+0.35));
+		var ft="from";
+		if(blocks_page.new_block_click_pos[1] > blocks.get("blocks["+blocks_page.was_selected+"]::space::y")) ft = "to";
+		lcd_main.message("write","will connect automatically",ft,":",getBlockName(blocks_page.was_selected));
+		lcd_main.message("font",mainfont,fontheight);
+		lcd_main.message("textface", "bold");
+		topspace -= 0.5;
 	}
-	var type = blocks_menu[num].name;
+
+	// if((matrix_menu_index[num] == undefined)||(num == -1)){
+	// 	if((menu.search!="")&&(matrix_menu_index[0]!==undefined)){
+	// 		num = matrix_menu_index[0];
+	// 	// }else{
+	// 	// 	lcd_main.message("bang");
+	// 	// 	return 0;
+	// 	}
+	// }
+	// menu.selected = num;
+	if(menu.selected==undefined && (matrix_menu_index[0]!==undefined) ) menu.selected = matrix_menu_index[0];
+	
+	var type = blocks_menu[menu.selected].name;
 	var col = menucolour;
 	var cod;
 	if(blocktypes.contains(type+"::colour")){
