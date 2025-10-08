@@ -50,6 +50,7 @@
 			{
 				"name" : "circuit_saturation",
 				"type" : "menu_b",
+				"nopervoice" : 1,
 				"values" : ["saturation_off", "saturation_on"],
 				"wrap" : 1,
 				"default" : 0.75

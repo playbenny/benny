@@ -4177,8 +4177,9 @@ function type_to_search(key){
 		if((x==-w)&&(z==-3.5)){
 			matrix_menu_index=[];
 		}
+		if(osel==null || osel>=menu.shown_order.length) osel = 0;
 		menu.selected = menu.shown_order[osel];
-		blocks_menu[menu.selected].position[1] += 1;
+		if(blocks_menu[menu.selected]) blocks_menu[menu.selected].position[1] += 1;
 		write_menu_matrix();
 	}else{
 		initialise_block_menu(1);
