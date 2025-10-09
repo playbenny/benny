@@ -4258,7 +4258,6 @@ function draw_sidebar(){
 			automap.count = (automap.mapped_k>-1) || (automap.mapped_q!=-1) || ((automap.devicename_c!="")&&(block_name!="core.input.control.auto")) || ((automap.mapped_k==-1)||(automap.available_k_block>-1));
 			
 			if(automap.count) draw_automap_headers(sx, block);
-
 			var current_p = blocks.get("blocks["+block+"]::poly::voices");
 
 			if(current_p>1){
@@ -8768,6 +8767,8 @@ function draw_resource_monitor_page() {
 }
 
 function draw_automap_headers(sx, block) {
+	var mio = mouse_index;
+	// post("\nAM HEADERS, mouse index is",mouse_index,"sbm is",sidebar.mode);
 	if ((automap.already_k == 0)&&((automap.mapped_k>-1) || ((automap.available_k_block>-1)&&(sidebar.mode=="block")&&(automap.mapped_k==-1)))){
 		//DRAW KEYBOARD AUTOMAP HEADER LINE
 		click_zone(automap_k_click, -1, -1, sidebar.x, y_offset, sidebar.x + 22, y_offset + fontheight * 0.5, mouse_index, 1);
@@ -9165,6 +9166,7 @@ function draw_automap_headers(sx, block) {
 	}
 
 	if (sx != sidebar.x) y_offset += fontheight * 0.6;
+	mouse_index = Math.max(mouse_index,mio+32);
 	//return y_offset;
 }
 

@@ -126,72 +126,37 @@
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 1, 2 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.coiler.vcf" : 		{
+		},
+		"hardware.drive.pit.viper" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
-			"help_text" : "coiler filter",
+			"help_text" : "pit viper is distortion into mixed svf outputs",
 			"exclusive" : 0,
 			"click_out" : 0,
 			"cue_out" : 0,
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in", "cv" ],
+					"hardware" : [ "in", "f cv" ],
 					"hardware_channels" : [ 7, 8 ],
 					"matrix_channels" : [ 5, 6 ]
-				}
-,
-				"out" : 				{
-					"hardware" : [ "hp out", "bp out", "lp out" ],
-					"hardware_channels" : [ 3, 4, 5 ],
-					"matrix_channels" : [ 3, 4, 5 ],
-					"input_gate" : [ 1, 1, 1 ],
-					"dc_block" : [ 1, 1, 1 ]
-				}
-
-			}
-
-		}
-,
-		"hardware.maths.1" : 		{
-			"type" : "hardware",
-			"substitute" : [  ],
-			"max_polyphony" : 1,
-			"help_text" : "maths left side",
-			"exclusive" : 0,
-			"click_out" : 0,
-			"cue_out" : 0,
-			"talk_in" : 0,
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "in", "rate" ],
-					"hardware_channels" : [ 9, 21 ],
-					"matrix_channels" : [ 7 ]
-				}
-,
+				},
 				"out" : 				{
 					"hardware" : [ "out" ],
-					"hardware_channels" : [ 6 ],
-					"matrix_channels" : [ 6 ],
-					"dc_block" : [ 0 ],
-					"input_gate" : [ 1 ]
+					"hardware_channels" : [ 4 ],
+					"matrix_channels" : [ 4 ],
+					"input_gate" : [ 1 ],
+					"dc_block" : [ 1 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.maths.2" : 		{
+		},
+		"hardware.function" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
-			"help_text" : "maths right side",
+			"help_text" : "makenoise function",
 			"exclusive" : 0,
 			"click_out" : 0,
 			"cue_out" : 0,
@@ -201,8 +166,7 @@
 					"hardware" : [ "in", "rate" ],
 					"hardware_channels" : [ 10, 22 ],
 					"matrix_channels" : [ 8 ]
-				}
-,
+				},
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 7 ],
@@ -210,12 +174,9 @@
 					"dc_block" : [ 0 ],
 					"input_gate" : [ 1 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.arp.filter" : 		{
+		},
+		"hardware.filter.arp" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
@@ -229,19 +190,15 @@
 					"hardware" : [ "in", "cv" ],
 					"hardware_channels" : [ 13, 14 ],
 					"matrix_channels" : [ 11, 12 ]
-				}
-,
+				},
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 10 ],
 					"matrix_channels" : [ 10 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.sem" : 		{
+		},
+		"hardware.filter.sem" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
@@ -255,70 +212,102 @@
 					"hardware" : [ "in", "cv" ],
 					"hardware_channels" : [ 15, 16 ],
 					"matrix_channels" : [ 13, 14 ]
-				}
-,
+				},
 				"out" : 				{
 					"hardware" : [ "lp/hp out", "bp out" ],
 					"hardware_channels" : [ 11, 12 ],
 					"matrix_channels" : [ 11, 12 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.qmmg" : 		{
+		},
+		"hardware.drive.mog.4band" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
-			"help_text" : "channels 3 and 4 of the qmmg",
+			"help_text" : "mog 4 band drive",
 			"exclusive" : 0,
 			"click_out" : 0,
 			"cue_out" : 0,
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "audio 3", "audio 4", "cv 3", "cv 4" ],
-					"hardware_channels" : [ 24, 18, 12, 23 ],
-					"matrix_channels" : [ 0, 16, 10 ]
-				}
-,
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 9 ],
+					"matrix_channels" : [ 7 ]
+				},
 				"out" : 				{
-					"hardware" : [ "out 3", "out 4" ],
-					"hardware_channels" : [ 15, 14 ],
-					"matrix_channels" : [ 15, 14 ]
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 6 ],
+					"matrix_channels" : [ 6 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.drive.+qmmg" : 		{
+		},
+		"hardware.drive.london" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
 			"max_polyphony" : 1,
-			"help_text" : "drive+qmmg",
+			"help_text" : "music thing overdrive",
 			"exclusive" : 0,
 			"click_out" : 0,
 			"cue_out" : 0,
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-					"hardware" : [ "in1", "in2" ],
-					"hardware_channels" : [ 17, 11 ],
-					"matrix_channels" : [ 15, 9 ]
-				}
-,
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 17 ],
+					"matrix_channels" : [ 15 ]
+				},
 				"out" : 				{
-					"hardware" : [ "out1", "out2" ],
-					"hardware_channels" : [ 13, 8 ],
-					"matrix_channels" : [ 9, 8 ]
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 13 ],
+					"matrix_channels" : [ 9 ]
 				}
-
 			}
-
-		}
-,
+		},
+		"hardware.drive.bard.ivan" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "bard ivan vfd tube drive",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 11 ],
+					"matrix_channels" : [ 9 ]
+				},
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 5 ],
+					"matrix_channels" : [ 5 ]
+				}
+			}
+		},
+		"hardware.phaser.orion" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "wmd orion phaser",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" , "freq" ],
+					"hardware_channels" : [ 12, 13 ],
+					"matrix_channels" : [ 10, 16 ]
+				},
+				"out" : 				{
+					"hardware" : [ "out L", "out R" ],
+					"hardware_channels" : [ 3, 8 ],
+					"matrix_channels" : [ 3, 8 ]
+				}
+			}
+		},
 		"hardware.fx.boy" : 		{
 			"type" : "hardware",
 			"substitute" : 47,
@@ -333,19 +322,15 @@
 					"hardware" : [ "in", "cvX", "cvY" ],
 					"hardware_channels" : [ 3, 4, 6 ],
 					"matrix_channels" : [ 1, 2, 4 ]
-				}
-,
+				},
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 1 ],
 					"matrix_channels" : [ 1 ]
 				}
-
 			}
-
-		}
-,
-		"hardware.lifeforms.delay" : 		{
+		},
+		"hardware.delay.lifeforms" : 		{
 			"type" : "hardware",
 			"substitute" : 54,
 			"max_polyphony" : 1,
@@ -359,18 +344,14 @@
 					"hardware" : [ "in", "time" ],
 					"hardware_channels" : [ 5, 20 ],
 					"matrix_channels" : [ 3, 0, 0 ]
-				}
-,
+				},
 				"out" : 				{
 					"hardware" : [ "out" ],
 					"hardware_channels" : [ 2 ],
 					"matrix_channels" : [ 2 ]
 				}
-
 			}
-
-		}
-,
+		},
 		"hardware.ribbon" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
@@ -382,19 +363,14 @@
 			"talk_in" : 0,
 			"connections" : 			{
 				"in" : 				{
-
-				}
-,
+				},
 				"out" : 				{
-					"hardware" : [ "position", "pressure (via maths2)" ],
+					"hardware" : [ "position", "pressure (via function)" ],
 					"hardware_channels" : [ 16, 7 ],
 					"dc_block" : [ 0, 0 ]
 				}
-
 			}
-
-		}
-,
+		},
 		"hardware.rme.headphones" : 		{
 			"type" : "hardware",
 			"substitute" : [  ],
@@ -409,37 +385,8 @@
 					"hardware" : [ "new", "new" ],
 					"hardware_channels" : [ 33, 34 ]
 				}
-
 			}
-
 		}
-,
-		"hardware.sto" : 		{
-			"type" : "hardware",
-			"substitute" : 102,
-			"max_polyphony" : 1,
-			"help_text" : "oscilator for tuner tests",
-			"exclusive" : 0,
-			"click_out" : 0,
-			"cue_out" : 0,
-			"talk_in" : 0,
-			"connections" : 			{
-				"in" : 				{
-					"hardware" : [ "1v/oct in" ],
-					"hardware_channels" : [ 19 ]
-				}
-,
-				"out" : 				{
-					"hardware" : [ "osc" ],
-					"hardware_channels" : [ 9 ],
-					"dc_block" : [ 0 ]
-				}
-
-			}
-
-		}
-
-	}
-,
+	},
 	"measured_latency" : 592
 }

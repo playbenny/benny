@@ -1280,7 +1280,7 @@ function remove_connection(connection_number){
 						var use_max_matrix = 1;
 						if((SOUNDCARD_HAS_MATRIX == 1) && (f_type=="hardware")&&(t_type=="hardware")){
 							//use soundcard 
-							post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
+							// post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
 							outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 							outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 							outmsg[2] = 0;
@@ -1940,7 +1940,7 @@ function make_connection(cno,existing){
 							var outmsg=[];
 							if((SOUNDCARD_HAS_MATRIX == 1) && (f_type=="hardware")&&(t_type=="hardware")){
 								//use soundcard 
-								post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
+								// post("\nCONNECTION VIA SOUNDCARD MATRIX MIXER");
 								outmsg[0] = audioiolists[0][f_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 								outmsg[1] = audioiolists[1][t_voice - 1 - MAX_AUDIO_VOICES * NO_IO_PER_BLOCK]-1;
 								outmsg[2] = conversion.get("scale") * (1-(hw_mute || conversion.get("mute")));

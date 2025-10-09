@@ -157,7 +157,7 @@ function mouseidle(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		usermouse.qlb = leftbutton;
 		// deferred_diag.push("idle    "+x+","+y+" [[  "+leftbutton+"  ]] "+usermouse.qcount);
 	}else{
-		deferred_diag.push("idle during click??????");
+		// deferred_diag.push("idle during click??????");
 		usermouse.queue.push([x,y,leftbutton,ctrl,shift,caps,alt,usermouse.qcount++]);
 		usermouse.qlb = leftbutton; //nb previously, these two lines weren't here, these messages were dumped, but now i only see them when a mouse release has failed to register
 	}
