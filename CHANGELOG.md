@@ -1,3 +1,6 @@
+12/10/25:
+- **core.scales.shapes** now has easier ways to select common scales - via sliders or midi input.
+
 8/10/25:
 - **version 0.555**
 - breaking change: the spread/rotate formula has been tweaked - spread works properly on stereo destinations and the polyphonic gain autocompensation is much less aggressive. old songfiles will use the old formula, any songs you start in this version will use the new one. if you've made a custom 'autoload.json' file you'll need to make it again from the one bundled with this version. 

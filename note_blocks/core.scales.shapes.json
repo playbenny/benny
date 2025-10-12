@@ -3,24 +3,56 @@
 		"patcher" : "core.scales.shapes",
 		"type" : "note",
 		"block_ui_patcher" : "core.scales.shapes.ui",
-		"help_text" : "Scales and shapes storage and editting. ££Benny has 8 scale slots, you can access these by adding more voices to this block. (1 voice = 1 scale). You can use these for quantisation - eg in midi.scale.quantise or fx.retune etc - but this block can also store patterns in the form of the scale and a list ('shape') of which notes occurred in which order. The seq.shape.player can play back and mutate these patterns.££You can enter scales with the mouse by clicking the keyboard graphics. ££You can make scales (dynamically if you want!) using midi (or QWERTY!) input in two ways: ££For midi into the 'held' input the currently held notes are stored along with the order they were added. ££A phrase played into the 'pattern' input is turned into a list of notes and the order they were received. it decides you've finished a couple of hundred ms after the last note off, so you can input repeated notes by either holding another previous note while you enter them, or by leaving a very short gap between them, but you do have to wait a tiny moment if you want to enter a new scale so that it doesn't treat it all as one. ££Scales can also span two octaves, if the scale you input is bigger than an octave then it treats it as being two. In the mouse interface if you hold shift it only adds/removes in the current octave. ",
+		"help_text" : "Scales and shapes storage and editting. ££Benny has 8 scale slots, you can access these by adding more voices to this block. (1 voice = 1 scale). You can use these for quantisation - eg in midi.scale.quantise or fx.retune etc - but this block can also store patterns in the form of the scale and a list ('shape') of which notes occurred in which order. The seq.shape.player can play back and mutate these patterns.££You can enter scales with the mouse by clicking the keyboard graphics. ££You can make scales (dynamically if you want!) using midi (or QWERTY!) input in three ways: ££For midi into the 'held' input the currently held notes are stored along with the order they were added. ££A phrase played into the 'pattern' input is turned into a list of notes and the order they were received. it decides you've finished a couple of hundred ms after the last note off, so you can input repeated notes by either holding another previous note while you enter them, or by leaving a very short gap between them, but you do have to wait a tiny moment if you want to enter a new scale so that it doesn't treat it all as one. ££Finally midi into the 'auto scale select' input picks from the common scale lists: note sets the rote, octave sets the scale type:£0 major£1 dorian £2 phrygian £3 lydian £4 mixolydian £5 aeolian £6 locrian £7 harmonic minor £8 double harmonic £9 super locrian ££££Scales can also span two octaves, if the scale you input is bigger than an octave then it treats it as being two. In the mouse interface if you hold shift it only adds/removes in the current octave. ",
 		"exclusive" : 1,
 		"ui_in_sidebar_height" : 5,		
 		"ui_in_sidebar_expands" : 1,
 		"max_polyphony" : 8,
 		"connections" : {
 			"in" : {
-				"midi" : [ "patterns in", "held notes in" ],
+				"midi" : [ "patterns in", "held notes in", "auto_scale_select" ],
 				"dontdefaultall" : 1,
 				"automap_poly" : 0
 			}
 		},
-        "default_polymode" : { 
-            "stack_mode" : "1x",
-            "choose_mode" : "cycle free",
-            "steal_mode" : "oldest",
-            "return_mode" : 0,
-            "latching" : 0
-        }
+		"default_polymode" : { 
+				"stack_mode" : "1x",
+				"choose_mode" : "cycle free",
+				"steal_mode" : "oldest",
+				"return_mode" : 0,
+				"latching" : 0
+		},
+		"groups" : [
+			{ 
+				"contains" : [0],
+				"onepervoice" : 1,
+				"header" : "auto",
+				"height" : 0
+			},
+			{ 
+				"contains" : [1],
+				"onepervoice" : 1,
+				"height" : 0
+			}
+
+		],
+		"parameters" : [
+			{
+				"name" : "auto_scale",
+				"type" : "menu_i",
+				"values" : ["off", "major", "dorian", "phrygian", "lydian", "mixolydian", "aeolian", "locrian", "harmonic_minor", "double_harmonic", "super_locrian"],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "auto_root",
+				"type" : "menu_i",
+				"values" : [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ],
+				"error_scale" : 0,
+				"wrap" : 0,
+				"default" : 0
+			}
+		]
 	}
 }
