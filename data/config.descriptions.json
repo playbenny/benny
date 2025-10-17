@@ -15,6 +15,7 @@
 	"ALWAYS_AUTOCONNECT_IF_YOU_CAN" : "if on, then if you make a new block (via type-to-search) and you had a block selected already then the new block will be automatically connected to it",
 	"STATE_FADE_DRAG_THRESHOLD" : "distance you have to drag from a state button before it turns into a fader",
 	"MAX_BEZIER_SEGMENTS" : "maximum number of segments to make a wire out of (raising this seems to make the gpu work hard)",
+	"FSAA" : "anti-aliasing in the benny window. saves a little bit of gpu load on systems with built in gpus and hi res screens",
 	"MAX_BLOCKS" : "number of blocks available.",
 	"MAX_NOTE_VOICES" : "number of note voices available",
 	"MAX_AUDIO_VOICES" : "number of audio voice available. has a big effect on baseline cpu usage (the matrix mixer that connects all the audio voices internally is the cause of this). 64 is fine on mid range systems, to keep a laptop from getting too hot for simple patches on the sofa you can set this to 16",

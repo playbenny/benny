@@ -336,7 +336,7 @@ function initialise_graphics() {
 	world.message("sendrender", "smooth_shading", 1);
 	world.message("esc_fullscreen", 0);
 	world.message("fsmenubar", 0);
-	world.message("fsaa", 1);
+	world.message("fsaa", (config.get("FSAA")==1)|0);
 	world.message("fps", TARGET_FPS[0]);
 	world.message("visible", 1);
 	if(config.contains("START_FULLSCREEN")&&(config.get("START_FULLSCREEN")==1)){

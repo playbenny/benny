@@ -58,6 +58,7 @@
 	"RECORD_FOLDER" : "",
 	"type_order" : [ "core", "seq", "midi", "source", "voice", "hardware", "fx", "utility", "mixer", "vst", "amxd" ],
 	"RECYCLING" : 1,
+	"FSAA" : 1,
 	"ENABLE_RECORD_HARDWARE" : 1,
 	"AUTOLOAD_INCLUDES_STATES" : 0,
 	"BOTTOMBAR_HEIGHT" : 3.5,
