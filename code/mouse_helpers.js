@@ -4233,7 +4233,7 @@ function show_and_search_new_block_menu(key){
 		menu.search = "";
 		show_new_block_menu();
 		end_of_frame_fn = function(){type_to_search(key);};
-	}else if((((key>=-42)&&(key<-32))||((key>=48)&&(key<58)))&&(usermouse.caps==0)){ //numbers do direct entry on values.	
+	}else if((((key>=-42)&&(key<-32))||((key>=44)&&(key<58)))&&(usermouse.caps==0)){ //numbers do direct entry on values.	
 		if((sidebar.mode == "block")&&(usermouse.got_t>=2) && (usermouse.got_t<=4) && (usermouse.got_i) && (usermouse.x > sidebar.x)){
 			var pno = mouse_click_parameters[usermouse.got_i][0];
 			//0-3 coords, 456 colour, 8 is the block (we know that already) 9 is the param no
@@ -4249,21 +4249,141 @@ function show_and_search_new_block_menu(key){
 }
 
 function number_entry(key){
+	if(key>512)key -= 512;
 	if(key == -4){//enter
-		request_set_block_parameter(sidebar.selected,sidebar.param_number,(+sidebar.param_number_entry));
+		if(sidebar.param_number_entry.indexOf(",")>-1){
+			parameter_list_entry();
+		}else{
+			request_set_block_parameter(sidebar.selected,sidebar.param_number,(+sidebar.param_number_entry));
+		}
 		sidebar.mode = "block";
 		redraw_flag.flag |=2;
 	}else if(key == -3){//esc
 		sidebar.param_number_entry = "";
 		sidebar.mode = "block";
 		redraw_flag.flag |= 2;
-	}else if(((key>=48)&&(key<58))||(key==46)||((key>=-42)&&(key<-32))){
+	}else if(((key>=44)&&(key<58))||(key==110)||(key==116)||((key>=-42)&&(key<-32))){
+		//44=. 45=- 46=. 47=/ 110,116 = nt
 		if(((key>=-42)&&(key<-32))) key = -key + 15;
 		sidebar.param_number_entry = sidebar.param_number_entry.concat(String.fromCharCode(key));
 		draw_number_entry(sidebar.param_number,sidebar.param_number_entry);
 	}else if((key==-6)||(key==-7)){
 		sidebar.param_number_entry = sidebar.param_number_entry.slice(0, -1);
 		draw_number_entry(sidebar.param_number,sidebar.param_number_entry);
+	}
+}
+
+function parameter_list_entry(){
+	// like this
+	//  request_set_block_parameter(sidebar.selected,sidebar.param_number,(+sidebar.param_number_entry));
+	// but for a list. so 
+	// you find the least value, 
+	var clock = null;
+	var list = [];
+
+	if(sidebar.param_number_entry.indexOf("/")>-1){
+		clock = sidebar.param_number_entry.split("/").pop();
+		if(clock.indexOf("n")==-1) clock = clock+"n";
+		post("\nuser entered clock",clock);
+	}
+
+	list = sidebar.param_number_entry.split(",");
+	post("\n list has ",list.length,"entries"	);
+	var least = 1;
+	for(var i=0;i<list.length;i++){
+		list[i] = unscale_parameter(sidebar.selected,sidebar.param_number,parseFloat(list[i]));
+		if(list[i]<least)least = list[i];
+	}
+	post("least value is ",least);
+
+	// set it to that,
+	parameter_value_buffer.poke(1,MAX_PARAMETERS*sidebar.selected+sidebar.param_number,least);
+	
+	// work out the offsets for all list items
+	for(var i=0;i<list.length;i++){
+		list[i] = list[i] - least;
+	}
+
+	// make a seq values
+	post("\n i got this far, list is",JSON.stringify(list));
+
+	var x = blocks.get("blocks["+sidebar.selected+"]::space::x");
+	var y = blocks.get("blocks["+sidebar.selected+"]::space::y");
+
+	var seqblock = new_block('seq.values', x-1.5, y+1.5,0  );
+	
+	draw_block(seqblock);
+	new_connection.parse('{}');
+	new_connection.replace("conversion::mute" , 0);
+	new_connection.replace("conversion::scale", 1);
+	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::offset", 0.5);
+	new_connection.replace("conversion::offset2", 0.5);
+	new_connection.replace("from::number",seqblock);
+	new_connection.replace("to::number",sidebar.selected);
+	if(sidebar.selected_voice==-1){
+		new_connection.replace("to::voice","all");
+	}else{
+		new_connection.replace("to::voice",sidebar.selected_voice);
+	}
+	new_connection.replace("from::voice",0);
+	new_connection.replace("to::input::number",sidebar.param_number);
+	new_connection.replace("to::input::type","parameters");
+	new_connection.replace("from::output::number",0);
+	new_connection.replace("from::output::type","parameters");
+	connections.append("connections",new_connection);
+	make_connection(connections.getsize("connections")-1,0);
+
+	request_set_block_parameter(seqblock,3,list.length);
+	var vl = voicemap.get(seqblock);
+	if(!Array.isArray(vl)) vl = [vl];
+
+	for(var i=0;i<list.length;i++){
+		if(list[i] == null ){
+			list[i] = 0;
+		}else{
+			list[i] = (1 + 127*list[i])/128;
+		}
+		voice_data_buffer.poke(1,MAX_DATA*vl[0]+1+i,list[i]);
+	}
+
+	// connect to a new clock
+	if(clock != null){
+		var clockblock = null;
+		for(var i = 0;i < MAX_BLOCKS;i++){
+			if(blocks.get("blocks["+i+"]::name") && blocks.get("blocks["+i+"]::name")=='core.clock'){
+				clockblock = i;
+				break;
+			}
+		}
+		if(clockblock==null){
+			clockblock = new_block('core.clock',x - 1.5, y+ 3,0);
+		}else{
+			voicecount(clockblock,blocks.get("blocks["+clockblock+"]::poly::voices")+1);
+		}
+		var cvcl = voicemap.get(clockblock);
+		if(!Array.isArray(cvcl)) cvcl = [cvcl];
+		var cvn = cvcl.length;
+		draw_block(seqblock);
+		new_connection.parse('{}');
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::offset", 0.5);
+		new_connection.replace("conversion::offset2", 0.5);
+		new_connection.replace("from::number",clockblock);
+		new_connection.replace("to::number",seqblock);
+		new_connection.replace("to::voice",0);
+		new_connection.replace("from::voice",cvn);
+		new_connection.replace("to::input::number",0);
+		new_connection.replace("to::input::type","midi");
+		new_connection.replace("from::output::number",0);
+		new_connection.replace("from::output::type","midi");
+		connections.append("connections",new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+		
+		var div = ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"].indexOf(clock);
+		request_set_voice_parameter(clockblock,cvn,8,div);
 	}
 }
 
