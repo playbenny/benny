@@ -2226,7 +2226,7 @@ function request_set_voice_parameter(block,voice,parameter,value){
 	if((!Array.isArray(vcl))||(vcl.length<=1)){ //if a block currently has just one voice then it sets the block param rather than the per voice offset
 		request_set_block_parameter(block,parameter,value);
 	}
-	//post("\nrsvp",block,voice,parameter,value);
+	post("\nrsvp",block,voice,parameter,value);
 	var v = unscale_parameter(block,parameter,value);
 	if(v == null) return -1;
 	var bv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+parameter);
@@ -4305,7 +4305,6 @@ function parameter_list_entry(){
 	}
 
 	// make a seq values
-	post("\n i got this far, list is",JSON.stringify(list));
 
 	var x = blocks.get("blocks["+sidebar.selected+"]::space::x");
 	var y = blocks.get("blocks["+sidebar.selected+"]::space::y");
@@ -4326,7 +4325,7 @@ function parameter_list_entry(){
 	}else{
 		new_connection.replace("to::voice",sidebar.selected_voice);
 	}
-	new_connection.replace("from::voice",0);
+	new_connection.replace("from::voice",1);
 	new_connection.replace("to::input::number",sidebar.param_number);
 	new_connection.replace("to::input::type","parameters");
 	new_connection.replace("from::output::number",0);
@@ -4339,10 +4338,10 @@ function parameter_list_entry(){
 	if(!Array.isArray(vl)) vl = [vl];
 
 	for(var i=0;i<list.length;i++){
-		if(list[i] == null ){
-			list[i] = 0;
+		if(typeof list[i] == 'number' && !isNaN(list[i])){
+			list[i] = (1 + 127*parseFloat(list[i]))/128;
 		}else{
-			list[i] = (1 + 127*list[i])/128;
+			list[i] = 0;
 		}
 		voice_data_buffer.poke(1,MAX_DATA*vl[0]+1+i,list[i]);
 	}
@@ -4363,7 +4362,7 @@ function parameter_list_entry(){
 		}
 		var cvcl = voicemap.get(clockblock);
 		if(!Array.isArray(cvcl)) cvcl = [cvcl];
-		var cvn = cvcl.length;
+		var cvn = cvcl.length-1;
 		draw_block(seqblock);
 		new_connection.parse('{}');
 		new_connection.replace("conversion::mute" , 0);
@@ -4373,8 +4372,8 @@ function parameter_list_entry(){
 		new_connection.replace("conversion::offset2", 0.5);
 		new_connection.replace("from::number",clockblock);
 		new_connection.replace("to::number",seqblock);
-		new_connection.replace("to::voice",0);
-		new_connection.replace("from::voice",cvn);
+		new_connection.replace("to::voice",1);
+		new_connection.replace("from::voice",cvn+1);
 		new_connection.replace("to::input::number",0);
 		new_connection.replace("to::input::type","midi");
 		new_connection.replace("from::output::number",0);
@@ -4383,7 +4382,7 @@ function parameter_list_entry(){
 		make_connection(connections.getsize("connections")-1,0);
 		
 		var div = ["off", "1n", "2n", "2nt", "4n", "4nt", "8n", "8nt", "16n", "16nt", "32n", "32nt", "64n", "128n"].indexOf(clock);
-		request_set_voice_parameter(clockblock,cvn,8,div);
+		request_set_voice_parameter(clockblock,cvcl[cvn],8,div+0.5);
 	}
 }
 
