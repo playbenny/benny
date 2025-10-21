@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1852.0, 921.0 ],
+		"rect" : [ 134.0, 134.0, 1852.0, 921.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -6145,7 +6145,7 @@
 									"patching_rect" : [ 50.0, 204.413818359375, 169.0, 22.0 ],
 									"saved_object_attributes" : 									{
 										"embed" : 0,
-										"name" : "3633lastinput",
+										"name" : "3146lastinput",
 										"parameter_enable" : 0,
 										"parameter_mappable" : 0,
 										"range" : 128,
@@ -6466,7 +6466,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1236.0, 339.5, 217.0, 22.0 ],
-					"text" : "6 param  1556 0.55"
+					"text" : "-1"
 				}
 
 			}
@@ -9511,10 +9511,10 @@
 									"id" : "obj-54",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
-									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 411.0, 264.0, 22.0, 22.0 ],
-									"text" : "t 1"
+									"numoutlets" : 2,
+									"outlettype" : [ "int", "int" ],
+									"patching_rect" : [ 411.0, 264.0, 45.0, 22.0 ],
+									"text" : "t 1 300"
 								}
 
 							}
@@ -9537,8 +9537,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "bang" ],
-									"patching_rect" : [ 411.0, 232.0, 48.0, 22.0 ],
-									"text" : "del 300"
+									"patching_rect" : [ 411.0, 232.0, 55.0, 22.0 ],
+									"text" : "del 2300"
 								}
 
 							}
@@ -11842,6 +11842,13 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-49", 1 ],
+									"source" : [ "obj-54", 1 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-343", 0 ],
 									"source" : [ "obj-55", 0 ]
 								}
@@ -12660,7 +12667,7 @@
 					"patching_rect" : [ 1639.0, 338.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3633mapwrap",
+						"name" : "3146mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
@@ -12685,7 +12692,7 @@
 					"patching_rect" : [ 816.0, 1072.0, 114.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
-						"name" : "3633mapwrap",
+						"name" : "3146mapwrap",
 						"parameter_enable" : 0,
 						"parameter_mappable" : 0,
 						"range" : 3,
