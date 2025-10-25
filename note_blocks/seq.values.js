@@ -9,6 +9,10 @@ var width, height,x_pos,y_pos,unit,sx,rh,cw,maxl=-1;
 var block = -1;
 var blocks = new Dict;
 blocks.name = "blocks"
+var connections = new Dict;
+connections.name = "connections";
+var blocktypes = new Dict;
+blocktypes.name = "blocktypes";
 var voicemap = new Dict;
 voicemap.name =  "voicemap";
 var mini = 0;
@@ -26,6 +30,7 @@ var cursors = []; //holds last drawn position of playheads (per row)
 var notelist = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var menucolour,menudark,block_colour=[0,255,0];
 var change;
+var target_block = [];
 
 function setup(x1,y1,x2,y2,sw,mode){
 //	post("drawing sequencers");
@@ -45,6 +50,7 @@ function setup(x1,y1,x2,y2,sw,mode){
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+		if(!mini) get_connections();
 		draw();
 	} 
 }
@@ -95,6 +101,9 @@ function fulldraw(){
 					outlet(1,"write",i);
 					outlet(1,"moveto", sx + c * cw + x_pos + 0.1 * unit, r * rh + y_pos + unit*1.2);
 					outlet(1,"write", notelist[i % 12] + "-" + Math.floor(i/12));
+					if(target_block[r]){
+						post("\nconn found for lane",r,JSON.stringify(target_block[r]));
+					}
 				}
 			}
 		}
@@ -289,3 +298,42 @@ function parseMidiNote(note) {
 }
 
 function enabled(){}
+
+//currently only bothers with param-param ones
+function get_connections(){
+	target_block = [];
+	for(var i=connections.getsize("connections")-1; i>=0; i--){
+		if(connections.contains("connections["+i+"]::from")
+			 && connections.get("connections["+i+"]::from::number") == block
+			 && connections.get("connections["+i+"]::from::output::type") == "parameters"
+			 && connections.get("connections["+i+"]::to::input::type") == "parameters"){
+			var source = connections.get("connections["+i+"]::from::voice");
+			var details = { };
+			var number = connections.get("connections["+i+"]::to::input::number");
+			details.toblock = connections.get("connections["+i+"]::to::number");
+			details.destvoice = connections.get("connections["+i+"]::to::voice");
+			if(details.destvoice == "all"){
+				details.destvoice = voicemap.get(details.toblock);
+				if(Array.isArray(details.destvoice)) details.destvoice = details.destvoice[0];
+			}
+			details.paramaddress = MAX_PARAMETERS * details.destvoice + number;
+			details.pvalues = blocktypes.get(blocks.get("blocks["+details.toblock+"]::name")+"::parameters["+number+"]::values");
+			details.ptype = blocktypes.get(blocks.get("blocks["+details.toblock+"]::name")+"::parameters["+number+"]::type");
+			details.scale = connections.get("connections["+i+"]::conversion::scale");
+			details.offset = connections.get("connections["+i+"]::conversion::offset");
+			var srclist;
+			if(source == "all"){
+				srclist = voicemap.get(block);
+				if(!Array.isArray(srclist)) srclist = [srclist];
+			}else{
+				srclist = [source];
+			}
+			// post("\nnumber",i,"srclist",srclist,"details",JSON.stringify(details));
+			for(var ii=0;ii<srclist.length;ii++){
+				if(target_block[srclist[ii]]==null)target_block[srclist[ii]] = [];
+				target_block[srclist[ii]].push(details);
+			}
+		}
+	}
+	// post("\ncollected connections,\n",JSON.stringify(target_block));
+}
