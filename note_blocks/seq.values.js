@@ -67,7 +67,7 @@ function draw(){
 
 function fulldraw(){
 	var i,c,r,ph;
-	var nonempty=[];
+	var nonempty=[], found = 0;
 	cw = (width)/(maxl - 0.1);
 	i = Math.max(2 - mini,v_list.length);
 	rh = height / (i-0.1);
@@ -80,7 +80,10 @@ function fulldraw(){
 			var shade = (c==ph) ? 3 : (0.4+0.6*((c>=s[r])&&(c<s[r]+l[r])));	
 			outlet(0,"custom_ui_element","data_v_scroll", sx+c*cw+x_pos,r*rh+y_pos,sx+(0.9+c)*cw+x_pos,(r+0.9)*rh+y_pos,shade * col[0],shade * col[1],shade * col[2],MAX_DATA*v_list[r]+128*p[r]+1+c,1);
 			var val = voice_data_buffer.peek(1, MAX_DATA*v_list[r]+128*p[r]+1+c);
-			if(val!=0) nonempty[r]=1;
+			if(val!=0){
+				nonempty[r]=1;
+				found = 1;
+			}
 			if(!mini){
 				outlet(1,"moveto",sx+c*cw+x_pos+0.1*unit,r*rh+y_pos+unit*0.4);
 				outlet(1,"write",c);
@@ -97,7 +100,7 @@ function fulldraw(){
 		}
 	}
 	change = 0;
-	if(nonempty.indexOf(1)>-1){
+	if(found){
 		var n = blocks.get("blocks["+block+"]::patterns::names");
 		if(n!=null){
 			for(r=0;r<v_list.length;r++){
