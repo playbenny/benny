@@ -104,7 +104,7 @@ function fulldraw(){
 					outlet(1,"write", notelist[i % 12] + "-" + Math.floor(i/12));
 					if(target_block[r]){
 						var yy = 1.6;
-						post("\nconn found for lane",r,JSON.stringify(target_block[r]));
+						// post("\nconn found for lane",r,JSON.stringify(target_block[r]));
 						for(var dn=0;dn<target_block[r].length;dn++){
 							if(c == 0){
 								outlet(1,"moveto", sx + c * cw + x_pos + 0.1 * unit, r * rh + y_pos + unit*yy);
@@ -123,6 +123,7 @@ function fulldraw(){
 							}
 							val = get_parameter_label(target_block[r][dn].ptype, target_block[r][dn].wrap, val, target_block[r][dn].pvalues);
 							outlet(1,"write", val); 							
+							yy += 0.4;
 						}
 					}
 				}
