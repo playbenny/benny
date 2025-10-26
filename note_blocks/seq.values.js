@@ -103,27 +103,29 @@ function fulldraw(){
 					outlet(1,"moveto", sx + c * cw + x_pos + 0.1 * unit, r * rh + y_pos + unit*1.2);
 					outlet(1,"write", notelist[i % 12] + "-" + Math.floor(i/12));
 					if(target_block[r]){
-						var yy = 1.6;
+						var yy = 1.8;
 						// post("\nconn found for lane",r,JSON.stringify(target_block[r]));
 						for(var dn=0;dn<target_block[r].length;dn++){
 							if(c == 0){
+								outlet(1,"frgb", shade * col[0],shade * col[1],shade * col[2]);
 								outlet(1,"moveto", sx + c * cw + x_pos + 0.1 * unit, r * rh + y_pos + unit*yy);
 								outlet(1,"write", "to:" + target_block[r][dn].destname + ":"+target_block[r][dn].paramlabel); 
 							}
 							yy += 0.4;
 							outlet(1,"moveto", sx + c * cw + x_pos + 0.1 * unit, r * rh + y_pos + unit*yy);
 							// apply offset and scale
-							val = (i*target_block[r][dn].scale/128 + 2*(target_block[r][dn].offset- 0.5));
+							var tval = (val * target_block[r][dn].scale) + 2*(target_block[r][dn].offset- 0.5);
 							// add to base target param value and wrap 
-							val += parameter_value_buffer.peek(1, target_block[r][dn].paramaddress);
+							tval += parameter_value_buffer.peek(1, target_block[r][dn].paramaddress);
 							if(target_block[r][dn].wrap){
-								val %= 1;
+								tval %= 1;
 							}else{
-								val = Math.max(0,Math.min(1,val));
+								tval = Math.max(0,Math.min(1,tval));
 							}
-							val = get_parameter_label(target_block[r][dn].ptype, target_block[r][dn].wrap, val, target_block[r][dn].pvalues);
-							outlet(1,"write", val); 							
-							yy += 0.4;
+							tval = get_parameter_label(target_block[r][dn].ptype, target_block[r][dn].wrap, tval, target_block[r][dn].pvalues);
+							outlet(1,"frgb",menucolour);
+							outlet(1,"write", tval); 							
+							yy += 0.6;
 						}
 					}
 				}
