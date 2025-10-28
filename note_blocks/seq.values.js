@@ -114,7 +114,7 @@ function fulldraw(){
 							yy += 0.4;
 							outlet(1,"moveto", sx + c * cw + x_pos + 0.1 * unit, r * rh + y_pos + unit*yy);
 							// apply offset and scale
-							var tval = (val * target_block[r][dn].scale) + 2*(target_block[r][dn].offset- 0.5);
+							var tval = ((val - 1/128) * target_block[r][dn].scale) + 2*(target_block[r][dn].offset- 0.5);
 							// add to base target param value and wrap 
 							tval += parameter_value_buffer.peek(1, target_block[r][dn].paramaddress);
 							if(target_block[r][dn].wrap){

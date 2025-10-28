@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 9,
 			"minor" : 0,
-			"revision" : 5,
+			"revision" : 9,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -827,8 +827,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 45.0, 725.0, 58.0, 22.0 ],
-					"text" : "pak 1 0 0"
+					"patching_rect" : [ 45.0, 725.0, 61.0, 22.0 ],
+					"text" : "pak 1 0 0."
 				}
 
 			}
@@ -844,7 +844,7 @@
 						"appversion" : 						{
 							"major" : 9,
 							"minor" : 0,
-							"revision" : 5,
+							"revision" : 9,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -1087,8 +1087,7 @@
 								}
 
 							}
- ],
-						"originid" : "pat-4716"
+ ]
 					}
 ,
 					"patching_rect" : [ 82.5, 307.0, 54.0, 22.0 ],
@@ -1307,6 +1306,10 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 39.0, 784.0, 35.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : ""
+					}
+,
 					"text" : "out 1"
 				}
 
@@ -1331,10 +1334,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 65.0, 52.0, 28.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"attr_comment" : ""
-					}
-,
 					"text" : "in 1"
 				}
 
@@ -2310,8 +2309,7 @@
 				}
 
 			}
- ],
-		"originid" : "pat-4712"
+ ]
 	}
 
 }

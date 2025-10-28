@@ -4339,7 +4339,7 @@ function parameter_list_entry(){
 
 	for(var i=0;i<list.length;i++){
 		if(typeof list[i] == 'number' && !isNaN(list[i])){
-			list[i] = (1 + 127*parseFloat(list[i]))/128;
+			list[i] = (1 + 128*parseFloat(list[i]))/128;
 		}else{
 			list[i] = 0;
 		}
@@ -4390,10 +4390,16 @@ function draw_number_entry(pno,number){
 	var y = paramslider_details[pno][3]-paramslider_details[pno][1]-fontheight;
 	y*=0.5;
 	y+=paramslider_details[pno][1];
+	var x1 = paramslider_details[pno][0];
+	var x2 = paramslider_details[pno][2];
+	if(number.length > 6){
+		x1 = sidebar.x;
+		x2 = sidebar.x2;
+	}
 
-	lcd_main.message("paintrect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,0,0,0);
-	lcd_main.message("framerect",paramslider_details[pno][0],y,paramslider_details[pno][2],y+fontheight,paramslider_details[pno][4],paramslider_details[pno][5],paramslider_details[pno][6]);
-	lcd_main.message("moveto",paramslider_details[pno][0]+4,y+fontheight*0.8);
+	lcd_main.message("paintrect",x1,y,x2,y+fontheight,0,0,0);
+	lcd_main.message("framerect",x1,y,x2,y+fontheight,paramslider_details[pno][4],paramslider_details[pno][5],paramslider_details[pno][6]);
+	lcd_main.message("moveto",x1+4,y+fontheight*0.8);
 	lcd_main.message("font",mainfont,fontsmall*2);
 	lcd_main.message("write",number);
 }
