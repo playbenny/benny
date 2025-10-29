@@ -330,7 +330,6 @@ function labelled_parameter_v_slider(sl_no){
 		lcd_main.message("write",paramslider_details[sl_no][11][c]);				
 		namelabely+=0.4*fontheight;
 	}
-	
 	var pv,ov=-11.11;
 
 	var vo = voicemap.get(paramslider_details[sl_no][8]);

@@ -7505,6 +7505,7 @@ function draw_sidebar(){
 			}else if(t_type=="parameters"){
 				var params=blocktypes.get(t_name+"::parameters");
 				curp = t_i_no;
+				var p_type = params[curp].get("type");
 				var p_values = params[curp].get("values");
 				var wrap = params[curp].get("wrap");
 				var pv = parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp);
