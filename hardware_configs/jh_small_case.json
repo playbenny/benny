@@ -1,242 +1,294 @@
 {
-    "io": {
-        "keyboards": [ "Xkey37", "Xkey25" ],
-        "controllers": {
-            "Midi Fighter Twister": {
-                "name": "Midi Fighter Twister",
-                "driver": "Midi Fighter Twister",
-                "substitute": [ "JAMES_16e" ],
-                "outputs": 16,
-                "scaling": 1,
-                "type": "encoder",
-                "channel": 1,
-                "first": 0,
-                "columns": 4,
-                "rows": 4,
-                "colour": {
-                    "type": "midifighter",
-                    "channel": 2,
-                    "first": 0
-                },
-                "brightness": {
-                    "type": "midifighter",
-                    "channel": 3,
-                    "first": 0,
-                    "dim": 19,
-                    "bright": 48
-                },
-                "value": {
-                    "type": "cc",
-                    "channel": 1,
-                    "first": 0
-                },
-                "resets": {
-                    "type": "cc",
-                    "channel": 2,
-                    "first": 0
-                },
-                "buttons": {
-                    "type": "cc",
-                    "globals": {
-                        "automap_toggle": 0,
-                        "automap_page": 3
-                    },
-                    "channel": 4,
-                    "first": 8
-                }
-            }
-        },
-        "matrix": {        }
-    },
-    "hardware": {
-        "hardware.out.1+2": {
-            "type": "hardware",
-            "max_polyphony": 2,
-            "help_text": "pc speakers",
-            "connections": {
-                "in": {
-                    "hardware": [ "out" ],
-                    "hardware_channels": [ 1, 2 ]
-                }
-            }
-        },
-        "hardware.pit.viper": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "about your block",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in" ],
-                    "hardware_channels": [ 3 ]
-                },
-                "out": {
-                    "hardware": [ "blend out" ],
-                    "hardware_channels": [ 1 ],
-                    "input_gate": [ 1 ],
-                    "dc_block": [ 1 ]
-                }
-            }
-        },
-        "hardware.sem1": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "sem filter with xmod",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in", "cutoff" ],
-                    "hardware_channels": [ 9, 10 ]
-                },
-                "out": {
-                    "hardware": [ "lp/hp", "bp" ],
-                    "hardware_channels": [ 9, 10 ]
-                }
-            }
-        },
-        "hardware.sem2": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "sem filter with xmod",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in", "cutoff" ],
-                    "hardware_channels": [ 11, 12 ]
-                },
-                "out": {
-                    "hardware": [ "lp/hp", "bp" ],
-                    "hardware_channels": [ 11, 12 ]
-                }
-            }
-        },
-        "hardware.headphones": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 2,
-            "help_text": "",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 1,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "L", "R" ],
-                    "hardware_channels": [ 33, 34 ]
-                }
-            }
-        },
-        "hardware.arp": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "arp filter",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in", "cv" ],
-                    "hardware_channels": [ 15, 16 ]
-                },
-                "out": {
-                    "hardware": [ "out" ],
-                    "hardware_channels": [ 13 ]
-                }
-            }
-        },
-        "hardware.mog": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "4 band dist",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in" ],
-                    "hardware_channels": [ 13 ]
-                },
-                "out": {
-                    "hardware": [ "out" ],
-                    "hardware_channels": [ 14 ]
-                }
-            }
-        },
-        "hardware.phaser": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "wmd phaser",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in" ],
-                    "hardware_channels": [ 14 ]
-                },
-                "out": {
-                    "hardware": [ "L", "R" ],
-                    "hardware_channels": [ 15, 16 ]
-                }
-            }
-        },
-        "hardware.sarajevo": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "bbd delay",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in" ],
-                    "hardware_channels": [ 4 ]
-                },
-                "out": {
-                    "hardware": [ "tap1", "tap2", "tap3" ],
-                    "hardware_channels": [ 2, 3, 4 ]
-                }
-            }
-        },
-        "hardware.fxboy": {
-            "type": "hardware",
-            "substitute": [],
-            "max_polyphony": 1,
-            "help_text": "fxboy",
-            "exclusive": 0,
-            "click_out": 0,
-            "cue_out": 0,
-            "talk_in": 0,
-            "connections": {
-                "in": {
-                    "hardware": [ "in", "X", "Y" ],
-                    "hardware_channels": [ 5, 6, 7 ]
-                },
-                "out": {
-                    "hardware": [ "out" ],
-                    "hardware_channels": [ 5 ]
-                }
-            }
-        }
-    }
+	"io" : 	{
+		"keyboards" : [ "Xkey37", "Xkey25" ],
+		"controllers" : 		{
+			"Midi Fighter Twister" : 			{
+				"name" : "Midi Fighter Twister",
+				"driver" : "Midi Fighter Twister",
+				"substitute" : [ "JAMES_16e" ],
+				"outputs" : 16,
+				"scaling" : 1,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 0,
+				"columns" : 4,
+				"rows" : 4,
+				"colour" : 				{
+					"type" : "midifighter",
+					"channel" : 2,
+					"first" : 0
+				}
+,
+				"brightness" : 				{
+					"type" : "midifighter",
+					"channel" : 3,
+					"first" : 0,
+					"dim" : 19,
+					"bright" : 48
+				}
+,
+				"value" : 				{
+					"type" : "cc",
+					"channel" : 1,
+					"first" : 0
+				}
+,
+				"resets" : 				{
+					"type" : "cc",
+					"channel" : 2,
+					"first" : 0
+				}
+,
+				"buttons" : 				{
+					"type" : "cc",
+					"globals" : 					{
+						"automap_toggle" : 0,
+						"automap_page" : 3
+					}
+,
+					"channel" : 4,
+					"first" : 8
+				}
+
+			}
+
+		}
+,
+		"matrix" : 		{
+
+		}
+
+	}
+,
+	"hardware" : 	{
+		"hardware.out.1+2" : 		{
+			"type" : "hardware",
+			"max_polyphony" : 2,
+			"help_text" : "pc speakers",
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 1, 2 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.pit.viper" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 3 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "blend out" ],
+					"hardware_channels" : [ 1 ],
+					"input_gate" : [ 1 ],
+					"dc_block" : [ 1 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.sem1" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "sem filter with xmod",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 9, 10 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "lp/hp", "bp" ],
+					"hardware_channels" : [ 9, 10 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.sem2" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "sem filter with xmod",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "cutoff" ],
+					"hardware_channels" : [ 11, 12 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "lp/hp", "bp" ],
+					"hardware_channels" : [ 11, 12 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.headphones" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 2,
+			"help_text" : "",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 1,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "L", "R" ],
+					"hardware_channels" : [ 33, 34 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.arp" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "arp filter",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "cv" ],
+					"hardware_channels" : [ 15, 16 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 13 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.mog" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "4 band dist",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 13 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 14 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.phaser" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "wmd phaser",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 14 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "L", "R" ],
+					"hardware_channels" : [ 15, 16 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.sarajevo" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "bbd delay",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 4 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "tap1", "tap2", "tap3" ],
+					"hardware_channels" : [ 2, 3, 4 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.fxboy" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "fxboy",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "X", "Y" ],
+					"hardware_channels" : [ 5, 6, 7 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 5 ]
+				}
+
+			}
+
+		}
+
+	}
+,
+	"measured_latency" : 580
 }
