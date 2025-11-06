@@ -1,0 +1,552 @@
+{
+	"io" : 	{
+		"keyboards" : [ "LPD8 mk2", "Xkey37" ],
+		"controllers" : 		{
+			"Midi Fighter Twister" : 			{
+				"name" : "Midi Fighter Twister",
+				"driver" : "Midi Fighter Twister",
+				"substitute" : [ "JAMES_16e" ],
+				"outputs" : 16,
+				"scaling" : 1,
+				"type" : "encoder",
+				"channel" : 1,
+				"first" : 0,
+				"columns" : 4,
+				"rows" : 4,
+				"colour" : 				{
+					"type" : "midifighter",
+					"channel" : 2,
+					"first" : 0
+				}
+,
+				"brightness" : 				{
+					"type" : "midifighter",
+					"channel" : 3,
+					"first" : 0,
+					"dim" : 19,
+					"bright" : 48
+				}
+,
+				"value" : 				{
+					"type" : "cc",
+					"channel" : 1,
+					"first" : 0
+				}
+,
+				"resets" : 				{
+					"type" : "cc",
+					"channel" : 2,
+					"first" : 0
+				}
+,
+				"buttons" : 				{
+					"type" : "cc",
+					"globals" : 					{
+						"automap_toggle" : 0,
+						"automap_page" : 3,
+						"capture_keyboard_loop" : 1,
+						"capture_controller_loop" : 4
+					}
+,
+					"channel" : 4,
+					"first" : 8
+				}
+
+			}
+,
+			"LPD8 mk2" : 			{
+				"name" : "LPD8 mk2",
+				"substitute" : [ "LPD8", "Launch Control XL" ],
+				"outputs" : 8,
+				"type" : "potentiometer",
+				"channel" : 1,
+				"first" : 1,
+				"scaling" : 0.125,
+				"columns" : 8,
+				"rows" : 2,
+				"buttons" : 				{
+					"type" : "cc",
+					"channel" : 1,
+					"first" : 36,
+					"count" : 8,
+					"globals" : 					{
+						"automap_toggle" : -1,
+						"automap_page" : -1
+					}
+
+				}
+
+			}
+
+		}
+,
+		"matrix" : 		{
+			"soundcard" : "/Users/jokubaspreiksa/Music/benny/hardware_configs/drivers/soundcard_mixer/rme_totalmix.maxpat"
+		}
+,
+		"controller_defaults" : 		{
+			"control_auto" : "Midi Fighter Twister",
+			"mixer_bus" : "LPD8 mk2"
+		}
+,
+		"sync" : 		{
+			"audio_clock_out" : 			{
+				"enable" : 1,
+				"ppqn" : 4,
+				"channel" : 30
+			}
+
+		}
+
+	}
+,
+	"hardware" : 	{
+		"hardware.out.1+2" : 		{
+			"type" : "hardware",
+			"max_polyphony" : 2,
+			"help_text" : "pc speakers",
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 31, 32 ]
+				}
+,
+				"out" : 				{
+
+				}
+
+			}
+
+		}
+,
+		"hardware.in.1+2" : 		{
+			"type" : "hardware",
+			"max_polyphony" : 2,
+			"help_text" : "pc microphones/inputs",
+			"connections" : 			{
+				"out" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 1, 2 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.MixerErica1" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "In1", "In2", "In3" ],
+					"hardware_channels" : [ 9, 10, 11 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 9 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.MixerErica2" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "In1", "In2", "In3" ],
+					"hardware_channels" : [ 12, 13, 14 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 10 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.Kick" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "Shuttle Control v4.0",
+			"connections" : 			{
+				"in" : 				{
+					"midi" : [ "midiin" ],
+					"midi_channels" : [ 1 ],
+					"midi_ranges" : [ [ 0, 127 ] ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 1 ],
+					"dc_block" : [ 1 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.Snare" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "Shuttle Control v4.0",
+			"connections" : 			{
+				"in" : 				{
+					"midi" : [ "notein" ],
+					"midi_channels" : [ 2 ],
+					"midi_ranges" : [ [ 0, 127 ] ],
+					"hardware" : [ "ext_in" ],
+					"hardware_channels" : [ 20 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 2 ]
+				}
+
+			}
+,
+			"parameters" : [ 				{
+					"name" : "n-decay",
+					"cc_channel" : 2,
+					"cc_number" : 1,
+					"values" : [ "uni", 0, 127, "lin" ],
+					"type" : "int"
+				}
+, 				{
+					"name" : "n-freq",
+					"cc_channel" : 2,
+					"cc_number" : 2,
+					"values" : [ "uni", 0, 127, "lin" ],
+					"type" : "int"
+				}
+ ]
+		}
+,
+		"hardware.Metals" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "Shuttle Control v4.0",
+			"connections" : 			{
+				"in" : 				{
+					"midi" : [ "metal1" ],
+					"midi_channels" : [ 3 ],
+					"midi_ranges" : [ [ 0, 127 ] ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 3 ]
+				}
+
+			}
+,
+			"parameters" : [ 				{
+					"name" : "param1",
+					"cc_channel" : 3,
+					"cc_number" : 1,
+					"values" : [ "uni", 0, 127, "lin" ],
+					"type" : "int"
+				}
+, 				{
+					"name" : "param2",
+					"cc_channel" : 3,
+					"cc_number" : 2,
+					"values" : [ "uni", 0, 127, "lin" ],
+					"type" : "int"
+				}
+, 				{
+					"name" : "param3",
+					"cc_channel" : 3,
+					"cc_number" : 3,
+					"values" : [ "uni", 0, 127, "lin" ],
+					"type" : "int"
+				}
+, 				{
+					"name" : "param4",
+					"cc_channel" : 3,
+					"cc_number" : 4,
+					"values" : [ "uni", 0, 127, "lin" ],
+					"type" : "int"
+				}
+ ]
+		}
+,
+		"hardware.Metal2" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"midi_handler" : "generic.hardware.midi.handler",
+			"midi_in" : "Shuttle Control v4.0",
+			"connections" : 			{
+				"in" : 				{
+					"midi" : [ "midiin" ],
+					"midi_channels" : [ 4 ],
+					"midi_ranges" : [ [ 0, 127 ] ]
+				}
+
+			}
+
+		}
+,
+		"hardware.Res4" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "In" ],
+					"hardware_channels" : [ 1 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 4 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.FXboy" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 2 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 11 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.ddelay" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 15 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 12 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.sem" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "modin" ],
+					"hardware_channels" : [ 16, 3 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 13 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.wasp" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "modin" ],
+					"hardware_channels" : [ 4, 5 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 14 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.fold6" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 17 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 17 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.dealaySara" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 18 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 18 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.polyphaser" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in" ],
+					"hardware_channels" : [ 19 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 19 ]
+				}
+
+			}
+
+		}
+,
+		"hardware.ripples" : 		{
+			"type" : "hardware",
+			"substitute" : [  ],
+			"max_polyphony" : 1,
+			"help_text" : "about your block",
+			"exclusive" : 0,
+			"click_out" : 0,
+			"cue_out" : 0,
+			"talk_in" : 0,
+			"connections" : 			{
+				"in" : 				{
+					"hardware" : [ "in", "modin" ],
+					"hardware_channels" : [ 6, 7 ]
+				}
+,
+				"out" : 				{
+					"hardware" : [ "out" ],
+					"hardware_channels" : [ 20 ]
+				}
+
+			}
+
+		}
+
+	}
+
+}
