@@ -328,6 +328,7 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 			new_connection.replace("conversion::mute" , 0);
 			new_connection.replace("conversion::scale", 1);
 			new_connection.replace("conversion::vector", 0);	
+			new_connection.replace("conversion::projectionAngle", 0);	
 			new_connection.replace("conversion::offset", 1);
 			new_connection.replace("conversion::offset2", 0.5);
 			new_connection.replace("conversion::force_unity", 1);
@@ -2158,20 +2159,7 @@ function make_connection(cno,existing){
 							}else{
 								set_routing(f_voice,f_o_no,enab,4,3,t_voice-MAX_NOTE_VOICES,t_i_no,1,scale,offn*256-128,offv*256-128,cno,v);
 							}
-						}/*else if(t_type == "block"){
-							//this is a midi-block control connection for a single voice
-							//post("fv",f_voice,"f_o",f_o_no);
-							//m_index = (f_voice)*128+f_o_no;
-							//add_to_midi_routemap(m_index,t_voice);
-							post("\nper-voice muting isn't supported (yet) TODO it shouldn't let you make this connection");
-							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
-							var offn = conversion.get("offset");
-							var offv = conversion.get("offset2");
-							var vect = conversion.get("vector");
-							var m_index_mult = MAX_MOD_IDS * m_index;
-							//set_conversion(m_index_mult + t_voice,enab,4,scale,offn,offv,vect,-(1+t_i_no));
-						}*/else if(t_type == "parameters"){
+						}else if(t_type == "parameters"){
 							// parameter connections are just like midi ones really
 							m_index = (f_voice)*128+f_o_no; 
 							t_voice += NO_IO_PER_BLOCK * MAX_AUDIO_VOICES + MAX_AUDIO_OUTPUTS;
