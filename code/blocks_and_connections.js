@@ -1892,7 +1892,7 @@ function make_connection(cno,existing){
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
-					var vect = conversion.get("vector");
+					var vect = conversion.get("projectionAngle");
 					if(t_type == "midi"){
 						set_routing(f_voices[i]+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}else{
@@ -1904,7 +1904,7 @@ function make_connection(cno,existing){
 					var scale = conversion.get("scale");
 					var offn = conversion.get("offset");
 					var offv = conversion.get("offset2");
-					var vect = conversion.get("vector");
+					var vect = conversion.get("projectionAngle");
 					if(t_type == "midi"){
 						set_routing(f_voices[i],f_o_no, enab,2,1,t_block,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,0);
 					}else{
@@ -1998,7 +1998,7 @@ function make_connection(cno,existing){
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
-							var vect = conversion.get("vector");
+							var vect = conversion.get("projectionAngle");
 							t_voice -= MAX_BLOCKS;
 							//post("\nrouting",f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,2,2,t_voice,t_i_no);
 							if(t_voice<MAX_NOTE_VOICES){
@@ -2143,7 +2143,7 @@ function make_connection(cno,existing){
 								var offn = offs[0];
 								var offv = offs[1];
 							}
-							var vect = conversion.get("vector");
+							var vect = conversion.get("projectionAngle");
 							set_routing(f_voice,f_o_no,enab,3,6,tmod_id,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 						}else if(t_type == "midi"){
 							//this is a midi-midi connection for a single voice
@@ -2229,7 +2229,7 @@ function make_connection(cno,existing){
 								var offn = offs[0];
 								var offv = offs[1];
 							}
-							var vect = conversion.get("vector");
+							var vect = conversion.get("projectionAngle");
 							set_routing(f_voice,f_o_no,enab,3,6,tmod_id,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
 						}		
 					}else if(f_type == "parameters"){
@@ -2294,7 +2294,7 @@ function make_connection(cno,existing){
 							var scale = conversion.get("scale");
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
-							var vect = conversion.get("vector");
+							var vect = conversion.get("projectionAngle");
 							t_voice-=MAX_BLOCKS;
 							if(t_voice<MAX_NOTE_VOICES){
 								set_routing(f_voice,f_o_no,enab,2,2,t_voice,t_i_no,scale*Math.sin(Math.PI*vect*2),scale*Math.cos(Math.PI*vect*2),offn*256-128,offv*256-128,cno,v);
@@ -2369,7 +2369,7 @@ function make_connection(cno,existing){
 								var offn = offs[0];
 								var offv = offs[1];
 							}
-							var vect = conversion.get("vector");
+							//var vect = conversion.get("vector");
 							set_routing(f_voice,f_o_no,enab,1 ,6,tmod_id,t_i_no,scale/*Math.sin(Math.PI*vect*2)*/,scale/*Math.cos(Math.PI*vect*2)*/,offn*256-128,offv*256-128,cno,v);
 						}		
 					}
@@ -2429,6 +2429,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	new_connection.replace("conversion::mute" , usermouse.ctrl);
 	new_connection.replace("conversion::scale", 1);
 	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::projectionAngle", 0);	
 	new_connection.replace("conversion::offset", 0);	
 	
 	sidebar.connection.default_out_applied = 0;
@@ -2611,7 +2612,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		if(!Array.isArray(tcn)) tcn=[tcn];
 		var inname = tcn[new_connection.get("from::output::number")];
 		if((inname == "notes")||(inname == "notes in")||(inname == "pitch")){//sidebar.connection.default_in_applied||sidebar.connection.default_out_applied){
-			new_connection.replace("conversion::vector", 0.25);
+			new_connection.replace("conversion::projectionAngle", 0.25);
 			new_connection.replace("conversion::offset2",0.787);
 			post("\nthis looks like a param->note connection so i've set the vector and velocity offset accordingly");
 		}
@@ -3437,6 +3438,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::projectionAngle", 0);	
 		new_connection.replace("conversion::offset", 0);
 		new_connection.replace("conversion::offset2", 0.5);
 		if(((f_type=="midi")||(f_type=="parameters"))&&(intypes[i_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
@@ -3459,6 +3461,7 @@ function insert_block_in_connection(newblockname,newblock){
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::projectionAngle", 0);	
 		new_connection.replace("conversion::offset", (defaultpos==3)|0);//and this is making the spread wide for mixer channels
 		new_connection.replace("conversion::offset2", 0.5);
 		if(((t_type=="midi")||(t_type=="parameters"))&&(outtypes[o_no]=="midi")) new_connection.replace("conversion::offset", 0.5);
@@ -3942,6 +3945,7 @@ function spawn_player(keyblock,auto){
 								new_connection.replace("conversion::mute" , 0);
 								new_connection.replace("conversion::scale", 1);
 								new_connection.replace("conversion::vector", 0);	
+								new_connection.replace("conversion::projectionAngle", 0);	
 								new_connection.replace("conversion::offset", 0.5);	
 								new_connection.replace("conversion::offset2", 0.5);	
 								remove_connection(c);
@@ -3973,6 +3977,7 @@ function spawn_player(keyblock,auto){
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::projectionAngle", 0);	
 		new_connection.replace("conversion::offset", 0.5);	
 		new_connection.replace("conversion::offset2", 0.5);	
 		

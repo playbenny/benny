@@ -6308,6 +6308,10 @@ function draw_sidebar(){
 										var mute = connections.get("connections["+i+"]::conversion::mute");
 										var scale = connections.get("connections["+i+"]::conversion::scale");
 										var vector = connections.get("connections["+i+"]::conversion::vector");
+										var projectionAngle = 0;
+										if(connections.contains("connections["+i+"]::conversion::projectionAngle")){
+											projectionAngle =  connections.get("connections["+i+"]::conversion::projectionAngle");
+										}
 										var offset = connections.get("connections["+i+"]::conversion::offset");
 										var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 										var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
@@ -6366,9 +6370,9 @@ function draw_sidebar(){
 												mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
 												mouse_index++;
 											}else if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,projectionAngle);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;
 												draw_2d_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
@@ -6399,9 +6403,9 @@ function draw_sidebar(){
 												mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
 												mouse_index++;
 											}else if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,projectionAngle);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;
 												draw_2d_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
@@ -6424,9 +6428,9 @@ function draw_sidebar(){
 												mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
 												mouse_index++;			
 											}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,projectionAngle);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;
 												draw_h_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
@@ -6435,9 +6439,9 @@ function draw_sidebar(){
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;			
 											}else if((connections.get("connections["+i+"]::to::input::type")=="audio")||(connections.get("connections["+i+"]::to::input::type")=="hardware")){
-												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,projectionAngle);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;
 												draw_h_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
@@ -6448,9 +6452,9 @@ function draw_sidebar(){
 											}
 										}else if(connections.get("connections["+i+"]::from::output::type")=="parameters"){
 											if((connections.get("connections["+i+"]::to::input::type")=="midi")||(connections.get("connections["+i+"]::to::input::type")=="block")){
-												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+												draw_vector(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*2.2, fontheight+y_offset,col[0],col[1],col[2],mouse_index,projectionAngle);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;
 												draw_2d_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset,offset2);
@@ -6461,7 +6465,7 @@ function draw_sidebar(){
 											}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
 												draw_h_slider(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";//this was ??? vector";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;			
 											}			
@@ -6601,6 +6605,7 @@ function draw_sidebar(){
 			var mute = connections.get("connections["+i+"]::conversion::mute");
 			var scale = connections.get("connections["+i+"]::conversion::scale");
 			var vector = connections.get("connections["+i+"]::conversion::vector");
+			var projectionAngle = connections.get("connections["+i+"]::conversion::projectionAngle");
 			var offset = connections.get("connections["+i+"]::conversion::offset");
 			var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 			var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
@@ -7134,10 +7139,10 @@ function draw_sidebar(){
 					sidebar.connection.defaults.vector = Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
-					draw_vector(sidebar.x, y_offset, sidebar.x2-fo1*54, fo1*19+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
+					draw_vector(sidebar.x, y_offset, sidebar.x2-fo1*54, fo1*19+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-					automap.groups[1]="connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
+					automap.groups[1]="connections["+i+"]::conversion::projectionAngle";
 					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
@@ -7232,10 +7237,10 @@ function draw_sidebar(){
 					sidebar.connection.defaults.vector = Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
-					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
+					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-					automap.groups[1]="connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
+					automap.groups[1]="connections["+i+"]::conversion::projectionAngle";
 					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
@@ -7249,9 +7254,9 @@ function draw_sidebar(){
 					automap.sidebar_row_ys[3] = 1/256;
 					mouse_index++;	
 					
-					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 	
@@ -7331,17 +7336,17 @@ function draw_sidebar(){
 				}else if((t_type=="parameters")||(t_type=="audio")||(t_type=="hardware")){
 					sidebar.connection.defaults.vector =  Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
-					draw_vector(sidebar.x2-21*fo1, y_offset, sidebar.x2, 21*fo1+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
+					draw_vector(sidebar.x2-21*fo1, y_offset, sidebar.x2, 21*fo1+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-					automap.groups[1]="connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
+					automap.groups[1]="connections["+i+"]::conversion::projectionAngle";
 					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 
-					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*22,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*22,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 					//not sure if this should be put back in for audio/hardware destinations? not needed for params obvs. downside is that it will jump if muted
@@ -7365,10 +7370,10 @@ function draw_sidebar(){
 					sidebar.connection.defaults.vector = Math.round(vector*4)/4;
 					sidebar.connection.defaults.offset = 0.5;
 					sidebar.connection.defaults.offset2 = 0.5;
-					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector);
+					draw_vector(sidebar.x2-fo1*15.5, y_offset, sidebar.x2, fo1*15.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
-					automap.groups[1]="connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
+					automap.groups[1]="connections["+i+"]::conversion::projectionAngle";
 					automap.sidebar_row_ys[1] = 0.025;
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
@@ -7382,9 +7387,9 @@ function draw_sidebar(){
 					automap.sidebar_row_ys[3] = 1/256;
 					mouse_index++;	
 					
-					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+					draw_h_slider(sidebar.x,y_offset,sidebar.x2-fo1*16.5,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,projectionAngle);
 					mouse_click_actions[mouse_index] = connection_edit;
-					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
+					mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::projectionAngle";
 					mouse_click_values[mouse_index] = 0;
 					mouse_index++;
 	

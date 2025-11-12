@@ -4316,6 +4316,7 @@ function parameter_list_entry(){
 	new_connection.replace("conversion::mute" , 0);
 	new_connection.replace("conversion::scale", 1);
 	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::projectionAngle", 0);	
 	new_connection.replace("conversion::offset", 0.5);
 	new_connection.replace("conversion::offset2", 0.5);
 	new_connection.replace("from::number",seqblock);
@@ -4368,6 +4369,7 @@ function parameter_list_entry(){
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::projectionAngle", 0);	
 		new_connection.replace("conversion::offset", 0.5);
 		new_connection.replace("conversion::offset2", 0.5);
 		new_connection.replace("from::number",clockblock);
@@ -4702,7 +4704,8 @@ function reify_automap_k(){
 	
 	new_connection.replace("conversion::mute" , 0);
 	new_connection.replace("conversion::scale", 1);
-	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::vector", 0);
+	new_connection.replace("conversion::projectionAngle", 0);		
 	new_connection.replace("conversion::offset", 0.5);	
 	new_connection.replace("conversion::offset2", 0.5);	
 	connections.append("connections", new_connection);
