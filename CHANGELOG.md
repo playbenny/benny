@@ -1,7 +1,7 @@
 12/11/25:
 - **abl.drumbuss** added - a wrapper for the ableton drum buss plugin
 - in the sidebar you can hover over a slider and type a value to set it. now additionally you can hover over a slider and type a comma separated list of values (eg `3,4,,,,5,1,23,,1`) and benny will automatically create a seq.values block attached to that slider ready to create that modulation pattern. additionally, if you end your list with / and a time value then a clock will be created and connected for the new seq.values. eg `3,4,,,,6/4n`
-- the fullscreen view of seq.values now tries to work out the result of each step's output on all the things its connected to. so if you're modulating a filter cutoff using seq.values you'll see the resulting frequencies listed above the steps in seq.values.
+- the fullscreen view of seq.values now tries to work out the result of each step's output on all the things its connected to. so for example if you're modulating a filter cutoff using seq.values you'll see the resulting frequencies listed above the steps in seq.values.
 
 12/10/25:
 - **core.scales.shapes** now has easier ways to select common scales - via sliders or midi input.
