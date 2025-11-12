@@ -1,0 +1,118 @@
+{
+	"fx.abl.drumbuss" : {
+		"patcher" : "fx.abl.drumbuss",
+		"type" : "audio",
+		"block_ui_patcher" : "blank.ui",
+		"help_text" : "wrapper for the abl.device.drumbuss. stereo in stereo out. only available in max 9.",
+		"max_polyphony" : 0,
+		"upsample" : 1,
+		"subvoices" : 2,
+		"connections" : {
+			"in" : { 
+				"audio" : [ "in" ]
+			},
+			"out" : {
+				"audio" : [ "out" ]
+			}
+		},
+		"groups" : [
+			{ 
+				"contains" : [0,0,3],
+				"height" : 0
+			},
+			{	
+				"contains" : [1,2,10],
+				"height" : 0
+			},
+			{ 
+				"header" : "mid range",
+				"contains" : [4,5,6],
+				"height" : 0
+			},
+			{ 
+				"header" : "low end",
+				"contains" : [7,8,9],
+				"height" : 0
+			}
+		],
+		"parameters" : [
+			{
+				"name" : "distortion_type",
+				"type" : "menu_l",
+				"values" : ["soft (shaping)", "medium (limiting)", "hard (clipping with bass boost)"],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "drive",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.2
+			},
+			{
+				"name" : "trim",
+				"type" : "float",
+				"values" : ["uni", -70, 0, "exp"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "input_compressor",
+				"type" : "menu_b",
+				"values" : ["input_compressor_off", "input_compressor_on"],
+				"wrap" : 1,
+				"default" : 0.1
+			},
+			{
+				"name" : "crunch",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "damping freq",
+				"type" : "float",
+				"values" : ["uni", 500, 20000, "exp100"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "transients",
+				"type" : "float",
+				"values" : ["bi", -1,1,  "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "boom",
+				"type" : "float",
+				"values" : ["uni", 0,1,  "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "boom freq",
+				"type" : "float",
+				"values" : ["uni", 30,90,  "exp100"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "decay",
+				"type" : "float",
+				"values" : ["uni", 0,1,  "lin"],
+				"wrap" : 0,
+				"default" : 1
+			},
+			{
+				"name" : "mix",
+				"type" : "float",
+				"values" : ["uni", 0,1,  "lin"],
+				"wrap" : 0,
+				"default" : 1
+			}
+		]
+	}
+}
