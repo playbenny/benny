@@ -2340,7 +2340,7 @@ function make_connection(cno,existing){
 									mod_buffer.poke(1, mod_id, 0);
 								}
 							}
-
+							var spread_l = spread_level(i, v, conversion.get("offset"),conversion.get("vector"),f_voices.length, t_voices.length);
 							add_to_midi_routemap(m_index,tmod_id+MAX_BLOCKS+MAX_NOTE_VOICES+MAX_AUDIO_VOICES+MAX_HARDWARE_MIDI_OUTS);
 							var wrap = 0;
 							if(blocktypes.contains(blocks.get("blocks["+t_block+"]::name")+"::parameters["+t_i_no+"]::wrap")){
@@ -2348,7 +2348,7 @@ function make_connection(cno,existing){
 							}
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
 							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
+							var scale = conversion.get("scale") * spread_l;
 							var offs = conversion.get("offset");
 							if(typeof offs === "number"){
 								var offn = offs;
