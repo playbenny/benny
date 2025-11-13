@@ -1096,7 +1096,7 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 		tl = Math.min(1,Math.pow(max_chans*no_in_channels,0.666) / tl);
 
 		// then the particular one
-		d = (((rotation+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
+		d = (((rotation+outputangle-inputangle) + 2.5) % 1 ) - 0.5;
 		d = Math.abs(d);
 		var l = Math.max(1 - r2 * d * min_chans,0) * tl;
 		return l;

@@ -6775,7 +6775,7 @@ function draw_sidebar(){
 				lcd_main.message("frgb", section_colour );
 				lcd_main.message("moveto" ,sidebar.x2-fo1*12, fo1*11+y_offset);
 				lcd_main.message("write", "auto");
-				click_zone(conn_toggle_control_auto_assign,0,-1,sidebar.x2-fo1*29, y_offset+0.7*fontheight, sidebar.x2-fo1*15, fontheight*1.3+y_offset,mouse_index,1);
+				click_zone(conn_toggle_control_auto_assign,0,-1,sidebar.x2-fo1*14, y_offset+0.7*fontheight, sidebar.x2, fontheight*1.3+y_offset,mouse_index,1);
 			}
 			lcd_main.message("frgb" , section_colour_dark);
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
