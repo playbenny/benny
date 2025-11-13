@@ -6373,9 +6373,9 @@ function draw_sidebar(){
 												mouse_index++;
 												if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
 													y_offset+=fontheight;
-													draw_h_slider(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
+													draw_h_slider(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset2-1);
 													mouse_click_actions[mouse_index] = connection_edit;
-													mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+													mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
 													mouse_click_values[mouse_index] = 0;
 													mouse_index++;
 												}
@@ -6408,9 +6408,9 @@ function draw_sidebar(){
 												mouse_index++;
 												if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
 													y_offset += fontheight;
-													draw_h_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset-1);
+													draw_h_slider(sidebar.x2-fontheight*2.1, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,2*offset2-1);
 													mouse_click_actions[mouse_index] = connection_edit;
-													mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
+													mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
 													mouse_click_values[mouse_index] = 0;
 													mouse_index++;
 												}
@@ -6469,9 +6469,9 @@ function draw_sidebar(){
 												mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset2";
 												mouse_index++;			
 											}else if(connections.get("connections["+i+"]::to::input::type")=="parameters"){
-												draw_h_slider(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,vector);
+												draw_h_slider(sidebar.x2-fontheight*3.2, y_offset, sidebar.x2-fontheight*1.1, fontheight+y_offset,col[0],col[1],col[2],mouse_index,offset2);
 												mouse_click_actions[mouse_index] = connection_edit;
-												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";//this was ??? vector";
+												mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";//this was ??? vector";
 												mouse_click_values[mouse_index] = 0;
 												mouse_index++;			
 											}			
@@ -6766,22 +6766,20 @@ function draw_sidebar(){
 			lcd_main.message("font",mainfont,fontsmall);
 
 			click_zone(conn_show_from_outputs_list,0,-1,sidebar.x, y_offset+0.7*fontheight, sidebar.x2, fontheight*1.3+y_offset,mouse_index,1);
-			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(1+is_core_control)*15*fo1, fo1*13+y_offset,section_colour_darkest );
-			lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-(is_core_control && !sidebar.connection.show_from_outputs)*15*fo1, fo1*13+y_offset,section_colour_darkest );
+			//lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
 			if(is_core_control){
 				var tbc = (auto_pick_controller)? section_colour_dark:section_colour_darkest;
 				tbc = (usermouse.clicked2d==mouse_index)? section_colour:tbc;
-				lcd_main.message("paintrect", sidebar.x2-fo1*29, y_offset+fo1*7, sidebar.x2-fo1*15, y_offset+fo1*13, tbc );
+				lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, tbc );
 				lcd_main.message("frgb", section_colour );
-				lcd_main.message("moveto" ,sidebar.x2-fo1*27, fo1*11+y_offset);
+				lcd_main.message("moveto" ,sidebar.x2-fo1*12, fo1*11+y_offset);
 				lcd_main.message("write", "auto");
 				click_zone(conn_toggle_control_auto_assign,0,-1,sidebar.x2-fo1*29, y_offset+0.7*fontheight, sidebar.x2-fo1*15, fontheight*1.3+y_offset,mouse_index,1);
 			}
 			lcd_main.message("frgb" , section_colour_dark);
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
 			lcd_main.message("write", "from");
-			//lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
-			//lcd_main.message("write", "change");
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
 			lcd_main.message("write", "output");
 			lcd_main.message("frgb", section_colour );
@@ -6801,8 +6799,8 @@ function draw_sidebar(){
 				}
 			}
 			if(!sidebar.connection.show_from_outputs){
-				lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
-				lcd_main.message("write", "change");
+				// lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
+				// lcd_main.message("write", "change");
 				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*1.1+y_offset);
 				lcd_main.message("frgb", type_colour );
 				lcd_main.message("write", f_o_name);
@@ -6811,17 +6809,17 @@ function draw_sidebar(){
 				y_offset+=1.4*fontheight;
 			}else{
 				//draw a list of buttons to select between the various outputs on offer here
-				if(f_o_no!=null){
-					lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
-					lcd_main.message("write", "hide");
-				}
-				y_offset+=1.4*fontheight;
+				// if(f_o_no!=null){
+				// 	lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
+				// 	lcd_main.message("write", "hide");
+				// }
+				y_offset+=(is_core_control+1)*7*fo1;//1.4*fontheight;
 				if(EXTERNAL_MATRIX_PRESENT && to_has_matrix) y_offset = conn_draw_from_outputs_list(i, f_name, "matrix", y_offset, null);
-				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null);
-				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null);
-				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null);
-				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset, param_count);
-				if(is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, button_count);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "hardware", y_offset, null, section_colour);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "audio", y_offset, null, section_colour);
+				if(!is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, null, section_colour);
+				y_offset = conn_draw_from_outputs_list(i, f_name, "parameters", y_offset, param_count, section_colour);
+				if(is_core_control) y_offset = conn_draw_from_outputs_list(i, f_name, "midi", y_offset, button_count, section_colour);
 			}
 			
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.6+y_offset,section_colour_darkest );
@@ -7035,9 +7033,7 @@ function draw_sidebar(){
 			}
 
 
-			// conversion params header
-
-
+/*			// conversion params header
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, fontheight*0.6+y_offset,type_colour_darkest );
 			lcd_main.message("frgb" , type_colour_dark);
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.4+y_offset);
@@ -7051,7 +7047,7 @@ function draw_sidebar(){
 				}
 			}
 			y_offset+=fontheight*0.7;			
-
+*/
 			//conversion settings here
 			if(mute){
 				lcd_main.message("paintrect",sidebar.x2-fontheight, y_offset, sidebar.x2, fontheight+y_offset,96,96,96);
@@ -7112,14 +7108,14 @@ function draw_sidebar(){
 						//no rotators etc
 						//y_offset+=(sidebar.width-fo1)*0.5 + 30*fo1;
 					}else{
-						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+						draw_h_slider(sidebar.x,y_offset,(sidebar.x + sidebar.x2) * 0.5 - 2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 						automap.groups[1]="connections["+i+"]::conversion::vector";
 						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
-						draw_h_slider(sidebar.x,y_offset+fontheight*1.1,sidebar.x2,y_offset+2.1*fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
+						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 						automap.groups[2]="connections["+i+"]::conversion::offset";
@@ -7129,22 +7125,22 @@ function draw_sidebar(){
 						lcd_main.message("frgb",type_colour_dark);
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fontheight*0.8);
 						lcd_main.message("write","rotation",vector.toPrecision(2));
-						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fontheight*1.9);
+						lcd_main.message("moveto",(sidebar.x + sidebar.x2) * 0.5 +2*fo1,y_offset+fontheight*0.8);
 						lcd_main.message("write","spread",offset.toPrecision(2));
-						y_offset+=22*fo1;
+						y_offset+=12*fo1;
 						sidebar.connection.defaults.vector = 0;
 						sidebar.connection.defaults.offset = 1;
-						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.5, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
-						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.5, y_offset, sidebar.x2, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
+						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.67, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
+						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.67, y_offset, sidebar.x2, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 						mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
 						mouse_index++;
-						y_offset+=(sidebar.width-fo1)*0.5 + fo1;
+						y_offset+=(sidebar.width-fo1)*0.33 + fo1;
 					}
 					if(t_type=="parameters"){ //params get an offset
 						sidebar.connection.defaults.offset = 0.5;
-						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset-1);
+						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset2-1);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
 						automap.groups[1]="connections["+i+"]::conversion::offset2";
@@ -7153,7 +7149,7 @@ function draw_sidebar(){
 						mouse_index++;
 						lcd_main.message("frgb",type_colour_dark);
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*9);
-						lcd_main.message("write","offset2",(2*offset-1).toPrecision(2));
+						lcd_main.message("write","offset2",(2*offset2-1).toPrecision(2));
 						y_offset+=11*fo1;
 					}
 				}else if((t_type=="midi")||(t_type=="block")){
@@ -7200,14 +7196,14 @@ function draw_sidebar(){
 					}else{
 						sidebar.connection.defaults.vector = 0;
 						sidebar.connection.defaults.offset = 1;
-						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
+						draw_h_slider(sidebar.x,y_offset,(sidebar.x + sidebar.x2) * 0.5 - 2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 						automap.groups[1]="connections["+i+"]::conversion::vector";
 						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
-						draw_h_slider(sidebar.x,y_offset+fo1*11,sidebar.x2,y_offset+21*fo1,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
+						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 						automap.groups[2]="connections["+i+"]::conversion::offset";
@@ -7217,18 +7213,18 @@ function draw_sidebar(){
 						lcd_main.message("frgb",type_colour_dark);
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
 						lcd_main.message("write","rotation",vector.toPrecision(2));
-						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*19);
+						lcd_main.message("moveto",(sidebar.x + sidebar.x2) * 0.5 +2*fo1,y_offset+fo1*8);
 						if(offset>0.98) lcd_main.message("frgb",type_colour);
 						lcd_main.message("write","spread",offset.toPrecision(2));
-						y_offset+=22*fo1;
+						y_offset+=12*fo1;
 	
-						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.5, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
-						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.5, y_offset, sidebar.x2, (sidebar.width-fo1)*0.5+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
+						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.67, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
+						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.67, y_offset, sidebar.x2, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
 						mouse_click_values[mouse_index] = "connections["+i+"]::conversion::offset";
 						mouse_index++;
-						y_offset+=(sidebar.width-fo1)*0.5 + fo1;
+						y_offset+=(sidebar.width-fo1)*0.33 + fo1;
 					}
 					if(t_type=="parameters"){ // params get an offset
 						sidebar.connection.defaults.offset2 = 0.5;
@@ -7569,10 +7565,9 @@ function draw_sidebar(){
 			//click_zone(select_block,0,t_number,sidebar.x2-fontheight*1.4, y_offset, sidebar.x2, fontheight*0.6+y_offset,mouse_index,1);
 			//^^this should be the select a new to block fn
 			
-			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2-15*fo1, fo1*13+y_offset,section_colour_darkest );
-			lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
+			lcd_main.message("paintrect", sidebar.x, y_offset+fo1*7, sidebar.x2, fo1*13+y_offset,section_colour_darkest );
+			// lcd_main.message("paintrect", sidebar.x2-fo1*14, y_offset+fo1*7, sidebar.x2, y_offset+fo1*13, (usermouse.clicked2d==mouse_index)? section_colour:section_colour_darkest );
 			click_zone(conn_show_to_inputs_list,0,-1,sidebar.x, y_offset+0.7*fontheight, sidebar.x2, fontheight*1.3+y_offset,mouse_index,1);
-			//^^fn not defined yet. this should be 'select a new input'
 			
 			lcd_main.message("frgb", section_colour );
 			lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*0.4+y_offset);
@@ -7585,16 +7580,14 @@ function draw_sidebar(){
 			lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*1.1+y_offset);
 			lcd_main.message("write", "input");
 			
-			//lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*0.4+y_offset);
-			//lcd_main.message("write", "change");
 			var tty = t_type;
 			if((tty=="hardware")&&(connections.contains("connections["+i+"]::conversion::soundcard"))) tty="soundcard";
 			type_colour = config.get("palette::connections::"+tty);
 			type_colour_dark = [type_colour[0]*0.5,type_colour[1]*0.5,type_colour[2]*0.5];
 			type_colour_darkest = [type_colour[0]*bg_dark_ratio,type_colour[1]*bg_dark_ratio,type_colour[2]*bg_dark_ratio];
 			if(!sidebar.connection.show_to_inputs){
-				lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
-				lcd_main.message("write", "change");
+				// lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
+				// lcd_main.message("write", "change");
 				lcd_main.message("moveto" ,sidebar.x+fontheight*1.4, fontheight*1.1+y_offset);
 				lcd_main.message("frgb", type_colour );
 				lcd_main.message("write", t_i_name);
@@ -7603,19 +7596,19 @@ function draw_sidebar(){
 				y_offset+=1.4*fontheight;
 			}else{
 				//draw a list of buttons to select between the various outputs on offer here
-				if(t_i_no!=null){
-					lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
-					lcd_main.message("write", "hide");
-				}
-				y_offset+=1.4*fontheight;
+				// if(t_i_no!=null){
+				// 	lcd_main.message("moveto" ,sidebar.x2-fontheight*1.2, fontheight*1.1+y_offset);
+				// 	lcd_main.message("write", "hide");
+				// }
+				y_offset+=7 * fo1; //1.4*fontheight;
 				if(f_type == "matrix"){
-					y_offset = conn_draw_to_inputs_list(i, t_name, "matrix", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "matrix", y_offset, section_colour);
 				}else{
-					y_offset = conn_draw_to_inputs_list(i, t_name, "hardware", y_offset);
-					y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset);
-					y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset);
-					y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset);
-					if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "hardware", y_offset, section_colour);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "audio", y_offset, section_colour);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "midi", y_offset, section_colour);
+					y_offset = conn_draw_to_inputs_list(i, t_name, "parameters", y_offset, section_colour);
+					if(t_i_v == "all") y_offset = conn_draw_to_inputs_list(i, t_name, "block", y_offset, section_colour);
 				}
 			}
 			lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2, 6*fo1+y_offset,section_colour_darkest );

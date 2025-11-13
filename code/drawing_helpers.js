@@ -925,7 +925,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	var minl=99,maxl=-99;
 	for(cx=v2-1;cx>=0;cx--){
 		for(cy=0;cy<v1;cy++){
-			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v2, v1);
+			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v2, v1)*0.5;
 			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;
@@ -936,10 +936,15 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 		if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
 			//lcd_main.message("font",mainfont, Math.min(uy,ux)*0.4);
 			if(Math.min(uy,ux)*0.4>=fontsmall){
-				lcd_main.message("frgb", menucolour);
 				for(cx=v2-1;cx>=0;cx--){
 					for(cy=0;cy<v1;cy++){
 						l = scale*spread_level(cx, cy, offset,vector, v2, v1);
+						var ll = Math.abs(l);
+						if(ll<0.3){
+							lcd_main.message("frgb", (0.7+ll)*r,(0.7+ll)*g,(0.7+ll)*b);
+						}else{
+							lcd_main.message("frgb", 0,0,0);
+						}
 						lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*uy);
 						lcd_main.message("write",l.toPrecision(2));				
 					}
@@ -1484,7 +1489,7 @@ function draw_menu_hint(){
 }
 	
 
-function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
+function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate, bgColour) {
 	var curr=-1;
 	if(connections.get("connections["+i+"]::from::output::type")==ty){
 		curr = (connections.get("connections["+i+"]::from::output::number"))
@@ -1502,6 +1507,8 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 		}
 		if (!Array.isArray(l)) l = [l];
 		var c = config.get("palette::connections::" + ty);
+		var bgc = bgColour;
+		if(bgc == null) bgc = c;
 		var len = l.length;
 		if(truncate!=null) len = Math.min(len,truncate);
 		for (var o = 0; o < len; o++) {
@@ -1512,14 +1519,15 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 			}
 			if(l[o]!=null){
 				if(curr==o){
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
 					lcd_main.message("frgb", 0,0,0);
 				}else{
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(c, bg_dark_ratio));
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(bgc, bg_dark_ratio));
 					lcd_main.message("frgb", c);
 				}
-				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
+				lcd_main.message("moveto", sidebar.x + fo1 * 16, y_offset + 4 * fo1);
 				lcd_main.message("write", l[o]);
+				lcd_main.message("moveto", sidebar.x2 -(2 + 1.65* ty.length)*fo1, y_offset + 4 * fo1);
 				lcd_main.message("frgb", shadeRGB(c, 0.5));
 				lcd_main.message("write", ty);
 				if(desc && (blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]")!="")){
@@ -1538,7 +1546,7 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 	return y_offset;
 }
 
-function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
+function conn_draw_to_inputs_list(i, t_name, ty, y_offset,bgColour) {
 	var curr=-1;
 	if(connections.get("connections["+i+"]::to::input::type")==ty){
 		curr = (connections.get("connections["+i+"]::to::input::number"))
@@ -1569,7 +1577,8 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 	if(l.length>0){
 		var cc = config.get("palette::connections::" + ty);
 		var c = cc;
-
+		var bgc = bgColour;
+		if(bgColour==null)bgc=c;
 		for (var o = 0; o < l.length; o++) {
 			var used_already = 0;
 			if(ty=="matrix"){
@@ -1592,21 +1601,22 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 			}
 			if(l[o]!=null){
 				if(curr==o){
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
 					lcd_main.message("frgb", 0,0,0);
 				}else{
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(c, bg_dark_ratio));
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(bgc, bg_dark_ratio));
 					lcd_main.message("frgb", c);
 				}
-				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
+				lcd_main.message("moveto", sidebar.x + fo1 * 16, y_offset + 4 * fo1);
 				lcd_main.message("write", l[o]);
 				lcd_main.message("frgb", shadeRGB(c, 0.5));
 				if(used_already==0){
+					lcd_main.message("moveto", sidebar.x2 - fo1 * (2 + 1.65 * ty.length), y_offset + 4 * fo1);
 					lcd_main.message("write", ty);
 					click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
 				}else{
 					lcd_main.message("write", "matrix (input already in use)");
-					click_zone(sidebar_select_connection, used_already, 0, sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+					click_zone(sidebar_select_connection, used_already, 0, sidebar.x + fo1 * 16, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
 				}
 				y_offset+=7*fo1;
 			}
