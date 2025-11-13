@@ -7146,14 +7146,14 @@ function draw_sidebar(){
 						sidebar.connection.defaults.offset = 0.5;
 						draw_h_slider(sidebar.x,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,2*offset-1);
 						mouse_click_actions[mouse_index] = connection_edit;
-						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
-						automap.groups[1]="connections["+i+"]::conversion::offset";
+						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset2";
+						automap.groups[1]="connections["+i+"]::conversion::offset2";
 						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
 						lcd_main.message("frgb",type_colour_dark);
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*9);
-						lcd_main.message("write","offset",(2*offset-1).toPrecision(2));
+						lcd_main.message("write","offset2",(2*offset-1).toPrecision(2));
 						y_offset+=11*fo1;
 					}
 				}else if((t_type=="midi")||(t_type=="block")){
