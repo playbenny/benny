@@ -3717,14 +3717,41 @@ function draw_sidebar(){
 		lcd_main.message("write", "merge");
 	
 		if(selected.block.indexOf(1)!=-1){
-			lcd_main.message("paintrect", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.5, 9+fontheight,gdarkest );
-			lcd_main.message("frgb" , gcolour);
-			click_zone(save_song, 1, "", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.6, 9+fontheight,mouse_index,1 );
-			lcd_main.message("font",mainfont,fontsmall);
-			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.45);
-			lcd_main.message("write", "save");
+			lcd_main.message("paintrect", file_menu_x + fontheight*4.1, 9, file_menu_x + fontheight*5.9, 9+fontheight,gdarkest );
+			if((loading.songname != "")&&(loading.songname!="autoload")){
+				if(loading.hardware_substitutions_occured==1){
+					lcd_main.message("frgb", 255, 50, 50);
+				}else{
+					lcd_main.message("frgb" , gcolour);
+				}
+				click_zone(save_song, 0, 0, file_menu_x + fontheight*4.1, 9, file_menu_x + fontheight*6, 9+fontheight,mouse_index,1 );
+			}else{
+				lcd_main.message("frgb", greydark);
+			}
+			lcd_main.message("moveto", file_menu_x + fontheight*4.3, 9+fontheight*0.75);
+			lcd_main.message("write", "save");				
+	
+			lcd_main.message("paintrect", file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.7, 9+fontheight,gdarkest );
+			if(danger_button == mouse_index){
+				lcd_main.message("frgb" , 255,50,50);
+			}else{
+				lcd_main.message("frgb", gcolour);
+			}
+			click_zone( save_song, 0, 1, file_menu_x + fontheight*6, 9, file_menu_x + fontheight*8.8, 9+fontheight,mouse_index,1 );
+			//lcd_main.message("font",mainfont,fontsmall);
 			lcd_main.message("moveto", file_menu_x + fontheight*6.2, 9+fontheight*0.75);
-			lcd_main.message("write", "selected");
+			lcd_main.message("write", "save as");
+
+			var selcount=0;
+			for(var i=0;i<selected.block.length;i++)selcount+=selected.block[i];
+			lcd_main.message("paintrect", file_menu_x + fontheight*8.8, 9, file_menu_x + fontheight*11.5, 9+fontheight,gdarkest );
+			lcd_main.message("frgb" , gcolour);
+			click_zone(save_song, 1, "", file_menu_x + fontheight*8.8, 9, file_menu_x + fontheight*11.6, 9+fontheight,mouse_index,1 );
+			lcd_main.message("font",mainfont,fontsmall);
+			lcd_main.message("moveto", file_menu_x + fontheight*9, 9+fontheight*0.45);
+			lcd_main.message("write", "save",selcount);
+			lcd_main.message("moveto", file_menu_x + fontheight*9, 9+fontheight*0.75);
+			lcd_main.message("write", "selected blocks");
 			lcd_main.message("font",mainfont,fontsmall*2);
 		}else{
 			lcd_main.message("paintrect", file_menu_x + fontheight*4.1, 9, file_menu_x + fontheight*5.9, 9+fontheight,gdarkest );

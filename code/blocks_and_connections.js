@@ -2679,10 +2679,10 @@ function check_for_connection_overlap(n){
 									}
 								}
 								if(tomatch){
-									return 1;
-									//post("\noverlapping connection");
+									post("\noverlapping connection, f:",fv,f_v,"t:",tv,t_v);
 									//ti=99999;
 									//overlap = 1;
+									return 1;
 								}	
 							}
 						}
