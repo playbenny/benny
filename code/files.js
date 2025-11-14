@@ -768,6 +768,9 @@ function import_song(){
 				new_connection = songs.get(loading.songname+"::connections["+b+"]");
 				new_connection.replace("from::number", loading.mapping[new_connection.get("from::number")]);
 				new_connection.replace("to::number", loading.mapping[new_connection.get("to::number")]);
+				if(!new_connection.contains("conversion::projectionAngle")){
+					convert_pre_0_6_connection();
+				}
 				connections.append("connections",new_connection);
 				var co = connections.getsize("connections")-1;
 				make_connection(co,0);
@@ -1860,4 +1863,30 @@ function write_blockipedia(){
 		}
 	}
 	blocki.close();
+}
+
+function convert_pre_0_6_connection(){
+	var ttype = new_connection.get("to::input::type");
+	var ftype = new_connection.get("from::output::type");
+	if(ttype == "parameters" || ttype == "audio" || ttype == "hardware" || ttype == "block"){
+		//to is 1d
+		if(ftype == "midi"){
+			post("replaced rotate with projection for this connection,",ftype,ttype);
+			new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
+		}else{
+			post(".");
+			new_connection.replace("conversion::projectionAngle",0);
+		}
+		post("o",new_connection.get("conversion::offset"));
+		new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
+		new_connection.replace("conversion::offset",0);
+	}else{
+		if(ftype == "parameters" || ftype == "audio" || ftype == "hardware"){
+			post("replaced rotate with projection for this connection,",ftype,ttype);
+			new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
+		}else{
+			post(".");
+			new_connection.replace("conversion::projectionAngle",0);
+		}
+	}
 }
