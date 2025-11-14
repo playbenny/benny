@@ -2134,8 +2134,8 @@ function make_connection(cno,existing){
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
 							//post("midi to audio",tvv);
 							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
-							var offs = conversion.get("offset");
+							var scale = conversion.get("scale") * spread_l;
+							var offs = conversion.get("offset2");
 							if(typeof offs === "number"){
 								var offn = offs;
 								var offv = 0.5;
@@ -2148,7 +2148,7 @@ function make_connection(cno,existing){
 						}else if(t_type == "midi"){
 							//this is a midi-midi connection for a single voice
 							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
+							var scale = conversion.get("scale") * spread_l;
 							var offn = conversion.get("offset");
 							var offv = conversion.get("offset2");
 							t_voice-=MAX_BLOCKS;
@@ -2207,8 +2207,8 @@ function make_connection(cno,existing){
 							}
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
 							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
-							var offs = conversion.get("offset");
+							var scale = conversion.get("scale") * spread_l;
+							var offs = conversion.get("offset2");
 							if(typeof offs === "number"){
 								var offn = offs;
 								var offv = 0;
