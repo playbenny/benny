@@ -1866,6 +1866,7 @@ function write_blockipedia(){
 }
 
 function convert_pre_0_6_connection(){
+	// if it's too param/audio/hw/block then the offset is in offset2, and projectionAngle replaces rotate for 1d-2d,2d-1d
 	var ttype = new_connection.get("to::input::type");
 	var ftype = new_connection.get("from::output::type");
 	if(ttype == "parameters" || ttype == "audio" || ttype == "hardware" || ttype == "block"){

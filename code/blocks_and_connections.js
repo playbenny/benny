@@ -2063,9 +2063,9 @@ function make_connection(cno,existing){
 							}
 							add_to_mod_routemap(t_voice,tmod_id,t_i_no,wrap);  
 							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
+							var scale = conversion.get("scale") * spread_l;
 							var offv = conversion.get("offset2");
-							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale*spread_l,offv*256-128,0,cno,v); //offn*256-128,offv*256-128
+							set_routing(f_voice+f_o_no*MAX_AUDIO_VOICES+MAX_AUDIO_VOICES,0,enab,1,6,tmod_id,t_i_no,0,scale,offv*256-128,0,cno,v); //offn*256-128,offv*256-128
 						}
 					}else if(f_type == "matrix"){
 						if(t_type == "matrix") {
@@ -2263,7 +2263,7 @@ function make_connection(cno,existing){
 							add_to_mod_routemap(tvv,tmod_id,0,0); 
 							//post("param to audio",tvv);
 							enab = 1-conversion.get("mute");
-							var scale = conversion.get("scale");
+							var scale = conversion.get("scale") * spread_l;
 							/*var offs = conversion.get("offset");
 							if(typeof offs === "number"){
 								var offn = offs;
