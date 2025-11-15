@@ -1,3 +1,8 @@
+15/11/25:
+- big update to connections. now almost all connections have a spread/rotate control when there are >1 voices at either end. this means you can, for example, modulate a parameter a different amount for each voice.
+- the spread rotate control itself has been updated - you can go past 1, for extra-separated sources, and you can also go negative, which sends an inverted copy to the opposite channels. in stereo this creates a super-wide spread effect (that cancels in mono..) but for example with parameter modulation you can have one lfo going forward to some voices and antiphase to some other voices.
+- **important breaking change** although benny will load and attempt to convert old songfiles, gains and spread rotate settings may not exactly match and songs saved with this version will not open in older versions.
+
 14/11/25:
 - improved file menu to remove the chance of using 'save selected' by accident
 

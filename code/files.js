@@ -579,11 +579,7 @@ function import_song(){
 			loading.xoffset = current_x_max + 4 - new_x_min;
 		}
 		sidebar.notification = null;
-		if(songs.contains(loading.songname+"::version")){
-			bennyversion = songs.get(loading.songname+"::version");
-		}else{
-			bennyversion = 0;
-		}
+
 		if(songs.contains(loading.songname+"::notepad")){ 
 			sidebar.notification = songs.get(loading.songname+"::notepad");
 			set_sidebar_mode("notification");
@@ -1331,8 +1327,8 @@ function save_song(selectedonly, saveas){ //saveas == 1 -> prompt for name
 	}
 	var songsettings = new Dict;
 	songsettings.name = "songsettings";
-	songsettings.parse('{ "MAX_WAVES": '+MAX_WAVES+', "version":'+bennyversion+'}');
-	post("\nstored version : ",'{ "MAX_WAVES": '+MAX_WAVES+', "version":'+bennyversion+'}');
+	songsettings.parse('{ "MAX_WAVES": '+MAX_WAVES+'}');
+	post("\nstored version : ",'{ "MAX_WAVES": '+MAX_WAVES+'}');
 	for(b=0;b<MAX_BLOCKS;b++){
 		if(store[b].length) states.replace("states::current::"+b,store[b]);
 		//if(per_v[b].length) states.replace("states::current::static_mod::"+b,per_v[b]);
