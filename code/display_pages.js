@@ -7166,7 +7166,7 @@ function draw_sidebar(){
 						if(offset<0.5) lcd_main.message("write","(wide)");
 						y_offset+=12*fo1;
 						sidebar.connection.defaults.vector = 0;
-						sidebar.connection.defaults.offset = 1;
+						sidebar.connection.defaults.offset = 0.5;
 						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.67, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
 						draw_spread_levels(sidebar.x2-(sidebar.width-fo1)*0.67, y_offset, sidebar.x2, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,scale);				
 						mouse_click_actions[mouse_index] = connection_edit;
@@ -7232,7 +7232,7 @@ function draw_sidebar(){
 						//y_offset+=(sidebar.width-fo1)*0.5 + 30*fo1;
 					}else{
 						sidebar.connection.defaults.vector = 0;
-						sidebar.connection.defaults.offset = 1;
+						sidebar.connection.defaults.offset = 0.5;
 						draw_h_slider(sidebar.x,y_offset,(sidebar.x + sidebar.x2) * 0.5 - 2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
@@ -7405,7 +7405,7 @@ function draw_sidebar(){
 						//y_offset+=(sidebar.width-fo1)*0.5 + 30*fo1;
 					}else{
 						sidebar.connection.defaults.vector = 0;
-						sidebar.connection.defaults.offset = 1;
+						sidebar.connection.defaults.offset = 0.5;
 						draw_h_slider(sidebar.x,y_offset,(sidebar.x + sidebar.x2) * 0.5 - 2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,vector);
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::vector";
