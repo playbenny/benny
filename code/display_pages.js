@@ -2870,14 +2870,21 @@ function draw_topbar(){
 								c=[255,255,255];
 							}
 							statesbar.y_pos[i] = y_o;
-							lcd_main.message("paintrect", 5, y_o, 9+fontheight, fontheight + y_o,c );		
+							if(patternpage.held_state_fires.indexOf(i)>-1){
+								for(var t=Math.floor(fontheight/8)*2;t>=0;t-=4){
+									lcd_main.message("framerect", 5+t, y_o+t, 9+fontheight-t, fontheight + y_o-t,c );	
+								}
+								lcd_main.message("frgb", 255,255,255);
+							}else{
+								lcd_main.message("paintrect", 5, y_o, 9+fontheight, fontheight + y_o,c );		
+								lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
+							}
 							if(states.contains("names::"+i)){
 								var sn=states.get("names::"+i);
 								sn = sn.split(".");
 								if(!Array.isArray(sn)) sn = [sn];
 								for(var si=0;si<sn.length;si++){
 									lcd_main.message("moveto",5 + fontheight*0.1, y_o+fontheight*(1-0.25*(sn.length-si)));
-									lcd_main.message("frgb", 0,0,0); //c[0]*bg_dark_ratio,c[1]*bg_dark_ratio,c[2]*bg_dark_ratio);
 									lcd_main.message("write",sn[si]);
 								}
 							}					

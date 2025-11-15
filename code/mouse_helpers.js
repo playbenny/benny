@@ -1559,7 +1559,8 @@ function fire_block_state(state, block){
 			if(state=="current") state = -1;//lol
 			queue_quantised_notification(fire_block_state,state,block);
 			patternpage.held_state_fires[block] = state;
-			if(sidebar.selected==block) redraw_flag.flag |= 2; 
+			//if(sidebar.selected==block) 
+			redraw_flag.flag |= 2; 
 		}else{
 			patternpage.held_state_fires[block] = null;
 			var pv=[];
