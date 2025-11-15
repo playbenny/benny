@@ -2416,7 +2416,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	new_connection.replace("conversion::scale", 1);
 	new_connection.replace("conversion::vector", 0);	
 	new_connection.replace("conversion::projectionAngle", 0);	
-	new_connection.replace("conversion::offset", 0);	
+	new_connection.replace("conversion::offset", 0.5);	
 	
 	sidebar.connection.default_out_applied = 0;
 	sidebar.connection.default_in_applied = 0;
@@ -2508,7 +2508,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 					new_connection.replace("to::input::number",0);
 				}
 				new_connection.replace("to::input::type","hardware");
-				new_connection.replace("conversion::offset", defaultSpread);
+				new_connection.replace("conversion::offset", 0.5 + 0.25*defaultSpread);
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);
@@ -2525,7 +2525,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 					new_connection.replace("to::input::number",0);
 				}
 				new_connection.replace("to::input::type","audio");
-				new_connection.replace("conversion::offset", defaultSpread);
+				new_connection.replace("conversion::offset",  0.5 + 0.25*defaultSpread);
 				new_connection.replace("conversion::offset2", 0.5);
 			}else if(sidebar.connection.default_out_applied==1){
 				new_connection.replace("conversion::offset", 0.5);

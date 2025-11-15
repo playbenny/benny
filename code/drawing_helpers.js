@@ -918,30 +918,38 @@ function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 
 function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	if((v2==1)&&(v1==1)) return;
-	if(bennyversion < 0.555) vector = -vector;
 	var cx,cy,l;
 	var ux = (x2-x1)/v2;
 	var uy = (y2-y1)/v1;
 	var minl=99,maxl=-99;
+	var sl=[];
 	for(cx=v2-1;cx>=0;cx--){
+		sl[cx]=[];
 		for(cy=0;cy<v1;cy++){
-			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v2, v1)*0.5;
-			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
+			l = scale*spread_level(cy, cx, offset,vector, v1, v2);
+			sl[cx][cy]=l;
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;
+			l *= 0.5;
+			if(l<0){
+				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,-g*l,-r*l,-b*l);
+			}else{
+				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
+			}
 		}
 	}
 	if(sidebar.mode != "connections"){
 		lcd_main.message("font",mainfont,fontsmall);
-		if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
-			//lcd_main.message("font",mainfont, Math.min(uy,ux)*0.4);
+		if(minl!=maxl){
 			if(Math.min(uy,ux)*0.4>=fontsmall){
 				for(cx=v2-1;cx>=0;cx--){
 					for(cy=0;cy<v1;cy++){
-						l = scale*spread_level(cx, cy, offset,vector, v2, v1);
-						var ll = Math.abs(l);
-						if(ll<0.3){
-							lcd_main.message("frgb", (0.7+ll)*r,(0.7+ll)*g,(0.7+ll)*b);
+						// l = scale*spread_level(cy, cx, offset,vector, v1, v2);
+						// var ll = Math.abs(l);
+						var ll = sl[cx][cy]; 
+						l = 0.01 * Math.floor(100*ll*(1 - 2* (scale<0)));
+						if(ll<0.6){
+							lcd_main.message("frgb", (0.6+ll)*r,(0.6+ll)*g,(0.6+ll)*b);
 						}else{
 							lcd_main.message("frgb", 0,0,0);
 						}
@@ -951,7 +959,6 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 				}
 			}
 		}else{
-			//maxl*=scale;
 			lcd_main.message("frgb",0,0,0);
 			lcd_main.message("moveto",(x1+5),(y1+(y2-y1)*0.95));
 			lcd_main.message("write","x"+maxl.toPrecision(3));
@@ -1056,11 +1063,22 @@ function wipe_midi_meters(){
 
 
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2,fcol,tcol){
+	amount = (2*amount - 1);
 	if(fcol==null)fcol=[r,g,b];
 	if(tcol==null)tcol=[r,g,b];
-	if(bennyversion < 0.555) angle = -angle;
-	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
+	if(amount<0){
+		lcd_main.message("frgb",b/2,g/2,r/2);
+		for(var tt=x2-x1;tt>0;tt-=6){
+			lcd_main.message("moveto",x1,y1+tt);
+			lcd_main.message("lineto",x1+tt,y1);
+			lcd_main.message("moveto",x2,y2-tt);
+			lcd_main.message("lineto",x2-tt,y2);
+		}
+		tt = b; b = r; r = tt;
+	}		
+	amount = Math.abs(amount);
+	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
 	lcd_main.message("frameoval",x1,y1,x2,y2,tcol);
 	lcd_main.message("frameoval",(x1+t),(y1+t),(x2-t),(y2-t),fcol);

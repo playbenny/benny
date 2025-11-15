@@ -1880,7 +1880,7 @@ function convert_pre_0_6_connection(){
 		}
 		post("o",new_connection.get("conversion::offset"));
 		new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
-		new_connection.replace("conversion::offset",0);
+		new_connection.replace("conversion::offset",0.5);
 	}else{
 		if(ftype == "parameters" || ftype == "audio" || ftype == "hardware"){
 			post("replaced rotate with projection for this connection,",ftype,ttype);

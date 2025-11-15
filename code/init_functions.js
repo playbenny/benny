@@ -1070,30 +1070,45 @@ function mulberry32(){
    return ((t ^ t >>> 14) >>> 0) / 4294967296;
 }
 
-function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels){
-	if(bennyversion >= 0.555){
+function spread_level(source_channel, destination_channel, r2, rotation, source_count, destination_count){
+	var inputangle = source_channel / source_count;
+	var outputangle = destination_channel / destination_count;
+	var spread = Math.abs(r2*4-2);
+	if(spread>1) spread = 1 + (spread-1)*(spread-1)*(spread-1)*(destination_count-1);
+	var d = (((-rotation+outputangle-inputangle) + 5.5) % 1 ) - 0.5;
+	d = d * spread;
+	var l;
+	if(r2>=0.5){
+		l = (Math.cos(Math.min(3.14159, Math.max(-3.14159, 6.28318*d))) + 1)*0.5;//(2*source_count);
+	}else{
+		l = (Math.cos(Math.min(3.14159, Math.max(-3.14159, 6.28318*d))));//(2*source_count);
+	}
+	return l;
+}
+
+/*	}else if(bennyversion >= 0.555){
 		//r2=radius of inner circle
 		//d = angle difference
-		var max_chans = Math.max(no_in_channels,no_out_channels);
-		var min_chans = Math.min(no_in_channels,no_out_channels);
+		var max_chans = Math.max(source_count,destination_count);
+		var min_chans = Math.min(source_count,destination_count);
 		if(min_chans<2){
 			min_chans = 2;
 			max_chans -= r2;
 			//implements a crazy no-dip pan law for the mono->stereo/3/4/etc special case
 		}
-		var inputangle = in_no / no_in_channels;
-		var outputangle = out_no / no_out_channels;
+		var inputangle = source_channel / source_count;
+		var outputangle = destination_channel / destination_count;
 		var d;
 		var tl=0;
 		rotation = -rotation;
-		for(var i=0;i<no_out_channels;i++){
-			for(var ii=0;ii<no_in_channels;ii++){
-				d = ((((i/no_out_channels)+(ii/no_in_channels)+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
+		for(var i=0;i<destination_count;i++){
+			for(var ii=0;ii<source_count;ii++){
+				d = ((((i/destination_count)+(ii/source_count)+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
 				d = Math.abs(d);
-				tl += Math.max(1 - d * r2 * min_chans /*no_out_channels*/,0);
+				tl += Math.max(1 - d * r2 * min_chans ,0);
 			}
 		} // first sum up a kind of hypothetical total level and get a scaling factor:
-		tl = Math.min(1,Math.pow(max_chans*no_in_channels,0.666) / tl);
+		tl = Math.min(1,Math.pow(max_chans*source_count,0.666) / tl);
 
 		// then the particular one
 		d = (((rotation+outputangle-inputangle) + 2.5) % 1 ) - 0.5;
@@ -1101,10 +1116,8 @@ function spread_level(in_no, out_no, r2,rotation,no_in_channels, no_out_channels
 		var l = Math.max(1 - r2 * d * min_chans,0) * tl;
 		return l;
 	}else{
-		return spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_channels);
+		return spread_level_old(source_channel, destination_channel, r2,rotation,source_count, destination_count);
 	}
-}
-
 function spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_channels){
 	//r2=radius of inner circle
 	//d = angle difference
@@ -1119,7 +1132,7 @@ function spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_chan
 		for(var ii=0;ii<no_in_channels;ii++){
 			d = ((((i/no_out_channels)+(ii/no_in_channels)+outputangle-inputangle) + 1.5) % 1 ) - 0.5;
 			d = Math.abs(d);
-			tl += Math.max(1 - r2 * d * max_chans /*no_out_channels*/,0);
+			tl += Math.max(1 - r2 * d * max_chans,0);
 		}
 	} // first sum up a kind of hypothetical total level
 	tl /= min_chans;
@@ -1130,7 +1143,7 @@ function spread_level_old(in_no, out_no, r2,rotation,no_in_channels, no_out_chan
 	var l = Math.max(1 - r2 * d * max_chans,0) / tl;
 	//post("\ntl",tl,"l",l);
 	return l;
-}
+}*/
 
 function populate_lookup_tables(){
 	post("\nbuilding oscillator shape lookup");

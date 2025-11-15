@@ -7139,7 +7139,7 @@ function draw_sidebar(){
 						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
-						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
+						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,(offset*4 - 2));
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 						automap.groups[2]="connections["+i+"]::conversion::offset";
@@ -7150,7 +7150,9 @@ function draw_sidebar(){
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fontheight*0.8);
 						lcd_main.message("write","rotation",vector.toPrecision(2));
 						lcd_main.message("moveto",(sidebar.x + sidebar.x2) * 0.5 +2*fo1,y_offset+fontheight*0.8);
-						lcd_main.message("write","spread",offset.toPrecision(2));
+						if(Math.abs(2*offset-1)>0.5) lcd_main.message("frgb",0,0,0);
+						lcd_main.message("write","spread",(offset*4 - 2).toPrecision(2));
+						if(offset<0.5) lcd_main.message("write","(wide)");
 						y_offset+=12*fo1;
 						sidebar.connection.defaults.vector = 0;
 						sidebar.connection.defaults.offset = 1;
@@ -7227,7 +7229,7 @@ function draw_sidebar(){
 						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
-						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
+						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,(offset*4 - 2));
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 						automap.groups[2]="connections["+i+"]::conversion::offset";
@@ -7238,8 +7240,9 @@ function draw_sidebar(){
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
 						lcd_main.message("write","rotation",vector.toPrecision(2));
 						lcd_main.message("moveto",(sidebar.x + sidebar.x2) * 0.5 +2*fo1,y_offset+fo1*8);
-						if(offset>0.98) lcd_main.message("frgb",type_colour);
-						lcd_main.message("write","spread",offset.toPrecision(2));
+						if(Math.abs(2*offset-1)>0.5) lcd_main.message("frgb",0,0,0);
+						lcd_main.message("write","spread",(offset*4 - 2).toPrecision(2));
+						if(offset<0.5) lcd_main.message("write","(wide)");
 						y_offset+=12*fo1;
 	
 						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.67, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
@@ -7395,7 +7398,7 @@ function draw_sidebar(){
 						automap.sidebar_row_ys[1] = 0.025;
 						mouse_click_values[mouse_index] = 0;
 						mouse_index++;
-						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,offset);
+						draw_h_slider((sidebar.x + sidebar.x2) * 0.5 + 2,y_offset,sidebar.x2,y_offset+fontheight,type_colour_dark[0],type_colour_dark[1],type_colour_dark[2],mouse_index,(offset*4 - 2));
 						mouse_click_actions[mouse_index] = connection_edit;
 						mouse_click_parameters[mouse_index] = "connections["+i+"]::conversion::offset";
 						automap.groups[2]="connections["+i+"]::conversion::offset";
@@ -7406,8 +7409,9 @@ function draw_sidebar(){
 						lcd_main.message("moveto",sidebar.x+2*fo1,y_offset+fo1*8);
 						lcd_main.message("write","rotation",vector.toPrecision(2));
 						lcd_main.message("moveto",(sidebar.x + sidebar.x2) * 0.5 +2*fo1,y_offset+fo1*8);
-						if(offset>0.98) lcd_main.message("frgb",type_colour);
-						lcd_main.message("write","spread",offset.toPrecision(2));
+						if(Math.abs(2*offset-1)>0.5) lcd_main.message("frgb",0,0,0);
+						lcd_main.message("write","spread",(offset*4 - 2).toPrecision(2));
+						if(offset<0.5) lcd_main.message("write","(wide)");
 						y_offset+=12*fo1;
 	
 						draw_spread(sidebar.x, y_offset, sidebar.x2-(sidebar.width+fo1)*0.67, (sidebar.width-fo1)*0.33+y_offset,type_colour[0],type_colour[1],type_colour[2],mouse_index,vector,offset,v1,v2,from_colour,to_colour);				
