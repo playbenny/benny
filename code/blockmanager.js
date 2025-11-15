@@ -460,7 +460,6 @@ var blocks_page = {
 var menucolour, menudark, menudarkest;
 var greycolour, greydark, greydarkest;
 var bg_dark_ratio = 0.2;
-var bennyversion = 0;
 var fontheight,fontsmall;
 var fo1;
 var backgroundcolour;

@@ -932,7 +932,7 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 			if(l>maxl)maxl=l;
 			l *= 0.5;
 			if(l<0){
-				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,-g*l,-r*l,-b*l);
+				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,-b*l,-g*l,-r*l);
 			}else{
 				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
 			}
@@ -948,7 +948,11 @@ function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 						// var ll = Math.abs(l);
 						var ll = sl[cx][cy]; 
 						l = 0.01 * Math.floor(100*ll*(1 - 2* (scale<0)));
-						if(ll<0.6){
+						if(ll<-0.6){
+							lcd_main.message("frgb", 0,0,0);
+						}else if(ll<0){
+							lcd_main.message("frgb", (0.6-ll)*b,(0.6-ll)*g,(0.6-ll)*r);
+						}else if(ll<0.6){
 							lcd_main.message("frgb", (0.6+ll)*r,(0.6+ll)*g,(0.6+ll)*b);
 						}else{
 							lcd_main.message("frgb", 0,0,0);
