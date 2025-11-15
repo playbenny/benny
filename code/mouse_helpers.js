@@ -5002,3 +5002,17 @@ function scroll_pattern(p,v){
 		redraw_flag.deferred |= 4;
 	}
 }
+
+function enter_midi_map_mode(){
+	post("\ntodo map the hovered control!")
+	if(usermouse.got_t>=2 && usermouse.got_t<=4){	
+		if(usermouse.got_i>=0){
+			var f = mouse_click_actions[usermouse.got_i];
+			var p = mouse_click_parameters[usermouse.got_i];
+			var v = mouse_click_values[usermouse.got_i];
+			if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
+				post("FOUND sidebar knob:",p,v);
+			}
+		}
+	}
+}
