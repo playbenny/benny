@@ -1,292 +1,261 @@
 {
-	"patcher" : 	{
-		"fileversion" : 1,
-		"appversion" : 		{
-			"major" : 9,
-			"minor" : 0,
-			"revision" : 5,
-			"architecture" : "x64",
-			"modernui" : 1
-		}
-,
-		"classnamespace" : "dsp.gen",
-		"rect" : [ 382.0, 311.0, 1241.0, 588.0 ],
-		"gridsize" : [ 15.0, 15.0 ],
-		"boxes" : [ 			{
-				"box" : 				{
-					"id" : "obj-15",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 350.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 9"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-14",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 312.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 8"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-13",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 275.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 7"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-12",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 238.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 6"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-11",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 170.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 5"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-10",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 133.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 4"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-9",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 163.0, -2.0, 28.0, 22.0 ],
-					"text" : "in 5"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-8",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 96.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 3"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-7",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 59.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 2"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-6",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 129.0, -2.0, 28.0, 22.0 ],
-					"text" : "in 4"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-5",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 93.0, -2.0, 28.0, 22.0 ],
-					"text" : "in 3"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-1",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 22.0, -2.0, 28.0, 22.0 ],
-					"text" : "in 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-2",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 55.0, -2.0, 28.0, 22.0 ],
-					"text" : "in 2"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"code" : "Buffer routing(\"routing\");\r\nBuffer modbuff(\"mod_buffer\");\r\n//Buffer midi_scopes(\"midi_scopes_buffer\");\r\n//Buffer midi_scopes_change(\"midi_scopes_change_buffer\");\r\n\r\nParam max_connections_per_output(32);\r\nParam max_outputs_per_voice(128);\r\n\r\n//inputs\r\n//1 = index, 2 = outputno 3 = note 4 = vel 5 = voiceno\r\n//index = in1;\r\n//this index is used to cycle through the possible multiple connections per output\r\n\r\npointer = in1 + max_connections_per_output * (in2 + in5 * max_outputs_per_voice);\r\npointer = pointer * 9; \r\n//8 samples per connection hold all the info\r\n//mute, type, dest-type, dest-voice, scale-n, scale-v, offset-n, offset-v\r\nnote = -1;\r\nvel = 0;\r\ndesttype = -1;\r\ndestvoice = -1;\r\ndestinput = 0;\r\nindex = in1 + 1;\r\n\t\r\nenab = peek(routing, pointer, 0);\r\ntype = peek(routing, pointer+1, 0);\r\nif((enab) && (type > 0)){\r\n\tdesttype = peek(routing, pointer+2, 0);\r\n\tdestvoice = peek(routing, pointer+3, 0);\r\n\tdestinput = peek(routing, pointer+4, 0);\r\n\tscalen = peek(routing, pointer+5, 0);\r\n\tscalev = peek(routing, pointer+6, 0);\r\n\toffsetn = peek(routing, pointer+7, 0);\r\n\toffsetv = peek(routing, pointer+8, 0);\r\n\tnote = in3*scalen;\r\n\tavel = abs(in4);\r\n\tvel = avel*scalev;\r\n\tsign = (in4<0) ? -1 : 1;\r\n\t\r\n\tnote = selector(type, 0, in4*scalen+offsetn, note+offsetn, note+offsetn, 0);\r\n\t// first one was in4*scalev\r\n\tvel = selector(type, clip(sign * vel+offsetn,-127,127), -abs(clip(in4*scalev+offsetv,-127,127)), note + vel, sign * clip((vel+offsetv),0, 127));\r\n\tif(desttype == 6){\r\n\t\tpoke(modbuff,vel/128,destvoice,0);\r\n\t\t//put it directly into the mod buffer\r\n\t\tdesttype = 0;\r\n\t}else{\r\n\t\tif(note<0) desttype = 0;\r\n\t\tif(note>127) desttype = 0;\r\n\t\tdestvoice += 1; //because poly setvalue expects voice + 1\r\n\t}\r\n\tif((scalen==0)&&(scalev==0)&&(offsetn==0)&&(offsetv==0)){\r\n\t\tpoke(routing,0,pointer,0);\r\n\t\t//if scale+offset are 0000 this is a muted connection\r\n\t\t//and now we've sent one 0 value we can stop, this turns off enab\r\n\t}\r\n}else if(type<=0){ //end of the routings table\r\n\tindex = -2;\r\n\tdesttype = 0;\r\n}else{ // ie enab=0, muted connection. carry on.\r\n\tdesttype = 0;\r\n}\t\r\nout1 = (index < max_connections_per_output) ? index : -1;\r\nout2 = destvoice;\r\nout3 = clip(note,0,127) + 128 * destinput;\r\nout4 = vel;\r\nout5 = desttype;\r\nout6 = in2;\r\nout7 = in3;\r\nout8 = in4;\r\nout9 = in5;",
-					"fontface" : 0,
-					"fontname" : "<Monospaced>",
-					"fontsize" : 12.0,
-					"id" : "obj-3",
-					"maxclass" : "codebox",
-					"numinlets" : 5,
-					"numoutlets" : 9,
-					"outlettype" : [ "", "", "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 22.0, 9.0, 1198.0, 552.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-4",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 22.0, 574.0, 35.0, 22.0 ],
-					"text" : "out 1"
-				}
-
-			}
- ],
-		"lines" : [ 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 1 ],
-					"source" : [ "obj-2", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-10", 0 ],
-					"source" : [ "obj-3", 3 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-11", 0 ],
-					"source" : [ "obj-3", 4 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-12", 0 ],
-					"source" : [ "obj-3", 5 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-13", 0 ],
-					"source" : [ "obj-3", 6 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-14", 0 ],
-					"source" : [ "obj-3", 7 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-15", 0 ],
-					"source" : [ "obj-3", 8 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-4", 0 ],
-					"source" : [ "obj-3", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-7", 0 ],
-					"source" : [ "obj-3", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-8", 0 ],
-					"source" : [ "obj-3", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 2 ],
-					"source" : [ "obj-5", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 3 ],
-					"source" : [ "obj-6", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 4 ],
-					"source" : [ "obj-9", 0 ]
-				}
-
-			}
- ],
-		"originid" : "pat-816"
-	}
-
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 0,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "dsp.gen",
+        "rect": [ 39.0, 130.0, 1241.0, 588.0 ],
+        "boxes": [
+            {
+                "box": {
+                    "id": "obj-15",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 350.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 9"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-14",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 312.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 8"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-13",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 275.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 7"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-12",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 238.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 6"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-11",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 170.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 5"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-10",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 133.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 4"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-9",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 163.0, -2.0, 28.0, 22.0 ],
+                    "text": "in 5"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-8",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 96.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 3"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-7",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 59.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 2"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-6",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 129.0, -2.0, 28.0, 22.0 ],
+                    "text": "in 4"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-5",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 93.0, -2.0, 28.0, 22.0 ],
+                    "text": "in 3"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-1",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 22.0, -2.0, 28.0, 22.0 ],
+                    "text": "in 1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-2",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 55.0, -2.0, 28.0, 22.0 ],
+                    "text": "in 2"
+                }
+            },
+            {
+                "box": {
+                    "code": "Buffer routing(\"routing\");\r\nBuffer modbuff(\"mod_buffer\");\r\n//Buffer midi_scopes(\"midi_scopes_buffer\");\r\n//Buffer midi_scopes_change(\"midi_scopes_change_buffer\");\r\n\r\nParam max_connections_per_output(32);\r\nParam max_outputs_per_voice(128);\r\n\r\n//inputs\r\n//1 = index, 2 = outputno 3 = note 4 = vel 5 = voiceno\r\n//index = in1;\r\n//this index is used to cycle through the possible multiple connections per output\r\n\r\npointer = in1 + max_connections_per_output * (in2 + in5 * max_outputs_per_voice);\r\npointer = pointer * 9; \r\n//8 samples per connection hold all the info\r\n//mute, type, dest-type, dest-voice, scale-n, scale-v, offset-n, offset-v\r\nnote = -1;\r\nvel = 0;\r\ndesttype = -1;\r\ndestvoice = -1;\r\ndestinput = 0;\r\nindex = in1 + 1;\r\n\t\r\nenab = peek(routing, pointer, 0);\r\ntype = peek(routing, pointer+1, 0);\r\nif((enab) && (type > 0)){\r\n\tdesttype = peek(routing, pointer+2, 0);\r\n\tdestvoice = peek(routing, pointer+3, 0);\r\n\tdestinput = peek(routing, pointer+4, 0);\r\n\tscalen = peek(routing, pointer+5, 0);\r\n\tscalev = peek(routing, pointer+6, 0);\r\n\toffsetn = peek(routing, pointer+7, 0);\r\n\toffsetv = peek(routing, pointer+8, 0);\r\n\tnote = in3*scalen;\r\n\tavel = abs(in4);\r\n\tvel = avel*scalev;\r\n\tsign = (in4<0) ? -1 : 1;\r\n\t\r\n\tnote = selector(type, 0, in4*scalen+offsetn, note+offsetn, note+offsetn, 0);\r\n\t// first one was in4*scalev\r\n\tvel = selector(type, clip(sign * vel+offsetn,-127,127), -abs(clip(in4*scalev+offsetv,-127,127)), note + vel, sign * clip((vel+offsetv),0, 127));\r\n\tif(desttype == 6){\r\n        if(/*(scalen==0) || */(avel!=0)){\r\n            poke(modbuff,vel/128,destvoice,0);\r\n        }\r\n\t\t//put it directly into the mod buffer, ignore noteoffs (unless projectionangle==0 or pi)\r\n\t\tdesttype = 0;\r\n\t}else{\r\n\t\tif(note<0) desttype = 0;\r\n\t\tif(note>127) desttype = 0;\r\n\t\tdestvoice += 1; //because poly setvalue expects voice + 1\r\n\t}\r\n\tif((scalen==0)&&(scalev==0)&&(offsetn==0)&&(offsetv==0)){\r\n\t\tpoke(routing,0,pointer,0);\r\n\t\t//if scale+offset are 0000 this is a muted connection\r\n\t\t//and now we've sent one 0 value we can stop, this turns off enab\r\n\t}\r\n}else if(type<=0){ //end of the routings table\r\n\tindex = -2;\r\n\tdesttype = 0;\r\n}else{ // ie enab=0, muted connection. carry on.\r\n\tdesttype = 0;\r\n}\t\r\nout1 = (index < max_connections_per_output) ? index : -1;\r\nout2 = destvoice;\r\nout3 = clip(note,0,127) + 128 * destinput;\r\nout4 = vel;\r\nout5 = desttype;\r\nout6 = in2;\r\nout7 = in3;\r\nout8 = in4;\r\nout9 = in5;",
+                    "fontface": 0,
+                    "fontname": "<Monospaced>",
+                    "fontsize": 12.0,
+                    "id": "obj-3",
+                    "maxclass": "codebox",
+                    "numinlets": 5,
+                    "numoutlets": 9,
+                    "outlettype": [ "", "", "", "", "", "", "", "", "" ],
+                    "patching_rect": [ 22.0, 9.0, 1198.0, 552.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-4",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 22.0, 574.0, 35.0, 22.0 ],
+                    "text": "out 1"
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "destination": [ "obj-3", 0 ],
+                    "source": [ "obj-1", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-3", 1 ],
+                    "source": [ "obj-2", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-10", 0 ],
+                    "source": [ "obj-3", 3 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-11", 0 ],
+                    "source": [ "obj-3", 4 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-12", 0 ],
+                    "source": [ "obj-3", 5 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-13", 0 ],
+                    "source": [ "obj-3", 6 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-14", 0 ],
+                    "source": [ "obj-3", 7 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-15", 0 ],
+                    "source": [ "obj-3", 8 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-4", 0 ],
+                    "source": [ "obj-3", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-7", 0 ],
+                    "source": [ "obj-3", 1 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-8", 0 ],
+                    "source": [ "obj-3", 2 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-3", 2 ],
+                    "source": [ "obj-5", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-3", 3 ],
+                    "source": [ "obj-6", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-3", 4 ],
+                    "source": [ "obj-9", 0 ]
+                }
+            }
+        ]
+    }
 }
