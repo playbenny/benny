@@ -1559,7 +1559,8 @@ function fire_block_state(state, block){
 			if(state=="current") state = -1;//lol
 			queue_quantised_notification(fire_block_state,state,block);
 			patternpage.held_state_fires[block] = state;
-			if(sidebar.selected==block) redraw_flag.flag |= 2; 
+			//if(sidebar.selected==block) 
+			redraw_flag.flag |= 2; 
 		}else{
 			patternpage.held_state_fires[block] = null;
 			var pv=[];
@@ -4228,7 +4229,7 @@ function squash_block_menu(){
 }
 
 function show_and_search_new_block_menu(key){
-	if(!usermouse.caps && (key>=97)&& (key<=122)){
+	if((displaymode=="blocks") && !usermouse.caps && (key>=97)&& (key<=122)){
 		blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);// [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
@@ -4316,6 +4317,7 @@ function parameter_list_entry(){
 	new_connection.replace("conversion::mute" , 0);
 	new_connection.replace("conversion::scale", 1);
 	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::projectionAngle", 0);	
 	new_connection.replace("conversion::offset", 0.5);
 	new_connection.replace("conversion::offset2", 0.5);
 	new_connection.replace("from::number",seqblock);
@@ -4368,6 +4370,7 @@ function parameter_list_entry(){
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
 		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::projectionAngle", 0);	
 		new_connection.replace("conversion::offset", 0.5);
 		new_connection.replace("conversion::offset2", 0.5);
 		new_connection.replace("from::number",clockblock);
@@ -4702,7 +4705,8 @@ function reify_automap_k(){
 	
 	new_connection.replace("conversion::mute" , 0);
 	new_connection.replace("conversion::scale", 1);
-	new_connection.replace("conversion::vector", 0);	
+	new_connection.replace("conversion::vector", 0);
+	new_connection.replace("conversion::projectionAngle", 0);		
 	new_connection.replace("conversion::offset", 0.5);	
 	new_connection.replace("conversion::offset2", 0.5);	
 	connections.append("connections", new_connection);
@@ -4998,3 +5002,34 @@ function scroll_pattern(p,v){
 		redraw_flag.deferred |= 4;
 	}
 }
+
+function enter_midi_map_mode(){
+	post("\ntodo map the hovered control!")
+	if(usermouse.got_t>=2 && usermouse.got_t<=4){	
+		if(usermouse.got_i>=0){
+			// var f = mouse_click_actions[usermouse.got_i];
+			var p = mouse_click_parameters[usermouse.got_i];
+			
+			if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
+				post("FOUND sidebar knob:",p);
+				sidebar.midiMapTarget = p;
+				set_sidebar_mode("midimap");
+			}
+		}
+	}
+}
+
+/*// turn a knob to map it functionality here - also applies to core.input.keyboard (and core.input.arc when it's done)
+				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
+				// auto is always visible as a button, auto-enables if it's turned on in config and the list is open. disabling it if list is open disables it in config?
+				var firv = voicemap.get(f_number);
+				if(Array.isArray(firv)) firv=firv[0];
+
+				if(sidebar.connection.show_from_outputs){
+					auto_pick_controller = 1 & sidebar.connection.auto_pick_controller;
+					note_poly.message("setvalue", firv+1,"connection_assign_mode",auto_pick_controller);
+					automap.assignmode = 1;
+				}else{
+					automap.assignmode = 0;
+					note_poly.message("setvalue", firv+1,"connection_assign_mode",0);
+				}*/

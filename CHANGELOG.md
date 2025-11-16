@@ -1,3 +1,13 @@
+15/11/25:
+- big update to connections. now almost all connections have a spread/rotate control when there are >1 voices at either end. this means you can, for example, modulate a parameter a different amount for each voice.
+- the spread rotate control itself has been updated - you can go past 1, for extra-separated sources, and you can also go negative, which sends an inverted copy to the opposite channels. in stereo this creates a super-wide spread effect (that cancels in mono..) but for example with parameter modulation you can have one lfo going forward to some voices and antiphase to some other voices.
+- **important breaking change** although benny will load and attempt to convert old songfiles, gains and spread rotate settings may not exactly match and songs saved with this version will not open in older versions.
+- midi to parameter/audio connections now ignore noteoffs, which works better for most use cases (eg making cutoff follow note pitch, or making a parameter respond to velocity)
+- when you shift-click a state to trigger it on the next bar (after shift is released) there's a visual indication of this
+
+14/11/25:
+- improved file menu to remove the chance of using 'save selected' by accident
+
 12/11/25:
 - **abl.drumbuss** added - a wrapper for the ableton drum buss plugin
 - in the sidebar you can hover over a slider and type a value to set it. now additionally you can hover over a slider and type a comma separated list of values (eg `3,4,,,,5,1,23,,1`) and benny will automatically create a seq.values block attached to that slider ready to create that modulation pattern. additionally, if you end your list with / and a time value then a clock will be created and connected for the new seq.values. eg `3,4,,,,6/4n`

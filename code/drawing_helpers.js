@@ -918,35 +918,51 @@ function draw_vector(x1,y1,x2,y2,r,g,b,index,angle){
 
 function draw_spread_levels(x1,y1,x2,y2,r,g,b,index,vector,offset,v1,v2,scale){
 	if((v2==1)&&(v1==1)) return;
-	if(bennyversion < 0.555) vector = -vector;
 	var cx,cy,l;
 	var ux = (x2-x1)/v2;
 	var uy = (y2-y1)/v1;
 	var minl=99,maxl=-99;
+	var sl=[];
 	for(cx=v2-1;cx>=0;cx--){
+		sl[cx]=[];
 		for(cy=0;cy<v1;cy++){
-			l = Math.abs(scale)*spread_level(cx, cy, offset,vector, v2, v1);
-			lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
+			l = scale*spread_level(cy, cx, offset,vector, v1, v2);
+			sl[cx][cy]=l;
 			if(l<minl)minl=l;
 			if(l>maxl)maxl=l;
+			l *= 0.5;
+			if(l<0){
+				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,-b*l,-g*l,-r*l);
+			}else{
+				lcd_main.message("paintrect",x1+cx*ux,y1+cy*uy,x1+(cx+1)*ux,y1+(cy+1)*uy,r*l,g*l,b*l);
+			}
 		}
 	}
 	if(sidebar.mode != "connections"){
 		lcd_main.message("font",mainfont,fontsmall);
-		if(minl!=maxl){ //TODO THIS IS MESSY, WHOLE UI AROUND SPREAD NEEDS A LOT MORE EXPLAINING
-			//lcd_main.message("font",mainfont, Math.min(uy,ux)*0.4);
+		if(minl!=maxl){
 			if(Math.min(uy,ux)*0.4>=fontsmall){
-				lcd_main.message("frgb", menucolour);
 				for(cx=v2-1;cx>=0;cx--){
 					for(cy=0;cy<v1;cy++){
-						l = scale*spread_level(cx, cy, offset,vector, v2, v1);
+						// l = scale*spread_level(cy, cx, offset,vector, v1, v2);
+						// var ll = Math.abs(l);
+						var ll = sl[cx][cy]; 
+						l = 0.01 * Math.floor(100*ll*(1 - 2* (scale<0)));
+						if(ll<-0.6){
+							lcd_main.message("frgb", 0,0,0);
+						}else if(ll<0){
+							lcd_main.message("frgb", (0.6-ll)*b,(0.6-ll)*g,(0.6-ll)*r);
+						}else if(ll<0.6){
+							lcd_main.message("frgb", (0.6+ll)*r,(0.6+ll)*g,(0.6+ll)*b);
+						}else{
+							lcd_main.message("frgb", 0,0,0);
+						}
 						lcd_main.message("moveto",x1+(cx+0.05)*ux,y1+(cy+0.95)*uy);
 						lcd_main.message("write",l.toPrecision(2));				
 					}
 				}
 			}
 		}else{
-			//maxl*=scale;
 			lcd_main.message("frgb",0,0,0);
 			lcd_main.message("moveto",(x1+5),(y1+(y2-y1)*0.95));
 			lcd_main.message("write","x"+maxl.toPrecision(3));
@@ -1051,11 +1067,22 @@ function wipe_midi_meters(){
 
 
 function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2,fcol,tcol){
+	amount = (2*amount - 1);
 	if(fcol==null)fcol=[r,g,b];
 	if(tcol==null)tcol=[r,g,b];
-	if(bennyversion < 0.555) angle = -angle;
-	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintrect",x1,y1,x2,y2,r/6,g/6,b/6);
+	if(amount<0){
+		lcd_main.message("frgb",b/2,g/2,r/2);
+		for(var tt=x2-x1;tt>0;tt-=6){
+			lcd_main.message("moveto",x1,y1+tt);
+			lcd_main.message("lineto",x1+tt,y1);
+			lcd_main.message("moveto",x2,y2-tt);
+			lcd_main.message("lineto",x2-tt,y2);
+		}
+		tt = b; b = r; r = tt;
+	}		
+	amount = Math.abs(amount);
+	t = (1-amount)*(x2-x1-8)/2;
 	lcd_main.message("paintoval",x1,y1,x2,y2,0,0,0);
 	lcd_main.message("frameoval",x1,y1,x2,y2,tcol);
 	lcd_main.message("frameoval",(x1+t),(y1+t),(x2-t),(y2-t),fcol);
@@ -1072,7 +1099,7 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2,fcol,tcol){
 	}
 	col=shadeRGB(tcol,1.5);
 	for(i=0;i<v2;i++){ // labels 
-		lcd_main.message("moveto",(cx-w+((i<10)*2 - 0.33)*fo1+r1*Math.sin(6.28*i/v2)),(cy+w-1.3*fo1-r1*Math.cos(6.28*i/v2)));
+		lcd_main.message("moveto",(cx-w+((i<10) - 0.33)*fo1+r1*Math.sin(6.28*i/v2)),(cy+w-0.8*fo1-r1*Math.cos(6.28*i/v2)));
 		lcd_main.message("frgb", col);
 		lcd_main.message("write",i+1);
 		if(i==0) col = [0,0,0];
@@ -1085,7 +1112,7 @@ function draw_spread(x1,y1,x2,y2,r,g,b,index,angle,amount,v1,v2,fcol,tcol){
 	}
 	col=shadeRGB(fcol,1.5);
 	for(i=0;i<v1;i++){ // labels
-		lcd_main.message("moveto",(cx-w+((i<10)*2 - 0.33)*fo1+r1*Math.sin(6.28*(angle + i/v1))),(cy+w-1.3*fo1-r1*Math.cos(6.28*(angle + i/v1))));
+		lcd_main.message("moveto",(cx-w+((i<10) - 0.33)*fo1+r1*Math.sin(6.28*(angle + i/v1))),(cy+w-0.8*fo1-r1*Math.cos(6.28*(angle + i/v1))));
 		lcd_main.message("frgb", col);
 		lcd_main.message("write",i+1);
 		if(i==0) col = [0,0,0];
@@ -1484,7 +1511,7 @@ function draw_menu_hint(){
 }
 	
 
-function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
+function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate, bgColour) {
 	var curr=-1;
 	if(connections.get("connections["+i+"]::from::output::type")==ty){
 		curr = (connections.get("connections["+i+"]::from::output::number"))
@@ -1502,6 +1529,8 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 		}
 		if (!Array.isArray(l)) l = [l];
 		var c = config.get("palette::connections::" + ty);
+		var bgc = bgColour;
+		if(bgc == null) bgc = c;
 		var len = l.length;
 		if(truncate!=null) len = Math.min(len,truncate);
 		for (var o = 0; o < len; o++) {
@@ -1512,14 +1541,15 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 			}
 			if(l[o]!=null){
 				if(curr==o){
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
 					lcd_main.message("frgb", 0,0,0);
 				}else{
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(c, bg_dark_ratio));
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(bgc, bg_dark_ratio));
 					lcd_main.message("frgb", c);
 				}
-				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
+				lcd_main.message("moveto", sidebar.x + fo1 * 16, y_offset + 4 * fo1);
 				lcd_main.message("write", l[o]);
+				lcd_main.message("moveto", sidebar.x2 -(2 + 1.65* ty.length)*fo1, y_offset + 4 * fo1);
 				lcd_main.message("frgb", shadeRGB(c, 0.5));
 				lcd_main.message("write", ty);
 				if(desc && (blocktypes.get(f_name + "::connections::out::descriptions::" + ty+"["+o+"]")!="")){
@@ -1538,7 +1568,7 @@ function conn_draw_from_outputs_list(i, f_name, ty, y_offset, truncate) {
 	return y_offset;
 }
 
-function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
+function conn_draw_to_inputs_list(i, t_name, ty, y_offset,bgColour) {
 	var curr=-1;
 	if(connections.get("connections["+i+"]::to::input::type")==ty){
 		curr = (connections.get("connections["+i+"]::to::input::number"))
@@ -1569,7 +1599,8 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 	if(l.length>0){
 		var cc = config.get("palette::connections::" + ty);
 		var c = cc;
-
+		var bgc = bgColour;
+		if(bgColour==null)bgc=c;
 		for (var o = 0; o < l.length; o++) {
 			var used_already = 0;
 			if(ty=="matrix"){
@@ -1592,21 +1623,22 @@ function conn_draw_to_inputs_list(i, t_name, ty, y_offset) {
 			}
 			if(l[o]!=null){
 				if(curr==o){
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, c);
 					lcd_main.message("frgb", 0,0,0);
 				}else{
-					lcd_main.message("paintrect", sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(c, bg_dark_ratio));
+					lcd_main.message("paintrect", sidebar.x + fo1 * 14, y_offset, sidebar.x2, y_offset + 6 * fo1, shadeRGB(bgc, bg_dark_ratio));
 					lcd_main.message("frgb", c);
 				}
-				lcd_main.message("moveto", sidebar.x + fo1 * 14, y_offset + 4 * fo1);
+				lcd_main.message("moveto", sidebar.x + fo1 * 16, y_offset + 4 * fo1);
 				lcd_main.message("write", l[o]);
 				lcd_main.message("frgb", shadeRGB(c, 0.5));
 				if(used_already==0){
+					lcd_main.message("moveto", sidebar.x2 - fo1 * (2 + 1.65 * ty.length), y_offset + 4 * fo1);
 					lcd_main.message("write", ty);
 					click_zone(conn_set_to_input, i, [ty, o], sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
 				}else{
 					lcd_main.message("write", "matrix (input already in use)");
-					click_zone(sidebar_select_connection, used_already, 0, sidebar.x + fo1 * 12, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
+					click_zone(sidebar_select_connection, used_already, 0, sidebar.x + fo1 * 16, y_offset, sidebar.x2, y_offset + 6 * fo1, mouse_index, 1);
 				}
 				y_offset+=7*fo1;
 			}
