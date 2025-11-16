@@ -166,7 +166,8 @@
         "2026" : ["ALT-F6", "open_patcher"],
         "2037" : ["alt-left arrow", "back_button"],
         "2036" : ["alt-right arrow", "fwd_button"],
-        "365" : ["ctrl-M", "mute_selected_block", -1]
+        "365" : ["ctrl-M", "mute_selected_block", -1],
+        "all" : ["all", "show_and_search_new_block_menu"]
     },
     "patterns" : {
         "-18" : ["F2", "blocks_and", "block" ],

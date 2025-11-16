@@ -4229,7 +4229,7 @@ function squash_block_menu(){
 }
 
 function show_and_search_new_block_menu(key){
-	if(!usermouse.caps && (key>=97)&& (key<=122)){
+	if((displaymode=="blocks") && !usermouse.caps && (key>=97)&& (key<=122)){
 		blocks_page.new_block_click_pos = screentoworld(usermouse.x,usermouse.y);// [usermouse.x,usermouse.y];
 		menu.search = "";
 		show_new_block_menu();
@@ -5011,7 +5011,7 @@ function enter_midi_map_mode(){
 			var p = mouse_click_parameters[usermouse.got_i];
 			var v = mouse_click_values[usermouse.got_i];
 			if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
-				post("FOUND sidebar knob:",p,v);
+				post("FOUND sidebar knob:",p,"<p v>",v);
 			}
 		}
 	}
