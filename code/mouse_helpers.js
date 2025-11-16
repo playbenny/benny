@@ -5007,12 +5007,29 @@ function enter_midi_map_mode(){
 	post("\ntodo map the hovered control!")
 	if(usermouse.got_t>=2 && usermouse.got_t<=4){	
 		if(usermouse.got_i>=0){
-			var f = mouse_click_actions[usermouse.got_i];
+			// var f = mouse_click_actions[usermouse.got_i];
 			var p = mouse_click_parameters[usermouse.got_i];
-			var v = mouse_click_values[usermouse.got_i];
+			
 			if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
-				post("FOUND sidebar knob:",p,"<p v>",v);
+				post("FOUND sidebar knob:",p);
+				sidebar.midiMapTarget = p;
+				set_sidebar_mode("midimap");
 			}
 		}
 	}
 }
+
+/*// turn a knob to map it functionality here - also applies to core.input.keyboard (and core.input.arc when it's done)
+				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
+				// auto is always visible as a button, auto-enables if it's turned on in config and the list is open. disabling it if list is open disables it in config?
+				var firv = voicemap.get(f_number);
+				if(Array.isArray(firv)) firv=firv[0];
+
+				if(sidebar.connection.show_from_outputs){
+					auto_pick_controller = 1 & sidebar.connection.auto_pick_controller;
+					note_poly.message("setvalue", firv+1,"connection_assign_mode",auto_pick_controller);
+					automap.assignmode = 1;
+				}else{
+					automap.assignmode = 0;
+					note_poly.message("setvalue", firv+1,"connection_assign_mode",0);
+				}*/

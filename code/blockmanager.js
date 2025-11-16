@@ -608,6 +608,7 @@ var sidebar = {
 	text_being_edited : "",
 	channelnaming : ["block","channel"], //set when you bring up the edit channel name mode
 	dropdown : null,
+	midiMapTarget : null, //target for midimapping
 	show_help : 0 //once you add a block to a song this turns on and it always shows help
 }
 
