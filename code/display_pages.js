@@ -3068,7 +3068,12 @@ function draw_sidebar(){
 		lcd_main.message("write", "cancel");
 		lcd_main.message("moveto" ,sidebar.x2-fontheight*0.8, fontheight*0.75+y_offset);
 		lcd_main.message("write", "ok");
-		
+	// }else if(sidebar.mode == "midimap"){
+	// 	lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menucolour);
+	// 	click_zone(set_sidebar_mode, "block", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
+	// 	lcd_main.message("frgb" , 0,0,0);
+	// 	lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);		
+	// 	lcd_main.message("write", "move a midi control to map it to this parameter");
 	}else if(sidebar.mode == "block_search"){
 		// type to search for blocks in your patch ##############################################################################################################
 		if(sidebar.mode != sidebar.lastmode){
@@ -3936,6 +3941,10 @@ function draw_sidebar(){
 			var block_label = blocks.get("blocks["+block+"]::label");
 			var block_type = blocks.get("blocks["+block+"]::type");
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
+			if(sidebar.mode == "midimap"){
+				var block_colour_backup = [block_colour[0],block_colour[1], block_colour[2]];
+				block_colour = [80,80,80];
+			}
 			block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
 			block_dark = [block_colour[0]>>1,block_colour[1]>>1,block_colour[2]>>1];
 			block_darkest = [block_colour[0]*bg_dark_ratio, block_colour[1]*bg_dark_ratio, block_colour[2]*bg_dark_ratio];
@@ -3946,7 +3955,7 @@ function draw_sidebar(){
 			var tii,ts;
 			var block_voicecount = 1;
 
-			if((sidebar.mode == "settings")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")){
+			if((sidebar.mode == "settings")||(sidebar.mode == "add_state")||(sidebar.mode == "connections")||(sidebar.mode == "help")||(sidebar.mode == "flock")||(sidebar.mode == "panel_assign")||(sidebar.mode == "midimap")){
 			}else{
 				sidebar.mode = "block";
 				if(AUTOZOOM_ON_SELECT)center_view(1);
@@ -3973,7 +3982,7 @@ function draw_sidebar(){
 				audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
 				remove_midi_scope();
 				redraw_flag.targets=[];
-				if(sidebar.mode == "block"){
+				if(sidebar.mode == "block" ||(sidebar.mode == "midimap")){
 					//get scope info together, turn on scopes
 					if(block_type=="audio"){
 						if(sidebar.selected_voice != -1){
@@ -4071,6 +4080,7 @@ function draw_sidebar(){
 			click_zone(set_sidebar_mode, "block", null, sidebar.x, y_offset, sidebar.x2-fontheight*2.4,fontheight+y_offset,mouse_index,1);
 			var bnt = block_label.split('.');
 			lcd_main.message("frgb" , block_colour);
+			if(sidebar.mode == "midimap") bnt = ["move a midi control to map it to this parameter"];
 			if(bnt.length>1){
 				lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.35+y_offset);
 				lcd_main.message("write", bnt[0]);
@@ -4212,7 +4222,7 @@ function draw_sidebar(){
 				}
 			}
 			if(automap.available_c!=-1){
-				if((block_name != "core.input.control.auto") && (block_name != "core.input.control.basic") && has_params){
+				if((block_name != "core.input.control.auto") && (block_name != "core.input.control.basic") && has_params && (sidebar.mode != "midimap")){
 					if((automap.mapped_c!=block&&!automap.lock_c)){
 						automap.offset_c = 0;
 						getmap=1; //flag set, then it collects up map data
@@ -4320,7 +4330,7 @@ function draw_sidebar(){
 				y_offset += fontheight*0.6;
 			}
 
-			if(sidebar.mode == "block"){
+			if(sidebar.mode == "block" ||(sidebar.mode == "midimap")){
 				sidebar.scopes.starty = y_offset;
 				if(blocktypes.contains(block_name+"::connections::out::midi_scopes_height")){
 					sidebar.scopes.endy = y_offset+fontheight * blocktypes.get(block_name+"::connections::out::midi_scopes_height");
@@ -4525,7 +4535,7 @@ function draw_sidebar(){
 				}
 				y_offset += 0.6*fontheight;
 			}
-			if((sidebar.mode == "block")||(sidebar.mode == "add_state")){
+			if((sidebar.mode == "block")||(sidebar.mode == "add_state")||(sidebar.mode == "midimap")){
 				var groups = [];
 				var params = [];
 				var knob_x = 0; var knob_y = 0;
@@ -4614,8 +4624,16 @@ function draw_sidebar(){
 						y1 = y_offset +  fontheight * (4 * knob_y);
 						y2 = y_offset +  fontheight * (4 * knob_y + h_slider+1.5*(h_slider==0));
 						var h_ext=0;
+						var backup_colour = colour;
 						for(t=0;t<slidercount;t++){
 							var curp = plist[t];
+							if(sidebar.mode == "midimap"){
+								if(curp == sidebar.midiMapTarget[0]){
+									colour = backup_colour;
+								}else{
+									colour = [80,80,80];
+								}
+							}
 							wk=0;
 							for(tk=t;tk<slidercount;tk++){
 								if(plist[tk]==plist[t]) wk++;

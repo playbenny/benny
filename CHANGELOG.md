@@ -1,3 +1,6 @@
+17/11/25:
+- quick midi mapping: press "\" while your mouse is over a sidebar slider and it'll go into midi map mode, move a midi control to make the mapping. if your controller supports per-knob led colours benny tries to make it match the slider you just assigned to.
+
 15/11/25:
 - **important** although benny will load and attempt to convert old songfiles, gains and spread rotate settings may not exactly match and songs saved with this version will not open in older versions.
 - big update to connections. now almost all connections have a spread/rotate control when there are >1 voices at either end. this means you can, for example, modulate a parameter a different amount for each voice.

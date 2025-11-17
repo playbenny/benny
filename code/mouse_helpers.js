@@ -4605,15 +4605,40 @@ function automap_q_click(p,v){
 	}
 }
 
-function conn_assign_controller_moved(type,number){
+function conn_assign_controller_moved(type,number,block){
 	if(type == "parameters"){
 		post("\nyou moved controller param number",number);
 	}else{
 		post("\nyou pressed controller button number",number);
 	}
-	i = selected.wire.indexOf(1);
-	if(i>-1){
-		conn_set_from_output(i, [type, number]);
+	if(sidebar.mode=="wire"){
+		i = selected.wire.indexOf(1);
+		if(i>-1){
+			conn_set_from_output(i, [type, number]);
+		}
+	}else if(sidebar.mode=="midimap"){
+		post("\nneed to create midi mapping for this one",block,number,type);
+		new_connection.parse('{}');
+		new_connection.replace("conversion::mute" , 0);
+		new_connection.replace("conversion::scale", 1);
+		new_connection.replace("conversion::vector", 0);	
+		new_connection.replace("conversion::projectionAngle", 0);	
+		new_connection.replace("conversion::offset", 0.5);
+		new_connection.replace("conversion::offset2", 0.5);
+		new_connection.replace("from::number",block);
+		new_connection.replace("to::number",sidebar.midiMapTarget[1]);
+		new_connection.replace("to::voice","all");
+		new_connection.replace("from::voice","all");
+		new_connection.replace("to::input::number",sidebar.midiMapTarget[0]);
+		new_connection.replace("to::input::type","parameters");
+		new_connection.replace("from::output::number",number);
+		new_connection.replace("from::output::type","parameters");
+		connections.append("connections",new_connection);
+		make_connection(connections.getsize("connections")-1,0);
+		ui_poly.message("setvalue",block+1,"set_knob_colour",number,sidebar.midiMapTarget[3],sidebar.midiMapTarget[4],sidebar.midiMapTarget[5]);
+		redraw_flag.flag |= 4;
+		setAllControllerBlocksAssignMode(0);
+		set_sidebar_mode("block");
 	}
 }
 
@@ -5009,27 +5034,27 @@ function enter_midi_map_mode(){
 		if(usermouse.got_i>=0){
 			// var f = mouse_click_actions[usermouse.got_i];
 			var p = mouse_click_parameters[usermouse.got_i];
-			
 			if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
-				post("FOUND sidebar knob:",p);
-				sidebar.midiMapTarget = p;
+				post("FOUND sidebar knob:",p,"set all controllers into assign mode");
+				var c = paramslider_details[p[0]];
+				sidebar.midiMapTarget = [p[0],p[1],p[2],c[4],c[5],c[6]];
+				setAllControllerBlocksAssignMode(1);
 				set_sidebar_mode("midimap");
 			}
 		}
 	}
 }
 
-/*// turn a knob to map it functionality here - also applies to core.input.keyboard (and core.input.arc when it's done)
-				// see if we should be in auto_pick_controller mode, send an 'assign mode' message to the block in question.
-				// auto is always visible as a button, auto-enables if it's turned on in config and the list is open. disabling it if list is open disables it in config?
-				var firv = voicemap.get(f_number);
-				if(Array.isArray(firv)) firv=firv[0];
 
-				if(sidebar.connection.show_from_outputs){
-					auto_pick_controller = 1 & sidebar.connection.auto_pick_controller;
-					note_poly.message("setvalue", firv+1,"connection_assign_mode",auto_pick_controller);
-					automap.assignmode = 1;
-				}else{
-					automap.assignmode = 0;
-					note_poly.message("setvalue", firv+1,"connection_assign_mode",0);
-				}*/
+function setAllControllerBlocksAssignMode(m) {
+	for (var i = 0; i < MAX_BLOCKS; i++) {
+		if (blocks.contains("blocks[" + i + "]::name")) {
+			var n = blocks.get("blocks[" + i + "]::name").split('.');
+			if (n[0] == 'core' && n[1] == 'input' && n[2] == 'control') {
+				var v = voicemap.get(i);
+				if (Array.isArray(v)) v = v[0];
+				note_poly.message("setvalue", v + 1, "connection_assign_mode", m);
+			}
+		}
+	}
+}

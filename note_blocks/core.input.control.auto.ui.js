@@ -52,13 +52,6 @@ var playing = 0;
 
 function setup(x1,y1,x2,y2,sw,mode){ 
 	// not done - needs to work out which controller it is, get row and column count from config
-	menucolour = config.get("palette::menu");
-	menudark = [menucolour[0]*0.2, menucolour[1]*0.2, menucolour[2]*0.2];
-	menumid = [menucolour[0]*0.5, menucolour[1]*0.5, menucolour[2]*0.5];
-	gamutl = config.getsize("palette::gamut");
-	fontheight = config.get("fontheight");
-	MAX_DATA = config.get("MAX_DATA");
-	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
 	width = x2-x1;
 	height = y2-y1;
 	x_pos = x1;
@@ -376,6 +369,14 @@ function set_forces_to_defaults() {
 
 function voice_offset(){}
 function loadbang(){
+	menucolour = config.get("palette::menu");
+	menudark = [menucolour[0]*0.2, menucolour[1]*0.2, menucolour[2]*0.2];
+	menumid = [menucolour[0]*0.5, menucolour[1]*0.5, menucolour[2]*0.5];
+	gamutl = config.getsize("palette::gamut");
+	fontheight = config.get("fontheight");
+	MAX_DATA = config.get("MAX_DATA");
+	MAX_PARAMETERS = config.get("MAX_PARAMETERS");
+
 	outlet(0,"getvoice");
 }
 
@@ -596,4 +597,27 @@ function convert_to_lengths(){ //this is a trimmed copy of the keyboard equivale
 		}
 	}
 	forceupdate = 1;
+}
+
+function set_knob_colour(knob,r,g,b){
+	//post("\nreceived instruction to set knob colour",knob,r,g,b);
+	var readindex=(MAX_DATA*v_list+knob+1)|0;
+	var max = Math.max(r,Math.max(g,b));
+	max = 256/max;
+	r *= max; g *= max; b *= max;
+	var mind=99999999;
+	var ccc=-1;
+	for(var c = 0;c<gamutl;c++){
+		var cc = config.get("palette::gamut["+c+"]::colour");
+		var maxcc = Math.max(cc[0],cc[1],cc[2]);
+		maxcc = 256/maxcc;
+		var d = Math.abs(r - maxcc * cc[0]) + Math.abs(g - maxcc * cc[1]) + Math.abs(b - maxcc * cc[2]);
+		if(d < mind){
+			mind = d;
+			ccc=c;
+			if(d==0) c=999999;
+		}
+	}
+	// post("chose",ccc);
+	voice_data_buffer.poke(1,(readindex + 2*paramcount)|0,ccc/gamutl);
 }

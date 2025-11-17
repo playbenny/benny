@@ -212,7 +212,11 @@
             "61" : ["+ (mac)", "poly_key", 1],
             "555" : ["+ (mac)", "poly_key", 1],
             "573" : ["+", "poly_key" , 1]
-           }
+        },
+        "midimap" : {
+            "92" : ["\\", "set_sidebar_mode", "block"],
+            "-3" : ["ESC", "set_sidebar_mode", "block"]
+        }
     },
     "qwertymidi" : {
         "122" : ["Z" , "qwertymidi", 0],
