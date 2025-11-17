@@ -1,7 +1,6 @@
 {
 	"voice.grains" : {
 		"patcher" : "voice.grains",
-		"deprecated" : 1,
 		"type" : "audio",
 		"block_ui_patcher" : "blank.ui",
 		"help_text" : "each voice of this is a pair of overlapping 'grains'. this is a building block for granular synthesis. you can stack many voices to make big grain clouds, use benny's lfos and poly spread etc to add modulation. etc",
@@ -11,7 +10,7 @@
 		"connections" : {
 			"in" : {
 				"midi" : [ "notes in" ],
-				"audio" : [ "mod1" ,"mod2"]
+				"audio" : [ "pitch modulation" ,"amplitude modulation"]
 			},
 			"out" : {
 				"audio" : [ "out" ],
@@ -20,21 +19,38 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 0, 12,13],
-				"height" : 0
+				"contains" : [0, 0, 0, 1,2],
+				"height" : 0,
+				"colour" : -10
 			},
 			{ 
-				"contains" : [1, 2, 3, 4],
-				"height" : 0
+				"contains" : [3,3 , 3, 4,5,5,5,6],
+				"height" : 0,
+				"colour" : 2
 			},{ 
-				"contains" : [5,6,7]
+				"contains" : [15],
+				"height" : 0,
+				"colour" : 8
 			},{ 
-				"contains" : [8,9,10,11],
-				"height" : 0
+				"contains" : [7,7,7,8, 9,9,9,10],
+				"height" : 0,
+				"colour" : 8
+			},{ 
+				"contains" : [11,11,11,12,13,13,14,14],
+				"height" : 0,
+				"colour" : 14
+			},{ 
+				"contains" : [16,17,18,19],
+				"height" : 0,
+				"colour" : 20
+			},{ 
+				"contains" : [20],
+				"height" : 0,
+				"colour" : 57
 			}
 		],
 		"panel" : {
-			"parameters" : [5,6,7]
+			"parameters" : [3,5,7,9,13]
 		},
 		"parameters" : [
 			{
@@ -46,86 +62,6 @@
 				"default" : 0
 			},
 			{
-				"name" : "slice",
-				"type" : "int",
-				"values" : ["uni", 0, 128, "lin"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "offset",
-				"type" : "float",
-				"values" : ["bi", -100, 100, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "detune",
-				"type" : "float",
-				"values" : ["bi", -24, 24, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "stretch",
-				"type" : "float",
-				"values" : ["bi", -4, 4, "lin"],
-				"wrap" : 0,
-				"default" : 0.5
-			},
-			{
-				"name" : "attack",
-				"type" : "float",
-				"values" : ["uni", 0.01, 60000, "exp1000" ],
-				"wrap" : 0,
-				"error_scale" : 2,
-				"default" : 0.05
-			},
-			{
-				"name" : "sustain",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin" ],
-				"wrap" : 0,
-				"error_scale" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "release",
-				"type" : "float",
-				"values" : ["uni", 0.01, 60000, "exp1000" ],
-				"wrap" : 0,
-				"error_scale" : 4,
-				"default" : 0.15
-			},
-			{
-				"name" : "curve",
-				"type" : "menu_f",
-				"values" : ["exp", "lin", "log" ],
-				"wrap" : 0,
-				"default" : 0.2
-			},
-			{
-				"name" : "loop",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin" ],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "vel->level",
-				"type" : "float",
-				"values" : ["bi", -1, 1, "lin" ],
-				"wrap" : 0,
-				"default" : 1
-			},
-			{
-				"name" : "accum",
-				"type" : "float",
-				"values" : ["bi", -1, 1, "lin" ],
-				"wrap" : 0,
-				"default" : 0.5
-			}	,
-			{
 				"name" : "load_wave",
 				"type" : "button",
 				"values" : ["core","load_wave","request_load_wave"],
@@ -136,7 +72,136 @@
 				"type" : "button",
 				"values" : ["core","edit_wave","request_edit_wave"],
 				"default" : 0
-			}	
+			},
+			{
+				"name" : "slice",
+				"type" : "int",
+				"values" : ["uni", 0, 128, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "+rand",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "position",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "+rand",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "grain_size_ms",
+				"type" : "float",
+				"values" : ["uni", 2, 2000, "exp1000"],
+				"wrap" : 0,
+				"default" : 0.3
+			},
+			{
+				"name" : "+rand",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "shape",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "+rand",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "reverse",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "+rand",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "vel->volume",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "random volume",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "scan",
+				"type" : "float",
+				"values" : ["bi", -16, 16, "exp1000" ],
+				"wrap" : 0,
+				"default" : 0.55
+			},
+			{
+				"name" : "transpose",
+				"type" : "float",
+				"values" : ["bi", -24, 24, "lin" ],
+				"wrap" : 0,
+				"error_scale" : 0,
+				"default" : 0.5
+			},
+			{
+				"name" : "+rand_(octaves)",
+				"type" : "int",
+				"values" : ["uni", 0, 4, "lin" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "+rand_(semitones)",
+				"type" : "int",
+				"values" : ["uni", 0, 48, "lin" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "+rand_(fine)",
+				"type" : "float",
+				"values" : ["uni", 0, 1, "lin" ],
+				"wrap" : 0,
+				"default" : 0
+			},
+			{
+				"name" : "rand transpose scale",
+				"type" : "scale",
+				"values" : ["chromatic", "1", "2", "3", "4", "5", "6", "7", "8"],
+				"wrap" : 0,
+				"columns" : 9,
+				"error_scale" : 0,
+				"default" : 0
+			}
 		]
 	}
 }
