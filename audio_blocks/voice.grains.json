@@ -19,34 +19,33 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [0, 0, 0, 1,2],
-				"height" : 0,
-				"colour" : -10
-			},
-			{ 
 				"contains" : [3,3 , 3, 4,5,5,5,6],
 				"height" : 0,
 				"colour" : 2
 			},{ 
 				"contains" : [15],
 				"height" : 0,
-				"colour" : 8
+				"colour" : 14
 			},{ 
 				"contains" : [7,7,7,8, 9,9,9,10],
 				"height" : 0,
-				"colour" : 8
+				"colour" : 26
 			},{ 
 				"contains" : [11,11,11,12,13,13,14,14],
 				"height" : 0,
-				"colour" : 14
+				"colour" : 38
 			},{ 
 				"contains" : [16,17,18,19],
 				"height" : 0,
-				"colour" : 20
+				"colour" : 50
 			},{ 
 				"contains" : [20],
 				"height" : 0,
-				"colour" : 57
+				"colour" : 67
+			},{ 
+				"contains" : [0, 0, 0, 1,2],
+				"height" : 0,
+				"colour" : -10
 			}
 		],
 		"panel" : {
@@ -102,7 +101,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "grain_size_ms",
+				"name" : "grain size (ms)",
 				"type" : "float",
 				"values" : ["uni", 2, 2000, "exp1000"],
 				"wrap" : 0,
