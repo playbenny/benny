@@ -911,7 +911,6 @@ function select_voice(parameter,value){
 }
 
 function sidebar_select_connection(num,val){
-	post("\nSSC");
 	if(usermouse.ctrl){
 		if(!connections.contains("connections["+num+"]::conversion")) post("\n?????",num);
 		var m = !connections.get("connections["+num+"]::conversion::mute");
@@ -4617,7 +4616,7 @@ function conn_assign_controller_moved(type,number,block){
 			conn_set_from_output(i, [type, number]);
 		}
 	}else if(sidebar.mode=="midimap"){
-		post("\nneed to create midi mapping for this one",block,number,type);
+		post("creating midi mapping");//,block,number,type);
 		new_connection.parse('{}');
 		new_connection.replace("conversion::mute" , 0);
 		new_connection.replace("conversion::scale", 1);
@@ -5029,13 +5028,11 @@ function scroll_pattern(p,v){
 }
 
 function enter_midi_map_mode(){
-	post("\ntodo map the hovered control!")
 	if(usermouse.got_t>=2 && usermouse.got_t<=4){	
 		if(usermouse.got_i>=0){
 			// var f = mouse_click_actions[usermouse.got_i];
 			var p = mouse_click_parameters[usermouse.got_i];
 			if(mouse_click_actions[usermouse.got_i]==sidebar_parameter_knob){
-				post("FOUND sidebar knob:",p,"set all controllers into assign mode");
 				var c = paramslider_details[p[0]];
 				sidebar.midiMapTarget = [p[0],p[1],p[2],c[4],c[5],c[6]];
 				setAllControllerBlocksAssignMode(1);

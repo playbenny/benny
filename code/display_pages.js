@@ -3068,12 +3068,6 @@ function draw_sidebar(){
 		lcd_main.message("write", "cancel");
 		lcd_main.message("moveto" ,sidebar.x2-fontheight*0.8, fontheight*0.75+y_offset);
 		lcd_main.message("write", "ok");
-	// }else if(sidebar.mode == "midimap"){
-	// 	lcd_main.message("paintrect", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,menucolour);
-	// 	click_zone(set_sidebar_mode, "block", "", sidebar.x, y_offset, sidebar.x2,fontheight+y_offset,mouse_index,1);
-	// 	lcd_main.message("frgb" , 0,0,0);
-	// 	lcd_main.message("moveto" ,sidebar.x+fontheight*0.2, fontheight*0.75+y_offset);		
-	// 	lcd_main.message("write", "move a midi control to map it to this parameter");
 	}else if(sidebar.mode == "block_search"){
 		// type to search for blocks in your patch ##############################################################################################################
 		if(sidebar.mode != sidebar.lastmode){
@@ -3942,7 +3936,7 @@ function draw_sidebar(){
 			var block_type = blocks.get("blocks["+block+"]::type");
 			block_colour = blocks.get("blocks["+block+"]::space::colour");
 			if(sidebar.mode == "midimap"){
-				var block_colour_backup = [block_colour[0],block_colour[1], block_colour[2]];
+				var backup_colour = [block_colour[0],block_colour[1], block_colour[2]];
 				block_colour = [80,80,80];
 			}
 			block_colour = [Math.min(block_colour[0]*1.5,255),Math.min(block_colour[1]*1.5,255),Math.min(block_colour[2]*1.5,255)];
@@ -3982,7 +3976,7 @@ function draw_sidebar(){
 				audio_to_data_poly.message("setvalue", 0,"vis_scope", 0);
 				remove_midi_scope();
 				redraw_flag.targets=[];
-				if(sidebar.mode == "block" ||(sidebar.mode == "midimap")){
+				if((sidebar.mode == "block")||(sidebar.mode == "midimap")){
 					//get scope info together, turn on scopes
 					if(block_type=="audio"){
 						if(sidebar.selected_voice != -1){
@@ -4587,12 +4581,14 @@ function draw_sidebar(){
 					for(i=0;i<groups.length;i++){
 						var this_group_mod_in_para=[];
 						automap.sidebar_row_ys[i] = y_offset;
-						colour=block_colour;
+						colour=[block_colour[0],block_colour[1],block_colour[2]];
 						if(groups[i].contains("patterncontrols")) groups[i].replace("contains",[]);
 						if(groups[i].contains("colour")){
 							colour = groups[i].get("colour");
 						}
+						// var backup_colour = [colour[0],colour[1],colour[2]];
 						if(groups[i].contains("header")){
+							if(sidebar.mode=="midimap") colour = [80,80,80];
 							y_offset += fo1;
 							lcd_main.message("paintrect",sidebar.x,y_offset,sidebar.x2,y_offset+fontheight*0.5,colour[0]*bg_dark_ratio,colour[1]*bg_dark_ratio,colour[2]*bg_dark_ratio);
 							lcd_main.message("moveto", sidebar.x+fo1, y_offset+0.4*fontheight);
@@ -4624,12 +4620,16 @@ function draw_sidebar(){
 						y1 = y_offset +  fontheight * (4 * knob_y);
 						y2 = y_offset +  fontheight * (4 * knob_y + h_slider+1.5*(h_slider==0));
 						var h_ext=0;
-						var backup_colour = colour;
+						
 						for(t=0;t<slidercount;t++){
 							var curp = plist[t];
 							if(sidebar.mode == "midimap"){
 								if(curp == sidebar.midiMapTarget[0]){
-									colour = backup_colour;
+									if(groups[i].contains("colour")){
+										colour = groups[i].get("colour");
+									}else{
+										colour = backup_colour;
+									}
 								}else{
 									colour = [80,80,80];
 								}
