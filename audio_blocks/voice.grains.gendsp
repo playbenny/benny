@@ -9,15 +9,35 @@
             "modernui": 1
         },
         "classnamespace": "dsp.gen",
-        "rect": [ 59.0, 107.0, 600.0, 629.0 ],
+        "rect": [ 59.0, 107.0, 796.0, 629.0 ],
         "boxes": [
+            {
+                "box": {
+                    "id": "obj-7",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 576.0, 587.0, 35.0, 22.0 ],
+                    "text": "out 4"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-6",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 389.3333333333333, 587.0, 35.0, 22.0 ],
+                    "text": "out 3"
+                }
+            },
             {
                 "box": {
                     "id": "obj-5",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 493.5, 577.0, 35.0, 22.0 ],
+                    "patching_rect": [ 202.66666666666666, 587.0, 35.0, 22.0 ],
                     "text": "out 2"
                 }
             },
@@ -39,22 +59,22 @@
                     "numinlets": 0,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 497.0, 2.0, 28.0, 22.0 ],
+                    "patching_rect": [ 734.0, 2.0, 28.0, 22.0 ],
                     "text": "in 2"
                 }
             },
             {
                 "box": {
-                    "code": "//this is grain player. it plays 2 grains at once, xfading\r\n//a lot of values are only set at grain start    \r\n\r\nBuffer mtof_lookup(\"mtof_lookup\");\r\nBuffer prm(\"voice_parameter_buffer\");\r\nBuffer detuning(\"detuning\");\r\nBuffer changed_flags(\"changed_flags\");\r\nBuffer sourcebuffer(\"waves.1\");\r\n\r\nHistory cursor_s(0);\r\nHistory cursor_p(0);\r\n\r\nHistory a_state,a_rise,a_fall,a_e,a_pos,a_rate;\r\nHistory b_state,b_rise,b_fall,b_e,b_pos,b_rate;\r\nHistory scan,scanrate;\r\n\r\nParam voice_offset(0);\r\nParam voice_is(0, min=0,default=0,max=4096);\r\nParam p(0,min=0,default=64,max=128);\r\nParam v(0);\r\nParam panic(0);\r\n\r\nif(delta(v!=0)>0){\r\n    if(a_state==0 && b_state==0){\r\n    //note on, triggers playback if not already playing\r\n        scan = 0;\r\n        scanrate = 0.0001; //TODO\r\n        //start a\r\n        a_state = 1;\r\n        a_rise = 0.0001; //TODO\r\n        a_fall = 0.0001; //TODO\r\n        a_e = 0;\r\n    }    \r\n}\r\n\r\nif(a_state){\r\n    if(a_state == 1){\r\n        a_e += a_rise;\r\n        if(a_e>=1){\r\n            a_state = 2;\r\n            if(v!=0){\r\n                //start b\r\n                b_state = 1;\r\n                b_rise = 0.0001; //TODO\r\n                b_fall = 0.0001; //TODO\r\n                b_e = 0;\r\n            }\r\n        }\r\n    }else if(a_state == 2){\r\n        a_e -= a_rise;\r\n        if(a_e<=0){\r\n            a_e = 0;\r\n            if((b_state!=1) && (v!=0)){\r\n                //start a again\r\n                a_state = 1;\r\n                a_rise = 0.0001; //TODO\r\n                a_fall = 0.0001; //TODO\r\n                a_e = 0;\r\n            }else{\r\n                a_state = 0;\r\n            }\r\n        }\r\n    }    \r\n}\r\n\r\nif(b_state){\r\n    if(b_state == 1){\r\n        b_e += b_rise;\r\n        if(b_e>=1){\r\n            b_state = 2;\r\n            if(v!=0){\r\n                //start a\r\n                a_state = 1;\r\n                a_rise = 0.0001; //TODO\r\n                a_fall = 0.0001; //TODO\r\n                a_e = 0;\r\n            }\r\n        }\r\n    }else if(b_state == 2){\r\n        b_e -= b_rise;\r\n        if(b_e<=0){\r\n            b_e = 0;\r\n            if((a_state!=1) && (v!=0)){\r\n                //start b again\r\n                b_state = 1;\r\n                b_rise = 0.0001; //TODO\r\n                b_fall = 0.0001; //TODO\r\n                b_e = 0;\r\n            }else{\r\n                b_state = 0;\r\n            }\r\n        }\r\n    }    \r\n}\r\n\r\n\r\n\r\nout1 = a_e + in1 + in2;\r\nout2 = b_e;",
+                    "code": "//this is grain player. it plays 2 grains at once, xfading\r\n//a lot of values are only set at grain start    \r\ngetGrainInfo(v_o,p,v,scan){\r\n    Buffer prm(\"voice_parameter_buffer\");\r\n    Buffer mtof_lookup(\"mtof_lookup\");\r\n\r\n    pos = peek(prm, v_o+5,0);\r\n    posrand = peek(prm, v_o+6,0);\r\n    \r\n    rate = peek(mtof_lookup, p, 0) / (samplerate*261.616);\r\n    \r\n    pos += 1 + posrand*(noise()+noise()+noise()+noise()-2) + scan;\r\n    \r\n    pos = pos % 1;\r\n    \r\n    gtime = peek(prm,v_o+7,0);\r\n    gtimerand = peek(prm,v_o+8,0);\r\n    gshape = peek(prm,v_o+9,0);\r\n    gshaperand = peek(prm,v_o+10,0);\r\n    //gtime += gtimerand *(noise()+noise()+noise()+noise()-2);\r\n    gtime = clip(gtime,0,1);\r\n    //gshape += gshaperand *(noise()+noise()+noise()+noise()-2);\r\n    gshape = clip(gshape,0,1);\r\n    \r\n    gtime = (pow(1000,gtime) - 1) * 0.001001001001001001001001001001;\r\n    gtime = 2 + 1998*gtime;\r\n    gtime *= 0.001 * samplerate;\r\n    \r\n    rise = max(gshape * gtime,1);\r\n    fall = max(gtime - rise,1);\r\n    \r\n    return pos, rate, 1/rise, 1/fall;\r\n}\r\n\r\n\r\nBuffer detuning(\"detuning\");\r\nBuffer changed_flags(\"changed_flags\");\r\nBuffer sourcebuffer(\"waves.1\");\r\n\r\nHistory cursor_s(0);\r\nHistory cursor_p(0);\r\n\r\nHistory a_state,a_rise,a_fall,a_e,a_pos,a_rate;\r\nHistory b_state,b_rise,b_fall,b_e,b_pos,b_rate;\r\nHistory scan,scanrate;\r\n\r\nParam voice_offset(0);\r\nParam voice_is(0, min=0,default=0,max=4096);\r\nParam p(0,min=0,default=64,max=128);\r\nParam v(0);\r\nParam panic(0);\r\n\r\nif(delta(v!=0)>0){\r\n    if(a_state==0 && b_state==0){\r\n    //note on, triggers playback if not already playing\r\n        scan = 0;\r\n        scanrate = 0.000001; //TODO\r\n        //start a\r\n        a_state = 1;\r\n        a_rise = 0.0001; //TODO\r\n        a_fall = 0.0001; //TODO\r\n        a_e = 0;\r\n        a_pos,a_rate,a_rise,a_fall = getGrainInfo(voice_offset,p,v,scan);\r\n    }    \r\n}\r\nscan+=scanrate;\r\n\r\n\r\nif(a_state){\r\n    a_pos+=a_rate;\r\n    if(a_state == 1){\r\n        a_e += a_rise;\r\n        if(a_e>=1){\r\n            a_state = 2;\r\n            if(v!=0){\r\n                //start b\r\n                b_state = 1;\r\n                b_rise = 0.0001; //TODO\r\n                b_fall = 0.0001; //TODO\r\n                b_e = 0;\r\n                b_pos,b_rate,b_rise,b_fall = getGrainInfo(voice_offset,p,v,scan);\r\n            }\r\n        }\r\n    }else if(a_state == 2){\r\n        a_e -= a_rise;\r\n        if(a_e<=0){\r\n            a_e = 0;\r\n            if((b_state!=1) && (v!=0)){\r\n                //start a again\r\n                a_state = 1;\r\n                a_rise = 0.0001; //TODO\r\n                a_fall = 0.0001; //TODO\r\n                a_e = 0;\r\n                a_pos,a_rate,a_rise,a_fall = getGrainInfo(voice_offset,p,v,scan);\r\n            }else{\r\n                a_state = 0;\r\n            }\r\n        }\r\n    }    \r\n}\r\n\r\nif(b_state){\r\n    b_pos+=b_rate;\r\n    if(b_state == 1){\r\n        b_e += b_rise;\r\n        if(b_e>=1){\r\n            b_state = 2;\r\n            if(v!=0){\r\n                //start a\r\n                a_state = 1;\r\n                a_rise = 0.0001; //TODO\r\n                a_fall = 0.0001; //TODO\r\n                a_e = 0;\r\n                a_pos,a_rate,a_rise,a_fall = getGrainInfo(voice_offset,p,v,scan);\r\n            }\r\n        }\r\n    }else if(b_state == 2){\r\n        b_e -= b_rise;\r\n        if(b_e<=0){\r\n            b_e = 0;\r\n            if((a_state!=1) && (v!=0)){\r\n                //start b again\r\n                b_state = 1;\r\n                b_rise = 0.0001; //TODO\r\n                b_fall = 0.0001; //TODO\r\n                b_e = 0;\r\n                b_pos,b_rate,b_rise,b_fall = getGrainInfo(voice_offset,p,v,scan);\r\n            }else{\r\n                b_state = 0;\r\n            }\r\n        }\r\n    }    \r\n}\r\n\r\n\r\n\r\nout1 = a_e + in1 + in2;\r\nout2 = b_e;\r\nout3 = a_pos;\r\nout4 = b_pos;",
                     "fontface": 0,
                     "fontname": "<Monospaced>",
                     "fontsize": 12.0,
                     "id": "obj-3",
                     "maxclass": "codebox",
                     "numinlets": 2,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "" ],
-                    "patching_rect": [ 16.0, 29.0, 500.0, 542.0 ]
+                    "numoutlets": 4,
+                    "outlettype": [ "", "", "", "" ],
+                    "patching_rect": [ 16.0, 29.0, 737.0, 539.0 ]
                 }
             },
             {
@@ -63,7 +83,7 @@
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 16.0, 577.0, 35.0, 22.0 ],
+                    "patching_rect": [ 16.0, 587.0, 35.0, 22.0 ],
                     "text": "out 1"
                 }
             }
@@ -91,6 +111,18 @@
                 "patchline": {
                     "destination": [ "obj-5", 0 ],
                     "source": [ "obj-3", 1 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-6", 0 ],
+                    "source": [ "obj-3", 2 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-7", 0 ],
+                    "source": [ "obj-3", 3 ]
                 }
             }
         ]
