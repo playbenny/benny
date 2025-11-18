@@ -1921,7 +1921,11 @@ function draw_wire(connection_number){
 			//var s2 = 0.5;// - 0.4*short;
 			meanvector[1] = from_pos[1] + 0.85*from_anglevector[1] - to_pos[1] + 0.85*to_anglevector[1];
 			var mvl = Math.sqrt(meanvector[0]*meanvector[0] + meanvector[1]*meanvector[1]);
-			blob_position[2] =  Math.max(-1.25,-0.6 -0.5*(Math.max(0,mvl-3))); //was -0.25 -0.3
+			if(to_pos[2]>0.5 || from_pos[2]>0.5){
+				blob_position[2] = (from_pos[2]+to_pos[2])*0.5;
+			}else{
+				blob_position[2] =  Math.max(-1.25,-0.6 -0.5*(Math.max(0,mvl-3))); //was -0.25 -0.3
+			}
 			meanvector[0] = meanvector[0] * -0.5/mvl;
 			meanvector[1] = meanvector[1] * -0.5/mvl;	
 			meanvector[2] = 0;			
@@ -2199,6 +2203,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var wd = wire_dia*(1+selected.wire[connection_number]);
 	wires_scale[connection_number][segment] = [(seglength+wd)*0.52, wd, wd];
 	wires_rotatexyz[connection_number][segment] = [0, rotY, rotZ];
+	// post("\n",segment,"rotate",rotY,rotZ);
 	var tmc=0.4;
 	tmc *= (1-0.8*selected.anysel*(0.3 - selected.wire[connection_number]));
 	var zs = Math.max(Math.abs(avg_pos[2])-0.5,0);
