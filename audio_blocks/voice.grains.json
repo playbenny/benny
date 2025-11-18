@@ -23,7 +23,7 @@
 				"height" : 0,
 				"colour" : 2
 			},{ 
-				"contains" : [15],
+				"contains" : [15,15,15,16],
 				"height" : 0,
 				"colour" : 14
 			},{ 
@@ -35,11 +35,11 @@
 				"height" : 0,
 				"colour" : 38
 			},{ 
-				"contains" : [16,17,18,19],
+				"contains" : [17,18,19,20,21],
 				"height" : 0,
 				"colour" : 50
 			},{ 
-				"contains" : [20],
+				"contains" : [22],
 				"height" : 0,
 				"colour" : 67
 			},{ 
@@ -129,14 +129,7 @@
 				"default" : 0
 			},
 			{
-				"name" : "reverse",
-				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
-				"wrap" : 0,
-				"default" : 0
-			},
-			{
-				"name" : "+rand",
+				"name" : "reverse_chance",
 				"type" : "float",
 				"values" : ["uni", 0, 1, "lin"],
 				"wrap" : 0,
@@ -145,9 +138,16 @@
 			{
 				"name" : "vel->volume",
 				"type" : "float",
-				"values" : ["uni", 0, 1, "lin"],
+				"values" : ["bi", -1, 1, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 1
+			},
+			{
+				"name" : "pitch->volume",
+				"type" : "float",
+				"values" : ["bi", -1, 1, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			},
 			{
 				"name" : "random volume",
@@ -158,6 +158,13 @@
 			},
 			{
 				"name" : "scan",
+				"type" : "float",
+				"values" : ["bi", -16, 16, "exp1000" ],
+				"wrap" : 0,
+				"default" : 0.55
+			},
+			{
+				"name" : "curve",
 				"type" : "float",
 				"values" : ["bi", -16, 16, "exp1000" ],
 				"wrap" : 0,
@@ -191,6 +198,13 @@
 				"values" : ["uni", 0, 1, "lin" ],
 				"wrap" : 0,
 				"default" : 0
+			},
+			{
+				"name" : "key follow",
+				"type" : "float",
+				"values" : ["bi", -4, 4, "lin" ],
+				"wrap" : 0,
+				"default" : 0.625
 			},
 			{
 				"name" : "rand transpose scale",
