@@ -4241,6 +4241,7 @@ function show_and_search_new_block_menu(key){
 			if(((key>=-42)&&(key<-32))){
 				key = -key + 15;
 			}
+			if(key>512) key -= 512;
 			sidebar.param_number_entry = String.fromCharCode(key);
 			sidebar.param_number = pno;
 			draw_number_entry(pno, sidebar.param_number_entry);
