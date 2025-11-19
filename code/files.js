@@ -1863,32 +1863,34 @@ function write_blockipedia(){
 
 function convert_pre_0_6_connection(){
 	// if it's too param/audio/hw/block then the offset is in offset2, and projectionAngle replaces rotate for 1d-2d,2d-1d
-	var ttype = new_connection.get("to::input::type");
-	var ftype = new_connection.get("from::output::type");
-	if(ttype == "parameters" || ttype == "audio" || ttype == "hardware" || ttype == "block"){
-		//to is 1d
-		if(ftype == "midi"){
-			post("replaced rotate with projection for this connection,",ftype,ttype);
-			new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
-			new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
-			new_connection.replace("conversion::offset",0.5);
-		}else if((ftype == "audio" || ftype == "hardware") && (ttype == "audio" || ttype == "hardware")){
-			post("O");
-			new_connection.replace("conversion::offset",0.5+ 0.25*new_connection.get("conversion::offset"));
-			new_connection.replace("conversion::projectionAngle",0);
+	if(new_connection.contains("to::input::type")){
+		var ttype = new_connection.get("to::input::type");
+		var ftype = new_connection.get("from::output::type");
+		if(ttype == "parameters" || ttype == "audio" || ttype == "hardware" || ttype == "block"){
+			//to is 1d
+			if(ftype == "midi"){
+				post("replaced rotate with projection for this connection,",ftype,ttype);
+				new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
+				new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
+				new_connection.replace("conversion::offset",0.5);
+			}else if((ftype == "audio" || ftype == "hardware") && (ttype == "audio" || ttype == "hardware")){
+				post("O");
+				new_connection.replace("conversion::offset",0.5+ 0.25*new_connection.get("conversion::offset"));
+				new_connection.replace("conversion::projectionAngle",0);
+			}else{
+				post(".");
+				new_connection.replace("conversion::projectionAngle",0);
+				new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
+				new_connection.replace("conversion::offset",0.5);
+			}
 		}else{
-			post(".");
-			new_connection.replace("conversion::projectionAngle",0);
-			new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
-			new_connection.replace("conversion::offset",0.5);
-		}
-	}else{
-		if(ftype == "parameters" || ftype == "audio" || ftype == "hardware"){
-			post("replaced rotate with projection for this connection,",ftype,ttype);
-			new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
-		}else{
-			post(".");
-			new_connection.replace("conversion::projectionAngle",0);
+			if(ftype == "parameters" || ftype == "audio" || ftype == "hardware"){
+				post("replaced rotate with projection for this connection,",ftype,ttype);
+				new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
+			}else{
+				post(".");
+				new_connection.replace("conversion::projectionAngle",0);
+			}
 		}
 	}
 }
