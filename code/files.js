@@ -1892,5 +1892,6 @@ function convert_pre_0_6_connection(){
 				new_connection.replace("conversion::projectionAngle",0);
 			}
 		}
+		if(new_connection.contains("overlap"))new_connection.remove("overlap");
 	}
 }
