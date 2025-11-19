@@ -2640,53 +2640,50 @@ function check_for_connection_overlap(n){
 	for(var ti=0;ti<l;ti++){
 		if(ti==n){
 		}else{
-			if((connections.contains("connections["+ti+"]::from::number"))&&(connections.get("connections["+ti+"]::from::number")==f_n)){
-				if(connections.get("connections["+ti+"]::to::number")==t_n){
-					//post("\nfrom and to match");
-					if((connections.get("connections["+ti+"]::from::output::type")==f_t)&&(connections.get("connections["+ti+"]::to::input::type")==t_t)){
-						//post("\ntypes match");
-						if((connections.get("connections["+ti+"]::from::output::number")==f_i)&&(connections.get("connections["+ti+"]::to::input::number")==t_i)){
-							//inputs / outputs match	
-							var frommatch=0;
-							var fv = new_connection.get("from::voice");
-							if((f_v == "all") || (fv == "all")){
+			if((connections.contains("connections["+ti+"]::from::number"))&&(connections.get("connections["+ti+"]::from::number")==f_n)
+				&&(connections.get("connections["+ti+"]::to::number")==t_n)
+				&&(connections.get("connections["+ti+"]::from::output::type")==f_t)&&(connections.get("connections["+ti+"]::to::input::type")==t_t)
+				&&(connections.get("connections["+ti+"]::from::output::number")==f_i)&&(connections.get("connections["+ti+"]::to::input::number")==t_i)){
+				//now have to check if voices match
+				var frommatch=0;
+				var fv = connections.get("connections["+ti+"]::from::voice");
+				post("\ntesting",ti,"against",n,"fv",fv,"f_v",f_v);
+				if((f_v == "all") || (fv == "all")){
+					frommatch = 1;
+				}else{
+					if(!Array.isArray(fv)) fv = [fv];
+					for(vi=0;vi<fv.length;vi++){
+						for(vii=0;vii<f_v.length;vii++){
+							if(fv[vi]==f_v[vii]){
 								frommatch = 1;
-							}else{
-								if(!Array.isArray(fv)) fv = [fv];
-								for(vi=0;vi<fv.length;vi++){
-									for(vii=0;vii<f_v.length;vii++){
-										if(fv[vi]==f_v[vii]){
-											frommatch = 1;
-											vii = 9999; vi = 9999;
-										}
-									}
-								}
-							}
-							if(frommatch){
-								var tomatch=0;
-								var tv = new_connection.get("to::voice");
-								if((t_v == "all") || (tv == "all")){
-									tomatch = 1;
-								}else{
-									if(!Array.isArray(tv)) tv = [tv];
-									for(vi=0;vi<tv.length;vi++){
-										for(vii=0;vii<t_v.length;vii++){
-											if(tv[vi]==t_v[vii]){
-												tomatch = 1;
-												vii = 9999; vi = 9999;
-											}
-										}
-									}
-								}
-								if(tomatch){
-									post("\noverlapping connection, f:",fv,f_v,"t:",tv,t_v);
-									//ti=99999;
-									//overlap = 1;
-									return 1;
-								}	
+								vii = 9999; vi = 9999;
 							}
 						}
 					}
+				}
+				if(frommatch){
+					var tomatch=0;
+					var tv = connections.get("connections["+ti+"]::to::voice");
+					post("tv",tv,"t_v",t_v);
+					if((t_v == "all") || (tv == "all")){
+						tomatch = 1;
+					}else{
+						if(!Array.isArray(tv)) tv = [tv];
+						for(vi=0;vi<tv.length;vi++){
+							for(vii=0;vii<t_v.length;vii++){
+								if(tv[vi]==t_v[vii]){
+									tomatch = 1;
+									vii = 9999; vi = 9999;
+								}
+							}
+						}
+					}
+					if(tomatch){
+						post("\noverlapping connection, f:",fv,f_v,"t:",tv,t_v);
+						//ti=99999;
+						//overlap = 1;
+						return 1;
+					}	
 				}
 			}
 		}
