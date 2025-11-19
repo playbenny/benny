@@ -3380,7 +3380,10 @@ function store_wave_slices(waveno){
 	if(d>0){
 		//post("\ncalculating ",d,"slices ")
 		var l = waves_dict.get("waves["+waveno+"]::length");
-
+		if(isNaN(l)){
+			post("\nproblem getting wave length?");
+			l=1000;
+		} 
 		var s = l * waves_dict.get("waves["+waveno+"]::start");
 		var e = l * waves_dict.get("waves["+waveno+"]::end");
 		var m = (e-s) / d;
