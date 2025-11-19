@@ -3390,6 +3390,7 @@ function store_wave_slices(waveno){
 		for(i=0;i<d;i++){
 			waves_slices_buffer.poke(1, o+i, i*m+s);
 		}
+		waves_slices_buffer.poke(1, o+d, l);
 		//post("writing slices to buffer",waveno,/*o,*/l,s,e,d,m,"\n");
 	}
 }
