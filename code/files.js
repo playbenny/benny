@@ -198,7 +198,6 @@ function preload_all_waves(){
 
 function create_blank_wave_buffer(number,length, channels,name){
 	polybuffer_create_blank(length,channels);
-	get_polybuffer_info();
 	var buffername = "waves."+polybuffer_names.length;
 	waves_buffer[number]= new Buffer(buffername);
 	// post("length",waves_buffer[number].length(),waves_buffer[number].framecount(),waves_buffer[number].channelcount(),"name",name,buffername);
@@ -863,8 +862,8 @@ function import_song(){
 		for(i=0;i<loading.mutelist.length;i++){
 			mute_particular_block(loading.mutelist[i][0],loading.mutelist[i][1]);
 		}
-		messnamed("update_wave_colls","bang");
 		post("\nmarker");
+		messnamed("update_wave_colls","bang");
 		if((still_checking_polys&7)==0){
 			update_all_voices_mutestatus();
 		}
