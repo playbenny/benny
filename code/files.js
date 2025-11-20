@@ -276,7 +276,6 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 				return -2;
 			}else if(check_exists(wavepath)){
 				waves_polybuffer.append(wavepath);
-				//post("\n(loading)")
 				get_polybuffer_info();
 				return -1;
 			}else{
