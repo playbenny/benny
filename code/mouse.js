@@ -996,7 +996,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 													subvoices = blocks.get("blocks["+ob+"]::subvoices");
 													if(subvoices<1)subvoices = 1;
 												}
-												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
+												blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position = [ bdx + (0.125*subvoices + 0.125)*(usermouse.drag.dragging.voices[t][1]>0)+ 0.5*usermouse.drag.dragging.voices[t][1]/subvoices, bdy, SELECTED_BLOCK_Z_MOVE -0.25];//-usermouse.drag.dragging.voices[t][1]-0.2];
 												//post("\nset position of block",ob,"voice",usermouse.drag.dragging.voices[t][1],"to:",blocks_cube[ob][usermouse.drag.dragging.voices[t][1]].position);
 											}
 											if(bl.length>0){
