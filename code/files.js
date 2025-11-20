@@ -427,7 +427,6 @@ function buffer_loaded(number,path,name,buffername){
 		d.replace("divisions",0);
 		d.replace("buffername",buffername);
 		waves_dict.replace("waves["+tn+"]",d);
-		tn++;
 		// tn++;
 	}
 	var tc = (waves_buffer[number].channelcount() | 0);
