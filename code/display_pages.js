@@ -1891,7 +1891,7 @@ function draw_wire(connection_number){
 				}
 			}
 
-			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1.5))){
+			if((cfrom!=cto)&&(from_pos[1]>(to_pos[1]-1.5))&&(from_pos[2]<0.8 && to_pos[2]<0.8)){
 				short = 1;
 				if((dist<5)&&(Math.abs(fx-tx)<0.5)){
 					// segments_to_use = 1; //flag for short wires - use less segments.
