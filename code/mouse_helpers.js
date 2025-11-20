@@ -3390,10 +3390,9 @@ function store_wave_slices(waveno){
 		var i;
 		var o = (waveno - 1) * MAX_WAVES_SLICES;
 		
-		for(i=0;i<d;i++){
+		for(i=0;i<=d;i++){
 			waves_slices_buffer.poke(1, o+i, i*m+s);
 		}
-		waves_slices_buffer.poke(1, o+d, d*m+s);
 		//post("writing slices to buffer",waveno,/*o,*/l,s,e,d,m,"\n");
 	}
 }
