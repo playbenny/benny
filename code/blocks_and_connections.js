@@ -287,7 +287,12 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
 				voicecount(new_block_index,blocktypes.get(block_name+"::max_polyphony"));
 			}
-		}	
+		}else{
+			if(hardware_metermap.contains(block_index)){
+				hardware_metermap.remove(block_index);
+			}
+		}
+
 	}
 //	draw_block(new_block_index);
 	if(type == "note"){

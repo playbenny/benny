@@ -1255,6 +1255,10 @@ function load_block(block_name,block_index,paramvalues,was_exclusive){
 			if(blocktypes.get(block_name+"::max_polyphony")>1){
 				voicecount(block_index,blocktypes.get(block_name+"::max_polyphony"));
 			}
+		}else{
+			if(hardware_metermap.contains(block_index)){
+				hardware_metermap.remove(block_index);
+			}
 		}
 	}
 
