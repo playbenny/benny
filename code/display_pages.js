@@ -2180,7 +2180,7 @@ function draw_cylinder(connection_number, segment, from_pos, to_pos, cmute,col){
 	var seglength = 0;
 	var rotY, rotZ;
 	for(var t=0;t<3;t++){
-		avg_pos[t] = (from_pos[t] + to_pos[t])/2;
+		avg_pos[t] = (from_pos[t] + to_pos[t])*0.5;
 		pos_dif[t] = (to_pos[t] - from_pos[t]);
 		seglength += pos_dif[t] * pos_dif[t];
 	}
