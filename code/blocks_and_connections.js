@@ -2422,7 +2422,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 	new_connection.replace("conversion::vector", 0);	
 	new_connection.replace("conversion::projectionAngle", 0);	
 	new_connection.replace("conversion::offset", 0.5);	
-	
+	new_connection.replace("conversion::offset2", 0.5);	
 	sidebar.connection.default_out_applied = 0;
 	sidebar.connection.default_in_applied = 0;
 	var defaultSpread = 0;
