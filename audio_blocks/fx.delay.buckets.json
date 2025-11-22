@@ -108,7 +108,7 @@
 				"name" : "companding",
 				"type" : "float",
 				"values" : ["uni", 1, 4, "lin"],
-				"default" : 0.125,
+				"default" : 0.525,
 				"wrap" : 0,
 				"error_scale" : 0
 			},
@@ -125,7 +125,7 @@
 				"type" : "float",
 				"error_scale" : 0,
 				"values" : ["uni", 0, 1, "lin"],
-				"default" : 0,
+				"default" : 0.16,
 				"wrap" : 0
 			},
 			{
