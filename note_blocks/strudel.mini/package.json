@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@strudel/mini": "^1.2.5"
+  }
+}
