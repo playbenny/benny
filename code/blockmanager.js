@@ -606,6 +606,7 @@ var sidebar = {
 	files_page : "songs",
 	notification : "",
 	text_being_edited : "",
+	ctrl_scrl : 0,
 	channelnaming : ["block","channel"], //set when you bring up the edit channel name mode
 	dropdown : null,
 	midiMapTarget : null, //target for midimapping
