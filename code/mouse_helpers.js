@@ -24,7 +24,7 @@ function play(state){
 				if(playing){
 					ext_sync.state = 1;
 				}else{
-	
+					if(config.get("STOP_EXT_CLOCK_WHEN_BENNY_STOPS")) stop_ext_clocks();
 				}
 			}
 		}
