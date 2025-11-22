@@ -23,6 +23,7 @@
 	"MAX_AUDIO_OUTPUTS" : 24,
 	"smart_soft_pickup" : "for midi controllers with normal potentiometers (as opposed to encoders or motorised potentiometers) benny has a smart method for when a knob or fader's position doesn't match the value it's mapped to - it remaps the fader curve around the difference. this is better than standard soft pickup as there are no dead zones - moving the fader always makes a change of value in the same direction.",
 	"AUDIO_TO_DATA_DOWNSAMPLE" : "this mostly affects the minimum scope zoom and how smooth the scopes look. the default 1 is the best appearance, reducing the amount of samples taken (eg 4 or 8) gives a ~20% cpu use reduction on large patches on low end systems.",
+	"STOP_EXT_CLOCK_WHEN_BENNY_STOPS" : "if this isn't on then the midi ext clock carries on running when you stop benny, and when you start benny it waits for the external clock's 1 before joining in.",
 	"NO_IO_PER_BLOCK" : "in theory this allows blocks with more io to be loaded, but a lot of supporting infrastructure for that is not ready. do not adjust.",
 	"MAX_PARAMETERS" : "max parameters a voice can have. do not adjust.",
 	"MAX_DATA" : 16384,

@@ -24,6 +24,7 @@
 	"AUTO_INCREMENT_SAVE_KEY" : 0,
 	"monofont" : "Consolas",
 	"mainfont" : "Arial",
+	"STOP_EXT_CLOCK_WHEN_BENNY_STOPS" : 0,
 	"sidebar_scrollbar_width" : 27,
 	"sidebar_width_in_units" : 10,
 	"click_buffer_scaledown" : 2,
