@@ -592,7 +592,10 @@ function draw_panels(){
 		if((ui!="blank.ui")&&(ui!="self")&&((ui!=null))){
 			has_ui = 4;
 			if(blocktypes.contains(block_name+"::ui_in_sidebar_height")){
-				has_ui = Math.min(4,blocktypes.get(block_name+"::ui_in_sidebar_height"));
+				has_ui = blocktypes.get(block_name+"::ui_in_sidebar_height");
+				var block_voicecount = voicemap.get(b).length;
+				if((block_voicecount>1) && (blocktypes.contains(block_name+"::ui_in_sidebar_expands"))) has_ui += (block_voicecount-1) * blocktypes.get(block_name+"::ui_in_sidebar_expands");
+				has_ui = Math.min(6,has_ui);
 			}
 			if(blocktypes.contains(block_name+"::no_ui_in_panel")) has_ui = 0;
 			if(bottombar.block==b) has_ui = 0;

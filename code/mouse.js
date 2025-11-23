@@ -265,7 +265,7 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 		}else if(ctrl==0 && sidebar.ctrl_scrl && x<sidebar.x){
 			back_button();
 		}
-		/*if(sidebar.mode == "file_menu")*/ redraw_flag.flag |= 2;
+		redraw_flag.flag |= 2;
 	}
 	if(alt!=usermouse.alt){
 		usermouse.alt = alt;
