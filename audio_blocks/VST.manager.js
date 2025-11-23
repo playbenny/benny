@@ -232,11 +232,11 @@ function transfer_params_and_defaults(){
 	new_blockfile.replace(block_name + "::upsample", ups);
 	var conns = new Dict;
 	if(orthogonal==0){
-		conns.parse('{ "in" : { "audio" : [ "L", "R" ] , "midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ], "automap_poly" : 0 } , "out" : { "audio" : [ "L", "R" ] }  }');
+		conns.parse('{ "in" : { "audio" : [ "L", "R" ] , "midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ], "automap_poly" : 0, "dontdefaultall" : 1 } , "out" : { "audio" : [ "L", "R" ] }  }');
 		new_blockfile.replace(block_name + "::subvoices",1);
 	}else{
 		new_blockfile.replace(block_name + "::subvoices",2);
-		conns.parse('{ "in" : { "audio" : [ "audio in" ] , "midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain"  ], "automap_poly" : 0 } , "out" : { "audio" : [ "audio out" ], "midi" : [ "notes out" ], "parameters" : [ "pitchbend", "modulation", "aftertouch", "sustain" ] }  }');		
+		conns.parse('{ "in" : { "audio" : [ "audio in" ] , "midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain"  ], "automap_poly" : 0, "dontdefaultall" : 1 } , "out" : { "audio" : [ "audio out" ], "midi" : [ "notes out" ], "parameters" : [ "pitchbend", "modulation", "aftertouch", "sustain" ] }  }');		
 	}
 	new_blockfile.replace(block_name + "::connections",conns);
 	new_blockfile.replace(block_name + "::parameters", "A");

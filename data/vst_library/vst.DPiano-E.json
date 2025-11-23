@@ -14,7 +14,8 @@
 			"in" : 			{
 				"audio" : [ "audio in" ],
 				"midi" : [ "notes in", "pitchbend", "modulation", "aftertouch", "sustain" ],
-				"automap_poly" : 0
+				"automap_poly" : 0,
+				"dontdefaultall" : 1
 			}
 ,
 			"out" : 			{
