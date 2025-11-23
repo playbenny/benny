@@ -44,7 +44,7 @@ function parseMidiNote(note) {
 
     if (match) {
         const noteName = match[1].toUpperCase(); // Normalize to uppercase
-        const octave = parseInt(match[2], 10);
+        const octave = parseInt(match[2], 10) + 2;
 
         // Mapping of note names to MIDI note numbers
         const noteToNumber = {

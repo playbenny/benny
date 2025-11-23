@@ -4344,7 +4344,7 @@ function parameter_list_entry(){
 
 	for(var i=0;i<list.length;i++){
 		if(typeof list[i] == 'number' && !isNaN(list[i])){
-			list[i] = (1 + 128*parseFloat(list[i]))/128;
+			list[i] = (1 + 128*parseFloat(list[i]))/127.999;
 		}else{
 			list[i] = 0;
 		}
