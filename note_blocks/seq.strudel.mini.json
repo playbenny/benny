@@ -3,7 +3,7 @@
 		"patcher" : "seq.strudel.mini",
 		"type" : "note",
 		"block_ui_patcher" : "seq.strudel.mini.ui",
-		"help_text" : "the strudel mini notation in benny. ",
+		"help_text" : "the strudel mini notation in benny. experimental beta.",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 2,
 		"ui_in_sidebar_expands" : 1,

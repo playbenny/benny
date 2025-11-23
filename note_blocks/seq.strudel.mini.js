@@ -38,13 +38,17 @@ function setup(x1,y1,x2,y2,sw,mode){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	unit = height / 18;
 	typedMessage = null;
 	if(block>=0){
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
-		//if(!mini) get_connections();
+		if(mini){
+			unit = height / (6 * Math.sqrt(v_list.length));
+		}else{
+			unit = height / (12 * Math.sqrt(v_list.length));
+		}
+		// post("\nwidth/unit =",width/unit);
 		draw();
 	} 
 }
@@ -68,7 +72,8 @@ function fulldraw(){
 		}
 
 		outlet(1,"paintrect",x_pos,y_pos+2+v*rh,x_pos+width,y_pos+(v+1)*rh-2,col[0]*0.25,col[1]*0.25,col[2]*0.25);
-		outlet(1,"moveto",x_pos+4,y_pos+2+(v+0.2)*rh);
+		outlet(1,"moveto",x_pos+4,y_pos+2+unit+rh*v);
+		outlet(1,"font",config.get("monofont"),unit);
 		if(typedMessage!=null && typingRow==v){
 			outlet(1,"frgb",menucolour);
 			outlet(1,"write",typedMessage);

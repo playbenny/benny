@@ -4440,7 +4440,7 @@ function draw_sidebar(){
 
 					if(ui_h>0){
 						sidebar.panel = 1;
-						sidebar.panel_keycapture = blocktypes.get(block_name+"::ui_in_sidebar_gets_keypresses");
+						//sidebar.panel_keycapture = blocktypes.get(block_name+"::ui_in_sidebar_gets_keypresses");
 						sidebar.panel_y_range = [y_offset,y_offset+ui_h*fontheight];
 						ui_h *= fontheight;
 						//draw the panelui for this block here
@@ -4489,6 +4489,7 @@ function draw_sidebar(){
 				}
 				lcd_main.message("paintrect", sidebar.x,y_offset,endx,y_offset+fontheight*0.5,ebg);
 				lcd_main.message("frgb" , efg);
+				lcd_main.message("font", mainfont,fontsmall);
 				if(view_changed===true) click_rectangle( sidebar.x,y_offset,endx,y_offset+fontheight*0.5,mouse_index,1);
 				mouse_index++;
 				lcd_main.message("moveto" ,sidebar.x+2*fo1, y_offset+fontheight*0.4);

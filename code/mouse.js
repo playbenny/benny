@@ -1506,7 +1506,13 @@ function keydown(key){
 			ui_poly.message("setvalue",  custom_block+1, "keydown", key, usermouse.x, usermouse.y);
 			return 1;
 		}
-	}
+	}else if((displaymode=="panels") && 
+			((mouse_click_actions[usermouse.got_i] == set_display_mode && mouse_click_parameters[usermouse.got_i] == "custom")
+			|| (mouse_click_actions[usermouse.got_i] == select_block))){
+		post("\n sending keypress to panel ui instead ");
+		ui_poly.message("setvalue", mouse_click_values[usermouse.got_i] + 1, "keydown", key, usermouse.x, usermouse.y);
+		return 1;
+	}else if((displaymode=="panels")) post("\npanels keypress:",JSON.stringify(mouse_click_actions[usermouse.got_i]),"p:",mouse_click_parameters[usermouse.got_i],"v:",mouse_click_values[usermouse.got_i])
 	if(keymap.contains("modal::"+displaymode)){
 		if(keymap.contains("modal::"+displaymode+"::"+key)){
 			var action = keymap.get("modal::"+displaymode+"::"+key);
