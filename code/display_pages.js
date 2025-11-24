@@ -4168,8 +4168,7 @@ function draw_sidebar(){
 						if(ci>-2){
 							automap.mapped_k_v = sidebar.selected_voice;
 							if(sidebar.selected_voice == -1){
-								post(block_name+"--"+blocktypes.get(block_name+"::connections::in::automap_poly"));
-
+								// post(block_name+"--"+blocktypes.get(block_name+"::connections::in::automap_poly"));
 								if(blocktypes.contains(block_name+"::connections::in::automap_poly")&&blocktypes.get(block_name+"::connections::in::automap_poly")==0){
 									// post("\nAUTOMAP POLY 0");
 									// force selection to not be block if this key is set 

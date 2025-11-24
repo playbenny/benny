@@ -288,8 +288,8 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 				voicecount(new_block_index,blocktypes.get(block_name+"::max_polyphony"));
 			}
 		}else{
-			if(hardware_metermap.contains(block_index)){
-				hardware_metermap.remove(block_index);
+			if(hardware_metermap.contains(new_block_index)){
+				hardware_metermap.remove(new_block_index);
 			}
 		}
 
