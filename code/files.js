@@ -243,12 +243,12 @@ function polybuffer_create_blank(length,channels){
 function check_exists(filepath){
 	var testfile = new File(filepath);
 	if(testfile.isopen){
-		post(/*"\n",filepath,*/" found OK");
+		// post(/*"\n",filepath,*/" found OK");
 		testfile.close();
 		testfile.freepeer();
 		return 1;
 	}else{
-		post("NOT FOUND:",filepath );
+		// post("NOT FOUND:",filepath );
 		testfile.close();
 		testfile.freepeer();
 		return 0;
@@ -274,7 +274,7 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 		}
 		if(exists==-1){
 			if((wavepath==null)||(wavepath=="")){
-				post("\nbad filename, skipping load fn");
+				post("\nbad filename or unsaved temporary wave buffer slot, skipping load fn");
 				return -2;
 			}else if(check_exists(wavepath)){
 				waves_polybuffer.append(wavepath);
@@ -287,7 +287,7 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 				last_folder = last_slash.pop();
 				var up_one = pathonly.split(last_folder)[0];
 				if(waves_search_paths.indexOf(up_one)<0){
-					post("\n added ",up_one,"to search path");
+					// post("\n added ",up_one,"to search path");
 					waves_search_paths.push(up_one);
 				}
 				waves_search_paths.push(SONGS_FOLDER);
@@ -299,7 +299,7 @@ function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into pol
 						//post("\nfound something!",r);
 						s=99999;
 					}else{
-						post("\n - not found in ",waves_search_paths[s]);
+						// post("\n - not found in ",waves_search_paths[s]);
 					}
 				}
 				if(r==-1){
@@ -695,7 +695,7 @@ function import_song(){
 						if(loading.wait>1) post("\nblock flagged as exclusive: searching for existing copy of ",block_name);
 						for(i=0;i<MAX_BLOCKS;i++){
 							if(blocks.get("blocks["+i+"]::name") == block_name){
-								post("found:",i)
+								post("found existing copy of",block_name,":",i);
 								t= 1;
 								loading.mapping[b] = i; //this next line stops orphaned bits of clock being left behind
 								if(thisblock.get("poly::voices")<blocks.get("blocks["+i+"]::poly::voices")) thisblock.replace("poly::voices",blocks.get("blocks["+i+"]::poly::voices"));
