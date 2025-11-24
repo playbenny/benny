@@ -1507,8 +1507,7 @@ function keydown(key){
 			return 1;
 		}
 	}else if((displaymode=="panels") && 
-			((mouse_click_actions[usermouse.got_i] == set_display_mode && mouse_click_parameters[usermouse.got_i] == "custom")
-			|| (mouse_click_actions[usermouse.got_i] == select_block))){
+			(mouse_click_actions[usermouse.got_i] == custom_mouse_passthrough)){
 		// post("\n sending keypress to panel ui instead ");
 		ui_poly.message("setvalue", mouse_click_values[usermouse.got_i] + 1, "keydown", key, usermouse.x, usermouse.y);
 		return 1;

@@ -27,7 +27,7 @@ var textCursor = null;
 var cursorState = 0;
 var typedMessage = null;
 var typingRow = -1;
-
+var rowwidth = 30;
 
 
 function setup(x1,y1,x2,y2,sw,mode){
@@ -42,7 +42,6 @@ function setup(x1,y1,x2,y2,sw,mode){
 	height = y2-y1;
 	x_pos = x1;
 	y_pos = y1;
-	typedMessage = null;
 	if(block>=0){
 		block_colour = blocks.get("blocks["+block+"]::space::colour");
 		v_list = voicemap.get(block);
@@ -76,21 +75,60 @@ function fulldraw(){
 		if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[v]+"::"+v+"::pattern")){
 			patternString = blocks.get("blocks["+block+"]::stored_patterns::"+p[v]+"::"+v+"::pattern");
 		}
-
 		outlet(1,"paintrect",x_pos,y_pos+2+v*rh,x_pos+width,y_pos+(v+1)*rh-2,col[0]*0.25,col[1]*0.25,col[2]*0.25);
 		outlet(1,"moveto",x_pos+4,y_pos+2+unit+rh*v);
 		outlet(1,"font",config.get("monofont"),unit);
 		if(typedMessage!=null && typingRow==v){
 			textCursor = Math.min(textCursor,typedMessage.length);
-			var displayText = typedMessage.slice(0,textCursor)+"|"+typedMessage.slice(textCursor);
-			outlet(1,"frgb",menucolour);
-			outlet(1,"write",displayText);
+			renderText(typedMessage,v, textCursor);
 		}else if(patternString!=""){
-			outlet(1,"frgb",block_colour);
-			outlet(1,"write",patternString);
+			renderText(patternString,v,-1);
 		}else{
 			outlet(1,"frgb",col[0]*0.4,col[1]*0.4,col[2]*0.4);
 			outlet(1,"write","type a pattern here...");
+		}
+	}
+}
+
+function renderText(message, row, cursor){
+	//cycles through colours based on bracket depth.
+	var depth = 0;
+	var colour = 0;
+	var pal_len = config.getsize("palette::gamut");
+	var x = x_pos+4;
+	var x_step = unit/1.8;
+	y = y_pos+rh*row+unit;
+	function scaleRGB(s, c){
+		return [s*c[0],s*c[1],s*c[2]];
+	}
+	var bri = (row == typingRow)*0.4 + 0.7;
+	outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+	for(var i=0;i<message.length;i++){
+		if(i==cursor){
+			outlet(1,"moveto",x-0.2*unit,y);
+			outlet(1,"frgb",menucolour);
+			outlet(1,"write",cursorState<0.5 ? '|' : ' ');
+			cursorState = (cursorState+0.1)%1;
+			outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+		}
+		if((message[i] == '[') || (message[i] == '<')){
+			depth++;
+			colour = (depth * 4) % pal_len;
+			outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+		}
+		outlet(1,"moveto",x,y);
+		outlet(1,"write",message[i]);
+		if((message[i] == ']') || (message[i] == '>')){
+			depth--;
+			if(depth<0)depth =0;
+			colour = (depth * 4) % pal_len;
+			outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+		}
+		x+=x_step;
+		if(x>x_pos+width-unit){
+			x = x_pos + 4; 
+			y+=unit;
+			rowwidth=i+1;
 		}
 	}
 }
@@ -141,10 +179,15 @@ function keydown(key,x,y){
 		parseTypedMessage();
 	}else if(key == -3){//esc
 		typedMessage=null;
+		typingRow=-1;
+	}else if(key==-11){
+		textCursor--;
+	}else if(key==-12){
+		textCursor++;
 	}else if(key==-6){
-		typedMessage = typedMessage.slice(0,textCursor)+typedMessage.slice(textCursor+1,0);
+		typedMessage = typedMessage.slice(0,textCursor).concat(typedMessage.slice(textCursor+1));
 	}else if(key==-7){
-		typedMessage = typedMessage.slice(0,textCursor-1)+typedMessage.slice(textCursor,0);
+		typedMessage = typedMessage.slice(0,textCursor-1).concat(typedMessage.slice(textCursor));
 		textCursor--;
 	}else{
 		if(key>512){
@@ -168,31 +211,51 @@ function keydown(key,x,y){
 		if(typedMessage == null){
 			typingRow = Math.floor(v_list.length * (y-y_pos) / height);
 			textCursor = Math.floor(1.8*(x-x_pos)/unit);
+			typedMessage = "";
 		}
-		if(typedMessage == null) typedMessage = "";
 		typedMessage = typedMessage.slice(0,textCursor)+s+typedMessage.slice(textCursor);
 		textCursor++;	
 	}
 	fulldraw();
 }
 
+var scrcounter=0;
+var mouseflag =0;
 function mouse(x,y,l,s,a,c,scr){
 	if(l==1){
-		typingRow = Math.floor(v_list.length * (y-y_pos)/height);
-		textCursor = Math.floor(1.8*(x-x_pos)/unit);
-		if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern")){
-			typedMessage = blocks.get("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern");
-		}
-		if(typedMessage == null) typedMessage = "";
-		fulldraw();
-	}else if(scr){
-		if(typingRow>-1){
-			textCursor = Math.max(0, textCursor+2*(scr>0)-1);
+		var newrow = Math.floor(v_list.length * (y-y_pos) / height);
+		if(typingRow!=newrow){
+			typingRow = newrow;
+			// post("\nnew row",newrow,typingRow);
+			// if(typedMessage == null){
+				if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern")){
+					typedMessage = blocks.get("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern");
+				}
+			// }
+			textCursor = Math.floor(1.8*(x-x_pos-4)/unit);
+			textCursor += Math.floor((y-y_pos-rh*newrow)/unit)*rowwidth;
 		}else{
-			mouse(x,unit,l,s,a,c,0);
-			return 0;
+			textCursor = Math.floor(1.8*(x-x_pos-4)/unit);
+			textCursor += Math.floor((y-y_pos-rh*newrow)/unit)*rowwidth;
 		}
+		mouseflag = 1;
+	}else if(scr!=0 && scr!=1){
+		if(typingRow>-1){
+			scrcounter+=scr;
+			if(scrcounter>1){
+				textCursor++;
+				scrcounter=0;
+				textCursor = Math.max(0, textCursor+2*(scr>0)-1);
+			}else if(scrcounter<-1){
+				textCursor--;
+				scrcounter=0;
+				textCursor = Math.max(0, textCursor+2*(scr>0)-1);
+			}
+		}
+		mouseflag=1;
+	}else if(mouseflag){
 		fulldraw();
+		mouseflag=0;
 	}
 }
 
@@ -200,7 +263,9 @@ function parseTypedMessage(){
 	var v = typingRow;
 	blocks.replace("blocks["+block+"]::stored_patterns::"+p[v]+"::"+v+"::pattern",typedMessage);
 	messnamed("strudel_mini",block,v,"bang");
+	post("\nparse");
 	typedMessage = null;
+	typingRow = -1;
 }
 
 function parseMidiNote(note) {
@@ -227,209 +292,3 @@ function parseMidiNote(note) {
 }
 
 function enabled(){}
-
-//currently only bothers with param-param ones
-function get_connections(){
-	target_block = [];
-	for(var i=connections.getsize("connections")-1; i>=0; i--){
-		if(connections.contains("connections["+i+"]::from")
-			 && connections.get("connections["+i+"]::from::number") == block
-			 && connections.get("connections["+i+"]::from::output::type") == "parameters"
-			 && connections.get("connections["+i+"]::to::input::type") == "parameters"){
-			var source = connections.get("connections["+i+"]::from::voice");
-			var details = { };
-			var number = connections.get("connections["+i+"]::to::input::number");
-			details.toblock = connections.get("connections["+i+"]::to::number");
-			if(blocks.contains("blocks["+details.toblock+"]::label")){
-				details.destname = blocks.get("blocks["+details.toblock+"]::label");
-			}else{
-				details.destname = blocks.get("blocks["+details.toblock+"]::name");
-			}
-			details.destvoice = connections.get("connections["+i+"]::to::voice");
-			if(details.destvoice == "all"){
-				details.destvoice = voicemap.get(details.toblock);
-				if(Array.isArray(details.destvoice)) details.destvoice = details.destvoice[0];
-			}
-			details.paramaddress = MAX_PARAMETERS * details.toblock + number;
-			details.paramlabel = blocktypes.get(blocks.get("blocks["+details.toblock+"]::name")+"::parameters["+number+"]::name");
-			details.pvalues = blocktypes.get(blocks.get("blocks["+details.toblock+"]::name")+"::parameters["+number+"]::values");
-			details.ptype = blocktypes.get(blocks.get("blocks["+details.toblock+"]::name")+"::parameters["+number+"]::type");
-			details.wrap = blocktypes.get(blocks.get("blocks["+details.toblock+"]::name")+"::parameters["+number+"]::wrap");
-			details.scale = connections.get("connections["+i+"]::conversion::scale");
-			details.offset = connections.get("connections["+i+"]::conversion::offset");
-			var srclist;
-			if(source == "all"){
-				srclist = voicemap.get(block);
-				if(!Array.isArray(srclist)) srclist = [srclist];
-				for(var ii = 0; ii<srclist.length;ii++) srclist[ii]=ii;
-			}else{
-				srclist = [source - 1];
-			}
-			// post("\nnumber",i,"srclist",srclist,"details",JSON.stringify(details));
-			for(var ii=0;ii<srclist.length;ii++){
-				if(target_block[srclist[ii]]==null)target_block[srclist[ii]] = [];
-				target_block[srclist[ii]].push(details);
-			}
-		}
-	}
-	// post("\ncollected connections,\n",JSON.stringify(target_block));
-}
-
-
-function get_parameter_label(p_type,wrap,pv,p_values){
-	var pvp="";
-	if(p_type == "menu_f"){
-		var pv2;
-		if(wrap){
-			pv *= (p_values.length-0.0001);
-			pv = Math.floor(pv);
-			pv2 = (pv+1) % (p_values.length);
-			pv = pv % (p_values.length);											
-		}else{
-			pv *= (p_values.length-1);
-			pv = Math.floor(pv);
-			pv2 = Math.min(pv+1,p_values.length-1);
-			pv = Math.min(pv,p_values.length-1);											
-		}
-		if(pv==pv2){
-			pvp = p_values[pv];	
-		}else{
-			pvp = p_values[pv]+ "-"+ p_values[pv2];
-		}	
-	}else if((p_type == "menu_i")||(p_type == "menu_b")||(p_type=="menu_l")||(p_type=="menu_d")||(p_type=="scale")){
-		pv *= (p_values.length-0.0001);
-		pv = Math.min(Math.floor(pv),p_values.length-1);
-		pvp = p_values[pv];
-	}else if((p_type == "wave")){
-		pv *= (MAX_WAVES-0.0001);
-		pv = Math.floor(pv+1);
-		var wnam = "-";
-		if(waves_dict.contains("waves["+pv+"]::name")) wnam = waves_dict.get("waves["+pv+"]::name");
-		pvp = pv+" "+wnam;
-	}else if((p_type == "float") || (p_type == "int") || (p_type=="float4") || (p_type=="note")){
-		if(p_values[3] == "exp"){
-			if(p_values[0] == "uni"){
-				pv = Math.pow(2, pv) - 1;
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = Math.pow(2, pv) - 1;
-				}else{
-					pv = -(Math.pow(2, -pv) - 1);
-				}
-				pv += 1;
-				pv *= 0.5;
-			}
-		}else if(p_values[3] == "exp10"){
-			if(p_values[0] == "uni"){
-				pv = (Math.pow(10, pv) - 1)*0.11111111111111111111111111111111;
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = (Math.pow(10, pv) - 1)*0.11111111111111111111111111111111;
-				}else{
-					pv = -0.11111111111111111111111111111111*(Math.pow(10, -pv) - 1);
-				}
-				pv += 1;
-				pv /= 2;
-			}
-		}else if(p_values[3] == "exp100"){
-			if(p_values[0] == "uni"){
-				pv = (Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = (Math.pow(100, pv) - 1)*0.01010101010101010101010101010101;
-				}else{
-					pv = -0.01010101010101010101010101010101*(Math.pow(100, -pv) - 1);
-				}
-				pv += 1;
-				pv /= 2;
-			}
-		}else if(p_values[3] == "exp1000"){
-			if(p_values[0] == "uni"){
-				pv = (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = (Math.pow(1000, pv) - 1)*0.001001001001001001001001001001;
-				}else{
-					pv = -0.001001001001001001001001001001*(Math.pow(1000, -pv) - 1);
-				}
-				pv += 1;
-				pv /= 2;
-			}
-		}else if(p_values[3] == "exp.1"){
-			if(p_values[0] == "uni"){
-				pv = -1.1111111111111111111111111111111*(Math.pow(.1, pv) - 1);
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = -1.1111111111111111111111111111111*(Math.pow(0.1, pv) - 1);
-				}else{
-					pv = 1.1111111111111111111111111111111*(Math.pow(0.1, -pv) - 1);
-				}
-				pv += 1;
-				pv /= 2;
-			}
-		}else if(p_values[3] == "exp.01"){
-			if(p_values[0] == "uni"){
-				pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = -1.010101010101010101010101010101*(Math.pow(0.01, pv) - 1);
-				}else{
-					pv = 1.010101010101010101010101010101*(Math.pow(0.01, -pv) - 1);
-				}
-				pv += 1;
-				pv /= 2;
-			}
-		}else if(p_values[3] == "exp.001"){
-			if(p_values[0] == "uni"){
-				pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
-			}else{
-				pv -=0.5;
-				pv *=2;
-				if(pv>=0){
-					pv = -1.001001001001001001001001001001*(Math.pow(0.001, pv) - 1);
-				}else{
-					pv = 1.001001001001001001001001001001*(Math.pow(0.001, -pv) - 1);
-				}
-				pv += 1;
-				pv /= 2;
-			}
-		}else if(p_values[3] == "s"){
-			if(p_values[0] == "uni"){
-				pv = 0.5 - 0.5 * Math.cos(pv*PI);
-			}else{
-				pv -=0.5;
-				pv *=2;
-				pv = 0.5 - 0.5 * Math.cos(pv*PI);
-				pv += 1;
-				pv /= 2;
-			}
-		}
-		pvp = p_values[1] + (p_values[2]-p_values[1]-0.0001)*pv;
-		if(p_type == "int"){
-			pvp = Math.floor(p_values[1] + (0.99+p_values[2]-p_values[1])*pv);
-		}else if(p_type == "note"){
-			pvp = note_names[Math.floor(pvp)];
-		}else if(p_type == "float4"){
-			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-			var pre = 4+Math.floor(Math.log(Math.abs(pv*10)+0.1)/Math.log(10));
-			pvp = pv.toPrecision(pre);
-		}else{
-			pv = p_values[1] + (p_values[2]-p_values[1])*pv;
-			var pre = 2+Math.floor(Math.log(Math.abs(pv*10)+0.1)/Math.log(10));
-			pvp = pv.toPrecision(pre);
-		}
-	}
-	return pvp;
-}
