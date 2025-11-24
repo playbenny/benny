@@ -23,6 +23,10 @@ var notelist = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 var menucolour,menudark,block_colour=[0,255,0];
 var change;
 var target_block = [];
+var textCursor = null;
+var cursorState = 0;
+var typedMessage = null;
+var typingRow = -1;
 
 
 
@@ -65,6 +69,8 @@ function draw(){
 function fulldraw(){
 	rh = height / v_list.length;
 	var col = block_colour;
+	outlet(0,"custom_ui_element","mouse_passthrough",x_pos,y_pos,width+x_pos,height+y_pos,0,0,0,block,1);
+
 	for(var v=0;v<v_list.length;v++){
 		var patternString = "";
 		if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[v]+"::"+v+"::pattern")){
@@ -75,8 +81,10 @@ function fulldraw(){
 		outlet(1,"moveto",x_pos+4,y_pos+2+unit+rh*v);
 		outlet(1,"font",config.get("monofont"),unit);
 		if(typedMessage!=null && typingRow==v){
+			textCursor = Math.min(textCursor,typedMessage.length);
+			var displayText = typedMessage.slice(0,textCursor)+"|"+typedMessage.slice(textCursor);
 			outlet(1,"frgb",menucolour);
-			outlet(1,"write",typedMessage);
+			outlet(1,"write",displayText);
 		}else if(patternString!=""){
 			outlet(1,"frgb",block_colour);
 			outlet(1,"write",patternString);
@@ -122,9 +130,6 @@ function store(){
 	messnamed("to_blockmanager","store_ok_done",block);
 }
 
-var typedMessage = null;
-var typingRow = -1;
-
 function keydown(key,x,y){
 	if(typedMessage == null){
 		typingRow = Math.floor(v_list.length * (y-y_pos) / height);
@@ -136,8 +141,11 @@ function keydown(key,x,y){
 		parseTypedMessage();
 	}else if(key == -3){//esc
 		typedMessage=null;
-	}else if((key==-6)||(key==-7)){
-		typedMessage = typedMessage.slice(0, -1);
+	}else if(key==-6){
+		typedMessage = typedMessage.slice(0,textCursor)+typedMessage.slice(textCursor+1,0);
+	}else if(key==-7){
+		typedMessage = typedMessage.slice(0,textCursor-1)+typedMessage.slice(textCursor,0);
+		textCursor--;
 	}else{
 		if(key>512){
 			if(key==556){
@@ -159,13 +167,35 @@ function keydown(key,x,y){
 		
 		if(typedMessage == null){
 			typingRow = Math.floor(v_list.length * (y-y_pos) / height);
+			textCursor = Math.floor(1.8*(x-x_pos)/unit);
 		}
 		if(typedMessage == null) typedMessage = "";
-		typedMessage = typedMessage.concat(s);
-	
+		typedMessage = typedMessage.slice(0,textCursor)+s+typedMessage.slice(textCursor);
+		textCursor++;	
 	}
 	fulldraw();
 }
+
+function mouse(x,y,l,s,a,c,scr){
+	if(l==1){
+		typingRow = Math.floor(v_list.length * (y-y_pos)/height);
+		textCursor = Math.floor(1.8*(x-x_pos)/unit);
+		if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern")){
+			typedMessage = blocks.get("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern");
+		}
+		if(typedMessage == null) typedMessage = "";
+		fulldraw();
+	}else if(scr){
+		if(typingRow>-1){
+			textCursor = Math.max(0, textCursor+2*(scr>0)-1);
+		}else{
+			mouse(x,unit,l,s,a,c,0);
+			return 0;
+		}
+		fulldraw();
+	}
+}
+
 function parseTypedMessage(){
 	var v = typingRow;
 	blocks.replace("blocks["+block+"]::stored_patterns::"+p[v]+"::"+v+"::pattern",typedMessage);
