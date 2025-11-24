@@ -4171,7 +4171,7 @@ function draw_sidebar(){
 								post(block_name+"--"+blocktypes.get(block_name+"::connections::in::automap_poly"));
 
 								if(blocktypes.contains(block_name+"::connections::in::automap_poly")&&blocktypes.get(block_name+"::connections::in::automap_poly")==0){
-									post("\nAUTOMAP POLY 0");
+									// post("\nAUTOMAP POLY 0");
 									// force selection to not be block if this key is set 
 									sidebar.selected_voice = 0; //this is a little hacky but it works?
 									redraw_flag.flag |= 8; //block_and_wire_colours();

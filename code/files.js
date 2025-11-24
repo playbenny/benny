@@ -256,7 +256,7 @@ function check_exists(filepath){
 }
 
 function polybuffer_load_wave(wavepath,wavename,dictpath){ //loads wave into polybuffer if not already loaded.
-	post("\n\nPB LOAD WAVE, path:",wavepath,"\n\nname",wavepath,"\ndict",dictpath);
+	// post("\n\nPB LOAD WAVE, path:",wavepath,"\n\nname",wavepath,"\ndict",dictpath);
 	if((wavename.split("-")[0] == "unsaved.looper")||(wavename.split("$")[0] == "unsaved.looper")){ //creates a blank buffer if a looper block needs one
 		var length = wavename.split("$")[1];
 		var channels = wavename.split("$")[2];
