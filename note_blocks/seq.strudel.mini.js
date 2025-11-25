@@ -226,12 +226,9 @@ function mouse(x,y,l,s,a,c,scr){
 		var newrow = Math.floor(v_list.length * (y-y_pos) / height);
 		if(typingRow!=newrow){
 			typingRow = newrow;
-			// post("\nnew row",newrow,typingRow);
-			// if(typedMessage == null){
-				if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern")){
-					typedMessage = blocks.get("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern");
-				}
-			// }
+			if(blocks.contains("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern")){
+				typedMessage = blocks.get("blocks["+block+"]::stored_patterns::"+p[typingRow]+"::"+typingRow+"::pattern");
+			}
 			textCursor = Math.floor(1.8*(x-x_pos-4)/unit);
 			textCursor += Math.floor((y-y_pos-rh*newrow)/unit)*rowwidth;
 		}else{
