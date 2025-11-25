@@ -47,6 +47,11 @@
 				"contains" : [3,3,3,3,4],
 				"colour" : 10,
 				"height":0
+			},
+			{
+				"contains" : [5],
+				"colour" : 20,
+				"height" : 0.6
 			}
 		],
 		"patterns" : {
@@ -55,7 +60,7 @@
 			"playhead_offset" : 1
 		},
 		"panel" : {
-			"parameters" : [0]
+			"parameters" : [5]
 		},
 		"parameters" : [
 			{
@@ -94,6 +99,14 @@
 				"name" : "edit_scales",
 				"type" : "button",
 				"values" : ["core","jump to_scales_block","jump_to_scales_shapes"],
+				"default" : 0
+			},
+			{
+				"name" : "rev",
+				"type" : "menu_l",
+				"columns" : 3,
+				"values" : ["normal", "rev", "jux rev"],
+				"wrap" : 0,
 				"default" : 0
 			}
 		]

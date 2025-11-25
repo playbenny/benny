@@ -6,6 +6,7 @@ const { mini } = require('@strudel/mini');
 let currentCycle = 0;
 let currentPattern = "";
 let playingSeq = "aseq";
+let rev_jux = 0;
 
 function parseAndSend(){
   if(currentPattern == null || currentPattern == "") return 0;
@@ -21,16 +22,28 @@ function parseAndSend(){
   // send each event as an instruction to store it in seq
   events.forEach(hap => {
     const value = hap.value;
-    const noteNum = parseMidiNote(value);
-
-    if(noteNum){
-      maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,noteNum,Number(hap.whole.end - hap.whole.begin));
-    }else if(typeof(value) === "number"){
-      // maxApi.post("number",value);
-      maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,-value,Number(hap.whole.end - hap.whole.begin));
-    }else{
-      
-      maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,value,Number(hap.whole.end - hap.whole.begin));
+    let noteNum = null;
+    if(typeof(value) !== "number"){
+      noteNum = parseMidiNote(value.toString());
+    }
+    
+    if(rev_jux != 1){
+      if(noteNum){
+        maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,noteNum,Number(hap.whole.end - hap.whole.begin));
+      }else if(typeof(value) === "number"){
+        maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,24-value,Number(hap.whole.end - hap.whole.begin));
+      }else{
+        maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,value,Number(hap.whole.end - hap.whole.begin));
+      }
+    }
+    if(rev_jux>0){
+      if(noteNum){
+        maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),noteNum,Number(hap.whole.end - hap.whole.begin));
+      }else if(typeof(value) === "number"){
+        maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),24-value,Number(hap.whole.end - hap.whole.begin));
+      }else{
+        maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),value,Number(hap.whole.end - hap.whole.begin));
+      }    
     }
   });
   maxApi.outlet("seq", "seq", targetSeq);
@@ -39,6 +52,7 @@ function parseAndSend(){
 }
 
 function parseMidiNote(note) {
+  try {
     const midiNotePattern = /([A-Ga-g][#b]?)(\d+)/;
     const match = note.match(midiNotePattern);
 
@@ -59,6 +73,10 @@ function parseMidiNote(note) {
     } else {
         return null; // No valid note found
     }
+  } catch (err) {
+    maxApi.post(`Error: ${err.message}`);
+    return null;
+  }
 }
 
 // Parse a mini notation pattern and output as dictionary
@@ -74,6 +92,12 @@ maxApi.addHandler('pattern', (patternString) => {
 maxApi.addHandler('cycle', (cycleNumber) => {
     currentCycle = cycleNumber;
     parseAndSend();
+});
+
+maxApi.addHandler('rev_jux', (mode) => {
+  if(rev_jux!=2 && mode==2)maxApi.post("thanks yaxu");
+  rev_jux = mode;
+  parseAndSend();
 });
 
 
