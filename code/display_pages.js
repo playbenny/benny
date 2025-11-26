@@ -6656,7 +6656,12 @@ function draw_sidebar(){
 						post("\nthis block needs you to send midi direct to the voices, not to the main block polyphonic allocator.")
 						t_i_v = [1];
 						connections.replace("connections["+i+"]::to::voice",1);
+						wire_ends[i] = [-12.1212];
+						draw_wire(i);
 						redraw_flag.flag |= 4;
+						not_to_block = 1;
+						timed_sidebar_notification("this block needs you to send midi direct to the voices, not to the main block polyphonic allocator.",1000);
+						return 0;
 					}
 					not_to_block = 1;
 				}
