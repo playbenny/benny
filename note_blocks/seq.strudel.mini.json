@@ -23,7 +23,7 @@
 				"automap_to" : 0
 			},
 			"out" : {
-				"midi" : [ "notes out" ],
+				"midi" : [ "notes out","bd","sd","cp","ch","oh","rd","lt","mt","ht" ],
 				"dontdefaultall" : 1,
 				"default" : 0
 			}

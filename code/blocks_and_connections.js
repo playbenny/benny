@@ -2652,7 +2652,7 @@ function check_for_connection_overlap(n){
 				//now have to check if voices match
 				var frommatch=0;
 				var fv = connections.get("connections["+ti+"]::from::voice");
-				post("\ntesting",ti,"against",n,"fv",fv,"f_v",f_v);
+				// post("\ntesting",ti,"against",n,"fv",fv,"f_v",f_v);
 				if((f_v == "all") || (fv == "all")){
 					frommatch = 1;
 				}else{
@@ -2669,7 +2669,7 @@ function check_for_connection_overlap(n){
 				if(frommatch){
 					var tomatch=0;
 					var tv = connections.get("connections["+ti+"]::to::voice");
-					post("tv",tv,"t_v",t_v);
+					// post("tv",tv,"t_v",t_v);
 					if((t_v == "all") || (tv == "all")){
 						tomatch = 1;
 					}else{
