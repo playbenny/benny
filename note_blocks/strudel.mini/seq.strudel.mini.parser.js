@@ -79,7 +79,6 @@ function parseMidiNote(note) {
   }
 }
 
-// Parse a mini notation pattern and output as dictionary
 maxApi.addHandler('pattern', (patternString) => {
   try {
     currentPattern = patternString;

@@ -8,7 +8,8 @@
 		"max_polyphony" : 0,
 		"connections" : {
 			"in" : {
-				"midi" : [ "notes in", "force pass next", "force discard next" ]
+				"midi" : [ "notes in", "force pass next", "force discard next" ],
+				"automap_poly" : 0
 			},
 			"out" : {
 				"midi" : [ "passed", "discarded" ]

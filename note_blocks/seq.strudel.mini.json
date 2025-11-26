@@ -51,7 +51,8 @@
 			{
 				"contains" : [5],
 				"colour" : 20,
-				"height" : 0.6
+				"height" : 1,
+				"onepervoice" : 1
 			}
 		],
 		"patterns" : {
