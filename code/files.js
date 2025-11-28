@@ -1873,8 +1873,11 @@ function convert_pre_0_6_connection(){
 		if(ttype == "parameters" || ttype == "audio" || ttype == "hardware" || ttype == "block"){
 			//to is 1d
 			if(ftype == "midi"){
-				post("replaced rotate with projection for this connection,",ftype,ttype);
-				new_connection.replace("conversion::projectionAngle",new_connection.get("conversion::rotate"));
+				var ro = new_connection.get("conversion::rotate");
+				if(ro == null) ro = 0;
+				if(typeof ro === 'string') ro = parseFloat(ro);
+				post("replaced rotate with projection for this connection,",ftype,ttype,ro);
+				new_connection.replace("conversion::projectionAngle", ro);
 				new_connection.replace("conversion::offset2",new_connection.get("conversion::offset"));
 				new_connection.replace("conversion::offset",0.5);
 			}else if((ftype == "audio" || ftype == "hardware") && (ttype == "audio" || ttype == "hardware")){

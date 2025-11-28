@@ -4894,7 +4894,7 @@ function draw_sidebar(){
 										var count = p_values.length;
 										if(count < 9){
 											if(sidebar.selected_voice==-1){
-												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[0]+curp)*8.99);
+												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[0]+curp)*7.99)+1;
 												// poolno = Math.floor(parameter_value_buffer.peek(1,MAX_PARAMETERS*block+curp)*7.99)+1;
 											}else{
 												poolno = Math.floor(voice_parameter_buffer.peek(1,MAX_PARAMETERS*vl[sidebar.selected_voice]+curp)*7.99)+1;
@@ -6372,6 +6372,8 @@ function draw_sidebar(){
 										var scale = connections.get("connections["+i+"]::conversion::scale");
 										var vector = connections.get("connections["+i+"]::conversion::vector");
 										var projectionAngle =  connections.get("connections["+i+"]::conversion::projectionAngle");
+										if(projectionAngle === null) projectionAngle = 0;
+										if( typeof projectionAngle === 'string') projectionAngle = parseFloat(projectionAngle);
 										var offset = connections.get("connections["+i+"]::conversion::offset");
 										var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 										var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
@@ -6677,6 +6679,8 @@ function draw_sidebar(){
 			var scale = connections.get("connections["+i+"]::conversion::scale");
 			var vector = connections.get("connections["+i+"]::conversion::vector");
 			var projectionAngle = connections.get("connections["+i+"]::conversion::projectionAngle");
+			if(projectionAngle === null) projectionAngle = 0;
+			if( typeof projectionAngle === 'string') projectionAngle = parseFloat(projectionAngle);
 			var offset = connections.get("connections["+i+"]::conversion::offset");
 			var offset2 = connections.get("connections["+i+"]::conversion::offset2");
 			var force_unity = connections.get("connections["+i+"]::conversion::force_unity");
