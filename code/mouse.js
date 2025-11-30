@@ -432,6 +432,11 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 							var pb = mouse_click_parameters[usermouse.last.got_i];
 							//post("params",pb);
 							if(alt == 1){
+								post("\nsma:",pb);
+								if(pb[0]>MAX_BLOCKS){
+									pb[0] = paramslider_details[pb[0]][9];
+									post("swapped to",pb[0]);
+								}
 								sidebar_parameter_knob(pb,param_defaults[pb[1]][pb[0]]);
 								redraw_flag.flag|=2;								
 							}else if(usermouse.ctrl == 1){
@@ -1511,7 +1516,7 @@ function keydown(key){
 		// post("\n sending keypress to panel ui instead ");
 		ui_poly.message("setvalue", mouse_click_values[usermouse.got_i] + 1, "keydown", key, usermouse.x, usermouse.y);
 		return 1;
-	}else if((displaymode=="panels")) post("\npanels keypress:",JSON.stringify(mouse_click_actions[usermouse.got_i]),"p:",mouse_click_parameters[usermouse.got_i],"v:",mouse_click_values[usermouse.got_i])
+	}//else if((displaymode=="panels")) post("\npanels keypress:",JSON.stringify(mouse_click_actions[usermouse.got_i]),"p:",mouse_click_parameters[usermouse.got_i],"v:",mouse_click_values[usermouse.got_i])
 	if(keymap.contains("modal::"+displaymode)){
 		if(keymap.contains("modal::"+displaymode+"::"+key)){
 			var action = keymap.get("modal::"+displaymode+"::"+key);

@@ -910,7 +910,7 @@ function draw_panel(x1,y,h,b,column_width,statecount,has_params,has_ui,has_trigg
 					//paramslider_details is used for quick redraw of a single slider. index is curp
 					//ie is mouse_click_parameters[index][0]
 					mouse_click_actions[mouse_index] = sidebar_parameter_knob;
-					mouse_click_parameters[mouse_index] = [curp/*panelslider_index*/, b,wrap];
+					mouse_click_parameters[mouse_index] = [panelslider_index, b,wrap];
 					if((p_type == "menu_b")||(p_type == "menu_i")||(p_type == "menu_f")||(p_type=="menu_l")||(p_type=="wave")){
 						//if it's a menu_b or menu_i store the slider index + 1 in mouse-values
 						mouse_click_values[mouse_index] = curp+1;
