@@ -346,7 +346,12 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 			new_connection.replace("from::output::number",0);
 			new_connection.replace("from::output::type","audio");
 			connections.append("connections",new_connection);
-			make_connection(connections.getsize("connections")-1,0);
+			if(check_for_connection_overlap(new_connection)){
+				connections.remove("connections["+new_connection+"]");
+				error("\ntried to add a connection that seems to already exist");
+			}else{
+				make_connection(connections.getsize("connections")-1,0);
+			}
 			if(bottombar.block==bus){
 				bottombar.right = -1;
 				setup_bottom_bar(bus);
