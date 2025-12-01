@@ -430,14 +430,14 @@ function omouse(x,y,leftbutton,ctrl,shift,caps,alt,e){
 					if((usermouse.last.got_t == 2) && (usermouse.drag.distance<100)){ //its a slider
 						if(mouse_click_actions[usermouse.last.got_i]==sidebar_parameter_knob){
 							var pb = mouse_click_parameters[usermouse.last.got_i];
-							//post("params",pb);
 							if(alt == 1){
-								post("\nsma:",pb);
 								if(pb[0]>MAX_BLOCKS){
-									pb[0] = paramslider_details[pb[0]][9];
-									post("swapped to",pb[0]);
+									//little hack to make this work on panels sliders too:
+									pb[1] = paramslider_details[pb[0]][8];
+									sidebar_parameter_knob(pb,param_defaults[pb[1]][paramslider_details[pb[0]][9]]);
+								}else{
+									sidebar_parameter_knob(pb,param_defaults[pb[1]][pb[0]]);
 								}
-								sidebar_parameter_knob(pb,param_defaults[pb[1]][pb[0]]);
 								redraw_flag.flag|=2;								
 							}else if(usermouse.ctrl == 1){
 								if(usermouse.shift == 1){
