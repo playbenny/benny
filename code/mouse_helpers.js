@@ -340,6 +340,8 @@ function blocks_paste(outside_connections,target){
 					}
 					if(new_block_index==-1){
 						if(excl!=2)post("\nerror pasting, "+name+" not found");
+						error("\naborting whole paste/undo action for safety");
+						return -1;
 					}else{
 						new_blocks_indexes.push(new_block_index);
 						paste_mapping[copied_blocks[b]] = new_block_index;
