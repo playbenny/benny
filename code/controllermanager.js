@@ -19,7 +19,7 @@ var MAX_PARAMETERS = 256;
 var MAX_BLOCKS = 128;
 
 var controllerslist = [];
-var controllersavailablelist = [];
+var controllersavailablelist = [ "monome arc" ];
 
 var blockno = -1;
 var blockname = null;
@@ -251,7 +251,7 @@ function ispresent(controller){
 }
 
 function clear(){
-    controllersavailablelist = [];
+    controllersavailablelist = [ "monome arc" ];
 }
 function done_waiting(){
     firstbootwait=false;
