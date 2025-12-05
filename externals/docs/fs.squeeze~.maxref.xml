@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--If you edit this file, please place it in a safe place since future exports will overwrite this automatically generated reference file.-->
+<c74object name="fs.squeeze~">
+<metadatalist>
+<metadata name="author">Fixation Studios</metadata>
+<metadata name="tag">audio</metadata>
+<metadata name="tag">dynamics</metadata>
+<metadata name="tag">utility</metadata>
+</metadatalist>
+<methodlist>
+<method name="message"><digest>message input</digest><description>message input</description></method>
+</methodlist>
+<attributelist>
+<attribute name="style_blend" get="1" set="1" size="1" type="float64">
+<digest>Morph between single-band and multi-band operation.</digest>
+<description>Morphs between single band and multiband operation. Multiband operation has been tuned to provide a flat frequency response with slight mid band attenuation and bass boost, similar to the original OTT. Multiband processing may exceed the Ceiling.</description>
+</attribute>
+<attribute name="floor_dB" get="1" set="1" size="1" type="float64">
+<digest>Threshold where upward processing begins.</digest>
+<description>The level at which processing will take place. Anything above this value will be pushed closer to the Ceiling, anything below this level will be unaffected. Very low values can bring up minute details that otherwise might never be heard, which can lead to interesting yet unpredictable results.</description>
+</attribute>
+<attribute name="transport_bypass" get="1" set="1" size="1" type="float64">
+<digest>Bypass processing when Transport stops.</digest>
+<description>If enabled, Squeeze will be bypassed when Transport stops. This avoids things like noise from hardware or reverb/delay tails coming up to full volume when nothing is playing.</description>
+</attribute>
+<attribute name="time_ms" get="1" set="1" size="1" type="float64">
+<digest>Global release time for envelopes.</digest>
+<description>Adjusts the release for all envelopes. High values will result in something closer to normalization, low values will result in extreme upward compression, squeezing every last drop from your sounds.</description>
+</attribute>
+<attribute name="squeeze" get="1" set="1" size="1" type="float64">
+<digest>Amount of upward compression applied.</digest>
+<description>Adjusts the amount of processing, similar to a ratio control on a typical compressor.</description>
+</attribute>
+<attribute name="mix" get="1" set="1" size="1" type="float64">
+<digest>Balance between processed and unprocessed signal.</digest>
+<description>Adjusts the balance between the processed and unprocessed signal.</description>
+</attribute>
+<attribute name="ceiling_dB" get="1" set="1" size="1" type="float64">
+<digest>Target level the processed signal is pushed toward.</digest>
+<description>The level that the affected audio will be normalized to. Lower values combined with adjusting the Dry/Wet(Mix) allows you to tame the processing, making it more useful in a mixing context. The Ceiling may be exceeded if Style is greater than 1.</description>
+</attribute>
+</attributelist>
+<description>An external version of the GMaudio Squeeze 2.0 MaxForLive device that can be used in Max/MSP for personal, research and open source projects.</description>
+<digest>GMaudio Squeeze 2.0 External</digest>
+</c74object>
