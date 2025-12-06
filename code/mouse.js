@@ -1355,7 +1355,6 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			draw_menu_hint();
 		}
 	}else if((d>=2) && (d<=4)){
-		post("\nscroll",scroll,"      --accum",usermouse.scroll_accumulator);
 		var f = mouse_click_actions[b];
 		var p = mouse_click_parameters[b];
 		var v = mouse_click_values[b];
