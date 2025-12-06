@@ -19,7 +19,7 @@
 		},
 		"groups" : [
 			{ 
-				"contains" : [3,3 , 3, 4,5,5,5,6],
+				"contains" : [3,3,3,4,5,5,5,6],
 				"height" : 0,
 				"colour" : 2
 			},{ 
@@ -31,13 +31,13 @@
 				"height" : 0,
 				"colour" : 26
 			},{ 
-				"contains" : [11,11,12,12,13,13,14,14],
-				"height" : 0,
-				"colour" : 38
-			},{ 
 				"contains" : [17,18,19,20,21],
 				"height" : 0,
 				"colour" : 50
+			},{ 
+				"contains" : [11,11,12,12,13,13,14,14],
+				"height" : 0,
+				"colour" : 38
 			},{ 
 				"contains" : [22],
 				"height" : 0,
@@ -161,7 +161,7 @@
 				"type" : "float",
 				"values" : ["bi", -16, 16, "exp1000" ],
 				"wrap" : 0,
-				"default" : 0.55
+				"default" : 0.5
 			},
 			{
 				"name" : "curve",
