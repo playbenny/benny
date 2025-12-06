@@ -1277,6 +1277,9 @@ function um_scroll_wait(){
 }
 
 function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
+	// temporary? fix for max bug where scroll events are reported twice (?)
+	scroll /= 2;
+	
 	usermouse.shift = shift;
 	usermouse.ctrl = ctrl;
 	usermouse.alt = alt;
@@ -1352,6 +1355,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 			draw_menu_hint();
 		}
 	}else if((d>=2) && (d<=4)){
+		post("\nscroll",scroll,"      --accum",usermouse.scroll_accumulator);
 		var f = mouse_click_actions[b];
 		var p = mouse_click_parameters[b];
 		var v = mouse_click_values[b];
@@ -1389,7 +1393,7 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 				var t=paramslider_details[p[0]][13];
 				var p_values= blocktypes.get(paramslider_details[p[0]][15]+"::parameters["+paramslider_details[p[0]][9]+"]::values");
 			}
-			if(t=="int"){
+			if((t=="int")||(t=="note")){
 				if(p_values.length==5) scalar *= p_values[4];
 				usermouse.scroll_accumulator += scroll*scalar;
 				if(usermouse.scroll_accumulator > 0.22 ){
@@ -1414,10 +1418,10 @@ function mousewheel(x,y,leftbutton,ctrl,shift,caps,alt,e,f, scroll){
 					usermouse.scroll_accumulator += scroll;
 					if(usermouse.scroll_accumulator > 0.22 ){
 						usermouse.scroll_accumulator = 0;
-						tv += scalar / (p_values.length+1);
+						tv += 0.5 * scalar / Math.max(1,p_values.length);
 					}else if(usermouse.scroll_accumulator < -0.22){
 						usermouse.scroll_accumulator = 0;
-						tv -= scalar / (p_values.length+1);
+						tv -= 0.5 * scalar / Math.max(1,p_values.length);
 					}
 				}else{
 					if(scroll>0){
