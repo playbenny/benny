@@ -408,10 +408,10 @@ function buffer_loaded(number,path,name,buffername){
 	if(tn>=waves_dict.getsize("waves"))	extend_waves_dict(tn);
 	if(waves_dict.contains("waves["+tn+"]::name")){
 		if(waves_dict.get("waves["+tn+"]::path")==path){
-			//post("not overwriting existing wave info in dictionary");
+			// post("not overwriting existing wave info in dictionary");
 			exists=1;
 		}else{
-			//post("\npath doesn't match so overwriting",waves_dict.get("waves["+tn+"]::path"),path);
+			// post("\npath doesn't match so overwriting",waves_dict.get("waves["+tn+"]::path"),path);
 		}
 	}
 	if(!exists){
@@ -425,7 +425,13 @@ function buffer_loaded(number,path,name,buffername){
 		d.replace("samplerate",waves_buffer[number].framecount()/waves_buffer[number].length());
 		d.replace("start",0);
 		d.replace("end",1);
-		d.replace("divisions",0);
+		var matches = name.match(/(\d+)/);
+		if(matches){
+			post("\nset slice count from filename",matches[0]);
+			d.replace("divisions",matches[0]/MAX_WAVES_SLICES);
+		}else{
+			d.replace("divisions",0);
+		}
 		d.replace("buffername",buffername);
 		waves_dict.replace("waves["+tn+"]",d);
 		// tn++;

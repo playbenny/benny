@@ -2,6 +2,7 @@
 - **fx.squeeze** added, a wrapper for the GMaudio squeeze multiband upward compressor.
 - **voice.grains** granular synth building block. each voice of this plays an overlapping pair of grains from your sample.
 - **seq.strudel.mini** EXPERIMENTAL ALPHA but so fun i'm mentioning it here: this block lets you enter patterns in strudel/tidalcycles mini-notation eg `[c4*7 <g3 g4>]/2,[bd sd]*2` - see https://strudel.cc/learn/mini-notation/
+- when importing waves if the filename contains a number benny uses it for the number of slices. useful if you're preparing sample banks.
 
 17/11/25:
 - quick midi mapping: press `\` while your mouse is over a sidebar slider and it'll go into midi map mode, move a midi control to make the mapping. if your controller supports per-knob led colours benny tries to make it match the slider you just assigned to.
