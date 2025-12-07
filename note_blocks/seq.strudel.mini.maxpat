@@ -689,8 +689,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "int" ],
-                    "patching_rect": [ 429.6, 674.0, 29.5, 22.0 ],
-                    "text": "+ 1"
+                    "patching_rect": [ 425.0, 671.0, 29.5, 22.0 ],
+                    "text": "+ 2"
                 }
             },
             {
@@ -1068,13 +1068,13 @@
             {
                 "box": {
                     "id": "obj-25",
-                    "linecount": 2,
+                    "linecount": 3,
                     "maxclass": "message",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 297.0, 377.0, 68.0, 36.0 ],
-                    "text": "\"[cd gd dh]\""
+                    "patching_rect": [ 297.0, 377.0, 68.0, 50.0 ],
+                    "text": "\"[cd gd dh]/3,[0 2 4 7]*5\""
                 }
             },
             {
