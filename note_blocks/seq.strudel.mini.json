@@ -3,7 +3,7 @@
 		"patcher" : "seq.strudel.mini",
 		"type" : "note",
 		"block_ui_patcher" : "seq.strudel.mini.ui",
-		"help_text" : "the strudel mini notation in benny. experimental beta.",
+		"help_text" : "the strudel mini notation in benny. experimental beta.££eg [c4 g4 <f3 [f2 f4, c4]>],[bd sd]££you can write midi notes (eg c#3), note numbers (which are then picked from the selected scale), drum names (bd sd cp hh oh rd lt mt ht) or scale names (rootnote then nothing for maj, m for aeolian minor, h for harmonic, d for dorian. eg c#d)",
 		"max_polyphony" : 0,
 		"ui_in_sidebar_height" : 2,
 		"ui_in_sidebar_expands" : 1,
@@ -23,7 +23,8 @@
 				"automap_to" : 0
 			},
 			"out" : {
-				"midi" : [ "notes out","bd","sd","cp","ch","oh","rd","lt","mt","ht" ],
+				"midi" : [ "notes out","bd","sd","cp","hh","oh","rd","lt","mt","ht" ],
+				"midi_scopes_types" : [ 0,3,3,3,3,3,3,3,3,3],
 				"dontdefaultall" : 1,
 				"default" : 0
 			}
@@ -44,7 +45,7 @@
 				"onepervoice" :1
 			},
 			{ 
-				"contains" : [3,3,3,3,4],
+				"contains" : [3,3,3,4,6],
 				"colour" : 10,
 				"height":0
 			},
@@ -107,6 +108,12 @@
 				"type" : "menu_l",
 				"columns" : 3,
 				"values" : ["normal", "rev", "jux rev"],
+				"wrap" : 0,
+				"default" : 0
+			},{
+				"name" : "scale note offset",
+				"type" : "int",
+				"values" : ["uni", 0, 64, "lin"],
 				"wrap" : 0,
 				"default" : 0
 			}

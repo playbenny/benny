@@ -23,34 +23,69 @@ function parseAndSend(){
   events.forEach(hap => {
     const value = hap.value;
     let noteNum = null;
+    let vel = 100;
     if(typeof(value) !== "number"){
       noteNum = parseMidiNote(value.toString());
     }
-    
-    if(rev_jux != 1){
-      if(noteNum){
-        maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,noteNum,Number(hap.whole.end - hap.whole.begin));
-      }else if(typeof(value) === "number"){
-        maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,24-value,Number(hap.whole.end - hap.whole.begin));
+    let type = -1;
+    if(noteNum){
+      type = 0; //midi note
+    }else if(typeof(value) === "number"){
+      type = 1; //scale degree
+      noteNum = value+24;
+    }else{
+      noteNum = parseDrumNumber(value);
+      if(noteNum>-1){
+        type = 2; //drum
       }else{
-        maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,value,Number(hap.whole.end - hap.whole.begin));
+        type = 3; //scale select
+         // Mapping of note names to MIDI note numbers
+        const noteToNumber = {
+            'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4,
+            'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9,
+            'A#': 10, 'B': 11
+        };
+        if(value.slice(1,2)=='#'){
+          noteNum = noteToNumber[value.slice(0,2).toUpperCase()];
+          let mm = value.slice(2,);
+          if(mm == 'm'){
+            vel = 1;
+          }else{
+            vel = 0;
+          }
+          // maxApi.post("scale parser 2:",noteNum,value.slice(0,2).toUpperCase());
+        }else{
+          noteNum = noteToNumber[value.slice(0,1).toUpperCase()];
+          let mm = value.slice(1,);
+          if(mm == 'm'){
+            vel = 5;
+          }else if(mm == 'd'){
+            vel = 1;
+          }else if(mm == 'h'){
+            vel = 7;
+          }else{
+            vel = 0;
+          }
+          // maxApi.post("scale parser 1:",noteNum,value.slice(0,1).toUpperCase());
+        }
+        // maxApi.post(`unknown type ${value} ${noteNum} ${vel}`);
       }
     }
-    if(rev_jux>0){
-      if(noteNum){
-        maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),noteNum,Number(hap.whole.end - hap.whole.begin));
-      }else if(typeof(value) === "number"){
-        maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),24-value,Number(hap.whole.end - hap.whole.begin));
-      }else{
-        maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),value,Number(hap.whole.end - hap.whole.begin));
-      }    
+    if(rev_jux != 1){ //fwd version
+      maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,type,noteNum,vel,Number(hap.whole.end - hap.whole.begin));
+    }
+    if(rev_jux>0){ //rev version
+      maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),type,noteNum,vel,Number(hap.whole.end - hap.whole.begin));    
     }
   });
   maxApi.outlet("seq", "seq", targetSeq);
   playingSeq = targetSeq;
   // maxApi.post(`Parsed pattern: ${currentPattern} (${events.length} events)`);
 }
-
+function parseDrumNumber(note){
+  const drumList = ["bd","sd","cp","hh","oh","rd","lt","mt","ht"];
+  return drumList.indexOf(note);
+}
 function parseMidiNote(note) {
   try {
     const midiNotePattern = /([A-Ga-g][#b]?)(\d+)/;
