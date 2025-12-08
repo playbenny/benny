@@ -78,7 +78,7 @@
 				"error_scale" : 0,
 				"columns" : 2,
 				"wrap" : 0,
-				"default" : 0.61
+				"default" : 0.81
 			},
 			{
 				"name" : "clock_edge_amount",

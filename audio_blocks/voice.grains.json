@@ -6,7 +6,6 @@
 		"help_text" : "each voice of this is a pair of overlapping 'grains'. this is a building block for granular synthesis. you can stack many voices to make big grain clouds, use benny's lfos and poly spread etc to add modulation. etc",
 		"max_polyphony" : 0,
 		"upsample" : 1,
-		"subvoices" : 2,
 		"connections" : {
 			"in" : {
 				"midi" : [ "notes in" ],
