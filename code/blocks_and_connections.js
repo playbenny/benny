@@ -2609,7 +2609,7 @@ function build_new_connection_menu(from, to, fromv,tov){
 		var inname = tcn[new_connection.get("from::output::number")];
 		if((inname == "notes")||(inname == "notes in")||(inname == "pitch")){//sidebar.connection.default_in_applied||sidebar.connection.default_out_applied){
 			new_connection.replace("conversion::projectionAngle", 0.25);
-			new_connection.replace("conversion::offset2",0.787);
+			new_connection.replace("conversion::offset2",0.505);
 			post("\nthis looks like a param->note connection so i've set the vector and velocity offset accordingly");
 		}
 	}
