@@ -547,7 +547,7 @@ function mouse(x,y,lb,sh,al,ct,scr){
 			}
 			//post("\nselection ",sel_sx,sel_ex,sel_sy,sel_ey,sel_sx2,sel_ex2);
 			drawflag=1;
-		}else{
+		}else if(!((clickx<0)||(clickx>v_list.length-1)||(clicky<0)||(clicky>maxl))){
 			cursorx2 = clickx2;
 			cursorx = Math.min(v_list.length-1,Math.floor(clickx));	
 			cursory = clicky;
