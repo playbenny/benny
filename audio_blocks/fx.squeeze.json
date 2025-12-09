@@ -23,6 +23,10 @@
 			{ 
 				"contains" : [3,4,5],
 				"height" : 0
+			},
+			{
+				"contains" : [6],
+				"height" : 0
 			}
 		],
 		"parameters" : [
@@ -50,23 +54,30 @@
 			{
 				"name" : "floor",
 				"type" : "float",
-				"values" : ["uni", -320, -20, "exp.001"],
+				"values" : ["uni", -320, -20, "exp.01"],
 				"wrap" : 0,
 				"default" : 0.8
 			},
 			{
 				"name" : "time",
 				"type" : "float",
-				"values" : ["uni", 10, 400, "exp"],
+				"values" : ["uni", 10, 400, "exp10"],
 				"wrap" : 0,
 				"default" : 0.1
 			},
 			{
 				"name" : "ceiling",
 				"type" : "float",
-				"values" : ["uni", -20, 0, "exp.01"],
+				"values" : ["uni", -20, 0, "exp.1"],
 				"wrap" : 0,
 				"default" : 0.9
+			},
+			{
+				"name" : "disable_on_stop",
+				"type" : "menu_l",
+				"values" : ["run always", "disable on transport stop"],
+				"default" : 0.1,
+				"wrap" : 1
 			}
 		]
 	}
