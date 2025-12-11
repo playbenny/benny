@@ -201,6 +201,14 @@ function keydown(key,x,y){
 				key = 33;
 			}else if(key==568){
 				key = 42;
+			}else if(key==559 || key==575){
+				key = 63;//?
+			}else if(key==569){
+				key = 40;//(
+			}else if(key==560){
+				key = 41;//)
+			}else if(key==557){
+				key = 95;//_
 			}
 		}else if(key == -2){
 			key = 32;
