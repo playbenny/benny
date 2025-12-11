@@ -137,7 +137,7 @@ function update(){
 	if(block>=0){
 		var r,i;
 		for(i=0;i<v_list.length;i++) {
-			var pp = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i]+7)*15.99);
+			var pp = Math.floor(voice_parameter_buffer.peek(1, MAX_PARAMETERS*v_list[i])*15.99);
 			if(p[i]!=pp){
 				p[i]=pp;
 				change = 1;

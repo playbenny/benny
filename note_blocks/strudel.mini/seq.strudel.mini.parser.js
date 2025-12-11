@@ -32,7 +32,7 @@ function parseAndSend(){
       type = 0; //midi note
     }else if(typeof(value) === "number"){
       type = 1; //scale degree
-      noteNum = value+24;
+      noteNum = value;
     }else{
       noteNum = parseDrumNumber(value);
       if(noteNum>-1){
@@ -53,7 +53,7 @@ function parseAndSend(){
           }else{
             vel = 0;
           }
-          // maxApi.post("scale parser 2:",noteNum,value.slice(0,2).toUpperCase());
+          maxApi.post("scale parser 2:",noteNum,value.slice(0,2).toUpperCase(),vel);
         }else{
           noteNum = noteToNumber[value.slice(0,1).toUpperCase()];
           let mm = value.slice(1,);
@@ -66,7 +66,7 @@ function parseAndSend(){
           }else{
             vel = 0;
           }
-          // maxApi.post("scale parser 1:",noteNum,value.slice(0,1).toUpperCase());
+          maxApi.post("scale parser 1:",noteNum,value.slice(0,1).toUpperCase(),vel);
         }
         // maxApi.post(`unknown type ${value} ${noteNum} ${vel}`);
       }
