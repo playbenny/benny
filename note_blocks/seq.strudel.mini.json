@@ -45,9 +45,19 @@
 				"onepervoice" :1
 			},
 			{ 
-				"contains" : [3,3,3,4,6],
+				"contains" : [3,3,3,4],
 				"colour" : 10,
 				"height":0
+			},
+			{ 
+				"contains" : [6],
+				"height":0,
+				"onepervoice" :1
+			},
+			{ 
+				"contains" : [7],
+				"height":0,
+				"onepervoice" :1
 			},
 			{
 				"contains" : [5],
@@ -111,11 +121,17 @@
 				"wrap" : 0,
 				"default" : 0
 			},{
-				"name" : "scale note offset",
+				"name" : "add_(scale degree steps)",
 				"type" : "int",
-				"values" : ["uni", 0, 64, "lin"],
+				"values" : ["bi", -64, 64, "lin"],
 				"wrap" : 0,
-				"default" : 0
+				"default" : 0.5
+			},{
+				"name" : "add_(octave steps)",
+				"type" : "int",
+				"values" : ["bi", -8, 8, "lin"],
+				"wrap" : 0,
+				"default" : 0.5
 			}
 		]
 	}
