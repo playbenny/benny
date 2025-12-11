@@ -44,7 +44,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 1,
+				"default" : 0,
 				"click_set" : 1 
 			},
 			{
@@ -52,7 +52,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.75 ,
+				"default" : 0 ,
 				"click_set" : 1
 			},
 			{
@@ -60,7 +60,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.5,
+				"default" : 0.75,
 				"click_set" : 1
 			},
 			{
@@ -68,7 +68,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.25,
+				"default" : 0.5,
 				"click_set" : 1
 			},
 			{
@@ -76,7 +76,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.05,
+				"default" : 0.35,
 				"click_set" : 1 
 			},
 			{
@@ -84,7 +84,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.25,
+				"default" : 0.75,
 				"click_set" : 1 
 			},
 			{
@@ -92,7 +92,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.5,
+				"default" : 0,
 				"click_set" : 1 
 			},
 			{
@@ -100,7 +100,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 0.75,
+				"default" : 0.2,
 				"click_set" : 1 
 			},
 			{
@@ -108,7 +108,7 @@
 				"type" : "int",
 				"values" : ["uni", 0, 8, "lin"],
 				"wrap" : 0,
-				"default" : 1.0,
+				"default" : 0.2,
 				"click_set" : 1
 			},
 			{
