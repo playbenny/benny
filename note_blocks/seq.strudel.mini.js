@@ -28,7 +28,7 @@ var cursorState = 0;
 var typedMessage = null;
 var typingRow = -1;
 var rowwidth = 30;
-
+var highlights = [];
 
 function setup(x1,y1,x2,y2,sw,mode){
 //	post("drawing sequencers");
@@ -94,6 +94,7 @@ function renderText(message, row, cursor){
 	//cycles through colours based on bracket depth.
 	var depth = 0;
 	var colour = 0;
+	var col = [];
 	var pal_len = config.getsize("palette::gamut");
 	var x = x_pos+4;
 	var x_step = unit/1.8;
@@ -101,20 +102,26 @@ function renderText(message, row, cursor){
 	function scaleRGB(s, c){
 		return [s*c[0],s*c[1],s*c[2]];
 	}
-	var bri = (row == typingRow)*0.4 + 0.7;
-	outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+	var bri = (row == typingRow)*0.5 + 0.8;
+	var cx=-1;
+	var cy=-1;
+	col = scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour"));
+	if(!highlights[row])highlights[row] == [0];
 	for(var i=0;i<message.length;i++){
 		if(i==cursor){
-			outlet(1,"moveto",x-0.2*unit,y);
-			outlet(1,"frgb",menucolour);
-			outlet(1,"write",cursorState<0.5 ? '|' : ' ');
-			cursorState = (cursorState+0.1)%1;
-			outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+			cx = x-0.2*unit;
+			cy = y;
 		}
 		if((message[i] == '[') || (message[i] == '<')){
 			depth++;
 			colour = (depth * 4) % pal_len;
-			outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+			col = scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour"));
+		}
+		if((row!=typingRow) && highlights[row][i+1]){
+			outlet(1,"paintrect",x-0.1*unit,y-unit*0.75,x+0.6*unit,y+unit*0.25,0,0,0);
+			outlet(1,"frgb", 255,255,255);
+		}else{
+			outlet(1,"frgb",col);
 		}
 		outlet(1,"moveto",x,y);
 		outlet(1,"write",message[i]);
@@ -122,7 +129,7 @@ function renderText(message, row, cursor){
 			depth--;
 			if(depth<0)depth =0;
 			colour = (depth * 4) % pal_len;
-			outlet(1,"frgb",scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour")));
+			col = scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour"));
 		}
 		x+=x_step;
 		if(x>x_pos+width-unit){
@@ -130,6 +137,18 @@ function renderText(message, row, cursor){
 			y+=unit;
 			rowwidth=i+1;
 		}
+	}
+	if(row == typingRow){
+		if(cursorState<0.5){
+			if(cx==-1){
+				cx = x - 0.2*unit;
+				cy = y;
+			}
+			outlet(1,"moveto",cx,cy);
+			outlet(1,"frgb",menucolour);
+			outlet(1,"write",'|');
+		}
+		cursorState = (cursorState+0.1)%1;
 	}
 }
 
@@ -156,6 +175,7 @@ function voice_is(v){
 	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+		v_list.forEach((v,i) => highlights[i]=[0]);
 	}
 }
 
@@ -297,3 +317,14 @@ function parseMidiNote(note) {
 }
 
 function enabled(){}
+
+function locations(){
+		var args = arrayfromargs(arguments);
+
+		if(args[0] == block){
+			for(let i=3;i<args.length;i+=2){
+				for(let x=parseInt(args[i]);x<parseInt(args[i+1]);x++) highlights[args[1]][x]=args[2];
+			}
+			change = 1;
+		}
+}

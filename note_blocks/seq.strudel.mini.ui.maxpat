@@ -13,6 +13,17 @@
         "boxes": [
             {
                 "box": {
+                    "id": "obj-6",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 420.0, 157.0, 97.0, 22.0 ],
+                    "text": "r strudel_mini_ui"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-9",
                     "maxclass": "message",
                     "numinlets": 2,
@@ -29,6 +40,10 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 359.0, 306.0, 35.0, 22.0 ],
+                    "saved_object_attributes": {
+                        "attr_comment": "",
+                        "c": ""
+                    },
                     "text": "out 3"
                 }
             },
@@ -39,22 +54,32 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 315.0, 306.0, 35.0, 22.0 ],
+                    "saved_object_attributes": {
+                        "attr_comment": "",
+                        "c": ""
+                    },
                     "text": "out 2"
                 }
             },
             {
                 "box": {
+                    "filename": "seq.strudel.mini.js",
                     "id": "obj-3",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 3,
                     "outlettype": [ "", "", "" ],
-                    "patching_rect": [ 265.0, 217.0, 105.0, 22.0 ],
+                    "patching_rect": [ 265.0, 217.0, 109.0, 22.0 ],
                     "saved_object_attributes": {
-                        "filename": "seq.strudel.mini",
                         "parameter_enable": 0
                     },
-                    "text": "js seq.strudel.mini"
+                    "text": "v8 seq.strudel.mini",
+                    "textfile": {
+                        "filename": "seq.strudel.mini.js",
+                        "flags": 0,
+                        "embed": 0,
+                        "autowatch": 1
+                    }
                 }
             },
             {
@@ -64,10 +89,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 269.0, 306.0, 35.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
                     "text": "out 1"
                 }
             },
@@ -78,11 +99,7 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 265.0, 182.0, 28.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
+                    "patching_rect": [ 256.0, 157.0, 28.0, 22.0 ],
                     "text": "in 1"
                 }
             }
@@ -110,6 +127,12 @@
                 "patchline": {
                     "destination": [ "obj-5", 0 ],
                     "source": [ "obj-3", 1 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-3", 0 ],
+                    "source": [ "obj-6", 0 ]
                 }
             },
             {

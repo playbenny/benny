@@ -9,6 +9,8 @@ let playingSeq = "aseq";
 let rev_jux = 0;
 
 function parseAndSend(){
+  let idcount = 0;
+  
   if(currentPattern == null || currentPattern == "") return 0;
   const pattern = mini(currentPattern);
     
@@ -18,6 +20,7 @@ function parseAndSend(){
   const targetSeq = (playingSeq == "bseq") ? "aseq" : "bseq";
   
   maxApi.outlet("seq", "erase", targetSeq);
+  maxApi.outlet("locations", "clear");
 
   // send each event as an instruction to store it in seq
   events.forEach(hap => {
@@ -74,12 +77,23 @@ function parseAndSend(){
         // maxApi.post(`unknown type ${value} ${noteNum} ${vel}`);
       }
     }
+    // the seq format here is: starttime, type, note, vel, duration, hap locations list id
     if(rev_jux != 1){ //fwd version
-      maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,type,noteNum,vel,Number(hap.whole.end - hap.whole.begin));
+      maxApi.outlet("seq","add",targetSeq,Number(hap.whole.begin) % 1,type,noteNum,vel,Number(hap.whole.end - hap.whole.begin),idcount);
+      let locList = [];
+      hap.context.locations.forEach((l) => {
+        locList.push(l.start);
+        locList.push(l.end);
+      });
+      maxApi.outlet("locations",idcount,...locList);
     }
     if(rev_jux>0){ //rev version
+      // to show locations would be a bit of a pain using my current system
+      // either, reverse lookup id here and append to the coll
+      // or switch to using the length of haps to turn off location highlights.
       maxApi.outlet("seq","add",targetSeq,1 - (Number(hap.whole.end) % 1),type,noteNum,vel,Number(hap.whole.end - hap.whole.begin));    
     }
+    idcount++;
   });
   maxApi.outlet("seq", "seq", targetSeq);
   playingSeq = targetSeq;
