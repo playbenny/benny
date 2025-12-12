@@ -1571,16 +1571,16 @@ function keydown(key){
 		// post("\nfound in keymap for sidebar mode", sidebar.mode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;
+	}else if(keymap.contains(displaymode+"::"+key)){
+		var action = keymap.get(displaymode+"::"+key);
+		var paras = action.slice(2,99);
+		// post("\nfound in keymap for mode", displaymode,":", action, "paras",paras);
+		(eval(action[1])).apply(this,paras);
+		return 1;		
 	}else if(keymap.contains("global::"+key)){
 		var action = keymap.get("global::"+key);
 		var paras = action.slice(2,99);
 		// post("\nfound in global keymap", action[0],action[1], "paras",paras);
-		(eval(action[1])).apply(this,paras);
-		return 1;		
-	}else if(keymap.contains(displaymode+"::"+key)){
-		var action = keymap.get(displaymode+"::"+key);
-		var paras = action.slice(2,99);
-		//post("\nfound in keymap for mode", displaymode,":", action, "paras",paras);
 		(eval(action[1])).apply(this,paras);
 		return 1;		
 	}else if(keymap.contains(displaymode+"::all")){

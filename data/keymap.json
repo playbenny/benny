@@ -103,11 +103,17 @@
     "custom_fullscreen" : {
         "-18" : ["F2", "blocks_and", "block" ],
         "-3" : ["ESC", "key_escape"],
+        "91" : ["91", "custom_key_passthrough",91],
+        "93" : ["93", "custom_key_passthrough",93],
+        "-2" : ["space", "custom_key_passthrough",-2],
         "all" : ["all", "custom_key_passthrough"]
     },
     "custom" : {
         "-18" : ["F2", "blocks_and", "block" ],
         "-3" : ["ESC", "key_escape"],
+        "91" : ["91", "custom_key_passthrough",91],
+        "93" : ["93", "custom_key_passthrough",93],
+        "-2" : ["space", "custom_key_passthrough",-2],
         "all" : ["all", "custom_key_passthrough"]
     },
     "blocks" : {
