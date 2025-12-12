@@ -21,6 +21,10 @@ function parseAndSend(){
 
   // send each event as an instruction to store it in seq
   events.forEach(hap => {
+    //THIS IS HOW YOU DO CODE HIGHLIGHTING AS IT PLAYS
+    //every hap gets a list of locations in the text that it refers to
+    //maxApi.post("\nhap",JSON.stringify(hap.context));
+    //maxApi.post("\nhap",JSON.stringify(hap.value));
     const value = hap.value;
     let noteNum = null;
     let vel = 100;
