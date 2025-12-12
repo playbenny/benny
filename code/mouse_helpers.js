@@ -4059,15 +4059,21 @@ function convert_regular_to_matrix(cno, channels){
 
 function fold_menus(){
 	post("\nfold",sidebar.connection.default_out_applied);
-	if(sidebar.connection.default_out_applied>0){
-		sidebar.connection.show_from_outputs = 0;
-		sidebar.connection.default_out_applied = 0;
-	} 
-	if(sidebar.connection.default_in_applied>0){
-		sidebar.connection.show_to_inputs = 0;
-		sidebar.connection.default_in_applied = 0;
+	if(sidebar.connection.show_to_inputs || sidebar.connection.show_from_outputs){
+		if(sidebar.connection.default_out_applied>0){
+			sidebar.connection.show_from_outputs = 0;
+			sidebar.connection.default_out_applied = 0;
+		} 
+		if(sidebar.connection.default_in_applied>0){
+			sidebar.connection.show_to_inputs = 0;
+			sidebar.connection.default_in_applied = 0;
+		}
+		wire_ends[selected.wire.indexOf(1)][0]=-0.96969696; //forces it to redraw it
+	}else{
+		var s = selected.wire.indexOf(1);
+		select_block(0,connections.get("connections["+s+"]::to::number"));
+		selected.wire[s]=0;
 	}
-	wire_ends[selected.wire.indexOf(1)][0]=-0.96969696; //forces it to redraw it
 	sidebar.scroll.position = 0;
 	redraw_flag.flag |= 10;
 }

@@ -2689,7 +2689,7 @@ function check_for_connection_overlap(n){
 						}
 					}
 					if(tomatch){
-						post("\noverlapping connection, f:",fv,f_v,"t:",tv,t_v);
+						post("\noverlapping connection, f:",fv,f_v,"t:",tv,t_v,"in connection",ti,"\n",JSON.stringify(connections.get("connections["+ti+"]")));
 						//ti=99999;
 						//overlap = 1;
 						return 1;

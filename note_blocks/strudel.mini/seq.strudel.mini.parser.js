@@ -24,7 +24,6 @@ function parseAndSend(){
     //THIS IS HOW YOU DO CODE HIGHLIGHTING AS IT PLAYS
     //every hap gets a list of locations in the text that it refers to
     //maxApi.post("\nhap",JSON.stringify(hap.context));
-    //maxApi.post("\nhap",JSON.stringify(hap.value));
     const value = hap.value;
     let noteNum = null;
     let vel = 100;
@@ -57,7 +56,7 @@ function parseAndSend(){
           }else{
             vel = 0;
           }
-          maxApi.post("scale parser 2:",noteNum,value.slice(0,2).toUpperCase(),vel);
+          //maxApi.post("scale parser 2:",noteNum,value.slice(0,2).toUpperCase(),vel);
         }else{
           noteNum = noteToNumber[value.slice(0,1).toUpperCase()];
           let mm = value.slice(1,);
@@ -70,7 +69,7 @@ function parseAndSend(){
           }else{
             vel = 0;
           }
-          maxApi.post("scale parser 1:",noteNum,value.slice(0,1).toUpperCase(),vel);
+          //maxApi.post("scale parser 1:",noteNum,value.slice(0,1).toUpperCase(),vel);
         }
         // maxApi.post(`unknown type ${value} ${noteNum} ${vel}`);
       }
@@ -121,7 +120,7 @@ function parseMidiNote(note) {
 maxApi.addHandler('pattern', (patternString) => {
   try {
     currentPattern = patternString;
-    parseAndSend();
+    //parseAndSend();
   } catch (err) {
     maxApi.post(`Error: ${err.message}`);
   }
@@ -129,13 +128,17 @@ maxApi.addHandler('pattern', (patternString) => {
 
 maxApi.addHandler('cycle', (cycleNumber) => {
     currentCycle = cycleNumber;
+  try {
     parseAndSend();
+  } catch (err) {
+    maxApi.post(`Error: ${err.message}`);
+  }
 });
 
 maxApi.addHandler('rev_jux', (mode) => {
   if(rev_jux!=2 && mode==2)maxApi.post("thanks yaxu");
   rev_jux = mode;
-  parseAndSend();
+  //parseAndSend();
 });
 
 
