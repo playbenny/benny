@@ -1,7 +1,9 @@
 // Install Strudel first: npm install @strudel/mini
 
-const maxApi = require('max-api');
-const { mini } = require('@strudel/mini');
+// const maxApi = require('max-api');
+// const { mini } = require('@strudel/mini');
+import maxApi from 'max-api';
+import { mini } from '@strudel/mini';
 
 let currentCycle = 0;
 let currentPattern = "";
