@@ -1229,15 +1229,17 @@
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "", "" ],
-                    "patching_rect": [ 268.5, 458.0, 275.0, 22.0 ],
+                    "patching_rect": [ 268.5, 458.0, 285.0, 22.0 ],
                     "saved_object_attributes": {
                         "autostart": 1,
                         "defer": 0,
+                        "node_bin_path": "",
+                        "npm_bin_path": "",
                         "watch": 0
                     },
-                    "text": "node.script seq.strudel.mini.parser.js @autostart 1",
+                    "text": "node.script seq.strudel.mini.parser.mjs @autostart 1",
                     "textfile": {
-                        "filename": "seq.strudel.mini.parser.js",
+                        "filename": "seq.strudel.mini.parser.mjs",
                         "flags": 0,
                         "embed": 0,
                         "autowatch": 1
@@ -1434,10 +1436,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 30.0, 687.0, 35.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
                     "text": "out 1"
                 }
             },
@@ -1460,6 +1458,10 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 65.0, 52.0, 28.0, 22.0 ],
+                    "saved_object_attributes": {
+                        "attr_comment": "",
+                        "c": ""
+                    },
                     "text": "in 1"
                 }
             },
