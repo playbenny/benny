@@ -1404,7 +1404,7 @@
     ],
     "panels_order": [ 0, 1, 4, 5, 6, 7, 9, 10 ],
     "MAX_PANEL_COLUMNS": 3,
-    "notepad": "this song shows strudel doing most of the things it can - note patterns, scale degree patterns, chance, euclideans, scale-setting£and drum outputs",
+    "notepad": "this song shows strudel-mini doing most of the things it can do in benny - note patterns, scale degree patterns, chance, euclideans, scale-setting and drum outputs",
     "states": {
         "current": {
             "static_mod": {
