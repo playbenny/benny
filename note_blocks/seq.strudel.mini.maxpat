@@ -13,6 +13,18 @@
         "boxes": [
             {
                 "box": {
+                    "id": "obj-73",
+                    "linecount": 2,
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 697.0, 147.0, 272.0, 36.0 ],
+                    "text": "add aseq -1 -1, delete aseq -1, add bseq -1 -1, delete bseq -1"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-87",
                     "maxclass": "newobj",
                     "numinlets": 2,
@@ -1233,8 +1245,6 @@
                     "saved_object_attributes": {
                         "autostart": 1,
                         "defer": 0,
-                        "node_bin_path": "",
-                        "npm_bin_path": "",
                         "watch": 0
                     },
                     "text": "node.script seq.strudel.mini.parser.mjs @autostart 1",
@@ -1298,8 +1308,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 596.0, 155.0, 374.0, 36.0 ],
-                    "text": "\"[<g3 <g4 a#4>>*16 <g3 <g4 <a4 c5>>>*16]/2,d4(5,16),f4(6,16,1),[gm a#]/8,<14 19 24 26 38>*16?0.8\""
+                    "patching_rect": [ 596.0, 155.0, 62.0, 36.0 ],
+                    "text": "\"[c2 c4]*8\""
                 }
             },
             {
@@ -1436,6 +1446,10 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 30.0, 687.0, 35.0, 22.0 ],
+                    "saved_object_attributes": {
+                        "attr_comment": "",
+                        "c": ""
+                    },
                     "text": "out 1"
                 }
             },
@@ -1458,10 +1472,6 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 65.0, 52.0, 28.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
                     "text": "in 1"
                 }
             },
@@ -1808,13 +1818,20 @@
             {
                 "patchline": {
                     "destination": [ "obj-34", 0 ],
-                    "order": 1,
+                    "order": 2,
                     "source": [ "obj-42", 0 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "obj-44", 0 ],
+                    "order": 1,
+                    "source": [ "obj-42", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-73", 0 ],
                     "order": 0,
                     "source": [ "obj-42", 0 ]
                 }
@@ -2189,6 +2206,12 @@
                 "patchline": {
                     "destination": [ "obj-51", 0 ],
                     "source": [ "obj-72", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-48", 0 ],
+                    "source": [ "obj-73", 0 ]
                 }
             },
             {
