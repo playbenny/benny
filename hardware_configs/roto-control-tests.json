@@ -1,0 +1,58 @@
+{
+    "io": {
+        "keyboards": [ "Xkey37", "Xkey25" ],
+        "controllers": {
+            "Roto-Control": {
+                "name": "Roto-Control",
+                "driver": "Roto-Control",
+                "substitute": [],
+                "outputs": 32,
+                "scaling": 1,
+                "type": "potentiometer",
+                "channel": 1,
+                "first": 0,
+                "columns": 8,
+                "rows": 4,
+                "buttons": {
+                    "type": "cc",
+                    "globals": {
+                        "automap_toggle": 0,
+                        "automap_page": 1,
+                        "capture_controller_loop": 2,
+                        "capture_keyboard_loop": 5
+                    },
+                    "channel": 4,
+                    "first": 8
+                }
+            }
+        },
+        "matrix": {        },
+        "controller_defaults": {
+            "control_auto": "Roto-Control"
+        }
+    },
+    "hardware": {
+        "hardware.out.1+2": {
+            "type": "hardware",
+            "max_polyphony": 2,
+            "help_text": "pc speakers",
+            "connections": {
+                "in": {
+                    "hardware": [ "out" ],
+                    "hardware_channels": [ 1, 2 ]
+                }
+            }
+        },
+        "hardware.in.1+2": {
+            "type": "hardware",
+            "max_polyphony": 2,
+            "help_text": "pc microphones/inputs",
+            "connections": {
+                "out": {
+                    "hardware": [ "in" ],
+                    "hardware_channels": [ 1, 2 ]
+                }
+            }
+        }
+    }
+}

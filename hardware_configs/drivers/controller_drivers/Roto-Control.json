@@ -1,0 +1,31 @@
+{
+	"Roto-Control" : {
+		"name" : "Roto-Control",
+		"driver" : "Roto-Control",
+		"substitute" : [  ],
+		"outputs" : 32,
+		"scaling" : 1,
+		"type" : "potentiometer",
+		"names": 12,
+		"channel" : 1,
+		"first" : 0,
+		"columns" : 4,
+		"rows" : 8,
+		"value" : {
+			"type" : "cc",
+			"channel" : 1,
+			"first" : 0
+		},
+		"buttons" :{
+			"type" : "cc",
+			"globals" : {
+				"automap_toggle" : 0,
+				"automap_page" : 1,
+				"capture_controller_loop" : 2,
+				"capture_keyboard_loop" : 5
+			},
+			"channel" : 4,
+			"first" : 8
+		}
+	}
+}

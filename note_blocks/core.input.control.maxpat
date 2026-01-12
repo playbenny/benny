@@ -4,7 +4,7 @@
         "appversion": {
             "major": 9,
             "minor": 1,
-            "revision": 0,
+            "revision": 2,
             "architecture": "x64",
             "modernui": 1
         },
@@ -448,7 +448,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -809,7 +809,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -1059,7 +1059,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 0,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -2815,7 +2815,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 0,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -5336,7 +5336,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -5472,7 +5472,7 @@
                                     "numoutlets": 1,
                                     "outlettype": [ "" ],
                                     "patching_rect": [ 210.0, 176.413818359375, 50.0, 36.0 ],
-                                    "text": "15."
+                                    "text": "36."
                                 }
                             },
                             {
@@ -5524,7 +5524,7 @@
                                     "patching_rect": [ 50.0, 204.413818359375, 169.0, 22.0 ],
                                     "saved_object_attributes": {
                                         "embed": 0,
-                                        "name": "5052lastinput",
+                                        "name": "2516lastinput",
                                         "parameter_enable": 0,
                                         "parameter_mappable": 0,
                                         "range": 128,
@@ -5807,7 +5807,7 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 1236.0, 339.5, 327.0, 22.0 ],
-                    "text": "4 param  1029 nan 4 param  1045 0.55"
+                    "text": "-1"
                 }
             },
             {
@@ -6011,7 +6011,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -6447,7 +6447,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -6650,7 +6650,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 0,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -7578,7 +7578,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -7771,10 +7771,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 128.0, 967.0, 35.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
                     "text": "out 1"
                 }
             },
@@ -7785,10 +7781,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 439.5, 103.0, 35.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
                     "text": "out 1"
                 }
             },
@@ -7877,11 +7869,11 @@
                 "box": {
                     "id": "obj-174",
                     "maxclass": "newobj",
-                    "numinlets": 5,
-                    "numoutlets": 5,
-                    "outlettype": [ "", "", "", "", "" ],
-                    "patching_rect": [ 158.0, 700.0, 263.0, 22.0 ],
-                    "text": "route ready resets num_params colours_enable"
+                    "numinlets": 6,
+                    "numoutlets": 6,
+                    "outlettype": [ "", "", "", "", "", "" ],
+                    "patching_rect": [ 158.0, 700.0, 330.0, 22.0 ],
+                    "text": "route ready resets num_params colours_enable disable_ssp"
                 }
             },
             {
@@ -7895,7 +7887,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -8496,7 +8488,7 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 48.5, 259.0, 163.0, 22.0 ],
-                    "text": "\"Midi Fighter Twister\""
+                    "text": "Roto-Control"
                 }
             },
             {
@@ -8534,7 +8526,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -9270,7 +9262,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 0,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -10944,7 +10936,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -11211,7 +11203,7 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 262.0, 304.0, 121.0, 22.0 ],
-                    "text": "\"Midi Fighter Twister\""
+                    "text": "Roto-Control"
                 }
             },
             {
@@ -11374,7 +11366,7 @@
                     "patching_rect": [ 1639.0, 338.0, 114.0, 22.0 ],
                     "saved_object_attributes": {
                         "embed": 0,
-                        "name": "5052mapwrap",
+                        "name": "2516mapwrap",
                         "parameter_enable": 0,
                         "parameter_mappable": 0,
                         "range": 3,
@@ -11397,7 +11389,7 @@
                     "patching_rect": [ 816.0, 1072.0, 114.0, 22.0 ],
                     "saved_object_attributes": {
                         "embed": 0,
-                        "name": "5052mapwrap",
+                        "name": "2516mapwrap",
                         "parameter_enable": 0,
                         "parameter_mappable": 0,
                         "range": 3,
@@ -11909,7 +11901,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 0,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -12654,6 +12646,10 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 471.0, 1314.0, 35.0, 22.0 ],
+                    "saved_object_attributes": {
+                        "attr_comment": "",
+                        "c": ""
+                    },
                     "text": "out 1"
                 }
             },
@@ -12676,10 +12672,6 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 469.5, 6.0, 28.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "attr_comment": "",
-                        "c": ""
-                    },
                     "text": "in 1"
                 }
             },
@@ -13451,6 +13443,12 @@
                     "color": [ 0.27843137254902, 0.92156862745098, 0.63921568627451, 1.0 ],
                     "destination": [ "obj-208", 0 ],
                     "source": [ "obj-172", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-111", 0 ],
+                    "source": [ "obj-174", 4 ]
                 }
             },
             {
