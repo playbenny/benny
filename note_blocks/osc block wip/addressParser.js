@@ -1,11 +1,11 @@
 /**
- * OSC Pattern Analyzer
+ * OSC Pattern analyser
  * 
- * Analyzes a list of raw OSC message strings and suggests patterns
+ * analyses a list of raw OSC message strings and suggests patterns
  * mapping them to a Block -> Voice -> Output hierarchy.
  */
 
-class OSCPatternAnalyzer {
+class OSCPatternanalyser {
   constructor() {
     this.messages = [];
   }
@@ -17,7 +17,7 @@ class OSCPatternAnalyzer {
     }
   }
 
-  analyze() {
+  analyse() {
     if (this.messages.length === 0) return [];
 
     // 1. Group by "Address Depth" (number of parts in the OSC address)
@@ -102,7 +102,7 @@ class OSCPatternAnalyzer {
     // 2. The Voice (Dynamic Address Suffix + Dynamic Arg Prefix)
     // 3. The Outputs (Remaining Args)
 
-    // Analyze Address Parts to find where the static part ends
+    // analyse Address Parts to find where the static part ends
     const addressMatrix = cluster.map(m => m.addressParts);
     const numAddressParts = addressMatrix[0].length;
     
@@ -121,7 +121,7 @@ class OSCPatternAnalyzer {
       }
     }
 
-    // Now analyze Arguments to see if they should be promoted to "Voice ID" (Case 3)
+    // Now analyse Arguments to see if they should be promoted to "Voice ID" (Case 3)
     // or remain as "Outputs" (Case 4).
     // Logic: If an arg has LOW cardinality (few unique values), it's likely an ID/Index.
     // If it has HIGH cardinality (many values), it's likely a value/output.
@@ -250,7 +250,7 @@ class OSCPatternAnalyzer {
   }
 }
 
-const analyzer = new OSCPatternAnalyzer();
+const analyser = new OSCPatternanalyser();
 
 //mode 0 = normal parsing
 //mode 1 = listening to determine addresses
@@ -260,7 +260,7 @@ let listenMode = 0;
 function msg_int(m) {
   listenMode = m;
   if(m == 1) {
-    analyzer.messages = [];
+    analyser.messages = [];
   }else{
     process();
   }        
@@ -268,9 +268,9 @@ function msg_int(m) {
 
 function process(){
   // Run Analysis
-  const patterns = analyzer.analyze();
+  const patterns = analyser.analyse();
 
-  post("\n--- SUGGESTED PATTERNS ---");
+  post('\n--- SUGGESTED PATTERNS ---');
   patterns.forEach((p, index) => {
     post(`\nPattern ${index + 1}: ${p.suggestionString}`);
     post(`\n   Block: ${p.blockPath}`);
@@ -285,29 +285,29 @@ function bang() {
   //bunch of dummy data
 
   // 1. TouchDesigner Style: /block/voiceID value
-  analyzer.record("/many/keys/define/address/1 0.5");
-  analyzer.record("/many/keys/define/address/2 0.7");
-  analyzer.record("/many/keys/define/address/3 0.2");
+  analyser.record("/many/keys/define/address/1 0.5");
+  analyser.record("/many/keys/define/address/2 0.7");
+  analyser.record("/many/keys/define/address/3 0.2");
 
   // 2. TouchOSC Vintage: /block/faderID value
-  analyzer.record("/some/keys/fader1 0.1");
-  analyzer.record("/some/keys/fader2 0.9");
+  analyser.record("/some/keys/fader1 0.1");
+  analyser.record("/some/keys/fader2 0.9");
 
   // 3. Space separated as address: /block x y value (where x,y are indices)
-  analyzer.record("/keys/name 0 1 0.5");
-  analyzer.record("/keys/name 0 2 0.6");
-  analyzer.record("/keys/name 1 1 0.8");
+  analyser.record("/keys/name 0 1 0.5");
+  analyser.record("/keys/name 0 2 0.6");
+  analyser.record("/keys/name 1 1 0.8");
 
   // 4. Multi-output: /block val1 val2 (where vals are variables)
-  analyzer.record("/mixer/chan1 0.5 0.8");
-  analyzer.record("/mixer/chan1 0.6 0.9");
-  analyzer.record("/mixer/chan2 0.1 0.2");
+  analyser.record("/mixer/chan1 0.5 0.8");
+  analyser.record("/mixer/chan1 0.6 0.9");
+  analyser.record("/mixer/chan2 0.1 0.2");
 }
 
 function anything() {
 	var a = arrayfromargs(messagename, arguments);
   if(listenMode == 1) {
-    analyzer.record(a.join(' '));
+    analyser.record(a.join(' '));
   }else{
     //post("i should route and process this",a);
   }
