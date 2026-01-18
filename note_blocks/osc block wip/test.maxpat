@@ -94,7 +94,7 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 119.0, 10.0, 167.0, 22.0 ],
-                    "text": "/hi/from/james/3 -0.208488"
+                    "text": "/hi/from/james/3 0.008681"
                 }
             },
             {
