@@ -18,102 +18,51 @@ class OSCPatternanalyser {
   }
 
   analyse() {
-    if (this.messages.length === 0) return [];
-
-    // 1. Group by "Address Depth" (number of parts in the OSC address)
-    //    This separates /a/b from /a/b/c immediately.
+  if (this.messages.length === 0) return [];
+    
+    // 1. Group messages by structure (Depth + Common Prefix)
     const groupedByDepth = this._groupBy(this.messages, m => m.addressParts.length);
-
     const suggestions = [];
 
-    // 2. For each depth group, find sub-clusters (Common Base Keys)
     Object.values(groupedByDepth).forEach(group => {
-      // We need to find clusters of messages that look similar.
-      // We do this by finding the Longest Common Prefix (LCP) of the address parts.
-      
-      // Sort to ensure similar addresses are adjacent
       group.sort((a, b) => a.fullAddress.localeCompare(b.fullAddress));
-
+      
       let currentCluster = [group[0]];
-  
-      // Heuristic: If they share at least the first 2 parts (or 50% of path), 
-      // treat them as part of the same pattern cluster.
-      const minShared = Math.min(2, group[0].addressParts.length);
-      // post("\nchecking the group for length",group[0].addressParts.length,'has ',group.length,'members');
-
+      post("\nthis group has address length",group[0].addressParts.length);
       for (let i = 1; i < group.length; i++) {
         const prev = group[i-1];
         const curr = group[i];
-        
         const commonDepth = this._getCommonPrefixDepth(prev.addressParts, curr.addressParts);
-                
+        
+        // Group if they share at least the first 2 parts (or 50%)
+        const minShared = Math.max(1, Math.floor(curr.addressParts.length * 0.5)); 
+        
         if (commonDepth >= minShared) {
           currentCluster.push(curr);
         } else {
-          // Finish current cluster and start new one
-          suggestions.push(this._derivePattern(currentCluster));
+          suggestions.push(...this._generateAlternatives(currentCluster));
           currentCluster = [curr];
         }
       }
-      suggestions.push(this._derivePattern(currentCluster));
+      suggestions.push(...this._generateAlternatives(currentCluster));
     });
 
     return suggestions;
   }
 
-  // --- Internal Logic ---
-
-  _parseMessage(str) {
-    const trimmed = str.trim();
-    if (!trimmed.startsWith('/')) return null;
-    
-    // Split by first space to separate address from args
-    const firstSpaceIndex = trimmed.indexOf(' ');
-    
-    let address = "";
-    let args = [];
-    
-    if (firstSpaceIndex === -1) {
-      address = trimmed;
-    } else {
-      address = trimmed.substring(0, firstSpaceIndex);
-      const argStr = trimmed.substring(firstSpaceIndex + 1);
-      if (argStr.length > 0) {
-        args = argStr.split(/\s+/).map(a => {
-          // Try to convert to number if possible
-          const float = parseFloat(a);
-          return isNaN(float) ? a : float;
-        });
-      }
-    }
-    
-    return {
-      raw: str,
-      addressParts: address.split('/').filter(p => p !== ''), // ["many", "keys", ...]
-      fullAddress: address,
-      args: args
-    };
-  }
-
-  _derivePattern(cluster) {
-    // We have a cluster of messages that look structurally similar.
-    // We need to separate:
-    // 1. The Block (Static Address Prefix)
-    // 2. The Voice (Dynamic Address Suffix + Dynamic Arg Prefix)
-    // 3. The Outputs (Remaining Args)
-
-    // analyse Address Parts to find where the static part ends
+  // --- NEW: GENERATES MULTIPLE STRATEGIES ---
+  _generateAlternatives(cluster) {
+    const alternatives = [];
     const addressMatrix = cluster.map(m => m.addressParts);
     const numAddressParts = addressMatrix[0].length;
     
-    // Identify which columns in the address are "static" (100% same) vs "variable"
+    // 1. Identify Static vs Variable Address Parts
     const staticAddressParts = [];
-    const variableAddressIndices = [];
+    const variableAddressIndices = []; // e.g. [1, 2, 3]
     
     for (let col = 0; col < numAddressParts; col++) {
       const values = addressMatrix.map(row => row[col]);
       const uniqueVals = new Set(values);
-      
       if (uniqueVals.size === 1) {
         staticAddressParts.push(values[0]);
       } else {
@@ -121,122 +70,150 @@ class OSCPatternanalyser {
       }
     }
 
-    // Now analyse Arguments to see if they should be promoted to "Voice ID" (Case 3)
-    // or remain as "Outputs" (Case 4).
-    // Logic: If an arg has LOW cardinality (few unique values), it's likely an ID/Index.
-    // If it has HIGH cardinality (many values), it's likely a value/output.
-    
+    // 2. Identify Voice Args vs Output Args
     const argMatrix = cluster.map(m => m.args);
     const maxArgs = Math.max(...cluster.map(m => m.args.length));
+    const ID_CARDINALITY_THRESHOLD = 5; 
     
     const voiceArgIndices = [];
     const outputArgIndices = [];
 
-    // Dynamic threshold for "high cardinality" vs "low cardinality"
-    // If we have 100 messages, and an arg has 2 values -> ID. If it has 90 values -> Output.
-    const ID_CARDINALITY_THRESHOLD = 5; 
-
     for (let i = 0; i < maxArgs; i++) {
-      // Gather values for this arg index across all messages that have it
-      const values = argMatrix
-        .filter(row => row.length > i)
-        .map(row => row[i]);
-      
+      const values = argMatrix.filter(row => row.length > i).map(row => row[i]);
       if (values.length === 0) break;
       
       const uniqueVals = new Set(values);
       const isNumeric = values.every(v => typeof v === 'number');
+      const isLowCardinality = uniqueVals.size <= ID_CARDINALITY_THRESHOLD;
+      const areAllIntegers = values.every(v => Number.isInteger(v));
 
-      // Check if looks like an Index (Voice ID)
-      // Criteria: Numeric AND (Low Cardinality OR Integer)
-      if (isNumeric) {
-        const isLowCardinality = uniqueVals.size <= ID_CARDINALITY_THRESHOLD;
-        const areAllIntegers = values.every(v => Number.isInteger(v));
+      if (isNumeric && (isLowCardinality || areAllIntegers)) {
+         voiceArgIndices.push(i);
+      } else {
+         outputArgIndices.push(i);
+      }
+    }
+
+    // --- STRATEGY GENERATION LOOP ---
+    
+    // A. Strategy 1: "Flat Voice" (Everything variable is the Voice ID, Outputs are just values)
+    alternatives.push(this._createAlternative(
+      cluster, 
+      staticAddressParts, 
+      variableAddressIndices, // Voice
+      [],                      // Output Address Parts
+      voiceArgIndices,         // Voice Args
+      outputArgIndices,        // Output Args
+      "Standard (Address is Voice)"
+    ));
+
+    // B. Strategy 2...N: "Hierarchical Splits"
+    // We split the variable address parts. Left side = Voice, Right side = Output ID.
+    // e.g. if varIndices = [1, 2, 3]
+    // Split 1: Voice=[1], OutputAddr=[2,3]
+    // Split 2: Voice=[1,2], OutputAddr=[3]
+    
+    // Only do this if we have at least 2 variable parts (to make a split meaningful)
+    // and if we don't have voice arguments (mixing ID args and address splits gets too messy)
+    if (variableAddressIndices.length >= 2 && voiceArgIndices.length === 0) {
+      for (let i = 1; i < variableAddressIndices.length; i++) {
+        const voiceParts = variableAddressIndices.slice(0, i);
+        const outputParts = variableAddressIndices.slice(i);
         
-        // Case 3: /keys/name 0 1 value -> 0 and 1 are likely indices
-        if (isLowCardinality || areAllIntegers) {
-           voiceArgIndices.push(i);
-           continue;
-        }
+        // Create a label like "Split: Last 1 part is Output"
+        const splitCount = outputParts.length;
+        alternatives.push(this._createAlternative(
+          cluster,
+          staticAddressParts,
+          voiceParts,
+          outputParts,
+          voiceArgIndices,
+          outputArgIndices,
+          `Hierarchical (Last ${splitCount} address part${splitCount > 1 ? 's' : ''} is Output)`
+        ));
       }
-      
-      // Otherwise, it's an output value
-      outputArgIndices.push(i);
     }
 
-    // Construct the result object
-    const blockAddress = '/' + staticAddressParts.join('/');
-    
-    // We need a "Pattern String" that matches these messages
-    // e.g. /base/{id} or /base {id} {id}
-    
-    let patternParts = [...staticAddressParts];
-    
-    // Add placeholders for variable address parts
-    for (let i = 0; i < numAddressParts; i++) {
-      if (variableAddressIndices.includes(i)) {
-        patternParts.push('{id}');
+    return alternatives;
+  }
+
+  _createAlternative(cluster, staticAddr, voiceAddrIdx, outputAddrIdx, voiceArgIdx, outputArgIdx, label) {
+    const uniqueVoices = new Set();
+    const uniqueOutputs = new Set();
+    const blockAddress = '/' + staticAddr.join('/');
+
+    cluster.forEach(msg => {
+      // 1. Construct Voice ID
+      const vParts = voiceAddrIdx.map(i => msg.addressParts[i]);
+      const vArgs = voiceArgIdx.map(i => msg.args[i]);
+      const voiceKey = [...vParts, ...vArgs].join(':') || "Default";
+      uniqueVoices.add(voiceKey);
+
+      // 2. Construct Output ID
+      // Note: Outputs are tricky. They can be defined by the Address OR by the Argument index.
+      const oAddrParts = outputAddrIdx.map(i => msg.addressParts[i]);
+      
+      // If outputs are defined by address (e.g. part 3 is the fader number)
+      if (oAddrParts.length > 0) {
+        uniqueOutputs.add(oAddrParts.join(':'));
+      } 
+      // If outputs are defined by arguments (e.g. value 1, value 2)
+      else {
+        // We map arg indices to generic names like "Value 1", "Value 2"
+        outputArgIdx.forEach((argIdx, count) => {
+          // If there is only one output arg, just call it "Value", else number them.
+          const name = outputArgIdx.length === 1 ? "Value" : `Value ${count + 1}`;
+          uniqueOutputs.add(name);
+        });
       }
-    }
-    
-    // Add placeholders for voice args
-    // Note: In OSC standard, address is distinct from args. 
-    // But for display, we can show: /prefix {id_from_address} {id_from_arg_0}
-    
+    });
+
     return {
+      label: label, // To distinguish patterns in UI
       blockPath: blockAddress,
       messageCount: cluster.length,
       
-      // Structure mapping
+      // UI Lists
+      voices: Array.from(uniqueVoices).sort(),
+      outputs: Array.from(uniqueOutputs).sort(),
+      
+      // Structure map (for your parser logic later)
       structure: {
-        block: staticAddressParts,
-        
+        block: staticAddr,
         voice: {
-          addressIndices: variableAddressIndices, // e.g. [2] means 3rd part of address
-          argIndices: voiceArgIndices             // e.g. [0] means 1st arg
+          addressIndices: voiceAddrIdx,
+          argIndices: voiceArgIdx
         },
-        
-        outputs: outputArgIndices
+        output: {
+          addressIndices: outputAddrIdx, // New: Supports output coming from address
+          argIndices: outputArgIdx
+        }
       },
       
-      // Human readable suggestion
-      suggestionString: this._generateSuggestionString(staticAddressParts, numAddressParts, variableAddressIndices, voiceArgIndices, outputArgIndices),
-      
-      // Example data for UI
-      examples: cluster.slice(0, 3).map(m => m.raw)
+      // Visualization helper
+      exampleAddress: cluster[0].addressParts.join('/')
     };
   }
 
-  _generateSuggestionString(staticAddr, totalAddr, varAddrIndices, voiceArgIndices, outputArgIndices) {
-    let s = "/" + staticAddr.join('/');
-    
-    // Add variable address parts
-    for (let i=0; i<totalAddr; i++) {
-      if (!varAddrIndices.includes(i)) continue; // skip static
-      s += `/{addr_id}`;
+  // --- Helpers ---
+  
+  _parseMessage(str) {
+    const trimmed = str.trim();
+    if (!trimmed.startsWith('/')) return null;
+    const firstSpaceIndex = trimmed.indexOf(' ');
+    let address = "", args = [];
+    if (firstSpaceIndex === -1) address = trimmed;
+    else {
+      address = trimmed.substring(0, firstSpaceIndex);
+      const argStr = trimmed.substring(firstSpaceIndex + 1);
+      if (argStr.length > 0) args = argStr.split(/\s+/).map(a => isNaN(parseFloat(a)) ? a : parseFloat(a));
     }
-    
-    // Add voice args
-    voiceArgIndices.forEach(() => s += ` {idx}`);
-    
-    // Add outputs
-    if (outputArgIndices.length > 0) {
-      s += ` (`;
-      outputArgIndices.forEach((_, idx) => {
-        s += `val${idx+1} `;
-      });
-      s = s.trim() + `)`;
-    }
-    
-    return s;
+    return { raw: str, addressParts: address.split('/').filter(p => p !== ''), fullAddress: address, args: args };
   }
 
   _getCommonPrefixDepth(arr1, arr2) {
-    let i = 0;
-    const minLen = Math.min(arr1.length, arr2.length);
-    while (i < minLen && arr1[i] === arr2[i]) {
-      i++;
-    }
+    let i = 0; const minLen = Math.min(arr1.length, arr2.length);
+    while (i < minLen && arr1[i] === arr2[i]) i++;
     return i;
   }
 
@@ -250,35 +227,59 @@ class OSCPatternanalyser {
   }
 }
 
+
 const analyser = new OSCPatternanalyser();
 
 //mode 0 = normal parsing
 //mode 1 = listening to determine addresses
 let listenMode = 0;
 
+function loadbang() {
+  wipeDisplay();
+}
+
+function wipeDisplay(){
+  outlet(0,'umenu','clear');
+  outlet(0,'display','bba','set',' ');
+  outlet(0,'display','addr1','set',' ');
+  outlet(0,'display','addr2','set',' ');
+}
 
 function msg_int(m) {
   listenMode = m;
   if(m == 1) {
     analyser.messages = [];
+    wipeDisplay();
   }else{
+    post("\ncaptured",analyser.messages.length,"messages, analysing");
     process();
   }        
 }
 
+let patterns = {};
+let selectedIndex = 0;
+
 function process(){
   // Run Analysis
-  const patterns = analyser.analyse();
-
+  patterns = analyser.analyse().filter(p => (p.outputs.length>0));//remove stub ones with no outputs
+  // put the ones with more outputs first, within that sort by number of messages matched.
+  patterns.sort((a,b) => {
+    const ldif = b.structure.output.addressIndices.length - a.structure.output.addressIndices.length;
+    if(ldif!=0) return ldif;
+    return b.structure.messageCount - b.structure.messageCount;
+  });
+  outlet(0, 'umenu', 'clear');
   post('\n--- SUGGESTED PATTERNS ---');
+  post(`\nFound ${patterns.length} pattern interpretations:\n`);
   patterns.forEach((p, index) => {
-    post(`\nPattern ${index + 1}: ${p.suggestionString}`);
+    outlet(0, 'umenu', 'append', `Pattern ${index + 1}: ${p.label}`);
+    post(`\nPattern ${index + 1}: ${p.label} `);
     post(`\n   Block: ${p.blockPath}`);
-    post(`\n   Voice Source: Address Parts [${p.structure.voice.addressIndices.join(', ')}] + Args [${p.structure.voice.argIndices.join(', ')}]`);
-    post(`\n   Output Indices: [${p.structure.outputs.join(', ')}]`);
-    post(`\n   Examples: ${p.examples.length} messages`);
+    post(`\n    Voices Found: [${p.voices.join(', ')}]`); 
+    post(`\n    Outputs:      [${p.outputs.join(', ')}]`);
     post('\n');
   });
+  displayPattern(0);
 }
 
 function bang() {
@@ -304,6 +305,16 @@ function bang() {
   analyser.record("/mixer/chan2 0.1 0.2");
 }
 
+function displayPattern(index){
+  p = patterns[index];
+  selectedIndex = index;
+
+  outlet(0,'display', 'bba','set', `${p.blockPath}`);
+  outlet(0,'display', 'addr1','set', p.voices.join('\n'));
+  outlet(0,'display', 'addr2','set', p.outputs.join('\n'));
+}
+
+
 function anything() {
 	var a = arrayfromargs(messagename, arguments);
   if(listenMode == 1) {
@@ -311,4 +322,10 @@ function anything() {
   }else{
     //post("i should route and process this",a);
   }
+}
+
+function apply(){
+  // this needs to store the pattern, voice addresses, output labels and assignments in the block dict
+  // it needs to add voices
+  // can it label them?
 }
