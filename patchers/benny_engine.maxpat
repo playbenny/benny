@@ -4,7 +4,7 @@
         "appversion": {
             "major": 9,
             "minor": 1,
-            "revision": 1,
+            "revision": 2,
             "architecture": "x64",
             "modernui": 1
         },
@@ -207,7 +207,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -461,7 +461,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -639,7 +639,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -751,7 +751,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -1011,7 +1011,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -1146,7 +1146,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -2004,7 +2004,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -2261,7 +2261,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -3148,7 +3148,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -3189,12 +3189,12 @@
                             {
                                 "box": {
                                     "id": "obj-27",
-                                    "maxclass": "message",
-                                    "numinlets": 2,
+                                    "maxclass": "newobj",
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [ "" ],
-                                    "patching_rect": [ 535.0, 41.0, 42.0, 22.0 ],
-                                    "text": "get $1"
+                                    "patching_rect": [ 535.0, 41.0, 153.0, 22.0 ],
+                                    "text": "sprintf get connections[%d]"
                                 }
                             },
                             {
@@ -3211,12 +3211,13 @@
                             {
                                 "box": {
                                     "id": "obj-21",
-                                    "maxclass": "message",
-                                    "numinlets": 2,
+                                    "linecount": 2,
+                                    "maxclass": "newobj",
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [ "" ],
-                                    "patching_rect": [ 439.0, 41.0, 42.0, 22.0 ],
-                                    "text": "get $1"
+                                    "patching_rect": [ 439.0, 34.0, 67.0, 36.0 ],
+                                    "text": "sprintf get blocks[%d]"
                                 }
                             },
                             {
@@ -4073,7 +4074,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -4348,7 +4349,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -4524,7 +4525,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 1,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -6182,7 +6183,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -6233,7 +6234,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 1,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -8080,7 +8081,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -9741,7 +9742,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 1,
+                            "revision": 2,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -10341,7 +10342,7 @@
                                         "appversion": {
                                             "major": 9,
                                             "minor": 1,
-                                            "revision": 1,
+                                            "revision": 2,
                                             "architecture": "x64",
                                             "modernui": 1
                                         },
@@ -11736,7 +11737,7 @@
                     "presentation": 1,
                     "presentation_rect": [ 9.0, 254.0, 88.0, 30.0 ],
                     "text": "start",
-                    "textoncolor": [ 1.0, 0.827, 0.0, 1.0 ],
+                    "textoncolor": [ 1.0, 0.216, 0.0, 1.0 ],
                     "varname": "startbutton"
                 }
             },
@@ -11802,7 +11803,7 @@
                     "fontname": "Arial Bold",
                     "fontsize": 18.0,
                     "id": "obj-52",
-                    "items": [ "jh_small_case.json", ",", "luke studio.json", ",", "Matthys Euro.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "tiptop_case.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
+                    "items": [ "jh_small_case.json", ",", "luke studio.json", ",", "midi_drum_machine_example.json", ",", "no_hardware.json", ",", "tiptop_case.json", ",", "wedge case click.json", ",", "wedge case cue no click.json" ],
                     "maxclass": "umenu",
                     "numinlets": 1,
                     "numoutlets": 3,
@@ -12039,7 +12040,7 @@
             },
             {
                 "box": {
-                    "id": "obj-64",
+                    "id": "obj-46",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 1,
@@ -12051,13 +12052,73 @@
             },
             {
                 "box": {
-                    "id": "obj-74",
+                    "id": "obj-47",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "multichannelsignal" ],
+                    "patching_rect": [ 654.0, 527.0, 206.0, 22.0 ],
+                    "text": "mc.gen~ input_processing @chans 2",
+                    "varname": "input_processing"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-49",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 667.0, 882.0, 100.0, 22.0 ],
                     "text": "mc.dac~ 1 2",
                     "varname": "audio_outputs"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-56",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 930.0, 440.0, 100.0, 22.0 ],
+                    "text": "r record",
+                    "varname": "recr"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-64",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "multichannelsignal" ],
+                    "patching_rect": [ 950.0, 520.0, 100.0, 22.0 ],
+                    "text": "mc.adc~ 1 2",
+                    "varname": "hw_rec_adc_hardware.in.1+2"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-74",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "signal" ],
+                    "patching_rect": [ 950.0, 580.0, 219.0, 22.0 ],
+                    "text": "mc.sfrecord~ 2 @dither 0 @bitdepth 32",
+                    "varname": "hw_rec_hardware.in.1+2"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-76",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 950.0, 550.0, 100.0, 22.0 ],
+                    "text": "gate",
+                    "varname": "hw_rec_gate_hardware.in.1+2"
                 }
             }
         ],
@@ -12432,7 +12493,7 @@
             },
             {
                 "patchline": {
-                    "destination": [ "obj-74", 0 ],
+                    "destination": [ "obj-49", 0 ],
                     "source": [ "obj-3", 0 ]
                 }
             },
@@ -12545,6 +12606,18 @@
             },
             {
                 "patchline": {
+                    "destination": [ "obj-47", 0 ],
+                    "source": [ "obj-46", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-31", 1 ],
+                    "source": [ "obj-47", 0 ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [ "obj-32", 0 ],
                     "source": [ "obj-48", 2 ]
                 }
@@ -12635,6 +12708,12 @@
             },
             {
                 "patchline": {
+                    "destination": [ "obj-76", 1 ],
+                    "source": [ "obj-56", 0 ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [ "obj-15", 0 ],
                     "source": [ "obj-57", 0 ]
                 }
@@ -12665,7 +12744,7 @@
             },
             {
                 "patchline": {
-                    "destination": [ "obj-31", 1 ],
+                    "destination": [ "obj-74", 0 ],
                     "source": [ "obj-64", 0 ]
                 }
             },
@@ -12714,7 +12793,7 @@
             },
             {
                 "patchline": {
-                    "destination": [ "obj-74", 0 ],
+                    "destination": [ "obj-49", 0 ],
                     "order": 1,
                     "source": [ "obj-70", 0 ]
                 }
@@ -12747,6 +12826,12 @@
                 "patchline": {
                     "destination": [ "obj-147", 0 ],
                     "source": [ "obj-75", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-74", 0 ],
+                    "source": [ "obj-76", 0 ]
                 }
             },
             {

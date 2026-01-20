@@ -195,6 +195,53 @@ class OSCPatternanalyser {
     };
   }
 
+
+  // takes the selected pattern and makes a single voice's parser config object
+  makeParserConfig(pattern, voiceId, selectedOutputIds) {
+    // 1. Construct the Static Address Prefix
+    //    We build the prefix by appending the specific voiceId to the block path.
+    let prefix = pattern.blockPath;
+
+    // Case A: The Voice ID is part of the OSC address (e.g., /from/james)
+    if (pattern.structure.voice.addressIndices.length > 0) {
+      prefix += '/' + voiceId;
+    }
+    // Case B: The Voice ID is in the arguments (e.g., /track 1)
+    // The prefix stays as the block path (e.g., /track). 
+    // We will pass the voiceArgIndex so the parser can filter messages later.
+
+    // 2. Determine the Output Mode
+    let mode = 'implicit';
+    if (pattern.structure.output.addressIndices.length > 0) {
+      mode = 'address_suffix';
+    } else if (pattern.structure.output.argIndices.length > 0) {
+      mode = 'arg_index';
+    }
+
+    // 3. Prepare the validOutputs list
+    //    For 'arg_index' mode, we need to convert the Output Names (e.g., "Value 1")
+    //    back into integer indices (e.g., 0).
+    let validOutputs = selectedOutputIds;
+
+    if (mode === 'arg_index') {
+      validOutputs = selectedOutputIds.map(outputName => {
+        // Find the index of this name in the pattern's discovered outputs list
+        const index = pattern.outputs.indexOf(outputName);
+        return index; 
+      }).filter(idx => idx !== -1); // Remove any invalid selections
+    }
+
+    return {
+      addressPrefix: prefix,
+      outputMode: mode,
+      validOutputs: validOutputs,
+      // Extra data to help VoiceParser filter if Voice ID is in arguments
+      voiceArgIndex: pattern.structure.voice.argIndices[0],
+      expectedVoiceId: voiceId
+    };
+  }
+
+
   // --- Helpers ---
   
   _parseMessage(str) {
@@ -230,6 +277,7 @@ class OSCPatternanalyser {
 
 const analyser = new OSCPatternanalyser();
 
+
 //mode 0 = normal parsing
 //mode 1 = listening to determine addresses
 let listenMode = 0;
@@ -258,6 +306,7 @@ function msg_int(m) {
 
 let patterns = {};
 let selectedIndex = 0;
+let OSCport = 9000;
 
 function process(){
   // Run Analysis
@@ -314,6 +363,9 @@ function displayPattern(index){
   outlet(0,'display', 'addr2','set', p.outputs.join('\n'));
 }
 
+function port(p){
+  OSCport = p;
+}
 
 function anything() {
 	var a = arrayfromargs(messagename, arguments);
@@ -324,8 +376,27 @@ function anything() {
   }
 }
 
-function apply(){
+function apply(blockNum){
   // this needs to store the pattern, voice addresses, output labels and assignments in the block dict
   // it needs to add voices
-  // can it label them?
+  // can it label the outputs?
+  let blocks = new Dict;
+  blocks.name = "blocks";
+  voicePatterns = [];
+  let p = patterns[selectedIndex];
+  for(let i = 0; i<p.voices.length; i++){
+    const parserConfig = analyser.makeParserConfig(p, p.voices[i], p.outputs);
+    voicePatterns[i] = {
+      voiceName : p.voices[i],
+      outputs : p.outputs,
+      parserConfig : parserConfig
+    }
+  }
+  blocks.replace("blocks[" + blockNum + "]::OSC_settings", { "port": OSCport, "voices" : voicePatterns });
+  if(blocks.get("blocks[" + blockNum + "]::poly::voices") != p.voices.length){
+    messnamed("to_blockmanager","voicecount",blockNum,p.voices.length);
+  }
+  
+  post("current block",blockNum," dict:",JSON.stringify(blocks.get("blocks["+blockNum+"]")));
 }
+
