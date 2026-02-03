@@ -42,7 +42,7 @@ function voice_is(v){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
         if(blocks.contains("blocks["+block+"]::OSC_settings")){
-            post("\nexisting OSC settings found",JSON.stringify(blocks.get("blocks["+block+"]::OSC_settings")));
+            // post("\nexisting OSC settings found",JSON.stringify(blocks.get("blocks["+block+"]::OSC_settings")));
             outlet(3, "port", blocks.get("blocks["+block+"]::OSC_settings::port"));
 	// 					outlet(0,'display', 'bba','set', `${p.blockPath}`);
   // outlet(0,'display', 'addr1','set', p.voices.join('\n'));
