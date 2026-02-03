@@ -382,9 +382,16 @@ function apply(blockNum){
   // can it label the outputs?
   let blocks = new Dict;
   blocks.name = "blocks";
+  
+  let blocktypes = new Dict;
+  blocktypes.name = "blocktypes";
+  
   voicePatterns = [];
   let p = patterns[selectedIndex];
-  for(let i = 0; i<p.voices.length; i++){
+  for(let i = 0;i<p.outputs.length; i++){
+    blocktypes.replace("utility.OSC.input::connections::out::parameters["+i+"]",p.outputs[i]);
+  }
+  for(i = 0; i<p.voices.length; i++){
     const parserConfig = analyser.makeParserConfig(p, p.voices[i], p.outputs);
     voicePatterns[i] = {
       voiceName : p.voices[i],

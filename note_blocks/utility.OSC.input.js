@@ -3,7 +3,7 @@ var MAX_PARAMETERS = 256;
 var voice_data_buffer = new Buffer("voice_data_buffer"); 
 var voice_parameter_buffer = new Buffer("voice_parameter_buffer");
 var shape_buffer = new Buffer("osc_shape_lookup");
-outlets = 3;
+outlets = 4;
 var config = new Dict;
 config.name = "config";
 var connections = new Dict;
@@ -41,6 +41,14 @@ function voice_is(v){
 	if(block>=0){
 		v_list = voicemap.get(block);
 		if(typeof v_list=="number") v_list = [v_list];
+        if(blocks.contains("blocks["+block+"]::OSC_settings")){
+            post("\nexisting OSC settings found",JSON.stringify(blocks.get("blocks["+block+"]::OSC_settings")));
+            outlet(3, "port", blocks.get("blocks["+block+"]::OSC_settings::port"));
+	// 					outlet(0,'display', 'bba','set', `${p.blockPath}`);
+  // outlet(0,'display', 'addr1','set', p.voices.join('\n'));
+  // outlet(0,'display', 'addr2','set', p.outputs.join('\n'));
+            //outlet(3, 
+        }    
 	}
 
 }

@@ -14,6 +14,28 @@
         "boxes": [
             {
                 "box": {
+                    "id": "obj-15",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 503.0, 373.0, 60.0, 22.0 ],
+                    "text": "route port"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-8",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 240.0, 8.0, 109.0, 22.0 ],
+                    "text": "loadmess set 9000"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-6",
                     "maxclass": "newobj",
                     "numinlets": 2,
@@ -104,15 +126,15 @@
             {
                 "box": {
                     "id": "obj-48",
-                    "linecount": 6,
+                    "linecount": 14,
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 236.0, 179.0, 150.0, 89.0 ],
+                    "patching_rect": [ 236.0, 179.0, 150.0, 200.0 ],
                     "presentation": 1,
-                    "presentation_linecount": 7,
-                    "presentation_rect": [ 398.0, 41.0, 142.0, 103.0 ],
-                    "text": "when you click apply the selected address pattern & osc port will be stored, and as many voices as needed will be added and their outputs labelled."
+                    "presentation_linecount": 15,
+                    "presentation_rect": [ 398.0, 41.0, 143.0, 213.0 ],
+                    "text": "turn on listen mode, send some OSC messages, turn listen mode off. the dropdown will be populated with some suggested parsing patterns.\n\nwhen you click apply the selected address pattern & osc port will be stored, and as many voices as needed will be added and their outputs labelled."
                 }
             },
             {
@@ -167,29 +189,25 @@
             {
                 "box": {
                     "id": "obj-31",
-                    "linecount": 3,
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 220.0, 335.0, 150.0, 48.0 ],
+                    "patching_rect": [ 220.0, 335.0, 150.0, 20.0 ],
                     "presentation": 1,
-                    "presentation_linecount": 3,
-                    "presentation_rect": [ 194.0, 129.0, 166.0, 48.0 ],
-                    "text": "1\n2\n3"
+                    "presentation_rect": [ 194.0, 129.0, 166.0, 20.0 ],
+                    "text": " "
                 }
             },
             {
                 "box": {
                     "id": "obj-29",
-                    "linecount": 2,
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 95.0, 342.0, 183.0, 34.0 ],
+                    "patching_rect": [ 95.0, 342.0, 183.0, 20.0 ],
                     "presentation": 1,
-                    "presentation_linecount": 2,
-                    "presentation_rect": [ 5.0, 129.0, 150.0, 34.0 ],
-                    "text": "james\nsven"
+                    "presentation_rect": [ 5.0, 129.0, 150.0, 20.0 ],
+                    "text": " "
                 }
             },
             {
@@ -213,7 +231,7 @@
                     "patching_rect": [ 52.5, 429.0, 150.0, 20.0 ],
                     "presentation": 1,
                     "presentation_rect": [ 129.0, 72.0, 231.0, 20.0 ],
-                    "text": "/hi/from"
+                    "text": " "
                 }
             },
             {
@@ -253,7 +271,7 @@
             {
                 "box": {
                     "id": "obj-11",
-                    "items": [ "Pattern 1: Hierarchical (Last 1 address part is Output)", ",", "Pattern 2: Standard (Address is Voice)" ],
+                    "items": "<empty>",
                     "maxclass": "umenu",
                     "numinlets": 1,
                     "numoutlets": 3,
@@ -429,8 +447,8 @@
                     "id": "obj-3",
                     "maxclass": "newobj",
                     "numinlets": 1,
-                    "numoutlets": 3,
-                    "outlettype": [ "", "", "" ],
+                    "numoutlets": 4,
+                    "outlettype": [ "", "", "", "" ],
                     "patching_rect": [ 386.0, 373.0, 106.0, 22.0 ],
                     "saved_object_attributes": {
                         "filename": "utility.OSC.input",
@@ -518,6 +536,12 @@
             },
             {
                 "patchline": {
+                    "destination": [ "obj-7", 0 ],
+                    "source": [ "obj-15", 0 ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [ "obj-18", 0 ],
                     "source": [ "obj-17", 0 ]
                 }
@@ -582,6 +606,12 @@
                 "patchline": {
                     "destination": [ "obj-31", 0 ],
                     "source": [ "obj-27", 2 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-15", 0 ],
+                    "source": [ "obj-3", 3 ]
                 }
             },
             {
@@ -656,6 +686,12 @@
                 "patchline": {
                     "destination": [ "obj-20", 0 ],
                     "source": [ "obj-7", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-7", 0 ],
+                    "source": [ "obj-8", 0 ]
                 }
             },
             {
