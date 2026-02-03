@@ -1,3 +1,6 @@
+3/2/25:
+- **OSC input** added, with smart address parsing for a variety of OSC data formats
+
 6/12/25:
 - **fx.squeeze** added, a wrapper for the GMaudio squeeze multiband upward compressor.
 - **voice.grains** granular synth building block. each voice of this plays an overlapping pair of grains from your sample.
