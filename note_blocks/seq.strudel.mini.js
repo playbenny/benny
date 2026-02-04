@@ -106,7 +106,7 @@ function renderText(message, row, cursor){
 	var cx=-1;
 	var cy=-1;
 	col = scaleRGB(bri,config.get("palette::gamut["+colour+"]::colour"));
-	if(!Array.isArray(highlights[row]))highlights[row] == [0];
+	if(!Array.isArray(highlights[row]))highlights[row] = [0];
 	for(var i=0;i<message.length;i++){
 		if(i==cursor){
 			cx = x-0.2*unit;
