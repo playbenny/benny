@@ -1,0 +1,94 @@
+name: Build XOX mxe64
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-sync:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout benny
+        uses: actions/checkout@v4
+
+      - name: Validate required settings
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${{ vars.XOX_SOURCE_REPO }}" ]; then
+            echo "Missing repo variable XOX_SOURCE_REPO (format: owner/repo)."
+            exit 1
+          fi
+          if [ -z "${{ secrets.XOX_SOURCE_REPO_TOKEN }}" ]; then
+            echo "Missing secret XOX_SOURCE_REPO_TOKEN."
+            exit 1
+          fi
+
+      - name: Checkout XOX source repo (default branch)
+        if: ${{ vars.XOX_SOURCE_REF == '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.XOX_SOURCE_REPO }}
+          token: ${{ secrets.XOX_SOURCE_REPO_TOKEN }}
+          path: xox-src
+          submodules: recursive
+
+      - name: Checkout XOX source repo (specific ref)
+        if: ${{ vars.XOX_SOURCE_REF != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.XOX_SOURCE_REPO }}
+          ref: ${{ vars.XOX_SOURCE_REF }}
+          token: ${{ secrets.XOX_SOURCE_REPO_TOKEN }}
+          path: xox-src
+          submodules: recursive
+
+      - name: Checkout max-sdk
+        uses: actions/checkout@v4
+        with:
+          repository: Cycling74/max-sdk
+          path: max-sdk
+
+      - name: Build Windows externals
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S xox-src/max_external -B xox-src/build-max-win -A x64 \
+            -DMAX_SDK_BASE_DIR="$GITHUB_WORKSPACE/max-sdk/source/max-sdk-base"
+          cmake --build xox-src/build-max-win --config Release
+
+      - name: Copy drum mxe64 binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          src_dir="xox-src/max_external/externals"
+          dst_dir="externals/xox_drums"
+          mkdir -p "$dst_dir"
+          for drum in kick snare hihat clap cowbell tom; do
+            src="$src_dir/xox.$drum~.mxe64"
+            dst="$dst_dir/xox.$drum~.mxe64"
+            if [ ! -f "$src" ]; then
+              echo "Missing build output: $src"
+              exit 1
+            fi
+            cp "$src" "$dst"
+          done
+
+      - name: Commit updated binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- externals/xox_drums; then
+            echo "No mxe64 updates."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add externals/xox_drums/*.mxe64
+          git commit -m "chore: update xox drum mxe64 externals [skip ci]"
+          git push
