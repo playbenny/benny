@@ -57,3 +57,4 @@ data/*.maxsnap
 .DS_Store
 hardware_configs/tiptop_case.json
 note_blocks/strudel.mini/*.log
+xox_to_implement/

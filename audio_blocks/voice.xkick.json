@@ -1,0 +1,236 @@
+{
+  "voice.xkick": {
+    "patcher": "voice.xkick",
+    "type": "audio",
+    "block_ui_patcher": "blank.ui",
+    "help_text": "XOX kick drum voice (xox.kick~) triggered by MIDI notes. Includes per-parameter velocity attenuverters for expressive dynamics.",
+    "max_polyphony": 0,
+    "default_polymode": {
+      "stack_mode": "1x",
+      "choose_mode": "first free",
+      "steal_mode": "oldest",
+      "return_mode": 1,
+      "latching": 0
+    },
+    "upsample": 1,
+    "connections": {
+      "in": {
+        "audio": [
+          "pitch",
+          "saturation"
+        ],
+        "midi": [
+          "notes"
+        ]
+      },
+      "out": {
+        "audio": [
+          "out"
+        ],
+        "midi": [
+          "through"
+        ]
+      }
+    },
+    "groups": [
+      {
+        "contains": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "colour": [
+          22,
+          156,
+          144
+        ],
+        "height": 2,
+        "header": "kick"
+      },
+      {
+        "contains": [
+          6,
+          7,
+          8
+        ],
+        "colour": [
+          190,
+          190,
+          190
+        ],
+        "height": 1,
+        "header": "velocity modulation"
+      },
+      {
+        "contains": [
+          9,
+          10,
+          11
+        ],
+        "colour": [
+          190,
+          190,
+          190
+        ],
+        "height": 1
+      }
+    ],
+    "panel": {
+      "parameters": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "parameters": [
+      {
+        "name": "pitch",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.328125
+      },
+      {
+        "name": "pitchdepth",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "pitchdecay",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "ampdecay",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.328125
+      },
+      {
+        "name": "saturation",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.328125
+      },
+      {
+        "name": "range",
+        "type": "menu_i",
+        "values": [
+          "2x",
+          "10x",
+          "100x"
+        ],
+        "wrap": 0,
+        "default": 0
+      },
+      {
+        "name": "vel->pitch",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->pitchdepth",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->pitchdecay",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->ampdecay",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->saturation",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->dynamics",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      }
+    ]
+  }
+}

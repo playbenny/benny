@@ -1,0 +1,251 @@
+{
+  "voice.xclap": {
+    "patcher": "voice.xclap",
+    "type": "audio",
+    "block_ui_patcher": "blank.ui",
+    "help_text": "XOX clap voice (xox.clap~) triggered by MIDI notes with per-parameter velocity attenuverters and dynamics control.",
+    "max_polyphony": 0,
+    "default_polymode": {
+      "stack_mode": "1x",
+      "choose_mode": "first free",
+      "steal_mode": "oldest",
+      "return_mode": 1,
+      "latching": 0
+    },
+    "upsample": 1,
+    "connections": {
+      "in": {
+        "audio": [
+          "color",
+          "saturation"
+        ],
+        "midi": [
+          "notes"
+        ]
+      },
+      "out": {
+        "audio": [
+          "out"
+        ],
+        "midi": [
+          "through"
+        ]
+      }
+    },
+    "groups": [
+      {
+        "contains": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "colour": [
+          230,
+          120,
+          70
+        ],
+        "height": 2,
+        "header": "clap"
+      },
+      {
+        "contains": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "colour": [
+          190,
+          190,
+          190
+        ],
+        "height": 1,
+        "header": "velocity modulation"
+      },
+      {
+        "contains": [
+          10,
+          11,
+          12
+        ],
+        "colour": [
+          190,
+          190,
+          190
+        ],
+        "height": 1
+      }
+    ],
+    "panel": {
+      "parameters": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "parameters": [
+      {
+        "name": "energy",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.25
+      },
+      {
+        "name": "spread",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.25
+      },
+      {
+        "name": "color",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.25
+      },
+      {
+        "name": "verbdecay",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.25
+      },
+      {
+        "name": "verb vol",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.25
+      },
+      {
+        "name": "saturation",
+        "type": "float",
+        "values": [
+          "uni",
+          0,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.25
+      },
+      {
+        "name": "vel->ener",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->sprd",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->col",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->vdec",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->vvol",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->sat",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      },
+      {
+        "name": "vel->dyna",
+        "type": "float",
+        "values": [
+          "bi",
+          -1,
+          1,
+          "lin"
+        ],
+        "wrap": 0,
+        "default": 0.5
+      }
+    ]
+  }
+}
