@@ -1,3 +1,11 @@
+function sanitize_patcher_name(name){
+	if((name == null) || (name == "")) return name;
+	name = name.toString();
+	if(name.slice(-7) == ".maxpat") name = name.slice(0,-7);
+	if(name.slice(-5) == ".json") name = name.slice(0,-5);
+	return name;
+}
+
 function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting or undoing
 	//post("new block");
 	var details = new Dict;
@@ -24,7 +32,7 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 	}else if(type == "audio"){
 		if(blocktypes.contains(block_name+"::upsample")) up = UPSAMPLING * blocktypes.get(block_name+"::upsample");
 	}
-	var patcher = details.get("patcher");
+	var patcher = sanitize_patcher_name(details.get("patcher"));
 	var vst = 0;
 	var recycled=0;
 	if((type=="audio") && RECYCLING){
@@ -105,7 +113,7 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 		}
 	}else{
 		//block_name = details.get("patcher");
-		blocks.replace("blocks["+new_block_index+"]::patcher",details.get("patcher"));
+			blocks.replace("blocks["+new_block_index+"]::patcher",patcher);
 		var ui = details.get("block_ui_patcher");
 		if((ui == "") || (ui == null) || (ui == "self")){
 			ui_patcherlist[new_block_index] = "blank.ui";
@@ -438,7 +446,9 @@ function send_note_patcherlist(do_all){ //loads a single voice and returns, only
 				}
 			}else{
 				if(loading.wait>1) post("loading",note_patcherlist[i],"into",i+1,"\n");
-				var pn = (note_patcherlist[i]+".maxpat");
+					var patcher_name = sanitize_patcher_name(note_patcherlist[i]);
+					if(patcher_name != note_patcherlist[i]) note_patcherlist[i] = patcher_name;
+					var pn = (patcher_name+".maxpat");
 				if(loaded_note_patcherlist[i] == "reload"){
 					note_poly.message("setvalue", i+1,"patchername","blank.note.maxpat");
 					loaded_note_patcherlist[i] = "blank.note";
@@ -487,7 +497,9 @@ function send_audio_patcherlist(do_all){
 				}
 			}else{
 				//post("loading",audio_patcherlist[i],"into",i+1,"\n");
-				var pn = (audio_patcherlist[i]+".maxpat");
+					var patcher_name = sanitize_patcher_name(audio_patcherlist[i]);
+					if(patcher_name != audio_patcherlist[i]) audio_patcherlist[i] = patcher_name;
+					var pn = (patcher_name+".maxpat");
 				if(audio_upsamplelist[i]>1){
 					pn = "upsample upwrap"+audio_upsamplelist[i]+" "+pn;
 				}
