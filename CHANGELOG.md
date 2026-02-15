@@ -1,4 +1,7 @@
-3/2/25:
+15/2/26
+- **X0X drums** added, a port of the 4ms VCV modules, thanks to [El Chico Fuendre](https://elchicofuendre.bandcamp.com/album/ragas-for-city-dwellers)
+
+3/2/26:
 - **OSC input** added, with smart address parsing for a variety of OSC data formats
 
 6/12/25:
