@@ -1,4 +1,7 @@
-15/2/26
+25/2/26:
+- the airwindows 'console' non-linear summing plugins and tape emulation have been compiled as max externals, so they should work on first install for everyone on both platforms.
+
+15/2/26:
 - **X0X drums** added, a port of the 4ms VCV modules, thanks to [El Chico Fuendre](https://elchicofuendre.bandcamp.com/album/ragas-for-city-dwellers)
 
 3/2/26:
