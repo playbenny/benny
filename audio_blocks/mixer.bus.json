@@ -5,9 +5,9 @@
 		"block_ui_patcher" : "mix.bus.ui",
 		"ui_in_sidebar_height" : 8,
 		"ui_to_bottom_panel" : 1,
-		"help_text" : "provides a UI for all connected mixer channel blocks. optionally you can put the mixer bus ui in the bottom panel area. ££every mixer.mono/mixer.stereo etc block has to be routed, at unity gain, to one of these, to make the airwindows non-linear summing magic work.££IMPORTANT the non-linear summing will only work if you have the airwindows console 7 vsts (console7channel64, console7cascade64, console7buss64) installed, without it the mixer defaults to normal digital summing.",
+		"help_text" : "provides a UI for all connected mixer channel blocks. optionally you can put the mixer bus ui in the bottom panel area. ££every mixer.mono/mixer.stereo etc block has to be routed, at unity gain, to one of these, to make the airwindows non-linear summing magic work.",
 		"max_polyphony" : 1,
-		"upsample" : 2,
+		"upsample" : 1,
 		"subvoices" : 2,
 		"connections" : {
 			"in" : { 
