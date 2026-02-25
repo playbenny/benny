@@ -66,13 +66,6 @@
 	"smart_soft_pickup" : 1,
 	"pattern_recall_timing_quantise" : "1n",
 	"waves_preloading" : 1,
-	"consolevsts" : {
-		"bus" : "console7buss64",
-		"channel" : "console7channel64",
-		"cascade" : "console7cascade64",
-		"crunch" : "console7crunch64",
-		"tape" : "totape664"
-	},
 	"maxmsp" : {
 		"preempt" : 1,
 		"seteventinterval" : 2,

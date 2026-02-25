@@ -86,14 +86,6 @@ function loadbang(){
 }
 
 function systemtypeis(type){
-	if(type!="windows"){
-		post("\ndetected macos, noting small differences")
-		config.replace("consolevsts::bus", "Console7Buss");
-		config.replace("consolevsts::channel", "Console7Channel");
-		config.replace("consolevsts::cascade", "Console7Cascade");
-		config.replace("consolevsts::crunch", "Console7Crunch");
-		config.replace("consolevsts::tape", "totape6");
-	}
 }
 
 function initialise_reset(hardware_file){
