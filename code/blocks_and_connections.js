@@ -346,7 +346,7 @@ function new_block(block_name,x,y, no_smart_stuff){ //final param =1 if pasting 
 			new_connection.replace("from::output::number",0);
 			new_connection.replace("from::output::type","audio");
 			connections.append("connections",new_connection);
-			if(check_for_connection_overlap(new_connection)){
+			if(check_for_connection_overlap(connections.getsize("connections")-1)){
 				connections.remove("connections["+new_connection+"]");
 				error("\ntried to add a connection that seems to already exist");
 			}else{
