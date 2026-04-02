@@ -1,3 +1,8 @@
+...you'll have noticed updates have slowed here, we're hard at work on version 2. more soon...
+
+2/4/26:
+- thanks to raphael ripperton the intro video now has subtitles in english french and german
+
 25/2/26:
 - the airwindows 'console' non-linear summing plugins and tape emulation have been compiled as max externals, so they should work on first install for everyone on both platforms.
 
