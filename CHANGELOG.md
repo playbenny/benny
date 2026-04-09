@@ -1,5 +1,8 @@
 ...updates have slowed here, we're hard at work on version 2. more soon...
 
+9/4/26:
+- fixed two broken IRs and the inbuilt drive/trim compensation values in fx.metal.box. breaking change (sorry) as it may change the gain of the block, but now you can scroll through models and compare as they're all the same gain/drive.
+
 2/4/26:
 - thanks to raphael ripperton the intro video now has subtitles in english french and german
 
